@@ -1,0 +1,45 @@
+.gridContainer {
+    display: grid;
+    height: 100%;
+    margin: 0 .5rem;
+    grid-template-columns: auto;
+    grid-template-rows: 50% 50%;
+    justify-content: stretch;
+    grid-template-areas:
+      "enemies"
+      "battleUpdates";      
+  }
+
+.enemies {
+    grid-area: enemies;
+}
+
+.battleUpdates {
+    grid-area: battleUpdates;
+}
+
+.enemiesGrid {
+    display: grid;    
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+      "enemy1 enemy2"
+      "enemy3 enemy4";  
+}
+
+.enemy1 {
+    grid-area: enemy1;
+}
+
+.enemy2 {
+    grid-area: enemy2;
+}
+
+.enemy3 {
+    grid-area: enemy3;
+}
+
+.enemy4 {
+    grid-area: enemy4;
+}

@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { GlobalService } from '../global/global.service';
+declare var LZString: any;
 
 @Injectable({
   providedIn: 'root'
@@ -11,7 +12,7 @@ export class GameSaveService {
   saveGame() {
     if (typeof Worker !== 'undefined') {
       // Create a new
-      const worker = new Worker(new URL('./webworker.worker', import.meta.url));
+      const worker = new Worker(new URL('../../webworker.worker', import.meta.url));
       worker.onmessage = ({ data }) => {
         localStorage.setItem("thePilgrimageGameData", data);
         worker.terminate();

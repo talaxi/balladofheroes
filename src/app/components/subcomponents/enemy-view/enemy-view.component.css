@@ -1,0 +1,18 @@
+.characterBar {
+    width: 75%;
+    margin-right: .5rem;
+    display: inline-block;
+}
+
+.hpMpText {
+    font-size: .75rem;
+    font-weight: bold;
+}
+
+.mat-progress-bar-element, .mat-progress-bar {
+    height: 1rem !important;
+  }
+
+  .flex {
+    display: flex;
+  }

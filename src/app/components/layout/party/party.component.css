@@ -1,0 +1,124 @@
+.gridContainer {
+    display: grid;
+    height: 100%;
+    margin: 0 .5rem;
+    grid-template-columns: auto;
+    grid-template-rows: 45% 45% 10%;
+    justify-content: stretch;
+    grid-template-areas:
+      "character1"
+      "character2"
+      "options";
+  }
+
+.character1 {
+    grid-area: character1;
+    height: 100%;
+}
+
+.character2 { 
+    grid-area: character2;
+    height: 100%;
+}
+
+.options {
+    grid-area: options;
+    height: 100%;
+}
+
+.characterBar {
+    width: 75%;
+    margin-right: .5rem;
+    display: inline-block;
+}
+
+.partyMember {
+    height: 95%;
+}
+
+.hpMpText {
+    font-size: .75rem;
+    font-weight: bold;
+}
+
+.characterGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 60% 40%;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+      "characterInfo abilities";
+}
+
+.characterInfo {
+    grid-area: characterInfo;
+}
+
+.abilities {
+    grid-area: abilities;
+}
+
+.abilityGrid {
+    display: grid;
+    margin: .5rem;
+    height: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 25% 25% 25% 25%;
+    justify-content: stretch;
+    grid-template-areas:
+      "autoAttack"
+      "ability1"
+      "ability2"
+      "ability3";
+}
+
+.autoAttack {
+    grid-area: autoAttack;
+}
+
+.ability1 {
+    grid-area: ability1;
+}
+
+.ability2 {
+    grid-area: ability2;
+}
+
+.ability3 {
+    grid-area: ability3;
+}
+
+.abilityBreakoutGrid {
+    display: grid;
+    grid-template-columns: 2fr 1fr .5fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+      "abilityName abilityTimer abilitySwap";
+}
+
+.abilityName {
+    grid-area: abilityName;
+}
+
+.abilityTimer {
+    grid-area: abilityTimer;
+}
+
+.abilitySwap {
+    grid-area: abilitySwap;
+}
+
+.mat-progress-bar-element, .mat-progress-bar {
+    height: 1rem !important;
+  }
+
+.spinner {
+    display: inline-block;
+    vertical-align: middle;
+}
+
+.flex {
+    display: flex;
+}

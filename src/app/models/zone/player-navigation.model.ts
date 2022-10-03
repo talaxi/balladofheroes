@@ -1,0 +1,15 @@
+import { BalladEnum } from "../enums/ballad-enum.model";
+import { SubZoneEnum } from "../enums/sub-zone-enum.model";
+import { ZoneEnum } from "../enums/zone-enum.model";
+import { Ballad } from "./ballad.model";
+import { SubZone } from "./sub-zone.model";
+import { Zone } from "./zone.model";
+
+export class PlayerNavigation {
+    currentBallad: Ballad;
+    atNonBattleEvent: boolean;
+
+    constructor() {
+        this.atNonBattleEvent = false;
+    }
+}

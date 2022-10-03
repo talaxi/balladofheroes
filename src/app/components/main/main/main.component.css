@@ -1,0 +1,126 @@
+.gridContainer {
+    display: grid;
+    width: 100vw;
+    height: 100vh;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 6% 88% 6%;
+    justify-content: stretch;
+    grid-template-areas:
+      "header header header"
+      "main main main"
+      "footer footer footer";
+  }
+
+  .defaultDisplayGrid {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+      "party battle nav";
+  }
+
+  @media (max-width: 800px) {
+    .gridContainer {
+      display: grid;
+      width: 100vw;
+      height: 100%;      
+      position: fixed;
+      top: 0;
+      left: 0;
+      bottom: 0;
+      right: 0;
+      grid-template-columns: 1fr 1fr 1fr;
+      grid-template-rows: auto 1fr auto;
+      justify-content: stretch;
+      grid-template-areas:
+      "header header header"
+      "main main main"
+      "footer footer footer";
+    }
+  }
+
+  .mainArea {
+    grid-area: main;
+    justify-self: stretch;
+
+    background-color: var(--background-secondary);
+    color: var(--foreground-default);
+
+    overflow: auto;
+  }
+
+  .battleArea {
+    grid-area: battle;
+    justify-self: stretch;
+
+    background-color: var(--background-secondary);
+    color: var(--foreground-default);
+
+    overflow: auto;
+  }
+
+  .navArea {
+    grid-area: nav;
+    justify-self: stretch;
+
+    background-color: var(--background-secondary);
+    color: var(--foreground-default);
+  }
+
+  .partyArea {
+    grid-area: party;
+    justify-self: stretch;
+
+    background-color: var(--background-secondary);
+    color: var(--foreground-default);
+  }
+
+  .footerArea {
+    grid-area: footer;
+    justify-self: stretch;
+
+    background-color: var(--background-tertiary);
+    color: var(--foreground-quaternary);
+  }
+
+  .headerArea {
+    grid-area: header;
+    justify-self: stretch;
+
+    background-color: var(--background-tertiary);
+    color: var(--foreground-quaternary);
+  }
+
+  .mainView {
+    height: 100%;
+    background-color: var(--background-secondary);
+    border-color: var(--background-tertiary);
+    color: var(--foreground-default);     
+  }
+
+  ::ng-deep ngb-modal-backdrop {
+    z-index: 1050 !important;
+  }
+
+  .modalClass {
+    white-space: pre-line;
+
+    background-color: var(--background-secondary);
+    border-color: var(--background-tertiary);
+    color: var(--foreground-default);
+  }
+
+  .rightAlign {
+    float: right;
+  }
+
+  .spaced {
+    margin-left: .5em;
+  }
+
+  .spaceBetween {
+    justify-content: space-between !important;
+  }
