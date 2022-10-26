@@ -1,3 +1,7 @@
+.characterInfo {
+    height: 100%;
+}
+
 .characterBar {
     width: 75%;
     margin-right: .5rem;
@@ -9,6 +13,18 @@
     font-weight: bold;
 }
 
+.staggerBar {
+    width: 50%;
+    margin-right: .5rem;
+    display: inline-block;
+}
+
+.staggerText {
+    font-size: .75rem;
+    font-weight: bold;
+}
+
+
 .mat-progress-bar-element, .mat-progress-bar {
     height: 1rem !important;
   }
@@ -16,3 +32,7 @@
   .flex {
     display: flex;
   }
+
+  .characterTargeted:hover {
+    border: 1px solid red;
+}

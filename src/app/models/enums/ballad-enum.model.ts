@@ -1,3 +1,4 @@
 export enum BalladEnum {    
-    Champion
+    Champion,
+    Gorgon
   }

@@ -13,25 +13,18 @@ import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generato
 })
 export class BalladService {
 
-  constructor(private subZoneGeneratorService: SubZoneGeneratorService, private globalService: GlobalService) { }
+  constructor(private subZoneGeneratorService: SubZoneGeneratorService, private globalService: GlobalService) { }  
 
-  generateBallad(type?: BalladEnum, name?: string) {
-    var ballad = new Ballad();
+  getBalladName(type?: BalladEnum) {
+    var name = "";
 
-    if (type === BalladEnum.Champion || name === "Champion") {      
-      ballad.name = "Champion";
+    if (type === BalladEnum.Champion)
+      name = "Ballad of a Champion";
+    if (type === BalladEnum.Gorgon)
+      name = "Ballad of the Gorgon";
 
-      var forest = new Zone();
-      forest.subzones.push(this.subZoneGeneratorService.generateSubZone(SubZoneEnum.Coast));
-      forest.subzones.push(this.subZoneGeneratorService.generateSubZone(SubZoneEnum.Valley));
-      forest.subzones.push(this.subZoneGeneratorService.generateSubZone(SubZoneEnum.Mountainside));
-
-      ballad.zones.push(forest);
-      this.globalService.globalVar.ballads.push(ballad);
-    }
-
-    return ballad;
-  }
+    return name;
+  }  
 
   getActiveBallad() {
     var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
@@ -57,7 +50,22 @@ export class BalladService {
     return subzone;
   }
 
-  testPlayerNavigation() {
+  findSubzone(type: SubZoneEnum) {
+    var returnSubzone: SubZone | undefined;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.zones.forEach(zone => {
+        zone.subzones.forEach(subzone => {
+          if (subzone.type === type)
+            returnSubzone = subzone;
+        })
+      })
+    });
+
+    return returnSubzone;
+  }
+
+  /*testPlayerNavigation() {
     this.globalService.globalVar.playerNavigation.currentBallad = this.generateBallad(BalladEnum.Champion);    
 
     if (this.globalService.globalVar.playerNavigation.currentBallad !== undefined) {
@@ -66,5 +74,5 @@ export class BalladService {
       this.globalService.globalVar.playerNavigation.currentBallad.zones[0].subzones[0].isSelected = true;
       this.globalService.globalVar.activeBattle = new Battle();
     }
-  }
+  }*/
 }

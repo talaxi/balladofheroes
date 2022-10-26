@@ -3,27 +3,26 @@
         <div *ngIf="character.type === noCharacter" class="partyMember">
             <span>None</span>
         </div>
-        <div *ngIf="character.type !== noCharacter" class="partyMember">
+        <div *ngIf="character.type !== noCharacter" class="partyMember" [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" (click)='battleService.useBattleItemOnCharacter(character)'>
             <div class="characterGrid">
                 <div class="characterInfo">
                     <span class="s2Heading">{{character.name}} </span> <span><strong>Lv {{character.level}}</strong></span>
                     <br />
                     <div class="godDisplay">
-                        <span *ngIf="character.assignedGod1 !== undefined"><span
-                                class="s3Heading"><strong>{{character.assignedGod1.name}}</strong></span> <span>Lv
-                                {{character.assignedGod1.level}}</span></span>
-                        <span *ngIf="character.assignedGod2 !== undefined"><span
-                                class="s3Heading">{{character.assignedGod2.name}}</span> <strong><span>Lv
-                                {{character.assignedGod2.level}}</span></strong></span>
+                        <span *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod"><span
+                                class="s3Heading">{{getCharacterGodName(character, 1)}} </span> <span><strong>Lv
+                                {{getCharacterGodLevel(character, 1)}}</strong></span></span>
+                        <span *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"><span
+                                class="s3Heading">{{getCharacterGodName(character, 2)}}</span> <strong><span>Lv
+                                {{getCharacterGodLevel(character, 2)}}</span></strong></span>
                     </div>
-
+                    <br/>
                     <div class="flex">
                     <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
                         class="green-progress characterBar">
                     </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp}} /
                         {{character.battleStats.hp}}</span>
-                        </div>
-                    <br />
+                        </div>                    
                     <div class="flex">
                     <mat-progress-bar mode="determinate" [value]="getCharacterMpPercent(character)"
                         class="cyan-progress characterBar">
@@ -34,7 +33,7 @@
                 <div class="abilities">
                     <div class="abilityGrid">
                         <span class="autoAttack abilityBreakoutGrid"><span class="abilityName">Auto Attack</span> <mat-spinner class="spinner abilityTimer" mode="determinate" diameter="25" [value]="getCharacterAutoAttackProgress(character)"></mat-spinner><span class="abilitySwap"><button>&#8680;</button></span></span>
-                        <span class="ability1">Ability1</span>
+                        <span class="ability1 abilityBreakoutGrid"> <span class='abilityName'>{{getSelectedAbilityName(character)}}</span><mat-spinner class="spinner abilityTimer" mode="determinate" diameter="25" [value]="getCharacterSelectedAbilityProgress(character)"></mat-spinner><span class="abilitySwap"><button>&#8680;</button></span></span>
                         <span class="ability2">Ability2</span>
                         <span class="ability3">Ability3</span>
                     </div>
@@ -44,6 +43,9 @@
         <hr />
     </div>
     <div class="options">
-
+        <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" [class]="'battleItem' + (i + 1)">
+            <button *ngIf="isBattleItemSlotUnequipped(i)" (click)="openItemModal(i)">Empty Item Slot 1</button>
+            <button *ngIf="!isBattleItemSlotUnequipped(i)" (click)="battleService.useBattleItem(i)" [ngClass]="{'targetModeActive': battleItemInUse(i)}" >Equipped Item Slot 1</button>
+        </div>
     </div>
 </div>

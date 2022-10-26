@@ -22,22 +22,23 @@
 
 :root {
   /* Colors */
-  --foreground-default: #08090a;
-  --foreground-secondary: #41474d;
-  --foreground-tertiary: #797c80;
-  --foreground-quaternary: #f4faff;
-  --foreground-light: #41474d;
+  --foreground-default: #A3B9CC;
+  --foreground-secondary: #5C7D99;
+  --foreground-tertiary: #49647A;
+  --foreground-quaternary: #E5E5E5;
+  --foreground-light: #FFFFFF;
 
-  --background-default: #f4faff;
-  --background-secondary: #a3b9cc;
-  --background-tertiary: #5c7d99;
-  --background-quarternary: #65799E;
+  --background-default: #797C80;
+  --background-secondary: #41474D;
+  --background-tertiary: #08090A;
+  --background-quarternary: #2A2C31;
   --background-five: #007bff;
-  --background-light: #ffffff;
-
+  --background-light: #41474D;
   --primary-default: #5dfdcb;
   --primary-dark: #24b286;
   --primary-light: #b2ffe7;
+
+  --battle-update-text: #e0d01d;
 
   --error-default: #ef3e36;
   --error-dark: #800600;
@@ -112,7 +113,7 @@
   --s2-spacing: 0.1px;
 
   --s3-size: 1rem;
-  --s3-weight: 60;
+  --s3-weight: 600;
   --s3-spacing: 0.15px;
 
   --s4-size: 1.25rem;
@@ -139,7 +140,7 @@ body {
   margin: 0;
   padding: 0;
   font-family: "Candara", sans-serif;
-  font-size: 2vmin;
+  font-size: 2.2vmin;
   cursor: default;
 }
 
@@ -344,4 +345,11 @@ button:active:enabled {
 }
 
 html, body { height: 100%; }
-body { margin: 0; font-family: Roboto, "Helvetica Neue", sans-serif; }
+
+.mat-progress-spinner circle {
+  transition: none !important;
+}
+
+.battleUpdateText {
+  color: var(--battle-update-text);
+}

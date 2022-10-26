@@ -7,7 +7,10 @@ export class Ballad {
     isSelected: boolean;
     zones: Zone[];
 
-    constructor() {
+    constructor(type?: BalladEnum) {
         this.zones = [];
+
+        if (type !== undefined)
+            this.type = type;
     }
 }

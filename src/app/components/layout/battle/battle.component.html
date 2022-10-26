@@ -1,14 +1,13 @@
 <div class="gridContainer">
     <div class="enemies">
-        <!--make this a grid or something-->
         <div *ngIf="!currentEnemies.isBossFight" class="enemiesGrid">
             <app-enemy-view [character]="currentEnemies.enemyList[0]" class="enemy1"></app-enemy-view>
             <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [character]="currentEnemies.enemyList[1]" class="enemy2"></app-enemy-view>
             <app-enemy-view *ngIf="currentEnemies.enemyList.length > 2" [character]="currentEnemies.enemyList[2]" class="enemy3"></app-enemy-view>
             <app-enemy-view *ngIf="currentEnemies.enemyList.length > 3" [character]="currentEnemies.enemyList[3]" class="enemy4"></app-enemy-view>
-        </div>
+        </div> 
+        <hr/>
     </div>
-    <div class="battleUpdates">
-
+    <div class="battleUpdates" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)" [innerHtml]="this.displayGameUpdates()">                       
     </div>
 </div>

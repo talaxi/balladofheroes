@@ -48,13 +48,21 @@ export class AppComponent {
       var devMode = this.deploymentService.devModeActive;
 
       if (this.newGame || forceNewGame)
+      {
+        console.log("New game forced");
         this.globalService.initializeGlobalVariables();
-      
+      }
+
       if (devMode) {
-        this.balladService.testPlayerNavigation();
+        this.globalService.devMode();
       }
 
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {      
+      //institute a max deltaTime before something else happens, currently set to 5 minutes
+      //TODO: use this to institute some sort of loading screen or something
+      if (deltaTime > 1 * 5 * 60)
+        deltaTime = 1 * 5 * 60; 
+
       this.gameCheckup(deltaTime);
       this.saveTime += deltaTime;
 

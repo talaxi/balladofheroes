@@ -1,4 +1,8 @@
 export enum StatusEffectEnum { 
     None,
-    Dead 
+    Dead,
+    AgilityUp,
+    AgilityDown,
+    AttackUp,
+    AttackDown
   }

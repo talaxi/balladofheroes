@@ -1,5 +1,9 @@
-export enum SubZoneEnum {    
-    Coast,
-    Valley,
-    Mountainside
-  }
+export enum SubZoneEnum {
+  Camp, //always a safe space
+  AigosthenaUpperCoast,
+  AigosthenaBay,
+  AigosthenaLowerCoast,
+  AigosthenaWesternWoodlands,
+  AigosthenaHeartOfTheWoods,
+  AigosthenaEasternWoodlands
+}

@@ -3,12 +3,13 @@
     height: 100%;
     margin: 0 .5rem;
     grid-template-columns: auto;
-    grid-template-rows: 50% 50%;
+    grid-template-rows: 1fr 1fr;
     justify-content: stretch;
+    grid-row-gap: 1rem;
     grid-template-areas:
-      "enemies"
-      "battleUpdates";      
-  }
+        "enemies"
+        "battleUpdates";
+}
 
 .enemies {
     grid-area: enemies;
@@ -16,16 +17,21 @@
 
 .battleUpdates {
     grid-area: battleUpdates;
+
+    white-space: pre;
+    overflow-x: hidden;
+    overflow-y: auto;
 }
 
 .enemiesGrid {
-    display: grid;    
+    display: grid;
+    height: 100%;
     grid-template-columns: 1fr 1fr;
     grid-template-rows: 1fr 1fr;
     justify-content: stretch;
     grid-template-areas:
-      "enemy1 enemy2"
-      "enemy3 enemy4";  
+        "enemy1 enemy2"
+        "enemy3 enemy4";
 }
 
 .enemy1 {

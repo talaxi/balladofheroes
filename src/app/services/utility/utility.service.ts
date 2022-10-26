@@ -1,4 +1,4 @@
-import { Injectable } from '@angular/core';
+import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as seedrandom from "seedrandom";
 
@@ -7,7 +7,22 @@ import * as seedrandom from "seedrandom";
 })
 export class UtilityService {
 
+  //glossary
+  public quickAutoAttackSpeed = 4;
+  public averageAutoAttackSpeed = 8;
+  public longAutoAttackSpeed = 12;
+  public maxItemBeltSize = 4;
+
   constructor(public sanitizer: DomSanitizer) { }
+
+  getSanitizedHtml(text: string) {
+    var sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(text));
+
+    if (sanitizedHtml === null)
+      return "";
+
+    return sanitizedHtml;
+  }
 
   getRandomSeededInteger(min: number, max: number, seedValue: string = "seeded"): number {
     var prng = seedrandom(seedValue);

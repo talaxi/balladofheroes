@@ -48,6 +48,7 @@
 import 'zone.js';  // Included with Angular CLI.
 import 'reflect-metadata';
 import './assets/js/lz-string';
+import 'pluralize';
 
 /***************************************************************************************************
  * APPLICATION IMPORTS

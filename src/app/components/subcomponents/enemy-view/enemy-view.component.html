@@ -1,5 +1,6 @@
-<div class="characterInfo">
-    <span class="s2Heading">{{character.name}} </span>
+<div class="characterInfo" (click)='battleService.useBattleItemOnCharacter(character)' [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" >
+    <span class="s2Heading">{{character.name}} </span>    
+    <br />
     <br />
     <div class="flex">
         <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
@@ -7,4 +8,9 @@
         </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp}} /
             {{character.battleStats.hp}}</span>
     </div>
+    <!--<div class="flex">        
+        <mat-progress-bar mode="determinate" [value]="getStaggerPercent(character)"
+            class="cyan-progress characterBar">
+        </mat-progress-bar> <span class="hpMpText">{{character.currentStagger}}%</span>        
+</div>-->
 </div>

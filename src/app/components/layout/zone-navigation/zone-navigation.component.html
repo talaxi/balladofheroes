@@ -1,1 +1,26 @@
-<p>zone-navigation works!</p>
+<div>
+    <span class="s4Heading">Ballads</span>
+    <hr/>
+    <div *ngFor="let ballad of availableBallads">
+        <div *ngIf="!ballad.isSelected">
+            <span (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}</span>
+        </div>
+        <div *ngIf="ballad.isSelected">
+            <span><strong>{{balladService.getBalladName(ballad.type)}}</strong></span>
+            <div *ngFor="let zone of availableZones">
+                <div *ngIf="!zone.isSelected">
+                    &#8618;<span (click)="selectZone(zone)">{{zone.zoneName}}</span>
+                </div>
+                <div *ngIf="zone.isSelected">
+                    <span>&#8618;<strong>{{zone.zoneName}}</strong></span>
+                    <div *ngFor="let subzone of availableSubZones">
+                        <div *ngIf="!subzone.isSelected">
+                            <span class="subzoneSpacer">&#8618;</span><span (click)="selectSubZone(subzone)">{{subzone.name}} ({{subzone.victoryCount}}/{{subzone.victoriesNeededToProceed}} victories)</span>
+                        </div>
+                        <div *ngIf="subzone.isSelected">
+                            <span><span class="subzoneSpacer">&#8618;</span><strong>{{subzone.name}}</strong> ({{subzone.victoryCount}}/{{subzone.victoriesNeededToProceed}} victories)</span>
+                    </div>
+            </div>
+        </div>    
+    </div>
+</div>

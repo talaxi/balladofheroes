@@ -122,3 +122,7 @@
 .flex {
     display: flex;
 }
+
+.characterTargeted:hover, .targetModeActive {
+    border: 1px solid red;
+}

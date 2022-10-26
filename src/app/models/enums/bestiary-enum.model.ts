@@ -1,6 +1,8 @@
 export enum BestiaryEnum {    
-    Dingo,
-    WaterFlan,
-    Condor,
-    GarudaBesaid 
+    WaterSerpent,
+    Crustacean,
+    FrenziedGull,
+    StarvingMongrel,
+    WildBoar,
+    KillerBees
   }

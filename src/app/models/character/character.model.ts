@@ -1,6 +1,8 @@
 import { Type } from "class-transformer";
 import { BattleInfo } from "../battle/battle-info.model";
 import { CharacterEnum } from "../enums/character-enum.model";
+import { GodEnum } from "../enums/god-enum.model";
+import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
 import { God } from "./god.model";
 
@@ -14,13 +16,12 @@ export class Character {
     battleStats: CharacterStats; //includes equipment, buffs, etc
     @Type(() => BattleInfo)
     battleInfo: BattleInfo;
-    isAvailable: boolean;
-    @Type(() => God)
-    assignedGod1: God;
-    @Type(() => God)
-    assignedGod2: God;
+    isAvailable: boolean;    
+    assignedGod1: GodEnum;    
+    assignedGod2: GodEnum;
     exp: number;
     expToNextLevel: number;
+    abilityList: Ability[];
 
     constructor(type?: CharacterEnum) {      
         this.type = type === undefined ? CharacterEnum.none : type;  
@@ -28,10 +29,9 @@ export class Character {
         this.level = 1;
         this.exp = 0;
         this.expToNextLevel = 1000;
+        this.assignedGod1 = GodEnum.None;
+        this.assignedGod2 = GodEnum.None;
 
-        if (type === CharacterEnum.Warrior)
-        {         
-            this.battleInfo = new BattleInfo(type);
-        }
-    }
+        this.battleInfo = new BattleInfo(type);        
+    }   
 }
