@@ -5,6 +5,7 @@ export class StatusEffect {
     duration: number;
     effectiveness: number;
     isPermanent: boolean;
+    isInstant: boolean;
 
     constructor(type: StatusEffectEnum) {
         this.type = type;
@@ -16,6 +17,7 @@ export class StatusEffect {
         copy.duration = this.duration;
         copy.effectiveness = this.effectiveness;
         copy.isPermanent = this.isPermanent;
+        copy.isInstant = this.isInstant;
 
         return copy;
     }

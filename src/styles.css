@@ -124,11 +124,9 @@
   --s5-weight: 100;
   --s5-spacing: 0.1px;
 
-  --flatlandColor: #c66900;
-  --mountainColor: #279113;
-  --waterColor: #0000ff;
-  --tundraColor: #1ca1c9;
-  --volcanicColor: #d92525;
+  --adventurerColor: #c66900;
+
+  --athenaColor: #279113;
 }
 
 body {
@@ -339,15 +337,11 @@ button:active:enabled {
   user-select: none;
 }
 
-.flatlandColor {
-  color: var(--flatlandColor);
-  /*#eb3023;   */
-}
-
 html, body { height: 100%; }
 
 .mat-progress-spinner circle {
   transition: none !important;
+  stroke: red; /* TODO: how to update this? */
 }
 
 .battleUpdateText {

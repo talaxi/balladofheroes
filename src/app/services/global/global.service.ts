@@ -29,6 +29,7 @@ export class GlobalService {
   constructor(private utilityService: UtilityService) { }
 
   initializeGlobalVariables() {
+    this.globalVar = new GlobalVariables();
     this.globalVar.lastTimeStamp = Date.now();
     this.globalVar.characters = [];
     this.globalVar.ballads = [];
@@ -79,7 +80,7 @@ export class GlobalService {
       quickHit.damageMultiplier = 1.25;
       quickHit.cooldown = quickHit.currentCooldown = 20;
       quickHit.dealsDirectDamage = true;
-      quickHit.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.1));
+      quickHit.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.1, false));
       character.abilityList.push(quickHit);
     }
   }
@@ -87,7 +88,52 @@ export class GlobalService {
   initializeGods() {
     var athena = new God(GodEnum.Athena);
     athena.name = "Athena";
-    this.globalVar.gods.push(athena);
+    this.assignGodAbilityInfo(athena);
+    this.globalVar.gods.push(athena);    
+  }
+
+  assignGodAbilityInfo(god: God) {
+    god.abilityList = [];
+
+    if (god.type === GodEnum.Athena) {
+      var divineStrike = new Ability(); 
+      divineStrike.name = "Divine Strike";
+      divineStrike.isAvailable = false;
+      divineStrike.cooldown = divineStrike.currentCooldown = 35;
+      divineStrike.dealsDirectDamage = true;
+      divineStrike.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true));
+      god.abilityList.push(divineStrike);
+    }
+
+    if (god.type === GodEnum.Athena) {
+      var aegis = new Ability(); 
+      aegis.name = "Aegis";
+      aegis.isAvailable = false;
+      aegis.cooldown = aegis.currentCooldown = 60;
+      aegis.dealsDirectDamage = true;
+      aegis.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenDown, 8, .8, false));
+      god.abilityList.push(aegis);
+    }
+
+    if (god.type === GodEnum.Athena) {
+      var blindingLight = new Ability(); 
+      blindingLight.name = "Blinding Light";
+      blindingLight.isAvailable = false;
+      blindingLight.cooldown = blindingLight.currentCooldown = 25;
+      blindingLight.dealsDirectDamage = true;
+      blindingLight.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false));
+      god.abilityList.push(blindingLight);
+    }
+
+    if (god.type === GodEnum.Athena) {
+      var secondWind = new Ability(); 
+      secondWind.name = "Second Wind";
+      secondWind.isAvailable = false;
+      secondWind.isPassive = true;
+      secondWind.dealsDirectDamage = true;
+      secondWind.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true));
+      god.abilityList.push(secondWind);
+    }
   }
 
   initializeItemBelt() {
@@ -95,17 +141,14 @@ export class GlobalService {
     {
       this.globalVar.itemBelt.push(ItemsEnum.None);
     }
-
-    console.log("Max Item Belt Size: " + this.utilityService.maxItemBeltSize);
-    console.log(this.globalVar.itemBelt);
-    console.log("Belt above + " + this.globalVar.itemBelt.length);
   }
 
-  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number)
+  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean)
   {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
+    statusEffect.isInstant = isInstant;
 
     return statusEffect;
   }
@@ -153,7 +196,7 @@ export class GlobalService {
   }
 
   calculateCharacterBattleStats(character: Character) {
-    character.battleStats.hp = character.baseStats.hp;
+    character.battleStats.maxHp = character.baseStats.maxHp;
     character.battleStats.currentHp = character.baseStats.currentHp;
     character.battleStats.mp = character.baseStats.mp;
     character.battleStats.currentMp = character.baseStats.currentMp;
@@ -213,8 +256,16 @@ export class GlobalService {
   }
 
   devMode() {
+    this.globalVar.currentStoryId = 10000;  
     var character1 = this.globalVar.characters.find(item => item.type === this.globalVar.activePartyMember1);
     if (character1 !== undefined)
-      character1.assignedGod1 = GodEnum.Athena;
+    {
+      character1.assignedGod1 = GodEnum.Athena;      
+    }
+
+    var athena = this.globalVar.gods.find(item => item.type === GodEnum.Athena);    
+    athena?.abilityList.forEach(ability => {
+      ability.isAvailable = true;
+    });
   }
 }

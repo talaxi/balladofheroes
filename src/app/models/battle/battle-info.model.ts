@@ -14,12 +14,10 @@ export class BattleInfo {
 
         if (characterType === CharacterEnum.Warrior)
         {
-            console.log("Is Warrior");
             this.timeToAutoAttack = 5;
         }
         if (characterType === CharacterEnum.Adventurer)
         {
-            console.log("Is Adventurer");
             this.timeToAutoAttack = 3;
         }
     }

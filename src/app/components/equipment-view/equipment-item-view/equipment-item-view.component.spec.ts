@@ -1,20 +1,20 @@
 import { ComponentFixture, TestBed } from '@angular/core/testing';
 
-import { CharacterViewComponent } from './character-view.component';
+import { EquipmentItemViewComponent } from './equipment-item-view.component';
 
-describe('CharacterViewComponent', () => {
-  let component: CharacterViewComponent;
-  let fixture: ComponentFixture<CharacterViewComponent>;
+describe('EquipmentItemViewComponent', () => {
+  let component: EquipmentItemViewComponent;
+  let fixture: ComponentFixture<EquipmentItemViewComponent>;
 
   beforeEach(async () => {
     await TestBed.configureTestingModule({
-      declarations: [ CharacterViewComponent ]
+      declarations: [ EquipmentItemViewComponent ]
     })
     .compileComponents();
   });
 
   beforeEach(() => {
-    fixture = TestBed.createComponent(CharacterViewComponent);
+    fixture = TestBed.createComponent(EquipmentItemViewComponent);
     component = fixture.componentInstance;
     fixture.detectChanges();
   });

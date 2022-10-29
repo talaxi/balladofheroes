@@ -1,0 +1,69 @@
+<div class="equipmentView">
+    <div class="availableEquipment">
+        <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)" (click)="equipItem(equipment)">
+            <span customToolTip [contentTemplate]="template">{{lookupService.getItemName(equipment.item)}} x{{equipment.amount}}</span>
+        </div>
+    </div>
+    <div class="characterInfo">
+        <div class="existingEquipment">
+            <span customToolTip [contentTemplate]="equippedWeapon">Weapon: {{getEquippedItemNameByType(equipmentTypeEnum.Weapon)}}</span>
+            <br/>
+            <span customToolTip [contentTemplate]="equippedShield">Shield: {{getEquippedItemNameByType(equipmentTypeEnum.Shield)}}</span>
+            <br/>
+            <span customToolTip [contentTemplate]="equippedArmor">Armor: {{getEquippedItemNameByType(equipmentTypeEnum.Armor)}}</span>
+            <br/>
+            <span customToolTip [contentTemplate]="equippedLeftRing">Left Ring: {{getEquippedItemNameByType(equipmentTypeEnum.Ring)}}</span>
+            <br/>
+            <span customToolTip [contentTemplate]="equippedRightRing">Right Ring: {{getEquippedItemNameByType(equipmentTypeEnum.Ring)}}</span>
+            <br/>
+            <span customToolTip [contentTemplate]="equippedNecklace">Necklace: {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
+        </div>
+        <hr/>
+        <div class="existingEffects">
+            Existing Effects
+        </div>
+    </div>
+</div>
+
+<ng-template #equippedWeapon>
+    <div class="equippedItem">
+     <div class="item"><app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Weapon)"></app-equipment-item-view></div>          
+    </div>
+  </ng-template>
+
+  <ng-template #equippedShield>
+    <div class="equippedItem">
+     <div class="item"><app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Shield)"></app-equipment-item-view></div>          
+    </div>
+  </ng-template>
+
+  <ng-template #equippedArmor>
+    <div class="equippedItem">
+     <div class="item"><app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"></app-equipment-item-view></div>          
+    </div>
+  </ng-template>
+
+  <ng-template #equippedLeftRing>
+    <div class="equippedItem">
+     <div class="item"><app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view></div>          
+    </div>
+  </ng-template>
+
+  <ng-template #equippedRightRing>
+    <div class="equippedItem">
+     <div class="item"><app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view></div>          
+    </div>
+  </ng-template>
+
+  <ng-template #equippedNecklace>
+    <div class="equippedItem">
+     <div class="item"><app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Necklace)"></app-equipment-item-view></div>          
+    </div>
+  </ng-template>
+
+<ng-template #template>
+    <div class="compareEquipment">
+     <span class="item"><app-equipment-item-view [equipment]="hoveredItem"></app-equipment-item-view></span>     
+     <span class="item comparedEquipmentItem"><app-equipment-item-view [equipment]="getEquippedComparisonItem()"></app-equipment-item-view></span>
+    </div>
+  </ng-template>

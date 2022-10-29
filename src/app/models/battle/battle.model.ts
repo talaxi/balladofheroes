@@ -5,8 +5,10 @@ import { EnemyTeam } from "../character/enemy-team.model";
 export class Battle {    
     @Type(() => EnemyTeam)
     currentEnemies: EnemyTeam;
+    atScene: boolean;
 
     constructor() {
         this.currentEnemies = new EnemyTeam();
+        this.atScene = false;
     }
 }

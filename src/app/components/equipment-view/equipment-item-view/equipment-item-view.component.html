@@ -1,0 +1,10 @@
+<div class="equipmentItem">
+    <div *ngIf="equipment === undefined">
+        Unequipped
+    </div>
+    <div *ngIf="equipment !== undefined">
+        <span class="s4Heading">{{lookupService.getItemName(equipment.itemType)}}</span>
+        <hr class="miniHr" />
+        Stats and such
+    </div>
+</div>

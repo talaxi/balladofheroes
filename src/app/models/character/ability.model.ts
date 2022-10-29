@@ -13,6 +13,7 @@ export class Ability {
     userGainsStatusEffect: StatusEffect[];
     targetGainsStatusEffect: StatusEffect[];
     isAoe: boolean;
+    isPassive: boolean;
     aoeModifier: number;
 
     constructor() {

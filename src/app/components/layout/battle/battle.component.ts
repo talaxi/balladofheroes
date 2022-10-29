@@ -4,6 +4,7 @@ import { BattleService } from 'src/app/services/battle/battle.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { StoryService } from 'src/app/services/story/story.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -17,7 +18,7 @@ export class BattleComponent implements OnInit {
   previousLogHeight = 0;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
-    private utilityService: UtilityService, private gameLogService: GameLogService) { }
+    private utilityService: UtilityService, private gameLogService: GameLogService, private storyService: StoryService) { }
 
   ngOnInit(): void {
     if (this.globalService.globalVar.activeBattle !== undefined)
@@ -27,6 +28,22 @@ export class BattleComponent implements OnInit {
       if (this.globalService.globalVar.activeBattle !== undefined)
         this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
     });
+  }
+
+  isAtScene() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
+      return this.globalService.globalVar.activeBattle.atScene;
+    
+    return false;
+  }
+
+  displayStorySegment() {
+    return this.utilityService.getSanitizedHtml(this.storyService.sceneText);
+  }
+
+  getPagePercent() {
+    console.log( (this.globalService.globalVar.timers.scenePageTimer / this.globalService.globalVar.timers.scenePageLength) * 100);
+    return (this.globalService.globalVar.timers.scenePageTimer / this.globalService.globalVar.timers.scenePageLength) * 100;
   }
 
   displayGameUpdates() {

@@ -2,6 +2,7 @@ import { Type } from "class-transformer";
 import { BattleInfo } from "../battle/battle-info.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { GodEnum } from "../enums/god-enum.model";
+import { EquipmentSet } from "../resources/equipment-set.model";
 import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
 import { God } from "./god.model";
@@ -22,6 +23,8 @@ export class Character {
     exp: number;
     expToNextLevel: number;
     abilityList: Ability[];
+    @Type(() => EquipmentSet)
+    equipmentSet: EquipmentSet;
 
     constructor(type?: CharacterEnum) {      
         this.type = type === undefined ? CharacterEnum.none : type;  
@@ -33,5 +36,6 @@ export class Character {
         this.assignedGod2 = GodEnum.None;
 
         this.battleInfo = new BattleInfo(type);        
-    }   
+        this.equipmentSet = new EquipmentSet();
+    }       
 }

@@ -4,5 +4,9 @@ export enum StatusEffectEnum {
     AgilityUp,
     AgilityDown,
     AttackUp,
-    AttackDown
+    AttackDown,
+    InstantHeal,
+    InstantHealAfterAutoAttack,
+    DamageTakenDown,
+    Blind
   }

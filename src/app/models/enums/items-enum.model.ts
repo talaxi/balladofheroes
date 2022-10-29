@@ -1,5 +1,9 @@
 export enum ItemsEnum {
   None,
   HealingHerb,
-  HealingSalve
+  HealingSalve,
+  BronzeSword,
+  BronzeAxe,
+  BronzeShield,
+  BronzeArmor
 }

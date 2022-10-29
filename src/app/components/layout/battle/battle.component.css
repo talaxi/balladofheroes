@@ -49,3 +49,18 @@
 .enemy4 {
     grid-area: enemy4;
 }
+
+.storyGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: 90% 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "text"
+        "loadingBar";
+}
+
+.hr {
+    width: 100%;
+}

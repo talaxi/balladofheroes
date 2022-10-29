@@ -21,7 +21,7 @@
                     <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
                         class="green-progress characterBar">
                     </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp}} /
-                        {{character.battleStats.hp}}</span>
+                        {{character.battleStats.maxHp}}</span>
                         </div>                    
                     <div class="flex">
                     <mat-progress-bar mode="determinate" [value]="getCharacterMpPercent(character)"
@@ -32,9 +32,9 @@
                 </div>
                 <div class="abilities">
                     <div class="abilityGrid">
-                        <span class="autoAttack abilityBreakoutGrid"><span class="abilityName">Auto Attack</span> <mat-spinner class="spinner abilityTimer" mode="determinate" diameter="25" [value]="getCharacterAutoAttackProgress(character)"></mat-spinner><span class="abilitySwap"><button>&#8680;</button></span></span>
+                        <span class="autoAttack abilityBreakoutGrid"><span class="abilityName">Auto Attack</span> <mat-spinner class="spinner abilityTimer" mode="determinate" diameter="25" [value]="getCharacterAutoAttackProgress(character)" [ngStyle]="{'stroke': lookupService.getCharacterColor(character.type)}"></mat-spinner><span class="abilitySwap"><button>&#8680;</button></span></span>
                         <span class="ability1 abilityBreakoutGrid"> <span class='abilityName'>{{getSelectedAbilityName(character)}}</span><mat-spinner class="spinner abilityTimer" mode="determinate" diameter="25" [value]="getCharacterSelectedAbilityProgress(character)"></mat-spinner><span class="abilitySwap"><button>&#8680;</button></span></span>
-                        <span class="ability2">Ability2</span>
+                        <span class="ability2"><app-ability-view [character]="character" [ability]="getGodAbility(character, 1, 0)"></app-ability-view></span>
                         <span class="ability3">Ability3</span>
                     </div>
                 </div>

@@ -1,0 +1,24 @@
+.equipmentView {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+      "availableEquipment existingEquipment"
+      "availableEquipment existingEffects";
+  }
+
+.compareEquipment {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.comparedEquipmentItem {
+    border-left: 1px solid gray;
+}
+
+.item {
+    padding: 2rem;
+}

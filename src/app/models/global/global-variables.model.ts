@@ -8,6 +8,7 @@ import { ResourceValue } from "../resources/resource-value.model";
 import { Ballad } from "../zone/ballad.model";
 import { PlayerNavigation } from "../zone/player-navigation.model";
 import { Zone } from "../zone/zone.model";
+import { Timers } from "./timers.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -17,6 +18,8 @@ export class GlobalVariables {
     gods: God[];
     @Type(() => Ballad)
     ballads: Ballad[];
+    @Type(() => Timers)
+    timers: Timers;
     resources: ResourceValue[];
     activePartyMember1: CharacterEnum;
     activePartyMember2: CharacterEnum;
@@ -24,6 +27,7 @@ export class GlobalVariables {
     playerNavigation: PlayerNavigation;
     itemBeltSize: number;
     itemBelt: ItemsEnum[];
+    currentStoryId: number;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -35,5 +39,7 @@ export class GlobalVariables {
         this.itemBeltSize = 1;
         this.activeBattle = new Battle();
         this.playerNavigation = new PlayerNavigation();
+        this.timers = new Timers();
+        this.currentStoryId = 0;
     }
 }

@@ -29,6 +29,7 @@ export class EnemyGeneratorService {
       enemy.currentStagger = enemy.baseStagger = 100;
       enemy.breakPoint = 200; 
       enemy.loot.push(new LootItem(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 1, .5));
+      enemy.loot.push(new LootItem(ItemsEnum.BronzeSword, ItemTypeEnum.Equipment, 1, .5));
     }
     if (type === BestiaryEnum.Crustacean)
     {
@@ -37,6 +38,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 500;
       enemy.currentStagger = enemy.baseStagger = 100;
       enemy.breakPoint = 200;  
+      enemy.loot.push(new LootItem(ItemsEnum.BronzeArmor, ItemTypeEnum.Equipment, 1, .5));
     }
 
     return enemy;

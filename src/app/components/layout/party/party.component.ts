@@ -7,6 +7,8 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
+import { Ability } from 'src/app/models/character/ability.model';
+import { God } from 'src/app/models/character/god.model';
 
 @Component({
   selector: 'app-party',
@@ -20,15 +22,14 @@ export class PartyComponent implements OnInit {
   public noCharacter = CharacterEnum.none;
   public noGod = GodEnum.None;
 
-  constructor(private globalService: GlobalService, private lookupService: LookupService, public battleService: BattleService) { }
+  constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService) { }
 
   ngOnInit(): void {
-    this.party = this.globalService.getActivePartyCharacters(false);
-    console.log(this.party);
+    this.party = this.globalService.getActivePartyCharacters(false);    
   }
 
   getCharacterHpPercent(character: Character) {
-    return (character.battleStats.currentHp / character.battleStats.hp) * 100;
+    return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
   }
 
   getCharacterMpPercent(character: Character) {
@@ -112,7 +113,7 @@ export class PartyComponent implements OnInit {
     return;
 
     var item = this.globalService.globalVar.itemBelt[slotNumber];
-    if (item === this.battleService.battleItemInUse)
+    if (item === this.battleService.battleItemInUse && this.battleService.targetbattleItemMode)
       return true;
     else
       return false;
@@ -125,5 +126,27 @@ export class PartyComponent implements OnInit {
       isTargeted = true;
 
     return isTargeted;
+  }
+
+  getGodAbility(character: Character, assignedGodNumber: number, abilityNumber: number) {
+    var ability: Ability = new Ability();
+    var godType: GodEnum = GodEnum.None;
+    
+    if (assignedGodNumber === 1)
+    godType = character.assignedGod1;
+    else if (assignedGodNumber === 2)
+    godType = character.assignedGod2;
+
+    if (godType !== GodEnum.None)
+    {
+      var god = this.globalService.globalVar.gods.find(item => item.type = godType);
+
+      if (god !== undefined && god.abilityList.length >= abilityNumber)
+      {
+        ability = god.abilityList[abilityNumber];
+      }
+    }
+
+    return ability;
   }
 }

@@ -8,6 +8,7 @@ import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -15,6 +16,7 @@ import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
+import { StoryService } from '../story/story.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
@@ -30,7 +32,7 @@ export class BattleService {
 
   constructor(private globalService: GlobalService, private subzoneGeneratorService: SubZoneGeneratorService,
     private balladService: BalladService, private utilityService: UtilityService, private gameLogService: GameLogService,
-    private lookupService: LookupService) { }
+    private lookupService: LookupService, private storyService: StoryService) { }
 
   handleBattle(deltaTime: number) {
     if (this.isPaused)
@@ -43,38 +45,56 @@ export class BattleService {
     if (this.battle === undefined)
       return;
 
-    if (this.battle.currentEnemies === undefined || this.battle.currentEnemies.enemyList.length === 0)
-      this.initializeEnemyList();
+    if (this.battle.atScene) {
+      var continueShowing = this.storyService.handleScene(deltaTime);
+      if (!continueShowing)
+        this.battle.atScene = false;
+    }
+    else {
+      if (this.battle.currentEnemies === undefined || this.battle.currentEnemies.enemyList.length === 0)
+        this.initializeEnemyList();
 
-    var party = this.globalService.getActivePartyCharacters(true);
-    var enemies = this.battle.currentEnemies.enemyList;
+      var party = this.globalService.getActivePartyCharacters(true);
+      var enemies = this.battle.currentEnemies.enemyList;
 
-    party.forEach(partyMember => {
-      //check for defeated
-      var isDefeated = this.isCharacterDefeated(partyMember);
-      if (!isDefeated) {
-        //check for status effects
-        this.handleStatusEffectDurations(partyMember, deltaTime);
-        this.handleAutoAttackTimer(partyMember, enemies, deltaTime);
-        this.handleAbilities(partyMember, enemies, deltaTime);
-      }
-    });
+      party.forEach(partyMember => {
+        //check for defeated
+        var isDefeated = this.isCharacterDefeated(partyMember);
+        if (!isDefeated) {
+          //check for status effects
+          this.handleStatusEffectDurations(partyMember, deltaTime);
+          this.handleAutoAttackTimer(partyMember, enemies, deltaTime);
+          this.handleAbilities(partyMember, enemies, deltaTime);
+        }
+      });
 
-    enemies.forEach(enemy => {
-      var isDefeated = this.isCharacterDefeated(enemy);
-      if (!isDefeated) {
-        this.handleStatusEffectDurations(enemy, deltaTime);
-        this.handleAutoAttackTimer(enemy, party, deltaTime);
-        this.handleAbilities(enemy, party, deltaTime);
-      }
-    });
+      enemies.forEach(enemy => {
+        var isDefeated = this.isCharacterDefeated(enemy);
+        if (!isDefeated) {
+          this.handleStatusEffectDurations(enemy, deltaTime);
+          this.handleAutoAttackTimer(enemy, party, deltaTime);
+          this.handleAbilities(enemy, party, deltaTime);
+        }
+      });
 
-    if (deltaTime > 0)
-      this.updateBattleState(party, enemies);
+      if (deltaTime > 0)
+        this.updateBattleState(party, enemies);
+    }
   }
 
   initializeBattle() {
     this.globalService.globalVar.activeBattle = new Battle();
+    this.checkScene();
+  }
+
+  checkScene() {
+    this.storyService.checkForNewStoryScene();
+
+    if (this.storyService.showStory)
+      this.globalService.globalVar.activeBattle.atScene = true;
+    else {
+      //TODO: get random % for other scenes
+    }
   }
 
   initializeEnemyList() {
@@ -133,10 +153,6 @@ export class BattleService {
 
     var gameLogEntry = "<strong>" + character.name + "</strong>" + " attacks <strong>" + target.name + "</strong> for " + damageDealt + " damage.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
-
-    if (character.type !== CharacterEnum.Enemy) {
-      this.dealStagger(character, target as Enemy);
-    }
   }
 
   handleAbilities(character: Character, targets: Character[], deltaTime: number) {
@@ -152,6 +168,38 @@ export class BattleService {
           }
         }
       });
+
+    if (character.assignedGod1 !== undefined && character.assignedGod1 !== GodEnum.None) {
+      var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+      if (god !== undefined) {
+        if (god.abilityList !== undefined && god.abilityList.length > 0)
+          god.abilityList.forEach(ability => {
+            ability.currentCooldown -= deltaTime;
+
+            if (ability.currentCooldown <= 0) {
+              ability.currentCooldown = 0;
+              this.useAbility(ability, character, targets);
+              ability.currentCooldown = ability.cooldown;
+            }
+          });
+      }
+    }
+
+    if (character.assignedGod2 !== undefined && character.assignedGod2 !== GodEnum.None) {
+      var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+      if (god !== undefined) {
+        if (god.abilityList !== undefined && god.abilityList.length > 0)
+          character.abilityList.forEach(ability => {
+            ability.currentCooldown -= deltaTime;
+
+            if (ability.currentCooldown <= 0) {
+              ability.currentCooldown = 0;
+              this.useAbility(ability, character, targets);
+              ability.currentCooldown = ability.cooldown;
+            }
+          });
+      }
+    }
   }
 
   useAbility(ability: Ability, user: Character, targets: Character[]) {
@@ -166,6 +214,17 @@ export class BattleService {
         ability.userGainsStatusEffect.forEach(gainedStatusEffect => {
           user.battleInfo.statusEffects.push(gainedStatusEffect.makeCopy());
         });
+
+        if (user.battleInfo.statusEffects.some(item => item.isInstant)) {
+          user.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
+            if (instantEffect.type === StatusEffectEnum.InstantHeal) {
+              var healAmount = damageDealt * instantEffect.effectiveness;
+              this.gainHp(user, healAmount);
+            }
+          });
+
+          user.battleInfo.statusEffects.filter(item => !item.isInstant);
+        }
       }
     }
   }
@@ -200,8 +259,12 @@ export class BattleService {
     return damage;
   }
 
-  dealStagger(attacker: Character, target: Enemy) {
-    target.currentStagger += .5;
+  //check for upper limits and any weird logic
+  gainHp(character: Character, healAmount: number) {
+    character.battleStats.currentHp += healAmount;
+
+    if (character.battleStats.currentHp > character.battleStats.maxHp)
+      character.battleStats.currentHp = character.battleStats.maxHp;
   }
 
   isCharacterDefeated(character: Character) {
@@ -223,6 +286,8 @@ export class BattleService {
 
     if (this.areCharactersDefeated(enemies))
       this.moveToNextBattle();
+
+      this.checkScene();
   }
 
   areCharactersDefeated(characters: Character[]) {
@@ -296,12 +361,10 @@ export class BattleService {
       return;
 
     var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item);
-    if (existingResource === undefined)
-    {
+    if (existingResource === undefined) {
       this.globalService.globalVar.resources.push(item);
     }
-    else
-    {
+    else {
       existingResource.amount += item.amount;
     }
   }
@@ -331,13 +394,12 @@ export class BattleService {
       //use item
     }
     else {
-      if (this.targetbattleItemMode === false)
-      {
+      if (this.targetbattleItemMode === false) {
         this.battleItemInUse = selectedItem;
         this.targetbattleItemMode = true;
-      }   
+      }
       else
-        this.targetbattleItemMode = false;   
+        this.targetbattleItemMode = false;
     }
   }
 
@@ -346,7 +408,7 @@ export class BattleService {
       return;
 
     if (this.battleItemInUse === ItemsEnum.HealingHerb) {
-      character.battleStats.currentHp += this.lookupService.getHealingHerbAmount();
+      this.gainHp(character, this.lookupService.getHealingHerbAmount())
       this.lookupService.useResource(this.battleItemInUse, 1);
     }
   }

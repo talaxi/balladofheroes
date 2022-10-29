@@ -1,5 +1,5 @@
 export class CharacterStats {
-    hp: number;
+    maxHp: number;
     mp: number;
     strength: number;
     defense: number;
@@ -13,7 +13,7 @@ export class CharacterStats {
 
     constructor(hp: number, mp: number, strength: number, defense: number, magic: number, magicDefense: number, agility: number,
         luck: number) {
-        this.hp = hp;
+        this.maxHp = hp;
         this.currentHp = hp;
         this.mp = mp;
         this.currentMp = mp;
@@ -26,7 +26,7 @@ export class CharacterStats {
     }
 
     makeCopy() {
-        var copy = new CharacterStats(this.hp, this.mp, this.strength, this.defense, this.magic, this.magicDefense, this.agility,
+        var copy = new CharacterStats(this.maxHp, this.mp, this.strength, this.defense, this.magic, this.magicDefense, this.agility,
             this.luck);
 
             return copy;

@@ -17,7 +17,7 @@ export class EnemyViewComponent implements OnInit {
   }
 
   getCharacterHpPercent(character: Enemy) {    
-    return (character.battleStats.currentHp / character.battleStats.hp) * 100;
+    return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
   }
 
   getCharacterMpPercent(character: Enemy) {

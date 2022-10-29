@@ -44,8 +44,12 @@ import {MatTabsModule} from '@angular/material/tabs';
 import {MatToolbarModule} from '@angular/material/toolbar';
 import {MatTooltipModule} from '@angular/material/tooltip';
 import {MatTreeModule} from '@angular/material/tree';
-import { CharacterViewComponent } from './components/subcomponents/character-view/character-view.component';
 import { EnemyViewComponent } from './components/subcomponents/enemy-view/enemy-view.component';
+import { AbilityViewComponent } from './components/subcomponents/ability-view/ability-view.component';
+import { EquipmentViewComponent } from './components/equipment-view/equipment-view.component';
+import { CustomTooltipComponent } from './components/subcomponents/custom-tooltip/custom-tooltip.component';
+import { ToolTipRendererDirective } from './components/subcomponents/custom-tooltip/tool-tip-renderer.directive';
+import { EquipmentItemViewComponent } from './components/equipment-view/equipment-item-view/equipment-item-view.component';
 
 
 @NgModule({
@@ -57,8 +61,12 @@ import { EnemyViewComponent } from './components/subcomponents/enemy-view/enemy-
     ZoneNavigationComponent,
     PartyComponent,
     BattleComponent,
-    CharacterViewComponent,
-    EnemyViewComponent
+    EnemyViewComponent,
+    AbilityViewComponent,
+    EquipmentViewComponent,
+    CustomTooltipComponent,
+    ToolTipRendererDirective,
+    EquipmentItemViewComponent
   ],
   imports: [
     BrowserModule,

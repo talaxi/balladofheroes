@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import { GodEnum } from "../enums/god-enum.model";
+import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
 
 export class God {
@@ -10,11 +11,13 @@ export class God {
     statGain: CharacterStats;
     @Type(() => CharacterStats)
     permanentStatGain: CharacterStats;
-
+    abilityList: Ability[];
 
     constructor(type: GodEnum) {
         this.type = type;
         this.level = 1;
-        this.statGain = new CharacterStats(0, 0, 0, 0, 0, 0, 0, 0,);
+        this.statGain = new CharacterStats(0, 0, 0, 0, 0, 0, 0, 0);
+        this.permanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0, 0, 0);
+        this.abilityList = [];
     }
 }

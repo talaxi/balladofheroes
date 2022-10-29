@@ -3,10 +3,13 @@
         <app-header></app-header>
     </div>
     <div class="mainArea">
-        <div class="defaultDisplayGrid"> <!--ngif default view-->
+        <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
             <app-party class="partyArea"></app-party>            
             <app-battle class="battleArea"></app-battle>            
             <app-zone-navigation class="navArea"></app-zone-navigation>
+        </div>
+        <div class="menu" *ngIf="navigation === navigationEnum.Menu">
+            <app-equipment-view></app-equipment-view>
         </div>
     </div>
     <div class="footerArea">
