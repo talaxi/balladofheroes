@@ -23,18 +23,19 @@ export class ZoneNavigationComponent implements OnInit {
     private utilityService: UtilityService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
-    this.availableBallads = this.globalService.globalVar.ballads;
+    this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
     var selectedBallad = this.balladService.getActiveBallad();
     if (selectedBallad !== undefined)
-      this.availableZones = selectedBallad.zones;
+      this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);;
     var selectedZone = this.balladService.getActiveZone();
     if (selectedZone !== undefined)
       this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
       var selectedBallad = this.balladService.getActiveBallad();
       if (selectedBallad !== undefined)
-        this.availableZones = selectedBallad.zones;
+        this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);;
       var selectedZone = this.balladService.getActiveZone();
       if (selectedZone !== undefined)
         this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);

@@ -1,0 +1,55 @@
+<span customToolTip [contentTemplate]="characterPopover"><span class="s2Heading">{{character.name}} </span>
+    <span><strong>Lv {{character.level}}</strong></span></span>
+<br />
+<div class="flex xpBarWidth">
+    <mat-progress-bar mode="determinate" [value]="getCharacterXpPercent()" class="blue-progress characterBar">
+    </mat-progress-bar>
+</div>
+<br />
+<div class="godGrid">
+    <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" customToolTip
+        [contentTemplate]="god1Popover" class="god1" g><span class="s3Heading">{{getCharacterGodName(character, 1)}}
+        </span>
+        <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span>
+        <div class="flex xpBarWidth">
+            <mat-progress-bar mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar">
+            </mat-progress-bar>
+        </div>
+    </div>
+
+    <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod" customToolTip
+        [contentTemplate]="god2Popover" class="god2"g><span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
+        <strong><span>Lv
+                {{getCharacterGodLevel(character, 2)}}</span></strong>
+        <div class="flex xpBarWidth">
+            <mat-progress-bar mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar">
+            </mat-progress-bar>
+        </div>
+    </div>
+
+    <br />
+</div>
+
+<ng-template #characterPopover>
+    <div>
+        Passive: {{getCharacterPassiveDescription()}}
+        <hr />
+        Click for details on Character.
+    </div>
+</ng-template>
+
+<ng-template #god1Popover>
+    <div>
+        Passive: {{getGodPassiveDescription(1)}}
+        <hr />
+        Click for details on God.
+    </div>
+</ng-template>
+
+<ng-template #god2Popover>
+    <div>
+        Passive: {{getGodPassiveDescription(2)}}
+        <hr />
+        Click for details on God.
+    </div>
+</ng-template>

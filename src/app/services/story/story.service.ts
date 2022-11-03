@@ -17,12 +17,10 @@ export class StoryService {
   checkForNewStoryScene() {    
     if (this.globalService.globalVar.currentStoryId === 0)
     {
-      console.log("Show Id 0");
       this.showStory = true;
     }
     else if (this.globalService.globalVar.currentStoryId === 1 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AigosthenaBay))
     {
-      console.log("Show Id 1");
       this.showStory = true;
     }
   }

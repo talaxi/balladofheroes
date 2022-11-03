@@ -50,6 +50,7 @@ import { EquipmentViewComponent } from './components/equipment-view/equipment-vi
 import { CustomTooltipComponent } from './components/subcomponents/custom-tooltip/custom-tooltip.component';
 import { ToolTipRendererDirective } from './components/subcomponents/custom-tooltip/tool-tip-renderer.directive';
 import { EquipmentItemViewComponent } from './components/equipment-view/equipment-item-view/equipment-item-view.component';
+import { CharacterNameViewComponent } from './components/subcomponents/character-name-view/character-name-view.component';
 
 
 @NgModule({
@@ -66,7 +67,8 @@ import { EquipmentItemViewComponent } from './components/equipment-view/equipmen
     EquipmentViewComponent,
     CustomTooltipComponent,
     ToolTipRendererDirective,
-    EquipmentItemViewComponent
+    EquipmentItemViewComponent,
+    CharacterNameViewComponent
   ],
   imports: [
     BrowserModule,

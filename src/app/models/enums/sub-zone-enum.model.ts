@@ -5,5 +5,5 @@ export enum SubZoneEnum {
   AigosthenaLowerCoast,
   AigosthenaWesternWoodlands,
   AigosthenaHeartOfTheWoods,
-  AigosthenaEasternWoodlands
+  /*AigosthenaEasternWoodlands*/ //not needed
 }

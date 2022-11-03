@@ -28,6 +28,7 @@ export class GlobalVariables {
     itemBeltSize: number;
     itemBelt: ItemsEnum[];
     currentStoryId: number;
+    godXpModifier: number;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -41,5 +42,6 @@ export class GlobalVariables {
         this.playerNavigation = new PlayerNavigation();
         this.timers = new Timers();
         this.currentStoryId = 0;
+        this.godXpModifier = .1;
     }
 }

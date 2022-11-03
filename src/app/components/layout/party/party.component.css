@@ -3,7 +3,7 @@
     height: 100%;
     margin: 0 .5rem;
     grid-template-columns: auto;
-    grid-template-rows: 45% 45% 10%;
+    grid-template-rows: 43% 43% 14%;
     justify-content: stretch;
     grid-template-areas:
       "character1"
@@ -59,7 +59,7 @@
     grid-area: abilities;
 }
 
-.abilityGrid {
+/*.abilityGrid {
     display: grid;
     margin: .5rem;
     height: 100%;
@@ -71,6 +71,19 @@
       "ability1"
       "ability2"
       "ability3";
+}*/
+
+.abilityGrid {
+    display: grid;
+    margin: .5rem;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr 1fr 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+      "autoAttack ability1 ability2"
+      "god1ability1 god1ability2 god1ability3"
+      "god2ability1 god2ability2 god2ability3";
 }
 
 .autoAttack {
@@ -87,6 +100,62 @@
 
 .ability3 {
     grid-area: ability3;
+}
+
+.god1ability1 {
+    grid-area: god1ability1;
+}
+
+.god1ability2 {
+    grid-area: god1ability2;
+}
+
+.god1ability3 {
+    grid-area: god1ability3;
+}
+
+.god2ability1 {
+    grid-area: god2ability1;
+}
+
+.god2ability2 {
+    grid-area: god2ability2;
+}
+
+.god2ability3 {
+    grid-area: god2ability3;
+}
+
+.battleItemGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+      "battleItem1 battleItem2 battleItem3 battleItem4";
+    gap: 15%;
+}
+
+.battleItem1 {
+    grid-area: battleItem1;
+}
+
+.battleItem2 {
+    grid-area: battleItem2;
+}
+
+.battleItem3 {
+    grid-area: battleItem3;
+}
+
+.battleItem4 {
+    grid-area: battleItem4;
+}
+
+.battleItem {
+    display: flex;
+    align-self: center;
+    flex-direction: column;
 }
 
 .abilityBreakoutGrid {
@@ -125,4 +194,9 @@
 
 .characterTargeted:hover, .targetModeActive {
     border: 1px solid red;
+}
+
+.itemImage {
+    width: 100%;
+    height: 100%;
 }

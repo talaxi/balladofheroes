@@ -4,5 +4,6 @@ export enum BestiaryEnum {
     FrenziedGull,
     StarvingMongrel,
     WildBoar,
-    KillerBees
+    KillerBees,
+    Matriarch
   }

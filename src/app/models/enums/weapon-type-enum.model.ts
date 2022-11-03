@@ -1,5 +1,6 @@
 export enum WeaponTypeEnum {    
     None,
     Hammer,
-    Sword
+    Sword,
+    Bow
   }

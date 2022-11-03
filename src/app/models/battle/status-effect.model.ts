@@ -5,10 +5,19 @@ export class StatusEffect {
     duration: number;
     effectiveness: number;
     isPermanent: boolean;
-    isInstant: boolean;
+    isInstant: boolean;    
+
+    //for DoTs
+    associatedAbilityName: string;
+    tickFrequency: number;
+    tickTimer: number;
 
     constructor(type: StatusEffectEnum) {
         this.type = type;
+
+        this.tickTimer = 0;
+        this.tickFrequency = 0;
+        this.duration = 0;
     }
 
     makeCopy() {
@@ -18,6 +27,10 @@ export class StatusEffect {
         copy.effectiveness = this.effectiveness;
         copy.isPermanent = this.isPermanent;
         copy.isInstant = this.isInstant;
+
+        copy.associatedAbilityName = this.associatedAbilityName;
+        copy.tickFrequency = this.tickFrequency;
+        copy.tickTimer = this.tickTimer;
 
         return copy;
     }

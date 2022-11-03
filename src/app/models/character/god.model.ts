@@ -12,12 +12,16 @@ export class God {
     @Type(() => CharacterStats)
     permanentStatGain: CharacterStats;
     abilityList: Ability[];
+    exp: number;
+    expToNextLevel: number;
 
     constructor(type: GodEnum) {
         this.type = type;
         this.level = 1;
-        this.statGain = new CharacterStats(0, 0, 0, 0, 0, 0, 0, 0);
-        this.permanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0, 0, 0);
+        this.statGain = new CharacterStats(0, 0, 0, 0, 0);
+        this.permanentStatGain = new CharacterStats(0, 0, 0, 0, 0);
         this.abilityList = [];
+        this.exp = 0;
+        this.expToNextLevel = 200;
     }
 }

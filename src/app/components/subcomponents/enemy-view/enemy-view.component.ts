@@ -20,13 +20,9 @@ export class EnemyViewComponent implements OnInit {
     return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
   }
 
-  getCharacterMpPercent(character: Enemy) {
-    return (character.battleStats.currentMp / character.battleStats.mp) * 100;
-  }
-
-  getStaggerPercent(character: Enemy) {
+  /*getStaggerPercent(character: Enemy) {
     return ((character.currentStagger - character.baseStagger) / (character.breakPoint - character.baseStagger)) * 100;
-  }
+  }*/
 
   getCharacterAutoAttackProgress(character: Enemy) {
     return (character.battleInfo.autoAttackTimer / character.battleInfo.timeToAutoAttack) * 100;

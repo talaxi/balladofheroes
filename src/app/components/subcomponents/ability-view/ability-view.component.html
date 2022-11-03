@@ -1,4 +1,10 @@
-<div #spinnerDiv class="ability"> 
-    <span class='abilityTimer'><img class="abilityImage" src="assets/svg/sword.svg"></span>
-    <mat-spinner class="spinner abilityTimer" mode="determinate" [diameter]="spinnerDiameter" [strokeWidth]="strokeWidth" [value]="getAbilityProgress()"></mat-spinner>
+<div class="container">
+    <div class="centeredBox">
+        <div #spinnerDiv class="ability">
+            <span class='abilityTimer'><img class="abilityImage" src="assets/svg/sword.svg"></span>
+            <mat-spinner class="spinner abilityTimer" mode="determinate" [diameter]="spinnerDiameter"
+                [strokeWidth]="strokeWidth"
+                [value]="isAutoAttack ? getCharacterAutoAttackProgress() : getAbilityProgress()"></mat-spinner>
+        </div>
+    </div>
 </div>

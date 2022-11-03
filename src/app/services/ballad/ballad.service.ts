@@ -2,6 +2,7 @@ import { Injectable } from '@angular/core';
 import { Battle } from 'src/app/models/battle/battle.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
@@ -13,7 +14,7 @@ import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generato
 })
 export class BalladService {
 
-  constructor(private subZoneGeneratorService: SubZoneGeneratorService, private globalService: GlobalService) { }  
+  constructor(private globalService: GlobalService) { }
 
   getBalladName(type?: BalladEnum) {
     var name = "";
@@ -24,7 +25,7 @@ export class BalladService {
       name = "Ballad of the Gorgon";
 
     return name;
-  }  
+  }
 
   getActiveBallad() {
     var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
@@ -48,6 +49,30 @@ export class BalladService {
       }
     }
     return subzone;
+  }
+
+  findBallad(type: BalladEnum) {
+    var returnBallad: Ballad | undefined;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      if (ballad.type === type)
+        returnBallad = ballad;
+    });
+
+    return returnBallad;
+  }
+
+  findZone(type: ZoneEnum) {
+    var returnZone: Zone | undefined;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.zones.forEach(zone => {
+          if (zone.type === type)
+            returnZone = zone;        
+      })
+    });
+
+    return returnZone;
   }
 
   findSubzone(type: SubZoneEnum) {

@@ -8,5 +8,10 @@ export enum StatusEffectEnum {
     InstantHeal,
     InstantHealAfterAutoAttack,
     DamageTakenDown,
-    Blind
+    DamageOverTime,
+    Stun,
+    Taunt,
+    Blind,
+    Barrage,
+    ThousandCuts
   }

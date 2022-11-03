@@ -5,8 +5,8 @@
     <div class="flex">
         <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
             class="green-progress characterBar">
-        </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp}} /
-            {{character.battleStats.maxHp}}</span>
+        </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp | number : '1.0-0'}} /
+            {{character.battleStats.maxHp | number : '1.0-0'}}</span>
     </div>
     <!--<div class="flex">        
         <mat-progress-bar mode="determinate" [value]="getStaggerPercent(character)"

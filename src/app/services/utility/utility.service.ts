@@ -12,6 +12,12 @@ export class UtilityService {
   public averageAutoAttackSpeed = 8;
   public longAutoAttackSpeed = 12;
   public maxItemBeltSize = 4;
+  public defaultCharacterAbilityLevel = 1;
+  public characterPassiveLevel = 2;
+  public characterAbility2Level = 5;
+  public godAbility2Level = 5;
+  public godPassiveLevel = 2;
+  public godAbility3Level = 10;
 
   constructor(public sanitizer: DomSanitizer) { }
 

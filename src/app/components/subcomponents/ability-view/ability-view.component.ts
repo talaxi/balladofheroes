@@ -25,8 +25,8 @@ export class AbilityViewComponent implements OnInit {
     this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
   }
   
-  getCharacterAutoAttackProgress(character: Character) {
-    return (character.battleInfo.autoAttackTimer / character.battleInfo.timeToAutoAttack) * 100;
+  getCharacterAutoAttackProgress() {
+    return (this.character.battleInfo.autoAttackTimer / this.character.battleInfo.timeToAutoAttack) * 100;
   }
 
   getAbilityProgress() {   

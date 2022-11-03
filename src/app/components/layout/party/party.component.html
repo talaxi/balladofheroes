@@ -6,46 +6,44 @@
         <div *ngIf="character.type !== noCharacter" class="partyMember" [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" (click)='battleService.useBattleItemOnCharacter(character)'>
             <div class="characterGrid">
                 <div class="characterInfo">
-                    <span class="s2Heading">{{character.name}} </span> <span><strong>Lv {{character.level}}</strong></span>
-                    <br />
-                    <div class="godDisplay">
-                        <span *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod"><span
-                                class="s3Heading">{{getCharacterGodName(character, 1)}} </span> <span><strong>Lv
-                                {{getCharacterGodLevel(character, 1)}}</strong></span></span>
-                        <span *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"><span
-                                class="s3Heading">{{getCharacterGodName(character, 2)}}</span> <strong><span>Lv
-                                {{getCharacterGodLevel(character, 2)}}</span></strong></span>
-                    </div>
+                    <app-character-name-view [character]="character"></app-character-name-view>                    
                     <br/>
                     <div class="flex">
                     <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
                         class="green-progress characterBar">
-                    </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp}} /
-                        {{character.battleStats.maxHp}}</span>
+                    </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp  | number : '1.0-0'}} /
+                        {{character.battleStats.maxHp | number : '1.0-0'}}</span>
                         </div>                    
-                    <div class="flex">
+                    <!--<div class="flex">
                     <mat-progress-bar mode="determinate" [value]="getCharacterMpPercent(character)"
                         class="cyan-progress characterBar">
                     </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentMp}} /
                         {{character.battleStats.mp}}</span>
-                    </div>
+                    </div>-->
                 </div>
-                <div class="abilities">
+                <div class="abilities">                    
                     <div class="abilityGrid">
-                        <span class="autoAttack abilityBreakoutGrid"><span class="abilityName">Auto Attack</span> <mat-spinner class="spinner abilityTimer" mode="determinate" diameter="25" [value]="getCharacterAutoAttackProgress(character)" [ngStyle]="{'stroke': lookupService.getCharacterColor(character.type)}"></mat-spinner><span class="abilitySwap"><button>&#8680;</button></span></span>
-                        <span class="ability1 abilityBreakoutGrid"> <span class='abilityName'>{{getSelectedAbilityName(character)}}</span><mat-spinner class="spinner abilityTimer" mode="determinate" diameter="25" [value]="getCharacterSelectedAbilityProgress(character)"></mat-spinner><span class="abilitySwap"><button>&#8680;</button></span></span>
-                        <span class="ability2"><app-ability-view [character]="character" [ability]="getGodAbility(character, 1, 0)"></app-ability-view></span>
-                        <span class="ability3">Ability3</span>
+                        <app-ability-view class="autoAttack" [character]="character" [isAutoAttack]="true"></app-ability-view>
+                        <app-ability-view class="ability1" [character]="character" *ngIf="isCharacterAbilityAvailable(character, 0)" [ability]="getCharacterAbility(character, 0)"></app-ability-view>
+                        <app-ability-view class="ability2" [character]="character" *ngIf="isCharacterAbilityAvailable(character, 1)" [ability]="getCharacterAbility(character, 1)"></app-ability-view>
+                        
+                        <app-ability-view class="god1ability1" [character]="character" *ngIf="isGodAbilityAvailable(character, 1, 0)" [ability]="getGodAbility(character, 1, 0)"></app-ability-view>
+                        <app-ability-view class="god1ability2" [character]="character" *ngIf="isGodAbilityAvailable(character, 1, 1)" [ability]="getGodAbility(character, 1, 1)"></app-ability-view>
+                        <app-ability-view class="god1ability3" [character]="character" *ngIf="isGodAbilityAvailable(character, 1, 2)" [ability]="getGodAbility(character, 1, 2)"></app-ability-view>
+
+                        <app-ability-view class="god2ability1" [character]="character" *ngIf="isGodAbilityAvailable(character, 2, 0)" [ability]="getGodAbility(character, 2, 0)"></app-ability-view>
+                        <app-ability-view class="god2ability2" [character]="character" *ngIf="isGodAbilityAvailable(character, 2, 1)" [ability]="getGodAbility(character, 2, 1)"></app-ability-view>
+                        <app-ability-view class="god2ability3" [character]="character" *ngIf="isGodAbilityAvailable(character, 2, 2)" [ability]="getGodAbility(character, 2, 2)"></app-ability-view>
                     </div>
                 </div>
             </div>            
         </div>
         <hr />
     </div>
-    <div class="options">
-        <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" [class]="'battleItem' + (i + 1)">
-            <button *ngIf="isBattleItemSlotUnequipped(i)" (click)="openItemModal(i)">Empty Item Slot 1</button>
-            <button *ngIf="!isBattleItemSlotUnequipped(i)" (click)="battleService.useBattleItem(i)" [ngClass]="{'targetModeActive': battleItemInUse(i)}" >Equipped Item Slot 1</button>
+    <div class="options battleItemGrid">
+        <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem" [class]="'battleItem' + (i + 1)">
+            <button *ngIf="isBattleItemSlotUnequipped(i)" (click)="openItemModal(i)"><img class="itemImage" src="assets/svg/emptyItemSlot.svg"></button>
+            <button *ngIf="!isBattleItemSlotUnequipped(i)" (click)="battleService.useBattleItem(i)" [ngClass]="{'targetModeActive': battleItemInUse(i)}" ><img class="itemImage" [src]="getSelectedItemImage(i)"></button>
         </div>
     </div>
 </div>

@@ -32,32 +32,6 @@ export class PartyComponent implements OnInit {
     return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
   }
 
-  getCharacterMpPercent(character: Character) {
-    return (character.battleStats.currentMp / character.battleStats.mp) * 100;
-  }
-
-  getCharacterAutoAttackProgress(character: Character) {
-    return (character.battleInfo.autoAttackTimer / character.battleInfo.timeToAutoAttack) * 100;
-  }
-
-  getCharacterSelectedAbilityProgress(character: Character) {
-    var selectedAbility = character.abilityList.find(item => item.isSelected);
-    if (selectedAbility === undefined)
-      return 0;
-
-    return 100 - ((selectedAbility.currentCooldown / selectedAbility.cooldown) * 100);
-  }
-
-  getSelectedAbilityName(character: Character) {
-    var name = "";
-    var selectedAbility = character.abilityList.find(item => item.isSelected);
-
-    if (selectedAbility !== undefined)
-      name = selectedAbility.name;
-
-    return name;
-  }
-
   getCharacterGodName(character: Character, whichGod: number) {
     var matchTo = character.assignedGod1;
     if (whichGod === 2)
@@ -82,6 +56,23 @@ export class PartyComponent implements OnInit {
     }
 
     return "";
+  }
+
+  getSelectedItemImage(slotNumber: number) {
+    var src = "assets/svg/";
+    if (this.globalService.globalVar.itemBelt.length < slotNumber)
+    {
+      src += "emptyItemSlot.svg";
+      return;
+    }
+
+    var item = this.globalService.globalVar.itemBelt[slotNumber];
+
+    if (item === ItemsEnum.HealingHerb) {
+      src += "healingHerb.svg";
+    }
+
+    return src;
   }
 
   getItemBeltCount() {
@@ -128,6 +119,56 @@ export class PartyComponent implements OnInit {
     return isTargeted;
   }
 
+  isCharacterAbilityAvailable(character: Character, abilityNumber: number) {
+    var ability: Ability = new Ability();
+
+    if (character !== undefined && character.abilityList.length >= abilityNumber)
+    {
+      ability = character.abilityList[abilityNumber];
+    }
+
+    if (ability === undefined)
+      return false;
+      
+    return ability.isAvailable;
+  }
+
+  isGodAbilityAvailable(character: Character, assignedGodNumber: number, abilityNumber: number) {
+    var ability: Ability = new Ability();
+    var godType: GodEnum = GodEnum.None;
+    
+    if (assignedGodNumber === 1)
+    godType = character.assignedGod1;
+    else if (assignedGodNumber === 2)
+    godType = character.assignedGod2;
+
+    if (godType !== GodEnum.None)
+    {
+      var god = this.globalService.globalVar.gods.find(item => item.type === godType);
+
+      if (god !== undefined && god.abilityList.length >= abilityNumber)
+      {
+        ability = god.abilityList[abilityNumber];
+      }
+    }
+
+    if (ability === undefined)
+      return false;
+
+    return ability.isAvailable;
+  }
+
+  getCharacterAbility(character: Character, abilityNumber: number) {
+    var ability: Ability = new Ability();
+
+    if (character !== undefined && character.abilityList.length >= abilityNumber)
+    {
+      ability = character.abilityList[abilityNumber];
+    }
+
+    return ability;
+  }
+
   getGodAbility(character: Character, assignedGodNumber: number, abilityNumber: number) {
     var ability: Ability = new Ability();
     var godType: GodEnum = GodEnum.None;
@@ -139,7 +180,7 @@ export class PartyComponent implements OnInit {
 
     if (godType !== GodEnum.None)
     {
-      var god = this.globalService.globalVar.gods.find(item => item.type = godType);
+      var god = this.globalService.globalVar.gods.find(item => item.type === godType);
 
       if (god !== undefined && god.abilityList.length >= abilityNumber)
       {

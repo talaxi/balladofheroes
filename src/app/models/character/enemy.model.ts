@@ -6,10 +6,6 @@ import { Character } from "./character.model";
 export class Enemy extends Character {
     xpGainFromDefeat: number;
     loot: LootItem[];
-    baseStagger: number;
-    currentStagger: number;
-    breakPoint: number;
-    breakLength: number;
     
     constructor() {
         super();

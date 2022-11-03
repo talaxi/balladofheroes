@@ -4,7 +4,9 @@
     </div>
     <div *ngIf="equipment !== undefined">
         <span class="s4Heading">{{lookupService.getItemName(equipment.itemType)}}</span>
+        <br />
+        <span>{{lookupService.getEquipmentTypeName(equipment)}}</span>
         <hr class="miniHr" />
-        Stats and such
+        <span [innerHtml]="equipmentStats"></span>
     </div>
 </div>

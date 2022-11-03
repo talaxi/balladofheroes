@@ -1,5 +1,7 @@
 import { EnemyTeam } from "../character/enemy-team.model";
+import { BalladEnum } from "../enums/ballad-enum.model";
 import { SubZoneEnum } from "../enums/sub-zone-enum.model";
+import { ZoneEnum } from "../enums/zone-enum.model";
 
 export class SubZone {
     name: string;
@@ -9,7 +11,7 @@ export class SubZone {
     victoryCount: number;
     victoriesNeededToProceed: number;
     isAvailable: boolean;
-
+    
     constructor(enumVal?: SubZoneEnum) {
         this.victoriesNeededToProceed = 0;
 
@@ -21,7 +23,6 @@ export class SubZone {
         this.battleOptions = [];        
         this.victoryCount = 0;
         this.isAvailable = false;
-
     }
 
     setSubZoneName(type: SubZoneEnum) {
@@ -37,27 +38,31 @@ export class SubZone {
             name = "Western Woodlands";
         if (type === SubZoneEnum.AigosthenaHeartOfTheWoods)
             name = "Heart of the Woods";
-        if (type === SubZoneEnum.AigosthenaEasternWoodlands)
-            name = "Eastern Woodlands";
+        /*if (type === SubZoneEnum.AigosthenaEasternWoodlands)
+            name = "Eastern Woodlands";*/
 
         return name;
     }
 
     getVictoriesNeededToProceed(type: SubZoneEnum) {
         var victories = 1;
+        var testing = true;
 
-        if (type === SubZoneEnum.AigosthenaUpperCoast)
-            victories = 10;
-        if (type === SubZoneEnum.AigosthenaBay)
-            victories = 10;
-        if (type === SubZoneEnum.AigosthenaLowerCoast)
-            victories = 10;
-        if (type === SubZoneEnum.AigosthenaWesternWoodlands)
-            victories = 10;
-        if (type === SubZoneEnum.AigosthenaHeartOfTheWoods)
-            victories = 1;
-        if (type === SubZoneEnum.AigosthenaEasternWoodlands)
-            victories = 10;
+        if (!testing)
+        {
+            if (type === SubZoneEnum.AigosthenaUpperCoast)
+                victories = 10;
+            if (type === SubZoneEnum.AigosthenaBay)
+                victories = 10;
+            if (type === SubZoneEnum.AigosthenaLowerCoast)
+                victories = 10;
+            if (type === SubZoneEnum.AigosthenaWesternWoodlands)
+                victories = 10;
+            if (type === SubZoneEnum.AigosthenaHeartOfTheWoods)
+                victories = 1;
+            /*if (type === SubZoneEnum.AigosthenaEasternWoodlands)
+                victories = 10;*/
+        }
 
         return victories;
     } 

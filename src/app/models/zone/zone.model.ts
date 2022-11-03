@@ -5,6 +5,7 @@ export class Zone {
     zoneName: string;
     type: ZoneEnum;
     isSelected: boolean;
+    isAvailable: boolean;
     subzones: SubZone[];
 
     constructor() {

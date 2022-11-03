@@ -1,9 +1,12 @@
 import { Injectable } from '@angular/core';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
+import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
+import { BalladService } from '../ballad/ballad.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
 
 @Injectable({
@@ -11,7 +14,7 @@ import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.servic
 })
 export class SubZoneGeneratorService {
 
-  constructor(private enemyGeneratorService: EnemyGeneratorService) { }
+  constructor(private enemyGeneratorService: EnemyGeneratorService, private balladService: BalladService) { }
 
   generateSubZone(type: SubZoneEnum)
   {
@@ -22,7 +25,7 @@ export class SubZoneGeneratorService {
     return subZone;
   }
 
-  generateBattleOptions(type: SubZoneEnum) {
+  generateBattleOptions(type: SubZoneEnum) {    
     var battleOptions: EnemyTeam[] = [];
     if (type === SubZoneEnum.AigosthenaUpperCoast)
     {
@@ -34,30 +37,89 @@ export class SubZoneGeneratorService {
       enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
       enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
       battleOptions.push(enemyTeam2);
-
-      var enemyTeam3: EnemyTeam = new EnemyTeam();
-      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-      battleOptions.push(enemyTeam3);
-
-      var enemyTeam4: EnemyTeam = new EnemyTeam();
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-      battleOptions.push(enemyTeam4);
     }
     if (type === SubZoneEnum.AigosthenaBay)
     {
       var enemyTeam: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));      
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));      
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));      
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));     
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));     
+      battleOptions.push(enemyTeam2);
+      
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));     
+      battleOptions.push(enemyTeam3);
+    }
+    if (type === SubZoneEnum.AigosthenaLowerCoast)
+    {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));     
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedGull));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FrenziedGull));     
+      battleOptions.push(enemyTeam2);
+      
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Crustacean));     
+      battleOptions.push(enemyTeam3);
+    }
+    if (type === SubZoneEnum.AigosthenaWesternWoodlands)
+    {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarvingMongrel));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));     
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));  
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));          
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));     
+      battleOptions.push(enemyTeam2);
+      
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarvingMongrel));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarvingMongrel));     
+      battleOptions.push(enemyTeam3);
+
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));      
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarvingMongrel));     
+      battleOptions.push(enemyTeam4);
+    }
+    if (type === SubZoneEnum.AigosthenaHeartOfTheWoods)
+    {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Matriarch));      
       battleOptions.push(enemyTeam);
     }
+    /*if (type === SubZoneEnum.AigosthenaEasternWoodlands)
+    {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarvingMongrel));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));       
+      battleOptions.push(enemyTeam);
 
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));  
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));     
+      battleOptions.push(enemyTeam2);
+      
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));      
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));     
+      battleOptions.push(enemyTeam3);
+    }
+*/
     battleOptions.forEach(enemyTeam => {      
       enemyTeam.enemyList.forEach(enemy => {
         var duplicateNameList = enemyTeam.enemyList.filter(item => item.name === enemy.name);
@@ -75,5 +137,43 @@ export class SubZoneGeneratorService {
     });
 
     return battleOptions;
+  }
+
+  getBalladUnlocks(type: SubZoneEnum) {
+    var balladEnums: BalladEnum[] = [];
+    
+    if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
+      balladEnums.push(BalladEnum.Gorgon);
+    }
+
+    return balladEnums;
+  }
+
+  getZoneUnlocks(type: SubZoneEnum) {
+    var zoneEnums: ZoneEnum[] = [];
+    
+    return zoneEnums;
+  }
+
+  getSubZoneUnlocks(type: SubZoneEnum) {
+    var subZoneEnums: SubZoneEnum[] = [];
+    
+    if (type === SubZoneEnum.AigosthenaUpperCoast) {
+      subZoneEnums.push(SubZoneEnum.AigosthenaBay);
+    }
+    if (type === SubZoneEnum.AigosthenaBay) {
+      subZoneEnums.push(SubZoneEnum.AigosthenaLowerCoast);
+    }
+    if (type === SubZoneEnum.AigosthenaLowerCoast) {
+      subZoneEnums.push(SubZoneEnum.AigosthenaWesternWoodlands);
+    }
+    if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
+      subZoneEnums.push(SubZoneEnum.AigosthenaHeartOfTheWoods);
+    }
+    //if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
+      //subZoneEnums.push(SubZoneEnum.AigosthenaEasternWoodlands);
+    //}
+
+    return subZoneEnums;
   }
 }

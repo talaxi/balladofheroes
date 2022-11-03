@@ -4,5 +4,6 @@ export enum GodEnum {
     Zeus,
     Ares,
     Apollo,
-    Poseidon
+    Poseidon,
+    Artemis
   }

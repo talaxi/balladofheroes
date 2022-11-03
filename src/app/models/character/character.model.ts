@@ -37,5 +37,7 @@ export class Character {
 
         this.battleInfo = new BattleInfo(type);        
         this.equipmentSet = new EquipmentSet();
+
+        this.abilityList = [];
     }       
 }

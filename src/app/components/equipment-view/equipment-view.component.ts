@@ -33,8 +33,8 @@ export class EquipmentViewComponent implements OnInit {
       this.hoveredItem = hoveredEquipmentPiece;
   }
 
-  equipItem(item: ResourceValue) {
-    console.log("Equipping " + this.lookupService.getItemName(item.item));
+  equipItem(item: ResourceValue) { 
+    console.log("Equipping");
     var selectedEquipmentPiece = this.lookupService.getEquipmentPieceByItemType(item.item);
     console.log(selectedEquipmentPiece);
     if (selectedEquipmentPiece === undefined)

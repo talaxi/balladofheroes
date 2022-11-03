@@ -13,6 +13,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
@@ -110,6 +111,19 @@ export class BattleService {
 
     character.battleInfo.statusEffects.forEach(effect => {
       effect.duration -= deltaTime;
+
+      if (effect.type === StatusEffectEnum.DamageOverTime) {
+        //check tick time
+        effect.tickTimer += deltaTime;
+        if (effect.tickTimer >= effect.tickFrequency) {
+          //deal damage
+          var damageDealt = this.dealTrueDamage(character, effect.effectiveness);
+          var gameLogEntry = "<strong>" + character.name + "</strong>" + " takes " + damageDealt + " damage from " + effect.associatedAbilityName + "'s effect.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+
+          effect.tickTimer -= effect.tickFrequency;
+        }
+      }
     });
 
     character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(effect => effect.duration > 0);
@@ -153,19 +167,33 @@ export class BattleService {
 
     var gameLogEntry = "<strong>" + character.name + "</strong>" + " attacks <strong>" + target.name + "</strong> for " + damageDealt + " damage.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+
+    if (character.abilityList.find(item => item.name === "Barrage" && item.isAvailable)) {
+      var barrage = character.abilityList.find(item => item.name === "Barrage" && item.isAvailable)!;
+      barrage.count += 1;
+      
+      if (barrage.count >= barrage.maxCount) {
+        var additionalTargets = targets.filter(item => item !== target);
+        if (additionalTargets.length > 0) {
+          additionalTargets.forEach(additionalTarget => {
+            var additionalDamageDealt = this.dealDamage(character, additionalTarget, undefined, barrage!.damageMultiplier);
+            var gameLogEntry = "<strong>" + character.name + "</strong>" + "'s attack hits <strong>" + additionalTarget.name + "</strong> for " + additionalDamageDealt + " damage as well.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+          });
+        }
+        barrage.count = 0;
+      }
+    }
   }
 
   handleAbilities(character: Character, targets: Character[], deltaTime: number) {
     if (character.abilityList !== undefined && character.abilityList.length > 0)
-      character.abilityList.forEach(ability => {
+      character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
         ability.currentCooldown -= deltaTime;
         if (ability.currentCooldown <= 0) {
           ability.currentCooldown = 0;
-
-          if (ability.isSelected) {
-            this.useAbility(ability, character, targets);
-            ability.currentCooldown = ability.cooldown;
-          }
+          this.useAbility(ability, character, targets);
+          ability.currentCooldown = ability.cooldown;
         }
       });
 
@@ -173,7 +201,7 @@ export class BattleService {
       var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
       if (god !== undefined) {
         if (god.abilityList !== undefined && god.abilityList.length > 0)
-          god.abilityList.forEach(ability => {
+          god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
             ability.currentCooldown -= deltaTime;
 
             if (ability.currentCooldown <= 0) {
@@ -189,7 +217,7 @@ export class BattleService {
       var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
       if (god !== undefined) {
         if (god.abilityList !== undefined && god.abilityList.length > 0)
-          character.abilityList.forEach(ability => {
+          character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
             ability.currentCooldown -= deltaTime;
 
             if (ability.currentCooldown <= 0) {
@@ -226,6 +254,29 @@ export class BattleService {
           user.battleInfo.statusEffects.filter(item => !item.isInstant);
         }
       }
+
+      if (ability.targetGainsStatusEffect.length > 0) {
+        ability.targetGainsStatusEffect.forEach(gainedStatusEffect => {
+          var appliedStatusEffect = gainedStatusEffect.makeCopy();
+
+          if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
+            appliedStatusEffect.effectiveness = user.battleStats.attack * appliedStatusEffect.effectiveness;
+          }
+
+          target.battleInfo.statusEffects.push(appliedStatusEffect);
+        });
+
+        if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
+          target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
+            if (instantEffect.type === StatusEffectEnum.InstantHeal) {
+              var healAmount = damageDealt * instantEffect.effectiveness;
+              this.gainHp(target, healAmount);
+            }
+          });
+
+          target.battleInfo.statusEffects.filter(item => !item.isInstant);
+        }
+      }
     }
   }
 
@@ -237,10 +288,10 @@ export class BattleService {
     if (damageMultiplier === undefined)
       damageMultiplier = 1;
 
-    var adjustedStrength = attacker.battleStats.strength;
+    var adjustedAttack = attacker.battleStats.attack;
     var adjustedDefense = target.battleStats.defense;
 
-    var damage = Math.round(damageMultiplier * abilityDamageMultiplier * (adjustedStrength * (2 / 3) -
+    var damage = Math.round(damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
       (adjustedDefense * (2 / 9))));
 
     /*
@@ -248,6 +299,19 @@ export class BattleService {
     (BRV DMG Dealt Multiplier) x (BRV DMG Increase Multiplier) x (Critical Damage) x (RNG)
     */
 
+    if (damage < 0)
+      damage = 0;
+
+    target.battleStats.currentHp -= damage;
+
+    if (target.battleStats.currentHp < 0)
+      target.battleStats.currentHp = 0;
+
+    return damage;
+  }
+
+  //DoTs
+  dealTrueDamage(target: Character, damage: number) {
     if (damage < 0)
       damage = 0;
 
@@ -287,7 +351,7 @@ export class BattleService {
     if (this.areCharactersDefeated(enemies))
       this.moveToNextBattle();
 
-      this.checkScene();
+    this.checkScene();
   }
 
   areCharactersDefeated(characters: Character[]) {
@@ -323,7 +387,7 @@ export class BattleService {
     }
 
     if (subZone.victoryCount >= subZone.victoriesNeededToProceed) {
-      this.unlockNextSubzone(subZone.type);
+      this.unlockNextSubzone(subZone);
     }
 
     this.initializeEnemyList();
@@ -369,11 +433,33 @@ export class BattleService {
     }
   }
 
-  unlockNextSubzone(type: SubZoneEnum) {
-    if (type === SubZoneEnum.AigosthenaUpperCoast) {
-      var subzone = this.balladService.findSubzone(SubZoneEnum.AigosthenaBay);
-      if (subzone !== undefined)
-        subzone.isAvailable = true;
+  unlockNextSubzone(subZone: SubZone) {
+    var subZoneUnlocks = this.subzoneGeneratorService.getSubZoneUnlocks(subZone.type);
+    var zoneUnlocks = this.subzoneGeneratorService.getZoneUnlocks(subZone.type);
+    var balladUnlocks = this.subzoneGeneratorService.getBalladUnlocks(subZone.type);
+
+    if (balladUnlocks !== undefined && balladUnlocks.length > 0) {
+      balladUnlocks.forEach(ballad => {
+        var unlockedBallad = this.balladService.findBallad(ballad);
+        if (unlockedBallad !== undefined)
+          unlockedBallad.isAvailable = true;
+      });
+    }
+
+    if (zoneUnlocks !== undefined && zoneUnlocks.length > 0) {
+      zoneUnlocks.forEach(zone => {
+        var unlockedZone = this.balladService.findZone(zone);
+        if (unlockedZone !== undefined)
+          unlockedZone.isAvailable = true;
+      });
+    }
+
+    if (subZoneUnlocks !== undefined && subZoneUnlocks.length > 0) {
+      subZoneUnlocks.forEach(subZone => {
+        var unlockedSubZone = this.balladService.findSubzone(subZone);
+        if (unlockedSubZone !== undefined)
+          unlockedSubZone.isAvailable = true;
+      });
     }
   }
 
@@ -387,11 +473,13 @@ export class BattleService {
 
     var selectedItem = this.globalService.globalVar.itemBelt[slotNumber];
 
-    if (selectedItem === undefined || this.lookupService.getResourceAmount(selectedItem) === 0)
+    if (selectedItem === undefined || this.lookupService.getResourceAmount(selectedItem) === 0) {
+      this.targetbattleItemMode = false;
       return;
+    }
 
     if (this.lookupService.itemDoesNotNeedSelection()) {
-      //use item
+      //use item      
     }
     else {
       if (this.targetbattleItemMode === false) {
@@ -410,6 +498,10 @@ export class BattleService {
     if (this.battleItemInUse === ItemsEnum.HealingHerb) {
       this.gainHp(character, this.lookupService.getHealingHerbAmount())
       this.lookupService.useResource(this.battleItemInUse, 1);
+    }
+
+    if (this.lookupService.getResourceAmount(this.battleItemInUse) === 0) {
+      this.targetbattleItemMode = false;
     }
   }
 }
