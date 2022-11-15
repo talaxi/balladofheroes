@@ -11,6 +11,7 @@ export class UtilityService {
   public quickAutoAttackSpeed = 4;
   public averageAutoAttackSpeed = 8;
   public longAutoAttackSpeed = 12;
+  
   public maxItemBeltSize = 4;
   public defaultCharacterAbilityLevel = 1;
   public characterPassiveLevel = 2;

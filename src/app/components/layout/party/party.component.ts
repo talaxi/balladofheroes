@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, QueryList, ViewChild } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -9,6 +9,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { Ability } from 'src/app/models/character/ability.model';
 import { God } from 'src/app/models/character/god.model';
+import { MatMenuTrigger } from '@angular/material/menu';
 
 @Component({
   selector: 'app-party',
@@ -21,6 +22,9 @@ export class PartyComponent implements OnInit {
   public characterEnum: CharacterEnum;
   public noCharacter = CharacterEnum.none;
   public noGod = GodEnum.None;
+  @ViewChild(MatMenuTrigger) trigger: QueryList<MatMenuTrigger>;
+  openedSlotNumber: number = 0;
+  itemMenuClass = "itemMenu";
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService) { }
 
@@ -28,8 +32,23 @@ export class PartyComponent implements OnInit {
     this.party = this.globalService.getActivePartyCharacters(false);    
   }
 
-  getCharacterHpPercent(character: Character) {
+  ngAfterViewInit() {
+    var elements = document.getElementsByClassName('mat-icon-button');
+    var elementLength = elements.length;
+    
+    if (elements !== null && elements !== undefined) {
+      for (var i = 0; i < elementLength; i++) {        
+        elements[0].removeAttribute("class");
+      }
+    }    
+  }
+
+  getCharacterHpPercent(character: Character) {    
     return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
+  }
+
+  getCharacterBarrierValue(character: Character) {    
+    return character.battleInfo.barrierValue;
   }
 
   getCharacterGodName(character: Character, whichGod: number) {
@@ -95,8 +114,27 @@ export class PartyComponent implements OnInit {
     if (this.globalService.globalVar.itemBelt.length < slotNumber)
       return;
 
+    this.openedSlotNumber = slotNumber;
+
+    //this.trigger.toArray()[slotNumber].openMenu();
     //simulating selecting the healing herb
-    this.globalService.globalVar.itemBelt[slotNumber] = ItemsEnum.HealingHerb;
+    //this.globalService.globalVar.itemBelt[slotNumber] = ItemsEnum.HealingHerb;
+  }
+
+  selectItemFromMenu() {
+    this.globalService.globalVar.itemBelt[this.openedSlotNumber] = ItemsEnum.HealingHerb;
+  }
+
+  getItemAmount(slotNumber: number) {
+    var amount = 0;
+
+    if (this.globalService.globalVar.itemBelt.length < slotNumber)
+    return amount;
+
+    var item = this.globalService.globalVar.itemBelt[slotNumber];
+    amount = this.lookupService.getResourceAmount(item);
+
+    return amount;
   }
 
   battleItemInUse(slotNumber: number) {
@@ -124,7 +162,7 @@ export class PartyComponent implements OnInit {
 
     if (character !== undefined && character.abilityList.length >= abilityNumber)
     {
-      ability = character.abilityList[abilityNumber];
+      ability = character.abilityList.filter(item => !item.isPassive)[abilityNumber];
     }
 
     if (ability === undefined)
@@ -148,7 +186,7 @@ export class PartyComponent implements OnInit {
 
       if (god !== undefined && god.abilityList.length >= abilityNumber)
       {
-        ability = god.abilityList[abilityNumber];
+        ability = god.abilityList.filter(item => !item.isPassive)[abilityNumber];
       }
     }
 
@@ -163,7 +201,7 @@ export class PartyComponent implements OnInit {
 
     if (character !== undefined && character.abilityList.length >= abilityNumber)
     {
-      ability = character.abilityList[abilityNumber];
+      ability = character.abilityList.filter(item => !item.isPassive)[abilityNumber];
     }
 
     return ability;
@@ -184,7 +222,7 @@ export class PartyComponent implements OnInit {
 
       if (god !== undefined && god.abilityList.length >= abilityNumber)
       {
-        ability = god.abilityList[abilityNumber];
+        ability = god.abilityList.filter(item => !item.isPassive)[abilityNumber];
       }
     }
 

@@ -1,0 +1,30 @@
+<div class="statusEffectView">
+    <div class="positiveStatusEffectContainer">
+        <div *ngFor="let statusEffect of getPositiveStatusEffects(); let i = index" class="positiveStatusEffectList">
+            <div *ngIf="isStatUpDownEffect(statusEffect)"
+                class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
+                <img class="image halfImage" src="assets/svg/statUpSE.svg">
+                <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
+            </div>
+            <div *ngIf="!isStatUpDownEffect(statusEffect)" class="positiveStatusEffect">
+                <div *ngIf="hasImage(statusEffect)"><img class="image" [src]="this.getStatusEffectImage(statusEffect)">
+                </div>
+                <div *ngIf="!hasImage(statusEffect)" class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
+            </div>
+        </div>
+    </div>
+    <div class="negativeStatusEffectContainer">
+        <div *ngFor="let statusEffect of getNegativeStatusEffects(); let i = index" class="negativeStatusEffectList">
+            <div *ngIf="isStatUpDownEffect(statusEffect)"
+                class="statUpDownGrid negativeStatUpDownGrid negativeStatusEffect">
+                <img class="image halfImage" src="assets/svg/statDownSE.svg">
+                <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
+            </div>
+            <div *ngIf="!isStatUpDownEffect(statusEffect)" class="negativeStatusEffect">
+                <div *ngIf="hasImage(statusEffect)"><img class="image" [src]="this.getStatusEffectImage(statusEffect)">
+                </div>
+                <div *ngIf="!hasImage(statusEffect)" class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
+            </div>
+        </div>
+    </div>
+</div>

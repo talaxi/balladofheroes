@@ -37,3 +37,7 @@
 .abilityImage {
     height: 100%;
 }
+
+.mat-progress-spinner svg circle {
+    stroke: unset !important;  
+  }

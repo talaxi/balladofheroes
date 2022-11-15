@@ -9,9 +9,11 @@ import { Enemy } from 'src/app/models/character/enemy.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from '../ballad/ballad.service';
@@ -63,9 +65,10 @@ export class BattleService {
         var isDefeated = this.isCharacterDefeated(partyMember);
         if (!isDefeated) {
           //check for status effects
+          this.updateBattleStats(partyMember);
           this.handleStatusEffectDurations(partyMember, deltaTime);
           this.handleAutoAttackTimer(partyMember, enemies, deltaTime);
-          this.handleAbilities(partyMember, enemies, deltaTime);
+          this.handleAbilities(partyMember, enemies, party, deltaTime);
         }
       });
 
@@ -74,7 +77,7 @@ export class BattleService {
         if (!isDefeated) {
           this.handleStatusEffectDurations(enemy, deltaTime);
           this.handleAutoAttackTimer(enemy, party, deltaTime);
-          this.handleAbilities(enemy, party, deltaTime);
+          this.handleAbilities(enemy, party, enemies, deltaTime);
         }
       });
 
@@ -129,10 +132,16 @@ export class BattleService {
     character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(effect => effect.duration > 0);
   }
 
-  handleAutoAttackTimer(character: Character, targets: Character[], deltaTime: number) {
-    character.battleInfo.autoAttackTimer += deltaTime;
+  //add equipment and permanent stats to base stats
+  updateBattleStats(character: Character) {
+    this.globalService.calculateCharacterBattleStats(character);
+  }
 
-    var timeToAutoAttack = this.getAutoAttackTime(character);
+  handleAutoAttackTimer(character: Character, targets: Character[], deltaTime: number) {
+    if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
+      character.battleInfo.autoAttackTimer += deltaTime;
+
+    var timeToAutoAttack = this.lookupService.getAutoAttackTime(character);
 
     if (character.battleInfo.autoAttackTimer >= timeToAutoAttack) {
       this.handleAutoAttack(character, targets);
@@ -140,30 +149,13 @@ export class BattleService {
     }
   }
 
-  getAutoAttackTime(character: Character) {
-    var timeToAutoAttack = character.battleInfo.timeToAutoAttack;
-    var adjustedAgility = this.lookupService.getAdjustedAgility(character);
-
-    var amplifier = 120;
-    var horizontalStretch = .00035;
-    var horizontalPosition = 1;
-
-    //500 * (log(.0035 * 10 + 1)) + 50      
-    var modifierAmount = amplifier * Math.log10(horizontalStretch * (adjustedAgility) + horizontalPosition);
-
-    //if it goes below 0, needs to attack multi times
-    //although probably need to make it more like if it gets reduced to 33% or something like that because otherwise its a nerf       
-    timeToAutoAttack -= modifierAmount;
-
-    return timeToAutoAttack;
-  }
-
   handleAutoAttack(character: Character, targets: Character[]) {
     //TODO: handle targetting system -- default to random but have options to target highest or lowest hp and other conditions
-    var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+    var target = this.getTarget(character, targets);
 
-    var target = potentialTargets[this.utilityService.getRandomInteger(0, potentialTargets.length - 1)];
-    var damageDealt = this.dealDamage(character, target);
+    var damageMultiplier = this.getDamageMultiplier(character, target);
+
+    var damageDealt = this.dealDamage(character, target, undefined, damageMultiplier);
 
     var gameLogEntry = "<strong>" + character.name + "</strong>" + " attacks <strong>" + target.name + "</strong> for " + damageDealt + " damage.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
@@ -171,12 +163,13 @@ export class BattleService {
     if (character.abilityList.find(item => item.name === "Barrage" && item.isAvailable)) {
       var barrage = character.abilityList.find(item => item.name === "Barrage" && item.isAvailable)!;
       barrage.count += 1;
-      
+
       if (barrage.count >= barrage.maxCount) {
-        var additionalTargets = targets.filter(item => item !== target);
+        var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+        var additionalTargets = potentialTargets.filter(item => item !== target);
         if (additionalTargets.length > 0) {
           additionalTargets.forEach(additionalTarget => {
-            var additionalDamageDealt = this.dealDamage(character, additionalTarget, undefined, barrage!.damageMultiplier);
+            var additionalDamageDealt = this.dealDamage(character, additionalTarget, undefined, barrage!.effectiveness);
             var gameLogEntry = "<strong>" + character.name + "</strong>" + "'s attack hits <strong>" + additionalTarget.name + "</strong> for " + additionalDamageDealt + " damage as well.";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           });
@@ -186,13 +179,15 @@ export class BattleService {
     }
   }
 
-  handleAbilities(character: Character, targets: Character[], deltaTime: number) {
+  handleAbilities(character: Character, targets: Character[], partyMembers: Character[], deltaTime: number) {
     if (character.abilityList !== undefined && character.abilityList.length > 0)
       character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-        ability.currentCooldown -= deltaTime;
+        if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
+          ability.currentCooldown -= deltaTime;
+
         if (ability.currentCooldown <= 0) {
           ability.currentCooldown = 0;
-          this.useAbility(ability, character, targets);
+          this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, false);
           ability.currentCooldown = ability.cooldown;
         }
       });
@@ -202,11 +197,12 @@ export class BattleService {
       if (god !== undefined) {
         if (god.abilityList !== undefined && god.abilityList.length > 0)
           god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-            ability.currentCooldown -= deltaTime;
+            if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
+              ability.currentCooldown -= deltaTime;
 
             if (ability.currentCooldown <= 0) {
               ability.currentCooldown = 0;
-              this.useAbility(ability, character, targets);
+              this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, true);
               ability.currentCooldown = ability.cooldown;
             }
           });
@@ -218,11 +214,12 @@ export class BattleService {
       if (god !== undefined) {
         if (god.abilityList !== undefined && god.abilityList.length > 0)
           character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-            ability.currentCooldown -= deltaTime;
+            if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
+              ability.currentCooldown -= deltaTime;
 
             if (ability.currentCooldown <= 0) {
               ability.currentCooldown = 0;
-              this.useAbility(ability, character, targets);
+              this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, true);
               ability.currentCooldown = ability.cooldown;
             }
           });
@@ -230,57 +227,187 @@ export class BattleService {
     }
   }
 
-  useAbility(ability: Ability, user: Character, targets: Character[]) {
+  useAbility(ability: Ability, user: Character, targets: Character[], party: Character[], isGodAbility: boolean) {
+    var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+    var target = this.getTarget(user, targets, ability.targetType !== undefined ? ability.targetType : TargetEnum.Random);
+
+    var abilityEffectiveness = this.getAbilityEffectiveness(user, target, ability, party, isGodAbility);
+
     if (ability.dealsDirectDamage) {
-      var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
-      var target = potentialTargets[this.utilityService.getRandomInteger(0, potentialTargets.length - 1)];
-      var damageDealt = this.dealDamage(user, target, ability.damageMultiplier);
+      var damageMultiplier = this.getDamageMultiplier(user, target);
+
+      var damageDealt = this.dealDamage(user, target, abilityEffectiveness, damageMultiplier, ability);
       var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + " on <strong>" + target.name + "</strong> for " + damageDealt + " damage.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+    }
+    else if (ability.heals) {
+      var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user);
+      var healedAmount = this.gainHp(target, healAmount);
+      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + " on " + target.name + ", restoring " + healedAmount + " HP.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
+    }
+    else if (ability.name === "Barrier") {
+      var barrierAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user);
 
-      if (ability.userGainsStatusEffect.length > 0) {
-        ability.userGainsStatusEffect.forEach(gainedStatusEffect => {
-          user.battleInfo.statusEffects.push(gainedStatusEffect.makeCopy());
-        });
+      targets.forEach(partyMember => {
+        partyMember.battleInfo.barrierValue += barrierAmount;
 
-        if (user.battleInfo.statusEffects.some(item => item.isInstant)) {
-          user.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
-            if (instantEffect.type === StatusEffectEnum.InstantHeal) {
-              var healAmount = damageDealt * instantEffect.effectiveness;
-              this.gainHp(user, healAmount);
-            }
-          });
-
-          user.battleInfo.statusEffects.filter(item => !item.isInstant);
+        if (partyMember.battleInfo.barrierValue > partyMember.battleStats.maxHp * ability.threshold) {
+          //TODO: maybe don't overwrite existing effect though if it was already higher
+          partyMember.battleInfo.barrierValue = partyMember.battleStats.maxHp * ability.threshold;
         }
-      }
+      });
 
-      if (ability.targetGainsStatusEffect.length > 0) {
-        ability.targetGainsStatusEffect.forEach(gainedStatusEffect => {
-          var appliedStatusEffect = gainedStatusEffect.makeCopy();
+      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + ", shielding allies for " + barrierAmount + " damage.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
+    }
+    else {
+      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + ".";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
+    }
 
-          if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
-            appliedStatusEffect.effectiveness = user.battleStats.attack * appliedStatusEffect.effectiveness;
+    if (ability.userGainsStatusEffect.length > 0) {
+      ability.userGainsStatusEffect.forEach(gainedStatusEffect => {
+        user.battleInfo.statusEffects.push(gainedStatusEffect.makeCopy());
+      });
+
+      if (user.battleInfo.statusEffects.some(item => item.isInstant)) {
+        user.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
+          if (instantEffect.type === StatusEffectEnum.InstantHeal) {
+            var healAmount = damageDealt * instantEffect.effectiveness;
+            this.gainHp(user, healAmount);
           }
-
-          target.battleInfo.statusEffects.push(appliedStatusEffect);
         });
 
-        if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
-          target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
-            if (instantEffect.type === StatusEffectEnum.InstantHeal) {
-              var healAmount = damageDealt * instantEffect.effectiveness;
-              this.gainHp(target, healAmount);
-            }
-          });
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => !item.isInstant);
+      }
+    }
 
-          target.battleInfo.statusEffects.filter(item => !item.isInstant);
+    if (ability.targetGainsStatusEffect.length > 0) {
+      ability.targetGainsStatusEffect.forEach(gainedStatusEffect => {
+        var appliedStatusEffect = gainedStatusEffect.makeCopy();
+
+        if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
+          appliedStatusEffect.effectiveness = user.battleStats.attack * appliedStatusEffect.effectiveness;
         }
+
+        this.applyStatusEffect(appliedStatusEffect, target, potentialTargets);
+
+        var mark = user.abilityList.find(item => item.name === "Mark" && item.isAvailable);
+        if (mark !== undefined) {
+          var markEffect = mark.targetGainsStatusEffect[0].makeCopy();
+          markEffect.duration = gainedStatusEffect.duration;
+          markEffect.isAoe = gainedStatusEffect.isAoe;
+
+          this.applyStatusEffect(markEffect, target, potentialTargets);
+        }
+      });
+
+      if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
+        target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
+          if (instantEffect.type === StatusEffectEnum.InstantHeal) {
+            var healAmount = damageDealt * instantEffect.effectiveness;
+            this.gainHp(target, healAmount);
+          }
+        });
+
+        target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => !item.isInstant);
       }
     }
   }
 
-  dealDamage(attacker: Character, target: Character, abilityDamageMultiplier?: number, damageMultiplier?: number) {
+  getAbilityEffectiveness(character: Character, target: Character, ability: Ability, party: Character[], isGodAbility: boolean) {
+    //return ability effectivness * faith boost
+    var effectiveness = ability.effectiveness;
+
+    //check for faith
+    var priest = party.find(member => member.type === CharacterEnum.Priest);
+    if (priest !== undefined) {
+      var faith = priest.abilityList.find(item => item.name === "Faith" && item.isAvailable);
+      if (faith !== undefined && isGodAbility) {
+        effectiveness *= faith.effectiveness;
+      }
+    }
+
+    return effectiveness;
+  }
+
+  getDamageMultiplier(character: Character, target: Character) {
+    var overallDamageMultiplier = 1;
+
+    //check for basic damage up/down buffs
+
+    //each unique status effect is its own multiplier. or perhaps they should be additive, i'm not sure
+    var thousandCutsDamageIncrease = 1;
+    if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts)) {
+      var effect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThousandCuts)!;
+      thousandCutsDamageIncrease += effect.effectiveness * effect.count;
+      effect.count += 1;
+    }
+
+    //check for mark
+    var markDamageIncrease = 1;
+    if (target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Mark)) {
+      var effect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Mark)!;
+      markDamageIncrease = effect.effectiveness;
+    }
+
+    return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease;
+  }
+
+  applyStatusEffect(appliedStatusEffect: StatusEffect, target: Character, potentialTargets: Character[]) {
+    if (appliedStatusEffect.isAoe) {
+      potentialTargets.forEach(enemy => {
+        var existingApplication = enemy.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
+        if (appliedStatusEffect.refreshes && existingApplication !== undefined) {
+          if (appliedStatusEffect.duration > existingApplication.duration)
+            existingApplication.duration = appliedStatusEffect.duration;
+        }
+        else
+          enemy.battleInfo.statusEffects.push(appliedStatusEffect);
+      });
+    }
+    else {
+      var existingApplication = target.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
+      if (appliedStatusEffect.refreshes && existingApplication !== undefined) {
+        if (appliedStatusEffect.duration > existingApplication.duration)
+          existingApplication.duration = appliedStatusEffect.duration;
+      }
+      else
+        target.battleInfo.statusEffects.push(appliedStatusEffect);
+    }
+  }
+
+  getTarget(user: Character, targets: Character[], targetType: TargetEnum = TargetEnum.Random) {
+    var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+    if (potentialTargets.length === 0)
+      return new Character();
+
+    var target = potentialTargets[0];
+
+    if (targetType === TargetEnum.Random)
+      target = potentialTargets[this.utilityService.getRandomInteger(0, potentialTargets.length - 1)];
+    else if (targetType === TargetEnum.LowestHpPercent) {
+      potentialTargets = potentialTargets.sort(item => item.battleStats.getHpPercent());
+      var target = potentialTargets[0];
+    }
+
+    var taunted = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Taunt);
+    if (taunted !== undefined) {
+      var tauntCaster = targets.find(caster => caster.name === taunted!.caster);
+      if (tauntCaster !== undefined && !tauntCaster.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead))
+        target = tauntCaster;
+    }
+
+    var targetsWithTaunt = potentialTargets.filter(target => target.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Taunt));
+    if (targetsWithTaunt.length > 0) {
+      var target = targetsWithTaunt[this.utilityService.getRandomInteger(0, targetsWithTaunt.length - 1)];
+    }
+
+    return target;
+  }
+
+  dealDamage(attacker: Character, target: Character, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability) {
     //damage formula, check for shields, check for ko
     if (abilityDamageMultiplier === undefined)
       abilityDamageMultiplier = 1;
@@ -288,8 +415,8 @@ export class BattleService {
     if (damageMultiplier === undefined)
       damageMultiplier = 1;
 
-    var adjustedAttack = attacker.battleStats.attack;
-    var adjustedDefense = target.battleStats.defense;
+    var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability);
+    var adjustedDefense = this.lookupService.getAdjustedDefense(target);
 
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
       (adjustedDefense * (2 / 9))));
@@ -302,12 +429,25 @@ export class BattleService {
     if (damage < 0)
       damage = 0;
 
+    var totalDamageDealt = damage;
+
+    if (target.battleInfo.barrierValue > 0) {
+      target.battleInfo.barrierValue -= damage;
+      damage = 0;
+
+      if (target.battleInfo.barrierValue < 0) {
+        //deal remaining damage to hp
+        damage = -target.battleInfo.barrierValue;
+        target.battleInfo.barrierValue = 0;
+      }
+    }
+
     target.battleStats.currentHp -= damage;
 
     if (target.battleStats.currentHp < 0)
       target.battleStats.currentHp = 0;
 
-    return damage;
+    return totalDamageDealt;
   }
 
   //DoTs
@@ -324,17 +464,22 @@ export class BattleService {
   }
 
   //check for upper limits and any weird logic
-  gainHp(character: Character, healAmount: number) {
+  gainHp(character: Character, healAmount: number) {    
     character.battleStats.currentHp += healAmount;
 
-    if (character.battleStats.currentHp > character.battleStats.maxHp)
+    if (character.battleStats.currentHp > character.battleStats.maxHp) {
+      healAmount -= character.battleStats.currentHp - character.battleStats.maxHp;
       character.battleStats.currentHp = character.battleStats.maxHp;
+    }
+
+    return healAmount;
   }
 
   isCharacterDefeated(character: Character) {
     if (character.battleStats.currentHp <= 0) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.persistsDeath);
       if (!character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead)) {
-        character.battleInfo.statusEffects.push(new StatusEffect(StatusEffectEnum.Dead));
+        character.battleInfo.statusEffects.push(new StatusEffect(StatusEffectEnum.Dead, true));
       }
 
       return true;
@@ -376,12 +521,12 @@ export class BattleService {
     var subZone = this.balladService.getActiveSubZone();
     subZone.victoryCount += 1;
 
-    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains " + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList) + " XP.");
+    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList) + " XP</strong>.");
     this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies);
     var loot = this.getLoot(this.battle.currentEnemies);
     if (loot !== undefined && loot.length > 0) {
       loot.forEach(item => {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive " + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : pluralize(this.lookupService.getItemName(item.item))) + ".");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : pluralize(this.lookupService.getItemName(item.item))) + "</strong>.");
         this.addLootToResources(item);
       });
     }
@@ -491,13 +636,44 @@ export class BattleService {
     }
   }
 
+  isTargetableWithItem(character: Character, isEnemy: boolean) {
+    var isTargetable = true;
+
+    if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
+    {
+      isTargetable = false;
+      return isTargetable;
+    }
+
+    var itemType = this.lookupService.getItemTypeFromItemEnum(this.battleItemInUse);
+    if (itemType === ItemTypeEnum.None)
+    {
+      console.log("Error getting item type from item");
+      isTargetable = false;
+      return isTargetable;
+    }
+
+    if (itemType === ItemTypeEnum.HealingItem) {
+      if (isEnemy)
+        isTargetable = false;
+    }
+
+    return isTargetable;
+  }
+
   useBattleItemOnCharacter(character: Character) {
     if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
-      return;
+      return;    
 
     if (this.battleItemInUse === ItemsEnum.HealingHerb) {
-      this.gainHp(character, this.lookupService.getHealingHerbAmount())
+      if (character.battleStats.currentHp === character.battleStats.maxHp)
+        return;
+
+      var healedAmount = this.gainHp(character, this.lookupService.getHealingHerbAmount())
       this.lookupService.useResource(this.battleItemInUse, 1);
+
+      var gameLogEntry = "<strong>" + character.name + "</strong>" + " uses a Healing Herb, gaining " + healedAmount + " HP.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
     }
 
     if (this.lookupService.getResourceAmount(this.battleItemInUse) === 0) {

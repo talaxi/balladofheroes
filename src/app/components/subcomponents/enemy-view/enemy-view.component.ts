@@ -32,7 +32,9 @@ export class EnemyViewComponent implements OnInit {
   targetCharacterWithItem(character: Character) {
     var isTargeted = false;
 
-    if (this.battleService.targetbattleItemMode) //need to check if item targets allies or enemies
+    var isTargetable = this.battleService.isTargetableWithItem(character, true);
+
+    if (this.battleService.targetbattleItemMode && isTargetable) //need to check if item targets allies or enemies
       isTargeted = true;
 
     return isTargeted;

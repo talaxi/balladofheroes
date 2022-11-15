@@ -9,6 +9,6 @@ export class Enemy extends Character {
     
     constructor() {
         super();
-       this.loot = [];       
+       this.loot = [];      
     }
 }

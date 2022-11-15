@@ -7,15 +7,17 @@ import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { LootItem } from 'src/app/models/resources/loot-item.model';
+import { GlobalService } from '../global/global.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EnemyGeneratorService {
 
-  constructor() { }
+  constructor(private globalService: GlobalService) { }
 
   generateEnemy(type: BestiaryEnum)
   {
@@ -48,7 +50,7 @@ export class EnemyGeneratorService {
       var peck = new Ability();
       peck.name = "Peck";
       peck.isAvailable = true;
-      peck.damageMultiplier = .5;
+      peck.effectiveness = .5;
       peck.dealsDirectDamage = true;
       peck.cooldown = peck.currentCooldown = 5;
       enemy.abilityList.push(peck);
@@ -81,6 +83,16 @@ export class EnemyGeneratorService {
       enemy.name = "Matriarch";
       enemy.battleStats = new CharacterStats(100, 15, 6, 8, 5); 
       enemy.xpGainFromDefeat = 100; 
+
+      var slash = new Ability();
+      slash.name = "Slash";
+      slash.isAvailable = true;
+      slash.effectiveness = 1.25;
+      slash.dealsDirectDamage = true;
+      slash.cooldown = slash.currentCooldown = 18;
+      slash.targetGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .8, false, false));
+      enemy.abilityList.push(slash);
+
       enemy.loot.push(new LootItem(ItemsEnum.BronzeArmor, ItemTypeEnum.Equipment, 1, .5));
     }
 

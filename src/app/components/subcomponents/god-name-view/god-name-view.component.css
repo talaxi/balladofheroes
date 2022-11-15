@@ -1,0 +1,24 @@
+.xpBarWidth {
+    width: 75%;
+}
+
+.mat-progress-bar-element, .mat-progress-bar {
+    height: .5rem !important;
+  }
+
+.godGrid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+      "god1 god2";
+}
+
+.god1 {
+    grid-area: god1;
+}
+
+.god2 {
+    grid-area: god2;
+}

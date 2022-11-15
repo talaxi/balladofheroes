@@ -22,8 +22,8 @@
 
 :root {
   /* Colors */
-  --foreground-default: #A3B9CC;
   --foreground-secondary: #5C7D99;
+  --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
   --foreground-light: #FFFFFF;
@@ -33,12 +33,18 @@
   --background-tertiary: #08090A;
   --background-quarternary: #2A2C31;
   --background-five: #007bff;
-  --background-light: #41474D;
+  --background-light: #54595E;
+  --button-color: #F0F0F0;
   --primary-default: #5dfdcb;
   --primary-dark: #24b286;
   --primary-light: #b2ffe7;
 
+  --positive-status-effect: #24b286;
+  --negative-status-effect: #b22426;
+
   --battle-update-text: #e0d01d;
+  --battle-item-text: #05CF51;
+  --change-location-text: #F9B86E;
 
   --error-default: #ef3e36;
   --error-dark: #800600;
@@ -125,8 +131,17 @@
   --s5-spacing: 0.1px;
 
   --adventurerColor: #c66900;
+  --archerColor: #279113;
+  --warriorColor: #0385f0;
+  --priestColor: #D063EE;
 
-  --athenaColor: #279113;
+  --athenaColor: #7fbffa;
+  --zeusColor: #fff30b;
+  --aresColor: #EE665F;
+  --apolloColor: #eda324;
+  --poseidonColor: #00baa1;
+  --artemisColor: #f0f0f0;
+  --hadesColor: #000000;  
 }
 
 body {
@@ -340,10 +355,83 @@ button:active:enabled {
 html, body { height: 100%; }
 
 .mat-progress-spinner circle {
-  transition: none !important;
-  stroke: red; /* TODO: how to update this? */
+  transition: none !important;    
+}
+
+.mat-progress-spinner circle, .mat-spinner circle {
+  stroke: unset;
 }
 
 .battleUpdateText {
   color: var(--battle-update-text);
+}
+
+.battleItemText {
+  color: var(--battle-item-text);
+}
+
+.changeLocationText {
+  color: var(--change-location-text);
+}
+
+.screenMargin {
+  margin: .3rem;
+}
+
+.adventurerColor {
+  color: var(--adventurerColor);
+  stroke: var(--adventurerColor) !important;
+}
+
+.archerColor {
+  color: var(--archerColor);
+  stroke: var(--archerColor) !important;
+}
+
+.warriorColor {
+  color: var(--warriorColor);
+  stroke: var(--warriorColor) !important;
+}
+
+.priestColor {
+  color: var(--priestColor);
+  stroke: var(--priestColor) !important;
+}
+
+.athenaColor {
+  color: var(--athenaColor);
+  stroke: var(--athenaColor) !important;
+}
+
+.zeusColor {
+  color: var(--zeusColor);
+  stroke: var(--zeusColor) !important;
+}
+
+.artemisColor {
+  color: var(--artemisColor);
+  stroke: var(--artemisColor) !important;
+}
+
+.apolloColor {
+  color: var(--apolloColor);
+  stroke: var(--apolloColor) !important;
+}
+
+.poseidonColor {
+  color: var(--poseidonColor);
+  stroke: var(--poseidonColor) !important;
+}
+
+.aresColor {
+  color: var(--aresColor);
+  stroke: var(--aresColor) !important;
+}
+
+.unclearedSubzoneColor {
+  color: var(--foreground-default);
+}
+
+.clearedSubzoneColor {
+  color: red;
 }

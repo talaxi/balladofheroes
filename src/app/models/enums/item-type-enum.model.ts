@@ -1,4 +1,5 @@
-export enum ItemTypeEnum {    
+export enum ItemTypeEnum {  
+    None,  
     HealingItem,
     Equipment,
   }

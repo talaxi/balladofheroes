@@ -1,6 +1,6 @@
 <div>
     <span class="s4Heading">Ballads</span>
-    <hr/>
+    <hr />
     <div *ngFor="let ballad of availableBallads">
         <div *ngIf="!ballad.isSelected">
             <span (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}</span>
@@ -15,12 +15,17 @@
                     <span>&#8618;<strong>{{zone.zoneName}}</strong></span>
                     <div *ngFor="let subzone of availableSubZones">
                         <div *ngIf="!subzone.isSelected">
-                            <span class="subzoneSpacer">&#8618;</span><span (click)="selectSubZone(subzone)">{{subzone.name}} ({{subzone.victoryCount}}/{{subzone.victoriesNeededToProceed}} victories)</span>
+                            <span class="subzoneSpacer">&#8618;</span><span
+                                (click)="selectSubZone(subzone, zone)">{{subzone.name}}
+                                ({{subzone.victoryCount}}/{{subzone.victoriesNeededToProceed}} victories)</span>
                         </div>
                         <div *ngIf="subzone.isSelected">
-                            <span><span class="subzoneSpacer">&#8618;</span><strong>{{subzone.name}}</strong> ({{subzone.victoryCount}}/{{subzone.victoriesNeededToProceed}} victories)</span>
+                            <span><span class="subzoneSpacer">&#8618;</span><span [ngClass]="getSubzoneClass(subzone)"><strong>{{subzone.name}}</strong>
+                                    ({{subzone.victoryCount}}                                    
+                                    <span *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
+                                    victories)</span></span>
+                        </div>
                     </div>
+                </div>
             </div>
-        </div>    
-    </div>
-</div>
+        </div>

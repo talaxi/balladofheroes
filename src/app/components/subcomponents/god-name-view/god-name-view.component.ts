@@ -6,19 +6,18 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
-  selector: 'app-character-name-view',
-  templateUrl: './character-name-view.component.html',
-  styleUrls: ['./character-name-view.component.css']
+  selector: 'app-god-name-view',
+  templateUrl: './god-name-view.component.html',
+  styleUrls: ['./god-name-view.component.css']
 })
-export class CharacterNameViewComponent implements OnInit {
+export class GodNameViewComponent implements OnInit {
   @Input() character: Character;
   public noCharacter = CharacterEnum.none;
   public noGod = GodEnum.None;
-
-  constructor(public lookupService: LookupService, private globalService: GlobalService) { }
+  
+  constructor(private globalService: GlobalService, public lookupService: LookupService) { }
 
   ngOnInit(): void {
-        
   }
 
   getCharacterGodName(character: Character, whichGod: number) {

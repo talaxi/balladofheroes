@@ -6,10 +6,12 @@ export class BattleInfo {
     autoAttackTimer: number;
     timeToAutoAttack: number;
     statusEffects: StatusEffect[];
+    barrierValue: number;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
         this.timeToAutoAttack = 10;
+        this.barrierValue = 0;
         this.statusEffects = [];
 
         if (characterType === CharacterEnum.Warrior)

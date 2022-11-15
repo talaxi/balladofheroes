@@ -5,6 +5,7 @@ export class CharacterStats {
     defense: number;
     agility: number;
     luck: number; 
+    resistance: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number) {
         this.maxHp = hp;
@@ -18,6 +19,13 @@ export class CharacterStats {
     makeCopy() {
         var copy = new CharacterStats(this.maxHp,this.attack, this.defense, this.agility, this.luck);
 
-            return copy;
+        return copy;
+    }
+
+    getHpPercent(asPercent: boolean = false) {
+        if (asPercent)
+            return (this.currentHp / this.maxHp) * 100;
+        else
+            return this.currentHp / this.maxHp;
     }
 }

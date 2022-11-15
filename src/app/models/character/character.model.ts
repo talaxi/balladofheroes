@@ -8,8 +8,8 @@ import { CharacterStats } from "./character-stats.model";
 import { God } from "./god.model";
 
 export class Character {
-    name: string;   
-    level: number; 
+    name: string;
+    level: number;
     type: CharacterEnum;
     @Type(() => CharacterStats)
     baseStats: CharacterStats;
@@ -17,17 +17,18 @@ export class Character {
     battleStats: CharacterStats; //includes equipment, buffs, etc
     @Type(() => BattleInfo)
     battleInfo: BattleInfo;
-    isAvailable: boolean;    
-    assignedGod1: GodEnum;    
+    isAvailable: boolean;
+    assignedGod1: GodEnum;
     assignedGod2: GodEnum;
     exp: number;
     expToNextLevel: number;
+    @Type(() => Ability)
     abilityList: Ability[];
     @Type(() => EquipmentSet)
     equipmentSet: EquipmentSet;
 
-    constructor(type?: CharacterEnum) {      
-        this.type = type === undefined ? CharacterEnum.none : type;  
+    constructor(type?: CharacterEnum) {
+        this.type = type === undefined ? CharacterEnum.none : type;
         this.battleInfo = new BattleInfo();
         this.level = 1;
         this.exp = 0;
@@ -35,9 +36,9 @@ export class Character {
         this.assignedGod1 = GodEnum.None;
         this.assignedGod2 = GodEnum.None;
 
-        this.battleInfo = new BattleInfo(type);        
+        this.battleInfo = new BattleInfo(type);
         this.equipmentSet = new EquipmentSet();
 
         this.abilityList = [];
-    }       
+    }    
 }

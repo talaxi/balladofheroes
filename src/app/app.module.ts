@@ -51,6 +51,8 @@ import { CustomTooltipComponent } from './components/subcomponents/custom-toolti
 import { ToolTipRendererDirective } from './components/subcomponents/custom-tooltip/tool-tip-renderer.directive';
 import { EquipmentItemViewComponent } from './components/equipment-view/equipment-item-view/equipment-item-view.component';
 import { CharacterNameViewComponent } from './components/subcomponents/character-name-view/character-name-view.component';
+import { GodNameViewComponent } from './components/subcomponents/god-name-view/god-name-view.component';
+import { StatusEffectViewComponent } from './components/subcomponents/status-effect-view/status-effect-view.component';
 
 
 @NgModule({
@@ -68,7 +70,9 @@ import { CharacterNameViewComponent } from './components/subcomponents/character
     CustomTooltipComponent,
     ToolTipRendererDirective,
     EquipmentItemViewComponent,
-    CharacterNameViewComponent
+    CharacterNameViewComponent,
+    GodNameViewComponent,
+    StatusEffectViewComponent
   ],
   imports: [
     BrowserModule,

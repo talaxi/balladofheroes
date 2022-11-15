@@ -14,6 +14,14 @@ export class GameLogService {
     {
       entry = "<span class='battleUpdateText'>" + entry + "</span>";
     }
+    if (type === GameLogEntryEnum.UseBattleItem) 
+    {
+      entry = "<span class='battleItemText'>" + entry + "</span>";
+    }
+    if (type === GameLogEntryEnum.ChangeLocation) 
+    {
+      entry = "<span class='changeLocationText'>" + entry + "</span>";
+    }
 
     this.gameLog += entry + "<br/>";
   }

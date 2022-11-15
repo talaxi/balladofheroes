@@ -1,5 +1,6 @@
 .characterInfo {
     height: 100%;
+    border: 1px solid var(--background-secondary);
 }
 
 .characterBar {

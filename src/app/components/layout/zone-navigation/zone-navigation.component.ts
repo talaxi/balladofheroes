@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
@@ -20,7 +22,7 @@ export class ZoneNavigationComponent implements OnInit {
   subscription: any;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
-    private utilityService: UtilityService, private gameLoopService: GameLoopService) { }
+    private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService) { }
 
   ngOnInit(): void {
     this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
@@ -63,7 +65,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.availableSubZones = zone.subzones;
   }
 
-  selectSubZone(subzone: SubZone) {
+  selectSubZone(subzone: SubZone, zone: Zone) {
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.zones !== undefined && ballad.zones.length > 0)
         ballad.zones.forEach(zone => {
@@ -76,11 +78,22 @@ export class ZoneNavigationComponent implements OnInit {
 
     subzone.isSelected = true;
 
+    var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+
+
     var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
     if (enemyOptions.length > 0) {
       var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
       this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
     }
+  }
+
+  getSubzoneClass(subzone: SubZone) {
+    return {
+      'unclearedSubzoneColor': subzone.victoriesNeededToProceed > subzone.victoryCount,      
+      'clearedSubzoneColor': subzone.victoriesNeededToProceed <= subzone.victoryCount,      
+    };
   }
 
   ngOnDestroy() {
