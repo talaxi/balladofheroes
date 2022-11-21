@@ -24,6 +24,8 @@ export class Ability {
     count: number; //some abilities require a count
     maxCount: number;
     threshold: number; //some abilities are triggered by a specific threshold
+    autoMode: boolean; //users can swap between auto mode and manual mode
+    manuallyTriggered: boolean;
 
     constructor() {
         this.effectiveness = 1;
@@ -37,5 +39,7 @@ export class Ability {
 
         this.userGainsStatusEffect = [];
         this.targetGainsStatusEffect = [];
+        this.autoMode = true;
+        this.manuallyTriggered = false;
     }
 }

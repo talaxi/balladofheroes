@@ -18,6 +18,7 @@ import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
+import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
@@ -28,7 +29,7 @@ import { UtilityService } from '../utility/utility.service';
 export class GlobalService {
   globalVar = new GlobalVariables();
 
-  constructor(private utilityService: UtilityService) { }
+  constructor(private utilityService: UtilityService, private achievementService: AchievementService) { }
 
   initializeGlobalVariables() {
     this.globalVar = new GlobalVariables();
@@ -54,8 +55,9 @@ export class GlobalService {
     adventurer.name = "Adventurer";
     adventurer.type = CharacterEnum.Adventurer;
     adventurer.isAvailable = true;
-    adventurer.baseStats = new CharacterStats(250, 12, 8, 10, 5);
+    adventurer.baseStats = new CharacterStats(250, 12, 8, 10, 5, 5);
     adventurer.battleStats = adventurer.baseStats.makeCopy();
+    adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
     this.assignAbilityInfo(adventurer);
 
     this.globalVar.characters.push(adventurer);
@@ -64,8 +66,9 @@ export class GlobalService {
     archer.name = "Archer";
     archer.type = CharacterEnum.Archer;
     archer.isAvailable = true;
-    archer.baseStats = new CharacterStats(250, 10, 10, 10, 5);
+    archer.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
     archer.battleStats = archer.baseStats.makeCopy();
+    archer.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
     this.assignAbilityInfo(archer);
 
     this.globalVar.characters.push(archer);
@@ -74,8 +77,9 @@ export class GlobalService {
     warrior.name = "Warrior";
     warrior.type = CharacterEnum.Warrior;
     warrior.isAvailable = true;
-    warrior.baseStats = new CharacterStats(250, 10, 10, 10, 5);
+    warrior.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
     warrior.battleStats = warrior.baseStats.makeCopy();
+    warrior.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
     this.assignAbilityInfo(warrior);
 
     this.globalVar.characters.push(warrior);
@@ -84,8 +88,9 @@ export class GlobalService {
     priest.name = "Priest";
     priest.type = CharacterEnum.Priest;
     priest.isAvailable = true;
-    priest.baseStats = new CharacterStats(250, 10, 10, 10, 5);
+    priest.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
     priest.battleStats = priest.baseStats.makeCopy();
+    priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
     this.assignAbilityInfo(priest);
 
     this.globalVar.characters.push(priest);
@@ -504,7 +509,12 @@ export class GlobalService {
     var upperCoast = new SubZone(SubZoneEnum.AigosthenaUpperCoast);
     upperCoast.isSelected = true;
     upperCoast.isAvailable = true;
+    this.achievementService.createDefaultAchievementsForSubzone(upperCoast.type).forEach(achievement => {
+      this.globalVar.achievements.push(achievement);
+    });
+    
     aigosthena.subzones.push(upperCoast);
+
     aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaBay));
     aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaLowerCoast));
     aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaWesternWoodlands));
@@ -516,12 +526,14 @@ export class GlobalService {
 
 
     this.globalVar.ballads.push(new Ballad(BalladEnum.Gorgon));
+
+    this.globalVar.ballads.push(new Ballad(BalladEnum.Underworld));    
   }
 
   devMode() {
     this.globalVar.currentStoryId = 10000;
     this.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-    this.globalVar.activePartyMember2 = CharacterEnum.Priest;
+    this.globalVar.activePartyMember2 = CharacterEnum.Archer;
     this.globalVar.itemBeltSize = 4;
 
     var character1 = this.globalVar.characters.find(item => item.type === this.globalVar.activePartyMember1);
@@ -546,11 +558,18 @@ export class GlobalService {
     });
 
     this.globalVar.ballads.forEach(ballad => {
+      ballad.isAvailable = true;
       ballad.zones.forEach(zone => {
+        zone.isAvailable = true;
         zone.subzones.forEach(subzone => {
           subzone.isAvailable = true;
+          this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
+            this.globalVar.achievements.push(achievement);
+          });
         })
       })
-    })
+    });
+
+    console.log(this.globalVar.achievements);
   }
 }

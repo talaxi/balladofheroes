@@ -1,29 +1,30 @@
 .equipmentView {
-    display: grid;
-    width: 100%;
-    height: 100%;
-    grid-template-columns: auto 1fr 1fr;
-    grid-template-rows: 1fr 1fr;
-    justify-content: stretch;
-    gap: 1rem;
-    grid-template-areas:
-      "characterSelect availableEquipment existingEquipment"
-      "characterSelect availableEquipment existingEffects";
-  }
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 1fr 1fr;
+  grid-template-rows: 1fr;
+  justify-content: stretch;
+  gap: 1rem;
+  grid-template-areas:
+    "availableEquipment existingEquipment";
 
-  .characterSelect {
-    grid-area: characterSelect;
-  }
+  color: var(--foreground-default);
+}
+
+.characterSelect {
+  grid-area: characterSelect;
+}
 
 .compareEquipment {
-    display: flex;
-    justify-content: space-evenly;
+  display: flex;
+  justify-content: space-evenly;
 }
 
 .comparedEquipmentItem {
-    border-left: 1px solid gray;
+  border-left: 1px solid gray;
 }
 
 .item {
-    padding: 2rem;
+  padding: 2rem;
 }

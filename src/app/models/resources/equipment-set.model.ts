@@ -147,4 +147,28 @@ export class EquipmentSet {
 
         return total;
     }
+
+    getTotalResistanceGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.resistance;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.resistance;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.resistance;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.resistance;
+
+        if (this.rightRing !== undefined)
+            total += this.rightRing.stats.resistance;
+
+        if (this.leftRing !== undefined)
+            total += this.leftRing.stats.resistance;
+
+        return total;
+    }
 }

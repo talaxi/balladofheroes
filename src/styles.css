@@ -142,6 +142,10 @@
   --poseidonColor: #00baa1;
   --artemisColor: #f0f0f0;
   --hadesColor: #000000;  
+
+  --clearedSubzoneColor: red;
+
+  --basicEquipmentColor: #f0f0f0;
 }
 
 body {
@@ -433,5 +437,13 @@ html, body { height: 100%; }
 }
 
 .clearedSubzoneColor {
-  color: red;
+  color: var(--clearedSubzoneColor);
+}
+
+.basicEquipment {
+  color: var(--basicEquipmentColor);
+}
+
+.hide {
+  display: none;
 }

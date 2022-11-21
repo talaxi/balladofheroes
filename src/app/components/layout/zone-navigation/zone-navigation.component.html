@@ -1,29 +1,40 @@
 <div>
-    <span class="s4Heading">Ballads</span>
+    <div class="balladHeader">
+        <span class="s4Heading balladTitle">Ballads</span>
+        <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="autoProgress">Auto Progress</mat-checkbox>
+        </span>
+    </div>
     <hr />
     <div *ngFor="let ballad of availableBallads">
         <div *ngIf="!ballad.isSelected">
-            <span (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}</span>
+            <span (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}} <app-notification-icon
+                    *ngIf="ballad.showNewNotification"></app-notification-icon></span>
         </div>
         <div *ngIf="ballad.isSelected">
             <span><strong>{{balladService.getBalladName(ballad.type)}}</strong></span>
             <div *ngFor="let zone of availableZones">
                 <div *ngIf="!zone.isSelected">
-                    &#8618;<span (click)="selectZone(zone)">{{zone.zoneName}}</span>
+                    &#8618;<span (click)="selectZone(zone)">{{zone.zoneName}} <app-notification-icon
+                            *ngIf="zone.showNewNotification"></app-notification-icon></span>
                 </div>
                 <div *ngIf="zone.isSelected">
                     <span>&#8618;<strong>{{zone.zoneName}}</strong></span>
                     <div *ngFor="let subzone of availableSubZones">
                         <div *ngIf="!subzone.isSelected">
-                            <span class="subzoneSpacer">&#8618;</span><span
-                                (click)="selectSubZone(subzone, zone)">{{subzone.name}}
-                                ({{subzone.victoryCount}}/{{subzone.victoriesNeededToProceed}} victories)</span>
+                            <span class="subzoneSpacer">&#8618;</span><span [ngClass]="getSubzoneClass(subzone)"><span
+                                    (click)="selectSubZone(subzone, zone)">{{subzone.name}}
+                                    ({{subzone.victoryCount}}<span
+                                        *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
+                                    victories) <app-notification-icon *ngIf="subzone.showNewNotification">
+                                    </app-notification-icon></span></span>
                         </div>
                         <div *ngIf="subzone.isSelected">
-                            <span><span class="subzoneSpacer">&#8618;</span><span [ngClass]="getSubzoneClass(subzone)"><strong>{{subzone.name}}</strong>
-                                    ({{subzone.victoryCount}}                                    
-                                    <span *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
-                                    victories)</span></span>
+                            <strong><span><span class="subzoneSpacer">&#8618;</span><span
+                                        [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
+                                        ({{subzone.victoryCount}}<span
+                                            *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
+                                        victories)</span></span></strong>
                         </div>
                     </div>
                 </div>

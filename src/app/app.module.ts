@@ -1,5 +1,6 @@
 import { NgModule } from '@angular/core';
 import { BrowserModule } from '@angular/platform-browser';
+import { FormsModule } from '@angular/forms';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
@@ -53,6 +54,15 @@ import { EquipmentItemViewComponent } from './components/equipment-view/equipmen
 import { CharacterNameViewComponent } from './components/subcomponents/character-name-view/character-name-view.component';
 import { GodNameViewComponent } from './components/subcomponents/god-name-view/god-name-view.component';
 import { StatusEffectViewComponent } from './components/subcomponents/status-effect-view/status-effect-view.component';
+import { ItemMenuItemComponent } from './components/subcomponents/items/item-menu-item/item-menu-item.component';
+import { ItemBeltItemComponent } from './components/subcomponents/items/item-belt-item/item-belt-item.component';
+import { MenuOptionsComponent } from './components/layout/menu/menu-options/menu-options.component';
+import { MenuDisplayComponent } from './components/layout/menu/menu-display/menu-display.component';
+import { CharacterViewComponent } from './components/menu/character-view/character-view.component';
+import { GodViewComponent } from './components/menu/god-view/god-view.component';
+import { CurrentEquipmentViewComponent } from './components/subcomponents/current-equipment-view/current-equipment-view.component';
+import { SettingsViewComponent } from './components/menu/settings-view/settings-view.component';
+import { NotificationIconComponent } from './components/subcomponents/notification-icon/notification-icon.component';
 
 
 @NgModule({
@@ -72,10 +82,20 @@ import { StatusEffectViewComponent } from './components/subcomponents/status-eff
     EquipmentItemViewComponent,
     CharacterNameViewComponent,
     GodNameViewComponent,
-    StatusEffectViewComponent
+    StatusEffectViewComponent,
+    ItemMenuItemComponent,
+    ItemBeltItemComponent,
+    MenuOptionsComponent,
+    MenuDisplayComponent,
+    CharacterViewComponent,
+    GodViewComponent,
+    CurrentEquipmentViewComponent,
+    SettingsViewComponent,
+    NotificationIconComponent
   ],
   imports: [
     BrowserModule,
+    FormsModule,
     AppRoutingModule,
     BrowserAnimationsModule,
     MatAutocompleteModule,

@@ -9,7 +9,10 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { Ability } from 'src/app/models/character/ability.model';
 import { God } from 'src/app/models/character/god.model';
-import { MatMenuTrigger } from '@angular/material/menu';
+import { matMenuAnimations, MatMenuTrigger } from '@angular/material/menu';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 
 @Component({
   selector: 'app-party',
@@ -22,25 +25,44 @@ export class PartyComponent implements OnInit {
   public characterEnum: CharacterEnum;
   public noCharacter = CharacterEnum.none;
   public noGod = GodEnum.None;
-  @ViewChild(MatMenuTrigger) trigger: QueryList<MatMenuTrigger>;
+  @ViewChild('itemMenu') itemMenu: MatMenuTrigger;
   openedSlotNumber: number = 0;
   itemMenuClass = "itemMenu";
+  battleItems: ResourceValue[];
+  battleItemRows: ResourceValue[][];
+  battleItemCells: ResourceValue[];
+  subscription: any;
 
-  constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService) { }
+  constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService,
+    private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
-    this.party = this.globalService.getActivePartyCharacters(false);    
+    this.party = this.globalService.getActivePartyCharacters(false);   
+    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
+
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      if (!this.itemMenu.menuOpen)
+      {
+        this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
+      }
+
+      this.removeDefaultMaterialButtonClasses();
+    });
   }
 
   ngAfterViewInit() {
+    this.removeDefaultMaterialButtonClasses();   
+  }
+
+  removeDefaultMaterialButtonClasses() {
     var elements = document.getElementsByClassName('mat-icon-button');
     var elementLength = elements.length;
     
-    if (elements !== null && elements !== undefined) {
+    if (elements !== null && elements !== undefined && elementLength > 0) {
       for (var i = 0; i < elementLength; i++) {        
         elements[0].removeAttribute("class");
       }
-    }    
+    } 
   }
 
   getCharacterHpPercent(character: Character) {    
@@ -87,9 +109,7 @@ export class PartyComponent implements OnInit {
 
     var item = this.globalService.globalVar.itemBelt[slotNumber];
 
-    if (item === ItemsEnum.HealingHerb) {
-      src += "healingHerb.svg";
-    }
+    src = this.lookupService.getItemImage(item);
 
     return src;
   }
@@ -116,13 +136,14 @@ export class PartyComponent implements OnInit {
 
     this.openedSlotNumber = slotNumber;
 
-    //this.trigger.toArray()[slotNumber].openMenu();
-    //simulating selecting the healing herb
-    //this.globalService.globalVar.itemBelt[slotNumber] = ItemsEnum.HealingHerb;
+    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem); 
+
+    this.setupDisplayBattleItems();
   }
 
-  selectItemFromMenu() {
-    this.globalService.globalVar.itemBelt[this.openedSlotNumber] = ItemsEnum.HealingHerb;
+  unselectItemSlot(slotNumber: number) {
+    this.globalService.globalVar.itemBelt[slotNumber] = ItemsEnum.None;    
+    this.battleService.targetbattleItemMode = false;
   }
 
   getItemAmount(slotNumber: number) {
@@ -151,7 +172,9 @@ export class PartyComponent implements OnInit {
   targetCharacterWithItem(character: Character) {
     var isTargeted = false;
 
-    if (this.battleService.targetbattleItemMode) //need to check if item targets allies or enemies
+    var isTargetable = this.battleService.isTargetableWithItem(character, false);
+
+    if (this.battleService.targetbattleItemMode && isTargetable) //need to check if item targets allies or enemies
       isTargeted = true;
 
     return isTargeted;
@@ -227,5 +250,28 @@ export class PartyComponent implements OnInit {
     }
 
     return ability;
+  }
+
+  setupDisplayBattleItems(): void {
+    this.battleItemCells = [];
+    this.battleItemRows = [];
+
+    var maxColumns = 3;
+    
+    for (var i = 1; i <= this.battleItems.length; i++) {
+      this.battleItemCells.push(this.battleItems[i - 1]);
+      if ((i % maxColumns) == 0) {
+        this.battleItemRows.push(this.battleItemCells);
+        this.battleItemCells = [];
+      }
+    }
+
+    if (this.battleItemCells.length !== 0)
+      this.battleItemRows.push(this.battleItemCells);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+      this.subscription.unsubscribe();
   }
 }

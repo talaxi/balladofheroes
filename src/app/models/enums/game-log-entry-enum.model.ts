@@ -1,12 +1,12 @@
-export enum GameLogEntryEnum {    
-    DealingDamage,
-    ReceivingDamage,
-    UseAbility,
-    UseBattleItem,
-    CausedStatusEffect,
-    ReceivedStatusEffect,
-    StatusEffectOccurs,
-    BattleRewards,
-    BattleUpdate,
-    ChangeLocation
-  }
+export enum GameLogEntryEnum {
+  DealingDamage,
+  ReceivingDamage,
+  UseAbility,
+  UseBattleItem,
+  CausedStatusEffect,
+  ReceivedStatusEffect,
+  StatusEffectOccurs,
+  BattleRewards,
+  BattleUpdate,
+  ChangeLocation
+}

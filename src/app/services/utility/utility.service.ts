@@ -8,9 +8,14 @@ import * as seedrandom from "seedrandom";
 export class UtilityService {
 
   //glossary
-  public quickAutoAttackSpeed = 4;
+  public quickAutoAttackSpeed = 6;
   public averageAutoAttackSpeed = 8;
-  public longAutoAttackSpeed = 12;
+  public longAutoAttackSpeed = 10;
+
+  public enemyQuickAutoAttackSpeed = 5;
+  public enemyAverageAutoAttackSpeed = 10;
+  public enemyLongAutoAttackSpeed = 15;
+  public enemyVeryLongAutoAttackSpeed = 20;
   
   public maxItemBeltSize = 4;
   public defaultCharacterAbilityLevel = 1;
@@ -151,5 +156,20 @@ export class UtilityService {
     }
 
     return minutesDisplay + ":" + secondsDisplay;
+  }
+
+  ordinalSuffixOf(i: number) {
+    var j = i % 10,
+      k = i % 100;
+    if (j == 1 && k != 11) {
+      return i + "st";
+    }
+    if (j == 2 && k != 12) {
+      return i + "nd";
+    }
+    if (j == 3 && k != 13) {
+      return i + "rd";
+    }
+    return i + "th";
   }
 }

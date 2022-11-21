@@ -16,6 +16,7 @@ import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
+import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
@@ -32,10 +33,11 @@ export class BattleService {
   isPaused: boolean;
   battleItemInUse: ItemsEnum;
   targetbattleItemMode: boolean = false;
+  showNewEnemyGroup = false;
 
   constructor(private globalService: GlobalService, private subzoneGeneratorService: SubZoneGeneratorService,
     private balladService: BalladService, private utilityService: UtilityService, private gameLogService: GameLogService,
-    private lookupService: LookupService, private storyService: StoryService) { }
+    private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService) { }
 
   handleBattle(deltaTime: number) {
     if (this.isPaused)
@@ -143,10 +145,16 @@ export class BattleService {
 
     var timeToAutoAttack = this.lookupService.getAutoAttackTime(character);
 
-    if (character.battleInfo.autoAttackTimer >= timeToAutoAttack) {
+    if (character.battleInfo.autoAttackTimer >= timeToAutoAttack && 
+      (character.battleInfo.autoAttackAutoMode || character.battleInfo.autoAttackManuallyTriggered)) {
       this.handleAutoAttack(character, targets);
       character.battleInfo.autoAttackTimer -= timeToAutoAttack;
+
+      if (character.battleInfo.autoAttackManuallyTriggered)
+        character.battleInfo.autoAttackTimer = 0;
     }
+
+    character.battleInfo.autoAttackManuallyTriggered = false;
   }
 
   handleAutoAttack(character: Character, targets: Character[]) {
@@ -182,14 +190,7 @@ export class BattleService {
   handleAbilities(character: Character, targets: Character[], partyMembers: Character[], deltaTime: number) {
     if (character.abilityList !== undefined && character.abilityList.length > 0)
       character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-        if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
-          ability.currentCooldown -= deltaTime;
-
-        if (ability.currentCooldown <= 0) {
-          ability.currentCooldown = 0;
-          this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, false);
-          ability.currentCooldown = ability.cooldown;
-        }
+        this.handleAbilityCooldown(character, ability, deltaTime, partyMembers, targets);
       });
 
     if (character.assignedGod1 !== undefined && character.assignedGod1 !== GodEnum.None) {
@@ -197,14 +198,7 @@ export class BattleService {
       if (god !== undefined) {
         if (god.abilityList !== undefined && god.abilityList.length > 0)
           god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-            if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
-              ability.currentCooldown -= deltaTime;
-
-            if (ability.currentCooldown <= 0) {
-              ability.currentCooldown = 0;
-              this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, true);
-              ability.currentCooldown = ability.cooldown;
-            }
+            this.handleAbilityCooldown(character, ability, deltaTime, partyMembers, targets);
           });
       }
     }
@@ -213,17 +207,27 @@ export class BattleService {
       var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
       if (god !== undefined) {
         if (god.abilityList !== undefined && god.abilityList.length > 0)
-          character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-            if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
-              ability.currentCooldown -= deltaTime;
-
-            if (ability.currentCooldown <= 0) {
-              ability.currentCooldown = 0;
-              this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, true);
-              ability.currentCooldown = ability.cooldown;
-            }
+          god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+            this.handleAbilityCooldown(character, ability, deltaTime, partyMembers, targets);
           });
       }
+    }
+  }
+
+  handleAbilityCooldown(character: Character, ability: Ability, deltaTime: number, partyMembers: Character[], targets: Character[]) {
+    if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
+      ability.currentCooldown -= deltaTime;
+
+    if (ability.currentCooldown <= 0) {
+      ability.currentCooldown = 0;
+
+      if (ability.autoMode || ability.manuallyTriggered)    
+      {
+        this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, true);
+        ability.currentCooldown = ability.cooldown;
+      }
+
+      ability.manuallyTriggered = false;
     }
   }
 
@@ -419,10 +423,10 @@ export class BattleService {
     var adjustedDefense = this.lookupService.getAdjustedDefense(target);
 
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
-      (adjustedDefense * (2 / 9))));
+      (adjustedDefense * (2 / 5))));
 
     /*
-    Skill Power x ((ATK x ATK boost x 2/3) - (DEF x DEF boost x 2/9)) x (BRV DMG Reduction) x 
+    Skill Power x ((ATK x ATK boost x 2/3) - (DEF x DEF boost x 2/5)) x (BRV DMG Reduction) x 
     (BRV DMG Dealt Multiplier) x (BRV DMG Increase Multiplier) x (Critical Damage) x (RNG)
     */
 
@@ -464,7 +468,7 @@ export class BattleService {
   }
 
   //check for upper limits and any weird logic
-  gainHp(character: Character, healAmount: number) {    
+  gainHp(character: Character, healAmount: number) {
     character.battleStats.currentHp += healAmount;
 
     if (character.battleStats.currentHp > character.battleStats.maxHp) {
@@ -517,9 +521,17 @@ export class BattleService {
   }
 
   moveToNextBattle() {
+    this.showNewEnemyGroup = true;
     this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "The enemy party has been defeated.");
     var subZone = this.balladService.getActiveSubZone();
     subZone.victoryCount += 1;
+    //this is causing some sort of loop issue
+    /*var achievement = this.achievementService.checkForSubzoneAchievement(subZone.type, this.globalService.globalVar.achievements);
+
+    if (achievement !== undefined)
+    {
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Achievement completed!");
+    }*/
 
     this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList) + " XP</strong>.");
     this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies);
@@ -586,24 +598,38 @@ export class BattleService {
     if (balladUnlocks !== undefined && balladUnlocks.length > 0) {
       balladUnlocks.forEach(ballad => {
         var unlockedBallad = this.balladService.findBallad(ballad);
-        if (unlockedBallad !== undefined)
+        if (unlockedBallad !== undefined && !unlockedBallad.isAvailable)
+        {
           unlockedBallad.isAvailable = true;
+          unlockedBallad.showNewNotification = true;
+        }
       });
     }
 
     if (zoneUnlocks !== undefined && zoneUnlocks.length > 0) {
       zoneUnlocks.forEach(zone => {
         var unlockedZone = this.balladService.findZone(zone);
-        if (unlockedZone !== undefined)
+        if (unlockedZone !== undefined && !unlockedZone.isAvailable)
+        {
           unlockedZone.isAvailable = true;
+          unlockedZone.showNewNotification = true;
+        }
       });
     }
 
     if (subZoneUnlocks !== undefined && subZoneUnlocks.length > 0) {
       subZoneUnlocks.forEach(subZone => {
         var unlockedSubZone = this.balladService.findSubzone(subZone);
-        if (unlockedSubZone !== undefined)
+        if (unlockedSubZone !== undefined && !unlockedSubZone.isAvailable)
+        {
           unlockedSubZone.isAvailable = true;
+          unlockedSubZone.showNewNotification = true;
+          this.achievementService.createDefaultAchievementsForSubzone(subZone).forEach(achievement => {
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+
+          console.log(this.globalService.globalVar.achievements);
+        }
       });
     }
   }
@@ -639,15 +665,13 @@ export class BattleService {
   isTargetableWithItem(character: Character, isEnemy: boolean) {
     var isTargetable = true;
 
-    if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
-    {
+    if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None) {
       isTargetable = false;
       return isTargetable;
     }
 
     var itemType = this.lookupService.getItemTypeFromItemEnum(this.battleItemInUse);
-    if (itemType === ItemTypeEnum.None)
-    {
+    if (itemType === ItemTypeEnum.None) {
       console.log("Error getting item type from item");
       isTargetable = false;
       return isTargetable;
@@ -658,12 +682,20 @@ export class BattleService {
         isTargetable = false;
     }
 
+
+    if (itemType === ItemTypeEnum.BattleItem) {
+      if (!isEnemy) {
+        console.log("Not targetable");
+        isTargetable = false;
+      }
+    }
+
     return isTargetable;
   }
 
   useBattleItemOnCharacter(character: Character) {
     if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
-      return;    
+      return;
 
     if (this.battleItemInUse === ItemsEnum.HealingHerb) {
       if (character.battleStats.currentHp === character.battleStats.maxHp)
@@ -673,6 +705,17 @@ export class BattleService {
       this.lookupService.useResource(this.battleItemInUse, 1);
 
       var gameLogEntry = "<strong>" + character.name + "</strong>" + " uses a Healing Herb, gaining " + healedAmount + " HP.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+    }
+
+    if (this.battleItemInUse === ItemsEnum.ThrowingStone) {
+      if (character.battleStats.currentHp <= 0)
+        return;
+
+      var damage = this.dealTrueDamage(character, this.lookupService.getThrowingStoneAmount())
+      this.lookupService.useResource(this.battleItemInUse, 1);
+
+      var gameLogEntry = "<strong>" + character.name + "</strong>" + " is hit by a Throwing Stone, dealing " + damage + " damage.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
     }
 

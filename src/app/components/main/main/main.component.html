@@ -4,12 +4,13 @@
     </div>
     <div class="mainArea screenMargin">
         <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
-            <app-party class="partyArea"></app-party>            
+            <app-party class="partyArea"></app-party>                        
             <app-battle class="battleArea"></app-battle>            
             <app-zone-navigation class="navArea"></app-zone-navigation>
         </div>
-        <div class="menu" *ngIf="navigation === navigationEnum.Menu">
-            <app-equipment-view></app-equipment-view>
+        <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
+            <app-menu-options class="menuOptions"></app-menu-options>
+            <app-menu-display class="menuDisplay"></app-menu-display>            
         </div>
     </div>
     <div class="footerArea">

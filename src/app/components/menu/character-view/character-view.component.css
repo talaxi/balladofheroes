@@ -1,0 +1,70 @@
+.gridContainer {
+    display: grid;
+    margin-right: 3rem;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: .5fr 1fr 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "characterInfo"
+        "characterStats"
+        "characterAbilities";
+}
+
+.characterInfo {
+    grid-area: characterInfo;    
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        ". baseInfo godInfo";
+}
+
+.characterStats {
+    grid-area: characterStats;
+}
+
+.characterAbilities {
+    grid-area: characterAbilities;
+}
+
+.baseInfo {
+    text-align: center;
+    grid-area: baseInfo;
+}
+
+.godInfo {
+    grid-area: godInfo;
+    text-align: right;
+}
+
+.statContainer {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "equipment primaryStats secondaryStats";
+}
+
+.equipment {
+    grid-area: equipment;
+}
+
+.primaryStats {
+    grid-area: primaryStats;
+    text-align: center;
+}
+
+.secondaryStats {
+    grid-area: secondaryStats;
+    text-align: right;
+}
+
+.leftAlignText {
+    text-align: left;
+    display: inline-block;
+}

@@ -1,0 +1,43 @@
+<div class="saveLoad">
+    <span class="s4Heading">Save/Load</span>
+    <br />
+    <div class="importExportDiv">
+        <textarea id="importExport" name="importExport" rows="10" [(ngModel)]="importExportValue"></textarea>
+        <div class="importExportButtons">
+            <button (click)="LoadGame()">
+                Import
+            </button>
+            <button (click)="SaveGame()">
+                Export
+            </button>
+        </div>
+        <br/>
+        <div class="importExportButtons">
+            <div>
+                <button (click)="LoadGameFromFile()">
+                    Import from File
+                </button>
+                <input type='file' class="spaced" id="fileUpload" (change)="fileChanged($event)">
+            </div>
+            <button (click)="SaveGameToFile()">
+                Export to File
+            </button>
+        </div>
+    </div>
+    <br />
+    <br />
+    <div>
+        <span class="s4Heading">Code Redemption</span>
+        <br />
+        <br />
+        <div class="codeRedemption">
+            <label for="codeRedemptionText">Code: </label>
+            <input id="codeRedemptionText" type="text" class="spaced codeRedemptionInput"
+                [(ngModel)]="enteredRedemptionCode">
+            <button class="screenMarginLeft" (click)="enterRedemptionCode()">
+                Enter
+            </button>
+        </div>
+        <br/>
+    </div>
+</div>

@@ -5,12 +5,16 @@ import { StatusEffect } from "./status-effect.model";
 export class BattleInfo {
     autoAttackTimer: number;
     timeToAutoAttack: number;
+    autoAttackAutoMode: boolean;
+    autoAttackManuallyTriggered: boolean;
     statusEffects: StatusEffect[];
     barrierValue: number;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
         this.timeToAutoAttack = 10;
+        this.autoAttackAutoMode = true;
+        this.autoAttackManuallyTriggered = false;
         this.barrierValue = 0;
         this.statusEffects = [];
 

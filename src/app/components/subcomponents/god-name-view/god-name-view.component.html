@@ -3,7 +3,7 @@
         [contentTemplate]="god1Popover" class="god1" [ngClass]="lookupService.getGodColorClass(character.assignedGod1)"><span class="s3Heading">{{getCharacterGodName(character, 1)}}
         </span>
         <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span>
-        <div class="flex xpBarWidth">
+        <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover">
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar">
             </mat-progress-bar>
         </div>
@@ -13,7 +13,7 @@
         [contentTemplate]="god2Popover" class="god2" [ngClass]="lookupService.getGodColorClass(character.assignedGod2)"><span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
         <strong><span>Lv
                 {{getCharacterGodLevel(character, 2)}}</span></strong>
-        <div class="flex xpBarWidth">
+        <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover">
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar">
             </mat-progress-bar>
         </div>
@@ -33,5 +33,13 @@
         <span *ngIf="isGodPassiveUnlocked(2)">Passive: {{getGodPassiveDescription(2)}}</span>
         <hr />
         Click for details on God.
+    </div>
+</ng-template>
+
+<ng-template #xpPopover>
+    <div>
+        Level {{getCharacterGodLevel(character, 1)}}
+        <br />
+        {{character.exp}} / {{character.expToNextLevel}} XP to Level {{character.level + 1}}
     </div>
 </ng-template>

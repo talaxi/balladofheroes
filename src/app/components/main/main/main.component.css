@@ -25,6 +25,18 @@
     "party battle nav";
 }
 
+.defaultMenuGrid {
+  display: grid;
+  gap: .5rem;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: auto 1fr;
+  grid-template-rows: auto;
+  justify-content: stretch;
+  grid-template-areas:
+    "menuOptions menuDisplay";
+}
+
 @media (max-width: 800px) {
   .gridContainer {
     display: grid;
@@ -95,6 +107,14 @@
 
   background-color: var(--background-tertiary);
   color: var(--foreground-quaternary);
+}
+
+.menuOptions {
+  grid-area: menuOptions;
+}
+
+.menuDisplay {
+  grid-area: menuDisplay;
 }
 
 .mainView {

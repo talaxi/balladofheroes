@@ -1,0 +1,5 @@
+<div class="menu">    
+    <app-character-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Characters"></app-character-view>
+    <app-god-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Gods"></app-god-view>    
+    <app-settings-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Settings"></app-settings-view>
+</div>

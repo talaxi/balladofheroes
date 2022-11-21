@@ -1,3 +1,13 @@
 .subzoneSpacer {
     margin-left: 1rem;
 }
+
+.balladHeader {
+    display: flex;
+}
+
+.balladTitle {
+    margin-top: auto;
+    margin-bottom: auto;
+    margin-right: 5rem;
+}

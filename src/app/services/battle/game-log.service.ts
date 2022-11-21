@@ -5,7 +5,8 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
   providedIn: 'root'
 })
 export class GameLogService {
-  gameLog: string = "";
+  gameLog: string[] = [];
+  gameLogMaxLength = 100;
 
   constructor() { }
 
@@ -23,6 +24,14 @@ export class GameLogService {
       entry = "<span class='changeLocationText'>" + entry + "</span>";
     }
 
-    this.gameLog += entry + "<br/>";
+    this.gameLog.push(entry + "<br/>");
+
+    if (this.gameLog.length > this.gameLogMaxLength)
+    {
+      for (var i = this.gameLog.length; i > this.gameLogMaxLength; i--)
+      {
+        this.gameLog = this.gameLog.filter(item => item != this.gameLog[0]);
+      }
+    }
   }
 }

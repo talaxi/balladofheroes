@@ -2,9 +2,10 @@
     width: 75%;
 }
 
-.mat-progress-bar-element, .mat-progress-bar {
+.mat-progress-bar-element,
+.mat-progress-bar {
     height: .5rem !important;
-  }
+}
 
 .godGrid {
     display: grid;
@@ -12,7 +13,7 @@
     grid-template-rows: 1fr;
     justify-content: stretch;
     grid-template-areas:
-      "god1 god2";
+        "god1 god2";
 }
 
 .god1 {
@@ -21,4 +22,19 @@
 
 .god2 {
     grid-area: god2;
+}
+
+.testing {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "testgrid";
+
+}
+
+.testgrid {
+    grid-area: testgrid;
 }

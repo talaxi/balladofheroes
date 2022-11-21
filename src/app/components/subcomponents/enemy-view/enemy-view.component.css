@@ -1,6 +1,11 @@
 .characterInfo {
     height: 100%;
-    border: 1px solid var(--background-secondary);
+    /* needs to match item targeting below */
+    border: 2px solid var(--background-secondary);
+}
+
+.characterTargeted:hover {
+  border: 2px solid red;
 }
 
 .characterBar {
@@ -33,7 +38,3 @@
   .flex {
     display: flex;
   }
-
-  .characterTargeted:hover {
-    border: 1px solid red;
-}

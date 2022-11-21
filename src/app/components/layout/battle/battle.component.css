@@ -7,7 +7,7 @@
     justify-content: stretch;
     grid-row-gap: 1rem;
     grid-template-areas:
-        "enemies"
+        "scene"
         "battleUpdates";
 }
 
@@ -63,4 +63,15 @@
 
 .hr {
     width: 100%;
+}
+
+.slideAnimation {
+    -webkit-animation: slide .5s forwards;    
+    animation: slide .5s forwards;
+}
+
+@keyframes slide {
+    0% {opacity: 0%}
+    20% {opacity: 0%}
+    100% {opacity: 100%}
 }

@@ -1,0 +1,7 @@
+.availableIcon {
+    color: var(--foreground-quaternary);
+    border-radius: 25px;
+    background: var(--background-five);
+    padding: 0 .5rem;
+    margin-right: .25rem;
+  }

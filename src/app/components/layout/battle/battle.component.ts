@@ -16,6 +16,9 @@ export class BattleComponent implements OnInit {
   currentEnemies: EnemyTeam;
   subscription: any;
   previousLogHeight = 0;
+  showNewEnemyGroupAnimation = false;
+  animationTimer = 0;
+  animationTimerCap = .5;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, private storyService: StoryService) { }
@@ -24,9 +27,24 @@ export class BattleComponent implements OnInit {
     if (this.globalService.globalVar.activeBattle !== undefined)
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
       if (this.globalService.globalVar.activeBattle !== undefined)
         this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
+
+      if (this.battleService.showNewEnemyGroup)
+      {
+        this.showNewEnemyGroupAnimation = true;
+        this.battleService.showNewEnemyGroup = false;        
+      }
+
+      if (this.showNewEnemyGroupAnimation) {
+        this.animationTimer += deltaTime;
+        if (this.animationTimer >= this.animationTimerCap)
+        {
+          this.animationTimer = 0;
+          this.showNewEnemyGroupAnimation = false;
+        }
+      }
     });
   }
 
@@ -41,13 +59,17 @@ export class BattleComponent implements OnInit {
     return this.utilityService.getSanitizedHtml(this.storyService.sceneText);
   }
 
-  getPagePercent() {
-    console.log( (this.globalService.globalVar.timers.scenePageTimer / this.globalService.globalVar.timers.scenePageLength) * 100);
+  getPagePercent() {    
     return (this.globalService.globalVar.timers.scenePageTimer / this.globalService.globalVar.timers.scenePageLength) * 100;
   }
 
   displayGameUpdates() {
-    return this.utilityService.getSanitizedHtml(this.gameLogService.gameLog);
+    var gameLogEntries = "";
+    this.gameLogService.gameLog.forEach(item => {
+      gameLogEntries += item;
+    });
+
+    return this.utilityService.getSanitizedHtml(gameLogEntries);
   }
 
   getScrollHeight(scrollToTop: any) {

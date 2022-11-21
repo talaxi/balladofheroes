@@ -1,95 +1,27 @@
-<div class="">
-  <div class="equipmentView">
-    <div class="characterSelect">
-      <div *ngFor="let member of partyMembers">
-        <span (click)="selectPartyMember(member)">
-          {{member.name}}
-        </span>
-      </div>
-    </div>
+<div>
+  <span class="s4Heading">Change Equipment</span>
+    <hr />
+  <div class="equipmentView">    
     <div class="availableEquipment">
       <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)"
         (click)="equipItem(equipment)">
-        <span customToolTip [contentTemplate]="template">{{lookupService.getItemName(equipment.item)}}
+        <span customToolTip [isDelayed]="false"
+          [contentTemplate]="template">{{lookupService.getItemName(equipment.item)}}
           x{{equipment.amount}}</span>
       </div>
     </div>
-    <div class="characterInfo">
-      <div class="existingEquipment">
-        <span customToolTip [contentTemplate]="equippedWeapon">Weapon:
-          {{getEquippedItemNameByType(equipmentTypeEnum.Weapon)}}</span>
-        <br />
-        <span customToolTip [contentTemplate]="equippedShield">Shield:
-          {{getEquippedItemNameByType(equipmentTypeEnum.Shield)}}</span>
-        <br />
-        <span customToolTip [contentTemplate]="equippedArmor">Armor:
-          {{getEquippedItemNameByType(equipmentTypeEnum.Armor)}}</span>
-        <br />
-        <span customToolTip [contentTemplate]="equippedLeftRing">Left Ring:
-          {{getEquippedItemNameByType(equipmentTypeEnum.Ring)}}</span>
-        <br />
-        <span customToolTip [contentTemplate]="equippedRightRing">Right Ring:
-          {{getEquippedItemNameByType(equipmentTypeEnum.Ring)}}</span>
-        <br />
-        <span customToolTip [contentTemplate]="equippedNecklace">Necklace:
-          {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
+    <div class="existingEquipment">
+      <div>
+        <app-current-equipment-view></app-current-equipment-view>
       </div>
       <hr />
       <div class="existingEffects">
-        Existing Effects
-      </div>
+        <span>Gain from equipment:</span>
+        <br/>
+        <span [innerHtml]="equipmentGain()"></span>      
     </div>
   </div>
 </div>
-
-<ng-template #equippedWeapon>
-  <div class="equippedItem">
-    <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Weapon)"></app-equipment-item-view>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #equippedShield>
-  <div class="equippedItem">
-    <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Shield)"></app-equipment-item-view>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #equippedArmor>
-  <div class="equippedItem">
-    <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"></app-equipment-item-view>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #equippedLeftRing>
-  <div class="equippedItem">
-    <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #equippedRightRing>
-  <div class="equippedItem">
-    <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #equippedNecklace>
-  <div class="equippedItem">
-    <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Necklace)">
-      </app-equipment-item-view>
-    </div>
-  </div>
-</ng-template>
 
 <ng-template #template>
   <div class="compareEquipment">

@@ -1,0 +1,71 @@
+<div class="gridContainer">
+    <div class="characterInfo">
+        <div class="baseInfo">
+            <span class="s2Heading" [ngClass]="getCharacterColor()">{{character.name}}</span>
+            <br />
+            <span>Level {{character.level}}</span>
+            <br />
+            <span>{{character.exp}} / {{character.expToNextLevel}} XP to Level {{character.level + 1}}</span>
+        </div>
+
+        <div class="godInfo">
+            <div class="leftAlignText">
+                Equipped Gods:
+                <br />
+                <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
+                    <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
+                    <strong><span>Lv {{getCharacterGodLevel(character, 1)}}</span></strong>
+                </div>
+                <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod" [ngClass]="lookupService.getGodColorClass(character.assignedGod2)">
+                    <span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
+                    <strong><span>Lv {{getCharacterGodLevel(character, 2)}}</span></strong>
+                </div>
+                <button>Change</button>
+            </div>
+        </div>
+    </div>
+    <div class="characterStats statContainer">
+        <div class="equipment">
+            <span class="s4Heading">Equipment</span>
+            <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
+            </app-current-equipment-view>
+        </div>
+        <div class="primaryStats">
+            <div class="leftAlignText">
+                <span class="s4Heading">Primary Stats</span>
+                <br />
+                <span><strong>Max HP:</strong> {{character.battleStats.maxHp}}</span>
+                <br />
+                <span><strong>Attack:</strong> {{character.battleStats.attack}}</span>
+                <br />
+                <span><strong>Agility:</strong> {{character.battleStats.agility}}</span>
+                <br />
+                <span><strong>Luck:</strong> {{character.battleStats.luck}}</span>
+                <br />
+                <span><strong>Defense:</strong> {{character.battleStats.defense}}</span>
+                <br />
+                <span><strong>Resistance:</strong> {{character.battleStats.resistance}}</span>
+            </div>
+        </div>
+        <div class="secondaryStats">
+            <div class="leftAlignText">
+                <span class="s4Heading">Secondary Stats</span>
+            </div>
+        </div>
+    </div>
+    <div class="characterAbilities">
+        <span class="s4Heading">Abilities</span>
+        <div *ngFor="let ability of character.abilityList">
+            <strong [ngClass]="getAbilityColor(false)">{{ability.name}}</strong> - <span
+                [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span>
+        </div>
+        <div *ngFor="let ability of god1AbilityList">
+            <strong [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong> - <span
+                [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span>
+        </div>
+        <div *ngFor="let ability of god2AbilityList">
+            <strong [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong> - <span
+                [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span>
+        </div>
+    </div>
+</div>

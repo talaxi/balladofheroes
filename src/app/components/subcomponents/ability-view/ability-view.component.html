@@ -1,7 +1,10 @@
 <div customToolTip [contentTemplate]="abilityPopover" class="container">
     <div class="centeredBox">
-        <div #spinnerDiv class="ability">
-            <span class='abilityTimer'><img class="abilityImage" src="assets/svg/sword.svg"></span>
+        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAuto()">
+            <div>
+                <span class='abilityTimer' [ngClass]="{'manualModeImage': !autoMode}"><img class="abilityImage" src="assets/svg/sword.svg"></span>
+                <span *ngIf="!autoMode" class="manualModeText"><strong>OFF</strong></span>
+            </div>
             <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate" [diameter]="spinnerDiameter"
                 [strokeWidth]="strokeWidth"
                 [value]="isAutoAttack ? getCharacterAutoAttackProgress() : getAbilityProgress()"></mat-spinner>
@@ -11,7 +14,7 @@
 
 <ng-template #abilityPopover>
     <div>
-        <span [innerHtml]="getAbilityName()"></span>
+        <strong><span [innerHtml]="getAbilityName()"></span></strong>
         <hr class="miniHr" />
         <span [innerHtml]="getAbilityDescription()"></span>        
         <hr />

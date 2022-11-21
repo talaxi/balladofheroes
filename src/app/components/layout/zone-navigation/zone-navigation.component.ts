@@ -20,6 +20,7 @@ export class ZoneNavigationComponent implements OnInit {
   availableZones: Zone[];
   availableSubZones: SubZone[];
   subscription: any;
+  autoProgress: boolean = false;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService) { }
@@ -37,11 +38,33 @@ export class ZoneNavigationComponent implements OnInit {
       this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
       var selectedBallad = this.balladService.getActiveBallad();
       if (selectedBallad !== undefined)
-        this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);;
+        this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);
       var selectedZone = this.balladService.getActiveZone();
       if (selectedZone !== undefined)
         this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
+
+      var currentSubzone = this.availableSubZones.find(item => item.isSelected);
+      if (this.autoProgress && currentSubzone !== undefined && currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0)
+      {
+        this.selectNextSubzone();        
+      }
     });
+  }
+
+  selectNextSubzone() {
+    var currentBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
+
+    if (currentBallad !== undefined) {
+      var currentZone = currentBallad.zones.find(item => item.isSelected);
+
+      if (currentZone !== undefined)
+      {
+        var incompleteSubzone = currentZone.subzones.find(item => item.victoriesNeededToProceed - item.victoryCount > 0);
+        
+        if (incompleteSubzone !== undefined)
+          this.selectSubZone(incompleteSubzone, currentZone);
+      }
+    }
   }
 
   selectBallad(ballad: Ballad) {
@@ -50,6 +73,7 @@ export class ZoneNavigationComponent implements OnInit {
     });
 
     ballad.isSelected = true;
+    ballad.showNewNotification = false;
     this.availableZones = ballad.zones;
   }
 
@@ -62,6 +86,7 @@ export class ZoneNavigationComponent implements OnInit {
     });
 
     zone.isSelected = true;
+    zone.showNewNotification = false;
     this.availableSubZones = zone.subzones;
   }
 
@@ -77,6 +102,7 @@ export class ZoneNavigationComponent implements OnInit {
     });
 
     subzone.isSelected = true;
+    subzone.showNewNotification = false;
 
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);

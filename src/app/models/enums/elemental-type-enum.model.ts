@@ -1,6 +1,6 @@
-export enum ElementalTypeEnum {    
-    Fire,
-    Lightning,
-    Earth,
-    Air
-  }
+export enum ElementalTypeEnum {
+  Fire,
+  Lightning,
+  Earth,
+  Air
+}

@@ -1,15 +1,28 @@
-<span customToolTip [contentTemplate]="characterPopover"><span class="s2Heading" [ngClass]="lookupService.getCharacterColorClass(character.type)">{{character.name}} </span>
-    <span><strong>Lv {{character.level}}</strong></span></span>
+<span customToolTip [contentTemplate]="characterPopover" (click)="goToCharacterDetails()">
+    <span class="s2Heading" [ngClass]="lookupService.getCharacterColorClass(character.type)">{{character.name}} </span>
+    <span [ngClass]="lookupService.getCharacterColorClass(character.type)"><strong>Lv {{character.level}}</strong></span>
+</span>
 <br />
-<div class="flex xpBarWidth">
+<div *ngIf="true" class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover"> <!--ngIf fixes the default value for the progress bar-->
     <mat-progress-bar mode="determinate" [value]="getCharacterXpPercent()" class="blue-progress characterBar">
     </mat-progress-bar>
 </div>
+<!--<div class="testing">
+    <mat-progress-bar class="testgrid" mode="determinate" value="50"></mat-progress-bar>
+</div>-->
 
 <ng-template #characterPopover>
     <div>
-        <span *ngIf="isCharacterPassiveUnlocked()">Passive: {{getCharacterPassiveDescription()}}</span>
+        <span *ngIf="isCharacterPassiveUnlocked()" [innerHtml]="getCharacterPassiveDescription()"></span>
         <hr />
         Click for details on Character.
+    </div>
+</ng-template>
+
+<ng-template #xpPopover>
+    <div>
+        Level {{character.level}}
+        <br />
+        {{character.exp}} / {{character.expToNextLevel}} XP to Level {{character.level + 1}}
     </div>
 </ng-template>

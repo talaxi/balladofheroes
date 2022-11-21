@@ -1,4 +1,6 @@
-export enum BalladEnum {    
-    Champion,
-    Gorgon
-  }
+export enum BalladEnum {
+  Champion,
+  Gorgon,
+  Labors,
+  Underworld
+}

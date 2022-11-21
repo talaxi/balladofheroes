@@ -6,6 +6,7 @@ export class Ballad {
     type: BalladEnum;
     isSelected: boolean;
     isAvailable: boolean;
+    showNewNotification: boolean;
     zones: Zone[];
 
     constructor(type?: BalladEnum) {

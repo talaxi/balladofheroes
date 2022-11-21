@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit } from '@angular/core';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
@@ -12,6 +12,14 @@ export class HeaderComponent implements OnInit {
 
   constructor(private battleService: BattleService, private layoutService: LayoutService) { }
 
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+  
+    if (event.key === "m" || event.key === "M") {
+      this.openMenu();
+    }
+  }
+
   ngOnInit(): void {
   }
 
@@ -19,7 +27,7 @@ export class HeaderComponent implements OnInit {
     this.battleService.togglePause();
   }
 
-  changeEquipment() {
+  openMenu() {
     if (this.layoutService.navigation === NavigationEnum.Default)
     this.layoutService.changeLayout(NavigationEnum.Menu);
     else

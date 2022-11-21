@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
@@ -9,6 +10,8 @@ import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-equipment-view',
@@ -18,19 +21,26 @@ import { LookupService } from 'src/app/services/lookup.service';
 export class EquipmentViewComponent implements OnInit {
   subscription: any;
   @Input() characterType: CharacterEnum = CharacterEnum.Adventurer;
+  character: Character;
   availableEquipment: ResourceValue[];
   hoveredItem: Equipment;
   public equipmentTypeEnum = EquipmentTypeEnum;
   public partyMembers: Character[];
 
-  constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService) { }
+  constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
+    private menuService: MenuService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
+    this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
     this.availableEquipment = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.Equipment);
-    this.partyMembers = this.globalService.globalVar.characters;
+    if (this.globalService.globalVar.characters.some(item => item.type === this.characterType))
+      this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
       this.availableEquipment = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.Equipment);
+      if (this.globalService.globalVar.characters.some(item => item.type === this.characterType))
+        this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
     });
   }
 
@@ -40,15 +50,13 @@ export class EquipmentViewComponent implements OnInit {
       this.hoveredItem = hoveredEquipmentPiece;
   }
 
-  equipItem(item: ResourceValue) { 
-    console.log("Equipping");
+  equipItem(item: ResourceValue) {
     var selectedEquipmentPiece = this.lookupService.getEquipmentPieceByItemType(item.item);
-    console.log(selectedEquipmentPiece);
     if (selectedEquipmentPiece === undefined)
       return;
 
     var character = this.globalService.globalVar.characters.find(item => item.type === this.characterType);
-    console.log(character);
+
     if (character === undefined)
       return;
 
@@ -64,8 +72,6 @@ export class EquipmentViewComponent implements OnInit {
       character.equipmentSet.leftRing = selectedEquipmentPiece;
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Necklace)
       character.equipmentSet.necklace = selectedEquipmentPiece;
-
-    console.log(character.equipmentSet);
   }
 
   getEquippedItemNameByType(type: EquipmentTypeEnum) {
@@ -99,8 +105,27 @@ export class EquipmentViewComponent implements OnInit {
     return comparisonItem;
   }
 
-  selectPartyMember(character: Character) {
-    this.characterType = character.type;
+  equipmentGain() {
+    var characterStats = new CharacterStats(this.character.equipmentSet.getTotalMaxHpGain(),
+      this.character.equipmentSet.getTotalAttackGain(), this.character.equipmentSet.getTotalDefenseGain(),
+      this.character.equipmentSet.getTotalAgilityGain(), this.character.equipmentSet.getTotalLuckGain(), this.character.equipmentSet.getTotalResistanceGain());
+    var equipmentStats = "";
+
+
+    if (characterStats.attack > 0)
+      equipmentStats += "+" + characterStats.attack.toString() + " Attack<br />";
+    if (characterStats.defense > 0)
+      equipmentStats += "+" + characterStats.defense + " Defense<br />";
+    if (characterStats.maxHp > 0)
+      equipmentStats += "+" + characterStats.maxHp + " Max HP<br />";
+    if (characterStats.agility > 0)
+      equipmentStats += "+" + characterStats.agility + " Agility<br />";
+    if (characterStats.luck > 0)
+      equipmentStats += "+" + characterStats.luck + " Luck<br />";
+    if (characterStats.resistance > 0)
+      equipmentStats += "+" + characterStats.resistance + " Resistance<br />";
+
+    return this.utilityService.getSanitizedHtml(equipmentStats);
   }
 
   ngOnDestroy() {

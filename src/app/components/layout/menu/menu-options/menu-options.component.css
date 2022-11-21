@@ -1,0 +1,13 @@
+.vr {
+    display: flex;
+    height: 100%;
+}
+
+.navigation {
+    display: flex;
+    height: 100%;    
+}
+
+.menuOptions {
+    margin-right: .5rem;
+}

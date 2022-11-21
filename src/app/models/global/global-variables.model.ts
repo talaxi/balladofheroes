@@ -8,10 +8,14 @@ import { ResourceValue } from "../resources/resource-value.model";
 import { Ballad } from "../zone/ballad.model";
 import { PlayerNavigation } from "../zone/player-navigation.model";
 import { Zone } from "../zone/zone.model";
+import { Achievement } from "./achievement.model";
 import { Timers } from "./timers.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
+    currentVersion: number;
+    startingVersion: number;
+    startDate: Date;
     @Type(() => Character)
     characters: Character[];
     @Type(() => God)
@@ -20,10 +24,14 @@ export class GlobalVariables {
     ballads: Ballad[];
     @Type(() => Timers)
     timers: Timers;
+    @Type(() => ResourceValue)
     resources: ResourceValue[];
     activePartyMember1: CharacterEnum;
     activePartyMember2: CharacterEnum;
+    @Type(() => Battle)
     activeBattle: Battle;
+    @Type(() => Achievement)
+    achievements: Achievement[];
     playerNavigation: PlayerNavigation;
     itemBeltSize: number;
     itemBelt: ItemsEnum[];
@@ -37,6 +45,7 @@ export class GlobalVariables {
         this.ballads = [];
         this.resources = [];
         this.itemBelt = [];
+        this.achievements = [];
         this.itemBeltSize = 1;
         this.activeBattle = new Battle();
         this.playerNavigation = new PlayerNavigation();

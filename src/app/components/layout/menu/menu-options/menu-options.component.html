@@ -1,0 +1,26 @@
+<div class="navigation">
+  <div class="menuOptions">
+    <div>
+      <button (click)="switchView(menuEnum.Characters)"
+        [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Characters }">Characters</button>
+      <div class="characterSelect" *ngIf="menuService.selectedMenuDisplay === menuEnum.Characters">
+        <div *ngFor="let member of partyMembers">
+          <span (click)="selectPartyMember(member)">
+            {{member.name}}
+          </span>
+        </div>
+      </div>
+    </div>
+    <div>
+      <button (click)="switchView(menuEnum.Gods)"
+        [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Gods }">Gods</button>
+    </div>    
+    <div>
+      <button (click)="switchView(menuEnum.Settings)"
+        [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }">Settings</button>
+    </div>
+  </div>
+  <div class="vr">
+    <hr />
+  </div>
+</div>

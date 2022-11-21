@@ -1,0 +1,13 @@
+<button (click)="battleService.useBattleItem(slotNumber)" customToolTip #tooltip [contentTemplate]="itemPopover"
+    class="battleItemButton" [ngClass]="{'targetModeActive': battleItemInUse(slotNumber)}"><img class="itemImage"
+        [src]="getSelectedItemImage(slotNumber)"><strong class="itemAmount s3Heading">x{{getItemAmount(slotNumber)}}</strong></button>
+<button class="battleItemButton cancelBattleItemButton" (click)="unselectItemSlot(slotNumber)"><strong>X</strong></button>
+
+
+<ng-template #itemPopover>
+    <div>
+        <strong><span [innerHtml]="getItemName()"></span></strong>
+        <hr class="miniHr" />
+        <span [innerHtml]="getItemDescription()"></span>        
+    </div>
+</ng-template>

@@ -11,6 +11,7 @@ export class SubZone {
     victoryCount: number;
     victoriesNeededToProceed: number;
     isAvailable: boolean;
+    showNewNotification: boolean;
     
     constructor(enumVal?: SubZoneEnum) {
         this.victoriesNeededToProceed = 0;
@@ -44,7 +45,10 @@ export class SubZone {
         return name;
     }
 
-    getVictoriesNeededToProceed(type: SubZoneEnum) {
+    getVictoriesNeededToProceed(type?: SubZoneEnum) {
+        if (type === undefined)
+            type = this.type;
+
         var victories = 1;
         var testing = true;
 

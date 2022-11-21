@@ -1,0 +1,22 @@
+.itemImage {
+    width: 100%;
+    height: 100%;
+}
+
+.battleItemButton {
+    position: relative;
+}
+
+.cancelBattleItemButton {
+    width: 100%;
+}
+
+.itemAmount {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+}
+
+.targetModeActive {
+    border: 2px solid red !important;
+}

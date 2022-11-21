@@ -6,6 +6,7 @@ export class Zone {
     type: ZoneEnum;
     isSelected: boolean;
     isAvailable: boolean;
+    showNewNotification: boolean;
     subzones: SubZone[];
 
     constructor() {

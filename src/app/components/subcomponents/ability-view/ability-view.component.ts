@@ -20,11 +20,15 @@ export class AbilityViewComponent implements OnInit {
   @ViewChild('spinnerDiv') spinnerDiv: ElementRef;
   spinnerDiameter = 10;
   strokeWidth = 5;
+  autoMode: boolean;
 
   constructor(private lookupService: LookupService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
-
+    if (this.ability === undefined)
+      this.autoMode = this.character.battleInfo.autoAttackAutoMode;
+    else
+      this.autoMode = this.ability.autoMode;
   }
 
   ngAfterViewInit(): void {
@@ -32,7 +36,8 @@ export class AbilityViewComponent implements OnInit {
   }
 
   getCharacterAutoAttackProgress() {
-    return (this.character.battleInfo.autoAttackTimer / this.character.battleInfo.timeToAutoAttack) * 100;
+    var timeToAutoAttack = this.lookupService.getAutoAttackTime(this.character);
+    return (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
   }
 
   getAbilityProgress() {
@@ -58,12 +63,29 @@ export class AbilityViewComponent implements OnInit {
     if (this.isAutoAttack)
       description = this.lookupService.getAutoAttackDescription(this.character);
     else
-      description = this.lookupService.getCharacterAbilityDescription(this.ability.name);
+      description = this.lookupService.getCharacterAbilityDescription(this.ability.name, this.character, this.ability);
 
     if (description === "")
-      description = this.lookupService.getGodAbilityDescription(this.ability.name);
+      description = this.lookupService.getGodAbilityDescription(this.ability.name, this.character, this.ability);
 
     return this.utilityService.getSanitizedHtml(description);
+  }
+
+  toggleAuto() {
+    this.autoMode = !this.autoMode;
+    if (this.ability !== undefined)    
+      this.ability.autoMode = this.autoMode;  
+    else
+      this.character.battleInfo.autoAttackAutoMode = this.autoMode;
+
+    return false;
+  }
+
+  manuallyTrigger() {
+    if (this.ability !== undefined)
+      this.ability.manuallyTriggered = true;
+    else
+      this.character.battleInfo.autoAttackManuallyTriggered = true;
   }
 
   getStrokeColor() {

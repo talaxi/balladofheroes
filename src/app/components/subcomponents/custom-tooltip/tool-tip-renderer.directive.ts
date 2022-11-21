@@ -2,16 +2,17 @@ import { Directive, Input, TemplateRef, ElementRef, OnInit, HostListener, Compon
 import { Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { CustomTooltipComponent } from './custom-tooltip.component';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 
 @Directive({
   selector: '[customToolTip]'
 })
 export class ToolTipRendererDirective {
 
-   /**
-   * This will be used to show tooltip or not
-   * This can be used to show the tooltip conditionally
-   */
+  /**
+  * This will be used to show tooltip or not
+  * This can be used to show the tooltip conditionally
+  */
   @Input() showToolTip: boolean = true;
 
   //If this is specified then specified text will be showin in the tooltip
@@ -21,10 +22,16 @@ export class ToolTipRendererDirective {
   @Input() contentTemplate: TemplateRef<any>;
 
   private _overlayRef: OverlayRef;
-  
+
+  delayTimer: number = 0;
+  subscription: any;
+  delayTimerCap = .35;
+  @Input() isDelayed: boolean = true;
+
   constructor(private _overlay: Overlay,
-              private _overlayPositionBuilder: OverlayPositionBuilder,
-              private _elementRef: ElementRef) { }
+    private _overlayPositionBuilder: OverlayPositionBuilder,
+    private _elementRef: ElementRef,
+    private gameLoopService: GameLoopService) { }
 
   /**
    * Init life cycle event handler
@@ -36,16 +43,16 @@ export class ToolTipRendererDirective {
     }
 
     const positionStrategy = this._overlayPositionBuilder
-                                 .flexibleConnectedTo(this._elementRef)
-                                 .withPositions([{
-                                                    originX: 'center',
-                                                    originY: 'bottom',
-                                                    overlayX: 'center',
-                                                    overlayY: 'top',
-                                                    offsetY: 5,
-                                                }]);
+      .flexibleConnectedTo(this._elementRef)
+      .withPositions([{
+        originX: 'center',
+        originY: 'bottom',
+        overlayX: 'center',
+        overlayY: 'top',
+        offsetY: 5,
+      }]);
 
-    this._overlayRef = this._overlay.create({ positionStrategy});
+    this._overlayRef = this._overlay.create({ positionStrategy });
 
   }
 
@@ -56,13 +63,25 @@ export class ToolTipRendererDirective {
    */
   @HostListener('mouseenter')
   show() {
-    
-    //attach the component if it has not already attached to the overlay
-    if (this._overlayRef && !this._overlayRef.hasAttached()) {
-      const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
-      tooltipRef.instance.text = this.text;
-      tooltipRef.instance.contentTemplate = this.contentTemplate;
-    }    
+    if (this.isDelayed) {
+      this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
+        this.delayTimer += deltaTime;
+
+        //attach the component if it has not already attached to the overlay
+        if (this._overlayRef && !this._overlayRef.hasAttached() && this.delayTimer > this.delayTimerCap) {
+          const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
+          tooltipRef.instance.text = this.text;
+          tooltipRef.instance.contentTemplate = this.contentTemplate;
+        }
+      });
+    }
+    else {
+      if (this._overlayRef && !this._overlayRef.hasAttached()) {
+        const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
+        tooltipRef.instance.text = this.text;
+        tooltipRef.instance.contentTemplate = this.contentTemplate;
+      }
+    }
   }
 
   /**
@@ -89,7 +108,11 @@ export class ToolTipRendererDirective {
   /**
    * This method will close the tooltip by detaching the component from the overlay
    */
-  private closeToolTip() {
+  closeToolTip() {
+    this.delayTimer = 0;
+    if (this.subscription !== undefined)
+      this.subscription.unsubscribe();
+
     if (this._overlayRef) {
       this._overlayRef.detach();
     }

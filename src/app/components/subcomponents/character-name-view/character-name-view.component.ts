@@ -1,9 +1,15 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
+import { Enemy } from 'src/app/models/character/enemy.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-character-name-view',
@@ -15,10 +21,17 @@ export class CharacterNameViewComponent implements OnInit {
   public noCharacter = CharacterEnum.none;
   public noGod = GodEnum.None;
 
-  constructor(public lookupService: LookupService, private globalService: GlobalService) { }
+  constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
+    private layoutService: LayoutService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
-        
+    
+  }
+
+  goToCharacterDetails() {    
+    this.layoutService.changeLayout(NavigationEnum.Menu);
+    this.menuService.selectedMenuDisplay = MenuEnum.Characters;
+    this.menuService.selectedCharacter = this.character.type;
   }
 
   getCharacterGodName(character: Character, whichGod: number) {
@@ -65,7 +78,7 @@ export class CharacterNameViewComponent implements OnInit {
     if (passiveAbility === undefined)
       return passiveDescription;
 
-    passiveDescription = this.lookupService.getGodAbilityDescription(passiveAbility.name);
+    passiveDescription = this.lookupService.getGodAbilityDescription(passiveAbility.name, this.character, passiveAbility);
 
     return passiveDescription;
   }
@@ -77,12 +90,13 @@ export class CharacterNameViewComponent implements OnInit {
     if (passiveAbility === undefined)
       return passiveDescription;
 
-    passiveDescription = this.lookupService.getCharacterAbilityDescription(passiveAbility.name);
+    passiveDescription = this.lookupService.getCharacterAbilityDescription(passiveAbility.name, this.character, passiveAbility);
 
-    return passiveDescription;
+    return "Passive: " + this.utilityService.getSanitizedHtml(passiveDescription);
   }
 
   getCharacterXpPercent() {
+
     return (this.character.exp / this.character.expToNextLevel) * 100;
   }
 

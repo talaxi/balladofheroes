@@ -23,6 +23,10 @@ export class BalladService {
       name = "Ballad of a Champion";
     if (type === BalladEnum.Gorgon)
       name = "Ballad of the Gorgon";
+    if (type === BalladEnum.Labors)
+      name = "Ballad of the Labors";
+    if (type === BalladEnum.Underworld)
+      name = "Ballad of the Underworld";
 
     return name;
   }
@@ -88,16 +92,5 @@ export class BalladService {
     });
 
     return returnSubzone;
-  }
-
-  /*testPlayerNavigation() {
-    this.globalService.globalVar.playerNavigation.currentBallad = this.generateBallad(BalladEnum.Champion);    
-
-    if (this.globalService.globalVar.playerNavigation.currentBallad !== undefined) {
-      this.globalService.globalVar.playerNavigation.currentBallad.isSelected = true;
-      this.globalService.globalVar.playerNavigation.currentBallad.zones[0].isSelected = true;
-      this.globalService.globalVar.playerNavigation.currentBallad.zones[0].subzones[0].isSelected = true;
-      this.globalService.globalVar.activeBattle = new Battle();
-    }
-  }*/
+  }  
 }

@@ -1,9 +1,9 @@
-export enum BestiaryEnum {    
-    WaterSerpent,
-    Crustacean,
-    FrenziedGull,
-    StarvingMongrel,
-    WildBoar,
-    KillerBees,
-    Matriarch
-  }
+export enum BestiaryEnum {
+  WaterSerpent,
+  Crustacean,
+  FrenziedGull,
+  StarvingMongrel,
+  WildBoar,
+  KillerBees,
+  Matriarch
+}
