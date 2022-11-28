@@ -2,10 +2,16 @@
     height: 100%;
     /* needs to match item targeting below */
     border: 2px solid var(--background-secondary);
+
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
 }
 
 .characterTargeted:hover {
-  border: 2px solid red;
+    border: 2px solid red;
 }
 
 .characterBar {
@@ -31,10 +37,11 @@
 }
 
 
-.mat-progress-bar-element, .mat-progress-bar {
+.mat-progress-bar-element,
+.mat-progress-bar {
     height: 1rem !important;
-  }
+}
 
-  .flex {
+.flex {
     display: flex;
-  }
+}

@@ -5,22 +5,25 @@ import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from '../ballad/ballad.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
+import { ResourceGeneratorService } from '../resources/resource-generator.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubZoneGeneratorService {
 
-  constructor(private enemyGeneratorService: EnemyGeneratorService, private balladService: BalladService) { }
+  constructor(private enemyGeneratorService: EnemyGeneratorService, private resourceGeneratorService: ResourceGeneratorService) { }
 
   generateSubZone(type: SubZoneEnum)
   {
     var subZone = new SubZone(type);    
 
     subZone.battleOptions = this.generateBattleOptions(type);
+    subZone.treasureChestChance = this.generateTreasureChestChance(type);
 
     return subZone;
   }
@@ -102,24 +105,83 @@ export class SubZoneGeneratorService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Matriarch));      
       battleOptions.push(enemyTeam);
     }
-    /*if (type === SubZoneEnum.AigosthenaEasternWoodlands)
+    if (type === SubZoneEnum.DodonaDelphiOutskirts)
     {
       var enemyTeam: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarvingMongrel));      
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));       
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Bandit));
       battleOptions.push(enemyTeam);
 
       var enemyTeam2: EnemyTeam = new EnemyTeam();
-      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));  
-      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.KillerBees));     
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Bandit));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Thief));
       battleOptions.push(enemyTeam2);
-      
+
       var enemyTeam3: EnemyTeam = new EnemyTeam();
-      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));      
-      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));     
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Thief));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Highwayman));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Thief));
+      battleOptions.push(enemyTeam3);
+
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Highwayman));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Highwayman));
+      battleOptions.push(enemyTeam4);
+      
+      var enemyTeam5: EnemyTeam = new EnemyTeam();
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Thief));
+      battleOptions.push(enemyTeam5);
+    }
+    if (type === SubZoneEnum.DodonaCoastalRoadsOfLocris)
+    {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Coyote));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Coyote));
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Bandit));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Bandit));
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Thief));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Bandit));      
       battleOptions.push(enemyTeam3);
     }
-*/
+    if (type === SubZoneEnum.DodonaCountryside)
+    {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Archer));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.DodonaMountainOpening)
+    {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Coyote));
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Coyote));
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlueHarpy));
+      battleOptions.push(enemyTeam3);
+
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
+      battleOptions.push(enemyTeam4);
+      
+      var enemyTeam5: EnemyTeam = new EnemyTeam();
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlueHarpy));
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Coyote));
+      battleOptions.push(enemyTeam5);
+    }
+
     battleOptions.forEach(enemyTeam => {      
       enemyTeam.enemyList.forEach(enemy => {
         var duplicateNameList = enemyTeam.enemyList.filter(item => item.name === enemy.name);
@@ -139,6 +201,36 @@ export class SubZoneGeneratorService {
     return battleOptions;
   }
 
+  generateTreasureChestChance(type: SubZoneEnum) {
+    var chance = 0;
+
+    if (type === SubZoneEnum.AigosthenaWesternWoodlands)
+    {
+      chance = .05;
+    }
+
+    return chance;
+  }
+
+  getTreasureChestRewards(type: SubZoneEnum) {
+    var rewards: ResourceValue[] = [];
+    
+    if (type === SubZoneEnum.AigosthenaUpperCoast)
+    {
+      rewards.push(this.resourceGeneratorService.throwingStone(15));
+    }
+    if (type === SubZoneEnum.AigosthenaBay)
+    {
+      rewards.push(this.resourceGeneratorService.bronzeSword(1));
+    }
+    if (type === SubZoneEnum.AigosthenaWesternWoodlands)
+    {
+      rewards.push(this.resourceGeneratorService.healingHerb(1));
+    }
+
+    return rewards;
+  }
+
   getBalladUnlocks(type: SubZoneEnum) {
     var balladEnums: BalladEnum[] = [];
     
@@ -152,6 +244,13 @@ export class SubZoneGeneratorService {
   getZoneUnlocks(type: SubZoneEnum) {
     var zoneEnums: ZoneEnum[] = [];
     
+    if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
+      zoneEnums.push(ZoneEnum.Dodona);
+    }
+    if (type === SubZoneEnum.DodonaAmbracianGulf) {
+      zoneEnums.push(ZoneEnum.Libya);
+    }
+
     return zoneEnums;
   }
 
@@ -170,9 +269,34 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
       subZoneEnums.push(SubZoneEnum.AigosthenaHeartOfTheWoods);
     }
-    //if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
-      //subZoneEnums.push(SubZoneEnum.AigosthenaEasternWoodlands);
-    //}
+    if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
+      subZoneEnums.push(SubZoneEnum.DodonaDelphi);
+      subZoneEnums.push(SubZoneEnum.DodonaDelphiOutskirts);
+    }
+    if (type === SubZoneEnum.DodonaDelphiOutskirts) {
+      subZoneEnums.push(SubZoneEnum.DodonaCoastalRoadsOfLocris);
+    }
+    if (type === SubZoneEnum.DodonaCoastalRoadsOfLocris) {
+      subZoneEnums.push(SubZoneEnum.DodonaCountryside);
+    }
+    if (type === SubZoneEnum.DodonaCountryside) {
+      subZoneEnums.push(SubZoneEnum.DodonaMountainOpening);
+    }
+    if (type === SubZoneEnum.DodonaMountainOpening) {
+      subZoneEnums.push(SubZoneEnum.DodonaMountainPassOne);
+    }
+    if (type === SubZoneEnum.DodonaMountainPassOne) {
+      subZoneEnums.push(SubZoneEnum.DodonaLakeTrichonida);
+    }
+    if (type === SubZoneEnum.DodonaLakeTrichonida) {
+      subZoneEnums.push(SubZoneEnum.DodonaMountainPassTwo);
+    }
+    if (type === SubZoneEnum.DodonaMountainPassTwo) {
+      subZoneEnums.push(SubZoneEnum.DodonaAmbracianGulf);
+    }
+    if (type === SubZoneEnum.DodonaAmbracianGulf) {
+      subZoneEnums.push(SubZoneEnum.DodonaArta);
+    }
 
     return subZoneEnums;
   }

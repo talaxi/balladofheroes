@@ -1,5 +1,5 @@
 export enum ZoneEnum {    
-    Coast,
-    Valley,
-    Mountainside
+    Aigosthena,
+    Dodona,
+    Libya
   }

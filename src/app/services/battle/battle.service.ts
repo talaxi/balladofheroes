@@ -11,9 +11,11 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
+import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { AchievementService } from '../achievements/achievement.service';
@@ -40,6 +42,10 @@ export class BattleService {
     private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService) { }
 
   handleBattle(deltaTime: number) {
+    var subZone = this.balladService.getActiveSubZone();
+    if (subZone.isTown) //no need to check any battle info
+      return;
+
     if (this.isPaused)
       deltaTime = 0;
 
@@ -51,9 +57,18 @@ export class BattleService {
       return;
 
     if (this.battle.atScene) {
-      var continueShowing = this.storyService.handleScene(deltaTime);
-      if (!continueShowing)
+      var continueShowing = false;
+      if (this.battle.sceneType === SceneTypeEnum.Story) {
+        continueShowing = this.storyService.handleScene(deltaTime);
+      }
+      else if (this.battle.sceneType === SceneTypeEnum.Chest) {
+        continueShowing = this.handleChest(deltaTime);
+      }
+
+      if (!continueShowing) {
         this.battle.atScene = false;
+        this.battle.sceneType = SceneTypeEnum.None;
+      }
     }
     else {
       if (this.battle.currentEnemies === undefined || this.battle.currentEnemies.enemyList.length === 0)
@@ -93,13 +108,121 @@ export class BattleService {
     this.checkScene();
   }
 
+  checkBreakpoints() {
+    var subzone = this.balladService.getActiveSubZone();
+
+    var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
+    if (subzone.type === SubZoneEnum.AigosthenaHeartOfTheWoods && subzone.victoryCount >= 1) {
+      if (athena !== undefined && !athena.isAvailable) {
+        athena.isAvailable = true;
+
+        athena.abilityList.forEach(ability => {
+          if (athena!.level >= ability.requiredLevel)
+            ability.isAvailable = true;
+        });
+
+        var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
+        if (character1 !== undefined) {
+          character1.assignedGod1 = GodEnum.Athena;
+        }
+      }
+    }
+
+    if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
+      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
+
+      var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);      
+      if (artemis !== undefined && !artemis.isAvailable) {
+        artemis.isAvailable = true;
+
+        artemis.abilityList.forEach(ability => {
+          if (athena!.level >= ability.requiredLevel)
+            ability.isAvailable = true;
+        });
+
+        var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
+        if (character2 !== undefined) {
+          character2.assignedGod1 = GodEnum.Artemis;
+        }
+      }
+    }
+
+    //TODO: THIS IS JUST FOR THE TUTORIAL RELEASE BUT WILL EVENTUALLY BE REMOVED
+    //VVV
+    if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {  
+      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);      
+      if (hermes !== undefined && !hermes.isAvailable) {
+        hermes.isAvailable = true;
+
+        hermes.abilityList.forEach(ability => {
+          if (apollo!.level >= ability.requiredLevel)
+            ability.isAvailable = true;
+        });
+
+        var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
+        if (character1 !== undefined) {
+          character1.assignedGod2 = GodEnum.Hermes;
+        }
+      }
+      
+      var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);      
+      if (apollo !== undefined && !apollo.isAvailable) {
+        apollo.isAvailable = true;
+
+        apollo.abilityList.forEach(ability => {
+          if (apollo!.level >= ability.requiredLevel)
+            ability.isAvailable = true;
+        });
+
+        var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
+        if (character2 !== undefined) {
+          character2.assignedGod2 = GodEnum.Apollo;
+        }
+      }
+    }
+    //^^^
+  }
+
   checkScene() {
+    var subzone = this.balladService.getActiveSubZone();
     this.storyService.checkForNewStoryScene();
 
-    if (this.storyService.showStory)
+    if (this.storyService.showStory) {
       this.globalService.globalVar.activeBattle.atScene = true;
+      this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Story;
+    }
     else {
       //TODO: get random % for other scenes
+      //get % per subzone of treasure chest
+      var treasureChestChance = this.subzoneGeneratorService.generateTreasureChestChance(subzone.type);
+      //get % per subzone of altar
+      var altarChance = 0;
+
+      var rng = this.utilityService.getRandomNumber(0, 1);
+
+      //auto gain throwing stones in aigosthena upper coast
+      if (subzone.type === SubZoneEnum.AigosthenaUpperCoast && subzone.victoryCount >= 3 &&
+        !this.globalService.globalVar.freeTreasureChests.aigosthenaUpperCoastAwarded) {
+        treasureChestChance = 1;
+        this.globalService.globalVar.freeTreasureChests.aigosthenaUpperCoastAwarded = true;
+      }
+
+      //auto gain a sword in aigosthena bay
+      if (subzone.type === SubZoneEnum.AigosthenaBay && subzone.victoryCount >= 4 &&
+        !this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded) {
+        treasureChestChance = 1;
+        this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded = true;
+      }
+
+      if (rng <= treasureChestChance) {
+        //Get chest rewards
+        this.globalService.globalVar.activeBattle.atScene = true;
+        this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Chest;
+        this.globalService.globalVar.activeBattle.chestRewards = this.subzoneGeneratorService.getTreasureChestRewards(subzone.type);
+        this.globalService.globalVar.activeBattle.chestRewards.forEach(reward => {
+          this.lookupService.gainResource(reward);
+        });
+      }
     }
   }
 
@@ -145,7 +268,7 @@ export class BattleService {
 
     var timeToAutoAttack = this.lookupService.getAutoAttackTime(character);
 
-    if (character.battleInfo.autoAttackTimer >= timeToAutoAttack && 
+    if (character.battleInfo.autoAttackTimer >= timeToAutoAttack &&
       (character.battleInfo.autoAttackAutoMode || character.battleInfo.autoAttackManuallyTriggered)) {
       this.handleAutoAttack(character, targets);
       character.battleInfo.autoAttackTimer -= timeToAutoAttack;
@@ -162,10 +285,11 @@ export class BattleService {
     var target = this.getTarget(character, targets);
 
     var damageMultiplier = this.getDamageMultiplier(character, target);
+    var isCritical = this.isDamageCritical(character, target);
 
-    var damageDealt = this.dealDamage(character, target, undefined, damageMultiplier);
+    var damageDealt = this.dealDamage(character, target, isCritical, undefined, damageMultiplier);
 
-    var gameLogEntry = "<strong>" + character.name + "</strong>" + " attacks <strong>" + target.name + "</strong> for " + damageDealt + " damage.";
+    var gameLogEntry = "<strong>" + character.name + "</strong>" + " attacks <strong>" + target.name + "</strong> for " + damageDealt + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
     this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
 
     if (character.abilityList.find(item => item.name === "Barrage" && item.isAvailable)) {
@@ -177,7 +301,7 @@ export class BattleService {
         var additionalTargets = potentialTargets.filter(item => item !== target);
         if (additionalTargets.length > 0) {
           additionalTargets.forEach(additionalTarget => {
-            var additionalDamageDealt = this.dealDamage(character, additionalTarget, undefined, barrage!.effectiveness);
+            var additionalDamageDealt = this.dealDamage(character, additionalTarget, false, undefined, barrage!.effectiveness);
             var gameLogEntry = "<strong>" + character.name + "</strong>" + "'s attack hits <strong>" + additionalTarget.name + "</strong> for " + additionalDamageDealt + " damage as well.";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           });
@@ -221,8 +345,7 @@ export class BattleService {
     if (ability.currentCooldown <= 0) {
       ability.currentCooldown = 0;
 
-      if (ability.autoMode || ability.manuallyTriggered)    
-      {
+      if (ability.autoMode || ability.manuallyTriggered) {
         this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, true);
         ability.currentCooldown = ability.cooldown;
       }
@@ -239,18 +362,25 @@ export class BattleService {
 
     if (ability.dealsDirectDamage) {
       var damageMultiplier = this.getDamageMultiplier(user, target);
+      var isCritical = this.isDamageCritical(user, target);
 
-      var damageDealt = this.dealDamage(user, target, abilityEffectiveness, damageMultiplier, ability);
+      var damageDealt = this.dealDamage(user, target, isCritical, abilityEffectiveness, damageMultiplier, ability);
       var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + " on <strong>" + target.name + "</strong> for " + damageDealt + " damage.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
     }
     else if (ability.heals) {
       var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user);
+      var adjustedCriticalMultiplier = 1;
+      var isCritical = this.isHealCritical(user);
+      if (isCritical)
+        adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(user);
+      healAmount *= adjustedCriticalMultiplier;
+
       var healedAmount = this.gainHp(target, healAmount);
-      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + " on " + target.name + ", restoring " + healedAmount + " HP.";
+      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + " on " + target.name + ", restoring " + healedAmount + " HP." + (isCritical ? " <strong>Critical heal!</strong>" : "");
       this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
     }
-    else if (ability.name === "Barrier") {
+    else if (ability.name === "Pray") {
       var barrierAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user);
 
       targets.forEach(partyMember => {
@@ -411,7 +541,7 @@ export class BattleService {
     return target;
   }
 
-  dealDamage(attacker: Character, target: Character, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability) {
+  dealDamage(attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability) {
     //damage formula, check for shields, check for ko
     if (abilityDamageMultiplier === undefined)
       abilityDamageMultiplier = 1;
@@ -421,9 +551,12 @@ export class BattleService {
 
     var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability);
     var adjustedDefense = this.lookupService.getAdjustedDefense(target);
+    var adjustedCriticalMultiplier = 1;
+    if (isCritical)
+      adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(attacker);
 
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
-      (adjustedDefense * (2 / 5))));
+      (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier);
 
     /*
     Skill Power x ((ATK x ATK boost x 2/3) - (DEF x DEF boost x 2/5)) x (BRV DMG Reduction) x 
@@ -479,6 +612,34 @@ export class BattleService {
     return healAmount;
   }
 
+  isHealCritical(user: Character) {
+    var isCritical = false;
+    var criticalChance = .05;
+    var rng = this.utilityService.getRandomNumber(0, 1);
+
+    criticalChance = this.lookupService.getHealingCriticalChance(user);
+
+    if (rng <= criticalChance) {
+      isCritical = true;
+    }
+
+    return isCritical;
+  }
+
+  isDamageCritical(attacker: Character, target: Character) {
+    var isCritical = false;
+    var criticalChance = .05;
+    var rng = this.utilityService.getRandomNumber(0, 1);
+
+    criticalChance = this.lookupService.getDamageCriticalChance(attacker, target);
+
+    if (rng <= criticalChance) {
+      isCritical = true;
+    }
+
+    return isCritical;
+  }
+
   isCharacterDefeated(character: Character) {
     if (character.battleStats.currentHp <= 0) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.persistsDeath);
@@ -494,13 +655,22 @@ export class BattleService {
   }
 
   updateBattleState(party: Character[], enemies: Character[]) {
-    if (this.areCharactersDefeated(party))
+    var stateChanged = false;
+
+    if (this.areCharactersDefeated(party)) {
+      stateChanged = true;
       this.handlePartyDefeat();
+    }
 
-    if (this.areCharactersDefeated(enemies))
+    if (this.areCharactersDefeated(enemies)) {
+      stateChanged = true;
       this.moveToNextBattle();
+    }
 
-    this.checkScene();
+    if (stateChanged) {
+      this.checkScene();
+      this.checkBreakpoints();
+    }
   }
 
   areCharactersDefeated(characters: Character[]) {
@@ -525,13 +695,11 @@ export class BattleService {
     this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "The enemy party has been defeated.");
     var subZone = this.balladService.getActiveSubZone();
     subZone.victoryCount += 1;
-    //this is causing some sort of loop issue
-    /*var achievement = this.achievementService.checkForSubzoneAchievement(subZone.type, this.globalService.globalVar.achievements);
+    var achievement = this.achievementService.checkForSubzoneAchievement(subZone.type, this.globalService.globalVar.achievements);
 
-    if (achievement !== undefined)
-    {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Achievement completed!");
-    }*/
+    if (achievement !== undefined) {
+      this.addAchievementToGameLog(achievement);
+    }
 
     this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList) + " XP</strong>.");
     this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies);
@@ -577,6 +745,22 @@ export class BattleService {
     return lootGained;
   }
 
+  addAchievementToGameLog(achievement: Achievement) {
+    var achievementBonus = "";
+    if (achievement.bonusResources !== undefined && achievement.bonusResources.length > 0) {
+      achievement.bonusResources.forEach(item => {
+        achievementBonus += "<strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : pluralize(this.lookupService.getItemName(item.item))) + "</strong>, ";
+      });
+
+      achievementBonus = achievementBonus.substring(0, achievementBonus.length - 2);
+    }
+    var gameLogUpdate = "Achievement " + this.lookupService.getAchievementName(achievement) + " completed!";
+    if (achievementBonus !== "")
+      gameLogUpdate += " You gain " + achievementBonus + ".";
+
+    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogUpdate);
+  }
+
   addLootToResources(item: ResourceValue | undefined) {
     if (item === undefined)
       return;
@@ -598,8 +782,7 @@ export class BattleService {
     if (balladUnlocks !== undefined && balladUnlocks.length > 0) {
       balladUnlocks.forEach(ballad => {
         var unlockedBallad = this.balladService.findBallad(ballad);
-        if (unlockedBallad !== undefined && !unlockedBallad.isAvailable)
-        {
+        if (unlockedBallad !== undefined && !unlockedBallad.isAvailable) {
           unlockedBallad.isAvailable = true;
           unlockedBallad.showNewNotification = true;
         }
@@ -609,8 +792,7 @@ export class BattleService {
     if (zoneUnlocks !== undefined && zoneUnlocks.length > 0) {
       zoneUnlocks.forEach(zone => {
         var unlockedZone = this.balladService.findZone(zone);
-        if (unlockedZone !== undefined && !unlockedZone.isAvailable)
-        {
+        if (unlockedZone !== undefined && !unlockedZone.isAvailable) {
           unlockedZone.isAvailable = true;
           unlockedZone.showNewNotification = true;
         }
@@ -620,15 +802,12 @@ export class BattleService {
     if (subZoneUnlocks !== undefined && subZoneUnlocks.length > 0) {
       subZoneUnlocks.forEach(subZone => {
         var unlockedSubZone = this.balladService.findSubzone(subZone);
-        if (unlockedSubZone !== undefined && !unlockedSubZone.isAvailable)
-        {
+        if (unlockedSubZone !== undefined && !unlockedSubZone.isAvailable) {
           unlockedSubZone.isAvailable = true;
           unlockedSubZone.showNewNotification = true;
           this.achievementService.createDefaultAchievementsForSubzone(subZone).forEach(achievement => {
             this.globalService.globalVar.achievements.push(achievement);
           });
-
-          console.log(this.globalService.globalVar.achievements);
         }
       });
     }
@@ -664,6 +843,7 @@ export class BattleService {
 
   isTargetableWithItem(character: Character, isEnemy: boolean) {
     var isTargetable = true;
+    var isCharacterDead = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Dead) !== undefined;
 
     if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None) {
       isTargetable = false;
@@ -678,14 +858,12 @@ export class BattleService {
     }
 
     if (itemType === ItemTypeEnum.HealingItem) {
-      if (isEnemy)
+      if (isEnemy || isCharacterDead)
         isTargetable = false;
     }
 
-
     if (itemType === ItemTypeEnum.BattleItem) {
-      if (!isEnemy) {
-        console.log("Not targetable");
+      if (!isEnemy || isCharacterDead) {
         isTargetable = false;
       }
     }
@@ -722,5 +900,15 @@ export class BattleService {
     if (this.lookupService.getResourceAmount(this.battleItemInUse) === 0) {
       this.targetbattleItemMode = false;
     }
+  }
+
+  handleChest(deltaTime: number) {
+    this.globalService.globalVar.timers.chestTimer += deltaTime;
+    if (this.globalService.globalVar.timers.chestTimer >= this.globalService.globalVar.timers.chestLength) {
+      this.globalService.globalVar.timers.chestTimer = 0;
+      return false;
+    }
+
+    return true;
   }
 }

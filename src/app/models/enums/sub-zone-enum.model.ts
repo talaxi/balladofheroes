@@ -6,4 +6,18 @@ export enum SubZoneEnum {
   AigosthenaWesternWoodlands,
   AigosthenaHeartOfTheWoods,
   /*AigosthenaEasternWoodlands*/ //not needed
+  DodonaDelphi,
+  DodonaDelphiOutskirts,
+  DodonaCoastalRoadsOfLocris,
+  DodonaCountryside,
+  DodonaMountainOpening,
+  DodonaMountainPassOne,
+  DodonaLakeTrichonida,
+  DodonaMountainPassTwo,
+  DodonaAmbracianGulf,
+  DodonaArta,
+  LibyaBeach,
+  LibyaRockyOutcrops,
+  LibyaDeeperPath,
+  LibyaIsleCenter
 }

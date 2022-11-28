@@ -1,4 +1,4 @@
-<div class="characterInfo" (click)='battleService.useBattleItemOnCharacter(character)' [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" >
+<div *ngIf="character !== undefined" class="characterInfo" (click)='battleService.useBattleItemOnCharacter(character)' [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" >
     <span class="s2Heading">{{character.name}} </span>    
     <br />
     <br />

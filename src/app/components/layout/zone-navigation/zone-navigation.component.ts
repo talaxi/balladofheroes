@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
+import { AchievementService } from 'src/app/services/achievements/achievement.service';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -23,9 +25,16 @@ export class ZoneNavigationComponent implements OnInit {
   autoProgress: boolean = false;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
-    private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService) { }
+    private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
+    private achievementService: AchievementService) { }
 
   ngOnInit(): void {
+    var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
+    if (autoProgress === undefined)
+      this.autoProgress = false;
+    else
+      this.autoProgress = autoProgress;
+
     this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
     var selectedBallad = this.balladService.getActiveBallad();
     if (selectedBallad !== undefined)
@@ -115,11 +124,54 @@ export class ZoneNavigationComponent implements OnInit {
     }
   }
 
+  getBalladClass(ballad: Ballad) {
+    var allSubZonesCleared = true;
+    var allSubZonesCompleted = true;
+
+    ballad.zones.forEach(zone => {
+      zone.subzones.forEach(subzone => {
+        if (subzone.victoryCount < subzone.victoriesNeededToProceed)
+          allSubZonesCleared = false;
+        if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0)
+          allSubZonesCompleted = false;
+      });
+    });
+
+    return {
+      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,      
+      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,  
+      'completedSubzoneColor': allSubZonesCompleted      
+    };
+  }
+
+  getZoneClass(zone: Zone) {
+    var allSubZonesCleared = true;
+    var allSubZonesCompleted = true;
+    zone.subzones.forEach(subzone => {
+      if (subzone.victoryCount < subzone.victoriesNeededToProceed)
+        allSubZonesCleared = false;
+      if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0)
+        allSubZonesCompleted = false;
+    });
+
+    return {
+      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,      
+      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,  
+      'completedSubzoneColor': allSubZonesCompleted      
+    };
+  }
+
   getSubzoneClass(subzone: SubZone) {
+    var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0;
     return {
       'unclearedSubzoneColor': subzone.victoriesNeededToProceed > subzone.victoryCount,      
-      'clearedSubzoneColor': subzone.victoriesNeededToProceed <= subzone.victoryCount,      
+      'clearedSubzoneColor': subzone.victoriesNeededToProceed <= subzone.victoryCount && !achievementsCompleted,  
+      'completedSubzoneColor': achievementsCompleted      
     };
+  }
+
+  autoProgressToggle() {
+    this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
   }
 
   ngOnDestroy() {

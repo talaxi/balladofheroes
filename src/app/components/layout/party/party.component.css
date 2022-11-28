@@ -6,17 +6,23 @@
     grid-template-rows: 43% 43% 14%;
     justify-content: stretch;
     grid-template-areas:
-      "character1"
-      "character2"
-      "options";
-  }
+        "character1"
+        "character2"
+        "options";
+
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
 
 .character1 {
     grid-area: character1;
     height: 100%;
 }
 
-.character2 { 
+.character2 {
     grid-area: character2;
     height: 100%;
 }
@@ -51,7 +57,7 @@
     grid-template-rows: 1fr;
     justify-content: stretch;
     grid-template-areas:
-      "characterInfo abilities";
+        "characterInfo abilities";
 }
 
 .characterInfo {
@@ -87,9 +93,9 @@
     grid-template-rows: 1fr 1fr 1fr;
     justify-content: stretch;
     grid-template-areas:
-      "autoAttack ability1 ability2"
-      "god1ability1 god1ability2 god1ability3"
-      "god2ability1 god2ability2 god2ability3";
+        "autoAttack ability1 ability2"
+        "god1ability1 god1ability2 god1ability3"
+        "god2ability1 god2ability2 god2ability3";
 }
 
 .autoAttack {
@@ -138,7 +144,7 @@
     grid-template-rows: 1fr;
     justify-content: stretch;
     grid-template-areas:
-      "battleItem1 battleItem2 battleItem3 battleItem4";
+        "battleItem1 battleItem2 battleItem3 battleItem4";
     gap: 15%;
 }
 
@@ -170,7 +176,7 @@
     grid-template-rows: 1fr;
     justify-content: stretch;
     grid-template-areas:
-      "abilityName abilityTimer abilitySwap";
+        "abilityName abilityTimer abilitySwap";
 }
 
 .abilityName {
@@ -185,9 +191,10 @@
     grid-area: abilitySwap;
 }
 
-.mat-progress-bar-element, .mat-progress-bar {
+.mat-progress-bar-element,
+.mat-progress-bar {
     height: 1rem !important;
-  }
+}
 
 .spinner {
     display: inline-block;
@@ -198,7 +205,8 @@
     display: flex;
 }
 
-.characterTargeted:hover, .targetModeActive {
+.characterTargeted:hover,
+.targetModeActive {
     border: 2px solid red !important;
 }
 
@@ -239,22 +247,25 @@ table {
 
 td {
     width: 25%;
-    border: 1px solid rgba(0,0,0,.1);
+    border: 1px solid rgba(0, 0, 0, .1);
     border-right: none;
-  }  
+}
 
-  table tr td:last-child, table tr td:nth-last-child(2), table tr td:nth-last-child(3), table tr td:nth-last-child(4) {
+table tr td:last-child,
+table tr td:nth-last-child(2),
+table tr td:nth-last-child(3),
+table tr td:nth-last-child(4) {
     border-bottom: none;
-  }
+}
 
-  table tr:nth-child(1) td:nth-child(-n+4) {
+table tr:nth-child(1) td:nth-child(-n+4) {
     border-top: none;
-  }
-  
-  table tr td:nth-child(4n) { 
-    border-right: none;
-  }
+}
 
-  table tr td:nth-child(4n-3) { 
+table tr td:nth-child(4n) {
+    border-right: none;
+}
+
+table tr td:nth-child(4n-3) {
     border-left: none;
-  }
+}

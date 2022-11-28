@@ -44,6 +44,7 @@ export class CharacterViewComponent implements OnInit {
   }
 
   getCharacterGodAbilities() {
+    this.god1AbilityList = [];
     if (this.character.assignedGod1 !== undefined && this.character.assignedGod1 !== GodEnum.None)
     {
       var god = this.globalService.globalVar.gods.find(item => item.type === this.character.assignedGod1);
@@ -51,6 +52,7 @@ export class CharacterViewComponent implements OnInit {
         this.god1AbilityList = god.abilityList;
     }
 
+    this.god2AbilityList = [];
     if (this.character.assignedGod2 !== undefined && this.character.assignedGod2 !== GodEnum.None)
     {
       var god = this.globalService.globalVar.gods.find(item => item.type === this.character.assignedGod2);

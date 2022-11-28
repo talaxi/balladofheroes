@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { AchievementTypeEnum } from "../enums/achievement-type-enum.copy";
 import { SubZoneEnum } from "../enums/sub-zone-enum.model";
 import { ResourceValue } from "../resources/resource-value.model";
@@ -5,6 +6,7 @@ import { ResourceValue } from "../resources/resource-value.model";
 export class Achievement {
     relatedSubzone: SubZoneEnum;
     achievementType: AchievementTypeEnum;
+    @Type(() => ResourceValue)
     bonusResources: ResourceValue[];
     completed: boolean;
 
@@ -15,5 +17,5 @@ export class Achievement {
 
         if (relatedSubzone !== undefined)
             this.relatedSubzone = relatedSubzone;
-    }
+    }    
 }

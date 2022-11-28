@@ -7,6 +7,8 @@ export class CharacterStats {
     luck: number; 
     resistance: number;
 
+    criticalMultiplier: number;
+
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
         this.currentHp = hp;        

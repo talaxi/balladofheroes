@@ -12,7 +12,7 @@ export class Ability {
     cooldown: number;
     effectiveness: number; 
     secondaryEffectiveness: number; //for multi part abilities
-    dealsDirectDamage: boolean;
+    dealsDirectDamage: boolean;    
     heals: boolean;
     targetsAllies: boolean;
     elementalType: ElementalTypeEnum;
@@ -36,6 +36,7 @@ export class Ability {
         this.abilitySequence = 1;
         this.threshold = 0;
         this.targetsAllies = false;
+        this.elementalType = ElementalTypeEnum.None;
 
         this.userGainsStatusEffect = [];
         this.targetGainsStatusEffect = [];

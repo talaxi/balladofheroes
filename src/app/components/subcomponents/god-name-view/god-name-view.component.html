@@ -3,7 +3,7 @@
         [contentTemplate]="god1Popover" class="god1" [ngClass]="lookupService.getGodColorClass(character.assignedGod1)"><span class="s3Heading">{{getCharacterGodName(character, 1)}}
         </span>
         <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span>
-        <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover">
+        <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xp1Popover">
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar">
             </mat-progress-bar>
         </div>
@@ -13,7 +13,7 @@
         [contentTemplate]="god2Popover" class="god2" [ngClass]="lookupService.getGodColorClass(character.assignedGod2)"><span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
         <strong><span>Lv
                 {{getCharacterGodLevel(character, 2)}}</span></strong>
-        <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover">
+        <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xp2Popover">
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar">
             </mat-progress-bar>
         </div>
@@ -22,24 +22,36 @@
 
 <ng-template #god1Popover>
     <div>
-        <span *ngIf="isGodPassiveUnlocked(1)">Passive: {{getGodPassiveDescription(1)}}</span>
+        <div *ngIf="isGodPassiveUnlocked(1)">
+        <span [innerHtml]="getGodPassiveDescription(1)"></span>
         <hr />
+    </div>
         Click for details on God.
     </div>
 </ng-template>
 
 <ng-template #god2Popover>
     <div>
-        <span *ngIf="isGodPassiveUnlocked(2)">Passive: {{getGodPassiveDescription(2)}}</span>
+        <div *ngIf="isGodPassiveUnlocked(2)" >
+        <span [innerHtml]="getGodPassiveDescription(2)"></span>
         <hr />
+        </div>
         Click for details on God.
     </div>
 </ng-template>
 
-<ng-template #xpPopover>
+<ng-template #xp1Popover>
     <div>
         Level {{getCharacterGodLevel(character, 1)}}
         <br />
-        {{character.exp}} / {{character.expToNextLevel}} XP to Level {{character.level + 1}}
+        {{getGodExp(1)}} / {{getGodExpToNextLevel(1)}} XP to Level {{getCharacterGodLevel(character, 1) + 1}}
+    </div>
+</ng-template>
+
+<ng-template #xp2Popover>
+    <div>
+        Level {{getCharacterGodLevel(character, 2)}}
+        <br />
+        {{getGodExp(2)}} / {{getGodExpToNextLevel(2)}} XP to Level {{getCharacterGodLevel(character, 2) + 1}}
     </div>
 </ng-template>

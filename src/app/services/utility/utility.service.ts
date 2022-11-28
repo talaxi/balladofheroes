@@ -8,8 +8,8 @@ import * as seedrandom from "seedrandom";
 export class UtilityService {
 
   //glossary
-  public quickAutoAttackSpeed = 6;
-  public averageAutoAttackSpeed = 8;
+  public quickAutoAttackSpeed = 5;
+  public averageAutoAttackSpeed = 7.5;
   public longAutoAttackSpeed = 10;
 
   public enemyQuickAutoAttackSpeed = 5;
@@ -18,9 +18,10 @@ export class UtilityService {
   public enemyVeryLongAutoAttackSpeed = 20;
   
   public maxItemBeltSize = 4;
-  public defaultCharacterAbilityLevel = 1;
-  public characterPassiveLevel = 2;
-  public characterAbility2Level = 5;
+  public defaultCharacterAbilityLevel = 2;
+  public characterPassiveLevel = 5;
+  public characterAbility2Level = 15;
+  public defaultGodAbilityLevel = 1;
   public godAbility2Level = 5;
   public godPassiveLevel = 2;
   public godAbility3Level = 10;
@@ -171,5 +172,9 @@ export class UtilityService {
       return i + "rd";
     }
     return i + "th";
+  }
+
+  roundTo(value: number, degree: number) {
+    return Math.round((value + Number.EPSILON) * (10 ** degree)) / (10 ** degree);
   }
 }

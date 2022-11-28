@@ -1,6 +1,9 @@
 export enum ElementalTypeEnum {
+  None,
+  Holy,
   Fire,
   Lightning,
   Earth,
-  Air
+  Air,
+  Water
 }

@@ -1,0 +1,53 @@
+.positiveStatusEffect {
+    border: 2px solid var(--positive-status-effect);
+    aspect-ratio: 1/1;
+}
+
+.negativeStatusEffect {
+    border: 2px solid var(--negative-status-effect);
+    aspect-ratio: 1/1;
+}
+
+.image {
+    height: 100%;
+    width: 100%;
+}
+
+.flex {
+    display: flex;
+}
+
+.positiveStatUpDownGrid {    
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 50% 50%;
+    justify-content: stretch;
+    grid-template-areas:
+      "halfImage"
+      "textDiv";
+}
+
+.negativeStatUpDownGrid {    
+    aspect-ratio: 1 / 1;
+    display: grid;
+    grid-template-columns: auto;
+    grid-template-rows: 50% 50%;
+    justify-content: stretch;
+    grid-template-areas:      
+      "textDiv"
+      "halfImage";
+}
+
+.halfImage {
+    grid-area: halfImage;
+}
+
+.textDiv {
+    grid-area: textDiv;
+    font-size: .75vw;
+    font-weight: 600;
+    text-align: center;
+    width: 100%;
+}
+

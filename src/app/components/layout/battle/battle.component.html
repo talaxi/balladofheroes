@@ -1,7 +1,7 @@
 <div class="gridContainer">
     <div class="scene">
-        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }" *ngIf="!isAtScene()">            
-            <div *ngIf="!currentEnemies.isBossFight" class="enemiesGrid">           
+        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }" *ngIf="!isAtScene()">
+            <div *ngIf="!currentEnemies.isBossFight" class="enemiesGrid">
                 <app-enemy-view [character]="currentEnemies.enemyList[0]" class="enemy1"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [character]="currentEnemies.enemyList[1]"
                     class="enemy2"></app-enemy-view>
@@ -11,17 +11,31 @@
                     class="enemy4"></app-enemy-view>
             </div>
         </div>
-        <div *ngIf="isAtScene()" class="storyGrid">
+        <div *ngIf="isAtStoryScene()" class="storyGrid">
             <div class="text" [innerHtml]="this.displayStorySegment()"></div>
-            <div class="loadingBar">
+            <div class="skipButton">
+                <button class="floatRight arrow" (click)="skipStory()">&#8594;</button>
+            </div>
+            <div class="loadingBar" *ngIf="true">
                 <mat-progress-bar mode="determinate" [value]="getPagePercent()" class="green-progress characterBar">
                 </mat-progress-bar>
             </div>
+        </div>
+        <div *ngIf="isAtChestScene()" class="chestGrid">
+            <div class="chestImage">
+                <img class="chestIcon" src="assets/svg/sword.svg">
+            </div>
+            <div class="text" [innerHtml]="this.displayChestText()"></div>
+            <div class="loadingBar" *ngIf="true">
+                <mat-progress-bar mode="determinate" [value]="getChestPercent()" class="green-progress characterBar">
+                </mat-progress-bar>
+            </div>
             <!--<hr class='hr' />-->
-        </div>        
-        <hr />
+        </div>
     </div>
-    <div class="battleUpdates" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
-        [innerHtml]="this.displayGameUpdates()">
+    <hr class='gap hr' />
+    <div class="battleUpdates">
+            <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)" [innerHtml]="this.displayGameUpdates()"></div>
+            <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)" class="skipToBottom arrow">&#8595;</button>        
     </div>
 </div>

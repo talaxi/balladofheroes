@@ -1,0 +1,45 @@
+.gridContainer {
+    display: grid;
+    margin-right: 3rem;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: .5fr 1fr 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "godInfo"
+        "godStats"
+        "godAbilities";
+}
+
+.godStats {
+    grid-area: godStats;
+}
+
+.godAbilities {
+    grid-area: godAbilities;
+}
+
+.godInfo {
+    grid-area: godInfo;
+}
+
+.baseInfo {
+    text-align: center;
+    grid-area: baseInfo;
+}
+
+
+.primaryStats {
+    grid-area: primaryStats;
+    text-align: center;
+}
+
+.secondaryStats {
+    grid-area: secondaryStats;
+    text-align: right;
+}
+
+.leftAlignText {
+    text-align: left;
+    display: inline-block;
+}

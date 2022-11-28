@@ -5,6 +5,7 @@ import { Character } from "./character.model";
 
 export class Enemy extends Character {
     xpGainFromDefeat: number;
+    coinGainFromDefeat: number;
     loot: LootItem[];
     
     constructor() {

@@ -21,7 +21,7 @@ export class SettingsViewComponent implements OnInit {
 
   public SaveGame() {
     var globalData = JSON.stringify(this.globalService.globalVar);
-    console.log(globalData);
+    console.log(this.globalService.globalVar);
     var compressedData = LZString.compressToBase64(globalData);
     this.importExportValue = compressedData;
   }

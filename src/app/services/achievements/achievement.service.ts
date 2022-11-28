@@ -20,8 +20,8 @@ export class AchievementService {
 
     var hundredVictories = new Achievement(AchievementTypeEnum.HundredVictories, subzoneType);
 
-    if (subzoneType === SubZoneEnum.AigosthenaLowerCoast) {
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10));
+    if (subzoneType === SubZoneEnum.AigosthenaUpperCoast) {      
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10));      
     }
 
     newAchievements.push(hundredVictories);
@@ -32,17 +32,19 @@ export class AchievementService {
     return newAchievements;
   }
 
-  checkForSubzoneAchievement(subzoneType: SubZoneEnum, achievements: Achievement[]) {
+  checkForSubzoneAchievement(subzoneType: SubZoneEnum, achievements: Achievement[]) {    
     var completedAchievement = undefined;
     var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);
 
-    if (subzoneRelatedAchievements !== undefined && subzoneRelatedAchievements.length > 0) {
+    if (subzoneRelatedAchievements !== undefined && subzoneRelatedAchievements.length > 0) {      
       var subzone = this.lookupService.getSubZoneByType(subzoneType);
       if (subzone === undefined)
         return completedAchievement;
 
       var hundredVictories = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.HundredVictories);
-      if (hundredVictories !== undefined && subzone.victoryCount >= 1 && !hundredVictories.completed && hundredVictories.bonusResources !== undefined) {                        
+      if (hundredVictories !== undefined && subzone.victoryCount >= 100 && !hundredVictories.completed && hundredVictories.bonusResources !== undefined) {                        
+          completedAchievement = hundredVictories;
+          hundredVictories.completed = true;
           hundredVictories.bonusResources.forEach(bonus => {
             this.lookupService.gainResource(bonus);
           });        
@@ -50,5 +52,17 @@ export class AchievementService {
     }
 
     return completedAchievement;
+  }
+
+  getAchievementsBySubZone(subzoneType: SubZoneEnum, achievements: Achievement[]) {    
+    var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);
+
+    return subzoneRelatedAchievements;
+  }
+
+  getUncompletedAchievementCountBySubZone(subzoneType: SubZoneEnum, achievements: Achievement[]) {
+    var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);
+
+    return subzoneRelatedAchievements.filter(item => !item.completed).length;
   }
 }

@@ -143,7 +143,8 @@
   --artemisColor: #f0f0f0;
   --hadesColor: #000000;  
 
-  --clearedSubzoneColor: red;
+  --clearedSubzoneColor: #b36b24;
+  --completedSubzoneColor: #e8c602;
 
   --basicEquipmentColor: #f0f0f0;
 }
@@ -438,6 +439,10 @@ html, body { height: 100%; }
 
 .clearedSubzoneColor {
   color: var(--clearedSubzoneColor);
+}
+
+.completedSubzoneColor {
+  color: var(--completedSubzoneColor);
 }
 
 .basicEquipment {

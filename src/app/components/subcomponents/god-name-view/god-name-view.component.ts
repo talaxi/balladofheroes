@@ -4,6 +4,7 @@ import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-god-name-view',
@@ -15,7 +16,7 @@ export class GodNameViewComponent implements OnInit {
   public noCharacter = CharacterEnum.none;
   public noGod = GodEnum.None;
   
-  constructor(private globalService: GlobalService, public lookupService: LookupService) { }
+  constructor(private globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
   }
@@ -44,9 +45,34 @@ export class GodNameViewComponent implements OnInit {
       return god.level;
     }
 
-    return "";
+    return 0;
   }
 
+  getGodExp(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (god !== undefined) {
+      return Math.round(god.exp);
+    }
+
+    return 0;
+  }
+
+  getGodExpToNextLevel(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (god !== undefined) {
+      return Math.round(god.expToNextLevel);
+    }
+
+    return 0;
+  }
   
   getGodPassiveDescription(whichGod: number) {
     var passiveDescription = "";

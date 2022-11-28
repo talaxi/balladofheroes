@@ -105,6 +105,13 @@ export class EquipmentViewComponent implements OnInit {
     return comparisonItem;
   }
 
+  getEquipmentName(equipment: ResourceValue) {
+    var name = this.lookupService.getItemName(equipment.item);
+    var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.item));
+
+    return this.utilityService.getSanitizedHtml("<strong class='" + qualityClass + "'>" + name + "</strong>");
+  }
+
   equipmentGain() {
     var characterStats = new CharacterStats(this.character.equipmentSet.getTotalMaxHpGain(),
       this.character.equipmentSet.getTotalAttackGain(), this.character.equipmentSet.getTotalDefenseGain(),

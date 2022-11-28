@@ -6,7 +6,7 @@
       <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)"
         (click)="equipItem(equipment)">
         <span customToolTip [isDelayed]="false"
-          [contentTemplate]="template">{{lookupService.getItemName(equipment.item)}}
+          [contentTemplate]="template" [innerHtml]="getEquipmentName(equipment)">
           x{{equipment.amount}}</span>
       </div>
     </div>

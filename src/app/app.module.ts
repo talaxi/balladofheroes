@@ -63,6 +63,7 @@ import { GodViewComponent } from './components/menu/god-view/god-view.component'
 import { CurrentEquipmentViewComponent } from './components/subcomponents/current-equipment-view/current-equipment-view.component';
 import { SettingsViewComponent } from './components/menu/settings-view/settings-view.component';
 import { NotificationIconComponent } from './components/subcomponents/notification-icon/notification-icon.component';
+import { IndividualStatusEffectViewComponent } from './components/subcomponents/status-effect-view/individual-status-effect-view/individual-status-effect-view.component';
 
 
 @NgModule({
@@ -91,7 +92,8 @@ import { NotificationIconComponent } from './components/subcomponents/notificati
     GodViewComponent,
     CurrentEquipmentViewComponent,
     SettingsViewComponent,
-    NotificationIconComponent
+    NotificationIconComponent,
+    IndividualStatusEffectViewComponent
   ],
   imports: [
     BrowserModule,

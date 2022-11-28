@@ -3,12 +3,16 @@
     height: 100%;
     margin: 0 .5rem;
     grid-template-columns: auto;
-    grid-template-rows: 1fr 1fr;
+    grid-template-rows: 1fr 1rem 1fr;
     justify-content: stretch;
-    grid-row-gap: 1rem;
     grid-template-areas:
         "scene"
+        "gap"
         "battleUpdates";
+}
+
+.gap {
+    grid-area: gap;
 }
 
 .enemies {
@@ -18,9 +22,21 @@
 .battleUpdates {
     grid-area: battleUpdates;
 
-    white-space: pre;
     overflow-x: hidden;
     overflow-y: auto;
+    position: relative;
+}
+
+.innerContainer {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+
+.skipToBottom {
+    position: absolute;
+    bottom: 0;
+    right: 2rem;
 }
 
 .enemiesGrid {
@@ -54,15 +70,55 @@
     display: grid;
     height: 100%;
     grid-template-columns: auto;
-    grid-template-rows: 90% 1fr;
+    grid-template-rows: 80% 1fr 1fr;
+    gap: 1rem;
     justify-content: stretch;
     grid-template-areas:
+        "text"
+        "skipButton"
+        "loadingBar";
+}
+
+.chestGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: 75% 15% 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "chestImage"
         "text"
         "loadingBar";
 }
 
+.chestImage {
+    grid-area: chestImage;
+    margin: auto;
+}
+
+.text {
+    grid-area: text;
+}
+
+.loadingBar {
+    grid-area: loadingBar;
+    height: 4px;
+}
+
+.chestIcon {
+    height: 15vh;
+}
+
 .hr {
     width: 100%;
+}
+
+.floatRight {
+    float: right;
+}
+
+.arrow {
+    font-weight: 700;
 }
 
 .slideAnimation {

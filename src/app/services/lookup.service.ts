@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { StatusEffect } from '../models/battle/status-effect.model';
 import { Ability } from '../models/character/ability.model';
 import { CharacterStats } from '../models/character/character-stats.model';
 import { Character } from '../models/character/character.model';
@@ -13,6 +14,7 @@ import { ItemsEnum } from '../models/enums/items-enum.model';
 import { StatusEffectEnum } from '../models/enums/status-effects-enum.model';
 import { SubZoneEnum } from '../models/enums/sub-zone-enum.model';
 import { WeaponTypeEnum } from '../models/enums/weapon-type-enum.model';
+import { Achievement } from '../models/global/achievement.model';
 import { Equipment } from '../models/resources/equipment.model';
 import { ResourceValue } from '../models/resources/resource-value.model';
 import { SubZone } from '../models/zone/sub-zone.model';
@@ -54,6 +56,13 @@ export class LookupService {
     });
 
     return chosenSubzone;
+  }
+
+  getAchievementName(achievement: Achievement) {
+    var name = "";
+
+
+    return name;
   }
 
   getTotalXpGainFromEnemyTeam(enemyTeam: Enemy[]) {
@@ -170,11 +179,21 @@ export class LookupService {
     return equipmentPiece;
   }
 
-  getEquipmentQualityClass(item: Equipment) {
+  getEquipmentQualityClass(item?: Equipment) {
     var classText = "";
+    if (item === undefined)
+      return classText;
+
     if (item.quality === EquipmentQualityEnum.Basic)
       classText = "basicEquipment";
     return classText;
+  }
+
+  getItemTextClass(item: ResourceValue) {
+    if (item.type === ItemTypeEnum.Equipment)
+      return this.getEquipmentQualityClass(this.getEquipmentPieceByItemType(item.item));
+    else
+      return "";
   }
 
   getAutoAttackDescription(character: Character) {
@@ -193,7 +212,9 @@ export class LookupService {
   getCharacterAbilityDescription(abilityName: string, character: Character, ability?: Ability) {
     var abilityDescription = "";
     var effectiveAmount = 0;
+    var effectiveAmountPercent = 0; //for nondamage
     var abilityCount = 0;
+    var thresholdAmountPercent = 0;
     var relatedUserGainStatusEffectDuration = 0;
     var relatedUserGainStatusEffectEffectiveness = 0;
     var relatedUserGainStatusEffectEffectivenessPercent = 0;
@@ -201,10 +222,15 @@ export class LookupService {
     var relatedTargetGainStatusEffectEffectiveness = 0;
     var relatedTargetGainStatusEffectEffectivenessPercent = 0;
     var relatedTargetGainStatusEffectTickFrequency = 0;
+    var cooldown = 0;
 
     if (ability !== undefined) {
       effectiveAmount = Math.round(this.getAbilityEffectiveAmount(character, ability));
+      effectiveAmountPercent = Math.round((ability.effectiveness - 1) * 100);
+      thresholdAmountPercent = Math.round((ability.threshold) * 100);
       abilityCount = ability.maxCount;
+      cooldown = ability.cooldown;
+
       var relatedUserGainStatusEffect = ability?.userGainsStatusEffect[0];
 
       if (relatedUserGainStatusEffect !== undefined) {
@@ -231,42 +257,152 @@ export class LookupService {
 
     //Adventurer
     if (abilityName === "Quick Hit")
-      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage and increase Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage and increase Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Barrage")
-      abilityDescription = "Every <strong>" + this.utilityService.ordinalSuffixOf(abilityCount) + "</strong> auto attack hits all additional enemies for <strong>" + (ability !== undefined ? (ability!.effectiveness * 100).toString() : "") + "%</strong> of the damage dealt.";
+      abilityDescription = "Every <strong>" + this.utilityService.ordinalSuffixOf(abilityCount) + "</strong> auto attack hits all additional enemies for <strong>" + (ability !== undefined ? (ability!.effectiveness * 100).toString() : "") + "%</strong> of the damage dealt. Passive.";
     if (abilityName === "Thousand Cuts")
-      abilityDescription = "For <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds, deal an additional <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> damage after each auto attack or ability.";
+      abilityDescription = "For <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds, deal an additional <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> damage after each auto attack or ability. " + cooldown + " second cooldown.";
 
     //Archer
     if (abilityName === "Sure Shot")
-      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds.";
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Mark")
-      abilityDescription = "When an enemy has a status effect that you have applied, they also have Mark. Mark increases damage taken by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong>.";
+      abilityDescription = "When an enemy has a status effect that you have applied, they also have Mark. Mark increases damage taken by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong>. Passive.";
     if (abilityName === "Pinning Shot")
-      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. Stun the target for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds.";
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. Stun the target for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
     //Warrior
+    if (abilityName === "Battle Cry")
+      abilityDescription = "Draw all targets' focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. " + cooldown + " second cooldown.";
     if (abilityName === "Last Stand")
-      abilityDescription = "Last Stand Description";
+      abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
+    if (abilityName === "Shield Slam")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. Deals increased damage based on defense. " + cooldown + " second cooldown.";
 
     //Priest
+    if (abilityName === "Heal")
+      abilityDescription = "Heal a party member for <strong>" + effectiveAmount + "</strong> HP. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
     if (abilityName === "Faith")
-      abilityDescription = "Faith Description";
+      abilityDescription = "God abilities for all characters are more effective by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
+    if (abilityName === "Pray")
+      abilityDescription = "Grant all characters a <strong>" + effectiveAmount + "</strong> HP Shield, up to <strong>" + thresholdAmountPercent + "%</strong> of their total health. " + cooldown + " second cooldown.";
 
     return this.utilityService.getSanitizedHtml(abilityDescription);
   }
 
   getGodAbilityDescription(abilityName: string, character: Character, ability?: Ability) {
     var abilityDescription = "";
+    var effectiveAmount = 0;
+    var effectiveAmountPercent = 0; //for nondamage
+    var abilityCount = 0;
+    var thresholdAmountPercent = 0;
+    var relatedUserGainStatusEffectDuration = 0;
+    var relatedUserGainStatusEffectEffectiveness = 0;
+    var relatedUserGainStatusEffectEffectivenessPercent = 0;
+    var relatedTargetGainStatusEffectDuration = 0;
+    var relatedTargetGainStatusEffectEffectiveness = 0;
+    var relatedTargetGainStatusEffectEffectivenessPercent = 0;
+    var relatedTargetGainStatusEffectTickFrequency = 0;
+    var cooldown = 0;
 
-    if (abilityName === "Second Wind") {
-      abilityDescription = "Second Wind Description";
+    if (ability !== undefined) {
+      effectiveAmount = Math.round(this.getAbilityEffectiveAmount(character, ability));
+      effectiveAmountPercent = Math.round((ability.effectiveness - 1) * 100);
+      thresholdAmountPercent = Math.round((ability.threshold) * 100);
+      abilityCount = ability.maxCount;
+      cooldown = ability.cooldown;
+
+      var relatedUserGainStatusEffect = ability?.userGainsStatusEffect[0];
+
+      if (relatedUserGainStatusEffect !== undefined) {
+        relatedUserGainStatusEffectDuration = Math.round(relatedUserGainStatusEffect.duration);
+        relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
+        if (relatedUserGainStatusEffectEffectiveness < 1)
+          relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness) * 100);
+        else
+          relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness - 1) * 100);
+      }
+
+      var relatedTargetGainStatusEffect = ability?.targetGainsStatusEffect[0];
+
+      if (relatedTargetGainStatusEffect !== undefined) {
+        relatedTargetGainStatusEffectDuration = Math.round(relatedTargetGainStatusEffect.duration);
+        relatedTargetGainStatusEffectEffectiveness = relatedTargetGainStatusEffect.effectiveness;
+        if (relatedTargetGainStatusEffectEffectiveness < 1)
+          relatedTargetGainStatusEffectEffectivenessPercent = Math.round((relatedTargetGainStatusEffectEffectiveness) * 100);
+        else
+          relatedTargetGainStatusEffectEffectivenessPercent = Math.round((relatedTargetGainStatusEffectEffectiveness - 1) * 100);
+        relatedTargetGainStatusEffectTickFrequency = relatedTargetGainStatusEffect.tickFrequency;
+      }
     }
-    if (abilityName === "Divine Strike") {
-      abilityDescription = "Divine Strike Description";
-    }
+
+    //Athena
+    if (abilityName === "Second Wind")
+      abilityDescription = "After using an ability, your next auto attack heals for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. Passive.";
+    if (abilityName === "Divine Strike")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
+    if (abilityName === "Heavenly Shield")
+      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. " + cooldown + " second cooldown.";
+    if (abilityName === "Blinding Light")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage to all targets. Blind them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+
+    //Zeus
+    if (abilityName === "Overload")
+      abilityDescription = "Surge effect increases damage dealt by next ability by " + effectiveAmount + "%. Passive";
+    if (abilityName === "Lightning Bolt")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> Lightning damage. Grants user Surge. " + cooldown + " second cooldown.";
+    if (abilityName === "Chain Lightning")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> Lightning damage. Deal 25% less damage to another random target. Repeat until all targets have been hit. " + cooldown + " second cooldown.";
+    if (abilityName === "Judgment")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. " + cooldown + " second cooldown.";
+
+    //Artemis
+    if (abilityName === "Expose Weakness")
+      abilityDescription = "If your target has a negative status effect, increase critical strike chance by X% when attacking. Passive.";
+    if (abilityName === "Wounding Shot")
+      abilityDescription = "Deal medium damage and apply Attack Down debuff to target.";
+    if (abilityName === "Electric Volley")
+      abilityDescription = "Deal a small amount of damage to all targets. Paralyze them.";
+    if (abilityName === "True Shot")
+      abilityDescription = "Deal a small amount of damage. Any negative status effects on the target have their duration increased by 20% of the original duration.";
+
+    //Apollo
+
+    //Hermes
 
     return abilityDescription;
+  }
+
+  getStatusEffectDescription(statusEffect: StatusEffect) {
+    var description = "";
+
+    if (statusEffect.type === StatusEffectEnum.AgilityUp)
+      description = "Increase Agility by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.AttackUp)
+      description = "Increase Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.DefenseUp)
+      description = "Increase Defense by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.LuckUp)
+      description = "Increase Luck by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.ResistanceUp)
+      description = "Increase Resistance by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.MaxHpUp)
+      description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+
+    if (statusEffect.type === StatusEffectEnum.AgilityDown)
+      description = "Decrease Agility by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.AttackDown)
+      description = "Decrease Attack by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.DefenseDown)
+      description = "Decrease Defense by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.LuckDown)
+      description = "Decrease Luck by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.ResistanceDown)
+      description = "Decrease Resistance by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.MaxHpDown)
+      description = "Decrease Max HP by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+
+    return description;
   }
 
   getGodNameByType(godType: GodEnum) {
@@ -354,6 +490,41 @@ export class LookupService {
     return timeToAutoAttack;
   }
 
+  getDamageCriticalChance(attacker: Character, target: Character) {
+    var criticalChance = .05;
+
+    var attackerLuck = this.getAdjustedLuck(attacker);
+    var targetResistance = this.getAdjustedResistance(target);
+
+    var difference = attackerLuck - targetResistance;
+
+    if (difference > 0) {
+      var amplifier = 50;
+      var horizontalStretch = .05;
+      var horizontalPosition = 5;
+
+      //500 * (log(.0035 * 10 + 1)) + 50      
+      criticalChance = (amplifier * Math.log10(horizontalStretch * (difference) + horizontalPosition) / 100);
+    }
+
+    return criticalChance;
+  }
+  
+  getHealingCriticalChance(attacker: Character) {
+    var criticalChance = .05;
+
+    var attackerLuck = this.getAdjustedLuck(attacker);
+
+    var amplifier = 20;
+    var horizontalStretch = .05;
+    var horizontalPosition = 5;
+
+    //500 * (log(.0035 * 10 + 1)) + 50      
+    criticalChance = (amplifier * Math.log10(horizontalStretch * (attackerLuck) + horizontalPosition) / 100);
+
+    return criticalChance;
+  }
+
   getAdjustedAgility(character: Character) {
     var agility = character.battleStats.agility;
 
@@ -371,6 +542,44 @@ export class LookupService {
     }
 
     return agility;
+  }
+
+  getAdjustedLuck(character: Character) {
+    var luck = character.battleStats.luck;
+
+    if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
+      var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.LuckUp ||
+        effect.type === StatusEffectEnum.LuckDown);
+
+      if (relevantStatusEffects.length > 0) {
+        relevantStatusEffects.forEach(effect => {
+          if (effect.type === StatusEffectEnum.LuckUp || effect.type === StatusEffectEnum.LuckDown) {
+            luck *= effect.effectiveness;
+          }
+        });
+      }
+    }
+
+    return luck;
+  }
+
+  getAdjustedResistance(character: Character) {
+    var resistance = character.battleStats.resistance;
+
+    if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
+      var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.ResistanceUp ||
+        effect.type === StatusEffectEnum.ResistanceDown);
+
+      if (relevantStatusEffects.length > 0) {
+        relevantStatusEffects.forEach(effect => {
+          if (effect.type === StatusEffectEnum.ResistanceUp || effect.type === StatusEffectEnum.ResistanceDown) {
+            resistance *= effect.effectiveness;
+          }
+        });
+      }
+    }
+
+    return resistance;
   }
 
   getAdjustedAttack(character: Character, ability?: Ability) {
@@ -419,6 +628,10 @@ export class LookupService {
     }
 
     return defense;
+  }
+
+  getAdjustedCriticalMultiplier(character: Character) {
+    return 1.5;
   }
 
   getCharacterColorClass(type: CharacterEnum) {

@@ -19,10 +19,12 @@ export enum StatusEffectEnum {
     DamageTakenUp,
     DamageOverTime,
     Stun,
+    Paralyze,
     Taunt,
     Mark,
     Blind,
     Barrage,
     ThousandCuts,
-    Shield
+    Shield,
+    DebuffDurationIncrease
   }

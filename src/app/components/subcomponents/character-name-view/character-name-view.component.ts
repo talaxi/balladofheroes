@@ -92,7 +92,7 @@ export class CharacterNameViewComponent implements OnInit {
 
     passiveDescription = this.lookupService.getCharacterAbilityDescription(passiveAbility.name, this.character, passiveAbility);
 
-    return "Passive: " + this.utilityService.getSanitizedHtml(passiveDescription);
+    return this.utilityService.getSanitizedHtml(passiveDescription);
   }
 
   getCharacterXpPercent() {

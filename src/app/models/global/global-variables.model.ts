@@ -4,7 +4,9 @@ import { Character } from "../character/character.model";
 import { God } from "../character/god.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
+import { FreeTreasureChests } from "../resources/free-treasure-chests.model";
 import { ResourceValue } from "../resources/resource-value.model";
+import { Settings } from "../utility/settings.model";
 import { Ballad } from "../zone/ballad.model";
 import { PlayerNavigation } from "../zone/player-navigation.model";
 import { Zone } from "../zone/zone.model";
@@ -32,11 +34,15 @@ export class GlobalVariables {
     activeBattle: Battle;
     @Type(() => Achievement)
     achievements: Achievement[];
-    playerNavigation: PlayerNavigation;
+    @Type(() => Settings)
+    settings: Settings;
+    //playerNavigation: PlayerNavigation;
     itemBeltSize: number;
     itemBelt: ItemsEnum[];
     currentStoryId: number;
     godXpModifier: number;
+    @Type(() => FreeTreasureChests)
+    freeTreasureChests: FreeTreasureChests;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -47,9 +53,11 @@ export class GlobalVariables {
         this.itemBelt = [];
         this.achievements = [];
         this.itemBeltSize = 1;
-        this.activeBattle = new Battle();
-        this.playerNavigation = new PlayerNavigation();
+        //this.activeBattle = new Battle();
+        //this.playerNavigation = new PlayerNavigation();
         this.timers = new Timers();
+        this.settings = new Settings();
+        this.freeTreasureChests = new FreeTreasureChests();
         this.currentStoryId = 0;
         this.godXpModifier = .1;
     }

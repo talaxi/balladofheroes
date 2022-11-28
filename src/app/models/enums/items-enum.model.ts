@@ -7,5 +7,7 @@ export enum ItemsEnum {
   BronzeHammer,
   ShortBow,
   BronzeShield,
-  BronzeArmor
+  BronzeArmor,
+  EagleFeather,
+  LamiaFang
 }

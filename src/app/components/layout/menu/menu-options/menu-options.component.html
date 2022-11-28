@@ -14,6 +14,13 @@
     <div>
       <button (click)="switchView(menuEnum.Gods)"
         [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Gods }">Gods</button>
+        <div class="godSelect" *ngIf="menuService.selectedMenuDisplay === menuEnum.Gods">
+          <div *ngFor="let god of gods">
+            <span (click)="selectGod(god)">
+              {{god.name}}
+            </span>
+          </div>
+        </div>
     </div>    
     <div>
       <button (click)="switchView(menuEnum.Settings)"

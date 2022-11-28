@@ -14,6 +14,7 @@ export class God {
     abilityList: Ability[];
     exp: number;
     expToNextLevel: number;
+    isAvailable: boolean;
 
     constructor(type: GodEnum) {
         this.type = type;
@@ -23,5 +24,6 @@ export class God {
         this.abilityList = [];
         this.exp = 0;
         this.expToNextLevel = 200;
+        this.isAvailable = false;
     }
 }

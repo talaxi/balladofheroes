@@ -8,6 +8,7 @@ import { environment } from 'src/environments/environment';
 import { DeploymentService } from './services/deployment/deployment.service';
 import { BattleService } from './services/battle/battle.service';
 import { BalladService } from './services/ballad/ballad.service';
+import { InitializationService } from './services/global/initialization.service';
 declare var LZString: any;
 
 @Component({
@@ -22,7 +23,7 @@ export class AppComponent {
   saveFrequency = 10; //in seconds
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
-    private deploymentService: DeploymentService, private battleService: BattleService, private balladService: BalladService) {
+    private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService) {
 
   }
 
@@ -51,10 +52,11 @@ export class AppComponent {
       {
         console.log("New game forced");
         this.globalService.initializeGlobalVariables();
+        this.initializationService.initializeVariables();
       }
 
       if (devMode) {
-        this.globalService.devMode();
+        this.initializationService.devMode();
       }
 
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {      

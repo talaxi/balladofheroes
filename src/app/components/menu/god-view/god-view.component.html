@@ -1,1 +1,34 @@
-<p>god-view works!</p>
+<div class="gridContainer">
+    <div class="godInfo">
+        <div class="baseInfo">
+            <span class="s2Heading" [ngClass]="getGodColor()">{{god.name}}</span>
+            <br />
+            <span>Level {{god.level}}</span>
+            <br />
+            <span>{{god.exp}} / {{god.expToNextLevel}} XP to Level {{god.level + 1}}</span>
+        </div>
+    </div>
+    <div class="godStats">
+        <div class="leftAlignText">
+            <span class="s4Heading">Stat Gain</span>
+            <br />
+            <span><strong>Max HP:</strong> {{god.statGain.maxHp}}</span>
+            <br />
+            <span><strong>Attack:</strong> {{god.statGain.attack}}</span>
+            <br />
+            <span><strong>Agility:</strong> {{god.statGain.agility}}</span>
+            <br />
+            <span><strong>Luck:</strong> {{god.statGain.luck}}</span>
+            <br />
+            <span><strong>Defense:</strong> {{god.statGain.defense}}</span>
+            <br />
+            <span><strong>Resistance:</strong> {{god.statGain.resistance}}</span>
+        </div>
+    </div>
+    <div class="godAbilities">
+        <div *ngFor="let ability of god.abilityList">
+            <strong [ngClass]="getGodColor()">{{ability.name}}</strong> - <span
+                [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
+        </div>
+    </div>
+</div>

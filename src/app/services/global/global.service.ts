@@ -9,6 +9,8 @@ import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { God } from 'src/app/models/character/god.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
@@ -20,6 +22,7 @@ import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
+import { GameLogService } from '../battle/game-log.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
 
@@ -29,7 +32,7 @@ import { UtilityService } from '../utility/utility.service';
 export class GlobalService {
   globalVar = new GlobalVariables();
 
-  constructor(private utilityService: UtilityService, private achievementService: AchievementService) { }
+  constructor(private utilityService: UtilityService, private gameLogService: GameLogService) { }
 
   initializeGlobalVariables() {
     this.globalVar = new GlobalVariables();
@@ -37,15 +40,13 @@ export class GlobalService {
     this.globalVar.characters = [];
     this.globalVar.ballads = [];
     this.globalVar.itemBelt = [];
-    this.globalVar.activeBattle = new Battle();
+    //this.globalVar.activeBattle = new Battle();
 
     this.initializeCharacters();
     this.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
     this.globalVar.activePartyMember2 = CharacterEnum.none;
 
     this.initializeGods();
-
-    this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
 
     this.initializeItemBelt();
   }
@@ -102,12 +103,12 @@ export class GlobalService {
     if (character.type === CharacterEnum.Adventurer) {
       var quickHit = new Ability();
       quickHit.name = "Quick Hit";
-      quickHit.isAvailable = true;
+      quickHit.isAvailable = false;
       quickHit.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
-      quickHit.effectiveness = 1.3;
+      quickHit.effectiveness = 1.5;
       quickHit.cooldown = quickHit.currentCooldown = 20;
       quickHit.dealsDirectDamage = true;
-      quickHit.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.1, false, true));      
+      quickHit.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true));
       character.abilityList.push(quickHit);
 
       var barrage = new Ability();
@@ -132,11 +133,11 @@ export class GlobalService {
       var sureShot = new Ability();
       sureShot.name = "Sure Shot";
       sureShot.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
-      sureShot.isAvailable = true;
-      sureShot.effectiveness = 1.1;
+      sureShot.isAvailable = false;
+      sureShot.effectiveness = 1.2;
       sureShot.cooldown = sureShot.currentCooldown = 25;
       sureShot.dealsDirectDamage = true;
-      sureShot.targetGainsStatusEffect.push(this.createDamageOverTimeEffect(12, 3, .1, sureShot.name));
+      sureShot.targetGainsStatusEffect.push(this.createDamageOverTimeEffect(12, 3, .2, sureShot.name));
       character.abilityList.push(sureShot);
 
       var mark = new Ability();
@@ -144,7 +145,7 @@ export class GlobalService {
       mark.requiredLevel = this.utilityService.characterPassiveLevel;
       mark.isAvailable = false;
       mark.isPassive = true;
-      mark.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Mark, 10, 1.1, false, false));  
+      mark.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Mark, 10, 1.1, false, false));
       character.abilityList.push(mark);
 
       var pinningShot = new Ability();
@@ -152,15 +153,17 @@ export class GlobalService {
       pinningShot.requiredLevel = this.utilityService.characterAbility2Level;
       pinningShot.isAvailable = false;
       pinningShot.cooldown = pinningShot.currentCooldown = 35;
-      pinningShot.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));      
+      pinningShot.dealsDirectDamage = true;
+      pinningShot.effectiveness = 1.25;
+      pinningShot.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));
       character.abilityList.push(pinningShot);
     }
 
     if (character.type === CharacterEnum.Warrior) {
       var battleCry = new Ability();
-      battleCry.name = "Battlecry";
+      battleCry.name = "Battle Cry";
       battleCry.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
-      battleCry.isAvailable = true;
+      battleCry.isAvailable = false;
       battleCry.cooldown = battleCry.currentCooldown = 10;
       battleCry.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 15, 0, false, false, true, character.name));
       character.abilityList.push(battleCry);
@@ -170,8 +173,8 @@ export class GlobalService {
       lastStand.requiredLevel = this.utilityService.characterPassiveLevel;
       lastStand.isAvailable = false;
       lastStand.isPassive = true;
-      lastStand.threshold = .25;    
-      lastStand.effectiveness = 1.25;        
+      lastStand.threshold = .25;
+      lastStand.effectiveness = 1.25;
       character.abilityList.push(lastStand);
 
       var shieldSlam = new Ability();
@@ -190,7 +193,7 @@ export class GlobalService {
       heal.name = "Heal";
       heal.requiredLevel = this.utilityService.characterAbility2Level;
       heal.targetType = TargetEnum.LowestHpPercent;
-      heal.isAvailable = true;
+      heal.isAvailable = false;
       heal.effectiveness = 1;
       heal.heals = true;
       heal.targetsAllies = true;
@@ -203,19 +206,19 @@ export class GlobalService {
       faith.requiredLevel = this.utilityService.characterPassiveLevel;
       faith.isAvailable = false;
       faith.isPassive = true;
-      faith.effectiveness = 2.25;
+      faith.effectiveness = 1.25;
       character.abilityList.push(faith);
 
       var barrier = new Ability();
-      barrier.name = "Barrier";
+      barrier.name = "Pray";
       barrier.requiredLevel = this.utilityService.characterAbility2Level;
-      barrier.isAvailable = false;   
+      barrier.isAvailable = false;
       barrier.dealsDirectDamage = false;
       barrier.isAoe = true;
       barrier.targetsAllies = true;
       barrier.effectiveness = .6;
       barrier.threshold = .10;
-      barrier.cooldown = barrier.currentCooldown = 5;      
+      barrier.cooldown = barrier.currentCooldown = 5;
       character.abilityList.push(barrier);
     }
   }
@@ -259,9 +262,11 @@ export class GlobalService {
       var divineStrike = new Ability();
       divineStrike.name = "Divine Strike";
       divineStrike.isAvailable = false;
-      divineStrike.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
-      divineStrike.cooldown = divineStrike.currentCooldown = 35;
+      divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      divineStrike.cooldown = divineStrike.currentCooldown = 30;
       divineStrike.dealsDirectDamage = true;
+      divineStrike.effectiveness = 1.6;
+      divineStrike.elementalType = ElementalTypeEnum.Holy;
       divineStrike.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
       god.abilityList.push(divineStrike);
 
@@ -279,6 +284,128 @@ export class GlobalService {
       blindingLight.isAvailable = false;
       blindingLight.cooldown = blindingLight.currentCooldown = 25;
       blindingLight.dealsDirectDamage = true;
+      blindingLight.effectiveness = .5;
+      blindingLight.elementalType = ElementalTypeEnum.Holy;
+      blindingLight.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false));
+      god.abilityList.push(blindingLight);
+
+      var secondWind = new Ability();
+      secondWind.name = "Second Wind";
+      secondWind.requiredLevel = this.utilityService.godPassiveLevel;
+      secondWind.isAvailable = false;
+      secondWind.isPassive = true;
+      secondWind.dealsDirectDamage = true;
+      secondWind.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
+      god.abilityList.push(secondWind);
+    }
+
+    if (god.type === GodEnum.Artemis) {
+      var woundingArrow = new Ability();
+      woundingArrow.name = "Wounding Arrow";
+      woundingArrow.isAvailable = false;
+      woundingArrow.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      woundingArrow.cooldown = woundingArrow.currentCooldown = 18;
+      woundingArrow.effectiveness = 1.2;
+      woundingArrow.dealsDirectDamage = true;
+      woundingArrow.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackDown, 6, .9, false, false));
+      god.abilityList.push(woundingArrow);
+
+      var electricVolley = new Ability();
+      electricVolley.name = "Electric Volley";
+      electricVolley.isAvailable = false;
+      electricVolley.requiredLevel = this.utilityService.godAbility2Level;
+      electricVolley.cooldown = electricVolley.currentCooldown = 40;
+      electricVolley.effectiveness = .35;
+      electricVolley.isAoe = true;
+      electricVolley.dealsDirectDamage = true;
+      electricVolley.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Paralyze, 12, 0, false, false, true));
+      god.abilityList.push(woundingArrow);
+
+      var trueShot = new Ability();
+      trueShot.name = "True Shot";
+      trueShot.isAvailable = false;
+      trueShot.requiredLevel = this.utilityService.godAbility3Level;
+      trueShot.cooldown = trueShot.currentCooldown = 55;      
+      trueShot.dealsDirectDamage = true;
+      trueShot.effectiveness = 1.8;
+      trueShot.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
+      god.abilityList.push(trueShot);
+
+      var exposeWeakness = new Ability();
+      exposeWeakness.name = "Expose Weakness";
+      exposeWeakness.isAvailable = false;
+      exposeWeakness.requiredLevel = this.utilityService.godPassiveLevel;      
+      exposeWeakness.isPassive = true;
+      exposeWeakness.effectiveness = 1.1;
+      god.abilityList.push(exposeWeakness);
+    }
+    
+    if (god.type === GodEnum.Apollo) {
+      var staccato = new Ability();
+      staccato.name = "Staccato";
+      staccato.isAvailable = false;
+      staccato.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      staccato.cooldown = staccato.currentCooldown = 45;      
+      staccato.dealsDirectDamage = false;
+      staccato.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.1, false, true, true));
+      god.abilityList.push(staccato);
+
+      var fortissimo = new Ability();
+      fortissimo.name = "Fortissimo";
+      fortissimo.isAvailable = false;
+      fortissimo.requiredLevel = this.utilityService.godAbility2Level;
+      fortissimo.cooldown = fortissimo.currentCooldown = 45;      
+      fortissimo.dealsDirectDamage = false;
+      fortissimo.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 8, 1.1, false, true, true));
+      god.abilityList.push(fortissimo);
+
+      var allegro = new Ability();
+      allegro.name = "Allegro";
+      allegro.isAvailable = false;
+      allegro.requiredLevel = this.utilityService.godAbility3Level;
+      allegro.cooldown = allegro.currentCooldown = 60;      
+      allegro.dealsDirectDamage = true;
+      allegro.effectiveness = 1.8;
+      allegro.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.LuckUp, 5, 1.1, false, true, true));
+      god.abilityList.push(allegro);
+
+      var ostinato = new Ability();
+      ostinato.name = "Ostinato";
+      ostinato.isAvailable = false;
+      ostinato.requiredLevel = this.utilityService.godPassiveLevel;      
+      ostinato.isPassive = true;
+      ostinato.effectiveness = .8;
+      god.abilityList.push(ostinato);
+    }
+    
+    if (god.type === GodEnum.Hermes) {
+      var divineStrike = new Ability();
+      divineStrike.name = "Divine Strike";
+      divineStrike.isAvailable = false;
+      divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      divineStrike.cooldown = divineStrike.currentCooldown = 30;
+      divineStrike.dealsDirectDamage = true;
+      divineStrike.effectiveness = 1.6;
+      divineStrike.elementalType = ElementalTypeEnum.Holy;
+      divineStrike.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
+      god.abilityList.push(divineStrike);
+
+      var aegis = new Ability();
+      aegis.name = "Heavenly Shield";
+      aegis.requiredLevel = this.utilityService.godAbility2Level;
+      aegis.isAvailable = false;
+      aegis.cooldown = aegis.currentCooldown = 6;
+      aegis.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenDown, 8, .8, false, true));
+      god.abilityList.push(aegis);
+
+      var blindingLight = new Ability();
+      blindingLight.name = "Blinding Light";
+      blindingLight.requiredLevel = this.utilityService.godAbility3Level;
+      blindingLight.isAvailable = false;
+      blindingLight.cooldown = blindingLight.currentCooldown = 25;
+      blindingLight.dealsDirectDamage = true;
+      blindingLight.effectiveness = .5;
+      blindingLight.elementalType = ElementalTypeEnum.Holy;
       blindingLight.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false));
       god.abilityList.push(blindingLight);
 
@@ -297,20 +424,13 @@ export class GlobalService {
     }
 
     if (god.type === GodEnum.Ares) {
-      
-    }
 
-    if (god.type === GodEnum.Apollo) {
-      
     }
 
     if (god.type === GodEnum.Poseidon) {
-      
+
     }
 
-    if (god.type === GodEnum.Artemis) {
-      
-    }
   }
 
   initializeItemBelt() {
@@ -334,7 +454,7 @@ export class GlobalService {
 
     if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark)
       statusEffect.refreshes = true;
-      
+
 
     return statusEffect;
   }
@@ -376,18 +496,6 @@ export class GlobalService {
         characters.push(character2);
     }
 
-    /*if (this.globalVar.activePartyMember3 === CharacterEnum.none) {
-      if (!excludeEmptySlots)
-        characters.push(new Character());
-    }
-    else {
-      var character3 = this.globalVar.characters.find(item => item.type === this.globalVar.activePartyMember3);
-      if (character3 === undefined)
-        characters.push(new Character());
-      else
-        characters.push(character3);
-    }*/
-
     return characters;
   }
 
@@ -405,12 +513,12 @@ export class GlobalService {
     character.battleStats.attack += character.equipmentSet.getTotalAttackGain();
     character.battleStats.defense += character.equipmentSet.getTotalDefenseGain();
     character.battleStats.agility += character.equipmentSet.getTotalAgilityGain();
-    character.battleStats.luck += character.equipmentSet.getTotalLuckGain();    
+    character.battleStats.luck += character.equipmentSet.getTotalLuckGain();
   }
 
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam) {
     defeatedEnemies.enemyList.forEach(enemy => {
-      party.forEach(partyMember => {
+      party.filter(partyMember => partyMember.level < partyMember.maxLevel).forEach(partyMember => {
         //needs to have some sort of modification factor on beating enemies at a certain lvl compared to you
         partyMember.exp += enemy.xpGainFromDefeat;
       });
@@ -423,8 +531,10 @@ export class GlobalService {
 
 
     party.forEach(partyMember => {
-      if (partyMember.exp >= partyMember.expToNextLevel) {
+      if (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel) {
         this.levelUpPartyMember(partyMember);
+        if (partyMember.level === partyMember.maxLevel)
+          partyMember.exp = 0;
       }
     });
 
@@ -446,7 +556,7 @@ export class GlobalService {
   }
 
   getCharacterLevelStatIncrease(character: Character) {
-     var statIncrease = 5; /* For levels 1-10 */
+    var statIncrease = 2; /* For levels 1-10 */
 
     character.baseStats.attack += statIncrease;
     character.baseStats.agility += statIncrease;
@@ -458,16 +568,33 @@ export class GlobalService {
 
   checkForNewCharacterAbilities(character: Character) {
     character.abilityList.forEach(ability => {
-      if (character.level >= ability.requiredLevel)
+      if (character.level >= ability.requiredLevel) {
+        if (!ability.isAvailable) {
+          var gameLogEntry = "<strong>" + character.name + "</strong>" + " learns a new ability: <strong>" + ability.name + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+        }
         ability.isAvailable = true;
+      }
     });
   }
-  
+
   getCharacterXpToNextLevel(level: number) {
-    var xpConstant = 1000;
-    return xpConstant * level;
+    var baseXp = 200;
+
+    if (level < 20) {
+      var factor = 1.4;
+
+      return (baseXp) * level + (baseXp * (factor ** (level-1)));
+    }
+    else {
+      //TODO: depends on what kind of XP you're getting at this reset
+      var factor = 1.09;
+      var additive = 1500;
+
+      return baseXp * (factor ** level) + (additive * (level - 1));
+    }
   }
-  
+
   levelUpGod(god: God) {
     god.level += 1;
     god.exp -= god.expToNextLevel;
@@ -492,84 +619,5 @@ export class GlobalService {
   getGodXpToNextLevel(level: number) {
     var xpConstant = 1000;
     return xpConstant * level;
-  }
-
-  initializeBallads() {
-    var championBallad = new Ballad(BalladEnum.Champion);
-    championBallad.isSelected = true;
-    championBallad.isAvailable = true;
-
-    var camp = new Zone();
-
-    var aigosthena = new Zone();
-    aigosthena.zoneName = "Aigosthena";
-    aigosthena.isAvailable = true;
-    aigosthena.isSelected = true;
-
-    var upperCoast = new SubZone(SubZoneEnum.AigosthenaUpperCoast);
-    upperCoast.isSelected = true;
-    upperCoast.isAvailable = true;
-    this.achievementService.createDefaultAchievementsForSubzone(upperCoast.type).forEach(achievement => {
-      this.globalVar.achievements.push(achievement);
-    });
-    
-    aigosthena.subzones.push(upperCoast);
-
-    aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaBay));
-    aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaLowerCoast));
-    aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaWesternWoodlands));
-    aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaHeartOfTheWoods));
-    //aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaEasternWoodlands));
-
-    championBallad.zones.push(aigosthena);
-    this.globalVar.ballads.push(championBallad);
-
-
-    this.globalVar.ballads.push(new Ballad(BalladEnum.Gorgon));
-
-    this.globalVar.ballads.push(new Ballad(BalladEnum.Underworld));    
-  }
-
-  devMode() {
-    this.globalVar.currentStoryId = 10000;
-    this.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-    this.globalVar.activePartyMember2 = CharacterEnum.Archer;
-    this.globalVar.itemBeltSize = 4;
-
-    var character1 = this.globalVar.characters.find(item => item.type === this.globalVar.activePartyMember1);
-    if (character1 !== undefined) {
-      character1.assignedGod1 = GodEnum.Athena;
-      character1.assignedGod2 = GodEnum.Zeus;
-    }
-
-    var character2 = this.globalVar.characters.find(item => item.type === this.globalVar.activePartyMember2);
-
-    character1?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-    
-    character2?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    var athena = this.globalVar.gods.find(item => item.type === GodEnum.Athena);
-    athena?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    this.globalVar.ballads.forEach(ballad => {
-      ballad.isAvailable = true;
-      ballad.zones.forEach(zone => {
-        zone.isAvailable = true;
-        zone.subzones.forEach(subzone => {
-          subzone.isAvailable = true;
-          this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
-            this.globalVar.achievements.push(achievement);
-          });
-        })
-      })
-    });
-
-    console.log(this.globalVar.achievements);
   }
 }

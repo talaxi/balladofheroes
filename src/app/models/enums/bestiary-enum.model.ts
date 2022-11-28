@@ -5,5 +5,17 @@ export enum BestiaryEnum {
   StarvingMongrel,
   WildBoar,
   KillerBees,
-  Matriarch
+  Matriarch,
+  Bandit,
+  Thief,
+  Highwayman,
+  Coyote,
+  Archer,
+  RedHarpy,
+  BlueHarpy,
+  GreenHarpy,
+  FledglingLamia,
+  Lamia,  
+  Sybaris,
+  LargeOctopus
 }
