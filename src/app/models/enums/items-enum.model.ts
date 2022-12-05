@@ -1,5 +1,6 @@
 export enum ItemsEnum {
   None,
+  Coin,
   HealingHerb,
   HealingSalve,
   ThrowingStone,
@@ -7,6 +8,7 @@ export enum ItemsEnum {
   BronzeHammer,
   ShortBow,
   BronzeShield,
+  LinenArmor,
   BronzeArmor,
   EagleFeather,
   LamiaFang

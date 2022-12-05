@@ -29,7 +29,7 @@ export class Character {
     equipmentSet: EquipmentSet;
 
     constructor(type?: CharacterEnum) {
-        this.type = type === undefined ? CharacterEnum.none : type;
+        this.type = type === undefined ? CharacterEnum.None : type;
         this.battleInfo = new BattleInfo();
         this.level = 1;
         this.maxLevel = 20;

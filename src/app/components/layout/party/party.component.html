@@ -1,7 +1,6 @@
 <div class="gridContainer">
     <div *ngFor="let character of party; let i = index" [class]="'character' + (i + 1)">
-        <div *ngIf="character.type === noCharacter" class="partyMember">
-            <span>None</span>
+        <div *ngIf="character.type === noCharacter" class="partyMember">            
         </div>
         <div *ngIf="character.type !== noCharacter" class="partyMember"
             [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}"
@@ -63,7 +62,7 @@
                 </div>
             </div>
         </div>
-        <hr />
+        <hr *ngIf="activeCharacterCount > i" />
     </div>
     <div class="options battleItemGrid">
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"

@@ -44,14 +44,22 @@ export class BalladService {
 
   getActiveSubZone() {
     var subzone = new SubZone();
-    var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
-    if (activeBallad !== undefined) {
-      var zone = activeBallad.zones.find(item => item.isSelected);
-      if (zone !== undefined) {
-        if (zone.subzones.some(item => item.isSelected))
-          subzone = zone.subzones.find(item => item.isSelected)!;
+    
+    if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined) {
+      var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
+      if (activeBallad !== undefined) {
+        var zone = activeBallad.zones.find(item => item.isSelected);
+        if (zone !== undefined) {
+          if (zone.subzones.some(item => item.isSelected))
+            subzone = zone.subzones.find(item => item.isSelected)!;
+        }
       }
     }
+    else
+    {
+      subzone = this.globalService.globalVar.playerNavigation.currentSubzone;
+    }
+
     return subzone;
   }
 
@@ -71,8 +79,8 @@ export class BalladService {
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       ballad.zones.forEach(zone => {
-          if (zone.type === type)
-            returnZone = zone;        
+        if (zone.type === type)
+          returnZone = zone;
       })
     });
 
@@ -92,5 +100,5 @@ export class BalladService {
     });
 
     return returnSubzone;
-  }  
+  }
 }

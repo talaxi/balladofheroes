@@ -15,6 +15,7 @@ export enum StatusEffectEnum {
     ResistanceDown,
     InstantHeal,
     InstantHealAfterAutoAttack,
+    InstantAutoAttack,
     DamageTakenDown,
     DamageTakenUp,
     DamageOverTime,

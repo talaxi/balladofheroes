@@ -1,11 +1,11 @@
 <div class="gridContainer">
     <div class="godInfo">
         <div class="baseInfo">
-            <span class="s2Heading" [ngClass]="getGodColor()">{{god.name}}</span>
+            <span class="s2Heading pageHeader" [ngClass]="getGodColor()">{{god.name}}</span>
             <br />
             <span>Level {{god.level}}</span>
             <br />
-            <span>{{god.exp}} / {{god.expToNextLevel}} XP to Level {{god.level + 1}}</span>
+            <span>{{god.exp  | number : '1.0-0'}} / {{god.expToNextLevel  | number : '1.0-0'}} XP to Level {{god.level + 1}}</span>
         </div>
     </div>
     <div class="godStats">
@@ -25,6 +25,7 @@
             <span><strong>Resistance:</strong> {{god.statGain.resistance}}</span>
         </div>
     </div>
+    <span>Ability stats based on: Adventurer</span> <!-- TODO: make this a dropdown -->
     <div class="godAbilities">
         <div *ngFor="let ability of god.abilityList">
             <strong [ngClass]="getGodColor()">{{ability.name}}</strong> - <span

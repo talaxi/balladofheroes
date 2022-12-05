@@ -37,6 +37,7 @@ export class InitializationService {
     var upperCoast = new SubZone(SubZoneEnum.AigosthenaUpperCoast);
     upperCoast.isSelected = true;
     upperCoast.isAvailable = true;
+    this.globalService.globalVar.playerNavigation.currentSubzone = upperCoast;
     this.achievementService.createDefaultAchievementsForSubzone(upperCoast.type).forEach(achievement => {
       this.globalService.globalVar.achievements.push(achievement);
     });
@@ -95,10 +96,15 @@ export class InitializationService {
     var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
     if (character1 !== undefined) {
       character1.assignedGod1 = GodEnum.Athena;
-      character1.assignedGod2 = GodEnum.Zeus;
+      character1.assignedGod2 = GodEnum.Hermes;
     }
 
     var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
+
+    if (character2 !== undefined) {
+      character2.assignedGod1 = GodEnum.Artemis;
+      character2.assignedGod2 = GodEnum.Apollo;
+    }
 
     character1?.abilityList.forEach(ability => {
       ability.isAvailable = true;
@@ -114,9 +120,21 @@ export class InitializationService {
       ability.isAvailable = true;
     });
 
-    var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
-    zeus!.isAvailable = true;
-    zeus?.abilityList.forEach(ability => {
+    var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+    hermes!.isAvailable = true;
+    hermes?.abilityList.forEach(ability => {
+      ability.isAvailable = true;
+    });
+
+    var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+    apollo!.isAvailable = true;
+    apollo?.abilityList.forEach(ability => {
+      ability.isAvailable = true;
+    });
+
+    var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
+    artemis!.isAvailable = true;
+    artemis?.abilityList.forEach(ability => {
       ability.isAvailable = true;
     });
 

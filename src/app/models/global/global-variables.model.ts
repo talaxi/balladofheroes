@@ -36,7 +36,8 @@ export class GlobalVariables {
     achievements: Achievement[];
     @Type(() => Settings)
     settings: Settings;
-    //playerNavigation: PlayerNavigation;
+    @Type(() => PlayerNavigation)
+    playerNavigation: PlayerNavigation;
     itemBeltSize: number;
     itemBelt: ItemsEnum[];
     currentStoryId: number;
@@ -54,7 +55,7 @@ export class GlobalVariables {
         this.achievements = [];
         this.itemBeltSize = 1;
         //this.activeBattle = new Battle();
-        //this.playerNavigation = new PlayerNavigation();
+        this.playerNavigation = new PlayerNavigation();
         this.timers = new Timers();
         this.settings = new Settings();
         this.freeTreasureChests = new FreeTreasureChests();

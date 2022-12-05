@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { Battle } from 'src/app/models/battle/battle.model';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
@@ -22,6 +23,7 @@ import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
+import { MenuService } from '../menu/menu.service';
 import { StoryService } from '../story/story.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
@@ -36,18 +38,22 @@ export class BattleService {
   battleItemInUse: ItemsEnum;
   targetbattleItemMode: boolean = false;
   showNewEnemyGroup = false;
+  bankedTime = 0;
+  catchupDialog: MatDialogRef<unknown, any> | undefined = undefined;
 
   constructor(private globalService: GlobalService, private subzoneGeneratorService: SubZoneGeneratorService,
     private balladService: BalladService, private utilityService: UtilityService, private gameLogService: GameLogService,
-    private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService) { }
+    private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService,
+    private menuService: MenuService, public dialog: MatDialog) { }
 
-  handleBattle(deltaTime: number) {
-    var subZone = this.balladService.getActiveSubZone();
-    if (subZone.isTown) //no need to check any battle info
-      return;
-
+  handleBattle(deltaTime: number, loadingContent: any) {
+    //institute a max deltaTime before stop automating and adding to double time, currently set to 60 minutes    
     if (this.isPaused)
-      deltaTime = 0;
+    deltaTime = 0;
+    
+    this.handleShortTermCatchUpTime(deltaTime, loadingContent);    
+
+    var subZone = this.balladService.getActiveSubZone();    
 
     if (this.globalService.globalVar.activeBattle === undefined)
       this.initializeBattle();
@@ -55,6 +61,15 @@ export class BattleService {
     this.battle = this.globalService.globalVar.activeBattle!;
     if (this.battle === undefined)
       return;
+
+    if (subZone.isTown) //no need to check any battle info
+    {
+      this.battle.atTown = true;
+      return;
+    }
+    else
+      this.battle.atTown = false;
+
 
     if (this.battle.atScene) {
       var continueShowing = false;
@@ -103,6 +118,12 @@ export class BattleService {
     }
   }
 
+  openCatchUpModal(content: any) {
+    var dialog = this.dialog.open(content, { width: '50%' });
+
+    return dialog;
+  }
+
   initializeBattle() {
     this.globalService.globalVar.activeBattle = new Battle();
     this.checkScene();
@@ -130,8 +151,9 @@ export class BattleService {
 
     if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
+      this.menuService.setNewPartyMember2(this.globalService.globalVar.activePartyMember2);
 
-      var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);      
+      var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
       if (artemis !== undefined && !artemis.isAvailable) {
         artemis.isAvailable = true;
 
@@ -149,8 +171,8 @@ export class BattleService {
 
     //TODO: THIS IS JUST FOR THE TUTORIAL RELEASE BUT WILL EVENTUALLY BE REMOVED
     //VVV
-    if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {  
-      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);      
+    if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
+      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       if (hermes !== undefined && !hermes.isAvailable) {
         hermes.isAvailable = true;
 
@@ -164,8 +186,8 @@ export class BattleService {
           character1.assignedGod2 = GodEnum.Hermes;
         }
       }
-      
-      var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);      
+
+      var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
       if (apollo !== undefined && !apollo.isAvailable) {
         apollo.isAvailable = true;
 
@@ -268,13 +290,18 @@ export class BattleService {
 
     var timeToAutoAttack = this.lookupService.getAutoAttackTime(character);
 
-    if (character.battleInfo.autoAttackTimer >= timeToAutoAttack &&
+    //hopefully unnecessary fail safe
+    var autoAttacksAtOnce = 0;
+    var totalAutoAttacksAtOnce = 100;
+
+    while (character.battleInfo.autoAttackTimer >= timeToAutoAttack && autoAttacksAtOnce < totalAutoAttacksAtOnce &&
       (character.battleInfo.autoAttackAutoMode || character.battleInfo.autoAttackManuallyTriggered)) {
       this.handleAutoAttack(character, targets);
       character.battleInfo.autoAttackTimer -= timeToAutoAttack;
 
       if (character.battleInfo.autoAttackManuallyTriggered)
         character.battleInfo.autoAttackTimer = 0;
+      autoAttacksAtOnce += 1;
     }
 
     character.battleInfo.autoAttackManuallyTriggered = false;
@@ -345,7 +372,7 @@ export class BattleService {
     if (ability.currentCooldown <= 0) {
       ability.currentCooldown = 0;
 
-      if (ability.autoMode || ability.manuallyTriggered) {
+      if (targets !== undefined && targets.length > 0 && (ability.autoMode || ability.manuallyTriggered)) {
         this.useAbility(ability, character, ability.targetsAllies ? partyMembers : targets, partyMembers, true);
         ability.currentCooldown = ability.cooldown;
       }
@@ -910,5 +937,43 @@ export class BattleService {
     }
 
     return true;
+  }
+
+  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any) {
+    if (deltaTime > 1 * 60 * 60)
+      deltaTime = 1 * 60 * 60;
+
+    var batchTime = 5;
+    //user was afk, run battle in batches until you're caught up
+    if (deltaTime > batchTime) {
+      this.bankedTime += deltaTime - batchTime;
+      deltaTime = batchTime;
+
+      if (this.bankedTime > 60 && this.catchupDialog === undefined)
+        this.catchupDialog = this.openCatchUpModal(loadingContent);
+    }
+
+    if (deltaTime < batchTime && this.bankedTime > 0) {
+
+      if (this.bankedTime + deltaTime <= batchTime) //amount of time banked is less than a batch so use it all
+      {
+        deltaTime += this.bankedTime;
+        this.bankedTime = 0;
+
+        if (this.catchupDialog !== undefined) {
+          this.catchupDialog.close();
+          this.catchupDialog = undefined;
+        }
+      }
+      else //use partial amount of banked time
+      {
+        var useAmount = batchTime - deltaTime;
+        this.bankedTime -= useAmount;
+        deltaTime += useAmount;
+
+        if (this.bankedTime <= 0)
+          this.bankedTime = 0;
+      }
+    }
   }
 }

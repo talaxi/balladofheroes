@@ -90,22 +90,10 @@ export class AbilityViewComponent implements OnInit {
 
   getStrokeColor() {
     if (this.god !== undefined) {
-      return {
-        'athenaColor': this.god === GodEnum.Athena,
-        'zeusColor': this.god === GodEnum.Zeus,
-        'apolloColor': this.god === GodEnum.Apollo,
-        'aresColor': this.god === GodEnum.Ares,
-        'poseidonColor': this.god === GodEnum.Poseidon,
-        'artemisColor': this.god === GodEnum.Artemis
-      };
+      return this.lookupService.getGodColorClass(this.god);
     }
     else {
-      return {
-        'adventurerColor': this.character.type === CharacterEnum.Adventurer,
-        'archerColor': this.character.type === CharacterEnum.Archer,
-        'warriorColor': this.character.type === CharacterEnum.Warrior,
-        'priestColor': this.character.type === CharacterEnum.Priest
-      };
+      return this.lookupService.getCharacterColorClass(this.character.type);
     }
   }
 }

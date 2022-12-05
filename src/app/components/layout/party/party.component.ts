@@ -13,6 +13,7 @@ import { matMenuAnimations, MatMenuTrigger } from '@angular/material/menu';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 
 @Component({
   selector: 'app-party',
@@ -23,7 +24,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 export class PartyComponent implements OnInit {
   party: Character[];
   public characterEnum: CharacterEnum;
-  public noCharacter = CharacterEnum.none;
+  public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
   @ViewChild('itemMenu') itemMenu: MatMenuTrigger;
   openedSlotNumber: number = 0;
@@ -31,22 +32,34 @@ export class PartyComponent implements OnInit {
   battleItems: ResourceValue[];
   battleItemRows: ResourceValue[][];
   battleItemCells: ResourceValue[];
+  activeCharacterCount: number;
   subscription: any;
+  partyMember1CheckSubscription: any;
+  partyMember2CheckSubscription: any;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService, private menuService: MenuService) { }
 
   ngOnInit(): void {
     this.party = this.globalService.getActivePartyCharacters(false);   
+    this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
     this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
       if (!this.itemMenu.menuOpen)
       {
         this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
       }
 
       this.removeDefaultMaterialButtonClasses();
+    });
+
+    this.partyMember1CheckSubscription = this.menuService.getNewPartyMember1().subscribe((value) => {      
+      this.party = this.globalService.getActivePartyCharacters(false);   
+    });
+
+    this.partyMember1CheckSubscription = this.menuService.getNewPartyMember2().subscribe((value) => {      
+      this.party = this.globalService.getActivePartyCharacters(false);   
     });
   }
 

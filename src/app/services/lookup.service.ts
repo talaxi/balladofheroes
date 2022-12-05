@@ -294,6 +294,8 @@ export class LookupService {
     var abilityDescription = "";
     var effectiveAmount = 0;
     var effectiveAmountPercent = 0; //for nondamage
+    var secondaryEffectiveAmount = 0;
+    var secondaryEffectiveAmountPercent = 0; //for nondamage
     var abilityCount = 0;
     var thresholdAmountPercent = 0;
     var relatedUserGainStatusEffectDuration = 0;
@@ -308,6 +310,8 @@ export class LookupService {
     if (ability !== undefined) {
       effectiveAmount = Math.round(this.getAbilityEffectiveAmount(character, ability));
       effectiveAmountPercent = Math.round((ability.effectiveness - 1) * 100);
+      secondaryEffectiveAmount = ability.secondaryEffectiveness;
+      secondaryEffectiveAmountPercent = Math.round((secondaryEffectiveAmount - 1) * 100);
       thresholdAmountPercent = Math.round((ability.threshold) * 100);
       abilityCount = ability.maxCount;
       cooldown = ability.cooldown;
@@ -346,6 +350,36 @@ export class LookupService {
     if (abilityName === "Blinding Light")
       abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage to all targets. Blind them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
+    //Artemis
+    if (abilityName === "True Shot")
+      abilityDescription = "If your target has a negative status effect, increase critical strike chance by <strong>" + effectiveAmountPercent + "%</strong> when attacking. Passive.";
+    if (abilityName === "Wounding Arrow")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage to a target and reduce their attack by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "Electric Volley")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage to all targets and paralyze them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "Expose Weakness")
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. Any negative status effects on the target have their duration increased by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the original duration. " + cooldown + " second cooldown.";
+
+    //Apollo
+    if (abilityName === "Staccato")
+      abilityDescription = "Increase the party's agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Staccato is active, each party member performs a free auto attack. " + cooldown + " second cooldown.";
+      if (abilityName === "Fortissimo")
+      abilityDescription = "Increase the party's attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Fortissimo is active, reduce your other cooldowns by <strong>" + secondaryEffectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
+      if (abilityName === "Allegro")
+      abilityDescription = "Increase the party's luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Allegro is active, cleanse a random debuff from a party member. " + cooldown + " second cooldown.";
+      if (abilityName === "Ostinato")
+      abilityDescription = "Every " + cooldown + " seconds, heal a HP party member for <strong>" + effectiveAmount + "</strong>. Targets the party member with the lowest HP %.";
+    
+    //Hermes
+    if (abilityName === "Trick Shot")
+    abilityDescription = "Deal <strong>" + effectiveAmount + " </strong>damage. " + cooldown + " second cooldown.";
+    if (abilityName === "Embellish")
+    abilityDescription = "Increase your attack and agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "Special Delivery")
+    abilityDescription = "Immediately perform <strong>three</strong> auto attacks. Their damage is increased by <strong>" + effectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
+    if (abilityName === "Quicken")
+    abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ability?.effectiveness + "</strong> seconds. Passive.";
+  
     //Zeus
     if (abilityName === "Overload")
       abilityDescription = "Surge effect increases damage dealt by next ability by " + effectiveAmount + "%. Passive";
@@ -355,20 +389,6 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> Lightning damage. Deal 25% less damage to another random target. Repeat until all targets have been hit. " + cooldown + " second cooldown.";
     if (abilityName === "Judgment")
       abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage. " + cooldown + " second cooldown.";
-
-    //Artemis
-    if (abilityName === "Expose Weakness")
-      abilityDescription = "If your target has a negative status effect, increase critical strike chance by X% when attacking. Passive.";
-    if (abilityName === "Wounding Shot")
-      abilityDescription = "Deal medium damage and apply Attack Down debuff to target.";
-    if (abilityName === "Electric Volley")
-      abilityDescription = "Deal a small amount of damage to all targets. Paralyze them.";
-    if (abilityName === "True Shot")
-      abilityDescription = "Deal a small amount of damage. Any negative status effects on the target have their duration increased by 20% of the original duration.";
-
-    //Apollo
-
-    //Hermes
 
     return abilityDescription;
   }
@@ -650,7 +670,8 @@ export class LookupService {
       'apolloColor': type === GodEnum.Apollo,
       'aresColor': type === GodEnum.Ares,
       'poseidonColor': type === GodEnum.Poseidon,
-      'artemisColor': type === GodEnum.Artemis
+      'artemisColor': type === GodEnum.Artemis,
+      'hermesColor': type === GodEnum.Hermes,
     };
   }
 

@@ -3,30 +3,37 @@ import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { ShopItem } from 'src/app/models/shop/shop-item.model';
+import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from '../ballad/ballad.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
+import { ShopItemGeneratorService } from '../shop/shop-item-generator.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class SubZoneGeneratorService {
 
-  constructor(private enemyGeneratorService: EnemyGeneratorService, private resourceGeneratorService: ResourceGeneratorService) { }
+  constructor(private enemyGeneratorService: EnemyGeneratorService, private resourceGeneratorService: ResourceGeneratorService,
+    private shopItemGenerator: ShopItemGeneratorService) { }
 
-  generateSubZone(type: SubZoneEnum)
+  //THIS IS NEVER CALLED
+  /*generateSubZone(type: SubZoneEnum)
   {
     var subZone = new SubZone(type);    
 
     subZone.battleOptions = this.generateBattleOptions(type);
-    subZone.treasureChestChance = this.generateTreasureChestChance(type);
+    subZone.treasureChestChance = this.generateTreasureChestChance(type);    
 
     return subZone;
-  }
+  }*/
 
   generateBattleOptions(type: SubZoneEnum) {    
     var battleOptions: EnemyTeam[] = [];
@@ -104,7 +111,7 @@ export class SubZoneGeneratorService {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Matriarch));      
       battleOptions.push(enemyTeam);
-    }
+    }    
     if (type === SubZoneEnum.DodonaDelphiOutskirts)
     {
       var enemyTeam: EnemyTeam = new EnemyTeam();
@@ -230,7 +237,7 @@ export class SubZoneGeneratorService {
 
     return rewards;
   }
-
+  
   getBalladUnlocks(type: SubZoneEnum) {
     var balladEnums: BalladEnum[] = [];
     
@@ -299,5 +306,19 @@ export class SubZoneGeneratorService {
     }
 
     return subZoneEnums;
+  }
+
+  getShopOptions(subzoneType: SubZoneEnum) {
+    var shopOptions: ShopOption[] = [];
+
+    if (subzoneType === SubZoneEnum.DodonaDelphi) {
+      var availableOptionsGeneral: ShopItem[] = [];
+
+      availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LinenArmor));
+
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+    }
+
+    return shopOptions;
   }
 }

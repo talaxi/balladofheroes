@@ -1,11 +1,11 @@
 <div class="gridContainer">
     <div class="characterInfo">
         <div class="baseInfo">
-            <span class="s2Heading" [ngClass]="getCharacterColor()">{{character.name}}</span>
+            <span class="s2Heading pageHeader" [ngClass]="getCharacterColor()">{{character.name}}</span>
             <br />
             <span>Level {{character.level}}</span>
             <br />
-            <span>{{character.exp}} / {{character.expToNextLevel}} XP to Level {{character.level + 1}}</span>
+            <span>{{character.exp  | number : '1.0-0'}} / {{character.expToNextLevel  | number : '1.0-0'}} XP to Level {{character.level + 1}}</span>
         </div>
 
         <div class="godInfo">
@@ -34,17 +34,17 @@
             <div class="leftAlignText">
                 <span class="s4Heading">Primary Stats</span>
                 <br />
-                <span><strong>Max HP:</strong> {{character.battleStats.maxHp}}</span>
+                <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong> {{character.battleStats.maxHp}}</span>
                 <br />
-                <span><strong>Attack:</strong> {{character.battleStats.attack}}</span>
+                <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong> {{character.battleStats.attack}}</span>
                 <br />
-                <span><strong>Agility:</strong> {{character.battleStats.agility}}</span>
+                <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong> {{character.battleStats.agility}}</span>
                 <br />
-                <span><strong>Luck:</strong> {{character.battleStats.luck}}</span>
+                <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong> {{character.battleStats.luck}}</span>
                 <br />
-                <span><strong>Defense:</strong> {{character.battleStats.defense}}</span>
+                <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong> {{character.battleStats.defense}}</span>
                 <br />
-                <span><strong>Resistance:</strong> {{character.battleStats.resistance}}</span>
+                <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong> {{character.battleStats.resistance}}</span>
             </div>
         </div>
         <div class="secondaryStats">
@@ -69,3 +69,40 @@
         </div>
     </div>
 </div>
+
+
+<ng-template #maxHpPopover>
+    <div>
+       HP
+    </div>
+</ng-template>
+
+<ng-template #attackPopover>
+    <div>
+       Atk
+    </div>
+</ng-template>
+
+<ng-template #defensePopover>
+    <div>
+       Def
+    </div>
+</ng-template>
+
+<ng-template #agilityPopover>
+    <div>
+       Agi
+    </div>
+</ng-template>
+
+<ng-template #luckPopover>
+    <div>
+       Luck
+    </div>
+</ng-template>
+
+<ng-template #resistancePopover>
+    <div>
+       Res
+    </div>
+</ng-template>

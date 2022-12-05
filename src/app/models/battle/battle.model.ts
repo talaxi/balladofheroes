@@ -11,11 +11,13 @@ export class Battle {
     //scene related variables
     atScene: boolean;
     sceneType: SceneTypeEnum;
+    atTown: boolean;
     chestRewards: ResourceValue[];
 
     constructor() {
         this.currentEnemies = new EnemyTeam();
         this.atScene = false;
+        this.atTown = false;
         this.sceneType = SceneTypeEnum.None;
         this.chestRewards = [];
     }

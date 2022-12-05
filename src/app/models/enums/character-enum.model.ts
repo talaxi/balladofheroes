@@ -4,5 +4,5 @@ export enum CharacterEnum {
   Adventurer,
   Priest,
   Archer,
-  none
+  None
 }

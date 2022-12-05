@@ -6,10 +6,9 @@ import { SubZone } from "./sub-zone.model";
 import { Zone } from "./zone.model";
 
 export class PlayerNavigation {
-    currentBallad: Ballad;
-    atNonBattleEvent: boolean;
+    currentSubzone: SubZone;
 
     constructor() {
-        this.atNonBattleEvent = false;
+        
     }
 }

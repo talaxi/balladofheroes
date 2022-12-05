@@ -89,12 +89,7 @@ export class CharacterViewComponent implements OnInit {
   }
 
   getCharacterColor() {
-    return {
-      'adventurerColor': this.character.type === CharacterEnum.Adventurer,
-      'archerColor': this.character.type === CharacterEnum.Archer,
-      'warriorColor': this.character.type === CharacterEnum.Warrior,
-      'priestColor': this.character.type === CharacterEnum.Priest
-    };
+    return this.lookupService.getCharacterColorClass(this.character.type);
   }
 
   getGodAbilityDescription(abilityName: string, character: Character, whichGod: number, ability?: Ability) {
@@ -111,22 +106,11 @@ export class CharacterViewComponent implements OnInit {
       if (whichGod === 2)
         god = this.character.assignedGod2;
 
-      return {
-        'athenaColor': god === GodEnum.Athena,
-        'zeusColor': god === GodEnum.Zeus,
-        'apolloColor': god === GodEnum.Apollo,
-        'aresColor': god === GodEnum.Ares,
-        'poseidonColor': god === GodEnum.Poseidon,
-        'artemisColor': god === GodEnum.Artemis
-      };
+      //TODO: make this one call to lookup so you only have to add new gods once
+      return this.lookupService.getGodColorClass(god)
     }
     else {
-      return {
-        'adventurerColor': this.character.type === CharacterEnum.Adventurer,
-        'archerColor': this.character.type === CharacterEnum.Archer,
-        'warriorColor': this.character.type === CharacterEnum.Warrior,
-        'priestColor': this.character.type === CharacterEnum.Priest
-      };
+      return this.lookupService.getCharacterColorClass(this.character.type)
     }
   }
 

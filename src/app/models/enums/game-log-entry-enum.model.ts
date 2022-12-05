@@ -9,5 +9,6 @@ export enum GameLogEntryEnum {
   BattleRewards,
   BattleUpdate,
   ChangeLocation,
-  LearnAbility
+  LearnAbility,
+  LevelUp
 }

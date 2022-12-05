@@ -26,7 +26,7 @@ export class SubZone {
         this.battleOptions = [];
         this.victoryCount = 0;
         this.isAvailable = false;
-        this.isTown = false;
+        this.isTown = this.isSubzoneTown(this.type);
         this.treasureChestChance = 0;
     }
 
@@ -43,7 +43,7 @@ export class SubZone {
             name = "Western Woodlands";
         if (type === SubZoneEnum.AigosthenaHeartOfTheWoods)
             name = "Heart of the Woods";
-        
+
         if (type === SubZoneEnum.DodonaDelphi)
             name = "Delphi";
         if (type === SubZoneEnum.DodonaDelphiOutskirts)
@@ -71,7 +71,7 @@ export class SubZone {
         if (type === SubZoneEnum.LibyaDeeperPath)
             name = "Deeper Path";
         if (type === SubZoneEnum.LibyaIsleCenter)
-            name = "Isle Center";        
+            name = "Isle Center";
 
         return name;
     }
@@ -133,4 +133,13 @@ export class SubZone {
 
         return victories;
     }
+
+    isSubzoneTown(type: SubZoneEnum) {
+        if (type === SubZoneEnum.DodonaDelphi || type === SubZoneEnum.DodonaArta) {
+            return true;
+        }
+
+        return false;
+    }
+
 }

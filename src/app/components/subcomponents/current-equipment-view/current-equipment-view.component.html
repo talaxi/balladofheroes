@@ -1,76 +1,77 @@
 <div class="existingEquipment">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedWeapon">Weapon:
-      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Weapon)"></span></span>
-    <br />
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedShield">Shield:
-      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Shield)"></span></span>
-    <br />
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedArmor">Armor:
-      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Armor)"></span></span>
-    <br />
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedLeftRing">Ring:
-      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
-    <br />
-    <!--<span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing">Right Ring:
+  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedWeapon"><strong>Weapon: </strong>
+    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Weapon)"></span></span>
+  <br />
+  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedShield"><strong>Shield: </strong>
+    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Shield)"></span></span>
+  <br />
+  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedArmor"><strong>Armor: </strong>
+    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Armor)"></span></span>
+  <br />
+  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedLeftRing"><strong>Ring: </strong>
+    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
+  <br />
+  <!--<span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing">Right Ring:
       {{getEquippedItemNameByType(equipmentTypeEnum.Ring)}}</span>
     <br />-->
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace">Necklace:
-      {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
-  </div>
-  <div *ngIf="canChangeEquipment">
-    <br/>
-    <button (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
-  </div>
+  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong>Necklace: </strong>
+    {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
+</div>
+<div *ngIf="canChangeEquipment">
+  <br />
+  <button (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
+</div>
 
-  <ng-template #equipmentModal>
-    <app-equipment-view *ngIf="canChangeEquipment && equipmentModalOpened" [characterType]="characterType"></app-equipment-view>
+<ng-template #equipmentModal>
+  <app-equipment-view *ngIf="canChangeEquipment && equipmentModalOpened" [characterType]="characterType">
+  </app-equipment-view>
 </ng-template>
 
 <ng-template #equippedWeapon>
-    <div class="equippedItem">
-      <div class="item">
-        <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Weapon)"></app-equipment-item-view>
-      </div>
+  <div class="equippedItem">
+    <div class="item">
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Weapon)"></app-equipment-item-view>
     </div>
-  </ng-template>
-  
-  <ng-template #equippedShield>
-    <div class="equippedItem">
-      <div class="item">
-        <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Shield)"></app-equipment-item-view>
-      </div>
+  </div>
+</ng-template>
+
+<ng-template #equippedShield>
+  <div class="equippedItem">
+    <div class="item">
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Shield)"></app-equipment-item-view>
     </div>
-  </ng-template>
-  
-  <ng-template #equippedArmor>
-    <div class="equippedItem">
-      <div class="item">
-        <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"></app-equipment-item-view>
-      </div>
+  </div>
+</ng-template>
+
+<ng-template #equippedArmor>
+  <div class="equippedItem">
+    <div class="item">
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"></app-equipment-item-view>
     </div>
-  </ng-template>
-  
-  <ng-template #equippedLeftRing>
-    <div class="equippedItem">
-      <div class="item">
-        <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
-      </div>
+  </div>
+</ng-template>
+
+<ng-template #equippedLeftRing>
+  <div class="equippedItem">
+    <div class="item">
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
     </div>
-  </ng-template>
-  
-  <ng-template #equippedRightRing>
-    <div class="equippedItem">
-      <div class="item">
-        <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
-      </div>
+  </div>
+</ng-template>
+
+<ng-template #equippedRightRing>
+  <div class="equippedItem">
+    <div class="item">
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
     </div>
-  </ng-template>
-  
-  <ng-template #equippedNecklace>
-    <div class="equippedItem">
-      <div class="item">
-        <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Necklace)">
-        </app-equipment-item-view>
-      </div>
+  </div>
+</ng-template>
+
+<ng-template #equippedNecklace>
+  <div class="equippedItem">
+    <div class="item">
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Necklace)">
+      </app-equipment-item-view>
     </div>
-  </ng-template>
+  </div>
+</ng-template>

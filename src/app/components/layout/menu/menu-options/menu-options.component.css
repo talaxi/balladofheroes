@@ -3,11 +3,78 @@
     height: 100%;
 }
 
+.vrHr {
+    margin: 0;
+    padding: 0;
+    height: auto;
+}
+
 .navigation {
     display: flex;
-    height: 100%;    
+    height: 100%;
+    width: 100%;
 }
 
 .menuOptions {
-    margin-right: .5rem;
+    background-color: var(--background-quarternary);
+    position: relative;
 }
+
+.transparentHr {
+    margin: 0;
+    padding: 0;
+    border: 0;
+    border-top: 1px solid rgba(255, 255, 255, .25);
+}
+
+.miniTransparentHr {
+    width: 75%;
+    margin: 0;
+    padding: 0;
+    border: 0;
+    margin-top: .2rem;
+    border-top: 1px solid rgba(255, 255, 255, .25);
+}
+
+.navItem {
+    padding: 1rem;
+    position: relative;
+}
+
+.navItem:hover {
+    background-color: var(--button-hover);
+    /*color: var(--foreground-tertiary) !important;*/
+}
+
+.navItem:hover > .submenu {
+    display: block;
+    top: 0;
+}
+
+.active {
+    background-color: var(--button-selected) !important;
+    color: var(--foreground-secondary) !important;
+}
+
+.activeText {
+    color: var(--foreground-secondary) !important;
+}
+
+.submenu {
+    display: none;
+    position: absolute;
+    left: 100%;
+    top: 0;
+    padding: .5rem;
+    background-color: var(--background-quarternary) !important;
+}
+
+.partyMemberOption:hover, .godOption:hover {
+    background-color: var(--button-hover);
+}
+
+.characterSelect:not(.submenu), .godSelect:not(.submenu) {
+    margin-left: .5rem;
+    background-color: var(--button-selected) !important;
+}
+

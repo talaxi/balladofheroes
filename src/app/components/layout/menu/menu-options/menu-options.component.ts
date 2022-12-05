@@ -1,6 +1,8 @@
 import { Component, EventEmitter, OnInit, Output } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
@@ -27,13 +29,18 @@ export class MenuOptionsComponent implements OnInit {
 
   switchView(type: MenuEnum) {
     this.menuService.selectedMenuDisplay = type;
+
+    if (type === MenuEnum.Characters && this.menuService.selectedCharacter === CharacterEnum.None)
+      this.menuService.setSelectedCharacter(CharacterEnum.Adventurer);
+    if (type === MenuEnum.Gods && this.menuService.selectedGod === GodEnum.None)
+      this.menuService.setSelectedGod(GodEnum.Athena);
   }
 
   selectPartyMember(character: Character) {
-    this.menuService.selectedCharacter = character.type;
+    this.menuService.setSelectedCharacter(character.type);
   }
 
   selectGod(god: God) {
-    this.menuService.selectedGod = god.type;
+    this.menuService.setSelectedGod(god.type);
   }
 }

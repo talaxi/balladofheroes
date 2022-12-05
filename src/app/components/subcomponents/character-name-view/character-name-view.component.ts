@@ -18,7 +18,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class CharacterNameViewComponent implements OnInit {
   @Input() character: Character;
-  public noCharacter = CharacterEnum.none;
+  public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
@@ -31,7 +31,7 @@ export class CharacterNameViewComponent implements OnInit {
   goToCharacterDetails() {    
     this.layoutService.changeLayout(NavigationEnum.Menu);
     this.menuService.selectedMenuDisplay = MenuEnum.Characters;
-    this.menuService.selectedCharacter = this.character.type;
+    this.menuService.setSelectedCharacter(this.character.type);
   }
 
   getCharacterGodName(character: Character, whichGod: number) {

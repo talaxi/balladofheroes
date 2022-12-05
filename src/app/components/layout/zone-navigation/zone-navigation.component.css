@@ -11,3 +11,7 @@
     margin-bottom: auto;
     margin-right: 5rem;
 }
+
+.selected {
+    color: var(--foreground-secondary) !important;
+}

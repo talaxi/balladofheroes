@@ -3,12 +3,17 @@
     height: 100%;
     margin: 0 .5rem;
     grid-template-columns: auto;
-    grid-template-rows: 1fr 1rem 1fr;
+    grid-template-rows: auto 1fr 1rem 1fr;
     justify-content: stretch;
     grid-template-areas:
+        "header"
         "scene"
         "gap"
         "battleUpdates";
+}
+
+.header {
+    grid-area: header;
 }
 
 .gap {
@@ -25,6 +30,10 @@
     overflow-x: hidden;
     overflow-y: auto;
     position: relative;
+}
+
+.selectedSubzone {
+    color: var(--foreground-secondary);
 }
 
 .innerContainer {

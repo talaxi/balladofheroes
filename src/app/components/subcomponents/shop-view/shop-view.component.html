@@ -1,0 +1,13 @@
+<div *ngFor="let option of shopOptions; let i = index">
+    <button (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
+</div>
+
+<ng-template #shopModal>
+    <table>
+        <tr *ngFor="let cells of shopItemRows;">
+            <td *ngFor="let c of cells;">
+                <app-shopping-item-view [item]="c"></app-shopping-item-view>
+            </td>
+        </tr>
+    </table>
+  </ng-template>

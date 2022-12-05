@@ -112,11 +112,12 @@ export class ZoneNavigationComponent implements OnInit {
 
     subzone.isSelected = true;
     subzone.showNewNotification = false;
+    this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
 
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
-
+    
     var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
     if (enemyOptions.length > 0) {
       var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
@@ -138,6 +139,7 @@ export class ZoneNavigationComponent implements OnInit {
     });
 
     return {
+      'selected': ballad.isSelected,
       'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,      
       'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,  
       'completedSubzoneColor': allSubZonesCompleted      
@@ -155,6 +157,7 @@ export class ZoneNavigationComponent implements OnInit {
     });
 
     return {
+      'selected': zone.isSelected,
       'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,      
       'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,  
       'completedSubzoneColor': allSubZonesCompleted      
@@ -163,7 +166,9 @@ export class ZoneNavigationComponent implements OnInit {
 
   getSubzoneClass(subzone: SubZone) {
     var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0;
+    
     return {
+      'selected': subzone.isSelected,
       'unclearedSubzoneColor': subzone.victoriesNeededToProceed > subzone.victoryCount,      
       'clearedSubzoneColor': subzone.victoriesNeededToProceed <= subzone.victoryCount && !achievementsCompleted,  
       'completedSubzoneColor': achievementsCompleted      

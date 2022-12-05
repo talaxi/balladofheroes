@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, TemplateRef, ViewChild } from '@angular/core';
 import { plainToInstance } from 'class-transformer';
 import { GlobalVariables } from './models/global/global-variables.model';
 import { GameLoopService } from './services/game-loop/game-loop.service';
@@ -9,6 +9,7 @@ import { DeploymentService } from './services/deployment/deployment.service';
 import { BattleService } from './services/battle/battle.service';
 import { BalladService } from './services/ballad/ballad.service';
 import { InitializationService } from './services/global/initialization.service';
+import { TownService } from './services/town.service';
 declare var LZString: any;
 
 @Component({
@@ -17,18 +18,20 @@ declare var LZString: any;
   styleUrls: ['./app.component.css']
 })
 export class AppComponent {
-  title = 'pilgrimage';
+  @ViewChild('loadingModal') loading: any;
+  title = 'Ballad of Heroes';
   newGame = true;
   saveTime = 0;
   saveFrequency = 10; //in seconds
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
-    private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService) {
-
+    private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
+    private balladService: BalladService, private townService: TownService) {
+      
   }
 
   ngOnInit() {
-    var compressedGameData = localStorage.getItem("thePilgrimageGameData");
+    var compressedGameData = localStorage.getItem("theBalladOfHeroesGameData");
 
     if (compressedGameData !== null && compressedGameData !== undefined) {
       var gameData = LZString.decompressFromBase64(compressedGameData);
@@ -60,11 +63,6 @@ export class AppComponent {
       }
 
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {      
-      //institute a max deltaTime before something else happens, currently set to 5 minutes
-      //TODO: use this to institute some sort of loading screen or something
-      if (deltaTime > 1 * 5 * 60)
-        deltaTime = 1 * 5 * 60; 
-
       this.gameCheckup(deltaTime);
       this.saveTime += deltaTime;
 
@@ -79,7 +77,15 @@ export class AppComponent {
 
   public gameCheckup(deltaTime: number): void {
     //all game logic that should be updated behind the scenes
-    this.battleService.handleBattle(deltaTime);
+    var activeSubzone = this.balladService.getActiveSubZone();
+
+    if (activeSubzone.isTown)
+    {
+      //handleTown
+      this.townService.handleTown(deltaTime);
+    }
+    else
+      this.battleService.handleBattle(deltaTime, this.loading);
   }
 
   loadStartup() {

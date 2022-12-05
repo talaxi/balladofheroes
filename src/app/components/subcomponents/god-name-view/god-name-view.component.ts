@@ -13,7 +13,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class GodNameViewComponent implements OnInit {
   @Input() character: Character;
-  public noCharacter = CharacterEnum.none;
+  public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
   
   constructor(private globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService) { }
