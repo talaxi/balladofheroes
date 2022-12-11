@@ -8,7 +8,7 @@ import * as seedrandom from "seedrandom";
 export class UtilityService {
 
   //glossary
-  public activeTimeLimit = 1 * 60 * 60;
+  public activeTimeLimit = 1 * 20 * 60;
 
   public quickAutoAttackSpeed = 5;
   public averageAutoAttackSpeed = 7.5;
