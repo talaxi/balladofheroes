@@ -5,7 +5,7 @@
     "ng": "ng",
     "start": "ng serve",
     "build": "npm install && ng build",
-    "deploy": "ng build --base-href=/Pilgrimage/",
+    "deploy": "ng build --base-href=/balladofheroes/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },
