@@ -16,6 +16,8 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 })
 export class GodViewComponent implements OnInit {
   @Input() god: God;
+  characters: Character[];
+  characterTemplate: CharacterEnum = CharacterEnum.Adventurer;
   subscription: any;
 
   constructor(private lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
@@ -26,7 +28,15 @@ export class GodViewComponent implements OnInit {
     if (selectedGod !== undefined)
     {
       this.god = selectedGod;    
+
+      //for each character, check if this is the assigned god. if so, default template to you
+      this.globalService.getActivePartyCharacters(true).forEach(character => {
+        if (character.assignedGod1 === this.god.type || character.assignedGod2 === this.god.type)
+          this.characterTemplate = character.type;
+      });
     }
+
+    this.characters = this.globalService.globalVar.characters.filter(item => item.isAvailable);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.menuService.selectedGod !== undefined && this.menuService.selectedGod !== this.god.type) {
@@ -34,14 +44,23 @@ export class GodViewComponent implements OnInit {
         if (selectedGod !== undefined)
         {
           this.god = selectedGod;
+          
+          this.globalService.getActivePartyCharacters(true).forEach(character => {
+            if (character.assignedGod1 === this.god.type || character.assignedGod2 === this.god.type)
+              this.characterTemplate = character.type;
+          });
         }
       }
     });
   }
 
-  getGodAbilityDescription(abilityName: string, ability?: Ability) {    
+  getGodAbilityDescription(abilityName: string, ability?: Ability) {  
+    console.log(this.characterTemplate);  
     var defaultCharacter = new Character();
-    var character = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer);
+    var character = this.globalService.globalVar.characters.find(item => item.type.toString() === this.characterTemplate.toString());
+    console.log(this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer)?.type + " === " + this.characterTemplate);
+    console.log(this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer)?.type === this.characterTemplate);
+    console.log(character);
     if (character !== undefined)
       defaultCharacter = character;
     return this.lookupService.getGodAbilityDescription(abilityName, defaultCharacter, ability);

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
@@ -9,6 +10,7 @@ import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { LookupService } from 'src/app/services/lookup.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -23,10 +25,11 @@ export class ZoneNavigationComponent implements OnInit {
   availableSubZones: SubZone[];
   subscription: any;
   autoProgress: boolean = false;
+  itemsEnum = ItemsEnum;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
-    private achievementService: AchievementService) { }
+    private achievementService: AchievementService, public lookupService: LookupService) { }
 
   ngOnInit(): void {
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
@@ -125,6 +128,38 @@ export class ZoneNavigationComponent implements OnInit {
     }
   }
 
+  jumpToLatestShop() {
+    var latestShop: SubZone = this.balladService.getActiveSubZone();
+    var relatedZone: Zone | undefined = this.balladService.getActiveZone();
+    var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
+
+    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
+      ballad.isSelected = false;
+      if (ballad.zones !== undefined && ballad.zones.length > 0)
+        ballad.zones.filter(item => item.isAvailable).forEach(zone => {
+          zone.isSelected = false;
+          if (zone.subzones !== undefined && zone.subzones.length > 0)
+            zone.subzones.forEach(subzone => {
+              subzone.isSelected = false;
+              if (subzone.isTown)
+              {
+                latestShop = subzone;
+                relatedZone = zone;
+                relatedBallad = ballad;
+              }
+            });
+        });
+    });
+        
+    latestShop.isSelected = true;
+    latestShop.showNewNotification = false;
+    if (relatedZone !== undefined)
+      relatedZone.isSelected = true;
+    if (relatedBallad !== undefined)
+      relatedBallad.isSelected = true;
+    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;    
+  }
+
   getBalladClass(ballad: Ballad) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
@@ -177,6 +212,22 @@ export class ZoneNavigationComponent implements OnInit {
 
   autoProgressToggle() {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
+  }
+
+  getSubZoneSubText(subzone: SubZone) {
+    var text = "";
+
+    if (subzone.isTown)
+      text = "(Town)";
+    else
+    {
+      text = "(" + subzone.victoryCount.toString();
+      if (subzone.victoriesNeededToProceed > subzone.victoryCount)
+        text += "/" + subzone.victoriesNeededToProceed;
+      text += " wins)";
+    }
+
+    return text;
   }
 
   ngOnDestroy() {

@@ -11,4 +11,11 @@ export class ResourceValue {
         this.type = type;
         this.amount = amount;
     }
+
+    makeCopy() 
+    {
+        var copy = new ResourceValue(this.item, this.type, this.amount);
+
+        return copy;
+    }
 }

@@ -34,7 +34,7 @@ export class Character {
         this.level = 1;
         this.maxLevel = 20;
         this.exp = 0;
-        this.expToNextLevel = 200;
+        this.expToNextLevel = 100;
         this.assignedGod1 = GodEnum.None;
         this.assignedGod2 = GodEnum.None;
         this.battleStats = new CharacterStats(0, 0, 0, 0, 0, 0);

@@ -5,7 +5,9 @@ import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-header',
@@ -14,7 +16,8 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private battleService: BattleService, private layoutService: LayoutService, private menuService: MenuService) { }
+  constructor(private battleService: BattleService, private layoutService: LayoutService, private menuService: MenuService,
+    private utilityService: UtilityService, private globalService: GlobalService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -29,6 +32,14 @@ export class HeaderComponent implements OnInit {
 
   pauseGame() {
     this.battleService.togglePause();
+  }
+
+  getExtraSpeedTime() {
+    var time = "";
+
+    time = this.utilityService.convertSecondsToHHMMSS(this.globalService.globalVar.extraSpeedTimeRemaining);
+
+    return time;
   }
 
   openMenu() {

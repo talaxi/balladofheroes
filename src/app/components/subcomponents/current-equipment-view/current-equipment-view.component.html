@@ -1,21 +1,33 @@
 <div class="existingEquipment">
-  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedWeapon"><strong>Weapon: </strong>
-    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Weapon)"></span></span>
-  <br />
-  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedShield"><strong>Shield: </strong>
-    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Shield)"></span></span>
-  <br />
-  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedArmor"><strong>Armor: </strong>
-    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Armor)"></span></span>
-  <br />
-  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedLeftRing"><strong>Ring: </strong>
-    <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
-  <br />
+  <div class="equipmentDiv">
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedWeapon"><strong>Weapon: </strong>
+      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Weapon)"></span>
+    </span>
+    <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Weapon)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Weapon)">X</button>
+  </div>
+  <div class="equipmentDiv">
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedShield"><strong>Shield: </strong>
+      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Shield)"></span></span>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Shield)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Shield)">X</button>
+  </div>
+  <div class="equipmentDiv">
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedArmor"><strong>Armor: </strong>
+      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Armor)"></span></span>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Armor)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Armor)">X</button>
+  </div>
+  <div class="equipmentDiv">
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedLeftRing"><strong>Ring: </strong>
+      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Ring)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Ring)">X</button>
+  </div>  
+  <div class="equipmentDiv">
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong>Necklace: </strong>
+      {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Necklace)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Necklace)">X</button>
+  </div>
   <!--<span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing">Right Ring:
       {{getEquippedItemNameByType(equipmentTypeEnum.Ring)}}</span>
     <br />-->
-  <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong>Necklace: </strong>
-    {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
 </div>
 <div *ngIf="canChangeEquipment">
   <br />

@@ -2,7 +2,10 @@ export enum EquipmentQualityEnum {
   None,
   Basic, //gray
   Uncommon, //white
-  Rare, //blue
+  Rare, //blue  
   Epic, //purple
-  Legendary //orange
+  Special, //green
+  Extraordinary, //orange
+  Unique, //red
+  
 }

@@ -1,18 +1,21 @@
 <div class="gridContainer">
     <div class="header">
-        <div class="s4Heading textCentered selectedSubzone pageHeader"><strong>{{activeSubzone.name}}</strong></div>
-        <hr/>
+        <div class="s4Heading textCentered selectedSubzone pageHeader"><strong>{{activeSubzone.name}}</strong> <span
+                *ngIf="showDevStats"> EPS: {{getExpectedExpPerSec()}}</span></div>
+        <hr />
     </div>
     <div class="scene">
-        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }" *ngIf="!isAtScene() && !isAtTown()">
+        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }"
+            *ngIf="!isAtScene() && !isAtTown()">
             <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight" class="enemiesGrid">
-                <app-enemy-view [character]="currentEnemies.enemyList[0]" class="enemy1"></app-enemy-view>
+                <app-enemy-view [character]="currentEnemies.enemyList[0]"
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy1"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [character]="currentEnemies.enemyList[1]"
-                    class="enemy2"></app-enemy-view>
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy2"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 2" [character]="currentEnemies.enemyList[2]"
-                    class="enemy3"></app-enemy-view>
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy3"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 3" [character]="currentEnemies.enemyList[3]"
-                    class="enemy4"></app-enemy-view>
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy4"></app-enemy-view>
             </div>
         </div>
         <div *ngIf="isAtStoryScene()" class="storyGrid">
@@ -20,8 +23,9 @@
             <div class="skipButton">
                 <button class="floatRight arrow" (click)="skipStory()">&#8594;</button>
             </div>
-            <div class="loadingBar" *ngIf="true">
-                <mat-progress-bar mode="determinate" [value]="getPagePercent()" class="green-progress characterBar">
+            <div class="loadingBar">
+                <mat-progress-bar mode="determinate" [value]="getPagePercent()"
+                    class="green-progress characterBar removeAnimation">
                 </mat-progress-bar>
             </div>
         </div>
@@ -30,8 +34,9 @@
                 <img class="chestIcon" src="assets/svg/sword.svg">
             </div>
             <div class="text" [innerHtml]="this.displayChestText()"></div>
-            <div class="loadingBar" *ngIf="true">
-                <mat-progress-bar mode="determinate" [value]="getChestPercent()" class="green-progress characterBar">
+            <div class="loadingBar">
+                <mat-progress-bar mode="determinate" [value]="getChestPercent()"
+                    class="green-progress characterBar removeAnimation">
                 </mat-progress-bar>
             </div>
             <!--<hr class='hr' />-->
@@ -42,7 +47,9 @@
     </div>
     <hr class='gap hr' />
     <div class="battleUpdates">
-            <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)" [innerHtml]="this.displayGameUpdates()"></div>
-            <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)" class="skipToBottom arrow">&#8595;</button>        
+        <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
+            [innerHtml]="this.displayGameUpdates()"></div>
+        <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
+            class="skipToBottom arrow">&#8595;</button>
     </div>
 </div>

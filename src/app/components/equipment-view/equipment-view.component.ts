@@ -22,7 +22,7 @@ export class EquipmentViewComponent implements OnInit {
   subscription: any;
   @Input() characterType: CharacterEnum = CharacterEnum.Adventurer;
   character: Character;
-  availableEquipment: ResourceValue[];
+  availableEquipment: ResourceValue[] = [];
   hoveredItem: Equipment;
   public equipmentTypeEnum = EquipmentTypeEnum;
   public partyMembers: Character[];
@@ -32,16 +32,48 @@ export class EquipmentViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
-    this.availableEquipment = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.Equipment);
+    this.setUpAvailableEquipment();
     if (this.globalService.globalVar.characters.some(item => item.type === this.characterType))
       this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
-      this.availableEquipment = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.Equipment);
+      this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;      
+      console.log(this.characterType);
       if (this.globalService.globalVar.characters.some(item => item.type === this.characterType))
         this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
     });
+  }
+
+  setUpAvailableEquipment() {
+    this.availableEquipment = [];    
+    this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.Equipment).forEach(equip => {
+      if (equip !== undefined)
+        this.availableEquipment.push(equip.makeCopy());
+    });    
+
+    this.globalService.globalVar.characters.forEach(character => {
+      var weapon = this.availableEquipment.find(item => item.item === character.equipmentSet.weapon?.itemType);      
+      if (weapon !== undefined)
+        weapon.amount -= 1;
+
+      var shield = this.availableEquipment.find(item => item.item === character.equipmentSet.shield?.itemType);      
+      if (shield !== undefined)
+        shield.amount -= 1;
+
+      var armor = this.availableEquipment.find(item => item.item === character.equipmentSet.armor?.itemType);      
+      if (armor !== undefined)
+        armor.amount -= 1;
+
+      var ring = this.availableEquipment.find(item => item.item === character.equipmentSet.rightRing?.itemType);      
+      if (ring !== undefined)
+        ring.amount -= 1;
+
+      var necklace = this.availableEquipment.find(item => item.item === character.equipmentSet.necklace?.itemType);      
+      if (necklace !== undefined)
+        necklace.amount -= 1;      
+    });
+
+    this.availableEquipment = this.availableEquipment.filter(item => item.amount > 0);    
   }
 
   hoverItem(item: ResourceValue) {
@@ -72,6 +104,13 @@ export class EquipmentViewComponent implements OnInit {
       character.equipmentSet.leftRing = selectedEquipmentPiece;
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Necklace)
       character.equipmentSet.necklace = selectedEquipmentPiece;
+
+    this.globalService.calculateCharacterBattleStats(character);
+    this.setUpAvailableEquipment();
+  }
+
+  itemUnequipped($event: boolean) {
+    this.setUpAvailableEquipment();
   }
 
   getEquippedItemNameByType(type: EquipmentTypeEnum) {
@@ -109,7 +148,7 @@ export class EquipmentViewComponent implements OnInit {
     var name = this.lookupService.getItemName(equipment.item);
     var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.item));
 
-    return this.utilityService.getSanitizedHtml("<strong class='" + qualityClass + "'>" + name + "</strong>");
+    return this.utilityService.getSanitizedHtml("<strong class='" + qualityClass + "'>" + name + "</strong> x" + equipment.amount);
   }
 
   equipmentGain() {
@@ -117,7 +156,6 @@ export class EquipmentViewComponent implements OnInit {
       this.character.equipmentSet.getTotalAttackGain(), this.character.equipmentSet.getTotalDefenseGain(),
       this.character.equipmentSet.getTotalAgilityGain(), this.character.equipmentSet.getTotalLuckGain(), this.character.equipmentSet.getTotalResistanceGain());
     var equipmentStats = "";
-
 
     if (characterStats.attack > 0)
       equipmentStats += "+" + characterStats.attack.toString() + " Attack<br />";

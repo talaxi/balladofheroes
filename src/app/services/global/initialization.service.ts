@@ -139,7 +139,8 @@ export class InitializationService {
     });
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      ballad.isAvailable = true;
+      if (ballad.type !== BalladEnum.Underworld)
+        ballad.isAvailable = true;
       ballad.zones.forEach(zone => {
         zone.isAvailable = true;
         zone.subzones.forEach(subzone => {

@@ -1,4 +1,4 @@
-import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
@@ -16,6 +16,7 @@ export class CurrentEquipmentViewComponent implements OnInit {
   @Input() characterType: CharacterEnum = CharacterEnum.Adventurer;
   @Input() canChangeEquipment: boolean = false;
   equipmentModalOpened = false;
+  @Output() unequipEmitter = new EventEmitter<boolean>();
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, public dialog: MatDialog,
     private utilityService: UtilityService) { }
@@ -52,10 +53,45 @@ export class CurrentEquipmentViewComponent implements OnInit {
 
   openEquipmentModal(content: any) {
     this.equipmentModalOpened = true;
-    this.dialog.open(content, { width: '50%' });
+    this.dialog.open(content, { width: '50%', height: '50%', panelClass: 'mat-dialog-no-scroll' });
 
     /*dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);
     });*/
+  }
+
+  isUnequipped(type: EquipmentTypeEnum) {
+    var isUnequipped = false;
+
+    var item = this.getEquippedItemByType(type);
+
+    if (item === undefined)
+      isUnequipped = true;
+
+
+    return isUnequipped;
+  }
+
+  unequipItem(type: EquipmentTypeEnum) {   
+    var character = this.globalService.globalVar.characters.find(item => item.type === this.characterType);
+
+    if (character === undefined)
+      return;
+
+    if (type === EquipmentTypeEnum.Weapon)
+      character.equipmentSet.weapon = undefined;
+    if (type === EquipmentTypeEnum.Shield)
+      character.equipmentSet.shield = undefined;
+    if (type === EquipmentTypeEnum.Armor)
+      character.equipmentSet.armor = undefined;
+    if (type === EquipmentTypeEnum.Ring)
+      character.equipmentSet.rightRing = undefined;
+    if (type === EquipmentTypeEnum.Ring)
+      character.equipmentSet.leftRing = undefined;
+    if (type === EquipmentTypeEnum.Necklace)
+      character.equipmentSet.necklace = undefined;
+
+    this.globalService.calculateCharacterBattleStats(character); 
+    this.unequipEmitter.emit(false); 
   }
 }

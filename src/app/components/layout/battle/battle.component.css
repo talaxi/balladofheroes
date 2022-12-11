@@ -3,7 +3,7 @@
     height: 100%;
     margin: 0 .5rem;
     grid-template-columns: auto;
-    grid-template-rows: auto 1fr 1rem 1fr;
+    grid-template-rows: auto 47% 1rem 1fr;
     justify-content: stretch;
     grid-template-areas:
         "header"
@@ -107,6 +107,7 @@
 
 .text {
     grid-area: text;
+    margin: auto;
 }
 
 .loadingBar {

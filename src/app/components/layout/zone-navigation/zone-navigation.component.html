@@ -1,42 +1,130 @@
-<div>
-    <div class="balladHeader">
-        <span class="s4Heading balladTitle">Ballads</span>
-        <span>
-            <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto Progress</mat-checkbox>
-        </span>
-    </div>
-    <hr />
-    <div *ngFor="let ballad of availableBallads">
-        <div *ngIf="!ballad.isSelected">
-            <span [ngClass]="getBalladClass(ballad)" (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}} <app-notification-icon
-                    *ngIf="ballad.showNewNotification"></app-notification-icon></span>
+<div class="navigationGrid">
+    <div class="navigation">
+        <div class="balladHeader">
+            <span class="s4Heading balladTitle">Ballads</span>
+            <span>
+                <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
+                    Progress
+                </mat-checkbox>
+            </span>
         </div>
-        <div *ngIf="ballad.isSelected">
-            <span class="selected"><strong [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></span>
-            <div *ngFor="let zone of availableZones">
-                <div *ngIf="!zone.isSelected">
-                    &#8618;<span [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)">{{zone.zoneName}} <app-notification-icon
-                            *ngIf="zone.showNewNotification"></app-notification-icon></span>
+        <hr />
+        <div class="zoneGrid">
+            <div class="balladList">
+                <div *ngFor="let ballad of availableBallads">
+                    <div *ngIf="!ballad.isSelected">
+                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading" [ngClass]="getBalladClass(ballad)"
+                            (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
+                            <app-notification-icon *ngIf="ballad.showNewNotification"></app-notification-icon>
+                        </button>
+                    </div>
+                    <div *ngIf="ballad.isSelected" class="spaceBetween">
+                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected"><strong
+                                [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></button>
+                        <span class="selectedArrow textRightAligned">
+                            <strong>&#8594;</strong>
+                        </span>
+                    </div>
                 </div>
-                <div *ngIf="zone.isSelected">
-                    <span class="selected">&#8618;<strong [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></span>
-                    <div *ngFor="let subzone of availableSubZones">
-                        <div *ngIf="!subzone.isSelected">
-                            <span class="subzoneSpacer">&#8618;</span><span [ngClass]="getSubzoneClass(subzone)"><span
-                                    (click)="selectSubZone(subzone, zone)">{{subzone.name}}
-                                    ({{subzone.victoryCount}}<span
-                                        *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
-                                    victories) <app-notification-icon *ngIf="subzone.showNewNotification">
-                                    </app-notification-icon></span></span>
-                        </div>
-                        <div *ngIf="subzone.isSelected">
-                            <strong><span class="selected"><span class="subzoneSpacer">&#8618;</span><span
-                                        [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
-                                        ({{subzone.victoryCount}}<span
-                                            *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
-                                        victories)</span></span></strong>
+            </div>
+            <div class="zoneList">
+                <div *ngFor="let zone of availableZones">
+                    <div *ngIf="!zone.isSelected">
+                        <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
+                            (click)="selectZone(zone)">{{zone.zoneName}}
+                            <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
+                        </button>
+                    </div>
+                    <div *ngIf="zone.isSelected">
+                        <button class="buttonAsTextKeepColor z2Heading clickableText selected"><strong
+                                [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></button>
+                        <div *ngFor="let subzone of availableSubZones">
+                            <div *ngIf="!subzone.isSelected">
+                                <span class="subzoneSpacer">&#8618;</span><span><button
+                                        class="buttonAsTextKeepColor z3Heading clickableText"
+                                        [ngClass]="getSubzoneClass(subzone)"
+                                        (click)="selectSubZone(subzone, zone)">{{subzone.name}}
+                                        {{getSubZoneSubText(subzone)}}
+                                    </button>
+                                    <app-notification-icon *ngIf="subzone.showNewNotification">
+                                    </app-notification-icon>
+                                </span>
+                            </div>
+                            <div *ngIf="subzone.isSelected">
+                                <strong><button class="buttonAsTextKeepColor z3Heading clickableText selected"><span
+                                            class="subzoneSpacer">&#8618;</span><span
+                                            [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
+                                            {{getSubZoneSubText(subzone)}}</span></button></strong>
+                            </div>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
+        <!--<div *ngFor="let ballad of availableBallads">
+            <div *ngIf="!ballad.isSelected">
+                <span [ngClass]="getBalladClass(ballad)"
+                    (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}} <app-notification-icon
+                        *ngIf="ballad.showNewNotification"></app-notification-icon></span>
+            </div>
+            <div *ngIf="ballad.isSelected">
+                <span class="selected"><strong
+                        [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></span>
+                <div *ngFor="let zone of availableZones">
+                    <div *ngIf="!zone.isSelected">
+                        &#8618;<span [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)">{{zone.zoneName}}
+                            <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
+                        </span>
+                    </div>
+                    <div *ngIf="zone.isSelected">
+                        <span class="selected">&#8618;<strong
+                                [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></span>
+                        <div *ngFor="let subzone of availableSubZones">
+                            <div *ngIf="!subzone.isSelected">
+                                <span class="subzoneSpacer">&#8618;</span><span
+                                    [ngClass]="getSubzoneClass(subzone)"><span
+                                        (click)="selectSubZone(subzone, zone)">{{subzone.name}}
+                                        ({{subzone.victoryCount}}<span
+                                            *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
+                                        wins) <app-notification-icon *ngIf="subzone.showNewNotification">
+                                        </app-notification-icon></span></span>
+                            </div>
+                            <div *ngIf="subzone.isSelected">
+                                <strong><span class="selected"><span class="subzoneSpacer">&#8618;</span><span
+                                            [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
+                                            ({{subzone.victoryCount}}<span
+                                                *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
+                                            wins)</span></span></strong>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>-->
+    </div>
+    <div class="hr gap">
+        <hr />
+    </div>
+    <div class="quickLink">
+        <div class="quickJump">
+            <span>Jump to..</span>
+            <br />
+            <button (click)="jumpToLatestShop()">Latest Town</button>
+            <br />
+            <button (click)="jumpToLatestShop()">Underworld Town</button>
+            <br />
+            <button (click)="jumpToLatestShop()">Olympus Town</button>
+            <br />
+            <button (click)="jumpToLatestShop()">Latest Shop</button>
+            <br />
+            <button (click)="jumpToLatestShop()">Latest Shop</button>
+            <br />
+            <button (click)="jumpToLatestShop()">Latest Shop</button>
+            <br />
+            <button (click)="jumpToLatestShop()">Latest Shop</button>
+        </div>
+        <div class="peekResources">
+            <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span>
+        </div>
+    </div>
+</div>

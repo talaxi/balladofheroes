@@ -8,6 +8,8 @@ import * as seedrandom from "seedrandom";
 export class UtilityService {
 
   //glossary
+  public activeTimeLimit = 1 * 60 * 60;
+
   public quickAutoAttackSpeed = 5;
   public averageAutoAttackSpeed = 7.5;
   public longAutoAttackSpeed = 10;
@@ -25,6 +27,10 @@ export class UtilityService {
   public godAbility2Level = 5;
   public godPassiveLevel = 2;
   public godAbility3Level = 10;
+
+  public godStatGainLevelIncrement = .05;
+  public godStatGainBaseAmount = 5;
+  
 
   constructor(public sanitizer: DomSanitizer) { }
 

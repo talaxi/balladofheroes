@@ -30,16 +30,15 @@ export class EnemyGeneratorService {
       enemy.name = "Water Serpent";
       enemy.battleStats = new CharacterStats(10, 12, 4, 5, 0, 0); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.xpGainFromDefeat = 37;
+      enemy.xpGainFromDefeat = 22;
       enemy.coinGainFromDefeat = 1;
-      enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
     }
     if (type === BestiaryEnum.Crustacean)
     {
       enemy.name = "Crustacean";
-      enemy.battleStats = new CharacterStats(18, 10, 7, 3, 1, 0); 
+      enemy.battleStats = new CharacterStats(14, 10, 7, 3, 1, 0); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.xpGainFromDefeat = 45;
+      enemy.xpGainFromDefeat = 31;
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .15));
     }
@@ -49,7 +48,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(16, 15, 3, 6, 5, 0); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 1;
-      enemy.xpGainFromDefeat = 40; 
+      enemy.xpGainFromDefeat = 33; 
 
       var peck = new Ability();
       peck.name = "Peck";
@@ -65,7 +64,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(17, 12, 4, 10, 5, 0); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 50; 
+      enemy.xpGainFromDefeat = 35; 
       enemy.loot.push(new LootItem(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 1, .1));
     }
     if (type === BestiaryEnum.WildBoar)
@@ -73,23 +72,23 @@ export class EnemyGeneratorService {
       enemy.name = "Wild Boar";
       enemy.battleStats = new CharacterStats(25, 10, 10, 5, 5, 0); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.xpGainFromDefeat = 55; 
+      enemy.xpGainFromDefeat = 45; 
       enemy.coinGainFromDefeat = 2;      
       //chance to drop light leather
     }
     if (type === BestiaryEnum.KillerBees)
     {
       enemy.name = "Killer Bees";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(12, 18, 4, 15, 25, 0); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.xpGainFromDefeat = 30; 
+      enemy.xpGainFromDefeat = 20; 
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
     }
     if (type === BestiaryEnum.Matriarch)
     {
       enemy.name = "Matriarch";
-      enemy.battleStats = new CharacterStats(100, 25, 8, 8, 5, 5); 
+      enemy.battleStats = new CharacterStats(125, 25, 8, 8, 5, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 100; 

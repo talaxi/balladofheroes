@@ -224,15 +224,15 @@ export class SubZoneGeneratorService {
     
     if (type === SubZoneEnum.AigosthenaUpperCoast)
     {
-      rewards.push(this.resourceGeneratorService.throwingStone(15));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 15));
     }
     if (type === SubZoneEnum.AigosthenaBay)
     {
-      rewards.push(this.resourceGeneratorService.bronzeSword(1));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.IronSword, 1));
     }
     if (type === SubZoneEnum.AigosthenaWesternWoodlands)
     {
-      rewards.push(this.resourceGeneratorService.healingHerb(1));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingHerb, 1));
     }
 
     return rewards;
@@ -310,13 +310,37 @@ export class SubZoneGeneratorService {
 
   getShopOptions(subzoneType: SubZoneEnum) {
     var shopOptions: ShopOption[] = [];
+    var availableOptionsGeneral: ShopItem[] = [];
+    var availableOptionsCrafter: ShopItem[] = [];
 
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LinenArmor));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronSword));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronHammer));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ShortBow));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronShield));
+
+    //every general shop should have access to everything previous shop had
     if (subzoneType === SubZoneEnum.DodonaDelphi) {
-      var availableOptionsGeneral: ShopItem[] = [];
-
-      availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LinenArmor));
-
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+
+      return shopOptions;
+    }
+    
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronArmor));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeSword));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeHammer));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LongBow));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HealingHerb));
+
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FortifiedBronzeSword));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FortifiedBronzeHammer));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Venomstrike));
+
+    if (subzoneType === SubZoneEnum.DodonaArta) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
     }
 
     return shopOptions;

@@ -1,3 +1,7 @@
+.equipmentOverview {
+  height: 100%;
+}
+
 .equipmentView {
   display: grid;
   width: 100%;
@@ -10,6 +14,16 @@
     "availableEquipment existingEquipment";
 
   color: var(--foreground-default);
+}
+
+.availableEquipment {
+  grid-area: availableEquipment;
+  overflow-y: auto;
+  margin-bottom: 1rem;
+}
+
+.existingEquipment {
+  grid-area: existingEquipment
 }
 
 .characterSelect {

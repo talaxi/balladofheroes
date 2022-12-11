@@ -19,6 +19,7 @@ import { Equipment } from '../models/resources/equipment.model';
 import { ResourceValue } from '../models/resources/resource-value.model';
 import { SubZone } from '../models/zone/sub-zone.model';
 import { GlobalService } from './global/global.service';
+import { SubZoneGeneratorService } from './sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from './utility/utility.service';
 
 @Injectable({
@@ -26,7 +27,7 @@ import { UtilityService } from './utility/utility.service';
 })
 export class LookupService {
 
-  constructor(private globalService: GlobalService, private utilityService: UtilityService) { }
+  constructor(private globalService: GlobalService, private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService) { }
 
   getSubZoneCompletionByType(type: SubZoneEnum) {
     var chosenSubzone = new SubZone();
@@ -84,12 +85,25 @@ export class LookupService {
       return ItemTypeEnum.BattleItem;
     }
 
+    if (type === ItemsEnum.LamiaFang) {
+      return ItemTypeEnum.CraftingMaterial;
+    }
+
+    if (type === ItemsEnum.Coin) {
+      return ItemTypeEnum.Resource
+    }
+
     return ItemTypeEnum.None;
   }
 
   getItemName(type: ItemsEnum) {
     var name = "";
 
+    //resources
+    if (type === ItemsEnum.Coin)
+      name = "Coin";
+
+    //healing items
     if (type === ItemsEnum.HealingHerb)
       name = "Healing Herb";
 
@@ -98,16 +112,59 @@ export class LookupService {
       name = "Throwing Stone";
 
     //equipment
+    //swords
+    else if (type === ItemsEnum.IronSword)
+      name = "Iron Sword";
     else if (type === ItemsEnum.BronzeSword)
       name = "Bronze Sword";
+    else if (type === ItemsEnum.FortifiedBronzeSword)
+      name = "Fortified Bronze Sword";
+    else if (type === ItemsEnum.SteelSword)
+      name = "Steel Sword";
+    else if (type === ItemsEnum.GoldenSword)
+      name = "Golden Sword";
+
+    //hammers
+    else if (type === ItemsEnum.IronHammer)
+      name = "Iron Hammer";
     else if (type === ItemsEnum.BronzeHammer)
       name = "Bronze Hammer";
+    else if (type === ItemsEnum.FortifiedBronzeHammer)
+      name = "Fortified Bronze Hammer";
+    else if (type === ItemsEnum.SteelHammer)
+      name = "Steel Hammer";
+    else if (type === ItemsEnum.DiamondHammer)
+      name = "Diamond Hammer";
+
+    //bows
     else if (type === ItemsEnum.ShortBow)
       name = "Short Bow";
+    else if (type === ItemsEnum.LongBow)
+      name = "Long Bow";
+    else if (type === ItemsEnum.Venomstrike)
+      name = "Venomstrike";
+    else if (type === ItemsEnum.Wolfsbane)
+      name = "Wolfsbane";
+    else if (type === ItemsEnum.EagleEye)
+      name = "Eagle Eye";
+
+    //shields
+    else if (type === ItemsEnum.IronShield)
+      name = "Iron Shield";
     else if (type === ItemsEnum.BronzeShield)
       name = "Bronze Shield";
+
+    //armor
+    else if (type === ItemsEnum.LinenArmor)
+      name = "Linen Armor";
+    else if (type === ItemsEnum.IronArmor)
+      name = "Iron Armor";
     else if (type === ItemsEnum.BronzeArmor)
       name = "Bronze Armor";
+    else if (type === ItemsEnum.FortifiedBronzeArmor)
+      name = "Fortified Bronze Armor";
+    else if (type === ItemsEnum.SteelArmor)
+      name = "Steel Armor";
 
     return name;
   }
@@ -122,7 +179,35 @@ export class LookupService {
     else if (type === ItemsEnum.ThrowingStone)
       name = "Deal " + this.getThrowingStoneAmount() + " damage to a target.";
 
+    //equipment
+    else if (this.getEquipmentPieceByItemType(type) !== undefined) {
+      name = this.getEquipmentStats(this.getEquipmentPieceByItemType(type));
+    }
+
     return name;
+  }
+
+  getItemTypeName(item: ItemsEnum) {
+    var itemTypeName = "";
+
+    var equipment = this.getEquipmentPieceByItemType(item);
+
+    if (equipment !== undefined)
+      itemTypeName = this.getEquipmentTypeName(equipment);
+    else {
+      var itemType = this.getItemTypeFromItemEnum(item);
+
+      if (itemType === ItemTypeEnum.BattleItem)
+        itemTypeName = "Equippable Damaging Item";
+      else if (itemType === ItemTypeEnum.HealingItem)
+        itemTypeName = "Equippable Healing Item";
+      else if (itemType === ItemTypeEnum.CraftingMaterial)
+        itemTypeName = "Material";
+      else if (itemType === ItemTypeEnum.Resource)
+        itemTypeName = "Resource";
+    }
+
+    return itemTypeName;
   }
 
   getEquipmentTypeName(equipment: Equipment) {
@@ -155,25 +240,102 @@ export class LookupService {
   getEquipmentPieceByItemType(type: ItemsEnum) {
     var equipmentPiece: Equipment | undefined = undefined;
 
-    if (type === ItemsEnum.BronzeSword) {
+    //swords
+    if (type === ItemsEnum.IronSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Basic, WeaponTypeEnum.Sword);
       equipmentPiece.stats = new CharacterStats(0, 5, 0, 3, 0, 0);
     }
-    if (type === ItemsEnum.BronzeShield) {
-      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Basic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 8, 0, 0, 0);
+    if (type === ItemsEnum.BronzeSword) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 10, 0, 6, 0, 0);
     }
-    if (type === ItemsEnum.BronzeArmor) {
-      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Basic);
-      equipmentPiece.stats = new CharacterStats(30, 0, 3, 0, 0, 0);
+    if (type === ItemsEnum.FortifiedBronzeSword) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 15, 0, 9, 0, 0);
     }
-    if (type === ItemsEnum.BronzeHammer) {
+    if (type === ItemsEnum.SteelSword) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 20, 0, 12, 0, 0);
+    }
+    if (type === ItemsEnum.GoldenSword) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 40, 0, 24, 0, 0);
+    }
+
+    //hammers
+    if (type === ItemsEnum.IronHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Basic, WeaponTypeEnum.Hammer);
       equipmentPiece.stats = new CharacterStats(0, 9, 0, 0, 0, 0);
     }
+    if (type === ItemsEnum.BronzeHammer) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 18, 0, 0, 0, 0);
+    }
+    if (type === ItemsEnum.FortifiedBronzeHammer) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 27, 0, 0, 0, 0);
+    }
+    if (type === ItemsEnum.SteelHammer) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 36, 0, 0, 0, 0);
+    }
+    if (type === ItemsEnum.DiamondHammer) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 72, 0, 0, 0, 0);
+    }
+
+    //bows
     if (type === ItemsEnum.ShortBow) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Basic, WeaponTypeEnum.Bow);
       equipmentPiece.stats = new CharacterStats(0, 6, 0, 0, 5, 0);
+    }
+    if (type === ItemsEnum.LongBow) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Bow);
+      equipmentPiece.stats = new CharacterStats(0, 12, 0, 0, 10, 0);
+    }
+    if (type === ItemsEnum.Venomstrike) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Bow);
+      equipmentPiece.stats = new CharacterStats(0, 18, 0, 0, 15, 0);
+    }
+    if (type === ItemsEnum.Wolfsbane) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Bow);
+      equipmentPiece.stats = new CharacterStats(0, 24, 0, 0, 20, 0);
+    }
+    if (type === ItemsEnum.EagleEye) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Bow);
+      equipmentPiece.stats = new CharacterStats(0, 40, 0, 0, 50, 0);
+    }
+
+    //shields
+    if (type === ItemsEnum.IronShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Basic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 8, 0, 0, 0);
+    }
+    if (type === ItemsEnum.BronzeShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Basic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 16, 0, 0, 0);
+    }
+
+    //armor
+    if (type === ItemsEnum.LinenArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Basic);
+      equipmentPiece.stats = new CharacterStats(25, 0, 5, 0, 0, 0);
+    }
+    if (type === ItemsEnum.IronArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Basic);
+      equipmentPiece.stats = new CharacterStats(60, 0, 3, 0, 0, 0);
+    }
+    if (type === ItemsEnum.BronzeArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Uncommon);
+      equipmentPiece.stats = new CharacterStats(120, 0, 6, 0, 0, 0);
+    }
+    if (type === ItemsEnum.FortifiedBronzeArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Uncommon);
+      equipmentPiece.stats = new CharacterStats(180, 0, 10, 0, 0, 0);
+    }
+    if (type === ItemsEnum.SteelArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
+      equipmentPiece.stats = new CharacterStats(400, 0, 15, 0, 0, 0);
     }
 
     return equipmentPiece;
@@ -186,6 +348,19 @@ export class LookupService {
 
     if (item.quality === EquipmentQualityEnum.Basic)
       classText = "basicEquipment";
+    if (item.quality === EquipmentQualityEnum.Uncommon)
+      classText = "uncommonEquipment";
+    if (item.quality === EquipmentQualityEnum.Rare)
+      classText = "rareEquipment";
+    if (item.quality === EquipmentQualityEnum.Epic)
+      classText = "epicEquipment";
+    if (item.quality === EquipmentQualityEnum.Special)
+      classText = "specialEquipment";
+    if (item.quality === EquipmentQualityEnum.Extraordinary)
+      classText = "extraordinaryEquipment";
+    if (item.quality === EquipmentQualityEnum.Unique)
+      classText = "uniqueEquipment";
+
     return classText;
   }
 
@@ -363,23 +538,23 @@ export class LookupService {
     //Apollo
     if (abilityName === "Staccato")
       abilityDescription = "Increase the party's agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Staccato is active, each party member performs a free auto attack. " + cooldown + " second cooldown.";
-      if (abilityName === "Fortissimo")
+    if (abilityName === "Fortissimo")
       abilityDescription = "Increase the party's attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Fortissimo is active, reduce your other cooldowns by <strong>" + secondaryEffectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
-      if (abilityName === "Allegro")
+    if (abilityName === "Allegro")
       abilityDescription = "Increase the party's luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Allegro is active, cleanse a random debuff from a party member. " + cooldown + " second cooldown.";
-      if (abilityName === "Ostinato")
+    if (abilityName === "Ostinato")
       abilityDescription = "Every " + cooldown + " seconds, heal a HP party member for <strong>" + effectiveAmount + "</strong>. Targets the party member with the lowest HP %.";
-    
+
     //Hermes
     if (abilityName === "Trick Shot")
-    abilityDescription = "Deal <strong>" + effectiveAmount + " </strong>damage. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + effectiveAmount + " </strong>damage. " + cooldown + " second cooldown.";
     if (abilityName === "Embellish")
-    abilityDescription = "Increase your attack and agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Increase your attack and agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Special Delivery")
-    abilityDescription = "Immediately perform <strong>three</strong> auto attacks. Their damage is increased by <strong>" + effectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
+      abilityDescription = "Immediately perform <strong>three</strong> auto attacks. Their damage is increased by <strong>" + effectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
     if (abilityName === "Quicken")
-    abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ability?.effectiveness + "</strong> seconds. Passive.";
-  
+      abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ability?.effectiveness + "</strong> seconds. Passive.";
+
     //Zeus
     if (abilityName === "Overload")
       abilityDescription = "Surge effect increases damage dealt by next ability by " + effectiveAmount + "%. Passive";
@@ -529,7 +704,7 @@ export class LookupService {
 
     return criticalChance;
   }
-  
+
   getHealingCriticalChance(attacker: Character) {
     var criticalChance = .05;
 
@@ -550,11 +725,13 @@ export class LookupService {
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.AgilityUp ||
-        effect.type === StatusEffectEnum.AgilityDown);
+        effect.type === StatusEffectEnum.AgilityDown
+        || effect.type === StatusEffectEnum.RecentlyDefeated);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
-          if (effect.type === StatusEffectEnum.AgilityUp || effect.type === StatusEffectEnum.AgilityDown) {
+          if (effect.type === StatusEffectEnum.AgilityUp || effect.type === StatusEffectEnum.AgilityDown
+            || effect.type === StatusEffectEnum.RecentlyDefeated) {
             agility *= effect.effectiveness;
           }
         });
@@ -569,11 +746,13 @@ export class LookupService {
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.LuckUp ||
-        effect.type === StatusEffectEnum.LuckDown);
+        effect.type === StatusEffectEnum.LuckDown
+        || effect.type === StatusEffectEnum.RecentlyDefeated);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
-          if (effect.type === StatusEffectEnum.LuckUp || effect.type === StatusEffectEnum.LuckDown) {
+          if (effect.type === StatusEffectEnum.LuckUp || effect.type === StatusEffectEnum.LuckDown
+            || effect.type === StatusEffectEnum.RecentlyDefeated) {
             luck *= effect.effectiveness;
           }
         });
@@ -588,11 +767,13 @@ export class LookupService {
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.ResistanceUp ||
-        effect.type === StatusEffectEnum.ResistanceDown);
+        effect.type === StatusEffectEnum.ResistanceDown
+        || effect.type === StatusEffectEnum.RecentlyDefeated);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
-          if (effect.type === StatusEffectEnum.ResistanceUp || effect.type === StatusEffectEnum.ResistanceDown) {
+          if (effect.type === StatusEffectEnum.ResistanceUp || effect.type === StatusEffectEnum.ResistanceDown
+            || effect.type === StatusEffectEnum.RecentlyDefeated) {
             resistance *= effect.effectiveness;
           }
         });
@@ -607,11 +788,13 @@ export class LookupService {
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.AttackUp ||
-        effect.type === StatusEffectEnum.AttackDown);
+        effect.type === StatusEffectEnum.AttackDown
+        || effect.type === StatusEffectEnum.RecentlyDefeated);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
-          if (effect.type === StatusEffectEnum.AttackUp || effect.type === StatusEffectEnum.AttackDown) {
+          if (effect.type === StatusEffectEnum.AttackUp || effect.type === StatusEffectEnum.AttackDown
+            || effect.type === StatusEffectEnum.RecentlyDefeated) {
             attack *= effect.effectiveness;
           }
         });
@@ -631,11 +814,13 @@ export class LookupService {
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.DefenseUp ||
-        effect.type === StatusEffectEnum.DefenseDown);
+        effect.type === StatusEffectEnum.DefenseDown
+        || effect.type === StatusEffectEnum.RecentlyDefeated);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
-          if (effect.type === StatusEffectEnum.DefenseUp || effect.type === StatusEffectEnum.DefenseDown) {
+          if (effect.type === StatusEffectEnum.DefenseUp || effect.type === StatusEffectEnum.DefenseDown
+            || effect.type === StatusEffectEnum.RecentlyDefeated) {
             defense *= effect.effectiveness;
           }
         });
@@ -652,6 +837,30 @@ export class LookupService {
 
   getAdjustedCriticalMultiplier(character: Character) {
     return 1.5;
+  }
+
+  getEquipmentStats(equipment: Equipment | undefined) {
+    var equipmentStats = "";
+
+    if (equipment === undefined)
+      return equipmentStats;
+
+    if (equipment.stats.attack > 0)
+      equipmentStats += "+" + equipment.stats.attack.toString() + " Attack<br />";
+    if (equipment.stats.defense > 0)
+      equipmentStats += "+" + equipment.stats.defense + " Defense<br />";
+    if (equipment.stats.maxHp > 0)
+      equipmentStats += "+" + equipment.stats.maxHp + " Max HP<br />";
+    if (equipment.stats.agility > 0)
+      equipmentStats += "+" + equipment.stats.agility + " Agility<br />";
+    if (equipment.stats.luck > 0)
+      equipmentStats += "+" + equipment.stats.luck + " Luck<br />";
+    if (equipment.stats.resistance > 0)
+      equipmentStats += "+" + equipment.stats.resistance + " Luck<br />";
+
+    equipmentStats = this.utilityService.getSanitizedHtml(equipmentStats);
+
+    return equipmentStats;
   }
 
   getCharacterColorClass(type: CharacterEnum) {
@@ -686,5 +895,59 @@ export class LookupService {
     }
 
     return src;
+  }
+
+  getCharacterDps(character: Character, target?: Character) {
+    var totalDps = 0;
+    var adjustedAttack = this.getAdjustedAttack(character);
+    var adjustedDefense = target === undefined ? 0 : this.getAdjustedDefense(target);
+    var critChance = this.getDamageCriticalChance(character, target === undefined ? new Character() : target);
+    var adjustedCriticalMultiplier = ((1 - critChance)) + (critChance * this.getAdjustedCriticalMultiplier(character));
+
+    if (target === undefined) {
+      totalDps += adjustedAttack * adjustedCriticalMultiplier / this.getAutoAttackTime(character);
+    }
+    else {
+      var damageMultiplier = 1;
+      var abilityDamageMultiplier = 1;
+
+      //auto attack
+      totalDps += Math.round((damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
+        (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier) / this.getAutoAttackTime(character));
+
+      //console.log ("Total DPS = " + totalDps + " = (" + adjustedAttack + " (2 / 3)) - (" + adjustedDefense + " (2 / 5)) * " + adjustedCriticalMultiplier + ") / " + this.getAutoAttackTime(character));
+    }
+
+    return this.utilityService.roundTo(totalDps, 1);
+  }
+
+  getPartyDps(party: Character[], target?: Character) {
+    var totalDps = 0;
+
+    party.forEach(character => {
+      totalDps += this.getCharacterDps(character, target);
+    });
+
+    return this.utilityService.roundTo(totalDps, 1);
+  }
+
+  getSubzoneExpPerSec(subzoneType: SubZoneEnum) {
+    var expPerSecPerEnemyTeam: number[] = [];
+    var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzoneType);
+
+    enemyOptions.forEach(enemyTeam => {
+      var timeToClear = 0;
+      var totalXp = 0;
+      enemyTeam.enemyList.forEach(enemy => {
+        var dpsAgainstEnemy = this.getPartyDps(this.globalService.getActivePartyCharacters(true), enemy);
+        var enemyClearTime = enemy.battleStats.maxHp / dpsAgainstEnemy;
+        timeToClear += enemyClearTime;
+        totalXp += enemy.xpGainFromDefeat;
+      });      
+
+      expPerSecPerEnemyTeam.push(totalXp / timeToClear);
+    });
+
+    return (expPerSecPerEnemyTeam.reduce((a, b) => a + b, 0) / expPerSecPerEnemyTeam.length) || 0;
   }
 }

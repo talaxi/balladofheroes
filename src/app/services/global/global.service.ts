@@ -9,6 +9,7 @@ import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { God } from 'src/app/models/character/god.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
@@ -105,10 +106,10 @@ export class GlobalService {
       quickHit.name = "Quick Hit";
       quickHit.isAvailable = false;
       quickHit.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
-      quickHit.effectiveness = 1.5;
-      quickHit.cooldown = quickHit.currentCooldown = 20;
+      quickHit.effectiveness = 2.2;
+      quickHit.cooldown = quickHit.currentCooldown = 18;
       quickHit.dealsDirectDamage = true;
-      quickHit.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true));
+      quickHit.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 8, 1.25, false, true));
       character.abilityList.push(quickHit);
 
       var barrage = new Ability();
@@ -134,7 +135,7 @@ export class GlobalService {
       sureShot.name = "Sure Shot";
       sureShot.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       sureShot.isAvailable = false;
-      sureShot.effectiveness = 1.2;
+      sureShot.effectiveness = 1.5;
       sureShot.cooldown = sureShot.currentCooldown = 25;
       sureShot.dealsDirectDamage = true;
       sureShot.targetGainsStatusEffect.push(this.createDamageOverTimeEffect(12, 3, .2, sureShot.name));
@@ -154,7 +155,7 @@ export class GlobalService {
       pinningShot.isAvailable = false;
       pinningShot.cooldown = pinningShot.currentCooldown = 35;
       pinningShot.dealsDirectDamage = true;
-      pinningShot.effectiveness = 1.25;
+      pinningShot.effectiveness = 1.85;
       pinningShot.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));
       character.abilityList.push(pinningShot);
     }
@@ -181,7 +182,7 @@ export class GlobalService {
       shieldSlam.name = "Shield Slam";
       shieldSlam.requiredLevel = this.utilityService.characterAbility2Level;
       shieldSlam.isAvailable = false;
-      shieldSlam.effectiveness = 1;
+      shieldSlam.effectiveness = 1.7;
       shieldSlam.secondaryEffectiveness = .25;
       shieldSlam.dealsDirectDamage = true;
       shieldSlam.cooldown = shieldSlam.currentCooldown = 5;
@@ -194,7 +195,7 @@ export class GlobalService {
       heal.requiredLevel = this.utilityService.characterAbility2Level;
       heal.targetType = TargetEnum.LowestHpPercent;
       heal.isAvailable = false;
-      heal.effectiveness = 1;
+      heal.effectiveness = 1.4;
       heal.heals = true;
       heal.targetsAllies = true;
       heal.dealsDirectDamage = false;
@@ -216,7 +217,7 @@ export class GlobalService {
       barrier.dealsDirectDamage = false;
       barrier.isAoe = true;
       barrier.targetsAllies = true;
-      barrier.effectiveness = .6;
+      barrier.effectiveness = .7;
       barrier.threshold = .10;
       barrier.cooldown = barrier.currentCooldown = 5;
       character.abilityList.push(barrier);
@@ -271,7 +272,7 @@ export class GlobalService {
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       divineStrike.cooldown = divineStrike.currentCooldown = 30;
       divineStrike.dealsDirectDamage = true;
-      divineStrike.effectiveness = 1.6;
+      divineStrike.effectiveness = 2.1;
       divineStrike.elementalType = ElementalTypeEnum.Holy;
       divineStrike.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
       god.abilityList.push(divineStrike);
@@ -290,7 +291,7 @@ export class GlobalService {
       blindingLight.isAvailable = false;
       blindingLight.cooldown = blindingLight.currentCooldown = 25;
       blindingLight.dealsDirectDamage = true;
-      blindingLight.effectiveness = .5;
+      blindingLight.effectiveness = .65;
       blindingLight.elementalType = ElementalTypeEnum.Holy;
       blindingLight.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false));
       god.abilityList.push(blindingLight);
@@ -310,7 +311,7 @@ export class GlobalService {
       woundingArrow.isAvailable = false;
       woundingArrow.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       woundingArrow.cooldown = woundingArrow.currentCooldown = 18;
-      woundingArrow.effectiveness = 1.2;
+      woundingArrow.effectiveness = 2.6;
       woundingArrow.dealsDirectDamage = true;
       woundingArrow.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackDown, 6, .9, false, false));
       god.abilityList.push(woundingArrow);
@@ -320,7 +321,7 @@ export class GlobalService {
       electricVolley.isAvailable = false;
       electricVolley.requiredLevel = this.utilityService.godAbility2Level;
       electricVolley.cooldown = electricVolley.currentCooldown = 40;
-      electricVolley.effectiveness = .35;
+      electricVolley.effectiveness = .65;
       electricVolley.isAoe = true;
       electricVolley.dealsDirectDamage = true;
       electricVolley.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Paralyze, 12, 0, false, false, true));
@@ -330,61 +331,61 @@ export class GlobalService {
       exposeWeakness.name = "Expose Weakness";
       exposeWeakness.isAvailable = false;
       exposeWeakness.requiredLevel = this.utilityService.godAbility3Level;
-      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 55;      
+      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 55;
       exposeWeakness.dealsDirectDamage = true;
-      exposeWeakness.effectiveness = 1.8;
+      exposeWeakness.effectiveness = 2.8;
       exposeWeakness.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
       god.abilityList.push(exposeWeakness);
 
       var trueShot = new Ability();
       trueShot.name = "True Shot";
       trueShot.isAvailable = false;
-      trueShot.requiredLevel = this.utilityService.godPassiveLevel;      
+      trueShot.requiredLevel = this.utilityService.godPassiveLevel;
       trueShot.isPassive = true;
       trueShot.effectiveness = 1.1;
       god.abilityList.push(trueShot);
     }
-    
+
     if (god.type === GodEnum.Apollo) {
       var staccato = new Ability();
       staccato.name = "Staccato";
       staccato.isAvailable = false;
       staccato.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      staccato.cooldown = staccato.currentCooldown = 45;      
+      staccato.cooldown = staccato.currentCooldown = 45;
       staccato.dealsDirectDamage = false;
-      staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.1, false, true, true));
+      staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.2, false, true, true));
       god.abilityList.push(staccato);
 
       var fortissimo = new Ability();
       fortissimo.name = "Fortissimo";
       fortissimo.isAvailable = false;
       fortissimo.requiredLevel = this.utilityService.godAbility2Level;
-      fortissimo.cooldown = fortissimo.currentCooldown = 45;      
+      fortissimo.cooldown = fortissimo.currentCooldown = 45;
       fortissimo.dealsDirectDamage = false;
       fortissimo.secondaryEffectiveness = 1.01;
-      fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 8, 1.1, false, true, true));
+      fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 8, 1.2, false, true, true));
       god.abilityList.push(fortissimo);
 
       var allegro = new Ability();
       allegro.name = "Allegro";
       allegro.isAvailable = false;
       allegro.requiredLevel = this.utilityService.godAbility3Level;
-      allegro.cooldown = allegro.currentCooldown = 60;      
+      allegro.cooldown = allegro.currentCooldown = 60;
       allegro.dealsDirectDamage = true;
       allegro.effectiveness = 1.8;
-      allegro.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.LuckUp, 5, 1.1, false, true, true));
+      allegro.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.LuckUp, 5, 1.2, false, true, true));
       god.abilityList.push(allegro);
 
       var ostinato = new Ability();
       ostinato.name = "Ostinato";
       ostinato.isAvailable = false;
-      ostinato.requiredLevel = this.utilityService.godPassiveLevel;      
+      ostinato.requiredLevel = this.utilityService.godPassiveLevel;
       ostinato.isPassive = true;
       ostinato.effectiveness = .8;
       ostinato.cooldown = ostinato.currentCooldown = 40;
       god.abilityList.push(ostinato);
     }
-    
+
     if (god.type === GodEnum.Hermes) {
       var trickShot = new Ability();
       trickShot.name = "Trick Shot";
@@ -392,7 +393,7 @@ export class GlobalService {
       trickShot.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       trickShot.cooldown = trickShot.currentCooldown = 8;
       trickShot.dealsDirectDamage = true;
-      trickShot.effectiveness = 1.2;
+      trickShot.effectiveness = 1.6;
       god.abilityList.push(trickShot);
 
       var embellish = new Ability();
@@ -423,7 +424,7 @@ export class GlobalService {
       quicken.isAvailable = false;
       quicken.isPassive = true;
       quicken.dealsDirectDamage = false;
-      quicken.effectiveness = .1;      
+      quicken.effectiveness = .1;
       god.abilityList.push(quicken);
     }
 
@@ -574,6 +575,8 @@ export class GlobalService {
     if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark)
       statusEffect.refreshes = true;
 
+    if (type === StatusEffectEnum.RecentlyDefeated)
+      statusEffect.persistsDeath = true;
 
     return statusEffect;
   }
@@ -628,11 +631,33 @@ export class GlobalService {
     if (!inBattle)
       character.battleStats.currentHp = character.battleStats.maxHp;
 
+    //equipment
     character.battleStats.maxHp += character.equipmentSet.getTotalMaxHpGain();
     character.battleStats.attack += character.equipmentSet.getTotalAttackGain();
     character.battleStats.defense += character.equipmentSet.getTotalDefenseGain();
     character.battleStats.agility += character.equipmentSet.getTotalAgilityGain();
     character.battleStats.luck += character.equipmentSet.getTotalLuckGain();
+
+    //gods
+    var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
+    if (god1 !== undefined) {
+      character.battleStats.maxHp += god1.statGain.maxHp;
+      character.battleStats.attack += god1.statGain.attack;
+      character.battleStats.defense += god1.statGain.defense;
+      character.battleStats.agility += god1.statGain.agility;
+      character.battleStats.luck += god1.statGain.luck;
+      character.battleStats.resistance += god1.statGain.resistance;
+    }
+
+    var god2 = this.globalVar.gods.find(item => character.assignedGod2 === item.type);
+    if (god2 !== undefined) {
+      character.battleStats.maxHp += god2.statGain.maxHp;
+      character.battleStats.attack += god2.statGain.attack;
+      character.battleStats.defense += god2.statGain.defense;
+      character.battleStats.agility += god2.statGain.agility;
+      character.battleStats.luck += god2.statGain.luck;
+      character.battleStats.resistance += god2.statGain.resistance;
+    }
   }
 
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam) {
@@ -701,12 +726,17 @@ export class GlobalService {
   }
 
   getCharacterXpToNextLevel(level: number) {
-    var baseXp = 200;
+    var baseXp = 100;
 
     if (level < 20) {
-      var factor = 1.4;
+      var factor = 1.33;
+      if (level > 9)
+        factor = 1.5;
+      var additive = level > 4 ? 350 * (level) : 0;
+      var exponential = (baseXp * (factor ** (level - 1)));
+      var multiplier = baseXp * level;
 
-      return (baseXp) * level + (baseXp * (factor ** (level-1)));
+      return multiplier + exponential + additive;
     }
     else {
       //TODO: depends on what kind of XP you're getting at this reset
@@ -728,7 +758,27 @@ export class GlobalService {
   }
 
   getGodLevelStatIncrease(god: God) {
+    var statToIncrease = this.getNextStatToIncrease(god.lastStatGain);
+    god.lastStatGain = statToIncrease;
+    var baseGainAmount = this.utilityService.godStatGainBaseAmount + (god.statGainCount * this.utilityService.godStatGainLevelIncrement);
+    
+    var maxHpGain = statToIncrease === CharacterStatEnum.MaxHp ? baseGainAmount * god.gainModifiers.maxHp : 0;
+    var attackGain = statToIncrease === CharacterStatEnum.Attack ? baseGainAmount * god.gainModifiers.attack : 0;
+    var defenseGain = statToIncrease === CharacterStatEnum.Defense ? baseGainAmount * god.gainModifiers.defense : 0;
+    var agilityGain = statToIncrease === CharacterStatEnum.Agility ? baseGainAmount * god.gainModifiers.agility : 0;
+    var luckGain = statToIncrease === CharacterStatEnum.Luck ? baseGainAmount * god.gainModifiers.luck : 0;
+    var resistanceGain = statToIncrease === CharacterStatEnum.Resistance ? baseGainAmount * god.gainModifiers.resistance : 0;
 
+    god.statGain.maxHp += maxHpGain;
+    god.statGain.attack += attackGain;
+    god.statGain.defense += defenseGain;
+    god.statGain.agility += agilityGain;
+    god.statGain.luck += luckGain;
+    god.statGain.resistance += resistanceGain;
+
+    god.statGainCount += 1;
+
+    //probably need to add numbers to game log
   }
 
   checkForNewGodAbilities(god: God) {
@@ -741,5 +791,24 @@ export class GlobalService {
   getGodXpToNextLevel(level: number) {
     var xpConstant = 1000;
     return xpConstant * level;
+  }
+
+  getNextStatToIncrease(lastStat: CharacterStatEnum) {
+    var nextStat = CharacterStatEnum.Attack;
+
+    if (lastStat === CharacterStatEnum.Resistance)
+      nextStat = CharacterStatEnum.Attack;
+    else if (lastStat === CharacterStatEnum.Attack)
+      nextStat = CharacterStatEnum.MaxHp;
+    else if (lastStat === CharacterStatEnum.MaxHp)
+      nextStat = CharacterStatEnum.Agility;
+    else if (lastStat === CharacterStatEnum.Agility)
+      nextStat = CharacterStatEnum.Defense;
+    else if (lastStat === CharacterStatEnum.Defense)
+      nextStat = CharacterStatEnum.Luck;
+    else if (lastStat === CharacterStatEnum.Luck)
+      nextStat = CharacterStatEnum.Resistance;
+
+    return nextStat;
   }
 }

@@ -7,6 +7,7 @@ export class DeploymentService {
   devModeActive = false;
   forceStartNewGame = false;
   codeCreationMode = false;
+  showStats = false;
 
   constructor() { }
 
@@ -15,11 +16,13 @@ export class DeploymentService {
     this.devModeActive = false;
     this.forceStartNewGame = false;
     this.codeCreationMode = false;
+    this.showStats = false;
   }
 
   setStagingMode() {
-    this.devModeActive = true;
+    this.devModeActive = false;
     this.forceStartNewGame = true;
     this.codeCreationMode = true;
+    this.showStats = true;
   }
 }

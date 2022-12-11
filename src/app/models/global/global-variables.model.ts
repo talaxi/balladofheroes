@@ -44,6 +44,7 @@ export class GlobalVariables {
     godXpModifier: number;
     @Type(() => FreeTreasureChests)
     freeTreasureChests: FreeTreasureChests;
+    extraSpeedTimeRemaining: number;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -60,6 +61,7 @@ export class GlobalVariables {
         this.settings = new Settings();
         this.freeTreasureChests = new FreeTreasureChests();
         this.currentStoryId = 0;
-        this.godXpModifier = .1;
+        this.godXpModifier = 1;
+        this.extraSpeedTimeRemaining = 0;
     }
 }

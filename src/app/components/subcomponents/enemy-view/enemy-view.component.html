@@ -4,7 +4,7 @@
     <br />
     <div class="flex">
         <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
-            class="green-progress characterBar">
+            class="green-progress characterBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
         </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp | number : '1.0-0'}} /
             {{character.battleStats.maxHp | number : '1.0-0'}}</span>
     </div>

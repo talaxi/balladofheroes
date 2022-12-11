@@ -3,7 +3,8 @@
     margin-right: 3rem;
     height: 100%;
     grid-template-columns: auto;
-    grid-template-rows: .5fr 1fr 1fr;
+    grid-template-rows: auto;
+    gap: 2rem;
     justify-content: stretch;
     grid-template-areas:
         "characterInfo"

@@ -6,6 +6,8 @@
         <span class="s4Heading">{{lookupService.getItemName(equipment.itemType)}}</span>
         <br />
         <span>{{lookupService.getEquipmentTypeName(equipment)}}</span>
+        <br/>
+        {{getStars()}}
         <hr class="miniHr" />
         <span [innerHtml]="equipmentStats"></span>
     </div>

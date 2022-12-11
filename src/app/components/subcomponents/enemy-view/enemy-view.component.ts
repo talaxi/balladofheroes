@@ -10,6 +10,7 @@ import { BattleService } from 'src/app/services/battle/battle.service';
 })
 export class EnemyViewComponent implements OnInit {
   @Input() character: Enemy;
+  @Input() showNewEnemyGroupAnimation: boolean = false;
 
   constructor(public battleService: BattleService) { }
 
@@ -39,4 +40,8 @@ export class EnemyViewComponent implements OnInit {
 
     return isTargeted;
   }
+
+  /*ngOnChanges(changes: any) {
+    this.showNewEnemyGroupAnimation = changes.showNewEnemyGroupAnimation.currentValue;    
+  }*/
 }

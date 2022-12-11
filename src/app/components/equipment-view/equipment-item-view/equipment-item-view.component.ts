@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -18,31 +19,29 @@ export class EquipmentItemViewComponent implements OnInit {
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
-    this.getEquipmentStats();
+    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.getEquipmentStats();
+      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment);
     });
   }
 
-  getEquipmentStats() {
-    if (this.equipment === undefined)
-      return;
-    this.equipmentStats = "";
+  getStars() {
+    if (this.equipment?.quality === EquipmentQualityEnum.Basic)
+      return "★";
+    if (this.equipment?.quality === EquipmentQualityEnum.Uncommon)
+      return "★★";
+    if (this.equipment?.quality === EquipmentQualityEnum.Rare)
+      return "★★★";
+    if (this.equipment?.quality === EquipmentQualityEnum.Epic)
+      return "★★★★";
+    if (this.equipment?.quality === EquipmentQualityEnum.Special)
+      return "★★★★★";
+    if (this.equipment?.quality === EquipmentQualityEnum.Extraordinary)
+      return "★★★★★★";
+    if (this.equipment?.quality === EquipmentQualityEnum.Unique)
+      return "★★★★★★★";
 
-    if (this.equipment.stats.attack > 0)
-      this.equipmentStats += "+" + this.equipment.stats.attack.toString() + " Attack<br />";
-    if (this.equipment.stats.defense > 0)
-      this.equipmentStats += "+" + this.equipment.stats.defense + " Defense<br />";
-    if (this.equipment.stats.maxHp > 0)
-      this.equipmentStats += "+" + this.equipment.stats.maxHp + " Max HP<br />";
-    if (this.equipment.stats.agility > 0)
-      this.equipmentStats += "+" + this.equipment.stats.agility + " Agility<br />";
-    if (this.equipment.stats.luck > 0)
-      this.equipmentStats += "+" + this.equipment.stats.luck + " Luck<br />";
-      if (this.equipment.stats.resistance > 0)
-      this.equipmentStats += "+" + this.equipment.stats.resistance + " Luck<br />";
-
-    this.equipmentStats = this.utilityService.getSanitizedHtml(this.equipmentStats);
+    return "";
   }
 }

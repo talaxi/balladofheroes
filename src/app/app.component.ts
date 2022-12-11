@@ -10,6 +10,9 @@ import { BattleService } from './services/battle/battle.service';
 import { BalladService } from './services/ballad/ballad.service';
 import { InitializationService } from './services/global/initialization.service';
 import { TownService } from './services/town.service';
+import { BackgroundService } from './services/utility/background.service';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { UtilityService } from './services/utility/utility.service';
 declare var LZString: any;
 
 @Component({
@@ -23,10 +26,13 @@ export class AppComponent {
   newGame = true;
   saveTime = 0;
   saveFrequency = 10; //in seconds
+  bankedTime = 0;
+  catchupDialog: MatDialogRef<unknown, any> | undefined = undefined;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
     private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
-    private balladService: BalladService, private townService: TownService) {
+    private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
+    private utilityService: UtilityService) {
       
   }
 
@@ -75,16 +81,16 @@ export class AppComponent {
     this.gameLoopService.Update();
   }
 
-  public gameCheckup(deltaTime: number): void {
+  public gameCheckup(deltaTime: number): void {    
+    deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading);
+
     //all game logic that should be updated behind the scenes
     var activeSubzone = this.balladService.getActiveSubZone();
 
-    if (activeSubzone.isTown)
-    {
-      //handleTown
-      this.townService.handleTown(deltaTime);
-    }
-    else
+    //this runs regardless of battle state
+    this.backgroundService.handleBackgroundTimers(deltaTime);
+
+    if (!activeSubzone.isTown)    
       this.battleService.handleBattle(deltaTime, this.loading);
   }
 
@@ -92,5 +98,71 @@ export class AppComponent {
     /*var selectedTheme = this.globalService.globalVar.settings.get("theme");
     if (selectedTheme !== null && selectedTheme !== undefined)
       this.themeService.setActiveTheme(selectedTheme);*/
+  }
+
+  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any) {
+    if (deltaTime > this.utilityService.activeTimeLimit)
+    {
+      this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
+      deltaTime = this.utilityService.activeTimeLimit;
+    }
+
+    if (this.battleService.isPaused)
+      deltaTime = 0;
+
+    //if speed up time remains, use it
+    if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2)
+    {
+      if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime)
+      {        
+        deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
+        this.globalService.globalVar.extraSpeedTimeRemaining = 0;
+      }
+      else
+      {      
+        this.globalService.globalVar.extraSpeedTimeRemaining -= deltaTime;
+        deltaTime *= 2;
+      }
+    }
+
+    var batchTime = 5; //runs the game in batches of 5 seconds max
+    //user was afk, run battle in batches until you're caught up
+    if (deltaTime > batchTime) {
+      this.bankedTime += deltaTime - batchTime;
+      deltaTime = batchTime;
+
+      if (this.bankedTime > 60 && this.catchupDialog === undefined)
+        this.catchupDialog = this.openCatchUpModal(loadingContent);
+    }
+
+    if (deltaTime < batchTime && this.bankedTime > 0) {
+      if (this.bankedTime + deltaTime <= batchTime) //amount of time banked is less than a batch so use it all
+      {
+        deltaTime += this.bankedTime;
+        this.bankedTime = 0;
+
+        if (this.catchupDialog !== undefined) {
+          this.catchupDialog.close();
+          this.catchupDialog = undefined;
+        }
+      }
+      else //use partial amount of banked time
+      {
+        var useAmount = batchTime - deltaTime;
+        this.bankedTime -= useAmount;
+        deltaTime += useAmount;
+
+        if (this.bankedTime <= 0)
+          this.bankedTime = 0;
+      }
+    }
+
+    return deltaTime;
+  }
+
+  openCatchUpModal(content: any) {
+    var dialog = this.dialog.open(content, { width: '50%' });
+
+    return dialog;
   }
 }

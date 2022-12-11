@@ -15,3 +15,55 @@
 .selected {
     color: var(--foreground-secondary) !important;
 }
+
+.navigationGrid {
+    display: grid;
+    height: 100%;    
+    grid-template-columns: auto;
+    grid-template-rows: 1fr 1rem 30%;
+    justify-content: stretch;
+    grid-template-areas:
+        "navigation"
+        "gap"
+        "quickLink";
+}
+
+.navigation {
+    grid-area: navigation;
+}
+
+.quickLink {
+    grid-area: quickLink;
+
+    display: grid;
+    height: 100%;    
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "quickJump peekResources";
+}
+
+.quickJump {
+    grid-area: quickJump;
+}
+
+.peekResources {
+    grid-area: peekResources;
+}
+
+.zoneGrid {
+    display: grid;
+    height: 100%;    
+    grid-template-columns: 42% 1fr;
+    gap: 1.5rem;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "balladList zoneList";
+}
+
+.spaceBetween {
+    display: flex;
+    justify-content: space-between;
+}

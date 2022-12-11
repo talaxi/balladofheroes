@@ -6,6 +6,8 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
+import { BattleService } from 'src/app/services/battle/battle.service';
+import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
@@ -20,12 +22,13 @@ export class CharacterNameViewComponent implements OnInit {
   @Input() character: Character;
   public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
+  showDevStats = false;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
-    private layoutService: LayoutService, private utilityService: UtilityService) { }
+    private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {
-    
+    this.showDevStats = this.deploymentService.showStats;
   }
 
   goToCharacterDetails() {    
@@ -128,5 +131,9 @@ export class CharacterNameViewComponent implements OnInit {
       return false;
 
     return god.abilityList.some(item => item.isPassive && item.isAvailable);
+  }
+
+  getCharacterDps() {
+    return this.lookupService.getCharacterDps(this.character);
   }
 }

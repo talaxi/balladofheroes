@@ -34,17 +34,17 @@
             <div class="leftAlignText">
                 <span class="s4Heading">Primary Stats</span>
                 <br />
-                <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong> {{character.battleStats.maxHp}}</span>
+                <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong> {{character.battleStats.maxHp | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong> {{character.battleStats.attack}}</span>
+                <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong> {{character.battleStats.attack | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong> {{character.battleStats.agility}}</span>
+                <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong> {{character.battleStats.agility | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong> {{character.battleStats.luck}}</span>
+                <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong> {{character.battleStats.luck | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong> {{character.battleStats.defense}}</span>
+                <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong> {{character.battleStats.defense | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong> {{character.battleStats.resistance}}</span>
+                <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong> {{character.battleStats.resistance | number : '1.0-0'}}</span>
             </div>
         </div>
         <div class="secondaryStats">
@@ -54,11 +54,13 @@
         </div>
     </div>
     <div class="characterAbilities">
-        <span class="s4Heading">Abilities</span>
+        <span class="s4Heading">Character Abilities</span>
         <div *ngFor="let ability of character.abilityList">
             <strong [ngClass]="getAbilityColor(false)">{{ability.name}}</strong> - <span
                 [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span>
         </div>
+        <br/>
+        <span class="s4Heading">Equipped God Abilities</span>
         <div *ngFor="let ability of god1AbilityList">
             <strong [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong> - <span
                 [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span>
@@ -73,36 +75,36 @@
 
 <ng-template #maxHpPopover>
     <div>
-       HP
+       The amount of damage you can take before dieing.
     </div>
 </ng-template>
 
 <ng-template #attackPopover>
     <div>
-       Atk
+       Increase auto attack and ability damage.
     </div>
 </ng-template>
 
 <ng-template #defensePopover>
     <div>
-       Def
+       Reduce damage taken from enemy attacks.
     </div>
 </ng-template>
 
 <ng-template #agilityPopover>
     <div>
-       Agi
+       Increase your auto attack speed.
     </div>
 </ng-template>
 
 <ng-template #luckPopover>
     <div>
-       Luck
+       Increase your chance to deal a critical hit.
     </div>
 </ng-template>
 
 <ng-template #resistancePopover>
     <div>
-       Res
+       Reduce your chance to be critically hit by enemies.
     </div>
 </ng-template>

@@ -1,35 +1,37 @@
-<div>
+<div class="equipmentOverview">
   <span class="s4Heading">Change Equipment</span>
-    <hr />
-  <div class="equipmentView">    
+  <hr />
+  <div class="equipmentView">
     <div class="availableEquipment">
-      <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)"
-        (click)="equipItem(equipment)">
-        <span customToolTip [isDelayed]="false"
-          [contentTemplate]="template" [innerHtml]="getEquipmentName(equipment)">
-          x{{equipment.amount}}</span>
+      <div class="scrollable">
+        <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)"
+          (click)="equipItem(equipment)">
+          <span customToolTip [isDelayed]="false" [contentTemplate]="template"
+            [innerHtml]="getEquipmentName(equipment)"></span>
+          <hr class="leftAlignedMiniHr" />
+        </div>
       </div>
     </div>
     <div class="existingEquipment">
       <div>
-        <app-current-equipment-view></app-current-equipment-view>
+        <app-current-equipment-view [characterType]="characterType" (unequipEmitter)="itemUnequipped($event)"></app-current-equipment-view>
       </div>
       <hr />
       <div class="existingEffects">
         <span>Gain from equipment:</span>
-        <br/>
-        <span [innerHtml]="equipmentGain()"></span>      
+        <br />
+        <span [innerHtml]="equipmentGain()"></span>
+      </div>
     </div>
   </div>
-</div>
 
-<ng-template #template>
-  <div class="compareEquipment">
-    <span class="item">
-      <app-equipment-item-view [equipment]="hoveredItem"></app-equipment-item-view>
-    </span>
-    <span class="item comparedEquipmentItem">
-      <app-equipment-item-view [equipment]="getEquippedComparisonItem()"></app-equipment-item-view>
-    </span>
-  </div>
-</ng-template>
+  <ng-template #template>
+    <div class="compareEquipment">
+      <span class="item">
+        <app-equipment-item-view [equipment]="hoveredItem"></app-equipment-item-view>
+      </span>
+      <span class="item comparedEquipmentItem">
+        <app-equipment-item-view [equipment]="getEquippedComparisonItem()"></app-equipment-item-view>
+      </span>
+    </div>
+  </ng-template>
