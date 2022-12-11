@@ -33,7 +33,7 @@ export class AppComponent {
     private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
     private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
     private utilityService: UtilityService) {
-      
+
   }
 
   ngOnInit() {
@@ -49,26 +49,29 @@ export class AppComponent {
       }
     }
 
-    if (environment.staging)
+    if (environment.staging) {
+      console.log("Stage");
       this.deploymentService.setStagingMode();
-    else
+    }
+    else {
+      console.log("Prod");
       this.deploymentService.setProductionMode();
+    }
+    
+    var forceNewGame = this.deploymentService.forceStartNewGame;
+    var devMode = this.deploymentService.devModeActive;
 
-      var forceNewGame = this.deploymentService.forceStartNewGame;
-      var devMode = this.deploymentService.devModeActive;
+    if (this.newGame || forceNewGame) {
+      console.log("New game forced");
+      this.globalService.initializeGlobalVariables();
+      this.initializationService.initializeVariables();
+    }
 
-      if (this.newGame || forceNewGame)
-      {
-        console.log("New game forced");
-        this.globalService.initializeGlobalVariables();
-        this.initializationService.initializeVariables();
-      }
+    if (devMode) {
+      this.initializationService.devMode();
+    }
 
-      if (devMode) {
-        this.initializationService.devMode();
-      }
-
-    var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {      
+    var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
       this.gameCheckup(deltaTime);
       this.saveTime += deltaTime;
 
@@ -81,7 +84,7 @@ export class AppComponent {
     this.gameLoopService.Update();
   }
 
-  public gameCheckup(deltaTime: number): void {    
+  public gameCheckup(deltaTime: number): void {
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading);
 
     //all game logic that should be updated behind the scenes
@@ -90,7 +93,7 @@ export class AppComponent {
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime);
 
-    if (!activeSubzone.isTown)    
+    if (!activeSubzone.isTown)
       this.battleService.handleBattle(deltaTime, this.loading);
   }
 
@@ -101,8 +104,7 @@ export class AppComponent {
   }
 
   handleShortTermCatchUpTime(deltaTime: number, loadingContent: any) {
-    if (deltaTime > this.utilityService.activeTimeLimit)
-    {
+    if (deltaTime > this.utilityService.activeTimeLimit) {
       this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
       deltaTime = this.utilityService.activeTimeLimit;
     }
@@ -111,15 +113,12 @@ export class AppComponent {
       deltaTime = 0;
 
     //if speed up time remains, use it
-    if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2)
-    {
-      if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime)
-      {        
+    if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2) {
+      if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
         deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
         this.globalService.globalVar.extraSpeedTimeRemaining = 0;
       }
-      else
-      {      
+      else {
         this.globalService.globalVar.extraSpeedTimeRemaining -= deltaTime;
         deltaTime *= 2;
       }

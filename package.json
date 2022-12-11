@@ -3,9 +3,11 @@
   "version": "0.0.0",
   "scripts": {
     "ng": "ng",
+    "testconfig": "ts-node ./test-config.index.ts",
+    "config": "ts-node ./config.index.ts",
     "start": "ng serve",
-    "build": "npm install && ng build",
-    "deploy": "ng build --base-href=/balladofheroes/",
+    "build": "npm install && npm run testconfig && ng build",
+    "deploy": "npm run config && ng build --base-href=/balladofheroes/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
   },

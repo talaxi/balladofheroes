@@ -293,7 +293,7 @@ export class BattleService {
     while (character.battleInfo.autoAttackTimer >= timeToAutoAttack && autoAttacksAtOnce < totalAutoAttacksAtOnce &&
       (character.battleInfo.autoAttackAutoMode || character.battleInfo.autoAttackManuallyTriggered)) {
       var autoAttackOccurred = this.handleAutoAttack(character, targets);
-        console.log(character.type + ": " + character.battleInfo.autoAttackTimer);
+              
       if (autoAttackOccurred)
         character.battleInfo.autoAttackTimer -= timeToAutoAttack;
 

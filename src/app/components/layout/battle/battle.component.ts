@@ -62,8 +62,6 @@ export class BattleComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    console.log("Skip to bottom");
-    console.log(this.gameLogScroll.nativeElement);
     this.skipToBottom(this.gameLogScroll.nativeElement);
   }
 

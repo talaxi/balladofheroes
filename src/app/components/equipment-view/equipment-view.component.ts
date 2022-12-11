@@ -38,7 +38,7 @@ export class EquipmentViewComponent implements OnInit {
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;      
-      console.log(this.characterType);
+      
       if (this.globalService.globalVar.characters.some(item => item.type === this.characterType))
         this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
     });
