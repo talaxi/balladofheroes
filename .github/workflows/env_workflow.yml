@@ -1,0 +1,36 @@
+name: CI
+
+on: push
+
+jobs:
+  build:
+
+    runs-on: ubuntu-latest
+    permissions: write-all
+    environment: 
+      name: github-pages
+      url: ${{ steps.deployment.outputs.page_url }}
+    steps:
+    
+    - name: Checkout
+      uses: actions/checkout@v2
+
+    - name: Build
+      run: |
+        npm install
+        npm run-script deploy
+      env:
+        CODEREDEMPTIONSECRET: ${{ secrets.CODEREDEMPTIONSECRET }}
+    
+    - name: Upload Artifact
+      uses: actions/upload-pages-artifact@v0
+      with:
+        path: ./docs/
+        retention-days: 1
+
+    - name: Deploy
+      uses: actions/deploy-pages@v1
+      id: deployment
+      with:
+        emit_telemetry: false
+        token: ${{ secrets.GITHUB_TOKEN }}
