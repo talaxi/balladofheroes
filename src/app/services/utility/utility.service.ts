@@ -21,8 +21,9 @@ export class UtilityService {
   
   public maxItemBeltSize = 4;
   public defaultCharacterAbilityLevel = 2;
-  public characterPassiveLevel = 5;
-  public characterAbility2Level = 15;
+  public characterPassiveLevel = 4;
+  public characterOverdriveLevel = 6;
+  public characterAbility2Level = 8;
   public defaultGodAbilityLevel = 1;
   public godAbility2Level = 5;
   public godPassiveLevel = 2;

@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { EnemyTeam } from "../character/enemy-team.model";
 import { BalladEnum } from "../enums/ballad-enum.model";
 import { SubZoneEnum } from "../enums/sub-zone-enum.model";
@@ -8,6 +9,7 @@ export class SubZone {
     type: SubZoneEnum;
     isSelected: boolean;
     isTown: boolean;
+    @Type(() => EnemyTeam)
     battleOptions: EnemyTeam[];
     victoryCount: number;
     victoriesNeededToProceed: number;

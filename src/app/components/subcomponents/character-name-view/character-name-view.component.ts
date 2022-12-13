@@ -8,6 +8,7 @@ import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
@@ -20,15 +21,39 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class CharacterNameViewComponent implements OnInit {
   @Input() character: Character;
+  previousLevel: number;
   public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
   showDevStats = false;
+  showLevelUpAnimation = false;
+  subscription: any;
+  animationTimer = 0;
+  animationTimerCap = 3;
+  levelUpAnimationText = "Lv Up!";
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
-    private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService) { }
+    private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService,
+    private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
     this.showDevStats = this.deploymentService.showStats;
+    this.previousLevel = this.character.level;
+
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
+      if (this.character.level > this.previousLevel)
+      {
+        this.showLevelUpAnimation = true;
+        this.previousLevel = this.character.level;
+      }
+
+      if (this.showLevelUpAnimation) {
+        this.animationTimer += deltaTime;
+        if (this.animationTimer >= this.animationTimerCap) {
+          this.animationTimer = 0;
+          this.showLevelUpAnimation = false;
+        }
+      }
+    });
   }
 
   goToCharacterDetails() {    
@@ -135,5 +160,12 @@ export class CharacterNameViewComponent implements OnInit {
 
   getCharacterDps() {
     return this.lookupService.getCharacterDps(this.character);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+    {
+      this.subscription.unsubscribe();
+    }
   }
 }

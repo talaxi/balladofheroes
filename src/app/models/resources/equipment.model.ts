@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { CharacterStats } from "../character/character-stats.model";
 import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
 import { EquipmentTypeEnum } from "../enums/equipment-type-enum.model";
@@ -8,6 +9,7 @@ export class Equipment {
     itemType: ItemsEnum;
     equipmentType: EquipmentTypeEnum;
     weaponType: WeaponTypeEnum;
+    @Type(() => CharacterStats)
     stats: CharacterStats;
     quality: EquipmentQualityEnum;
 

@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -15,10 +16,55 @@ export class GodNameViewComponent implements OnInit {
   @Input() character: Character;
   public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
+  previousGod1Level: number;
+  previousGod2Level: number;
+  showGod1LevelUpAnimation = false;
+  showGod2LevelUpAnimation = false;
+  subscription: any;
+  animation1Timer = 0;
+  animation2Timer = 0;
+  animationTimerCap = 3;
+  levelUpAnimationText = "Lv Up!";
   
-  constructor(private globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService) { }
+  constructor(private globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
+    private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
+    this.previousGod1Level = this.getCharacterGodLevel(this.character, 1);
+    this.previousGod2Level = this.getCharacterGodLevel(this.character, 2);
+
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
+      var god1Level = this.getCharacterGodLevel(this.character, 1);
+      var god2Level = this.getCharacterGodLevel(this.character, 2);
+      
+      if (god1Level > this.previousGod1Level)
+      {
+        this.showGod1LevelUpAnimation = true;
+        this.previousGod1Level = god1Level;
+      }
+
+      if (this.showGod1LevelUpAnimation) {
+        this.animation1Timer += deltaTime;
+        if (this.animation1Timer >= this.animationTimerCap) {
+          this.animation1Timer = 0;
+          this.showGod1LevelUpAnimation = false;
+        }
+      }
+
+      if (god2Level > this.previousGod2Level)
+      {
+        this.showGod2LevelUpAnimation = true;
+        this.previousGod2Level = god1Level;
+      }
+
+      if (this.showGod2LevelUpAnimation) {
+        this.animation2Timer += deltaTime;
+        if (this.animation2Timer >= this.animationTimerCap) {
+          this.animation2Timer = 0;
+          this.showGod2LevelUpAnimation = false;
+        }
+      }
+    });
   }
 
   getCharacterGodName(character: Character, whichGod: number) {
@@ -139,5 +185,12 @@ export class GodNameViewComponent implements OnInit {
       return false;
 
     return god.abilityList.some(item => item.isPassive && item.isAvailable);
+  }
+
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+    {
+      this.subscription.unsubscribe();
+    }
   }
 }

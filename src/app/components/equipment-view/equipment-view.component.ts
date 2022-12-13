@@ -64,7 +64,7 @@ export class EquipmentViewComponent implements OnInit {
       if (armor !== undefined)
         armor.amount -= 1;
 
-      var ring = this.availableEquipment.find(item => item.item === character.equipmentSet.rightRing?.itemType);      
+      var ring = this.availableEquipment.find(item => item.item === character.equipmentSet.ring?.itemType);      
       if (ring !== undefined)
         ring.amount -= 1;
 
@@ -99,9 +99,7 @@ export class EquipmentViewComponent implements OnInit {
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Armor)
       character.equipmentSet.armor = selectedEquipmentPiece;
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Ring)
-      character.equipmentSet.rightRing = selectedEquipmentPiece;
-    if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Ring)
-      character.equipmentSet.leftRing = selectedEquipmentPiece;
+      character.equipmentSet.ring = selectedEquipmentPiece;
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Necklace)
       character.equipmentSet.necklace = selectedEquipmentPiece;
 

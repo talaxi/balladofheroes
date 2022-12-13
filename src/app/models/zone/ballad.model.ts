@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { BalladEnum } from "../enums/ballad-enum.model";
 import { Zone } from "./zone.model";
 
@@ -7,6 +8,7 @@ export class Ballad {
     isSelected: boolean;
     isAvailable: boolean;
     showNewNotification: boolean;
+    @Type(() => Zone)
     zones: Zone[];
 
     constructor(type?: BalladEnum) {

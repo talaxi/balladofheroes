@@ -85,11 +85,11 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
     }
-    if (type === BestiaryEnum.Matriarch)
+    if (type === BestiaryEnum.Patriarch)
     {
-      enemy.name = "Matriarch";
+      enemy.name = "Patriarch";
       enemy.battleStats = new CharacterStats(125, 25, 8, 8, 5, 5); 
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 100; 
 
@@ -107,8 +107,8 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Bandit)
     {
       enemy.name = "Bandit";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(30, 18, 6, 7, 10, 10); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
@@ -116,7 +116,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Thief)
     {
       enemy.name = "Thief";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(22, 14, 5, 35, 5, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
@@ -125,7 +125,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Highwayman)
     {
       enemy.name = "Highwayman";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(50, 15, 10, 10, 10, 20); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
@@ -134,7 +134,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Coyote)
     {
       enemy.name = "Coyote";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(27, 16, 8, 25, 25, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
@@ -144,47 +144,81 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Archer)
     {
       enemy.name = "Archer";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(220, 12, 10, 10, 15, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
+
+      var sureShot = new Ability();
+      sureShot.name = "Sure Shot";
+      sureShot.isAvailable = true;
+      sureShot.effectiveness = 1.5;
+      sureShot.cooldown = sureShot.currentCooldown = 25;
+      sureShot.dealsDirectDamage = true;
+      sureShot.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .2, sureShot.name));
+      enemy.abilityList.push(sureShot);
     }
     if (type === BestiaryEnum.RedHarpy)
     {
       enemy.name = "Red-Feathered Harpy";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(70, 22, 15, 25, 10, 10); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
       //chance to drop leather
 
+      var claw = new Ability();
+      claw.name = "Claw";
+      claw.isAvailable = true;
+      claw.effectiveness = 1.5;
+      claw.cooldown = claw.currentCooldown = 18;
+      claw.dealsDirectDamage = true;
+      claw.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .2, claw.name));
+      enemy.abilityList.push(claw);
+
     }
     if (type === BestiaryEnum.BlueHarpy)
     {
       enemy.name = "Blue-Feathered Harpy";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(75, 30, 18, 20, 10, 10); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
       //chance to drop leather
+
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = (this.utilityService.enemyLongAutoAttackSpeed - 1);
+      enrage.dealsDirectDamage = false;
+      enrage.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 5, 1.25, false, true));
+      enemy.abilityList.push(enrage);
     }
     if (type === BestiaryEnum.GreenHarpy)
     {
       enemy.name = "Green-Feathered Harpy";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(65, 25, 13, 20, 20, 10); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
       //chance to drop leather
+      
+      var ravage = new Ability();
+      ravage.name = "Claw";
+      ravage.isAvailable = true;
+      ravage.effectiveness = 1.8;
+      ravage.cooldown = ravage.currentCooldown = 7;
+      ravage.dealsDirectDamage = true;
+      enemy.abilityList.push(ravage);
     }
     if (type === BestiaryEnum.FledglingLamia)
     {
       enemy.name = "Fledgling Lamia";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(50, 20, 10, 45, 20, 10); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
@@ -194,32 +228,113 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Lamia)
     {
       enemy.name = "Lamia";
-      enemy.battleStats = new CharacterStats(10, 9, 4, 15, 15, 0); 
+      enemy.battleStats = new CharacterStats(80, 30, 25, 25, 30, 30); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 30; 
       enemy.coinGainFromDefeat = 1;
       enemy.loot.push(new LootItem(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 1, .1));
       //chance to drop Lamia Scales
+
+      var empower = new Ability();
+      empower.name = "Empower";
+      empower.isAvailable = true;
+      empower.cooldown = empower.currentCooldown = 10;
+      empower.dealsDirectDamage = false;
+      empower.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, 1.15, false, true, true));
+      empower.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.15, false, true, true));
+      enemy.abilityList.push(empower);
     }
     if (type === BestiaryEnum.Sybaris)
     {
       enemy.name = "Sybaris";
-      enemy.battleStats = new CharacterStats(100, 25, 8, 8, 5, 5); 
+      enemy.battleStats = new CharacterStats(750, 45, 40, 25, 25, 45); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 100; 
 
-      var slash = new Ability();
-      slash.name = "Slash";
-      slash.isAvailable = true;
-      slash.effectiveness = 1.25;
-      slash.dealsDirectDamage = true;
-      slash.cooldown = slash.currentCooldown = 18;
-      slash.targetGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .8, false, false));
-      enemy.abilityList.push(slash);
+      var bite = new Ability();
+      bite.name = "Bite";
+      bite.isAvailable = true;
+      bite.effectiveness = 1.9;
+      bite.dealsDirectDamage = true;
+      bite.cooldown = bite.currentCooldown = 22;
+      bite.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(24, 4, .2, bite.name));
+      enemy.abilityList.push(bite);
+
+      var empower = new Ability();
+      empower.name = "Empower";
+      empower.isAvailable = true;
+      empower.cooldown = empower.currentCooldown = 10;
+      empower.dealsDirectDamage = false;
+      empower.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, 1.15, false, true, true));
+      empower.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.15, false, true, true));
+      enemy.abilityList.push(empower);
 
       enemy.loot.push(new LootItem(ItemsEnum.LamiaFang, ItemTypeEnum.CraftingMaterial, 1, .2));
       //chance to drop Poison Fang (battle item)
+    }
+    if (type === BestiaryEnum.LargeOctopus)
+    {
+      enemy.name = "Large Octopus";
+      enemy.battleStats = new CharacterStats(100, 28, 20, 30, 30, 30); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.xpGainFromDefeat = 30; 
+      enemy.coinGainFromDefeat = 1;
+      //chance to drop Lamia Scales
+
+      var constrict = new Ability();
+      constrict.name = "Empower";
+      constrict.isAvailable = true;
+      constrict.cooldown = constrict.currentCooldown = 16;
+      constrict.dealsDirectDamage = false;
+      constrict.targetGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 8, .75, false, false));      
+      enemy.abilityList.push(constrict);
+    }
+    if (type === BestiaryEnum.UnsettlingShade)
+    {
+      enemy.name = "Unsettling Shade";
+      enemy.battleStats = new CharacterStats(150, 60, 40, 60, 40, 20); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.xpGainFromDefeat = 30; 
+      enemy.coinGainFromDefeat = 1;
+      //chance to drop Lamia Scales
+
+      var ethereal = new Ability();
+      ethereal.name = "Ethereal";
+      ethereal.isAvailable = true;
+      ethereal.cooldown = ethereal.currentCooldown = 30;
+      ethereal.dealsDirectDamage = false;
+      ethereal.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 4, 0, false, true));      
+      enemy.abilityList.push(ethereal);
+    }
+    if (type === BestiaryEnum.Gorgon)
+    {
+      enemy.name = "Gorgon";
+      enemy.battleStats = new CharacterStats(120, 45, 40, 50, 35, 35); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.xpGainFromDefeat = 30; 
+      enemy.coinGainFromDefeat = 1;
+      //chance to drop Lamia Scales
+
+      var gaze = new Ability();
+      gaze.name = "Ethereal";
+      gaze.isAvailable = true;
+      gaze.cooldown = gaze.currentCooldown = 14;
+      gaze.dealsDirectDamage = false;
+      gaze.targetGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 8, 0, false, false));      
+      enemy.abilityList.push(gaze);
+    }
+    if (type === BestiaryEnum.Stheno)
+    {
+
+    }
+    if (type === BestiaryEnum.Euryale)
+    {
+      
+    }
+    if (type === BestiaryEnum.Medusa)
+    {
+      
     }
 
     return enemy;

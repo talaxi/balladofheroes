@@ -12,18 +12,23 @@ export class BackgroundService {
   constructor(private globalService: GlobalService, private battleService: BattleService) { }
 
   //global -- this occurs even when at a scene or in a town
-  handleBackgroundTimers(deltaTime: number) {    
+  handleBackgroundTimers(deltaTime: number) {
     var party = this.globalService.getActivePartyCharacters(true);
 
-      party.forEach(partyMember => {
-        //check for defeated
-        var isDefeated = this.battleService.isCharacterDefeated(partyMember);
-        if (!isDefeated) {
-          this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
-          this.handleAbilityCooldowns(partyMember, deltaTime);
-          this.battleService.handleStatusEffectDurations(partyMember, deltaTime);
-        }
-      });    
+    party.forEach(partyMember => {
+      //check for defeated
+      var isDefeated = this.battleService.isCharacterDefeated(partyMember);
+      if (!isDefeated) {
+        this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
+        this.handleAbilityCooldowns(partyMember, deltaTime);
+        this.battleService.handleStatusEffectDurations(partyMember, deltaTime);
+      }
+    });
+  }
+
+  handleTown(deltaTime: number, loading: any) {
+    var party = this.globalService.getActivePartyCharacters(true);
+    this.gainHpInTown(party, deltaTime);
   }
 
   handleAbilityCooldowns(character: Character, deltaTime: number) {
@@ -50,6 +55,30 @@ export class BackgroundService {
             this.battleService.handleAbilityCooldown(character, ability, deltaTime);
           });
       }
+    }
+  }
+
+  gainHpInTown(party: Character[], deltaTime: number) {
+    this.globalService.globalVar.timers.townHpGainTimer += deltaTime;
+    var teamNeedsHealing = party.some(item => item.battleStats.currentHp < item.battleStats.maxHp);
+
+    while (this.globalService.globalVar.timers.townHpGainTimer > this.globalService.globalVar.timers.townHpGainLength && teamNeedsHealing) {
+      party.forEach(partyMember => {
+        if (partyMember.battleStats.currentHp < partyMember.battleStats.maxHp) {
+          console.log("Heal: " + Math.ceil(partyMember.battleStats.maxHp * .02));
+          partyMember.battleStats.currentHp += Math.ceil(partyMember.battleStats.maxHp * .02);
+        }
+
+        if (partyMember.battleStats.currentHp >= partyMember.battleStats.maxHp) {
+          partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+        }
+      });
+
+      this.globalService.globalVar.timers.townHpGainTimer -= this.globalService.globalVar.timers.townHpGainLength;
+      teamNeedsHealing = party.some(item => item.battleStats.currentHp < item.battleStats.maxHp);
+
+      if (!teamNeedsHealing)        
+        this.globalService.globalVar.timers.townHpGainTimer = 0;
     }
   }
 }

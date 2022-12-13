@@ -16,7 +16,7 @@
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Armor)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Armor)">X</button>
   </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedLeftRing"><strong>Ring: </strong>
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing"><strong>Ring: </strong>
       <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Ring)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Ring)">X</button>
   </div>  
@@ -25,9 +25,6 @@
       {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Necklace)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Necklace)">X</button>
   </div>
-  <!--<span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing">Right Ring:
-      {{getEquippedItemNameByType(equipmentTypeEnum.Ring)}}</span>
-    <br />-->
 </div>
 <div *ngIf="canChangeEquipment">
   <br />
@@ -59,14 +56,6 @@
   <div class="equippedItem">
     <div class="item">
       <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"></app-equipment-item-view>
-    </div>
-  </div>
-</ng-template>
-
-<ng-template #equippedLeftRing>
-  <div class="equippedItem">
-    <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>

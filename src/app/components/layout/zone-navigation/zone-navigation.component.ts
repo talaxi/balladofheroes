@@ -26,6 +26,7 @@ export class ZoneNavigationComponent implements OnInit {
   subscription: any;
   autoProgress: boolean = false;
   itemsEnum = ItemsEnum;
+  townsAvailable = false;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
@@ -46,7 +47,13 @@ export class ZoneNavigationComponent implements OnInit {
     if (selectedZone !== undefined)
       this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
 
+    if (this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
+      this.townsAvailable = true;
+
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      if (!this.townsAvailable && this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
+        this.townsAvailable = true;
+
       this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
       var selectedBallad = this.balladService.getActiveBallad();
       if (selectedBallad !== undefined)
@@ -56,7 +63,8 @@ export class ZoneNavigationComponent implements OnInit {
         this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
 
       var currentSubzone = this.availableSubZones.find(item => item.isSelected);
-      if (this.autoProgress && currentSubzone !== undefined && currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0)
+      if (this.autoProgress && currentSubzone !== undefined && 
+        (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0  || currentSubzone.isTown))
       {
         this.selectNextSubzone();        
       }
@@ -71,7 +79,7 @@ export class ZoneNavigationComponent implements OnInit {
 
       if (currentZone !== undefined)
       {
-        var incompleteSubzone = currentZone.subzones.find(item => item.victoriesNeededToProceed - item.victoryCount > 0);
+        var incompleteSubzone = currentZone.subzones.find(item => !item.isTown && item.victoriesNeededToProceed - item.victoryCount > 0);
         
         if (incompleteSubzone !== undefined)
           this.selectSubZone(incompleteSubzone, currentZone);
@@ -139,7 +147,7 @@ export class ZoneNavigationComponent implements OnInit {
         ballad.zones.filter(item => item.isAvailable).forEach(zone => {
           zone.isSelected = false;
           if (zone.subzones !== undefined && zone.subzones.length > 0)
-            zone.subzones.forEach(subzone => {
+            zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
               subzone.isSelected = false;
               if (subzone.isTown)
               {
@@ -157,7 +165,10 @@ export class ZoneNavigationComponent implements OnInit {
       relatedZone.isSelected = true;
     if (relatedBallad !== undefined)
       relatedBallad.isSelected = true;
-    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;    
+    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;  
+    
+    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);  
   }
 
   getBalladClass(ballad: Ballad) {
@@ -214,7 +225,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
   }
 
-  getSubZoneSubText(subzone: SubZone) {
+  getSubZoneSubText(subzone: SubZone) {    
     var text = "";
 
     if (subzone.isTown)

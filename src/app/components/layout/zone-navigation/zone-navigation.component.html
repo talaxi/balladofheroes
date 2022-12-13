@@ -13,7 +13,8 @@
             <div class="balladList">
                 <div *ngFor="let ballad of availableBallads">
                     <div *ngIf="!ballad.isSelected">
-                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading" [ngClass]="getBalladClass(ballad)"
+                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading"
+                            [ngClass]="getBalladClass(ballad)"
                             (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
                             <app-notification-icon *ngIf="ballad.showNewNotification"></app-notification-icon>
                         </button>
@@ -106,25 +107,15 @@
         <hr />
     </div>
     <div class="quickLink">
-        <div class="quickJump">
-            <span>Jump to..</span>
-            <br />
-            <button (click)="jumpToLatestShop()">Latest Town</button>
-            <br />
-            <button (click)="jumpToLatestShop()">Underworld Town</button>
-            <br />
-            <button (click)="jumpToLatestShop()">Olympus Town</button>
-            <br />
-            <button (click)="jumpToLatestShop()">Latest Shop</button>
-            <br />
-            <button (click)="jumpToLatestShop()">Latest Shop</button>
-            <br />
-            <button (click)="jumpToLatestShop()">Latest Shop</button>
-            <br />
-            <button (click)="jumpToLatestShop()">Latest Shop</button>
-        </div>
-        <div class="peekResources">
-            <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span>
+        <div class="quickLinkGrid">
+            <div *ngIf="townsAvailable" class="quickJump">
+                <span>Jump to..</span>
+                <br />
+                <button *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
+            </div>
+            <div class="peekResources">
+                <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span>
+            </div>
         </div>
     </div>
 </div>

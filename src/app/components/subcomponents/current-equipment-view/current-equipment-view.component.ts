@@ -85,9 +85,7 @@ export class CurrentEquipmentViewComponent implements OnInit {
     if (type === EquipmentTypeEnum.Armor)
       character.equipmentSet.armor = undefined;
     if (type === EquipmentTypeEnum.Ring)
-      character.equipmentSet.rightRing = undefined;
-    if (type === EquipmentTypeEnum.Ring)
-      character.equipmentSet.leftRing = undefined;
+      character.equipmentSet.ring = undefined;    
     if (type === EquipmentTypeEnum.Necklace)
       character.equipmentSet.necklace = undefined;
 

@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { ZoneEnum } from "../enums/zone-enum.model";
 import { SubZone } from "./sub-zone.model";
 
@@ -7,6 +8,7 @@ export class Zone {
     isSelected: boolean;
     isAvailable: boolean;
     showNewNotification: boolean;
+    @Type(() => SubZone)
     subzones: SubZone[];
 
     constructor() {

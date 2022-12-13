@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { BestiaryEnum } from "../enums/bestiary-enum.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { StatusEffect } from "./status-effect.model";
@@ -7,6 +8,7 @@ export class BattleInfo {
     timeToAutoAttack: number;
     autoAttackAutoMode: boolean;
     autoAttackManuallyTriggered: boolean;
+    @Type(() => StatusEffect)
     statusEffects: StatusEffect[];
     barrierValue: number;
 

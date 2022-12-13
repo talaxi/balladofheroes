@@ -1,0 +1,12 @@
+.importExportDiv {
+    width: 50%;
+}
+
+#importExport {
+    width: 100%;
+}
+
+.importExportButtons {
+    display: flex;
+    justify-content: space-between;
+  }

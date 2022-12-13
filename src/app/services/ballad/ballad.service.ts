@@ -42,10 +42,10 @@ export class BalladService {
     return zone;
   }
 
-  getActiveSubZone() {
+  getActiveSubZone(search: boolean = false) {
     var subzone = new SubZone();
     
-    if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined) {
+    if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined || search) {
       var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
       if (activeBallad !== undefined) {
         var zone = activeBallad.zones.find(item => item.isSelected);

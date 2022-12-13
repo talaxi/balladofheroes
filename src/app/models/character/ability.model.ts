@@ -1,3 +1,4 @@
+import { Type } from "class-transformer";
 import { StatusEffect } from "../battle/status-effect.model";
 import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { TargetEnum } from "../enums/target-enum.model";
@@ -16,7 +17,9 @@ export class Ability {
     heals: boolean;
     targetsAllies: boolean;
     elementalType: ElementalTypeEnum;
+    @Type(() => StatusEffect)
     userGainsStatusEffect: StatusEffect[];
+    @Type(() => StatusEffect)
     targetGainsStatusEffect: StatusEffect[];
     isAoe: boolean;
     isPassive: boolean;

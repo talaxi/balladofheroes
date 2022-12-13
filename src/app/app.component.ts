@@ -49,15 +49,13 @@ export class AppComponent {
       }
     }
 
-    if (environment.staging) {
-      console.log("Stage");
+    if (environment.staging) {    
       this.deploymentService.setStagingMode();
     }
-    else {
-      console.log("Prod");
+    else {      
       this.deploymentService.setProductionMode();
     }
-    
+
     var forceNewGame = this.deploymentService.forceStartNewGame;
     var devMode = this.deploymentService.devModeActive;
 
@@ -95,6 +93,8 @@ export class AppComponent {
 
     if (!activeSubzone.isTown)
       this.battleService.handleBattle(deltaTime, this.loading);
+    else
+      this.backgroundService.handleTown(deltaTime, this.loading);
   }
 
   loadStartup() {
@@ -127,6 +127,7 @@ export class AppComponent {
     var batchTime = 5; //runs the game in batches of 5 seconds max
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {
+      this.globalService.globalVar.isCatchingUp = true;
       this.bankedTime += deltaTime - batchTime;
       deltaTime = batchTime;
 
@@ -139,6 +140,7 @@ export class AppComponent {
       {
         deltaTime += this.bankedTime;
         this.bankedTime = 0;
+        this.globalService.globalVar.isCatchingUp = false;
 
         if (this.catchupDialog !== undefined) {
           this.catchupDialog.close();

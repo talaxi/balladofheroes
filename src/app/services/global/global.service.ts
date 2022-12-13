@@ -57,7 +57,7 @@ export class GlobalService {
     adventurer.name = "Adventurer";
     adventurer.type = CharacterEnum.Adventurer;
     adventurer.isAvailable = true;
-    adventurer.baseStats = new CharacterStats(250, 12, 8, 10, 5, 5);
+    adventurer.baseStats = new CharacterStats(250, 12, 8, 12, 5, 5);
     adventurer.battleStats = adventurer.baseStats.makeCopy();
     adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
     this.assignAbilityInfo(adventurer);
@@ -67,8 +67,8 @@ export class GlobalService {
     var archer = new Character(CharacterEnum.Archer);
     archer.name = "Archer";
     archer.type = CharacterEnum.Archer;
-    archer.isAvailable = true;
-    archer.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
+    archer.isAvailable = false;
+    archer.baseStats = new CharacterStats(220, 12, 10, 10, 15, 5);
     archer.battleStats = archer.baseStats.makeCopy();
     archer.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
     this.assignAbilityInfo(archer);
@@ -78,7 +78,7 @@ export class GlobalService {
     var warrior = new Character(CharacterEnum.Warrior);
     warrior.name = "Warrior";
     warrior.type = CharacterEnum.Warrior;
-    warrior.isAvailable = true;
+    warrior.isAvailable = false;
     warrior.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
     warrior.battleStats = warrior.baseStats.makeCopy();
     warrior.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
@@ -89,7 +89,7 @@ export class GlobalService {
     var priest = new Character(CharacterEnum.Priest);
     priest.name = "Priest";
     priest.type = CharacterEnum.Priest;
-    priest.isAvailable = true;
+    priest.isAvailable = false;
     priest.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
     priest.battleStats = priest.baseStats.makeCopy();
     priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
@@ -662,13 +662,13 @@ export class GlobalService {
 
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam) {
     defeatedEnemies.enemyList.forEach(enemy => {
-      party.filter(partyMember => partyMember.level < partyMember.maxLevel).forEach(partyMember => {
+      party.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {
         //needs to have some sort of modification factor on beating enemies at a certain lvl compared to you
         partyMember.exp += enemy.xpGainFromDefeat;
       });
 
       //TODO: this probably needs adjusting but for now, give XP to all gods
-      this.globalVar.gods.forEach(god => {
+      this.globalVar.gods.filter(god => god.isAvailable).forEach(god => {
         god.exp += enemy.xpGainFromDefeat * this.globalVar.godXpModifier;
       });
     });

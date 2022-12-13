@@ -144,6 +144,10 @@ export class BattleService {
     }
 
     if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
+      var archer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
+      if (archer !== undefined)
+        archer.isAvailable = true;
+
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
       this.menuService.setNewPartyMember2(this.globalService.globalVar.activePartyMember2);
 
@@ -217,7 +221,7 @@ export class BattleService {
       var rng = this.utilityService.getRandomNumber(0, 1);
 
       //auto gain throwing stones in aigosthena upper coast
-      if (subzone.type === SubZoneEnum.AigosthenaUpperCoast && subzone.victoryCount >= 3 &&
+      if (subzone.type === SubZoneEnum.AigosthenaUpperCoast && subzone.victoryCount >= 2 &&
         !this.globalService.globalVar.freeTreasureChests.aigosthenaUpperCoastAwarded) {
         treasureChestChance = 1;
         this.globalService.globalVar.freeTreasureChests.aigosthenaUpperCoastAwarded = true;
@@ -288,18 +292,25 @@ export class BattleService {
 
     //hopefully unnecessary fail safe
     var autoAttacksAtOnce = 0;
-    var totalAutoAttacksAtOnce = 100;
+    var totalAutoAttacksAtOnce = 1;
+
+    if (this.globalService.globalVar.isCatchingUp)
+      totalAutoAttacksAtOnce = 50;
 
     while (character.battleInfo.autoAttackTimer >= timeToAutoAttack && autoAttacksAtOnce < totalAutoAttacksAtOnce &&
       (character.battleInfo.autoAttackAutoMode || character.battleInfo.autoAttackManuallyTriggered)) {
       var autoAttackOccurred = this.handleAutoAttack(character, targets);
-              
+
       if (autoAttackOccurred)
         character.battleInfo.autoAttackTimer -= timeToAutoAttack;
 
       if (character.battleInfo.autoAttackManuallyTriggered)
         character.battleInfo.autoAttackTimer = 0;
       autoAttacksAtOnce += 1;
+
+      //this prevents auto attack timer from building up while in scene or town
+      if (autoAttacksAtOnce === totalAutoAttacksAtOnce)
+        character.battleInfo.autoAttackTimer = 0;
     }
 
     character.battleInfo.autoAttackManuallyTriggered = false;
@@ -317,7 +328,7 @@ export class BattleService {
 
     var damageDealt = this.dealDamage(character, target, isCritical, undefined, damageMultiplier);
 
-    var gameLogEntry = "<strong>" + character.name + "</strong>" + " attacks <strong>" + target.name + "</strong> for " + damageDealt + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+    var gameLogEntry = "<strong class='" + this.lookupService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attacks <strong class='" + this.lookupService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
     this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
 
     if (character.abilityList.find(item => item.name === "Barrage" && item.isAvailable)) {
@@ -330,7 +341,7 @@ export class BattleService {
         if (additionalTargets.length > 0) {
           additionalTargets.forEach(additionalTarget => {
             var additionalDamageDealt = this.dealDamage(character, additionalTarget, false, undefined, barrage!.effectiveness);
-            var gameLogEntry = "<strong>" + character.name + "</strong>" + "'s attack hits <strong>" + additionalTarget.name + "</strong> for " + additionalDamageDealt + " damage as well.";
+            var gameLogEntry = "<strong class='" + this.lookupService.getCharacterColorClassText(character.type) + ">" + character.name + "</strong>" + "'s attack hits <strong>" + additionalTarget.name + "</strong> for " + additionalDamageDealt + " damage as well.";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           });
         }
@@ -408,7 +419,7 @@ export class BattleService {
       var isCritical = this.isDamageCritical(user, target);
 
       var damageDealt = this.dealDamage(user, target, isCritical, abilityEffectiveness, damageMultiplier, ability);
-      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + " on <strong>" + target.name + "</strong> for " + damageDealt + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+      var gameLogEntry = "<strong class='" + this.lookupService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.lookupService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
       this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
     }
     else if (ability.heals) {
@@ -420,7 +431,7 @@ export class BattleService {
       healAmount *= adjustedCriticalMultiplier;
 
       var healedAmount = this.gainHp(target, healAmount);
-      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + " on " + target.name + ", restoring " + healedAmount + " HP." + (isCritical ? " <strong>Critical heal!</strong>" : "");
+      var gameLogEntry = "<strong class='" + this.lookupService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on " + target.name + ", restoring " + healedAmount + " HP." + (isCritical ? " <strong>Critical heal!</strong>" : "");
       this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
     }
     else if (ability.name === "Pray") {
@@ -435,11 +446,11 @@ export class BattleService {
         }
       });
 
-      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + ", shielding allies for " + barrierAmount + " damage.";
+      var gameLogEntry = "<strong class='" + this.lookupService.getCharacterColorClassText(user.type) + ">" + user.name + "</strong>" + " uses " + ability.name + ", shielding allies for " + barrierAmount + " damage.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
     }
     else {
-      var gameLogEntry = "<strong>" + user.name + "</strong>" + " uses " + ability.name + ".";
+      var gameLogEntry = "<strong class='" + this.lookupService.getCharacterColorClassText(user.type) + ">" + user.name + "</strong>" + " uses " + ability.name + ".";
       this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
     }
 
@@ -822,7 +833,10 @@ export class BattleService {
     this.showNewEnemyGroup = true;
     this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "The enemy party has been defeated.");
     var subZone = this.balladService.getActiveSubZone();
+    console.log(subZone);
+    console.log("Before: " + subZone.victoryCount);
     subZone.victoryCount += 1;
+    console.log("After: " + subZone.victoryCount);
     var achievement = this.achievementService.checkForSubzoneAchievement(subZone.type, this.globalService.globalVar.achievements);
 
     if (achievement !== undefined) {
@@ -1027,7 +1041,7 @@ export class BattleService {
       var healedAmount = this.gainHp(character, this.lookupService.getHealingHerbAmount())
       this.lookupService.useResource(this.battleItemInUse, 1);
 
-      var gameLogEntry = "<strong>" + character.name + "</strong>" + " uses a Healing Herb, gaining " + healedAmount + " HP.";
+      var gameLogEntry = "<strong class='" + this.lookupService.getCharacterColorClassText(character.type) + ">" + character.name + "</strong>" + " uses a Healing Herb, gaining " + healedAmount + " HP.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
     }
 

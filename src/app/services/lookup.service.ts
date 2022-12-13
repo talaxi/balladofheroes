@@ -863,6 +863,19 @@ export class LookupService {
     return equipmentStats;
   }
 
+  getCharacterColorClassText(type: CharacterEnum) {
+    if (type === CharacterEnum.Adventurer)
+      return 'adventurerColor';
+    if (type === CharacterEnum.Archer)
+      return 'archerColor';
+    if (type === CharacterEnum.Warrior)
+      return 'warriorColor';
+    if (type === CharacterEnum.Priest)
+      return 'priestColor';
+
+    return '';
+  }
+
   getCharacterColorClass(type: CharacterEnum) {
     return {
       'adventurerColor': type === CharacterEnum.Adventurer,
@@ -906,6 +919,19 @@ export class LookupService {
 
     if (target === undefined) {
       totalDps += adjustedAttack * adjustedCriticalMultiplier / this.getAutoAttackTime(character);
+
+      character.abilityList.filter(item => item.isAvailable).forEach(ability => {
+        var damageMultiplier = 1;
+        var abilityDamageMultiplier = this.getAbilityEffectiveAmount(character, ability);
+
+        if (ability.dealsDirectDamage) {
+          var damageMultiplier = 1;
+
+          totalDps += Math.round((damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
+            (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier) / ability.cooldown);
+        }
+      });
+
     }
     else {
       var damageMultiplier = 1;
@@ -914,6 +940,18 @@ export class LookupService {
       //auto attack
       totalDps += Math.round((damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
         (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier) / this.getAutoAttackTime(character));
+
+      character.abilityList.filter(item => item.isAvailable).forEach(ability => {
+        var damageMultiplier = 1;
+        var abilityDamageMultiplier = this.getAbilityEffectiveAmount(character, ability);
+
+        if (ability.dealsDirectDamage) {
+          var damageMultiplier = 1;
+
+          totalDps += Math.round((damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
+            (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier) / ability.cooldown);
+        }
+      });
 
       //console.log ("Total DPS = " + totalDps + " = (" + adjustedAttack + " (2 / 3)) - (" + adjustedDefense + " (2 / 5)) * " + adjustedCriticalMultiplier + ") / " + this.getAutoAttackTime(character));
     }
@@ -943,7 +981,7 @@ export class LookupService {
         var enemyClearTime = enemy.battleStats.maxHp / dpsAgainstEnemy;
         timeToClear += enemyClearTime;
         totalXp += enemy.xpGainFromDefeat;
-      });      
+      });
 
       expPerSecPerEnemyTeam.push(totalXp / timeToClear);
     });

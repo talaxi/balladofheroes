@@ -45,6 +45,7 @@ export class GlobalVariables {
     @Type(() => FreeTreasureChests)
     freeTreasureChests: FreeTreasureChests;
     extraSpeedTimeRemaining: number;
+    isCatchingUp: boolean = false;
 
     constructor() {
         this.lastTimeStamp = 0;

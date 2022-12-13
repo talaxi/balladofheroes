@@ -18,13 +18,16 @@ export class MenuOptionsComponent implements OnInit {
   
   public partyMembers: Character[];
   public gods: God[];
+
+  godsAvailable = false;
   
   constructor(public menuService: MenuService, private globalService: GlobalService) { }
 
   ngOnInit(): void {    
-    this.partyMembers = this.globalService.globalVar.characters;
+    this.partyMembers = this.globalService.globalVar.characters.filter(item => item.isAvailable);
     this.selectedMenu = this.menuService.selectedMenuDisplay;
     this.gods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
+    this.godsAvailable = this.gods.length > 0;
   }
 
   switchView(type: MenuEnum) {

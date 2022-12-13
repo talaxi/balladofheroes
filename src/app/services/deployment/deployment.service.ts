@@ -23,6 +23,6 @@ export class DeploymentService {
     this.devModeActive = false;
     this.forceStartNewGame = true;
     this.codeCreationMode = true;
-    this.showStats = true;
+    this.showStats = false;
   }
 }

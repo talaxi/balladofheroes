@@ -109,7 +109,7 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.AigosthenaHeartOfTheWoods)
     {
       var enemyTeam: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Matriarch));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Patriarch));      
       battleOptions.push(enemyTeam);
     }    
     if (type === SubZoneEnum.DodonaDelphiOutskirts)

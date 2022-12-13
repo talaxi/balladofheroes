@@ -1,12 +1,17 @@
+import { Type } from "class-transformer";
 import { EquipmentTypeEnum } from "../enums/equipment-type-enum.model";
 import { Equipment } from "./equipment.model";
 
 export class EquipmentSet {
+    @Type(() => Equipment)
     weapon: Equipment | undefined;
+    @Type(() => Equipment)
     shield: Equipment | undefined;
+    @Type(() => Equipment)
     armor: Equipment | undefined;
-    rightRing: Equipment | undefined;
-    leftRing: Equipment | undefined;
+    @Type(() => Equipment)
+    ring: Equipment | undefined;
+    @Type(() => Equipment)    
     necklace: Equipment | undefined;
 
     constructor() {
@@ -21,7 +26,7 @@ export class EquipmentSet {
         else if (type === EquipmentTypeEnum.Shield)
             return this.shield;
         else if (type === EquipmentTypeEnum.Ring)
-            return this.rightRing;
+            return this.ring;
         else if (type === EquipmentTypeEnum.Necklace)
             return this.necklace;
 
@@ -43,11 +48,8 @@ export class EquipmentSet {
         if (this.necklace !== undefined)
             total += this.necklace.stats.maxHp;
 
-        if (this.rightRing !== undefined)
-            total += this.rightRing.stats.maxHp;
-
-        if (this.leftRing !== undefined)
-            total += this.leftRing.stats.maxHp;
+        if (this.ring !== undefined)
+            total += this.ring.stats.maxHp;
 
         return total;
     }
@@ -67,11 +69,8 @@ export class EquipmentSet {
         if (this.necklace !== undefined)
             total += this.necklace.stats.attack;
 
-        if (this.rightRing !== undefined)
-            total += this.rightRing.stats.attack;
-
-        if (this.leftRing !== undefined)
-            total += this.leftRing.stats.attack;
+        if (this.ring !== undefined)
+            total += this.ring.stats.attack;
 
         return total;
     }
@@ -91,11 +90,8 @@ export class EquipmentSet {
         if (this.necklace !== undefined)
             total += this.necklace.stats.agility;
 
-        if (this.rightRing !== undefined)
-            total += this.rightRing.stats.agility;
-
-        if (this.leftRing !== undefined)
-            total += this.leftRing.stats.agility;
+        if (this.ring !== undefined)
+            total += this.ring.stats.agility;
 
         return total;
     }
@@ -115,11 +111,8 @@ export class EquipmentSet {
         if (this.necklace !== undefined)
             total += this.necklace.stats.luck;
 
-        if (this.rightRing !== undefined)
-            total += this.rightRing.stats.luck;
-
-        if (this.leftRing !== undefined)
-            total += this.leftRing.stats.luck;
+        if (this.ring !== undefined)
+            total += this.ring.stats.luck;
 
         return total;
     }
@@ -139,11 +132,8 @@ export class EquipmentSet {
         if (this.necklace !== undefined)
             total += this.necklace.stats.defense;
 
-        if (this.rightRing !== undefined)
-            total += this.rightRing.stats.defense;
-
-        if (this.leftRing !== undefined)
-            total += this.leftRing.stats.defense;
+        if (this.ring !== undefined)
+            total += this.ring.stats.defense;
 
         return total;
     }
@@ -163,11 +153,8 @@ export class EquipmentSet {
         if (this.necklace !== undefined)
             total += this.necklace.stats.resistance;
 
-        if (this.rightRing !== undefined)
-            total += this.rightRing.stats.resistance;
-
-        if (this.leftRing !== undefined)
-            total += this.leftRing.stats.resistance;
+        if (this.ring !== undefined)
+            total += this.ring.stats.resistance;
 
         return total;
     }

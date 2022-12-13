@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { plainToInstance } from 'class-transformer';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
+import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 declare var LZString: any;
 
@@ -14,14 +15,14 @@ export class SettingsViewComponent implements OnInit {
   file: any;
   enteredRedemptionCode: string;
 
-  constructor(private globalService: GlobalService) { }
+  constructor(private globalService: GlobalService, private balladService: BalladService) { }
 
   ngOnInit(): void {
+    
   }
 
   public SaveGame() {
-    var globalData = JSON.stringify(this.globalService.globalVar);
-    console.log(this.globalService.globalVar);
+    var globalData = JSON.stringify(this.globalService.globalVar);    
     var compressedData = LZString.compressToBase64(globalData);
     this.importExportValue = compressedData;
   }
@@ -36,7 +37,8 @@ export class SettingsViewComponent implements OnInit {
       var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
       if (loadDataJson !== null && loadDataJson !== undefined) {
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
-        //this.versionControlService.updatePlayerVersion(); //TODO
+        
+        this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
       }
     }
   }
@@ -69,6 +71,9 @@ export class SettingsViewComponent implements OnInit {
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
           this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
+
+          //TODO: this is redudandant -- its finding itself
+          this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           //this.versionControlService.updatePlayerVersion(); //TODO
         }
       }

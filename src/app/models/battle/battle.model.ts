@@ -12,6 +12,7 @@ export class Battle {
     atScene: boolean;
     sceneType: SceneTypeEnum;
     atTown: boolean;
+    @Type(() => ResourceValue)
     chestRewards: ResourceValue[];
 
     constructor() {

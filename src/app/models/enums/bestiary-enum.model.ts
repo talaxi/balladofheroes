@@ -5,7 +5,7 @@ export enum BestiaryEnum {
   StarvingMongrel,
   WildBoar,
   KillerBees,
-  Matriarch,
+  Patriarch,
   Bandit,
   Thief,
   Highwayman,
@@ -17,5 +17,10 @@ export enum BestiaryEnum {
   FledglingLamia,
   Lamia,  
   Sybaris,
-  LargeOctopus
+  LargeOctopus,
+  UnsettlingShade,
+  Gorgon,
+  Stheno,
+  Euryale,
+  Medusa
 }

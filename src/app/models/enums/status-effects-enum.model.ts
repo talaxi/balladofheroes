@@ -28,5 +28,6 @@ export enum StatusEffectEnum {
     ThousandCuts,
     Shield,
     DebuffDurationIncrease,
-    RecentlyDefeated
+    RecentlyDefeated,
+    Dodge
   }
