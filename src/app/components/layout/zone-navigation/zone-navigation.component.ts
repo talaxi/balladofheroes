@@ -1,7 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
@@ -11,6 +14,7 @@ import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -30,7 +34,8 @@ export class ZoneNavigationComponent implements OnInit {
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
-    private achievementService: AchievementService, public lookupService: LookupService) { }
+    private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
+    private menuService: MenuService) { }
 
   ngOnInit(): void {
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
@@ -239,6 +244,11 @@ export class ZoneNavigationComponent implements OnInit {
     }
 
     return text;
+  }
+
+  goToResourceView() {
+    this.layoutService.changeLayout(NavigationEnum.Menu);
+    this.menuService.selectedMenuDisplay = MenuEnum.Resources;
   }
 
   ngOnDestroy() {

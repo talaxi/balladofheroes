@@ -23,6 +23,10 @@ export class GameLogService {
     {
       entry = "<span class='changeLocationText'>" + entry + "</span>";
     }
+    if (type === GameLogEntryEnum.Tutorial) 
+    {
+      entry = "<span class='tutorialText'>" + entry + "</span>";
+    }
 
     this.gameLog.push(entry + "<br/>");
 

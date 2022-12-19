@@ -3,6 +3,7 @@ import { plainToInstance } from 'class-transformer';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { StoryService } from 'src/app/services/story/story.service';
 declare var LZString: any;
 
 @Component({
@@ -15,7 +16,7 @@ export class SettingsViewComponent implements OnInit {
   file: any;
   enteredRedemptionCode: string;
 
-  constructor(private globalService: GlobalService, private balladService: BalladService) { }
+  constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService) { }
 
   ngOnInit(): void {
     
@@ -39,6 +40,7 @@ export class SettingsViewComponent implements OnInit {
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
         
         this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
+        this.storyService.showStory = false;
       }
     }
   }
@@ -72,8 +74,8 @@ export class SettingsViewComponent implements OnInit {
         if (loadDataJson !== null && loadDataJson !== undefined) {
           this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
 
-          //TODO: this is redudandant -- its finding itself
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
+          this.storyService.showStory = false;
           //this.versionControlService.updatePlayerVersion(); //TODO
         }
       }

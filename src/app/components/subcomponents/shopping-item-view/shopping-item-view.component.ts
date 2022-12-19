@@ -1,8 +1,11 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { LookupService } from 'src/app/services/lookup.service';
 import { ResourceGeneratorService } from 'src/app/services/resources/resource-generator.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-shopping-item-view',
@@ -12,20 +15,34 @@ import { ResourceGeneratorService } from 'src/app/services/resources/resource-ge
 export class ShoppingItemViewComponent implements OnInit {
   @Input() item: ShopItem;
   itemDescription = "";
-  purchaseResourcesRequired: string;
+  purchaseResourcesRequired: string = "";
 
-  constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService) { }
+  constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService, 
+    private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
     this.item.purchasePrice.forEach(resource => {
       var displayName = this.lookupService.getItemName(resource.item);
-      this.purchaseResourcesRequired = (resource.amount).toLocaleString() + " " + displayName + ", ";
-
-      if (this.purchaseResourcesRequired.length > 0) {
-        this.purchaseResourcesRequired = this.purchaseResourcesRequired.substring(0, this.purchaseResourcesRequired.length - 2);
-      }
+      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(resource.type, resource.item) + "'>" +(resource.amount).toLocaleString() + " " + displayName + "</span><br/>";      
     });
+
+    if (this.purchaseResourcesRequired.length > 0) {
+      this.purchaseResourcesRequired = this.utilityService.getSanitizedHtml(this.purchaseResourcesRequired);
+    }    
+  }
+
+  getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum) {
+    var classText = "";
+
+    if (type === ItemTypeEnum.Resource)
+      classText = "resourceKeyword";
+    if (type === ItemTypeEnum.CraftingMaterial)
+      classText = "craftingMaterialKeyword";
+    if (type === ItemTypeEnum.Equipment)  
+      classText = this.getEquipmentClass(item);    
+
+    return classText;
   }
 
   buyItem() {
@@ -59,8 +76,11 @@ export class ShoppingItemViewComponent implements OnInit {
     return this.lookupService.getEquipmentPieceByItemType(this.item.shopItem) !== undefined;
   }
 
-  getEquipmentClass() {
-    var equipment = this.lookupService.getEquipmentPieceByItemType(this.item.shopItem);    
+  getEquipmentClass(item?: ItemsEnum) {
+    if (item === undefined)
+      item = this.item.shopItem;
+
+    var equipment = this.lookupService.getEquipmentPieceByItemType(item);    
     if (equipment !== undefined)
     {
     var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));

@@ -4,5 +4,6 @@ export enum MenuEnum {
   Gods,
   Equipment,
   Shop,
-  Settings
+  Settings,
+  Resources
 }

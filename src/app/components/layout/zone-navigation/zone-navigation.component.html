@@ -46,9 +46,9 @@
                                         [ngClass]="getSubzoneClass(subzone)"
                                         (click)="selectSubZone(subzone, zone)">{{subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
-                                    </button>
                                     <app-notification-icon *ngIf="subzone.showNewNotification">
                                     </app-notification-icon>
+                                </button>
                                 </span>
                             </div>
                             <div *ngIf="subzone.isSelected">
@@ -111,9 +111,11 @@
             <div *ngIf="townsAvailable" class="quickJump">
                 <span>Jump to..</span>
                 <br />
-                <button *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
+                <button class="buttonStyled" *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
             </div>
             <div class="peekResources">
+                <span (click)="goToResourceView()">Quick Resource View</span>
+                <br/>
                 <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span>
             </div>
         </div>

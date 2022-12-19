@@ -1,21 +1,41 @@
 <div class="godGrid">
-    <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" class="god1" 
-    [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
-    <span customToolTip [contentTemplate]="god1Popover" class="s3Heading">{{getCharacterGodName(character, 1)}}
-        </span>
-        <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong> <span class="levelUpAnimationText" [ngClass]="{'levelUpAnimation': showGod1LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
-        <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xp1Popover">
+    <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" class="god1"
+        [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
+        <span (click)="goToGodDetails(1)" customToolTip [contentTemplate]="god1Popover">
+            <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
+            <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span> <span class="levelUpAnimationText"
+                [ngClass]="{'levelUpAnimation': showGod1LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
+        <div class="flex xpBarWidth" customToolTip [contentTemplate]="xp1Popover">
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar">
+            </mat-progress-bar>
+        </div>
+        <div *ngIf="character.assignedGod1 === godEnum.Apollo" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(1)"
+            (contextmenu)="toggleAuto(1)">
+            <span *ngIf="!isGodSpecificAbilityAuto(1)" class="manualGodAbilityText">OFF</span>
+            <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(1)"
+                class="apolloProgressBarColor characterBar"
+                [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(1)}">
             </mat-progress-bar>
         </div>
     </div>
 
-    <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"  class="god2" [ngClass]="lookupService.getGodColorClass(character.assignedGod2)">
-        <span customToolTip [contentTemplate]="god2Popover" class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
+    <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod" class="god2"
+        [ngClass]="lookupService.getGodColorClass(character.assignedGod2)" (click)="goToGodDetails(2)">
+        <span customToolTip [contentTemplate]="god2Popover" class="s3Heading">{{getCharacterGodName(character, 2)}}
+        </span>
         <span><strong>Lv
-                {{getCharacterGodLevel(character, 2)}}</strong> <span class="levelUpAnimationText" [ngClass]="{'levelUpAnimation': showGod2LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
+                {{getCharacterGodLevel(character, 2)}}</strong> <span class="levelUpAnimationText"
+                [ngClass]="{'levelUpAnimation': showGod2LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
         <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xp2Popover">
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar">
+            </mat-progress-bar>
+        </div>
+        <div *ngIf="character.assignedGod2 === godEnum.Apollo" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(2)"
+            (contextmenu)="toggleAuto(2)">
+            <span *ngIf="!isGodSpecificAbilityAuto(2)" class="manualGodAbilityText">OFF</span>
+            <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(2)"
+                class="apolloProgressBarColor characterBar"
+                [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(2)}">
             </mat-progress-bar>
         </div>
     </div>
@@ -24,18 +44,18 @@
 <ng-template #god1Popover>
     <div>
         <div *ngIf="isGodPassiveUnlocked(1)">
-        <span [innerHtml]="getGodPassiveDescription(1)"></span>
-        <hr />
-    </div>
+            <span [innerHtml]="getGodPassiveDescription(1)"></span>
+            <hr />
+        </div>
         Click for details on God.
     </div>
 </ng-template>
 
 <ng-template #god2Popover>
     <div>
-        <div *ngIf="isGodPassiveUnlocked(2)" >
-        <span [innerHtml]="getGodPassiveDescription(2)"></span>
-        <hr />
+        <div *ngIf="isGodPassiveUnlocked(2)">
+            <span [innerHtml]="getGodPassiveDescription(2)"></span>
+            <hr />
         </div>
         Click for details on God.
     </div>

@@ -106,7 +106,7 @@ export class GlobalService {
       quickHit.name = "Quick Hit";
       quickHit.isAvailable = false;
       quickHit.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
-      quickHit.effectiveness = 2.2;
+      quickHit.effectiveness = 1.75;
       quickHit.cooldown = quickHit.currentCooldown = 18;
       quickHit.dealsDirectDamage = true;
       quickHit.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 8, 1.25, false, true));
@@ -135,10 +135,10 @@ export class GlobalService {
       sureShot.name = "Sure Shot";
       sureShot.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       sureShot.isAvailable = false;
-      sureShot.effectiveness = 1.5;
-      sureShot.cooldown = sureShot.currentCooldown = 25;
-      sureShot.dealsDirectDamage = true;
-      sureShot.targetGainsStatusEffect.push(this.createDamageOverTimeEffect(12, 3, .2, sureShot.name));
+      sureShot.effectiveness = 1.3;
+      sureShot.cooldown = sureShot.currentCooldown = 24;
+      sureShot.dealsDirectDamage = true;      
+      sureShot.targetGainsStatusEffect.push(this.createDamageOverTimeEffect(12, 3, .2, sureShot.name, true));
       character.abilityList.push(sureShot);
 
       var mark = new Ability();
@@ -155,7 +155,7 @@ export class GlobalService {
       pinningShot.isAvailable = false;
       pinningShot.cooldown = pinningShot.currentCooldown = 35;
       pinningShot.dealsDirectDamage = true;
-      pinningShot.effectiveness = 1.85;
+      pinningShot.effectiveness = 1.6;
       pinningShot.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));
       character.abilityList.push(pinningShot);
     }
@@ -165,7 +165,7 @@ export class GlobalService {
       battleCry.name = "Battle Cry";
       battleCry.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       battleCry.isAvailable = false;
-      battleCry.cooldown = battleCry.currentCooldown = 10;
+      battleCry.cooldown = battleCry.currentCooldown = 40;
       battleCry.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 15, 0, false, false, true, character.name));
       character.abilityList.push(battleCry);
 
@@ -182,7 +182,7 @@ export class GlobalService {
       shieldSlam.name = "Shield Slam";
       shieldSlam.requiredLevel = this.utilityService.characterAbility2Level;
       shieldSlam.isAvailable = false;
-      shieldSlam.effectiveness = 1.7;
+      shieldSlam.effectiveness = 1.4;
       shieldSlam.secondaryEffectiveness = .25;
       shieldSlam.dealsDirectDamage = true;
       shieldSlam.cooldown = shieldSlam.currentCooldown = 5;
@@ -272,7 +272,7 @@ export class GlobalService {
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       divineStrike.cooldown = divineStrike.currentCooldown = 30;
       divineStrike.dealsDirectDamage = true;
-      divineStrike.effectiveness = 2.1;
+      divineStrike.effectiveness = 1.6;
       divineStrike.elementalType = ElementalTypeEnum.Holy;
       divineStrike.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
       god.abilityList.push(divineStrike);
@@ -289,11 +289,12 @@ export class GlobalService {
       blindingLight.name = "Blinding Light";
       blindingLight.requiredLevel = this.utilityService.godAbility3Level;
       blindingLight.isAvailable = false;
-      blindingLight.cooldown = blindingLight.currentCooldown = 25;
+      blindingLight.cooldown = blindingLight.currentCooldown = 8;
+      blindingLight.isAoe = true;
       blindingLight.dealsDirectDamage = true;
-      blindingLight.effectiveness = .65;
+      blindingLight.effectiveness = .6;
       blindingLight.elementalType = ElementalTypeEnum.Holy;
-      blindingLight.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false));
+      blindingLight.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false, true));
       god.abilityList.push(blindingLight);
 
       var secondWind = new Ability();
@@ -301,7 +302,7 @@ export class GlobalService {
       secondWind.requiredLevel = this.utilityService.godPassiveLevel;
       secondWind.isAvailable = false;
       secondWind.isPassive = true;
-      secondWind.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
+      secondWind.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, -1, .05, false, true));
       god.abilityList.push(secondWind);
     }
 
@@ -311,7 +312,7 @@ export class GlobalService {
       woundingArrow.isAvailable = false;
       woundingArrow.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       woundingArrow.cooldown = woundingArrow.currentCooldown = 18;
-      woundingArrow.effectiveness = 2.6;
+      woundingArrow.effectiveness = 2.1;
       woundingArrow.dealsDirectDamage = true;
       woundingArrow.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackDown, 6, .9, false, false));
       god.abilityList.push(woundingArrow);
@@ -320,8 +321,8 @@ export class GlobalService {
       electricVolley.name = "Electric Volley";
       electricVolley.isAvailable = false;
       electricVolley.requiredLevel = this.utilityService.godAbility2Level;
-      electricVolley.cooldown = electricVolley.currentCooldown = 40;
-      electricVolley.effectiveness = .65;
+      electricVolley.cooldown = electricVolley.currentCooldown = 15;
+      electricVolley.effectiveness = .5;
       electricVolley.isAoe = true;
       electricVolley.dealsDirectDamage = true;
       electricVolley.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Paralyze, 12, 0, false, false, true));
@@ -333,7 +334,7 @@ export class GlobalService {
       exposeWeakness.requiredLevel = this.utilityService.godAbility3Level;
       exposeWeakness.cooldown = exposeWeakness.currentCooldown = 55;
       exposeWeakness.dealsDirectDamage = true;
-      exposeWeakness.effectiveness = 2.8;
+      exposeWeakness.effectiveness = 2.3;
       exposeWeakness.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
       god.abilityList.push(exposeWeakness);
 
@@ -342,6 +343,7 @@ export class GlobalService {
       trueShot.isAvailable = false;
       trueShot.requiredLevel = this.utilityService.godPassiveLevel;
       trueShot.isPassive = true;
+      trueShot.dealsDirectDamage = false;
       trueShot.effectiveness = 1.1;
       god.abilityList.push(trueShot);
     }
@@ -351,9 +353,10 @@ export class GlobalService {
       staccato.name = "Staccato";
       staccato.isAvailable = false;
       staccato.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      staccato.cooldown = staccato.currentCooldown = 45;
+      staccato.cooldown = staccato.currentCooldown = 35;
       staccato.dealsDirectDamage = false;
       staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.2, false, true, true));
+      staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Staccato, 10, 1, false, true));
       god.abilityList.push(staccato);
 
       var fortissimo = new Ability();
@@ -364,6 +367,7 @@ export class GlobalService {
       fortissimo.dealsDirectDamage = false;
       fortissimo.secondaryEffectiveness = 1.01;
       fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 8, 1.2, false, true, true));
+      fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Fortissimo, 8, 1, false, true));
       god.abilityList.push(fortissimo);
 
       var allegro = new Ability();
@@ -371,9 +375,9 @@ export class GlobalService {
       allegro.isAvailable = false;
       allegro.requiredLevel = this.utilityService.godAbility3Level;
       allegro.cooldown = allegro.currentCooldown = 60;
-      allegro.dealsDirectDamage = true;
-      allegro.effectiveness = 1.8;
+      allegro.dealsDirectDamage = false;      
       allegro.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.LuckUp, 5, 1.2, false, true, true));
+      allegro.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Allegro, 5, 1, false, true));
       god.abilityList.push(allegro);
 
       var ostinato = new Ability();
@@ -382,6 +386,9 @@ export class GlobalService {
       ostinato.requiredLevel = this.utilityService.godPassiveLevel;
       ostinato.isPassive = true;
       ostinato.effectiveness = .8;
+      ostinato.heals = true;
+      ostinato.targetsAllies = true;
+      ostinato.targetType = TargetEnum.LowestHpPercent;
       ostinato.cooldown = ostinato.currentCooldown = 40;
       god.abilityList.push(ostinato);
     }
@@ -393,7 +400,7 @@ export class GlobalService {
       trickShot.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       trickShot.cooldown = trickShot.currentCooldown = 8;
       trickShot.dealsDirectDamage = true;
-      trickShot.effectiveness = 1.6;
+      trickShot.effectiveness = 1.2;
       god.abilityList.push(trickShot);
 
       var embellish = new Ability();
@@ -572,7 +579,7 @@ export class GlobalService {
     if (duration === -1)
       statusEffect.isPermanent = true;
 
-    if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark)
+    if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark || type === StatusEffectEnum.Stun)
       statusEffect.refreshes = true;
 
     if (type === StatusEffectEnum.RecentlyDefeated)
@@ -581,12 +588,13 @@ export class GlobalService {
     return statusEffect;
   }
 
-  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, associatedAbilityName: string) {
+  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, associatedAbilityName: string, basedOnOriginalDamage: boolean = false) {
     var statusEffect = new StatusEffect(StatusEffectEnum.DamageOverTime);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
     statusEffect.tickFrequency = tickFrequency;
     statusEffect.associatedAbilityName = associatedAbilityName;
+    statusEffect.basedOnOriginalDamage = basedOnOriginalDamage;
 
     return statusEffect;
   }
@@ -693,7 +701,7 @@ export class GlobalService {
     character.level += 1;
     character.exp -= character.expToNextLevel;
 
-    var gameLogEntry = "<strong>" + character.name + "</strong>" + " attains level <strong>" + character.level + "</strong>.";
+    var gameLogEntry = "<strong  class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attains level <strong>" + character.level + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
 
     this.getCharacterLevelStatIncrease(character);
@@ -717,12 +725,25 @@ export class GlobalService {
     character.abilityList.forEach(ability => {
       if (character.level >= ability.requiredLevel) {
         if (!ability.isAvailable) {
-          var gameLogEntry = "<strong>" + character.name + "</strong>" + " learns a new ability: <strong>" + ability.name + "</strong>.";
+          var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " learns a new ability: <strong>" + ability.name + "</strong>.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
         }
         ability.isAvailable = true;
       }
     });
+  }
+
+  getCharacterColorClassText(type: CharacterEnum) {
+    if (type === CharacterEnum.Adventurer)
+      return 'adventurerColor';
+    if (type === CharacterEnum.Archer)
+      return 'archerColor';
+    if (type === CharacterEnum.Warrior)
+      return 'warriorColor';
+    if (type === CharacterEnum.Priest)
+      return 'priestColor';
+
+    return '';
   }
 
   getCharacterXpToNextLevel(level: number) {

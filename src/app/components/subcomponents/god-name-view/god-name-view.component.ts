@@ -2,9 +2,13 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -16,6 +20,7 @@ export class GodNameViewComponent implements OnInit {
   @Input() character: Character;
   public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
+  public godEnum = GodEnum;
   previousGod1Level: number;
   previousGod2Level: number;
   showGod1LevelUpAnimation = false;
@@ -25,9 +30,9 @@ export class GodNameViewComponent implements OnInit {
   animation2Timer = 0;
   animationTimerCap = 3;
   levelUpAnimationText = "Lv Up!";
-  
+
   constructor(private globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService, private layoutService: LayoutService, private menuService: MenuService) { }
 
   ngOnInit(): void {
     this.previousGod1Level = this.getCharacterGodLevel(this.character, 1);
@@ -36,9 +41,8 @@ export class GodNameViewComponent implements OnInit {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
       var god1Level = this.getCharacterGodLevel(this.character, 1);
       var god2Level = this.getCharacterGodLevel(this.character, 2);
-      
-      if (god1Level > this.previousGod1Level)
-      {
+
+      if (god1Level > this.previousGod1Level) {
         this.showGod1LevelUpAnimation = true;
         this.previousGod1Level = god1Level;
       }
@@ -51,8 +55,7 @@ export class GodNameViewComponent implements OnInit {
         }
       }
 
-      if (god2Level > this.previousGod2Level)
-      {
+      if (god2Level > this.previousGod2Level) {
         this.showGod2LevelUpAnimation = true;
         this.previousGod2Level = god1Level;
       }
@@ -73,7 +76,7 @@ export class GodNameViewComponent implements OnInit {
       matchTo = character.assignedGod2;
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
-    
+
     if (god !== undefined) {
       return god.name;
     }
@@ -119,7 +122,7 @@ export class GodNameViewComponent implements OnInit {
 
     return 0;
   }
-  
+
   getGodPassiveDescription(whichGod: number) {
     var passiveDescription = "";
 
@@ -129,7 +132,7 @@ export class GodNameViewComponent implements OnInit {
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
     if (god === undefined || !god.abilityList.some(ability => ability.isPassive && ability.isAvailable)) {
-      return passiveDescription;      
+      return passiveDescription;
     }
 
     var passiveAbility = god.abilityList.find(item => item.isPassive && item.isAvailable);
@@ -141,7 +144,7 @@ export class GodNameViewComponent implements OnInit {
     return passiveDescription;
   }
 
-  getCharacterPassiveDescription() {    
+  getCharacterPassiveDescription() {
     var passiveDescription = "";
 
     var passiveAbility = this.character.abilityList.find(item => item.isPassive && item.isAvailable);
@@ -163,7 +166,7 @@ export class GodNameViewComponent implements OnInit {
       matchTo = this.character.assignedGod2;
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
-    
+
     if (god !== undefined) {
       return (god.exp / god.expToNextLevel) * 100;
     }
@@ -187,9 +190,95 @@ export class GodNameViewComponent implements OnInit {
     return god.abilityList.some(item => item.isPassive && item.isAvailable);
   }
 
+  goToGodDetails(whichGod: number) {
+    this.layoutService.changeLayout(NavigationEnum.Menu);
+    this.menuService.selectedMenuDisplay = MenuEnum.Gods;
+
+    if (whichGod === 1)
+      this.menuService.setSelectedGod(this.character.assignedGod1);
+    else if (whichGod === 2)
+      this.menuService.setSelectedGod(this.character.assignedGod2);
+  }
+
+  getGodSpecificProgressBar(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (god === undefined)
+      return 0;
+
+    if (god.type === GodEnum.Apollo) {
+      var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
+      if (ostinato !== undefined)
+        return 100 - ((ostinato.currentCooldown / ostinato.cooldown) * 100);
+    }
+
+    return 0;
+  }
+
+  toggleAuto(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (god === undefined)
+      return false;
+
+    //each god may have different specifications
+    if (god.type === GodEnum.Apollo) {
+      var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
+      if (ostinato !== undefined)
+      {
+        ostinato.autoMode = !ostinato.autoMode;
+      }      
+    }
+    return false;
+  }
+
+  manuallyTrigger(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (god === undefined)
+      return;
+
+    //each god may have different specifications
+    if (god.type === GodEnum.Apollo) {
+      var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
+      if (ostinato !== undefined)
+      {
+        ostinato.manuallyTriggered = true;
+      }      
+    }
+  }
+
+  isGodSpecificAbilityAuto(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (god === undefined)
+      return false;
+
+    //each god may have different specifications
+    if (god.type === GodEnum.Apollo) {
+      var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
+      if (ostinato !== undefined)
+      {
+        return ostinato.autoMode;
+      }      
+    }
+    return false;
+  }
+
   ngOnDestroy() {
-    if (this.subscription !== undefined)
-    {
+    if (this.subscription !== undefined) {
       this.subscription.unsubscribe();
     }
   }

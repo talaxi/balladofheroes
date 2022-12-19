@@ -19,6 +19,14 @@
   background-color: #01082e !important;
 }
 
+.red-progress .mat-progress-bar-fill::after {
+  background-color: #c40e1d !important;
+}
+
+.red-progress .mat-progress-bar-buffer {
+  background-color: #290609 !important;
+}
+
 
 :root {
   /* Colors */
@@ -47,8 +55,9 @@
   --battle-update-text: #e0d01d;
   --battle-item-text: #05CF51;
   --change-location-text: #F9B86E;
+  --tutorial-text: #13D001;
 
-  --error-default: #ef3e36;
+  --error-default: #3e2b2a;
   --error-dark: #800600;
   --error-light: #ffcecc;
 
@@ -178,6 +187,10 @@
   --specialEquipmentColor: #41c93c;
   --extraordinaryEquipmentColor: #D9791A;
   --uniqueEquipmentColor: #FD5949;
+
+  --resourceKeywordColor: #EAAD91;
+  --craftingMaterialKeywordColor: #ABB5DC;
+  --equipmentKeywordColor: #83C2A6;
 }
 
 body {
@@ -281,14 +294,9 @@ h6 {
   color: var(--resourceKeywordColor);
 }
 
-.progressionKeyword {
+.craftingMaterialKeyword {
   font-weight: 550;
-  color: var(--progressionKeywordColor);
-}
-
-.specialtyKeyword {
-  font-weight: 550;
-  color: var(--specialityKeywordColor);
+  color: var(--craftingMaterialKeywordColor);
 }
 
 .equipmentKeyword {
@@ -423,6 +431,12 @@ html, body { height: 100%; }
   color: var(--change-location-text);
 }
 
+.tutorialText {
+  font-weight: bold;
+  font-style: italic;
+  color: var(--tutorial-text);
+}
+
 .screenMargin {
   margin: .3rem;
 }
@@ -465,6 +479,14 @@ html, body { height: 100%; }
 .apolloColor {
   color: var(--apolloColor);
   stroke: var(--apolloColor) !important;
+}
+
+.apolloProgressBarColor .mat-progress-bar-fill::after {
+  background-color: var(--apolloColor) !important;
+}
+
+.apolloProgressBarColor .mat-progress-bar-buffer {
+  background-color: #382402 !important;
 }
 
 .poseidonColor {

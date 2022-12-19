@@ -18,9 +18,8 @@ export class InitializationService {
   constructor(private globalService: GlobalService, private achievementService: AchievementService) { }
 
   initializeVariables() {
-
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
-    this.initializeSettings();
+    this.initializeSettings();    
   }
 
   initializeBallads() {
@@ -89,21 +88,23 @@ export class InitializationService {
 
   devMode() {
     this.globalService.globalVar.currentStoryId = 10000;
+    
     this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
+    this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });
     this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
     this.globalService.globalVar.itemBeltSize = 4;
 
     var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
     if (character1 !== undefined) {
-      character1.assignedGod1 = GodEnum.Athena;
-      character1.assignedGod2 = GodEnum.Hermes;
+      //character1.assignedGod1 = GodEnum.Athena;
+      character1.assignedGod1 = GodEnum.Hermes;
     }
 
     var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
 
     if (character2 !== undefined) {
-      character2.assignedGod1 = GodEnum.Artemis;
-      character2.assignedGod2 = GodEnum.Apollo;
+      //character2.assignedGod1 = GodEnum.Artemis;
+      character2.assignedGod1 = GodEnum.Apollo;
     }
 
     character1?.abilityList.forEach(ability => {
@@ -141,10 +142,13 @@ export class InitializationService {
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.type !== BalladEnum.Underworld)
         ballad.isAvailable = true;
+        ballad.showNewNotification=true;
       ballad.zones.forEach(zone => {
         zone.isAvailable = true;
+        zone.showNewNotification=true;
         zone.subzones.forEach(subzone => {
           subzone.isAvailable = true;
+          subzone.showNewNotification =true;
           if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
             this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
               this.globalService.globalVar.achievements.push(achievement);

@@ -28,6 +28,12 @@ export enum ItemsEnum {
   FortifiedBronzeArmor,
   SteelArmor,
   LeatherArmor,
+  ForgottenLocket,
   EagleFeather,
-  LamiaFang
+  LightLeather,
+  Leather,
+  SmallFeather,
+  LamiaHeart,
+  PoisonFang,
+  PetrifiedBark
 }

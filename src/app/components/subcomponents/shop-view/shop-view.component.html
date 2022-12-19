@@ -1,5 +1,5 @@
 <div class="shopOption" *ngFor="let option of shopOptions; let i = index">
-    <button class="buttonStyled" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
+    <button class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
     <br *ngIf="i < shopOptions.length-1"/>
     <br *ngIf="i < shopOptions.length-1"/>
 </div>

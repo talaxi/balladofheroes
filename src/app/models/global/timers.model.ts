@@ -9,10 +9,10 @@ export class Timers {
 
     constructor() {
         this.scenePageTimer = 0;
-        this.scenePageLength = 3; //TODO: SET TO 10
+        this.scenePageLength = 30; 
 
         this.chestTimer = 0;
-        this.chestLength = 3;
+        this.chestLength = 5;
 
         this.townHpGainTimer = 0;
         this.townHpGainLength = 2;

@@ -22,7 +22,7 @@ export class AbilityViewComponent implements OnInit {
   strokeWidth = 5;
   autoMode: boolean;
 
-  constructor(private lookupService: LookupService, private utilityService: UtilityService) { }
+  constructor(public lookupService: LookupService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     if (this.ability === undefined)

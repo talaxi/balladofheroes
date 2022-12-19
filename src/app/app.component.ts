@@ -13,6 +13,7 @@ import { TownService } from './services/town.service';
 import { BackgroundService } from './services/utility/background.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UtilityService } from './services/utility/utility.service';
+import { SubZone } from './models/zone/sub-zone.model';
 declare var LZString: any;
 
 @Component({
@@ -83,10 +84,13 @@ export class AppComponent {
   }
 
   public gameCheckup(deltaTime: number): void {
-    deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading);
-
     //all game logic that should be updated behind the scenes
     var activeSubzone = this.balladService.getActiveSubZone();
+    
+    if (this.utilityService.isGamePaused)
+      deltaTime = 0;
+
+    deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);    
 
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime);
@@ -103,14 +107,11 @@ export class AppComponent {
       this.themeService.setActiveTheme(selectedTheme);*/
   }
 
-  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any) {
+  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {
     if (deltaTime > this.utilityService.activeTimeLimit) {
       this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
       deltaTime = this.utilityService.activeTimeLimit;
     }
-
-    if (this.battleService.isPaused)
-      deltaTime = 0;
 
     //if speed up time remains, use it
     if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2) {
@@ -124,7 +125,7 @@ export class AppComponent {
       }
     }
 
-    var batchTime = 5; //runs the game in batches of 5 seconds max
+    var batchTime = this.getBatchRunTime(subzone); //runs the game in batches of 5 seconds max
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {
       this.globalService.globalVar.isCatchingUp = true;
@@ -149,6 +150,7 @@ export class AppComponent {
       }
       else //use partial amount of banked time
       {
+        console.log("Remaining batch time: " + this.bankedTime);
         var useAmount = batchTime - deltaTime;
         this.bankedTime -= useAmount;
         deltaTime += useAmount;
@@ -159,6 +161,15 @@ export class AppComponent {
     }
 
     return deltaTime;
+  }
+
+  getBatchRunTime(subzone: SubZone) {
+    var batchRunTime = 5;
+
+    if (subzone.isTown)
+      batchRunTime = 30;
+
+    return batchRunTime;
   }
 
   openCatchUpModal(content: any) {

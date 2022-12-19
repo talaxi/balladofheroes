@@ -1,0 +1,37 @@
+.shoppingItem {
+    display: grid;
+    height: 100%;    
+    grid-template-columns: auto;
+    grid-gap: .5rem;
+    grid-template-rows: 1fr 1fr .5fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "itemDescription"
+        "purchaseDescription"
+        "purchaseButton";
+}
+
+.itemDescription {
+    grid-area: itemDescription;
+}
+
+.purchaseDescription {
+    grid-area: purchaseDescription;
+    align-self: center;
+}
+
+.purchaseButton {
+    grid-area: purchaseButton;
+}
+
+/*.shoppingItem {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.purchaseButton {
+    width: 25%;
+    align-self: center;
+}*/

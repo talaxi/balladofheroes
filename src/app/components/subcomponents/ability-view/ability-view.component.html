@@ -2,7 +2,7 @@
     <div class="centeredBox">
         <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAuto()">
             <div>
-                <span class='abilityTimer' [ngClass]="{'manualModeImage': !autoMode}"><img class="abilityImage" src="assets/svg/sword.svg"></span>
+                <span class='abilityTimer' [ngClass]="{'manualModeImage': !autoMode}"><img class="abilityImage" [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)"></span>
                 <span *ngIf="!autoMode" class="manualModeText"><strong>OFF</strong></span>
             </div>
             <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate" [diameter]="spinnerDiameter"
@@ -18,6 +18,6 @@
         <hr class="miniHr" />
         <span [innerHtml]="getAbilityDescription()"></span>        
         <hr />
-        Right click to toggle between Manual and Auto mode. Left click to use ability in Manual mode.
+        Right click to toggle between Manual and Auto mode. Left click to manually use ability.
     </div>
 </ng-template>

@@ -66,6 +66,7 @@ import { NotificationIconComponent } from './components/subcomponents/notificati
 import { IndividualStatusEffectViewComponent } from './components/subcomponents/status-effect-view/individual-status-effect-view/individual-status-effect-view.component';
 import { ShopViewComponent } from './components/subcomponents/shop-view/shop-view.component';
 import { ShoppingItemViewComponent } from './components/subcomponents/shopping-item-view/shopping-item-view.component';
+import { ResourceViewComponent } from './components/menu/resource-view/resource-view.component';
 
 
 @NgModule({
@@ -97,7 +98,8 @@ import { ShoppingItemViewComponent } from './components/subcomponents/shopping-i
     NotificationIconComponent,
     IndividualStatusEffectViewComponent,
     ShopViewComponent,
-    ShoppingItemViewComponent
+    ShoppingItemViewComponent,
+    ResourceViewComponent
   ],
   imports: [
     BrowserModule,

@@ -6,6 +6,7 @@ import { EquipmentSet } from "../resources/equipment-set.model";
 import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
 import { God } from "./god.model";
+import { OverdriveInfo } from "./overdrive-info.model";
 
 export class Character {
     name: string;
@@ -27,6 +28,8 @@ export class Character {
     abilityList: Ability[];
     @Type(() => EquipmentSet)
     equipmentSet: EquipmentSet;
+    @Type(() => OverdriveInfo)
+    overdriveInfo: OverdriveInfo;
 
     constructor(type?: CharacterEnum) {
         this.type = type === undefined ? CharacterEnum.None : type;
@@ -41,6 +44,7 @@ export class Character {
 
         this.battleInfo = new BattleInfo(type);
         this.equipmentSet = new EquipmentSet();
+        this.overdriveInfo = new OverdriveInfo();
 
         this.abilityList = [];
     }    

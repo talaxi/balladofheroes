@@ -6,6 +6,8 @@ import * as seedrandom from "seedrandom";
   providedIn: 'root'
 })
 export class UtilityService {
+  isGamePaused: boolean;
+  isBattlePaused: boolean;
 
   //glossary
   public activeTimeLimit = 1 * 20 * 60;

@@ -2,5 +2,6 @@
     border: 1px solid gray;
     border-radius: 2px;
     padding: 1px 5px 4px 5px;
-    background: linear-gradient(#FFFFFF 0px, #E4E5F0 100%);    
+    background: linear-gradient(#FFFFFF 0px, #E4E5F0 100%);
+    max-width: 38vw;     
 }

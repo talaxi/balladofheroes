@@ -3,13 +3,14 @@ import { Character } from 'src/app/models/character/character.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { BattleService } from '../battle/battle.service';
 import { GlobalService } from '../global/global.service';
+import { UtilityService } from './utility.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BackgroundService {
 
-  constructor(private globalService: GlobalService, private battleService: BattleService) { }
+  constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number) {
@@ -18,7 +19,7 @@ export class BackgroundService {
     party.forEach(partyMember => {
       //check for defeated
       var isDefeated = this.battleService.isCharacterDefeated(partyMember);
-      if (!isDefeated) {
+      if (!isDefeated && !this.utilityService.isBattlePaused) {
         this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
         this.handleAbilityCooldowns(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(partyMember, deltaTime);
@@ -64,8 +65,7 @@ export class BackgroundService {
 
     while (this.globalService.globalVar.timers.townHpGainTimer > this.globalService.globalVar.timers.townHpGainLength && teamNeedsHealing) {
       party.forEach(partyMember => {
-        if (partyMember.battleStats.currentHp < partyMember.battleStats.maxHp) {
-          console.log("Heal: " + Math.ceil(partyMember.battleStats.maxHp * .02));
+        if (partyMember.battleStats.currentHp < partyMember.battleStats.maxHp) {          
           partyMember.battleStats.currentHp += Math.ceil(partyMember.battleStats.maxHp * .02);
         }
 

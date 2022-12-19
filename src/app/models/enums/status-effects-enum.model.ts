@@ -18,6 +18,8 @@ export enum StatusEffectEnum {
     InstantAutoAttack,
     DamageTakenDown,
     DamageTakenUp,
+    DamageDealtDown,
+    DamageDealtUp,
     DamageOverTime,
     Stun,
     Paralyze,
@@ -29,5 +31,8 @@ export enum StatusEffectEnum {
     Shield,
     DebuffDurationIncrease,
     RecentlyDefeated,
-    Dodge
+    Dodge,
+    Staccato,
+    Fortissimo,
+    Allegro
   }

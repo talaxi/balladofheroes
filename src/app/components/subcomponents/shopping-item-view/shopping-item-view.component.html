@@ -1,18 +1,19 @@
-<div [class]="getEquipmentClass()">
-    <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
+<div class="shoppingItem" [class]="getEquipmentClass()">
+    <div class="itemDescription">
+        <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
         <br />
         <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
-        <div *ngIf="isEquipment()">            
+        <div *ngIf="isEquipment()">
             {{getStars()}}
         </div>
         <hr class="miniHr" />
         <span [innerHtml]="itemDescription"></span>
-        <br />
-        <br />
-        <div class="resourceKeyword">
-            {{ purchaseResourcesRequired }}
+    </div>
+    <div class="purchaseDescription">
+        <div class="resourceKeyword" [innerHtml]="purchaseResourcesRequired">
         </div>
-        <br />
-        <br />    
+    </div>
+    <div class="purchaseButton">
         <button (click)="buyItem()" [disabled]="!canBuyItem()">Buy</button>
+    </div>
 </div>

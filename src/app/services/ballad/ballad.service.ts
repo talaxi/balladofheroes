@@ -1,11 +1,13 @@
 import { Injectable } from '@angular/core';
 import { Battle } from 'src/app/models/battle/battle.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
+import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 
@@ -14,7 +16,7 @@ import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generato
 })
 export class BalladService {
 
-  constructor(private globalService: GlobalService) { }
+  constructor(private globalService: GlobalService, private gameLogService: GameLogService) { }
 
   getBalladName(type?: BalladEnum) {
     var name = "";
@@ -44,7 +46,7 @@ export class BalladService {
 
   getActiveSubZone(search: boolean = false) {
     var subzone = new SubZone();
-    
+
     if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined || search) {
       var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
       if (activeBallad !== undefined) {
@@ -55,12 +57,44 @@ export class BalladService {
         }
       }
     }
-    else
-    {
+    else {
       subzone = this.globalService.globalVar.playerNavigation.currentSubzone;
     }
 
     return subzone;
+  }
+
+  setActiveSubZone(type: SubZoneEnum) {
+    var relatedZone: Zone | undefined = this.getActiveZone();
+    var relatedBallad: Ballad | undefined = this.getActiveBallad();
+    var relatedSubzone: SubZone = this.getActiveSubZone();;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.isSelected = false;
+      ballad.zones.forEach(zone => {
+        zone.isSelected = false;
+        zone.subzones.forEach(subzone => {
+          subzone.isSelected = false;
+          
+          if (subzone.type === type) {
+            relatedZone = zone;
+            relatedBallad = ballad;
+            relatedSubzone = subzone;
+          }
+        })
+      })
+    });
+
+    relatedSubzone.isSelected = true;
+    relatedSubzone.showNewNotification = false;
+    if (relatedZone !== undefined)
+      relatedZone.isSelected = true;
+    if (relatedBallad !== undefined)
+      relatedBallad.isSelected = true;
+    this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
+
+    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + relatedSubzone.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
   }
 
   findBallad(type: BalladEnum) {

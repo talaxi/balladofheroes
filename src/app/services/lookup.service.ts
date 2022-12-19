@@ -81,16 +81,17 @@ export class LookupService {
       return ItemTypeEnum.HealingItem;
     }
 
-    if (type === ItemsEnum.ThrowingStone) {
+    if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.PoisonFang) {
       return ItemTypeEnum.BattleItem;
     }
 
-    if (type === ItemsEnum.LamiaFang) {
+    if (type === ItemsEnum.EagleFeather || type === ItemsEnum.LamiaHeart || type === ItemsEnum.Leather || type === ItemsEnum.LightLeather ||
+      type === ItemsEnum.PetrifiedBark || type === ItemsEnum.SmallFeather) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
     if (type === ItemsEnum.Coin) {
-      return ItemTypeEnum.Resource
+      return ItemTypeEnum.Resource;
     }
 
     return ItemTypeEnum.None;
@@ -110,6 +111,8 @@ export class LookupService {
     //battle items
     else if (type === ItemsEnum.ThrowingStone)
       name = "Throwing Stone";
+    else if (type === ItemsEnum.PoisonFang)
+      name = "Poison Fang";
 
     //equipment
     //swords
@@ -154,6 +157,10 @@ export class LookupService {
     else if (type === ItemsEnum.BronzeShield)
       name = "Bronze Shield";
 
+    //necklaces
+    else if (type === ItemsEnum.ForgottenLocket)
+      name = "Forgotten Locket";
+
     //armor
     else if (type === ItemsEnum.LinenArmor)
       name = "Linen Armor";
@@ -165,6 +172,18 @@ export class LookupService {
       name = "Fortified Bronze Armor";
     else if (type === ItemsEnum.SteelArmor)
       name = "Steel Armor";
+
+    //crafting materials
+    else if (type === ItemsEnum.LightLeather)
+      name = "Light Leather";
+    else if (type === ItemsEnum.Leather)
+      name = "Leather";
+    else if (type === ItemsEnum.PetrifiedBark)
+      name = "Petrified Bark";
+    else if (type === ItemsEnum.LamiaHeart)
+      name = "Lamia Heart";
+    else if (type === ItemsEnum.SmallFeather)
+      name = "Small Feather";
 
     return name;
   }
@@ -380,6 +399,10 @@ export class LookupService {
     return description;
   }
 
+  getOverdriveMultiplier(character: Character) {
+    return 3;
+  }
+
   getAbilityEffectiveAmount(character: Character, ability: Ability) {
     return ability.effectiveness * this.getAdjustedAttack(character);
   }
@@ -529,7 +552,7 @@ export class LookupService {
     if (abilityName === "True Shot")
       abilityDescription = "If your target has a negative status effect, increase critical strike chance by <strong>" + effectiveAmountPercent + "%</strong> when attacking. Passive.";
     if (abilityName === "Wounding Arrow")
-      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage to a target and reduce their attack by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage to a target and reduce their attack by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Electric Volley")
       abilityDescription = "Deal <strong>" + effectiveAmount + "</strong> damage to all targets and paralyze them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Expose Weakness")
@@ -543,7 +566,7 @@ export class LookupService {
     if (abilityName === "Allegro")
       abilityDescription = "Increase the party's luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Allegro is active, cleanse a random debuff from a party member. " + cooldown + " second cooldown.";
     if (abilityName === "Ostinato")
-      abilityDescription = "Every " + cooldown + " seconds, heal a HP party member for <strong>" + effectiveAmount + "</strong>. Targets the party member with the lowest HP %.";
+      abilityDescription = "Every " + cooldown + " seconds, heal a party member for <strong>" + effectiveAmount + "</strong> HP. Targets the party member with the lowest HP %.";
 
     //Hermes
     if (abilityName === "Trick Shot")
@@ -700,6 +723,12 @@ export class LookupService {
 
       //500 * (log(.0035 * 10 + 1)) + 50      
       criticalChance = (amplifier * Math.log10(horizontalStretch * (difference) + horizontalPosition) / 100);
+    }
+
+    var trueShot = this.characterHasAbility("True Shot", attacker);
+    if (trueShot !== undefined && target.battleInfo.statusEffects.some(effect => !effect.isPositive))
+    {
+      criticalChance *= trueShot.effectiveness;
     }
 
     return criticalChance;
@@ -863,19 +892,6 @@ export class LookupService {
     return equipmentStats;
   }
 
-  getCharacterColorClassText(type: CharacterEnum) {
-    if (type === CharacterEnum.Adventurer)
-      return 'adventurerColor';
-    if (type === CharacterEnum.Archer)
-      return 'archerColor';
-    if (type === CharacterEnum.Warrior)
-      return 'warriorColor';
-    if (type === CharacterEnum.Priest)
-      return 'priestColor';
-
-    return '';
-  }
-
   getCharacterColorClass(type: CharacterEnum) {
     return {
       'adventurerColor': type === CharacterEnum.Adventurer,
@@ -906,6 +922,30 @@ export class LookupService {
     if (type === ItemsEnum.ThrowingStone) {
       src += "throwingStone.svg";
     }
+
+    return src;
+  }
+
+  getAbilityImage(abilityName: string) {
+    var src = "assets/svg/";
+
+    if (abilityName === "Sure Shot") {
+      src += "sureShot.svg";
+    }
+    else if (abilityName === "Pinning Shot") {
+      src += "pinningShot.svg";
+    }
+    else if (abilityName === "Staccato") {
+      src += "staccato.svg";
+    }
+    else if (abilityName === "Fortissimo") {
+      src += "fortissimo.svg";
+    }
+    else if (abilityName === "Allegro") {
+      src += "allegro.svg";
+    }
+    else
+      src += "sword.svg";
 
     return src;
   }
@@ -987,5 +1027,39 @@ export class LookupService {
     });
 
     return (expPerSecPerEnemyTeam.reduce((a, b) => a + b, 0) / expPerSecPerEnemyTeam.length) || 0;
+  }
+
+  characterHasAbility(abilityName: string, character: Character) : Ability | undefined {
+    var matchingAbility: Ability | undefined = undefined;
+
+    if (character.abilityList !== undefined && character.abilityList.length > 0)
+      character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+        if (ability.name === abilityName)
+          matchingAbility = ability;
+      });
+
+    if (character.assignedGod1 !== undefined && character.assignedGod1 !== GodEnum.None) {
+      var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+      if (god !== undefined) {
+        if (god.abilityList !== undefined && god.abilityList.length > 0)
+          god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+            if (ability.name === abilityName)
+              matchingAbility = ability;
+          });
+      }
+    }
+
+    if (character.assignedGod2 !== undefined && character.assignedGod2 !== GodEnum.None) {
+      var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+      if (god !== undefined) {
+        if (god.abilityList !== undefined && god.abilityList.length > 0)
+          god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+            if (ability.name === abilityName)
+              matchingAbility = ability;
+          });
+      }
+    }
+
+    return matchingAbility;
   }
 }

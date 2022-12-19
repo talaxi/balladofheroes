@@ -14,6 +14,7 @@ import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-party',
@@ -38,7 +39,7 @@ export class PartyComponent implements OnInit {
   partyMember2CheckSubscription: any;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService,
-    private gameLoopService: GameLoopService, private menuService: MenuService) { }
+    private gameLoopService: GameLoopService, private menuService: MenuService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.party = this.globalService.getActivePartyCharacters(false);   
@@ -78,12 +79,20 @@ export class PartyComponent implements OnInit {
     } 
   }
 
+  isOverdriveAvailable(character: Character) {
+    return character.level >= this.utilityService.characterOverdriveLevel;
+  }
+
   getCharacterHpPercent(character: Character) {    
     return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
   }
 
   getCharacterBarrierValue(character: Character) {    
     return character.battleInfo.barrierValue;
+  }
+
+  getCharacterOverdrivePercent(character: Character) {
+    return (character.overdriveInfo.overdriveGaugeAmount / character.overdriveInfo.overdriveGaugeTotal) * 100;
   }
 
   getCharacterGodName(character: Character, whichGod: number) {
@@ -281,6 +290,16 @@ export class PartyComponent implements OnInit {
 
     if (this.battleItemCells.length !== 0)
       this.battleItemRows.push(this.battleItemCells);
+  }
+
+  toggleAuto(character: Character) {
+    character.overdriveInfo.overdriveAutoMode = !character.overdriveInfo.overdriveAutoMode; 
+    
+    return false;
+  }
+
+  manuallyTrigger(character: Character) {
+    character.overdriveInfo.manuallyTriggered = true;
   }
 
   ngOnDestroy() {

@@ -1,7 +1,13 @@
 import { Injectable } from '@angular/core';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
+import { BalladService } from '../ballad/ballad.service';
+import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
+import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
+import { UtilityService } from '../utility/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -12,29 +18,29 @@ export class StoryService {
   pageCount: number;
   sceneText = "";
 
-  constructor(private globalService: GlobalService, private lookupService: LookupService) { }
+  constructor(private globalService: GlobalService, private lookupService: LookupService, private balladService: BalladService,
+    private utilityService: UtilityService, private tutorialService: TutorialService, private gameLogService: GameLogService) { }
 
-  checkForNewStoryScene() {    
-    if (this.globalService.globalVar.currentStoryId === 0)
-    {
+  checkForNewStoryScene() {  
+    if (this.globalService.globalVar.currentStoryId === 0)    
+      this.showStory = true;    
+    else if (this.globalService.globalVar.currentStoryId === 1 && this.balladService.getActiveSubZone().type === SubZoneEnum.AigosthenaHeartOfTheWoods)        
+      this.showStory = true;        
+    else if (this.globalService.globalVar.currentStoryId === 2 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AigosthenaHeartOfTheWoods))
       this.showStory = true;
-    }
-    else if (this.globalService.globalVar.currentStoryId === 1 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AigosthenaBay))
-    {
-      this.showStory = true;
-    }
   }
 
-  handleScene(deltaTime: number) {  
+  handleScene(deltaTime: number) {      
     if (this.globalService.globalVar.currentStoryId === 0)
     {
+      this.utilityService.isBattlePaused = true;
       this.pageCount = 2;      
 
       if (this.currentPage === 1)
       {
         this.sceneText = "Today is the Festival of Gods in your small village in Greece. " +
-         "Musicians are performing, children are playing, men and women are eating and drinking. <br/><br/> You are racing.<br/><br/>" +
-        "Every year, some set out to the Temple of Athena far inland. It is modest compared to the one in Athens, but it is the " +
+         "Musicians are performing, children are playing, men and women are eating and drinking. <br/><br/> <strong>You</strong> are racing.<br/><br/>" +
+        "Every year, some set out inland to the Temple of Athena. It is modest compared to the one in Athens, but it is the " +
         "largest most people in your village will ever see. From generation to generation, the story has held that the first person to reach the temple on the day of the Festival will be granted an audience with Athena herself.";
       }
       else if (this.currentPage === 2)
@@ -50,7 +56,16 @@ export class StoryService {
 
       if (this.currentPage === 1)
       {
-        this.sceneText = "Next Story ID";
+        this.sceneText = "Before the Patriarch";
+      }
+    }
+    if (this.globalService.globalVar.currentStoryId === 2)
+    {
+      this.pageCount = 1;
+
+      if (this.currentPage === 1)
+      {
+        this.sceneText = "After the Patriarch";
       }
     }
 
@@ -65,7 +80,18 @@ export class StoryService {
     {
       this.globalService.globalVar.currentStoryId += 1;
       this.currentPage = 1;
-      this.showStory = false;
+      this.showStory = false;      
+
+      //post story events, if any
+      if (this.globalService.globalVar.currentStoryId === 1) 
+      {        
+        this.utilityService.isBattlePaused = false;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack));
+      }
+      if (this.globalService.globalVar.currentStoryId === 3)
+      {
+        this.balladService.setActiveSubZone(SubZoneEnum.DodonaDelphi);
+      }
     }
 
     return this.showStory;

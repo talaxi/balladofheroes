@@ -14,6 +14,7 @@ export class God {
     statGain: CharacterStats;
     @Type(() => CharacterStats)
     permanentStatGain: CharacterStats;
+    @Type(() => Ability)
     abilityList: Ability[];
     exp: number;
     expToNextLevel: number;

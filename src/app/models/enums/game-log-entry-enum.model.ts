@@ -7,8 +7,10 @@ export enum GameLogEntryEnum {
   ReceivedStatusEffect,
   StatusEffectOccurs,
   BattleRewards,
+  TreasureChestRewards,
   BattleUpdate,
   ChangeLocation,
   LearnAbility,
-  LevelUp
+  LevelUp,
+  Tutorial
 }

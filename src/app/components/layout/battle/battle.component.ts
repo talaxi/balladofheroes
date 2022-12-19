@@ -28,13 +28,15 @@ export class BattleComponent implements OnInit {
   activeSubzone: SubZone;
   @ViewChild('scrollToTop') gameLogScroll: ElementRef;
   showDevStats: boolean = false;
+  scrollButtonDelay = 0;
+  scrollButtonDelayTotalCount = 5;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, private storyService: StoryService,
     private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {
-    this.activeSubzone = this.balladService.getActiveSubZone();          
+    this.activeSubzone = this.balladService.getActiveSubZone();
     this.showDevStats = this.deploymentService.showStats;
 
     if (this.globalService.globalVar.activeBattle !== undefined)
@@ -51,7 +53,7 @@ export class BattleComponent implements OnInit {
         this.battleService.showNewEnemyGroup = false;
       }
 
-      if (this.showNewEnemyGroupAnimation) {        
+      if (this.showNewEnemyGroupAnimation) {
         this.animationTimer += deltaTime;
         if (this.animationTimer >= this.animationTimerCap) {
           this.animationTimer = 0;
@@ -69,8 +71,8 @@ export class BattleComponent implements OnInit {
     this.globalService.globalVar.timers.scenePageTimer = this.globalService.globalVar.timers.scenePageLength;
   }
 
-  isAtTown() {    
-    if (this.activeSubzone !== undefined) {          
+  isAtTown() {
+    if (this.activeSubzone !== undefined) {
       return this.activeSubzone.isTown;
     }
     return false;
@@ -161,14 +163,19 @@ export class BattleComponent implements OnInit {
       offsetMultiplier = .995;
 
     if (Math.ceil(scrollToTop.scrollTop + scrollToTop.offsetHeight) >= (this.previousLogHeight * offsetMultiplier)) {
+      this.scrollButtonDelay = 0;
       return false;
     }
     else {
-      return true;
+      this.scrollButtonDelay += 1;
+      if (this.scrollButtonDelay >= this.scrollButtonDelayTotalCount)
+        return true;
+      else
+        return false;
     }
   }
 
-  skipToBottom(scrollToTop: any) {    
+  skipToBottom(scrollToTop: any) {
     if (scrollToTop !== undefined)
       scrollToTop.scrollTop = scrollToTop.scrollHeight;
   }
@@ -176,7 +183,7 @@ export class BattleComponent implements OnInit {
   getExpectedExpPerSec() {
     return this.lookupService.getSubzoneExpPerSec(this.activeSubzone.type);
   }
-  
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

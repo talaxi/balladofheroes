@@ -1,10 +1,15 @@
 .buttonStyled {
   width: 75%;
   height: 3rem;
+  cursor: pointer;
 }
 
 .shopOption {
   text-align: center;
+}
+
+.shopButtonText {
+  font-size: 1.4rem;
 }
 
 table {

@@ -104,8 +104,6 @@ export class SubZone {
             victories = aigosthenaVictories;
         if (type === SubZoneEnum.AigosthenaHeartOfTheWoods)
             victories = bossVictories;
-        /*if (type === SubZoneEnum.AigosthenaEasternWoodlands)
-            victories = 10;*/
 
         if (type === SubZoneEnum.DodonaDelphiOutskirts)
             victories = defaultVictories;
@@ -118,7 +116,7 @@ export class SubZone {
         if (type === SubZoneEnum.DodonaMountainPassOne)
             victories = defaultVictories;
         if (type === SubZoneEnum.DodonaLakeTrichonida)
-            victories = defaultVictories;
+            victories = bossVictories;
         if (type === SubZoneEnum.DodonaMountainPassTwo)
             victories = defaultVictories;
         if (type === SubZoneEnum.DodonaAmbracianGulf)
@@ -129,9 +127,9 @@ export class SubZone {
         if (type === SubZoneEnum.LibyaRockyOutcrops)
             victories = defaultVictories;
         if (type === SubZoneEnum.LibyaDeeperPath)
-            victories = defaultVictories;
+            victories = bossVictories;
         if (type === SubZoneEnum.LibyaIsleCenter)
-            victories = defaultVictories;
+            victories = bossVictories;
 
         return victories;
     }

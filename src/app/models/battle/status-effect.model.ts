@@ -19,6 +19,7 @@ export class StatusEffect {
     associatedAbilityName: string;
     tickFrequency: number;
     tickTimer: number;
+    basedOnOriginalDamage: boolean; //is the DoT based on original damage dealt or is it standalone?
 
     constructor(type: StatusEffectEnum, persistsDeath?: boolean) {
         this.type = type;
@@ -31,6 +32,7 @@ export class StatusEffect {
         this.duration = 0;
         this.count = 0;
         this.maxCount = 0;
+        this.basedOnOriginalDamage = false;
     }
 
     makeCopy() {
@@ -51,6 +53,7 @@ export class StatusEffect {
         copy.associatedAbilityName = this.associatedAbilityName;
         copy.tickFrequency = this.tickFrequency;
         copy.tickTimer = this.tickTimer;
+        copy.basedOnOriginalDamage = this.basedOnOriginalDamage;
 
         return copy;
     }
