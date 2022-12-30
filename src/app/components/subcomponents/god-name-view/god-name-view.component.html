@@ -65,7 +65,7 @@
     <div>
         Level {{getCharacterGodLevel(character, 1)}}
         <br />
-        {{getGodExp(1)}} / {{getGodExpToNextLevel(1)}} XP to Level {{getCharacterGodLevel(character, 1) + 1}}
+        {{getGodExp(1) | number : '1.0-0'}} / {{getGodExpToNextLevel(1) | number : '1.0-0'}} XP to Level {{getCharacterGodLevel(character, 1) + 1}}
     </div>
 </ng-template>
 
@@ -73,6 +73,6 @@
     <div>
         Level {{getCharacterGodLevel(character, 2)}}
         <br />
-        {{getGodExp(2)}} / {{getGodExpToNextLevel(2)}} XP to Level {{getCharacterGodLevel(character, 2) + 1}}
+        {{getGodExp(2) | number : '1.0-0'}} / {{getGodExpToNextLevel(2) | number : '1.0-0'}} XP to Level {{getCharacterGodLevel(character, 2) + 1}}
     </div>
 </ng-template>

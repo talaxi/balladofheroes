@@ -24,17 +24,6 @@ export class SubZoneGeneratorService {
   constructor(private enemyGeneratorService: EnemyGeneratorService, private resourceGeneratorService: ResourceGeneratorService,
     private shopItemGenerator: ShopItemGeneratorService) { }
 
-  //THIS IS NEVER CALLED
-  /*generateSubZone(type: SubZoneEnum)
-  {
-    var subZone = new SubZone(type);    
-
-    subZone.battleOptions = this.generateBattleOptions(type);
-    subZone.treasureChestChance = this.generateTreasureChestChance(type);    
-
-    return subZone;
-  }*/
-
   generateBattleOptions(type: SubZoneEnum) {
     var battleOptions: EnemyTeam[] = [];
     if (type === SubZoneEnum.AigosthenaUpperCoast) {
@@ -104,6 +93,7 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Patriarch));
       battleOptions.push(enemyTeam);
     }
@@ -150,6 +140,7 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.DodonaCountryside) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Archer));
       battleOptions.push(enemyTeam);
     }
@@ -212,6 +203,7 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.DodonaLakeTrichonida) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Sybaris));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
@@ -335,13 +327,27 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.LibyaDeeperPath) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Stheno));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Euryale));      
       battleOptions.push(enemyTeam);
     }
     if (type === SubZoneEnum.LibyaIsleCenter) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Medusa));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.NemeaCountryRoadsOne) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnceladusOne));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.NemeaCountryRoadsTwo) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lion));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lion));      
       battleOptions.push(enemyTeam);
     }
 
@@ -369,6 +375,12 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
       chance = .05;
     }
+    if (type === SubZoneEnum.DodonaMountainPassOne) {
+      chance = .075;
+    }
+    if (type === SubZoneEnum.DodonaMountainPassTwo) {
+      chance = .03;
+    }
 
     return chance;
   }
@@ -384,6 +396,12 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingHerb, 1));
+    }
+    if (type === SubZoneEnum.DodonaMountainPassOne) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 2));
+    }
+    if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 5));
     }
 
     return rewards;
@@ -465,6 +483,15 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.LibyaDeeperPath) {
       subZoneEnums.push(SubZoneEnum.LibyaIsleCenter);
     }
+    if (type === SubZoneEnum.LibyaIsleCenter) {
+      subZoneEnums.push(SubZoneEnum.NemeaCountryRoadsOne);
+    }
+    if (type === SubZoneEnum.NemeaCountryRoadsTwo) {
+      subZoneEnums.push(SubZoneEnum.NemeaRollingHills);
+    }
+    if (type === SubZoneEnum.NemeaRollingHills) {
+      subZoneEnums.push(SubZoneEnum.NemeaLairOfTheLion);
+    }
 
     return subZoneEnums;
   }
@@ -488,18 +515,28 @@ export class SubZoneGeneratorService {
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronArmor));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeArmor));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeSword));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeHammer));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LongBow));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HealingHerb));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ThrowingStone));
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FortifiedBronzeSword));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FortifiedBronzeHammer));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FortifiedBronzeArmor));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Venomstrike));
 
     if (subzoneType === SubZoneEnum.DodonaArta) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+
+      return shopOptions;
+    }
+
+    if (subzoneType === SubZoneEnum.AsphodelHallOfTheDead) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.Alchemist, []));
+      shopOptions.push(new ShopOption(ShopTypeEnum.ChthonicFavor, []));
 
       return shopOptions;
     }

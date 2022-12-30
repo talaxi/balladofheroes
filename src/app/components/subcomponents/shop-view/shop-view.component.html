@@ -1,5 +1,7 @@
 <div class="shopOption" *ngFor="let option of shopOptions; let i = index">
-    <button class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
+    <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter" class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
+    <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText" (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}}</button>
+    <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText" (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}}</button>
     <br *ngIf="i < shopOptions.length-1"/>
     <br *ngIf="i < shopOptions.length-1"/>
 </div>
@@ -12,4 +14,12 @@
             </td>
         </tr>
     </table>
+  </ng-template>
+
+  <ng-template #chthonicFavorModal>
+    <app-chthonic-reset-view></app-chthonic-reset-view>
+  </ng-template>
+
+  <ng-template #alchemyModal>
+    Coming Soon!
   </ng-template>

@@ -1,5 +1,7 @@
 export enum ZoneEnum {    
     Aigosthena,
     Dodona,
-    Libya
+    Libya,
+    Nemea,
+    Asphodel
   }

@@ -1,0 +1,36 @@
+<div>
+    <div class="textCentered chthonicPowerKeyword">Chthonic Power: {{getChthonicPower() | number : '1.0-2'}}</div>
+    <hr />
+    <div class="chthonicStats">
+        <div class="chthonicStatUpgrade">
+            Max HP: {{getChthonicMaxHPBoost() | number : '1.0-0'}}% <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForMaxHp()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForMaxHp() > getChthonicPower()" (click)="buyChthonicMaxHPBoost()">Increase</button>
+        </div>
+        <div class="chthonicStatUpgrade">
+            Attack: {{getChthonicAttackBoost() | number : '1.0-0'}}% <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAttack()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForAttack() > getChthonicPower()" (click)="buyChthonicAttackBoost()">Increase</button>
+        </div>
+        <div class="chthonicStatUpgrade">
+            Agility: {{getChthonicAgilityBoost() | number : '1.0-0'}}% <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAgility()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForAgility() > getChthonicPower()" (click)="buyChthonicAgilityBoost()">Increase</button>
+        </div>
+        <div class="chthonicStatUpgrade">
+            Luck: {{getChthonicLuckBoost() | number : '1.0-0'}}% <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForLuck()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForLuck() > getChthonicPower()" (click)="buyChthonicLuckBoost()">Increase</button>
+        </div>
+        <div class="chthonicStatUpgrade">
+            Defense: {{getChthonicDefenseBoost() | number : '1.0-0'}}% <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForDefense()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForDefense() > getChthonicPower()" (click)="buyChthonicDefenseBoost()">Increase</button>
+        </div>
+        <div class="chthonicStatUpgrade">
+            Resistance: {{getChthonicResistanceBoost() | number : '1.0-0'}}% <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForResistance()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForResistance() > getChthonicPower()" (click)="buyChthonicResistanceBoost()">Increase</button>
+        </div>
+    </div>
+</div>

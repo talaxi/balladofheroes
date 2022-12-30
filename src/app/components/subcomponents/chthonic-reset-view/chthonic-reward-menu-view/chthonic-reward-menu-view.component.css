@@ -1,0 +1,9 @@
+.chthonicStats {
+    display: flex;
+    justify-content: space-around;
+}
+
+.chthonicStatUpgrade {
+    width: 16.666%;
+    text-align: center;
+}

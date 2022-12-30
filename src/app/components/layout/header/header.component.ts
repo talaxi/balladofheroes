@@ -17,13 +17,17 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class HeaderComponent implements OnInit {
 
   constructor(private battleService: BattleService, private layoutService: LayoutService, private menuService: MenuService,
-    private utilityService: UtilityService, private globalService: GlobalService) { }
+    public utilityService: UtilityService, private globalService: GlobalService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
   
     if (event.key === "m" || event.key === "M") {
       this.openMenu();
+    }
+      
+    if (event.key === "p" || event.key === "P") {
+      this.pauseGame();
     }
   }
 

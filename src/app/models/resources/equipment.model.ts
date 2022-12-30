@@ -4,6 +4,7 @@ import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
 import { EquipmentTypeEnum } from "../enums/equipment-type-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
 import { WeaponTypeEnum } from "../enums/weapon-type-enum.model";
+import { UsableItemEffect } from "./usable-item-effect.model";
 
 export class Equipment {
     itemType: ItemsEnum;
@@ -11,6 +12,8 @@ export class Equipment {
     weaponType: WeaponTypeEnum;
     @Type(() => CharacterStats)
     stats: CharacterStats;
+    @Type(() => UsableItemEffect)
+    equipmentEffect: UsableItemEffect;
     quality: EquipmentQualityEnum;
 
     constructor(itemType: ItemsEnum, equipmentType: EquipmentTypeEnum, quality: EquipmentQualityEnum, weaponType?: WeaponTypeEnum) {

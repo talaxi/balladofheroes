@@ -74,6 +74,16 @@ export class SubZone {
             name = "Deeper Path";
         if (type === SubZoneEnum.LibyaIsleCenter)
             name = "Isle Center";
+        if (type === SubZoneEnum.NemeaCountryRoadsOne)
+            name = "Country Roads";
+        if (type === SubZoneEnum.NemeaCountryRoadsTwo)
+            name = "Country Roads";
+        if (type === SubZoneEnum.NemeaRollingHills)
+            name = "Rolling Hills";
+        if (type === SubZoneEnum.NemeaLairOfTheLion)
+            name = "Lair of the Lion";
+        if (type === SubZoneEnum.AsphodelHallOfTheDead)
+            name = "Hall of the Dead";
 
         return name;
     }
@@ -135,7 +145,7 @@ export class SubZone {
     }
 
     isSubzoneTown(type: SubZoneEnum) {
-        if (type === SubZoneEnum.DodonaDelphi || type === SubZoneEnum.DodonaArta) {
+        if (type === SubZoneEnum.DodonaDelphi || type === SubZoneEnum.DodonaArta || type === SubZoneEnum.AsphodelHallOfTheDead) {
             return true;
         }
 

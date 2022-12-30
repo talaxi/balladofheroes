@@ -1,7 +1,7 @@
 <div *ngIf="isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover">
     <div *ngIf="isStatUpDownEffect(statusEffect)"
         class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
-        <img class="image halfImage" src="assets/svg/statUpSE.svg">
+        <img class="image halfImage" [src]="getStatUpImage(statusEffect)">
         <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
     </div>
     <div *ngIf="!isStatUpDownEffect(statusEffect)" class="flex positiveStatusEffect">
@@ -13,7 +13,7 @@
 <div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover">
     <div *ngIf="isStatUpDownEffect(statusEffect)"
         class="statUpDownGrid negativeStatUpDownGrid negativeStatusEffect">
-        <img class="image halfImage" src="assets/svg/statDownSE.svg">
+        <img class="image halfImage" [src]="getStatDownImage(statusEffect)">
         <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
     </div>
     <div *ngIf="!isStatUpDownEffect(statusEffect)" class="flex negativeStatusEffect">

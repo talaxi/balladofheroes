@@ -96,7 +96,10 @@ export class AppComponent {
     this.backgroundService.handleBackgroundTimers(deltaTime);
 
     if (!activeSubzone.isTown)
+    {
+      this.globalService.globalVar.timers.townHpGainTimer = 0;
       this.battleService.handleBattle(deltaTime, this.loading);
+    }
     else
       this.backgroundService.handleTown(deltaTime, this.loading);
   }
@@ -111,6 +114,9 @@ export class AppComponent {
     if (deltaTime > this.utilityService.activeTimeLimit) {
       this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
       deltaTime = this.utilityService.activeTimeLimit;
+
+      if (this.globalService.globalVar.extraSpeedTimeRemaining > this.utilityService.extraSpeedTimeLimit)
+        this.globalService.globalVar.extraSpeedTimeRemaining = this.utilityService.extraSpeedTimeLimit;
     }
 
     //if speed up time remains, use it
@@ -150,7 +156,6 @@ export class AppComponent {
       }
       else //use partial amount of banked time
       {
-        console.log("Remaining batch time: " + this.bankedTime);
         var useAmount = batchTime - deltaTime;
         this.bankedTime -= useAmount;
         deltaTime += useAmount;

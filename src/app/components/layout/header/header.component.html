@@ -1,4 +1,39 @@
 <div class="flex">
-<p (click)="pauseGame()">Pause ({{getExtraSpeedTime()}})</p>
-<p (click)="openMenu()">Menu</p>
+    <button class="buttonAsText clickableText menuItem" (click)="openMenu()">Menu</button>
+
+    <div class="extraTimeItem">
+
+    </div>
+
+    <div class="centerAlign">
+        <button class="buttonAsText clickableText" (click)="pauseGame()">
+            <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused">&#9658;</span>
+            <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused">&#9612; &#9612;</span>
+        </button>        
+    </div>    
+
+    <div class="extraTimeItem centerAlign">
+        <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover"> ({{getExtraSpeedTime()}})</span></span>
+    </div>
+
+    <div class="menuItem">        
+    </div>
 </div>
+
+<ng-template #pausedPopover>
+    <div>
+      The game is paused. Click or press the 'P' key to unpause.
+    </div>
+  </ng-template>
+
+  <ng-template #unpausedPopover>
+    <div>
+      The game is playing. Click or press the 'P' key to pause.
+    </div>
+  </ng-template>
+
+  <ng-template #extraTimePopover>
+    <div>
+      The amount of banked time you've gained while away from the game. While this is available, the game will run at 2x the speed.
+    </div>
+  </ng-template>

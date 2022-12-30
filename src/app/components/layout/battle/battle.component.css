@@ -59,6 +59,22 @@
         "enemy3 enemy4";
 }
 
+.bossGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "boss boss"
+        "enemy3 enemy4";
+}
+
+.boss {
+    grid-area: boss;
+    text-align: center;
+}
+
 .enemy1 {
     grid-area: enemy1;
 }
@@ -109,6 +125,15 @@
     grid-area: text;
     margin: auto;
 }
+
+.storyTextAnimation {
+    animation: fadeIn .5s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
 
 .loadingBar {
     grid-area: loadingBar;

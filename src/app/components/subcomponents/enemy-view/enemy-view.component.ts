@@ -11,6 +11,7 @@ import { BattleService } from 'src/app/services/battle/battle.service';
 export class EnemyViewComponent implements OnInit {
   @Input() character: Enemy;
   @Input() showNewEnemyGroupAnimation: boolean = false;
+  @Input() isBoss = false;
 
   constructor(public battleService: BattleService) { }
 
@@ -39,6 +40,11 @@ export class EnemyViewComponent implements OnInit {
       isTargeted = true;
 
     return isTargeted;
+  }
+
+  useBattleItemOnCharacter(character: Character) {
+    if (this.targetCharacterWithItem(character))
+      return this.battleService.useBattleItemOnCharacter(character);
   }
 
   /*ngOnChanges(changes: any) {

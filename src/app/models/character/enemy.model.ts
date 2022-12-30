@@ -9,6 +9,7 @@ export class Enemy extends Character {
     coinGainFromDefeat: number;
     @Type(() => LootItem)
     loot: LootItem[];
+    isBoss: boolean;
     
     constructor() {
         super();

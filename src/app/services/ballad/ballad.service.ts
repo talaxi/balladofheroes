@@ -75,7 +75,7 @@ export class BalladService {
         zone.isSelected = false;
         zone.subzones.forEach(subzone => {
           subzone.isSelected = false;
-          
+
           if (subzone.type === type) {
             relatedZone = zone;
             relatedBallad = ballad;
@@ -88,9 +88,15 @@ export class BalladService {
     relatedSubzone.isSelected = true;
     relatedSubzone.showNewNotification = false;
     if (relatedZone !== undefined)
+    {
       relatedZone.isSelected = true;
+      relatedZone.showNewNotification = false;
+    }
     if (relatedBallad !== undefined)
+    {
       relatedBallad.isSelected = true;
+      relatedBallad.showNewNotification = false;
+    }
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + relatedSubzone.name + "</strong>.";

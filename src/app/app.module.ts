@@ -67,6 +67,9 @@ import { IndividualStatusEffectViewComponent } from './components/subcomponents/
 import { ShopViewComponent } from './components/subcomponents/shop-view/shop-view.component';
 import { ShoppingItemViewComponent } from './components/subcomponents/shopping-item-view/shopping-item-view.component';
 import { ResourceViewComponent } from './components/menu/resource-view/resource-view.component';
+import { ChthonicResetViewComponent } from './components/subcomponents/chthonic-reset-view/chthonic-reset-view.component';
+import { ChthonicResetMenuViewComponent } from './components/subcomponents/chthonic-reset-view/chthonic-reset-menu-view/chthonic-reset-menu-view.component';
+import { ChthonicRewardMenuViewComponent } from './components/subcomponents/chthonic-reset-view/chthonic-reward-menu-view/chthonic-reward-menu-view.component';
 
 
 @NgModule({
@@ -99,7 +102,10 @@ import { ResourceViewComponent } from './components/menu/resource-view/resource-
     IndividualStatusEffectViewComponent,
     ShopViewComponent,
     ShoppingItemViewComponent,
-    ResourceViewComponent
+    ResourceViewComponent,
+    ChthonicResetViewComponent,
+    ChthonicResetMenuViewComponent,
+    ChthonicRewardMenuViewComponent
   ],
   imports: [
     BrowserModule,

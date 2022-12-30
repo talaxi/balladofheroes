@@ -16,27 +16,34 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 export class CharacterViewComponent implements OnInit {
   character: Character;
   subscription: any;
-  god1AbilityList: Ability[];
-  god2AbilityList: Ability[];
+  god1AbilityList: Ability[] = [];
+  god2AbilityList: Ability[] = [];
+  characterAbilityList: Ability[] = [];
   public noGod = GodEnum.None;
 
   constructor(public menuService: MenuService, public lookupService: LookupService, private globalService: GlobalService,
     private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
-    var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);
+    var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);    
     if (selectedCharacter !== undefined)
     {
       this.character = selectedCharacter;    
+      this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
+        return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
+      }).filter(item => item.isAvailable);
       this.getCharacterGodAbilities();
     }
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.menuService.selectedCharacter !== undefined && this.menuService.selectedCharacter !== this.character.type) {
-        var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);
+        var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);        
         if (selectedCharacter !== undefined)
         {
           this.character = selectedCharacter;
+          this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
+            return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
+          }).filter(item => item.isAvailable);
           this.getCharacterGodAbilities();
         }
       }
@@ -49,7 +56,9 @@ export class CharacterViewComponent implements OnInit {
     {
       var god = this.globalService.globalVar.gods.find(item => item.type === this.character.assignedGod1);
       if (god !== undefined)
-        this.god1AbilityList = god.abilityList;
+        this.god1AbilityList = god.abilityList.sort(function (a, b) {
+          return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
+        }).filter(item => item.isAvailable);
     }
 
     this.god2AbilityList = [];
@@ -57,7 +66,9 @@ export class CharacterViewComponent implements OnInit {
     {
       var god = this.globalService.globalVar.gods.find(item => item.type === this.character.assignedGod2);
       if (god !== undefined)
-        this.god2AbilityList = god.abilityList;
+        this.god2AbilityList = god.abilityList.sort(function (a, b) {
+          return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
+        }).filter(item => item.isAvailable);
     }
   }
 
@@ -97,7 +108,7 @@ export class CharacterViewComponent implements OnInit {
     if (whichGod === 2)
       godName = this.character.assignedGod2;
 
-    return this.lookupService.getGodAbilityDescription(abilityName, character, ability) + " This ability is only available while " + this.lookupService.getGodNameByType(godName) + " is equipped.";
+    return this.lookupService.getGodAbilityDescription(abilityName, character, ability);
   }
 
   getAbilityColor(isGod: boolean, whichGod?: number) {
@@ -107,11 +118,19 @@ export class CharacterViewComponent implements OnInit {
         god = this.character.assignedGod2;
 
       //TODO: make this one call to lookup so you only have to add new gods once
-      return this.lookupService.getGodColorClass(god)
+      return this.lookupService.getGodColorClass(god);
     }
     else {
       return this.lookupService.getCharacterColorClass(this.character.type)
     }
+  }
+
+  areGodsAvailable() {
+    return this.globalService.globalVar.gods.some(item => item.isAvailable);
+  }
+
+  hasGodEquipped() {
+    return this.character.assignedGod1 !== GodEnum.None || this.character.assignedGod2 !== GodEnum.None;
   }
 
   ngOnDestroy() {

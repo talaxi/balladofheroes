@@ -1,0 +1,26 @@
+<!--<div class="tabs">
+    <div class="clickableText tabItem" [ngClass]="{'active': isDisplayingResetView }">
+        <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': isDisplayingResetView }"
+            (click)="toggleView()">Reset</button>
+    </div>
+    <div class="clickableText tabItem" [ngClass]="{'active': !isDisplayingResetView }">
+        <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': !isDisplayingResetView }"
+            (click)="toggleView()">Reward</button>
+    </div>
+</div>-->
+<table>
+    <tr>
+        <td class="clickableText tabItem" [ngClass]="{'active': isDisplayingResetView }" (click)="toggleView()">
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': isDisplayingResetView }">Reset</button>
+        </td>
+        <td class="clickableText tabItem" [ngClass]="{'active': !isDisplayingResetView }" (click)="toggleView()">
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': !isDisplayingResetView }">Reward</button>
+        </td>
+    </tr>
+</table>
+
+<hr class="noMargin" />
+<div class="info">
+    <app-chthonic-reset-menu-view *ngIf="isDisplayingResetView"></app-chthonic-reset-menu-view>
+    <app-chthonic-reward-menu-view *ngIf="!isDisplayingResetView"></app-chthonic-reward-menu-view>
+</div>

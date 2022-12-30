@@ -1,8 +1,10 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Character } from 'src/app/models/character/character.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { ResourceGeneratorService } from 'src/app/services/resources/resource-generator.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -16,15 +18,23 @@ export class ShoppingItemViewComponent implements OnInit {
   @Input() item: ShopItem;
   itemDescription = "";
   purchaseResourcesRequired: string = "";
+  partyMembers: Character[];
+  subscription: any;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService, 
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService, private globalService: GlobalService) { }
 
-  ngOnInit(): void {
+  ngOnInit(): void {    
+    this.partyMembers = this.globalService.getActivePartyCharacters(true);
     this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
     this.item.purchasePrice.forEach(resource => {
       var displayName = this.lookupService.getItemName(resource.item);
-      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(resource.type, resource.item) + "'>" +(resource.amount).toLocaleString() + " " + displayName + "</span><br/>";      
+      var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
+      var insufficientText = "";
+      if (userResourceAmount < resource.amount)
+        insufficientText = " (" + userResourceAmount + " owned)";  
+
+      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" +(resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";      
     });
 
     if (this.purchaseResourcesRequired.length > 0) {
@@ -32,15 +42,19 @@ export class ShoppingItemViewComponent implements OnInit {
     }    
   }
 
-  getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum) {
-    var classText = "";
+  getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum, amountNeeded: number, amountOwned: number) {
+    var classText = "resourceKeyword";
 
-    if (type === ItemTypeEnum.Resource)
+    /*if (type === ItemTypeEnum.Resource)
       classText = "resourceKeyword";
     if (type === ItemTypeEnum.CraftingMaterial)
       classText = "craftingMaterialKeyword";
     if (type === ItemTypeEnum.Equipment)  
       classText = this.getEquipmentClass(item);    
+    */
+    
+    if (amountOwned < amountNeeded)
+      classText = "insufficientResourcesKeyword";  
 
     return classText;
   }
@@ -72,7 +86,7 @@ export class ShoppingItemViewComponent implements OnInit {
     });
   }
 
-  isEquipment() {
+  isEquipment() {    
     return this.lookupService.getEquipmentPieceByItemType(this.item.shopItem) !== undefined;
   }
 
@@ -110,5 +124,54 @@ export class ShoppingItemViewComponent implements OnInit {
       return "★★★★★★★";
 
     return "";
+  }
+
+  getEquippedComparisonItem(whichCharacter: number) {
+    var comparisonItem = undefined;
+    var character = this.partyMembers[0];
+    if (whichCharacter === 2)
+    {
+      character = this.partyMembers[1];
+    }
+
+    if (character === undefined)
+      return comparisonItem;
+
+    var equipment = this.lookupService.getEquipmentPieceByItemType(this.item.shopItem);
+    if (equipment === undefined)
+      return comparisonItem;
+
+    comparisonItem = character.equipmentSet.getPieceBasedOnType(equipment.equipmentType);
+
+    return comparisonItem;
+  }
+
+  getCharacterColorClass(whichCharacter: number) {
+    var character = this.partyMembers[0];
+    if (whichCharacter === 2)
+    {
+      character = this.partyMembers[1];
+    }
+
+    return this.lookupService.getCharacterColorClass(character.type);
+  }
+
+  getPartyMemberName(whichCharacter: number) {
+    var name = "";
+
+    var character = this.partyMembers[0];
+    if (whichCharacter === 2)
+    {
+      character = this.partyMembers[1];
+    }
+
+    name = character.name;
+
+    return name;
+  }
+
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+      this.subscription.unsubscribe();
   }
 }

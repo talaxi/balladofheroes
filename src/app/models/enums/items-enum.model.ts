@@ -35,5 +35,7 @@ export enum ItemsEnum {
   SmallFeather,
   LamiaHeart,
   PoisonFang,
-  PetrifiedBark
+  PetrifiedBark,
+  ChthonicFavor,
+  ChthonicPower
 }

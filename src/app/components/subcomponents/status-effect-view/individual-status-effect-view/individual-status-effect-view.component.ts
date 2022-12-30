@@ -24,7 +24,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.DefenseDown || effect.type === StatusEffectEnum.DefenseUp ||
       effect.type === StatusEffectEnum.LuckDown || effect.type === StatusEffectEnum.LuckUp ||
       effect.type === StatusEffectEnum.MaxHpDown || effect.type === StatusEffectEnum.MaxHpUp ||
-      effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp)
+      effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp ||
+      effect.type === StatusEffectEnum.DamageDealtDown || effect.type === StatusEffectEnum.DamageDealtUp ||
+      effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp)
       return true;
 
     return false;
@@ -48,6 +50,10 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "LCK";
     if (effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp)
       return "RES";
+    if (effect.type === StatusEffectEnum.DamageDealtUp || effect.type === StatusEffectEnum.DamageDealtDown)
+      return "DMG";
+    if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown)
+      return "TKN";
     if (effect.type === StatusEffectEnum.Stun)
       return "STUN";
     if (effect.type === StatusEffectEnum.DamageOverTime)
@@ -58,12 +64,42 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     return effect.type;
   }
 
+  getStatUpImage(effect: StatusEffect) {
+    var img = "assets/svg/statUpSE.svg";
+
+    if (effect.type === StatusEffectEnum.DamageTakenDown)
+      img = "assets/svg/invertStatUpSE.svg";
+
+    return img;
+  }
+  
+  getStatDownImage(effect: StatusEffect) {
+    var img = "assets/svg/statDownSE.svg";
+
+    if (effect.type === StatusEffectEnum.DamageTakenUp)
+      img = "assets/svg/invertStatDownSE.svg";
+
+    return img;
+  }
+
   getStatusEffectImage(effect: StatusEffect) {
     var src = "assets/svg/";
 
     if (effect.type === StatusEffectEnum.Mark)
     {
       src += "mark.svg";
+    }
+    if (effect.type === StatusEffectEnum.Staccato)
+    {
+      src += "staccato.svg";
+    }
+    if (effect.type === StatusEffectEnum.Fortissimo)
+    {
+      src += "fortissimo.svg";
+    }
+    if (effect.type === StatusEffectEnum.Coda)
+    {
+      src += "coda.svg";
     }
 
     return src;

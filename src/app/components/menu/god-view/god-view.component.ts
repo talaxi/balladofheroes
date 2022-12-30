@@ -19,6 +19,7 @@ export class GodViewComponent implements OnInit {
   characters: Character[];
   characterTemplate: CharacterEnum = CharacterEnum.Adventurer;
   subscription: any;
+  abilityList: Ability[] = [];
 
   constructor(private lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
     private menuService: MenuService) { }
@@ -28,6 +29,9 @@ export class GodViewComponent implements OnInit {
     if (selectedGod !== undefined)
     {
       this.god = selectedGod;    
+      this.abilityList = this.god.abilityList.sort(function (a, b) {
+        return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
+      }).filter(item => item.isAvailable);
 
       //for each character, check if this is the assigned god. if so, default template to you
       this.globalService.getActivePartyCharacters(true).forEach(character => {
@@ -44,6 +48,9 @@ export class GodViewComponent implements OnInit {
         if (selectedGod !== undefined)
         {
           this.god = selectedGod;
+          this.abilityList = this.god.abilityList.sort(function (a, b) {
+            return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
+          }).filter(item => item.isAvailable);
           
           this.globalService.getActivePartyCharacters(true).forEach(character => {
             if (character.assignedGod1 === this.god.type || character.assignedGod2 === this.god.type)

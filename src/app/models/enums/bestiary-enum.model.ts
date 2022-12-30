@@ -22,5 +22,8 @@ export enum BestiaryEnum {
   Gorgon,
   Stheno,
   Euryale,
-  Medusa
+  Medusa,
+  Lion,
+  EnceladusOne,
+
 }

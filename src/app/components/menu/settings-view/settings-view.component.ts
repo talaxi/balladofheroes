@@ -4,6 +4,7 @@ import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { StoryService } from 'src/app/services/story/story.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 declare var LZString: any;
 
 @Component({
@@ -16,7 +17,8 @@ export class SettingsViewComponent implements OnInit {
   file: any;
   enteredRedemptionCode: string;
 
-  constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService) { }
+  constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
+    private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     
@@ -41,6 +43,7 @@ export class SettingsViewComponent implements OnInit {
         
         this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
         this.storyService.showStory = false;
+        this.utilityService.isBattlePaused = false;
       }
     }
   }
@@ -76,6 +79,7 @@ export class SettingsViewComponent implements OnInit {
 
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
+          this.utilityService.isBattlePaused = false;
           //this.versionControlService.updatePlayerVersion(); //TODO
         }
       }

@@ -2,5 +2,6 @@ export enum ShopTypeEnum {
   None,
   General,
   Crafter,
-  Alchemist
+  Alchemist,
+  ChthonicFavor
 }

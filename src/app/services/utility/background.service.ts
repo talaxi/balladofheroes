@@ -17,7 +17,7 @@ export class BackgroundService {
     var party = this.globalService.getActivePartyCharacters(true);
 
     party.forEach(partyMember => {
-      //check for defeated
+      //check for defeated      
       var isDefeated = this.battleService.isCharacterDefeated(partyMember);
       if (!isDefeated && !this.utilityService.isBattlePaused) {
         this.battleService.handleAutoAttackTimer(partyMember, deltaTime);

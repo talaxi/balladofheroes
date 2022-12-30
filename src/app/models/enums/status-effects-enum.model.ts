@@ -34,5 +34,5 @@ export enum StatusEffectEnum {
     Dodge,
     Staccato,
     Fortissimo,
-    Allegro
+    Coda
   }

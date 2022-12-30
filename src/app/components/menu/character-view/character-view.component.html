@@ -5,18 +5,21 @@
             <br />
             <span>Level {{character.level}}</span>
             <br />
-            <span>{{character.exp  | number : '1.0-0'}} / {{character.expToNextLevel  | number : '1.0-0'}} XP to Level {{character.level + 1}}</span>
+            <span>{{character.exp | number : '1.0-0'}} / {{character.expToNextLevel | number : '1.0-0'}} XP to Level
+                {{character.level + 1}}</span>
         </div>
 
-        <div class="godInfo">
+        <div *ngIf="areGodsAvailable()" class="godInfo">
             <div class="leftAlignText">
                 Equipped Gods:
                 <br />
-                <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
+                <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod"
+                    [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
                     <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
                     <strong><span>Lv {{getCharacterGodLevel(character, 1)}}</span></strong>
                 </div>
-                <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod" [ngClass]="lookupService.getGodColorClass(character.assignedGod2)">
+                <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"
+                    [ngClass]="lookupService.getGodColorClass(character.assignedGod2)">
                     <span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
                     <strong><span>Lv {{getCharacterGodLevel(character, 2)}}</span></strong>
                 </div>
@@ -34,17 +37,23 @@
             <div class="leftAlignText">
                 <span class="s4Heading">Primary Stats</span>
                 <br />
-                <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong> {{character.battleStats.maxHp | number : '1.0-0'}}</span>
+                <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong>
+                    {{character.battleStats.maxHp | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong> {{character.battleStats.attack | number : '1.0-0'}}</span>
+                <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong>
+                    {{character.battleStats.attack | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong> {{character.battleStats.agility | number : '1.0-0'}}</span>
+                <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong>
+                    {{character.battleStats.agility | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong> {{character.battleStats.luck | number : '1.0-0'}}</span>
+                <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong> {{character.battleStats.luck
+                    | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong> {{character.battleStats.defense | number : '1.0-0'}}</span>
+                <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong>
+                    {{character.battleStats.defense | number : '1.0-0'}}</span>
                 <br />
-                <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong> {{character.battleStats.resistance | number : '1.0-0'}}</span>
+                <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong>
+                    {{character.battleStats.resistance | number : '1.0-0'}}</span>
             </div>
         </div>
         <div class="secondaryStats">
@@ -55,19 +64,21 @@
     </div>
     <div class="characterAbilities">
         <span class="s4Heading">Character Abilities</span>
-        <div *ngFor="let ability of character.abilityList">
+        <div *ngFor="let ability of characterAbilityList">
             <strong [ngClass]="getAbilityColor(false)">{{ability.name}}</strong> - <span
                 [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span>
         </div>
-        <br/>
-        <span class="s4Heading">Equipped God Abilities</span>
-        <div *ngFor="let ability of god1AbilityList">
-            <strong [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong> - <span
-                [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span>
-        </div>
-        <div *ngFor="let ability of god2AbilityList">
-            <strong [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong> - <span
-                [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span>
+        <br />
+        <div *ngIf="hasGodEquipped()">
+            <span class="s4Heading">Equipped God Abilities</span>
+            <div *ngFor="let ability of god1AbilityList">
+                <strong [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong> - <span
+                    [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span>
+            </div>
+            <div *ngFor="let ability of god2AbilityList">
+                <strong [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong> - <span
+                    [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span>
+            </div>
         </div>
     </div>
 </div>
@@ -75,36 +86,36 @@
 
 <ng-template #maxHpPopover>
     <div>
-       The amount of damage you can take before dieing.
+        The amount of damage you can take before dieing.
     </div>
 </ng-template>
 
 <ng-template #attackPopover>
     <div>
-       Increase auto attack and ability damage.
+        Increase auto attack and ability damage.
     </div>
 </ng-template>
 
 <ng-template #defensePopover>
     <div>
-       Reduce damage taken from enemy attacks.
+        Reduce damage taken from enemy attacks.
     </div>
 </ng-template>
 
 <ng-template #agilityPopover>
     <div>
-       Increase your auto attack speed.
+        Increase your auto attack speed.
     </div>
 </ng-template>
 
 <ng-template #luckPopover>
     <div>
-       Increase your chance to deal a critical hit.
+        Increase your chance to deal a critical hit.
     </div>
 </ng-template>
 
 <ng-template #resistancePopover>
     <div>
-       Reduce your chance to be critically hit by enemies.
+        Reduce your chance to be critically hit by enemies.
     </div>
 </ng-template>

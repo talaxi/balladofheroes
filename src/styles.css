@@ -159,7 +159,7 @@
   --z2-weight: 400;
   --z2-spacing: 0.1px; 
 
-  --z3-size: 1rem;
+  --z3-size: .935rem;
   --z3-weight: 400;
   --z3-spacing: 0.1px; 
 
@@ -189,8 +189,9 @@
   --uniqueEquipmentColor: #FD5949;
 
   --resourceKeywordColor: #EAAD91;
-  --craftingMaterialKeywordColor: #ABB5DC;
-  --equipmentKeywordColor: #83C2A6;
+  --insufficientResourcesKeywordColor: #7a818c;
+  --chthonicFavorColor: #ABB5DC;
+  --chthonicPowerColor: #83C2A6;
 }
 
 body {
@@ -299,9 +300,14 @@ h6 {
   color: var(--craftingMaterialKeywordColor);
 }
 
-.equipmentKeyword {
+.chthonicFavorKeyword {
   font-weight: 550;
-  color: var(--equipmentKeywordColor);
+  color: var(--chthonicFavorColor);
+}
+
+.chthonicPowerKeyword {
+  font-weight: 550;
+  color: var(--chthonicPowerColor);
 }
 
 .crossed {
@@ -623,4 +629,12 @@ html, body { height: 100%; }
 
 .removeAnimation div .mat-progress-bar-fill {
   transition: none !important;  
+}
+
+button {
+  cursor: pointer;
+}
+
+#dialogNoPadding {
+  padding: 0px;
 }

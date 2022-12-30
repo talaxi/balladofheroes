@@ -30,12 +30,18 @@ export class BattleComponent implements OnInit {
   showDevStats: boolean = false;
   scrollButtonDelay = 0;
   scrollButtonDelayTotalCount = 5;
+  showSkipButtonMessage = false;
+  showStoryAnimation = false;
+  storyAnimationTimerCap = .5;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, private storyService: StoryService,
     private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {
+    if (this.globalService.globalVar.currentStoryId === 0 && this.utilityService.isBattlePaused)
+      this.showSkipButtonMessage = true;
+      
     this.activeSubzone = this.balladService.getActiveSubZone();
     this.showDevStats = this.deploymentService.showStats;
 
@@ -43,6 +49,11 @@ export class BattleComponent implements OnInit {
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
+      if (this.globalService.globalVar.currentStoryId === 0 && this.utilityService.isBattlePaused)
+        this.showSkipButtonMessage = true;
+      else
+        this.showSkipButtonMessage = false;
+
       this.activeSubzone = this.balladService.getActiveSubZone();
 
       if (this.globalService.globalVar.activeBattle !== undefined)
@@ -60,6 +71,11 @@ export class BattleComponent implements OnInit {
           this.showNewEnemyGroupAnimation = false;
         }
       }
+
+      if (this.isAtStoryScene() && this.globalService.globalVar.timers.scenePageTimer < this.storyAnimationTimerCap)      
+        this.showStoryAnimation = true;      
+      else 
+        this.showStoryAnimation = false;
     });
   }
 

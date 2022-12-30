@@ -202,6 +202,11 @@ export class PartyComponent implements OnInit {
     return isTargeted;
   }
 
+  useBattleItemOnCharacter(character: Character) {
+    if (this.targetCharacterWithItem(character))
+      this.battleService.useBattleItemOnCharacter(character);
+  }
+
   isCharacterAbilityAvailable(character: Character, abilityNumber: number) {
     var ability: Ability = new Ability();
 

@@ -6,6 +6,7 @@ import { CharacterEnum } from "../enums/character-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
 import { FreeTreasureChests } from "../resources/free-treasure-chests.model";
 import { ResourceValue } from "../resources/resource-value.model";
+import { ChthonicPowers } from "../utility/chthonic-powers.model";
 import { Settings } from "../utility/settings.model";
 import { Ballad } from "../zone/ballad.model";
 import { PlayerNavigation } from "../zone/player-navigation.model";
@@ -46,6 +47,8 @@ export class GlobalVariables {
     freeTreasureChests: FreeTreasureChests;
     extraSpeedTimeRemaining: number;
     isCatchingUp: boolean = false;
+    @Type(() => ChthonicPowers)
+    chthonicPowers: ChthonicPowers;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -64,5 +67,6 @@ export class GlobalVariables {
         this.currentStoryId = 0;
         this.godXpModifier = 1;
         this.extraSpeedTimeRemaining = 0;
+        this.chthonicPowers = new ChthonicPowers();
     }
 }

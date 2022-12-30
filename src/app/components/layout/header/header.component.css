@@ -1,4 +1,38 @@
 .flex {
     display:flex;
-    justify-content: space-around;
+    justify-content: space-between;
+    height: 100%;
+}
+
+.extraTimeItem {    
+    width: 25%;
+    color: var(--foreground-default);
+}
+
+.fastForwardArrows {
+    font-size: 1.2rem;
+}
+
+.menuItem {
+    font-size: 1.2rem;
+    width: 10%;
+}
+
+.pauseItem {
+    font-size: .65rem;
+    vertical-align: middle;
+}
+
+.unpauseItem {
+    font-size: 1.2rem;
+    vertical-align: middle;
+}
+
+.menuItem:hover, .pauseItem:hover, .unpauseItem:hover {
+    /*background-color: var(--button-hover);*/
+    color: var(--foreground-tertiary) !important;
+}
+
+.centerAlign {
+    align-self: center;
 }

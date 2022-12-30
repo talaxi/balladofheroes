@@ -45,3 +45,23 @@
 .flex {
     display: flex;
 }
+
+.boss {
+    display: grid;
+    grid-template-columns: 1fr auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "hpBar hpAmount";
+}
+
+.boss .characterBar {
+    width: 95% !important;
+}
+
+.hpBar {
+    grid-area: hpBar;
+}
+
+.hpAmount {
+    grid-area: hpAmount;
+}

@@ -107,17 +107,36 @@
         <hr />
     </div>
     <div class="quickLink">
+        <div class="centeredText">
+            Quick View
+        </div>
         <div class="quickLinkGrid">
-            <div *ngIf="townsAvailable" class="quickJump">
+            <div *ngIf="townsAvailable" class="quickJump centeredText">
                 <span>Jump to..</span>
                 <br />
                 <button class="buttonStyled" *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
             </div>
-            <div class="peekResources">
-                <span (click)="goToResourceView()">Quick Resource View</span>
-                <br/>
-                <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span>
+            <div class="peekResources centeredText">
+                <div class="leftAlignTtext">
+                <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span> <br/>
+                <span class="resource">Leathers: {{lookupService.getResourceAmount(itemsEnum.Leather)}}</span> <br/>
+                <span class="resource">Lamia Hearts: {{lookupService.getResourceAmount(itemsEnum.LamiaHeart)}}</span> <br/>
+                <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" class="resource chthonicFavorKeyword" customToolTip [contentTemplate]="chthonicFavorPopover">Chthonic Favor: {{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number : '1.0-2'}}</span> <br/>
+                <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" class="resource chthonicPowerKeyword" customToolTip [contentTemplate]="chthonicPowerPopover">Chthonic Power: {{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number : '1.0-2'}}</span>
+            </div>
             </div>
         </div>
     </div>
 </div>
+
+<ng-template #chthonicFavorPopover>
+    <div>
+        {{lookupService.getItemDescription(itemsEnum.ChthonicFavor)}}
+    </div>
+</ng-template>
+
+<ng-template #chthonicPowerPopover>
+    <div>
+        {{lookupService.getItemDescription(itemsEnum.ChthonicPower)}}
+    </div>
+</ng-template>

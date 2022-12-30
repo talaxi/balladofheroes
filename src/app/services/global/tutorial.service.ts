@@ -25,6 +25,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.BattleItems) {
       text = "You received your first battle item. Click the plus sign on the bottom left to add an item to your item belt and click the item again to use it. Some items require you to click an ally or enemy to use. Hover over an item to see its effect.";
     }
+    else if (type === TutorialTypeEnum.NewSubzone) {
+      text = "You've won enough battles here to move to the next area. On the right side of the screen, select 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible.";
+    }
 
     return text;
   }

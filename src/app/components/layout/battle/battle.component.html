@@ -17,10 +17,19 @@
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 3" [character]="currentEnemies.enemyList[3]"
                     [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy4"></app-enemy-view>
             </div>
+            <div *ngIf="currentEnemies !== undefined && currentEnemies.isBossFight" class="bossGrid">
+                <app-enemy-view [character]="currentEnemies.enemyList[0]" [isBoss]="true"
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="boss"></app-enemy-view>
+                <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [character]="currentEnemies.enemyList[1]"
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy3"></app-enemy-view>
+                <app-enemy-view *ngIf="currentEnemies.enemyList.length > 2" [character]="currentEnemies.enemyList[2]"
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy4"></app-enemy-view>
+            </div>
         </div>
         <div *ngIf="isAtStoryScene()" class="storyGrid">
-            <div class="text" [innerHtml]="this.displayStorySegment()"></div>
+            <div class="text" [ngClass]="{'storyTextAnimation': showStoryAnimation }" [innerHtml]="this.displayStorySegment()"></div>
             <div class="skipButton">
+                <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next page</strong></i></span>
                 <button class="floatRight arrow" (click)="skipStory()">&#8594;</button>
             </div>
             <div class="loadingBar">
@@ -29,7 +38,7 @@
                 </mat-progress-bar>
             </div>
         </div>
-        <div *ngIf="isAtChestScene()" class="chestGrid">
+        <div *ngIf="isAtChestScene() && !isAtTown()" class="chestGrid">
             <div class="chestImage">
                 <img class="chestIcon" src="assets/svg/treasureChest.svg">
             </div>

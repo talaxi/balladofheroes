@@ -17,23 +17,23 @@ export class ShopViewComponent implements OnInit {
   shopOptions: ShopOption[];
   subscription: any;
   activeSubzoneType: SubZoneEnum;
+  shopTypeEnum = ShopTypeEnum;
 
   shopItems: ShopItem[];
   shopItemRows: ShopItem[][];
   shopItemCells: ShopItem[];
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
-  private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type)
-      {
+      if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
         this.activeSubzoneType = this.balladService.getActiveSubZone().type;
-      this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType);
+        this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType);
       }
     });
   }
@@ -41,31 +41,37 @@ export class ShopViewComponent implements OnInit {
   getOptionText(type: ShopTypeEnum) {
     var text = "";
 
-    if (type === ShopTypeEnum.General)
-    {
+    if (type === ShopTypeEnum.General) {
       text = "General";
     }
-    if (type === ShopTypeEnum.Crafter) 
-    {
+    if (type === ShopTypeEnum.Crafter) {
       text = "Crafter";
+    }
+    if (type === ShopTypeEnum.Alchemist) {
+      text = "Alchemist";
+    }
+    if (type === ShopTypeEnum.ChthonicFavor) {
+      text = "Chthonic Favor";
     }
 
     return text;
   }
 
-  openShop(option: ShopOption, content: any) {    
-    this.dialog.open(content, { width: '75%', maxHeight: '75%' });
+  openShop(option: ShopOption, content: any) {
+    this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '35%', id: 'dialogNoPadding' });
 
-    this.shopItems = option.availableItems;
-    this.setupDisplayShopItems();
+    if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General) {
+      this.shopItems = option.availableItems;
+      this.setupDisplayShopItems();
+    }
   }
-  
+
   setupDisplayShopItems(): void {
     this.shopItemCells = [];
     this.shopItemRows = [];
 
     var maxColumns = 4;
-    
+
     for (var i = 1; i <= this.shopItems.length; i++) {
       this.shopItemCells.push(this.shopItems[i - 1]);
       if ((i % maxColumns) == 0) {

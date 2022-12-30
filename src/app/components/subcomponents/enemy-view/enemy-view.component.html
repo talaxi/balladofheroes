@@ -1,15 +1,14 @@
-<div *ngIf="character !== undefined" class="characterInfo" (click)='battleService.useBattleItemOnCharacter(character)' [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" >
+<div *ngIf="character !== undefined" class="characterInfo" (click)='useBattleItemOnCharacter(character)' [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" >
     <span class="s2Heading">{{character.name}} </span>    
     <br />
     <br />
-    <div class="flex">
+    <div class="flex" [ngClass]="{'boss': isBoss }">
         <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
-            class="green-progress characterBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
-        </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp | number : '1.0-0'}} /
+            class="green-progress characterBar hpBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
+        </mat-progress-bar> <span class="hpMpText hpAmount">{{character.battleStats.currentHp | number : '1.0-0'}} /
             {{character.battleStats.maxHp | number : '1.0-0'}}</span>
     </div>
     <div>
         <app-status-effect-view [character]="character"></app-status-effect-view>
     </div>
-    
 </div>

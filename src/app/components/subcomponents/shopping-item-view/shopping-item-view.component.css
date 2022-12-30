@@ -3,7 +3,7 @@
     height: 100%;    
     grid-template-columns: auto;
     grid-gap: .5rem;
-    grid-template-rows: 1fr 1fr .5fr;
+    grid-template-rows: 1fr 1fr auto;
     justify-content: stretch;
     grid-template-areas:
         "itemDescription"
@@ -35,3 +35,16 @@
     width: 25%;
     align-self: center;
 }*/
+
+.compareEquipment {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .comparedEquipmentItem {
+    border-left: 1px solid gray;
+  }
+  
+  .item {
+    padding: 2rem;
+  }

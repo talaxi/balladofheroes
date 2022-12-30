@@ -4,10 +4,11 @@
   <div class="equipmentView">
     <div class="availableEquipment">
       <div class="scrollable">
-        <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)"
-          (click)="equipItem(equipment)">
-          <span customToolTip [isDelayed]="false" [contentTemplate]="template"
+        <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)">
+          <button class="buttonAsText clickableText" (click)="equipItem(equipment)">
+          <span class="equipmentItem" customToolTip [isDelayed]="false" [contentTemplate]="template"
             [innerHtml]="getEquipmentName(equipment)"></span>
+          </button>
           <hr class="leftAlignedMiniHr" />
         </div>
       </div>

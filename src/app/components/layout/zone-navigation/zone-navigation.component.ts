@@ -56,6 +56,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.townsAvailable = true;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      this.autoProgress = this.globalService.globalVar.settings.get("autoProgress");
       if (!this.townsAvailable && this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
         this.townsAvailable = true;
 

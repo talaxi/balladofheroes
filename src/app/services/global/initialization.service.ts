@@ -2,12 +2,16 @@ import { Injectable } from '@angular/core';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from '../achievements/achievement.service';
+import { LookupService } from '../lookup.service';
 import { GlobalService } from './global.service';
 
 @Injectable({
@@ -15,14 +19,14 @@ import { GlobalService } from './global.service';
 })
 export class InitializationService {
 
-  constructor(private globalService: GlobalService, private achievementService: AchievementService) { }
+  constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService) { }
 
   initializeVariables() {
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
     this.initializeSettings();    
   }
 
-  initializeBallads() {
+  initializeBallads() {    
     var championBallad = new Ballad(BalladEnum.Champion);
     championBallad.isSelected = true;
     championBallad.isAvailable = true;
@@ -79,7 +83,24 @@ export class InitializationService {
     gorgonBallad.zones.push(libya);
     this.globalService.globalVar.ballads.push(gorgonBallad);
 
-    this.globalService.globalVar.ballads.push(new Ballad(BalladEnum.Underworld));
+    var laborsBallad = new Ballad(BalladEnum.Labors);
+    var nemea = new Zone();
+    nemea.zoneName = "Nemea";
+    nemea.type = ZoneEnum.Nemea;
+    nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCountryRoadsOne));
+    nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCountryRoadsTwo));
+    nemea.subzones.push(new SubZone(SubZoneEnum.NemeaRollingHills));
+    nemea.subzones.push(new SubZone(SubZoneEnum.NemeaLairOfTheLion));
+    laborsBallad.zones.push(nemea);
+    this.globalService.globalVar.ballads.push(laborsBallad);
+
+    var underworldBallad = new Ballad(BalladEnum.Underworld);
+    var asphodel = new Zone();
+    asphodel.type = ZoneEnum.Asphodel;
+    asphodel.zoneName = "Asphodel";
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelHallOfTheDead));
+    underworldBallad.zones.push(asphodel);
+    this.globalService.globalVar.ballads.push(underworldBallad);
   }
 
   initializeSettings() {
@@ -87,6 +108,7 @@ export class InitializationService {
   }
 
   devMode() {
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
     this.globalService.globalVar.currentStoryId = 10000;
     
     this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
@@ -96,15 +118,15 @@ export class InitializationService {
 
     var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
     if (character1 !== undefined) {
-      //character1.assignedGod1 = GodEnum.Athena;
-      character1.assignedGod1 = GodEnum.Hermes;
+      character1.assignedGod1 = GodEnum.Athena;
+      character1.assignedGod2 = GodEnum.Hermes;
     }
 
     var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
 
     if (character2 !== undefined) {
-      //character2.assignedGod1 = GodEnum.Artemis;
-      character2.assignedGod1 = GodEnum.Apollo;
+      character2.assignedGod1 = GodEnum.Artemis;
+      character2.assignedGod2 = GodEnum.Apollo;
     }
 
     character1?.abilityList.forEach(ability => {
@@ -140,15 +162,15 @@ export class InitializationService {
     });
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.type !== BalladEnum.Underworld)
+      //if (ballad.type !== BalladEnum.Underworld)
         ballad.isAvailable = true;
-        ballad.showNewNotification=true;
+        //ballad.showNewNotification=true;
       ballad.zones.forEach(zone => {
         zone.isAvailable = true;
-        zone.showNewNotification=true;
+        //zone.showNewNotification=true;
         zone.subzones.forEach(subzone => {
           subzone.isAvailable = true;
-          subzone.showNewNotification =true;
+          //subzone.showNewNotification =true;
           if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
             this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
               this.globalService.globalVar.achievements.push(achievement);

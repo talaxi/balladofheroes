@@ -1,0 +1,13 @@
+<div *ngFor="let god of availableGods">
+    <div class="god">
+        <span class="godName" [ngClass]="lookupService.getGodColorClass(god.type)">{{god.name}}</span>
+        <span class="godLevel" [ngClass]="lookupService.getGodColorClass(god.type)">Lv {{god.level}}</span>
+        <span class="godResetText">results in..</span>
+        <div class="godResetResult">
+            <span class="chthonicFavorKeyword">{{getChthonicFavor(god) | number : '1.0-2'}} Chthonic Favor</span><br />
+            <span class="chthonicPowerKeyword">{{getChthonicPower(god) | number : '1.0-2'}} Chthonic Power</span>
+        </div>
+        <button [disabled]="god.level <= 1" class="godResetButton" (click)="resetGod(god)">Reset {{god.name}}</button>
+    </div>
+    <hr />
+</div>

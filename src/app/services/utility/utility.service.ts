@@ -11,6 +11,7 @@ export class UtilityService {
 
   //glossary
   public activeTimeLimit = 1 * 20 * 60;
+  public extraSpeedTimeLimit = 8 * 60 * 60;
 
   public quickAutoAttackSpeed = 5;
   public averageAutoAttackSpeed = 7.5;
@@ -20,20 +21,20 @@ export class UtilityService {
   public enemyAverageAutoAttackSpeed = 10;
   public enemyLongAutoAttackSpeed = 15;
   public enemyVeryLongAutoAttackSpeed = 20;
-  
+
   public maxItemBeltSize = 4;
   public defaultCharacterAbilityLevel = 2;
   public characterPassiveLevel = 4;
   public characterOverdriveLevel = 6;
   public characterAbility2Level = 8;
   public defaultGodAbilityLevel = 1;
-  public godAbility2Level = 5;
-  public godPassiveLevel = 2;
-  public godAbility3Level = 10;
+  public godPassiveLevel = 5;
+  public godAbility2Level = 25;
+  public godAbility3Level = 50;
 
   public godStatGainLevelIncrement = .05;
-  public godStatGainBaseAmount = 5;
-  
+  public godStatGainBaseAmount = 3;
+
 
   constructor(public sanitizer: DomSanitizer) { }
 
@@ -185,5 +186,20 @@ export class UtilityService {
 
   roundTo(value: number, degree: number) {
     return Math.round((value + Number.EPSILON) * (10 ** degree)) / (10 ** degree);
+  }
+
+  //level 0 = 1
+  //level 1 = 2
+  //level 2 = 3
+  //level 3 = 5
+  getFibonacciValue(level: number) {
+    var i;
+    var fib = [0, 1];
+
+    for (i = 0; i <= level; i++) {
+      fib[i + 2] = fib[i] + fib[i + 1];    
+    }
+
+    return fib[level + 2];
   }
 }

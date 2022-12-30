@@ -4,7 +4,7 @@
         </div>
         <div *ngIf="character.type !== noCharacter" class="partyMember"
             [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}"
-            (click)='battleService.useBattleItemOnCharacter(character)'>
+            (click)='useBattleItemOnCharacter(character)'>
             <div class="characterGrid">
                 <div class="characterInfo">
                     <div>

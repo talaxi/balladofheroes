@@ -19,5 +19,10 @@ export enum SubZoneEnum {
   LibyaBeach,
   LibyaRockyOutcrops,
   LibyaDeeperPath,
-  LibyaIsleCenter
+  LibyaIsleCenter,
+  NemeaCountryRoadsOne,
+  NemeaCountryRoadsTwo,
+  NemeaRollingHills,
+  NemeaLairOfTheLion,
+  AsphodelHallOfTheDead
 }

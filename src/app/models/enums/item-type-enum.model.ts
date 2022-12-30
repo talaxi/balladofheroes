@@ -4,5 +4,6 @@ export enum ItemTypeEnum {
   BattleItem,
   Equipment,
   CraftingMaterial,
-  Resource
+  Resource,
+  Progression
 }

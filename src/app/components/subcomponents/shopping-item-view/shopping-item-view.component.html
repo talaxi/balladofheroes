@@ -1,13 +1,22 @@
 <div class="shoppingItem" [class]="getEquipmentClass()">
     <div class="itemDescription">
-        <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
-        <br />
-        <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
-        <div *ngIf="isEquipment()">
-            {{getStars()}}
+        <div *ngIf="isEquipment()" customToolTip [isDelayed]="false" [contentTemplate]="equipmentComparisonTemplate">
+            <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
+            <br />
+            <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
+            <div>
+                {{getStars()}}
+            </div>
+            <hr class="miniHr" />
+            <span [innerHtml]="itemDescription"></span>
         </div>
-        <hr class="miniHr" />
-        <span [innerHtml]="itemDescription"></span>
+        <div *ngIf="!isEquipment()"> <!--Better way to do this other than copying and pasting?-->
+            <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
+            <br />
+            <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>            
+            <hr class="miniHr" />
+            <span [innerHtml]="itemDescription"></span>
+        </div>
     </div>
     <div class="purchaseDescription">
         <div class="resourceKeyword" [innerHtml]="purchaseResourcesRequired">
@@ -17,3 +26,16 @@
         <button (click)="buyItem()" [disabled]="!canBuyItem()">Buy</button>
     </div>
 </div>
+
+<ng-template #equipmentComparisonTemplate>
+    <div class="compareEquipment" *ngIf="partyMembers !== undefined && partyMembers.length > 0">
+        <span class="item">
+            <div class="textCentered" [ngClass]="getCharacterColorClass(1)">{{getPartyMemberName(1)}}</div>
+            <app-equipment-item-view [equipment]="getEquippedComparisonItem(1)"></app-equipment-item-view>
+        </span>
+        <span class="item comparedEquipmentItem" *ngIf="partyMembers.length > 1">
+            <div class="textCentered" [ngClass]="getCharacterColorClass(2)">{{getPartyMemberName(2)}}</div>
+            <app-equipment-item-view [equipment]="getEquippedComparisonItem(2)"></app-equipment-item-view>
+        </span>
+    </div>
+</ng-template>

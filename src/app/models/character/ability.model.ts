@@ -23,6 +23,7 @@ export class Ability {
     targetGainsStatusEffect: StatusEffect[];
     isAoe: boolean;
     isPassive: boolean;
+    isActivatable: boolean;
     aoeModifier: number;
     count: number; //some abilities require a count
     maxCount: number;
@@ -39,6 +40,7 @@ export class Ability {
         this.abilitySequence = 1;
         this.threshold = 0;
         this.targetsAllies = false;
+        this.isActivatable = true;
         this.elementalType = ElementalTypeEnum.None;
 
         this.userGainsStatusEffect = [];

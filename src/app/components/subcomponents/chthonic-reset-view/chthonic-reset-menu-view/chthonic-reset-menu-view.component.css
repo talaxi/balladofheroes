@@ -1,0 +1,37 @@
+.god {
+    color: var(--foreground-default);
+
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "godName godLevel godResetText godResetResult godResetButton";
+}
+
+.godName {
+    grid-area: godName;
+    align-self: center;
+    font-weight: bold;
+}
+
+.godLevel {
+    grid-area: godLevel;
+    align-self: center;
+    font-weight: bold;
+}
+
+.godResetText {
+    grid-area: godResetText;
+    align-self: center;
+    font-weight: bold;
+}
+
+.godResetResult {
+    grid-area: godResetResult;
+}
+
+.godResetButton {
+    grid-area: godResetButton;
+}
