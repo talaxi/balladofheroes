@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
+import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { BattleService } from '../battle/battle.service';
 import { GlobalService } from '../global/global.service';
@@ -20,6 +21,7 @@ export class BackgroundService {
       //check for defeated      
       var isDefeated = this.battleService.isCharacterDefeated(partyMember);
       if (!isDefeated && !this.utilityService.isBattlePaused) {
+        this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
         this.handleAbilityCooldowns(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(partyMember, deltaTime);

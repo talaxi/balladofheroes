@@ -1,6 +1,5 @@
 <div *ngIf="isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover">
-    <div *ngIf="isStatUpDownEffect(statusEffect)"
-        class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
+    <div *ngIf="isStatUpDownEffect(statusEffect)" class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
         <img class="image halfImage" [src]="getStatUpImage(statusEffect)">
         <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
     </div>
@@ -11,8 +10,7 @@
     </div>
 </div>
 <div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover">
-    <div *ngIf="isStatUpDownEffect(statusEffect)"
-        class="statUpDownGrid negativeStatUpDownGrid negativeStatusEffect">
+    <div *ngIf="isStatUpDownEffect(statusEffect)" class="statUpDownGrid negativeStatUpDownGrid negativeStatusEffect">
         <img class="image halfImage" [src]="getStatDownImage(statusEffect)">
         <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
     </div>
@@ -26,8 +24,12 @@
 <ng-template #statusEffectPopover>
     <div>
         <span [innerHtml]="getStatusEffectDescription()"></span>
-        <br/>
-        <br/>
-        <span>Remaining Duration: {{statusEffect.duration | number : '1.0-0'}} seconds</span>
+        <br />
+        <br />
+        <span>
+            <span *ngIf="statusEffect.duration >= 0">Remaining Duration: {{statusEffect.duration | number : '1.0-0'}}
+                seconds</span>
+            <span *ngIf="statusEffect.duration < 0">Resolves Upon Effect Condition</span>
+        </span>
     </div>
 </ng-template>

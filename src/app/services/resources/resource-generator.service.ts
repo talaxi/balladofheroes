@@ -87,6 +87,10 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.BronzeShield, ItemTypeEnum.Equipment, amount);
     }
+    if (type === ItemsEnum.Aegis)
+    {
+      return new ResourceValue(ItemsEnum.Aegis, ItemTypeEnum.Equipment, amount);
+    }
 
     //armor
     if (type === ItemsEnum.LinenArmor)

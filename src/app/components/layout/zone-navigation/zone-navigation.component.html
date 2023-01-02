@@ -117,10 +117,10 @@
                 <button class="buttonStyled" *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
             </div>
             <div class="peekResources centeredText">
-                <div class="leftAlignTtext">
+                <div class="textLeftAligned inlineBlock">
                 <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span> <br/>
-                <span class="resource">Leathers: {{lookupService.getResourceAmount(itemsEnum.Leather)}}</span> <br/>
-                <span class="resource">Lamia Hearts: {{lookupService.getResourceAmount(itemsEnum.LamiaHeart)}}</span> <br/>
+                <!--<span class="resource">Leathers: {{lookupService.getResourceAmount(itemsEnum.Leather)}}</span> <br/>
+                <span class="resource">Lamia Hearts: {{lookupService.getResourceAmount(itemsEnum.LamiaHeart)}}</span> <br/>-->
                 <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" class="resource chthonicFavorKeyword" customToolTip [contentTemplate]="chthonicFavorPopover">Chthonic Favor: {{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number : '1.0-2'}}</span> <br/>
                 <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" class="resource chthonicPowerKeyword" customToolTip [contentTemplate]="chthonicPowerPopover">Chthonic Power: {{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number : '1.0-2'}}</span>
             </div>

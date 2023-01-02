@@ -1,4 +1,5 @@
 import { Character } from "../character/character.model";
+import { DamageOverTimeTypeEnum } from "../enums/damage-over-time-type-enum.model";
 import { StatusEffectEnum } from "../enums/status-effects-enum.model";
 
 export class StatusEffect {
@@ -19,7 +20,8 @@ export class StatusEffect {
     associatedAbilityName: string;
     tickFrequency: number;
     tickTimer: number;
-    basedOnOriginalDamage: boolean; //is the DoT based on original damage dealt or is it standalone?
+    //basedOnOriginalDamage: boolean; //is the DoT based on original damage dealt or is it standalone?
+    damageOverTimeType: DamageOverTimeTypeEnum;
 
     constructor(type: StatusEffectEnum, persistsDeath?: boolean) {
         this.type = type;
@@ -32,7 +34,7 @@ export class StatusEffect {
         this.duration = 0;
         this.count = 0;
         this.maxCount = 0;
-        this.basedOnOriginalDamage = false;
+        this.damageOverTimeType = DamageOverTimeTypeEnum.BasedOnDamage;
     }
 
     makeCopy() {
@@ -53,7 +55,7 @@ export class StatusEffect {
         copy.associatedAbilityName = this.associatedAbilityName;
         copy.tickFrequency = this.tickFrequency;
         copy.tickTimer = this.tickTimer;
-        copy.basedOnOriginalDamage = this.basedOnOriginalDamage;
+        copy.damageOverTimeType = this.damageOverTimeType;
 
         return copy;
     }

@@ -147,3 +147,34 @@
 .spaceBetween {
   justify-content: space-between !important;
 }
+
+.hide {
+  display: none;
+}
+
+.mainContainer {
+  height: 100%;
+}
+
+.dark {
+  background-color: var(--background-tertiary);
+}
+
+.darken {  
+  background-color: var(--background-tertiary);
+  -webkit-animation: fade 3s forwards;    
+  animation: fade 3s forwards;
+}
+
+.lighten {
+  background-color: var(--background-secondary);
+  -webkit-animation: fade 3s forwards;    
+  animation: fade 3s forwards;
+}
+
+@keyframes fade {
+  0% {opacity: 0%}
+  100% {opacity: 100%}
+  /*60% {opacity: 100%}
+  100% {opacity: 0%}*/
+}

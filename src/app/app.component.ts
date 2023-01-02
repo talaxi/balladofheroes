@@ -14,6 +14,7 @@ import { BackgroundService } from './services/utility/background.service';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UtilityService } from './services/utility/utility.service';
 import { SubZone } from './models/zone/sub-zone.model';
+import { LookupService } from './services/lookup.service';
 declare var LZString: any;
 
 @Component({
@@ -33,7 +34,7 @@ export class AppComponent {
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
     private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
     private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
-    private utilityService: UtilityService) {
+    private utilityService: UtilityService, private lookupService: LookupService) {
 
   }
 
@@ -50,10 +51,10 @@ export class AppComponent {
       }
     }
 
-    if (environment.staging) {    
+    if (environment.staging) {
       this.deploymentService.setStagingMode();
     }
-    else {      
+    else {
       this.deploymentService.setProductionMode();
     }
 
@@ -86,22 +87,22 @@ export class AppComponent {
   public gameCheckup(deltaTime: number): void {
     //all game logic that should be updated behind the scenes
     var activeSubzone = this.balladService.getActiveSubZone();
-    
+
     if (this.utilityService.isGamePaused)
       deltaTime = 0;
 
-    deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);    
+    deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
 
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime);
 
-    if (!activeSubzone.isTown)
-    {
+    if (!activeSubzone.isTown) {
       this.globalService.globalVar.timers.townHpGainTimer = 0;
-      this.battleService.handleBattle(deltaTime, this.loading);
     }
     else
       this.backgroundService.handleTown(deltaTime, this.loading);
+
+    this.battleService.handleBattle(deltaTime, this.loading);
   }
 
   loadStartup() {
@@ -119,21 +120,24 @@ export class AppComponent {
         this.globalService.globalVar.extraSpeedTimeRemaining = this.utilityService.extraSpeedTimeLimit;
     }
 
-    //if speed up time remains, use it
-    if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2) {
-      if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
-        deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
-        this.globalService.globalVar.extraSpeedTimeRemaining = 0;
-      }
-      else {
-        this.globalService.globalVar.extraSpeedTimeRemaining -= deltaTime;
-        deltaTime *= 2;
+    //if speed up time remains, use it (only if not doing batches which causes issues)
+    if (!this.globalService.globalVar.isCatchingUp) {
+      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2) {
+        if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
+          deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
+          this.globalService.globalVar.extraSpeedTimeRemaining = 0;
+        }
+        else {
+          this.globalService.globalVar.extraSpeedTimeRemaining -= deltaTime;
+          deltaTime *= 2;
+        }
       }
     }
 
     var batchTime = this.getBatchRunTime(subzone); //runs the game in batches of 5 seconds max
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {
+      this.lookupService.isUIHidden = true;
       this.globalService.globalVar.isCatchingUp = true;
       this.bankedTime += deltaTime - batchTime;
       deltaTime = batchTime;
@@ -147,6 +151,7 @@ export class AppComponent {
       {
         deltaTime += this.bankedTime;
         this.bankedTime = 0;
+        this.lookupService.isUIHidden = false;
         this.globalService.globalVar.isCatchingUp = false;
 
         if (this.catchupDialog !== undefined) {

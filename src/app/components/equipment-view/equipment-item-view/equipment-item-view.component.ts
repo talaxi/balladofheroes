@@ -14,15 +14,18 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class EquipmentItemViewComponent implements OnInit {
   @Input() equipment: Equipment | undefined;
   equipmentStats = "";
+  equipmentEffects = "";
   subscription: any;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
     this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment);
+    this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment);
+      this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
     });
   }
 

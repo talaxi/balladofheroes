@@ -35,7 +35,7 @@ export class BattleComponent implements OnInit {
   storyAnimationTimerCap = .5;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
-    private utilityService: UtilityService, private gameLogService: GameLogService, private storyService: StoryService,
+    private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
     private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {

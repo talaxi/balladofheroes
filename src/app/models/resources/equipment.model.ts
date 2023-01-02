@@ -25,5 +25,6 @@ export class Equipment {
         else
             this.weaponType = WeaponTypeEnum.None;
         
+        this.equipmentEffect = new UsableItemEffect();
     }
 }

@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -79,15 +80,60 @@ export class CurrentEquipmentViewComponent implements OnInit {
       return;
 
     if (type === EquipmentTypeEnum.Weapon)
+    {
+      if (character.equipmentSet.weapon?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.weapon.equipmentEffect.userGainsStatusEffect.length > 0 ? 
+        character.equipmentSet.weapon.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetGainsStatusEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
       character.equipmentSet.weapon = undefined;
+    }
     if (type === EquipmentTypeEnum.Shield)
+    {
+      if (character.equipmentSet.shield?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.shield.equipmentEffect.userGainsStatusEffect.length > 0 ? 
+        character.equipmentSet.shield.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.shield.equipmentEffect.targetGainsStatusEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
       character.equipmentSet.shield = undefined;
+    }
     if (type === EquipmentTypeEnum.Armor)
+    {
+      if (character.equipmentSet.armor?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.armor.equipmentEffect.userGainsStatusEffect.length > 0 ? 
+        character.equipmentSet.armor.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.armor.equipmentEffect.targetGainsStatusEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
       character.equipmentSet.armor = undefined;
+    }
     if (type === EquipmentTypeEnum.Ring)
+    {
+      if (character.equipmentSet.ring?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.ring.equipmentEffect.userGainsStatusEffect.length > 0 ? 
+        character.equipmentSet.ring.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.ring.equipmentEffect.targetGainsStatusEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
       character.equipmentSet.ring = undefined;    
+    }
     if (type === EquipmentTypeEnum.Necklace)
+    {
+      if (character.equipmentSet.necklace?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.necklace.equipmentEffect.userGainsStatusEffect.length > 0 ? 
+        character.equipmentSet.necklace.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.necklace.equipmentEffect.targetGainsStatusEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
       character.equipmentSet.necklace = undefined;
+    }
 
     this.globalService.calculateCharacterBattleStats(character); 
     this.unequipEmitter.emit(false); 

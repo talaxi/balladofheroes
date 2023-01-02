@@ -1,19 +1,21 @@
 <div class="gridContainer">
     <div class="headerArea">
-        <app-header></app-header>
+        <app-header [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>
-    <div class="mainArea" [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu }">
-        <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
-            <app-party class="partyArea"></app-party>                        
-            <app-battle class="battleArea"></app-battle>            
-            <app-zone-navigation class="navArea"></app-zone-navigation>
-        </div>
-        <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
-            <app-menu-options class="menuOptions"></app-menu-options>
-            <app-menu-display class="menuDisplay screenMargin"></app-menu-display>            
+    <div class="mainArea" [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu && !storyService.triggerFirstTimeUnderworldScene }">
+        <div class="mainContainer" [ngClass]="{ 'hide': lookupService.isUIHidden, 'darken': storyService.triggerFirstTimeUnderworldScene, 'lighten': storyService.endFirstTimeUnderworldScene }">
+            <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
+                <app-party class="partyArea" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-party>
+                <app-battle class="battleArea" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory, 'dark': storyService.showFirstTimeUnderworldStory }"></app-battle>
+                <app-zone-navigation class="navArea" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-zone-navigation>
+            </div>
+            <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
+                <app-menu-options class="menuOptions"></app-menu-options>
+                <app-menu-display class="menuDisplay screenMargin"></app-menu-display>
+            </div>
         </div>
     </div>
     <div class="footerArea">
-        <app-footer></app-footer>
+        <app-footer [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-footer>
     </div>
 </div>

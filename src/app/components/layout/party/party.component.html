@@ -1,4 +1,4 @@
-<div class="gridContainer">
+<div class="gridContainer" [ngClass]="{'hide': lookupService.isUIHidden}">
     <div *ngFor="let character of party; let i = index" [class]="'character' + (i + 1)">
         <div *ngIf="character.type === noCharacter" class="partyMember">            
         </div>

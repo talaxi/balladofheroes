@@ -54,8 +54,6 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "DMG";
     if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown)
       return "TKN";
-    if (effect.type === StatusEffectEnum.Stun)
-      return "STUN";
     if (effect.type === StatusEffectEnum.DamageOverTime)
       return "DOT";
       if (effect.type === StatusEffectEnum.Taunt)
@@ -100,6 +98,30 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Coda)
     {
       src += "coda.svg";
+    }
+    if (effect.type === StatusEffectEnum.ThousandCuts)
+    {
+      src += "thousandCuts.svg";
+    }
+    if (effect.type === StatusEffectEnum.Blind)
+    {
+      src += "blind.svg";
+    }
+    if (effect.type === StatusEffectEnum.Stun)
+    {
+      src += "stun.svg";
+    }
+    if (effect.type === StatusEffectEnum.Paralyze)
+    {
+      src += "paralyze.svg";
+    }
+    if (effect.type === StatusEffectEnum.InstantHealAfterAutoAttack)
+    {
+      src += "healAfterAutoAttack.svg";
+    }
+    if (effect.type === StatusEffectEnum.DamageOverTime)
+    {
+      src += "bloodDoT.svg";
     }
 
     return src;

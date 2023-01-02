@@ -141,6 +141,9 @@ export class SubZone {
         if (type === SubZoneEnum.LibyaIsleCenter)
             victories = bossVictories;
 
+        if (type === SubZoneEnum.NemeaCountryRoadsOne)
+            victories = defaultVictories;
+
         return victories;
     }
 

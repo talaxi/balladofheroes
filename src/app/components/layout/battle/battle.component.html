@@ -4,7 +4,7 @@
                 *ngIf="showDevStats"> EPS: {{getExpectedExpPerSec()}}</span></div>
         <hr />
     </div>
-    <div class="scene">
+    <div class="scene" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
         <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }"
             *ngIf="!isAtScene() && !isAtTown()">
             <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight" class="enemiesGrid">
@@ -38,7 +38,7 @@
                 </mat-progress-bar>
             </div>
         </div>
-        <div *ngIf="isAtChestScene() && !isAtTown()" class="chestGrid">
+        <div *ngIf="isAtChestScene()" class="chestGrid">
             <div class="chestImage">
                 <img class="chestIcon" src="assets/svg/treasureChest.svg">
             </div>
@@ -50,12 +50,12 @@
             </div>
             <!--<hr class='hr' />-->
         </div>
-        <div *ngIf="isAtTown()" class="shopGrid">
+        <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene()" class="shopGrid">
             <app-shop-view></app-shop-view>
         </div>
     </div>
     <hr class='gap hr' />
-    <div class="battleUpdates">
+    <div class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
         <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"

@@ -12,6 +12,7 @@ import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { LookupService } from '../lookup.service';
+import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { GlobalService } from './global.service';
 
 @Injectable({
@@ -19,7 +20,8 @@ import { GlobalService } from './global.service';
 })
 export class InitializationService {
 
-  constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService) { }
+  constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
+    private resourceGeneratorService: ResourceGeneratorService) { }
 
   initializeVariables() {
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
@@ -109,7 +111,7 @@ export class InitializationService {
 
   devMode() {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
-    this.globalService.globalVar.currentStoryId = 10000;
+    this.globalService.globalVar.currentStoryId = 8; //10000
     
     this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
     this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });
@@ -162,7 +164,7 @@ export class InitializationService {
     });
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      //if (ballad.type !== BalladEnum.Underworld)
+      if (ballad.type !== BalladEnum.Underworld)
         ballad.isAvailable = true;
         //ballad.showNewNotification=true;
       ballad.zones.forEach(zone => {
@@ -180,6 +182,13 @@ export class InitializationService {
       })
     });
 
+    var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
+    if (resource !== undefined)
+      this.lookupService.gainResource(resource);
+
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Venomstrike, 1);
+    if (resource !== undefined)
+      this.lookupService.gainResource(resource);
     //console.log(this.globalService.globalVar.achievements);
   }
 }

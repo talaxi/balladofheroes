@@ -31,7 +31,7 @@ export class EnemyGeneratorService {
       enemy.name = "Water Serpent";
       enemy.battleStats = new CharacterStats(10, 12, 4, 5, 1, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.xpGainFromDefeat = 22;
+      enemy.xpGainFromDefeat = 2200;
       enemy.coinGainFromDefeat = 0;
     }
     if (type === BestiaryEnum.Crustacean)
@@ -430,7 +430,7 @@ export class EnemyGeneratorService {
     {
       //TODO: large XP boost on completing the first time
       enemy.name = "Enceladus";
-      enemy.battleStats = new CharacterStats(250000, 415, 383, 650, 600, 1000); 
+      enemy.battleStats = new CharacterStats(250000, 415, 383, 60, 600, 1000); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 1000;       
@@ -442,7 +442,7 @@ export class EnemyGeneratorService {
       smash = this.randomizeCooldown(smash);
       smash.dealsDirectDamage = true;
       smash.effectiveness = 2.3;    
-      smash.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .8, smash.name, false));
+      smash.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .8, smash.name));
       enemy.abilityList.push(smash);
 
       var wallop = new Ability();
@@ -456,8 +456,7 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(wallop);
     }
 
-    enemy.battleInfo.autoAttackTimer = this.utilityService.getRandomInteger(0, this.lookupService.getAutoAttackTime(enemy) / 2); 
-
+    enemy.battleInfo.autoAttackTimer = this.utilityService.getRandomInteger(0, this.lookupService.getAutoAttackTime(enemy) / 2);     
     return enemy;
   }
 

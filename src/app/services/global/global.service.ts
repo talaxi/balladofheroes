@@ -10,6 +10,7 @@ import { God } from 'src/app/models/character/god.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
+import { DamageOverTimeTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
@@ -141,7 +142,7 @@ export class GlobalService {
       sureShot.effectiveness = 1.3;
       sureShot.cooldown = sureShot.currentCooldown = 24;
       sureShot.dealsDirectDamage = true;      
-      sureShot.targetGainsStatusEffect.push(this.createDamageOverTimeEffect(12, 3, .2, sureShot.name, true));
+      sureShot.targetGainsStatusEffect.push(this.createDamageOverTimeEffect(12, 3, .2, sureShot.name, DamageOverTimeTypeEnum.BasedOnDamage));
       character.abilityList.push(sureShot);
 
       var mark = new Ability();
@@ -150,7 +151,7 @@ export class GlobalService {
       mark.isAvailable = false;
       mark.isPassive = true;
       mark.isActivatable = false;
-      mark.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Mark, 10, 1.1, false, false));
+      mark.targetGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Mark, 10, 1.05, false, false));
       character.abilityList.push(mark);
 
       var pinningShot = new Ability();
@@ -325,10 +326,10 @@ export class GlobalService {
       god.abilityList.push(woundingArrow);
 
       var electricVolley = new Ability();
-      electricVolley.name = "Electric Volley";
+      electricVolley.name = "Paralyzing Volley";
       electricVolley.isAvailable = false;
       electricVolley.requiredLevel = this.utilityService.godAbility2Level;
-      electricVolley.cooldown = electricVolley.currentCooldown = 45;
+      electricVolley.cooldown = electricVolley.currentCooldown = 60;
       electricVolley.effectiveness = .5;
       electricVolley.isAoe = true;
       electricVolley.dealsDirectDamage = true;
@@ -403,7 +404,7 @@ export class GlobalService {
 
     if (god.type === GodEnum.Hermes) {
       var trickShot = new Ability();
-      trickShot.name = "Trick Shot";
+      trickShot.name = "Nimble Strike";
       trickShot.isAvailable = false;
       trickShot.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       trickShot.cooldown = trickShot.currentCooldown = 8;
@@ -412,7 +413,7 @@ export class GlobalService {
       god.abilityList.push(trickShot);
 
       var embellish = new Ability();
-      embellish.name = "Embellish";
+      embellish.name = "Take Flight";
       embellish.requiredLevel = this.utilityService.godAbility2Level;
       embellish.isAvailable = false;
       embellish.dealsDirectDamage = false;
@@ -598,13 +599,13 @@ export class GlobalService {
     return statusEffect;
   }
 
-  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, associatedAbilityName: string, basedOnOriginalDamage: boolean = false) {
+  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, associatedAbilityName: string, damageOverTimeType: DamageOverTimeTypeEnum = DamageOverTimeTypeEnum.BasedOnAttack) {
     var statusEffect = new StatusEffect(StatusEffectEnum.DamageOverTime);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
     statusEffect.tickFrequency = tickFrequency;
     statusEffect.associatedAbilityName = associatedAbilityName;
-    statusEffect.basedOnOriginalDamage = basedOnOriginalDamage;
+    statusEffect.damageOverTimeType = damageOverTimeType;
 
     return statusEffect;
   }
@@ -751,6 +752,92 @@ export class GlobalService {
         ability.isAvailable = true;
       }
     });
+
+    //do upgrades
+    if (character.level > 10)
+    {
+      if (character.level % 10 === 2)
+      {
+        this.upgradeCharacterAbility1(character, character.level);
+      }
+      if (character.level % 10 === 4)
+      {
+        this.upgradeCharacterPassive(character, character.level);
+      }
+      if (character.level % 10 === 6)
+      {
+        this.upgradeCharacterOverdrive(character, character.level);
+      }
+      if (character.level % 10 === 8)
+      {
+        this.upgradeCharacterAbility2(character, character.level);
+      }
+    }
+  }
+
+  upgradeCharacterAbility1(character: Character, newLevel: number) {
+    var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+    if (ability1 === undefined)
+      return; 
+    
+    if (character.type === CharacterEnum.Adventurer) {
+      ability1.effectiveness += .25;
+    }
+    if (character.type === CharacterEnum.Archer) {
+      ability1.effectiveness += .2;
+    }
+
+    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);          
+  }
+
+  upgradeCharacterPassive(character: Character, newLevel: number) {
+    var ability = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
+    if (ability === undefined)
+      return; 
+    
+    if (character.type === CharacterEnum.Adventurer) {
+      ability.effectiveness += .05;
+    }
+    if (character.type === CharacterEnum.Archer) {
+      ability.effectiveness += .025;
+    }
+
+    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability?.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);          
+  }
+
+  upgradeCharacterOverdrive(character: Character, newLevel: number) {
+    /*var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+    if (ability1 === undefined)
+      return; 
+    
+    if (character.type === CharacterEnum.Adventurer) {
+      ability1.effectiveness += .25;
+    }
+    if (character.type === CharacterEnum.Archer) {
+      ability1.effectiveness += .2;
+    }
+
+    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);          
+    */
+  }
+
+  upgradeCharacterAbility2(character: Character, newLevel: number) {
+    var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+    if (ability1 === undefined)
+      return; 
+    
+    if (character.type === CharacterEnum.Adventurer) {
+      ability1.effectiveness += .025;
+    }
+    if (character.type === CharacterEnum.Archer) {
+      ability1.effectiveness += .3;
+    }
+
+    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);          
   }
 
   getCharacterColorClassText(type: CharacterEnum) {

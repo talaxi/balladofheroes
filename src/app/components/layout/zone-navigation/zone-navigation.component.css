@@ -9,7 +9,8 @@
 .balladTitle {
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: 5rem;
+    margin-right: 1.5rem;
+    width: 42%; /* matches .zoneGrid below */
 }
 
 .selected {
@@ -70,4 +71,8 @@
 .spaceBetween {
     display: flex;
     justify-content: space-between;
+}
+
+.inlineBlock {
+    display: inline-block;
 }

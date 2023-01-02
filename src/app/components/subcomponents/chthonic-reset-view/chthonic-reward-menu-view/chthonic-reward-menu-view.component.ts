@@ -16,7 +16,7 @@ export class ChthonicRewardMenuViewComponent implements OnInit {
   constructor(public lookupService: LookupService, private globalService: GlobalService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
-    console.log(this.getRequiredChthonicPowerForMaxHp() + " < " + this.getChthonicPower() + " = " + (this.getRequiredChthonicPowerForMaxHp() < this.getChthonicPower()));
+    
   }
 
   getChthonicPower() {
