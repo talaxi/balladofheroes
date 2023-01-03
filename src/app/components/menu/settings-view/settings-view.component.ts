@@ -56,7 +56,7 @@ export class SettingsViewComponent implements OnInit {
     let a = document.createElement("a"),
       url = URL.createObjectURL(file);
     a.href = url;
-    a.download = "Cultura-v" + this.globalService.globalVar.currentVersion.toString().replace(".", "_") + "-" + new Date().toLocaleDateString();
+    a.download = "BalladOfHeroes-v" + "-" + new Date().toLocaleDateString();
     document.body.appendChild(a);
     a.click();
     setTimeout(function () {

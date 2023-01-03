@@ -28,6 +28,12 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.NewSubzone) {
       text = "You've won enough battles here to move to the next area. On the right side of the screen, select 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible.";
     }
+    else if (type === TutorialTypeEnum.Town) {
+      text = "Towns offer respite and the opportunity to trade. Every few seconds, you will regain HP. Click the 'General' option to see new equipment options.";
+    }
+    else if (type === TutorialTypeEnum.Crafting) {
+      text = "Crafters can create unique items with materials found from battle. Keep an eye out for what loot you are receiving from individual enemies.";
+    }
 
     return text;
   }

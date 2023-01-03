@@ -3,11 +3,12 @@
     height: 100%;
     margin-right: .5rem;
     grid-template-columns: auto;
-    grid-template-rows: 43% 43% 14%;
+    grid-template-rows:  40% 40% 5.5% 14.5%;
     justify-content: stretch;
     grid-template-areas:
         "character1"
         "character2"
+        "dps"
         "options";
 
     -moz-user-select: -moz-none;
@@ -15,6 +16,32 @@
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+}
+
+.dps {
+    grid-area: dps;    
+}
+
+.dpsChecks {
+    display: flex;
+    justify-content: space-around;
+    margin: .15rem 0;
+}
+
+.partyDps {
+    align-self: center;
+    font-weight: bold;
+    color: var(--positive-status-effect);
+}
+
+.enemyDps {
+    align-self: center;
+    font-weight: bold;
+    color: #FF6478;
+}
+
+.smallText {
+    font-size: 1rem;
 }
 
 .character1 {
@@ -221,6 +248,7 @@
 
 .cancelBattleItemButton {
     width: 100%;
+    font-size: .75rem;
 }
 
 .itemAmount {

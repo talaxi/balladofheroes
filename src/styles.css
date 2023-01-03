@@ -155,7 +155,7 @@
   --z1-weight: 400;
   --z1-spacing: 0.1px;
 
-  --z2-size: 1rem;
+  --z2-size: 1.05rem;
   --z2-weight: 400;
   --z2-spacing: 0.1px; 
 
@@ -293,6 +293,11 @@ h6 {
 .resourceKeyword {
   font-weight: 550;
   color: var(--resourceKeywordColor);
+}
+
+.insufficientResourcesKeyword {
+  font-weight: 550;
+  color: var(--insufficientResourcesKeywordColor);
 }
 
 .craftingMaterialKeyword {
@@ -637,4 +642,12 @@ button {
 
 #dialogNoPadding {
   padding: 0px;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.noMargin {
+  margin: 0;
 }

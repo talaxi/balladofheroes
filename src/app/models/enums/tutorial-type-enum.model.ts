@@ -3,5 +3,7 @@ export enum TutorialTypeEnum {
   GodPassiveAbility,
   BattleItems,
   AutoAttack,
-  NewSubzone
+  NewSubzone,
+  Town,
+  Crafting
 }

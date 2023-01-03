@@ -24,7 +24,7 @@ export class BackgroundService {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
         this.handleAbilityCooldowns(partyMember, deltaTime);
-        this.battleService.handleStatusEffectDurations(partyMember, deltaTime);
+        this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
       }
     });
   }

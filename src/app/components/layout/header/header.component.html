@@ -5,8 +5,8 @@
 
     </div>
 
-    <div class="centerAlign">
-        <button class="buttonAsText clickableText" (click)="pauseGame()">
+    <div class="centerAlign gameState">
+        <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
             <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused">&#9658;</span>
             <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused">&#9612; &#9612;</span>
         </button>        

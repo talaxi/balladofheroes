@@ -921,7 +921,7 @@ export class GlobalService {
     var baseXp = 500;
 
       var factor = 1.021;
-      var additive = baseXp * level;
+      var additive = baseXp * (level-1);
       var exponential = (baseXp * (factor ** (level)));
 
       //

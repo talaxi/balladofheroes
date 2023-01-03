@@ -49,7 +49,6 @@ export class StoryService {
       this.showStory = true;
   }
 
-
   handleScene(deltaTime: number) {
     if (this.globalService.globalVar.currentStoryId === 0) {
       this.utilityService.isBattlePaused = true;
@@ -82,13 +81,13 @@ export class StoryService {
       this.pageCount = 2;
 
       if (this.currentPage === 1) {
-        this.sceneText = "You arrive at the Temple of Athena. The lone figure inside is an oracle, mixing powders together under the light of a single flame. “Am I the first?” you ask, falling to your knees. “You are the first.” She replies, the strong scent of incense filling the room. You’ve done it. Year after year you have tried, and you have finally succeeded. As you kneel, elated, exhausted, you begin to offer up a prayer. <br/><br/>" +
-          "“<span class='athenaColor'>Your resolve is impressive.</span>” a voice says from behind. The Goddess of Wisdom and War. <span class='athenaColor'>Athena</span>.";
+        this.sceneText = "You arrive at the Temple of Athena. The lone figure inside is an oracle, mixing powders together under the light of a single flame. <span class='adventurerColor bold'>“Am I the first?”</span> you ask, falling to your knees. <span class='bold'>“You are.”</span> She replies, the strong scent of incense filling the room. You've done it. Year after year you have tried, and you have finally succeeded. As you kneel, elated, exhausted, you begin to offer up a prayer. <br/><br/>" +
+          "<span class='athenaColor bold'>“Your resolve is impressive.”</span> a voice says from behind. The Goddess of Wisdom and War. <span class='athenaColor bold'>Athena</span>.";
       }
       else if (this.currentPage === 2) {
-        this.sceneText = "“<span class='athenaColor'>Be warned, mortal, for my mother has foreseen the impending fall of Olympus. She sees the Giants and Titans joining forces and planning a coordinated attack against us. We cannot hope to stand against both of them on our own. <br/><br/>" +
-          "We need allies, and I believe that you can help us. Prove your resolve once more. Trace the steps and trials of champions past. Let their strength be yours.</span>”<br/><br/>" +
-          "And then she was gone. All that remained was a scythe left where Athena once stood and the overwhelming smell of incense. After taking in what just occurred, you offer up another prayer and step back outside of the temple. But instead of woodlands, you see the open road. Instead of Aigosthena, you are in Delphi.";
+        this.sceneText = "<span class='athenaColor bold'>“Be warned, mortal, for my mother has foreseen the impending fall of Olympus. She sees the Giants and Titans joining forces and planning a coordinated attack against us. We cannot hope to stand against both of them on our own. <br/><br/>" +
+          "We need allies, and I believe that you can help us. Prove your resolve once more. Trace the steps and trials of champions past. Let their strength be yours.”</span><br/><br/>" +
+          "And then she was gone. All that remained was the overwhelming smell of incense. After taking in what just occurred, you offer up another prayer and step back outside of the temple. But instead of woodlands, you see the open road. Instead of Aigosthena, you are in Delphi.";
       }
     }
     if (this.globalService.globalVar.currentStoryId === 3) {
@@ -96,18 +95,23 @@ export class StoryService {
 
       if (this.currentPage === 1) {
         this.sceneText = "You find your way out of Delphi while trying to take in your meeting with Athena. Could you walk the path of champions? You know all of the stories by heart -- the trials of Heracles, the winding journey of Odysseus, the triumphs of Jason. Could you truly be in the same conversations as these heroes? <br/><br/>" +
-          "Your feet unconsciously make their way towards Dodona, following the path of Perseus. As you cross the countryside between Locris and Aetolia, you get the feeling you are being followed. No sooner than you make that realization, you are set upon by an assailant.";
+          "Your feet unconsciously make their way northwest towards Dodona, following the path of Perseus. As you cross the countryside between Locris and Aetolia, you get the feeling you are being followed. No sooner than you make that realization, you are set upon by an assailant.";
       }
     }
     if (this.globalService.globalVar.currentStoryId === 4) {
       this.pageCount = 2;
 
       if (this.currentPage === 1) {
-        this.sceneText = "After a hard fought battle, your opponent relents. Your power has grown significantly since being chosen by Athena -- and this Archer matches you in the same way. <br/><br/>" +
-          "“I have been blessed by the goddess Artemis. She has tasked me with hunting and defeating the strongest enemies I can find, so that I may prove myself and defend Olympus in the war to come.”";
+        this.sceneText = "After a hard fought battle, your opponent relents. Your power has grown significantly since being chosen by Athena, but you feel this Archer matches you in the same way. With your opponent thoroughly defeated, you sheathe your weapon and extend a hand. <br/><br/>" +
+          "“<span class='archerColor bold'>My goddess Artemis guides my arrows. She tasked me with hunting the strongest enemies I can find, so that I can prove myself and defend Olympus in the war to come.</span>”";
       }
       else if (this.currentPage === 2) {
-        this.sceneText = "The gods seem to each have their own favorites. “Walk with me, keep your distance if you choose. Athena guides my path as Artemis guides yours. We can prove ourselves together.” You reply. You continue to Dodona.";
+        this.sceneText = "The gods seem to each have their own favorites. “<span class='adventurerColor bold'>Walk with me, keep your distance if you choose. Athena guides my path as Artemis guides yours. We can prove ourselves together.</span>” You reply. You continue to Dodona.";
+
+        //TODO: REMOVE THIS
+        //VV
+          this.sceneText += "<br/><br/><i>For testing purposes, each character will now skip ahead to having two gods in use. In future iterations of this game, this will take longer and play out more naturally. Thanks for making it this far!</i>";
+        //^^
       }
     }
     if (this.globalService.globalVar.currentStoryId === 5) {
@@ -115,18 +119,18 @@ export class StoryService {
       this.pageCount = 3;
 
       if (this.currentPage === 1) {
-        this.sceneText = "Like Perseus before you, you wander through the oak grove outside of Dodona. The stories say that the trees spoke advice to Perseus, but to you they are quiet. As you make your way around the grove, a youthful man wearing a feather-brimmed hat.<br/><br/>" +
-          "“This is your champion? Seems a little… fresh, don't you think?” he says. True to the stories, Hermes has arrived to greet you, and Athena just behind him.<br/><br/>" +
-          "“We all start somewhere, brother. You've done well.” Athena says to you. “But your real trial is only just beginning.”";
+        this.sceneText = "Like Perseus before you, you wander through the oak grove outside of Dodona. The stories say that the trees spoke advice to Perseus, but to you they are quiet. As you make your way around the grove, a youthful man wearing a feather-brimmed hat steps out to greet you.<br/><br/>" +
+          "<span class='hermesColor bold'>“This is your champion? Seems a little… fresh, don't you think?”</span> he says. True to the stories, <span class='HermesColor bold'>Hermes</span> has arrived to greet you, and <span class='athenaColor bold'>Athena</span> just behind him.<br/><br/>" +
+          "<span class='athenaColor bold'>“We must all start somewhere, brother.” Athena</span> says as she turns to you. <span class='athenaColor bold'>“You've done well. But your real trial is only just beginning.”</span>";
       }
       else if (this.currentPage === 2) {
-        this.sceneText = "Athena steps forward towards you, shield in hand. “The next step on your journey is to slay Medusa. We're here to help you.” She hands you the shield, its surface so clean it looks almost like a mirror. <br/><br/>" +
-          "“Take these too. They'll take you straight where you need to be.” Hermes says as he hands you a pair of sandals. “You know, I wasn't sure you would come all the way here. You know how the story goes right? Medusa is in Libya. Just wanted to do some sightseeing?”" +
-          "“Well… I just wanted to follow in the footsteps of a real champion.” You reply.";
+        this.sceneText = "<span class='athenaColor bold'>Athena</span> steps forward towards you, shield in hand. <span class='athenaColor bold'>“The next step on your journey is to slay Medusa. We're here to help you.”</span> She hands you the shield, its surface so clean it looks almost like a mirror. <br/><br/>" +
+          "<span class='hermesColor bold'>“Take these too. They'll take you straight where you need to be.” Hermes</span> says as he hands you a pair of sandals. <span class='hermesColor bold'>“You know, I wasn't sure you would come all the way here. You know how the story goes right? Medusa is in Libya. Just wanted to do some sightseeing?”</span><br/><br/>" +
+          "<span class='adventurerColor bold'>“Well… I just wanted to follow in the footsteps of a real champion.”</span> You reply.";
       }
       else if (this.currentPage === 3) {
-        this.sceneText = "“That's well and good, but we need a champion of our own. Use those sandals and see if you have what it takes to defeat Medusa. I've got another pair for your friend there hiding in the shadows as well. Good luck!” <br/><br/>" +
-          "“We will see you soon. Farewell.” Athena said as she and Hermes vanished back into the grove. Your partner stepped out from behind the trees, keeping a healthy distance behind you. “It looks like our journey will continue in Libya.”";
+        this.sceneText = "<span class='hermesColor bold'>“That's well and good, but we need a champion of our own. Use those sandals and see if you have what it takes to defeat Medusa. I've got another pair for your friend there hiding in the shadows as well. Good luck!”</span> <br/><br/>" +
+          "<span class='athenaColor bold'>“We will see you soon. Farewell.” Athena</span> says as she and <span class='hermesColor bold'>Hermes</span> vanish back into the grove. Your partner steps out from behind the trees, keeping a healthy distance behind you. <span class='archerColor bold'>“It looks like our journey will continue in Libya.”</span>";
       }
     }
     if (this.globalService.globalVar.currentStoryId === 6) {
@@ -135,7 +139,7 @@ export class StoryService {
 
       if (this.currentPage === 1) {
         this.sceneText = "With one final attack, you slice Medusa's head clean off. With the power of the gods, what felt impossible before was now within your reach. Your strength is greater than you ever dreamed. Your companion kneels beside you, inspecting the snake-like hair of the Gorgon. <br/><br/>" +
-          "“That's one name off of my list. Who's next?”";
+          "<span class='archerColor bold'>“That's one name off of my list. Who's next?”</span>";
       }
     }
     if (this.globalService.globalVar.currentStoryId === 7) {
@@ -149,8 +153,8 @@ export class StoryService {
       else if (this.currentPage === 2) {
         this.sceneText = "As you work your way around the roads of Nemea, you find a towering figure seemingly waiting for you. " +
           "A Giant?! Most were imprisoned or dead, but here was one in your path." +
-          "“Little champions, I've been waiting a looong time for ya. Come on over, don't be shy!” it bellows as it makes its way towards you." +
-          "This is what Athena trusted you to handle. Time to make her proud.";
+          "<span class='bold'>“Little champions, I've been waiting a looong time for ya. Come on over, don't be shy!”</span> it bellows as it makes its way towards you." +
+          "This is what <span class='athenaColor bold'>Athena</span> trusted you to handle. Time to make her proud.";
       }
     }
     if (this.globalService.globalVar.currentStoryId === 8 && this.showFirstTimeUnderworldStory) {
@@ -163,8 +167,16 @@ export class StoryService {
           "Down. Down to the Underworld.";
       }
       else if (this.currentPage === 2) {
-        this.sceneText = "<span class='hermesColor'>“Guess you <strong>were</strong> a little too green. Don't be disappointed, not everyone can be the ultimate champion of the gods can they?”</span> You hear from a familiar voice." +
-          "<span class='hermesColor'>“Get up, let's get you situated here. Let's go see Hades.”</span>";
+        this.sceneText = "<span class='hermesColor bold'>“Guess you <i>were</i> a little too green. Don't be disappointed, not everyone can be the ultimate champion of the gods can they?”</span> You hear from a familiar voice." +
+          "<span class='hermesColor bold'>“Get up, let's get you situated here. Let's go see Hades.”</span>";
+      }
+    }
+    if (this.globalService.globalVar.currentStoryId === 9 && this.showFirstTimeUnderworldStory) {
+      //Speak to Hades for the first time
+      this.pageCount = 1;
+
+      if (this.currentPage === 1) {
+        this.sceneText = "<i>This is as far as the game goes for now. Thanks for playing and stay tuned for more!</i>";
       }
     }
 
@@ -186,8 +198,10 @@ export class StoryService {
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.balladService.setActiveSubZone(SubZoneEnum.DodonaDelphi);
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town));
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);

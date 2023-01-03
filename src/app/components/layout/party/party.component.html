@@ -1,6 +1,6 @@
 <div class="gridContainer" [ngClass]="{'hide': lookupService.isUIHidden}">
     <div *ngFor="let character of party; let i = index" [class]="'character' + (i + 1)">
-        <div *ngIf="character.type === noCharacter" class="partyMember">            
+        <div *ngIf="character.type === noCharacter" class="partyMember">
         </div>
         <div *ngIf="character.type !== noCharacter" class="partyMember"
             [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}"
@@ -18,13 +18,16 @@
                                 {{character.battleStats.maxHp | number : '1.0-0'}}
                                 <span
                                     *ngIf="getCharacterBarrierValue(character) > 0">({{getCharacterBarrierValue(character)}})</span></span>
-                        </div>                                                
-                        <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex" (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
-                            <span *ngIf="!character.overdriveInfo.overdriveAutoMode" class="manualOverdriveText">OFF</span>
+                        </div>
+                        <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex"
+                            (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
+                            <span *ngIf="!character.overdriveInfo.overdriveAutoMode"
+                                class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
-                                class="red-progress characterBar" [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.overdriveAutoMode}">                                
+                                class="red-progress characterBar"
+                                [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.overdriveAutoMode}">
                             </mat-progress-bar> <span class="hpMpText">
-                                {{getCharacterOverdrivePercent(character)  | number : '1.1-1'}}%
+                                {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                             </span>
                         </div>
                     </div>
@@ -70,17 +73,29 @@
                 </div>
             </div>
         </div>
-        <hr *ngIf="activeCharacterCount > i" />
+        <hr *ngIf="activeCharacterCount > 1" />
+    </div>
+    <div class="dps">
+        <div class="s4Heading textCentered pageHeader dpsChecks">                      
+            <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
+                Party DPS: {{getPartyDps() | number : '1.0-0'}}
+            </span>
+            <span class='smallText enemyDps' customToolTip [contentTemplate]="dpsTemplate">
+                Incoming DPS: {{getEnemyDps() | number : '1.0-0'}}
+            </span>            
+        </div>
+        <hr class="noMargin" />
     </div>
     <div class="options battleItemGrid">
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"
             [class]="'battleItem' + (i + 1)">
-            <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}" (menuOpened)="openItemModal(i)" mat-icon-button
+            <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}"
+                (menuOpened)="openItemModal(i)" mat-icon-button
                 [matMenuTriggerFor]="battleItems.length > 0 ? itemMenu : emptyItemMenu" [disableRipple]="true">
                 <img class="itemImage" src="assets/svg/emptyItemSlot.svg"></button>
-                <div *ngIf="!isBattleItemSlotUnequipped(i)">
-                    <app-item-belt-item [slotNumber]="i"></app-item-belt-item>
-                </div>
+            <div *ngIf="!isBattleItemSlotUnequipped(i)">
+                <app-item-belt-item [slotNumber]="i"></app-item-belt-item>
+            </div>
         </div>
     </div>
 </div>
@@ -95,5 +110,9 @@
     </table>
 </mat-menu>
 
-<mat-menu #emptyItemMenu="matMenu">    
+<mat-menu #emptyItemMenu="matMenu">
 </mat-menu>
+
+<ng-template #dpsTemplate>
+    Damage Per Second is calculated over a 120 second period and is reset upon changing sub zones.    
+</ng-template>

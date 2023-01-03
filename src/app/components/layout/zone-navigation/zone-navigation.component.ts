@@ -10,6 +10,7 @@ import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -35,7 +36,7 @@ export class ZoneNavigationComponent implements OnInit {
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
-    private menuService: MenuService) { }
+    private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService) { }
 
   ngOnInit(): void {
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
@@ -69,16 +70,32 @@ export class ZoneNavigationComponent implements OnInit {
         this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
 
       var currentSubzone = this.availableSubZones.find(item => item.isSelected);
-      if (this.autoProgress && currentSubzone !== undefined && 
-        (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0  || currentSubzone.isTown))
-      {
-        this.selectNextSubzone();        
+      if (this.autoProgress && currentSubzone !== undefined &&
+        (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
+        this.selectNextSubzone();
       }
     });
   }
 
   selectNextSubzone() {
-    var currentBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
+    var nextSubzoneFound = false;
+    var reverseOrderBallads = this.globalService.globalVar.ballads.slice().reverse();
+    reverseOrderBallads.filter(item => item.isAvailable).forEach(ballad => {
+      if (!nextSubzoneFound) {
+        var reverseZones = ballad.zones.slice().reverse();
+        reverseZones.filter(item => item.isAvailable).forEach(zone => {
+          var reverseSubzones = zone.subzones.slice().reverse();
+          reverseSubzones.filter(item => item.isAvailable).forEach(subzone => {
+            if (!nextSubzoneFound && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {
+              nextSubzoneFound = true;
+              this.selectSubZone(subzone, zone);
+            }
+          });
+        })
+      }
+    });
+
+    /*var currentBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
 
     if (currentBallad !== undefined) {
       var currentZone = currentBallad.zones.find(item => item.isSelected);
@@ -90,7 +107,7 @@ export class ZoneNavigationComponent implements OnInit {
         if (incompleteSubzone !== undefined)
           this.selectSubZone(incompleteSubzone, currentZone);
       }
-    }
+    }*/
   }
 
   selectBallad(ballad: Ballad) {
@@ -133,8 +150,10 @@ export class ZoneNavigationComponent implements OnInit {
 
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
 
-    
     var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
     if (enemyOptions.length > 0) {
       var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
@@ -155,8 +174,7 @@ export class ZoneNavigationComponent implements OnInit {
           if (zone.subzones !== undefined && zone.subzones.length > 0)
             zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
               subzone.isSelected = false;
-              if (subzone.isTown)
-              {
+              if (subzone.isTown) {
                 latestShop = subzone;
                 relatedZone = zone;
                 relatedBallad = ballad;
@@ -164,17 +182,17 @@ export class ZoneNavigationComponent implements OnInit {
             });
         });
     });
-        
+
     latestShop.isSelected = true;
     latestShop.showNewNotification = false;
     if (relatedZone !== undefined)
       relatedZone.isSelected = true;
     if (relatedBallad !== undefined)
       relatedBallad.isSelected = true;
-    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;  
-    
+    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
+
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);  
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
   }
 
   getBalladClass(ballad: Ballad) {
@@ -192,9 +210,9 @@ export class ZoneNavigationComponent implements OnInit {
 
     return {
       'selected': ballad.isSelected,
-      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,      
-      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,  
-      'completedSubzoneColor': allSubZonesCompleted      
+      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,
+      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,
+      'completedSubzoneColor': allSubZonesCompleted
     };
   }
 
@@ -210,20 +228,20 @@ export class ZoneNavigationComponent implements OnInit {
 
     return {
       'selected': zone.isSelected,
-      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,      
-      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,  
-      'completedSubzoneColor': allSubZonesCompleted      
+      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,
+      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,
+      'completedSubzoneColor': allSubZonesCompleted
     };
   }
 
   getSubzoneClass(subzone: SubZone) {
     var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0;
-    
+
     return {
       'selected': subzone.isSelected,
-      'unclearedSubzoneColor': subzone.victoriesNeededToProceed > subzone.victoryCount,      
-      'clearedSubzoneColor': subzone.victoriesNeededToProceed <= subzone.victoryCount && !achievementsCompleted,  
-      'completedSubzoneColor': achievementsCompleted      
+      'unclearedSubzoneColor': subzone.victoriesNeededToProceed > subzone.victoryCount,
+      'clearedSubzoneColor': subzone.victoriesNeededToProceed <= subzone.victoryCount && !achievementsCompleted,
+      'completedSubzoneColor': achievementsCompleted
     };
   }
 
@@ -231,13 +249,12 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
   }
 
-  getSubZoneSubText(subzone: SubZone) {    
+  getSubZoneSubText(subzone: SubZone) {
     var text = "";
 
     if (subzone.isTown)
       text = "(Town)";
-    else
-    {
+    else {
       text = "(" + subzone.victoryCount.toString();
       if (subzone.victoriesNeededToProceed > subzone.victoryCount)
         text += "/" + subzone.victoriesNeededToProceed;

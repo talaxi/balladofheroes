@@ -4,6 +4,7 @@ import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enu
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { ResourceGeneratorService } from 'src/app/services/resources/resource-generator.service';
@@ -22,11 +23,20 @@ export class ShoppingItemViewComponent implements OnInit {
   subscription: any;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService, 
-    private utilityService: UtilityService, private globalService: GlobalService) { }
+    private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {    
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
     this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
+    this.setItemPurchasePrice();
+
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      this.setItemPurchasePrice();
+    });
+  }
+
+  setItemPurchasePrice() {
+    this.purchaseResourcesRequired = "";
     this.item.purchasePrice.forEach(resource => {
       var displayName = this.lookupService.getItemName(resource.item);
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
@@ -39,7 +49,7 @@ export class ShoppingItemViewComponent implements OnInit {
 
     if (this.purchaseResourcesRequired.length > 0) {
       this.purchaseResourcesRequired = this.utilityService.getSanitizedHtml(this.purchaseResourcesRequired);
-    }    
+    }   
   }
 
   getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum, amountNeeded: number, amountOwned: number) {

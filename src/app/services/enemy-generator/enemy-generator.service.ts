@@ -31,7 +31,7 @@ export class EnemyGeneratorService {
       enemy.name = "Water Serpent";
       enemy.battleStats = new CharacterStats(10, 12, 4, 5, 1, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.xpGainFromDefeat = 2200;
+      enemy.xpGainFromDefeat = 22;
       enemy.coinGainFromDefeat = 0;
     }
     if (type === BestiaryEnum.Crustacean)
@@ -88,7 +88,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Patriarch)
     {
       enemy.name = "Patriarch";
-      enemy.battleStats = new CharacterStats(125, 25, 8, 8, 5, 40); 
+      enemy.battleStats = new CharacterStats(125, 24, 8, 8, 5, 40); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 100; 
@@ -100,7 +100,7 @@ export class EnemyGeneratorService {
       slash.dealsDirectDamage = true;
       slash.cooldown = slash.currentCooldown = 18;
       slash = this.randomizeCooldown(slash);
-      slash.targetGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .8, false, false));
+      slash.targetGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .9, false, false));
       enemy.abilityList.push(slash);
 
       enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .2));
@@ -250,7 +250,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Sybaris)
     {
       enemy.name = "Sybaris";
-      enemy.battleStats = new CharacterStats(750, 46, 40, 25, 25, 75); 
+      enemy.battleStats = new CharacterStats(700, 41, 37, 23, 20, 75); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 150; 
@@ -258,7 +258,7 @@ export class EnemyGeneratorService {
       var bite = new Ability();
       bite.name = "Bite";
       bite.isAvailable = true;
-      bite.effectiveness = 1.75;
+      bite.effectiveness = 1.7;
       bite.dealsDirectDamage = true;
       bite.cooldown = bite.currentCooldown = 22;
       bite = this.randomizeCooldown(bite);

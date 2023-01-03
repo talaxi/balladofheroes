@@ -148,6 +148,11 @@
     width: 100%;
 }
 
+.spaceBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
 .floatRight {
     float: right;
 }

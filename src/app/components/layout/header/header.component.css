@@ -4,6 +4,10 @@
     height: 100%;
 }
 
+.gameState {
+    height: 100%;
+}
+
 .extraTimeItem {    
     width: 25%;
     color: var(--foreground-default);

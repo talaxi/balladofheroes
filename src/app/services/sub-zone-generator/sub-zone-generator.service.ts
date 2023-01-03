@@ -400,7 +400,7 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.DodonaMountainPassOne) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 2));
     }
-    if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
+    if (type === SubZoneEnum.DodonaMountainPassTwo) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 5));
     }
 
@@ -506,6 +506,7 @@ export class SubZoneGeneratorService {
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronHammer));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ShortBow));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronShield));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HealingHerb));
 
     //every general shop should have access to everything previous shop had
     if (subzoneType === SubZoneEnum.DodonaDelphi) {
@@ -519,7 +520,6 @@ export class SubZoneGeneratorService {
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeSword));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeHammer));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LongBow));
-    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HealingHerb));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ThrowingStone));
 
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FortifiedBronzeSword));

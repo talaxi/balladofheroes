@@ -15,6 +15,8 @@ import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { GameLogService } from 'src/app/services/battle/game-log.service';
+import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 
 @Component({
   selector: 'app-party',
@@ -39,11 +41,13 @@ export class PartyComponent implements OnInit {
   partyMember2CheckSubscription: any;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService,
-    private gameLoopService: GameLoopService, private menuService: MenuService, private utilityService: UtilityService) { }
+    private gameLoopService: GameLoopService, private menuService: MenuService, private utilityService: UtilityService,
+    private dpsCalculatorService: DpsCalculatorService) { }
 
   ngOnInit(): void {
     this.party = this.globalService.getActivePartyCharacters(false);   
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
+    console.log("Count: " + this.activeCharacterCount);
     this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
@@ -305,6 +309,22 @@ export class PartyComponent implements OnInit {
 
   manuallyTrigger(character: Character) {
     character.overdriveInfo.manuallyTriggered = true;
+  }
+
+  getPartyDps() {
+    var dps = 0;
+
+    dps = this.dpsCalculatorService.calculatePartyDps();
+
+    return dps;
+  }
+
+  getEnemyDps() {
+    var dps = 0;
+
+    dps = this.dpsCalculatorService.calculateEnemyDps();
+
+    return dps;
   }
 
   ngOnDestroy() {
