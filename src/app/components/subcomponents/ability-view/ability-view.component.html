@@ -5,8 +5,8 @@
                 <span class='abilityTimer' [ngClass]="{'manualModeImage': !autoMode}"><img class="abilityImage" [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)"></span>                
                 <span *ngIf="!autoMode" class="manualModeText"><strong>OFF</strong></span>
             </div>
-            <!--<mat-spinner *ngIf="!lookupService.isUIHidden" class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate" [diameter]="spinnerDiameter"
-                [strokeWidth]="strokeWidth" [value]="isAutoAttack ? getCharacterAutoAttackProgress() : getAbilityProgress()"></mat-spinner>-->
+            <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate" [diameter]="spinnerDiameter"
+                [strokeWidth]="strokeWidth" [value]="isAutoAttack ? getCharacterAutoAttackProgress() : getAbilityProgress()"></mat-spinner>
             
         </div>
     </div>

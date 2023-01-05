@@ -4,6 +4,7 @@ import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -21,8 +22,9 @@ export class AbilityViewComponent implements OnInit {
   spinnerDiameter = 10;
   strokeWidth = 5;
   autoMode: boolean;
+  spinnerDivSubscription: any;
 
-  constructor(public lookupService: LookupService, private utilityService: UtilityService) { }
+  constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
     if (this.ability === undefined)
@@ -32,11 +34,23 @@ export class AbilityViewComponent implements OnInit {
   }
 
   ngAfterViewInit(): void {
-    this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
+    if (this.spinnerDiv.nativeElement.offsetHeight > 0)
+      this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;    
+
+    if (this.spinnerDiv.nativeElement.offsetHeight === 0)
+    {
+      this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+        if (this.spinnerDiv.nativeElement.offsetHeight > 0)
+          this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;        
+
+        if (this.spinnerDiv.nativeElement.offsetHeight > 0)
+          this.spinnerDivSubscription.unsubscribe();
+      });
+    }
   }
 
-  getCharacterAutoAttackProgress() {
-    var timeToAutoAttack = this.character.battleInfo.timeToAutoAttack;//this.lookupService.getAutoAttackTime(this.character);    
+  getCharacterAutoAttackProgress() {    
+    var timeToAutoAttack = this.character.battleInfo.timeToAutoAttack;//this.lookupService.getAutoAttackTime(this.character);        
     return (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
   }
 
@@ -53,7 +67,7 @@ export class AbilityViewComponent implements OnInit {
 
   getAbilityProgress() {
     if (this.ability === undefined)
-      return;
+      return 0;
 
     var progress = 100 - ((this.ability.currentCooldown / this.ability.cooldown) * 100);
     
@@ -111,5 +125,10 @@ export class AbilityViewComponent implements OnInit {
     else {
       return this.lookupService.getCharacterColorClass(this.character.type);
     }
+  }
+
+  ngOnDestroy() {
+    if (this.spinnerDivSubscription !== undefined)
+      this.spinnerDivSubscription.unsubscribe();
   }
 }
