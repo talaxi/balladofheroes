@@ -15,6 +15,7 @@ import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { UtilityService } from './services/utility/utility.service';
 import { SubZone } from './models/zone/sub-zone.model';
 import { LookupService } from './services/lookup.service';
+import { StoryService } from './services/story/story.service';
 declare var LZString: any;
 
 @Component({
@@ -34,7 +35,7 @@ export class AppComponent {
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
     private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
     private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
-    private utilityService: UtilityService, private lookupService: LookupService) {
+    private utilityService: UtilityService, private lookupService: LookupService, private storyService: StoryService) {
 
   }
 
@@ -109,6 +110,10 @@ export class AppComponent {
     /*var selectedTheme = this.globalService.globalVar.settings.get("theme");
     if (selectedTheme !== null && selectedTheme !== undefined)
       this.themeService.setActiveTheme(selectedTheme);*/
+      
+    this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
+    this.storyService.showStory = false;
+    this.utilityService.isBattlePaused = false;
   }
 
   handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {
