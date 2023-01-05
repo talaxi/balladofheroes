@@ -21,7 +21,7 @@ export class DeploymentService {
 
   setStagingMode() {
     this.devModeActive = false;
-    this.forceStartNewGame = true;
+    this.forceStartNewGame = false;
     this.codeCreationMode = true;
     this.showStats = false;
   }

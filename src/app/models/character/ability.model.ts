@@ -30,9 +30,12 @@ export class Ability {
     threshold: number; //some abilities are triggered by a specific threshold
     autoMode: boolean; //users can swap between auto mode and manual mode
     manuallyTriggered: boolean;
+    abilityUpgradeLevel: number;
+    isAbilityPermanent: boolean;
 
     constructor() {
         this.effectiveness = 1;
+        this.abilityUpgradeLevel = 0;
         this.secondaryEffectiveness = 1;
         this.cooldown = 15;
         this.count = 0;
@@ -47,5 +50,7 @@ export class Ability {
         this.targetGainsStatusEffect = [];
         this.autoMode = true;
         this.manuallyTriggered = false;
+
+        this.isAbilityPermanent = false;
     }
 }

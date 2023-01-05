@@ -22,7 +22,7 @@
   </div>  
   <div class="equipmentDiv">
     <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong>Necklace: </strong>
-      {{getEquippedItemNameByType(equipmentTypeEnum.Necklace)}}</span>
+      <span [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Necklace)"></span></span>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Necklace)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Necklace)">X</button>
   </div>
 </div>

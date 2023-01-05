@@ -54,7 +54,7 @@ export class CurrentEquipmentViewComponent implements OnInit {
 
   openEquipmentModal(content: any) {
     this.equipmentModalOpened = true;
-    this.dialog.open(content, { width: '50%', height: '50%', panelClass: 'mat-dialog-no-scroll' });
+    this.dialog.open(content, { width: '50%', height: '55%', panelClass: 'mat-dialog-no-scroll' });
 
     /*dialogRef.afterClosed().subscribe(result => {
       console.log(`Dialog result: ${result}`);

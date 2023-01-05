@@ -413,6 +413,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
       balladEnums.push(BalladEnum.Gorgon);
     }
+    if (type === SubZoneEnum.LibyaIsleCenter) {
+      balladEnums.push(BalladEnum.Labors);
+    }
 
     return balladEnums;
   }
@@ -425,6 +428,9 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.DodonaAmbracianGulf) {
       zoneEnums.push(ZoneEnum.Libya);
+    }
+    if (type === SubZoneEnum.LibyaIsleCenter) {
+      zoneEnums.push(ZoneEnum.Nemea);
     }
 
     return zoneEnums;
@@ -535,6 +541,7 @@ export class SubZoneGeneratorService {
     }
 
     if (subzoneType === SubZoneEnum.AsphodelHallOfTheDead) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.Story, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.Alchemist, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.ChthonicFavor, []));
 

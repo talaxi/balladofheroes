@@ -172,6 +172,13 @@
   animation: fade 3s forwards;
 }
 
+.loadingContainer {
+  height: 100%;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
 @keyframes fade {
   0% {opacity: 0%}
   100% {opacity: 100%}

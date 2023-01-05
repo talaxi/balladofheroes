@@ -88,6 +88,8 @@ export class ZoneNavigationComponent implements OnInit {
           reverseSubzones.filter(item => item.isAvailable).forEach(subzone => {
             if (!nextSubzoneFound && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
+              this.selectBallad(ballad)
+              this.selectZone(zone);
               this.selectSubZone(subzone, zone);
             }
           });
@@ -193,6 +195,8 @@ export class ZoneNavigationComponent implements OnInit {
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+
+    this.globalService.globalVar.settings.set("autoProgress", false);
   }
 
   getBalladClass(ballad: Ballad) {
@@ -200,7 +204,7 @@ export class ZoneNavigationComponent implements OnInit {
     var allSubZonesCompleted = true;
 
     ballad.zones.forEach(zone => {
-      zone.subzones.forEach(subzone => {
+      zone.subzones.filter(item => !item.isTown).forEach(subzone => {
         if (subzone.victoryCount < subzone.victoriesNeededToProceed)
           allSubZonesCleared = false;
         if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0)
@@ -219,7 +223,7 @@ export class ZoneNavigationComponent implements OnInit {
   getZoneClass(zone: Zone) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
-    zone.subzones.forEach(subzone => {
+    zone.subzones.filter(item => !item.isTown).forEach(subzone => {
       if (subzone.victoryCount < subzone.victoriesNeededToProceed)
         allSubZonesCleared = false;
       if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0)

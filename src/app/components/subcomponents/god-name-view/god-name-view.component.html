@@ -9,7 +9,7 @@
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar">
             </mat-progress-bar>
         </div>
-        <div *ngIf="character.assignedGod1 === godEnum.Apollo" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(1)"
+        <div *ngIf="character.assignedGod1 === godEnum.Apollo && godSpecificAbilityUnlocked(1)" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(1)"
             (contextmenu)="toggleAuto(1)">
             <span *ngIf="!isGodSpecificAbilityAuto(1)" class="manualGodAbilityText">OFF</span>
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(1)"
@@ -30,7 +30,7 @@
             <mat-progress-bar mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar">
             </mat-progress-bar>
         </div>
-        <div *ngIf="character.assignedGod2 === godEnum.Apollo" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(2)"
+        <div *ngIf="character.assignedGod2 === godEnum.Apollo && godSpecificAbilityUnlocked(2)" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(2)"
             (contextmenu)="toggleAuto(2)">
             <span *ngIf="!isGodSpecificAbilityAuto(2)" class="manualGodAbilityText">OFF</span>
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(2)"

@@ -142,8 +142,8 @@ export class AppComponent {
       this.bankedTime += deltaTime - batchTime;
       deltaTime = batchTime;
 
-      if (this.bankedTime > 60 && this.catchupDialog === undefined)
-        this.catchupDialog = this.openCatchUpModal(loadingContent);
+      //if (this.bankedTime > 60 && this.catchupDialog === undefined)
+        //this.catchupDialog = this.openCatchUpModal(loadingContent);
     }
 
     if (deltaTime < batchTime && this.bankedTime > 0) {

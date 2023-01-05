@@ -11,8 +11,8 @@
     </div>
     <div class="godStats">
         <div class="leftAlignText">
-            <span class="s4Heading">Stat Gain</span>
-            <br />
+            <span class="sectionHeaderText sectionHeading">Stats</span>
+            <div class="sectionInfo">
             <span><strong>Max HP:</strong> {{god.statGain.maxHp | number : '1.0-0'}}</span>
             <br />
             <span><strong>Attack:</strong> {{god.statGain.attack | number : '1.0-0'}}</span>
@@ -24,27 +24,30 @@
             <span><strong>Defense:</strong> {{god.statGain.defense | number : '1.0-0'}}</span>
             <br />
             <span><strong>Resistance:</strong> {{god.statGain.resistance | number : '1.0-0'}}</span>
+            </div>
+        </div>
+    </div>
+
+    <div class="godUpcoming">
+        <span class="sectionHeaderText sectionHeading">Upcoming Level Rewards</span>        
+        <div class="sectionInfo">
+        <div [innerHtml]="getGodLevelRewards()">
+        </div>
         </div>
     </div>
 
     <div class="godAbilities">
-        <span class="s4Heading">Abilities</span><span> <span class="s5Heading leftShift">Ability stats based on:
-                <select [(ngModel)]="characterTemplate">
-                    <option *ngFor="let character of characters" [value]="character.type">{{character.name}}</option>
-                    
+        <span class="sectionHeaderText sectionHeading">Abilities</span><span>
+            <span class="s5Heading leftShift">Ability stats based on: <select [(ngModel)]="characterTemplate">
+                    <option *ngFor="let character of characters" [value]="character.type">{{character.name}}
+                    </option>
                 </select>
-                <!-- <mat-form-field appearance="fill">
-            <mat-label>Favorite food</mat-label>
-            <mat-select>
-              <mat-option *ngFor="let character of characters" [value]="characterTemplate">
-                
-              </mat-option>
-            </mat-select>
-          </mat-form-field>-->
             </span></span>
-        <div *ngFor="let ability of god.abilityList">
-            <strong [ngClass]="getGodColor()">{{ability.name}}</strong> - <span
-                [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
+        <div class="sectionInfo">
+            <div *ngFor="let ability of god.abilityList">
+                <strong [ngClass]="getGodColor()">{{ability.name}}</strong> - <span
+                    [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
+            </div>
         </div>
     </div>
 </div>

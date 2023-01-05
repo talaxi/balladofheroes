@@ -11,6 +11,7 @@ export class BattleInfo {
     @Type(() => StatusEffect)
     statusEffects: StatusEffect[];
     barrierValue: number;
+    fastAutoAttackCount: number;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
@@ -18,6 +19,7 @@ export class BattleInfo {
         this.autoAttackAutoMode = true;
         this.autoAttackManuallyTriggered = false;
         this.barrierValue = 0;
+        this.fastAutoAttackCount = 0;
         this.statusEffects = [];
 
         if (characterType === CharacterEnum.Warrior)

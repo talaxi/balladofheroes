@@ -5,7 +5,9 @@ import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { BattleService } from 'src/app/services/battle/battle.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
+import { StoryService } from 'src/app/services/story/story.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 
 @Component({
@@ -24,7 +26,7 @@ export class ShopViewComponent implements OnInit {
   shopItemCells: ShopItem[];
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
@@ -55,6 +57,11 @@ export class ShopViewComponent implements OnInit {
     }
 
     return text;
+  }
+
+  progressStory() {
+    this.storyService.showStory = true;
+    this.battleService.checkScene();
   }
 
   openShop(option: ShopOption, content: any) {

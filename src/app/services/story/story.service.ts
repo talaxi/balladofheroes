@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -110,7 +111,7 @@ export class StoryService {
 
         //TODO: REMOVE THIS
         //VV
-          this.sceneText += "<br/><br/><i>For testing purposes, each character will now skip ahead to having two gods in use. In future iterations of this game, this will take longer and play out more naturally. Thanks for making it this far!</i>";
+        this.sceneText += "<br/><br/><i>For testing purposes, each character will now skip ahead to having two gods in use. In future iterations of this game, this will take longer and play out more naturally. Thanks for making it this far!</i>";
         //^^
       }
     }
@@ -120,12 +121,12 @@ export class StoryService {
 
       if (this.currentPage === 1) {
         this.sceneText = "Like Perseus before you, you wander through the oak grove outside of Dodona. The stories say that the trees spoke advice to Perseus, but to you they are quiet. As you make your way around the grove, a youthful man wearing a feather-brimmed hat steps out to greet you.<br/><br/>" +
-          "<span class='hermesColor bold'>“This is your champion? Seems a little… fresh, don't you think?”</span> he says. True to the stories, <span class='HermesColor bold'>Hermes</span> has arrived to greet you, and <span class='athenaColor bold'>Athena</span> just behind him.<br/><br/>" +
+          "<span class='hermesColor bold'>“This is your champion? Seems a little… fresh, don't you think?”</span> he says. True to the stories, <span class='hermesColor bold'>Hermes</span> has arrived to greet you with <span class='athenaColor bold'>Athena</span> just behind him.<br/><br/>" +
           "<span class='athenaColor bold'>“We must all start somewhere, brother.” Athena</span> says as she turns to you. <span class='athenaColor bold'>“You've done well. But your real trial is only just beginning.”</span>";
       }
       else if (this.currentPage === 2) {
         this.sceneText = "<span class='athenaColor bold'>Athena</span> steps forward towards you, shield in hand. <span class='athenaColor bold'>“The next step on your journey is to slay Medusa. We're here to help you.”</span> She hands you the shield, its surface so clean it looks almost like a mirror. <br/><br/>" +
-          "<span class='hermesColor bold'>“Take these too. They'll take you straight where you need to be.” Hermes</span> says as he hands you a pair of sandals. <span class='hermesColor bold'>“You know, I wasn't sure you would come all the way here. You know how the story goes right? Medusa is in Libya. Just wanted to do some sightseeing?”</span><br/><br/>" +
+          "<span class='hermesColor bold'>“Take these too. They'll take you straight where you need to be.” Hermes</span> says as he hands you a pair of sandals. <span class='hermesColor bold'>“You know, I wasn't sure you would come all the way here. You know how the story went right? Medusa is in Libya. Just wanted to do some sightseeing?”</span><br/><br/>" +
           "<span class='adventurerColor bold'>“Well… I just wanted to follow in the footsteps of a real champion.”</span> You reply.";
       }
       else if (this.currentPage === 3) {
@@ -153,7 +154,7 @@ export class StoryService {
       else if (this.currentPage === 2) {
         this.sceneText = "As you work your way around the roads of Nemea, you find a towering figure seemingly waiting for you. " +
           "A Giant?! Most were imprisoned or dead, but here was one in your path." +
-          "<span class='bold'>“Little champions, I've been waiting a looong time for ya. Come on over, don't be shy!”</span> it bellows as it makes its way towards you." +
+          "<span class='bold'>“Little champions, I've been waiting a looong time for ya. Come on over, don't be shy!”</span> it bellows as it makes its way towards you. <br/> <br/>" +
           "This is what <span class='athenaColor bold'>Athena</span> trusted you to handle. Time to make her proud.";
       }
     }
@@ -171,12 +172,12 @@ export class StoryService {
           "<span class='hermesColor bold'>“Get up, let's get you situated here. Let's go see Hades.”</span>";
       }
     }
-    if (this.globalService.globalVar.currentStoryId === 9 && this.showFirstTimeUnderworldStory) {
+    if (this.globalService.globalVar.currentStoryId === 9) {
       //Speak to Hades for the first time
       this.pageCount = 1;
 
       if (this.currentPage === 1) {
-        this.sceneText = "<i>This is as far as the game goes for now. Thanks for playing and stay tuned for more!</i>";
+        this.sceneText = "<i>This is as far as the game goes for now. Feel free to go back and try out things you may have missed earlier in the game. Thanks for playing and stay tuned for more!</i>";
       }
     }
 
@@ -213,6 +214,22 @@ export class StoryService {
         setTimeout(() => {
           this.endFirstTimeUnderworldScene = false;
         }, 5000);
+      }
+      if (this.globalService.globalVar.currentStoryId === 10) {
+        this.utilityService.isBattlePaused = false;
+        var championBallad = this.balladService.findBallad(BalladEnum.Champion);
+        if (championBallad !== undefined)
+          championBallad.isAvailable = true;
+
+        var gorgonBallad = this.balladService.findBallad(BalladEnum.Gorgon);
+        if (gorgonBallad !== undefined)
+          gorgonBallad.isAvailable = true;
+
+        var laborsBallad = this.balladService.findBallad(BalladEnum.Labors);
+        if (laborsBallad !== undefined)
+        laborsBallad.isAvailable = true;
+
+        this.globalService.globalVar.currentStoryId = 9;
       }
     }
 

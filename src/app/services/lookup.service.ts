@@ -430,7 +430,7 @@ export class LookupService {
 
     //necklace
     if (type === ItemsEnum.ForgottenLocket) {
-      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 5, 5, 5, 5, 5);
     }
 
@@ -469,9 +469,13 @@ export class LookupService {
 
   getAutoAttackDescription(character: Character) {
     var description = "";
-    var secondsPerAutoAttack = this.getAutoAttackTime(character).toFixed(3);
+    var secondsPerAutoAttack = character.battleInfo.timeToAutoAttack; //this.getAutoAttackTime(character).toFixed(3);
+    var totalAutoAttackCount = this.getTotalAutoAttackCount(character);
 
-    description = "Deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target every <strong>" + secondsPerAutoAttack + "</strong> seconds."
+    description = "Deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + totalAutoAttackCount + " times every <strong>" + secondsPerAutoAttack + "</strong> seconds.";
+
+    /*if (character.battleInfo.fastAutoAttackCount > 0)
+      description += " Additionally, deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + character.battleInfo.fastAutoAttackCount + (character.battleInfo.fastAutoAttackCount === 1 ? "time" : "times") + " every <strong>" + (character.battleInfo.timeToAutoAttack / 2) + "</strong> seconds.";*/
 
     return description;
   }
@@ -804,21 +808,45 @@ export class LookupService {
     return itemEffect;
   }
 
-  getAutoAttackTime(character: Character) {
-    var timeToAutoAttack = character.battleInfo.timeToAutoAttack;
-    var adjustedAgility = this.getAdjustedAgility(character);
+  getTotalAutoAttackCount(character: Character) {
+    var adjustedAgility = this.getAdjustedAgility(character);    
+    var agilityPerAdditionalAttack = 250;
 
+    return 1 + (adjustedAgility / agilityPerAdditionalAttack);
+  }
+
+  getAutoAttackTime(character: Character) {
+    character.battleInfo.fastAutoAttackCount  = 0;
+    var timeToAutoAttack = character.battleInfo.timeToAutoAttack;
+    var adjustedAgility = this.getAdjustedAgility(character);    
+    var attackCap = 100;
+    var attackCount = 0;
+    
+    //120 * (log(.00035 * x + 1))      
     var amplifier = 120;
     var horizontalStretch = .00035;
     var horizontalPosition = 1;
-
-    //500 * (log(.0035 * 10 + 1)) + 50      
-    var modifierAmount = amplifier * Math.log10(horizontalStretch * (adjustedAgility) + horizontalPosition);
-
-    //if it goes below half way, needs to break point and start over    
-    timeToAutoAttack -= modifierAmount;
-
-    //TODO: return an object containing number of hits and time for normal hit
+    var timerReduction = amplifier * Math.log10(horizontalStretch * (adjustedAgility) + horizontalPosition);
+        
+    //can return .1 or 100
+    //against 5s let's say
+    while (attackCount < attackCap && timerReduction > 0)
+    {
+      timeToAutoAttack = character.battleInfo.timeToAutoAttack;
+      
+      //if it goes below half way, needs to break point and start over          
+      if (timerReduction > character.battleInfo.timeToAutoAttack / 2)
+      {
+        timerReduction -= character.battleInfo.timeToAutoAttack / 2;
+        character.battleInfo.fastAutoAttackCount += 1;
+      }
+      else
+      {
+        timeToAutoAttack -= timerReduction;
+        timerReduction = 0;
+      }
+    }
+    
     return timeToAutoAttack;
   }
 

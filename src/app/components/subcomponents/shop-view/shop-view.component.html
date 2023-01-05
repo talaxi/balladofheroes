@@ -2,6 +2,7 @@
     <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter" class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
     <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText" (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}}</button>
     <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText" (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}}</button>
+    <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak to Hades</button>
     <br *ngIf="i < shopOptions.length-1"/>
     <br *ngIf="i < shopOptions.length-1"/>
 </div>

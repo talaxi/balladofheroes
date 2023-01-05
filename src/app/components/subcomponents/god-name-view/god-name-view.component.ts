@@ -277,6 +277,28 @@ export class GodNameViewComponent implements OnInit {
     return false;
   }
 
+  godSpecificAbilityUnlocked(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (god === undefined)
+      return false;
+
+      
+    //each god may have different specifications
+    if (god.type === GodEnum.Apollo) {
+      var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
+      if (ostinato !== undefined)
+      {
+        return god.level >= ostinato.requiredLevel;
+      }      
+    }
+
+    return false;
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined) {
       this.subscription.unsubscribe();

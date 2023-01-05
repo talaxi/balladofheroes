@@ -56,7 +56,12 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     god.exp = 0;
     god.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);    
     god.lastStatGain = CharacterStatEnum.Resistance;
+    god.statGainCount = 0;
     god.expToNextLevel = 200;
+    god.abilityList.forEach(ability => {
+      if (god.level < ability.requiredLevel && !ability.isAbilityPermanent)
+        ability.isAvailable = false;
+    });
     //reset god abilities
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {

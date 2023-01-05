@@ -253,6 +253,12 @@ h1 {
   font-weight: var(--s5-weight);
 }
 
+.sectionHeading {
+  font-size: var(--s4-size);
+  font-weight: bold;
+  /*color:*/
+}
+
 .m1Heading {
   font-size: var(--m1-size);
   font-weight: var(--m1-weight);
@@ -650,4 +656,17 @@ button {
 
 .noMargin {
   margin: 0;
+}
+
+
+.sectionHeaderText
+{
+  color: var(--foreground-quaternary);
+  background-color: var(--button-selected);
+  padding: 0 1rem;
+}
+
+.sectionInfo {
+  margin-top: .5rem;
+  margin-left: .25rem;
 }

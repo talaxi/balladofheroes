@@ -29,9 +29,7 @@ export class DpsCalculatorService {
   }
 
   addEnemyDamageAction(damageDealt: number) {
-    this.enemyDamagingActions.push([damageDealt, this.rollingAverageTimer]);
-    console.log("Add: (" + damageDealt + ", " + this.rollingAverageTimer + ")");
-    console.log(this.enemyDamagingActions);
+    this.enemyDamagingActions.push([damageDealt, this.rollingAverageTimer]);    
   }
 
   calculatePartyDps() {

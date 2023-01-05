@@ -47,7 +47,7 @@ export class PartyComponent implements OnInit {
   ngOnInit(): void {
     this.party = this.globalService.getActivePartyCharacters(false);   
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
-    console.log("Count: " + this.activeCharacterCount);
+        
     this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      

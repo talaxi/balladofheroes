@@ -14,6 +14,9 @@
                 <app-menu-display class="menuDisplay screenMargin"></app-menu-display>
             </div>
         </div>
+        <div class="s1Heading loadingContainer" *ngIf="lookupService.isUIHidden">
+            Loading...
+        </div>
     </div>
     <div class="footerArea">
         <app-footer [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-footer>

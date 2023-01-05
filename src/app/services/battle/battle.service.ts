@@ -54,10 +54,11 @@ export class BattleService {
 
   handleBattle(deltaTime: number, loadingContent: any) {
     var subZone = this.balladService.getActiveSubZone();
+    
     if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {
       this.checkScene();
     }
-    this.currentSubzoneType = subZone.type;
+    this.currentSubzoneType = subZone.type;    
 
     if (this.globalService.globalVar.activeBattle === undefined)
       this.initializeBattle();
@@ -331,7 +332,7 @@ export class BattleService {
   }
 
   checkAutoAttackTimer(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], deltaTime: number) {
-    var timeToAutoAttack = this.lookupService.getAutoAttackTime(character);
+    var timeToAutoAttack = character.battleInfo.timeToAutoAttack;//this.lookupService.getAutoAttackTime(character);
 
     //hopefully unnecessary fail safe
     var autoAttacksAtOnce = 0;
@@ -370,7 +371,8 @@ export class BattleService {
       return false;
     }
 
-    var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier);
+    var totalAutoAttackCount = this.lookupService.getTotalAutoAttackCount(character);
+    var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier) * totalAutoAttackCount;
     var isCritical = this.isDamageCritical(character, target);
     var overdriveMultiplier = 1;
     var usingOverdrive = false;
@@ -382,14 +384,17 @@ export class BattleService {
       character.overdriveInfo.overdriveGaugeAmount = 0;
     }
     character.overdriveInfo.manuallyTriggered = false;
-
-    var damageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, overdriveMultiplier, damageMultiplier);
+    
+    var damageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, overdriveMultiplier, damageMultiplier);    
 
     var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attacks <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + " damage." + (usingOverdrive ? " <strong>OVERDRIVE!</strong>" : "") + (isCritical ? " <strong>Critical hit!</strong>" : "");
     this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
 
-    this.checkForEquipmentEffect(EffectTriggerEnum.OnAutoAttack, character, target, party, targets);
-    this.checkForEquipmentEffect(EffectTriggerEnum.ChanceOnAutoAttack, character, target, party, targets);
+    for (var i = 0; i < Math.floor(totalAutoAttackCount); i++)
+    {
+      this.checkForEquipmentEffect(EffectTriggerEnum.OnAutoAttack, character, target, party, targets);
+      this.checkForEquipmentEffect(EffectTriggerEnum.ChanceOnAutoAttack, character, target, party, targets);
+    }
 
     var thorns = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
     if (thorns !== undefined) {
@@ -485,6 +490,13 @@ export class BattleService {
         this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
         return true;
       }
+    }
+
+    var dodge = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Dodge);
+    if (dodge !== undefined) {
+      var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + "'s attack misses!";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+      return true;      
     }
 
     return false;
@@ -1136,8 +1148,7 @@ export class BattleService {
       //send you to the underworld
       var startingPoint = this.balladService.findSubzone(SubZoneEnum.AsphodelHallOfTheDead);
       if (startingPoint !== undefined) {
-        startingPoint.isSelected = true;
-        startingPoint.showNewNotification = false;
+        this.balladService.setActiveSubZone(startingPoint.type);
         this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
       }
 
@@ -1190,8 +1201,7 @@ export class BattleService {
 
         var startingPoint = this.balladService.findSubzone(SubZoneEnum.DodonaDelphi);
         if (startingPoint !== undefined) {
-          startingPoint.isSelected = true;
-          startingPoint.showNewNotification = false;
+          this.balladService.setActiveSubZone(startingPoint.type);
           this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
         }
 
@@ -1201,8 +1211,7 @@ export class BattleService {
         //you're still in the tutorial part of the game                        
         var startingPoint = this.balladService.findSubzone(SubZoneEnum.AigosthenaUpperCoast);
         if (startingPoint !== undefined) {
-          startingPoint.isSelected = true;
-          startingPoint.showNewNotification = false;
+          this.balladService.setActiveSubZone(startingPoint.type);
           this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
         }
 

@@ -17,7 +17,7 @@ export class EquipmentItemViewComponent implements OnInit {
   equipmentEffects = "";
   subscription: any;
 
-  constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService) { }
+  constructor(public lookupService: LookupService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
     this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment);

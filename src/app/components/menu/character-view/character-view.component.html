@@ -9,6 +9,7 @@
                 {{character.level + 1}}</span>
         </div>
 
+        <!-- TODO: ADD BACK WHENEVER YOU CAN CHANGE GODS -->
         <!--<div *ngIf="areGodsAvailable()" class="godInfo">
             <div class="leftAlignText">
                 Equipped Gods:
@@ -29,55 +30,64 @@
     </div>
     <div class="characterStats statContainer">
         <div class="equipment">
-            <span class="s4Heading">Equipment</span>
-            <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
-            </app-current-equipment-view>
+            <span class="sectionHeaderText sectionHeading">Equipment</span>
+            <div class="sectionInfo">
+                <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
+                </app-current-equipment-view>
+            </div>
         </div>
         <div class="primaryStats">
             <div class="leftAlignText">
-                <span class="s4Heading">Primary Stats</span>
+                <span class="sectionHeaderText sectionHeading">Primary Stats</span>
                 <br />
-                <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong>
-                    {{character.battleStats.maxHp | number : '1.0-0'}}</span>
-                <br />
-                <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong>
-                    {{character.battleStats.attack | number : '1.0-0'}}</span>
-                <br />
-                <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong>
-                    {{character.battleStats.agility | number : '1.0-0'}}</span>
-                <br />
-                <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong> {{character.battleStats.luck
-                    | number : '1.0-0'}}</span>
-                <br />
-                <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong>
-                    {{character.battleStats.defense | number : '1.0-0'}}</span>
-                <br />
-                <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong>
-                    {{character.battleStats.resistance | number : '1.0-0'}}</span>
+                <div class="sectionInfo">
+                    <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong>
+                        {{character.battleStats.maxHp | number : '1.0-0'}}</span>
+                    <br />
+                    <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong>
+                        {{character.battleStats.attack | number : '1.0-0'}}</span>
+                    <br />
+                    <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong>
+                        {{character.battleStats.agility | number : '1.0-0'}}</span>
+                    <br />
+                    <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong>
+                        {{character.battleStats.luck
+                        | number : '1.0-0'}}</span>
+                    <br />
+                    <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong>
+                        {{character.battleStats.defense | number : '1.0-0'}}</span>
+                    <br />
+                    <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong>
+                        {{character.battleStats.resistance | number : '1.0-0'}}</span>
+                </div>
             </div>
         </div>
         <div class="secondaryStats">
             <div class="leftAlignText">
-                <span class="s4Heading">Secondary Stats</span>
+                <span class="sectionHeaderText sectionHeading">Secondary Stats</span>
             </div>
         </div>
     </div>
     <div class="characterAbilities">
-        <span class="s4Heading">Character Abilities</span>
-        <div *ngFor="let ability of characterAbilityList">
-            <strong [ngClass]="getAbilityColor(false)">{{ability.name}}</strong> - <span
-                [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span>
+        <span class="sectionHeaderText sectionHeading">Character Abilities</span>
+        <div class="sectionInfo">
+            <div *ngFor="let ability of characterAbilityList">
+                <strong [ngClass]="getAbilityColor(false)">{{ability.name}}</strong> - <span
+                    [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span>
+            </div>
         </div>
         <br />
         <div *ngIf="hasGodEquipped()">
-            <span class="s4Heading">Equipped God Abilities</span>
-            <div *ngFor="let ability of god1AbilityList">
-                <strong [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong> - <span
-                    [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span>
-            </div>
-            <div *ngFor="let ability of god2AbilityList">
-                <strong [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong> - <span
-                    [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span>
+            <span class="sectionHeaderText sectionHeading">Equipped God Abilities</span>
+            <div class="sectionInfo">
+                <div *ngFor="let ability of god1AbilityList">
+                    <strong [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong> - <span
+                        [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span>
+                </div>
+                <div *ngFor="let ability of god2AbilityList">
+                    <strong [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong> - <span
+                        [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span>
+                </div>
             </div>
         </div>
     </div>

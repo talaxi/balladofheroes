@@ -29,8 +29,12 @@ export class UtilityService {
   public characterAbility2Level = 8;
   public defaultGodAbilityLevel = 1;
   public godPassiveLevel = 5;
-  public godAbility2Level = 25;
-  public godAbility3Level = 50;
+  public godAbility2Level = 20;
+  public godAbility3Level = 75;
+  public permanentDefaultGodAbilityLevel = 40;
+  public permanentPassiveGodLevel = 125;
+  public permanentGodAbility2Level = 175;
+  public permanentGodAbility3Level = 385;
 
   public godStatGainLevelIncrement = .05;
   public godStatGainBaseAmount = 3;
