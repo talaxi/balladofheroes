@@ -148,8 +148,7 @@ export class GodViewComponent implements OnInit {
         if (rewards !== "")
           rewards = rewards.substring(0, rewards.length - 2);
       }
-      if (nextLevelType === GodLevelIncreaseEnum.NewAbility) {
-        console.log(this.god.abilityList);
+      if (nextLevelType === GodLevelIncreaseEnum.NewAbility) {        
         if (nextLevel === this.utilityService.godPassiveLevel) {
           rewards += this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " (Passive Ability)";
         }

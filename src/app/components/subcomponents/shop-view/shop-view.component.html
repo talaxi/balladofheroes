@@ -27,9 +27,9 @@
   <hr class="noMargin" />
   <div class="filters">
     <span>Show:</span>
-    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'active': !(filterBattleItems || filterBattleItems) }" (click)="resetFilters()">All</button>
-    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'active': filterEquipment }" (click)="changeFilter('Equipment')">Equipment</button>
-    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'active': filterBattleItems }" (click)="changeFilter('Battle Items')">Battle Items</button>
+    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'filterActive': !(filterEquipment || filterBattleItems) }" (click)="resetFilters()">All</button>
+    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'filterActive': filterEquipment }" (click)="changeFilter('Equipment')">Equipment</button>
+    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'filterActive': filterBattleItems }" (click)="changeFilter('Battle Items')">Battle Items</button>
     <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>    
   </div>
   <hr class="noMargin" />

@@ -78,7 +78,7 @@ export class ShopViewComponent implements OnInit {
   }
 
   openShop(option: ShopOption, content: any) {
-    this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '35%', id: 'dialogNoPadding' });
+    this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '50%', id: 'dialogNoPadding' });
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General) {
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));

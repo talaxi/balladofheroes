@@ -691,6 +691,10 @@ export class LookupService {
       description = "Increase Resistance by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.MaxHpUp)
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
+      description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
+      description = "Increase damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     //why is euryale debuff reducing by -600%?
     if (statusEffect.type === StatusEffectEnum.AgilityDown)
@@ -705,6 +709,10 @@ export class LookupService {
       description = "Decrease Resistance by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.MaxHpDown)
       description = "Decrease Max HP by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.DamageDealtDown)
+      description = "Decrease damage dealt by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.DamageTakenDown)
+      description = "Decrease damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.Blind)
       description = "Auto attacks have a 50% chance to miss, dealing no damage and not triggering any associated effects.";
@@ -730,6 +738,8 @@ export class LookupService {
       description = "You have recently been defeated and are still nursing your wounds. Your primary stats are reduced by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.ThousandCuts)
       description = "Deal increased damage after every attack.";
+      if (statusEffect.type === StatusEffectEnum.DamageOverTime)
+      description = "Taking damage over time.";
 
     return description;
   }

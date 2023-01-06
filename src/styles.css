@@ -383,6 +383,11 @@ button:active:enabled {
   color: #28a745;
 }
 
+.marginHr {
+  width: 92.5%;
+  opacity: .75;
+}
+
 .miniHr {
   width: 80%;
   opacity: .75;

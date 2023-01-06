@@ -169,7 +169,7 @@ export class StoryService {
       }
       else if (this.currentPage === 2) {
         this.sceneText = "<span class='hermesColor bold'>“Guess you <i>were</i> a little too green. Don't be disappointed, not everyone can be the ultimate champion of the gods can they?”</span> You hear from a familiar voice." +
-          "<span class='hermesColor bold'>“Get up, let's get you situated here. Let's go see Hades.”</span>";
+          "<span class='hermesColor bold'>“Get up, let's get you situated here. Time to go see Hades.”</span>";
       }
     }
     if (this.globalService.globalVar.currentStoryId === 9) {

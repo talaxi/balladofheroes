@@ -17,6 +17,39 @@
   justify-content: space-evenly;
 }
 
+.tabItem:hover:not(.active) {
+  background-color: var(--button-hover);
+  /*color: var(--foreground-tertiary) !important;*/
+}
+
+.filterActive {
+  color: var(--foreground-secondary) !important;
+  font-weight: bold;
+}
+
+.active {
+  background-color: var(--button-selected) !important;
+  color: var(--foreground-secondary) !important;
+}
+
+.mat-dialog-container {
+  padding: 0px;
+}
+
+.noMargin {
+  margin: 0px;
+  padding: 0px;
+}
+
+.tabItem {
+  border-right: 1px solid rgba(255, 255, 255, .25);
+}
+
+
+table tr td:nth-child(2n) {
+  border-right: none;
+}
+
 table {
     table-layout: fixed;
     width: 100%;

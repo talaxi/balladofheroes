@@ -1,0 +1,68 @@
+.resources {
+    white-space: pre;
+}
+
+.resourcesView {
+    height:100%;
+    
+    background-color: var(--background-secondary);
+    border-color: var(--background-tertiary);
+    color: var(--foreground-default);
+  }
+
+  .orbContent {    
+    background-color: var(--background-secondary);
+    border-color: var(--background-tertiary);
+    color: var(--foreground-default);
+  }
+
+  .gridContainer {
+      height: 100%;
+      display: grid;
+      grid-template-columns: 33% 33% 33%;
+      grid-template-rows: 1fr;
+      justify-content: stretch;
+      grid-template-areas: 
+        "equipment resources progression";
+    }
+    .resources {
+      grid-area: resources;
+      border-right: 1px solid rgba(0,0,0,.1);      
+      background-color: var(--background-secondary);
+    }
+
+    .progression {
+      grid-area: progression;
+      border-right: 1px solid rgba(0,0,0,.1);
+      background-color: var(--background-secondary);
+    }  
+  
+    .equipment {
+      grid-area: equipment;
+      background-color: var(--background-secondary);
+      border-right: 1px solid rgba(0,0,0,.1);
+    }
+
+    .rightAligned {
+        text-align: right;
+    }
+
+    .centered {
+        text-align: center;
+    }
+
+
+    @media (max-width: 800px) {
+      .gridContainer {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        justify-content: stretch;
+        grid-template-areas: 
+          "resources"
+          "progression" 
+          "specialty" 
+          "equipment";
+      }
+    }
