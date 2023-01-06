@@ -45,10 +45,10 @@ export class ToolTipRendererDirective {
     const positionStrategy = this._overlayPositionBuilder
       .flexibleConnectedTo(this._elementRef)
       .withPositions([{
-        originX: 'center',
-        originY: 'bottom',
-        overlayX: 'center',
-        overlayY: 'top',
+        originX: 'end',
+        originY: 'center',
+        overlayX: 'start',
+        overlayY: 'center',
         offsetY: 5,
       }]);
 

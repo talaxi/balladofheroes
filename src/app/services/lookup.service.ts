@@ -476,7 +476,7 @@ export class LookupService {
     var secondsPerAutoAttack = character.battleInfo.timeToAutoAttack; //this.getAutoAttackTime(character).toFixed(3);
     var totalAutoAttackCount = this.getTotalAutoAttackCount(character);
 
-    description = "Deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + totalAutoAttackCount + " times every <strong>" + secondsPerAutoAttack + "</strong> seconds.";
+    description = "Deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + totalAutoAttackCount.toFixed(3) + (totalAutoAttackCount === 1 ? "time" : "times") + " every <strong>" + secondsPerAutoAttack + "</strong> seconds.";
 
     /*if (character.battleInfo.fastAutoAttackCount > 0)
       description += " Additionally, deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + character.battleInfo.fastAutoAttackCount + (character.battleInfo.fastAutoAttackCount === 1 ? "time" : "times") + " every <strong>" + (character.battleInfo.timeToAutoAttack / 2) + "</strong> seconds.";*/
@@ -740,6 +740,8 @@ export class LookupService {
       description = "Deal increased damage after every attack.";
       if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking damage over time.";
+      if (statusEffect.type === StatusEffectEnum.Thorns)
+      description = "Dealing damage back to auto attackers.";
 
     return description;
   }
