@@ -12,6 +12,11 @@
   font-size: 1.4rem;
 }
 
+.filters {
+  display: flex;
+  justify-content: space-evenly;
+}
+
 table {
     table-layout: fixed;
     width: 100%;

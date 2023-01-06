@@ -1,26 +1,51 @@
 <div class="shopOption" *ngFor="let option of shopOptions; let i = index">
-    <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter" class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
-    <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText" (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}}</button>
-    <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText" (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}}</button>
-    <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak to Hades</button>
-    <br *ngIf="i < shopOptions.length-1"/>
-    <br *ngIf="i < shopOptions.length-1"/>
+  <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter"
+    class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
+  <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText"
+    (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}}</button>
+  <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText"
+    (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}}</button>
+  <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
+    to Hades</button>
+  <br *ngIf="i < shopOptions.length-1" />
+  <br *ngIf="i < shopOptions.length-1" />
 </div>
 
 <ng-template #shopModal>
-    <table>
-        <tr *ngFor="let cells of shopItemRows;">
-            <td class="item" *ngFor="let c of cells;">
-                <app-shopping-item-view [item]="c"></app-shopping-item-view>
-            </td>
-        </tr>
-    </table>
-  </ng-template>
+  <table>
+    <tr>
+      <td class="clickableText tabItem" [ngClass]="{'active': isDisplayingNewItems }" (click)="toggleDisplayNewItemsView()">
+        <button class="buttonAsText clickableText m1Heading"
+          [ngClass]="{'active': isDisplayingNewItems }">New Items</button>
+      </td>
+      <td class="clickableText tabItem" [ngClass]="{'active': !isDisplayingNewItems }" (click)="toggleDisplayNewItemsView()">
+        <button class="buttonAsText clickableText m1Heading"
+          [ngClass]="{'active': !isDisplayingNewItems }">All Items</button>
+      </td>
+    </tr>
+  </table>
+  <hr class="noMargin" />
+  <div class="filters">
+    <span>Show:</span>
+    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'active': !(filterBattleItems || filterBattleItems) }" (click)="resetFilters()">All</button>
+    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'active': filterEquipment }" (click)="changeFilter('Equipment')">Equipment</button>
+    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'active': filterBattleItems }" (click)="changeFilter('Battle Items')">Battle Items</button>
+    <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>    
+  </div>
+  <hr class="noMargin" />
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+</ng-template>
 
-  <ng-template #chthonicFavorModal>
-    <app-chthonic-reset-view></app-chthonic-reset-view>
-  </ng-template>
+<ng-template #chthonicFavorModal>
+  <app-chthonic-reset-view></app-chthonic-reset-view>
+</ng-template>
 
-  <ng-template #alchemyModal>
-    Coming Soon!
-  </ng-template>
+<ng-template #alchemyModal>
+  Coming Soon!
+</ng-template>

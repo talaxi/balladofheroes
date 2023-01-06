@@ -54,10 +54,10 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "DMG";
     if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown)
       return "TKN";
-    if (effect.type === StatusEffectEnum.DamageOverTime)
-      return "DOT";
-      if (effect.type === StatusEffectEnum.Taunt)
+    if (effect.type === StatusEffectEnum.Taunt)
       return "TNT";
+    if (effect.type === StatusEffectEnum.Dead)
+      return "KO";
 
     return effect.type;
   }
@@ -70,7 +70,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
 
     return img;
   }
-  
+
   getStatDownImage(effect: StatusEffect) {
     var img = "assets/svg/statDownSE.svg";
 
@@ -83,45 +83,38 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   getStatusEffectImage(effect: StatusEffect) {
     var src = "assets/svg/";
 
-    if (effect.type === StatusEffectEnum.Mark)
-    {
+    if (effect.type === StatusEffectEnum.Mark) {
       src += "mark.svg";
     }
-    if (effect.type === StatusEffectEnum.Staccato)
-    {
+    if (effect.type === StatusEffectEnum.Staccato) {
       src += "staccato.svg";
     }
-    if (effect.type === StatusEffectEnum.Fortissimo)
-    {
+    if (effect.type === StatusEffectEnum.Fortissimo) {
       src += "fortissimo.svg";
     }
-    if (effect.type === StatusEffectEnum.Coda)
-    {
+    if (effect.type === StatusEffectEnum.Coda) {
       src += "coda.svg";
     }
-    if (effect.type === StatusEffectEnum.ThousandCuts)
-    {
+    if (effect.type === StatusEffectEnum.ThousandCuts) {
       src += "thousandCuts.svg";
     }
-    if (effect.type === StatusEffectEnum.Blind)
-    {
+    if (effect.type === StatusEffectEnum.Blind) {
       src += "blind.svg";
     }
-    if (effect.type === StatusEffectEnum.Stun)
-    {
+    if (effect.type === StatusEffectEnum.Stun) {
       src += "stun.svg";
     }
-    if (effect.type === StatusEffectEnum.Paralyze)
-    {
+    if (effect.type === StatusEffectEnum.Paralyze) {
       src += "paralyze.svg";
     }
-    if (effect.type === StatusEffectEnum.InstantHealAfterAutoAttack)
-    {
+    if (effect.type === StatusEffectEnum.InstantHealAfterAutoAttack) {
       src += "healAfterAutoAttack.svg";
     }
-    if (effect.type === StatusEffectEnum.DamageOverTime)
-    {
+    if (effect.type === StatusEffectEnum.DamageOverTime) {
       src += "bloodDoT.svg";
+    }
+    if (effect.type === StatusEffectEnum.RecentlyDefeated) {
+      src += "skull.svg";
     }
 
     return src;

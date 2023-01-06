@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 
@@ -11,7 +12,7 @@ export class ShopItemGeneratorService {
 
   constructor() { }
 
-  generateShopItem(item: ItemsEnum) {    
+  generateShopItem(item: ItemsEnum, originalStore: SubZoneEnum) {    
     var purchasePrice: ResourceValue[] = [];
     if (item === ItemsEnum.LinenArmor)
     {
@@ -90,6 +91,6 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     }
 
-    return new ShopItem(item, purchasePrice);
+    return new ShopItem(item, purchasePrice, originalStore);
   }
 }

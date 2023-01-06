@@ -19,8 +19,10 @@
         </div>
     </div>
     <div class="purchaseDescription">
+        <br/>
         <div class="resourceKeyword" [innerHtml]="purchaseResourcesRequired">
         </div>
+        <br/>
     </div>
     <div class="purchaseButton">
         <button (click)="buyItem()" [disabled]="!canBuyItem()">Buy</button>

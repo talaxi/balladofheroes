@@ -7,7 +7,7 @@
     <div class="scene" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
         <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }"
             *ngIf="!isAtScene() && !isAtTown()">
-            <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight" class="enemiesGrid">
+            <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight && !currentEnemies.isDoubleBossFight" class="enemiesGrid">
                 <app-enemy-view [character]="currentEnemies.enemyList[0]"
                     [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy1"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [character]="currentEnemies.enemyList[1]"
@@ -24,6 +24,12 @@
                     [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy3"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 2" [character]="currentEnemies.enemyList[2]"
                     [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy4"></app-enemy-view>
+            </div>
+            <div *ngIf="currentEnemies !== undefined && currentEnemies.isDoubleBossFight" class="doubleBossGrid">
+                <app-enemy-view [character]="currentEnemies.enemyList[0]" [isBoss]="true"
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="boss1"></app-enemy-view>
+                <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [isBoss]="true" [character]="currentEnemies.enemyList[1]"
+                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="boss2"></app-enemy-view>
             </div>
         </div>
         <div *ngIf="isAtStoryScene()" class="storyGrid">

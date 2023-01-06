@@ -99,6 +99,10 @@ export class LookupService {
       return ItemTypeEnum.Resource;
     }
 
+    if (this.getEquipmentPieceByItemType(type) !== undefined) {
+      return ItemTypeEnum.Equipment;
+    }      
+
     return ItemTypeEnum.None;
   }
 
