@@ -26,6 +26,9 @@ export class GameLogService {
     if (type === GameLogEntryEnum.Tutorial) {
       entry = "<span class='tutorialText'>" + entry + "</span>";
     }
+    if (type === GameLogEntryEnum.Alchemy) {
+      entry = "<span class='alchemyText'>" + entry + "</span>";
+    }
 
     this.gameLog.push(entry + "<br/>");
 

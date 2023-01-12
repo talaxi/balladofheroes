@@ -141,4 +141,54 @@ export class BalladService {
 
     return returnSubzone;
   }
+
+  isSubzoneInBallad(type: SubZoneEnum, balladType: BalladEnum) {
+    var inBallad = false;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      if (balladType.toString() === ballad.type.toString()) {
+        ballad.zones.forEach(zone => {
+          zone.subzones.forEach(subzone => {            
+            if (subzone.type === type)
+              inBallad = true;
+          });
+        });
+      }
+    });
+
+    return inBallad;
+  }
+  
+  isZoneInBallad(type: ZoneEnum, balladType: BalladEnum) {
+    var inBallad = false;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      if (balladType.toString() === ballad.type.toString()) {
+        ballad.zones.forEach(zone => {
+          if (zone.type === type)
+            inBallad = true;
+        });
+      }
+    });
+
+    return inBallad;
+  }
+
+  isSubzoneInZone(type: SubZoneEnum, zoneType: ZoneEnum) {
+    var inZone = false;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {      
+        ballad.zones.forEach(zone => {
+          if (zone.type.toString() === zoneType.toString())
+          {
+            zone.subzones.forEach(subzone => {
+              if (subzone.type === type)
+                inZone = true;
+            });
+          }
+        });
+    });
+
+    return inZone;
+  }
 }

@@ -37,5 +37,15 @@ export enum ItemsEnum {
   PoisonFang,
   PetrifiedBark,
   ChthonicFavor,
-  ChthonicPower
+  ChthonicPower,
+  BoonOfOlympus,
+  Wax,
+  Olive,
+  Fennel,
+  HealingPoultice,  
+  PoisonousToxin,
+  DebilitatingToxin,
+  StranglingGasVial,  
+  ExplodingVial,
+  FireVial,
 }

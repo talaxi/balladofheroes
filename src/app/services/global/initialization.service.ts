@@ -111,7 +111,9 @@ export class InitializationService {
 
   devMode() {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
-    this.globalService.globalVar.currentStoryId = 8; //10000
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 10000));
+    this.globalService.globalVar.currentStoryId = 10000;
     
     this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
     this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });
@@ -164,7 +166,7 @@ export class InitializationService {
     });
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.type !== BalladEnum.Underworld)
+      //if (ballad.type !== BalladEnum.Underworld)
         ballad.isAvailable = true;
         //ballad.showNewNotification=true;
       ballad.zones.forEach(zone => {

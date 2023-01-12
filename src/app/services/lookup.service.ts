@@ -5,6 +5,8 @@ import { CharacterStats } from '../models/character/character-stats.model';
 import { Character } from '../models/character/character.model';
 import { Enemy } from '../models/character/enemy.model';
 import { God } from '../models/character/god.model';
+import { AchievementTypeEnum } from '../models/enums/achievement-type-enum.copy';
+import { AlchemyActionsEnum } from '../models/enums/alchemy-actions-enum.model';
 import { CharacterEnum } from '../models/enums/character-enum.model';
 import { DamageOverTimeTypeEnum } from '../models/enums/damage-over-time-type-enum.model';
 import { EffectTriggerEnum } from '../models/enums/effect-trigger-enum.model';
@@ -67,6 +69,7 @@ export class LookupService {
   getAchievementName(achievement: Achievement) {
     var name = "";
 
+    name += "'" + this.getSubZoneByType(achievement.relatedSubzone).name + " - " + this.getAchievementDescription(achievement.achievementType) + "'";
 
     return name;
   }
@@ -81,8 +84,25 @@ export class LookupService {
     return totalXp;
   }
 
+  getAlchemyActionName(action: AlchemyActionsEnum) {
+    var name = "";
+
+    if (action === AlchemyActionsEnum.PrepareWaterSmallPot)
+      name = "Boiling Water in a Small Pot";
+    if (action === AlchemyActionsEnum.StrainMixture)
+      name = "Straining Mixture";
+    if (action === AlchemyActionsEnum.CombineIngredients)
+      name = "Combining Ingredients in Pot";
+    if (action === AlchemyActionsEnum.MeltWax)
+      name = "Melting Wax";
+    if (action === AlchemyActionsEnum.MixOil)
+      name = "Mixing Oil";
+
+    return name;
+  }
+
   getItemTypeFromItemEnum(type: ItemsEnum) {
-    if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingSalve) {
+    if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.HealingSalve) {
       return ItemTypeEnum.HealingItem;
     }
 
@@ -101,7 +121,7 @@ export class LookupService {
 
     if (this.getEquipmentPieceByItemType(type) !== undefined) {
       return ItemTypeEnum.Equipment;
-    }      
+    }
 
     return ItemTypeEnum.None;
   }
@@ -118,16 +138,26 @@ export class LookupService {
       name = "Chthonic Favor";
     if (type === ItemsEnum.ChthonicPower)
       name = "Chthonic Power";
+    if (type === ItemsEnum.BoonOfOlympus)
+      name = "Boon of Olympus";
 
     //healing items
     if (type === ItemsEnum.HealingHerb)
       name = "Healing Herb";
+    if (type === ItemsEnum.HealingPoultice)
+      name = "Healing Poultice";
+    if (type === ItemsEnum.HealingSalve)
+      name = "Healing Salve";
 
     //battle items
     else if (type === ItemsEnum.ThrowingStone)
       name = "Throwing Stone";
     else if (type === ItemsEnum.PoisonFang)
       name = "Poison Fang";
+    else if (type === ItemsEnum.PoisonousToxin)
+      name = "Poisonous Toxin";
+    else if (type === ItemsEnum.DebilitatingToxin)
+      name = "Debilitating Toxin";
 
     //equipment
     //swords
@@ -203,6 +233,12 @@ export class LookupService {
       name = "Small Feather";
     else if (type === ItemsEnum.EagleFeather)
       name = "Eagle Feather";
+    else if (type === ItemsEnum.Olive)
+      name = "Olive";
+    else if (type === ItemsEnum.Fennel)
+      name = "Fennel";
+    else if (type === ItemsEnum.Wax)
+      name = "Wax";
 
     return name;
   }
@@ -245,7 +281,7 @@ export class LookupService {
       }
     }
 
-    if (type === ItemsEnum.HealingHerb)
+    if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice)
       name = "Heal a party member for " + effect.healAmount + " HP.";
 
     //battle items
@@ -476,7 +512,7 @@ export class LookupService {
     var secondsPerAutoAttack = character.battleInfo.timeToAutoAttack; //this.getAutoAttackTime(character).toFixed(3);
     var totalAutoAttackCount = this.getTotalAutoAttackCount(character);
 
-    description = "Deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + totalAutoAttackCount.toFixed(3) + (totalAutoAttackCount === 1 ? "time" : "times") + " every <strong>" + secondsPerAutoAttack + "</strong> seconds.";
+    description = "Deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + totalAutoAttackCount.toFixed(3) + (totalAutoAttackCount === 1 ? " time" : " times") + " every <strong>" + secondsPerAutoAttack + "</strong> seconds.";
 
     /*if (character.battleInfo.fastAutoAttackCount > 0)
       description += " Additionally, deal <strong>" + this.getAdjustedAttack(character).toFixed(0) + "</strong> damage to a single target " + character.battleInfo.fastAutoAttackCount + (character.battleInfo.fastAutoAttackCount === 1 ? "time" : "times") + " every <strong>" + (character.battleInfo.timeToAutoAttack / 2) + "</strong> seconds.";*/
@@ -488,7 +524,7 @@ export class LookupService {
     return 3;
   }
 
-  getAbilityEffectiveAmount(character: Character, ability: Ability) {    
+  getAbilityEffectiveAmount(character: Character, ability: Ability) {
     return ability.effectiveness * this.getAdjustedAttack(character);
   }
 
@@ -691,9 +727,9 @@ export class LookupService {
       description = "Increase Resistance by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.MaxHpUp)
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
+    if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
       description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
+    if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
       description = "Increase damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     //why is euryale debuff reducing by -600%?
@@ -709,9 +745,9 @@ export class LookupService {
       description = "Decrease Resistance by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.MaxHpDown)
       description = "Decrease Max HP by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.DamageDealtDown)
+    if (statusEffect.type === StatusEffectEnum.DamageDealtDown)
       description = "Decrease damage dealt by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.DamageTakenDown)
+    if (statusEffect.type === StatusEffectEnum.DamageTakenDown)
       description = "Decrease damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.Blind)
@@ -738,9 +774,9 @@ export class LookupService {
       description = "You have recently been defeated and are still nursing your wounds. Your primary stats are reduced by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.ThousandCuts)
       description = "Deal increased damage after every attack.";
-      if (statusEffect.type === StatusEffectEnum.DamageOverTime)
+    if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking damage over time.";
-      if (statusEffect.type === StatusEffectEnum.Thorns)
+    if (statusEffect.type === StatusEffectEnum.Thorns)
       description = "Dealing damage back to auto attackers.";
 
     return description;
@@ -812,6 +848,10 @@ export class LookupService {
       itemEffect.dealsDamage = false;
       itemEffect.healAmount = 50;
     }
+    if (item === ItemsEnum.HealingPoultice) {
+      itemEffect.dealsDamage = false;
+      itemEffect.healAmount = 200;
+    }
     if (item === ItemsEnum.ThrowingStone) {
       itemEffect.dealsDamage = true;
       itemEffect.trueDamageAmount = 3;
@@ -825,44 +865,41 @@ export class LookupService {
   }
 
   getTotalAutoAttackCount(character: Character) {
-    var adjustedAgility = this.getAdjustedAgility(character);    
+    var adjustedAgility = this.getAdjustedAgility(character);
     var agilityPerAdditionalAttack = 250;
 
     return 1 + (adjustedAgility / agilityPerAdditionalAttack);
   }
 
   getAutoAttackTime(character: Character) {
-    character.battleInfo.fastAutoAttackCount  = 0;
+    character.battleInfo.fastAutoAttackCount = 0;
     var timeToAutoAttack = character.battleInfo.timeToAutoAttack;
-    var adjustedAgility = this.getAdjustedAgility(character);    
+    var adjustedAgility = this.getAdjustedAgility(character);
     var attackCap = 100;
     var attackCount = 0;
-    
+
     //120 * (log(.00035 * x + 1))      
     var amplifier = 120;
     var horizontalStretch = .00035;
     var horizontalPosition = 1;
     var timerReduction = amplifier * Math.log10(horizontalStretch * (adjustedAgility) + horizontalPosition);
-        
+
     //can return .1 or 100
     //against 5s let's say
-    while (attackCount < attackCap && timerReduction > 0)
-    {
+    while (attackCount < attackCap && timerReduction > 0) {
       timeToAutoAttack = character.battleInfo.timeToAutoAttack;
-      
+
       //if it goes below half way, needs to break point and start over          
-      if (timerReduction > character.battleInfo.timeToAutoAttack / 2)
-      {
+      if (timerReduction > character.battleInfo.timeToAutoAttack / 2) {
         timerReduction -= character.battleInfo.timeToAutoAttack / 2;
         character.battleInfo.fastAutoAttackCount += 1;
       }
-      else
-      {
+      else {
         timeToAutoAttack -= timerReduction;
         timerReduction = 0;
       }
     }
-    
+
     return timeToAutoAttack;
   }
 
@@ -945,6 +982,19 @@ export class LookupService {
 
   getAdjustedAgility(character: Character) {
     var agility = character.battleStats.agility;
+    var activeStaccato: any;
+    var party = this.globalService.getActivePartyCharacters(true);
+
+    if (party.length > 0) {
+      party.forEach(character => {
+        var effect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Staccato);
+        if (effect !== undefined)
+          activeStaccato = effect;
+      });
+
+      if (activeStaccato !== undefined)
+        agility *= activeStaccato.effectiveness;
+    }
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.AgilityUp ||
@@ -966,6 +1016,19 @@ export class LookupService {
 
   getAdjustedLuck(character: Character) {
     var luck = character.battleStats.luck;
+    var activeCoda: any;
+    var party = this.globalService.getActivePartyCharacters(true);
+
+    if (party.length > 0) {
+      party.forEach(character => {
+        var effect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Coda);
+        if (effect !== undefined)
+          activeCoda = effect;
+      });
+
+      if (activeCoda !== undefined)
+        luck *= activeCoda.effectiveness;
+    }
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.LuckUp ||
@@ -1008,7 +1071,20 @@ export class LookupService {
 
   getAdjustedAttack(character: Character, ability?: Ability) {
     var attack = character.battleStats.attack;
+    var activeFortissimo: any;
+    var party = this.globalService.getActivePartyCharacters(true);
 
+    if (party.length > 0) {
+      party.forEach(character => {
+        var effect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Fortissimo);
+        if (effect !== undefined)
+          activeFortissimo = effect;
+      });
+
+      if (activeFortissimo !== undefined)
+        attack *= activeFortissimo.effectiveness;
+    }
+   
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.AttackUp ||
         effect.type === StatusEffectEnum.AttackDown
@@ -1172,6 +1248,9 @@ export class LookupService {
     if (type === ItemsEnum.ThrowingStone) {
       src += "throwingStone.svg";
     }
+    if (type === ItemsEnum.PoisonFang) {
+      src += "poisonFang.svg";
+    }
 
     return src;
   }
@@ -1208,7 +1287,7 @@ export class LookupService {
     }
     else if (abilityName === "Expose Weakness") {
       src += "exposeWeakness.svg";
-    }    
+    }
     else if (abilityName === "Nimble Strike") {
       src += "nimbleStrike.svg";
     }
@@ -1231,6 +1310,25 @@ export class LookupService {
       src += "sword.svg";
 
     return src;
+  }
+
+  getAchievementDescription(type: AchievementTypeEnum) {
+    var description = "";
+
+    if (type === AchievementTypeEnum.HundredVictories)
+      description = "Reach 100 victories";
+    if (type === AchievementTypeEnum.ThousandVictories)
+      description = "Reach 1,000 victories";
+    if (type === AchievementTypeEnum.TenThousandVictories)
+      description = "Reach 10,000 victories";
+    if (type === AchievementTypeEnum.FullHPClear)
+      description = "Clear without losing HP";
+    if (type === AchievementTypeEnum.TenSecondClear)
+      description = "Clear in 10 seconds";
+    if (type === AchievementTypeEnum.ThirtySecondClear)
+      description = "Clear in 30 seconds";
+
+    return description;
   }
 
   getCharacterDps(character: Character, target?: Character) {

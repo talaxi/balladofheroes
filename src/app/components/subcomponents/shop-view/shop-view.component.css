@@ -15,6 +15,7 @@
 .filters {
   display: flex;
   justify-content: space-evenly;
+  background-color: var(--background-quarternary);
 }
 
 .tabItem:hover:not(.active) {
@@ -44,7 +45,6 @@
 .tabItem {
   border-right: 1px solid rgba(255, 255, 255, .25);
 }
-
 
 table tr td:nth-child(2n) {
   border-right: none;

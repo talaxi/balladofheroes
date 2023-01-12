@@ -286,8 +286,8 @@ export class GlobalService {
       god.abilityList.push(divineStrike);
 
       var aegis = new Ability();
-      aegis.name = "Heavenly Shield";
       aegis.requiredLevel = this.utilityService.godAbility2Level;
+      aegis.name = "Heavenly Shield";
       aegis.isAvailable = false;
       aegis.cooldown = aegis.currentCooldown = 60;
       aegis.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenDown, 8, .8, false, true));
@@ -366,7 +366,7 @@ export class GlobalService {
       staccato.cooldown = staccato.currentCooldown = 35;
       staccato.dealsDirectDamage = false;
       staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.2, false, true, true));
-      staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Staccato, 10, 1, false, true));
+      staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Staccato, 10, 1.2, false, true));
       god.abilityList.push(staccato);
 
       var fortissimo = new Ability();
@@ -377,7 +377,7 @@ export class GlobalService {
       fortissimo.dealsDirectDamage = false;
       fortissimo.secondaryEffectiveness = 1.01;
       fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 8, 1.2, false, true, true));
-      fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Fortissimo, 8, 1, false, true));
+      fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Fortissimo, 8, 1.2, false, true));
       god.abilityList.push(fortissimo);
 
       var coda = new Ability();
@@ -387,7 +387,7 @@ export class GlobalService {
       coda.cooldown = coda.currentCooldown = 60;
       coda.dealsDirectDamage = false;
       coda.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.LuckUp, 5, 1.2, false, true, true));
-      coda.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Coda, 5, 1, false, true));
+      coda.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Coda, 5, 1.2, false, true));
       god.abilityList.push(coda);
 
       var ostinato = new Ability();
@@ -699,18 +699,18 @@ export class GlobalService {
           //needs to have some sort of modification factor on beating enemies at a certain lvl compared to you
           partyMember.exp += enemy.xpGainFromDefeat;
         });
-      
+
       //active gods
-      this.globalVar.gods.filter(god => god.isAvailable && 
+      this.globalVar.gods.filter(god => god.isAvailable &&
         activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {
-        god.exp += enemy.xpGainFromDefeat * this.globalVar.godXpModifier;
-      });
+          god.exp += enemy.xpGainFromDefeat * this.globalVar.godXpModifier;
+        });
 
       //inactive gods
-      this.globalVar.gods.filter(god => god.isAvailable && 
+      this.globalVar.gods.filter(god => god.isAvailable &&
         (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-        god.exp += enemy.xpGainFromDefeat * this.globalVar.godXpModifier;
-      });
+          god.exp += enemy.xpGainFromDefeat * this.globalVar.godXpModifier;
+        });
     });
 
 
@@ -738,6 +738,10 @@ export class GlobalService {
 
     this.getCharacterLevelStatIncrease(character);
     this.checkForNewCharacterAbilities(character);
+
+    //just trying this out for now
+    this.calculateCharacterBattleStats(character);
+    character.battleStats.currentHp = character.battleStats.maxHp;
 
     character.expToNextLevel = this.getCharacterXpToNextLevel(character.level);
   }
@@ -1034,13 +1038,21 @@ export class GlobalService {
 
     //function for each individual ability type
     //in those functions, break it down by god and give whatever based on upgrade level
-    if (ability.ability.requiredLevel === this.utilityService.defaultGodAbilityLevel)
-    {
-      this.upgradeGodAbility1(god);      
+    if (ability.ability.requiredLevel === this.utilityService.defaultGodAbilityLevel) {
+      this.upgradeGodAbility1(god);
+    }
+    else if (ability.ability.requiredLevel === this.utilityService.godAbility2Level) {
+      this.upgradeGodAbility2(god);
+    }
+    else if (ability.ability.requiredLevel === this.utilityService.godAbility3Level) {
+      this.upgradeGodAbility3(god);
+    }
+    else if (ability.ability.requiredLevel === this.utilityService.godPassiveLevel) {
+      this.upgradeGodPassive(god);
     }
 
-    var gameLogEntry =  "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>'s ability <strong>" + ability.ability.name + "</strong> has upgraded to level " + ability.upgradeLevel + ".";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);  
+    var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>'s ability <strong>" + ability.ability.name + "</strong> has upgraded to level " + ability.upgradeLevel + ".";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
   }
 
   upgradeGodAbility1(god: God) {
@@ -1048,34 +1060,208 @@ export class GlobalService {
     if (ability === undefined)
       return;
 
-    ability.abilityUpgradeLevel +=1;
+    ability.abilityUpgradeLevel += 1;
     var userGainsEffect = ability.userGainsStatusEffect[0];
+    var targetGainsEffect = ability.targetGainsStatusEffect[0];
 
-    if (god.type === GodEnum.Athena)
-    {
-      //TODO: make this % 5
-      if (ability.abilityUpgradeLevel % 2 === 0)
+    if (god.type === GodEnum.Athena) {
+      //every 5 upgrades, increase heal amount    
+      if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 40)
         userGainsEffect.effectiveness += .05;
       else
         ability.effectiveness += .3;
     }
+    else if (god.type === GodEnum.Artemis) {
+      //every 10 upgrades until level 100, reduce cooldown
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
+        //alternate increasing wounding arrow effect and duration every 5 levels until level 100
+        if (ability.abilityUpgradeLevel % 15 === 0)
+          targetGainsEffect.effectiveness += .05;
+        else
+          targetGainsEffect.duration += 1;
+      }
+      else
+        ability.effectiveness += .35;
+    }
+    else if (god.type === GodEnum.Hermes) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .25;
+      else
+        ability.effectiveness += .1;
+    }
+    else if (god.type === GodEnum.Apollo) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
+        userGainsEffect.duration += 1;
+      }
+      else
+        userGainsEffect.effectiveness += .05;
+    }
+    else if (god.type === GodEnum.Zeus) {
+
+    }
+    else if (god.type === GodEnum.Ares) {
+
+    }
+  }
+
+  upgradeGodAbility2(god: God) {
+    var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level);
+    if (ability === undefined)
+      return;
+
+    ability.abilityUpgradeLevel += 1;
+    var userGainsEffect = ability.userGainsStatusEffect[0];
+    var userGainsSecondEffect = ability.userGainsStatusEffect[1];
+    var targetGainsEffect = ability.targetGainsStatusEffect[0];
+
+    if (god.type === GodEnum.Athena) {
+      //30 levels of reducing cooldown to 45 seconds
+      if (ability.abilityUpgradeLevel % 3 === 1 && ability.abilityUpgradeLevel <= 90)
+        ability.cooldown -= .5;
+      //30 levels of increasuing duration to 14 seconds
+      else if (ability.abilityUpgradeLevel % 3 === 2 && ability.abilityUpgradeLevel <= 90)
+        userGainsEffect.duration += .2;
+      else
+        //40 levels of increasing effectiveness to 60% reduction
+        userGainsEffect.effectiveness += .1;
+    }
+    else if (god.type === GodEnum.Artemis) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= 1;
+      else if (ability.abilityUpgradeLevel % 10 === 5 && ability.abilityUpgradeLevel <= 100)
+        targetGainsEffect.duration += 1;
+      else
+        ability.effectiveness += .15;
+    }
+    else if (god.type === GodEnum.Hermes) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= 1;
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
+        userGainsEffect.duration += .5;
+        userGainsSecondEffect.duration += .5;
+      }
+      else {
+        userGainsEffect.effectiveness += .025;
+        userGainsSecondEffect.effectiveness += .025;
+      }
+    }
+    else if (god.type === GodEnum.Apollo) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
+        userGainsEffect.duration += 1;
+      }
+      else
+        userGainsEffect.effectiveness += .05;
+    }
+    else if (god.type === GodEnum.Zeus) {
+
+    }
+    else if (god.type === GodEnum.Ares) {
+
+    }
+  }
+
+  upgradeGodAbility3(god: God) {
+    var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level);
+    if (ability === undefined)
+      return;
+
+    ability.abilityUpgradeLevel += 1;
+    var userGainsEffect = ability.userGainsStatusEffect[0];
+    var targetGainsEffect = ability.targetGainsStatusEffect[0];
+
+    if (god.type === GodEnum.Athena) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= 1;
+      //5, 15, 45, 75, 90 increase blind effectiveness
+      else if ((ability.abilityUpgradeLevel === 5 || ability.abilityUpgradeLevel % 15 === 0) && ability.abilityUpgradeLevel <= 100)
+        targetGainsEffect.effectiveness += .05;
+      else if ((ability.abilityUpgradeLevel === 35 || ability.abilityUpgradeLevel === 70) && ability.abilityUpgradeLevel <= 100)
+        targetGainsEffect.duration += 1;
+      else
+        ability.effectiveness += .2;
+    }
+    else if (god.type === GodEnum.Artemis) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= 1;
+      else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        targetGainsEffect.effectiveness += .01;
+      else
+        ability.effectiveness += .4;
+    }
+    else if (god.type === GodEnum.Hermes) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= 1;
+      else if ((ability.abilityUpgradeLevel === 45 || ability.abilityUpgradeLevel === 90) && ability.abilityUpgradeLevel <= 100)
+        ability.userGainsStatusEffect.push(userGainsEffect.makeCopy());
+      else
+        ability.userGainsStatusEffect.forEach(effect => { effect.effectiveness += .01 });
+    }
+    else if (god.type === GodEnum.Apollo) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
+        userGainsEffect.duration += 1;
+      }
+      else
+        userGainsEffect.effectiveness += .05;
+    }
+    else if (god.type === GodEnum.Zeus) {
+
+    }
+    else if (god.type === GodEnum.Ares) {
+
+    }
+  }
+
+  upgradeGodPassive(god: God) {
+    var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+    if (ability === undefined)
+      return;
+
+    ability.abilityUpgradeLevel += 1;
+    var userGainsEffect = ability.userGainsStatusEffect[0];
+
+    if (god.type === GodEnum.Athena) {
+      if (ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.effectiveness += .05;      
+    }
+    else if (god.type === GodEnum.Artemis) {
+      if (ability.abilityUpgradeLevel <= 100)
+      userGainsEffect.effectiveness += .1;     
+    }
+    else if (god.type === GodEnum.Hermes) {
+      if (ability.abilityUpgradeLevel <= 100)
+      userGainsEffect.effectiveness += .009;     
+    }
+    else if (god.type === GodEnum.Apollo) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= 2;
+      else
+      ability.effectiveness += .3;
+    }
+    else if (god.type === GodEnum.Zeus) {
+
+    }
+    else if (god.type === GodEnum.Ares) {
+
+    }
   }
 
   checkForNewGodPermanentStats(god: God) {
-    god.abilityList.forEach(ability => {
-      if (god.level >= ability.requiredLevel) {
-        if (!ability.isAvailable) {
-          var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your god's name." : "");
-          this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
-        }
-        ability.isAvailable = true;
-      }
-    });
+    if (god.level % 100 === 0)
+    {
+      
+    }
 
-    if (god.level === this.utilityService.permanentDefaultGodAbilityLevel) {
-      var defaultAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.defaultGodAbilityLevel);
-      if (defaultAbility !== undefined)
-        defaultAbility.isAbilityPermanent = true;
+    if (god.level % 50 === 0)
+    {
+
     }
   }
 
@@ -1118,56 +1304,45 @@ export class GlobalService {
       return undefined;
 
     //only need to map out the first 100 lvls or so
-    if (godLevel === 10)
-    {
-      ability = defaultAbility;    
+    if (godLevel === 10) {
+      ability = defaultAbility;
     }
-    else if (godLevel === 15)
-    {
+    else if (godLevel === 15) {
       ability = passiveAbility;
     }
-    else if (godLevel === 25)
-    {
+    else if (godLevel === 25) {
       ability = passiveAbility;
       upgradeLevel = 2;
     }
-    else if (godLevel === 30)
-    {
+    else if (godLevel === 30) {
       ability = ability2;
       upgradeLevel = 2;
     }
-    else if (godLevel === 35)
-    {
+    else if (godLevel === 35) {
       ability = passiveAbility;
       upgradeLevel = 2;
     }
-    else if (godLevel === 45)
-    {
+    else if (godLevel === 45) {
       ability = ability2;
       upgradeLevel = 2;
     }
-    else if (godLevel === 55)
-    {
+    else if (godLevel === 55) {
       ability = defaultAbility;
       upgradeLevel = 3;
     }
-    else if (godLevel === 60)
-    {
+    else if (godLevel === 60) {
       ability = ability2;
       upgradeLevel = 3;
     }
-    else if (godLevel === 65)
-    {
+    else if (godLevel === 65) {
       ability = defaultAbility;
       upgradeLevel = 4;
     }
-    else if (godLevel === 70)
-    {
+    else if (godLevel === 70) {
       ability = passiveAbility;
       upgradeLevel = 3;
     }
-    else
-    {
+    else {
       //4 3 3 1 at this point
       //needs to rotate 3 abilities twice then passive, then repeat
       var repeaterLevel = (godLevel - 70) % 35;
@@ -1175,29 +1350,25 @@ export class GlobalService {
       //starts at 75 aka 5 here
       //a1 upgrade at 5 and 20, a2 at 10 and 25, a3 at 15 and 30, passive at 35 (or 0 for mod)
       //at a certain cut off level this might change because certain abilities can only grow so much like athena a2
-      if (repeaterLevel === 0)
-      {
+      if (repeaterLevel === 0) {
         ability = passiveAbility;
         upgradeLevel = repeaterCount + 3;
       }
-      else if (repeaterLevel === 5 || repeaterLevel === 20)
-      {
+      else if (repeaterLevel === 5 || repeaterLevel === 20) {
         ability = defaultAbility;
         upgradeLevel = repeaterLevel === 5 ? repeaterCount + 4 : repeaterCount + 5;
       }
-      else if (repeaterLevel === 10 || repeaterLevel === 25)
-      {
+      else if (repeaterLevel === 10 || repeaterLevel === 25) {
         ability = ability2;
         upgradeLevel = repeaterLevel === 10 ? repeaterCount + 3 : repeaterCount + 4;
       }
-      else if (repeaterLevel === 15 || repeaterLevel === 30)
-      {
+      else if (repeaterLevel === 15 || repeaterLevel === 30) {
         ability = ability3;
         upgradeLevel = repeaterLevel === 15 ? repeaterCount + 1 : repeaterCount + 2;
       }
     }
-    
-    return {ability, upgradeLevel};
+
+    return { ability, upgradeLevel };
   }
 
   getGodXpToNextLevel(level: number) {

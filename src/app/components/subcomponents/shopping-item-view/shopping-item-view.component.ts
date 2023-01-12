@@ -54,14 +54,6 @@ export class ShoppingItemViewComponent implements OnInit {
 
   getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum, amountNeeded: number, amountOwned: number) {
     var classText = "resourceKeyword";
-
-    /*if (type === ItemTypeEnum.Resource)
-      classText = "resourceKeyword";
-    if (type === ItemTypeEnum.CraftingMaterial)
-      classText = "craftingMaterialKeyword";
-    if (type === ItemTypeEnum.Equipment)  
-      classText = this.getEquipmentClass(item);    
-    */
     
     if (amountOwned < amountNeeded)
       classText = "insufficientResourcesKeyword";  

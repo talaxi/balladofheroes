@@ -13,6 +13,8 @@ export class Ballad {
 
     constructor(type?: BalladEnum) {
         this.zones = [];
+        this.type = BalladEnum.None;
+        this.name = "None";
 
         if (type !== undefined)
             this.type = type;

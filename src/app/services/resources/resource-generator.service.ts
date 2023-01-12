@@ -119,9 +119,29 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, amount);
     }
+    if (type === ItemsEnum.HealingPoultice)
+    {
+      return new ResourceValue(ItemsEnum.HealingPoultice, ItemTypeEnum.HealingItem, amount);
+    }
+    if (type === ItemsEnum.HealingSalve)
+    {
+      return new ResourceValue(ItemsEnum.HealingSalve, ItemTypeEnum.HealingItem, amount);
+    }
     if (type === ItemsEnum.ThrowingStone)
     {
       return new ResourceValue(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.PoisonFang)
+    {
+      return new ResourceValue(ItemsEnum.PoisonFang, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.PoisonousToxin)
+    {
+      return new ResourceValue(ItemsEnum.PoisonousToxin, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.DebilitatingToxin)
+    {
+      return new ResourceValue(ItemsEnum.DebilitatingToxin, ItemTypeEnum.BattleItem, amount);
     }
 
     return new ResourceValue(ItemsEnum.None, ItemTypeEnum.None, 0);

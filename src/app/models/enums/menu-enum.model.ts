@@ -5,5 +5,6 @@ export enum MenuEnum {
   Equipment,
   Shop,
   Settings,
-  Resources
+  Resources,
+  Achievements
 }

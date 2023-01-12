@@ -1,0 +1,8 @@
+.challenge {
+    font-weight: bold;
+}
+
+.reward {
+    color: var(--positive-status-effect);
+    font-weight: bold;
+}

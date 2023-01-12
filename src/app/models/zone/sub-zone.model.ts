@@ -19,6 +19,8 @@ export class SubZone {
 
     constructor(enumVal?: SubZoneEnum) {
         this.victoriesNeededToProceed = 0;
+        this.type = SubZoneEnum.None;
+        this.name = "None";
 
         if (enumVal !== undefined) {
             this.type = enumVal;

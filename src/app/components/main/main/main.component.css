@@ -10,7 +10,7 @@
     "main main main"
     "footer footer footer";
 
-  background-color: var(--background-secondary);
+  background-color: var(--background-default);
   color: var(--foreground-default);
 }
 
@@ -61,7 +61,7 @@
   grid-area: main;
   justify-self: stretch;
 
-  background-color: var(--background-secondary);
+  background-color: var(--background-default);
   color: var(--foreground-default);
 
   overflow: auto;
@@ -71,7 +71,7 @@
   grid-area: battle;
   justify-self: stretch;
 
-  background-color: var(--background-secondary);
+  background-color: var(--background-default);
   color: var(--foreground-default);
 
   overflow: auto;
@@ -81,7 +81,7 @@
   grid-area: nav;
   justify-self: stretch;
 
-  background-color: var(--background-secondary);
+  background-color: var(--background-default);
   color: var(--foreground-default);
 }
 
@@ -89,7 +89,7 @@
   grid-area: party;
   justify-self: stretch;
 
-  background-color: var(--background-secondary);
+  background-color: var(--background-default);
   color: var(--foreground-default);
 }
 
@@ -97,7 +97,7 @@
   grid-area: footer;
   justify-self: stretch;
 
-  background-color: var(--background-tertiary);
+  background-color: var(--background-header);
   color: var(--foreground-quaternary);
 }
 
@@ -105,7 +105,7 @@
   grid-area: header;
   justify-self: stretch;
 
-  background-color: var(--background-tertiary);
+  background-color: var(--background-header);
   color: var(--foreground-quaternary);
 }
 
@@ -119,8 +119,8 @@
 
 .mainView {
   height: 100%;
-  background-color: var(--background-secondary);
-  border-color: var(--background-tertiary);
+  background-color: var(--background-default);
+  border-color: var(--background-header);
   color: var(--foreground-default);
 }
 
@@ -131,8 +131,8 @@
 .modalClass {
   white-space: pre-line;
 
-  background-color: var(--background-secondary);
-  border-color: var(--background-tertiary);
+  background-color: var(--background-default);
+  border-color: var(--background-header);
   color: var(--foreground-default);
 }
 
@@ -157,17 +157,17 @@
 }
 
 .dark {
-  background-color: var(--background-tertiary);
+  background-color: var(--background-header);
 }
 
 .darken {  
-  background-color: var(--background-tertiary);
+  background-color: var(--background-header);
   -webkit-animation: fade 3s forwards;    
   animation: fade 3s forwards;
 }
 
 .lighten {
-  background-color: var(--background-secondary);
+  background-color: var(--background-default);
   -webkit-animation: fade 3s forwards;    
   animation: fade 3s forwards;
 }

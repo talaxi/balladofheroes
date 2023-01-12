@@ -11,7 +11,10 @@
     margin-bottom: auto;
     margin-right: 1.5rem;
     width: 42%; /* matches .zoneGrid below */
+    font-variant: small-caps;
 }
+
+
 
 .selected {
     color: var(--foreground-secondary) !important;

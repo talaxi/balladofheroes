@@ -49,6 +49,9 @@ export class AppComponent {
         this.newGame = false;
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
         this.loadStartup();
+
+        if (this.globalService.globalVar.betaSave)
+          this.newGame = true;
       }
     }
 
@@ -107,9 +110,9 @@ export class AppComponent {
   }
 
   loadStartup() {
-    /*var selectedTheme = this.globalService.globalVar.settings.get("theme");
-    if (selectedTheme !== null && selectedTheme !== undefined)
-      this.themeService.setActiveTheme(selectedTheme);*/
+    //TODO: after beta, remove this
+    if (this.globalService.globalVar.betaSave === undefined)
+      this.globalService.globalVar.betaSave = true;
       
     this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
     this.storyService.showStory = false;

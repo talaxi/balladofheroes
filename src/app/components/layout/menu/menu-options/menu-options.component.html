@@ -27,7 +27,11 @@
     </div>
     <hr class='transparentHr' *ngIf="godsAvailable"/>
     <div class="clickableText navItem" (click)="switchView(menuEnum.Resources)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Resources }">
-      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Resources }" (click)="switchView(menuEnum.Settings)">Resources</button>
+      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Resources }" (click)="switchView(menuEnum.Resources)">Resources</button>
+    </div>
+    <hr class='transparentHr'/>
+    <div class="clickableText navItem" (click)="switchView(menuEnum.Achievements)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }">
+      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }" (click)="switchView(menuEnum.Achievements)">Achievements</button>
     </div>
     <hr class='transparentHr'/>    
     <div class="clickableText navItem" (click)="switchView(menuEnum.Settings)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }">

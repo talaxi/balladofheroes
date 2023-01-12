@@ -1,4 +1,5 @@
 export enum SubZoneEnum {
+  None,
   Camp, //always a safe space
   AigosthenaUpperCoast,
   AigosthenaBay,

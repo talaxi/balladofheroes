@@ -4,6 +4,7 @@ import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.mode
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { BattleService } from '../battle/battle.service';
 import { GlobalService } from '../global/global.service';
+import { AlchemyService } from '../professions/alchemy.service';
 import { UtilityService } from './utility.service';
 
 @Injectable({
@@ -11,10 +12,12 @@ import { UtilityService } from './utility.service';
 })
 export class BackgroundService {
 
-  constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService) { }
+  constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
+    private alchemyService: AlchemyService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number) {
+    this.alchemyService.handleAlchemyTimer(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
 
     party.forEach(partyMember => {

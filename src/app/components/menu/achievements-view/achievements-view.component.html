@@ -1,0 +1,57 @@
+<div class="container">
+    <div class="s2Heading pageHeader">Achievements</div>
+    <div class="filters">
+        <hr/>
+        <div class="filterFlex">
+        <span class="s5Heading leftShift">Ballad: <select [(ngModel)]="selectedBallad" (change)="populateZones(); filterList();">
+            <option *ngFor="let ballad of ballads" [value]="ballad.type">{{balladService.getBalladName(ballad.type)}}
+            </option>
+        </select>
+        </span>
+        <span class="s5Heading leftShift">Zone: <select [(ngModel)]="selectedZone" (change)="populateSubzones(); filterList();">
+            <option *ngFor="let zone of zones" [value]="zone.type">{{zone.zoneName}}
+            </option>
+        </select>
+        </span>
+        <span class="s5Heading leftShift">Subzone: <select [(ngModel)]="selectedSubzone" (change)="filterList()">
+            <option *ngFor="let subzone of subzones" [value]="subzone.type">{{subzone.name}}
+            </option>
+        </select>
+        </span>
+        <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="showUncompleted" (input)="showUncompletedToggle()">Show Uncompleted Only
+            </mat-checkbox>
+        </span>    
+    </div>
+        <hr/>
+    </div>
+    <div class="achievements">
+        <div *ngFor="let subsection of achievementsBySubZone; let i = index">
+            <div class="grid">
+                <span [innerHtml]="getSubZoneName(subsection[0].relatedSubzone)"
+                    class="subzoneName sectionHeading"></span>
+                    <div class="achievementRow">
+                        <div class="row" *ngFor="let _ of [].constructor(getSubZoneRows(subsection)); let rowIndex = index">
+                            <div class="item" [ngClass]="getAchievementStatus(subsection, rowIndex, columnIndex)"
+                            *ngFor="let _ of [].constructor(getSubZoneColumnsPerRow(subsection, rowIndex)); let columnIndex = index">
+                                <app-individual-achievement-view
+                                [achievement]="getAchievement(subsection, rowIndex, columnIndex)"></app-individual-achievement-view>
+                            </div>
+                        </div>
+                    </div>
+                <!--<table class="achievements">
+                    <tr *ngFor="let _ of [].constructor(getSubZoneRows(subsection)); let rowIndex = index">
+                        <td class="item" [ngClass]="getAchievementStatus(subsection, rowIndex, columnIndex)"
+                            *ngFor="let _ of [].constructor(getSubZoneColumnsPerRow(subsection, rowIndex)); let columnIndex = index">
+                            <div>
+                                <app-individual-achievement-view
+                                    [achievement]="getAchievement(subsection, rowIndex, columnIndex)"></app-individual-achievement-view>
+                            </div>
+                        </td>
+                    </tr>
+                </table>                -->
+            </div>
+            <hr *ngIf="i < achievementsBySubZone.length - 1" />
+        </div>
+    </div>
+</div>

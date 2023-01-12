@@ -375,11 +375,20 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
       chance = .05;
     }
+    if (type === SubZoneEnum.DodonaCoastalRoadsOfLocris) {
+      chance = .025;
+    }    
+    if (type === SubZoneEnum.DodonaCountryside) {
+      chance = .02;
+    }
     if (type === SubZoneEnum.DodonaMountainPassOne) {
       chance = .075;
     }
     if (type === SubZoneEnum.DodonaMountainPassTwo) {
       chance = .03;
+    }
+    if (type === SubZoneEnum.DodonaAmbracianGulf) {
+      chance = .05;
     }
 
     return chance;
@@ -402,6 +411,15 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.DodonaMountainPassTwo) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 5));
+    }
+    if (type === SubZoneEnum.DodonaCountryside) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 1));
+    }
+    if (type === SubZoneEnum.DodonaCoastalRoadsOfLocris) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Wax, 1));
+    }
+    if (type === SubZoneEnum.DodonaAmbracianGulf) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 2));
     }
 
     return rewards;

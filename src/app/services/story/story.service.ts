@@ -104,15 +104,10 @@ export class StoryService {
 
       if (this.currentPage === 1) {
         this.sceneText = "After a hard fought battle, your opponent relents. Your power has grown significantly since being chosen by Athena, but you feel this Archer matches you in the same way. With your opponent thoroughly defeated, you sheathe your weapon and extend a hand. <br/><br/>" +
-          "“<span class='archerColor bold'>My goddess Artemis guides my arrows. She tasked me with hunting the strongest enemies I can find, so that I can prove myself and defend Olympus in the war to come.</span>”";
+          "<span class='archerColor bold'>“My goddess Artemis guides my arrows. She tasked me with hunting the strongest enemies I can find, so that I can prove myself and defend Olympus in the war to come.”</span>";
       }
       else if (this.currentPage === 2) {
-        this.sceneText = "The gods seem to each have their own favorites. “<span class='adventurerColor bold'>Walk with me, keep your distance if you choose. Athena guides my path as Artemis guides yours. We can prove ourselves together.</span>” You reply. You continue to Dodona.";
-
-        //TODO: REMOVE THIS
-        //VV
-        this.sceneText += "<br/><br/><i>For testing purposes, each character will now skip ahead to having two gods in use. In future iterations of this game, this will take longer and play out more naturally. Thanks for making it this far!</i>";
-        //^^
+        this.sceneText = "The gods seem to each have their own favorites. <span class='adventurerColor bold'>“Walk with me, keep your distance if you choose. Athena guides my path as Artemis guides yours. We can prove ourselves together.”</span> You reply. You continue to Dodona.";
       }
     }
     if (this.globalService.globalVar.currentStoryId === 5) {

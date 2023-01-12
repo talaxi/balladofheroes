@@ -1,7 +1,8 @@
-export enum ZoneEnum {    
-    Aigosthena,
-    Dodona,
-    Libya,
-    Nemea,
-    Asphodel
-  }
+export enum ZoneEnum {
+  None,
+  Aigosthena,
+  Dodona,
+  Libya,
+  Nemea,
+  Asphodel
+}

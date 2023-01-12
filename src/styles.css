@@ -27,18 +27,29 @@
   background-color: #290609 !important;
 }
 
+.purple-progress .mat-progress-bar-fill::after {
+  background-color: var(--alchemyColor) !important;
+}
+
+.purple-progress .mat-progress-bar-buffer {
+  background-color: #381142 !important;
+}
+
 
 :root {
   /* Colors */
-  --foreground-secondary: #5C7D99;
+  --foreground-secondary: #5D7F99; /* B3A0A2, 628599? */ 
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
   --foreground-light: #FFFFFF;
+  --active-filter: #FFFFFF;
+  --inactive-filter: #6A808A;
 
-  --background-default: #797C80;
-  --background-secondary: #41474D;
-  --background-tertiary: #08090A;
+  /* 797C80 */
+  --background-default: #41474D;
+  /*--background-default: #;*/
+  --background-header: #08090A;
   --background-quarternary: #2A2C31;
   --background-five: #007bff;
   --background-light: #54595E;
@@ -46,7 +57,6 @@
   --button-hover: #54595E;
   --button-selected: #1e2023;
   --primary-default: #5dfdcb;
-  --primary-dark: #24b286;
   --primary-light: #b2ffe7;
 
   --positive-status-effect: #24b286;
@@ -57,14 +67,41 @@
   --change-location-text: #F9B86E;
   --tutorial-text: #13D001;
 
-  --error-default: #3e2b2a;
-  --error-dark: #800600;
-  --error-light: #ffcecc;
-
   --grayedOut-Text: #797c80;
 
+  --adventurerColor: #DA7803;
+  --archerColor: #279113;
+  --warriorColor: #0385f0;
+  --priestColor: #D063EE;
+
+  --athenaColor: #7fbffa;
+  --zeusColor: #fff30b;
+  --aresColor: #EE665F;
+  --apolloColor: #eda324;
+  --poseidonColor: #00baa1;
+  --hermesColor: #f0f0f0; /*#faf9eb maybe instead */
+  --artemisColor: #97BBB0;
+  --hadesColor: #000000;  
+
+  --clearedSubzoneColor: #b36b24;
+  --completedSubzoneColor: #e8c602;
+
+  --basicEquipmentColor: #B2B69A;
+  --uncommonEquipmentColor: #f0f0f0;
+  --rareEquipmentColor: #2296F1;
+  --epicEquipmentColor: #AD75FA;
+  --specialEquipmentColor: #41c93c;
+  --extraordinaryEquipmentColor: #D9791A;
+  --uniqueEquipmentColor: #FD5949;
+  --alchemyColor: #CE66E9;
+
+  --resourceKeywordColor: #EAAD91;
+  --insufficientResourcesKeywordColor: #7a818c;
+  --chthonicFavorColor: #ABB5DC;
+  --chthonicPowerColor: #83C2A6;
+
   /* Shadows */
-  --background-tertiary-shadow: 0 1px 3px 0 rgba(92, 125, 153, 0.5);
+  --background-header-shadow: 0 1px 3px 0 rgba(92, 125, 153, 0.5);
 
   /* Fonts */
   --h1-size: 20vh;
@@ -138,7 +175,7 @@
   --s4-spacing: 0.1px;
 
   --s5-size: 1.15rem;
-  --s5-weight: 100;
+  --s5-weight: 400;
   --s5-spacing: 0.1px;
 
   /* Menu Buttons */
@@ -162,36 +199,6 @@
   --z3-size: .935rem;
   --z3-weight: 400;
   --z3-spacing: 0.1px; 
-
-  --adventurerColor: #DA7803;
-  --archerColor: #279113;
-  --warriorColor: #0385f0;
-  --priestColor: #D063EE;
-
-  --athenaColor: #7fbffa;
-  --zeusColor: #fff30b;
-  --aresColor: #EE665F;
-  --apolloColor: #eda324;
-  --poseidonColor: #00baa1;
-  --hermesColor: #f0f0f0; /*#faf9eb maybe instead */
-  --artemisColor: #97BBB0;
-  --hadesColor: #000000;  
-
-  --clearedSubzoneColor: #b36b24;
-  --completedSubzoneColor: #e8c602;
-
-  --basicEquipmentColor: #B2B69A;
-  --uncommonEquipmentColor: #f0f0f0;
-  --rareEquipmentColor: #2296F1;
-  --epicEquipmentColor: #AD75FA;
-  --specialEquipmentColor: #41c93c;
-  --extraordinaryEquipmentColor: #D9791A;
-  --uniqueEquipmentColor: #FD5949;
-
-  --resourceKeywordColor: #EAAD91;
-  --insufficientResourcesKeywordColor: #7a818c;
-  --chthonicFavorColor: #ABB5DC;
-  --chthonicPowerColor: #83C2A6;
 }
 
 body {
@@ -241,6 +248,7 @@ h1 {
 .s3Heading {
   font-size: var(--s3-size);
   font-weight: var(--s3-weight);
+  font-variant: small-caps;
 }
 
 .s4Heading {
@@ -256,6 +264,7 @@ h1 {
 .sectionHeading {
   font-size: var(--s4-size);
   font-weight: bold;
+  font-variant: small-caps;
   /*color:*/
 }
 
@@ -451,6 +460,10 @@ html, body { height: 100%; }
 
 .changeLocationText {
   color: var(--change-location-text);
+}
+
+.alchemyText {
+  color: var(--alchemyColor);
 }
 
 .tutorialText {
@@ -663,7 +676,6 @@ button {
   margin: 0;
 }
 
-
 .sectionHeaderText
 {
   color: var(--foreground-quaternary);
@@ -674,4 +686,9 @@ button {
 .sectionInfo {
   margin-top: .5rem;
   margin-left: .25rem;
+}
+
+.mainPageSectionHeader {
+  font-variant: small-caps;
+  font-weight: bold;
 }

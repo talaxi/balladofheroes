@@ -194,7 +194,7 @@ export class BattleService {
 
     //TODO: THIS IS JUST FOR THE TUTORIAL RELEASE BUT WILL EVENTUALLY BE REMOVED
     //VVV
-    if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
+    /*if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       if (hermes !== undefined && !hermes.isAvailable) {
         hermes.isAvailable = true;
@@ -224,7 +224,7 @@ export class BattleService {
           character2.assignedGod2 = GodEnum.Apollo;
         }
       }
-    }
+    }*/
     //^^^
   }
 
@@ -933,13 +933,18 @@ export class BattleService {
     if (isCritical)
       adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(attacker);
 
-    var damage = Math.round(damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
-      (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier);
-
     /*
+    DFFOO style
     Skill Power x ((ATK x ATK boost x 2/3) - (DEF x DEF boost x 2/5)) x (BRV DMG Reduction) x 
     (BRV DMG Dealt Multiplier) x (BRV DMG Increase Multiplier) x (Critical Damage) x (RNG)
+
+    var damage = Math.round(damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
+      (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier);  
     */
+
+    //2 * Attack^2 / (Attack + Defense)
+    var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier *
+    Math.ceil(Math.pow(adjustedAttack, 2) /  (adjustedAttack + adjustedDefense))); 
 
     if (damage < 0)
       damage = 0;
@@ -1432,7 +1437,7 @@ export class BattleService {
 
     var effect = this.lookupService.getBattleItemEffect(this.battleItemInUse);
 
-    if (this.battleItemInUse === ItemsEnum.HealingHerb) {
+    if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice) {
       if (character.battleStats.currentHp === character.battleStats.maxHp)
         return;
 

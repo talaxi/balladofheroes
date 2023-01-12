@@ -46,6 +46,10 @@ export class MenuOptionsComponent implements OnInit {
     if ((event.key === "s" || event.key === "S") && !event.ctrlKey) {
       this.switchView(MenuEnum.Settings);
     }
+
+    if ((event.key === "a" || event.key === "A") && !event.ctrlKey) {
+      this.switchView(MenuEnum.Achievements);
+    }
   }
 
   constructor(public menuService: MenuService, private globalService: GlobalService) { }

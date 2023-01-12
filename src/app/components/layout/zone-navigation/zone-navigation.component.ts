@@ -207,7 +207,8 @@ export class ZoneNavigationComponent implements OnInit {
       zone.subzones.filter(item => !item.isTown).forEach(subzone => {
         if (subzone.victoryCount < subzone.victoriesNeededToProceed)
           allSubZonesCleared = false;
-        if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0)
+        if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
+        this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
           allSubZonesCompleted = false;
       });
     });
@@ -226,7 +227,8 @@ export class ZoneNavigationComponent implements OnInit {
     zone.subzones.filter(item => !item.isTown).forEach(subzone => {
       if (subzone.victoryCount < subzone.victoriesNeededToProceed)
         allSubZonesCleared = false;
-      if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0)
+      if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
+      this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
         allSubZonesCompleted = false;
     });
 
@@ -239,7 +241,8 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   getSubzoneClass(subzone: SubZone) {
-    var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0;
+    var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0 &&
+    this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length > 0;
 
     return {
       'selected': subzone.isSelected,

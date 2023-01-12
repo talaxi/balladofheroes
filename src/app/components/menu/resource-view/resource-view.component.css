@@ -5,14 +5,14 @@
 .resourcesView {
     height:100%;
     
-    background-color: var(--background-secondary);
-    border-color: var(--background-tertiary);
+    background-color: var(--background-default);
+    border-color: var(--background-header);
     color: var(--foreground-default);
   }
 
   .orbContent {    
-    background-color: var(--background-secondary);
-    border-color: var(--background-tertiary);
+    background-color: var(--background-default);
+    border-color: var(--background-header);
     color: var(--foreground-default);
   }
 
@@ -28,18 +28,18 @@
     .resources {
       grid-area: resources;
       border-right: 1px solid rgba(0,0,0,.1);      
-      background-color: var(--background-secondary);
+      background-color: var(--background-default);
     }
 
     .progression {
       grid-area: progression;
       border-right: 1px solid rgba(0,0,0,.1);
-      background-color: var(--background-secondary);
+      background-color: var(--background-default);
     }  
   
     .equipment {
       grid-area: equipment;
-      background-color: var(--background-secondary);
+      background-color: var(--background-default);
       border-right: 1px solid rgba(0,0,0,.1);
     }
 

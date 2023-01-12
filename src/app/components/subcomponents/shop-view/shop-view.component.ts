@@ -8,7 +8,9 @@ import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 
@@ -35,7 +37,7 @@ export class ShopViewComponent implements OnInit {
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
-    private lookupService: LookupService) { }
+    private lookupService: LookupService, private globalService: GlobalService, private alchemyService: AlchemyService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
@@ -78,7 +80,14 @@ export class ShopViewComponent implements OnInit {
   }
 
   openShop(option: ShopOption, content: any) {
-    this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '50%', id: 'dialogNoPadding' });
+    this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
+
+    //TODO: prob better way to do this
+    if (option.type === ShopTypeEnum.Alchemist && this.globalService.globalVar.alchemy.level === 0)
+    {
+      this.globalService.globalVar.alchemy.level = 1;
+      this.alchemyService.checkForNewRecipes();
+    }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General) {
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));

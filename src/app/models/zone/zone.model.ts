@@ -13,5 +13,7 @@ export class Zone {
 
     constructor() {
         this.subzones = [];
+        this.type = ZoneEnum.None;
+        this.zoneName = "None";
     }
 }

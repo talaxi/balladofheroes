@@ -70,6 +70,9 @@ import { ResourceViewComponent } from './components/menu/resource-view/resource-
 import { ChthonicResetViewComponent } from './components/subcomponents/chthonic-reset-view/chthonic-reset-view.component';
 import { ChthonicResetMenuViewComponent } from './components/subcomponents/chthonic-reset-view/chthonic-reset-menu-view/chthonic-reset-menu-view.component';
 import { ChthonicRewardMenuViewComponent } from './components/subcomponents/chthonic-reset-view/chthonic-reward-menu-view/chthonic-reward-menu-view.component';
+import { AchievementsViewComponent } from './components/menu/achievements-view/achievements-view.component';
+import { IndividualAchievementViewComponent } from './components/menu/achievements-view/individual-achievement-view/individual-achievement-view.component';
+import { AlchemyViewComponent } from './components/subcomponents/alchemy-view/alchemy-view.component';
 
 
 @NgModule({
@@ -105,7 +108,10 @@ import { ChthonicRewardMenuViewComponent } from './components/subcomponents/chth
     ResourceViewComponent,
     ChthonicResetViewComponent,
     ChthonicResetMenuViewComponent,
-    ChthonicRewardMenuViewComponent
+    ChthonicRewardMenuViewComponent,
+    AchievementsViewComponent,
+    IndividualAchievementViewComponent,
+    AlchemyViewComponent
   ],
   imports: [
     BrowserModule,

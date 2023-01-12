@@ -4,6 +4,7 @@ import { Character } from "../character/character.model";
 import { God } from "../character/god.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
+import { Alchemy } from "../professions/alchemy.model";
 import { FreeTreasureChests } from "../resources/free-treasure-chests.model";
 import { ResourceValue } from "../resources/resource-value.model";
 import { ChthonicPowers } from "../utility/chthonic-powers.model";
@@ -49,6 +50,9 @@ export class GlobalVariables {
     isCatchingUp: boolean = false;
     @Type(() => ChthonicPowers)
     chthonicPowers: ChthonicPowers;
+    @Type(() => Alchemy)
+    alchemy: Alchemy;
+    betaSave: boolean = true;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -68,5 +72,6 @@ export class GlobalVariables {
         this.godXpModifier = 1;
         this.extraSpeedTimeRemaining = 0;
         this.chthonicPowers = new ChthonicPowers();
+        this.alchemy = new Alchemy();
     }
 }
