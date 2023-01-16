@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -22,7 +23,7 @@ export class CharacterViewComponent implements OnInit {
   public noGod = GodEnum.None;
 
   constructor(public menuService: MenuService, public lookupService: LookupService, private globalService: GlobalService,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);    
@@ -48,6 +49,14 @@ export class CharacterViewComponent implements OnInit {
         }
       }
     });
+  }
+
+  getOverdriveName() {
+    return this.lookupService.getOverdriveName(this.character.overdriveInfo.selectedOverdrive);
+  }
+
+  openOverdriveMenu(content: any) {          
+    this.dialog.open(content, { width: '50%', height: '55%' });  
   }
 
   getCharacterGodAbilities() {
@@ -131,6 +140,71 @@ export class CharacterViewComponent implements OnInit {
 
   hasGodEquipped() {
     return this.character.assignedGod1 !== GodEnum.None || this.character.assignedGod2 !== GodEnum.None;
+  }
+
+  getHpRegenBonus() {
+    return this.character.battleStats.hpRegen;
+  }
+
+  getCriticalMultiplierBonus() {
+    var defaultMultiplier = .25;
+    return defaultMultiplier + this.character.battleStats.criticalMultiplier;
+  }
+
+  getAbilityCooldownReductionBonus() {
+    return this.character.battleStats.abilityCooldownReduction;
+  }
+
+  getAutoAttackCooldownBonus() {
+    return this.character.battleStats.autoAttackCooldownReduction;
+  }
+
+  getHolyDamageBonus() {
+    return this.character.battleStats.elementalDamageIncrease.holy;
+  }
+
+  getFireDamageBonus() {
+    return this.character.battleStats.elementalDamageIncrease.fire;
+  }
+  
+  getLightningDamageBonus() {
+    return this.character.battleStats.elementalDamageIncrease.lightning;
+  }
+
+  getAirDamageBonus() {
+    return this.character.battleStats.elementalDamageIncrease.air;
+  }
+
+  getWaterDamageBonus() {
+    return this.character.battleStats.elementalDamageIncrease.water;
+  }
+
+  getEarthDamageBonus() {
+    return this.character.battleStats.elementalDamageIncrease.earth;
+  }
+
+  getHolyResistanceBonus() {
+    return this.character.battleStats.elementalDamageResistance.holy;
+  }
+
+  getFireResistanceBonus() {
+    return this.character.battleStats.elementalDamageResistance.fire;
+  }
+
+  getAirResistanceBonus() {
+    return this.character.battleStats.elementalDamageResistance.air;
+  }
+
+  getLightningResistanceBonus() {
+    return this.character.battleStats.elementalDamageResistance.lightning;
+  }
+
+  getWaterResistanceBonus() {
+    return this.character.battleStats.elementalDamageResistance.water;
+  }
+
+  getEarthResistanceBonus() {
+    return this.character.battleStats.elementalDamageResistance.earth;
   }
 
   ngOnDestroy() {

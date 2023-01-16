@@ -9,6 +9,8 @@ export enum GameLogEntryEnum {
   BattleRewards,
   TreasureChestRewards,
   BattleUpdate,
+  PartyAutoAttacks,
+  EnemyAutoAttacks,
   ChangeLocation,
   LearnAbility,
   LevelUp,

@@ -12,6 +12,8 @@ export class BattleInfo {
     statusEffects: StatusEffect[];
     barrierValue: number;
     fastAutoAttackCount: number;
+    hpRegenTimer: number;
+    hpRegenTimerLength: number;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
@@ -20,6 +22,8 @@ export class BattleInfo {
         this.autoAttackManuallyTriggered = false;
         this.barrierValue = 0;
         this.fastAutoAttackCount = 0;
+        this.hpRegenTimer = 0;
+        this.hpRegenTimerLength = 5;
         this.statusEffects = [];
 
         if (characterType === CharacterEnum.Warrior)

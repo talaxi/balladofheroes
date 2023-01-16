@@ -42,10 +42,16 @@
     overflow: auto;
 }
 
+.gameLogEditor {
+    position: absolute;
+    top: 0;
+    right: 1.5rem;
+}
+
 .skipToBottom {
     position: absolute;
     bottom: 0;
-    right: 2rem;
+    right: 1.5rem;
 }
 
 .enemiesGrid {
@@ -185,6 +191,16 @@
 .slideAnimation {
     -webkit-animation: slide .5s forwards;    
     animation: slide .5s forwards;
+}
+
+.gameLogEditor {
+    aspect-ratio: 1/1;
+    padding: 0;
+}
+
+.settingsIcon {
+    height: 1.5rem;
+    vertical-align: middle;
 }
 
 @keyframes slide {

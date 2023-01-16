@@ -1,0 +1,72 @@
+<div class="container">
+    <div class="header">Game Log Editor</div>
+    <hr />
+    <div class="options">
+        <div class='column1'>
+            <span class="statLabel">battle</span>
+            <br/>
+            <mat-checkbox [(ngModel)]="partyAutoAttacks" (input)="partyAutoAttacksToggle()">
+                Party Auto Attacks
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="partyAbilityUse" (input)="partyAbilityUseToggle()">
+                Party Ability Use
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="partyStatusEffect" (input)="partyStatusEffectToggle()">
+                Party Status Effect Updates
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="partyEquipmentEffect" (input)="partyEquipmentEffectToggle()">
+                Equipment Effect Updates
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="enemyAutoAttacks" (input)="enemyAutoAttacksToggle()">
+                Enemy Auto Attacks
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="enemyAbilityUse" (input)="enemyAbilityUseToggle()">
+                Enemy Ability Use
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="enemyStatusEffect" (input)="enemyStatusEffectToggle()">
+                Enemy Status Effect Updates
+            </mat-checkbox>
+            <br />            
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="battleUpdates" (input)="battleUpdatesToggle()">
+                Battle State Updates
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="battleRewards" (input)="battleRewardsToggle()">
+                Battle Rewards
+            </mat-checkbox>            
+            <br />            
+            <mat-checkbox class='battleItemText' [(ngModel)]="useBattleItem" (input)="useBattleItemToggle()">
+                Use Battle Item
+            </mat-checkbox>
+        </div>
+        <div class="column2">
+            <span class="statLabel">misc</span>
+            <br/>
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="partyLevelUp" (input)="partyLevelUpToggle()">
+                Character Level Up
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="godLevelUp" (input)="godLevelUpToggle()">
+                God Level Up
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="achievementUnlocked" (input)="achievementUnlockedToggle()">
+                Achievement Unlocked
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class='alchemyText' [(ngModel)]="alchemyLevelUp" (input)="alchemyLevelUpToggle()">
+                Alchemy Level Up
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class='alchemyText' [(ngModel)]="alchemyCreation" (input)="alchemyCreationToggle()">
+                Alchemy Creation
+            </mat-checkbox>            
+        </div>
+    </div>
+</div>

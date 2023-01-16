@@ -5,16 +5,19 @@ import { CharacterStats } from '../models/character/character-stats.model';
 import { Character } from '../models/character/character.model';
 import { Enemy } from '../models/character/enemy.model';
 import { God } from '../models/character/god.model';
+import { OverdriveInfo } from '../models/character/overdrive-info.model';
 import { AchievementTypeEnum } from '../models/enums/achievement-type-enum.copy';
 import { AlchemyActionsEnum } from '../models/enums/alchemy-actions-enum.model';
 import { CharacterEnum } from '../models/enums/character-enum.model';
 import { DamageOverTimeTypeEnum } from '../models/enums/damage-over-time-type-enum.model';
 import { EffectTriggerEnum } from '../models/enums/effect-trigger-enum.model';
+import { ElementalTypeEnum } from '../models/enums/elemental-type-enum.model';
 import { EquipmentQualityEnum } from '../models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from '../models/enums/equipment-type-enum.model';
 import { GodEnum } from '../models/enums/god-enum.model';
 import { ItemTypeEnum } from '../models/enums/item-type-enum.model';
 import { ItemsEnum } from '../models/enums/items-enum.model';
+import { OverdriveNameEnum } from '../models/enums/overdrive-name-enum.model';
 import { StatusEffectEnum } from '../models/enums/status-effects-enum.model';
 import { SubZoneEnum } from '../models/enums/sub-zone-enum.model';
 import { WeaponTypeEnum } from '../models/enums/weapon-type-enum.model';
@@ -140,6 +143,8 @@ export class LookupService {
       name = "Chthonic Power";
     if (type === ItemsEnum.BoonOfOlympus)
       name = "Boon of Olympus";
+    if (type === ItemsEnum.ItemBeltUp)
+      name = "Item Belt Size";
 
     //healing items
     if (type === ItemsEnum.HealingHerb)
@@ -520,6 +525,74 @@ export class LookupService {
     return description;
   }
 
+  isOverdriveDiscovered(type: OverdriveNameEnum, character?: Character) {
+    if (character !== undefined && character.unlockedOverdrives.some(item => item === type)) {
+      return true;
+    }
+
+    return false;
+  }
+
+
+  getOverdriveName(type: OverdriveNameEnum, character?: Character) {
+    var name = "";
+
+    if (character !== undefined && !character.unlockedOverdrives.some(item => item === type)) {
+      return "???";
+    }
+
+    if (type === OverdriveNameEnum.HeavyAttack)
+      name = "Heavy Attack";
+    if (type === OverdriveNameEnum.Smash)
+      name = "Smash";
+    if (type === OverdriveNameEnum.Speed)
+      name = "Speed";
+
+    return name;
+  }
+
+  getOverdriveDescription(type: OverdriveNameEnum) {
+    var description = "";
+
+    if (type === OverdriveNameEnum.HeavyAttack) {
+      description = "Your next auto attack deals <strong>300% Attack</strong> damage.";
+    }
+    if (type === OverdriveNameEnum.Smash) {
+      description = "Your next auto attack deals <strong>500% Attack</strong> damage.";
+    }
+
+    return description;
+  }
+
+  getOverdriveUnlockCondition(type: OverdriveNameEnum) {
+    var description = "???";
+
+    if (type === OverdriveNameEnum.Smash) {
+      description = "Reach character level 20.";
+    }
+
+    return description;
+  }
+
+  setOverdrive(character: Character, type: OverdriveNameEnum) {
+    character.overdriveInfo = this.getOverdriveInfo(type);
+  }
+
+  getOverdriveInfo(type: OverdriveNameEnum) {
+    var overdriveInfo = new OverdriveInfo();
+
+    overdriveInfo.selectedOverdrive = type;
+
+    if (type === OverdriveNameEnum.HeavyAttack) {
+      overdriveInfo.overdriveGaugeTotal = 100;
+    }
+    if (type === OverdriveNameEnum.Smash) {
+      overdriveInfo.overdriveGaugeTotal = 140;
+    }
+
+    return overdriveInfo;
+  }
+
   getOverdriveMultiplier(character: Character) {
     return 3;
   }
@@ -697,7 +770,7 @@ export class LookupService {
     if (abilityName === "Special Delivery")
       abilityDescription = "Immediately perform <strong>three</strong> auto attacks. Their damage is increased by <strong>" + effectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
     if (abilityName === "Quicken")
-      abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ability?.effectiveness + "</strong> seconds. Passive.";
+      abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ability?.effectiveness.toFixed(3) + "</strong> seconds. Passive.";
 
     //Zeus
     if (abilityName === "Overload")
@@ -833,6 +906,10 @@ export class LookupService {
     else {
       existingResource.amount += item.amount;
     }
+  }
+
+  increaseItemBeltSize() {
+    this.globalService.globalVar.itemBeltSize += 1;
   }
 
   itemDoesNotNeedSelection() {
@@ -1084,7 +1161,7 @@ export class LookupService {
       if (activeFortissimo !== undefined)
         attack *= activeFortissimo.effectiveness;
     }
-   
+
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.AttackUp ||
         effect.type === StatusEffectEnum.AttackDown
@@ -1134,8 +1211,17 @@ export class LookupService {
     return defense;
   }
 
+  getAbilityCooldown(ability: Ability, character: Character) {
+    return ability.cooldown - character.battleStats.abilityCooldownReduction;
+  }
+
+  getAutoAttackCooldown(character: Character) {
+    return character.battleInfo.timeToAutoAttack - character.battleStats.autoAttackCooldownReduction;
+  }
+
   getAdjustedCriticalMultiplier(character: Character) {
-    return 1.5;
+    var defaultMultiplier = 1.25;
+    return defaultMultiplier + character.battleStats.criticalMultiplier;
   }
 
   getChthonicFavorMultiplier() {
@@ -1327,6 +1413,8 @@ export class LookupService {
       description = "Clear in 10 seconds";
     if (type === AchievementTypeEnum.ThirtySecondClear)
       description = "Clear in 30 seconds";
+    if (type === AchievementTypeEnum.Complete)
+      description = "Complete Subzone";
 
     return description;
   }
@@ -1442,5 +1530,781 @@ export class LookupService {
     }
 
     return matchingAbility;
+  }
+
+  getMaxHpDescription() {
+    return "The amount of damage you can take before being knocked unconscious. If your entire party is unconscious, you must retreat to a town.";
+  }
+
+  getAttackDescription() {
+    return "Increase auto attack and ability damage.";
+  }
+
+  getDefenseDescription() {
+    return "Reduce damage taken from enemy attacks.";
+  }
+
+  getAgilityDescription() {
+    return "Increase the number of auto attacks you complete per cycle.";
+  }
+
+  getLuckDescription() {
+    return "Increase your chance to deal a critical hit.";
+  }
+
+  getResistanceDescription() {
+    return "Reduce your chance to be critically hit by enemies.";
+  }
+
+  getHpRegenDescription() {
+    return "Amount of HP you gain every 5 seconds.";
+  }
+
+  getCriticalMultiplierDescription() {
+    return "Increase the amount of damage dealt when dealing a critical hit.";
+  }
+
+  getAbilityCooldownReductionDescription() {
+    return "Reduces cooldown for all abilities.";
+  }
+
+  getAutoAttackCooldownReductionDescription() {
+    return "Reduces cooldown for auto attack.";
+  }
+
+  getElementalDamageIncreaseDescription(type?: ElementalTypeEnum, name?: string) {
+    var element = "";
+
+    if (type === ElementalTypeEnum.Holy || name === "Holy")
+      element = "Holy";
+    else if (type === ElementalTypeEnum.Fire || name === "Fire")
+      element = "Fire";
+    else if (type === ElementalTypeEnum.Lightning || name === "Lightning")
+      element = "Lightning";
+    else if (type === ElementalTypeEnum.Water || name === "Water")
+      element = "Water";
+    else if (type === ElementalTypeEnum.Air || name === "Air")
+      element = "Air";
+    else if (type === ElementalTypeEnum.Earth || name === "Earth")
+      element = "Earth";
+
+    return "Increase " + element + " damage dealt.";
+  }
+
+  getElementalResistanceIncreaseDescription(type?: ElementalTypeEnum, name?: string) {
+    var element = "";
+
+    if (type === ElementalTypeEnum.Holy || name === "Holy")
+      element = "Holy";
+    else if (type === ElementalTypeEnum.Fire || name === "Fire")
+      element = "Fire";
+    else if (type === ElementalTypeEnum.Lightning || name === "Lightning")
+      element = "Lightning";
+    else if (type === ElementalTypeEnum.Water || name === "Water")
+      element = "Water";
+    else if (type === ElementalTypeEnum.Air || name === "Air")
+      element = "Air";
+    else if (type === ElementalTypeEnum.Earth || name === "Earth")
+      element = "Earth";
+
+    return "Reduce " + element + " damage taken.";
+  }
+
+  getGodMaxHpStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.maxHp > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.maxHp) + "<br />";
+    if (god.permanentStatGain.maxHp > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.maxHp) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodAttackStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.attack > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.attack) + "<br />";
+    if (god.permanentStatGain.attack > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.attack) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodDefenseStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.defense > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.defense) + "<br />";
+    if (god.permanentStatGain.defense > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.defense) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodAgilityStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.agility > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.agility) + "<br />";
+    if (god.permanentStatGain.agility > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.agility) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodLuckStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.luck > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.luck) + "<br />";
+    if (god.permanentStatGain.luck > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.luck) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodResistanceStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.resistance > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.resistance) + "<br />";
+    if (god.permanentStatGain.resistance > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.resistance) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodHpRegenStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.hpRegen > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.hpRegen) + "<br />";
+    if (god.permanentStatGain.hpRegen > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.hpRegen) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodCriticalMultiplierStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.criticalMultiplier > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.criticalMultiplier * 100) + "%<br />";
+    if (god.permanentStatGain.criticalMultiplier > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.criticalMultiplier * 100) + "%<br />";
+
+    return breakdown;
+  }
+
+  getGodAbilityCooldownReductionStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.abilityCooldownReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.abilityCooldownReduction, 2) + "<br />";
+    if (god.permanentStatGain.abilityCooldownReduction > 0)
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.abilityCooldownReduction, 2) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodAutoAttackCooldownReductionStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.autoAttackCooldownReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.autoAttackCooldownReduction, 2) + "<br />";
+    if (god.permanentStatGain.autoAttackCooldownReduction > 0)
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.autoAttackCooldownReduction, 2) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodElementalDamageIncreaseStatBreakdown(god: God, type?: ElementalTypeEnum, name?: string) {
+    var breakdown = "";
+
+    if (type === ElementalTypeEnum.Holy || name === "Holy") {
+      if (god.statGain.elementalDamageIncrease.holy > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageIncrease.holy * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageIncrease.holy > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageIncrease.holy * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Fire || name === "Fire") {
+      if (god.statGain.elementalDamageIncrease.fire > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageIncrease.fire * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageIncrease.fire > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageIncrease.fire * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
+      if (god.statGain.elementalDamageIncrease.lightning > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageIncrease.lightning * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageIncrease.lightning > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageIncrease.lightning * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Water || name === "Water") {
+      if (god.statGain.elementalDamageIncrease.water > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageIncrease.water * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageIncrease.water > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageIncrease.water * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Air || name === "Air") {
+      if (god.statGain.elementalDamageIncrease.air > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageIncrease.air * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageIncrease.air > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageIncrease.air * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Earth || name === "Earth") {
+      if (god.statGain.elementalDamageIncrease.earth > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageIncrease.earth * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageIncrease.earth > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageIncrease.earth * 100) + "%<br />";
+    }
+
+    return breakdown;
+  }
+
+  getGodElementalDamageResistanceStatBreakdown(god: God, type?: ElementalTypeEnum, name?: string) {
+    var breakdown = "";
+
+    if (type === ElementalTypeEnum.Holy || name === "Holy") {
+      if (god.statGain.elementalDamageResistance.holy > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageResistance.holy * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageResistance.holy > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageResistance.holy * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Fire || name === "Fire") {
+      if (god.statGain.elementalDamageResistance.fire > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageResistance.fire * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageResistance.fire > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageResistance.fire * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
+      if (god.statGain.elementalDamageResistance.lightning > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageResistance.lightning * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageResistance.lightning > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageResistance.lightning * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Water || name === "Water") {
+      if (god.statGain.elementalDamageResistance.water > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageResistance.water * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageResistance.water > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageResistance.water * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Air || name === "Air") {
+      if (god.statGain.elementalDamageResistance.air > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageResistance.air * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageResistance.air > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageResistance.air * 100) + "%<br />";
+    }
+    else if (type === ElementalTypeEnum.Earth || name === "Earth") {
+      if (god.statGain.elementalDamageResistance.earth > 0)
+        breakdown += "Base Stat Gain: +" + (god.statGain.elementalDamageResistance.earth * 100) + "%<br />";
+      if (god.permanentStatGain.elementalDamageResistance.earth > 0)
+        breakdown += "Permanent Stat Gain: +" + (god.permanentStatGain.elementalDamageResistance.earth * 100) + "%<br />";
+    }
+
+    return breakdown;
+  }
+
+  getMaxHpStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.maxHp > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.maxHp) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.maxHp + assignedGod1.permanentStatGain.maxHp;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.maxHp + assignedGod2.permanentStatGain.maxHp;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (character.equipmentSet.getTotalMaxHpGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalMaxHpGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent()) + "<br />";
+
+    return breakdown;
+  }
+
+  getAttackStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.attack > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.attack) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.attack + assignedGod1.permanentStatGain.attack;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.attack + assignedGod2.permanentStatGain.attack;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (character.equipmentSet.getTotalAttackGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalAttackGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getAttackBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAttackBoostPercent()) + "<br />";
+
+    return breakdown;
+  }
+
+  getDefenseStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.defense > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.defense) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.defense + assignedGod1.permanentStatGain.defense;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.defense + assignedGod2.permanentStatGain.defense;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (character.equipmentSet.getTotalDefenseGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalDefenseGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent()) + "<br />";
+
+    return breakdown;
+  }
+
+  getAgilityStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.agility > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.agility) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.agility + assignedGod1.permanentStatGain.agility;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.agility + assignedGod2.permanentStatGain.agility;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (character.equipmentSet.getTotalAgilityGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalAgilityGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent()) + "<br />";
+
+    return breakdown;
+  }
+
+  getLuckStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.luck > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.luck) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.luck + assignedGod1.permanentStatGain.luck;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.luck + assignedGod2.permanentStatGain.luck;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (character.equipmentSet.getTotalLuckGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalLuckGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getLuckBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getLuckBoostPercent()) + "<br />";
+
+    return breakdown;
+  }
+
+  getResistanceStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.resistance > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.resistance) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.resistance + assignedGod1.permanentStatGain.resistance;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.resistance + assignedGod2.permanentStatGain.resistance;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (character.equipmentSet.getTotalResistanceGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalResistanceGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent()) + "<br />";
+
+    return breakdown;
+  }
+
+  getHpRegenStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.hpRegen > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.hpRegen) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.hpRegen + assignedGod1.permanentStatGain.hpRegen;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.hpRegen + assignedGod2.permanentStatGain.hpRegen;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+    }
+
+    /*if (character.equipmentSet.getTotalHpRegenGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalHpRegenGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent())+ "<br />";
+*/
+    return breakdown;
+  }
+
+  getCriticalMultiplierStatBreakdown(character: Character) {
+    var breakdown = "";
+    var defaultCriticalMultiplier = .25;
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    breakdown += "Base Stat Gain: +" + Math.round((character.baseStats.criticalMultiplier + defaultCriticalMultiplier) * 100) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.criticalMultiplier + assignedGod1.permanentStatGain.criticalMultiplier;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.criticalMultiplier + assignedGod2.permanentStatGain.criticalMultiplier;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    /*if (character.equipmentSet.getTotalCriticalMultiplierGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalCriticalMultiplierGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getCriticalMultiplierBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getCriticalMultiplierBoostPercent())+ "<br />";
+*/
+    return breakdown;
+  }
+
+  getAbilityCooldownReductionStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.abilityCooldownReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(character.baseStats.abilityCooldownReduction, 2) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.abilityCooldownReduction + assignedGod1.permanentStatGain.abilityCooldownReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain, 2) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.abilityCooldownReduction + assignedGod2.permanentStatGain.abilityCooldownReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain, 2) + "<br />";
+    }
+
+    /*if (character.equipmentSet.getTotalAbilityCooldownReductionGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalAbilityCooldownReductionGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getAbilityCooldownReductionBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAbilityCooldownReductionBoostPercent())+ "<br />";
+*/
+    return breakdown;
+  }
+
+  getAutoAttackCooldownReductionStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.autoAttackCooldownReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(character.baseStats.autoAttackCooldownReduction, 2) + "<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.autoAttackCooldownReduction + assignedGod1.permanentStatGain.autoAttackCooldownReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain, 2) + "<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.autoAttackCooldownReduction + assignedGod2.permanentStatGain.autoAttackCooldownReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain, 2) + "<br />";
+    }
+
+    /*if (character.equipmentSet.getTotalAutoAttackCooldownReductionGain() > 0)
+      breakdown += "Equipment: +" + character.equipmentSet.getTotalAutoAttackCooldownReductionGain() + "<br />";
+
+    if (this.globalService.globalVar.chthonicPowers.getAutoAttackCooldownReductionBoostPercent() > 0)
+      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAutoAttackCooldownReductionBoostPercent())+ "<br />";
+*/
+    return breakdown;
+  }
+
+  getElementalDamageIncreaseStatBreakdown(character: Character, type?: ElementalTypeEnum, name?: string) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (type === ElementalTypeEnum.Holy || name === "Holy") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.holy + assignedGod1.permanentStatGain.elementalDamageIncrease.holy;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.holy + assignedGod2.permanentStatGain.elementalDamageIncrease.holy;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalHolyDamageIncreaseGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalHolyDamageIncreaseGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Fire || name === "Fire") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.fire + assignedGod1.permanentStatGain.elementalDamageIncrease.fire;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.fire + assignedGod2.permanentStatGain.elementalDamageIncrease.fire;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalFireDamageIncreaseGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalFireDamageIncreaseGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.lightning + assignedGod1.permanentStatGain.elementalDamageIncrease.lightning;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.lightning + assignedGod2.permanentStatGain.elementalDamageIncrease.lightning;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalLightningDamageIncreaseGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalLightningDamageIncreaseGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Water || name === "Water") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.water + assignedGod1.permanentStatGain.elementalDamageIncrease.water;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.water + assignedGod2.permanentStatGain.elementalDamageIncrease.water;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalWaterDamageIncreaseGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalWaterDamageIncreaseGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Air || name === "Air") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.air + assignedGod1.permanentStatGain.elementalDamageIncrease.air;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.air + assignedGod2.permanentStatGain.elementalDamageIncrease.air;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalAirDamageIncreaseGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalAirDamageIncreaseGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Earth || name === "Earth") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.earth + assignedGod1.permanentStatGain.elementalDamageIncrease.earth;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.earth + assignedGod2.permanentStatGain.elementalDamageIncrease.earth;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalEarthDamageIncreaseGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalEarthDamageIncreaseGain() * 100) + "%<br />"
+    }
+
+    return breakdown;
+  }
+
+  getElementalDamageResistanceStatBreakdown(character: Character, type?: ElementalTypeEnum, name?: string) {
+    var breakdown = "";
+
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (type === ElementalTypeEnum.Holy || name === "Holy") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageResistance.holy + assignedGod1.permanentStatGain.elementalDamageResistance.holy;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageResistance.holy + assignedGod2.permanentStatGain.elementalDamageResistance.holy;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalHolyDamageResistanceGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalHolyDamageResistanceGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Fire || name === "Fire") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageResistance.fire + assignedGod1.permanentStatGain.elementalDamageResistance.fire;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageResistance.fire + assignedGod2.permanentStatGain.elementalDamageResistance.fire;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalFireDamageResistanceGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalFireDamageResistanceGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageResistance.lightning + assignedGod1.permanentStatGain.elementalDamageResistance.lightning;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageResistance.lightning + assignedGod2.permanentStatGain.elementalDamageResistance.lightning;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalLightningDamageResistanceGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalLightningDamageResistanceGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Water || name === "Water") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageResistance.water + assignedGod1.permanentStatGain.elementalDamageResistance.water;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageResistance.water + assignedGod2.permanentStatGain.elementalDamageResistance.water;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalWaterDamageResistanceGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalWaterDamageResistanceGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Air || name === "Air") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageResistance.air + assignedGod1.permanentStatGain.elementalDamageResistance.air;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageResistance.air + assignedGod2.permanentStatGain.elementalDamageResistance.air;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalAirDamageResistanceGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalAirDamageResistanceGain() * 100) + "%<br />"
+    }
+    else if (type === ElementalTypeEnum.Earth || name === "Earth") {
+      if (assignedGod1 !== undefined) {
+        var godStatGain = assignedGod1.statGain.elementalDamageResistance.earth + assignedGod1.permanentStatGain.elementalDamageResistance.earth;
+        if (godStatGain > 0)
+          breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (assignedGod2 !== undefined) {
+        var godStatGain = assignedGod2.statGain.elementalDamageResistance.earth + assignedGod2.permanentStatGain.elementalDamageResistance.earth;
+        if (godStatGain > 0)
+          breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+      }
+
+      if (character.equipmentSet.getTotalEarthDamageResistanceGain() > 0)
+        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalEarthDamageResistanceGain() * 100) + "%<br />"
+    }
+
+    return breakdown;
   }
 }

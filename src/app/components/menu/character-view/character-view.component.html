@@ -15,12 +15,12 @@
                 Equipped Gods:
                 <br />
                 <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod"
-                    [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
+                    [ngClass]="lookupService.getCharacterColorClass(character.assignedGod1)">
                     <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
                     <strong><span>Lv {{getCharacterGodLevel(character, 1)}}</span></strong>
                 </div>
                 <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"
-                    [ngClass]="lookupService.getGodColorClass(character.assignedGod2)">
+                    [ngClass]="lookupService.getCharacterColorClass(character.assignedGod2)">
                     <span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
                     <strong><span>Lv {{getCharacterGodLevel(character, 2)}}</span></strong>
                 </div>
@@ -41,92 +41,361 @@
                 <span class="sectionHeaderText sectionHeading">Primary Stats</span>
                 <br />
                 <div class="sectionInfo">
-                    <span customToolTip [contentTemplate]="maxHpPopover"><strong>Max HP:</strong>
-                        {{character.battleStats.maxHp | number : '1.0-0'}}</span>
+                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="maxHpPopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Max HP: </strong>
+                        <span class="statValue">{{character.battleStats.maxHp | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [contentTemplate]="attackPopover"><strong>Attack:</strong>
-                        {{character.battleStats.attack | number : '1.0-0'}}</span>
+                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="attackPopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Attack: </strong>
+                        <span class="statValue">{{character.battleStats.attack | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [contentTemplate]="agilityPopover"><strong>Agility:</strong>
-                        {{character.battleStats.agility | number : '1.0-0'}}</span>
+                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="agilityPopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Agility: </strong>
+                        <span class="statValue">{{character.battleStats.agility | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [contentTemplate]="luckPopover"><strong>Luck:</strong>
-                        {{character.battleStats.luck
-                        | number : '1.0-0'}}</span>
+                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="luckPopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Luck: </strong>
+                        <span class="statValue">{{character.battleStats.luck | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [contentTemplate]="defensePopover"><strong>Defense:</strong>
-                        {{character.battleStats.defense | number : '1.0-0'}}</span>
+                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="defensePopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Defense: </strong>
+                        <span class="statValue">{{character.battleStats.defense | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [contentTemplate]="resistancePopover"><strong>Resistance:</strong>
-                        {{character.battleStats.resistance | number : '1.0-0'}}</span>
+                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="resistancePopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Resistance: </strong>
+                        <span class="statValue">{{character.battleStats.resistance | number : '1.0-0'}}</span></span>
+                </div>
+            </div>
+        </div>        
+        <div class="secondaryStats">
+            <div class="leftAlignText">
+                <span class="sectionHeaderText sectionHeading">Secondary Stats</span>
+                <br/>
+                <div class="sectionInfo">
+                    <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="hpRegenPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">HP
+                            Regen:</strong>
+                        {{getHpRegenBonus() | number :
+                        '1.0-2'}} HP /
+                        5 seconds<br /></span>
+                    <span *ngIf="getCriticalMultiplierBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="criticalMultiplierPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Critical
+                            Damage Bonus:</strong>
+                        {{(getCriticalMultiplierBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getAbilityCooldownReductionBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="abilityCooldownReductionPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Ability
+                            Cooldown Reduction:</strong>
+                        {{getAbilityCooldownReductionBonus() | number : '1.0-2'}} sec<br /></span>
+                    <span *ngIf="getAutoAttackCooldownBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="autoAttackCooldownReductionPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Auto
+                            Attack Cooldown Reduction:</strong>
+                        {{getAutoAttackCooldownBonus() | number : '1.0-2'}} sec<br /></span>
+                    <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Holy Damage
+                            Bonus:</strong> {{(getHolyDamageBonus() *
+                        100)
+                        | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getFireDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="fireDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Fire Damage
+                            Bonus:</strong> {{(getFireDamageBonus() *
+                        100)
+                        | number : '1.0-2'}}%<br /></span>
+                        
+                    <span *ngIf="getLightningDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="lightningDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Lightning
+                            Damage Bonus:</strong>
+                        {{(getLightningDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getAirDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="airDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Air Damage
+                            Bonus:</strong> {{(getAirDamageBonus() *
+                        100) |
+                        number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getWaterDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="waterDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Water Damage
+                            Bonus:</strong> {{(getWaterDamageBonus()
+                        *
+                        100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getEarthDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="earthDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Earth Damage
+                            Bonus:</strong> {{(getEarthDamageBonus()
+                        *
+                        100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getHolyResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="holyResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Holy
+                            Resistance Bonus:</strong>
+                        {{(getHolyResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getFireResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="fireResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Fire
+                            Resistance Bonus:</strong>
+                        {{(getFireResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getLightningResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="lightningResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Lightning
+                            Resistance Bonus:</strong>
+                        {{(getLightningResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getAirResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="airResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Air Resistance
+                            Bonus:</strong>
+                        {{(getAirResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getWaterResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="waterResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Water
+                            Resistance Bonus:</strong>
+                        {{(getWaterResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getEarthResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                        [contentTemplate]="earthResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Earth
+                            Resistance Bonus:</strong>
+                        {{(getEarthResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
                 </div>
             </div>
         </div>
-        <!--TODO: show this when you can actually gain secondary stats -->
-        <!--<div class="secondaryStats">
-            <div class="leftAlignText">
-                <span class="sectionHeaderText sectionHeading">Secondary Stats</span>
-            </div>
-        </div>-->
     </div>
     <div class="characterAbilities">
         <span class="sectionHeaderText sectionHeading">Character Abilities</span>
         <div class="sectionInfo">
             <div *ngFor="let ability of characterAbilityList">
-                <strong [ngClass]="getAbilityColor(false)">{{ability.name}}</strong> - <span
-                    [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span>
+                <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{ability.name}}</strong><span class="statValue"> - <span
+                    [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span></span>
             </div>
-        </div>
+            <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{getOverdriveName()}} (Overdrive)</strong><span class="statValue"> - <span
+                [innerHtml]="lookupService.getOverdriveDescription(character.overdriveInfo.selectedOverdrive)"></span> </span> 
+                <button class="overdriveButton" (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
+        </div >
         <br />
         <div *ngIf="hasGodEquipped()">
             <span class="sectionHeaderText sectionHeading">Equipped God Abilities</span>
             <div class="sectionInfo">
                 <div *ngFor="let ability of god1AbilityList">
-                    <strong [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong> - <span
-                        [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span>
+                    <strong class="statLabel" [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong><span class="statValue"> - <span
+                        [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span></span>
                 </div>
                 <div *ngFor="let ability of god2AbilityList">
-                    <strong [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong> - <span
-                        [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span>
+                    <strong class="statLabel" [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong><span class="statValue"> - <span
+                        [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span></span>
                 </div>
             </div>
         </div>
     </div>
 </div>
 
+<ng-template #overdriveView>
+    <app-overdrive-view [character]="character"></app-overdrive-view>
+</ng-template>
 
 <ng-template #maxHpPopover>
     <div>
-        The amount of damage you can take before dieing.
+        <span class="description" [innerHtml]="this.lookupService.getMaxHpDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getMaxHpStatBreakdown(this.character)">
+
+        </div>
     </div>
 </ng-template>
 
 <ng-template #attackPopover>
     <div>
-        Increase auto attack and ability damage.
-    </div>
-</ng-template>
+        <span class="description" [innerHtml]="this.lookupService.getAttackDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getAttackStatBreakdown(this.character)">
 
-<ng-template #defensePopover>
-    <div>
-        Reduce damage taken from enemy attacks.
+        </div>
     </div>
 </ng-template>
 
 <ng-template #agilityPopover>
     <div>
-        Increase your auto attack speed.
+        <span class="description" [innerHtml]="this.lookupService.getAgilityDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getAgilityStatBreakdown(this.character)">
+
+        </div>
     </div>
 </ng-template>
 
 <ng-template #luckPopover>
     <div>
-        Increase your chance to deal a critical hit.
+        <span class="description" [innerHtml]="this.lookupService.getLuckDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getLuckStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #defensePopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getDefenseDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getDefenseStatBreakdown(this.character)">
+
+        </div>
     </div>
 </ng-template>
 
 <ng-template #resistancePopover>
     <div>
-        Reduce your chance to be critically hit by enemies.
+        <span class="description" [innerHtml]="this.lookupService.getResistanceDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getResistanceStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #hpRegenPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getHpRegenDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getHpRegenStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #criticalMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getCriticalMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getCriticalMultiplierStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #abilityCooldownReductionPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getAbilityCooldownReductionStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #autoAttackCooldownReductionPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAutoAttackCooldownReductionDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getAutoAttackCooldownReductionStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #holyDamageBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Holy')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getElementalDamageIncreaseStatBreakdown(this.character, undefined, 'Holy')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #fireDamageBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Fire')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"  [innerHtml]="this.lookupService.getElementalDamageIncreaseStatBreakdown(this.character, undefined, 'Fire')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #lightningDamageBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Lightning')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"  [innerHtml]="this.lookupService.getElementalDamageIncreaseStatBreakdown(this.character, undefined, 'Lightning')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #waterDamageBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Water')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"  [innerHtml]="this.lookupService.getElementalDamageIncreaseStatBreakdown(this.character, undefined, 'Water')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #earthDamageBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Earth')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"  [innerHtml]="this.lookupService.getElementalDamageIncreaseStatBreakdown(this.character, undefined, 'Earth')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #airDamageBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Air')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"  [innerHtml]="this.lookupService.getElementalDamageIncreaseStatBreakdown(this.character, undefined, 'Air')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #holyResistanceBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Holy')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getElementalDamageResistanceStatBreakdown(this.character, undefined, 'Holy')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #fireResistanceBonusPopover>
+    <div>
+        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Fire')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getElementalDamageResistanceStatBreakdown(this.character, undefined, 'Fire')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #lightningResistanceBonusPopover>
+    <div>
+        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Lightning')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getElementalDamageResistanceStatBreakdown(this.character, undefined, 'Lightning')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #waterResistanceBonusPopover>
+    <div>
+        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Water')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getElementalDamageResistanceStatBreakdown(this.character, undefined, 'Water')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #airResistanceBonusPopover>
+    <div>
+        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Air')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getElementalDamageResistanceStatBreakdown(this.character, undefined, 'Air')">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #earthResistanceBonusPopover>
+    <div>
+        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Earth')"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getElementalDamageResistanceStatBreakdown(this.character, undefined, 'Earth')">
+
+        </div>
     </div>
 </ng-template>

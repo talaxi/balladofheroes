@@ -48,4 +48,5 @@ export enum ItemsEnum {
   StranglingGasVial,  
   ExplodingVial,
   FireVial,
+  ItemBeltUp
 }

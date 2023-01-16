@@ -24,7 +24,7 @@ export class GodViewComponent implements OnInit {
   subscription: any;
   abilityList: Ability[] = [];
 
-  constructor(private lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
+  constructor(public lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
@@ -83,7 +83,7 @@ export class GodViewComponent implements OnInit {
     var previousLevel = this.god.level;
 
     for (var i = 0; i < totalLevelDisplay; i++) {
-      var nextLevel = previousLevel + 1;     
+      var nextLevel = previousLevel + 1;
 
       if (statDisplayCount >= 6) {
 
@@ -108,8 +108,8 @@ export class GodViewComponent implements OnInit {
           else if (nextLevel < 200) //permanent stat 4
             nextLevel = 200;
           else if (nextLevel <= 500) //end of permanent stats
-            nextLevel  = Math.ceil(nextLevel / 25) * 25;
-          else 
+            nextLevel = Math.ceil(nextLevel / 25) * 25;
+          else
             nextLevel = Math.ceil(nextLevel / 5) * 5;  //for now, just go back to showing upgrades
         }
         else {
@@ -118,15 +118,16 @@ export class GodViewComponent implements OnInit {
         }
 
       }
-      
-      var nextLevelType = this.globalService.getGodLevelIncreaseTypeByLevel(nextLevel);       
+
+      var nextLevelType = this.globalService.getGodLevelIncreaseTypeByLevel(this.god, nextLevel);
       if (nextLevel - previousLevel > 1)
         rewards += "...<br/>";
+      
 
-      rewards += "<strong>Lv " + nextLevel + " </strong>- ";
+      rewards += "<strong class='smallCaps " + this.globalService.getGodColorClassText(this.god.type) + "'>level " + nextLevel + " </strong>- ";
 
-      if (nextLevelType === GodLevelIncreaseEnum.Stats) {        
-        nextStatToIncrease = this.globalService.getNextStatToIncrease(nextStatToIncrease);        
+      if (nextLevelType === GodLevelIncreaseEnum.Stats) {
+        nextStatToIncrease = this.globalService.getNextStatToIncrease(nextStatToIncrease);
         var statGainAmount = this.utilityService.godStatGainBaseAmount + ((this.god.statGainCount + statDisplayCount) * this.utilityService.godStatGainLevelIncrement);
         statDisplayCount += 1;
 
@@ -148,7 +149,7 @@ export class GodViewComponent implements OnInit {
         if (rewards !== "")
           rewards = rewards.substring(0, rewards.length - 2);
       }
-      if (nextLevelType === GodLevelIncreaseEnum.NewAbility) {        
+      if (nextLevelType === GodLevelIncreaseEnum.NewAbility) {
         if (nextLevel === this.utilityService.godPassiveLevel) {
           rewards += this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " (Passive Ability)";
         }
@@ -161,7 +162,7 @@ export class GodViewComponent implements OnInit {
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {
         if (nextLevel === this.utilityService.permanentDefaultGodAbilityLevel) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel)?.name + " After Level Reset";
+          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.defaultGodAbilityLevel)?.name + " After Level Reset";
         }
         if (nextLevel === this.utilityService.permanentPassiveGodLevel) {
           rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " After Level Reset";
@@ -174,18 +175,74 @@ export class GodViewComponent implements OnInit {
         }
       }
       if (nextLevelType === GodLevelIncreaseEnum.AbilityUpgrade) {
-        var upgradedAbility = this.globalService.getWhichAbilityUpgrade(this.god, nextLevel);        
+        var upgradedAbility = this.globalService.getWhichAbilityUpgrade(this.god, nextLevel);
         if (upgradedAbility !== undefined)
           rewards += upgradedAbility.ability.name + " Upgrade " + upgradedAbility.upgradeLevel;
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentStats) {
-        rewards += "Permanent Stats! (TODO)";
+        var increaseValues = this.globalService.getNewGodPermanentStats(this.god, nextLevel);
+        var obtainTuple = this.globalService.getGodPermanentStatObtainCount(this.god, nextLevel);
+        var obtainAmount = obtainTuple[1];
+        var obtainCap = nextLevel % 100 === 0 ? this.utilityService.godPermanentStatGain2ObtainCap : this.utilityService.godPermanentStatGain1ObtainCap;
+        var remainingAmount = (obtainCap - obtainAmount);
+
+        rewards += "+";
+        if (increaseValues.maxHp > 0)
+          rewards += Math.round(increaseValues.maxHp) + " Max HP Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.attack > 0)
+          rewards += Math.round(increaseValues.attack) + " Attack Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.agility > 0)
+          rewards += Math.round(increaseValues.agility) + " Agility Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.luck > 0)
+          rewards += Math.round(increaseValues.luck) + " Luck Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.defense > 0)
+          rewards += Math.round(increaseValues.defense) + " Defense Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.resistance > 0)
+          rewards += Math.round(increaseValues.resistance) + " Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+
+        if (increaseValues.hpRegen > 0)
+          rewards += Math.round(increaseValues.hpRegen) + " HP Regen per 5 sec Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.criticalMultiplier > 0)
+          rewards += Math.round(increaseValues.criticalMultiplier) + " Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.abilityCooldownReduction > 0)
+          rewards += Math.round(increaseValues.abilityCooldownReduction) + " sec Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.autoAttackCooldownReduction > 0)
+          rewards += Math.round(increaseValues.autoAttackCooldownReduction) + " sec Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+
+        if (increaseValues.elementalDamageIncrease.holy > 0)
+          rewards += (increaseValues.elementalDamageIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageIncrease.fire > 0)
+          rewards += (increaseValues.elementalDamageIncrease.fire * 100) + "% Fire Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageIncrease.lightning > 0)
+          rewards += (increaseValues.elementalDamageIncrease.lightning * 100) + "% Lightning Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageIncrease.water > 0)
+          rewards += (increaseValues.elementalDamageIncrease.water * 100) + "% Water Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageIncrease.earth > 0)
+          rewards += (increaseValues.elementalDamageIncrease.earth * 100) + "% Earth Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageIncrease.air > 0)
+          rewards += (increaseValues.elementalDamageIncrease.air * 100) + "% Air Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+
+        if (increaseValues.elementalDamageResistance.holy > 0)
+          rewards += (increaseValues.elementalDamageResistance.holy * 100) + "% Holy Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageResistance.fire > 0)
+          rewards += (increaseValues.elementalDamageResistance.fire * 100) + "% Fire Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageResistance.lightning > 0)
+          rewards += (increaseValues.elementalDamageResistance.lightning * 100) + "% Lightning Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageResistance.water > 0)
+          rewards += (increaseValues.elementalDamageResistance.water * 100) + "% Water Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageResistance.earth > 0)
+          rewards += (increaseValues.elementalDamageResistance.earth * 100) + "% Earth Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementalDamageResistance.air > 0)
+          rewards += (increaseValues.elementalDamageResistance.air * 100) + "% Air Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+
+        if (rewards !== "")
+          rewards = rewards.substring(0, rewards.length - 2);
       }
 
       rewards += "<br/>";
       previousLevel = nextLevel;
     }
-    this.globalService.getGodLevelIncreaseTypeByLevel(this.god.level);
+    this.globalService.getGodLevelIncreaseTypeByLevel(this.god, this.god.level);
     /*var statToIncrease = this.getNextStatToIncrease(god.lastStatGain);
     god.lastStatGain = statToIncrease;
     var statGainAmount = this.utilityService.godStatGainBaseAmount + (god.statGainCount * this.utilityService.godStatGainLevelIncrement);    
@@ -193,5 +250,97 @@ export class GodViewComponent implements OnInit {
     var increaseValues = this.getGodLevelStatIncreaseValues(god, statToIncrease, statGainAmount);*/
 
     return rewards;
+  }
+
+  getMaxHpBonus() {
+    return this.god.statGain.maxHp + this.god.permanentStatGain.maxHp;
+  }
+
+  getAttackBonus() {
+    return this.god.statGain.attack + this.god.permanentStatGain.attack;
+  }
+
+  getDefenseBonus() {
+    return this.god.statGain.defense + this.god.permanentStatGain.defense;
+  }
+
+  getAgilityBonus() {
+    return this.god.statGain.agility + this.god.permanentStatGain.agility;
+  }
+
+  getLuckBonus() {
+    return this.god.statGain.luck + this.god.permanentStatGain.luck;
+  }
+
+  getResistanceBonus() {
+    return this.god.statGain.resistance + this.god.permanentStatGain.resistance;
+  }
+
+  getHpRegenBonus() {
+    return this.god.statGain.hpRegen + this.god.permanentStatGain.hpRegen;
+  }
+
+  getCriticalMultiplierBonus() {
+    return this.god.statGain.criticalMultiplier + this.god.permanentStatGain.criticalMultiplier;
+  }
+
+  getAbilityCooldownReductionBonus() {
+    return this.god.statGain.abilityCooldownReduction + this.god.permanentStatGain.abilityCooldownReduction;
+  }
+
+  getAutoAttackCooldownBonus() {
+    return this.god.statGain.autoAttackCooldownReduction + this.god.permanentStatGain.autoAttackCooldownReduction;
+  }
+
+  getHolyDamageBonus() {
+    return this.god.statGain.elementalDamageIncrease.holy + this.god.permanentStatGain.elementalDamageIncrease.holy;
+  }
+
+  getFireDamageBonus() {
+    return this.god.statGain.elementalDamageIncrease.fire + this.god.permanentStatGain.elementalDamageIncrease.fire;
+  }
+  
+  getLightningDamageBonus() {
+    return this.god.statGain.elementalDamageIncrease.lightning + this.god.permanentStatGain.elementalDamageIncrease.lightning;
+  }
+
+  getAirDamageBonus() {
+    return this.god.statGain.elementalDamageIncrease.air + this.god.permanentStatGain.elementalDamageIncrease.air;
+  }
+
+  getWaterDamageBonus() {
+    return this.god.statGain.elementalDamageIncrease.water + this.god.permanentStatGain.elementalDamageIncrease.water;
+  }
+
+  getEarthDamageBonus() {
+    return this.god.statGain.elementalDamageIncrease.earth + this.god.permanentStatGain.elementalDamageIncrease.earth;
+  }
+
+  getHolyResistanceBonus() {
+    return this.god.statGain.elementalDamageResistance.holy + this.god.permanentStatGain.elementalDamageResistance.holy;
+  }
+
+  getFireResistanceBonus() {
+    return this.god.statGain.elementalDamageResistance.fire + this.god.permanentStatGain.elementalDamageResistance.fire;
+  }
+
+  getAirResistanceBonus() {
+    return this.god.statGain.elementalDamageResistance.air + this.god.permanentStatGain.elementalDamageResistance.air;
+  }
+
+  getLightningResistanceBonus() {
+    return this.god.statGain.elementalDamageResistance.lightning + this.god.permanentStatGain.elementalDamageResistance.lightning;
+  }
+
+  getWaterResistanceBonus() {
+    return this.god.statGain.elementalDamageResistance.water + this.god.permanentStatGain.elementalDamageResistance.water;
+  }
+
+  getEarthResistanceBonus() {
+    return this.god.statGain.elementalDamageResistance.earth + this.god.permanentStatGain.elementalDamageResistance.earth;
+  }
+
+  getMaxHpStatBreakdown() {
+    return this.lookupService.getGodMaxHpStatBreakdown(this.god);
   }
 }

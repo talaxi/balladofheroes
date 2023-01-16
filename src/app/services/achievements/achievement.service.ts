@@ -30,12 +30,12 @@ export class AchievementService {
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10));
     else if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 20));
-    
+
     else if (subzoneType === SubZoneEnum.DodonaDelphiOutskirts)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
-      else if (subzoneType === SubZoneEnum.DodonaCoastalRoadsOfLocris)
+    else if (subzoneType === SubZoneEnum.DodonaCoastalRoadsOfLocris)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
-      else if (subzoneType === SubZoneEnum.DodonaCountryside)
+    else if (subzoneType === SubZoneEnum.DodonaCountryside)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 25));
 
     if (hundredVictories.bonusResources.length > 0)
@@ -70,6 +70,13 @@ export class AchievementService {
 
     if (tenSecondClear.bonusResources.length > 0)
       newAchievements.push(tenSecondClear);
+
+    var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
+    if (subzoneType === SubZoneEnum.LibyaIsleCenter)
+    completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
+
+    if (completeClear.bonusResources.length > 0)
+      newAchievements.push(completeClear);
 
     return newAchievements;
   }
@@ -107,6 +114,40 @@ export class AchievementService {
         tenThousandVictories.completed = true;
         tenThousandVictories.bonusResources.forEach(bonus => {
           this.lookupService.gainResource(bonus);
+        });
+      }
+
+      //TODO: need to create condition for completing in 10 seconds
+      var tenSecondClear = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.TenSecondClear);
+      if (tenSecondClear !== undefined && subzone.victoryCount >= 100 && !tenSecondClear.completed && tenSecondClear.bonusResources !== undefined) {
+        completedAchievement = tenSecondClear;
+        tenSecondClear.completed = true;
+        tenSecondClear.bonusResources.forEach(bonus => {
+          this.lookupService.gainResource(bonus);
+        });
+      }
+
+      //TODO: need to create condition for completing in 30 seconds
+      var thirtySecondClear = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.ThirtySecondClear);
+      if (thirtySecondClear !== undefined && subzone.victoryCount >= 100 && !thirtySecondClear.completed && thirtySecondClear.bonusResources !== undefined) {
+        completedAchievement = thirtySecondClear;
+        thirtySecondClear.completed = true;
+        thirtySecondClear.bonusResources.forEach(bonus => {
+          this.lookupService.gainResource(bonus);
+        });
+      }
+
+      var complete = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.Complete);
+      if (complete !== undefined && subzone.victoryCount >= 1 && !complete.completed && complete.bonusResources !== undefined) {
+        completedAchievement = complete;
+        complete.completed = true;
+        complete.bonusResources.forEach(bonus => {
+          if (bonus.item === ItemsEnum.ItemBeltUp)
+          {
+            this.lookupService.increaseItemBeltSize();
+          }
+          else
+            this.lookupService.gainResource(bonus);
         });
       }
     }

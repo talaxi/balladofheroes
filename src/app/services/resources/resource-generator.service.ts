@@ -144,6 +144,20 @@ export class ResourceGeneratorService {
       return new ResourceValue(ItemsEnum.DebilitatingToxin, ItemTypeEnum.BattleItem, amount);
     }
 
+    //materials
+    if (type === ItemsEnum.Wax)
+    {
+      return new ResourceValue(ItemsEnum.Wax, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.Fennel) 
+    {
+      return new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.Olive)
+    {
+      return new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, amount);
+    }
+
     return new ResourceValue(ItemsEnum.None, ItemTypeEnum.None, 0);
   }
 }

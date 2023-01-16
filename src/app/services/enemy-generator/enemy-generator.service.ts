@@ -31,7 +31,7 @@ export class EnemyGeneratorService {
       enemy.name = "Water Serpent";
       enemy.battleStats = new CharacterStats(10, 12, 4, 5, 1, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.xpGainFromDefeat = 22;
+      enemy.xpGainFromDefeat = 22000;
       enemy.coinGainFromDefeat = 0;
     }
     if (type === BestiaryEnum.Crustacean)
@@ -414,8 +414,7 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(gaze);
     }
     if (type === BestiaryEnum.Lion)
-    {
-      //TODO: large XP boost on completing the first time
+    {      
       enemy.name = "Lion";
       enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
@@ -432,8 +431,7 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(swipe);
     }
     if (type === BestiaryEnum.EnceladusOne)
-    {
-      //TODO: large XP boost on completing the first time
+    {      
       enemy.name = "Enceladus";
       enemy.battleStats = new CharacterStats(250000, 415, 383, 60, 600, 1000); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
@@ -459,6 +457,119 @@ export class EnemyGeneratorService {
       wallop.effectiveness = 1.5;
       wallop.targetGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .4, false, false));      
       enemy.abilityList.push(wallop);
+    }
+    if (type === BestiaryEnum.LostSoul)
+    {
+      //somewhat easy to rebound from resetting gods
+      enemy.name = "Lost Soul";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.Wretched)
+    {
+      enemy.name = "Wretched";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.IncoherentBanshee)
+    {
+      enemy.name = "Inchoerent Banshee";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.EngorgedShade)
+    {
+      enemy.name = "Engorged Shade";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.CacklingSpectre)
+    {
+      enemy.name = "Cackling Spectre";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.FloatingFlame)
+    {
+      enemy.name = "Floating Flame";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.Butcher)
+    {
+      enemy.name = "Butcher";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.WheelOfFire)
+    {
+      enemy.name = "Wheel of Fire";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.Empusa)
+    {
+      enemy.name = "Empusa";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.InsaneSoul)
+    {
+      enemy.name = "Insane Soul";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.DualWieldingButcher)
+    {
+      enemy.name = "Dual-Wielding Butcher";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.LostSoul)
+    {
+      enemy.name = "Lost Soul";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.HellRider)
+    {
+      enemy.name = "Hell Rider";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.FierySalamander)
+    {
+      enemy.name = "Fiery Salamander";
+      enemy.battleStats = new CharacterStats(1000, 190, 150, 300, 300, 280); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
     }
 
     enemy.battleInfo.autoAttackTimer = this.utilityService.getRandomInteger(0, this.lookupService.getAutoAttackTime(enemy) / 2);     

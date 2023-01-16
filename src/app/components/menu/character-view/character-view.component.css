@@ -1,9 +1,9 @@
 .gridContainer {
     display: grid;
-    margin-right: 3rem;
+    /*margin-right: 3rem; MENU REWORK*/
     height: 100%;
     grid-template-columns: auto;
-    grid-template-rows: auto;
+    grid-template-rows: auto auto 1fr;
     gap: 2rem;
     justify-content: stretch;
     grid-template-areas:
@@ -62,10 +62,23 @@
 
 .secondaryStats {
     grid-area: secondaryStats;
-    text-align: right;
+    text-align: center;
 }
 
 .leftAlignText {
     text-align: left;
     display: inline-block;
+}
+
+.statValue {
+    vertical-align: middle;
+}
+
+.menuAdjustment {
+    width: 90%;
+}
+
+.overdriveButton {
+    margin-left: 2rem;
+    vertical-align: middle;
 }

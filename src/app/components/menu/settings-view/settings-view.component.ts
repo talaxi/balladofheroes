@@ -21,7 +21,7 @@ export class SettingsViewComponent implements OnInit {
     private utilityService: UtilityService) { }
 
   ngOnInit(): void {
-    
+    console.log(this.globalService.globalVar);
   }
 
   public SaveGame() {

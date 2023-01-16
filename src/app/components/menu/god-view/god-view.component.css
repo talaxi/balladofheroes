@@ -1,18 +1,31 @@
 .gridContainer {
     display: grid;
-    margin-right: 3rem;
+    /*margin-right: 3rem; MENU REWORK */
     height: 100%;
-    grid-template-columns: 66% 34%;
-    grid-template-rows: .5fr 1fr 1fr;
+    grid-template-columns: 33% 33% 34%;
+    grid-template-rows: auto 1fr 1fr;
+    row-gap: 2rem;
     justify-content: stretch;
     grid-template-areas:
-        "godInfo godInfo"
-        "godStats godUpcoming"
-        "godAbilities godUpcoming";
+        "godInfo godInfo godInfo"
+        "godPrimaryStats godSecondaryStats godUpcoming"
+        "godAbilities godAbilities godUpcoming";
 }
 
-.godStats {
-    grid-area: godStats;
+.godPrimaryStats {
+    grid-area: godPrimaryStats;
+/*
+    display: grid;
+    height: 100%;
+    grid-template-columns: 50%;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "primary secondary";*/
+}
+
+.godSecondaryStats {
+    grid-area: godSecondaryStats;
 }
 
 .godAbilities {
@@ -35,8 +48,21 @@
 .leftAlignText {
     text-align: left;
     display: inline-block;
+    width: 100%;
 }
 
 .leftShift {
     margin-left: 5rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.obtainableCount {
+    font-style: italic;
+}
+
+.statValue {
+    vertical-align: middle;
 }

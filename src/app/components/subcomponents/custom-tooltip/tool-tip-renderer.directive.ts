@@ -1,5 +1,5 @@
 import { Directive, Input, TemplateRef, ElementRef, OnInit, HostListener, ComponentRef, OnDestroy } from '@angular/core';
-import { Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
+import { FlexibleConnectedPositionStrategy, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { CustomTooltipComponent } from './custom-tooltip.component';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -27,6 +27,7 @@ export class ToolTipRendererDirective {
   subscription: any;
   delayTimerCap = .35;
   @Input() isDelayed: boolean = true;
+  @Input() tooltipBelow: boolean = false;
 
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
@@ -42,15 +43,30 @@ export class ToolTipRendererDirective {
       return;
     }
 
-    const positionStrategy = this._overlayPositionBuilder
+    var positionStrategy: FlexibleConnectedPositionStrategy;
+
+    if (this.tooltipBelow) {
+      positionStrategy = this._overlayPositionBuilder
       .flexibleConnectedTo(this._elementRef)
-      .withPositions([{
-        originX: 'end',
-        originY: 'center',
-        overlayX: 'start',
-        overlayY: 'center',
-        offsetY: 5,
-      }]);
+        .withPositions([{
+          originX: 'start',
+          originY: 'bottom',
+          overlayX: 'start',
+          overlayY: 'top',
+          offsetY: 5,
+        }]);
+    }
+    else {
+      positionStrategy = this._overlayPositionBuilder
+        .flexibleConnectedTo(this._elementRef)
+        .withPositions([{
+          originX: 'end',
+          originY: 'center',
+          overlayX: 'start',
+          overlayY: 'center',
+          offsetY: 5,
+        }]);
+    }
 
     this._overlayRef = this._overlay.create({ positionStrategy });
 

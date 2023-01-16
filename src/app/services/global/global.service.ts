@@ -16,6 +16,7 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GodLevelIncreaseEnum } from 'src/app/models/enums/god-level-increase-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
@@ -365,7 +366,6 @@ export class GlobalService {
       staccato.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       staccato.cooldown = staccato.currentCooldown = 35;
       staccato.dealsDirectDamage = false;
-      staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.2, false, true, true));
       staccato.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Staccato, 10, 1.2, false, true));
       god.abilityList.push(staccato);
 
@@ -376,7 +376,6 @@ export class GlobalService {
       fortissimo.cooldown = fortissimo.currentCooldown = 45;
       fortissimo.dealsDirectDamage = false;
       fortissimo.secondaryEffectiveness = 1.01;
-      fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 8, 1.2, false, true, true));
       fortissimo.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Fortissimo, 8, 1.2, false, true));
       god.abilityList.push(fortissimo);
 
@@ -386,7 +385,6 @@ export class GlobalService {
       coda.requiredLevel = this.utilityService.godAbility3Level;
       coda.cooldown = coda.currentCooldown = 60;
       coda.dealsDirectDamage = false;
-      coda.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.LuckUp, 5, 1.2, false, true, true));
       coda.userGainsStatusEffect.push(this.createStatusEffect(StatusEffectEnum.Coda, 5, 1.2, false, true));
       god.abilityList.push(coda);
 
@@ -642,15 +640,12 @@ export class GlobalService {
   }
 
   calculateCharacterBattleStats(character: Character, inBattle: boolean = true) {
-    character.battleStats.maxHp = character.baseStats.maxHp;
-    character.battleStats.attack = character.baseStats.attack;
-    character.battleStats.defense = character.baseStats.defense;
-    character.battleStats.agility = character.baseStats.agility;
-    character.battleStats.luck = character.baseStats.luck;
-    character.battleStats.resistance = character.baseStats.resistance;
+    var currentHp = character.battleStats.currentHp;
 
-    if (!inBattle)
-      character.battleStats.currentHp = character.battleStats.maxHp;
+    character.battleStats = character.baseStats.makeCopy(inBattle);
+
+    if (inBattle)
+      character.battleStats.currentHp = currentHp;
 
     //equipment
     character.battleStats.maxHp += character.equipmentSet.getTotalMaxHpGain();
@@ -663,22 +658,40 @@ export class GlobalService {
     //gods
     var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
     if (god1 !== undefined) {
-      character.battleStats.maxHp += god1.statGain.maxHp;
-      character.battleStats.attack += god1.statGain.attack;
-      character.battleStats.defense += god1.statGain.defense;
-      character.battleStats.agility += god1.statGain.agility;
-      character.battleStats.luck += god1.statGain.luck;
-      character.battleStats.resistance += god1.statGain.resistance;
+      character.battleStats.maxHp += god1.statGain.maxHp + god1.permanentStatGain.maxHp;
+      character.battleStats.attack += god1.statGain.attack + god1.permanentStatGain.attack;
+      character.battleStats.defense += god1.statGain.defense + god1.permanentStatGain.defense;
+      character.battleStats.agility += god1.statGain.agility + god1.permanentStatGain.agility;
+      character.battleStats.luck += god1.statGain.luck + god1.permanentStatGain.luck;
+      character.battleStats.resistance += god1.statGain.resistance + god1.permanentStatGain.resistance;
+
+      character.battleStats.hpRegen += god1.statGain.hpRegen + god1.permanentStatGain.hpRegen;
+      character.battleStats.abilityCooldownReduction += god1.statGain.abilityCooldownReduction + god1.permanentStatGain.abilityCooldownReduction;
+      character.battleStats.autoAttackCooldownReduction += god1.statGain.autoAttackCooldownReduction + god1.permanentStatGain.autoAttackCooldownReduction;
+      character.battleStats.criticalMultiplier += god1.statGain.criticalMultiplier + god1.permanentStatGain.criticalMultiplier;
+      character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.statGain.elementalDamageIncrease);
+      character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.permanentStatGain.elementalDamageIncrease);
+      character.battleStats.elementalDamageResistance.increaseByStatArray(god1.statGain.elementalDamageResistance);
+      character.battleStats.elementalDamageResistance.increaseByStatArray(god1.permanentStatGain.elementalDamageResistance);
     }
 
     var god2 = this.globalVar.gods.find(item => character.assignedGod2 === item.type);
     if (god2 !== undefined) {
-      character.battleStats.maxHp += god2.statGain.maxHp;
-      character.battleStats.attack += god2.statGain.attack;
-      character.battleStats.defense += god2.statGain.defense;
-      character.battleStats.agility += god2.statGain.agility;
-      character.battleStats.luck += god2.statGain.luck;
-      character.battleStats.resistance += god2.statGain.resistance;
+      character.battleStats.maxHp += god2.statGain.maxHp + god2.permanentStatGain.maxHp;
+      character.battleStats.attack += god2.statGain.attack + god2.permanentStatGain.attack;
+      character.battleStats.defense += god2.statGain.defense + god2.permanentStatGain.defense;
+      character.battleStats.agility += god2.statGain.agility + god2.permanentStatGain.agility;
+      character.battleStats.luck += god2.statGain.luck + god2.permanentStatGain.luck;
+      character.battleStats.resistance += god2.statGain.resistance + god2.permanentStatGain.resistance;
+
+      character.battleStats.hpRegen += god2.statGain.hpRegen + god2.permanentStatGain.hpRegen;
+      character.battleStats.abilityCooldownReduction += god2.statGain.abilityCooldownReduction + god2.permanentStatGain.abilityCooldownReduction;
+      character.battleStats.autoAttackCooldownReduction += god2.statGain.autoAttackCooldownReduction + god2.permanentStatGain.autoAttackCooldownReduction;
+      character.battleStats.criticalMultiplier += god2.statGain.criticalMultiplier + god2.permanentStatGain.criticalMultiplier;
+      character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.statGain.elementalDamageIncrease);
+      character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.permanentStatGain.elementalDamageIncrease);
+      character.battleStats.elementalDamageResistance.increaseByStatArray(god2.statGain.elementalDamageResistance);
+      character.battleStats.elementalDamageResistance.increaseByStatArray(god2.permanentStatGain.elementalDamageResistance);
     }
 
     //chthonic powers    
@@ -733,13 +746,15 @@ export class GlobalService {
     character.level += 1;
     character.exp -= character.expToNextLevel;
 
-    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attains level <strong>" + character.level + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attains level <strong>" + character.level + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    }
 
     this.getCharacterLevelStatIncrease(character);
     this.checkForNewCharacterAbilities(character);
+    this.checkForNewCharacterOverdrives(character);
 
-    //just trying this out for now
     this.calculateCharacterBattleStats(character);
     character.battleStats.currentHp = character.battleStats.maxHp;
 
@@ -747,22 +762,40 @@ export class GlobalService {
   }
 
   getCharacterLevelStatIncrease(character: Character) {
-    var statIncrease = 2; /* For levels 1-10 */
+    var statIncrease = 2; /* For levels 1-20 */
+    var maxHpBonusMultiplier = 5;
+
+    if (character.level % 10 === 6)
+      statIncrease = 5;
 
     character.baseStats.attack += statIncrease;
     character.baseStats.agility += statIncrease;
     character.baseStats.defense += statIncrease;
     character.baseStats.luck += statIncrease;
     character.baseStats.resistance += statIncrease;
-    character.baseStats.maxHp += statIncrease * 5;
+    character.baseStats.maxHp += statIncrease * maxHpBonusMultiplier;
+    
+    if (this.globalVar.gameLogSettings.get("partyLevelUp")) {      
+      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " gains <strong>" + (maxHpBonusMultiplier * statIncrease) + " Max HP</strong> and <strong>" + statIncrease + " to all other primary stats.</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    }
+  }
+
+  checkForNewCharacterOverdrives(character: Character) {
+    if (character.level === 20)
+    {
+      character.unlockedOverdrives.push(OverdriveNameEnum.Smash);
+    }
   }
 
   checkForNewCharacterAbilities(character: Character) {
     character.abilityList.forEach(ability => {
       if (character.level >= ability.requiredLevel) {
         if (!ability.isAvailable) {
-          var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your character's name." : "");
-          this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+          if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
+            var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your character's name." : "");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+          }
         }
         ability.isAvailable = true;
       }
@@ -775,9 +808,6 @@ export class GlobalService {
       }
       if (character.level % 10 === 4) {
         this.upgradeCharacterPassive(character, character.level);
-      }
-      if (character.level % 10 === 6) {
-        this.upgradeCharacterOverdrive(character, character.level);
       }
       if (character.level % 10 === 8) {
         this.upgradeCharacterAbility2(character, character.level);
@@ -797,8 +827,10 @@ export class GlobalService {
       ability1.effectiveness += .2;
     }
 
-    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+    if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+    }
   }
 
   upgradeCharacterPassive(character: Character, newLevel: number) {
@@ -813,25 +845,10 @@ export class GlobalService {
       ability.effectiveness += .025;
     }
 
-    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability?.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
-  }
-
-  upgradeCharacterOverdrive(character: Character, newLevel: number) {
-    /*var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
-    if (ability1 === undefined)
-      return; 
-    
-    if (character.type === CharacterEnum.Adventurer) {
-      ability1.effectiveness += .25;
+    if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability?.name + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
     }
-    if (character.type === CharacterEnum.Archer) {
-      ability1.effectiveness += .2;
-    }
-
-    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);          
-    */
   }
 
   upgradeCharacterAbility2(character: Character, newLevel: number) {
@@ -846,8 +863,10 @@ export class GlobalService {
       ability1.effectiveness += .3;
     }
 
-    var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+    if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+    }
   }
 
   getCharacterColorClassText(type: CharacterEnum) {
@@ -908,10 +927,12 @@ export class GlobalService {
     god.level += 1;
     god.exp -= god.expToNextLevel;
 
-    var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " attains level <strong>" + god.level + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " attains level <strong>" + god.level + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    }
 
-    var getLevelUpType = this.getGodLevelIncreaseTypeByLevel(god.level);
+    var getLevelUpType = this.getGodLevelIncreaseTypeByLevel(god, god.level);
     if (getLevelUpType === GodLevelIncreaseEnum.Stats)
       this.doGodLevelStatIncrease(god);
     else if (getLevelUpType === GodLevelIncreaseEnum.NewAbility)
@@ -924,6 +945,10 @@ export class GlobalService {
       this.checkForNewGodPermanentStats(god);
 
     god.expToNextLevel = this.getGodXpToNextLevel(god.level);
+
+    this.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
+      this.calculateCharacterBattleStats(character);
+    });
   }
 
   //certain levels give something other than stat increases -- new abilities, permanent upgrades, etc
@@ -975,8 +1000,10 @@ export class GlobalService {
     if (statGainText !== "")
       statGainText = statGainText.substring(0, statGainText.length - 2);
 
-    var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " gains <strong>" + statGainText + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " gains <strong>" + statGainText + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    }
 
     god.statGainCount += 1;
   }
@@ -985,8 +1012,10 @@ export class GlobalService {
     god.abilityList.forEach(ability => {
       if (god.level >= ability.requiredLevel) {
         if (!ability.isAvailable) {
-          var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your god's name." : "");
-          this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+          if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+            var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your god's name." : "");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+          }
         }
         ability.isAvailable = true;
       }
@@ -1007,8 +1036,12 @@ export class GlobalService {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.permanentPassiveGodLevel);
       if (ability !== undefined) {
         ability.isAbilityPermanent = true;
-        var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+        if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+          if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+            var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+          }
+        }
       }
     }
 
@@ -1016,8 +1049,10 @@ export class GlobalService {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.permanentGodAbility2Level);
       if (ability !== undefined) {
         ability.isAbilityPermanent = true;
-        var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+        if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+          var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+        }
       }
     }
 
@@ -1025,8 +1060,10 @@ export class GlobalService {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.permanentGodAbility3Level);
       if (ability !== undefined) {
         ability.isAbilityPermanent = true;
-        var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+        if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+          var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+        }
       }
     }
   }
@@ -1051,8 +1088,10 @@ export class GlobalService {
       this.upgradeGodPassive(god);
     }
 
-    var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>'s ability <strong>" + ability.ability.name + "</strong> has upgraded to level " + ability.upgradeLevel + ".";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>'s ability <strong>" + ability.ability.name + "</strong> has upgraded to level " + ability.upgradeLevel + ".";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
+    }
   }
 
   upgradeGodAbility1(god: God) {
@@ -1229,21 +1268,21 @@ export class GlobalService {
 
     if (god.type === GodEnum.Athena) {
       if (ability.abilityUpgradeLevel <= 100)
-        userGainsEffect.effectiveness += .05;      
+        userGainsEffect.effectiveness += .05;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel <= 100)
-      userGainsEffect.effectiveness += .1;     
+        ability.effectiveness += .1;
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel <= 100)
-      userGainsEffect.effectiveness += .009;     
+        ability.effectiveness += .009;
     }
     else if (god.type === GodEnum.Apollo) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= 2;
       else
-      ability.effectiveness += .3;
+        ability.effectiveness += .3;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1253,23 +1292,118 @@ export class GlobalService {
     }
   }
 
+  getGodPermanentStatObtainCount(god: God, godLevel: number) {
+    if (godLevel % 100 === 0) {
+      var matchingCount = god.permanentStat2GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 50 === 0) {
+      var matchingCount = god.permanentStat1GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+
+    return [0, 0];
+  }
+
+  isGodPermanentStatStillObtainable(god: God, godLevel: number) {
+    var count = this.getGodPermanentStatObtainCount(god, godLevel);
+
+    if (godLevel % 100 === 0) {
+      if (count[1] >= this.utilityService.godPermanentStatGain2ObtainCap)
+        return false;
+    }
+    else if (godLevel % 50 === 0) {
+      if (count[1] >= this.utilityService.godPermanentStatGain1ObtainCap)
+        return false;
+    }
+    return true;
+  }
+
+  getNewGodPermanentStats(god: God, godLevel: number) {
+    var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+
+    if (godLevel % 100 === 0) {
+      if (god.type === GodEnum.Athena) {
+        stats.elementalDamageIncrease.holy += .05;
+      }
+      else if (god.type === GodEnum.Artemis) {
+        stats.criticalMultiplier += .1;
+      }
+      else if (god.type === GodEnum.Hermes) {
+        stats.autoAttackCooldownReduction += .05;
+      }
+      else if (god.type === GodEnum.Apollo) {
+        stats.hpRegen += 5;
+      }
+    }
+    else if (godLevel % 50 === 0) {
+      if (god.type === GodEnum.Athena) {
+        stats.defense += godLevel;
+      }
+      else if (god.type === GodEnum.Artemis) {
+        stats.luck += godLevel;
+      }
+      else if (god.type === GodEnum.Hermes) {
+        stats.agility += godLevel;
+      }
+      else if (god.type === GodEnum.Apollo) {
+        stats.resistance += godLevel;
+      }
+    }
+
+    return stats;
+  }
+
   checkForNewGodPermanentStats(god: God) {
-    if (god.level % 100 === 0)
-    {
-      
+    var upgradedStats = this.getNewGodPermanentStats(god, god.level);
+
+    if (god.level % 100 === 0) {
+      var matchingCount = god.permanentStat2GainCount.find(item => item[0] === god.level);
+      if (matchingCount === undefined)
+        god.permanentStat2GainCount.push([god.level, 1]);
+      else
+        matchingCount[1] += 1;
+
+      if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain2ObtainCap)
+        return;
+    }
+    else if (god.level % 50 === 0) {
+      var matchingCount = god.permanentStat1GainCount.find(item => item[0] === god.level);
+      if (matchingCount === undefined)
+        god.permanentStat1GainCount.push([god.level, 1]);
+      else
+        matchingCount[1] += 1;
+
+      if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain1ObtainCap)
+        return;
     }
 
-    if (god.level % 50 === 0)
-    {
+    god.permanentStatGain.attack += upgradedStats.attack;
+    god.permanentStatGain.defense += upgradedStats.defense;
+    god.permanentStatGain.maxHp += upgradedStats.maxHp;
+    god.permanentStatGain.agility += upgradedStats.agility;
+    god.permanentStatGain.luck += upgradedStats.luck;
+    god.permanentStatGain.resistance += upgradedStats.resistance;
 
-    }
+    god.permanentStatGain.hpRegen += upgradedStats.hpRegen;
+    god.permanentStatGain.elementalDamageIncrease.increaseByStatArray(upgradedStats.elementalDamageIncrease);
+    god.permanentStatGain.elementalDamageResistance.increaseByStatArray(upgradedStats.elementalDamageResistance);
+    god.permanentStatGain.criticalMultiplier += upgradedStats.criticalMultiplier;
+    god.permanentStatGain.abilityCooldownReduction += upgradedStats.abilityCooldownReduction;
+    god.permanentStatGain.autoAttackCooldownReduction += upgradedStats.autoAttackCooldownReduction;
   }
 
   //set this up entirely so you can tell what is going on. when leveling up, consult this before calling any function
   //and each type should have its own function
   //ability upgrades will need to be further broken down to follow the excel guide up to level 100 or so then you can automate it
   //the lookup function will also use this, display X number of each type and keep iterating until you get what you need
-  getGodLevelIncreaseTypeByLevel(level: number) {
+  getGodLevelIncreaseTypeByLevel(god: God, level: number) {
     var increaseType = GodLevelIncreaseEnum.Stats;
 
     if (level === this.utilityService.defaultGodAbilityLevel || level === this.utilityService.godPassiveLevel ||
@@ -1280,9 +1414,12 @@ export class GlobalService {
       level === this.utilityService.permanentGodAbility2Level || level === this.utilityService.permanentGodAbility3Level) {
       increaseType = GodLevelIncreaseEnum.PermanentAbility;
     }
-    else if (level === 50 || level === 100 || level === 150 || level === 200 ||
-      (level > 200 && level <= 500 && level % 25 === 0)) {
-      increaseType = GodLevelIncreaseEnum.PermanentStats;
+    else if ((level === 50 || level === 100 || level === 150 || level === 200 ||
+      (level > 200 && level <= 500 && level % 25 === 0))) {
+      if (this.isGodPermanentStatStillObtainable(god, level))
+        increaseType = GodLevelIncreaseEnum.PermanentStats;
+      else
+        increaseType = GodLevelIncreaseEnum.Stats;
     }
     else if (level % 5 === 0) {
       increaseType = GodLevelIncreaseEnum.AbilityUpgrade;

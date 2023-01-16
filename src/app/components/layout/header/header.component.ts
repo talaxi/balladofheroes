@@ -16,7 +16,9 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class HeaderComponent implements OnInit {
 
-  constructor(private battleService: BattleService, private layoutService: LayoutService, private menuService: MenuService,
+  navigationEnum = NavigationEnum;
+
+  constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
     public utilityService: UtilityService, private globalService: GlobalService) { }
 
   @HostListener('window:keyup', ['$event'])

@@ -1,4 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
@@ -36,7 +37,8 @@ export class BattleComponent implements OnInit {
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
-    private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService) { }
+    private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService,
+    public dialog: MatDialog) { }
 
   ngOnInit(): void {
     if (this.globalService.globalVar.currentStoryId === 0 && this.utilityService.isBattlePaused)
@@ -198,6 +200,10 @@ export class BattleComponent implements OnInit {
 
   getExpectedExpPerSec() {
     return this.lookupService.getSubzoneExpPerSec(this.activeSubzone.type);
+  }
+
+  openGameLogEditor(content: any) {
+    this.dialog.open(content, { width: '75%', maxHeight: '75%' });
   }
 
   ngOnDestroy() {

@@ -25,6 +25,7 @@ export class BackgroundService {
       var isDefeated = this.battleService.isCharacterDefeated(partyMember);
       if (!isDefeated && !this.utilityService.isBattlePaused) {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
+        this.battleService.handleHpRegen(partyMember, deltaTime);
         this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
         this.handleAbilityCooldowns(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);

@@ -1,9 +1,10 @@
-<div class="flex">
+<div [ngClass]="{'gridContainer': this.layoutService.navigation !== navigationEnum.Menu,
+ 'menuGridContainer': this.layoutService.navigation === navigationEnum.Menu}">
     <button class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()">Menu</button>
 
-    <div class="extraTimeItem">
+    <!--<div class="extraTimeItem">
 
-    </div>
+    </div>-->
 
     <div class="centerAlign gameState">
         <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
@@ -16,8 +17,8 @@
         <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover"> ({{getExtraSpeedTime()}})</span></span>
     </div>
 
-    <div class="menuItem">        
-    </div>
+    <!--<div class="menuItem">        
+    </div>-->
 </div>
 
 <ng-template #pausedPopover>

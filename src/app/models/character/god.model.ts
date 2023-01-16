@@ -21,6 +21,8 @@ export class God {
     isAvailable: boolean;
     lastStatGain: CharacterStatEnum;
     statGainCount = 0;
+    permanentStat1GainCount: [number, number][];    
+    permanentStat2GainCount: [number, number][];    
 
     constructor(type: GodEnum) {
         this.type = type;
@@ -33,6 +35,8 @@ export class God {
         this.expToNextLevel = 200;
         this.isAvailable = false;
         this.lastStatGain = CharacterStatEnum.Resistance;
+        this.permanentStat1GainCount = [];
+        this.permanentStat2GainCount = [];
     }
 
     private getGainModifier(type: GodEnum) {

@@ -1,0 +1,40 @@
+<div class="container">
+    <div class="column">
+        <div class="listList">
+            <span class="centeredText mainPageSectionHeader">overdrives</span>
+            <br />
+            <br />
+            <div class="listBackground">
+                <div *ngFor="let overdrive of getOverdrives(); let i = index" (click)="chooseOverdrive(overdrive)"
+                    class="listItem"
+                    [ngClass]="{'active': selectedOverdriveInfo !== undefined && selectedOverdriveInfo.selectedOverdrive === overdrive}">
+                    <button class="buttonAsText clickableText listItemButton"
+                        [ngClass]="{'active': selectedOverdriveInfo !== undefined && selectedOverdriveInfo.selectedOverdrive === overdrive}"
+                        [innerHtml]="getOverdriveName(overdrive)"></button>
+                    <hr class="noMargin" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vr">
+        <hr class="vrHr" />
+    </div>
+    <div class="column column2">
+        <div *ngIf="selectedOverdriveInfo !== undefined">
+            <span class="s4Heading" [innerHtml]="getOverdriveName()"></span>
+            <br />
+            <br />
+            <span [innerHtml]="getOverdriveDescription()"></span>
+            <hr />
+            <div
+                *ngIf="lookupService.isOverdriveDiscovered(this.selectedOverdriveInfo.selectedOverdrive, this.character)">
+                <div>
+                    Total Overdrive Points Required: {{selectedOverdriveInfo.overdriveGaugeTotal}}
+                </div>
+                <br />
+                <br />
+                <button [disabled]="isSelectedCurrentOverdrive()" (click)="setNewOverdrive()">Set New Overdrive</button>
+            </div>
+        </div>
+    </div>
+</div>

@@ -2,6 +2,7 @@ import { Type } from "class-transformer";
 import { BattleInfo } from "../battle/battle-info.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { GodEnum } from "../enums/god-enum.model";
+import { OverdriveNameEnum } from "../enums/overdrive-name-enum.model";
 import { EquipmentSet } from "../resources/equipment-set.model";
 import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
@@ -29,7 +30,8 @@ export class Character {
     @Type(() => EquipmentSet)
     equipmentSet: EquipmentSet;
     @Type(() => OverdriveInfo)
-    overdriveInfo: OverdriveInfo;
+    overdriveInfo: OverdriveInfo;    
+    unlockedOverdrives: OverdriveNameEnum[];
 
     constructor(type?: CharacterEnum) {
         this.type = type === undefined ? CharacterEnum.None : type;
@@ -47,5 +49,6 @@ export class Character {
         this.overdriveInfo = new OverdriveInfo();
 
         this.abilityList = [];
+        this.unlockedOverdrives = [OverdriveNameEnum.HeavyAttack];
     }    
 }

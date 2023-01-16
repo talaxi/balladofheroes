@@ -25,7 +25,7 @@ export class UtilityService {
   public maxItemBeltSize = 4;
   public defaultCharacterAbilityLevel = 2;
   public characterPassiveLevel = 4;
-  public characterOverdriveLevel = 6;
+  public characterOverdriveLevel = 10;
   public characterAbility2Level = 8;
   public defaultGodAbilityLevel = 1;
   public godPassiveLevel = 5;
@@ -38,7 +38,8 @@ export class UtilityService {
 
   public godStatGainLevelIncrement = .05;
   public godStatGainBaseAmount = 3;
-
+  public godPermanentStatGain1ObtainCap = 10;
+  public godPermanentStatGain2ObtainCap = 10;
 
   constructor(public sanitizer: DomSanitizer) { }
 

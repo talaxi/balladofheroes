@@ -158,4 +158,256 @@ export class EquipmentSet {
 
         return total;
     }
+
+    getTotalHolyDamageIncreaseGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageIncrease.holy;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageIncrease.holy;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageIncrease.holy;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageIncrease.holy;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageIncrease.holy;
+
+        return total;
+    }
+
+    getTotalFireDamageIncreaseGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageIncrease.fire;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageIncrease.fire;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageIncrease.fire;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageIncrease.fire;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageIncrease.fire;
+
+        return total;
+    }
+
+    getTotalLightningDamageIncreaseGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageIncrease.lightning;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageIncrease.lightning;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageIncrease.lightning;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageIncrease.lightning;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageIncrease.lightning;
+
+        return total;
+    }
+
+    getTotalWaterDamageIncreaseGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageIncrease.water;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageIncrease.water;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageIncrease.water;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageIncrease.water;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageIncrease.water;
+
+        return total;
+    }
+
+    getTotalAirDamageIncreaseGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageIncrease.air;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageIncrease.air;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageIncrease.air;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageIncrease.air;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageIncrease.air;
+
+        return total;
+    }
+
+    getTotalEarthDamageIncreaseGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageIncrease.earth;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageIncrease.earth;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageIncrease.earth;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageIncrease.earth;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageIncrease.earth;
+
+        return total;
+    }
+
+    getTotalHolyDamageResistanceGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageResistance.holy;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageResistance.holy;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageResistance.holy;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageResistance.holy;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageResistance.holy;
+
+        return total;
+    }
+
+    getTotalFireDamageResistanceGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageResistance.fire;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageResistance.fire;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageResistance.fire;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageResistance.fire;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageResistance.fire;
+
+        return total;
+    }
+
+    getTotalLightningDamageResistanceGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageResistance.lightning;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageResistance.lightning;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageResistance.lightning;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageResistance.lightning;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageResistance.lightning;
+
+        return total;
+    }
+
+    getTotalWaterDamageResistanceGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageResistance.water;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageResistance.water;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageResistance.water;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageResistance.water;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageResistance.water;
+
+        return total;
+    }
+
+    getTotalAirDamageResistanceGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageResistance.air;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageResistance.air;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageResistance.air;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageResistance.air;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageResistance.air;
+
+        return total;
+    }
+
+    getTotalEarthDamageResistanceGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.elementalDamageResistance.earth;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.elementalDamageResistance.earth;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.elementalDamageResistance.earth;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.elementalDamageResistance.earth;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.elementalDamageResistance.earth;
+
+        return total;
+    }
 }

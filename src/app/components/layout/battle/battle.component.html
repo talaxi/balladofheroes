@@ -64,7 +64,12 @@
     <div class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
+        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor"><img class="settingsIcon" src="assets/svg/gear.svg"></button>
         <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
             class="skipToBottom arrow">&#8595;</button>
     </div>
 </div>
+
+<ng-template #gameLogEditorModal>
+    <app-game-log-editor></app-game-log-editor>
+  </ng-template>

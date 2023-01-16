@@ -1,3 +1,5 @@
+import { OverdriveNameEnum } from "../enums/overdrive-name-enum.model";
+
 export class OverdriveInfo {
     overdriveGaugeAmount: number;
     overdriveGaugeTotal: number;
@@ -5,6 +7,7 @@ export class OverdriveInfo {
     gainPerAbility: number;
     overdriveAutoMode: boolean;
     manuallyTriggered: boolean;
+    selectedOverdrive: OverdriveNameEnum;
 
     constructor() {
         this.gainPerAutoAttack = .5;
@@ -13,5 +16,6 @@ export class OverdriveInfo {
         this.overdriveGaugeTotal = 100;
         this.overdriveAutoMode = true;
         this.manuallyTriggered = false;
+        this.selectedOverdrive = OverdriveNameEnum.HeavyAttack;
     }
 }

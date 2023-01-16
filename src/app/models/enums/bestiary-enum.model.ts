@@ -25,5 +25,18 @@ export enum BestiaryEnum {
   Medusa,
   Lion,
   EnceladusOne,
-
+  LostSoul,
+  Wretched,
+  Revenant,
+  IncoherentBanshee,
+  EngorgedShade,
+  CacklingSpectre,
+  FloatingFlame,
+  Butcher,
+  WheelOfFire,
+  Empusa,
+  DualWieldingButcher,
+  InsaneSoul,
+  HellRider,
+  FierySalamander
 }

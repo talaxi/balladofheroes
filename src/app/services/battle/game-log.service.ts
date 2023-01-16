@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GameLoopService } from '../game-loop/game-loop.service';
+import { GlobalService } from '../global/global.service';
 
 @Injectable({
   providedIn: 'root'

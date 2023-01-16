@@ -53,6 +53,8 @@ export class GlobalVariables {
     @Type(() => Alchemy)
     alchemy: Alchemy;
     betaSave: boolean = true;
+    @Type(() => Settings)
+    gameLogSettings: Settings;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -67,6 +69,7 @@ export class GlobalVariables {
         this.playerNavigation = new PlayerNavigation();
         this.timers = new Timers();
         this.settings = new Settings();
+        this.gameLogSettings = new Settings();
         this.freeTreasureChests = new FreeTreasureChests();
         this.currentStoryId = 0;
         this.godXpModifier = 1;

@@ -73,6 +73,8 @@ import { ChthonicRewardMenuViewComponent } from './components/subcomponents/chth
 import { AchievementsViewComponent } from './components/menu/achievements-view/achievements-view.component';
 import { IndividualAchievementViewComponent } from './components/menu/achievements-view/individual-achievement-view/individual-achievement-view.component';
 import { AlchemyViewComponent } from './components/subcomponents/alchemy-view/alchemy-view.component';
+import { GameLogEditorComponent } from './components/subcomponents/game-log-editor/game-log-editor.component';
+import { OverdriveViewComponent } from './components/subcomponents/overdrive-view/overdrive-view.component';
 
 
 @NgModule({
@@ -111,7 +113,9 @@ import { AlchemyViewComponent } from './components/subcomponents/alchemy-view/al
     ChthonicRewardMenuViewComponent,
     AchievementsViewComponent,
     IndividualAchievementViewComponent,
-    AlchemyViewComponent
+    AlchemyViewComponent,
+    GameLogEditorComponent,
+    OverdriveViewComponent
   ],
   imports: [
     BrowserModule,

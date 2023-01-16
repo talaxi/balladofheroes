@@ -25,7 +25,8 @@ export class InitializationService {
 
   initializeVariables() {
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
-    this.initializeSettings();    
+    this.initializeSettings();   
+    this.initializeGameLogSettings(); 
   }
 
   initializeBallads() {    
@@ -109,6 +110,26 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("autoProgress", false);    
   }
 
+  initializeGameLogSettings() {
+    this.globalService.globalVar.gameLogSettings.set("partyAutoAttacks", true);
+    this.globalService.globalVar.gameLogSettings.set("partyAbilityUse", true);
+    this.globalService.globalVar.gameLogSettings.set("enemyAutoAttacks", true);
+    this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
+    
+    this.globalService.globalVar.gameLogSettings.set("partyEquipmentEffect", true);
+    this.globalService.globalVar.gameLogSettings.set("partyStatusEffect", true);
+    this.globalService.globalVar.gameLogSettings.set("enemyStatusEffect", true);
+    this.globalService.globalVar.gameLogSettings.set("battleRewards", true);
+    this.globalService.globalVar.gameLogSettings.set("partyLevelUp", true);
+    this.globalService.globalVar.gameLogSettings.set("godLevelUp", true);
+    this.globalService.globalVar.gameLogSettings.set("foundTreasureChest", true);
+    this.globalService.globalVar.gameLogSettings.set("achievementUnlocked", true);
+    this.globalService.globalVar.gameLogSettings.set("alchemyLevelUp", true);
+    this.globalService.globalVar.gameLogSettings.set("alchemyCreation", true);
+    this.globalService.globalVar.gameLogSettings.set("battleUpdates", true);
+    this.globalService.globalVar.gameLogSettings.set("useBattleItem", true);
+  }
+
   devMode() {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 10000));
@@ -118,7 +139,7 @@ export class InitializationService {
     this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
     this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });
     this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
-    this.globalService.globalVar.itemBeltSize = 4;
+    this.globalService.globalVar.itemBeltSize = 1;
 
     var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
     if (character1 !== undefined) {

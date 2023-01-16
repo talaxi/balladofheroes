@@ -61,14 +61,22 @@ export class AlchemyService {
     alchemy.alchemyTimerLength = 0;
     alchemy.exp += alchemy.creatingRecipe.expGain;    
 
-    if (alchemy.exp >= alchemy.expToNextLevel) {
+    if (alchemy.exp >= alchemy.expToNextLevel) {      
       alchemy.level += 1;
       alchemy.exp -= alchemy.expToNextLevel;
+
+      if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
+        var gameLogEntry = "Your alchemy level increases to " + alchemy.level + ".";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        }
+
       this.checkForNewRecipes();
     }
     
+    if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
     var gameLogEntry = "You create <strong>" + this.lookupService.getItemName(alchemy.creatingRecipe.createdItem) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+    }
 
     alchemy.alchemyCurrentAmountCreated += 1;      
 
