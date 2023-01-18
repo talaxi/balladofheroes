@@ -44,10 +44,11 @@ export class CharacterViewComponent implements OnInit {
           this.character = selectedCharacter;
           this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
             return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
-          }).filter(item => item.isAvailable);
-          this.getCharacterGodAbilities();
+          }).filter(item => item.isAvailable);          
         }
       }
+
+      this.getCharacterGodAbilities();
     });
   }
 
@@ -57,6 +58,14 @@ export class CharacterViewComponent implements OnInit {
 
   openOverdriveMenu(content: any) {          
     this.dialog.open(content, { width: '50%', height: '55%' });  
+  }
+
+  openChangeGodMenu(content: any) {          
+    this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding'  });  
+  }
+
+  openEquipmentModal(content: any) {
+    this.dialog.open(content, { width: '50%', height: '55%', panelClass: 'mat-dialog-no-scroll' });
   }
 
   getCharacterGodAbilities() {

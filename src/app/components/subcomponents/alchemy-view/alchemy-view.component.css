@@ -83,3 +83,14 @@
 .filterOption.filterActive {
     color: var(--active-filter);
 }
+
+.vr {
+    display: flex;
+    height: 100%;
+}
+
+.vrHr {
+    margin: 0 1rem;
+    padding: 0;
+    height: auto;
+}

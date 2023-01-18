@@ -40,9 +40,9 @@ export class ShoppingItemViewComponent implements OnInit {
     this.item.purchasePrice.forEach(resource => {
       var displayName = this.lookupService.getItemName(resource.item);
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
-      var insufficientText = "";
-      if (userResourceAmount < resource.amount)
-        insufficientText = " (" + userResourceAmount + " owned)";  
+      //var insufficientText = "";
+      //if (userResourceAmount < resource.amount)
+      var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";  
 
       this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" +(resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";      
     });

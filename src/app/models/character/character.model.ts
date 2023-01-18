@@ -49,6 +49,6 @@ export class Character {
         this.overdriveInfo = new OverdriveInfo();
 
         this.abilityList = [];
-        this.unlockedOverdrives = [OverdriveNameEnum.HeavyAttack];
+        this.unlockedOverdrives = [OverdriveNameEnum.Fervor];
     }    
 }

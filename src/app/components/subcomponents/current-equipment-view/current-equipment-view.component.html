@@ -26,10 +26,10 @@
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Necklace)" class="unequipButton" (click)="unequipItem(equipmentTypeEnum.Necklace)">X</button>
   </div>
 </div>
-<div *ngIf="canChangeEquipment">
+<!--<div *ngIf="canChangeEquipment">
   <br />
   <button (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
-</div>
+</div>-->
 
 <ng-template #equipmentModal>
   <app-equipment-view *ngIf="canChangeEquipment && equipmentModalOpened" [characterType]="characterType">

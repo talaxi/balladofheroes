@@ -87,19 +87,52 @@ export class LookupService {
     return totalXp;
   }
 
+  getCharacterDescription(type: CharacterEnum) {
+
+  }
+
+  getGodDescription(type: GodEnum) {
+    var description = "";
+
+    if (type === GodEnum.Athena)
+      description = "Athena, Goddess of Wisdom and Warfare, focuses on combat and self-reliance. Her abilities and upgrades give the user the ability to heal themselves based on damage dealt and reduce incoming damage to themselves.";
+    if (type === GodEnum.Artemis)
+      description = "Artemis, Goddess of the Hunt, focuses on critical hits and debilitating enemies. Her abilities and upgrades can weaken enemies through status effects and increase damage dealt from critical attacks.";
+    if (type === GodEnum.Hermes)
+      description = "Hermes, Messenger of the Gods, focuses on agility and quick attacks. His abilities and upgrades can increase agility and reduce auto attack and ability cooldowns.";
+    if (type === GodEnum.Apollo)
+      description = "Apollo, God of Archery and Music, focuses on strengthening and healing allies. His abilities and upgrades allow the user to heal over time and provide a variety of buffs to the party.";
+    if (type === GodEnum.Zeus)
+      description = "";
+    if (type === GodEnum.Ares)
+      description = "";
+    if (type === GodEnum.Poseidon)
+      description = "";
+
+    return description;
+  }
+
   getAlchemyActionName(action: AlchemyActionsEnum) {
     var name = "";
 
     if (action === AlchemyActionsEnum.PrepareWaterSmallPot)
-      name = "Boiling Water in a Small Pot";
+      name = "Boiling water in a small pot";
     if (action === AlchemyActionsEnum.StrainMixture)
-      name = "Straining Mixture";
-    if (action === AlchemyActionsEnum.CombineIngredients)
-      name = "Combining Ingredients in Pot";
+      name = "Straining mixture";
+    if (action === AlchemyActionsEnum.CombineIngredientsPot)
+      name = "Combining ingredients in pot";
     if (action === AlchemyActionsEnum.MeltWax)
-      name = "Melting Wax";
+      name = "Melting wax";
     if (action === AlchemyActionsEnum.MixOil)
-      name = "Mixing Oil";
+      name = "Mixing oil";
+    if (action === AlchemyActionsEnum.CombineIngredientsPotion)
+      name = "Combining ingredients in vial and stoppering";
+    if (action === AlchemyActionsEnum.HeatMixture)
+      name = "Heating mixture";
+    if (action === AlchemyActionsEnum.CombineIngredients)
+      name = "Combining ingredients together";
+      if (action === AlchemyActionsEnum.CrushIngredients)
+      name = "Crushing ingredients into a powder";
 
     return name;
   }
@@ -109,7 +142,9 @@ export class LookupService {
       return ItemTypeEnum.HealingItem;
     }
 
-    if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.PoisonFang) {
+    if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.PoisonFang || type === ItemsEnum.ExplodingPotion
+      || type === ItemsEnum.FirePotion || type === ItemsEnum.StranglingGasPotion || type === ItemsEnum.PoisonousToxin ||
+      type === ItemsEnum.DebilitatingToxin) {
       return ItemTypeEnum.BattleItem;
     }
 
@@ -163,6 +198,12 @@ export class LookupService {
       name = "Poisonous Toxin";
     else if (type === ItemsEnum.DebilitatingToxin)
       name = "Debilitating Toxin";
+    else if (type === ItemsEnum.FirePotion)
+      name = "Fire Vial";
+    else if (type === ItemsEnum.ExplodingPotion)
+      name = "Exploding Vial";
+    else if (type === ItemsEnum.StranglingGasPotion)
+      name = "Strangling Gas Vial";
 
     //equipment
     //swords
@@ -244,6 +285,16 @@ export class LookupService {
       name = "Fennel";
     else if (type === ItemsEnum.Wax)
       name = "Wax";
+      else if (type === ItemsEnum.VialOfTheLethe)
+      name = "Vial of the Lethe";
+      else if (type === ItemsEnum.EssenceOfFire)
+      name = "Essence of Fire";
+      else if (type === ItemsEnum.SoulSpark)
+      name = "Soul Spark";
+      else if (type === ItemsEnum.Asphodelus)
+      name = "Asphodelus";
+      else if (type === ItemsEnum.ToxicIchor)
+      name = "Toxic Ichor";
 
     return name;
   }
@@ -289,11 +340,18 @@ export class LookupService {
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice)
       name = "Heal a party member for " + effect.healAmount + " HP.";
 
+    else if(type === ItemsEnum.HealingSalve)
+      name = "Heal both party members for " + effect.healAmount + " HP.";
+
     //battle items
-    else if (type === ItemsEnum.ThrowingStone)
+    else if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.ExplodingPotion || type === ItemsEnum.FirePotion)
       name = "Deal " + effect.trueDamageAmount + " damage to a target.";
-    else if (type === ItemsEnum.PoisonFang)
+    else if (type === ItemsEnum.PoisonFang ||  type === ItemsEnum.StranglingGasPotion)
       name = "Poison an enemy, dealing " + relatedTargetGainStatusEffectEffectiveness + " every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
+    else if (type === ItemsEnum.DebilitatingToxin)
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a chance to reduce a target's agility by 10% for 5 seconds. Only one toxin can be applied per party member at a time.";
+    else if (type === ItemsEnum.PoisonousToxin)
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a chance to deal an additional 6 damage after 4 seconds. Only one toxin can be applied per party member at a time.";
 
     //resources
     else if (type === ItemsEnum.Coin)
@@ -541,12 +599,19 @@ export class LookupService {
       return "???";
     }
 
-    if (type === OverdriveNameEnum.HeavyAttack)
-      name = "Heavy Attack";
+    if (type === OverdriveNameEnum.Fervor)
+      name = "Fervor";
     if (type === OverdriveNameEnum.Smash)
       name = "Smash";
     if (type === OverdriveNameEnum.Speed)
       name = "Speed";
+    if (type === OverdriveNameEnum.Resolve)
+      name = "Resolve";
+    if (type === OverdriveNameEnum.Protection)
+      name = "Protection";
+    if (type === OverdriveNameEnum.Nature)
+      name = "Nature";
+
 
     return name;
   }
@@ -554,7 +619,7 @@ export class LookupService {
   getOverdriveDescription(type: OverdriveNameEnum) {
     var description = "";
 
-    if (type === OverdriveNameEnum.HeavyAttack) {
+    if (type === OverdriveNameEnum.Fervor) {
       description = "Your next auto attack deals <strong>300% Attack</strong> damage.";
     }
     if (type === OverdriveNameEnum.Smash) {
@@ -583,7 +648,7 @@ export class LookupService {
 
     overdriveInfo.selectedOverdrive = type;
 
-    if (type === OverdriveNameEnum.HeavyAttack) {
+    if (type === OverdriveNameEnum.Fervor) {
       overdriveInfo.overdriveGaugeTotal = 100;
     }
     if (type === OverdriveNameEnum.Smash) {
@@ -929,13 +994,39 @@ export class LookupService {
       itemEffect.dealsDamage = false;
       itemEffect.healAmount = 200;
     }
+    if (item === ItemsEnum.HealingSalve) {
+      itemEffect.dealsDamage = false;
+      itemEffect.healAmount = 150;
+      itemEffect.isAoe = true;
+    }
     if (item === ItemsEnum.ThrowingStone) {
       itemEffect.dealsDamage = true;
       itemEffect.trueDamageAmount = 3;
     }
     if (item === ItemsEnum.PoisonFang) {
       itemEffect.dealsDamage = true;
-      itemEffect.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, 10, "Poison Fang", DamageOverTimeTypeEnum.TrueDamage));
+      itemEffect.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, 7, "Poison Fang", DamageOverTimeTypeEnum.TrueDamage));
+    }
+    if (item === ItemsEnum.ExplodingPotion) {
+      itemEffect.dealsDamage = true;
+      itemEffect.trueDamageAmount = 14;
+    }
+    if (item === ItemsEnum.FirePotion) {
+      itemEffect.dealsDamage = true;
+      itemEffect.trueDamageAmount = 18;
+      itemEffect.elementalProperty = ElementalTypeEnum.Fire;
+    }
+    if (item === ItemsEnum.StranglingGasPotion) {
+      itemEffect.dealsDamage = true;
+      itemEffect.targetGainsStatusEffect.push(this.globalService.createDamageOverTimeEffect(9, 3, 12, "Strangling Gas", DamageOverTimeTypeEnum.TrueDamage));
+    }
+    if (item === ItemsEnum.DebilitatingToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DebilitatingToxin, 15 * 60, .9, false, true));
+    }
+    if (item === ItemsEnum.PoisonousToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userGainsStatusEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PoisonousToxin, 15 * 60, 1, false, true));
     }
 
     return itemEffect;
@@ -943,7 +1034,7 @@ export class LookupService {
 
   getTotalAutoAttackCount(character: Character) {
     var adjustedAgility = this.getAdjustedAgility(character);
-    var agilityPerAdditionalAttack = 250;
+    var agilityPerAdditionalAttack = 250; //TODO: agility per additional attack needs to increase each time
 
     return 1 + (adjustedAgility / agilityPerAdditionalAttack);
   }
@@ -1336,6 +1427,27 @@ export class LookupService {
     }
     if (type === ItemsEnum.PoisonFang) {
       src += "poisonFang.svg";
+    }
+    if (type === ItemsEnum.ExplodingPotion) {
+      src += "explodingPotion.svg";
+    }
+    if (type === ItemsEnum.HealingPoultice) {
+      src += "healingPoultice.svg";
+    }
+    if (type === ItemsEnum.HealingSalve) {
+      src += "healingSalve.svg";
+    }
+    if (type === ItemsEnum.FirePotion) {
+      src += "firePotion.svg";
+    }
+    if (type === ItemsEnum.StranglingGasPotion) {
+      src += "stranglingGasPotion.svg";
+    }
+    if (type === ItemsEnum.DebilitatingToxin) {
+      src += "debilitatingToxin.svg";
+    }
+    if (type === ItemsEnum.PoisonousToxin) {
+      src += "poisonousToxin.svg";
     }
 
     return src;

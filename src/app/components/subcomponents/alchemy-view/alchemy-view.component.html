@@ -6,8 +6,9 @@
     <br />
     <span>Level {{getLevel()}}</span>
     <br />
-    <span>{{getExp() | number : '1.0-0'}} / {{getExpToNextLevel() | number : '1.0-0'}} XP to Level
+    <span *ngIf="!atMaxLevel()">{{getExp() | number : '1.0-0'}} / {{getExpToNextLevel() | number : '1.0-0'}} XP to Level
         {{getLevel() + 1}}</span>
+        <span *ngIf="atMaxLevel()">max</span>
 </div>
 <hr />
 <div class="centeredText" *ngIf="creatingRecipe()">
@@ -36,7 +37,9 @@
         </div>
     </div>
     <div class="spacer">
-
+        <div class="vr">
+            <hr class="vrHr" />
+        </div>
     </div>
     <div class="recipeInfo" *ngIf="selectedRecipe !== undefined">
         <span class="s4Heading" [innerHtml]="getSelectedRecipeName()"></span>
@@ -55,6 +58,6 @@
             <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100)">100x</button>
         </div>
         <br/>
-        <button (click)="createSelectedRecipe()">Create</button>
+        <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
     </div>
 </div>

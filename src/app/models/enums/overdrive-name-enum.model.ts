@@ -1,6 +1,9 @@
 export enum OverdriveNameEnum {  
   None,
-  HeavyAttack,
+  Fervor,
   Smash,
   Speed,
+  Resolve,
+  Protection,
+  Nature
 }

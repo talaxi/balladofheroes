@@ -1,5 +1,13 @@
 <div class="gridContainer">
     <div class="characterInfo">
+        <div class="god1Info">
+            <br/>
+            <!--<div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod"
+                    [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
+                    <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
+                    <strong><span>Lv {{getCharacterGodLevel(character, 1)}}</span></strong>
+                </div>-->
+        </div>
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getCharacterColor()">{{character.name}}</span>
             <br />
@@ -8,29 +16,21 @@
             <span>{{character.exp | number : '1.0-0'}} / {{character.expToNextLevel | number : '1.0-0'}} XP to Level
                 {{character.level + 1}}</span>
         </div>
-
-        <!-- TODO: ADD BACK WHENEVER YOU CAN CHANGE GODS -->
-        <!--<div *ngIf="areGodsAvailable()" class="godInfo">
-            <div class="leftAlignText">
-                Equipped Gods:
-                <br />
-                <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod"
-                    [ngClass]="lookupService.getCharacterColorClass(character.assignedGod1)">
-                    <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
-                    <strong><span>Lv {{getCharacterGodLevel(character, 1)}}</span></strong>
-                </div>
-                <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"
-                    [ngClass]="lookupService.getCharacterColorClass(character.assignedGod2)">
+        <!--<div class="god2Info">
+            <br/>
+            <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"
+                    [ngClass]="lookupService.getGodColorClass(character.assignedGod2)">
                     <span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
                     <strong><span>Lv {{getCharacterGodLevel(character, 2)}}</span></strong>
                 </div>
-                <button>Change</button>
-            </div>
         </div>-->
     </div>
     <div class="characterStats statContainer">
         <div class="equipment">
-            <span class="sectionHeaderText sectionHeading">Equipment</span>
+            <span class="sectionHeaderText sectionHeading middleAlign">Equipment</span>
+            <span>
+                <button class="changeButton" (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
+            </span>
             <div class="sectionInfo">
                 <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
                 </app-current-equipment-view>
@@ -149,19 +149,20 @@
         </div>
     </div>
     <div class="characterAbilities">
-        <span class="sectionHeaderText sectionHeading">Character Abilities</span>
+        <span class="sectionHeaderText sectionHeading middleAlign">Character Abilities</span> 
+        <button class="changeButton" (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
         <div class="sectionInfo">
             <div *ngFor="let ability of characterAbilityList">
                 <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{ability.name}}</strong><span class="statValue"> - <span
                     [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span></span>
             </div>
             <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{getOverdriveName()}} (Overdrive)</strong><span class="statValue"> - <span
-                [innerHtml]="lookupService.getOverdriveDescription(character.overdriveInfo.selectedOverdrive)"></span> </span> 
-                <button class="overdriveButton" (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
+                [innerHtml]="lookupService.getOverdriveDescription(character.overdriveInfo.selectedOverdrive)"></span> </span>                 
         </div >
         <br />
         <div *ngIf="hasGodEquipped()">
-            <span class="sectionHeaderText sectionHeading">Equipped God Abilities</span>
+            <span class="sectionHeaderText sectionHeading middleAlign">Equipped God Abilities</span>
+            <button class="changeButton" (click)="openChangeGodMenu(changeGodView)">Change Gods</button>
             <div class="sectionInfo">
                 <div *ngFor="let ability of god1AbilityList">
                     <strong class="statLabel" [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong><span class="statValue"> - <span
@@ -178,6 +179,10 @@
 
 <ng-template #overdriveView>
     <app-overdrive-view [character]="character"></app-overdrive-view>
+</ng-template>
+
+<ng-template #changeGodView>
+    <app-change-god-view [character]="character"></app-change-god-view>
 </ng-template>
 
 <ng-template #maxHpPopover>
@@ -399,3 +404,9 @@
         </div>
     </div>
 </ng-template>
+
+<ng-template #equipmentModal>
+    <app-equipment-view [characterType]="this.character.type">
+    </app-equipment-view>
+  </ng-template>
+  

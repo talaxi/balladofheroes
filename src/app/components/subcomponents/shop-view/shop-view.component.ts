@@ -83,9 +83,9 @@ export class ShopViewComponent implements OnInit {
     this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
 
     //TODO: prob better way to do this
-    if (option.type === ShopTypeEnum.Alchemist && this.globalService.globalVar.alchemy.level === 0)
-    {
-      this.globalService.globalVar.alchemy.level = 1;
+    if (option.type === ShopTypeEnum.Alchemist)
+    {      
+      this.alchemyService.handleShopOpen(this.activeSubzoneType);
       this.alchemyService.checkForNewRecipes();
     }
 

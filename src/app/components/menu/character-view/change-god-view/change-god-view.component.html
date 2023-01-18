@@ -1,0 +1,54 @@
+<div class="container">
+    <div class="currentGods">
+        <div [ngClass]="getGodColor(1)" class="god1">
+            <div class="godContainer" [ngClass]="{'active': swappingGod === 1 }">
+            <span class="s6Heading" [innerHtml]="getGodName(1)"></span>
+            <br/>
+            <span class="s6Heading" [innerHtml]="getGodLevel(1)"></span>
+            <br />
+            <br />
+            <span [innerHtml]="getGodDescription(1)"></span>
+            <br/>
+            <br/>
+            <button (click)="swapGod(1)">Swap</button>
+            </div>
+        </div>
+        <div class="vr">
+            <hr class="vrHr" />
+        </div>
+        <div [ngClass]="getGodColor(2)" class="god2">
+            <div class="godContainer" [ngClass]="{'active': swappingGod === 2 }">
+            <span class="s6Heading" [innerHtml]="getGodName(2)"></span>
+            <br/>
+            <span class="s6Heading" [innerHtml]="getGodLevel(2)"></span>
+            <br />
+            <br />
+            <span [innerHtml]="getGodDescription(2)"></span>
+            <br/>
+            <br/>
+            <button (click)="swapGod(2)">Swap</button>
+        </div>
+        </div>
+    </div>
+    <hr class="noMargin" />
+    <div class="allGods">
+        <table>
+            <tr *ngFor="let cells of godRows;">
+                <td [ngClass]="getGodColor(undefined, c.type)" class="item" *ngFor="let c of cells;">
+                    <span class="s3Heading" [innerHtml]="getGodName(undefined, c.type)"></span>
+                    <br/>
+                    <span class="s3Heading" [innerHtml]="getGodLevel(undefined, c.type)"></span>
+                    <br />
+                    <div *ngIf="isCurrentlyAssigned(c.type)">
+                        <i>Currently Assigned To: <span [innerHtml]="GetCurrentlyAssignedCharacter(c.type)"></span></i>
+                    </div>
+                    <br />
+                    <span [innerHtml]="getGodDescription(undefined, c.type)"></span>
+                    <br />
+                    <br />
+                    <button *ngIf="swapGod !== undefined" [disabled]="currentlyAssignedToSameCharacter(c.type)" (click)="selectNewGod(c.type)">Select</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

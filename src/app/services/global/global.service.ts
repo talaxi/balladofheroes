@@ -776,7 +776,7 @@ export class GlobalService {
     character.baseStats.maxHp += statIncrease * maxHpBonusMultiplier;
     
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {      
-      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " gains <strong>" + (maxHpBonusMultiplier * statIncrease) + " Max HP</strong> and <strong>" + statIncrease + " to all other primary stats.</strong>.";
+      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " gains <strong>" + (maxHpBonusMultiplier * statIncrease) + " Max HP</strong> and <strong>" + statIncrease + " to all other primary stats</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
   }
@@ -1023,15 +1023,6 @@ export class GlobalService {
   }
 
   checkForNewGodPermanentAbilities(god: God) {
-    if (god.level === this.utilityService.permanentDefaultGodAbilityLevel) {
-      var defaultAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.defaultGodAbilityLevel);
-      if (defaultAbility !== undefined) {
-        defaultAbility.isAbilityPermanent = true;
-        var gameLogEntry = "<strong>" + defaultAbility.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
-      }
-    }
-
     if (god.level === this.utilityService.permanentPassiveGodLevel) {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.permanentPassiveGodLevel);
       if (ability !== undefined) {
@@ -1410,7 +1401,7 @@ export class GlobalService {
       level === this.utilityService.godAbility2Level || level === this.utilityService.godAbility3Level) {
       increaseType = GodLevelIncreaseEnum.NewAbility;
     }
-    else if (level === this.utilityService.permanentDefaultGodAbilityLevel || level === this.utilityService.permanentPassiveGodLevel ||
+    else if (level === this.utilityService.permanentPassiveGodLevel ||
       level === this.utilityService.permanentGodAbility2Level || level === this.utilityService.permanentGodAbility3Level) {
       increaseType = GodLevelIncreaseEnum.PermanentAbility;
     }

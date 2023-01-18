@@ -178,6 +178,10 @@
   --s5-weight: 400;
   --s5-spacing: 0.1px;
 
+  --s6-size: 1.2rem;
+  --s6-weight: 600;
+  --s6-spacing: 0.15px;
+
   /* Menu Buttons */
   --m1-size: 1.25rem;
   --m1-weight: 550;
@@ -259,6 +263,12 @@ h1 {
 .s5Heading {
   font-size: var(--s5-size);
   font-weight: var(--s5-weight);
+}
+
+.s6Heading {
+  font-size: var(--s6-size);
+  font-weight: var(--s6-weight);
+  font-variant: small-caps;
 }
 
 .sectionHeading {

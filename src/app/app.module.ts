@@ -75,6 +75,7 @@ import { IndividualAchievementViewComponent } from './components/menu/achievemen
 import { AlchemyViewComponent } from './components/subcomponents/alchemy-view/alchemy-view.component';
 import { GameLogEditorComponent } from './components/subcomponents/game-log-editor/game-log-editor.component';
 import { OverdriveViewComponent } from './components/subcomponents/overdrive-view/overdrive-view.component';
+import { ChangeGodViewComponent } from './components/menu/character-view/change-god-view/change-god-view.component';
 
 
 @NgModule({
@@ -115,7 +116,8 @@ import { OverdriveViewComponent } from './components/subcomponents/overdrive-vie
     IndividualAchievementViewComponent,
     AlchemyViewComponent,
     GameLogEditorComponent,
-    OverdriveViewComponent
+    OverdriveViewComponent,
+    ChangeGodViewComponent
   ],
   imports: [
     BrowserModule,

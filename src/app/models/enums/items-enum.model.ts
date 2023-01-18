@@ -45,8 +45,13 @@ export enum ItemsEnum {
   HealingPoultice,  
   PoisonousToxin,
   DebilitatingToxin,
-  StranglingGasVial,  
-  ExplodingVial,
-  FireVial,
-  ItemBeltUp
+  StranglingGasPotion,  
+  ExplodingPotion,
+  FirePotion,
+  ItemBeltUp,
+  VialOfTheLethe,
+  SoulSpark,
+  EssenceOfFire,
+  ToxicIchor,
+  Asphodelus
 }

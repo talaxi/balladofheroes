@@ -35,5 +35,7 @@ export enum StatusEffectEnum {
     Staccato,
     Fortissimo,
     Coda,
-    Thorns
+    Thorns,
+    DebilitatingToxin,
+    PoisonousToxin
   }

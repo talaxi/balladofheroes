@@ -16,6 +16,6 @@ export class OverdriveInfo {
         this.overdriveGaugeTotal = 100;
         this.overdriveAutoMode = true;
         this.manuallyTriggered = false;
-        this.selectedOverdrive = OverdriveNameEnum.HeavyAttack;
+        this.selectedOverdrive = OverdriveNameEnum.Fervor;
     }
 }

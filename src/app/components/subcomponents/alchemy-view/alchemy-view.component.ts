@@ -26,6 +26,10 @@ export class AlchemyViewComponent implements OnInit {
     this.selectedRecipe = recipe;
   }
 
+  atMaxLevel() {
+    return this.globalService.globalVar.alchemy.level >= this.globalService.globalVar.alchemy.maxLevel;
+  }
+
   getLevel() {
     return this.globalService.globalVar.alchemy.level;
   }
@@ -69,9 +73,7 @@ export class AlchemyViewComponent implements OnInit {
       this.selectedRecipe.ingredients.forEach(resource => {
         var displayName = this.lookupService.getItemName(resource.item);
         var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
-        var insufficientText = "";
-        if (userResourceAmount < resource.amount)
-          insufficientText = " (" + userResourceAmount + " owned)";  
+        var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";  
   
         ingredients += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" +(resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";      
       });
@@ -150,12 +152,10 @@ export class AlchemyViewComponent implements OnInit {
     if (this.canCreateItem())
     {
       this.spendResourcesOnItem();
+      this.alchemyService.initializeCreation(this.selectedRecipe, this.createAmount);
     }
-
-    this.alchemyService.initializeCreation(this.selectedRecipe, this.createAmount);
   }
 
-  //TODO: move these to service, check them every time you start a new one
   canCreateItem() {
     var canBuy = this.alchemyService.canCreateItem(this.selectedRecipe);
    

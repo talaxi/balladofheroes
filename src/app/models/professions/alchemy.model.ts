@@ -3,8 +3,10 @@ import { Recipe } from "./recipe.model";
 
 export class Alchemy {
     level: number;
+    maxLevel: number;
     exp: number;
     expToNextLevel: number;
+    isUnlocked: boolean;
     @Type(() => Recipe)
     availableRecipes: Recipe[];
 
@@ -19,7 +21,7 @@ export class Alchemy {
     constructor() {
         this.level = 0;
         this.availableRecipes = [];
-
+        this.isUnlocked = false;
         this.alchemyTimer = 0;
         this.alchemyTimerLength = 0;
         this.alchemyStep = 0;

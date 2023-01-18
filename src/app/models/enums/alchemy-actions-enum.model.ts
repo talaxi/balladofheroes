@@ -1,8 +1,12 @@
 export enum AlchemyActionsEnum {
   None,
   PrepareWaterSmallPot,
-  CombineIngredients,
+  CombineIngredientsPot,
   StrainMixture,
   MixOil,
-  MeltWax
+  MeltWax,
+  CombineIngredientsPotion,
+  HeatMixture,
+  CrushIngredients,
+  CombineIngredients,
 }

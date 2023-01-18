@@ -20,7 +20,7 @@
     grid-template-rows: auto;
     justify-content: stretch;
     grid-template-areas:
-        ". baseInfo godInfo";
+        "god1Info baseInfo god2Info";
 }
 
 .characterStats {
@@ -36,9 +36,12 @@
     grid-area: baseInfo;
 }
 
-.godInfo {
-    grid-area: godInfo;
-    text-align: right;
+.god1Info {
+    grid-area: god1Info;    
+}
+
+.god2Info {
+    grid-area: god2Info;    
 }
 
 .statContainer {
@@ -78,7 +81,11 @@
     width: 90%;
 }
 
-.overdriveButton {
+.changeButton {
     margin-left: 2rem;
+    vertical-align: middle;
+}
+
+.middleAlign {
     vertical-align: middle;
 }

@@ -31,7 +31,6 @@ export class UtilityService {
   public godPassiveLevel = 5;
   public godAbility2Level = 20;
   public godAbility3Level = 75;
-  public permanentDefaultGodAbilityLevel = 40;
   public permanentPassiveGodLevel = 125;
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 385;
@@ -40,6 +39,8 @@ export class UtilityService {
   public godStatGainBaseAmount = 3;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
+
+  public firstAlchemyLevelCap = 25;
 
   constructor(public sanitizer: DomSanitizer) { }
 

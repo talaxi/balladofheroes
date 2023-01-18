@@ -90,9 +90,7 @@ export class GodViewComponent implements OnInit {
         if (i === totalLevelDisplay - 1) {
           //set next level to the next biggest thing
           if (nextLevel < this.utilityService.godAbility2Level)
-            nextLevel = this.utilityService.godAbility2Level;
-          else if (nextLevel < this.utilityService.permanentDefaultGodAbilityLevel)
-            nextLevel = this.utilityService.permanentDefaultGodAbilityLevel;
+            nextLevel = this.utilityService.godAbility2Level;          
           else if (nextLevel < 50) //permanent stat 1
             nextLevel = 50;
           else if (nextLevel < this.utilityService.godAbility3Level)
@@ -160,10 +158,7 @@ export class GodViewComponent implements OnInit {
           rewards += this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " (Ability 3)";
         }
       }
-      if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {
-        if (nextLevel === this.utilityService.permanentDefaultGodAbilityLevel) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.defaultGodAbilityLevel)?.name + " After Level Reset";
-        }
+      if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {        
         if (nextLevel === this.utilityService.permanentPassiveGodLevel) {
           rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " After Level Reset";
         }
