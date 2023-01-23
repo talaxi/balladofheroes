@@ -1,0 +1,64 @@
+<table>
+    <tr>
+        <td class="clickableText tabItem" [ngClass]="{'active': currentLogView === logViewEnum.Story }"
+            (click)="toggleDisplayStoryView()">
+            <button class="buttonAsText clickableText m1Heading"
+                [ngClass]="{'active': currentLogView === logViewEnum.Story }">Story</button>
+        </td>
+        <td class="clickableText tabItem" [ngClass]="{'active': currentLogView === logViewEnum.Tutorials }"
+            (click)="toggleDisplayTutorialsView()">
+            <button class="buttonAsText clickableText m1Heading"
+                [ngClass]="{'active': currentLogView === logViewEnum.Tutorials }">Tutorials</button>
+        </td>
+        <td class="clickableText tabItem" [ngClass]="{'active': currentLogView === logViewEnum.Loot }"
+            (click)="toggleDisplayLootView()">
+            <button class="buttonAsText clickableText m1Heading"
+                [ngClass]="{'active': currentLogView === logViewEnum.Loot }">Loot</button>
+        </td>
+    </tr>
+</table>
+<hr class="noMargin" />
+<div class="logInfo">
+    <table *ngIf="currentLogView === logViewEnum.Story" class="dataTable">
+        <tr class="dataRow">
+        <td class="dataDisplay">
+            <span class="dataDate">Date Received</span>
+            <span class="dataInfo">Info</span>
+        </td>
+    </tr>
+        <tr class="dataRow" *ngFor="let item of storyData">
+            <td class="dataDisplay">
+                <span class="dataDate">{{item.dateReceived}}</span>
+                <span class="dataInfo" [innerHtml]="getStoryData(item)"></span>
+            </td>                 
+        </tr>
+    </table>
+    <table *ngIf="currentLogView === logViewEnum.Tutorials" class="dataTable">
+        <tr class="dataRow">
+        <td class="dataDisplay">
+            <span class="dataDate">Date Received</span>
+            <span class="dataInfo">Info</span>
+        </td>
+    </tr>
+        <tr class="dataRow" *ngFor="let item of tutorialData">
+            <td class="dataDisplay">
+                <span class="dataDate">{{item.dateReceived}}</span>
+                <span class="dataInfo" [innerHtml]="getTutorialData(item)"></span>
+            </td>                 
+        </tr>
+    </table>
+    <table *ngIf="currentLogView === logViewEnum.Loot" class="dataTable">
+        <tr class="dataRow">
+        <td class="dataDisplay">
+            <span class="dataDate">Date Received</span>
+            <span class="dataInfo">Info</span>
+        </td>
+    </tr>
+        <tr class="dataRow" *ngFor="let item of lootData">
+            <td class="dataDisplay">
+                <span class="dataDate">{{item.dateReceived}}</span>
+                <span class="dataInfo" [innerHtml]="getLootData(item)"></span>
+            </td>                 
+        </tr>
+    </table>
+</div>

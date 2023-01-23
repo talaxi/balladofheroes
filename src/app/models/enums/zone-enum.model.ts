@@ -4,5 +4,6 @@ export enum ZoneEnum {
   Dodona,
   Libya,
   Nemea,
-  Asphodel
+  Asphodel,
+  Elysium
 }

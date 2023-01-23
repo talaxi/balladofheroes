@@ -14,6 +14,7 @@ export class Battle {
     atTown: boolean;
     @Type(() => ResourceValue)
     chestRewards: ResourceValue[];
+    battleDuration: number;
 
     constructor() {
         this.currentEnemies = new EnemyTeam();
@@ -21,5 +22,6 @@ export class Battle {
         this.atTown = false;
         this.sceneType = SceneTypeEnum.None;
         this.chestRewards = [];
+        this.battleDuration = 0;
     }
 }

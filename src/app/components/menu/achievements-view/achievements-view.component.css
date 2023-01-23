@@ -30,10 +30,9 @@
 .subzoneName {
     grid-area: subzoneName;
     text-align: center;
-    align-self: center;    
-    text-transform: lowercase;
+    align-self: center;
+    text-transform: uppercase;
     font-variant: small-caps;
-    font-size: 1.5rem;
 }
 
 .grid {
@@ -84,7 +83,7 @@ td {
     border: 1px solid var(--background-quarternary);
     padding: 1rem;
     vertical-align: top;
-    
+
 }
 
 .achievementRow {
@@ -98,9 +97,9 @@ td {
 }
 
 .item {
-    width: 28%;  
+    width: 28%;
     border: 2px solid var(--background-quarternary);
-    padding: 1rem;
+    padding: .75rem;
     vertical-align: top;
     margin-right: .5rem;
     margin-top: .1rem;
@@ -132,4 +131,12 @@ td {
 .filterFlex {
     display: flex;
     justify-content: space-around;
+}
+
+.sectionHeading {    
+    font-size: 1.5rem;
+}
+
+.s7Heading {
+    color: var(--foreground-accent);
 }

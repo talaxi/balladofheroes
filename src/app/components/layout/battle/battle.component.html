@@ -4,38 +4,50 @@
                 *ngIf="showDevStats"> EPS: {{getExpectedExpPerSec()}}</span></div>
         <hr />
     </div>
-    <div class="scene" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
+    <div class="scene"
+        [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
         <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }"
             *ngIf="!isAtScene() && !isAtTown()">
-            <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight && !currentEnemies.isDoubleBossFight" class="enemiesGrid">
-                <app-enemy-view [character]="currentEnemies.enemyList[0]"
+            <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight && !currentEnemies.isDoubleBossFight"
+                class="enemiesGrid">
+                <app-enemy-view [character]="currentEnemies.enemyList[0]" [enemyParty]="currentEnemies.enemyList"
                     [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy1"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [character]="currentEnemies.enemyList[1]"
-                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy2"></app-enemy-view>
+                    [enemyParty]="currentEnemies.enemyList" [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation"
+                    class="enemy2"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 2" [character]="currentEnemies.enemyList[2]"
-                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy3"></app-enemy-view>
+                    [enemyParty]="currentEnemies.enemyList" [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation"
+                    class="enemy3"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 3" [character]="currentEnemies.enemyList[3]"
-                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy4"></app-enemy-view>
+                    [enemyParty]="currentEnemies.enemyList" [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation"
+                    class="enemy4"></app-enemy-view>
             </div>
             <div *ngIf="currentEnemies !== undefined && currentEnemies.isBossFight" class="bossGrid">
                 <app-enemy-view [character]="currentEnemies.enemyList[0]" [isBoss]="true"
-                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="boss"></app-enemy-view>
+                    [enemyParty]="currentEnemies.enemyList" [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation"
+                    class="boss"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [character]="currentEnemies.enemyList[1]"
-                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy3"></app-enemy-view>
+                    [enemyParty]="currentEnemies.enemyList" [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation"
+                    class="enemy3"></app-enemy-view>
                 <app-enemy-view *ngIf="currentEnemies.enemyList.length > 2" [character]="currentEnemies.enemyList[2]"
-                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="enemy4"></app-enemy-view>
+                    [enemyParty]="currentEnemies.enemyList" [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation"
+                    class="enemy4"></app-enemy-view>
             </div>
             <div *ngIf="currentEnemies !== undefined && currentEnemies.isDoubleBossFight" class="doubleBossGrid">
                 <app-enemy-view [character]="currentEnemies.enemyList[0]" [isBoss]="true"
-                    [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="boss1"></app-enemy-view>
-                <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [isBoss]="true" [character]="currentEnemies.enemyList[1]"
+                    [enemyParty]="currentEnemies.enemyList" [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation"
+                    class="boss1"></app-enemy-view>
+                <app-enemy-view *ngIf="currentEnemies.enemyList.length > 1" [isBoss]="true"
+                    [character]="currentEnemies.enemyList[1]" [enemyParty]="currentEnemies.enemyList"
                     [showNewEnemyGroupAnimation]="showNewEnemyGroupAnimation" class="boss2"></app-enemy-view>
             </div>
         </div>
         <div *ngIf="isAtStoryScene()" class="storyGrid">
-            <div class="text" [ngClass]="{'storyTextAnimation': showStoryAnimation }" [innerHtml]="this.displayStorySegment()"></div>
+            <div class="text" [ngClass]="{'storyTextAnimation': showStoryAnimation }"
+                [innerHtml]="this.displayStorySegment()"></div>
             <div class="skipButton">
-                <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next page</strong></i></span>
+                <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next
+                            page</strong></i></span>
                 <button class="floatRight arrow" (click)="skipStory()">&#8594;</button>
             </div>
             <div class="loadingBar">
@@ -64,12 +76,14 @@
     <div class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
-        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor"><img class="settingsIcon" src="assets/svg/gear.svg"></button>
+        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton"><img
+                class="settingsIcon icon" src="assets/svg/gear.svg"></button>
         <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
-            class="skipToBottom arrow">&#8595;</button>
+            class="skipToBottom arrow gameLogButton"><img class="arrowDownIcon icon"
+                src="assets/svg/arrowDown.svg"></button>
     </div>
 </div>
 
 <ng-template #gameLogEditorModal>
     <app-game-log-editor></app-game-log-editor>
-  </ng-template>
+</ng-template>

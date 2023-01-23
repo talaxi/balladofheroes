@@ -8,6 +8,7 @@ import { Alchemy } from "../professions/alchemy.model";
 import { FreeTreasureChests } from "../resources/free-treasure-chests.model";
 import { ResourceValue } from "../resources/resource-value.model";
 import { ChthonicPowers } from "../utility/chthonic-powers.model";
+import { LogData } from "../utility/log-data.model";
 import { Settings } from "../utility/settings.model";
 import { Ballad } from "../zone/ballad.model";
 import { PlayerNavigation } from "../zone/player-navigation.model";
@@ -55,6 +56,9 @@ export class GlobalVariables {
     betaSave: boolean = true;
     @Type(() => Settings)
     gameLogSettings: Settings;
+    performanceMode = false;
+    @Type(() => LogData)
+    logData: LogData[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -64,6 +68,7 @@ export class GlobalVariables {
         this.resources = [];
         this.itemBelt = [];
         this.achievements = [];
+        this.logData = [];
         this.itemBeltSize = 1;
         //this.activeBattle = new Battle();
         this.playerNavigation = new PlayerNavigation();

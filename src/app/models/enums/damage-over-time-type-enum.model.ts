@@ -1,4 +1,4 @@
-export enum DamageOverTimeTypeEnum { 
+export enum dotTypeEnum { 
     None,
     TrueDamage,
     BasedOnAttack,

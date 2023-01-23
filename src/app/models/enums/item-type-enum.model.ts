@@ -1,9 +1,12 @@
 export enum ItemTypeEnum {
   None,
   HealingItem,
-  BattleItem,
+  BattleItem,  
   Equipment,
   CraftingMaterial,
+  Charm,
   Resource,
-  Progression
+  Progression,
+  Toxin,
+  Elixir
 }

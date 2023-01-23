@@ -116,6 +116,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.RecentlyDefeated) {
       src += "skull.svg";
     }
+    if (effect.type === StatusEffectEnum.DebilitatingToxin) {
+      src += "debilitatingToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.PoisonousToxin) {
+      src += "poisonousToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.HeroicElixir) {
+      src += "heroicElixir.svg";
+    }
 
     return src;
   }

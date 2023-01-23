@@ -18,9 +18,9 @@ export class Ability {
     targetsAllies: boolean;
     elementalType: ElementalTypeEnum;
     @Type(() => StatusEffect)
-    userGainsStatusEffect: StatusEffect[];
+    userEffect: StatusEffect[];
     @Type(() => StatusEffect)
-    targetGainsStatusEffect: StatusEffect[];
+    targetEffect: StatusEffect[];
     isAoe: boolean;
     isPassive: boolean;
     isActivatable: boolean;
@@ -46,8 +46,8 @@ export class Ability {
         this.isActivatable = true;
         this.elementalType = ElementalTypeEnum.None;
 
-        this.userGainsStatusEffect = [];
-        this.targetGainsStatusEffect = [];
+        this.userEffect = [];
+        this.targetEffect = [];
         this.autoMode = true;
         this.manuallyTriggered = false;
 

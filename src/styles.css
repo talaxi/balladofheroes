@@ -42,6 +42,7 @@
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
+  --foreground-accent: #9E8F81;
   --foreground-light: #FFFFFF;
   --active-filter: #FFFFFF;
   --inactive-filter: #6A808A;
@@ -86,13 +87,13 @@
   --clearedSubzoneColor: #b36b24;
   --completedSubzoneColor: #e8c602;
 
-  --basicEquipmentColor: #B2B69A;
-  --uncommonEquipmentColor: #f0f0f0;
-  --rareEquipmentColor: #2296F1;
-  --epicEquipmentColor: #AD75FA;
+  --basicEquipmentColor: #f0f0f0;
+  --uncommonEquipmentColor: #B2B69A;
+  --rareEquipmentColor: #4CB6FC;
+  --epicEquipmentColor: #C49BF9;
   --specialEquipmentColor: #41c93c;
-  --extraordinaryEquipmentColor: #D9791A;
-  --uniqueEquipmentColor: #FD5949;
+  --extraordinaryEquipmentColor: #F79721;
+  --uniqueEquipmentColor: #FF6250;
   --alchemyColor: #CE66E9;
 
   --resourceKeywordColor: #EAAD91;
@@ -182,6 +183,10 @@
   --s6-weight: 600;
   --s6-spacing: 0.15px;
 
+  --s7-size: .9rem;
+  --s7-weight: 600;
+  --s7-spacing: 0.15px;
+
   /* Menu Buttons */
   --m1-size: 1.25rem;
   --m1-weight: 550;
@@ -268,6 +273,12 @@ h1 {
 .s6Heading {
   font-size: var(--s6-size);
   font-weight: var(--s6-weight);
+  font-variant: small-caps;
+}
+
+.s7Heading {
+  font-size: var(--s7-size);
+  font-weight: var(--s7-weight);
   font-variant: small-caps;
 }
 

@@ -25,12 +25,17 @@ export enum SubZoneEnum {
   NemeaCountryRoadsTwo,
   NemeaRollingHills,
   NemeaLairOfTheLion,
-  AsphodelHallOfTheDead,
+  AsphodelPalaceOfHades,
   AsphodelTheDepths,
   AsphodelForgottenHalls,
+  AsphodelLostHaven,
   AsphodelEndlessStaircase,
   AsphodelFieryPassage,
   AsphodelDarkenedMeadows,
-  AsphodelLetheBasin,
-  AsphodelLetheTributary
+  AsphodelLetheBasin,  
+  AsphodelLetheTributary,
+  ElysiumElysianFields,
+  ElysiumOpenPlains,
+  ElysiumColiseum,
+  ElysiumGatesOfHornAndIvory
 }

@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -45,6 +46,24 @@ export class EquipmentItemViewComponent implements OnInit {
     if (this.equipment?.quality === EquipmentQualityEnum.Unique)
       return "★★★★★★★";
 
+    return "";
+  }
+
+  getEquipmentClass(item?: ItemsEnum) {
+    if (item === undefined)
+      item = this.equipment?.itemType;
+
+    if (item === undefined)
+      return "";
+
+    var equipment = this.lookupService.getEquipmentPieceByItemType(item);
+    if (equipment !== undefined)
+    {
+    var qualityClass = "s4Heading " + this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));
+
+    return qualityClass;
+    }
+    
     return "";
   }
 }

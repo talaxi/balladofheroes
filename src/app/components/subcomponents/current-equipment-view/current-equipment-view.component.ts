@@ -55,10 +55,6 @@ export class CurrentEquipmentViewComponent implements OnInit {
   openEquipmentModal(content: any) {
     this.equipmentModalOpened = true;
     this.dialog.open(content, { width: '50%', height: '55%', panelClass: 'mat-dialog-no-scroll' });
-
-    /*dialogRef.afterClosed().subscribe(result => {
-      console.log(`Dialog result: ${result}`);
-    });*/
   }
 
   isUnequipped(type: EquipmentTypeEnum) {
@@ -83,8 +79,8 @@ export class CurrentEquipmentViewComponent implements OnInit {
     {
       if (character.equipmentSet.weapon?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
       {
-        var effect = character.equipmentSet.weapon.equipmentEffect.userGainsStatusEffect.length > 0 ? 
-        character.equipmentSet.weapon.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetGainsStatusEffect[0];
+        var effect = character.equipmentSet.weapon.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.weapon.equipmentEffect.userEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
@@ -94,8 +90,8 @@ export class CurrentEquipmentViewComponent implements OnInit {
     {
       if (character.equipmentSet.shield?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
       {
-        var effect = character.equipmentSet.shield.equipmentEffect.userGainsStatusEffect.length > 0 ? 
-        character.equipmentSet.shield.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.shield.equipmentEffect.targetGainsStatusEffect[0];
+        var effect = character.equipmentSet.shield.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.shield.equipmentEffect.userEffect[0] : character.equipmentSet.shield.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
@@ -105,8 +101,8 @@ export class CurrentEquipmentViewComponent implements OnInit {
     {
       if (character.equipmentSet.armor?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
       {
-        var effect = character.equipmentSet.armor.equipmentEffect.userGainsStatusEffect.length > 0 ? 
-        character.equipmentSet.armor.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.armor.equipmentEffect.targetGainsStatusEffect[0];
+        var effect = character.equipmentSet.armor.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.armor.equipmentEffect.userEffect[0] : character.equipmentSet.armor.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
@@ -116,8 +112,8 @@ export class CurrentEquipmentViewComponent implements OnInit {
     {
       if (character.equipmentSet.ring?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
       {
-        var effect = character.equipmentSet.ring.equipmentEffect.userGainsStatusEffect.length > 0 ? 
-        character.equipmentSet.ring.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.ring.equipmentEffect.targetGainsStatusEffect[0];
+        var effect = character.equipmentSet.ring.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.ring.equipmentEffect.userEffect[0] : character.equipmentSet.ring.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
@@ -127,8 +123,8 @@ export class CurrentEquipmentViewComponent implements OnInit {
     {
       if (character.equipmentSet.necklace?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
       {
-        var effect = character.equipmentSet.necklace.equipmentEffect.userGainsStatusEffect.length > 0 ? 
-        character.equipmentSet.necklace.equipmentEffect.userGainsStatusEffect[0] : character.equipmentSet.necklace.equipmentEffect.targetGainsStatusEffect[0];
+        var effect = character.equipmentSet.necklace.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.necklace.equipmentEffect.userEffect[0] : character.equipmentSet.necklace.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 

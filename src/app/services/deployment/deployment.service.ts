@@ -8,6 +8,7 @@ export class DeploymentService {
   forceStartNewGame = false;
   codeCreationMode = false;
   showStats = false;
+  performanceModeAvailable = false;
 
   constructor() { }
 
@@ -17,6 +18,7 @@ export class DeploymentService {
     this.forceStartNewGame = false;
     this.codeCreationMode = false;
     this.showStats = false;
+    this.performanceModeAvailable = false;
   }
 
   setStagingMode() {
@@ -24,5 +26,6 @@ export class DeploymentService {
     this.forceStartNewGame = true;
     this.codeCreationMode = true;
     this.showStats = false;
+    this.performanceModeAvailable = true;
   }
 }

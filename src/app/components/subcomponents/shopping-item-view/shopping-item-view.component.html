@@ -1,11 +1,13 @@
-<div class="shoppingItem" [class]="getEquipmentClass()">
+<div class="shoppingItem">
     <div class="itemDescription">
         <div *ngIf="isEquipment()" customToolTip [isDelayed]="false" [contentTemplate]="equipmentComparisonTemplate">
-            <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
-            <br />
-            <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
-            <div>
-                {{getStars()}}
+            <div [class]="getEquipmentClass()">
+                <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
+                <br />
+                <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
+                <div>
+                    {{getStars()}}
+                </div>
             </div>
             <hr class="miniHr" />
             <span [innerHtml]="itemDescription"></span>
@@ -13,16 +15,16 @@
         <div *ngIf="!isEquipment()"> <!--Better way to do this other than copying and pasting?-->
             <span class="s4Heading">{{lookupService.getItemName(item.shopItem)}}</span>
             <br />
-            <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>            
+            <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
             <hr class="miniHr" />
             <span [innerHtml]="itemDescription"></span>
         </div>
     </div>
     <div class="purchaseDescription">
-        <br/>
+        <br />
         <div class="resourceKeyword" [innerHtml]="purchaseResourcesRequired">
         </div>
-        <br/>
+        <br />
     </div>
     <div class="purchaseButton">
         <button (click)="buyItem()" [disabled]="!canBuyItem()">Buy</button>

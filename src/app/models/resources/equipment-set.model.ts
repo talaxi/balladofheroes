@@ -159,6 +159,90 @@ export class EquipmentSet {
         return total;
     }
 
+    getTotalHpRegenGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.hpRegen;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.hpRegen;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.hpRegen;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.hpRegen;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.hpRegen;
+
+        return total;
+    }
+
+    getTotalCriticalMultiplierGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.criticalMultiplier;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.criticalMultiplier;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.criticalMultiplier;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.criticalMultiplier;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.criticalMultiplier;
+
+        return total;
+    }
+
+    getTotalAbilityCooldownReductionGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.abilityCooldownReduction;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.abilityCooldownReduction;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.abilityCooldownReduction;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.abilityCooldownReduction;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.abilityCooldownReduction;
+
+        return total;
+    }
+
+    getTotalAutoAttackCooldownReductionGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.autoAttackCooldownReduction;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.autoAttackCooldownReduction;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.autoAttackCooldownReduction;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.autoAttackCooldownReduction;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.autoAttackCooldownReduction;
+
+        return total;
+    }    
+
     getTotalHolyDamageIncreaseGain() {
         var total = 0;
 

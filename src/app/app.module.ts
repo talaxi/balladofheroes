@@ -76,6 +76,7 @@ import { AlchemyViewComponent } from './components/subcomponents/alchemy-view/al
 import { GameLogEditorComponent } from './components/subcomponents/game-log-editor/game-log-editor.component';
 import { OverdriveViewComponent } from './components/subcomponents/overdrive-view/overdrive-view.component';
 import { ChangeGodViewComponent } from './components/menu/character-view/change-god-view/change-god-view.component';
+import { LogViewComponent } from './components/subcomponents/log-view/log-view.component';
 
 
 @NgModule({
@@ -117,7 +118,8 @@ import { ChangeGodViewComponent } from './components/menu/character-view/change-
     AlchemyViewComponent,
     GameLogEditorComponent,
     OverdriveViewComponent,
-    ChangeGodViewComponent
+    ChangeGodViewComponent,
+    LogViewComponent
   ],
   imports: [
     BrowserModule,

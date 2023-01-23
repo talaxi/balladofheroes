@@ -91,6 +91,10 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.Aegis, ItemTypeEnum.Equipment, amount);
     }
+    if (type === ItemsEnum.MoltenShield)
+    {
+      return new ResourceValue(ItemsEnum.MoltenShield, ItemTypeEnum.Equipment, amount);
+    }
 
     //armor
     if (type === ItemsEnum.LinenArmor)
@@ -112,6 +116,22 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.SteelArmor)
     {
       return new ResourceValue(ItemsEnum.SteelArmor, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.MoltenArmor)
+    {
+      return new ResourceValue(ItemsEnum.MoltenArmor, ItemTypeEnum.Equipment, amount);
+    }
+
+    //necklace
+    if (type === ItemsEnum.ForgottenLocket)
+    {
+      return new ResourceValue(ItemsEnum.ForgottenLocket, ItemTypeEnum.Equipment, amount);
+    }
+
+    //rings
+    if (type === ItemsEnum.MoltenRing)
+    {
+      return new ResourceValue(ItemsEnum.MoltenRing, ItemTypeEnum.Equipment, amount);
     }
 
     //equippables
@@ -137,11 +157,31 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PoisonousToxin)
     {
-      return new ResourceValue(ItemsEnum.PoisonousToxin, ItemTypeEnum.BattleItem, amount);
+      return new ResourceValue(ItemsEnum.PoisonousToxin, ItemTypeEnum.Toxin, amount);
     }
     if (type === ItemsEnum.DebilitatingToxin)
     {
-      return new ResourceValue(ItemsEnum.DebilitatingToxin, ItemTypeEnum.BattleItem, amount);
+      return new ResourceValue(ItemsEnum.DebilitatingToxin, ItemTypeEnum.Toxin, amount);
+    }
+    if (type === ItemsEnum.ExplodingPotion)
+    {
+      return new ResourceValue(ItemsEnum.ExplodingPotion, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.FirePotion)
+    {
+      return new ResourceValue(ItemsEnum.FirePotion, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.StranglingGasPotion)
+    {
+      return new ResourceValue(ItemsEnum.StranglingGasPotion, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.PoisonExtractPotion)
+    {
+      return new ResourceValue(ItemsEnum.PoisonExtractPotion, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.HeroicElixir)
+    {
+      return new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, amount);
     }
 
     //materials
@@ -156,6 +196,48 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.Olive)
     {
       return new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.Asphodelus)
+    {
+      return new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.VialOfTheLethe)
+    {
+      return new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.EssenceOfFire)
+    {
+      return new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SoulSpark)
+    {
+      return new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, amount);
+    }
+
+    //charms
+    if (type === ItemsEnum.SmallCharmOfDetermination)
+    {
+      return new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, amount);
+    }
+    if (type === ItemsEnum.LargeCharmOfDetermination)
+    {
+      return new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, amount);
+    }
+    if (type === ItemsEnum.SmallCharmOfRejuvenation)
+    {
+      return new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, amount);
+    }
+    if (type === ItemsEnum.LargeCharmOfRejuvenation)
+    {
+      return new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, amount);
+    }
+    if (type === ItemsEnum.SmallCharmOfVulnerability)
+    {
+      return new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, amount);
+    }
+    if (type === ItemsEnum.LargeCharmOfVulnerability)
+    {
+      return new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, amount);
     }
 
     return new ResourceValue(ItemsEnum.None, ItemTypeEnum.None, 0);

@@ -10,15 +10,15 @@ export class UsableItemEffect {
     isAoe: boolean;
     trigger: EffectTriggerEnum;
     @Type(() => StatusEffect)
-    userGainsStatusEffect: StatusEffect[];
+    userEffect: StatusEffect[];
     @Type(() => StatusEffect)
-    targetGainsStatusEffect: StatusEffect[];
+    targetEffect: StatusEffect[];
     chance: number; //for effects that don't land every time
     elementalProperty: ElementalTypeEnum;
 
     constructor() {
-        this.userGainsStatusEffect = [];
-        this.targetGainsStatusEffect = [];
+        this.userEffect = [];
+        this.targetEffect = [];
         this.chance = 0;
         this.elementalProperty = ElementalTypeEnum.None;
     }

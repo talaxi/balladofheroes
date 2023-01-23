@@ -48,12 +48,16 @@ export class PartyComponent implements OnInit {
     this.party = this.globalService.getActivePartyCharacters(false);   
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
         
-    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
+    console.log(this.globalService.globalVar.resources);
+    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
+      item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir);   
+      console.log(this.battleItems);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
       if (!this.itemMenu.menuOpen)
       {
-        this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem);   
+        this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
+          item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir);   
       }
 
       this.removeDefaultMaterialButtonClasses();
@@ -162,7 +166,8 @@ export class PartyComponent implements OnInit {
 
     this.openedSlotNumber = slotNumber;
 
-    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem); 
+    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
+      item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir); 
 
     this.setupDisplayBattleItems();
   }
@@ -208,7 +213,7 @@ export class PartyComponent implements OnInit {
 
   useBattleItemOnCharacter(character: Character) {
     if (this.targetCharacterWithItem(character))
-      this.battleService.useBattleItemOnCharacter(character);
+      this.battleService.useBattleItemOnCharacter(character, this.party);
   }
 
   isCharacterAbilityAvailable(character: Character, abilityNumber: number) {

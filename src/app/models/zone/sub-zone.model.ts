@@ -12,6 +12,7 @@ export class SubZone {
     @Type(() => EnemyTeam)
     battleOptions: EnemyTeam[];
     victoryCount: number;
+    fastestCompletionSpeed: number;
     victoriesNeededToProceed: number;
     isAvailable: boolean;
     showNewNotification: boolean;
@@ -84,9 +85,32 @@ export class SubZone {
             name = "Rolling Hills";
         if (type === SubZoneEnum.NemeaLairOfTheLion)
             name = "Lair of the Lion";
-        if (type === SubZoneEnum.AsphodelHallOfTheDead)
-            name = "Hall of the Dead";
-
+        if (type === SubZoneEnum.AsphodelPalaceOfHades)
+            name = "Palace of Hades";
+        if (type === SubZoneEnum.AsphodelTheDepths)
+            name = "The Depths";
+        if (type === SubZoneEnum.AsphodelForgottenHalls)
+            name = "Forgotten Halls";
+            if (type === SubZoneEnum.AsphodelLostHaven)
+            name = "Lost Haven";
+        if (type === SubZoneEnum.AsphodelEndlessStaircase)
+            name = "Endless Staircase";
+        if (type === SubZoneEnum.AsphodelFieryPassage)
+            name = "Fiery Passage";
+        if (type === SubZoneEnum.AsphodelDarkenedMeadows)
+            name = "Darkened Meadows";
+        if (type === SubZoneEnum.AsphodelLetheBasin)
+            name = "Lethe Basin";
+        if (type === SubZoneEnum.AsphodelLetheTributary)
+            name = "Lethe Tributary";
+        if (type === SubZoneEnum.ElysiumElysianFields)
+            name = "Elysian Fields";
+        if (type === SubZoneEnum.ElysiumOpenPlains)
+            name = "Open Plains";
+        if (type === SubZoneEnum.ElysiumColiseum)
+            name = "Coliseum";
+        if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory)
+            name = "Gates of Horn and Ivory";
         return name;
     }
 
@@ -146,11 +170,22 @@ export class SubZone {
         if (type === SubZoneEnum.NemeaCountryRoadsOne)
             victories = defaultVictories;
 
+        if (type === SubZoneEnum.AsphodelTheDepths || type === SubZoneEnum.AsphodelForgottenHalls || type === SubZoneEnum.AsphodelEndlessStaircase ||
+            type === SubZoneEnum.AsphodelFieryPassage || type === SubZoneEnum.AsphodelDarkenedMeadows || type === SubZoneEnum.AsphodelLetheBasin)
+            victories = defaultVictories;
+
+        if (type === SubZoneEnum.AsphodelLetheTributary)
+            victories = bossVictories;
+
+        if (type === SubZoneEnum.ElysiumElysianFields || type === SubZoneEnum.ElysiumOpenPlains || type === SubZoneEnum.ElysiumGatesOfHornAndIvory)
+            victories = defaultVictories;
+
         return victories;
     }
 
     isSubzoneTown(type: SubZoneEnum) {
-        if (type === SubZoneEnum.DodonaDelphi || type === SubZoneEnum.DodonaArta || type === SubZoneEnum.AsphodelHallOfTheDead) {
+        if (type === SubZoneEnum.DodonaDelphi || type === SubZoneEnum.DodonaArta || type === SubZoneEnum.AsphodelPalaceOfHades ||
+            type === SubZoneEnum.AsphodelLostHaven || type === SubZoneEnum.ElysiumColiseum) {
             return true;
         }
 

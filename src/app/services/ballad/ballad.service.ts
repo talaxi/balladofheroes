@@ -127,6 +127,21 @@ export class BalladService {
     return returnZone;
   }
 
+  findBalladOfSubzone(type: SubZoneEnum) {
+    var returnBallad: Ballad | undefined;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.zones.forEach(zone => {
+        zone.subzones.forEach(subzone => {
+          if (subzone.type === type)
+          returnBallad = ballad;
+        })
+      })
+    });
+
+    return returnBallad;
+  }
+
   findSubzone(type: SubZoneEnum) {
     var returnSubzone: SubZone | undefined;
 

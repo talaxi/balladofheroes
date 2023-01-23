@@ -12,6 +12,7 @@ import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { LookupService } from '../lookup.service';
+import { AlchemyService } from '../professions/alchemy.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { GlobalService } from './global.service';
 
@@ -21,7 +22,7 @@ import { GlobalService } from './global.service';
 export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
-    private resourceGeneratorService: ResourceGeneratorService) { }
+    private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService) { }
 
   initializeVariables() {
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
@@ -35,7 +36,7 @@ export class InitializationService {
     championBallad.isAvailable = true;
 
     var aigosthena = new Zone();
-    aigosthena.zoneName = "Aigosthena"; //TODO: can be replaced using enum to save space
+    aigosthena.zoneName = "Aigosthena"; //can be replaced using enum to save space
     aigosthena.type = ZoneEnum.Aigosthena;
     aigosthena.isAvailable = true;
     aigosthena.isSelected = true;
@@ -101,8 +102,25 @@ export class InitializationService {
     var asphodel = new Zone();
     asphodel.type = ZoneEnum.Asphodel;
     asphodel.zoneName = "Asphodel";
-    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelHallOfTheDead));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelPalaceOfHades));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelTheDepths));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelForgottenHalls));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelLostHaven));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelEndlessStaircase));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelFieryPassage));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelDarkenedMeadows));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelLetheBasin));
+    asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelLetheTributary));
     underworldBallad.zones.push(asphodel);
+
+    var elysium = new Zone();
+    elysium.type = ZoneEnum.Elysium;
+    elysium.zoneName = "Elysium";
+    elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumElysianFields));
+    elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumOpenPlains));
+    elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumColiseum));
+    elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumGatesOfHornAndIvory));
+    underworldBallad.zones.push(elysium);
     this.globalService.globalVar.ballads.push(underworldBallad);
   }
 
@@ -140,6 +158,8 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, ItemTypeEnum.BattleItem, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, 10));
 
     this.globalService.globalVar.currentStoryId = 10000;
     
@@ -147,6 +167,11 @@ export class InitializationService {
     this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });
     this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
     this.globalService.globalVar.itemBeltSize = 1;
+    this.globalService.globalVar.alchemy.level = 25;
+    this.alchemyService.checkForNewRecipes();
+
+    //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
+    this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
     var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
     if (character1 !== undefined) {

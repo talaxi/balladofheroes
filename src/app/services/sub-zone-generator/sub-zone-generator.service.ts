@@ -450,6 +450,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.LibyaIsleCenter) {
       zoneEnums.push(ZoneEnum.Nemea);
     }
+    if (type === SubZoneEnum.AsphodelLetheTributary) {
+      zoneEnums.push(ZoneEnum.Elysium);
+    }
 
     return zoneEnums;
   }
@@ -516,6 +519,34 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.NemeaRollingHills) {
       subZoneEnums.push(SubZoneEnum.NemeaLairOfTheLion);
     }
+    if (type === SubZoneEnum.AsphodelTheDepths) {
+      subZoneEnums.push(SubZoneEnum.AsphodelForgottenHalls);
+    }
+    if (type === SubZoneEnum.AsphodelForgottenHalls) {
+      subZoneEnums.push(SubZoneEnum.AsphodelLostHaven);
+      subZoneEnums.push(SubZoneEnum.AsphodelEndlessStaircase);
+    }
+    if (type === SubZoneEnum.AsphodelEndlessStaircase) {
+      subZoneEnums.push(SubZoneEnum.AsphodelFieryPassage);
+    }
+    if (type === SubZoneEnum.AsphodelFieryPassage) {
+      subZoneEnums.push(SubZoneEnum.AsphodelDarkenedMeadows);
+    }
+    if (type === SubZoneEnum.AsphodelDarkenedMeadows) {
+      subZoneEnums.push(SubZoneEnum.AsphodelLetheBasin);
+    }
+    if (type === SubZoneEnum.AsphodelLetheBasin) {
+      subZoneEnums.push(SubZoneEnum.AsphodelLetheTributary);
+    }
+    if (type === SubZoneEnum.AsphodelLetheTributary) {
+      subZoneEnums.push(SubZoneEnum.ElysiumElysianFields);
+    }
+    if (type === SubZoneEnum.ElysiumElysianFields) {
+      subZoneEnums.push(SubZoneEnum.ElysiumOpenPlains);
+    }
+    if (type === SubZoneEnum.ElysiumOpenPlains) {
+      subZoneEnums.push(SubZoneEnum.ElysiumColiseum);      
+    }
 
     return subZoneEnums;
   }
@@ -558,10 +589,25 @@ export class SubZoneGeneratorService {
       return shopOptions;
     }
 
-    if (subzoneType === SubZoneEnum.AsphodelHallOfTheDead) {
+    if (subzoneType === SubZoneEnum.AsphodelPalaceOfHades) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Story, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.Alchemist, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.ChthonicFavor, []));
+
+      return shopOptions;
+    }
+
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SteelArmor, SubZoneEnum.AsphodelLostHaven));    
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SteelSword, SubZoneEnum.AsphodelLostHaven));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SteelHammer, SubZoneEnum.AsphodelLostHaven));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ElysianOakBow, SubZoneEnum.AsphodelLostHaven));
+
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MoltenArmor, SubZoneEnum.AsphodelLostHaven));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MoltenShield, SubZoneEnum.AsphodelLostHaven));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MoltenRing, SubZoneEnum.AsphodelLostHaven));
+
+    if (subzoneType === SubZoneEnum.AsphodelLostHaven) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
 
       return shopOptions;
     }

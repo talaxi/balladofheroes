@@ -11,7 +11,7 @@ export class TutorialService {
 
   constructor(private lookupService: LookupService) { }
 
-  getTutorialText(type: TutorialTypeEnum, newAbility?: Ability, character?: Character) {
+  getTutorialText(type: TutorialTypeEnum, newAbility?: Ability, character?: Character, addToLog: boolean = true) {    
     var text = "";
 
     if (type === TutorialTypeEnum.CharacterPassiveAbility) {
@@ -34,6 +34,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Crafting) {
       text = "Crafters can create unique items with materials found from battle. Keep an eye out for what loot you are receiving from individual enemies.";
     }
+
+    if (addToLog)
+      this.lookupService.addTutorialToLog(type);
 
     return text;
   }

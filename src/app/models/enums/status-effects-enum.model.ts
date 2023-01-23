@@ -37,5 +37,6 @@ export enum StatusEffectEnum {
     Coda,
     Thorns,
     DebilitatingToxin,
-    PoisonousToxin
+    PoisonousToxin,
+    HeroicElixir
   }

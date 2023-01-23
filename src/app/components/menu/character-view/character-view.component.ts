@@ -135,7 +135,6 @@ export class CharacterViewComponent implements OnInit {
       if (whichGod === 2)
         god = this.character.assignedGod2;
 
-      //TODO: make this one call to lookup so you only have to add new gods once
       return this.lookupService.getGodColorClass(god);
     }
     else {
@@ -196,7 +195,7 @@ export class CharacterViewComponent implements OnInit {
     return this.character.battleStats.elementalDamageResistance.holy;
   }
 
-  getFireResistanceBonus() {
+  getFireResistanceBonus() {    
     return this.character.battleStats.elementalDamageResistance.fire;
   }
 

@@ -10,6 +10,10 @@ export class GameSaveService {
   constructor(private globalService: GlobalService) { }
 
   saveGame() {
+    if (this.globalService.globalVar.performanceMode) {      
+      console.log("Begin saving game");
+    }
+
     if (typeof Worker !== 'undefined') {
       // Create a new
       const worker = new Worker(new URL('../../webworker.worker', import.meta.url));
@@ -25,6 +29,10 @@ export class GameSaveService {
       var globalData = JSON.stringify(data);
       var compressedData = LZString.compressToBase64(globalData);
       localStorage.setItem("theBalladOfHeroesGameData", compressedData);
+    }
+
+    if (this.globalService.globalVar.performanceMode) {      
+      console.log("End saving game");
     }
   }
 }

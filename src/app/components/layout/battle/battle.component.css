@@ -193,12 +193,8 @@
     animation: slide .5s forwards;
 }
 
-.gameLogEditor {
-    aspect-ratio: 1/1;
-    padding: 0;
-}
 
-.settingsIcon {
+.icon {
     height: 1.5rem;
     vertical-align: middle;
 }
@@ -207,4 +203,8 @@
     0% {opacity: 0%}
     20% {opacity: 0%}
     100% {opacity: 100%}
+}
+
+.gameLogButton {
+    padding: 0;
 }

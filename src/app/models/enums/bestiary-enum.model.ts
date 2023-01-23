@@ -38,5 +38,10 @@ export enum BestiaryEnum {
   DualWieldingButcher,
   InsaneSoul,
   HellRider,
-  FierySalamander
+  FieryNewt,
+  EnflamedSalamander,
+  FallenHero,
+  TwistedSoul,
+  BlessedShade,
+  ExiledHoplite
 }

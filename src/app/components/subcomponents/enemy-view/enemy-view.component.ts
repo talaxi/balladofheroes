@@ -9,6 +9,7 @@ import { BattleService } from 'src/app/services/battle/battle.service';
   styleUrls: ['./enemy-view.component.css']
 })
 export class EnemyViewComponent implements OnInit {
+  @Input() enemyParty: Enemy[];
   @Input() character: Enemy;
   @Input() showNewEnemyGroupAnimation: boolean = false;
   @Input() isBoss = false;
@@ -44,7 +45,7 @@ export class EnemyViewComponent implements OnInit {
 
   useBattleItemOnCharacter(character: Character) {
     if (this.targetCharacterWithItem(character))
-      return this.battleService.useBattleItemOnCharacter(character);
+      return this.battleService.useBattleItemOnCharacter(character, this.enemyParty);
   }
 
   /*ngOnChanges(changes: any) {

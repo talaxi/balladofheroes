@@ -1,15 +1,19 @@
 <div [ngClass]="{'gridContainer': this.layoutService.navigation !== navigationEnum.Menu,
  'menuGridContainer': this.layoutService.navigation === navigationEnum.Menu}">
-    <button class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()">Menu</button>
+    <button *ngIf="textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()">menu</button>
+    <button *ngIf="!textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()"><img *ngIf="!textMode" class="icon" src="assets/svg/menu.svg"></button>
 
-    <!--<div class="extraTimeItem">
-
-    </div>-->
+    <div class="performanceState" *ngIf="deploymentService.performanceModeAvailable && utilityService.isGamePaused">
+      <button (click)="togglePerformanceMode()">Perf Mode</button>
+    </div>
 
     <div class="centerAlign gameState">
         <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
-            <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused">&#9658;</span>
-            <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused">&#9612; &#9612;</span>
+            <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/play.svg"></span>
+            <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused  && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/pause.svg"></span>
+
+            <span class="headerTextItems" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused  && textMode">play</span>
+            <span class="headerTextItems" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused  && textMode">pause</span>
         </button>        
     </div>    
 
@@ -17,8 +21,12 @@
         <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover"> ({{getExtraSpeedTime()}})</span></span>
     </div>
 
-    <!--<div class="menuItem">        
-    </div>-->
+    <div class="storyItem">        
+      <button class="storyButton buttonAsText clickableText" (click)="openLog(logContent)">
+        <img *ngIf="!textMode" class="icon" src="assets/svg/document.svg">
+        <span class="headerTextItems" *ngIf="textMode">log</span>
+      </button>
+    </div>
 </div>
 
 <ng-template #pausedPopover>
@@ -36,5 +44,11 @@
   <ng-template #extraTimePopover>
     <div>
       The amount of banked time you've gained while away from the game. While this is available, the game will run at 2x the speed.
+    </div>
+  </ng-template>
+
+  <ng-template #logContent>
+    <div>
+      <app-log-view></app-log-view>
     </div>
   </ng-template>

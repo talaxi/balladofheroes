@@ -1,10 +1,12 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
+import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -17,9 +19,11 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class HeaderComponent implements OnInit {
 
   navigationEnum = NavigationEnum;
+  textMode = true;
 
   constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
-    public utilityService: UtilityService, private globalService: GlobalService) { }
+    public utilityService: UtilityService, private globalService: GlobalService, public deploymentService: DeploymentService,
+    public dialog: MatDialog) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -59,5 +63,14 @@ export class HeaderComponent implements OnInit {
     }    
     else
       this.layoutService.changeLayout(NavigationEnum.Default);
+  }
+
+  togglePerformanceMode() {
+    this.globalService.globalVar.performanceMode = !this.globalService.globalVar.performanceMode;
+    this.textMode = !this.textMode;
+  }
+
+  openLog(content: any) {          
+    this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });  
   }
 }

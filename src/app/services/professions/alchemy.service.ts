@@ -41,7 +41,7 @@ export class AlchemyService {
   }
 
   handleShopOpen(subzone: SubZoneEnum) {
-    if (subzone === SubZoneEnum.AsphodelHallOfTheDead) {
+    if (subzone === SubZoneEnum.AsphodelPalaceOfHades) {
       if (!this.globalService.globalVar.alchemy.isUnlocked) {
         this.globalService.globalVar.alchemy.isUnlocked = true;
         this.globalService.globalVar.alchemy.level = 1;
@@ -60,17 +60,17 @@ export class AlchemyService {
     if (action === AlchemyActionsEnum.CombineIngredientsPotion)
       duration = 1 * 15;
     if (action === AlchemyActionsEnum.HeatMixture)
-      duration = 1 * 30;
+      duration = 1 * 3;
     if (action === AlchemyActionsEnum.CrushIngredients)
-      duration = 1 * 30;
+      duration = 1 * 3;
     if (action === AlchemyActionsEnum.CombineIngredients)
       duration = 1 * 15;
     if (action === AlchemyActionsEnum.MixOil)
-      duration = 1 * 10;
+      duration = 1 * 1;
     if (action === AlchemyActionsEnum.MeltWax)
-      duration = 1 * 20;
+      duration = 1 * 2;
     if (action === AlchemyActionsEnum.StrainMixture)
-      duration = 1 * 10;
+      duration = 1 * 1;
 
     return duration;
   }
@@ -84,8 +84,6 @@ export class AlchemyService {
       alchemy.creatingRecipe.createdAmount));
 
     alchemy.alchemyStep = 0;
-    alchemy.alchemyTimer = 0;
-    alchemy.alchemyTimerLength = 0;
 
     if (alchemy.level < alchemy.maxLevel)
       alchemy.exp += alchemy.creatingRecipe.expGain;
@@ -115,6 +113,8 @@ export class AlchemyService {
     if (alchemy.alchemyCurrentAmountCreated >= alchemy.alchemyCreateAmount) {
       alchemy.alchemyCurrentAmountCreated = 0;
       alchemy.creatingRecipe = undefined;
+      alchemy.alchemyTimer = 0;
+      alchemy.alchemyTimerLength = 0;
     }
     else {
       if (this.canCreateItem(alchemy.creatingRecipe)) {
@@ -143,6 +143,12 @@ export class AlchemyService {
     alchemy.alchemyCreateAmount = createAmount;
     if (recipe.steps.length > 0)
       alchemy.alchemyTimerLength = this.getActionLength(recipe.steps[0]);
+  }
+
+  learnRecipe(item: ItemsEnum) {
+    if (!this.globalService.globalVar.alchemy.availableRecipes.some(recipe => recipe.createdItem === item)) {
+      this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(item));
+    }
   }
 
   checkForNewRecipes() {
@@ -245,6 +251,7 @@ export class AlchemyService {
       recipe.expGain = 10;
     }
     if (item === ItemsEnum.PoisonousToxin) {
+      //TODO: FILL IN CORRECTLY
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 2));
 
       recipe.numberOfSteps = 1;
@@ -253,6 +260,29 @@ export class AlchemyService {
       recipe.expGain = 8;
     }
     if (item === ItemsEnum.StranglingGasPotion) {
+      //TODO: FILL IN CORRECTLY
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 2));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+
+      recipe.expGain = 5;
+    }
+    if (item === ItemsEnum.PoisonExtractPotion) {
+      //TODO: FILL IN CORRECTLY
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 2));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+
+      recipe.expGain = 5;
+    }
+    if (item === ItemsEnum.HeroicElixir) {
+      //TODO: FILL IN CORRECTLY
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 2));
 
@@ -270,8 +300,7 @@ export class AlchemyService {
     var canBuy = true;
 
     recipe.ingredients.forEach(resource => {
-      var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
-      console.log(resource.item + ": " + userResourceAmount + " < " + resource.amount);
+      var userResourceAmount = this.lookupService.getResourceAmount(resource.item);      
       if (userResourceAmount < resource.amount)
         canBuy = false;
     });

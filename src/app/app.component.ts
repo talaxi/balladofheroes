@@ -75,13 +75,29 @@ export class AppComponent {
       this.initializationService.devMode();
     }
 
+    var lastPerformanceNow = 0;
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
+      var checkupPerformanceNow = performance.now();
+
       this.gameCheckup(deltaTime);
+
+      if (this.globalService.globalVar.performanceMode) {      
+        var checkupDiff = performance.now() - checkupPerformanceNow;
+        console.log("Check up performance: " + checkupDiff + " ms");
+      }
       this.saveTime += deltaTime;
 
       if (this.saveTime >= this.saveFrequency) {
         this.saveTime = 0;
         this.gameSaveService.saveGame();
+      }
+
+      if (this.globalService.globalVar.performanceMode) {      
+        var performanceNow = performance.now();
+        var diff = performanceNow - lastPerformanceNow;
+        console.log('Full Game Loop: ' + diff + " ms");
+
+        lastPerformanceNow = performanceNow;
       }
     });
 

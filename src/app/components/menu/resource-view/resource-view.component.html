@@ -33,4 +33,15 @@
             </span>            
         </p>
     </div> 
+    <div class="charms">
+        <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Charms</span></div>
+        <br />
+        <p *ngFor="let charm of charmResources;">
+            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass"
+                class="screenMarginLeft">
+                {{lookupService.getItemName(charm.item)}} x{{charm.amount}}
+                <hr class="marginHr" />
+            </span>            
+        </p>
+    </div> 
 </div>

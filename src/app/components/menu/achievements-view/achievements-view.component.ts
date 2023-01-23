@@ -53,6 +53,21 @@ export class AchievementsViewComponent implements OnInit {
     });    
   }
 
+  getSubZoneBalladName(type: SubZoneEnum) {
+    var ballad = this.balladService.findBalladOfSubzone(type);
+
+    var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(type, this.globalService.globalVar.achievements) === 0;
+    var className = "";
+
+    if (achievementsCompleted)
+      className = 'completedSubzoneColor';
+
+    if (ballad !== undefined)
+      return "<span class='" + className + "'>" + this.balladService.getBalladName(ballad.type) + "</span>";
+
+    return "";
+  }
+
   getSubZoneName(type: SubZoneEnum) {
     var subzone = this.balladService.findSubzone(type);
 
@@ -121,7 +136,7 @@ export class AchievementsViewComponent implements OnInit {
     this.subzones = [];
 
     var selectedBallad = this.balladService.findBallad(parseInt(this.selectedBallad.toString()));
-    //TODO: you have to make copies here
+    //TODO: you have to make copies here (?? what does this mean?)
     if (selectedBallad !== undefined)
       this.zones = selectedBallad?.zones;
 
@@ -157,8 +172,7 @@ export class AchievementsViewComponent implements OnInit {
 
   filterList() {
     this.achievementsBySubZone = [];
-    var mainList = this.globalService.globalVar.achievements;
-    console.log("Pre Main List: " + mainList.length);
+    var mainList = this.globalService.globalVar.achievements;    
 
     if (this.selectedBallad !== undefined && parseInt(this.selectedBallad.toString()) !== BalladEnum.None)
     {
@@ -180,7 +194,6 @@ export class AchievementsViewComponent implements OnInit {
       mainList = mainList.filter(item => !item.completed);      
     }
 
-    console.log("Post Main List: " + mainList.length);
     mainList.forEach(achievement => {
       var achievementSubsection = this.achievementsBySubZone.find(item => item[0].relatedSubzone === achievement.relatedSubzone)
       if (achievementSubsection !== undefined)

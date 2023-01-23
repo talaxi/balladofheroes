@@ -28,8 +28,11 @@
     <div class="achievements">
         <div *ngFor="let subsection of achievementsBySubZone; let i = index">
             <div class="grid">
-                <span [innerHtml]="getSubZoneName(subsection[0].relatedSubzone)"
-                    class="subzoneName sectionHeading"></span>
+                <div class="subzoneName">
+                <span class="s7Heading" [innerHtml]="getSubZoneBalladName(subsection[0].relatedSubzone)"></span>
+                 <br/>
+                <span [innerHtml]="getSubZoneName(subsection[0].relatedSubzone)" class="sectionHeading"></span>
+                </div>
                     <div class="achievementRow">
                         <div class="row" *ngFor="let _ of [].constructor(getSubZoneRows(subsection)); let rowIndex = index">
                             <div class="item" [ngClass]="getAchievementStatus(subsection, rowIndex, columnIndex)"
@@ -39,17 +42,6 @@
                             </div>
                         </div>
                     </div>
-                <!--<table class="achievements">
-                    <tr *ngFor="let _ of [].constructor(getSubZoneRows(subsection)); let rowIndex = index">
-                        <td class="item" [ngClass]="getAchievementStatus(subsection, rowIndex, columnIndex)"
-                            *ngFor="let _ of [].constructor(getSubZoneColumnsPerRow(subsection, rowIndex)); let columnIndex = index">
-                            <div>
-                                <app-individual-achievement-view
-                                    [achievement]="getAchievement(subsection, rowIndex, columnIndex)"></app-individual-achievement-view>
-                            </div>
-                        </td>
-                    </tr>
-                </table>                -->
             </div>
             <hr *ngIf="i < achievementsBySubZone.length - 1" />
         </div>
