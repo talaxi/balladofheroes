@@ -4,6 +4,7 @@ import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GodLevelIncreaseEnum } from 'src/app/models/enums/god-level-increase-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -23,6 +24,7 @@ export class GodViewComponent implements OnInit {
   characterTemplate: CharacterEnum = CharacterEnum.Adventurer;
   subscription: any;
   abilityList: Ability[] = [];
+  tooltipDirection = DirectionEnum.Down;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService) { }

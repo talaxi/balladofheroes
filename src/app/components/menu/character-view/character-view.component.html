@@ -29,7 +29,7 @@
         <div class="equipment">
             <span class="sectionHeaderText sectionHeading middleAlign">Equipment</span>
             <span>
-                <button class="changeButton" (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
+                <button class="changeButton buttonStyled" (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
             </span>
             <div class="sectionInfo">
                 <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
@@ -41,27 +41,27 @@
                 <span class="sectionHeaderText sectionHeading">Primary Stats</span>
                 <br />
                 <div class="sectionInfo">
-                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="maxHpPopover">
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="maxHpPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Max HP: </strong>
                         <span class="statValue">{{character.battleStats.maxHp | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="attackPopover">
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="attackPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Attack: </strong>
                         <span class="statValue">{{character.battleStats.attack | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="agilityPopover">
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="agilityPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Agility: </strong>
                         <span class="statValue">{{character.battleStats.agility | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="luckPopover">
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="luckPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Luck: </strong>
                         <span class="statValue">{{character.battleStats.luck | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="defensePopover">
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="defensePopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Defense: </strong>
                         <span class="statValue">{{character.battleStats.defense | number : '1.0-0'}}</span></span>
                     <br />
-                    <span customToolTip [tooltipBelow]="true" [contentTemplate]="resistancePopover">
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="resistancePopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Resistance: </strong>
                         <span class="statValue">{{character.battleStats.resistance | number : '1.0-0'}}</span></span>
                 </div>
@@ -72,75 +72,75 @@
                 <span class="sectionHeaderText sectionHeading">Secondary Stats</span>
                 <br/>
                 <div class="sectionInfo">
-                    <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="hpRegenPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">HP
                             Regen:</strong>
                         {{getHpRegenBonus() | number :
                         '1.0-2'}} HP /
                         5 seconds<br /></span>
-                    <span *ngIf="getCriticalMultiplierBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getCriticalMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="criticalMultiplierPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Critical
                             Damage Bonus:</strong>
                         {{(getCriticalMultiplierBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getAbilityCooldownReductionBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getAbilityCooldownReductionBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="abilityCooldownReductionPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Ability
                             Cooldown Reduction:</strong>
                         {{getAbilityCooldownReductionBonus() | number : '1.0-2'}} sec<br /></span>
-                    <span *ngIf="getAutoAttackCooldownBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getAutoAttackCooldownBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="autoAttackCooldownReductionPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Auto
                             Attack Cooldown Reduction:</strong>
                         {{getAutoAttackCooldownBonus() | number : '1.0-2'}} sec<br /></span>
-                    <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Holy Damage
                             Bonus:</strong> {{(getHolyDamageBonus() *
                         100)
                         | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getFireDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getFireDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="fireDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Fire Damage
                             Bonus:</strong> {{(getFireDamageBonus() *
                         100)
                         | number : '1.0-2'}}%<br /></span>
                         
-                    <span *ngIf="getLightningDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getLightningDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="lightningDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Lightning
                             Damage Bonus:</strong>
                         {{(getLightningDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getAirDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getAirDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="airDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Air Damage
                             Bonus:</strong> {{(getAirDamageBonus() *
                         100) |
                         number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getWaterDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getWaterDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="waterDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Water Damage
                             Bonus:</strong> {{(getWaterDamageBonus()
                         *
                         100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getEarthDamageBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getEarthDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="earthDamageBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Earth Damage
                             Bonus:</strong> {{(getEarthDamageBonus()
                         *
                         100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getHolyResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getHolyResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="holyResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Holy
                             Resistance Bonus:</strong>
                         {{(getHolyResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getFireResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getFireResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="fireResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Fire
                             Resistance Bonus:</strong>
                         {{(getFireResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getLightningResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getLightningResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="lightningResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Lightning
                             Resistance Bonus:</strong>
                         {{(getLightningResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getAirResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getAirResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="airResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Air Resistance
                             Bonus:</strong>
                         {{(getAirResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getWaterResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getWaterResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="waterResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Water
                             Resistance Bonus:</strong>
                         {{(getWaterResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getEarthResistanceBonus() > 0" customToolTip [tooltipBelow]="true"
+                    <span *ngIf="getEarthResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="earthResistanceBonusPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">Earth
                             Resistance Bonus:</strong>
                         {{(getEarthResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
@@ -150,7 +150,7 @@
     </div>
     <div class="characterAbilities">
         <span class="sectionHeaderText sectionHeading middleAlign">Character Abilities</span> 
-        <button class="changeButton" (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
+        <button class="changeButton buttonStyled" (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
         <div class="sectionInfo">
             <div *ngFor="let ability of characterAbilityList">
                 <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{ability.name}}</strong><span class="statValue"> - <span
@@ -162,7 +162,7 @@
         <br />
         <div *ngIf="hasGodEquipped()">
             <span class="sectionHeaderText sectionHeading middleAlign">Equipped God Abilities</span>
-            <button class="changeButton" (click)="openChangeGodMenu(changeGodView)">Change Gods</button>
+            <button class="changeButton buttonStyled" (click)="openChangeGodMenu(changeGodView)">Change Gods</button>
             <div class="sectionInfo">
                 <div *ngFor="let ability of god1AbilityList">
                     <strong class="statLabel" [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong><span class="statValue"> - <span

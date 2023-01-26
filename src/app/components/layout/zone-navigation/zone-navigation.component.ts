@@ -1,10 +1,14 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
@@ -16,6 +20,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -32,11 +37,15 @@ export class ZoneNavigationComponent implements OnInit {
   autoProgress: boolean = false;
   itemsEnum = ItemsEnum;
   townsAvailable = false;
+  quickView: QuickViewEnum = QuickViewEnum.Overview;
+  quickViewEnum = QuickViewEnum;
+  trackedResources: ItemsEnum[];
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
-    private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService) { }
+    private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService, public dialog: MatDialog,
+    private alchemyService: AlchemyService) { }
 
   ngOnInit(): void {
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
@@ -74,6 +83,8 @@ export class ZoneNavigationComponent implements OnInit {
         (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
         this.selectNextSubzone();
       }
+
+      this.trackedResources = this.globalService.globalVar.trackedResources;
     });
   }
 
@@ -199,6 +210,52 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.settings.set("autoProgress", false);
   }
 
+  jumpToLatestGeneralStore() {
+    var latestShop: SubZone = this.balladService.getActiveSubZone();
+    var relatedZone: Zone | undefined = this.balladService.getActiveZone();
+    var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
+
+    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
+      ballad.isSelected = false;
+      if (ballad.zones !== undefined && ballad.zones.length > 0)
+        ballad.zones.filter(item => item.isAvailable).forEach(zone => {
+          zone.isSelected = false;
+          if (zone.subzones !== undefined && zone.subzones.length > 0)
+            zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
+              subzone.isSelected = false;
+              if (subzone.isGeneralStore()) {
+                latestShop = subzone;
+                relatedZone = zone;
+                relatedBallad = ballad;
+              }
+            });
+        });
+    });
+
+    latestShop.isSelected = true;
+    latestShop.showNewNotification = false;
+    if (relatedZone !== undefined)
+      relatedZone.isSelected = true;
+    if (relatedBallad !== undefined)
+      relatedBallad.isSelected = true;
+    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
+
+    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+
+    this.globalService.globalVar.settings.set("autoProgress", false);
+  }
+
+  jumpToPalaceOfHades() {
+    var startingPoint = this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades);
+    if (startingPoint !== undefined) {
+      this.balladService.setActiveSubZone(startingPoint.type);
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
+    }
+
+    this.globalService.globalVar.settings.set("autoProgress", false);
+  }
+
   getBalladClass(ballad: Ballad) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
@@ -208,7 +265,7 @@ export class ZoneNavigationComponent implements OnInit {
         if (subzone.victoryCount < subzone.victoriesNeededToProceed)
           allSubZonesCleared = false;
         if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
-        this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
+          this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
           allSubZonesCompleted = false;
       });
     });
@@ -228,7 +285,7 @@ export class ZoneNavigationComponent implements OnInit {
       if (subzone.victoryCount < subzone.victoriesNeededToProceed)
         allSubZonesCleared = false;
       if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
-      this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
+        this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
         allSubZonesCompleted = false;
     });
 
@@ -242,7 +299,7 @@ export class ZoneNavigationComponent implements OnInit {
 
   getSubzoneClass(subzone: SubZone) {
     var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0 &&
-    this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length > 0;
+      this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length > 0;
 
     return {
       'selected': subzone.isSelected,
@@ -274,6 +331,102 @@ export class ZoneNavigationComponent implements OnInit {
   goToResourceView() {
     this.layoutService.changeLayout(NavigationEnum.Menu);
     this.menuService.selectedMenuDisplay = MenuEnum.Resources;
+  }
+
+  setQuickView(type: QuickViewEnum) {
+    this.quickView = type;
+  }
+
+  getQuickViewTitleName() {
+    var name = "";
+    if (this.quickView === QuickViewEnum.Alchemy)
+      name = "Alchemy ";
+    else if (this.quickView === QuickViewEnum.Jump)
+      name = "Travel ";
+    else if (this.quickView === QuickViewEnum.Resources)
+      name = "Resources ";
+    if (this.quickView === QuickViewEnum.Overview)
+      name = "Overview ";
+
+    return name;
+  }
+
+  openAlchemy(content: any) {
+    this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
+  }
+
+  getCreatingRecipeName() {
+    if (this.globalService.globalVar.alchemy.creatingRecipe !== undefined)
+      return this.lookupService.getItemName(this.globalService.globalVar.alchemy.creatingRecipe.createdItem);
+
+    return "";
+  }
+
+  creatingRecipe() {
+    return this.globalService.globalVar.alchemy.creatingRecipe !== undefined;
+  }
+
+  getStepProgress() {
+    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+      return 0;
+    var totalLength = 0;
+    var passedTime = 0;
+
+    for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) {
+      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]);
+      totalLength += actionLength;
+
+      if (this.globalService.globalVar.alchemy.alchemyStep > i + 1) {
+        passedTime += actionLength;
+      }
+    }
+
+    passedTime += this.globalService.globalVar.alchemy.alchemyTimer;
+    return (passedTime / totalLength) * 100;
+    //return (this.globalService.globalVar.alchemy.alchemyTimer / this.globalService.globalVar.alchemy.alchemyTimerLength) * 100;
+  }
+
+  getRecipeStepName() {
+    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+      return "";
+    return this.lookupService.getAlchemyActionName(this.globalService.globalVar.alchemy.creatingRecipe.steps[this.globalService.globalVar.alchemy.alchemyStep - 1]);
+  }
+
+  getTimeRemaining() {
+    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+      return "";
+
+    var timeRemaining = this.globalService.globalVar.alchemy.alchemyTimerLength - this.globalService.globalVar.alchemy.alchemyTimer;
+
+    for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++) {
+      var step = this.globalService.globalVar.alchemy.creatingRecipe.steps[i - 1];
+      timeRemaining += this.alchemyService.getActionLength(step);
+    }
+
+    if (timeRemaining > 60 * 60)
+      return this.utilityService.convertSecondsToHHMMSS(timeRemaining);
+
+    return this.utilityService.convertSecondsToMMSS(timeRemaining);
+  }
+
+  getTotalAmountToCreate() {
+    return this.globalService.globalVar.alchemy.alchemyCreateAmount;
+  }
+
+  getAmountCreated() {
+    return this.globalService.globalVar.alchemy.alchemyCurrentAmountCreated;
+  }
+
+  isAlchemyAvailable() {
+    return this.globalService.globalVar.alchemy.isUnlocked;
+  }
+
+  isPalaceOfHadesAvailable() {
+    var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);
+    if (underworld !== undefined && underworld.isAvailable) {
+      return true;
+    }
+    return false;
   }
 
   ngOnDestroy() {

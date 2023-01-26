@@ -8,8 +8,8 @@
     </div>
 
     <div class="centerAlign gameState">
-        <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
-            <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/play.svg"></span>
+      <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/play.svg"></span>
+      <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
             <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused  && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/pause.svg"></span>
 
             <span class="headerTextItems" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused  && textMode">play</span>

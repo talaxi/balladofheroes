@@ -97,7 +97,7 @@ td {
 }
 
 .item {
-    width: 28%;
+    width: 29%;
     border: 2px solid var(--background-quarternary);
     padding: .75rem;
     vertical-align: top;
@@ -139,4 +139,17 @@ td {
 
 .s7Heading {
     color: var(--foreground-accent);
+}
+
+.icon {
+    width: 1rem;
+    display: block;
+}
+
+.itemsPerPage {
+    width: 10%;
+}
+
+.itemsPerPageActive {
+    color: var(--foreground-secondary) !important;   
 }

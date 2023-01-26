@@ -1,47 +1,53 @@
-<div class="resourcesView gridContainer">    
-       
+<div class="resourcesView gridContainer">
+
     <div class="equipment">
         <div class="s4Heading centered">
-            <span class="sectionHeaderText sectionHeading">Equipment</span></div>
+            <span class="sectionHeaderText sectionHeading">Equipment</span>
+        </div>
         <br />
         <p *ngFor="let equipment of equipmentItems;">
-            <span class="screenMarginLeft">      
-                {{lookupService.getItemName(equipment.item)}} x{{equipment.amount}}                       
+            <span class="screenMarginLeft">
+                {{lookupService.getItemName(equipment.item)}} x{{equipment.amount}}
                 <hr class="marginHr" />
             </span>
         </p>
     </div>
     <div class="resources">
-        <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Resources & Crafting Materials</span></div>
+        <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Resources & Crafting
+                Materials</span></div>
         <br />
-        <p *ngFor="let resource of resources;">
-            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass"
-                class="screenMarginLeft">
-                {{lookupService.getItemName(resource.item)}} x{{resource.amount}}
+        <div *ngFor="let resource of resources;">
+            <div class="resourceDiv">
+                <button class="screenMarginLeft buttonAsText clickableText trackingButton"
+                     (click)="setTrackingResource(resource)">
+                    <!--{{lookupService.getItemName(resource.item)}} x{{resource.amount}}-->
+                    <app-resource-item-view [resource]="resource.item"></app-resource-item-view>
+                </button>
+                <span *ngIf="isResourceTracked(resource)" class="sectionHeaderText sectionHeading screenMarginRight">tracking</span>
+            </div>
+            <span>
                 <hr class="marginHr" />
-            </span>            
-        </p>
+            </span>
+        </div>
     </div>
     <div class="progression">
         <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Progression</span></div>
         <br />
         <p *ngFor="let progression of progressionResources;">
-            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass"
-                class="screenMarginLeft">
+            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
                 {{lookupService.getItemName(progression.item)}} x{{progression.amount}}
                 <hr class="marginHr" />
-            </span>            
+            </span>
         </p>
-    </div> 
+    </div>
     <div class="charms">
         <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Charms</span></div>
         <br />
         <p *ngFor="let charm of charmResources;">
-            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass"
-                class="screenMarginLeft">
+            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
                 {{lookupService.getItemName(charm.item)}} x{{charm.amount}}
                 <hr class="marginHr" />
-            </span>            
+            </span>
         </p>
-    </div> 
+    </div>
 </div>

@@ -185,3 +185,7 @@
   /*60% {opacity: 100%}
   100% {opacity: 0%}*/
 }
+
+.barHeight {
+  height: .5rem;
+}

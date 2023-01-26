@@ -44,7 +44,6 @@ export class GlobalVariables {
     itemBeltSize: number;
     itemBelt: ItemsEnum[];
     currentStoryId: number;
-    godXpModifier: number;
     @Type(() => FreeTreasureChests)
     freeTreasureChests: FreeTreasureChests;
     extraSpeedTimeRemaining: number;
@@ -56,9 +55,12 @@ export class GlobalVariables {
     betaSave: boolean = true;
     @Type(() => Settings)
     gameLogSettings: Settings;
+    @Type(() => Settings)
+    keybinds: Settings;
     performanceMode = false;
     @Type(() => LogData)
     logData: LogData[];
+    trackedResources: ItemsEnum[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -69,6 +71,7 @@ export class GlobalVariables {
         this.itemBelt = [];
         this.achievements = [];
         this.logData = [];
+        this.trackedResources = [];
         this.itemBeltSize = 1;
         //this.activeBattle = new Battle();
         this.playerNavigation = new PlayerNavigation();
@@ -77,9 +80,9 @@ export class GlobalVariables {
         this.gameLogSettings = new Settings();
         this.freeTreasureChests = new FreeTreasureChests();
         this.currentStoryId = 0;
-        this.godXpModifier = 1;
         this.extraSpeedTimeRemaining = 0;
         this.chthonicPowers = new ChthonicPowers();
         this.alchemy = new Alchemy();
+        this.keybinds = new Settings();
     }
 }

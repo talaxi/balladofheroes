@@ -23,4 +23,24 @@ export class ResourceViewComponent implements OnInit {
     this.progressionResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && item.type === ItemTypeEnum.Progression).sort();
     this.charmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && item.type === ItemTypeEnum.Charm).sort();
   }
+
+  isResourceTracked(resource: ResourceValue) {
+    if (this.globalService.globalVar.trackedResources.some(item => item === resource.item))
+    {
+      return true;
+    }
+
+    return false;
+  }
+
+  setTrackingResource(resource: ResourceValue) {
+    if (this.globalService.globalVar.trackedResources.some(item => item === resource.item))
+    {
+      this.globalService.globalVar.trackedResources = this.globalService.globalVar.trackedResources.filter(item => item != resource.item);
+    }
+    else
+    {
+      this.globalService.globalVar.trackedResources.push(resource.item);
+    }
+  }
 }

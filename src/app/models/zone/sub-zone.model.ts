@@ -192,4 +192,12 @@ export class SubZone {
         return false;
     }
 
+    isGeneralStore() {
+        if (this.type === SubZoneEnum.DodonaDelphi || this.type === SubZoneEnum.DodonaArta ||
+            this.type === SubZoneEnum.AsphodelLostHaven) {
+            return true;
+        }
+
+        return false;
+    }
 }

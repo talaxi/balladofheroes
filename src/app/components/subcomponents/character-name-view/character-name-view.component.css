@@ -60,6 +60,10 @@
     animation-timing-function: ease-in-out;
 }
 
+.buttonCursor {
+    cursor: pointer;
+}
+
 @keyframes levelUpAnimation {    
     25% {        
         transform: scale(1.1);   

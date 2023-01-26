@@ -3,6 +3,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -21,6 +22,7 @@ export class CharacterViewComponent implements OnInit {
   god2AbilityList: Ability[] = [];
   characterAbilityList: Ability[] = [];
   public noGod = GodEnum.None;
+  tooltipDirection = DirectionEnum.Down;
 
   constructor(public menuService: MenuService, public lookupService: LookupService, private globalService: GlobalService,
     private gameLoopService: GameLoopService, public dialog: MatDialog) { }

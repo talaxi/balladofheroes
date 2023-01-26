@@ -27,8 +27,7 @@
         <br />
         <br />
         <span>
-            <span *ngIf="statusEffect.duration >= 0">Remaining Duration: {{statusEffect.duration | number : '1.0-0'}}
-                seconds</span>
+            <span *ngIf="statusEffect.duration >= 0">Remaining Duration: {{getStatusEffectDuration()}}</span>
             <span *ngIf="statusEffect.duration < 0">Resolves Upon Effect Condition</span>
         </span>
     </div>

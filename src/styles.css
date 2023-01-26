@@ -84,6 +84,13 @@
   --artemisColor: #97BBB0;
   --hadesColor: #000000;  
 
+  --holyColor: #d9dbbf;
+  --lightningColor: #fff30b;
+  --airColor: #ac9cff;
+  --waterColor: #00baa1;
+  --fireColor: #FE565C;
+  --earthColor: #C0845D;
+
   --clearedSubzoneColor: #b36b24;
   --completedSubzoneColor: #e8c602;
 
@@ -366,6 +373,8 @@ h6 {
 .buttonStyled {
   background-color: var(--background-quarternary);
   color: var(--foreground-quaternary);
+  font-weight: bold;
+  font-size: .95rem;
 }
 
 .buttonStyled:hover {
@@ -499,6 +508,30 @@ html, body { height: 100%; }
 
 .screenMargin {
   margin: .3rem;
+}
+
+.holyColor {
+  color: var(--holyColor);
+}
+
+.lightningColor {
+  color: var(--lightningColor);
+}
+
+.fireColor {
+  color: var(--fireColor);
+}
+
+.airColor {
+  color: var(--airColor);
+}
+
+.waterColor {
+  color: var(--waterColor);
+}
+
+.earthColor {
+  color: var(--earthColor);
 }
 
 .adventurerColor {
@@ -726,4 +759,20 @@ button {
   font-variant: small-caps;
   vertical-align: middle;    
   font-weight: bold;
+}
+
+.bold {
+  font-weight: bold;
+}
+
+.subzoneClickableItem {
+  cursor: pointer;
+  text-decoration: underline;
+  font-weight: bold;
+}
+
+.subzoneClickableItem:hover {
+  cursor: pointer;
+  color: var(--foreground-secondary);
+  text-decoration: underline;
 }

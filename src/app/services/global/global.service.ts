@@ -725,6 +725,10 @@ export class GlobalService {
 
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam) {
     var activeParty = this.getActivePartyCharacters(true);
+    var BoonOfOlympus = this.globalVar.resources.find(item => item.item === ItemsEnum.BoonOfOlympus);
+    var BoonOfOlympusValue = 1;
+    if (BoonOfOlympus !== undefined)
+      BoonOfOlympusValue += BoonOfOlympus.amount;
 
     defeatedEnemies.enemyList.forEach(enemy => {
       activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel
@@ -735,20 +739,22 @@ export class GlobalService {
 
       //active gods
       this.globalVar.gods.filter(god => god.isAvailable &&
-        activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {
-          god.exp += enemy.xpGainFromDefeat * this.globalVar.godXpModifier;
+        activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {          
+          god.exp += enemy.xpGainFromDefeat * BoonOfOlympusValue;          
         });
 
       //inactive gods
       this.globalVar.gods.filter(god => god.isAvailable &&
         (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-          god.exp += enemy.xpGainFromDefeat * this.globalVar.godXpModifier;
+          god.exp += enemy.xpGainFromDefeat;
         });
     });
 
 
     party.forEach(partyMember => {
-      if (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel) {
+      var previousXp: number | undefined = undefined;
+      while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
+        previousXp = partyMember.exp;
         this.levelUpPartyMember(partyMember);
         if (partyMember.level === partyMember.maxLevel)
           partyMember.exp = 0;
@@ -756,7 +762,9 @@ export class GlobalService {
     });
 
     this.globalVar.gods.forEach(god => {
-      if (god.exp >= god.expToNextLevel) {
+      var previousXp: number | undefined = undefined;
+      while (god.exp >= god.expToNextLevel && (previousXp === undefined || god.exp < previousXp)) {
+        previousXp = god.exp;
         this.levelUpGod(god);
       }
     });

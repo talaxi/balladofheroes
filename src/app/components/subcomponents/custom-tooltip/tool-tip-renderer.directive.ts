@@ -3,6 +3,7 @@ import { FlexibleConnectedPositionStrategy, Overlay, OverlayPositionBuilder, Ove
 import { ComponentPortal } from '@angular/cdk/portal';
 import { CustomTooltipComponent } from './custom-tooltip.component';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 
 @Directive({
   selector: '[customToolTip]'
@@ -27,7 +28,7 @@ export class ToolTipRendererDirective {
   subscription: any;
   delayTimerCap = .35;
   @Input() isDelayed: boolean = true;
-  @Input() tooltipBelow: boolean = false;
+  @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
 
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
@@ -45,7 +46,7 @@ export class ToolTipRendererDirective {
 
     var positionStrategy: FlexibleConnectedPositionStrategy;
 
-    if (this.tooltipBelow) {
+    if (this.tooltipDirection === DirectionEnum.Down) {
       positionStrategy = this._overlayPositionBuilder
       .flexibleConnectedTo(this._elementRef)
         .withPositions([{
@@ -53,6 +54,28 @@ export class ToolTipRendererDirective {
           originY: 'bottom',
           overlayX: 'start',
           overlayY: 'top',
+          offsetY: 5,
+        }]);
+    }    
+    else if (this.tooltipDirection === DirectionEnum.Up) {
+      positionStrategy = this._overlayPositionBuilder
+      .flexibleConnectedTo(this._elementRef)
+        .withPositions([{
+          originX: 'start',
+          originY: 'top',
+          overlayX: 'start',
+          overlayY: 'bottom',
+          offsetY: 5,
+        }]);
+    }
+    else if (this.tooltipDirection === DirectionEnum.Left) {
+      positionStrategy = this._overlayPositionBuilder
+        .flexibleConnectedTo(this._elementRef)
+        .withPositions([{
+          originX: 'start',
+          originY: 'center',
+          overlayX: 'start',
+          overlayY: 'center',
           offsetY: 5,
         }]);
     }
@@ -95,7 +118,7 @@ export class ToolTipRendererDirective {
       if (this._overlayRef && !this._overlayRef.hasAttached()) {
         const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
         tooltipRef.instance.text = this.text;
-        tooltipRef.instance.contentTemplate = this.contentTemplate;
+        tooltipRef.instance.contentTemplate = this.contentTemplate;        
       }
     }
   }

@@ -1,8 +1,8 @@
 <div class="godGrid">
     <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" class="god1"
-        [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
-        <span (click)="goToGodDetails(1)" customToolTip [contentTemplate]="god1Popover">
-            <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
+        [ngClass]="lookupService.getGodColorClass(character.assignedGod1)"  (click)="goToGodDetails(1)">
+        <span customToolTip [contentTemplate]="god1Popover">
+            <span [ngClass]="{'buttonCursor': isButtonActive()}" class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
             <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span> <span class="levelUpAnimationText"
                 [ngClass]="{'levelUpAnimation': showGod1LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
         <div class="flex xpBarWidth" customToolTip [contentTemplate]="xp1Popover">
@@ -20,10 +20,10 @@
     </div>
 
     <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod" class="god2"
-        [ngClass]="lookupService.getGodColorClass(character.assignedGod2)" (click)="goToGodDetails(2)">
-        <span customToolTip [contentTemplate]="god2Popover" class="s3Heading">{{getCharacterGodName(character, 2)}}
+        [ngClass]="lookupService.getGodColorClass(character.assignedGod2)"  (click)="goToGodDetails(2)">
+        <span [ngClass]="{'buttonCursor': isButtonActive()}" customToolTip [contentTemplate]="god2Popover" class="s3Heading">{{getCharacterGodName(character, 2)}}
         </span>
-        <span><strong>Lv
+        <span [ngClass]="{'buttonCursor': isButtonActive()}"><strong>Lv
                 {{getCharacterGodLevel(character, 2)}}</strong> <span class="levelUpAnimationText"
                 [ngClass]="{'levelUpAnimation': showGod2LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
         <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xp2Popover">

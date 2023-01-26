@@ -7,16 +7,19 @@ import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
+import { DpsCalculatorService } from '../battle/dps-calculator.service';
 import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
+import { UtilityService } from '../utility/utility.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class BalladService {
 
-  constructor(private globalService: GlobalService, private gameLogService: GameLogService) { }
+  constructor(private globalService: GlobalService, private gameLogService: GameLogService, private dpsCalculatorService: DpsCalculatorService,
+    private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService) { }
 
   getBalladName(type?: BalladEnum) {
     var name = "";
@@ -87,13 +90,11 @@ export class BalladService {
 
     relatedSubzone.isSelected = true;
     relatedSubzone.showNewNotification = false;
-    if (relatedZone !== undefined)
-    {
+    if (relatedZone !== undefined) {
       relatedZone.isSelected = true;
       relatedZone.showNewNotification = false;
     }
-    if (relatedBallad !== undefined)
-    {
+    if (relatedBallad !== undefined) {
       relatedBallad.isSelected = true;
       relatedBallad.showNewNotification = false;
     }
@@ -101,6 +102,18 @@ export class BalladService {
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + relatedSubzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+
+    if (!relatedSubzone.isTown) {
+      var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(relatedSubzone.type);
+      if (enemyOptions.length > 0) {
+        var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
+        this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
+      }
+    }
   }
 
   findBallad(type: BalladEnum) {
@@ -134,7 +147,7 @@ export class BalladService {
       ballad.zones.forEach(zone => {
         zone.subzones.forEach(subzone => {
           if (subzone.type === type)
-          returnBallad = ballad;
+            returnBallad = ballad;
         })
       })
     });
@@ -144,14 +157,21 @@ export class BalladService {
 
   findSubzone(type: SubZoneEnum) {
     var returnSubzone: SubZone | undefined;
+    var subzoneFound = false;
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      ballad.zones.forEach(zone => {
-        zone.subzones.forEach(subzone => {
-          if (subzone.type === type)
-            returnSubzone = subzone;
-        })
-      })
+      if (!subzoneFound) {
+        ballad.zones.forEach(zone => {
+          if (!subzoneFound) {
+            zone.subzones.forEach(subzone => {
+              if (subzone.type === type) {
+                returnSubzone = subzone;
+                subzoneFound = true;
+              }
+            });
+          }
+        });
+      }
     });
 
     return returnSubzone;
@@ -163,7 +183,7 @@ export class BalladService {
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (balladType.toString() === ballad.type.toString()) {
         ballad.zones.forEach(zone => {
-          zone.subzones.forEach(subzone => {            
+          zone.subzones.forEach(subzone => {
             if (subzone.type === type)
               inBallad = true;
           });
@@ -173,7 +193,7 @@ export class BalladService {
 
     return inBallad;
   }
-  
+
   isZoneInBallad(type: ZoneEnum, balladType: BalladEnum) {
     var inBallad = false;
 
@@ -192,16 +212,15 @@ export class BalladService {
   isSubzoneInZone(type: SubZoneEnum, zoneType: ZoneEnum) {
     var inZone = false;
 
-    this.globalService.globalVar.ballads.forEach(ballad => {      
-        ballad.zones.forEach(zone => {
-          if (zone.type.toString() === zoneType.toString())
-          {
-            zone.subzones.forEach(subzone => {
-              if (subzone.type === type)
-                inZone = true;
-            });
-          }
-        });
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.zones.forEach(zone => {
+        if (zone.type.toString() === zoneType.toString()) {
+          zone.subzones.forEach(subzone => {
+            if (subzone.type === type)
+              inZone = true;
+          });
+        }
+      });
     });
 
     return inZone;

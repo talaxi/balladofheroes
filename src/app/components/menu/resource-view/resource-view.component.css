@@ -43,6 +43,10 @@
       border-right: 1px solid rgba(0,0,0,.1);
     }
 
+    .screenMarginRight {
+      margin-right: 1rem;
+    }
+
     .rightAligned {
         text-align: right;
     }
@@ -51,6 +55,17 @@
         text-align: center;
     }
 
+    .trackingButton {
+      /*width: 100%;*/
+      font-size: 1rem;
+      text-align: left;
+    }
+
+    .resourceDiv {
+      width: 100%;
+      display: flex;
+      justify-content: space-between;
+    }
 
     @media (max-width: 800px) {
       .gridContainer {

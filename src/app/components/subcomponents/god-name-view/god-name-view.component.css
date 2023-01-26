@@ -72,3 +72,7 @@
 .godAbility {
     position: relative;
 }
+
+.buttonCursor {
+    cursor: pointer;
+}

@@ -1,7 +1,7 @@
-<div>
+<div [ngClass]="{'cssTooltip': isSticky }">
     <div class="tooltip-container">
       <ng-template #simpleText>
-        {{text}}
+        <span [innerHtml]='text'></span>
       </ng-template>
       <ng-container *ngTemplateOutlet="contentTemplate || simpleText">
       </ng-container>

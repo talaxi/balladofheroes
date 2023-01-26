@@ -1,4 +1,4 @@
-import { Component, OnInit, QueryList, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, QueryList, ViewChild } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -40,6 +40,16 @@ export class PartyComponent implements OnInit {
   partyMember1CheckSubscription: any;
   partyMember2CheckSubscription: any;
 
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {    
+    var keybinds = this.globalService.globalVar.keybinds;
+
+    console.log(event.key + " === " + keybinds.get("autoToggleCharacter1AutoAttack") + " = " + (event.key === keybinds.get("autoToggleCharacter1AutoAttack")));
+    if (event.key === keybinds.get("autoToggleCharacter1AutoAttack")) {
+      this.party[0].battleInfo.autoAttackAutoMode = !this.party[0].battleInfo.autoAttackAutoMode;
+    }
+  }
+
   constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService,
     private gameLoopService: GameLoopService, private menuService: MenuService, private utilityService: UtilityService,
     private dpsCalculatorService: DpsCalculatorService) { }
@@ -48,11 +58,9 @@ export class PartyComponent implements OnInit {
     this.party = this.globalService.getActivePartyCharacters(false);   
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
         
-    console.log(this.globalService.globalVar.resources);
     this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
       item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir);   
-      console.log(this.battleItems);
-
+      
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
       if (!this.itemMenu.menuOpen)
       {

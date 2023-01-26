@@ -79,3 +79,27 @@
 .inlineBlock {
     display: inline-block;
 }
+
+.quickLinkIcons {
+    width: 100%;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.icon {
+    width: 2rem;
+}
+
+.iconDisabled {
+    opacity: .75;
+}
+
+.centeredBar {
+    width: 75%;
+    margin: .75rem auto;
+}
+
+.stackedButtons {
+    margin-top: .1rem;
+    margin-bottom: .1rem;
+}

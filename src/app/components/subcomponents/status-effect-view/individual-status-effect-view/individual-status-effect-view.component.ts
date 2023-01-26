@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-individual-status-effect-view',
@@ -12,7 +13,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   @Input() isPositiveEffect: boolean;
   @Input() statusEffect: StatusEffect;
 
-  constructor(private lookupService: LookupService) { }
+  constructor(private lookupService: LookupService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
   }
@@ -133,5 +134,16 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     var description = this.lookupService.getStatusEffectDescription(this.statusEffect);
 
     return description;
+  }
+
+  getStatusEffectDuration() {
+    var duration = Math.round(this.statusEffect.duration);
+    var durationString = "";
+    if (duration < 60)
+      durationString = duration + " seconds";
+    else
+      durationString = Math.ceil(duration / 60) + " minutes";
+
+    return durationString;
   }
 }

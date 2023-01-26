@@ -9,6 +9,7 @@ import { God } from '../models/character/god.model';
 import { OverdriveInfo } from '../models/character/overdrive-info.model';
 import { AchievementTypeEnum } from '../models/enums/achievement-type-enum.copy';
 import { AlchemyActionsEnum } from '../models/enums/alchemy-actions-enum.model';
+import { BestiaryEnum } from '../models/enums/bestiary-enum.model';
 import { CharacterEnum } from '../models/enums/character-enum.model';
 import { dotTypeEnum } from '../models/enums/damage-over-time-type-enum.model';
 import { EffectTriggerEnum } from '../models/enums/effect-trigger-enum.model';
@@ -31,6 +32,8 @@ import { ResourceValue } from '../models/resources/resource-value.model';
 import { UsableItemEffect } from '../models/resources/usable-item-effect.model';
 import { LogData } from '../models/utility/log-data.model';
 import { SubZone } from '../models/zone/sub-zone.model';
+import { BalladService } from './ballad/ballad.service';
+import { EnemyGeneratorService } from './enemy-generator/enemy-generator.service';
 import { GlobalService } from './global/global.service';
 import { CharmService } from './resources/charm.service';
 import { SubZoneGeneratorService } from './sub-zone-generator/sub-zone-generator.service';
@@ -44,7 +47,7 @@ export class LookupService {
   isUIHidden = false;
 
   constructor(private globalService: GlobalService, private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService,
-    private charmService: CharmService) { }
+    private charmService: CharmService, private enemyGeneratorService: EnemyGeneratorService, private balladService: BalladService) { }
 
   getSubZoneCompletionByType(type: SubZoneEnum) {
     var chosenSubzone = new SubZone();
@@ -336,7 +339,7 @@ export class LookupService {
     else if (type === ItemsEnum.ToxicIchor)
       name = "Toxic Ichor";
 
-      //recipes
+    //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Poison Extract Potion Recipe";
 
@@ -353,63 +356,63 @@ export class LookupService {
       name = "Small Charm of Vulnerability";
     else if (type === ItemsEnum.LargeCharmOfVulnerability)
       name = "Large Charm of Vulnerability";
-      else if (type === ItemsEnum.SmallCharmOfPreparation)
+    else if (type === ItemsEnum.SmallCharmOfPreparation)
       name = "Small Charm of Preparation";
     else if (type === ItemsEnum.LargeCharmOfPreparation)
       name = "Large Charm of Preparation";
-      else if (type === ItemsEnum.SmallCharmOfHaste)
+    else if (type === ItemsEnum.SmallCharmOfHaste)
       name = "Small Charm of Haste";
     else if (type === ItemsEnum.LargeCharmOfHaste)
       name = "Large Charm of Haste";
-      else if (type === ItemsEnum.SmallCharmOfHolyDestruction)
+    else if (type === ItemsEnum.SmallCharmOfHolyDestruction)
       name = "Small Charm of Holy Destruction";
     else if (type === ItemsEnum.LargeCharmOfHolyDestruction)
       name = "Large Charm of Holy Destruction";
-      else if (type === ItemsEnum.SmallCharmOfFireDestruction)
+    else if (type === ItemsEnum.SmallCharmOfFireDestruction)
       name = "Small Charm of Fire Destruction";
     else if (type === ItemsEnum.LargeCharmOfFireDestruction)
       name = "Large Charm of Fire Destruction";
-      else if (type === ItemsEnum.SmallCharmOfWaterDestruction)
+    else if (type === ItemsEnum.SmallCharmOfWaterDestruction)
       name = "Small Charm of Water Destruction";
     else if (type === ItemsEnum.LargeCharmOfWaterDestruction)
       name = "Large Charm of Water Destruction";
-      else if (type === ItemsEnum.SmallCharmOfLightningDestruction)
+    else if (type === ItemsEnum.SmallCharmOfLightningDestruction)
       name = "Small Charm of Lightning Destruction";
     else if (type === ItemsEnum.LargeCharmOfLightningDestruction)
       name = "Large Charm of Lightning Destruction";
-      else if (type === ItemsEnum.SmallCharmOfAirDestruction)
+    else if (type === ItemsEnum.SmallCharmOfAirDestruction)
       name = "Small Charm of Air Destruction";
     else if (type === ItemsEnum.LargeCharmOfAirDestruction)
       name = "Large Charm of Air Destruction";
-      else if (type === ItemsEnum.SmallCharmOfEarthDestruction)
+    else if (type === ItemsEnum.SmallCharmOfEarthDestruction)
       name = "Small Charm of Earth Destruction";
     else if (type === ItemsEnum.LargeCharmOfEarthDestruction)
       name = "Large Charm of Earth Destruction";
-      else if (type === ItemsEnum.SmallCharmOfHolyProtection)
+    else if (type === ItemsEnum.SmallCharmOfHolyProtection)
       name = "Small Charm of Holy Protection";
     else if (type === ItemsEnum.LargeCharmOfHolyProtection)
       name = "Large Charm of Holy Protection";
-      else if (type === ItemsEnum.SmallCharmOfFireProtection)
+    else if (type === ItemsEnum.SmallCharmOfFireProtection)
       name = "Small Charm of Fire Protection";
     else if (type === ItemsEnum.LargeCharmOfFireProtection)
       name = "Large Charm of Fire Protection";
-      else if (type === ItemsEnum.SmallCharmOfWaterProtection)
+    else if (type === ItemsEnum.SmallCharmOfWaterProtection)
       name = "Small Charm of Water Protection";
     else if (type === ItemsEnum.LargeCharmOfWaterProtection)
       name = "Large Charm of Water Protection";
-      else if (type === ItemsEnum.SmallCharmOfLightningProtection)
+    else if (type === ItemsEnum.SmallCharmOfLightningProtection)
       name = "Small Charm of Lightning Protection";
     else if (type === ItemsEnum.LargeCharmOfLightningProtection)
       name = "Large Charm of Lightning Protection";
-      else if (type === ItemsEnum.SmallCharmOfAirProtection)
+    else if (type === ItemsEnum.SmallCharmOfAirProtection)
       name = "Small Charm of Air Protection";
     else if (type === ItemsEnum.LargeCharmOfAirProtection)
       name = "Large Charm of Air Protection";
-      else if (type === ItemsEnum.SmallCharmOfEarthProtection)
+    else if (type === ItemsEnum.SmallCharmOfEarthProtection)
       name = "Small Charm of Earth Protection";
     else if (type === ItemsEnum.LargeCharmOfEarthProtection)
       name = "Large Charm of Earth Protection";
-      
+
     return name;
   }
 
@@ -418,6 +421,7 @@ export class LookupService {
     var effect = this.getBattleItemEffect(type);
 
     var relatedUserGainStatusEffectDuration = 0;
+    var durationInMinutes = 0;
     var relatedUserGainStatusEffectEffectiveness = 0;
     var relatedUserGainStatusEffectEffectivenessPercent = 0;
     var relatedTargetGainStatusEffectDuration = 0;
@@ -431,6 +435,7 @@ export class LookupService {
 
       if (relatedUserGainStatusEffect !== undefined) {
         relatedUserGainStatusEffectDuration = Math.round(relatedUserGainStatusEffect.duration);
+        durationInMinutes = Math.ceil(relatedUserGainStatusEffectDuration / 60);
         relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
         if (relatedUserGainStatusEffectEffectiveness < 1)
           relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness) * 100);
@@ -461,15 +466,19 @@ export class LookupService {
     else if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.ExplodingPotion || type === ItemsEnum.FirePotion)
       name = "Deal " + effect.trueDamageAmount + " damage to a target.";
     else if (type === ItemsEnum.PoisonFang || type === ItemsEnum.StranglingGasPotion)
-      name = "Poison an enemy, dealing " + relatedTargetGainStatusEffectEffectiveness + " every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
+      name = "Poison an enemy, dealing " + relatedTargetGainStatusEffectEffectiveness + " damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
+    else if (type === ItemsEnum.PoisonExtractPotion)
+      name = "Poison all enemies, dealing " + relatedTargetGainStatusEffectEffectiveness + " damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
     else if (type === ItemsEnum.DebilitatingToxin)
-      name = "Apply a toxin to a party member's weapon, giving their auto attacks a chance to reduce a target's agility by 10% for 5 seconds. Only one toxin can be applied per party member at a time.";
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's agility by 10% for 5 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.PoisonousToxin)
-      name = "Apply a toxin to a party member's weapon, giving their auto attacks a chance to deal an additional 6 damage after 4 seconds. Only one toxin can be applied per party member at a time.";
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 6 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
+    else if (type === ItemsEnum.HeroicElixir)
+      name = "Increase user's Attack by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
 
-    //resources
-    else if (type === ItemsEnum.Coin)
-      name = "Use to trade with merchants.";
+    //resources    
+    else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Resource || this.getItemTypeFromItemEnum(type) === ItemTypeEnum.CraftingMaterial)
+      name = this.getResourceDescription(type);
 
     //progression
     else if (type === ItemsEnum.ChthonicFavor)
@@ -483,6 +492,73 @@ export class LookupService {
     }
 
     return name;
+  }
+
+  getResourceDescription(item: ItemsEnum) {
+    var description = "";
+    if (item === ItemsEnum.Coin)
+      description = "Use to trade with merchants.";
+    else //if (item === ItemsEnum.LightLeather)
+      description = "Used for crafting. <hr/>Can be found at:<br/>" +
+        this.getResourceItemLocations(item);
+
+    return description;
+  }
+
+  getResourceItemLocations(item: ItemsEnum) {
+    var locations = "<div>???</div>";
+    var matchingEnemies: Enemy[] = [];
+    var matchingSubzones: SubZoneEnum[] = [];
+
+    //get enemies who have item
+    //find what subzones they exist in, remove those that aren't unlocked
+    //list highest % chance of top 3-5 or so
+
+    for (const [propertyKey, propertyValue] of Object.entries(BestiaryEnum)) {
+      if (!Number.isNaN(Number(propertyKey))) {
+        continue;
+      }
+
+      var enumValue = propertyValue as BestiaryEnum;
+      //todo: one option for optimization is abstract out loot from enemy generation and call that both in generateEnemy and here
+      var enemy = this.enemyGeneratorService.generateEnemy(enumValue);
+      if (enemy.loot.some(loot => loot.item === item))
+        matchingEnemies.push(enemy);
+    }
+
+    if (matchingEnemies.length === 0)
+      return locations;
+
+    matchingEnemies.forEach(enemy => {
+      for (const [propertyKey, propertyValue] of Object.entries(SubZoneEnum)) {
+        if (!Number.isNaN(Number(propertyKey))) {
+          continue;
+        }
+
+        var enumValue = propertyValue as SubZoneEnum;        
+
+        var options = this.subzoneGeneratorService.generateBattleOptions(enumValue);
+        if (options.some(option => option.enemyList.some(list => list.name === enemy.name))) {
+          matchingSubzones.push(enumValue);
+        }
+      }
+    });
+
+    if (matchingSubzones.length === 0)
+      return locations;
+
+    locations = "";
+    matchingSubzones = matchingSubzones.filter((el, i, a) => i === a.indexOf(el));
+    matchingSubzones.forEach(subzone => {
+      var matchedSubzone = this.balladService.findSubzone(subzone);
+      //TODO: clear count should be relevant here, <100 clears = ???, >100 clears gives info maybe
+      if (matchedSubzone?.isAvailable) {
+        locations += "<div class='subzoneClickableItem " + subzone.toString() + "'>" + this.getSubZoneByType(subzone).name + "</div>";
+      }
+    });
+
+    return this.utilityService.getSanitizedHtml(locations);
+    //<div>???</div><div>???</div>";
   }
 
   getItemTypeName(item: ItemsEnum) {
@@ -937,11 +1013,11 @@ export class LookupService {
     if (abilityName === "Second Wind")
       abilityDescription = "After using an ability, your next auto attack heals for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. Passive.";
     if (abilityName === "Divine Strike")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
     if (abilityName === "Heavenly Shield")
       abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. " + cooldown + " second cooldown.";
     if (abilityName === "Blinding Light")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Blind them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Blind them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
     //Artemis
     if (abilityName === "True Shot")
@@ -977,11 +1053,11 @@ export class LookupService {
     if (abilityName === "Overload")
       abilityDescription = "Surge effect increases damage dealt by next ability by " + effectiveAmount + "%. Passive";
     if (abilityName === "Lightning Bolt")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage. Grants user Surge. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Grants user Surge. " + cooldown + " second cooldown.";
     if (abilityName === "Chain Lightning")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage. Deal 25% less damage to another random target. Repeat until all targets have been hit. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal 25% less damage to another random target. Repeat until all targets have been hit. " + cooldown + " second cooldown.";
     if (abilityName === "Judgment")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. " + cooldown + " second cooldown.";
 
     return abilityDescription;
   }
@@ -1006,7 +1082,6 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
       description = "Increase damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
-    //why is euryale debuff reducing by -600%?
     if (statusEffect.type === StatusEffectEnum.AgilityDown)
       description = "Decrease Agility by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.AttackDown)
@@ -1052,6 +1127,14 @@ export class LookupService {
       description = "Taking damage over time.";
     if (statusEffect.type === StatusEffectEnum.Thorns)
       description = "Dealing damage back to auto attackers.";
+
+    if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
+      description = "10% chance on auto attack to reduce target's agility by 10% for 5 seconds.";
+    if (statusEffect.type === StatusEffectEnum.PoisonousToxin)
+      description = "10% chance on auto attack to deal 6 additional damage.";
+
+    if (statusEffect.type === StatusEffectEnum.HeroicElixir)
+      description = "Increase Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     return description;
   }

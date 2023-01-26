@@ -33,15 +33,14 @@ export class CharacterNameViewComponent implements OnInit {
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
     private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService, private battleService: BattleService) { }
 
   ngOnInit(): void {
     this.showDevStats = this.deploymentService.showStats;
     this.previousLevel = this.character.level;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
-      if (this.character.level > this.previousLevel)
-      {
+      if (this.character.level > this.previousLevel) {
         this.showLevelUpAnimation = true;
         this.previousLevel = this.character.level;
       }
@@ -56,10 +55,21 @@ export class CharacterNameViewComponent implements OnInit {
     });
   }
 
-  goToCharacterDetails() {    
-    this.layoutService.changeLayout(NavigationEnum.Menu);
-    this.menuService.selectedMenuDisplay = MenuEnum.Characters;
-    this.menuService.setSelectedCharacter(this.character.type);
+  isButtonActive() {
+    if (this.battleService.targetbattleItemMode && this.battleService.isTargetableWithItem(this.character, false)) {
+      return false;
+    }
+    else
+      return true;
+  }
+
+  goToCharacterDetails() {
+    if (this.isButtonActive())
+    {
+      this.layoutService.changeLayout(NavigationEnum.Menu);
+      this.menuService.selectedMenuDisplay = MenuEnum.Characters;
+      this.menuService.setSelectedCharacter(this.character.type);
+    }
   }
 
   getCharacterGodName(character: Character, whichGod: number) {
@@ -68,7 +78,7 @@ export class CharacterNameViewComponent implements OnInit {
       matchTo = character.assignedGod2;
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
-    
+
     if (god !== undefined) {
       return god.name;
     }
@@ -89,7 +99,7 @@ export class CharacterNameViewComponent implements OnInit {
     return "";
   }
 
-  
+
   getGodPassiveDescription(whichGod: number) {
     var passiveDescription = "";
 
@@ -99,7 +109,7 @@ export class CharacterNameViewComponent implements OnInit {
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
     if (god === undefined || !god.abilityList.some(ability => ability.isPassive && ability.isAvailable)) {
-      return passiveDescription;      
+      return passiveDescription;
     }
 
     var passiveAbility = god.abilityList.find(item => item.isPassive && item.isAvailable);
@@ -111,7 +121,7 @@ export class CharacterNameViewComponent implements OnInit {
     return passiveDescription;
   }
 
-  getCharacterPassiveDescription() {    
+  getCharacterPassiveDescription() {
     var passiveDescription = "";
 
     var passiveAbility = this.character.abilityList.find(item => item.isPassive && item.isAvailable);
@@ -134,7 +144,7 @@ export class CharacterNameViewComponent implements OnInit {
       matchTo = this.character.assignedGod2;
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
-    
+
     if (god !== undefined) {
       return (god.exp / god.expToNextLevel) * 100;
     }
@@ -163,8 +173,7 @@ export class CharacterNameViewComponent implements OnInit {
   }
 
   ngOnDestroy() {
-    if (this.subscription !== undefined)
-    {
+    if (this.subscription !== undefined) {
       this.subscription.unsubscribe();
     }
   }

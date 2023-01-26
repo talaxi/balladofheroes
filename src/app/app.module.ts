@@ -77,6 +77,7 @@ import { GameLogEditorComponent } from './components/subcomponents/game-log-edit
 import { OverdriveViewComponent } from './components/subcomponents/overdrive-view/overdrive-view.component';
 import { ChangeGodViewComponent } from './components/menu/character-view/change-god-view/change-god-view.component';
 import { LogViewComponent } from './components/subcomponents/log-view/log-view.component';
+import { ResourceItemViewComponent } from './components/menu/resource-view/resource-item-view/resource-item-view.component';
 
 
 @NgModule({
@@ -119,7 +120,8 @@ import { LogViewComponent } from './components/subcomponents/log-view/log-view.c
     GameLogEditorComponent,
     OverdriveViewComponent,
     ChangeGodViewComponent,
-    LogViewComponent
+    LogViewComponent,
+    ResourceItemViewComponent
   ],
   imports: [
     BrowserModule,

@@ -1,4 +1,4 @@
-<span customToolTip [contentTemplate]="characterPopover" class="characterName" (click)="goToCharacterDetails()">
+<span customToolTip [contentTemplate]="characterPopover" class="characterName" [ngClass]="{'buttonCursor': isButtonActive()}" (click)="goToCharacterDetails()">
     <span class="s2Heading" [ngClass]="lookupService.getCharacterColorClass(character.type)">{{character.name}} </span>
     <span [ngClass]="lookupService.getCharacterColorClass(character.type)"><strong>Lv
             {{character.level}}</strong> <span class="levelUpAnimationText" [ngClass]="{'levelUpAnimation': showLevelUpAnimation}">{{levelUpAnimationText}}</span> <span *ngIf="showDevStats"> DPS: {{getCharacterDps()}}</span></span>

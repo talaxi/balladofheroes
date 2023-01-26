@@ -614,6 +614,7 @@ export class BattleService {
     var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
     var target = this.getTarget(user, ability.targetsAllies ? party : targets, ability.targetType !== undefined ? ability.targetType : TargetEnum.Random);
     var damageDealt = 0;
+    var elementalText = "";    
 
     if (target === undefined)
       return false;
@@ -623,13 +624,15 @@ export class BattleService {
     if (ability.dealsDirectDamage) {
       var damageMultiplier = this.getDamageMultiplier(user, target);
       var isCritical = this.isDamageCritical(user, target);
+      if (ability.elementalType !== ElementalTypeEnum.None)
+        elementalText = this.getElementalDamageText(ability.elementalType);
 
       if (ability.isAoe) {
         potentialTargets.forEach(potentialTarget => {
           damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, ability);
           if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
             (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(potentialTarget.type) + "'>" + potentialTarget.name + "</strong> for " + damageDealt + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(potentialTarget.type) + "'>" + potentialTarget.name + "</strong> for " + damageDealt + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
         })
@@ -638,7 +641,7 @@ export class BattleService {
         damageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, ability);
         if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
           (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
           this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
         }
       }
@@ -1352,10 +1355,10 @@ export class BattleService {
       subZone.fastestCompletionSpeed = this.battle.battleDuration;
     }
 
-    var achievement = this.achievementService.checkForSubzoneAchievement(subZone.type, this.globalService.globalVar.achievements);
+    var achievements = this.achievementService.checkForSubzoneAchievement(subZone.type, this.globalService.globalVar.achievements);
 
-    if (achievement !== undefined) {
-      this.addAchievementToGameLog(achievement);
+    if (achievements !== undefined && achievements.length > 0) {
+      this.addAchievementToGameLog(achievements);
     }
 
     if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
@@ -1426,22 +1429,24 @@ export class BattleService {
     }
   }
 
-  addAchievementToGameLog(achievement: Achievement) {
-    var achievementBonus = "";
-    if (achievement.bonusResources !== undefined && achievement.bonusResources.length > 0) {
-      achievement.bonusResources.forEach(item => {
-        achievementBonus += "<strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : pluralize(this.lookupService.getItemName(item.item))) + "</strong>, ";
-      });
+  addAchievementToGameLog(achievements: Achievement[]) {
+    achievements.forEach(achievement => {
+      var achievementBonus = "";
+      if (achievement.bonusResources !== undefined && achievement.bonusResources.length > 0) {
+        achievement.bonusResources.forEach(item => {
+          achievementBonus += "<strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : pluralize(this.lookupService.getItemName(item.item))) + "</strong>, ";
+        });
 
-      achievementBonus = achievementBonus.substring(0, achievementBonus.length - 2);
-    }
-    var gameLogUpdate = "Achievement <strong>" + this.lookupService.getAchievementName(achievement) + "</strong> completed!";
-    if (achievementBonus !== "")
-      gameLogUpdate += " You gain " + achievementBonus + ".";
+        achievementBonus = achievementBonus.substring(0, achievementBonus.length - 2);
+      }
+      var gameLogUpdate = "Achievement <strong>" + this.lookupService.getAchievementName(achievement) + "</strong> completed!";
+      if (achievementBonus !== "")
+        gameLogUpdate += " You gain " + achievementBonus + ".";
 
-    if (this.globalService.globalVar.gameLogSettings.get("achievementUnlocked")) {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogUpdate);
-    }
+      if (this.globalService.globalVar.gameLogSettings.get("achievementUnlocked")) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogUpdate);
+      }
+    });
   }
 
   addLootToResources(item: ResourceValue | undefined) {
@@ -1696,6 +1701,26 @@ export class BattleService {
       this.gainHp(character, totalHpRegen);
       character.battleInfo.hpRegenTimer -= character.battleInfo.hpRegenTimerLength;
     }
+  }
+
+  getElementalDamageText(type: ElementalTypeEnum) {
+    var text = "";
+
+    if (type === ElementalTypeEnum.Holy)
+      text = " <span class='holyColor bold'>Holy</span> ";
+      if (type === ElementalTypeEnum.Fire)
+      text = " <span class='fireColor bold'>Fire</span> ";
+      if (type === ElementalTypeEnum.Air)
+      text = " <span class='airColor bold'>Air</span> ";
+      if (type === ElementalTypeEnum.Lightning)
+      text = " <span class='lightningColor bold'>Lightning</span> ";
+      if (type === ElementalTypeEnum.Water)
+      text = " <span class='waterColor bold'>Water</span> ";
+      if (type === ElementalTypeEnum.Earth)
+      text = " <span class='earthColor bold'>Earth</span> ";
+
+
+    return text;
   }
 
   checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character, party: Character[], targets: Character[]) {

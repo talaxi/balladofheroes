@@ -5,6 +5,7 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
+import { BattleService } from 'src/app/services/battle/battle.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -32,7 +33,8 @@ export class GodNameViewComponent implements OnInit {
   levelUpAnimationText = "Lv Up!";
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
-    private gameLoopService: GameLoopService, private layoutService: LayoutService, private menuService: MenuService) { }
+    private gameLoopService: GameLoopService, private layoutService: LayoutService, private menuService: MenuService,
+    private battleService: BattleService) { }
 
   ngOnInit(): void {
     this.previousGod1Level = this.getCharacterGodLevel(this.character, 1);
@@ -191,13 +193,15 @@ export class GodNameViewComponent implements OnInit {
   }
 
   goToGodDetails(whichGod: number) {
-    this.layoutService.changeLayout(NavigationEnum.Menu);
-    this.menuService.selectedMenuDisplay = MenuEnum.Gods;
+    if (this.isButtonActive()) {
+      this.layoutService.changeLayout(NavigationEnum.Menu);
+      this.menuService.selectedMenuDisplay = MenuEnum.Gods;
 
-    if (whichGod === 1)
-      this.menuService.setSelectedGod(this.character.assignedGod1);
-    else if (whichGod === 2)
-      this.menuService.setSelectedGod(this.character.assignedGod2);
+      if (whichGod === 1)
+        this.menuService.setSelectedGod(this.character.assignedGod1);
+      else if (whichGod === 2)
+        this.menuService.setSelectedGod(this.character.assignedGod2);
+    }
   }
 
   getGodSpecificProgressBar(whichGod: number) {
@@ -230,10 +234,9 @@ export class GodNameViewComponent implements OnInit {
     //each god may have different specifications
     if (god.type === GodEnum.Apollo) {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
-      if (ostinato !== undefined)
-      {
+      if (ostinato !== undefined) {
         ostinato.autoMode = !ostinato.autoMode;
-      }      
+      }
     }
     return false;
   }
@@ -250,10 +253,9 @@ export class GodNameViewComponent implements OnInit {
     //each god may have different specifications
     if (god.type === GodEnum.Apollo) {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
-      if (ostinato !== undefined)
-      {
+      if (ostinato !== undefined) {
         ostinato.manuallyTriggered = true;
-      }      
+      }
     }
   }
 
@@ -269,10 +271,9 @@ export class GodNameViewComponent implements OnInit {
     //each god may have different specifications
     if (god.type === GodEnum.Apollo) {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
-      if (ostinato !== undefined)
-      {
+      if (ostinato !== undefined) {
         return ostinato.autoMode;
-      }      
+      }
     }
     return false;
   }
@@ -286,17 +287,24 @@ export class GodNameViewComponent implements OnInit {
     if (god === undefined)
       return false;
 
-      
+
     //each god may have different specifications
     if (god.type === GodEnum.Apollo) {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
-      if (ostinato !== undefined)
-      {
+      if (ostinato !== undefined) {
         return god.level >= ostinato.requiredLevel;
-      }      
+      }
     }
 
     return false;
+  }
+
+  isButtonActive() {
+    if (this.battleService.targetbattleItemMode && this.battleService.isTargetableWithItem(this.character, false)) {
+      return false;
+    }
+    else
+      return true;
   }
 
   ngOnDestroy() {

@@ -106,28 +106,72 @@
     <div class="hr gap">
         <hr />
     </div>
-    <div class="quickLink">
-        <div class="centeredText mainPageSectionHeader">
-            Quick View
+    <div class="quickLink">        
+        <div class="quickLinkIcons">
+            <button class="buttonAsText clickableText" (click)="setQuickView(quickViewEnum.Overview)">
+                <img *ngIf="quickView === quickViewEnum.Overview" class="icon" src="assets/svg/overviewQuickView.svg">
+                <img *ngIf="quickView !== quickViewEnum.Overview" class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
+            </button>
+            <button class="buttonAsText clickableText" (click)="setQuickView(quickViewEnum.Resources)">
+                <img *ngIf="quickView === quickViewEnum.Resources" class="icon" src="assets/svg/resourcesQuickView.svg">
+                <img *ngIf="quickView !== quickViewEnum.Resources" class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
+            </button>
+            <button class="buttonAsText clickableText" *ngIf="isAlchemyAvailable()" (click)="setQuickView(quickViewEnum.Alchemy)">
+                <img *ngIf="quickView === quickViewEnum.Alchemy" class="icon" src="assets/svg/alchemyQuickView.svg">
+                <img *ngIf="quickView !== quickViewEnum.Alchemy" class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
+            </button>
         </div>
-        <div class="quickLinkGrid">
-            <div *ngIf="townsAvailable" class="quickJump centeredText">
-                <span>Jump to..</span>
-                <br />
-                <button class="buttonStyled" *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
+        <br/>
+        <!--<div class="centeredText mainPageSectionHeader">
+            {{getQuickViewTitleName()}} Quick View
+        </div>-->
+        <div class="overviewQuickView" *ngIf="quickView === quickViewEnum.Overview">
+            <div class="quickLinkGrid">
+                <div *ngIf="townsAvailable" class="quickJump centeredText">
+                    <span>Jump to..</span>
+                    <br />
+                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
+                    <br/>
+                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable" (click)="jumpToLatestGeneralStore()">Latest General Store</button>
+                    <br/>
+                    <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()" (click)="jumpToPalaceOfHades()">Palace of Hades</button>
+                </div>
+                <div class="peekResources centeredText">
+                    <div class="textLeftAligned inlineBlock">
+                    <span class="resource bold">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin) | number}}</span> <br/>
+                     <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" class="resource chthonicFavorKeyword" customToolTip [contentTemplate]="chthonicFavorPopover">Chthonic Favor: {{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number : '1.0-2'}}</span> <br/>
+                    <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" class="resource chthonicPowerKeyword" customToolTip [contentTemplate]="chthonicPowerPopover">Chthonic Power: {{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number : '1.0-2'}}</span>
+                </div>
+                </div>
             </div>
-            <div class="peekResources centeredText">
-                <div class="textLeftAligned inlineBlock">
-                <span class="resource">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin)}}</span> <br/>
-                <!--<span class="resource">Leathers: {{lookupService.getResourceAmount(itemsEnum.Leather)}}</span> <br/>
-                <span class="resource">Lamia Hearts: {{lookupService.getResourceAmount(itemsEnum.LamiaHeart)}}</span> <br/>-->
-                <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" class="resource chthonicFavorKeyword" customToolTip [contentTemplate]="chthonicFavorPopover">Chthonic Favor: {{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number : '1.0-2'}}</span> <br/>
-                <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" class="resource chthonicPowerKeyword" customToolTip [contentTemplate]="chthonicPowerPopover">Chthonic Power: {{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number : '1.0-2'}}</span>
+        </div>
+        <div class="resourcesQuickView" *ngIf="quickView === quickViewEnum.Resources">
+            <div *ngFor="let resource of trackedResources" class="resource">
+                <app-resource-item-view [resource]="resource"></app-resource-item-view>
             </div>
+        </div>
+        <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
+            <div *ngIf="creatingRecipe()">
+                <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth" *ngIf="this.getTotalAmountToCreate() > 1">&nbsp;<i>({{this.getAmountCreated() + 1}} of {{this.getTotalAmountToCreate()}})</i></span>       
+                <br/>        
+                <mat-progress-bar mode="determinate" [value]="getStepProgress()" class="purple-progress centeredBar removeAnimation">
+                </mat-progress-bar>    
+                <span><i>({{getTimeRemaining()}} remaining)</i></span>
             </div>
+            <div *ngIf="!creatingRecipe()">
+                <strong>Not Currently Brewing</strong>
+            </div>
+            <br/>
+            <button class="buttonStyled" (click)="openAlchemy(alchemyRecipeBook)">Open Recipe Book</button>            
         </div>
     </div>
 </div>
+
+<ng-template #alchemyRecipeBook>
+    <div>
+        <app-alchemy-view></app-alchemy-view>  
+    </div>
+</ng-template>
 
 <ng-template #chthonicFavorPopover>
     <div>

@@ -28,6 +28,8 @@ export class InitializationService {
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
     this.initializeSettings();   
     this.initializeGameLogSettings(); 
+    this.initializeQuickView();
+    this.initializeKeybinds();
   }
 
   initializeBallads() {    
@@ -45,10 +47,6 @@ export class InitializationService {
     upperCoast.isSelected = true;
     upperCoast.isAvailable = true;
     this.globalService.globalVar.playerNavigation.currentSubzone = upperCoast;
-    this.achievementService.createDefaultAchievementsForSubzone(upperCoast.type).forEach(achievement => {
-      this.globalService.globalVar.achievements.push(achievement);
-    });
-
     aigosthena.subzones.push(upperCoast);
 
     aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaBay));
@@ -59,6 +57,10 @@ export class InitializationService {
 
     championBallad.zones.push(aigosthena);
     this.globalService.globalVar.ballads.push(championBallad);
+
+    this.achievementService.createDefaultAchievementsForSubzone(upperCoast.type).forEach(achievement => {
+      this.globalService.globalVar.achievements.push(achievement);
+    });
 
     var gorgonBallad = new Ballad(BalladEnum.Gorgon);
     var dodona = new Zone();
@@ -148,6 +150,20 @@ export class InitializationService {
     this.globalService.globalVar.gameLogSettings.set("useBattleItem", true);
   }
 
+  initializeQuickView() {
+    this.globalService.globalVar.trackedResources.push(ItemsEnum.Coin);
+
+    //TODO: remove below, just for testing
+    this.globalService.globalVar.trackedResources.push(ItemsEnum.LightLeather);
+  }
+
+  initializeKeybinds() {
+    this.globalService.globalVar.keybinds.set("useCharacter1Ability1", "2");
+    
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1AutoAttack", "1");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1Ability1", "alt,2");
+  }
+
   devMode() {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 1000));
@@ -171,7 +187,7 @@ export class InitializationService {
     this.alchemyService.checkForNewRecipes();
 
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
-    this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
+    //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
     var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
     if (character1 !== undefined) {

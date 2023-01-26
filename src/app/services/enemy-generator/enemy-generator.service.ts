@@ -19,7 +19,7 @@ import { UtilityService } from '../utility/utility.service';
 })
 export class EnemyGeneratorService {
 
-  constructor(private globalService: GlobalService, private utilityService: UtilityService, private lookupService: LookupService) { }
+  constructor(private globalService: GlobalService, private utilityService: UtilityService) { }
 
   generateEnemy(type: BestiaryEnum)
   {
@@ -649,7 +649,7 @@ export class EnemyGeneratorService {
       enemy.loot.push(new LootItem(ItemsEnum.PendantOfSpeed, ItemTypeEnum.Equipment, 1, .001));
     }
 
-    enemy.battleInfo.autoAttackTimer = this.utilityService.getRandomInteger(0, this.lookupService.getAutoAttackTime(enemy) / 2);     
+    enemy.battleInfo.autoAttackTimer = this.utilityService.getRandomInteger(0, enemy.battleInfo.timeToAutoAttack / 2);     
     return enemy;
   }
 
