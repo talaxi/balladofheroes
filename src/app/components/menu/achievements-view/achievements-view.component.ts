@@ -233,8 +233,7 @@ export class AchievementsViewComponent implements OnInit {
     this.getAchievementsByPage();
   }
 
-  jumpToNextPage() {
-    console.log(this.currentPage + " < " + this.lastPage);
+  jumpToNextPage() {    
     if (this.currentPage < this.lastPage)
       this.currentPage += 1;
 

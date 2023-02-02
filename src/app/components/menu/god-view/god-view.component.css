@@ -3,7 +3,7 @@
     /*margin-right: 3rem; MENU REWORK */
     height: 100%;
     grid-template-columns: 33% 33% 34%;
-    grid-template-rows: auto 1fr 1fr;
+    grid-template-rows: auto 1fr auto;
     row-gap: 2rem;
     justify-content: stretch;
     grid-template-areas:
@@ -30,6 +30,7 @@
 
 .godAbilities {
     grid-area: godAbilities;
+    margin-bottom: 1rem;
 }
 
 .godInfo {

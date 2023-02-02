@@ -4,5 +4,6 @@ export enum ShopTypeEnum {
   Crafter,
   Alchemist,
   ChthonicFavor,
-  Story
+  Story,
+  Coliseum
 }

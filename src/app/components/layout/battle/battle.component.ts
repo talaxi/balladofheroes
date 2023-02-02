@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '
 import { MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
+import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
@@ -35,7 +36,7 @@ export class BattleComponent implements OnInit {
   showStoryAnimation = false;
   storyAnimationTimerCap = .5;
 
-  constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
+  constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
     private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService,
     public dialog: MatDialog) { }
@@ -59,7 +60,9 @@ export class BattleComponent implements OnInit {
       this.activeSubzone = this.balladService.getActiveSubZone();
 
       if (this.globalService.globalVar.activeBattle !== undefined)
-        this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
+      {
+        this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;        
+      }
 
       if (this.battleService.showNewEnemyGroup) {
         this.showNewEnemyGroupAnimation = true;
@@ -91,7 +94,7 @@ export class BattleComponent implements OnInit {
 
   isAtTown() {
     if (this.activeSubzone !== undefined) {
-      return this.activeSubzone.isTown;
+      return this.activeSubzone.isTown && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
     }
     return false;
   }
@@ -101,6 +104,13 @@ export class BattleComponent implements OnInit {
       return this.globalService.globalVar.activeBattle.atScene;
 
     return false;
+  }
+
+  doingColiseumFight() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
+      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
+
+  return false;
   }
 
   isAtStoryScene() {
@@ -142,7 +152,7 @@ export class BattleComponent implements OnInit {
     var text = "You found a chest containing " + chestRewards + ".";
     return text;
   }
-
+  
   getPagePercent() {
     return (this.globalService.globalVar.timers.scenePageTimer / this.globalService.globalVar.timers.scenePageLength) * 100;
   }
@@ -204,6 +214,14 @@ export class BattleComponent implements OnInit {
 
   openGameLogEditor(content: any) {
     this.dialog.open(content, { width: '75%', maxHeight: '75%' });
+  }
+
+  getTournamentTimeRemaining() {
+    var timeRemaining = this.globalService.globalVar.activeBattle.activeTournament.tournamentTimerLength - this.globalService.globalVar.activeBattle.activeTournament.tournamentTimer;
+
+    var value = this.utilityService.convertSecondsToMMSS(timeRemaining);
+
+    return value;
   }
 
   ngOnDestroy() {

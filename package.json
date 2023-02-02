@@ -24,6 +24,7 @@
     "@angular/platform-browser-dynamic": "~13.2.0",
     "@angular/router": "~13.2.0",
     "class-transformer": "^0.5.1",
+    "guid-typescript": "^1.0.9",
     "pluralize": "^8.0.0",
     "reflect-metadata": "^0.1.13",
     "rxjs": "~7.5.0",

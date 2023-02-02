@@ -1,0 +1,48 @@
+.altarGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: 75% 15% 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "image"
+        "text"
+        "options";
+}
+
+.image {
+    grid-area: image;
+    margin: auto;
+    height: 100%;
+    width: 100%;
+}
+
+.text {
+    grid-area: text;
+    margin: auto;
+}
+
+.storyTextAnimation {
+    animation: fadeIn .5s;
+}
+
+@keyframes fadeIn {
+    0% { opacity: 0; }
+    100% { opacity: 1; }
+  }
+
+.options {
+    grid-area: options;
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.altarIcon {
+    /*height: 15vh;*/
+    height: 100%;
+    width: 100%;
+}
+
+.hr {
+    width: 100%;
+}

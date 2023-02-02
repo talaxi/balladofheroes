@@ -74,7 +74,7 @@ export class ToolTipRendererDirective {
         .withPositions([{
           originX: 'start',
           originY: 'center',
-          overlayX: 'start',
+          overlayX: 'end',
           overlayY: 'center',
           offsetY: 5,
         }]);

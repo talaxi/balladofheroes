@@ -200,4 +200,12 @@ export class SubZone {
 
         return false;
     }
+
+    isSubzoneColiseum(type: SubZoneEnum) {
+        if (type === SubZoneEnum.ElysiumColiseum) {
+            return true;
+        }
+
+        return false;
+    }
 }

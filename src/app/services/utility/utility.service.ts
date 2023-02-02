@@ -42,6 +42,8 @@ export class UtilityService {
 
   public firstAlchemyLevelCap = 25;
 
+  public smallAltarAffinityGain = 1;
+
   constructor(public sanitizer: DomSanitizer) { }
 
   getSanitizedHtml(text: string) {

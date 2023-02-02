@@ -10,19 +10,26 @@
     user-select: none;
 }
 
+/*.relativePosition {
+    position: relative;
+}*/
+
 .characterTargeted:hover {
     border: 2px solid red;
 }
 
 .characterBar {
-    width: 75%;
+    width: 71%;
     margin-right: .5rem;
     display: inline-block;
+    /*position: absolute;*/
 }
 
 .hpMpText {
-    font-size: .75rem;
+    font-size: .8rem;
     font-weight: bold;
+    /*position: absolute;
+    right: .25rem;*/
 }
 
 .staggerBar {
@@ -46,22 +53,62 @@
     display: flex;
 }
 
-.boss {
+.enemy {
+    margin-top: .7rem;
     display: grid;
-    grid-template-columns: 1fr auto;
+    grid-template-columns: 80% 1fr;
     justify-content: stretch;
     grid-template-areas:
         "hpBar hpAmount";
 }
 
-.boss .characterBar {
+.boss {
+    margin-top: .7rem;
+    display: grid;
+    grid-template-columns: 90% 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "hpBar hpAmount";
+}
+
+.boss .characterBar, .enemy .characterBar {
     width: 95% !important;
 }
 
-.hpBar {
+.hpBarSpace {
     grid-area: hpBar;
 }
 
 .hpAmount {
     grid-area: hpAmount;
+}
+
+.hpBarGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "hpBarSlot";
+}
+
+.hpBar {
+    grid-area: hpBarSlot;
+}
+
+.stats {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.statColumn1 {
+    margin-right: .5rem;
+}
+
+.enemyName {
+    font-variant: small-caps;
+}
+
+.barrier {
+    color: var(--barrierColor);
 }

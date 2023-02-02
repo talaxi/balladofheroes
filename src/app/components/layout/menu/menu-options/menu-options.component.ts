@@ -6,6 +6,7 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 
 @Component({
   selector: 'app-menu-options',
@@ -23,36 +24,38 @@ export class MenuOptionsComponent implements OnInit {
   
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
-    if (event.key === "ArrowUp") {
+    var keybinds = this.globalService.globalVar.keybinds;
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuTraverseSubMenuUp"))) {
       this.toggleSubMenuOptions(-1);
     }
       
-    if (event.key === "ArrowDown") {
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuTraverseSubMenuDown"))) {
       this.toggleSubMenuOptions(1);
     }
-
-    if ((event.key === "c" || event.key === "C") && !event.ctrlKey) {
+    
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToCharacters"))) {
       this.switchView(MenuEnum.Characters);
     }
 
-    if ((event.key === "g" || event.key === "G") && !event.ctrlKey) {
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToGods"))) {
       this.switchView(MenuEnum.Gods);
     }
-
-    if ((event.key === "r" || event.key === "R") && !event.ctrlKey) {
+    
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToResources"))) {
       this.switchView(MenuEnum.Resources);
     }
 
-    if ((event.key === "s" || event.key === "S") && !event.ctrlKey) {
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToSettings"))) {
       this.switchView(MenuEnum.Settings);
     }
 
-    if ((event.key === "a" || event.key === "A") && !event.ctrlKey) {
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToAchievements"))) {
       this.switchView(MenuEnum.Achievements);
     }
   }
 
-  constructor(public menuService: MenuService, private globalService: GlobalService) { }
+  constructor(public menuService: MenuService, private globalService: GlobalService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {    
     this.partyMembers = this.globalService.globalVar.characters.filter(item => item.isAvailable);

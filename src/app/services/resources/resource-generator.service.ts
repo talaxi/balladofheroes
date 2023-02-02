@@ -127,6 +127,18 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.ForgottenLocket, ItemTypeEnum.Equipment, amount);
     }
+    if (type === ItemsEnum.PendantOfFortune)
+    {
+      return new ResourceValue(ItemsEnum.PendantOfFortune, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.PendantOfPower)
+    {
+      return new ResourceValue(ItemsEnum.PendantOfPower, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.PendantOfSpeed)
+    {
+      return new ResourceValue(ItemsEnum.PendantOfSpeed, ItemTypeEnum.Equipment, amount);
+    }
 
     //rings
     if (type === ItemsEnum.MoltenRing)

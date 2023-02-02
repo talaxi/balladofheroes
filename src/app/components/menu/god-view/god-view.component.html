@@ -136,17 +136,22 @@
     </div>
 
     <div class="godAbilities">
-        <span class="sectionHeaderText sectionHeading">Abilities</span><span>
-            <span class="s5Heading leftShift">Ability stats based on: <select [(ngModel)]="characterTemplate">
-                    <option *ngFor="let character of characters" [value]="character.type">{{character.name}}
-                    </option>
-                </select>
-            </span></span>
+        <span class="sectionHeaderText sectionHeading">Abilities</span>
         <div class="sectionInfo">
             <div *ngFor="let ability of abilityList">
                 <strong class="statLabel" [ngClass]="getGodColor()">{{ability.name}}</strong> - <span class="statValue"
                     [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
             </div>
+        </div>
+        <br/><br/>
+        <span class="sectionHeaderText sectionHeading">Affinity</span>
+        <div class="sectionInfo">
+            <span class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel}}</span>
+            <br />
+            <span>{{god.affinityExp | number : '1.0-0'}} / {{god.affinityExpToNextLevel | number : '1.0-0'}} XP to <span  class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel +
+                1}}</span></span>
+            <br />
+            <span><span class="statLabel" [ngClass]="getGodColor()">Next Reward:</span> +50% Pray Buff Length</span>
         </div>
     </div>
 </div>

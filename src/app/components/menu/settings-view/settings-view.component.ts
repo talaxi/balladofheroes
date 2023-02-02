@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { plainToInstance } from 'class-transformer';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
@@ -18,7 +19,7 @@ export class SettingsViewComponent implements OnInit {
   enteredRedemptionCode: string;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     console.log(this.globalService.globalVar);
@@ -87,6 +88,10 @@ export class SettingsViewComponent implements OnInit {
       }
       fileReader.readAsText(this.file);
     }
+  }
+
+  openKeybinds(content: any) {    
+      this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });    
   }
 
   enterRedemptionCode() {

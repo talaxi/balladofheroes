@@ -1,8 +1,11 @@
 import { Type } from "class-transformer";
+import { AltarInfo } from "../altar/altar-info.model";
 import { Character } from "../character/character.model";
 import { EnemyTeam } from "../character/enemy-team.model";
+import { ColiseumTournamentEnum } from "../enums/coliseum-tournament-enum.model";
 import { SceneTypeEnum } from "../enums/scene-type-enum.model";
 import { ResourceValue } from "../resources/resource-value.model";
+import { ColiseumTournament } from "./coliseum-tournament.model";
 
 export class Battle {    
     @Type(() => EnemyTeam)
@@ -14,7 +17,10 @@ export class Battle {
     atTown: boolean;
     @Type(() => ResourceValue)
     chestRewards: ResourceValue[];
+    selectedAltar: AltarInfo | undefined;
     battleDuration: number;
+
+    activeTournament: ColiseumTournament;
 
     constructor() {
         this.currentEnemies = new EnemyTeam();
@@ -23,5 +29,6 @@ export class Battle {
         this.sceneType = SceneTypeEnum.None;
         this.chestRewards = [];
         this.battleDuration = 0;
+        this.activeTournament = new ColiseumTournament();
     }
 }

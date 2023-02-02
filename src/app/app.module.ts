@@ -78,6 +78,10 @@ import { OverdriveViewComponent } from './components/subcomponents/overdrive-vie
 import { ChangeGodViewComponent } from './components/menu/character-view/change-god-view/change-god-view.component';
 import { LogViewComponent } from './components/subcomponents/log-view/log-view.component';
 import { ResourceItemViewComponent } from './components/menu/resource-view/resource-item-view/resource-item-view.component';
+import { UpdateKeybindsViewComponent } from './components/menu/settings-view/update-keybinds-view/update-keybinds-view.component';
+import { ColiseumViewComponent } from './components/subcomponents/coliseum-view/coliseum-view.component';
+import { AltarOptionsViewComponent } from './components/subcomponents/altar-options-view/altar-options-view.component';
+import { AltarComponent } from './components/layout/battle/altar/altar.component';
 
 
 @NgModule({
@@ -121,7 +125,11 @@ import { ResourceItemViewComponent } from './components/menu/resource-view/resou
     OverdriveViewComponent,
     ChangeGodViewComponent,
     LogViewComponent,
-    ResourceItemViewComponent
+    ResourceItemViewComponent,
+    UpdateKeybindsViewComponent,
+    ColiseumViewComponent,
+    AltarOptionsViewComponent,
+    AltarComponent
   ],
   imports: [
     BrowserModule,

@@ -29,6 +29,7 @@ export class BackgroundService {
         this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
         this.handleAbilityCooldowns(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
+        this.handleAltarEffectDurations(deltaTime);
       }
     });
   }
@@ -86,5 +87,16 @@ export class BackgroundService {
       if (!teamNeedsHealing)        
         this.globalService.globalVar.timers.townHpGainTimer = 0;
     }
+  }
+
+  handleAltarEffectDurations(deltaTime: number) {
+    if (this.globalService.globalVar.activeAltarEffects.length === 0)
+      return;
+
+      this.globalService.globalVar.activeAltarEffects.forEach(effect => {
+      effect.duration -= deltaTime;      
+    });
+
+    this.globalService.globalVar.activeAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.duration > 0);
   }
 }

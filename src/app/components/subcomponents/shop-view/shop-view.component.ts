@@ -70,6 +70,9 @@ export class ShopViewComponent implements OnInit {
     if (type === ShopTypeEnum.ChthonicFavor) {
       text = "Chthonic Favor";
     }
+    if (type === ShopTypeEnum.Coliseum) {
+      text = "Coliseum";
+    }
 
     return text;
   }
@@ -80,7 +83,10 @@ export class ShopViewComponent implements OnInit {
   }
 
   openShop(option: ShopOption, content: any) {
-    this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
+    if (option.type === ShopTypeEnum.Coliseum)
+      this.dialog.open(content, { width: '75%', maxHeight: '75%'});
+    else
+      this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
 
     if (option.type === ShopTypeEnum.Alchemist)
     {      
@@ -187,7 +193,6 @@ export class ShopViewComponent implements OnInit {
   changeFilter(filter: string) {
     if (filter === "Equipment") {
       this.filterEquipment = !this.filterEquipment;
-      console.log("Filter equipment: " + this.filterEquipment);
     }
     if (filter === "Battle Items")
       this.filterBattleItems = !this.filterBattleItems;

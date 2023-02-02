@@ -1,4 +1,5 @@
 import { Type } from "class-transformer";
+import { BestiaryEnum } from "../enums/bestiary-enum.model";
 import { LootItem } from "../resources/loot-item.model";
 import { ResourceValue } from "../resources/resource-value.model";
 import { CharacterStats } from "./character-stats.model";
@@ -10,6 +11,7 @@ export class Enemy extends Character {
     @Type(() => LootItem)
     loot: LootItem[];
     isBoss: boolean;
+    bestiaryType: BestiaryEnum;
     
     constructor() {
         super();

@@ -17,6 +17,7 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 
 @Component({
   selector: 'app-party',
@@ -42,17 +43,12 @@ export class PartyComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
-    var keybinds = this.globalService.globalVar.keybinds;
-
-    console.log(event.key + " === " + keybinds.get("autoToggleCharacter1AutoAttack") + " = " + (event.key === keybinds.get("autoToggleCharacter1AutoAttack")));
-    if (event.key === keybinds.get("autoToggleCharacter1AutoAttack")) {
-      this.party[0].battleInfo.autoAttackAutoMode = !this.party[0].battleInfo.autoAttackAutoMode;
-    }
+    this.setupKeybinds(event);    
   }
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService,
     private gameLoopService: GameLoopService, private menuService: MenuService, private utilityService: UtilityService,
-    private dpsCalculatorService: DpsCalculatorService) { }
+    private dpsCalculatorService: DpsCalculatorService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {
     this.party = this.globalService.getActivePartyCharacters(false);   
@@ -338,6 +334,216 @@ export class PartyComponent implements OnInit {
     dps = this.dpsCalculatorService.calculateEnemyDps();
 
     return dps;
+  }
+
+  setupKeybinds(event: KeyboardEvent) {
+    var keybinds = this.globalService.globalVar.keybinds;
+    
+    //character 1
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1AutoAttack"))) {
+      this.party[0].battleInfo.autoAttackManuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1Ability1"))) {
+      var ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+      if (ability !== undefined)
+        ability.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1Ability2"))) {
+      var ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+      if (ability !== undefined)
+        ability.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1God1Ability1"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 1, 0);       
+        godAbility.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1God1Ability2"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 1, 1);       
+        godAbility.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1God1Ability3"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 1, 2);       
+        godAbility.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1God2Ability1"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 2, 0);       
+        godAbility.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1God2Ability2"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 2, 1);       
+        godAbility.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1God2Ability3"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 2, 2);       
+        godAbility.manuallyTriggered = true;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1Overdrive"))) {
+      this.party[0].overdriveInfo.manuallyTriggered = true;
+    }
+
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1AutoAttack"))) {
+      this.party[0].battleInfo.autoAttackAutoMode = !this.party[0].battleInfo.autoAttackAutoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1Ability1"))) {
+      var ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+      if (ability !== undefined)
+        ability.autoMode = !ability.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1Ability2"))) {
+      var ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+      if (ability !== undefined)
+        ability.autoMode = !ability.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1God1Ability1"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 1, 0);       
+      godAbility.autoMode = !godAbility.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1God1Ability2"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 1, 1);       
+      godAbility.autoMode = !godAbility.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1God1Ability3"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 1, 2);       
+      godAbility.autoMode = !godAbility.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1God2Ability1"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 2, 0);       
+      godAbility.autoMode = !godAbility.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1God2Ability2"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 2, 1);       
+      godAbility.autoMode = !godAbility.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1God2Ability3"))) {      
+      var godAbility = this.getGodAbility(this.party[0], 2, 2);       
+      godAbility.autoMode = !godAbility.autoMode;
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1Overdrive"))) {
+      this.party[0].overdriveInfo.overdriveAutoMode = !this.party[0].overdriveInfo.overdriveAutoMode;
+    }
+
+    //Character 2
+    if (this.party[1] !== undefined) {
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2AutoAttack"))) {
+        this.party[1].battleInfo.autoAttackManuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2Ability1"))) {
+        var ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+        if (ability !== undefined)
+          ability.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2Ability2"))) {
+        var ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+        if (ability !== undefined)
+          ability.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2God1Ability1"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 1, 0);       
+          godAbility.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2God1Ability2"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 1, 1);       
+          godAbility.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2God1Ability3"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 1, 2);       
+          godAbility.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2God2Ability1"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 2, 0);       
+          godAbility.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2God2Ability2"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 2, 1);       
+          godAbility.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2God2Ability3"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 2, 2);       
+          godAbility.manuallyTriggered = true;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2Overdrive"))) {
+        this.party[1].overdriveInfo.manuallyTriggered = true;
+      }
+  
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2AutoAttack"))) {
+        this.party[1].battleInfo.autoAttackAutoMode = !this.party[1].battleInfo.autoAttackAutoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2Ability1"))) {
+        var ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+        if (ability !== undefined)
+          ability.autoMode = !ability.autoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2Ability2"))) {
+        var ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+        if (ability !== undefined)
+          ability.autoMode = !ability.autoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2God1Ability1"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 1, 0);       
+        godAbility.autoMode = !godAbility.autoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2God1Ability2"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 1, 1);       
+        godAbility.autoMode = !godAbility.autoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2God1Ability3"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 1, 2);       
+        godAbility.autoMode = !godAbility.autoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2God2Ability1"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 2, 0);       
+        godAbility.autoMode = !godAbility.autoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2God2Ability2"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 2, 1);       
+        godAbility.autoMode = !godAbility.autoMode;
+      }
+  
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2God2Ability3"))) {      
+        var godAbility = this.getGodAbility(this.party[1], 2, 2);       
+        godAbility.autoMode = !godAbility.autoMode;
+      }
+
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2Overdrive"))) {
+        this.party[1].overdriveInfo.overdriveAutoMode = !this.party[1].overdriveInfo.overdriveAutoMode;
+      }
+    }
   }
 
   ngOnDestroy() {

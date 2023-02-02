@@ -1,0 +1,32 @@
+<div class="keybindContainer">
+    <div class='centeredText'>
+        <i>
+            Change keybinds by clicking an existing keybind and then typing a new character or number.
+        </i>
+    </div>
+    <hr />
+    <div class="centeredText">
+        <span class="sectionHeaderText sectionHeading">menu</span>
+    </div>
+    <div *ngFor="let keybind of menuKeybinds" class="keybindItem">
+        <div class="grid">
+            <span class="keybindName">{{getKeybindName(keybind[0])}}</span>
+            <button class="buttonAsText clickableText" (click)="updateKeybind(keybind)"><span class="keybind"
+                    [innerHtml]="getKeybindButton(keybind)"></span></button>
+        </div>
+        <hr />
+    </div>
+    <br />
+    <br />
+    <div class="centeredText">
+        <span class="sectionHeaderText sectionHeading">battle</span>
+    </div>
+    <div *ngFor="let keybind of battleKeybinds" class="keybindItem">
+        <div class="grid">
+            <span class="keybindName">{{getKeybindName(keybind[0])}}</span>
+            <button class="buttonAsText clickableText" (click)="updateKeybind(keybind)"><span class="keybind"
+                    [innerHtml]="getKeybindButton(keybind)"></span></button>
+        </div>
+        <hr />
+    </div>
+</div>

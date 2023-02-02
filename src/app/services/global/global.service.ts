@@ -229,7 +229,8 @@ export class GlobalService {
       barrier.targetsAllies = true;
       barrier.effectiveness = .7;
       barrier.threshold = .10;
-      barrier.cooldown = barrier.currentCooldown = 5;
+      barrier.cooldown = barrier.currentCooldown = 45;
+      barrier.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .7, true, true, true, "", .1));
       character.abilityList.push(barrier);
     }
   }
@@ -576,7 +577,7 @@ export class GlobalService {
     }
   }
 
-  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean, isAoe: boolean = false, caster: string = "") {
+  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean, isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false) {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -585,6 +586,8 @@ export class GlobalService {
     statusEffect.isAoe = isAoe;
     statusEffect.caster = caster;
     statusEffect.refreshes = false;
+    statusEffect.threshold = threshold;
+    statusEffect.effectStacks = effectStacks;
 
     if (duration === -1)
       statusEffect.isPermanent = true;
@@ -599,13 +602,14 @@ export class GlobalService {
     return statusEffect;
   }
 
-  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, associatedAbilityName: string, dotType: dotTypeEnum = dotTypeEnum.BasedOnAttack) {
+  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, associatedAbilityName: string, dotType: dotTypeEnum = dotTypeEnum.BasedOnAttack, associatedElement: ElementalTypeEnum = ElementalTypeEnum.None) {
     var statusEffect = new StatusEffect(StatusEffectEnum.DamageOverTime);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
     statusEffect.tickFrequency = tickFrequency;
     statusEffect.associatedAbilityName = associatedAbilityName;
     statusEffect.dotType = dotType;
+    statusEffect.element = associatedElement;
 
     return statusEffect;
   }
@@ -713,6 +717,22 @@ export class GlobalService {
 
     //charms
     character.battleStats.hpRegen += this.charmService.getTotalHpRegenAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);
+    //TODO: should auto attack and ability cooldown reduction be % based?
+    character.battleStats.elementalDamageIncrease.holy += this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageIncrease.fire += this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageIncrease.lightning += this.charmService.getTotalLightningDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageIncrease.water += this.charmService.getTotalWaterDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageIncrease.air += this.charmService.getTotalAirDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageIncrease.earth += this.charmService.getTotalEarthDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+
+    character.battleStats.elementalDamageResistance.holy += this.charmService.getTotalHolyDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageResistance.fire += this.charmService.getTotalFireDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageResistance.lightning += this.charmService.getTotalLightningDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageResistance.water += this.charmService.getTotalWaterDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageResistance.air += this.charmService.getTotalAirDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementalDamageResistance.earth += this.charmService.getTotalEarthDamageResistanceAdditionFromCharms(this.globalVar.resources);
+
 
     //chthonic powers    
     character.battleStats.maxHp *= 1 + this.globalVar.chthonicPowers.getMaxHpBoostPercent();
@@ -1478,28 +1498,32 @@ export class GlobalService {
       ability = passiveAbility;
       upgradeLevel = 2;
     }
-    else if (godLevel === 45) {
+    else if (godLevel === 40) {
       ability = ability2;
       upgradeLevel = 2;
     }
-    else if (godLevel === 55) {
+    else if (godLevel === 45) {
       ability = defaultAbility;
       upgradeLevel = 3;
     }
-    else if (godLevel === 60) {
+    else if (godLevel === 55) {
       ability = ability2;
       upgradeLevel = 3;
     }
-    else if (godLevel === 65) {
+    else if (godLevel === 60) {
       ability = defaultAbility;
       upgradeLevel = 4;
     }
-    else if (godLevel === 70) {
+    else if (godLevel === 65) {
       ability = passiveAbility;
       upgradeLevel = 3;
     }
+    else if (godLevel === 70) {
+      ability = defaultAbility;
+      upgradeLevel = 5;
+    }
     else {
-      //4 3 3 1 at this point
+      //5 3 3 1 at this point
       //needs to rotate 3 abilities twice then passive, then repeat
       var repeaterLevel = (godLevel - 70) % 35;
       var repeaterCount = Math.ceil((godLevel - 70) / 35);
@@ -1512,7 +1536,7 @@ export class GlobalService {
       }
       else if (repeaterLevel === 5 || repeaterLevel === 20) {
         ability = defaultAbility;
-        upgradeLevel = repeaterLevel === 5 ? repeaterCount + 4 : repeaterCount + 5;
+        upgradeLevel = repeaterLevel === 5 ? repeaterCount + 5 : repeaterCount + 5;
       }
       else if (repeaterLevel === 10 || repeaterLevel === 25) {
         ability = ability2;

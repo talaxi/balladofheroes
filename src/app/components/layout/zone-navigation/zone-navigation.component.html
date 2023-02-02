@@ -1,14 +1,16 @@
 <div class="navigationGrid">
-    <div class="navigation">
-        <div class="balladHeader">
+    <div class="header">
+    <div class="balladHeader header">
             <span class="s4Heading balladTitle mainPageSectionHeader">Ballads</span>
             <span>
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
-            </span>
+            </span>          
         </div>
         <hr />
+    </div>
+    <div class="navigation">        
         <div class="zoneGrid">
             <div class="balladList">
                 <div *ngFor="let ballad of availableBallads">
@@ -46,9 +48,9 @@
                                         [ngClass]="getSubzoneClass(subzone)"
                                         (click)="selectSubZone(subzone, zone)">{{subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
-                                    <app-notification-icon *ngIf="subzone.showNewNotification">
-                                    </app-notification-icon>
-                                </button>
+                                        <app-notification-icon *ngIf="subzone.showNewNotification">
+                                        </app-notification-icon>
+                                    </button>
                                 </span>
                             </div>
                             <div *ngIf="subzone.isSelected">
@@ -62,66 +64,36 @@
                 </div>
             </div>
         </div>
-        <!--<div *ngFor="let ballad of availableBallads">
-            <div *ngIf="!ballad.isSelected">
-                <span [ngClass]="getBalladClass(ballad)"
-                    (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}} <app-notification-icon
-                        *ngIf="ballad.showNewNotification"></app-notification-icon></span>
-            </div>
-            <div *ngIf="ballad.isSelected">
-                <span class="selected"><strong
-                        [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></span>
-                <div *ngFor="let zone of availableZones">
-                    <div *ngIf="!zone.isSelected">
-                        &#8618;<span [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)">{{zone.zoneName}}
-                            <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
-                        </span>
-                    </div>
-                    <div *ngIf="zone.isSelected">
-                        <span class="selected">&#8618;<strong
-                                [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></span>
-                        <div *ngFor="let subzone of availableSubZones">
-                            <div *ngIf="!subzone.isSelected">
-                                <span class="subzoneSpacer">&#8618;</span><span
-                                    [ngClass]="getSubzoneClass(subzone)"><span
-                                        (click)="selectSubZone(subzone, zone)">{{subzone.name}}
-                                        ({{subzone.victoryCount}}<span
-                                            *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
-                                        wins) <app-notification-icon *ngIf="subzone.showNewNotification">
-                                        </app-notification-icon></span></span>
-                            </div>
-                            <div *ngIf="subzone.isSelected">
-                                <strong><span class="selected"><span class="subzoneSpacer">&#8618;</span><span
-                                            [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
-                                            ({{subzone.victoryCount}}<span
-                                                *ngIf="subzone.victoriesNeededToProceed > subzone.victoryCount">/{{subzone.victoriesNeededToProceed}}</span>
-                                            wins)</span></span></strong>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>-->
     </div>
-    <div class="hr gap">
+    <div class="hr gap1">
         <hr />
     </div>
-    <div class="quickLink">        
+    <div class="altars">
+        <app-altar-options-view></app-altar-options-view>
+    </div>
+    <div class="hr gap2">
+        <hr />
+    </div>
+    <div class="quickLink">
         <div class="quickLinkIcons">
             <button class="buttonAsText clickableText" (click)="setQuickView(quickViewEnum.Overview)">
                 <img *ngIf="quickView === quickViewEnum.Overview" class="icon" src="assets/svg/overviewQuickView.svg">
-                <img *ngIf="quickView !== quickViewEnum.Overview" class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
+                <img *ngIf="quickView !== quickViewEnum.Overview" class="icon iconDisabled"
+                    src="assets/svg/overviewDisabled.svg">
             </button>
             <button class="buttonAsText clickableText" (click)="setQuickView(quickViewEnum.Resources)">
                 <img *ngIf="quickView === quickViewEnum.Resources" class="icon" src="assets/svg/resourcesQuickView.svg">
-                <img *ngIf="quickView !== quickViewEnum.Resources" class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
+                <img *ngIf="quickView !== quickViewEnum.Resources" class="icon iconDisabled"
+                    src="assets/svg/resourcesDisabled.svg">
             </button>
-            <button class="buttonAsText clickableText" *ngIf="isAlchemyAvailable()" (click)="setQuickView(quickViewEnum.Alchemy)">
+            <button class="buttonAsText clickableText" *ngIf="isAlchemyAvailable()"
+                (click)="setQuickView(quickViewEnum.Alchemy)">
                 <img *ngIf="quickView === quickViewEnum.Alchemy" class="icon" src="assets/svg/alchemyQuickView.svg">
-                <img *ngIf="quickView !== quickViewEnum.Alchemy" class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
+                <img *ngIf="quickView !== quickViewEnum.Alchemy" class="icon iconDisabled"
+                    src="assets/svg/alchemyDisabled.svg">
             </button>
         </div>
-        <br/>
+        <br />
         <!--<div class="centeredText mainPageSectionHeader">
             {{getQuickViewTitleName()}} Quick View
         </div>-->
@@ -130,46 +102,69 @@
                 <div *ngIf="townsAvailable" class="quickJump centeredText">
                     <span>Jump to..</span>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable" (click)="jumpToLatestShop()">Latest Town</button>
-                    <br/>
-                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable" (click)="jumpToLatestGeneralStore()">Latest General Store</button>
-                    <br/>
-                    <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()" (click)="jumpToPalaceOfHades()">Palace of Hades</button>
+                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
+                        (click)="jumpToLatestShop()">Latest Town</button>
+                    <br />
+                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
+                        (click)="jumpToLatestGeneralStore()">Latest General Store</button>
+                    <br />
+                    <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()"
+                        (click)="jumpToPalaceOfHades()">Palace of Hades</button>
                 </div>
                 <div class="peekResources centeredText">
                     <div class="textLeftAligned inlineBlock">
-                    <span class="resource bold">Coins: {{lookupService.getResourceAmount(itemsEnum.Coin) | number}}</span> <br/>
-                     <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" class="resource chthonicFavorKeyword" customToolTip [contentTemplate]="chthonicFavorPopover">Chthonic Favor: {{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number : '1.0-2'}}</span> <br/>
-                    <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" class="resource chthonicPowerKeyword" customToolTip [contentTemplate]="chthonicPowerPopover">Chthonic Power: {{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number : '1.0-2'}}</span>
-                </div>
+                        <span class="resource bold">Coins:</span><span> {{lookupService.getResourceAmount(itemsEnum.Coin) |
+                            number}}</span> <br />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
+                            class="resource chthonicFavorKeyword" customToolTip
+                            [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number : '1.0-2'}}</span></span>
+                        <br />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
+                            class="resource chthonicPowerKeyword" customToolTip
+                            [contentTemplate]="chthonicPowerPopover">Chthonic Power:
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number : '1.0-2'}}</span></span>
+                    </div>
                 </div>
             </div>
         </div>
-        <div class="resourcesQuickView" *ngIf="quickView === quickViewEnum.Resources">
-            <div *ngFor="let resource of trackedResources" class="resource">
-                <app-resource-item-view [resource]="resource"></app-resource-item-view>
+        <div class="resourcesQuickView centeredText" *ngIf="quickView === quickViewEnum.Resources">
+            <div class="quickLinkGrid">
+                <div *ngIf="trackedResourcesColumn1.length > 0" class="peekResources">
+                    <div *ngFor="let resource of trackedResourcesColumn1" class="resource">
+                        <app-resource-item-view [resource]="resource"></app-resource-item-view>
+                    </div>
+                </div>
+                <div *ngIf="trackedResourcesColumn2.length > 0" class="quickJump">
+                    <div *ngFor="let resource of trackedResourcesColumn2" class="resource">
+                        <app-resource-item-view [resource]="resource"></app-resource-item-view>
+                    </div>
+                </div>
             </div>
         </div>
         <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
             <div *ngIf="creatingRecipe()">
-                <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth" *ngIf="this.getTotalAmountToCreate() > 1">&nbsp;<i>({{this.getAmountCreated() + 1}} of {{this.getTotalAmountToCreate()}})</i></span>       
-                <br/>        
-                <mat-progress-bar mode="determinate" [value]="getStepProgress()" class="purple-progress centeredBar removeAnimation">
-                </mat-progress-bar>    
+                <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span
+                    class="offsetWidth" *ngIf="this.getTotalAmountToCreate() > 1">&nbsp;<i>({{this.getAmountCreated() +
+                        1}} of {{this.getTotalAmountToCreate()}})</i></span>
+                <br />
+                <mat-progress-bar mode="determinate" [value]="getStepProgress()"
+                    class="purple-progress centeredBar removeAnimation">
+                </mat-progress-bar>
                 <span><i>({{getTimeRemaining()}} remaining)</i></span>
             </div>
             <div *ngIf="!creatingRecipe()">
                 <strong>Not Currently Brewing</strong>
             </div>
-            <br/>
-            <button class="buttonStyled" (click)="openAlchemy(alchemyRecipeBook)">Open Recipe Book</button>            
+            <br />
+            <button class="buttonStyled" (click)="openAlchemy(alchemyRecipeBook)">Open Recipe Book</button>
         </div>
     </div>
 </div>
 
 <ng-template #alchemyRecipeBook>
     <div>
-        <app-alchemy-view></app-alchemy-view>  
+        <app-alchemy-view></app-alchemy-view>
     </div>
 </ng-template>
 

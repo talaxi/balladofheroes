@@ -14,13 +14,32 @@
     font-variant: small-caps;
 }
 
-
+.zoneList {
+    overflow-y: auto;
+}
 
 .selected {
     color: var(--foreground-secondary) !important;
 }
 
 .navigationGrid {
+    display: grid;
+    height: 100%;
+    margin: 0 .5rem;
+    grid-template-columns: auto;
+    grid-template-rows: auto 47% 1rem 7.5% 1rem 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "header"
+        "navigation"
+        "gap1"
+        "altars"
+        "gap2"
+        "quickLink";
+}
+
+
+/*.navigationGrid {
     display: grid;
     height: 100%;    
     grid-template-columns: auto;
@@ -30,14 +49,30 @@
         "navigation"
         "gap"
         "quickLink";
+}*/
+
+.header {
+    grid-area: header;
 }
 
 .navigation {
     grid-area: navigation;
 }
 
+.gap1 {
+    grid-area: gap1;
+}
+
 .quickLink {
     grid-area: quickLink;    
+}
+
+.altars {
+    grid-area: altars;
+}
+
+.gap2 {
+    grid-area: gap2;
 }
 
 .quickLinkGrid {
@@ -81,6 +116,7 @@
 }
 
 .quickLinkIcons {
+    height: 2rem;
     width: 100%;
     display: flex;
     justify-content: space-evenly;

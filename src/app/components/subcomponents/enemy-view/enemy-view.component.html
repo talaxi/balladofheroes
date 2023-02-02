@@ -1,14 +1,63 @@
-<div *ngIf="character !== undefined" class="characterInfo" (click)='useBattleItemOnCharacter(character)' [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}" >
-    <span class="s2Heading">{{character.name}} </span>    
-    <br />
-    <br />
-    <div class="flex" [ngClass]="{'boss': isBoss }">
+<div *ngIf="character !== undefined" class="characterInfo" (click)='useBattleItemOnCharacter(character)'
+    [ngClass]="{'characterTargeted': targetCharacterWithItem(character)}">
+    <span class="s2Heading" customToolTip [tooltipDirection]="tooltipDirection"
+        [contentTemplate]="enemyPopover">{{character.name}} </span>    
+    <div [ngClass]="{'boss': isBoss, 'enemy': !isBoss}" class="boss"> <!--ignore the class name...-->
+        <div class="hpBarSpace hpBarGrid">
         <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
             class="green-progress characterBar hpBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
-        </mat-progress-bar> <span class="hpMpText hpAmount">{{character.battleStats.currentHp | number : '1.0-0'}} /
-            {{character.battleStats.maxHp | number : '1.0-0'}}</span>
+        </mat-progress-bar>
+        <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate" [value]="getCharacterBarrierPercent(character)"
+            class="barrier-progress characterBar hpBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
+        </mat-progress-bar> 
+    </div>
+        <span class="hpMpText hpAmount">{{character.battleStats.currentHp | number : '1.0-0'}} /
+            {{character.battleStats.maxHp | number : '1.0-0'}} <br/><span
+            *ngIf="getCharacterBarrierValue(character) > 0" class="barrier">({{getCharacterBarrierValue(character) | number : '1.0-0'}})</span></span>
     </div>
     <div>
         <app-status-effect-view [character]="character"></app-status-effect-view>
     </div>
 </div>
+
+<ng-template #enemyPopover>
+    <div>
+        <span class="s2Heading">{{character.name}}</span>
+        <hr />
+        <div class="stats">
+            <div class="statColumn1">
+                <span class='statLabel'>Attack:</span> {{character.battleStats.attack}}
+                <br />
+                <span class='statLabel'>Agility:</span> {{character.battleStats.agility}}
+                <br />
+                <span class='statLabel'>Luck:</span> {{character.battleStats.luck}}
+            </div>
+            <div class="statColumn2">
+                <span class='statLabel'>Max HP:</span> {{character.battleStats.maxHp}}
+                <br />
+                <span class='statLabel'>Defense:</span> {{character.battleStats.defense}}
+                <br />
+                <span class='statLabel'>Resistance:</span> {{character.battleStats.resistance}}
+            </div>
+        </div>
+        <br />
+        <span *ngIf="character.abilityList.length === 0">No abilities.</span>
+        <div *ngIf="character.abilityList.length > 0">
+            <div *ngFor="let ability of character.abilityList">
+                <span class='statLabel'>{{ability.name}}</span> - <span [innerHtml]='lookupService.getEnemyAbilityDescription(character, ability)'></span>
+            </div>
+        </div>
+        <!-- abilities -->
+        <hr />
+        <span><span class='statLabel'>Coins:</span> {{character.coinGainFromDefeat}}</span>
+        <br/>
+        <span *ngIf="character.loot.length === 0">No loot.</span>
+        <div *ngIf="character.loot.length > 0">
+            <span class='statLabel'>Possible Loot:</span>
+            <div *ngFor="let loot of character.loot">
+                {{lookupService.getItemName(loot.item)}}
+            </div>
+        </div>
+
+    </div>
+</ng-template>

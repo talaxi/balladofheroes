@@ -1,0 +1,37 @@
+<div class="container">
+    <div class="column">
+        <div class="listList">
+            <span class="centeredText mainPageSectionHeader">coliseum</span>
+            <br />
+            <br />
+            <div class="listBackground">
+                <div *ngFor="let tournament of getColiseumTournaments(); let i = index" (click)="chooseColiseumTournament(tournament)"
+                    class="listItem"
+                    [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}">
+                    <button class="buttonAsText clickableText listItemButton"
+                        [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}"
+                        [innerHtml]="getTournamentName(tournament)"></button>
+                    <hr class="noMargin" />
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vr">
+        <hr class="vrHr" />
+    </div>
+    <div class="column column2">
+        <div *ngIf="selectedTournament !== undefined">
+            <span class="s4Heading" [innerHtml]="getTournamentName()"></span>
+            <br />
+            <br />
+            <span [innerHtml]="getTournamentDescription()"></span>
+            <hr />
+            <div>
+                
+                <br />
+                <br />
+                <button (click)="startTournament()">Start Tournament</button>
+            </div>
+        </div>
+    </div>
+</div>

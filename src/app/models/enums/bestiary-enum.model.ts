@@ -43,5 +43,8 @@ export enum BestiaryEnum {
   FallenHero,
   TwistedSoul,
   BlessedShade,
-  ExiledHoplite
+  ExiledHoplite,
+  Ixion,
+  Castor,
+  Pollux
 }

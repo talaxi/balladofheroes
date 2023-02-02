@@ -58,7 +58,12 @@
     .trackingButton {
       /*width: 100%;*/
       font-size: 1rem;
-      text-align: left;
+      text-align: left;      
+    }
+
+    .trackingButton:active:enabled {      
+      transform: unset;
+      -webkit-transform: unset;
     }
 
     .resourceDiv {

@@ -22,7 +22,10 @@ export class God {
     lastStatGain: CharacterStatEnum;
     statGainCount = 0;
     permanentStat1GainCount: [number, number][];    
-    permanentStat2GainCount: [number, number][];    
+    permanentStat2GainCount: [number, number][];  
+    affinityLevel: number;
+    affinityExp: number;  
+    affinityExpToNextLevel: number;
 
     constructor(type: GodEnum) {
         this.type = type;
@@ -37,6 +40,10 @@ export class God {
         this.lastStatGain = CharacterStatEnum.Resistance;
         this.permanentStat1GainCount = [];
         this.permanentStat2GainCount = [];
+
+        this.affinityLevel = 0;
+        this.affinityExp = 0;
+        this.affinityExpToNextLevel = 100;
     }
 
     private getGainModifier(type: GodEnum) {

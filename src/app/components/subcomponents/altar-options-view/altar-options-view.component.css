@@ -1,0 +1,91 @@
+.container {
+    width: 100%;
+    height: 100%;
+    display: flex;
+    justify-content: center;
+}
+
+.centeredBox {
+    /*width: 80%;*/
+    height: 100%;
+    aspect-ratio: 1 / 1;
+    display: flex;
+    align-self: center;
+}
+
+.abilityTimer {
+    width: 100% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 0;
+}
+
+.abilityTimer svg {
+    width: 80% !important;
+    height: 80% !important;
+}
+
+.ability {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.abilityImage {
+    height: 100%;
+}
+
+.mat-progress-spinner svg circle {
+    stroke: unset !important;
+}
+
+.manualModeText {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.manualModeImage {
+    opacity: .3;
+}
+
+.grid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;   
+    grid-template-rows: 100%; 
+    justify-content: stretch;
+    grid-template-areas:
+        "altar1 altar2 altar3 altar4 altar5 buffs";
+}
+
+.altar1 {
+    grid-area: altar1;
+}
+
+.altarUnavailable {
+    opacity: .5;
+}
+
+.buffs {
+    grid-area: buffs;        
+    border: 2px solid var(--positive-status-effect);      
+    width: 50%;    
+    margin: auto;
+    aspect-ratio: 1/1;
+}
+
+.buffImage {    
+    height: 100%;
+    max-width: 50%;
+    aspect-ratio: 1/1;
+    margin: auto;
+    display: block;
+}

@@ -9,6 +9,7 @@ import { BattleService } from 'src/app/services/battle/battle.service';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -23,16 +24,17 @@ export class HeaderComponent implements OnInit {
 
   constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
     public utilityService: UtilityService, private globalService: GlobalService, public deploymentService: DeploymentService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog, private keybindService: KeybindService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    var keybinds = this.globalService.globalVar.keybinds;
   
-    if (event.key === "m" || event.key === "M") {
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("openMenu"))) {
       this.openMenu();
     }
       
-    if (event.key === "p" || event.key === "P") {
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("togglePauseGame"))) {
       this.pauseGame();
     }
   }

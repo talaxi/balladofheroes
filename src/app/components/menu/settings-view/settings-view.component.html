@@ -40,4 +40,13 @@
         </div>
         <br/>
     </div>
+    <div class="updateKeybinds">
+        <button (click)="openKeybinds(keybindContent)">Update Keybinds</button>
+    </div>
 </div>
+
+<ng-template #keybindContent>
+    <div>
+        <app-update-keybinds-view></app-update-keybinds-view>
+    </div>
+</ng-template>

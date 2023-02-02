@@ -1,0 +1,45 @@
+<div class="grid">
+
+    <div customToolTip [contentTemplate]="smallAltarPopover" [tooltipDirection]="tooltipDirection" class="altar1">
+        <button (click)="viewAltar(smallAltar)" *ngIf="smallAltar !== undefined" class="container buttonAsText"
+            [disabled]="!isAltarReady(smallAltar)">
+            <div class="centeredBox">
+                <div #spinnerDiv class="ability">
+                    <div>
+                        <span class='abilityTimer'><img class="abilityImage" src="assets/svg/smallAltar.svg" /></span>
+                    </div>
+                    <div [ngClass]="{'altarUnavailable': !isAltarReady(smallAltar) }">
+                        <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor(smallAltar)"
+                            mode="determinate" [diameter]="spinnerDiameter" [strokeWidth]="strokeWidth"
+                            [value]="getAltarCompletionPercent(smallAltar)"></mat-spinner>
+                    </div>
+                </div>
+            </div>
+        </button>
+    </div>
+    <div class="altar2"></div>
+    <div class="altar3"></div>
+    <div class="altar4"></div>
+    <div class="altar5"></div>
+    <div class="buffs" *ngIf="globalService.globalVar.activeAltarEffects.length > 0" customToolTip [contentTemplate]="buffPopover" [tooltipDirection]="buffTooltipDirection">
+        <img class="buffImage" src="assets/svg/statUpSE.svg" />
+    </div>
+</div>
+
+<ng-template #smallAltarPopover>
+    <div [innerHtml]="getAltarName(altarType.Small)">
+    </div>
+    <hr />
+    <div [innerHtml]="getAltarDescription(altarType.Small)">
+    </div>
+    <hr />
+    <div [innerHtml]="getAltarConditions(altarType.Small)">
+    </div>
+</ng-template>
+
+<ng-template #buffPopover>
+    <span>List of active altar effects:</span>
+    <hr/>    
+    <div [innerHtml]="getAltarEffects()"> 
+    </div>   
+</ng-template>

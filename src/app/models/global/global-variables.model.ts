@@ -15,6 +15,10 @@ import { PlayerNavigation } from "../zone/player-navigation.model";
 import { Zone } from "../zone/zone.model";
 import { Achievement } from "./achievement.model";
 import { Timers } from "./timers.model";
+import { Guid } from 'guid-typescript';
+import { EnemyDefeatCount } from "../battle/enemy-defeat-count.model";
+import { AltarInfo } from "../altar/altar-info.model";
+import { AltarEffect } from "../altar/altar-effect.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -60,7 +64,14 @@ export class GlobalVariables {
     performanceMode = false;
     @Type(() => LogData)
     logData: LogData[];
-    trackedResources: ItemsEnum[];
+    trackedResources: ItemsEnum[];    
+    guid: string;
+    @Type(() => EnemyDefeatCount)
+    enemyDefeatCount: EnemyDefeatCount[];
+    @Type(() => AltarInfo)
+    altarInfo: AltarInfo[];
+    @Type(() => AltarEffect)
+    activeAltarEffects: AltarEffect[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -72,6 +83,7 @@ export class GlobalVariables {
         this.achievements = [];
         this.logData = [];
         this.trackedResources = [];
+        this.enemyDefeatCount = [];
         this.itemBeltSize = 1;
         //this.activeBattle = new Battle();
         this.playerNavigation = new PlayerNavigation();
@@ -84,5 +96,8 @@ export class GlobalVariables {
         this.chthonicPowers = new ChthonicPowers();
         this.alchemy = new Alchemy();
         this.keybinds = new Settings();
+        this.altarInfo = [];
+        this.activeAltarEffects = [];
+        this.guid = Guid.create().toString();
     }
 }

@@ -1,7 +1,12 @@
 <div class="gridContainer">
     <div class="header">
-        <div class="s4Heading textCentered selectedSubzone pageHeader"><strong>{{activeSubzone.name}}</strong> <span
-                *ngIf="showDevStats"> EPS: {{getExpectedExpPerSec()}}</span></div>
+        <div class="headerFlex">
+            <div class="alignCenter" *ngIf="doingColiseumFight()">
+                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} of {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>
+            <div class="s4Heading textCentered selectedSubzone pageHeader"><strong>{{activeSubzone.name}}</strong> <span
+                    *ngIf="showDevStats"> EPS: {{getExpectedExpPerSec()}}</span></div>
+            <div class="alignCenter" *ngIf="doingColiseumFight()">{{getTournamentTimeRemaining()}} remaining</div>
+        </div>
         <hr />
     </div>
     <div class="scene"
@@ -67,6 +72,9 @@
                 </mat-progress-bar>
             </div>
             <!--<hr class='hr' />-->
+        </div>
+        <div *ngIf="isAtAltarScene()" class="altar">
+           <app-altar></app-altar>
         </div>
         <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene()" class="shopGrid">
             <app-shop-view></app-shop-view>

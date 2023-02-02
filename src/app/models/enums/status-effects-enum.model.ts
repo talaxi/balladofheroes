@@ -38,5 +38,20 @@ export enum StatusEffectEnum {
     Thorns,
     DebilitatingToxin,
     PoisonousToxin,
-    HeroicElixir
+    HeroicElixir,
+    Enfire,
+    Enair,
+    Enlightning,
+    Enwater,
+    Enearth,
+    Enholy,
+    Barfire,
+    Barair,
+    Barlightning,
+    Barwater,
+    Barearth,
+    Barholy,
+    Stagger,
+    Barrier,
+    Sap
   }

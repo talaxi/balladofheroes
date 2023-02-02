@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
@@ -22,6 +22,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -39,13 +40,19 @@ export class ZoneNavigationComponent implements OnInit {
   townsAvailable = false;
   quickView: QuickViewEnum = QuickViewEnum.Overview;
   quickViewEnum = QuickViewEnum;
-  trackedResources: ItemsEnum[];
+  trackedResourcesColumn1: ItemsEnum[] = [];
+  trackedResourcesColumn2: ItemsEnum[] = [];
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {    
+    this.setupKeybinds(event);    
+  }
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
     private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService, public dialog: MatDialog,
-    private alchemyService: AlchemyService) { }
+    private alchemyService: AlchemyService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
@@ -84,7 +91,9 @@ export class ZoneNavigationComponent implements OnInit {
         this.selectNextSubzone();
       }
 
-      this.trackedResources = this.globalService.globalVar.trackedResources;
+      this.trackedResourcesColumn1 = this.globalService.globalVar.trackedResources.slice(0, 5);
+      if (this.globalService.globalVar.trackedResources.length > 5)
+        this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
     });
   }
 
@@ -427,6 +436,20 @@ export class ZoneNavigationComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  setupKeybinds(event: KeyboardEvent) {
+    var keybinds = this.globalService.globalVar.keybinds;
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openOverviewQuickView"))) {
+      this.setQuickView(QuickViewEnum.Overview);
+    }
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openResourcesQuickView"))) {
+      this.setQuickView(QuickViewEnum.Resources);
+    }
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAlchemyQuickView"))) {
+      this.setQuickView(QuickViewEnum.Alchemy);
+    }
   }
 
   ngOnDestroy() {

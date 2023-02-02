@@ -1,5 +1,6 @@
 import { Character } from "../character/character.model";
 import { dotTypeEnum } from "../enums/damage-over-time-type-enum.model";
+import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { StatusEffectEnum } from "../enums/status-effects-enum.model";
 
 export class StatusEffect {
@@ -15,6 +16,9 @@ export class StatusEffect {
     maxCount: number;
     isPositive: boolean;
     caster: string;
+    threshold: number;
+    effectStacks: boolean;
+    stackCount: number;
 
     //for DoTs
     associatedAbilityName: string;
@@ -22,6 +26,7 @@ export class StatusEffect {
     tickTimer: number;
     //basedOnOriginalDamage: boolean; //is the DoT based on original damage dealt or is it standalone?
     dotType: dotTypeEnum;
+    element: ElementalTypeEnum;
 
     constructor(type: StatusEffectEnum, persistsDeath?: boolean) {
         this.type = type;
@@ -35,6 +40,9 @@ export class StatusEffect {
         this.count = 0;
         this.maxCount = 0;
         this.dotType = dotTypeEnum.BasedOnDamage;
+        this.element = ElementalTypeEnum.None;
+        this.effectStacks = false;
+        this.stackCount = 1;
     }
 
     makeCopy() {
@@ -51,7 +59,8 @@ export class StatusEffect {
         copy.maxCount = this.maxCount;
         copy.caster = this.caster;
         copy.refreshes = this.refreshes;
-        
+        copy.effectStacks = this.effectStacks;
+
         copy.associatedAbilityName = this.associatedAbilityName;
         copy.tickFrequency = this.tickFrequency;
         copy.tickTimer = this.tickTimer;

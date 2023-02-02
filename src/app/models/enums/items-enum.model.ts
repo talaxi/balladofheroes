@@ -99,5 +99,9 @@ export enum ItemsEnum {
   PendantOfPower,
   PendantOfSpeed,
   PendantOfFortune,
-  PoisonExtractPotionRecipe
+  PoisonExtractPotionRecipe,
+  BrokenNecklace,
+  SmallRuby,
+  SmallTopaz,
+  SmallEmerald
 }

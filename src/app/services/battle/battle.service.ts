@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { Battle } from 'src/app/models/battle/battle.model';
+import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
+import { AltarConditionEnum } from 'src/app/models/enums/altar-condition-enum.model';
+import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
@@ -26,6 +30,7 @@ import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { AchievementService } from '../achievements/achievement.service';
+import { AltarService } from '../altar/altar.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { TutorialService } from '../global/tutorial.service';
@@ -34,6 +39,7 @@ import { MenuService } from '../menu/menu.service';
 import { StoryService } from '../story/story.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
+import { ColiseumService } from './coliseum.service';
 import { DpsCalculatorService } from './dps-calculator.service';
 import { GameLogService } from './game-log.service';
 
@@ -51,7 +57,7 @@ export class BattleService {
     private balladService: BalladService, private utilityService: UtilityService, private gameLogService: GameLogService,
     private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService,
     private menuService: MenuService, public dialog: MatDialog, private tutorialService: TutorialService,
-    private dpsCalculatorService: DpsCalculatorService) { }
+    private dpsCalculatorService: DpsCalculatorService, private coliseumService: ColiseumService, private altarService: AltarService) { }
 
   handleBattle(deltaTime: number, loadingContent: any) {
     var lastPerformanceNow = performance.now();
@@ -77,6 +83,9 @@ export class BattleService {
       else if (this.battle.sceneType === SceneTypeEnum.Chest) {
         continueShowing = this.handleChest(deltaTime);
       }
+      else if (this.battle.sceneType === SceneTypeEnum.Altar) {
+        continueShowing = true;
+      }
 
       if (!continueShowing) {
         this.battle.atScene = false;
@@ -84,7 +93,7 @@ export class BattleService {
       }
     }
     else {
-      if (subZone.isTown) //no need to check any battle info
+      if (subZone.isTown && this.battle.activeTournament.type === ColiseumTournamentEnum.None) //no need to check any battle info
       {
         this.battle.atTown = true;
         return;
@@ -111,6 +120,14 @@ export class BattleService {
       if (deltaTime > 0) {
         this.battle.battleDuration += deltaTime;
         this.updateBattleState(party, enemies);
+
+        if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
+          this.battle.activeTournament.tournamentTimer += deltaTime;
+
+          if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
+            this.battle.activeTournament = new ColiseumTournament();
+          }
+        }
       }
     }
 
@@ -178,6 +195,10 @@ export class BattleService {
           character1.assignedGod1 = GodEnum.Athena;
         }
       }
+    }
+
+    if (subzone.type === SubZoneEnum.DodonaDelphiOutskirts && subzone.victoryCount >= 1) {
+      this.globalService.globalVar.altarInfo.push(this.altarService.getTutorialAltar());
     }
 
     if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
@@ -293,8 +314,16 @@ export class BattleService {
   }
 
   initializeEnemyList() {
-    var subZone = this.balladService.getActiveSubZone();
-    var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subZone.type);
+    if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
+      //tournament battles
+      var enemyOptions = this.coliseumService.generateBattleOptions(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
+    }
+    else {
+      //all standard battles
+      var subZone = this.balladService.getActiveSubZone();
+      var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subZone.type);
+    }
+
     var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
     this.battle.currentEnemies = randomEnemyTeam;
     this.battle.battleDuration = 0;
@@ -402,8 +431,12 @@ export class BattleService {
       overdriveMultiplier = this.lookupService.getOverdriveMultiplier(character);
       usingOverdrive = true;
       character.overdriveInfo.overdriveGaugeAmount = 0;
+      this.altarService.incrementAltarCount(AltarConditionEnum.OverdriveUse);
     }
     character.overdriveInfo.manuallyTriggered = false;
+
+    if (isPartyAttacking)
+      this.altarService.incrementAltarCount(AltarConditionEnum.AutoAttackUse);
 
     var damageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, overdriveMultiplier, damageMultiplier);
     //console.log(isPartyAttacking + " " + character.type + " attacking. dmg = " + damageDealt + " to " + target.type);
@@ -614,7 +647,7 @@ export class BattleService {
     var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
     var target = this.getTarget(user, ability.targetsAllies ? party : targets, ability.targetType !== undefined ? ability.targetType : TargetEnum.Random);
     var damageDealt = 0;
-    var elementalText = "";    
+    var elementalText = "";
 
     if (target === undefined)
       return false;
@@ -718,24 +751,6 @@ export class BattleService {
         }
       }
     }
-    else if (ability.name === "Pray") {
-      var barrierAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user);
-
-      targets.forEach(partyMember => {
-        partyMember.battleInfo.barrierValue += barrierAmount;
-
-        if (partyMember.battleInfo.barrierValue > partyMember.battleStats.maxHp * ability.threshold) {
-          //TODO: maybe don't overwrite existing effect though if it was already higher
-          partyMember.battleInfo.barrierValue = partyMember.battleStats.maxHp * ability.threshold;
-        }
-      });
-
-      if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
-        (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + ", shielding allies for " + barrierAmount + " damage.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
-      }
-    }
     else {
       if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
         (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
@@ -744,8 +759,24 @@ export class BattleService {
       }
     }
 
-    this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, targets, damageDealt);
+    this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt);
     this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt);
+
+    if (isPartyUsing)
+      this.altarService.incrementAltarCount(AltarConditionEnum.AbilityUse);
+
+    //code specific to Ixion
+    if (user.name === "Ixion" && user.battleInfo.statusEffects.some(item => (item.type === StatusEffectEnum.AgilityUp || item.type === StatusEffectEnum.AttackUp) && item.stackCount > 3))
+    {
+      var flamesOfTartarus = user.abilityList.find(item => item.name === "Flames of Tartarus");
+      if (flamesOfTartarus !== undefined)
+      {        
+        user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => 
+          !((item.type === StatusEffectEnum.AgilityUp || item.type === StatusEffectEnum.AttackUp) && item.stackCount > 3));          
+
+        this.useAbility(isPartyUsing, flamesOfTartarus, user, targets, party, isGodAbility);                
+      }
+    }
 
     var secondWind = this.lookupService.characterHasAbility("Second Wind", user);
 
@@ -799,6 +830,46 @@ export class BattleService {
 
           if (instantEffect.type === StatusEffectEnum.InstantAutoAttack) {
             this.handleAutoAttack(isPartyUsing, member, targets, party, instantEffect.effectiveness);
+          }
+
+          if (instantEffect.type === StatusEffectEnum.Sap) {
+            var sapDamage = instantEffect.effectiveness * member.battleStats.attack;
+            var target = this.getTarget(user, targets, TargetEnum.Random);
+            if (target !== undefined) {
+              this.dealTrueDamage(isPartyUsing, target, sapDamage);
+              this.gainHp(user, sapDamage);
+            }
+          }
+
+          if (instantEffect.type === StatusEffectEnum.Barrier) {
+            var barrierAmount = instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user);
+            if (instantEffect.isAoe) {              
+              party.forEach(partyMember => {
+                partyMember.battleInfo.barrierValue += barrierAmount;
+
+                if (partyMember.battleInfo.barrierValue > partyMember.battleStats.maxHp * instantEffect.threshold) {
+                  //TODO: maybe don't overwrite existing effect though if it was already higher
+                  partyMember.battleInfo.barrierValue = partyMember.battleStats.maxHp * instantEffect.threshold;
+                }
+                
+                partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Barrier);
+              });
+            }
+            else {              
+              user.battleInfo.barrierValue += barrierAmount;
+
+              if (user.battleInfo.barrierValue > user.battleStats.maxHp * instantEffect.threshold) {
+                //TODO: maybe don't overwrite existing effect though if it was already higher
+                user.battleInfo.barrierValue = user.battleStats.maxHp * instantEffect.threshold;
+              }              
+            }
+
+
+            if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
+              (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
+              var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong> shields allies for " + barrierAmount + " damage.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
+            }
           }
         });
       }
@@ -930,9 +1001,16 @@ export class BattleService {
     if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
       potentialTargets.forEach(enemy => {
         var existingApplication = enemy.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
-        if (appliedStatusEffect.refreshes && existingApplication !== undefined) {
-          if (appliedStatusEffect.duration > existingApplication.duration)
-            existingApplication.duration = appliedStatusEffect.duration;
+        if (existingApplication !== undefined) {
+          if (appliedStatusEffect.effectStacks) {
+            existingApplication.effectiveness += appliedStatusEffect.effectiveness - 1;
+            existingApplication.stackCount += 1;
+          }
+
+          if (appliedStatusEffect.refreshes) {
+            if (appliedStatusEffect.duration > existingApplication.duration)
+              existingApplication.duration = appliedStatusEffect.duration;
+          }
         }
         else
           enemy.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
@@ -940,9 +1018,16 @@ export class BattleService {
     }
     else {
       var existingApplication = target.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
-      if (appliedStatusEffect.refreshes && existingApplication !== undefined) {
-        if (appliedStatusEffect.duration > existingApplication.duration)
-          existingApplication.duration = appliedStatusEffect.duration;
+      if (existingApplication !== undefined) {
+        if (appliedStatusEffect.effectStacks) {
+          existingApplication.effectiveness += appliedStatusEffect.effectiveness - 1;
+          existingApplication.stackCount += 1;
+        }
+
+        if (appliedStatusEffect.refreshes) {
+          if (appliedStatusEffect.duration > existingApplication.duration)
+            existingApplication.duration = appliedStatusEffect.duration;
+        }
       }
       else
         target.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
@@ -1216,6 +1301,7 @@ export class BattleService {
 
   handlePartyDefeat(party: Character[]) {
     this.globalService.globalVar.settings.set("autoProgress", false);
+    this.battle.activeTournament = new ColiseumTournament();
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.zones !== undefined && ballad.zones.length > 0)
@@ -1350,6 +1436,7 @@ export class BattleService {
     }
     var subZone = this.balladService.getActiveSubZone();
     subZone.victoryCount += 1;
+    this.altarService.incrementAltarCount(AltarConditionEnum.Victories);
 
     if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {
       subZone.fastestCompletionSpeed = this.battle.battleDuration;
@@ -1365,6 +1452,8 @@ export class BattleService {
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList) + " XP</strong>.");
     }
     this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies);
+    this.updateEnemyDefeatCount(this.battle.currentEnemies);
+
     var loot = this.getLoot(this.battle.currentEnemies);
     this.getCoinRewards(this.battle.currentEnemies);
     if (loot !== undefined && loot.length > 0) {
@@ -1379,6 +1468,24 @@ export class BattleService {
 
     if (subZone.victoryCount >= subZone.victoriesNeededToProceed) {
       this.unlockNextSubzone(subZone);
+    }
+
+    if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
+      if (this.battle.activeTournament.currentRound >= this.battle.activeTournament.maxRounds) {
+        //handle victory situation
+        this.battle.activeTournament.bonusResources.forEach(reward => {
+          this.lookupService.gainResource(reward);
+          this.lookupService.addLootToLog(reward.item, reward.amount);
+          if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : pluralize(this.lookupService.getItemName(reward.item))) + "</strong>.");
+          }
+        });
+
+        //then reset
+        this.battle.activeTournament = new ColiseumTournament();
+      }
+      else
+        this.battle.activeTournament.currentRound += 1;
     }
 
     this.initializeEnemyList();
@@ -1417,14 +1524,19 @@ export class BattleService {
     if (defeatedEnemies.enemyList.length === 0)
       return;
 
-    defeatedEnemies.enemyList.forEach(enemy => {
-      coin += enemy.coinGainFromDefeat;
+    var altarMultiplier = 1;
+    var relevantAltarEffect = this.globalService.globalVar.activeAltarEffects.find(effect => effect.type === AltarEffectsEnum.SmallAltarPrayFortune);
+    if (relevantAltarEffect !== undefined)
+      altarMultiplier = relevantAltarEffect.effectiveness;
+
+    defeatedEnemies.enemyList.forEach(enemy => {                    
+      coin += enemy.coinGainFromDefeat * altarMultiplier;
     });
 
     if (coin > 0) {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, coin));
       if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain <strong>" + coin + " " + (coin === 1 ? this.lookupService.getItemName(ItemsEnum.Coin) : pluralize(this.lookupService.getItemName(ItemsEnum.Coin))) + "</strong>.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain <strong>" + Math.round(coin) + " " + (coin === 1 ? this.lookupService.getItemName(ItemsEnum.Coin) : pluralize(this.lookupService.getItemName(ItemsEnum.Coin))) + "</strong>.");
       }
     }
   }
@@ -1460,6 +1572,14 @@ export class BattleService {
     else {
       existingResource.amount += item.amount;
     }
+  }
+
+  updateEnemyDefeatCount(defeatedEnemies: EnemyTeam) {
+    defeatedEnemies.enemyList.forEach(enemy => {
+      var matchingEnemy = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === enemy.bestiaryType);
+      if (matchingEnemy !== undefined)
+        matchingEnemy.defeatCount += 1;
+    });
   }
 
   unlockNextSubzone(subZone: SubZone) {
@@ -1708,15 +1828,15 @@ export class BattleService {
 
     if (type === ElementalTypeEnum.Holy)
       text = " <span class='holyColor bold'>Holy</span> ";
-      if (type === ElementalTypeEnum.Fire)
+    if (type === ElementalTypeEnum.Fire)
       text = " <span class='fireColor bold'>Fire</span> ";
-      if (type === ElementalTypeEnum.Air)
+    if (type === ElementalTypeEnum.Air)
       text = " <span class='airColor bold'>Air</span> ";
-      if (type === ElementalTypeEnum.Lightning)
+    if (type === ElementalTypeEnum.Lightning)
       text = " <span class='lightningColor bold'>Lightning</span> ";
-      if (type === ElementalTypeEnum.Water)
+    if (type === ElementalTypeEnum.Water)
       text = " <span class='waterColor bold'>Water</span> ";
-      if (type === ElementalTypeEnum.Earth)
+    if (type === ElementalTypeEnum.Earth)
       text = " <span class='earthColor bold'>Earth</span> ";
 
 

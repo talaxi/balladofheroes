@@ -16,6 +16,7 @@ import { UtilityService } from './services/utility/utility.service';
 import { SubZone } from './models/zone/sub-zone.model';
 import { LookupService } from './services/lookup.service';
 import { StoryService } from './services/story/story.service';
+import { ColiseumTournamentEnum } from './models/enums/coliseum-tournament-enum.model';
 declare var LZString: any;
 
 @Component({
@@ -116,11 +117,10 @@ export class AppComponent {
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime);
 
-    if (!activeSubzone.isTown) {
-      this.globalService.globalVar.timers.townHpGainTimer = 0;
-    }
-    else
+    if (activeSubzone.isTown && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
       this.backgroundService.handleTown(deltaTime, this.loading);
+    else
+      this.globalService.globalVar.timers.townHpGainTimer = 0;    
 
     this.battleService.handleBattle(deltaTime, this.loading);
   }

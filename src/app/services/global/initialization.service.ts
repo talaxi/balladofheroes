@@ -1,5 +1,7 @@
 import { Injectable } from '@angular/core';
+import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
+import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -11,9 +13,11 @@ import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from '../achievements/achievement.service';
+import { AltarService } from '../altar/altar.service';
 import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
+import { KeybindService } from '../utility/keybind.service';
 import { GlobalService } from './global.service';
 
 @Injectable({
@@ -22,7 +26,8 @@ import { GlobalService } from './global.service';
 export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
-    private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService) { }
+    private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService, private keybindService: KeybindService,
+    private altarService: AltarService) { }
 
   initializeVariables() {
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
@@ -30,6 +35,7 @@ export class InitializationService {
     this.initializeGameLogSettings(); 
     this.initializeQuickView();
     this.initializeKeybinds();
+    this.intializeBestiaryDefeatCount();
   }
 
   initializeBallads() {    
@@ -158,10 +164,76 @@ export class InitializationService {
   }
 
   initializeKeybinds() {
-    this.globalService.globalVar.keybinds.set("useCharacter1Ability1", "2");
+    this.globalService.globalVar.keybinds.set("menuGoToCharacters", "keyC");
+    this.globalService.globalVar.keybinds.set("menuGoToGods", "keyG");
+    this.globalService.globalVar.keybinds.set("menuGoToResources", "keyR");
+    this.globalService.globalVar.keybinds.set("menuGoToAchievements", "keyA");
+    this.globalService.globalVar.keybinds.set("menuGoToSettings", "keyS");
+    this.globalService.globalVar.keybinds.set("menuTraverseSubMenuUp", "arrowup");
+    this.globalService.globalVar.keybinds.set("menuTraverseSubMenuDown", "arrowdown");
+
+    this.globalService.globalVar.keybinds.set("togglePauseGame", "keyP");
+    this.globalService.globalVar.keybinds.set("openMenu", "keyM");
+    this.globalService.globalVar.keybinds.set("openOverviewQuickView", "keyO");
+    this.globalService.globalVar.keybinds.set("openResourcesQuickView", "keyR");
+    this.globalService.globalVar.keybinds.set("openAlchemyQuickView", "keyA");
+
+    this.globalService.globalVar.keybinds.set("useCharacter1AutoAttack", "digit1");
+    this.globalService.globalVar.keybinds.set("useCharacter1Ability1", "digit2");
+    this.globalService.globalVar.keybinds.set("useCharacter1Ability2", "digit3");
+    this.globalService.globalVar.keybinds.set("useCharacter1God1Ability1", "digit4");
+    this.globalService.globalVar.keybinds.set("useCharacter1God1Ability2", "digit5");
+    this.globalService.globalVar.keybinds.set("useCharacter1God1Ability3", "digit6");
+    this.globalService.globalVar.keybinds.set("useCharacter1God2Ability1", "digit7");
+    this.globalService.globalVar.keybinds.set("useCharacter1God2Ability2", "digit8");
+    this.globalService.globalVar.keybinds.set("useCharacter1God2Ability3", "digit9");
+    this.globalService.globalVar.keybinds.set("useCharacter1Overdrive", "digit0");
     
-    this.globalService.globalVar.keybinds.set("autoToggleCharacter1AutoAttack", "1");
-    this.globalService.globalVar.keybinds.set("autoToggleCharacter1Ability1", "alt,2");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1AutoAttack", this.keybindService.altKeyBind + "digit1");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1Ability1", this.keybindService.altKeyBind + "digit2");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1Ability2", this.keybindService.altKeyBind + "digit3");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1God1Ability1", this.keybindService.altKeyBind + "digit4");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1God1Ability2", this.keybindService.altKeyBind + "digit5");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1God1Ability3", this.keybindService.altKeyBind + "digit6");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1God2Ability1", this.keybindService.altKeyBind + "digit7");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1God2Ability2", this.keybindService.altKeyBind + "digit8");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1God2Ability3", this.keybindService.altKeyBind + "digit9");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1Overdrive", this.keybindService.altKeyBind + "digit0");
+
+    this.globalService.globalVar.keybinds.set("useCharacter2AutoAttack", this.keybindService.shiftKeyBind + "digit1");
+    this.globalService.globalVar.keybinds.set("useCharacter2Ability1", this.keybindService.shiftKeyBind + "digit2");
+    this.globalService.globalVar.keybinds.set("useCharacter2Ability2", this.keybindService.shiftKeyBind + "digit3");
+    this.globalService.globalVar.keybinds.set("useCharacter2God1Ability1", this.keybindService.shiftKeyBind + "digit4");
+    this.globalService.globalVar.keybinds.set("useCharacter2God1Ability2", this.keybindService.shiftKeyBind + "digit5");
+    this.globalService.globalVar.keybinds.set("useCharacter2God1Ability3", this.keybindService.shiftKeyBind + "digit6");
+    this.globalService.globalVar.keybinds.set("useCharacter2God2Ability1", this.keybindService.shiftKeyBind + "digit7");
+    this.globalService.globalVar.keybinds.set("useCharacter2God2Ability2", this.keybindService.shiftKeyBind + "digit8");
+    this.globalService.globalVar.keybinds.set("useCharacter2God2Ability3", this.keybindService.shiftKeyBind + "digit9");
+    this.globalService.globalVar.keybinds.set("useCharacter2Overdrive", this.keybindService.shiftKeyBind + "digit0");
+    
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2AutoAttack", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit1");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2Ability1", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit2");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2Ability2", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit3");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2God1Ability1", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit4");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2God1Ability2", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit5");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2God1Ability3", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit6");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2God2Ability1", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit7");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2God2Ability2", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit8");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2God2Ability3", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit9");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2Overdrive", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit0");
+  }
+
+  intializeBestiaryDefeatCount() {    
+    for (const [propertyKey, propertyValue] of Object.entries(BestiaryEnum))
+    {
+      if (!Number.isNaN(Number(propertyKey))) {
+        continue;
+      }
+
+      var enumValue = propertyValue as BestiaryEnum;
+      var bestiaryDefeatCount = new EnemyDefeatCount(enumValue, 0);
+      this.globalService.globalVar.enemyDefeatCount.push(bestiaryDefeatCount);
+    }
   }
 
   devMode() {
@@ -185,6 +257,8 @@ export class InitializationService {
     this.globalService.globalVar.itemBeltSize = 1;
     this.globalService.globalVar.alchemy.level = 25;
     this.alchemyService.checkForNewRecipes();
+
+    this.globalService.globalVar.altarInfo.push(this.altarService.getTutorialAltar());
 
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));

@@ -16,6 +16,16 @@
     grid-area: header;
 }
 
+.headerFlex {    
+    display: flex;
+    justify-content: space-around;
+    font-variant: small-caps;
+}
+
+.alignCenter {
+    align-self: center;
+}
+
 .gap {
     grid-area: gap;
 }
@@ -169,6 +179,10 @@
 
 .chestIcon {
     height: 15vh;
+}
+
+.altar {
+    height: 100%;
 }
 
 .hr {
