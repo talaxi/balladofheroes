@@ -50,7 +50,7 @@ export class AbilityViewComponent implements OnInit {
   }
 
   getCharacterAutoAttackProgress() {    
-    var timeToAutoAttack = this.character.battleInfo.timeToAutoAttack;//this.lookupService.getAutoAttackTime(this.character);        
+    var timeToAutoAttack = this.lookupService.getAutoAttackTime(this.character);        
     return (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
   }
 

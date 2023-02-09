@@ -23,7 +23,8 @@
     grid-area: god2;
 }
 
-.levelUpAnimationText {   
+.levelUpAnimationText { 
+    font-size: .9rem;  
     margin-left: .5rem; 
     position: absolute;
     text-align: right;

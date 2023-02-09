@@ -1,5 +1,5 @@
 <div class="shopOption" *ngFor="let option of shopOptions; let i = index">
-  <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter"
+  <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter || option.type === shopTypeEnum.Traveler"
     class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
   <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText"
     (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}}</button>

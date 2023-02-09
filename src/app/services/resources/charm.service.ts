@@ -41,7 +41,6 @@ export class CharmService {
     return amount;
   }
 
-  //TODO: should this be percent based?
   getTotalAbilityCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
     var smallCharmValue = .05;
@@ -58,11 +57,10 @@ export class CharmService {
     return amount;
   }
 
-  //TODO: should this be percent based?
   getTotalAutoAttackCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = .1;
+    var largeCharmValue = .3;
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHaste);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHaste);

@@ -4,7 +4,7 @@
     <div class="options">
         <div class='column1'>
             <span class="statLabel">battle</span>
-            <br/>
+            <br />
             <mat-checkbox [(ngModel)]="partyAutoAttacks" (input)="partyAutoAttacksToggle()">
                 Party Auto Attacks
             </mat-checkbox>
@@ -32,22 +32,22 @@
             <mat-checkbox [(ngModel)]="enemyStatusEffect" (input)="enemyStatusEffectToggle()">
                 Enemy Status Effect Updates
             </mat-checkbox>
-            <br />            
+            <br />
             <mat-checkbox class='battleUpdateText' [(ngModel)]="battleUpdates" (input)="battleUpdatesToggle()">
                 Battle State Updates
             </mat-checkbox>
             <br />
             <mat-checkbox class='battleUpdateText' [(ngModel)]="battleRewards" (input)="battleRewardsToggle()">
                 Battle Rewards
-            </mat-checkbox>            
-            <br />            
+            </mat-checkbox>
+            <br />
             <mat-checkbox class='battleItemText' [(ngModel)]="useBattleItem" (input)="useBattleItemToggle()">
                 Use Battle Item
             </mat-checkbox>
         </div>
         <div class="column2">
             <span class="statLabel">misc</span>
-            <br/>
+            <br />
             <mat-checkbox class='battleUpdateText' [(ngModel)]="partyLevelUp" (input)="partyLevelUpToggle()">
                 Character Level Up
             </mat-checkbox>
@@ -56,17 +56,20 @@
                 God Level Up
             </mat-checkbox>
             <br />
-            <mat-checkbox class='battleUpdateText' [(ngModel)]="achievementUnlocked" (input)="achievementUnlockedToggle()">
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="achievementUnlocked"
+                (input)="achievementUnlockedToggle()">
                 Achievement Unlocked
             </mat-checkbox>
             <br />
-            <mat-checkbox class='alchemyText' [(ngModel)]="alchemyLevelUp" (input)="alchemyLevelUpToggle()">
-                Alchemy Level Up
-            </mat-checkbox>
-            <br />
-            <mat-checkbox class='alchemyText' [(ngModel)]="alchemyCreation" (input)="alchemyCreationToggle()">
-                Alchemy Creation
-            </mat-checkbox>            
+            <div *ngIf="alchemyUnlocked">
+                <mat-checkbox class='alchemyText' [(ngModel)]="alchemyLevelUp" (input)="alchemyLevelUpToggle()">
+                    Alchemy Level Up
+                </mat-checkbox>
+                <br />
+                <mat-checkbox class='alchemyText' [(ngModel)]="alchemyCreation" (input)="alchemyCreationToggle()">
+                    Alchemy Creation
+                </mat-checkbox>
+            </div>
         </div>
     </div>
 </div>

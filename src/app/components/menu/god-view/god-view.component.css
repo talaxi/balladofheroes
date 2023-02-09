@@ -1,6 +1,5 @@
 .gridContainer {
-    display: grid;
-    /*margin-right: 3rem; MENU REWORK */
+    display: grid;    
     height: 100%;
     grid-template-columns: 33% 33% 34%;
     grid-template-rows: auto 1fr auto;
@@ -14,14 +13,6 @@
 
 .godPrimaryStats {
     grid-area: godPrimaryStats;
-/*
-    display: grid;
-    height: 100%;
-    grid-template-columns: 50%;
-    grid-template-rows: 1fr;
-    justify-content: stretch;
-    grid-template-areas:
-        "primary secondary";*/
 }
 
 .godSecondaryStats {

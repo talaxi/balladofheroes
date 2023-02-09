@@ -151,7 +151,7 @@
             <span>{{god.affinityExp | number : '1.0-0'}} / {{god.affinityExpToNextLevel | number : '1.0-0'}} XP to <span  class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel +
                 1}}</span></span>
             <br />
-            <span><span class="statLabel" [ngClass]="getGodColor()">Next Reward:</span> +50% Pray Buff Length</span>
+            <span><span class="statLabel" [ngClass]="getGodColor()">Next Reward: </span> <span class="statValue">{{getNextAffinityReward()}}</span></span>
         </div>
     </div>
 </div>

@@ -1,6 +1,7 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
@@ -42,13 +43,14 @@ export class ZoneNavigationComponent implements OnInit {
   quickViewEnum = QuickViewEnum;
   trackedResourcesColumn1: ItemsEnum[] = [];
   trackedResourcesColumn2: ItemsEnum[] = [];
+  tooltipDirection = DirectionEnum.Up;  
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
     this.setupKeybinds(event);    
   }
 
-  constructor(private globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
+  constructor(public globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
     private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService, public dialog: MatDialog,
@@ -64,7 +66,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
     var selectedBallad = this.balladService.getActiveBallad();
     if (selectedBallad !== undefined)
-      this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);;
+      this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);
     var selectedZone = this.balladService.getActiveZone();
     if (selectedZone !== undefined)
       this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
@@ -99,13 +101,13 @@ export class ZoneNavigationComponent implements OnInit {
 
   selectNextSubzone() {
     var nextSubzoneFound = false;
-    var reverseOrderBallads = this.globalService.globalVar.ballads.slice().reverse();
-    reverseOrderBallads.filter(item => item.isAvailable).forEach(ballad => {
+    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).slice().reverse();
+    reverseOrderBallads.forEach(ballad => {
       if (!nextSubzoneFound) {
-        var reverseZones = ballad.zones.slice().reverse();
-        reverseZones.filter(item => item.isAvailable).forEach(zone => {
-          var reverseSubzones = zone.subzones.slice().reverse();
-          reverseSubzones.filter(item => item.isAvailable).forEach(subzone => {
+        var reverseZones = ballad.zones.filter(item => item.isAvailable).slice().reverse();
+        reverseZones.forEach(zone => {
+          var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
+          reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
@@ -139,7 +141,7 @@ export class ZoneNavigationComponent implements OnInit {
 
     ballad.isSelected = true;
     ballad.showNewNotification = false;
-    this.availableZones = ballad.zones;
+    this.availableZones = ballad.zones.filter(item => item.isAvailable);
   }
 
   selectZone(zone: Zone) {
@@ -152,7 +154,7 @@ export class ZoneNavigationComponent implements OnInit {
 
     zone.isSelected = true;
     zone.showNewNotification = false;
-    this.availableSubZones = zone.subzones;
+    this.availableSubZones = zone.subzones.filter(item => item.isAvailable);
   }
 
   selectSubZone(subzone: SubZone, zone: Zone) {

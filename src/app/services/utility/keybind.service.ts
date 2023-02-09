@@ -44,4 +44,53 @@ export class KeybindService {
 
     return string;
   }
+
+  getBindingString(button: string | undefined) {
+    var binding = "";
+    if (button === undefined)
+      return "";
+
+    if (button.includes(this.altKeyBind)) {
+      binding += "ALT + ";
+      button = button.replace(this.altKeyBind, "");
+    }
+    if (button.includes(this.ctrlKeyBind)) {
+      binding += "CTRL + ";
+      button = button.replace(this.ctrlKeyBind, "");
+    }
+    if (button.includes(this.shiftKeyBind)) {
+      binding += "SHIFT + ";
+      button = button.replace(this.shiftKeyBind, "");
+    }
+
+    if (button.includes("key")) {
+      binding += button.replace("key", "").toUpperCase();
+    }
+
+    if (button.includes("digit")) {
+      binding += button.replace("digit", "");
+    }
+
+    if (button.includes("arrowdown")) {
+      binding += "Down Arrow";
+    }
+
+    if (button.includes("arrowup")) {
+      binding += "Up Arrow";
+    }
+
+    if (button.includes("arrowright")) {
+      binding += "Right Arrow";
+    }
+
+    if (button.includes("arrowleft")) {
+      binding += "Left Arrow";
+    }
+
+    if (button.includes("space")) {
+      binding += "Space";
+    }
+
+    return binding;
+  }
 }

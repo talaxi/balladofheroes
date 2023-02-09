@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
@@ -22,10 +23,10 @@ export class ShoppingItemViewComponent implements OnInit {
   partyMembers: Character[];
   subscription: any;
 
-  constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService, 
+  constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
     this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
     this.setItemPurchasePrice();
@@ -42,21 +43,21 @@ export class ShoppingItemViewComponent implements OnInit {
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
       //var insufficientText = "";
       //if (userResourceAmount < resource.amount)
-      var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";  
+      var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
-      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" +(resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";      
+      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
     });
 
     if (this.purchaseResourcesRequired.length > 0) {
       this.purchaseResourcesRequired = this.utilityService.getSanitizedHtml(this.purchaseResourcesRequired);
-    }   
+    }
   }
 
   getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum, amountNeeded: number, amountOwned: number) {
     var classText = "resourceKeyword";
-    
+
     if (amountOwned < amountNeeded)
-      classText = "insufficientResourcesKeyword";  
+      classText = "insufficientResourcesKeyword";
 
     return classText;
   }
@@ -66,8 +67,28 @@ export class ShoppingItemViewComponent implements OnInit {
       this.spendResourcesOnItem();
 
       var resource = this.resourceGeneratorService.getResourceFromItemType(this.item.shopItem, 1);
-      if (resource !== undefined)
-        this.lookupService.gainResource(resource);
+      if (resource !== undefined) {
+        if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass) {
+          this.unlockClass(resource.item);
+        }
+        else
+          this.lookupService.gainResource(resource);
+      }
+    }
+  }
+
+  unlockClass(item: ItemsEnum) {
+    if (item === ItemsEnum.WarriorClass) {
+      var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+
+      if (warrior !== undefined)
+        warrior.isAvailable = true;
+    }
+    if (item === ItemsEnum.PriestClass) {
+      var priest = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);
+
+      if (priest !== undefined)
+        priest.isAvailable = true;
     }
   }
 
@@ -88,7 +109,7 @@ export class ShoppingItemViewComponent implements OnInit {
     });
   }
 
-  isEquipment() {    
+  isEquipment() {
     return this.lookupService.getEquipmentPieceByItemType(this.item.shopItem) !== undefined;
   }
 
@@ -96,14 +117,13 @@ export class ShoppingItemViewComponent implements OnInit {
     if (item === undefined)
       item = this.item.shopItem;
 
-    var equipment = this.lookupService.getEquipmentPieceByItemType(item);    
-    if (equipment !== undefined)
-    {
-    var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));
+    var equipment = this.lookupService.getEquipmentPieceByItemType(item);
+    if (equipment !== undefined) {
+      var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));
 
-    return qualityClass;
+      return qualityClass;
     }
-    
+
     return "";
   }
 
@@ -131,8 +151,7 @@ export class ShoppingItemViewComponent implements OnInit {
   getEquippedComparisonItem(whichCharacter: number) {
     var comparisonItem = undefined;
     var character = this.partyMembers[0];
-    if (whichCharacter === 2)
-    {
+    if (whichCharacter === 2) {
       character = this.partyMembers[1];
     }
 
@@ -150,8 +169,7 @@ export class ShoppingItemViewComponent implements OnInit {
 
   getCharacterColorClass(whichCharacter: number) {
     var character = this.partyMembers[0];
-    if (whichCharacter === 2)
-    {
+    if (whichCharacter === 2) {
       character = this.partyMembers[1];
     }
 
@@ -162,8 +180,7 @@ export class ShoppingItemViewComponent implements OnInit {
     var name = "";
 
     var character = this.partyMembers[0];
-    if (whichCharacter === 2)
-    {
+    if (whichCharacter === 2) {
       character = this.partyMembers[1];
     }
 

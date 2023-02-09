@@ -252,6 +252,16 @@ export class ResourceGeneratorService {
       return new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, amount);
     }
 
+    //other
+    if (type === ItemsEnum.WarriorClass)
+    {
+      return new ResourceValue(ItemsEnum.WarriorClass, ItemTypeEnum.Progression, amount);
+    }
+    if (type === ItemsEnum.PriestClass)
+    {
+      return new ResourceValue(ItemsEnum.PriestClass, ItemTypeEnum.Progression, amount);
+    }
+
     return new ResourceValue(ItemsEnum.None, ItemTypeEnum.None, 0);
   }
 }

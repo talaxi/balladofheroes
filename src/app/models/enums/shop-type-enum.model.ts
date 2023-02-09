@@ -5,5 +5,6 @@ export enum ShopTypeEnum {
   Alchemist,
   ChthonicFavor,
   Story,
-  Coliseum
+  Coliseum,
+  Traveler //teaches other classes
 }

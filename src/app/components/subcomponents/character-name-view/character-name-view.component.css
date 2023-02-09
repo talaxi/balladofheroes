@@ -1,5 +1,5 @@
 .xpBarWidth {
-    width: 75%;
+    width: 77%;
 }
 
 .mat-progress-bar-element,
@@ -28,24 +28,22 @@
     grid-area: god2;
 }
 
-.testing {
-    display: grid;
-    height: 100%;
-    grid-template-columns: 1fr;
-    grid-template-rows: 1fr;
-    justify-content: stretch;
-    grid-template-areas:
-        "testgrid";
-
+.flex {
+    display: flex;
+    justify-content: space-between;
+    width: 77%; 
 }
 
-.testgrid {
-    grid-area: testgrid;
+.targetIcon {
+    width: var(--s4-size);
+    vertical-align: middle;
 }
 
 .levelUpAnimationText {   
-    margin-left: 3rem; 
-    position: relative;
+    font-size: .9rem;
+    margin-top: .5rem;
+    margin-left: .5rem; 
+    position: absolute;
     text-align: right;
     font-weight: bold;
     color: var(--positive-status-effect);    
@@ -62,6 +60,14 @@
 
 .buttonCursor {
     cursor: pointer;
+}
+
+.alignSelfCenter {
+    align-self: center;
+}
+
+.keybind {
+    text-decoration: underline;
 }
 
 @keyframes levelUpAnimation {    

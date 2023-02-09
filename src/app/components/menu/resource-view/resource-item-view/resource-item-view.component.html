@@ -1,6 +1,6 @@
 
 <span (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
-    <span class="bold">{{getPluralizedItemName(resource)}}</span>: {{lookupService.getResourceAmount(resource) | number}}
+    <span class="bold">{{getPluralizedItemName(resource)}}:</span> {{lookupService.getResourceAmount(resource) | number}}
     <app-custom-tooltip *ngIf="showTooltip" [isSticky]="true" [text]="lookupService.getResourceDescription(resource)"></app-custom-tooltip>
 </span>
             

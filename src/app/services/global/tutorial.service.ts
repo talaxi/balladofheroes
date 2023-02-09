@@ -34,6 +34,15 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Crafting) {
       text = "Crafters can create unique items with materials found from battle. Keep an eye out for what loot you are receiving from individual enemies.";
     }
+    else if (type === TutorialTypeEnum.SkipStory) {
+      text = "Under settings, you can adjust the speed at which story scenes progress or skip the story entirely.";
+    }
+    else if (type === TutorialTypeEnum.Equipment) {
+      text = "You've acquired your first equipment item. Click on 'Adventurer' on the top left of the screen to quickly jump to the menu and view the character page. Use the 'Change Equipment' button to update your equipment."
+    }
+    else if (type === TutorialTypeEnum.Altars) {
+      text = "As you proceed on your journey, you will have access to different altars to honor the gods. Select the Altar on the right and pray to Athena to gain a party-wide buff and affinity EXP for Athena.";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

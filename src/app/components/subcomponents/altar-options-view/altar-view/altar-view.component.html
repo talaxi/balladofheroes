@@ -1,0 +1,28 @@
+<div customToolTip [contentTemplate]="smallAltarPopover" [tooltipDirection]="tooltipDirection" class="altarView">
+    <button (click)="viewAltar()"  class="container buttonAsText"
+        [disabled]="!isAltarReady()">
+        <div class="centeredBox">
+            <div #spinnerDiv class="ability">
+                <div>
+                    <span class='abilityTimer'><img class="abilityImage" src="assets/svg/smallAltar.svg" /></span>
+                </div>
+                <div [ngClass]="{'altarUnavailable': !isAltarReady() }">
+                    <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()"
+                        mode="determinate" [diameter]="spinnerDiameter" [strokeWidth]="strokeWidth"
+                        [value]="getAltarCompletionPercent()"></mat-spinner>
+                </div>
+            </div>
+        </div>
+    </button>
+</div>
+
+<ng-template #smallAltarPopover>
+    <div [innerHtml]="getAltarName()">
+    </div>
+    <hr />
+    <div [innerHtml]="getAltarDescription()">
+    </div>
+    <hr />
+    <div [innerHtml]="getAltarConditions()">
+    </div>
+</ng-template>

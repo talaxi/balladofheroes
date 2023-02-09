@@ -126,6 +126,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";
     }
+    if (effect.type === StatusEffectEnum.Thorns) {
+      src += "thorns.svg";
+    }
+    if (effect.type === StatusEffectEnum.Dodge) {
+      src += "dodge.svg";
+    }
 
     return src;
   }

@@ -108,6 +108,14 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.BrokenNecklace, ItemTypeEnum.CraftingMaterial, 1));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
     }
+    if (item === ItemsEnum.WarriorClass)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
+    }
+    if (item === ItemsEnum.PriestClass)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

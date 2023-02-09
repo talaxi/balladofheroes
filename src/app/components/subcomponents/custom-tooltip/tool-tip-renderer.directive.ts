@@ -101,7 +101,7 @@ export class ToolTipRendererDirective {
    * This method will show the tooltip by instantiating the McToolTipComponent and attaching to the overlay
    */
   @HostListener('mouseenter')
-  show() {
+  show() {    
     if (this.isDelayed) {
       this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
         this.delayTimer += deltaTime;
@@ -129,7 +129,7 @@ export class ToolTipRendererDirective {
    * This method will close the tooltip by detaching the overlay from the view
    */
   @HostListener('mouseleave')
-  hide() {
+  hide() {    
     this.closeToolTip();
   }
 

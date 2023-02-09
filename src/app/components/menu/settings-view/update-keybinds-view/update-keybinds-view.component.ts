@@ -84,6 +84,14 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (openAlchemyQuickView !== undefined)
       this.battleKeybinds.push(openAlchemyQuickView);
 
+      var openFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openFirstAvailableAltar");
+      if (openFirstAvailableAltar !== undefined)
+        this.battleKeybinds.push(openFirstAvailableAltar);
+  
+      var toggleCharacter1TargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter1TargetMode");
+      if (toggleCharacter1TargetMode !== undefined)
+        this.battleKeybinds.push(toggleCharacter1TargetMode);
+
     var useCharacter1AutoAttack = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "useCharacter1AutoAttack");
     if (useCharacter1AutoAttack !== undefined)
       this.battleKeybinds.push(useCharacter1AutoAttack);
@@ -163,6 +171,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var autoToggleCharacter1Overdrive = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter1Overdrive");
     if (autoToggleCharacter1Overdrive !== undefined)
       this.battleKeybinds.push(autoToggleCharacter1Overdrive);
+
+    var toggleCharacter2TargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter2TargetMode");
+    if (toggleCharacter2TargetMode !== undefined)
+      this.battleKeybinds.push(toggleCharacter2TargetMode);
 
     var useCharacter2AutoAttack = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "useCharacter2AutoAttack");
     if (useCharacter2AutoAttack !== undefined)
@@ -267,145 +279,116 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Traverse Down Submenu";
     if (name === "menuTraverseSubMenuDown")
       updatedName = "Traverse Up Submenu";
-      if (name === "togglePauseGame")
+    if (name === "togglePauseGame")
       updatedName = "Toggle Pause/Play";
-      if (name === "openMenu")
+    if (name === "openMenu")
       updatedName = "Open Menu";
-      if (name === "openOverviewQuickView")
+    if (name === "openOverviewQuickView")
       updatedName = "Open Overview Quick View";
-      if (name === "openResourcesQuickView")
+    if (name === "openResourcesQuickView")
       updatedName = "Open Resources Quick View";
-      if (name === "openAlchemyQuickView")
+    if (name === "openAlchemyQuickView")
       updatedName = "Open Alchemy Quick View";
       if (name === "useCharacter1AutoAttack")
       updatedName = "Use Character 1 Auto Attack";
-      if (name === "useCharacter1Ability1")
+      if (name === "openFirstAvailableAltar")
+      updatedName = "Pray At First Available Altar";      
+    if (name === "toggleCharacter1TargetMode")
+      updatedName = "Toggle Character 1 Target Mode";
+      if (name === "toggleCharacter2TargetMode")
+      updatedName = "Toggle Character 2 Target Mode";
+    if (name === "useCharacter1Ability1")
       updatedName = "Use Character 1 Ability 1";
-      if (name === "useCharacter1Ability2")
+    if (name === "useCharacter1Ability2")
       updatedName = "Use Character 1 Ability 2";
-      if (name === "useCharacter1God1Ability1")
+    if (name === "useCharacter1God1Ability1")
       updatedName = "Use Character 1 God 1 Ability 1";
-      if (name === "useCharacter1God1Ability2")
+    if (name === "useCharacter1God1Ability2")
       updatedName = "Use Character 1 God 1 Ability 2";
-      if (name === "useCharacter1God1Ability3")
+    if (name === "useCharacter1God1Ability3")
       updatedName = "Use Character 1 God 1 Ability 3";
-      if (name === "useCharacter1God2Ability1")
+    if (name === "useCharacter1God2Ability1")
       updatedName = "Use Character 1 God 2 Ability 1";
-      if (name === "useCharacter1God2Ability2")
+    if (name === "useCharacter1God2Ability2")
       updatedName = "Use Character 1 God 2 Ability 2";
-      if (name === "useCharacter1God2Ability3")
+    if (name === "useCharacter1God2Ability3")
       updatedName = "Use Character 1 God 2 Ability 3";
-      if (name === "useCharacter1Overdrive")
+    if (name === "useCharacter1Overdrive")
       updatedName = "Use Character 1 Overdrive";
-      if (name === "autoToggleCharacter1AutoAttack")
+    if (name === "autoToggleCharacter1AutoAttack")
       updatedName = "Toggle Auto Character 1 Auto Attack";
-      if (name === "autoToggleCharacter1Ability1")
+    if (name === "autoToggleCharacter1Ability1")
       updatedName = "Toggle Auto Character 1 Ability 1";
-      if (name === "autoToggleCharacter1Ability2")
+    if (name === "autoToggleCharacter1Ability2")
       updatedName = "Toggle Auto Character 1 Ability 2";
-      if (name === "autoToggleCharacter1God1Ability1")
+    if (name === "autoToggleCharacter1God1Ability1")
       updatedName = "Toggle Auto Character 1 God 1 Ability 1";
-      if (name === "autoToggleCharacter1God1Ability2")
+    if (name === "autoToggleCharacter1God1Ability2")
       updatedName = "Toggle Auto Character 1 God 1 Ability 2";
-      if (name === "autoToggleCharacter1God1Ability3")
+    if (name === "autoToggleCharacter1God1Ability3")
       updatedName = "Toggle Auto Character 1 God 1 Ability 3";
-      if (name === "autoToggleCharacter1God2Ability1")
+    if (name === "autoToggleCharacter1God2Ability1")
       updatedName = "Toggle Auto Character 1 God 2 Ability 1";
-      if (name === "autoToggleCharacter1God2Ability2")
+    if (name === "autoToggleCharacter1God2Ability2")
       updatedName = "Toggle Auto Character 1 God 2 Ability 2";
-      if (name === "autoToggleCharacter1God2Ability3")
+    if (name === "autoToggleCharacter1God2Ability3")
       updatedName = "Toggle Auto Character 1 God 2 Ability 3";
-      if (name === "autoToggleCharacter1Overdrive")
+    if (name === "autoToggleCharacter1Overdrive")
       updatedName = "Toggle Auto Character 1 Overdrive";
-      if (name === "useCharacter2AutoAttack")
+    if (name === "useCharacter2AutoAttack")
       updatedName = "Use Character 2 Auto Attack";
-      if (name === "useCharacter2Ability1")
+    if (name === "useCharacter2Ability1")
       updatedName = "Use Character 2 Ability 1";
-      if (name === "useCharacter2Ability2")
+    if (name === "useCharacter2Ability2")
       updatedName = "Use Character 2 Ability 2";
-      if (name === "useCharacter2God1Ability1")
+    if (name === "useCharacter2God1Ability1")
       updatedName = "Use Character 2 God 1 Ability 1";
-      if (name === "useCharacter2God1Ability2")
+    if (name === "useCharacter2God1Ability2")
       updatedName = "Use Character 2 God 1 Ability 2";
-      if (name === "useCharacter2God1Ability3")
+    if (name === "useCharacter2God1Ability3")
       updatedName = "Use Character 2 God 1 Ability 3";
-      if (name === "useCharacter2God2Ability1")
+    if (name === "useCharacter2God2Ability1")
       updatedName = "Use Character 2 God 2 Ability 1";
-      if (name === "useCharacter2God2Ability2")
+    if (name === "useCharacter2God2Ability2")
       updatedName = "Use Character 2 God 2 Ability 2";
-      if (name === "useCharacter2God2Ability3")
+    if (name === "useCharacter2God2Ability3")
       updatedName = "Use Character 2 God 2 Ability 3";
-      if (name === "useCharacter2Overdrive")
+    if (name === "useCharacter2Overdrive")
       updatedName = "Use Character 2 Overdrive";
-      if (name === "autoToggleCharacter2AutoAttack")
+    if (name === "autoToggleCharacter2AutoAttack")
       updatedName = "Toggle Auto Character 2 Auto Attack";
-      if (name === "autoToggleCharacter2Ability1")
+    if (name === "autoToggleCharacter2Ability1")
       updatedName = "Toggle Auto Character 2 Ability 1";
-      if (name === "autoToggleCharacter2Ability2")
+    if (name === "autoToggleCharacter2Ability2")
       updatedName = "Toggle Auto Character 2 Ability 2";
-      if (name === "autoToggleCharacter2God1Ability1")
+    if (name === "autoToggleCharacter2God1Ability1")
       updatedName = "Toggle Auto Character 2 God 1 Ability 1";
-      if (name === "autoToggleCharacter2God1Ability2")
+    if (name === "autoToggleCharacter2God1Ability2")
       updatedName = "Toggle Auto Character 2 God 1 Ability 2";
-      if (name === "autoToggleCharacter2God1Ability3")
+    if (name === "autoToggleCharacter2God1Ability3")
       updatedName = "Toggle Auto Character 2 God 1 Ability 3";
-      if (name === "autoToggleCharacter2God2Ability1")
+    if (name === "autoToggleCharacter2God2Ability1")
       updatedName = "Toggle Auto Character 2 God 2 Ability 1";
-      if (name === "autoToggleCharacter2God2Ability2")
+    if (name === "autoToggleCharacter2God2Ability2")
       updatedName = "Toggle Auto Character 2 God 2 Ability 2";
-      if (name === "autoToggleCharacter2God2Ability3")
+    if (name === "autoToggleCharacter2God2Ability3")
       updatedName = "Toggle Auto Character 2 God 2 Ability 3";
-      if (name === "autoToggleCharacter2Overdrive")
+    if (name === "autoToggleCharacter2Overdrive")
       updatedName = "Toggle Auto Character 2 Overdrive";
 
     return updatedName;
   }
 
+  
   getKeybindButton(keybind: [string, any]) {
     if (this.updateKeybindMode && this.keybindToUpdate !== undefined && this.keybindToUpdate[0] === keybind[0]) {
       return "&nbsp;";
     }
 
-
     var button = keybind[1].toLowerCase();
     var binding = "";
 
-    if (button.includes(this.keybindService.altKeyBind)) {
-      binding += "ALT + ";
-      button = button.replace(this.keybindService.altKeyBind, "");
-    }
-    if (button.includes(this.keybindService.ctrlKeyBind)) {
-      binding += "CTRL + ";
-      button = button.replace(this.keybindService.ctrlKeyBind, "");
-    }
-    if (button.includes(this.keybindService.shiftKeyBind)) {
-      binding += "SHIFT + ";
-      button = button.replace(this.keybindService.shiftKeyBind, "");
-    }
-
-    if (button.includes("key")) {
-      binding += button.replace("key", "").toUpperCase();
-    }
-
-    if (button.includes("digit")) {
-      binding += button.replace("digit", "");
-    }
-
-    if (button.includes("arrowdown")) {
-      binding += "Down Arrow";
-    }
-
-    if (button.includes("arrowup")) {
-      binding += "Up Arrow";
-    }
-
-    if (button.includes("arrowright")) {
-      binding += "Right Arrow";
-    }
-
-    if (button.includes("arrowleft")) {
-      binding += "Left Arrow";
-    }
+    binding = this.keybindService.getBindingString(button);
 
     return binding;
   }

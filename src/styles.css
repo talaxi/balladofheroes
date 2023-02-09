@@ -81,9 +81,9 @@
 
   --grayedOut-Text: #797c80;
 
-  --adventurerColor: #DA7803;
-  --archerColor: #279113;
-  --warriorColor: #0385f0;
+  --adventurerColor: #DB7803;
+  --archerColor: #12A901;
+  --warriorColor: #0695FB;
   --priestColor: #D063EE;
 
   --athenaColor: #7fbffa;
@@ -178,6 +178,9 @@
   --c2-size: 0.875rem;
   --c2-weight: 700;
   --c2-spacing: 0.1px;
+
+  --e2-size: 1.175rem;
+  --e3-size: .8rem;
 
   --s1-size: 3rem;
   --s1-weight: 600;
@@ -759,7 +762,7 @@ button {
 }
 
 .sectionInfo {
-  margin-top: .5rem;
+  margin-top: .3rem;
   margin-left: .25rem;
 }
 
@@ -792,4 +795,11 @@ button {
   cursor: pointer;
   color: var(--foreground-secondary);
   text-decoration: underline;
+}
+
+.storyCharacterName {
+  font-variant: small-caps;
+  font-weight: bold;
+  text-transform: lowercase;
+  font-size: 1.15rem;
 }

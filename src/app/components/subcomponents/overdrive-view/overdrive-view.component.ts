@@ -51,7 +51,7 @@ export class OverdriveViewComponent implements OnInit {
     if (this.lookupService.isOverdriveDiscovered(this.selectedOverdriveInfo.selectedOverdrive, this.character))
       return this.lookupService.getOverdriveDescription(this.selectedOverdriveInfo.selectedOverdrive);
 
-    return "Unlock: " + this.lookupService.getOverdriveUnlockCondition(this.selectedOverdriveInfo.selectedOverdrive);
+    return "Unlock: " + this.lookupService.getOverdriveUnlockCondition(this.selectedOverdriveInfo.selectedOverdrive, this.character);
   }
 
   isSelectedCurrentOverdrive() {

@@ -60,7 +60,7 @@
 }
 
 .characterBar {
-    width: 75%;
+    width: 77%;
     margin-right: .5rem;
     display: inline-block;
 }
@@ -307,7 +307,7 @@ table tr td:nth-child(4n-3) {
     z-index: 5;
     opacity: 1;
     text-align: center;
-    width: 75%; /* needs to match .characterBar */
+    width: 77%; /* needs to match .characterBar */
     bottom: .1rem;
     height: 1rem;
 }

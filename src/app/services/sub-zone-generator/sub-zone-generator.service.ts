@@ -679,8 +679,14 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.AigosthenaBay) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.IronSword, 1));
     }
+    if (type === SubZoneEnum.AigosthenaLowerCoast) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingHerb, 3));
+    }
     if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingHerb, 1));
+    }
+    if (type === SubZoneEnum.DodonaMountainOpening) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 30));
     }
     if (type === SubZoneEnum.DodonaMountainPassOne) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 2));
@@ -831,6 +837,7 @@ export class SubZoneGeneratorService {
     var shopOptions: ShopOption[] = [];
     var availableOptionsGeneral: ShopItem[] = [];
     var availableOptionsCrafter: ShopItem[] = [];
+    var availableOptionsTraveler: ShopItem[] = [];
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LinenArmor, SubZoneEnum.DodonaDelphi));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronSword, SubZoneEnum.DodonaDelphi));
@@ -892,10 +899,14 @@ export class SubZoneGeneratorService {
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PendantOfPower, SubZoneEnum.ElysiumColiseum));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PendantOfSpeed, SubZoneEnum.ElysiumColiseum));
 
+    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.WarriorClass, SubZoneEnum.ElysiumColiseum));
+    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PriestClass, SubZoneEnum.ElysiumColiseum));
+
     if (subzoneType === SubZoneEnum.ElysiumColiseum) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.Coliseum, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
-      shopOptions.push(new ShopOption(ShopTypeEnum.Coliseum, []));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
     }
 
     return shopOptions;

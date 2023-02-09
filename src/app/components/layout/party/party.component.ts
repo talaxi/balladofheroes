@@ -54,14 +54,12 @@ export class PartyComponent implements OnInit {
     this.party = this.globalService.getActivePartyCharacters(false);   
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
         
-    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
-      item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir);   
+    this.battleItems = this.getViableBattleItems();
       
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
       if (!this.itemMenu.menuOpen)
       {
-        this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
-          item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir);   
+        this.battleItems = this.getViableBattleItems();   
       }
 
       this.removeDefaultMaterialButtonClasses();
@@ -74,6 +72,11 @@ export class PartyComponent implements OnInit {
     this.partyMember1CheckSubscription = this.menuService.getNewPartyMember2().subscribe((value) => {      
       this.party = this.globalService.getActivePartyCharacters(false);   
     });
+  }
+
+  getViableBattleItems() {
+    return this.globalService.globalVar.resources.filter(item => (item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
+      item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir) && item.amount > 0);   
   }
 
   ngAfterViewInit() {
@@ -170,8 +173,7 @@ export class PartyComponent implements OnInit {
 
     this.openedSlotNumber = slotNumber;
 
-    this.battleItems = this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
-      item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir); 
+    this.battleItems = this.getViableBattleItems();   
 
     this.setupDisplayBattleItems();
   }
@@ -340,6 +342,14 @@ export class PartyComponent implements OnInit {
     var keybinds = this.globalService.globalVar.keybinds;
     
     //character 1
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("toggleCharacter1TargetMode"))) {
+      this.battleService.targetCharacterMode = !this.battleService.targetCharacterMode;
+      if (this.battleService.targetCharacterMode)
+        this.battleService.characterInTargetMode = this.globalService.globalVar.activePartyMember1;
+      else
+        this.battleService.characterInTargetMode = CharacterEnum.None;
+    }
+
     if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter1AutoAttack"))) {
       this.party[0].battleInfo.autoAttackManuallyTriggered = true;
     }
@@ -443,6 +453,14 @@ export class PartyComponent implements OnInit {
 
     //Character 2
     if (this.party[1] !== undefined) {
+      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("toggleCharacter2TargetMode"))) {
+        this.battleService.targetCharacterMode = !this.battleService.targetCharacterMode;
+        if (this.battleService.targetCharacterMode)
+          this.battleService.characterInTargetMode = this.globalService.globalVar.activePartyMember2;
+        else
+          this.battleService.characterInTargetMode = CharacterEnum.None;
+      }
+
       if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("useCharacter2AutoAttack"))) {
         this.party[1].battleInfo.autoAttackManuallyTriggered = true;
       }

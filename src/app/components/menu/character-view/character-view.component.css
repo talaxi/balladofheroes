@@ -1,15 +1,14 @@
 .gridContainer {
-    display: grid;
-    /*margin-right: 3rem; MENU REWORK*/
+    display: grid;    
     height: 100%;
-    grid-template-columns: auto;
+    grid-template-columns: 33% 33% 34%;
     grid-template-rows: auto auto 1fr;
-    gap: 2rem;
+    row-gap: 2rem;
     justify-content: stretch;
     grid-template-areas:
-        "characterInfo"
-        "characterStats"
-        "characterAbilities";
+        "characterInfo characterInfo characterInfo"
+        "characterStats characterStats secondaryStats"
+        "characterAbilities characterAbilities secondaryStats";
 }
 
 .characterInfo {
@@ -25,6 +24,10 @@
 
 .characterStats {
     grid-area: characterStats;
+}
+
+.secondaryStats {
+    grid-area: secondaryStats;
 }
 
 .characterAbilities {
@@ -47,11 +50,11 @@
 .statContainer {
     display: grid;
     height: 100%;
-    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-columns: 1fr 1fr;
     grid-template-rows: auto;
     justify-content: stretch;
     grid-template-areas:
-        "equipment primaryStats secondaryStats";
+        "equipment primaryStats";
 }
 
 .equipment {
@@ -81,8 +84,11 @@
     width: 90%;
 }
 
-.changeButton {
+.buttonOffset {
     margin-left: 2rem;
+}
+
+.changeButton {    
     vertical-align: middle;
 }
 

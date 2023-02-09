@@ -18,6 +18,22 @@
     border: 2px solid red;
 }
 
+.characterTargetedAdventurer:hover {
+    border: 2px solid var(--adventurerColor);
+}
+
+.characterTargetedArcher:hover {
+    border: 2px solid var(--archerColor);
+}
+
+.characterTargetedWarrior:hover {
+    border: 2px solid var(--warriorColor);
+}
+
+.characterTargetedPriest:hover {
+    border: 2px solid var(--priestColor);
+}
+
 .characterBar {
     width: 71%;
     margin-right: .5rem;
@@ -32,17 +48,14 @@
     right: .25rem;*/
 }
 
-.staggerBar {
-    width: 50%;
-    margin-right: .5rem;
-    display: inline-block;
+.targetSpace {
+    width: calc(var(--s4-size) * 2 + .5rem);
+    align-self: center;
 }
 
-.staggerText {
-    font-size: .75rem;
-    font-weight: bold;
+.secondTarget {
+    margin-left: .25rem;
 }
-
 
 .mat-progress-bar-element,
 .mat-progress-bar {
@@ -51,6 +64,28 @@
 
 .flex {
     display: flex;
+}
+
+.spaceBetween {
+    width: 100%;
+    justify-content: space-between;
+}
+
+.name {
+    height: calc(var(--s2-size) + .2rem);
+}
+
+.smallText {
+    font-size: var(--e2-size) !important;
+}
+
+.verySmallText {
+    font-size: var(--e3-size) !important;
+}
+
+.targetIcon {
+    width: var(--s4-size);
+    vertical-align: middle;
 }
 
 .enemy {

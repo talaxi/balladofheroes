@@ -1,5 +1,12 @@
 export enum AltarEffectsEnum {
   None,
   SmallAltarPrayStrength,
-  SmallAltarPrayFortune
+  SmallAltarPrayFortune,
+  SmallAltarPrayGod,
+  LargeAltarOfferGrains,
+  LargeAltarOfferFruit,
+  LargeAltarOfferStatue,
+  PyreSacrificeSheep,
+  PyreSacrificeGoat,
+  PyreSacrificeOx
 }

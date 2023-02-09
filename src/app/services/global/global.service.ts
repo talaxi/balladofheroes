@@ -63,10 +63,11 @@ export class GlobalService {
     adventurer.name = "Adventurer";
     adventurer.type = CharacterEnum.Adventurer;
     adventurer.isAvailable = true;
-    adventurer.baseStats = new CharacterStats(250, 12, 8, 0, 5, 10);
+    adventurer.baseStats = new CharacterStats(200, 12, 8, 0, 5, 10);
     adventurer.battleStats = adventurer.baseStats.makeCopy();
     adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
     this.assignAbilityInfo(adventurer);
+    this.calculateCharacterBattleStats(adventurer);
 
     this.globalVar.characters.push(adventurer);
 
@@ -77,6 +78,7 @@ export class GlobalService {
     archer.baseStats = new CharacterStats(220, 12, 10, 10, 15, 5);
     archer.battleStats = archer.baseStats.makeCopy();
     archer.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+    this.calculateCharacterBattleStats(archer);
     this.assignAbilityInfo(archer);
 
     this.globalVar.characters.push(archer);
@@ -88,6 +90,7 @@ export class GlobalService {
     warrior.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
     warrior.battleStats = warrior.baseStats.makeCopy();
     warrior.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+    this.calculateCharacterBattleStats(warrior);
     this.assignAbilityInfo(warrior);
 
     this.globalVar.characters.push(warrior);
@@ -96,9 +99,10 @@ export class GlobalService {
     priest.name = "Priest";
     priest.type = CharacterEnum.Priest;
     priest.isAvailable = false;
-    priest.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
+    priest.baseStats = new CharacterStats(220, 10, 10, 10, 5, 5);
     priest.battleStats = priest.baseStats.makeCopy();
     priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
+    this.calculateCharacterBattleStats(priest);
     this.assignAbilityInfo(priest);
 
     this.globalVar.characters.push(priest);
@@ -201,7 +205,7 @@ export class GlobalService {
     if (character.type === CharacterEnum.Priest) {
       var heal = new Ability();
       heal.name = "Heal";
-      heal.requiredLevel = this.utilityService.characterAbility2Level;
+      heal.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       heal.targetType = TargetEnum.LowestHpPercent;
       heal.isAvailable = false;
       heal.effectiveness = 1.4;
@@ -323,10 +327,10 @@ export class GlobalService {
       woundingArrow.name = "Wounding Arrow";
       woundingArrow.isAvailable = false;
       woundingArrow.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      woundingArrow.cooldown = woundingArrow.currentCooldown = 24;
+      woundingArrow.cooldown = woundingArrow.currentCooldown = 28;
       woundingArrow.effectiveness = 2;
       woundingArrow.dealsDirectDamage = true;
-      woundingArrow.targetEffect.push(this.createStatusEffect(StatusEffectEnum.AttackDown, 6, .9, false, false));
+      woundingArrow.targetEffect.push(this.createStatusEffect(StatusEffectEnum.AttackDown, 7, .9, false, false));
       god.abilityList.push(woundingArrow);
 
       var electricVolley = new Ability();
@@ -661,8 +665,8 @@ export class GlobalService {
     character.battleStats.resistance += character.equipmentSet.getTotalResistanceGain();
     character.battleStats.hpRegen = character.equipmentSet.getTotalHpRegenGain();
     character.battleStats.criticalMultiplier = character.equipmentSet.getTotalCriticalMultiplierGain();
-    character.battleStats.abilityCooldownReduction = character.equipmentSet.getTotalAbilityCooldownReductionGain();
-    character.battleStats.autoAttackCooldownReduction = character.equipmentSet.getTotalAutoAttackCooldownReductionGain();
+    character.battleStats.abilityCooldownReduction = (1 - character.equipmentSet.getTotalAbilityCooldownReductionGain());
+    character.battleStats.autoAttackCooldownReduction = (1 - character.equipmentSet.getTotalAutoAttackCooldownReductionGain());
     character.battleStats.elementalDamageIncrease.holy = character.equipmentSet.getTotalHolyDamageIncreaseGain();
     character.battleStats.elementalDamageIncrease.fire = character.equipmentSet.getTotalFireDamageIncreaseGain();
     character.battleStats.elementalDamageIncrease.water = character.equipmentSet.getTotalWaterDamageIncreaseGain();
@@ -687,8 +691,8 @@ export class GlobalService {
       character.battleStats.resistance += god1.statGain.resistance + god1.permanentStatGain.resistance;
 
       character.battleStats.hpRegen += god1.statGain.hpRegen + god1.permanentStatGain.hpRegen;
-      character.battleStats.abilityCooldownReduction += god1.statGain.abilityCooldownReduction + god1.permanentStatGain.abilityCooldownReduction;
-      character.battleStats.autoAttackCooldownReduction += god1.statGain.autoAttackCooldownReduction + god1.permanentStatGain.autoAttackCooldownReduction;
+      character.battleStats.abilityCooldownReduction *= (1 - (god1.statGain.abilityCooldownReduction + god1.permanentStatGain.abilityCooldownReduction));
+      character.battleStats.autoAttackCooldownReduction *= (1 - (god1.statGain.autoAttackCooldownReduction + god1.permanentStatGain.autoAttackCooldownReduction));
       character.battleStats.criticalMultiplier += god1.statGain.criticalMultiplier + god1.permanentStatGain.criticalMultiplier;
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.statGain.elementalDamageIncrease);
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.permanentStatGain.elementalDamageIncrease);
@@ -706,8 +710,8 @@ export class GlobalService {
       character.battleStats.resistance += god2.statGain.resistance + god2.permanentStatGain.resistance;
 
       character.battleStats.hpRegen += god2.statGain.hpRegen + god2.permanentStatGain.hpRegen;
-      character.battleStats.abilityCooldownReduction += god2.statGain.abilityCooldownReduction + god2.permanentStatGain.abilityCooldownReduction;
-      character.battleStats.autoAttackCooldownReduction += god2.statGain.autoAttackCooldownReduction + god2.permanentStatGain.autoAttackCooldownReduction;
+      character.battleStats.abilityCooldownReduction *= (1 - (god2.statGain.abilityCooldownReduction + god2.permanentStatGain.abilityCooldownReduction));
+      character.battleStats.autoAttackCooldownReduction *= (1 - (god2.statGain.autoAttackCooldownReduction + god2.permanentStatGain.autoAttackCooldownReduction));
       character.battleStats.criticalMultiplier += god2.statGain.criticalMultiplier + god2.permanentStatGain.criticalMultiplier;
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.statGain.elementalDamageIncrease);
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.permanentStatGain.elementalDamageIncrease);
@@ -717,8 +721,10 @@ export class GlobalService {
 
     //charms
     character.battleStats.hpRegen += this.charmService.getTotalHpRegenAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);
-    //TODO: should auto attack and ability cooldown reduction be % based?
+    character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);    
+    character.battleStats.abilityCooldownReduction *= (1 - this.charmService.getTotalAbilityCooldownReductionAdditionFromCharms(this.globalVar.resources));
+    character.battleStats.autoAttackCooldownReduction *= (1 - this.charmService.getTotalAutoAttackCooldownReductionAdditionFromCharms(this.globalVar.resources));
+
     character.battleStats.elementalDamageIncrease.holy += this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalVar.resources);
     character.battleStats.elementalDamageIncrease.fire += this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalVar.resources);
     character.battleStats.elementalDamageIncrease.lightning += this.charmService.getTotalLightningDamageIncreaseAdditionFromCharms(this.globalVar.resources);
@@ -760,13 +766,33 @@ export class GlobalService {
       //active gods
       this.globalVar.gods.filter(god => god.isAvailable &&
         activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {          
-          god.exp += enemy.xpGainFromDefeat * BoonOfOlympusValue;          
+          var affinityBoost = 1;
+
+          //repeats every 4 levels, duration increase is at level X3
+          var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
+          if (god.affinityLevel % 4 >= 3)
+          affinityIncreaseCount += 1;
+
+          affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
+
+          
+          god.exp += enemy.xpGainFromDefeat * BoonOfOlympusValue * affinityBoost;          
         });
 
       //inactive gods
       this.globalVar.gods.filter(god => god.isAvailable &&
         (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-          god.exp += enemy.xpGainFromDefeat;
+          var affinityBoost = 1;
+
+          //repeats every 4 levels, duration increase is at level X3
+          var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
+          if (god.affinityLevel % 4 >= 3)
+          affinityIncreaseCount += 1;
+
+          affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
+
+          
+          god.exp += enemy.xpGainFromDefeat * BoonOfOlympusValue * affinityBoost;
         });
     });
 
@@ -832,7 +858,7 @@ export class GlobalService {
   checkForNewCharacterOverdrives(character: Character) {
     if (character.level === 20)
     {
-      character.unlockedOverdrives.push(OverdriveNameEnum.Smash);
+      character.unlockedOverdrives.push(OverdriveNameEnum.Fervor);
     }
   }
 
@@ -1205,7 +1231,7 @@ export class GlobalService {
         userGainsEffect.duration += .2;
       else
         //40 levels of increasing effectiveness to 60% reduction
-        userGainsEffect.effectiveness += .1;
+        userGainsEffect.effectiveness -= .01;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)

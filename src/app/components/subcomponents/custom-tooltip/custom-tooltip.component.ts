@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, Renderer2, TemplateRef } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -25,7 +26,7 @@ export class CustomTooltipComponent implements OnInit {
 
   @Input() isSticky: boolean = false;
 
-  constructor(private balladService: BalladService, private globalService: GlobalService) { }
+  constructor(private balladService: BalladService, private globalService: GlobalService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
   }
@@ -37,6 +38,7 @@ export class CustomTooltipComponent implements OnInit {
         var subzoneEnumValue = className?.split(" ")[1];
         if (subzoneEnumValue !== undefined) {     
           this.jumpToSubzone(Number(subzoneEnumValue) as SubZoneEnum);
+          this.dialog.closeAll();
         }
     }));
   }

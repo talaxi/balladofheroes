@@ -23,9 +23,13 @@ export class GameLogEditorComponent implements OnInit {
   battleUpdates = false;
   useBattleItem = false;
 
+  alchemyUnlocked = false;
+
   constructor(private globalService: GlobalService) { }
 
   ngOnInit(): void {
+    this.alchemyUnlocked = this.globalService.globalVar.alchemy.isUnlocked;
+
     var partyAutoAttacks = this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks");
     if (partyAutoAttacks === undefined)
       this.partyAutoAttacks = false;

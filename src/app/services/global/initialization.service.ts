@@ -1,11 +1,14 @@
 import { Injectable } from '@angular/core';
+import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count.model';
 import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
@@ -35,7 +38,8 @@ export class InitializationService {
     this.initializeGameLogSettings(); 
     this.initializeQuickView();
     this.initializeKeybinds();
-    this.intializeBestiaryDefeatCount();
+    this.initializeBestiaryDefeatCount();
+    this.initializeColiseumDefeatCount();
   }
 
   initializeBallads() {    
@@ -158,9 +162,6 @@ export class InitializationService {
 
   initializeQuickView() {
     this.globalService.globalVar.trackedResources.push(ItemsEnum.Coin);
-
-    //TODO: remove below, just for testing
-    this.globalService.globalVar.trackedResources.push(ItemsEnum.LightLeather);
   }
 
   initializeKeybinds() {
@@ -178,6 +179,8 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("openResourcesQuickView", "keyR");
     this.globalService.globalVar.keybinds.set("openAlchemyQuickView", "keyA");
 
+    this.globalService.globalVar.keybinds.set("openFirstAvailableAltar", "Space"); 
+    this.globalService.globalVar.keybinds.set("toggleCharacter1TargetMode", "keyT");  
     this.globalService.globalVar.keybinds.set("useCharacter1AutoAttack", "digit1");
     this.globalService.globalVar.keybinds.set("useCharacter1Ability1", "digit2");
     this.globalService.globalVar.keybinds.set("useCharacter1Ability2", "digit3");
@@ -200,6 +203,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("autoToggleCharacter1God2Ability3", this.keybindService.altKeyBind + "digit9");
     this.globalService.globalVar.keybinds.set("autoToggleCharacter1Overdrive", this.keybindService.altKeyBind + "digit0");
 
+    this.globalService.globalVar.keybinds.set("toggleCharacter2TargetMode", this.keybindService.shiftKeyBind + "keyT");
     this.globalService.globalVar.keybinds.set("useCharacter2AutoAttack", this.keybindService.shiftKeyBind + "digit1");
     this.globalService.globalVar.keybinds.set("useCharacter2Ability1", this.keybindService.shiftKeyBind + "digit2");
     this.globalService.globalVar.keybinds.set("useCharacter2Ability2", this.keybindService.shiftKeyBind + "digit3");
@@ -223,7 +227,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("autoToggleCharacter2Overdrive", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit0");
   }
 
-  intializeBestiaryDefeatCount() {    
+  initializeBestiaryDefeatCount() {    
     for (const [propertyKey, propertyValue] of Object.entries(BestiaryEnum))
     {
       if (!Number.isNaN(Number(propertyKey))) {
@@ -236,8 +240,21 @@ export class InitializationService {
     }
   }
 
+  initializeColiseumDefeatCount() {    
+    for (const [propertyKey, propertyValue] of Object.entries(ColiseumTournamentEnum))
+    {
+      if (!Number.isNaN(Number(propertyKey))) {
+        continue;
+      }
+
+      var enumValue = propertyValue as ColiseumTournamentEnum;
+      var coliseumDefeatCount = new ColiseumDefeatCount(enumValue, 0);
+      this.globalService.globalVar.coliseumDefeatCount.push(coliseumDefeatCount);
+    }
+  }
+
   devMode() {
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 100000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 1000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 1000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 10000));
@@ -251,14 +268,18 @@ export class InitializationService {
 
     this.globalService.globalVar.currentStoryId = 10000;
     
+    //this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer)!.isAvailable = true;
+    //this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer)!.isAvailable = true;
+
     this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-    this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });
+    this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true;  });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
     this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
     this.globalService.globalVar.itemBeltSize = 1;
     this.globalService.globalVar.alchemy.level = 25;
     this.alchemyService.checkForNewRecipes();
 
     this.globalService.globalVar.altarInfo.push(this.altarService.getTutorialAltar());
+    
 
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));

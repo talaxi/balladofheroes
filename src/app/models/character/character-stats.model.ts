@@ -33,8 +33,8 @@ export class CharacterStats {
         this.criticalMultiplier = 0;
         this.elementalDamageIncrease = new ElementalStats();
         this.elementalDamageResistance = new ElementalStats();
-        this.abilityCooldownReduction = 0;
-        this.autoAttackCooldownReduction = 0;
+        this.abilityCooldownReduction = 0; 
+        this.autoAttackCooldownReduction = 0; 
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {

@@ -1,4 +1,6 @@
 export enum AltarEnum {
   None,
-  Small
+  Small,
+  Large,
+  Pyre
 }

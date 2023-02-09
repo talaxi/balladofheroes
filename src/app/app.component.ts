@@ -17,6 +17,7 @@ import { SubZone } from './models/zone/sub-zone.model';
 import { LookupService } from './services/lookup.service';
 import { StoryService } from './services/story/story.service';
 import { ColiseumTournamentEnum } from './models/enums/coliseum-tournament-enum.model';
+import { OptionalSceneEnum } from './models/enums/optional-scene-enum.model';
 declare var LZString: any;
 
 @Component({
@@ -41,7 +42,8 @@ export class AppComponent {
   }
 
   ngOnInit() {
-    var compressedGameData = localStorage.getItem("theBalladOfHeroesGameData");
+    //todo: when pushing v1, change all to theBalladOfHeroesFinalGameData
+    var compressedGameData = localStorage.getItem("theBalladOfHeroesBetaGameData");
 
     if (compressedGameData !== null && compressedGameData !== undefined) {
       var gameData = LZString.decompressFromBase64(compressedGameData);
@@ -132,6 +134,7 @@ export class AppComponent {
       
     this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
     this.storyService.showStory = false;
+    this.storyService.showOptionalStory = OptionalSceneEnum.None;
     this.utilityService.isBattlePaused = false;
   }
 

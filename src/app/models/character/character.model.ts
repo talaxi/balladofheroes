@@ -8,6 +8,7 @@ import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
 import { God } from "./god.model";
 import { OverdriveInfo } from "./overdrive-info.model";
+import { TrackedStats } from "./tracked-stats.model";
 
 export class Character {
     name: string;
@@ -32,6 +33,9 @@ export class Character {
     @Type(() => OverdriveInfo)
     overdriveInfo: OverdriveInfo;    
     unlockedOverdrives: OverdriveNameEnum[];
+    @Type(() => TrackedStats)
+    trackedStats: TrackedStats;
+    targeting: Character | undefined;
 
     constructor(type?: CharacterEnum) {
         this.type = type === undefined ? CharacterEnum.None : type;
@@ -49,6 +53,7 @@ export class Character {
         this.overdriveInfo = new OverdriveInfo();
 
         this.abilityList = [];
-        this.unlockedOverdrives = [OverdriveNameEnum.Fervor];
+        this.trackedStats = new TrackedStats();
+        this.unlockedOverdrives = [OverdriveNameEnum.Smash];
     }    
 }

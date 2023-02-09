@@ -5,5 +5,8 @@ export enum TutorialTypeEnum {
   AutoAttack,
   NewSubzone,
   Town,
-  Crafting
+  Crafting,
+  SkipStory,
+  Equipment,
+  Altars
 }

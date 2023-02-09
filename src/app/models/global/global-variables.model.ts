@@ -19,6 +19,8 @@ import { Guid } from 'guid-typescript';
 import { EnemyDefeatCount } from "../battle/enemy-defeat-count.model";
 import { AltarInfo } from "../altar/altar-info.model";
 import { AltarEffect } from "../altar/altar-effect.model";
+import { OptionalSceneEnum } from "../enums/optional-scene-enum.model";
+import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -56,7 +58,7 @@ export class GlobalVariables {
     chthonicPowers: ChthonicPowers;
     @Type(() => Alchemy)
     alchemy: Alchemy;
-    betaSave: boolean = true;
+    betaSave: boolean = false;
     @Type(() => Settings)
     gameLogSettings: Settings;
     @Type(() => Settings)
@@ -68,10 +70,13 @@ export class GlobalVariables {
     guid: string;
     @Type(() => EnemyDefeatCount)
     enemyDefeatCount: EnemyDefeatCount[];
+    @Type(() => ColiseumDefeatCount)
+    coliseumDefeatCount: ColiseumDefeatCount[];
     @Type(() => AltarInfo)
     altarInfo: AltarInfo[];
     @Type(() => AltarEffect)
     activeAltarEffects: AltarEffect[];
+    optionalScenesViewed: OptionalSceneEnum[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -84,6 +89,7 @@ export class GlobalVariables {
         this.logData = [];
         this.trackedResources = [];
         this.enemyDefeatCount = [];
+        this.coliseumDefeatCount = [];
         this.itemBeltSize = 1;
         //this.activeBattle = new Battle();
         this.playerNavigation = new PlayerNavigation();
@@ -98,6 +104,7 @@ export class GlobalVariables {
         this.keybinds = new Settings();
         this.altarInfo = [];
         this.activeAltarEffects = [];
+        this.optionalScenesViewed = [];
         this.guid = Guid.create().toString();
     }
 }

@@ -82,7 +82,10 @@ import { UpdateKeybindsViewComponent } from './components/menu/settings-view/upd
 import { ColiseumViewComponent } from './components/subcomponents/coliseum-view/coliseum-view.component';
 import { AltarOptionsViewComponent } from './components/subcomponents/altar-options-view/altar-options-view.component';
 import { AltarComponent } from './components/layout/battle/altar/altar.component';
-
+import { ChangeClassViewComponent } from './components/menu/character-view/change-class-view/change-class-view.component';
+import { AltarViewComponent } from './components/subcomponents/altar-options-view/altar-view/altar-view.component';
+import {Ng2FittextModule} from "ng2-fittext";
+import { ResourceRequiredViewComponent } from './components/subcomponents/shopping-item-view/resource-required-view/resource-required-view.component';
 
 @NgModule({
   declarations: [
@@ -129,7 +132,10 @@ import { AltarComponent } from './components/layout/battle/altar/altar.component
     UpdateKeybindsViewComponent,
     ColiseumViewComponent,
     AltarOptionsViewComponent,
-    AltarComponent
+    AltarComponent,
+    ChangeClassViewComponent,
+    AltarViewComponent,
+    ResourceRequiredViewComponent
   ],
   imports: [
     BrowserModule,
@@ -171,6 +177,7 @@ import { AltarComponent } from './components/layout/battle/altar/altar.component
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
+    Ng2FittextModule
   ],
   providers: [],
   bootstrap: [AppComponent]

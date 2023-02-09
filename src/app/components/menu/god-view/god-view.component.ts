@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
+import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
@@ -200,11 +201,11 @@ export class GodViewComponent implements OnInit {
         if (increaseValues.hpRegen > 0)
           rewards += Math.round(increaseValues.hpRegen) + " HP Regen per 5 sec Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.criticalMultiplier > 0)
-          rewards += Math.round(increaseValues.criticalMultiplier) + " Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.criticalMultiplier  * 100) + "% Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.abilityCooldownReduction > 0)
-          rewards += Math.round(increaseValues.abilityCooldownReduction) + " sec Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.autoAttackCooldownReduction > 0)
-          rewards += Math.round(increaseValues.autoAttackCooldownReduction) + " sec Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.elementalDamageIncrease.holy > 0)
           rewards += (increaseValues.elementalDamageIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
@@ -247,6 +248,23 @@ export class GodViewComponent implements OnInit {
     var increaseValues = this.getGodLevelStatIncreaseValues(god, statToIncrease, statGainAmount);*/
 
     return rewards;
+  }
+
+  getNextAffinityReward() {
+    var reward = this.lookupService.getAffinityRewardForLevel(this.god.affinityLevel + 1);
+
+    if (reward === AffinityLevelRewardEnum.PrayerDuration)
+      return "Increase Base Prayer Duration by " + this.utilityService.affinityRewardPrayerDuration * 100 + "%";
+      if (reward === AffinityLevelRewardEnum.PrayerEffectiveness)
+      return "Increase Base Prayer Effectiveness by " + this.utilityService.affinityRewardPrayerEffectiveness * 100 + "%";
+      if (reward === AffinityLevelRewardEnum.GodXp)
+      return "Increase God's EXP Gain by " + this.utilityService.affinityRewardGodXpBonus * 100 + "%";
+      if (reward === AffinityLevelRewardEnum.SmallCharm)
+      return "Small Charm of " + this.god.name;
+      if (reward === AffinityLevelRewardEnum.LargeCharm)
+      return "Large Charm of " + this.god.name;
+
+      return "";
   }
 
   getMaxHpBonus() {

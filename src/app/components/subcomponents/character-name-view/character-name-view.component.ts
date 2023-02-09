@@ -12,6 +12,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -30,14 +31,34 @@ export class CharacterNameViewComponent implements OnInit {
   animationTimer = 0;
   animationTimerCap = 3;
   levelUpAnimationText = "Lv Up!";
+  characterName: string;
+  targetKeybind: string = "";
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
     private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService,
-    private gameLoopService: GameLoopService, private battleService: BattleService) { }
+    private gameLoopService: GameLoopService, private battleService: BattleService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {
+    if (this.character.type === this.globalService.globalVar.activePartyMember1)
+    {
+      var keybind = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter1TargetMode");
+      if (keybind !== undefined)
+        this.targetKeybind = this.keybindService.getBindingString(keybind[1]);
+    }
+    else
+    {
+      var keybind = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter2TargetMode");
+      if (keybind !== undefined)
+        this.targetKeybind = this.keybindService.getBindingString(keybind[1]);
+    }
+
     this.showDevStats = this.deploymentService.showStats;
     this.previousLevel = this.character.level;
+
+    if (this.globalService.globalVar.activePartyMember1 === this.character.type)
+      this.characterName = "Thales";
+    if (this.globalService.globalVar.activePartyMember2 === this.character.type)
+      this.characterName = "Zosime";
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
       if (this.character.level > this.previousLevel) {
@@ -64,8 +85,7 @@ export class CharacterNameViewComponent implements OnInit {
   }
 
   goToCharacterDetails() {
-    if (this.isButtonActive())
-    {
+    if (this.isButtonActive()) {
       this.layoutService.changeLayout(NavigationEnum.Menu);
       this.menuService.selectedMenuDisplay = MenuEnum.Characters;
       this.menuService.setSelectedCharacter(this.character.type);
@@ -170,6 +190,29 @@ export class CharacterNameViewComponent implements OnInit {
 
   getCharacterDps() {
     return this.lookupService.getCharacterDps(this.character);
+  }
+
+  activateTargetingMode() {
+    this.battleService.targetCharacterMode = !this.battleService.targetCharacterMode;
+    if (this.battleService.targetCharacterMode)
+      this.battleService.characterInTargetMode = this.character.type;
+    else
+      this.battleService.characterInTargetMode = CharacterEnum.None;
+  }
+
+  getTargetingIcon() {
+    var src = "assets/svg/";
+
+    if (this.character.type === CharacterEnum.Adventurer)
+      src += "adventurerTarget.svg";
+    if (this.character.type === CharacterEnum.Archer)
+      src += "archerTarget.svg";
+      if (this.character.type === CharacterEnum.Warrior)
+      src += "warriorTarget.svg";
+      if (this.character.type === CharacterEnum.Priest)
+      src += "priestTarget.svg";
+
+      return src;
   }
 
   ngOnDestroy() {

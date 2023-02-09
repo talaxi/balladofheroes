@@ -1,5 +1,5 @@
 .subzoneSpacer {
-    margin-left: 1rem;
+    margin-left: .4rem;
 }
 
 .balladHeader {
@@ -122,12 +122,21 @@
     justify-content: space-evenly;
 }
 
+.iconButton {
+    height: 2rem;
+    width: 2rem;
+    position: relative;
+}
+
 .icon {
+    position:absolute;
+    top:0;
+    left:0;
     width: 2rem;
 }
 
-.iconDisabled {
-    opacity: .75;
+.iconEnabled {
+    z-index: 2;
 }
 
 .centeredBar {

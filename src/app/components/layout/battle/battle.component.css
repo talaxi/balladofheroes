@@ -222,3 +222,11 @@
 .gameLogButton {
     padding: 0;
 }
+
+.showOnHover {
+    display: none;
+}
+
+.battleUpdates:hover > .showOnHover {
+    display: block;
+}

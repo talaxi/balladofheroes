@@ -43,6 +43,19 @@ export class UtilityService {
   public firstAlchemyLevelCap = 25;
 
   public smallAltarAffinityGain = 1;
+  public largeAltarAffinityGain = 2;
+  public pyreAffinityGain = 3;
+
+  public affinityRewardPrayerDuration = .5;
+  public affinityRewardPrayerEffectiveness = .25;
+  public affinityRewardGodXpBonus = .1;
+
+  public killCountDisplayEnemyStatsAbilities = 10;
+  public killCountDisplayBasicEnemyLoot = 30;
+  public killCountDisplayFullEnemyLoot = 50;
+
+  public overdriveDamageNeededToUnlockProtection = 1000;
+  public overdriveAttacksNeededToUnlockNature = 3;
 
   constructor(public sanitizer: DomSanitizer) { }
 

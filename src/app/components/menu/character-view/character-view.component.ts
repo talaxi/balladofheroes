@@ -9,6 +9,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-character-view',
@@ -23,11 +24,17 @@ export class CharacterViewComponent implements OnInit {
   characterAbilityList: Ability[] = [];
   public noGod = GodEnum.None;
   tooltipDirection = DirectionEnum.Down;
+  otherClassesAvailable = false;
+  overdriveAvailable = false;
+  changeGodsAvailable = false;
 
   constructor(public menuService: MenuService, public lookupService: LookupService, private globalService: GlobalService,
-    private gameLoopService: GameLoopService, public dialog: MatDialog) { }
+    private gameLoopService: GameLoopService, public dialog: MatDialog, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
+    this.otherClassesAvailable = this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 2;
+    this.changeGodsAvailable = this.globalService.globalVar.gods.filter(item => item.isAvailable).length >= 2;
+
     var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);    
     if (selectedCharacter !== undefined)
     {
@@ -36,6 +43,8 @@ export class CharacterViewComponent implements OnInit {
         return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
       }).filter(item => item.isAvailable);
       this.getCharacterGodAbilities();
+      
+      this.overdriveAvailable = this.character.level >= this.utilityService.characterOverdriveLevel;
     }
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
@@ -63,6 +72,10 @@ export class CharacterViewComponent implements OnInit {
   }
 
   openChangeGodMenu(content: any) {          
+    this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding'  });  
+  }
+
+  openChangeClassMenu(content: any) {          
     this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding'  });  
   }
 
@@ -162,11 +175,11 @@ export class CharacterViewComponent implements OnInit {
   }
 
   getAbilityCooldownReductionBonus() {
-    return this.character.battleStats.abilityCooldownReduction;
+    return (1 - this.character.battleStats.abilityCooldownReduction) * 100;
   }
 
   getAutoAttackCooldownBonus() {
-    return this.character.battleStats.autoAttackCooldownReduction;
+    return (1 - this.character.battleStats.autoAttackCooldownReduction) * 100;
   }
 
   getHolyDamageBonus() {

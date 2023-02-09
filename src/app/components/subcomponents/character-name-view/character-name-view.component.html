@@ -1,17 +1,24 @@
-<span customToolTip [contentTemplate]="characterPopover" class="characterName" [ngClass]="{'buttonCursor': isButtonActive()}" (click)="goToCharacterDetails()">
-    <span class="s2Heading" [ngClass]="lookupService.getCharacterColorClass(character.type)">{{character.name}} </span>
-    <span [ngClass]="lookupService.getCharacterColorClass(character.type)"><strong>Lv
-            {{character.level}}</strong> <span class="levelUpAnimationText" [ngClass]="{'levelUpAnimation': showLevelUpAnimation}">{{levelUpAnimationText}}</span> <span *ngIf="showDevStats"> DPS: {{getCharacterDps()}}</span></span>
-</span>
-<br />
+<div class="flex">
+    <span customToolTip [contentTemplate]="characterPopover" class="characterName"
+        [ngClass]="{'buttonCursor': isButtonActive()}" (click)="goToCharacterDetails()">
+        <span class="s2Heading" [ngClass]="lookupService.getCharacterColorClass(character.type)">{{character.name}}
+        </span>
+        <span [ngClass]="lookupService.getCharacterColorClass(character.type)"><strong>Lv
+                {{character.level}}</strong> <span class="levelUpAnimationText"
+                [ngClass]="{'levelUpAnimation': showLevelUpAnimation}">{{levelUpAnimationText}}</span> <span
+                *ngIf="showDevStats"> DPS: {{getCharacterDps()}}</span></span>
+    </span>
+    <div class="alignSelfCenter">
+        <button customToolTip [contentTemplate]="targetingPopover" class="buttonAsText" (click)="activateTargetingMode()">
+            <img class="targetIcon" [src]="getTargetingIcon()">
+        </button>
+    </div>
+</div>
 <div *ngIf="true" class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover">
     <!--ngIf fixes the default value for the progress bar-->
     <mat-progress-bar mode="determinate" [value]="getCharacterXpPercent()" class="blue-progress characterBar">
     </mat-progress-bar>
 </div>
-<!--<div class="testing">
-    <mat-progress-bar class="testgrid" mode="determinate" value="50"></mat-progress-bar>
-</div>-->
 
 <ng-template #characterPopover>
     <div>
@@ -19,7 +26,7 @@
             <span [innerHtml]="getCharacterPassiveDescription()"></span>
             <hr />
         </div>
-        Click for details on Character.
+        {{characterName}} is assigned to the {{character.name}} class. Click for details on class.
     </div>
 </ng-template>
 
@@ -29,5 +36,11 @@
         <br />
         {{character.exp | number : '1.0-0'}} / {{character.expToNextLevel | number : '1.0-0'}} XP to Level
         {{character.level + 1}}
+    </div>
+</ng-template>
+
+<ng-template #targetingPopover>
+    <div>
+        Click or press <span class='keybind'>{{targetKeybind}}</span> to toggle targeting mode. After clicking, click an enemy to target all auto attacks and abilities on that enemy.                
     </div>
 </ng-template>

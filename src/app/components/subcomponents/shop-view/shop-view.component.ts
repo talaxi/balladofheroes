@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
+import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
@@ -24,6 +25,7 @@ export class ShopViewComponent implements OnInit {
   subscription: any;
   activeSubzoneType: SubZoneEnum;
   shopTypeEnum = ShopTypeEnum;
+  openShopSubscription: any;
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -43,7 +45,7 @@ export class ShopViewComponent implements OnInit {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.getShopOptions();
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
       if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
         this.activeSubzoneType = this.balladService.getActiveSubZone().type;
         this.getShopOptions();
@@ -73,6 +75,10 @@ export class ShopViewComponent implements OnInit {
     if (type === ShopTypeEnum.Coliseum) {
       text = "Coliseum";
     }
+    if (type === ShopTypeEnum.Traveler) {
+      text = "Traveler";
+    }
+
 
     return text;
   }
@@ -83,6 +89,24 @@ export class ShopViewComponent implements OnInit {
   }
 
   openShop(option: ShopOption, content: any) {
+    var optionalSceneToDisplay = this.optionalSceneToDisplay(option);
+    if (optionalSceneToDisplay !== OptionalSceneEnum.None)
+    {
+      //display optional scene from shop 
+      this.storyService.displayOptionalScene(optionalSceneToDisplay);
+      this.battleService.checkScene();
+      //subscribe to story service
+      this.openShopSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {        
+        if (this.storyService.returnedFromOptionalScene)
+        {
+          this.openShop(option, content);
+          this.openShopSubscription.unsubscribe();
+        }
+      });
+      //when given the okay, call this function again
+      return;
+    }
+
     if (option.type === ShopTypeEnum.Coliseum)
       this.dialog.open(content, { width: '75%', maxHeight: '75%'});
     else
@@ -94,7 +118,7 @@ export class ShopViewComponent implements OnInit {
       this.alchemyService.checkForNewRecipes();
     }
 
-    if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General) {
+    if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler) {
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));
       this.newItems = option.availableItems.sort((a, b) => this.sortFunction(a, b)).filter(item => item.originalStore === this.activeSubzoneType);
 
@@ -232,6 +256,24 @@ export class ShopViewComponent implements OnInit {
     this.shopItems.sort((a, b) => this.sortFunction(a, b));
 
     this.setupDisplayShopItems();
+  }
+
+  optionalSceneToDisplay(option: ShopOption) {
+    var scene = OptionalSceneEnum.None;
+
+    if (option.type === ShopTypeEnum.Alchemist && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&
+    !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HecateAlchemy))
+    {
+      console.log("Show hecate scene");
+      scene = OptionalSceneEnum.HecateAlchemy;
+    }
+    if (option.type === ShopTypeEnum.ChthonicFavor && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&
+    !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavor))
+    {
+      scene = OptionalSceneEnum.ChthonicFavor;
+    }
+
+    return scene;
   }
 
   ngOnDestroy() {

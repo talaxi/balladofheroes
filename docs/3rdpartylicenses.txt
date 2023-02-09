@@ -93,6 +93,9 @@ THE SOFTWARE.
 guid-typescript
 ISC
 
+ng2-fittext
+MIT
+
 pluralize
 MIT
 The MIT License (MIT)
