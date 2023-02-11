@@ -721,7 +721,7 @@ export class GlobalService {
 
     //charms
     character.battleStats.hpRegen += this.charmService.getTotalHpRegenAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);    
+    character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);
     character.battleStats.abilityCooldownReduction *= (1 - this.charmService.getTotalAbilityCooldownReductionAdditionFromCharms(this.globalVar.resources));
     character.battleStats.autoAttackCooldownReduction *= (1 - this.charmService.getTotalAutoAttackCooldownReductionAdditionFromCharms(this.globalVar.resources));
 
@@ -751,10 +751,6 @@ export class GlobalService {
 
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam) {
     var activeParty = this.getActivePartyCharacters(true);
-    var BoonOfOlympus = this.globalVar.resources.find(item => item.item === ItemsEnum.BoonOfOlympus);
-    var BoonOfOlympusValue = 1;
-    if (BoonOfOlympus !== undefined)
-      BoonOfOlympusValue += BoonOfOlympus.amount;
 
     defeatedEnemies.enemyList.forEach(enemy => {
       activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel
@@ -765,55 +761,52 @@ export class GlobalService {
 
       //active gods
       this.globalVar.gods.filter(god => god.isAvailable &&
-        activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {          
-          var affinityBoost = 1;
-
-          //repeats every 4 levels, duration increase is at level X3
-          var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
-          if (god.affinityLevel % 4 >= 3)
-          affinityIncreaseCount += 1;
-
-          affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
-
-          
-          god.exp += enemy.xpGainFromDefeat * BoonOfOlympusValue * affinityBoost;          
+        activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {
+          this.giveGodExp(god, enemy.xpGainFromDefeat);
         });
 
       //inactive gods
       this.globalVar.gods.filter(god => god.isAvailable &&
         (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-          var affinityBoost = 1;
-
-          //repeats every 4 levels, duration increase is at level X3
-          var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
-          if (god.affinityLevel % 4 >= 3)
-          affinityIncreaseCount += 1;
-
-          affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
-
-          
-          god.exp += enemy.xpGainFromDefeat * BoonOfOlympusValue * affinityBoost;
+          //todo: should xp be halved for inactive gods?
+          this.giveGodExp(god, enemy.xpGainFromDefeat);
         });
-    });
 
 
-    party.forEach(partyMember => {
-      var previousXp: number | undefined = undefined;
-      while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
-        previousXp = partyMember.exp;
-        this.levelUpPartyMember(partyMember);
-        if (partyMember.level === partyMember.maxLevel)
-          partyMember.exp = 0;
-      }
+      party.forEach(partyMember => {
+        var previousXp: number | undefined = undefined;
+        while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
+          previousXp = partyMember.exp;
+          this.levelUpPartyMember(partyMember);
+          if (partyMember.level === partyMember.maxLevel)
+            partyMember.exp = 0;
+        }
+      });
     });
+  }
 
-    this.globalVar.gods.forEach(god => {
-      var previousXp: number | undefined = undefined;
-      while (god.exp >= god.expToNextLevel && (previousXp === undefined || god.exp < previousXp)) {
-        previousXp = god.exp;
-        this.levelUpGod(god);
-      }
-    });
+  giveGodExp(god: God, xpAmount: number) {
+    var BoonOfOlympus = this.globalVar.resources.find(item => item.item === ItemsEnum.BoonOfOlympus);
+    var BoonOfOlympusValue = 1;
+    if (BoonOfOlympus !== undefined)
+      BoonOfOlympusValue += BoonOfOlympus.amount;
+
+    var affinityBoost = 1;
+
+    //repeats every 4 levels, duration increase is at level X3
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 3)
+      affinityIncreaseCount += 1;
+
+    affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
+    
+    god.exp += xpAmount * BoonOfOlympusValue * affinityBoost;    
+
+    var previousXp: number | undefined = undefined;
+    while (god.exp >= god.expToNextLevel && (previousXp === undefined || god.exp < previousXp)) {
+      previousXp = god.exp;
+      this.levelUpGod(god);
+    }
   }
 
   levelUpPartyMember(character: Character) {
@@ -848,16 +841,15 @@ export class GlobalService {
     character.baseStats.luck += statIncrease;
     character.baseStats.resistance += statIncrease;
     character.baseStats.maxHp += statIncrease * maxHpBonusMultiplier;
-    
-    if (this.globalVar.gameLogSettings.get("partyLevelUp")) {      
+
+    if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
       var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " gains <strong>" + (maxHpBonusMultiplier * statIncrease) + " Max HP</strong> and <strong>" + statIncrease + " to all other primary stats</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
   }
 
   checkForNewCharacterOverdrives(character: Character) {
-    if (character.level === 20)
-    {
+    if (character.level === 20) {
       character.unlockedOverdrives.push(OverdriveNameEnum.Fervor);
     }
   }
@@ -1581,7 +1573,7 @@ export class GlobalService {
     var baseXp = 500;
 
     var factor = 1.021;
-    var additive = baseXp * (level - 1);
+    var additive = (baseXp - 100) * (level - 1);
     var exponential = (baseXp * (factor ** (level)));
 
     //
@@ -1605,5 +1597,46 @@ export class GlobalService {
       nextStat = CharacterStatEnum.Resistance;
 
     return nextStat;
+  }
+
+  getAutoAttackTime(character: Character) {
+    var timeToAutoAttack = character.battleInfo.timeToAutoAttack * (character.battleStats.autoAttackCooldownReduction);
+    if (character.overdriveInfo.overdriveIsActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Fervor)
+      timeToAutoAttack *= .5;
+
+    return timeToAutoAttack;
+  }
+
+  resetCooldowns() {
+    var party = this.getActivePartyCharacters(true);
+
+    party.forEach(member => {
+      member.battleInfo.autoAttackTimer = 0;//this.getAutoAttackTime(member);
+
+      if (member.abilityList !== undefined && member.abilityList.length > 0)
+        member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+          ability.currentCooldown = ability.cooldown;
+        });
+
+      if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
+        var god = this.globalVar.gods.find(item => item.type === member.assignedGod1);
+        if (god !== undefined) {
+          if (god.abilityList !== undefined && god.abilityList.length > 0)
+            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+              ability.currentCooldown = ability.cooldown;
+            });
+        }
+      }
+
+      if (member.assignedGod2 !== undefined && member.assignedGod2 !== GodEnum.None) {
+        var god = this.globalVar.gods.find(item => item.type === member.assignedGod2);
+        if (god !== undefined) {
+          if (god.abilityList !== undefined && god.abilityList.length > 0)
+            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+              ability.currentCooldown = ability.cooldown;
+            });
+        }
+      }
+    });
   }
 }

@@ -40,6 +40,8 @@ export class PartyComponent implements OnInit {
   subscription: any;
   partyMember1CheckSubscription: any;
   partyMember2CheckSubscription: any;
+  displayDps = false;
+  unlockedBattleItems = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
@@ -55,8 +57,14 @@ export class PartyComponent implements OnInit {
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
         
     this.battleItems = this.getViableBattleItems();
+
+    this.displayDps = this.globalService.globalVar.isDpsUnlocked;
+    this.unlockedBattleItems = this.globalService.globalVar.areBattleItemsUnlocked;
       
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {  
+      this.displayDps = this.globalService.globalVar.isDpsUnlocked;
+      this.unlockedBattleItems = this.globalService.globalVar.areBattleItemsUnlocked;
+
       if (!this.itemMenu.menuOpen)
       {
         this.battleItems = this.getViableBattleItems();   
@@ -340,7 +348,8 @@ export class PartyComponent implements OnInit {
 
   setupKeybinds(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;
-    
+    console.log(event.key);
+
     //character 1
     if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("toggleCharacter1TargetMode"))) {
       this.battleService.targetCharacterMode = !this.battleService.targetCharacterMode;

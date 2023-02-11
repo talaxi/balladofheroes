@@ -1,6 +1,6 @@
 export enum AltarEffectsEnum {
   None,
-  SmallAltarPrayStrength,
+  /*SmallAltarPrayStrength,
   SmallAltarPrayFortune,
   SmallAltarPrayGod,
   LargeAltarOfferGrains,
@@ -8,5 +8,18 @@ export enum AltarEffectsEnum {
   LargeAltarOfferStatue,
   PyreSacrificeSheep,
   PyreSacrificeGoat,
-  PyreSacrificeOx
+  PyreSacrificeOx*/
+  AttackUp,
+  AthenaHeal,
+  AthenaHealOverTime,
+  AthenaDefenseUp,
+  ArtemisLuckUp,
+  ArtemisCriticalDamageUp,
+  ArtemisDefenseDebuff,
+  HermesAgilityUp,
+  HermesAbilityCooldown,
+  HermesAutoAttackUp,
+  ApolloResistanceUp,
+  ApolloBuffDurationUp,
+  ApolloHeal
 }

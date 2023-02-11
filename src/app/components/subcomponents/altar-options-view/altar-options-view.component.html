@@ -15,9 +15,9 @@
     <div class="altar5" *ngIf="availableAltars.length > 4">
         <app-altar-view [altar]="availableAltars[4]"></app-altar-view>
     </div>
-    <div class="buffs" *ngIf="globalService.globalVar.activeAltarEffects.length > 0" customToolTip [contentTemplate]="buffPopover" [tooltipDirection]="buffTooltipDirection">
+    <!--<div class="buffs" *ngIf="globalService.globalVar.activeAltarEffects.length > 0" customToolTip [contentTemplate]="buffPopover" [tooltipDirection]="buffTooltipDirection">
         <img class="buffImage" src="assets/svg/statUpSE.svg" />
-    </div>
+    </div>-->
 </div>
 
 <ng-template #buffPopover>

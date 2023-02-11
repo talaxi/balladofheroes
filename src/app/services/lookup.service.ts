@@ -105,11 +105,11 @@ export class LookupService {
 
     if (type === CharacterEnum.Adventurer)
       description = "The Adventurer class focuses on speed over damage, having access to agility buffs and increasing damage based on how many attacks you can perform in quick succession.";
-      if (type === CharacterEnum.Archer)
+    if (type === CharacterEnum.Archer)
       description = "The Archer class focuses on debilitating enemies, having access to damage over time and stunning effects.";
-      if (type === CharacterEnum.Warrior)
+    if (type === CharacterEnum.Warrior)
       description = "The Warrior class focuses on taking damage over dealing damage, having the ability to force enemies' attention and increasing defense when HP drops low.";
-      if (type === CharacterEnum.Priest)
+    if (type === CharacterEnum.Priest)
       description = "The Priest class focuses on keeping the party alive, having access to healing and barrier effects.";
 
 
@@ -439,7 +439,7 @@ export class LookupService {
       name = "<span class='warriorColor'>Warrior</span>";
     else if (type === ItemsEnum.PriestClass)
       name = "<span class='priestColor'>Priest</span>";
-    
+
     return name;
   }
 
@@ -554,12 +554,11 @@ export class LookupService {
       var enumValue = propertyValue as BestiaryEnum;
       //todo: one option for optimization is abstract out loot from enemy generation and call that both in generateEnemy and here
       var enemy = this.enemyGeneratorService.generateEnemy(enumValue);
-      if (enemy.loot.some(loot => loot.item === item))
-      {
+      if (enemy.loot.some(loot => loot.item === item)) {
         //todo: should I hide it like below or not?
         //var defeatCount = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === enemy.bestiaryType);
         //if (defeatCount !== undefined && defeatCount.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot)
-          matchingEnemies.push(enemy);
+        matchingEnemies.push(enemy);
       }
     }
 
@@ -731,7 +730,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.Aegis) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Uncommon);
-      equipmentPiece.stats = new CharacterStats(0, 0, 25, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 15, 0, 0, 0);
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 3, false, true, false, type.toString()));
     }
@@ -829,7 +828,7 @@ export class LookupService {
 
   getAutoAttackDescription(character: Character) {
     var description = "";
-    var secondsPerAutoAttack = this.utilityService.roundTo(this.getAutoAttackTime(character), 3);//.replace(/[.,]00$/, "");    
+    var secondsPerAutoAttack = this.utilityService.roundTo(this.globalService.getAutoAttackTime(character), 3);//.replace(/[.,]00$/, "");    
     var totalAutoAttackCount = this.getTotalAutoAttackCount(character);
 
     description = "Deal <strong>100% of Attack</strong> damage to a single target " + totalAutoAttackCount.toFixed(3) + (totalAutoAttackCount === 1 ? " time" : " times") + " every <strong>" + secondsPerAutoAttack + "</strong> seconds.";
@@ -1386,12 +1385,39 @@ export class LookupService {
     else
       durationString = Math.ceil(duration / 60) + " minutes";
 
-    if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
+    /*if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
       description = "Increase all Primary Stats by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
     if (effect.type === AltarEffectsEnum.SmallAltarPrayFortune)
       description = "Increase Coin gain from battle by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
+*/
+if (effect.type === AltarEffectsEnum.AttackUp)
+      description = "Increase Attack of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+    if (effect.type === AltarEffectsEnum.AthenaDefenseUp)
+      description = "Increase Defense of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+    if (effect.type === AltarEffectsEnum.AthenaHeal)
+      description = "When the duration expires, heal all party members for " + effect.effectiveness + " HP.";
+    if (effect.type === AltarEffectsEnum.AthenaHealOverTime)
+      description = "Heal all party members for " + effect.effectiveness + " every " + effect.tickFrequency + " seconds.";
+      if (effect.type === AltarEffectsEnum.ArtemisLuckUp)
+      description = "Increase Luck of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.ArtemisCriticalDamageUp)
+      description = "Increase Critical Damage Multiplier of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.ArtemisDefenseDebuff)
+      description = "When the duration expires, reduce all enemies' Defense by " + Math.round((1 - effect.effectiveness) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.HermesAgilityUp)
+      description = "Increase Agility of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.HermesAutoAttackUp)
+      description = "Increase Auto Attack Damage of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.HermesAbilityCooldown)
+      description = "When the duration expires, reduce all party members' cooldowns by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.ApolloBuffDurationUp)
+      description = "Increase the duration of any buffs applied while this is active by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.ApolloResistanceUp)
+      description = "Increase Resistance of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      if (effect.type === AltarEffectsEnum.ApolloHeal)
+      description = "Heal the party member with the lowest HP % for " + effect.effectiveness + " HP.";
 
-    description += "<hr/>";
+    description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
     return description;
   }
 
@@ -1526,14 +1552,6 @@ export class LookupService {
     return 1 + (adjustedAgility / agilityPerAdditionalAttack);
   }
 
-  getAutoAttackTime(character: Character) {        
-    var timeToAutoAttack = character.battleInfo.timeToAutoAttack * (character.battleStats.autoAttackCooldownReduction);    
-    if (character.overdriveInfo.overdriveIsActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Fervor)
-      timeToAutoAttack *= .5;
-
-    return timeToAutoAttack;
-  }
-
   getDamageCriticalChance(attacker: Character, target: Character) {
     var criticalChance = .05;
 
@@ -1608,7 +1626,7 @@ export class LookupService {
       }
     }
 
-    if (this.globalService.globalVar.activeAltarEffects.length > 0) {
+    /*if (this.globalService.globalVar.activeAltarEffects.length > 0) {
       var relevantAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.type === AltarEffectsEnum.SmallAltarPrayStrength);
 
       if (relevantAltarEffects.length > 0) {
@@ -1618,7 +1636,7 @@ export class LookupService {
           }
         })
       }
-    }
+    }*/
 
     return maxHp;
   }
@@ -1654,16 +1672,9 @@ export class LookupService {
       }
     }
 
-    if (this.globalService.globalVar.activeAltarEffects.length > 0) {
-      var relevantAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.type === AltarEffectsEnum.SmallAltarPrayStrength);
-
-      if (relevantAltarEffects.length > 0) {
-        relevantAltarEffects.forEach(effect => {
-          if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength) {
-            agility *= effect.effectiveness;
-          }
-        })
-      }
+    if (this.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp) !== undefined) {
+      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp);
+        agility *= relevantAltarEffect!.effectiveness;      
     }
 
     return agility;
@@ -1700,16 +1711,9 @@ export class LookupService {
       }
     }
 
-    if (this.globalService.globalVar.activeAltarEffects.length > 0) {
-      var relevantAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.type === AltarEffectsEnum.SmallAltarPrayStrength);
-
-      if (relevantAltarEffects.length > 0) {
-        relevantAltarEffects.forEach(effect => {
-          if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength) {
-            luck *= effect.effectiveness;
-          }
-        })
-      }
+    if (this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp) !== undefined) {
+      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp);
+        luck *= relevantAltarEffect!.effectiveness;      
     }
 
     return luck;
@@ -1733,16 +1737,9 @@ export class LookupService {
       }
     }
 
-    if (this.globalService.globalVar.activeAltarEffects.length > 0) {
-      var relevantAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.type === AltarEffectsEnum.SmallAltarPrayStrength);
-
-      if (relevantAltarEffects.length > 0) {
-        relevantAltarEffects.forEach(effect => {
-          if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength) {
-            resistance *= effect.effectiveness;
-          }
-        })
-      }
+    if (this.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp) !== undefined) {
+      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp);
+        resistance *= relevantAltarEffect!.effectiveness;      
     }
 
     return resistance;
@@ -1779,16 +1776,9 @@ export class LookupService {
       }
     }
 
-    if (this.globalService.globalVar.activeAltarEffects.length > 0) {
-      var relevantAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.type === AltarEffectsEnum.SmallAltarPrayStrength);
-
-      if (relevantAltarEffects.length > 0) {
-        relevantAltarEffects.forEach(effect => {
-          if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength) {
-            attack *= effect.effectiveness;
-          }
-        })
-      }
+    if (this.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
+      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
+        attack *= relevantAltarEffect!.effectiveness;      
     }
 
     if (ability !== undefined && ability.name === "Shield Slam") {
@@ -1821,16 +1811,9 @@ export class LookupService {
       }
     }
 
-    if (this.globalService.globalVar.activeAltarEffects.length > 0) {
-      var relevantAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.type === AltarEffectsEnum.SmallAltarPrayStrength);
-
-      if (relevantAltarEffects.length > 0) {
-        relevantAltarEffects.forEach(effect => {
-          if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength) {
-            defense *= effect.effectiveness;
-          }
-        })
-      }
+    if (this.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp) !== undefined) {
+      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp);
+        defense *= relevantAltarEffect!.effectiveness;      
     }
 
     var lastStand = character.abilityList.find(item => item.name === "Last Stand" && item.isAvailable);
@@ -1841,17 +1824,24 @@ export class LookupService {
     return defense;
   }
 
-  getAbilityCooldown(ability: Ability, character: Character) {    
+  getAbilityCooldown(ability: Ability, character: Character) {
     return ability.cooldown * (character.battleStats.abilityCooldownReduction);
   }
 
   getAutoAttackCooldown(character: Character) {
-    return this.getAutoAttackTime(character);//character.battleInfo.timeToAutoAttack - character.battleStats.autoAttackCooldownReduction;
+    return this.globalService.getAutoAttackTime(character);//character.battleInfo.timeToAutoAttack - character.battleStats.autoAttackCooldownReduction;
   }
 
   getAdjustedCriticalMultiplier(character: Character) {
     var defaultMultiplier = 1.25;
-    return defaultMultiplier + character.battleStats.criticalMultiplier;
+
+    var altarIncrease = 0;
+    if (this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp) !== undefined) {
+      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp);
+      altarIncrease *= relevantAltarEffect!.effectiveness;      
+    }
+
+    return defaultMultiplier + character.battleStats.criticalMultiplier + altarIncrease;
   }
 
   getChthonicFavorMultiplier() {
@@ -2158,7 +2148,7 @@ export class LookupService {
     var adjustedCriticalMultiplier = ((1 - critChance)) + (critChance * this.getAdjustedCriticalMultiplier(character));
 
     if (target === undefined) {
-      totalDps += adjustedAttack * adjustedCriticalMultiplier / this.getAutoAttackTime(character);
+      totalDps += adjustedAttack * adjustedCriticalMultiplier / this.globalService.getAutoAttackTime(character);
 
       character.abilityList.filter(item => item.isAvailable).forEach(ability => {
         var damageMultiplier = 1;
@@ -2179,7 +2169,7 @@ export class LookupService {
 
       //auto attack
       totalDps += Math.round((damageMultiplier * abilityDamageMultiplier * (adjustedAttack * (2 / 3) -
-        (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier) / this.getAutoAttackTime(character));
+        (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier) / this.globalService.getAutoAttackTime(character));
 
       character.abilityList.filter(item => item.isAvailable).forEach(ability => {
         var damageMultiplier = 1;
@@ -3150,11 +3140,14 @@ export class LookupService {
     return inZone;
   }
 
-  getRandomGodEnum() {
+  getRandomGodEnum(noRepeatingAltars: boolean = false) {
     var availableEnums: GodEnum[] = [];
 
     this.globalService.globalVar.gods.forEach(god => {
-      if (god.isAvailable)
+      if (god.isAvailable && (!noRepeatingAltars || (noRepeatingAltars && 
+        (this.globalService.globalVar.altars.altar1 === undefined || this.globalService.globalVar.altars.altar1.god !== god.type) &&
+        (this.globalService.globalVar.altars.altar2 === undefined || this.globalService.globalVar.altars.altar2.god !== god.type) &&
+        (this.globalService.globalVar.altars.altar3 === undefined || this.globalService.globalVar.altars.altar3.god !== god.type))))
         availableEnums.push(god.type);
     });
 
@@ -3175,8 +3168,24 @@ export class LookupService {
     else if (level % 4 === 2)
       reward = AffinityLevelRewardEnum.PrayerEffectiveness;
     else if (level % 4 === 3)
-      reward = AffinityLevelRewardEnum.GodXp;    
+      reward = AffinityLevelRewardEnum.GodXp;
 
     return reward;
   }
+
+  getAltarEffectWithEffect(effect: AltarEffectsEnum) {
+    if (this.globalService.globalVar.altars.activeAltarEffect1 !== undefined &&
+      this.globalService.globalVar.altars.activeAltarEffect1.type === effect)
+      return this.globalService.globalVar.altars.activeAltarEffect1;
+
+    if (this.globalService.globalVar.altars.activeAltarEffect2 !== undefined &&
+      this.globalService.globalVar.altars.activeAltarEffect2.type === effect)
+      return this.globalService.globalVar.altars.activeAltarEffect2;
+
+    if (this.globalService.globalVar.altars.activeAltarEffect3 !== undefined &&
+      this.globalService.globalVar.altars.activeAltarEffect3.type === effect)
+      return this.globalService.globalVar.altars.activeAltarEffect3;
+
+    return undefined;
+  }  
 }

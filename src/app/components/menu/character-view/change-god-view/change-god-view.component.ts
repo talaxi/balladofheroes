@@ -36,6 +36,9 @@ export class ChangeGodViewComponent implements OnInit {
         type = this.character.assignedGod2;
     }
 
+    if (type === GodEnum.None)
+      return "No God Assigned";
+
     return this.lookupService.getGodNameByType(type);
   }
 
@@ -45,6 +48,9 @@ export class ChangeGodViewComponent implements OnInit {
       if (whichGod === 2)
         type = this.character.assignedGod2;
     }
+
+    if (type === GodEnum.None)
+      return "";
 
     return "Lv " + this.globalService.globalVar.gods.find(item => item.type === type)?.level;
   }
@@ -71,6 +77,18 @@ export class ChangeGodViewComponent implements OnInit {
     }
 
     return this.lookupService.getGodDescription(type);
+  }
+
+  godEquipped(whichGod?: number) {
+    var type = GodEnum.None;
+    
+    if (type === undefined) {
+      type = this.character.assignedGod1;
+      if (whichGod === 2)
+        type = this.character.assignedGod2;
+    }
+
+    return type !== GodEnum.None;
   }
 
   setupDisplayGods(): void {

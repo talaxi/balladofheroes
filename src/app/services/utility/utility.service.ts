@@ -6,9 +6,6 @@ import * as seedrandom from "seedrandom";
   providedIn: 'root'
 })
 export class UtilityService {
-  isGamePaused: boolean;
-  isBattlePaused: boolean;
-
   //glossary
   public activeTimeLimit = 1 * 20 * 60;
   public extraSpeedTimeLimit = 8 * 60 * 60;
@@ -49,6 +46,7 @@ export class UtilityService {
   public affinityRewardPrayerDuration = .5;
   public affinityRewardPrayerEffectiveness = .25;
   public affinityRewardGodXpBonus = .1;
+  public basePrayGodXpIncrease = 20;
 
   public killCountDisplayEnemyStatsAbilities = 10;
   public killCountDisplayBasicEnemyLoot = 30;

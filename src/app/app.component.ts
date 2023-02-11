@@ -111,7 +111,7 @@ export class AppComponent {
     //all game logic that should be updated behind the scenes
     var activeSubzone = this.balladService.getActiveSubZone();
 
-    if (this.utilityService.isGamePaused)
+    if (this.globalService.globalVar.isGamePaused)
       deltaTime = 0;
 
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
@@ -135,7 +135,7 @@ export class AppComponent {
     this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
     this.storyService.showStory = false;
     this.storyService.showOptionalStory = OptionalSceneEnum.None;
-    this.utilityService.isBattlePaused = false;
+    this.globalService.globalVar.isBattlePaused = false;
   }
 
   handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {

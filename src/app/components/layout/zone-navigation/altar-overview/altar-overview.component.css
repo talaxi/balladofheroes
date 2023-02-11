@@ -1,0 +1,78 @@
+.characterBar {
+    display: inline-block;
+    height: 2rem;
+}
+
+.grid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 18% 1fr 18%;   
+    grid-template-rows: 30% 30% 30%;
+    row-gap: 4%; 
+    justify-content: stretch;
+    grid-template-areas:
+        "altarSpinner1 altarBar1 altarBoon1"
+        "altarSpinner2 altarBar2 altarBoon2"
+        "altarSpinner3 altarBar3 altarBoon3";
+}
+
+.altarSpinner1 {
+    width: 100%;
+    height: 100%;
+    grid-area: altarSpinner1;
+}
+
+.altarBar1 {
+    grid-area: altarBar1;
+    width: 100%;
+    margin: auto;
+}
+
+.altarSpinner2 {
+    width: 100%;
+    height: 100%;
+    grid-area: altarSpinner2;
+}
+
+.altarBar2 {
+    grid-area: altarBar2;
+    width: 100%;
+    margin: auto;
+}
+.altarSpinner3 {
+    width: 100%;
+    height: 100%;
+    grid-area: altarSpinner3;
+}
+
+.altarBar3 {
+    grid-area: altarBar3;
+    width: 100%;
+    margin: auto;
+}
+
+.altarBoon1 {
+    grid-area: altarBoon1;
+    margin: auto;
+}
+
+.altarBoon2 {
+    grid-area: altarBoon2;
+    margin: auto;
+}
+
+.altarBoon3 {
+    grid-area: altarBoon3;
+    margin: auto;
+}
+
+.buffs {
+    width: 100%;    
+    aspect-ratio: 1/1;
+    margin: auto;
+}
+
+.buffImage {    
+    width: 2.5rem;
+    aspect-ratio: 1/1;
+}

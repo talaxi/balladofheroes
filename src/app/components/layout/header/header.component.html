@@ -3,17 +3,17 @@
     <button *ngIf="textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()">menu</button>
     <button *ngIf="!textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()"><img *ngIf="!textMode" class="icon" src="assets/svg/menu.svg"></button>
 
-    <div class="performanceState" *ngIf="deploymentService.performanceModeAvailable && utilityService.isGamePaused">
+    <div class="performanceState" *ngIf="deploymentService.performanceModeAvailable && globalService.globalVar.isGamePaused">
       <button (click)="togglePerformanceMode()">Perf Mode</button>
     </div>
 
     <div class="centerAlign gameState">
-      <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/play.svg"></span>
+      <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/play.svg"></span>
       <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
-            <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused  && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/pause.svg"></span>
+            <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!globalService.globalVar.isGamePaused  && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/pause.svg"></span>
 
-            <span class="headerTextItems" customToolTip [contentTemplate]="pausedPopover" *ngIf="utilityService.isGamePaused  && textMode">play</span>
-            <span class="headerTextItems" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!utilityService.isGamePaused  && textMode">pause</span>
+            <span class="headerTextItems" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused  && textMode">play</span>
+            <span class="headerTextItems" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!globalService.globalVar.isGamePaused  && textMode">pause</span>
         </button>        
     </div>    
 

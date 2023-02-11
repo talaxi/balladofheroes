@@ -9,6 +9,7 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
+import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
@@ -137,6 +138,7 @@ export class InitializationService {
   }
 
   initializeSettings() {
+    this.globalService.globalVar.settings.set("activeOverview", QuickViewEnum.Overview);  
     this.globalService.globalVar.settings.set("autoProgress", false);    
   }
 
@@ -177,9 +179,12 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("openMenu", "keyM");
     this.globalService.globalVar.keybinds.set("openOverviewQuickView", "keyO");
     this.globalService.globalVar.keybinds.set("openResourcesQuickView", "keyR");
-    this.globalService.globalVar.keybinds.set("openAlchemyQuickView", "keyA");
+    this.globalService.globalVar.keybinds.set("openAlchemyQuickView", "keyL");
+    this.globalService.globalVar.keybinds.set("openAltarsQuickView", "keyA");
 
-    this.globalService.globalVar.keybinds.set("openFirstAvailableAltar", "Space"); 
+    this.globalService.globalVar.keybinds.set("openFirstAvailableAltar", "keyZ"); 
+    this.globalService.globalVar.keybinds.set("openSecondAvailableAltar", "keyX"); 
+    this.globalService.globalVar.keybinds.set("openThirdAvailableAltar", "keyC"); 
     this.globalService.globalVar.keybinds.set("toggleCharacter1TargetMode", "keyT");  
     this.globalService.globalVar.keybinds.set("useCharacter1AutoAttack", "digit1");
     this.globalService.globalVar.keybinds.set("useCharacter1Ability1", "digit2");
@@ -267,6 +272,9 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, 10));
 
     this.globalService.globalVar.currentStoryId = 10000;
+    this.globalService.globalVar.isDpsUnlocked = true;
+    this.globalService.globalVar.altars.isUnlocked = true;
+    this.globalService.globalVar.areBattleItemsUnlocked = true;
     
     //this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer)!.isAvailable = true;
     //this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer)!.isAvailable = true;
@@ -278,8 +286,9 @@ export class InitializationService {
     this.globalService.globalVar.alchemy.level = 25;
     this.alchemyService.checkForNewRecipes();
 
-    this.globalService.globalVar.altarInfo.push(this.altarService.getTutorialAltar());
-    
+    this.globalService.globalVar.altars.altar1 = this.altarService.getTutorialAltar();  
+    this.globalService.globalVar.altars.altar2 = this.altarService.getTutorialAltar();  
+    this.globalService.globalVar.altars.altar3 = this.altarService.getTutorialAltar();  
 
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));

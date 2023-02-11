@@ -99,6 +99,7 @@ export class BalladService {
       relatedBallad.showNewNotification = false;
     }
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
+    this.globalService.resetCooldowns(); //todo: maybe?
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + relatedSubzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);

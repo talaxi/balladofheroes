@@ -23,7 +23,7 @@ export class HeaderComponent implements OnInit {
   textMode = true;
 
   constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
-    public utilityService: UtilityService, private globalService: GlobalService, public deploymentService: DeploymentService,
+    public utilityService: UtilityService, public globalService: GlobalService, public deploymentService: DeploymentService,
     public dialog: MatDialog, private keybindService: KeybindService) { }
 
   @HostListener('window:keyup', ['$event'])

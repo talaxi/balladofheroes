@@ -43,11 +43,11 @@ export class ZoneNavigationComponent implements OnInit {
   quickViewEnum = QuickViewEnum;
   trackedResourcesColumn1: ItemsEnum[] = [];
   trackedResourcesColumn2: ItemsEnum[] = [];
-  tooltipDirection = DirectionEnum.Up;  
+  tooltipDirection = DirectionEnum.Up;
 
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {    
-    this.setupKeybinds(event);    
+  keyEvent(event: KeyboardEvent) {
+    this.setupKeybinds(event);
   }
 
   constructor(public globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
@@ -62,6 +62,10 @@ export class ZoneNavigationComponent implements OnInit {
       this.autoProgress = false;
     else
       this.autoProgress = autoProgress;
+
+    var activeOverview = this.globalService.globalVar.settings.get("activeOverview");
+    if (activeOverview !== undefined)
+      this.quickView = activeOverview;
 
     this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
     var selectedBallad = this.balladService.getActiveBallad();
@@ -171,6 +175,7 @@ export class ZoneNavigationComponent implements OnInit {
     subzone.isSelected = true;
     subzone.showNewNotification = false;
     this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
+    this.globalService.resetCooldowns(); //todo: maybe?
 
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -183,7 +188,7 @@ export class ZoneNavigationComponent implements OnInit {
       var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
       this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
     }
-  }
+  }  
 
   jumpToLatestShop() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();
@@ -214,6 +219,7 @@ export class ZoneNavigationComponent implements OnInit {
     if (relatedBallad !== undefined)
       relatedBallad.isSelected = true;
     this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
+    this.globalService.resetCooldowns(); //todo: maybe?
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -250,6 +256,7 @@ export class ZoneNavigationComponent implements OnInit {
     if (relatedBallad !== undefined)
       relatedBallad.isSelected = true;
     this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
+    this.globalService.resetCooldowns(); //todo: maybe?
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -432,6 +439,10 @@ export class ZoneNavigationComponent implements OnInit {
     return this.globalService.globalVar.alchemy.isUnlocked;
   }
 
+  areAltarsAvailable() {
+    return this.globalService.globalVar.altars.isUnlocked;
+  }
+
   isPalaceOfHadesAvailable() {
     var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);
     if (underworld !== undefined && underworld.isAvailable) {
@@ -449,9 +460,14 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openResourcesQuickView"))) {
       this.setQuickView(QuickViewEnum.Resources);
     }
-    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAlchemyQuickView"))) {
+    if (this.globalService.globalVar.alchemy.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAlchemyQuickView"))) {
       this.setQuickView(QuickViewEnum.Alchemy);
     }
+    if (this.globalService.globalVar.altars.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAltarsQuickView"))) {
+      this.setQuickView(QuickViewEnum.Altars);
+    }
+
+    this.globalService.globalVar.settings.set("activeOverview", this.quickView);
   }
 
   ngOnDestroy() {

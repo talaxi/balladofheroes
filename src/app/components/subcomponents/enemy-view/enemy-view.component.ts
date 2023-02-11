@@ -13,6 +13,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { Ng2FittextModule } from "ng2-fittext";
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 
 @Component({
   selector: 'app-enemy-view',
@@ -37,28 +38,30 @@ export class EnemyViewComponent implements OnInit {
     public globalService: GlobalService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      if (this.previousName !== this.character.name)
-      {
-        this.enemyName.nativeElement.classList.remove('smallText');
-        this.enemyName.nativeElement.classList.remove('verySmallText');
-      }
-
-      if ((this.enemyNameContainer.nativeElement.offsetHeight * 2.5) < this.enemyName.nativeElement.offsetHeight)
-      {
-        this.enemyName.nativeElement.classList.add('verySmallText');      
-      }
-      if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.5) < this.enemyName.nativeElement.offsetHeight)
-      {
-        this.enemyName.nativeElement.classList.add('smallText');      
-      }
-
-      this.previousName = this.character.name;
-
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {     
       var defeatCount: EnemyDefeatCount | undefined;
 
       if (this.character !== undefined)
+      {
         defeatCount = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.character.bestiaryType);
+      
+        if (this.previousName !== this.character.name)
+        {
+          this.enemyName.nativeElement.classList.remove('smallText');
+          this.enemyName.nativeElement.classList.remove('verySmallText');
+        }
+  
+        if ((this.enemyNameContainer.nativeElement.offsetHeight * 2.5) < this.enemyName.nativeElement.offsetHeight)
+        {
+          this.enemyName.nativeElement.classList.add('verySmallText');      
+        }
+        if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.5) < this.enemyName.nativeElement.offsetHeight)
+        {
+          this.enemyName.nativeElement.classList.add('smallText');      
+        }
+  
+        this.previousName = this.character.name;  
+      }
 
       if (defeatCount !== undefined)
         this.defeatCount = defeatCount.defeatCount;
@@ -103,15 +106,21 @@ export class EnemyViewComponent implements OnInit {
   }
 
   useBattleItemOnCharacter(character: Character) {
-    if (this.targetCharacterWithItem(character))
+    //console.log("Checking battle item");
+    if (!this.battleService.targetCharacterMode && this.targetCharacterWithItem(character))
       return this.battleService.useBattleItemOnCharacter(character, this.enemyParty);
   }
 
   characterTargetEnemy(character: Character) {
+    if (character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Dead) !== undefined)  
+      return;    
+    
     if (this.battleService.targetCharacterMode) {
       var targetingCharacter = this.globalService.globalVar.characters.find(item => item.type === this.battleService.characterInTargetMode);
       if (targetingCharacter !== undefined)
+      {
         targetingCharacter.targeting = character;
+      }
     }
 
     this.battleService.targetCharacterMode = false;

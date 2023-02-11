@@ -1,6 +1,6 @@
 <div class="shoppingItem">
     <div class="itemDescription">
-        <div *ngIf="isEquipment()" customToolTip [isDelayed]="false" [contentTemplate]="equipmentComparisonTemplate">
+        <div *ngIf="isEquipment()" customToolTip [tooltipDirection]="tooltipDirection" [isDelayed]="false" [contentTemplate]="equipmentComparisonTemplate">
             <div [class]="getEquipmentClass()">
                 <span class="s4Heading" [innerHtml]="lookupService.getItemName(item.shopItem)"></span>
                 <br />

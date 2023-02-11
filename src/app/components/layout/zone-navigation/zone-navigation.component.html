@@ -55,9 +55,9 @@
                             </div>
                             <div *ngIf="subzone.isSelected">
                                 <strong><button class="buttonAsTextKeepColor z3Heading clickableText selected"><span
-                                            class="subzoneSpacer">&#8618;</span><span
+                                            class="subzoneSpacer">&#8618;</span><strong><span
                                             [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
-                                            {{getSubZoneSubText(subzone)}}</span></button></strong>
+                                            {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
                             </div>
                         </div>
                     </div>
@@ -65,16 +65,16 @@
             </div>
         </div>
     </div>
-    <div class="hr gap1" *ngIf="globalService.globalVar.altarInfo.length > 0">
+    <!--<div class="hr gap1" *ngIf="globalService.globalVar.altarInfo.length > 0">
         <hr />
     </div>
     <div class="altars" *ngIf="globalService.globalVar.altarInfo.length > 0">
         <app-altar-options-view></app-altar-options-view>
-    </div>
-    <div class="hr gap2">
+    </div>-->
+    <div *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0" class="hr gap2">
         <hr />
     </div>
-    <div class="quickLink">
+    <div *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0" class="quickLink">
         <div class="quickLinkIcons">
             <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Overview)" customToolTip
             [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
@@ -86,13 +86,17 @@
                 <img *ngIf="quickView === quickViewEnum.Resources" class="icon iconEnabled" src="assets/svg/resourcesQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
             </button>
+            <button class="buttonAsText clickableText iconButton" *ngIf="areAltarsAvailable()" (click)="setQuickView(quickViewEnum.Altars)" customToolTip
+            [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
+                <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled" src="assets/svg/smallAltar.svg">
+                <img class="icon iconDisabled" src="assets/svg/altarsOverviewDisabled.svg">
+            </button>
             <button class="buttonAsText clickableText iconButton" *ngIf="isAlchemyAvailable()"
                 (click)="setQuickView(quickViewEnum.Alchemy)" customToolTip [contentTemplate]="alchemyIconPopover" [tooltipDirection]="tooltipDirection">
                 <img *ngIf="quickView === quickViewEnum.Alchemy" class="icon iconEnabled" src="assets/svg/alchemyQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
             </button>
         </div>
-        <br />
         <!--<div class="centeredText mainPageSectionHeader">
             {{getQuickViewTitleName()}} Quick View
         </div>-->
@@ -140,6 +144,9 @@
                     </div>
                 </div>
             </div>
+        </div>
+        <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
+            <app-altar-overview></app-altar-overview>
         </div>
         <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
             <div *ngIf="creatingRecipe()">

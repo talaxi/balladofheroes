@@ -40,23 +40,23 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.BronzeSword)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 150));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 100));
     }
     if (item === ItemsEnum.BronzeHammer)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 150));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 100));
     }
     if (item === ItemsEnum.LongBow)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 150));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 100));
     }
     if (item === ItemsEnum.BronzeShield)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 250));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 150));
     }
     if (item === ItemsEnum.BronzeArmor)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 250));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 150));
     }
     if (item === ItemsEnum.HealingHerb)
     {

@@ -75,8 +75,8 @@
         </div>
         <hr *ngIf="activeCharacterCount > 1" />
     </div>
-    <div class="dps">
-        <div class="s4Heading textCentered pageHeader dpsChecks">                      
+    <div>
+        <div *ngIf="displayDps" class="dps" class="s4Heading textCentered pageHeader dpsChecks">                      
             <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
                 Party DPS: {{getPartyDps() | number : '1.0-0'}}
             </span>
@@ -84,9 +84,9 @@
                 Incoming DPS: {{getEnemyDps() | number : '1.0-0'}}
             </span>            
         </div>
-        <hr class="noMargin" />
+        <hr *ngIf="unlockedBattleItems"  class="noMargin" />
     </div>
-    <div class="options battleItemGrid">
+    <div *ngIf="unlockedBattleItems" class="options battleItemGrid">
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"
             [class]="'battleItem' + (i + 1)">
             <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}"

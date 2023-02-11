@@ -86,6 +86,7 @@ import { ChangeClassViewComponent } from './components/menu/character-view/chang
 import { AltarViewComponent } from './components/subcomponents/altar-options-view/altar-view/altar-view.component';
 import {Ng2FittextModule} from "ng2-fittext";
 import { ResourceRequiredViewComponent } from './components/subcomponents/shopping-item-view/resource-required-view/resource-required-view.component';
+import { AltarOverviewComponent } from './components/layout/zone-navigation/altar-overview/altar-overview.component';
 
 @NgModule({
   declarations: [
@@ -135,7 +136,8 @@ import { ResourceRequiredViewComponent } from './components/subcomponents/shoppi
     AltarComponent,
     ChangeClassViewComponent,
     AltarViewComponent,
-    ResourceRequiredViewComponent
+    ResourceRequiredViewComponent,
+    AltarOverviewComponent
   ],
   imports: [
     BrowserModule,

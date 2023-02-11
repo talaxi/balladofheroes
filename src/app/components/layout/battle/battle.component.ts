@@ -42,7 +42,7 @@ export class BattleComponent implements OnInit {
     public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    if (this.globalService.globalVar.currentStoryId === 0 && this.utilityService.isBattlePaused)
+    if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
       this.showSkipButtonMessage = true;
       
     this.activeSubzone = this.balladService.getActiveSubZone();
@@ -52,7 +52,7 @@ export class BattleComponent implements OnInit {
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
-      if (this.globalService.globalVar.currentStoryId === 0 && this.utilityService.isBattlePaused)
+      if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
         this.showSkipButtonMessage = true;
       else
         this.showSkipButtonMessage = false;

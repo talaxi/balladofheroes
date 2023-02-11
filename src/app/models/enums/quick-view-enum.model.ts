@@ -3,5 +3,6 @@ export enum QuickViewEnum {
     Overview,
     Resources,
     Jump,
-    Alchemy
+    Alchemy,
+    Altars
   }

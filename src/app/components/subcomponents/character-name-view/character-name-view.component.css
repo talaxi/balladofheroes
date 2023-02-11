@@ -67,7 +67,7 @@
 }
 
 .keybind {
-    text-decoration: underline;
+    font-weight: bold;
 }
 
 @keyframes levelUpAnimation {    

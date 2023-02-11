@@ -1,5 +1,5 @@
 <div *ngIf="character !== undefined" class="characterInfo"
-    (click)='useBattleItemOnCharacter(character); characterTargetEnemy(character);' [ngClass]="getTargetClass()">
+   (click)="useBattleItemOnCharacter(character); characterTargetEnemy(character);" [ngClass]="getTargetClass()">
     <span class="flex spaceBetween">
         <span class="targetSpace" *ngIf="isBoss">
         </span>

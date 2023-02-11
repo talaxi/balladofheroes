@@ -21,12 +21,15 @@ import { AltarInfo } from "../altar/altar-info.model";
 import { AltarEffect } from "../altar/altar-effect.model";
 import { OptionalSceneEnum } from "../enums/optional-scene-enum.model";
 import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
+import { Altars } from "../altar/altars.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
     currentVersion: number;
     startingVersion: number;
-    startDate: Date;
+    startDate: Date;    
+    isGamePaused: boolean;
+    isBattlePaused: boolean;
     @Type(() => Character)
     characters: Character[];
     @Type(() => God)
@@ -72,11 +75,13 @@ export class GlobalVariables {
     enemyDefeatCount: EnemyDefeatCount[];
     @Type(() => ColiseumDefeatCount)
     coliseumDefeatCount: ColiseumDefeatCount[];
-    @Type(() => AltarInfo)
-    altarInfo: AltarInfo[];
-    @Type(() => AltarEffect)
-    activeAltarEffects: AltarEffect[];
+    //@Type(() => AltarInfo)
+    //altarInfo: AltarInfo[];
+    @Type(() => Altars)
+    altars: Altars;
     optionalScenesViewed: OptionalSceneEnum[];
+    areBattleItemsUnlocked = false;
+    isDpsUnlocked = false;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -102,9 +107,10 @@ export class GlobalVariables {
         this.chthonicPowers = new ChthonicPowers();
         this.alchemy = new Alchemy();
         this.keybinds = new Settings();
-        this.altarInfo = [];
-        this.activeAltarEffects = [];
+        this.altars = new Altars();
         this.optionalScenesViewed = [];
         this.guid = Guid.create().toString();
+        this.isGamePaused = false;
+        this.isBattlePaused = false;
     }
 }

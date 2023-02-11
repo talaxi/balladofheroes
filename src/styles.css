@@ -49,7 +49,7 @@
 
 :root {
   /* Colors */
-  --foreground-secondary: #5D7F99; /* B3A0A2, 628599? */ 
+  --foreground-secondary: #6B8CA5; /* B3A0A2, 628599? */ 
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
@@ -72,7 +72,7 @@
   --primary-light: #b2ffe7;
 
   --positive-status-effect: #24b286;
-  --negative-status-effect: #b22426;
+  --negative-status-effect: #c72b2d;
 
   --battle-update-text: #e0d01d;
   --battle-item-text: #05CF51;
@@ -802,4 +802,67 @@ button {
   font-weight: bold;
   text-transform: lowercase;
   font-size: 1.15rem;
+}
+
+.athena-progress .mat-progress-bar-fill::after {
+  background-color: var(--athenaColor) !important;
+}
+
+.athena-progress .mat-progress-bar-buffer {
+  background-color: var(--athenaColor) !important;
+  filter: brightness(50%);
+}
+
+.artemis-progress .mat-progress-bar-fill::after {
+  background-color: var(--artemisColor) !important;
+}
+
+.artemis-progress .mat-progress-bar-buffer {
+  background-color: var(--artemisColor) !important;
+  filter: brightness(50%);
+}
+
+.hermes-progress .mat-progress-bar-fill::after {
+  background-color: var(--hermesColor) !important;
+}
+
+.hermes-progress .mat-progress-bar-buffer {
+  background-color: var(--hermesColor) !important;
+  filter: brightness(50%);
+}
+
+.apollo-progress .mat-progress-bar-fill::after {
+  background-color: var(--apolloColor) !important;
+}
+
+.apollo-progress .mat-progress-bar-buffer {
+  background-color: var(--apolloColor) !important;
+  filter: brightness(50%);
+}
+
+.ares-progress .mat-progress-bar-fill::after {
+  background-color: var(--aresColor) !important;
+}
+
+.ares-progress .mat-progress-bar-buffer {
+  background-color: var(--aresColor) !important;
+  filter: brightness(50%);
+}
+
+.zeus-progress .mat-progress-bar-fill::after {
+  background-color: var(--zeusColor) !important;
+}
+
+.zeus-progress .mat-progress-bar-buffer {
+  background-color: var(--zeusColor) !important;
+  filter: brightness(50%);
+}
+
+.poseidon-progress .mat-progress-bar-fill::after {
+  background-color: var(--poseidonColor) !important;
+}
+
+.poseidon-progress .mat-progress-bar-buffer {
+  background-color: var(--poseidonColor) !important;
+  filter: brightness(50%);
 }

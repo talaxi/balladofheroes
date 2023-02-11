@@ -32,23 +32,19 @@ export class AltarOptionsViewComponent implements OnInit {
     public globalService: GlobalService, private changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {    
-    this.availableAltars = this.globalService.globalVar.altarInfo;
+    /*this.availableAltars = this.globalService.globalVar.altarInfo;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.availableAltars = this.globalService.globalVar.altarInfo;
-/*      if (smallAltar !== this.smallAltar) {
-        this.changeDetectorRef.detectChanges();
-        this.smallAltar = smallAltar;
-      }*/
-    });
+    });*/
   }
  
   getAltarEffects() {
     var effects = "";
 
-    this.globalService.globalVar.activeAltarEffects.forEach(effect => {
+    /*this.globalService.globalVar.activeAltarEffects.forEach(effect => {
       effects += this.lookupService.getAltarEffectDescription(effect);      
-    });
+    });*/
     
     effects = effects.replace(new RegExp("<hr/>" + '$'), '');
 

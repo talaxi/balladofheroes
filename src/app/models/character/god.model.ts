@@ -43,7 +43,7 @@ export class God {
 
         this.affinityLevel = 0;
         this.affinityExp = 0;
-        this.affinityExpToNextLevel = 3;
+        this.affinityExpToNextLevel = 5;
     }
 
     private getGainModifier(type: GodEnum) {

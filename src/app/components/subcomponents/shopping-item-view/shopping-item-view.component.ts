@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
@@ -21,7 +22,8 @@ export class ShoppingItemViewComponent implements OnInit {
   itemDescription = "";
   purchaseResourcesRequired: string = "";
   partyMembers: Character[];
-  subscription: any;
+  subscription: any;  
+  tooltipDirection = DirectionEnum.Down;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService) { }

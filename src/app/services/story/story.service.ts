@@ -102,8 +102,8 @@ export class StoryService {
     }
     else if (storyId === 2) {
       if (pageCount === 1)
-        sceneText = "You arrive at the Temple of Athena. The lone figure inside is an oracle, mixing powders together under the light of a single flame. <span class='adventurerColor bold'>“Am I the first?”</span> you ask, falling to your knees. <span class='bold'>“You are.”</span> She replies, the strong scent of incense filling the room. You've done it. Year after year you have tried, and you have finally succeeded. As you kneel, elated, exhausted, you begin to offer up a prayer. <br/><br/>" +
-          "<span class='athenaColor bold'>“Your resolve is impressive.”</span> a voice says from behind. The Goddess of Wisdom and Warfare. <span class='athenaColor bold'>Athena</span>.";
+        sceneText = "You arrive at the temple. The lone figure inside is an oracle, mixing powders together under the light of a single flame. <span class='adventurerColor bold'>“Am I the first?”</span> you ask, falling to your knees. <span class='bold'>“You are.”</span> She replies, the strong scent of incense filling the room. You've done it. Year after year you have tried, and you have finally succeeded. As you kneel, elated, exhausted, you begin to offer up a prayer. <br/><br/>" +
+          "<span class='athenaColor bold'>“Your resolve is impressive.”</span> a voice says from behind. The Goddess of Wisdom and Warfare. Athena.";
       else if (pageCount === 2)
         sceneText = "<span class='athenaColor bold'>“Be warned, mortal, for my mother has foreseen the impending fall of Olympus. She sees the Giants and Titans joining forces and planning a coordinated attack against us. We cannot hope to stand against both of them on our own. <br/><br/>" +
           "We need allies, and I believe that you can help us. Prove your resolve once more. Trace the steps and trials of champions past. Let their strength be yours.”</span><br/><br/>" +
@@ -118,7 +118,7 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "Your power has grown significantly since being chosen by Athena, but you feel this Archer matches you in the same way. As your fight comes to a stalemate, you raise your hands in surrender. <br/><br/>" +
           "<span class='adventurerColor bold'>“I thought you were trying to mug me, but you fight harder than an ordinary bandit. Why are you following me?”</span><br/><br/>" +
-          "<span class='archerColor bold'>“I didn't mean to startle you.”</span> Your opponent says, cautiously lowering her bow. <span class='archerColor bold'>“I was leaving Delphi at the same time as you, and couldn’t help notice you cutting down the outlaws running these roads. Following you made it easier to travel.. and I was curious what you were after.”</span>";
+          "<span class='archerColor bold'>“I didn't mean to startle you.”</span> Your opponent says, cautiously lowering her bow. <span class='archerColor bold'>“I was leaving Delphi at the same time as you, and couldn't help notice you cutting down the outlaws running these roads. Following you made it easier to travel.. and I was curious what you were after.”</span>";
       else if (pageCount === 2)
         sceneText = "<span class='archerColor bold'>“My name is Zosime. The goddess Artemis guides my arrows. She tasked me with hunting the strongest enemies I can find to prove myself worthy of defending Olympus. I almost added you to that list.”</span><br/><br/>" +
           "The gods seem to each have their own favorites. <span class='adventurerColor bold'>“Sorry about that.”</span> You reply with a grin. <span class='adventurerColor bold'>“If you want a challenge, then walk with me to Dodona. Athena guides my path as Artemis guides yours. Keep your distance if you choose, but we have the same goal. We can prove ourselves together.”</span>";
@@ -127,14 +127,14 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "Like Perseus before you, you wander through the oak grove outside of Dodona. The stories say that the trees spoke advice to Perseus, but to you they are quiet. As you make your way around the grove, a youthful man wearing a feather-brimmed hat steps out to greet you.<br/><br/>" +
           "<span class='hermesColor bold'>“This is your champion? Seems a little… fresh, don't you think?”</span> he says. True to the stories, <span class='hermesColor bold'>Hermes</span> has arrived to greet you with <span class='athenaColor bold'>Athena</span> just behind him.<br/><br/>" +
-          "<span class='athenaColor bold'>“We must all start somewhere, brother.” Athena</span> says as she turns to you. <span class='athenaColor bold'>“You've done well. But your real trial is only just beginning.”</span>";
+          "<span class='athenaColor bold'>“We must all start somewhere, brother.”</span> Athena says as she turns to you. <span class='athenaColor bold'>“You've done well. But your real trial is only just beginning.”</span>";
       else if (pageCount === 2)
         sceneText = "<span class='athenaColor bold'>Athena</span> steps forward towards you, shield in hand. <span class='athenaColor bold'>“The next step on your journey is to slay Medusa. We're here to help you.”</span> She hands you the shield, its surface so clean it looks almost like a mirror. <br/><br/>" +
-          "<span class='hermesColor bold'>“Take these too. They'll take you straight where you need to be.” Hermes</span> says as he hands you a pair of sandals. <span class='hermesColor bold'>“You know, I wasn't sure you would come all the way here. You know how the story went right? Medusa is in Libya. Just wanted to do some sightseeing?”</span><br/><br/>" +
+          "<span class='hermesColor bold'>“Take these too. They'll take you straight where you need to be.”</span> Hermes says as he hands you a pair of sandals. <span class='hermesColor bold'>“You know, I wasn't sure you would come all the way here. You know how the story went right? Medusa is in Libya. Just wanted to do some sightseeing?”</span><br/><br/>" +
           "<span class='adventurerColor bold'>“I... just wanted to follow in the footsteps of a real hero.”</span> You reply.";
       else if (pageCount === 3)
         sceneText = "<span class='hermesColor bold'>“That's well and good, but we need a real hero of our own. Use those sandals and see if you have what it takes to defeat Medusa. I've got another pair for your friend there hiding in the shadows as well. Good luck!”</span> <br/><br/>" +
-          "<span class='athenaColor bold'>“We will see you soon. Farewell.” Athena</span> says as she and <span class='hermesColor bold'>Hermes</span> vanish back into the grove. Zisome steps out from behind the trees, grabbing a pair of sandals. <span class='archerColor bold'>“It looks like our journey will continue in Libya.”</span>";
+          "<span class='athenaColor bold'>“We will see you soon. Farewell.” Athena</span> says as she and <span class='hermesColor bold'>Hermes</span> vanish back into the grove. Zosime steps out from behind the trees, grabbing a pair of sandals. <span class='archerColor bold'>“Sounds like we're heading to Libya.”</span>";
     }
     else if (storyId === 6) {
       if (pageCount === 1)
@@ -210,22 +210,23 @@ export class StoryService {
           "You nod your head, just happy to have someone else make the decision. " + this.thalesText("“Lead the way.”");
     }
 
-    sceneText = sceneText.replace("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
-    sceneText = sceneText.replace("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
-    sceneText = sceneText.replace("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
-    sceneText = sceneText.replace("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
-    sceneText = sceneText.replace("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
+    sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
+    sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
+    sceneText = sceneText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
+    sceneText = sceneText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
+    sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
+    sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
 
     return sceneText;
   }
 
   handleScene(deltaTime: number) {
     if (this.globalService.globalVar.currentStoryId === 0) {
-      this.utilityService.isBattlePaused = true;
+      this.globalService.globalVar.isBattlePaused = true;
       this.pageCount = 2;
     }
     else
-      this.utilityService.isBattlePaused = false;
+      this.globalService.globalVar.isBattlePaused = false;
 
     if (this.globalService.globalVar.currentStoryId === 1) {
       this.pageCount = 2;
@@ -278,7 +279,7 @@ export class StoryService {
 
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
-        this.utilityService.isBattlePaused = false;
+        this.globalService.globalVar.isBattlePaused = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack));
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
@@ -302,7 +303,7 @@ export class StoryService {
         }, 5000);
       }
       if (this.globalService.globalVar.currentStoryId === 10) {
-        this.utilityService.isBattlePaused = false;
+        this.globalService.globalVar.isBattlePaused = false;
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
           championBallad.isAvailable = true;

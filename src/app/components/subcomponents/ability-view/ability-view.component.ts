@@ -5,6 +5,7 @@ import { God } from 'src/app/models/character/god.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -24,7 +25,8 @@ export class AbilityViewComponent implements OnInit {
   autoMode: boolean;
   spinnerDivSubscription: any;
 
-  constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService) { }
+  constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
+    private globalService: GlobalService) { }
 
   ngOnInit(): void {
     if (this.ability === undefined)
@@ -50,7 +52,7 @@ export class AbilityViewComponent implements OnInit {
   }
 
   getCharacterAutoAttackProgress() {    
-    var timeToAutoAttack = this.lookupService.getAutoAttackTime(this.character);        
+    var timeToAutoAttack = this.globalService.getAutoAttackTime(this.character);        
     return (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
   }
 

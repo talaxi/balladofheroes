@@ -206,14 +206,17 @@ export class BattleService {
     }
 
     if (subzone.type === SubZoneEnum.DodonaDelphiOutskirts && subzone.victoryCount === 1) {
-      this.globalService.globalVar.altarInfo.push(this.altarService.getTutorialAltar());
+      this.globalService.globalVar.altars.isUnlocked = true;
+      this.globalService.globalVar.altars.altar1 = this.altarService.getTutorialAltar();
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Altars));
     }
 
     if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
       var archer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
-      if (archer !== undefined)
+      if (archer !== undefined && !archer.isAvailable)
+      {
         archer.isAvailable = true;
+        this.globalService.globalVar.isDpsUnlocked = true;
 
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
       this.menuService.setNewPartyMember2(this.globalService.globalVar.activePartyMember2);
@@ -221,15 +224,39 @@ export class BattleService {
       var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
       if (artemis !== undefined && !artemis.isAvailable) {
         artemis.isAvailable = true;
+        this.globalService.globalVar.altars.altar2 = this.altarService.getNewSmallAltar(GodEnum.Artemis);
 
         artemis.abilityList.forEach(ability => {
-          if (athena!.level >= ability.requiredLevel)
+          if (artemis!.level >= ability.requiredLevel)
             ability.isAvailable = true;
         });
 
         var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
         if (character2 !== undefined) {
           character2.assignedGod1 = GodEnum.Artemis;
+        }
+      }
+    }
+    }
+
+    if (this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial)!.defeatCount > 0)
+    {
+      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+      if (hermes !== undefined && !hermes.isAvailable) {
+        hermes.isAvailable = true;
+        this.globalService.globalVar.altars.altar3 = this.altarService.getNewSmallAltar(GodEnum.Hermes);
+
+        hermes.abilityList.forEach(ability => {
+          if (hermes!.level >= ability.requiredLevel)
+            ability.isAvailable = true;
+        });
+
+        var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
+        if (character1 !== undefined && character1.assignedGod1 === GodEnum.None) {
+          character1.assignedGod1 = GodEnum.Hermes;
+        }
+        if (character1 !== undefined && character1.assignedGod2 === GodEnum.None) {
+          character1.assignedGod2 = GodEnum.Hermes;
         }
       }
     }
@@ -294,6 +321,7 @@ export class BattleService {
         treasureChestChance = 1;
         this.globalService.globalVar.freeTreasureChests.aigosthenaUpperCoastAwarded = true;
         showBattleItemTutorial = true;
+        this.globalService.globalVar.areBattleItemsUnlocked = true;
       }
 
       //auto gain a sword in aigosthena bay
@@ -412,7 +440,7 @@ export class BattleService {
   }
 
   checkAutoAttackTimer(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], deltaTime: number) {
-    var timeToAutoAttack = this.lookupService.getAutoAttackTime(character);
+    var timeToAutoAttack = this.globalService.getAutoAttackTime(character);
 
     //hopefully unnecessary fail safe
     var autoAttacksAtOnce = 0;
@@ -979,11 +1007,18 @@ export class BattleService {
     return effectiveness;
   }
 
-  getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number) {
+  getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false) {
     var overallDamageMultiplier = 1;
 
     if (additionalDamageMultiplier !== undefined)
       overallDamageMultiplier *= additionalDamageMultiplier;
+
+    if (isAutoAttack) {      
+      if (this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp) !== undefined) {
+        var relevantAltarEffect = this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp);
+          overallDamageMultiplier *= relevantAltarEffect!.effectiveness;      
+      }
+    }
 
     //check for basic damage up/down buffs
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
@@ -1027,6 +1062,12 @@ export class BattleService {
   }
 
   applyStatusEffect(appliedStatusEffect: StatusEffect, target: Character, potentialTargets?: Character[]) {
+    if (appliedStatusEffect.isPositive &&
+       this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp) !== undefined) {
+      var relevantAltarEffect = this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp);
+        appliedStatusEffect.duration *= relevantAltarEffect!.effectiveness;      
+    }
+
     if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
       potentialTargets.forEach(enemy => {
         var existingApplication = enemy.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
@@ -1467,7 +1508,7 @@ export class BattleService {
         }
 
         if (this.globalService.globalVar.gameLogSettings.get("battleUpdates")) {
-          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "Your party has been defeated. You quickly make your way back to the safety of town.");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "Your party has been defeated. You hurry back to the safety of town.");
         }
       }
       else {
@@ -1588,10 +1629,10 @@ export class BattleService {
       return;
 
     var altarMultiplier = 1;
-    var relevantAltarEffect = this.globalService.globalVar.activeAltarEffects.find(effect => effect.type === AltarEffectsEnum.SmallAltarPrayFortune);
+    /*var relevantAltarEffect = this.globalService.globalVar.activeAltarEffects.find(effect => effect.type === AltarEffectsEnum.SmallAltarPrayFortune);
     if (relevantAltarEffect !== undefined)
       altarMultiplier = relevantAltarEffect.effectiveness;
-
+*/
     defeatedEnemies.enemyList.forEach(enemy => {
       coin += enemy.coinGainFromDefeat * altarMultiplier;
     });
@@ -1689,7 +1730,7 @@ export class BattleService {
   }
 
   togglePause() {
-    this.utilityService.isGamePaused = !this.utilityService.isGamePaused;
+    this.globalService.globalVar.isGamePaused = !this.globalService.globalVar.isGamePaused;
   }
 
   useBattleItem(slotNumber: number) {
@@ -2093,5 +2134,5 @@ export class BattleService {
         }
       }
     }
-  }
+  }  
 }

@@ -30,8 +30,8 @@ export class AltarComponent implements OnInit {
     return text;
   }
 
-  pray(option: AltarPrayOptionsEnum) {
-    this.altarService.pray(option, this.altar);
+  pray() {
+    this.altarService.pray(this.altar);
 
     this.globalService.globalVar.activeBattle.atScene = false;
     this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.None;

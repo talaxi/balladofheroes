@@ -49,7 +49,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.FrenziedGull)
     {
       enemy.name = "Frenzied Gull";
-      enemy.battleStats = new CharacterStats(16, 14, 6, 6, 5, 5); 
+      enemy.battleStats = new CharacterStats(18, 14, 6, 6, 5, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 1;
       enemy.xpGainFromDefeat = 33; 
@@ -193,7 +193,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.BlueHarpy)
     {
       enemy.name = "Blue-Feathered Harpy";
-      enemy.battleStats = new CharacterStats(85, 33, 24, 20, 10, 10); 
+      enemy.battleStats = new CharacterStats(85, 29, 24, 20, 10, 10); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.xpGainFromDefeat = 58; 
       enemy.coinGainFromDefeat = 2;
@@ -211,7 +211,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.GreenHarpy)
     {
       enemy.name = "Green-Feathered Harpy";
-      enemy.battleStats = new CharacterStats(78, 29, 19, 20, 20, 10); 
+      enemy.battleStats = new CharacterStats(78, 28, 19, 20, 20, 10); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 55; 
       enemy.coinGainFromDefeat = 2;
@@ -239,7 +239,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Lamia)
     {
       enemy.name = "Lamia";
-      enemy.battleStats = new CharacterStats(93, 35, 35, 25, 30, 30); 
+      enemy.battleStats = new CharacterStats(93, 33, 35, 25, 30, 30); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 60; 
       enemy.coinGainFromDefeat = 2;
@@ -309,7 +309,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.UnsettlingShade)
     {
       enemy.name = "Unsettling Shade";
-      enemy.battleStats = new CharacterStats(150, 64, 69, 60, 60, 25); 
+      enemy.battleStats = new CharacterStats(150, 64, 59, 60, 60, 25); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.xpGainFromDefeat = 70; 
       enemy.coinGainFromDefeat = 0;
@@ -327,7 +327,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Gorgon)
     {
       enemy.name = "Gorgon";
-      enemy.battleStats = new CharacterStats(120, 45, 66, 50, 35, 35); 
+      enemy.battleStats = new CharacterStats(120, 45, 60, 50, 35, 35); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.xpGainFromDefeat = 72; 
       enemy.coinGainFromDefeat = 2;      
@@ -339,7 +339,7 @@ export class EnemyGeneratorService {
       gaze.cooldown = gaze.currentCooldown = 24;
       gaze = this.randomizeCooldown(gaze);
       gaze.dealsDirectDamage = false;
-      gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 8, 0, false, false));      
+      gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));      
       enemy.abilityList.push(gaze);
     }
     if (type === BestiaryEnum.Stheno)
@@ -357,7 +357,7 @@ export class EnemyGeneratorService {
       gaze.cooldown = gaze.currentCooldown = 25;
       gaze = this.randomizeCooldown(gaze);
       gaze.dealsDirectDamage = false;
-      gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 8, 0, false, false));      
+      gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 6, 0, false, false));      
       enemy.abilityList.push(gaze);
 
       var bite = new Ability();
@@ -385,7 +385,7 @@ export class EnemyGeneratorService {
       gaze.cooldown = gaze.currentCooldown = 20;
       gaze = this.randomizeCooldown(gaze);
       gaze.dealsDirectDamage = false;
-      gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 5, 0, false, false));      
+      gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 6, 0, false, false));      
       enemy.abilityList.push(gaze);
 
       var feint = new Ability();

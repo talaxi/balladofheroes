@@ -1,0 +1,65 @@
+<div class="grid">
+    <div *ngIf="altar1 !== undefined" class="altarSpinner1">
+        <app-altar-view [altar]="altar1"></app-altar-view>
+    </div>
+    <div class="altarBar1" *ngIf="altarEffect1 !== undefined">
+        <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect1)"
+            class="characterBar removeAnimation" [ngClass]="getProgressColor(altarEffect1)">
+        </mat-progress-bar>
+    </div>
+    <div *ngIf="altarEffect1 !== undefined" class="altarBoon1">
+        <div class="buffs" customToolTip [contentTemplate]="altarEffect1Popover" [tooltipDirection]="buffTooltipDirection">
+            <img class="buffImage" src="assets/svg/statUpSE.svg" />
+        </div>
+    </div>
+    
+    <div *ngIf="altar2 !== undefined" class="altarSpinner2">
+        <app-altar-view [altar]="altar2"></app-altar-view>
+    </div>
+    <div *ngIf="altarEffect2 !== undefined" class="altarBar2">
+        <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect2)"
+            class="characterBar removeAnimation" [ngClass]="getProgressColor(altarEffect2)">
+        </mat-progress-bar>
+    </div>
+    <div *ngIf="altarEffect2 !== undefined" class="altarBoon2">
+        <div class="buffs" customToolTip [contentTemplate]="altarEffect2Popover" [tooltipDirection]="buffTooltipDirection">
+            <img class="buffImage" src="assets/svg/statUpSE.svg" />
+        </div>
+    </div>
+    
+    <div *ngIf="altar3 !== undefined" class="altarSpinner3">
+        <app-altar-view [altar]="altar3"></app-altar-view>
+    </div>
+    <div *ngIf="altarEffect3 !== undefined" class="altarBar3">
+        <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect3)"
+            class="characterBar removeAnimation" [ngClass]="getProgressColor(altarEffect3)">
+        </mat-progress-bar>
+    </div>
+    <div *ngIf="altarEffect3 !== undefined" class="altarBoon3">
+        <div class="buffs" customToolTip [contentTemplate]="altarEffect3Popover" [tooltipDirection]="buffTooltipDirection">
+            <img class="buffImage" src="assets/svg/statUpSE.svg" />
+        </div>
+    </div>
+</div>
+
+
+<ng-template #altarEffect1Popover>
+    <strong>Active Altar Effects</strong>
+    <hr/>    
+    <div [innerHtml]="getAltarEffect(1)"> 
+    </div>   
+</ng-template>
+
+<ng-template #altarEffect2Popover>
+    <strong>Active Altar Effects</strong>
+    <hr/>    
+    <div [innerHtml]="getAltarEffect(2)"> 
+    </div>   
+</ng-template>
+
+<ng-template #altarEffect3Popover>
+    <strong>Active Altar Effects</strong>
+    <hr/>    
+    <div [innerHtml]="getAltarEffect(3)"> 
+    </div>   
+</ng-template>
