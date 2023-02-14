@@ -12,7 +12,6 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
-import { Ng2FittextModule } from "ng2-fittext";
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 
 @Component({

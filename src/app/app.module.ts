@@ -84,7 +84,6 @@ import { AltarOptionsViewComponent } from './components/subcomponents/altar-opti
 import { AltarComponent } from './components/layout/battle/altar/altar.component';
 import { ChangeClassViewComponent } from './components/menu/character-view/change-class-view/change-class-view.component';
 import { AltarViewComponent } from './components/subcomponents/altar-options-view/altar-view/altar-view.component';
-import {Ng2FittextModule} from "ng2-fittext";
 import { ResourceRequiredViewComponent } from './components/subcomponents/shopping-item-view/resource-required-view/resource-required-view.component';
 import { AltarOverviewComponent } from './components/layout/zone-navigation/altar-overview/altar-overview.component';
 
@@ -179,7 +178,6 @@ import { AltarOverviewComponent } from './components/layout/zone-navigation/alta
     MatToolbarModule,
     MatTooltipModule,
     MatTreeModule,
-    Ng2FittextModule
   ],
   providers: [],
   bootstrap: [AppComponent]

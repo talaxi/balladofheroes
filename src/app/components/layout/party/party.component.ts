@@ -74,11 +74,11 @@ export class PartyComponent implements OnInit {
       this.removeDefaultMaterialButtonClasses();
     });
 
-    this.partyMember1CheckSubscription = this.menuService.getNewPartyMember1().subscribe((value) => {      
+    this.partyMember1CheckSubscription = this.menuService.getNewPartyMember1().subscribe(() => {      
       this.party = this.globalService.getActivePartyCharacters(false);      
     });
 
-    this.partyMember2CheckSubscription = this.menuService.getNewPartyMember2().subscribe((value) => {      
+    this.partyMember2CheckSubscription = this.menuService.getNewPartyMember2().subscribe(() => {      
       this.party = this.globalService.getActivePartyCharacters(false);         
     });
   }
