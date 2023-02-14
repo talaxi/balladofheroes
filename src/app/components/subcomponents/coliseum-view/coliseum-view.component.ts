@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { Battle } from 'src/app/models/battle/battle.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';

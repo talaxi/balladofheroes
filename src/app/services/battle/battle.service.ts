@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
 import * as pluralize from 'pluralize';
 import { Battle } from 'src/app/models/battle/battle.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';

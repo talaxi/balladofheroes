@@ -1,5 +1,5 @@
 import { Component, Input, OnInit, Renderer2, TemplateRef } from '@angular/core';
-import { MatDialog } from '@angular/material/dialog';
+import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
