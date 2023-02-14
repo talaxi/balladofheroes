@@ -67,7 +67,7 @@ export class AltarService {
     }
     if (altar.condition === AltarConditionEnum.AbilityUse) {
       if (altar.type === AltarEnum.Small)
-        maxCount = 20;
+        maxCount = tutorialAmount ? 10 : 20;
     }
 
     return maxCount;

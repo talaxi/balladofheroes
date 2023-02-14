@@ -4,6 +4,7 @@ import { AltarInfo } from "./altar-info.model";
 
 export class Altars {
     isUnlocked: boolean;
+    showNewNotification: boolean;
     @Type(() => AltarInfo)
     altar1: AltarInfo | undefined;
     @Type(() => AltarInfo)
@@ -20,5 +21,6 @@ export class Altars {
 
     constructor() {
         this.isUnlocked = false;
+        this.showNewNotification = false;
     }
 }

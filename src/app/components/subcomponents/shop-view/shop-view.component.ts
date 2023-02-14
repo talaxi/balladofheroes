@@ -96,7 +96,7 @@ export class ShopViewComponent implements OnInit {
       this.storyService.displayOptionalScene(optionalSceneToDisplay);
       this.battleService.checkScene();
       //subscribe to story service
-      this.openShopSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {        
+      this.openShopSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {           
         if (this.storyService.returnedFromOptionalScene)
         {
           this.openShop(option, content);

@@ -23,7 +23,7 @@
 }
 
 .existingEquipment {
-  grid-area: existingEquipment
+  grid-area: existingEquipment;
 }
 
 .characterSelect {
@@ -45,4 +45,35 @@
 
 .equipmentItem {
   font-size: 1rem;
+}
+
+
+.flex {
+  display: flex;
+  justify-content: space-around;
+}
+
+.flexBetween {
+  display:flex;
+  justify-content:  space-between;
+  width: 60%; /* needs to match .leftAlignedMiniHr */
+}
+
+.filterOption {
+  color: var(--inactive-filter);
+  font-size: 1.2rem;
+}
+
+.filterOption.filterActive {
+  color: var(--active-filter);
+}
+
+.sellItem {
+  text-align: center;
+}
+
+.icon {
+  width: 1rem;
+  height: 100%;
+  aspect-ratio: 1/1;
 }

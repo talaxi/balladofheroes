@@ -91,7 +91,7 @@
 .enemy {
     margin-top: .7rem;
     display: grid;
-    grid-template-columns: 80% 1fr;
+    grid-template-columns: 72% 1fr;
     justify-content: stretch;
     grid-template-areas:
         "hpBar hpAmount";
@@ -100,14 +100,14 @@
 .boss {
     margin-top: .7rem;
     display: grid;
-    grid-template-columns: 90% 1fr;
+    grid-template-columns: 85% 1fr;
     justify-content: stretch;
     grid-template-areas:
         "hpBar hpAmount";
 }
 
 .boss .characterBar, .enemy .characterBar {
-    width: 95% !important;
+    width: 97% !important;
 }
 
 .hpBarSpace {

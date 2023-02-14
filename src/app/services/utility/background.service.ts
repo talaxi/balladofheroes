@@ -19,7 +19,7 @@ export class BackgroundService {
     private alchemyService: AlchemyService) { }
 
   //global -- this occurs even when at a scene or in a town
-  handleBackgroundTimers(deltaTime: number) {
+  handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.alchemyService.handleAlchemyTimer(deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
@@ -30,9 +30,13 @@ export class BackgroundService {
       if (!isDefeated && !this.globalService.globalVar.isBattlePaused) {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleHpRegen(partyMember, deltaTime);
-        this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
-        this.handleAbilityCooldowns(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
+
+        if (!isInTown)
+        {
+          this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
+          this.handleAbilityCooldowns(partyMember, deltaTime);
+        }
       }
     });
   }
@@ -126,6 +130,7 @@ export class BackgroundService {
 
   handleTickingAltarEffect(effect: AltarEffect, deltaTime: number) {
     var party = this.globalService.getActivePartyCharacters(true);
+    party = party.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
     effect.tickTimer += deltaTime;
 
     if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
@@ -141,7 +146,9 @@ export class BackgroundService {
 
   handleEndOfDurationAltarEffect(effect: AltarEffect) {
     var party = this.globalService.getActivePartyCharacters(true);
+    party = party.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
     var enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
+    enemies = enemies.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
 
     if (effect.type === AltarEffectsEnum.AthenaHeal) {
       party.forEach(member => {

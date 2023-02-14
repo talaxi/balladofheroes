@@ -221,12 +221,10 @@ export class StoryService {
   }
 
   handleScene(deltaTime: number) {
-    if (this.globalService.globalVar.currentStoryId === 0) {
-      this.globalService.globalVar.isBattlePaused = true;
+    this.globalService.globalVar.isBattlePaused = true;
+    if (this.globalService.globalVar.currentStoryId === 0) {     
       this.pageCount = 2;
     }
-    else
-      this.globalService.globalVar.isBattlePaused = false;
 
     if (this.globalService.globalVar.currentStoryId === 1) {
       this.pageCount = 2;
@@ -276,6 +274,7 @@ export class StoryService {
       this.globalService.globalVar.currentStoryId += 1;
       this.currentPage = 1;
       this.showStory = false;
+      this.globalService.globalVar.isBattlePaused = false;
 
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {

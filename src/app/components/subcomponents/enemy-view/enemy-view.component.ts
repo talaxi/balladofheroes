@@ -130,6 +130,14 @@ export class EnemyViewComponent implements OnInit {
     return character.battleInfo.barrierValue;
   }
 
+  getCharacterCurrentHp() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.currentHp + this.getCharacterBarrierValue(this.character));
+  }
+
+  getCharacterMaxHp() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.maxHp);
+  }
+
   getLootItem(loot: LootItem) {
     var name = "";
 

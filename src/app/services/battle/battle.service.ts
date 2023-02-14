@@ -205,42 +205,41 @@ export class BattleService {
       }
     }
 
-    if (subzone.type === SubZoneEnum.DodonaDelphiOutskirts && subzone.victoryCount === 1) {
+    if (subzone.type === SubZoneEnum.DodonaDelphiOutskirts && subzone.victoryCount === 2) {
       this.globalService.globalVar.altars.isUnlocked = true;
       this.globalService.globalVar.altars.altar1 = this.altarService.getTutorialAltar();
+      this.globalService.globalVar.altars.showNewNotification = true;
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Altars));
     }
 
     if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
       var archer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
-      if (archer !== undefined && !archer.isAvailable)
-      {
+      if (archer !== undefined && !archer.isAvailable) {
         archer.isAvailable = true;
         this.globalService.globalVar.isDpsUnlocked = true;
 
-      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
-      this.menuService.setNewPartyMember2(this.globalService.globalVar.activePartyMember2);
+        this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
+        this.menuService.setNewPartyMember2(this.globalService.globalVar.activePartyMember2);
 
-      var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
-      if (artemis !== undefined && !artemis.isAvailable) {
-        artemis.isAvailable = true;
-        this.globalService.globalVar.altars.altar2 = this.altarService.getNewSmallAltar(GodEnum.Artemis);
+        var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
+        if (artemis !== undefined && !artemis.isAvailable) {
+          artemis.isAvailable = true;
+          this.globalService.globalVar.altars.altar2 = this.altarService.getNewSmallAltar(GodEnum.Artemis);
 
-        artemis.abilityList.forEach(ability => {
-          if (artemis!.level >= ability.requiredLevel)
-            ability.isAvailable = true;
-        });
+          artemis.abilityList.forEach(ability => {
+            if (artemis!.level >= ability.requiredLevel)
+              ability.isAvailable = true;
+          });
 
-        var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
-        if (character2 !== undefined) {
-          character2.assignedGod1 = GodEnum.Artemis;
+          var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
+          if (character2 !== undefined) {
+            character2.assignedGod1 = GodEnum.Artemis;
+          }
         }
       }
     }
-    }
 
-    if (this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial)!.defeatCount > 0)
-    {
+    if (this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial)!.defeatCount > 0) {
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       if (hermes !== undefined && !hermes.isAvailable) {
         hermes.isAvailable = true;
@@ -325,7 +324,7 @@ export class BattleService {
       }
 
       //auto gain a sword in aigosthena bay
-      if (subzone.type === SubZoneEnum.AigosthenaBay && subzone.victoryCount >= 4 &&
+      if (subzone.type === SubZoneEnum.AigosthenaBay && subzone.victoryCount >= 3 &&
         !this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded) {
         treasureChestChance = 1;
         this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded = true;
@@ -414,7 +413,7 @@ export class BattleService {
         if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
           //deal damage
           var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness);
-          var gameLogEntry = "<strong>" + character.name + "</strong>" + " takes " + Math.round(damageDealt) + " damage from " + effect.associatedAbilityName + "'s effect.";
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes " + Math.round(damageDealt) + " damage from " + effect.associatedAbilityName + "'s effect.";
 
           if ((isPartyMember && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
             (!isPartyMember && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
@@ -1013,10 +1012,10 @@ export class BattleService {
     if (additionalDamageMultiplier !== undefined)
       overallDamageMultiplier *= additionalDamageMultiplier;
 
-    if (isAutoAttack) {      
+    if (isAutoAttack) {
       if (this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp) !== undefined) {
         var relevantAltarEffect = this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp);
-          overallDamageMultiplier *= relevantAltarEffect!.effectiveness;      
+        overallDamageMultiplier *= relevantAltarEffect!.effectiveness;
       }
     }
 
@@ -1063,9 +1062,9 @@ export class BattleService {
 
   applyStatusEffect(appliedStatusEffect: StatusEffect, target: Character, potentialTargets?: Character[]) {
     if (appliedStatusEffect.isPositive &&
-       this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp) !== undefined) {
+      this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp) !== undefined) {
       var relevantAltarEffect = this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp);
-        appliedStatusEffect.duration *= relevantAltarEffect!.effectiveness;      
+      appliedStatusEffect.duration *= relevantAltarEffect!.effectiveness;
     }
 
     if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
@@ -1195,6 +1194,12 @@ export class BattleService {
       target.unlockedOverdrives.push(OverdriveNameEnum.Protection);
     if (target.overdriveInfo.overdriveIsActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection)
       target.overdriveInfo.damageTaken += totalDamageDealt;
+
+    if (target.level >= this.utilityService.characterOverdriveLevel) {
+      target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked;
+      if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
+        target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
+    }
 
     if (target.battleInfo.barrierValue > 0) {
       target.battleInfo.barrierValue -= damage;
@@ -1351,8 +1356,7 @@ export class BattleService {
           }
         }
 
-        if (this.globalService.getActivePartyCharacters(true).some(item => item.targeting === character))
-        {
+        if (this.globalService.getActivePartyCharacters(true).some(item => item.targeting === character)) {
           this.globalService.getActivePartyCharacters(true).forEach(item => {
             if (item.targeting === character)
               item.targeting = undefined;
@@ -2113,7 +2117,6 @@ export class BattleService {
     if (character.overdriveInfo.overdriveGaugeAmount === character.overdriveInfo.overdriveGaugeTotal &&
       (character.overdriveInfo.overdriveAutoMode || character.overdriveInfo.manuallyTriggered)) {
       character.overdriveInfo.overdriveIsActive = true;
-      console.log("Overdrive active");
       character.overdriveInfo.overdriveGaugeAmount = 0;
       this.altarService.incrementAltarCount(AltarConditionEnum.OverdriveUse);
     }
@@ -2125,7 +2128,6 @@ export class BattleService {
 
       if (character.overdriveInfo.overdriveActiveDuration >= character.overdriveInfo.overdriveActiveLength) {
         character.overdriveInfo.overdriveIsActive = false;
-        console.log("Overdrive inactive");
         character.overdriveInfo.overdriveActiveDuration = 0;
 
         if (character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection) {
@@ -2134,5 +2136,5 @@ export class BattleService {
         }
       }
     }
-  }  
+  }
 }

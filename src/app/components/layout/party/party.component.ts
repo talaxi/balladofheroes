@@ -64,6 +64,7 @@ export class PartyComponent implements OnInit {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {  
       this.displayDps = this.globalService.globalVar.isDpsUnlocked;
       this.unlockedBattleItems = this.globalService.globalVar.areBattleItemsUnlocked;
+      this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
 
       if (!this.itemMenu.menuOpen)
       {
@@ -74,11 +75,11 @@ export class PartyComponent implements OnInit {
     });
 
     this.partyMember1CheckSubscription = this.menuService.getNewPartyMember1().subscribe((value) => {      
-      this.party = this.globalService.getActivePartyCharacters(false);   
+      this.party = this.globalService.getActivePartyCharacters(false);      
     });
 
-    this.partyMember1CheckSubscription = this.menuService.getNewPartyMember2().subscribe((value) => {      
-      this.party = this.globalService.getActivePartyCharacters(false);   
+    this.partyMember2CheckSubscription = this.menuService.getNewPartyMember2().subscribe((value) => {      
+      this.party = this.globalService.getActivePartyCharacters(false);         
     });
   }
 
@@ -347,8 +348,7 @@ export class PartyComponent implements OnInit {
   }
 
   setupKeybinds(event: KeyboardEvent) {
-    var keybinds = this.globalService.globalVar.keybinds;
-    console.log(event.key);
+    var keybinds = this.globalService.globalVar.keybinds;    
 
     //character 1
     if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("toggleCharacter1TargetMode"))) {
@@ -571,6 +571,18 @@ export class PartyComponent implements OnInit {
         this.party[1].overdriveInfo.overdriveAutoMode = !this.party[1].overdriveInfo.overdriveAutoMode;
       }
     }
+  }
+
+  getCharacterBarrierPercent(character: Character) {
+    return (character.battleInfo.barrierValue / character.battleStats.maxHp) * 100;
+  }
+
+  getCurrentHp(character: Character) {
+    return this.utilityService.bigNumberReducer(character.battleStats.currentHp + this.getCharacterBarrierValue(character));
+  }
+
+  getMaxHp(character: Character) {
+    return this.utilityService.bigNumberReducer(character.battleStats.maxHp);
   }
 
   ngOnDestroy() {

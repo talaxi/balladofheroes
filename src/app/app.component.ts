@@ -115,11 +115,12 @@ export class AppComponent {
       deltaTime = 0;
 
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
+    var isInTown = activeSubzone.isTown && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
 
     //this runs regardless of battle state
-    this.backgroundService.handleBackgroundTimers(deltaTime);
+    this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
 
-    if (activeSubzone.isTown && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
+    if (isInTown)
       this.backgroundService.handleTown(deltaTime, this.loading);
     else
       this.globalService.globalVar.timers.townHpGainTimer = 0;    

@@ -358,4 +358,9 @@ export class GodViewComponent implements OnInit {
   getMaxHpStatBreakdown() {
     return this.lookupService.getGodMaxHpStatBreakdown(this.god);
   }
+  
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+      this.subscription.unsubscribe();
+  }
 }

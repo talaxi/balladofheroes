@@ -10,21 +10,26 @@
                     <div>
                         <app-character-name-view [character]="character"></app-character-name-view>
                         <br />
-                        <div *ngIf="true" class="flex"> <!--ngIf fixes the default value for the progress bar-->
-                            <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
-                                class="green-progress characterBar">
-                            </mat-progress-bar> <span class="hpMpText">{{character.battleStats.currentHp | number :
-                                '1.0-0'}} /
-                                {{character.battleStats.maxHp | number : '1.0-0'}}
-                                <span
-                                    *ngIf="getCharacterBarrierValue(character) > 0">({{getCharacterBarrierValue(character)}})</span></span>
+                        <div *ngIf="true" class="flex characterHp">
+                            <!--ngIf fixes the default value for the progress bar-->
+                            <div class="hpBarSpace hpBarGrid">
+                                <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
+                                    class="green-progress characterBar hpBar">
+                                </mat-progress-bar>
+                                <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
+                                    [value]="getCharacterBarrierPercent(character)"
+                                    class="barrier-progress characterBar hpBar">
+                                </mat-progress-bar>
+                            </div>
+                            <span class="hpMpText hpAmount"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span> /
+                                {{getMaxHp(character)}}</span>
                         </div>
                         <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex"
                             (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
                             <span *ngIf="!character.overdriveInfo.overdriveAutoMode"
                                 class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
-                                class="red-progress characterBar"
+                                class="red-progress characterBar overdriveProgressBar"
                                 [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.overdriveAutoMode}">
                             </mat-progress-bar> <span class="hpMpText">
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
@@ -76,15 +81,15 @@
         <hr *ngIf="activeCharacterCount > 1" />
     </div>
     <div>
-        <div *ngIf="displayDps" class="dps" class="s4Heading textCentered pageHeader dpsChecks">                      
+        <div *ngIf="displayDps" class="dps" class="s4Heading textCentered pageHeader dpsChecks">
             <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
                 Party DPS: {{getPartyDps() | number : '1.0-0'}}
             </span>
             <span class='smallText enemyDps' customToolTip [contentTemplate]="dpsTemplate">
                 Incoming DPS: {{getEnemyDps() | number : '1.0-0'}}
-            </span>            
+            </span>
         </div>
-        <hr *ngIf="unlockedBattleItems"  class="noMargin" />
+        <hr *ngIf="unlockedBattleItems" class="noMargin" />
     </div>
     <div *ngIf="unlockedBattleItems" class="options battleItemGrid">
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"
@@ -114,5 +119,5 @@
 </mat-menu>
 
 <ng-template #dpsTemplate>
-    Damage Per Second is calculated over a 120 second period and is reset upon changing sub zones.    
+    Damage Per Second is calculated over a 120 second period and is reset upon changing sub zones.
 </ng-template>

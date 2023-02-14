@@ -5,24 +5,45 @@
     <div class="availableEquipment">
       <div class="scrollable">
         <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)">
-          <button class="buttonAsText clickableText" (click)="equipItem(equipment)">
-          <span class="equipmentItem" customToolTip [isDelayed]="false" [contentTemplate]="template"
-            [innerHtml]="getEquipmentName(equipment)"></span>
-          </button>
+          <div class="flexBetween">
+            <button class="buttonAsText clickableText" (click)="equipItem(equipment)">
+              <span class="equipmentItem" customToolTip [isDelayed]="false" [contentTemplate]="template"
+                [innerHtml]="getEquipmentName(equipment)"></span>
+            </button>
+            <button (click)="setSellItem(equipment)"><img class="icon" src="assets/svg/resourcesQuickView.svg"></button>
+          </div>
           <hr class="leftAlignedMiniHr" />
         </div>
       </div>
     </div>
     <div class="existingEquipment">
       <div>
-        <app-current-equipment-view [characterType]="characterType" (unequipEmitter)="itemUnequipped($event)"></app-current-equipment-view>
+        <app-current-equipment-view [characterType]="characterType"
+          (unequipEmitter)="itemUnequipped($event)"></app-current-equipment-view>
       </div>
       <hr />
-      <div class="existingEffects">
+      <div *ngIf="itemToSellSelected" class="sellItem">
+        <span>Selling {{sellAmount}}x <span [innerHtml]="getEquipmentNameFromEquipment(itemToSell)"></span> for <strong>{{(itemToSellPrice * sellAmount)}}</strong> coins</span>
+        <br />
+        <br />
+        <div class="flex">
+          <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount === 1}"
+            (click)="changeSellAmount(1)">1x</button>
+          <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount === 5}"
+            (click)="changeSellAmount(5)">5x</button>
+          <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount === 25}"
+            (click)="changeSellAmount(25)">25x</button>
+          <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount !== 1 && sellAmount !== 5 && sellAmount !== 25 && sellAmount === getTotalItemToSellAmount()}"
+            (click)="changeSellAmount(getTotalItemToSellAmount())">All</button>
+        </div>
+        <br />
+        <button [disabled]="this.getTotalItemToSellAmount() < this.sellAmount" (click)="sellItem()">Sell</button>
+      </div>
+      <!--<div class="existingEffects">
         <span>Total gain from equipment:</span>
         <br />
         <span [innerHtml]="equipmentGain()"></span>
-      </div>
+      </div>-->
     </div>
   </div>
 

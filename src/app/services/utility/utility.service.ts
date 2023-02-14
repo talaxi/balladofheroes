@@ -7,7 +7,7 @@ import * as seedrandom from "seedrandom";
 })
 export class UtilityService {
   //glossary
-  public activeTimeLimit = 1 * 20 * 60;
+  public activeTimeLimit = 1 * 20 * 60; 
   public extraSpeedTimeLimit = 8 * 60 * 60;
 
   public quickAutoAttackSpeed = 5;
@@ -220,5 +220,31 @@ export class UtilityService {
     }
 
     return fib[level + 2];
+  }
+
+  bigNumberReducer(originalAmount: number) {
+    var originalAmount = Math.round(originalAmount);
+    var reducedNumber = "";    
+
+    if (this.getDigitCount(originalAmount) <= 3)
+      reducedNumber = originalAmount.toString();
+    else if (this.getDigitCount(originalAmount) <= 6)
+    {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 3;      
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0)
+      {
+        var remainingCount = 3 - leadingNumberCount;        
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "K";
+    }
+
+    return reducedNumber;
+  }
+
+  getDigitCount(x: number) {
+    return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
   }
 }

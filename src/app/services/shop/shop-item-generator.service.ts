@@ -69,13 +69,13 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.FortifiedBronzeSword)
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.BronzeSword, ItemTypeEnum.Equipment, 1));
-      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 15));
+      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));      
     }    
     if (item === ItemsEnum.FortifiedBronzeHammer)
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.BronzeHammer, ItemTypeEnum.Equipment, 1));
-      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 15));
+      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));
     }
     if (item === ItemsEnum.FortifiedBronzeArmor)
@@ -87,7 +87,7 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.Venomstrike)
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 10));
-      purchasePrice.push(new ResourceValue(ItemsEnum.LamiaHeart, ItemTypeEnum.CraftingMaterial, 3));
+      purchasePrice.push(new ResourceValue(ItemsEnum.LamiaHeart, ItemTypeEnum.CraftingMaterial, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     }
     if (item === ItemsEnum.PendantOfFortune)

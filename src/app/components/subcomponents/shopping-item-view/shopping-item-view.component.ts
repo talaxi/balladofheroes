@@ -23,7 +23,7 @@ export class ShoppingItemViewComponent implements OnInit {
   purchaseResourcesRequired: string = "";
   partyMembers: Character[];
   subscription: any;  
-  tooltipDirection = DirectionEnum.Down;
+  tooltipDirection = DirectionEnum.Right;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService) { }

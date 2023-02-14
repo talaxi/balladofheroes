@@ -26,6 +26,10 @@ export class EquipmentViewComponent implements OnInit {
   hoveredItem: Equipment;
   public equipmentTypeEnum = EquipmentTypeEnum;
   public partyMembers: Character[];
+  itemToSellSelected = false;
+  itemToSell: Equipment;
+  itemToSellPrice: number;
+  sellAmount: number = 1;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService) { }
@@ -37,43 +41,43 @@ export class EquipmentViewComponent implements OnInit {
       this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;      
-      
+      this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
+
       if (this.globalService.globalVar.characters.some(item => item.type === this.characterType))
         this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
     });
   }
 
   setUpAvailableEquipment() {
-    this.availableEquipment = [];    
+    this.availableEquipment = [];
     this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.Equipment).forEach(equip => {
       if (equip !== undefined)
         this.availableEquipment.push(equip.makeCopy());
-    });    
+    });
 
     this.globalService.globalVar.characters.forEach(character => {
-      var weapon = this.availableEquipment.find(item => item.item === character.equipmentSet.weapon?.itemType);      
+      var weapon = this.availableEquipment.find(item => item.item === character.equipmentSet.weapon?.itemType);
       if (weapon !== undefined)
         weapon.amount -= 1;
 
-      var shield = this.availableEquipment.find(item => item.item === character.equipmentSet.shield?.itemType);      
+      var shield = this.availableEquipment.find(item => item.item === character.equipmentSet.shield?.itemType);
       if (shield !== undefined)
         shield.amount -= 1;
 
-      var armor = this.availableEquipment.find(item => item.item === character.equipmentSet.armor?.itemType);      
+      var armor = this.availableEquipment.find(item => item.item === character.equipmentSet.armor?.itemType);
       if (armor !== undefined)
         armor.amount -= 1;
 
-      var ring = this.availableEquipment.find(item => item.item === character.equipmentSet.ring?.itemType);      
+      var ring = this.availableEquipment.find(item => item.item === character.equipmentSet.ring?.itemType);
       if (ring !== undefined)
         ring.amount -= 1;
 
-      var necklace = this.availableEquipment.find(item => item.item === character.equipmentSet.necklace?.itemType);      
+      var necklace = this.availableEquipment.find(item => item.item === character.equipmentSet.necklace?.itemType);
       if (necklace !== undefined)
-        necklace.amount -= 1;      
+        necklace.amount -= 1;
     });
 
-    this.availableEquipment = this.availableEquipment.filter(item => item.amount > 0);    
+    this.availableEquipment = this.availableEquipment.filter(item => item.amount > 0);
   }
 
   hoverItem(item: ResourceValue) {
@@ -148,6 +152,13 @@ export class EquipmentViewComponent implements OnInit {
 
     return this.utilityService.getSanitizedHtml("<strong class='" + qualityClass + "'>" + name + "</strong> x" + equipment.amount);
   }
+  
+  getEquipmentNameFromEquipment(equipment: Equipment) {
+    var name = this.lookupService.getItemName(equipment.itemType);
+    var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));
+
+    return this.utilityService.getSanitizedHtml("<strong class='" + qualityClass + "'>" + name + "</strong>");
+  }
 
   equipmentGain() {
     var characterStats = new CharacterStats(this.character.equipmentSet.getTotalMaxHpGain(),
@@ -169,6 +180,44 @@ export class EquipmentViewComponent implements OnInit {
       equipmentStats += "+" + characterStats.resistance + " Resistance<br />";
 
     return this.utilityService.getSanitizedHtml(equipmentStats);
+  }
+
+  setSellItem(equipment: ResourceValue) {
+    if (!this.itemToSellSelected) {
+      var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(equipment.item);
+      if (equipmentPiece !== undefined) {
+        this.itemToSell = equipmentPiece;
+        this.itemToSellSelected = true;
+        this.itemToSellPrice = this.lookupService.getItemSellPrice(equipment.item);
+      }
+    }
+    else {
+      if (equipment.item === this.itemToSell.itemType)
+        this.itemToSellSelected = false;
+    }
+  }
+
+  getTotalItemToSellAmount() {
+    return this.lookupService.getResourceAmount(this.itemToSell.itemType);
+  }
+
+  changeSellAmount(amount: number) {
+    this.sellAmount = amount;
+  }
+
+  sellItem() {
+    if (this.getTotalItemToSellAmount() >= this.sellAmount)
+    {
+      this.lookupService.useResource(this.itemToSell.itemType, this.sellAmount);
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, this.sellAmount * this.itemToSellPrice)); 
+    }
+
+    if (this.getTotalItemToSellAmount() <= 0)
+    {
+      this.itemToSellSelected = false;
+    }
+    
+    this.setUpAvailableEquipment();
   }
 
   ngOnDestroy() {

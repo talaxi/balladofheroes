@@ -214,6 +214,8 @@ export class BattleComponent implements OnInit {
 
   openGameLogEditor(content: any) {
     this.dialog.open(content, { width: '75%', maxHeight: '75%' });
+
+    console.log("Dialogs: " + this.dialog.openDialogs.length);
   }
 
   getTournamentTimeRemaining() {

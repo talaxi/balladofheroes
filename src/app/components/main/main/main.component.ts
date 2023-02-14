@@ -19,11 +19,15 @@ export class MainComponent implements OnInit {
   maxBankedTime = 0;
 
   constructor(private layoutService: LayoutService, private gameLoopService: GameLoopService, public lookupService: LookupService,
-    public storyService: StoryService, private globalService: GlobalService) { }
+    public storyService: StoryService) { }
 
   ngOnInit(): void {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.navigation = this.layoutService.navigation;
     });
+  }
+
+  ngOnDestroy() {
+    console.log("Main destroyed?");
   }
 }

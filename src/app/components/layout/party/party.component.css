@@ -60,8 +60,8 @@
 }
 
 .characterBar {
-    width: 77%;
-    margin-right: .5rem;
+    width: 100%;
+    /*margin-right: .5rem;*/
     display: inline-block;
 }
 
@@ -307,11 +307,51 @@ table tr td:nth-child(4n-3) {
     z-index: 5;
     opacity: 1;
     text-align: center;
-    width: 77%; /* needs to match .characterBar */
+    width: 75%; /* needs to match .characterBar */
     bottom: .1rem;
     height: 1rem;
 }
 
 .overdriveBar {
     position: relative;
+}
+
+.overdriveProgressBar {
+    width: 75%;
+    margin-right: .5rem;
+}
+
+.characterHp {
+    display: grid;
+    grid-template-columns: 75% 1fr;
+    column-gap: .4rem;
+    justify-content: stretch;
+    grid-template-areas:
+        "hpBar hpAmount";
+}
+
+/*.boss .characterBar, .enemy .characterBar {
+    width: 95% !important;
+}
+*/
+.hpBarSpace {
+    grid-area: hpBar;
+}
+
+.hpAmount {
+    grid-area: hpAmount;
+}
+
+
+.hpBarGrid {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "hpBarSlot";
+}
+
+.hpBar {
+    grid-area: hpBarSlot;
 }

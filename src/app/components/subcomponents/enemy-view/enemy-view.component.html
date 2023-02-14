@@ -23,10 +23,8 @@
                 [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
         </div>
-        <span class="hpMpText hpAmount">{{character.battleStats.currentHp | number : '1.0-0'}} /
-            {{character.battleStats.maxHp | number : '1.0-0'}} <br /><span
-                *ngIf="getCharacterBarrierValue(character) > 0" class="barrier">({{getCharacterBarrierValue(character) |
-                number : '1.0-0'}})</span></span>
+        <span class="hpMpText hpAmount"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
+            {{getCharacterMaxHp()}}<br /></span>
     </div>
     <div>
         <app-status-effect-view [character]="character"></app-status-effect-view>

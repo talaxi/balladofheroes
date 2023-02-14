@@ -1,16 +1,16 @@
 <div class="navigationGrid">
     <div class="header">
-    <div class="balladHeader header">
+        <div class="balladHeader header">
             <span class="s4Heading balladTitle mainPageSectionHeader">Ballads</span>
             <span>
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
-            </span>          
+            </span>
         </div>
         <hr />
     </div>
-    <div class="navigation">        
+    <div class="navigation">
         <div class="zoneGrid">
             <div class="balladList">
                 <div *ngFor="let ballad of availableBallads">
@@ -56,8 +56,8 @@
                             <div *ngIf="subzone.isSelected">
                                 <strong><button class="buttonAsTextKeepColor z3Heading clickableText selected"><span
                                             class="subzoneSpacer">&#8618;</span><strong><span
-                                            [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
-                                            {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
+                                                [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
+                                                {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
                             </div>
                         </div>
                     </div>
@@ -76,24 +76,34 @@
     </div>
     <div *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0" class="quickLink">
         <div class="quickLinkIcons">
-            <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Overview)" customToolTip
-            [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
-                <img *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled" src="assets/svg/overviewQuickView.svg">
+            <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Overview)"
+                customToolTip [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
+                <img *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled"
+                    src="assets/svg/overviewQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
             </button>
-            <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Resources)" customToolTip
-            [contentTemplate]="resourcesIconPopover" [tooltipDirection]="tooltipDirection">
-                <img *ngIf="quickView === quickViewEnum.Resources" class="icon iconEnabled" src="assets/svg/resourcesQuickView.svg">
+            <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Resources)"
+                customToolTip [contentTemplate]="resourcesIconPopover" [tooltipDirection]="tooltipDirection">
+                <img *ngIf="quickView === quickViewEnum.Resources" class="icon iconEnabled"
+                    src="assets/svg/resourcesQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
             </button>
-            <button class="buttonAsText clickableText iconButton" *ngIf="areAltarsAvailable()" (click)="setQuickView(quickViewEnum.Altars)" customToolTip
-            [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
-                <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled" src="assets/svg/smallAltar.svg">
-                <img class="icon iconDisabled" src="assets/svg/altarsOverviewDisabled.svg">
-            </button>
+            <div>
+                <button class="buttonAsText clickableText iconButton" *ngIf="areAltarsAvailable()"
+                    (click)="setQuickView(quickViewEnum.Altars)" customToolTip [contentTemplate]="overviewIconPopover"
+                    [tooltipDirection]="tooltipDirection">
+                    <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"
+                        src="assets/svg/smallAltar.svg">
+                    <img class="icon iconDisabled" src="assets/svg/altarsOverviewDisabled.svg">                    
+                </button>
+                <app-notification-icon
+                        *ngIf="globalService.globalVar.altars.showNewNotification"></app-notification-icon>
+            </div>
             <button class="buttonAsText clickableText iconButton" *ngIf="isAlchemyAvailable()"
-                (click)="setQuickView(quickViewEnum.Alchemy)" customToolTip [contentTemplate]="alchemyIconPopover" [tooltipDirection]="tooltipDirection">
-                <img *ngIf="quickView === quickViewEnum.Alchemy" class="icon iconEnabled" src="assets/svg/alchemyQuickView.svg">
+                (click)="setQuickView(quickViewEnum.Alchemy)" customToolTip [contentTemplate]="alchemyIconPopover"
+                [tooltipDirection]="tooltipDirection">
+                <img *ngIf="quickView === quickViewEnum.Alchemy" class="icon iconEnabled"
+                    src="assets/svg/alchemyQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
             </button>
         </div>
@@ -116,17 +126,21 @@
                 </div>
                 <div class="peekResources centeredText">
                     <div class="textLeftAligned inlineBlock">
-                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0"><span class="resource bold">Coins:</span><span> {{lookupService.getResourceAmount(itemsEnum.Coin) |
-                            number}}</span></span> <br />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0"><span
+                                class="resource bold">Coins:</span><span>
+                                {{lookupService.getResourceAmount(itemsEnum.Coin) |
+                                number}}</span></span> <br />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
                             class="resource chthonicFavorKeyword" customToolTip
                             [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
-                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number : '1.0-2'}}</span></span>
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
+                                : '1.0-2'}}</span></span>
                         <br />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
                             class="resource chthonicPowerKeyword" customToolTip
                             [contentTemplate]="chthonicPowerPopover">Chthonic Power:
-                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number : '1.0-2'}}</span></span>
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
+                                : '1.0-2'}}</span></span>
                     </div>
                 </div>
             </div>
@@ -194,7 +208,8 @@
 
 <ng-template #resourcesIconPopover>
     <div>
-        See all tracked resources. To track a specific resource, go to the 'Resources' tab in the menu and click an item.
+        See all tracked resources. To track a specific resource, go to the 'Resources' tab in the menu and click an
+        item.
     </div>
 </ng-template>
 

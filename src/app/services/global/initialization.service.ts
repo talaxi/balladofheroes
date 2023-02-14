@@ -314,6 +314,14 @@ export class InitializationService {
       ability.isAvailable = true;
     });
 
+    this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest)?.abilityList.forEach(ability => {
+      ability.isAvailable = true;
+    });
+
+    this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior)?.abilityList.forEach(ability => {
+      ability.isAvailable = true;
+    });
+
     var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
     athena!.isAvailable = true;
     athena?.abilityList.forEach(ability => {

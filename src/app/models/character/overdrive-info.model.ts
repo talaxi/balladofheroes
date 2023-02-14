@@ -6,6 +6,7 @@ export class OverdriveInfo {
     overdriveGaugeTotal: number;
     gainPerAutoAttack: number;
     gainPerAbility: number;
+    gainPerBeingAttacked: number;
     overdriveAutoMode: boolean;
     manuallyTriggered: boolean;
     selectedOverdrive: OverdriveNameEnum;
@@ -17,6 +18,7 @@ export class OverdriveInfo {
 
     constructor() {
         this.gainPerAutoAttack = .5;
+        this.gainPerBeingAttacked = .5;
         this.gainPerAbility = 1.5;
         this.overdriveGaugeAmount = 0;
         this.overdriveGaugeTotal = 100;

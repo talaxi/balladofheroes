@@ -8,6 +8,7 @@ import { LayoutService } from 'src/app/models/global/layout.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -24,7 +25,7 @@ export class HeaderComponent implements OnInit {
 
   constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
     public utilityService: UtilityService, public globalService: GlobalService, public deploymentService: DeploymentService,
-    public dialog: MatDialog, private keybindService: KeybindService) { }
+    public dialog: MatDialog, private keybindService: KeybindService, private lookupService: LookupService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -43,7 +44,7 @@ export class HeaderComponent implements OnInit {
   }
 
   pauseGame() {
-    this.battleService.togglePause();
+    this.battleService.togglePause();    
   }
 
   getExtraSpeedTime() {

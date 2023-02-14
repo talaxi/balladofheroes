@@ -353,6 +353,9 @@ export class ZoneNavigationComponent implements OnInit {
 
   setQuickView(type: QuickViewEnum) {
     this.quickView = type;
+
+    if (type === QuickViewEnum.Altars)
+      this.globalService.globalVar.altars.showNewNotification = false;
   }
 
   getQuickViewTitleName() {
@@ -465,6 +468,7 @@ export class ZoneNavigationComponent implements OnInit {
     }
     if (this.globalService.globalVar.altars.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAltarsQuickView"))) {
       this.setQuickView(QuickViewEnum.Altars);
+      this.globalService.globalVar.altars.showNewNotification = false;
     }
 
     this.globalService.globalVar.settings.set("activeOverview", this.quickView);
