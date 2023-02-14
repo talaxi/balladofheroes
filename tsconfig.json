@@ -16,15 +16,16 @@
     "experimentalDecorators": true,
     "moduleResolution": "node",
     "importHelpers": true,
-    "target": "es2020",
+    "target": "ES2022",
     "module": "es2020",
     "emitDecoratorMetadata": true,
     "resolveJsonModule": true,
-    "strictPropertyInitialization": false, 
+    "strictPropertyInitialization": false,
     "lib": [
       "esnext",
       "dom"
-    ]
+    ],
+    "useDefineForClassFields": false
   },
   "ts-node": {
     // these options are overrides used only by ts-node
