@@ -2,14 +2,14 @@ import { Component, HostListener, OnInit, QueryList, ViewChild } from '@angular/
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
-import { MatLegacyProgressBarModule as MatProgressBarModule } from '@angular/material/legacy-progress-bar';
+import { MatProgressBarModule as MatProgressBarModule } from '@angular/material/progress-bar';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { Ability } from 'src/app/models/character/ability.model';
 import { God } from 'src/app/models/character/god.model';
-import { matLegacyMenuAnimations as matMenuAnimations, MatLegacyMenuTrigger as MatMenuTrigger } from '@angular/material/legacy-menu';
+import { matMenuAnimations as matMenuAnimations, MatMenuTrigger as MatMenuTrigger } from '@angular/material/menu';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -30,7 +30,7 @@ export class PartyComponent implements OnInit {
   public characterEnum: CharacterEnum;
   public noCharacter = CharacterEnum.None;
   public noGod = GodEnum.None;
-  @ViewChild('itemMenu') itemMenu: MatMenuTrigger;
+  @ViewChild('itemMenuTrigger') itemMenu: MatMenuTrigger;
   openedSlotNumber: number = 0;
   itemMenuClass = "itemMenu";
   battleItems: ResourceValue[];
@@ -66,7 +66,7 @@ export class PartyComponent implements OnInit {
       this.unlockedBattleItems = this.globalService.globalVar.areBattleItemsUnlocked;
       this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
 
-      if (!this.itemMenu.menuOpen)
+      if (this.itemMenu !== undefined && !this.itemMenu.menuOpen)
       {
         this.battleItems = this.getViableBattleItems();   
       }
@@ -588,5 +588,9 @@ export class PartyComponent implements OnInit {
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
+
+    /*if (this.itemMenu !== undefined) {
+      this.itemMenu.ngOnDestroy();
+    }*/
   }
 }

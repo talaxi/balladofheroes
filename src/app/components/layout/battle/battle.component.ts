@@ -1,5 +1,5 @@
 import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog as MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
@@ -24,9 +24,12 @@ export class BattleComponent implements OnInit {
   currentEnemies: EnemyTeam;
   subscription: any;
   previousLogHeight = 0;
+  noTransition = false;
   showNewEnemyGroupAnimation = false;
   animationTimer = 0;
   animationTimerCap = .5;
+  noTransitionTimer = 0;
+  noTransitionTimerCap = this.animationTimerCap * .2;
   activeSubzone: SubZone;
   @ViewChild('scrollToTop') gameLogScroll: ElementRef;
   showDevStats: boolean = false;
@@ -66,11 +69,20 @@ export class BattleComponent implements OnInit {
 
       if (this.battleService.showNewEnemyGroup) {
         this.showNewEnemyGroupAnimation = true;
+        this.noTransition = true;
         this.battleService.showNewEnemyGroup = false;
       }
 
       if (this.showNewEnemyGroupAnimation) {
         this.animationTimer += deltaTime;
+        this.noTransitionTimer += deltaTime;
+
+        if (this.noTransitionTimer >= this.noTransitionTimerCap)
+        {
+          this.noTransitionTimer = 0;
+          this.noTransition = false;
+        }
+
         if (this.animationTimer >= this.animationTimerCap) {
           this.animationTimer = 0;
           this.showNewEnemyGroupAnimation = false;
@@ -213,9 +225,7 @@ export class BattleComponent implements OnInit {
   }
 
   openGameLogEditor(content: any) {
-    this.dialog.open(content, { width: '75%', maxHeight: '75%' });
-
-    console.log("Dialogs: " + this.dialog.openDialogs.length);
+    var dialog = this.dialog.open(content, { width: '75%', maxHeight: '75%' });
   }
 
   getTournamentTimeRemaining() {

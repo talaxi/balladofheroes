@@ -4,7 +4,7 @@
     </div>
     <div class="altarBar1" *ngIf="altarEffect1 !== undefined">
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect1)"
-            class="characterBar removeAnimation" [ngClass]="getProgressColor(altarEffect1)">
+            class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect1)">
         </mat-progress-bar>
     </div>
     <div *ngIf="altarEffect1 !== undefined" class="altarBoon1">
@@ -18,7 +18,7 @@
     </div>
     <div *ngIf="altarEffect2 !== undefined" class="altarBar2">
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect2)"
-            class="characterBar removeAnimation" [ngClass]="getProgressColor(altarEffect2)">
+            class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect2)">
         </mat-progress-bar>
     </div>
     <div *ngIf="altarEffect2 !== undefined" class="altarBoon2">
@@ -32,7 +32,7 @@
     </div>
     <div *ngIf="altarEffect3 !== undefined" class="altarBar3">
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect3)"
-            class="characterBar removeAnimation" [ngClass]="getProgressColor(altarEffect3)">
+            class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect3)">
         </mat-progress-bar>
     </div>
     <div *ngIf="altarEffect3 !== undefined" class="altarBoon3">

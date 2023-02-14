@@ -3,7 +3,8 @@
 }
 
 .mat-progress-bar-element,
-.mat-progress-bar {
+.mat-progress-bar,
+.characterBar {
     height: .5rem !important;
 }
 

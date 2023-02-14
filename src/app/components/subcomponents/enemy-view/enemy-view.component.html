@@ -16,10 +16,10 @@
     <div [ngClass]="{'boss': isBoss, 'enemy': !isBoss}">
         <div class="hpBarSpace hpBarGrid">
             <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
-                class="green-progress characterBar hpBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
+                class="green-progress characterBar hpBar highBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
             <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
-                [value]="getCharacterBarrierPercent(character)" class="barrier-progress characterBar hpBar"
+                [value]="getCharacterBarrierPercent(character)" class="barrier-progress characterBar hpBar highBar"
                 [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
         </div>

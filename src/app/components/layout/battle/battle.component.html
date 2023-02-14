@@ -11,7 +11,7 @@
     </div>
     <div class="scene"
         [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
-        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation }"
+        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation, 'removeTransition': noTransition }"
             *ngIf="!isAtScene() && !isAtTown()">
             <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight && !currentEnemies.isDoubleBossFight"
                 class="enemiesGrid">
@@ -57,7 +57,7 @@
             </div>
             <div class="loadingBar">
                 <mat-progress-bar mode="determinate" [value]="getPagePercent()"
-                    class="green-progress characterBar removeAnimation">
+                    class="green-progress characterBar removeAnimation removeTransition">
                 </mat-progress-bar>
             </div>
         </div>
@@ -68,7 +68,7 @@
             <div class="text" [innerHtml]="this.displayChestText()"></div>
             <div class="loadingBar">
                 <mat-progress-bar mode="determinate" [value]="getChestPercent()"
-                    class="green-progress characterBar removeAnimation">
+                    class="green-progress characterBar removeAnimation removeTransition">
                 </mat-progress-bar>
             </div>
             <!--<hr class='hr' />-->

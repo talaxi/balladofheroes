@@ -1,5 +1,5 @@
 import { Component, OnInit } from '@angular/core';
-import { MatLegacyDialog as MatDialog } from '@angular/material/legacy-dialog';
+import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { plainToInstance } from 'class-transformer';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';

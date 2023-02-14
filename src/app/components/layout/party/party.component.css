@@ -63,6 +63,7 @@
     width: 100%;
     /*margin-right: .5rem;*/
     display: inline-block;
+    height: 1rem;
 }
 
 .partyMember {
@@ -218,9 +219,9 @@
     grid-area: abilitySwap;
 }
 
-.mat-progress-bar-element,
-.mat-progress-bar {
+.mdc-linear-progress__bar-inner{
     height: 1rem !important;
+    border-top-width: var(--mdc-linear-progress-track-height, 1rem);
 }
 
 .spinner {

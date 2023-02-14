@@ -14,11 +14,11 @@
                             <!--ngIf fixes the default value for the progress bar-->
                             <div class="hpBarSpace hpBarGrid">
                                 <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
-                                    class="green-progress characterBar hpBar">
+                                    class="green-progress characterBar hpBar highBar">
                                 </mat-progress-bar>
                                 <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
                                     [value]="getCharacterBarrierPercent(character)"
-                                    class="barrier-progress characterBar hpBar">
+                                    class="barrier-progress characterBar hpBar highBar">
                                 </mat-progress-bar>
                             </div>
                             <span class="hpMpText hpAmount"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span> /
@@ -95,7 +95,7 @@
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"
             [class]="'battleItem' + (i + 1)">
             <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}"
-                (menuOpened)="openItemModal(i)" mat-icon-button
+                (menuOpened)="openItemModal(i)" mat-icon-button #itemMenuTrigger
                 [matMenuTriggerFor]="battleItems.length > 0 ? itemMenu : emptyItemMenu" [disableRipple]="true">
                 <img class="itemImage" src="assets/svg/emptyItemSlot.svg"></button>
             <div *ngIf="!isBattleItemSlotUnequipped(i)">

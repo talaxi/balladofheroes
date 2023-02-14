@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { GlobalService } from 'src/app/services/global/global.service';
 
 @Component({
@@ -25,7 +26,7 @@ export class GameLogEditorComponent implements OnInit {
 
   alchemyUnlocked = false;
 
-  constructor(private globalService: GlobalService) { }
+  constructor(private globalService: GlobalService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.alchemyUnlocked = this.globalService.globalVar.alchemy.isUnlocked;

@@ -6,14 +6,14 @@
             <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span> <span class="levelUpAnimationText"
                 [ngClass]="{'levelUpAnimation': showGod1LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
         <div class="flex xpBarWidth" customToolTip [contentTemplate]="xp1Popover">
-            <mat-progress-bar mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar">
+            <mat-progress-bar mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar xpHighBar">
             </mat-progress-bar>
         </div>
         <div *ngIf="character.assignedGod1 === godEnum.Apollo && godSpecificAbilityUnlocked(1)" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(1)"
             (contextmenu)="toggleAuto(1)">
             <span *ngIf="!isGodSpecificAbilityAuto(1)" class="manualGodAbilityText">OFF</span>
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(1)"
-                class="apolloProgressBarColor characterBar"
+                class="apolloProgressBarColor characterBar xpHighBar"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(1)}">
             </mat-progress-bar>
         </div>
@@ -27,14 +27,14 @@
                 {{getCharacterGodLevel(character, 2)}}</strong> <span class="levelUpAnimationText"
                 [ngClass]="{'levelUpAnimation': showGod2LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
         <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xp2Popover">
-            <mat-progress-bar mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar">
+            <mat-progress-bar mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar xpHighBar">
             </mat-progress-bar>
         </div>
         <div *ngIf="character.assignedGod2 === godEnum.Apollo && godSpecificAbilityUnlocked(2)" class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(2)"
             (contextmenu)="toggleAuto(2)">
             <span *ngIf="!isGodSpecificAbilityAuto(2)" class="manualGodAbilityText">OFF</span>
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(2)"
-                class="apolloProgressBarColor characterBar"
+                class="apolloProgressBarColor characterBar xpHighBar"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(2)}">
             </mat-progress-bar>
         </div>

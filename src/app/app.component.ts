@@ -11,7 +11,7 @@ import { BalladService } from './services/ballad/ballad.service';
 import { InitializationService } from './services/global/initialization.service';
 import { TownService } from './services/town.service';
 import { BackgroundService } from './services/utility/background.service';
-import { MatLegacyDialog as MatDialog, MatLegacyDialogRef as MatDialogRef } from '@angular/material/legacy-dialog';
+import { MatDialog as MatDialog, MatDialogRef as MatDialogRef } from '@angular/material/dialog';
 import { UtilityService } from './services/utility/utility.service';
 import { SubZone } from './models/zone/sub-zone.model';
 import { LookupService } from './services/lookup.service';
