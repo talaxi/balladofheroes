@@ -8,10 +8,12 @@ import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model'
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { AltarPrayOptionsEnum } from 'src/app/models/enums/altar-pray-options-enum.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { UtilityService } from '../utility/utility.service';
@@ -21,7 +23,8 @@ import { UtilityService } from '../utility/utility.service';
 })
 export class AltarService {
 
-  constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService) { }
+  constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
+    private gameLogService: GameLogService) { }
 
   getTutorialAltar() {
     var altar = new AltarInfo();
@@ -116,7 +119,7 @@ export class AltarService {
     return text;
   }
 
-  pray(altar: AltarInfo) {    
+  pray(altar: AltarInfo) {
     if (altar.type === AltarEnum.Small) {
       var effect = this.getRandomEffect(altar);
       this.setAltarEffect(effect, altar);
@@ -138,20 +141,22 @@ export class AltarService {
             this.lookupService.gainResource(new ResourceValue(this.getLargeCharmOfGod(god.type), ItemTypeEnum.Charm, 1));
           }
         }
+
+        if (this.globalService.globalVar.gameLogSettings.get("prayToAltar")) {
+          var gameLogEntry = "You pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon. <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+        }
       }
 
-      if (altar === this.globalService.globalVar.altars.altar1)
-      {
+      if (altar === this.globalService.globalVar.altars.altar1) {
         this.globalService.globalVar.altars.altar1 = undefined;
         this.globalService.globalVar.altars.altar1 = this.getNewSmallAltar();
       }
-      if (altar === this.globalService.globalVar.altars.altar2)
-      {
+      if (altar === this.globalService.globalVar.altars.altar2) {
         this.globalService.globalVar.altars.altar2 = undefined;
         this.globalService.globalVar.altars.altar2 = this.getNewSmallAltar();
       }
-      if (altar === this.globalService.globalVar.altars.altar3)
-      {
+      if (altar === this.globalService.globalVar.altars.altar3) {
         this.globalService.globalVar.altars.altar3 = undefined;
         this.globalService.globalVar.altars.altar3 = this.getNewSmallAltar();
       }
@@ -187,76 +192,79 @@ export class AltarService {
     return possibleEffects[this.utilityService.getRandomInteger(0, possibleEffects.length - 1)];
   }
 
-  setAltarEffect(effectType: AltarEffectsEnum, altar: AltarInfo) {    
+  setAltarEffect(effectType: AltarEffectsEnum, altar: AltarInfo) {
     var altarEffect = new AltarEffect();
     altarEffect.type = effectType;
 
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AttackUp) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AttackUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AthenaDefenseUp) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AthenaDefenseUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AthenaHeal) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AthenaHeal) {
       altarEffect.duration = altarEffect.totalDuration = 30;
-      altarEffect.effectiveness = 15;
+      altarEffect.effectiveness = 20;
       altarEffect.stacks = false;
       altarEffect.effectOnExpiration = true;
+      altarEffect.isEffectMultiplier = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AthenaHealOverTime) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.AthenaHealOverTime) {
       altarEffect.duration = altarEffect.totalDuration = 30;
-      altarEffect.effectiveness = 4;
-      altarEffect.tickFrequency = (30/4);
+      altarEffect.effectiveness = 5;
+      altarEffect.tickFrequency = (30 / 4);
       altarEffect.stacks = false;
+      altarEffect.isEffectMultiplier = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisLuckUp) {      
-      altarEffect.duration = altarEffect.totalDuration = 30;
-      altarEffect.effectiveness = 1.05;
-      altarEffect.stacks = false;
-    }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisCriticalDamageUp) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisLuckUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisDefenseDebuff) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisCriticalDamageUp) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+    }
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ArtemisDefenseDebuff) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = .95;
       altarEffect.stacks = false;
       altarEffect.effectOnExpiration = true;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAgilityUp) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAgilityUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAutoAttackUp) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAutoAttackUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAbilityCooldown) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.HermesAbilityCooldown) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.01;
       altarEffect.stacks = false;
       altarEffect.effectOnExpiration = true;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ApolloResistanceUp) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ApolloResistanceUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ApolloHeal) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ApolloHeal) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 20;
       altarEffect.stacks = false;
       altarEffect.effectOnExpiration = true;
+      altarEffect.isEffectMultiplier = false;
     }
-    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ApolloBuffDurationUp) {      
+    if (altar.type === AltarEnum.Small && effectType === AltarEffectsEnum.ApolloBuffDurationUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.02;
       altarEffect.stacks = false;
@@ -283,15 +291,22 @@ export class AltarService {
       var effectivenessIncreaseCount = Math.floor(god.affinityLevel / 4);
       if (god.affinityLevel % 4 >= 2)
         effectivenessIncreaseCount += 1;
-
-      altarEffect.effectiveness *= 1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness);
+      
+      if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1)
+      {        
+        altarEffect.effectiveness = (altarEffect.effectiveness - 1) * (1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness)) + 1;
+      }
+      else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1)
+        altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness)));
+      else
+        altarEffect.effectiveness *= 1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness);            
     }
 
     if (altar === this.globalService.globalVar.altars.altar1)
       this.globalService.globalVar.altars.activeAltarEffect1 = altarEffect;
-      if (altar === this.globalService.globalVar.altars.altar2)
+    if (altar === this.globalService.globalVar.altars.altar2)
       this.globalService.globalVar.altars.activeAltarEffect2 = altarEffect;
-      if (altar === this.globalService.globalVar.altars.altar3)
+    if (altar === this.globalService.globalVar.altars.altar3)
       this.globalService.globalVar.altars.activeAltarEffect3 = altarEffect;
   }
 

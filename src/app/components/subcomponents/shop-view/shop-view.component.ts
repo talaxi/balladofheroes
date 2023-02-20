@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
+import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -14,6 +15,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-shop-view',
@@ -26,6 +28,8 @@ export class ShopViewComponent implements OnInit {
   activeSubzoneType: SubZoneEnum;
   shopTypeEnum = ShopTypeEnum;
   openShopSubscription: any;
+  resetNotification = NotificationTypeEnum.Reset;
+  professionNotification = NotificationTypeEnum.Profession;
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -39,7 +43,8 @@ export class ShopViewComponent implements OnInit {
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
-    private lookupService: LookupService, private globalService: GlobalService, private alchemyService: AlchemyService) { }
+    private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
+    private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
@@ -55,6 +60,9 @@ export class ShopViewComponent implements OnInit {
 
   getShopOptions() {
     this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType);
+
+    if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
   }
 
   getOptionText(type: ShopTypeEnum) {
@@ -107,10 +115,16 @@ export class ShopViewComponent implements OnInit {
       return;
     }
 
+    var dialogRef: any;
+
     if (option.type === ShopTypeEnum.Coliseum)
       this.dialog.open(content, { width: '75%', maxHeight: '75%'});
     else
-      this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
+      dialogRef = this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
+
+    if (dialogRef !== undefined) {
+      
+    }
 
     if (option.type === ShopTypeEnum.Alchemist)
     {      
@@ -264,7 +278,6 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.Alchemist && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&
     !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HecateAlchemy))
     {
-      console.log("Show hecate scene");
       scene = OptionalSceneEnum.HecateAlchemy;
     }
     if (option.type === ShopTypeEnum.ChthonicFavor && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&

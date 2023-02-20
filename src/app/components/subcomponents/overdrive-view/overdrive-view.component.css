@@ -1,7 +1,10 @@
 .container {
     display: flex;
-    height: 100%;
-    width: 100%;
+    height: 40vh;
+    margin: 1rem;    
+    background-color: var(--background-quarternary);
+    color: var(--foreground-default);
+    padding: .5rem;
 }
 
 .vr {
@@ -13,6 +16,10 @@
     margin: 0 1rem;
     padding: 0;
     height: auto;
+}
+
+.overflowable {
+    overflow-y: auto;
 }
 
 .column {
@@ -37,6 +44,8 @@
     vertical-align: middle;
     margin-left: .25rem;
     margin-top: .5rem;
+    font-variant: small-caps;
+    font-weight: bold;
 }
 
 .listItem:hover {

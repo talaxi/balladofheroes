@@ -13,6 +13,7 @@ export class AltarEffect {
     tickFrequency: number;
     tickTimer: number;
     effectOnExpiration: boolean = false;
+    isEffectMultiplier: boolean = true;
 
     constructor() {
         this.tickTimer = 0;

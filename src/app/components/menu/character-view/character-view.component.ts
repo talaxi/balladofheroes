@@ -68,7 +68,7 @@ export class CharacterViewComponent implements OnInit {
   }
 
   openOverdriveMenu(content: any) {          
-    this.dialog.open(content, { width: '50%', height: '55%' });  
+    this.dialog.open(content, { width: '75%', maxHeight: '75%'});
   }
 
   openChangeGodMenu(content: any) {          
@@ -180,6 +180,22 @@ export class CharacterViewComponent implements OnInit {
 
   getAutoAttackCooldownBonus() {
     return (1 - this.character.battleStats.autoAttackCooldownReduction) * 100;
+  }
+  
+  getOverdriveGainBonus() {
+    return this.character.battleStats.overdriveGain;
+  }
+
+  getHealingReceivedBonus() {
+    return this.character.battleStats.healingReceived;
+  }
+
+  getDebuffDurationBonus() {
+    return this.character.battleStats.debuffDuration;
+  }
+  
+  getArmorPenetrationBonus() {    
+    return this.character.battleStats.armorPenetration;
   }
 
   getHolyDamageBonus() {

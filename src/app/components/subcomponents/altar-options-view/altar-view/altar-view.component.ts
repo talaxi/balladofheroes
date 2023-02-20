@@ -139,7 +139,7 @@ export class AltarViewComponent implements OnInit {
     if (this.altar !== undefined && this.altar.type === AltarEnum.Small) {
       godType = this.altar.god;
 
-      description = "When the condition is met, click to pray at a <strong>Small Altar</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a blessing. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
+      description = "When the condition is met, click to pray at a <strong>Small Altar</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
     }
 
     return description;

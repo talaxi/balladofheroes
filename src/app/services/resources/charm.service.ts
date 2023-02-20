@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { Character } from 'src/app/models/character/character.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 
@@ -32,6 +34,38 @@ export class CharmService {
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfVulnerability);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfVulnerability);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0)
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getTotalOverdriveGainAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = .05;
+    var largeCharmValue = .15;
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfDetermination);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfDetermination);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0)
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getTotalArmorPenetrationAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = .05;
+    var largeCharmValue = .15;
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfIngenuity);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfIngenuity);
 
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
@@ -260,6 +294,42 @@ export class CharmService {
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
     if (largeCharm !== undefined && largeCharm.amount > 0)
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getTotalHealingReceivedAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = .1;
+    var largeCharmValue = .3;
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfAthena);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfAthena);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Athena || character.assignedGod2 === GodEnum.Athena))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Athena || character.assignedGod2 === GodEnum.Athena))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getTotalDebuffDurationAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = .1;
+    var largeCharmValue = .3;
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfArtemis);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfArtemis);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Artemis || character.assignedGod2 === GodEnum.Artemis))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Artemis || character.assignedGod2 === GodEnum.Artemis))
       amount += largeCharmValue * largeCharm.amount;
 
     return amount;

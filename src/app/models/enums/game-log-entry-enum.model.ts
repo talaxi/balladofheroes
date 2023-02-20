@@ -15,5 +15,7 @@ export enum GameLogEntryEnum {
   LearnAbility,
   LevelUp,
   Tutorial,
-  Alchemy
+  Alchemy,
+  Overdrive,
+  Pray
 }

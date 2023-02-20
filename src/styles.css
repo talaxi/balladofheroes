@@ -11,6 +11,10 @@
   padding: 1rem;
 }
 
+#dialogNoPadding .mat-mdc-dialog-surface {
+  padding: 0 !important;
+}
+
 .mdc-linear-progress__bar-inner {
   left: 0;
 }
@@ -121,7 +125,7 @@
   --poseidonColor: #00baa1;
   --hermesColor: #f0f0f0; /*#faf9eb maybe instead */
   --artemisColor: #97BBB0;
-  --hadesColor: #000000;  
+  --hadesColor: #BBAFC5;  
 
   --holyColor: #d9dbbf;
   --lightningColor: #fff30b;
@@ -656,6 +660,12 @@ html, body { height: 100%; }
   --mdc-circular-progress-active-indicator-color:  var(--hermesColor) !important;
 }
 
+.hadesColor {
+  color: var(--hadesColor);
+  stroke: var(--hadesColor) !important;
+  --mdc-circular-progress-active-indicator-color:  var(--hadesColor) !important;
+}
+
 .unclearedSubzoneColor {
   color: var(--foreground-default);
 }
@@ -911,5 +921,14 @@ button {
 
 .poseidon-progress .mdc-linear-progress__buffer-bar {
   background-color: var(--poseidonColor) !important;
+  filter: brightness(50%);
+}
+
+.hades-progress {
+  --mdc-linear-progress-active-indicator-color: var(--hadesColor) !important;
+}
+
+.hades-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--hadesColor) !important;
   filter: brightness(50%);
 }

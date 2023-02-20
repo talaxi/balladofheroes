@@ -162,7 +162,6 @@ export class SubZoneGeneratorService {
       var enemyTeam4: EnemyTeam = new EnemyTeam();
       enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
       enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RedHarpy));
       battleOptions.push(enemyTeam4);
 
       var enemyTeam5: EnemyTeam = new EnemyTeam();
@@ -223,7 +222,6 @@ export class SubZoneGeneratorService {
 
       var enemyTeam3: EnemyTeam = new EnemyTeam();
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlueHarpy));
-      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlueHarpy));
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
       battleOptions.push(enemyTeam3);
@@ -243,7 +241,6 @@ export class SubZoneGeneratorService {
       var enemyTeam6: EnemyTeam = new EnemyTeam();
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
-      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lamia));
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lamia));
       battleOptions.push(enemyTeam6);
     }
@@ -367,7 +364,7 @@ export class SubZoneGeneratorService {
 
       var enemyTeam4: EnemyTeam = new EnemyTeam();
       enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LostSoul));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Revenant));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Wretched));
       enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LostSoul));
       battleOptions.push(enemyTeam4);
 
@@ -872,7 +869,7 @@ export class SubZoneGeneratorService {
       return shopOptions;
     }
 
-    if (subzoneType === SubZoneEnum.AsphodelPalaceOfHades) {
+    if (subzoneType === SubZoneEnum.AsphodelPalaceOfHades) {      
       shopOptions.push(new ShopOption(ShopTypeEnum.Story, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.Alchemist, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.ChthonicFavor, []));
@@ -904,10 +901,17 @@ export class SubZoneGeneratorService {
 
     if (subzoneType === SubZoneEnum.ElysiumColiseum) {
       shopOptions.push(new ShopOption(ShopTypeEnum.Coliseum, []));
-      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
       shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
     }
+
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedAmethystRing, SubZoneEnum.ElysiumColiseum));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedAquamarineRing, SubZoneEnum.ElysiumColiseum));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedEmeraldRing, SubZoneEnum.ElysiumColiseum));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedOpalRing, SubZoneEnum.ElysiumColiseum));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedRubyRing, SubZoneEnum.ElysiumColiseum));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedTopazRing, SubZoneEnum.ElysiumColiseum));
+
 
     return shopOptions;
   }

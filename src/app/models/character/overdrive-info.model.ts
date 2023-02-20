@@ -21,7 +21,7 @@ export class OverdriveInfo {
         this.gainPerBeingAttacked = .5;
         this.gainPerAbility = 1.5;
         this.overdriveGaugeAmount = 0;
-        this.overdriveGaugeTotal = 100;
+        this.overdriveGaugeTotal = 80;
         this.overdriveAutoMode = true;
         this.manuallyTriggered = false;
         this.selectedOverdrive = OverdriveNameEnum.Smash;

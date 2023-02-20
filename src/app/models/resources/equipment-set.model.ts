@@ -180,6 +180,48 @@ export class EquipmentSet {
         return total;
     }
 
+    getTotalOverdriveGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.overdriveGain;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.overdriveGain;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.overdriveGain;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.overdriveGain;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.overdriveGain;
+
+        return total;
+    }
+
+    getTotalArmorPenetrationGain() {
+        var total = 0;
+
+        if (this.weapon !== undefined)
+            total += this.weapon.stats.armorPenetration;
+
+        if (this.shield !== undefined)
+            total += this.shield.stats.armorPenetration;
+
+        if (this.armor !== undefined)
+            total += this.armor.stats.armorPenetration;
+
+        if (this.necklace !== undefined)
+            total += this.necklace.stats.armorPenetration;
+
+        if (this.ring !== undefined)
+            total += this.ring.stats.armorPenetration;
+
+        return total;
+    }
+
     getTotalCriticalMultiplierGain() {
         var total = 0;
 

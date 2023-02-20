@@ -31,16 +31,5 @@ export class ResourceViewComponent implements OnInit {
     }
 
     return false;
-  }
-
-  setTrackingResource(resource: ResourceValue) {
-    if (this.globalService.globalVar.trackedResources.some(item => item === resource.item))
-    {
-      this.globalService.globalVar.trackedResources = this.globalService.globalVar.trackedResources.filter(item => item != resource.item);
-    }
-    else
-    {
-      this.globalService.globalVar.trackedResources.push(resource.item);
-    }
-  }
+  }  
 }

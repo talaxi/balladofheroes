@@ -1,21 +1,21 @@
 <div class="centeredText mainPageSectionHeader">
-    <!--TODO: remove this vv-->
-    <span><i><strong>This is still a work in progress and may not work correctly for now.</strong></i></span><br/>
-    <!--^^-->
     <span class="s2Heading alchemyColor">Alchemy</span>
     <br />
     <span>Level {{getLevel()}}</span>
     <br />
     <span *ngIf="!atMaxLevel()">{{getExp() | number : '1.0-0'}} / {{getExpToNextLevel() | number : '1.0-0'}} XP to Level
         {{getLevel() + 1}}</span>
-        <span *ngIf="atMaxLevel()">max</span>
+    <span *ngIf="atMaxLevel()">max</span>
 </div>
 <hr />
 <div class="centeredText" *ngIf="creatingRecipe()">
-    <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth" *ngIf="this.getTotalAmountToCreate() > 1"><i>({{this.getAmountCreated() + 1}} of {{this.getTotalAmountToCreate()}})</i></span>       
-    <br/>        
-    <mat-progress-bar mode="determinate" [value]="getStepProgress()" class="purple-progress centeredBar removeAnimation">
-    </mat-progress-bar>    
+    <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth"
+        *ngIf="this.getTotalAmountToCreate() > 1"><i>({{this.getAmountCreated() + 1}} of
+            {{this.getTotalAmountToCreate()}})</i></span>
+    <br />
+    <mat-progress-bar mode="determinate" [value]="getStepProgress()"
+        class="purple-progress centeredBar removeAnimation">
+    </mat-progress-bar>
     <span><i>{{getRecipeStepName()}}.. ({{getTimeRemaining()}} remaining)</i></span>
 </div>
 <div class="centeredText" *ngIf="!creatingRecipe()">
@@ -23,19 +23,21 @@
 </div>
 <hr />
 <div class="recipeBook">
-    <div class="recipeList">
+    <div class="column recipeList">
         <span class="centeredText mainPageSectionHeader">recipe book</span>
         <br />
         <br />
         <div class="recipeBookBackground">
             <div class="scrollable">
-            <div *ngFor="let recipe of getRecipeList(); let i = index" (click)="selectRecipe(recipe)" 
-            class="recipeItem" [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}">
-                <button class="buttonAsText clickableText recipeItemButton" [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}"
-                 [innerHtml]="getCraftedItemName(recipe)"></button>
-                <hr class="noMargin" />
+                <div *ngFor="let recipe of getRecipeList(); let i = index" (click)="selectRecipe(recipe)"
+                    class="recipeItem"
+                    [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}">
+                    <button class="buttonAsText clickableText recipeItemButton"
+                        [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}"
+                        [innerHtml]="getCraftedItemName(recipe)"></button>
+                    <hr class="noMargin" />
+                </div>
             </div>
-        </div>
         </div>
     </div>
     <div class="spacer">
@@ -43,23 +45,29 @@
             <hr class="vrHr" />
         </div>
     </div>
-    <div class="recipeInfo" *ngIf="selectedRecipe !== undefined">
-        <span class="s4Heading" [innerHtml]="getSelectedRecipeName()"></span>
-        <br/>
-        <br/>
-        <span [innerHtml]="getSelectedRecipeDescription()"></span>
-        <hr />
-        <div [innerHtml]="listSelectedRecipeIngredients()">
+    <div class="column recipeInfo">
+        <div *ngIf="selectedRecipe !== undefined">
+            <strong><span class="s4Heading smallCaps" [innerHtml]="getSelectedRecipeName()"></span></strong>
+            <br />
+            <br />
+            <span [innerHtml]="getSelectedRecipeDescription()"></span>
+            <hr />
+            <div [innerHtml]="listSelectedRecipeIngredients()">
+            </div>
+            <br />
+            <br />
+            <div class="flex">
+                <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 1}"
+                    (click)="changeCreateAmount(1)">1x</button>
+                <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 5}"
+                    (click)="changeCreateAmount(5)">5x</button>
+                <button class="buttonAsText clickableText filterOption"
+                    [ngClass]="{'filterActive': createAmount === 25}" (click)="changeCreateAmount(25)">25x</button>
+                <button class="buttonAsText clickableText filterOption"
+                    [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100)">100x</button>
+            </div>
+            <br />
+            <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
         </div>
-        <br />
-        <br />
-        <div class="flex">
-            <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 1}" (click)="changeCreateAmount(1)">1x</button>
-            <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 5}" (click)="changeCreateAmount(5)">5x</button>
-            <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 25}" (click)="changeCreateAmount(25)">25x</button>
-            <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100)">100x</button>
-        </div>
-        <br/>
-        <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
     </div>
 </div>

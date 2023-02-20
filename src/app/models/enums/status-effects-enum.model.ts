@@ -53,5 +53,6 @@ export enum StatusEffectEnum {
     Barholy,
     Stagger,
     Barrier,
-    Sap
+    Sap,
+    AbsorbElementalDamage
   }

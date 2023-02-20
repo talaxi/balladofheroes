@@ -67,7 +67,7 @@ export class ChthonicRewardMenuViewComponent implements OnInit {
     }
     
     this.globalService.getActivePartyCharacters(true).forEach(member => {
-      this.globalService.calculateCharacterBattleStats(member);
+      this.globalService.calculateCharacterBattleStats(member, false);
     });    
   }
 

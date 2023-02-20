@@ -578,7 +578,7 @@ export class PartyComponent implements OnInit {
   }
 
   getCurrentHp(character: Character) {
-    return this.utilityService.bigNumberReducer(character.battleStats.currentHp + this.getCharacterBarrierValue(character));
+    return this.utilityService.bigNumberReducer(Math.ceil(character.battleStats.currentHp + this.getCharacterBarrierValue(character)));
   }
 
   getMaxHp(character: Character) {

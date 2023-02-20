@@ -90,9 +90,8 @@ export class ToolTipRendererDirective {
           offsetY: 5,
         }]);
     }
-
-    this._overlayRef = this._overlay.create({ positionStrategy });
-
+    
+    this._overlayRef = this._overlay.create({ positionStrategy });    
   }
 
   /**
@@ -156,5 +155,4 @@ export class ToolTipRendererDirective {
       this._overlayRef.detach();
     }
   }
-
 }

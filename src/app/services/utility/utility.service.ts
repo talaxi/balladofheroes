@@ -32,8 +32,8 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 385;
 
-  public godStatGainLevelIncrement = .05;
-  public godStatGainBaseAmount = 3;
+  public godStatGainLevelIncrement = .08333333; //1/12
+  public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
 
@@ -44,7 +44,7 @@ export class UtilityService {
   public pyreAffinityGain = 3;
 
   public affinityRewardPrayerDuration = .5;
-  public affinityRewardPrayerEffectiveness = .25;
+  public affinityRewardPrayerEffectiveness = .5;
   public affinityRewardGodXpBonus = .1;
   public basePrayGodXpIncrease = 20;
 
@@ -52,8 +52,12 @@ export class UtilityService {
   public killCountDisplayBasicEnemyLoot = 30;
   public killCountDisplayFullEnemyLoot = 50;
 
-  public overdriveDamageNeededToUnlockProtection = 1000;
+  public overdriveDamageNeededToUnlockProtection = 100000;
   public overdriveAttacksNeededToUnlockNature = 3;
+
+  public enemyMinorElementalWeakness = -.1;
+  public enemyMediumElementalWeakness = -.25;
+  public enemyMajorElementalWeakness = -.5;
 
   constructor(public sanitizer: DomSanitizer) { }
 
@@ -246,5 +250,17 @@ export class UtilityService {
 
   getDigitCount(x: number) {
     return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
+  }
+
+  //angular material creates all of these divs and they don't close and it causes lag issues
+  removeExcessOverlayDivs() {
+    var elements = document.getElementsByClassName('cdk-overlay-container');
+    var elementLength = elements.length;
+    
+    if (elements !== null && elements !== undefined && elementLength > 0) {
+      for (var i = 0; i < elementLength; i++) {        
+        elements[0].replaceChildren();
+      }
+    } 
   }
 }

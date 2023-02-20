@@ -27,7 +27,6 @@ export class MainComponent implements OnInit {
     });
   }
 
-  ngOnDestroy() {
-    console.log("Main destroyed?");
+  ngOnDestroy() {    
   }
 }

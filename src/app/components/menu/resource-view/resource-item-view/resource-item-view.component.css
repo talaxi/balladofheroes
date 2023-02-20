@@ -1,0 +1,9 @@
+.absolute {
+    position: absolute;
+    width: 100%;
+}
+
+.resourceContainer {
+    position: relative;
+    width: 100%;
+}

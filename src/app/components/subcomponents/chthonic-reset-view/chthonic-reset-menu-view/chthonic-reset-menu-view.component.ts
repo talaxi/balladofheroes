@@ -7,6 +7,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-chthonic-reset-menu-view',
@@ -17,7 +18,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
 
   availableGods: God[];
 
-  constructor(private globalService: GlobalService, public lookupService: LookupService) { }
+  constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.availableGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
@@ -35,7 +36,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       multiLevelBoost = (god.level - 2) * .1;
     }
 
-    return ((god.level-1) + multiLevelBoost) * (1 + chthonicFavorMultiplier);
+    return (((god.level-1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier);
   }
 
   getChthonicFavor(god: God)
@@ -49,7 +50,9 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     var powerGain = this.getChthonicPower(god);
     var favorGain = this.getChthonicFavor(god);
 
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicFavor, ItemTypeEnum.Progression, favorGain));
+    if (this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked)
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicFavor, ItemTypeEnum.Progression, favorGain));
+        
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, ItemTypeEnum.Progression, powerGain));
 
     god.level = 1;
@@ -58,14 +61,39 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     god.lastStatGain = CharacterStatEnum.Resistance;
     god.statGainCount = 0;
     god.expToNextLevel = 200;
+    var isAbility2Permanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.isAbilityPermanent;
+    var isAbility3Permanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.isAbilityPermanent;
+    var isPassivePermanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.isAbilityPermanent;
+    this.globalService.assignGodAbilityInfo(god);
+
+    if (isAbility2Permanent)
+    {
+      var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level);
+      if (newAbility !== undefined)
+        newAbility.isAvailable = true;
+    }
+
+    if (isAbility3Permanent)
+    {
+      var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level);
+      if (newAbility !== undefined)
+        newAbility.isAvailable = true;
+    }
+
+    if (isPassivePermanent)
+    {
+      var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+      if (newAbility !== undefined)
+        newAbility.isAvailable = true;
+    }
+
     god.abilityList.forEach(ability => {
-      if (god.level < ability.requiredLevel && !ability.isAbilityPermanent)
-        ability.isAvailable = false;
+      if (god.level >= ability.requiredLevel)
+        ability.isAvailable = true;
     });
-    //reset god abilities
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {
-      this.globalService.calculateCharacterBattleStats(member);
+      this.globalService.calculateCharacterBattleStats(member, false);
     });    
   }
 }

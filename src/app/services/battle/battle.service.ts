@@ -342,8 +342,7 @@ export class BattleService {
       if (subzone.type === SubZoneEnum.DodonaMountainOpening && subzone.victoryCount >= 0 &&
         !this.globalService.globalVar.freeTreasureChests.dodonaMountainOpening) {
         treasureChestChance = 1;
-        this.globalService.globalVar.freeTreasureChests.dodonaMountainOpening = true;
-        showBattleItemTutorial = true;
+        this.globalService.globalVar.freeTreasureChests.dodonaMountainOpening = true;        
       }
 
       if (rng <= treasureChestChance) {
@@ -383,7 +382,7 @@ export class BattleService {
     }
 
     var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
-    this.battle.currentEnemies = randomEnemyTeam;
+    this.battle.currentEnemies = randomEnemyTeam;    
     this.battle.battleDuration = 0;
   }
 
@@ -478,7 +477,7 @@ export class BattleService {
       return false;
     }
 
-    var totalAutoAttackCount = this.lookupService.getTotalAutoAttackCount(character);
+    var totalAutoAttackCount = this.lookupService.getTotalAutoAttackCount(character, isPartyAttacking);
     var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier) * totalAutoAttackCount;
     var isCritical = this.isDamageCritical(character, target);
     var overdriveMultiplier = 1;
@@ -601,8 +600,8 @@ export class BattleService {
       }
     }
 
-    if (character.level >= this.utilityService.characterOverdriveLevel) {
-      character.overdriveInfo.overdriveGaugeAmount += character.overdriveInfo.gainPerAutoAttack;
+    if (character.level >= this.utilityService.characterOverdriveLevel) {      
+      character.overdriveInfo.overdriveGaugeAmount += character.overdriveInfo.gainPerAutoAttack * this.lookupService.getOverdriveGainMultiplier(character);
       if (character.overdriveInfo.overdriveGaugeAmount > character.overdriveInfo.overdriveGaugeTotal)
         character.overdriveInfo.overdriveGaugeAmount = character.overdriveInfo.overdriveGaugeTotal;
     }
@@ -738,11 +737,11 @@ export class BattleService {
       }
     }
     else if (ability.heals) {
-      var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user);
+      var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, ability, isPartyUsing);
       var adjustedCriticalMultiplier = 1;
       var isCritical = this.isHealCritical(user);
       if (isCritical)
-        adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(user);
+        adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(user, isPartyUsing);
       healAmount *= adjustedCriticalMultiplier;
 
       var healedAmount = this.gainHp(target, healAmount);
@@ -760,7 +759,7 @@ export class BattleService {
         if (staccato !== undefined) {
           party.forEach(member => {
             var instantAttack = this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, -1, 1, true, true);
-            this.applyStatusEffect(instantAttack, member, party);
+            this.applyStatusEffect(instantAttack, member, party, user);
           });
         }
 
@@ -839,11 +838,11 @@ export class BattleService {
     if (secondWind !== undefined && !
       user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack)) {
       var statusEffect = secondWind.userEffect[0].makeCopy();
-      this.applyStatusEffect(statusEffect, user, party);
+      this.applyStatusEffect(statusEffect, user, party, user);
     }
 
     if (user.level >= this.utilityService.characterOverdriveLevel) {
-      user.overdriveInfo.overdriveGaugeAmount += user.overdriveInfo.gainPerAbility;
+      user.overdriveInfo.overdriveGaugeAmount += user.overdriveInfo.gainPerAbility * this.lookupService.getOverdriveGainMultiplier(user);      
       if (user.overdriveInfo.overdriveGaugeAmount > user.overdriveInfo.overdriveGaugeTotal)
         user.overdriveInfo.overdriveGaugeAmount = user.overdriveInfo.overdriveGaugeTotal;
     }
@@ -862,7 +861,7 @@ export class BattleService {
             appliedStatusEffect.effectiveness = damageDealt * appliedStatusEffect.effectiveness;
         }
 
-        this.applyStatusEffect(appliedStatusEffect, user, party);
+        this.applyStatusEffect(appliedStatusEffect, user, party, user);
       });
     }
 
@@ -898,7 +897,7 @@ export class BattleService {
           }
 
           if (instantEffect.type === StatusEffectEnum.Barrier) {
-            var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user));
+            var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             if (instantEffect.isAoe) {
               party.forEach(partyMember => {
                 partyMember.battleInfo.barrierValue += barrierAmount;
@@ -947,7 +946,7 @@ export class BattleService {
         }
 
         if (target !== undefined) {
-          this.applyStatusEffect(appliedStatusEffect, target, potentialTargets);
+          this.applyStatusEffect(appliedStatusEffect, target, potentialTargets, user);
         }
 
         var mark = user.abilityList.find(item => item.name === "Mark" && item.isAvailable);
@@ -957,7 +956,7 @@ export class BattleService {
           markEffect.isAoe = gainedStatusEffect.isAoe;
 
           if (target !== undefined)
-            this.applyStatusEffect(markEffect, target, potentialTargets);
+            this.applyStatusEffect(markEffect, target, potentialTargets, user);
         }
       });
     }
@@ -1060,11 +1059,16 @@ export class BattleService {
     return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease;
   }
 
-  applyStatusEffect(appliedStatusEffect: StatusEffect, target: Character, potentialTargets?: Character[]) {
+  applyStatusEffect(appliedStatusEffect: StatusEffect, target: Character, potentialTargets?: Character[], castingCharacter?: Character) {
     if (appliedStatusEffect.isPositive &&
       this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp) !== undefined) {
       var relevantAltarEffect = this.lookupService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp);
       appliedStatusEffect.duration *= relevantAltarEffect!.effectiveness;
+    }
+
+    if (!appliedStatusEffect.isPositive && castingCharacter !== undefined &&
+      castingCharacter.battleStats.debuffDuration > 0) {         
+      appliedStatusEffect.duration *= 1 + castingCharacter.battleStats.debuffDuration;
     }
 
     if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
@@ -1151,11 +1155,11 @@ export class BattleService {
     if (elementalType === undefined)
       elementalType = ElementalTypeEnum.None;
 
-    var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability);
-    var adjustedDefense = this.lookupService.getAdjustedDefense(target);
+    var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);    
+    var adjustedDefense = this.lookupService.getAdjustedDefense(target, !isPartyAttacking) * this.lookupService.getArmorPenetrationMultiplier(attacker);    
     var adjustedCriticalMultiplier = 1;
     if (isCritical)
-      adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(attacker);
+      adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(attacker, isPartyAttacking);
 
     /*
     DFFOO style
@@ -1196,7 +1200,7 @@ export class BattleService {
       target.overdriveInfo.damageTaken += totalDamageDealt;
 
     if (target.level >= this.utilityService.characterOverdriveLevel) {
-      target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked;
+      target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked * this.lookupService.getOverdriveGainMultiplier(target);
       if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
         target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
     }
@@ -1285,6 +1289,13 @@ export class BattleService {
 
   //check for upper limits and any weird logic
   gainHp(character: Character, healAmount: number) {
+    var healModifier = 1;
+
+    if (character.battleStats.healingReceived > 0)
+      healModifier = 1 + character.battleStats.healingReceived;
+
+    healAmount = healAmount * healModifier;
+
     character.battleStats.currentHp += healAmount;
 
     if (character.battleStats.currentHp > character.battleStats.maxHp) {
@@ -1542,7 +1553,9 @@ export class BattleService {
     subZone.victoryCount += 1;
     this.altarService.incrementAltarCount(AltarConditionEnum.Victories);
 
+    console.log("Completed in: " + this.battle.battleDuration);
     if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {
+      console.log("New time");
       subZone.fastestCompletionSpeed = this.battle.battleDuration;
     }
 
@@ -2107,7 +2120,7 @@ export class BattleService {
       if (debilitatingToxin !== undefined) {
         var rng = this.utilityService.getRandomNumber(0, 1);
         if (rng <= debilitatingToxin.effectiveness) {
-          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 5, .9, false, false), target);
+          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 5, .9, false, false), target, undefined, user);
         }
       }
     }
@@ -2119,6 +2132,11 @@ export class BattleService {
       character.overdriveInfo.overdriveIsActive = true;
       character.overdriveInfo.overdriveGaugeAmount = 0;
       this.altarService.incrementAltarCount(AltarConditionEnum.OverdriveUse);
+
+      if (this.globalService.globalVar.gameLogSettings.get("partyUseOverdrive")) {
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses overdrive " + this.lookupService.getOverdriveName(character.overdriveInfo.selectedOverdrive) + ".";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Overdrive, gameLogEntry);
+      }
     }
 
     character.overdriveInfo.manuallyTriggered = false;
@@ -2134,7 +2152,7 @@ export class BattleService {
           this.gainHp(character, character.overdriveInfo.damageTaken / 2);
           character.overdriveInfo.damageTaken = 0;
         }
-      }
+      }    
     }
   }
 }

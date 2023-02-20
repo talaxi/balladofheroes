@@ -1,9 +1,9 @@
+<div class="centeredText mainPageSectionHeader">
+    <span class="s2Heading">Coliseum</span>
+</div>
 <div class="container">
-    <div class="column">
+    <div class="overflowable column">
         <div class="listList">
-            <span class="centeredText mainPageSectionHeader">coliseum</span>
-            <br />
-            <br />
             <div class="listBackground">
                 <div *ngFor="let tournament of getColiseumTournaments(); let i = index" (click)="chooseColiseumTournament(tournament)"
                     class="listItem"
@@ -21,7 +21,7 @@
     </div>
     <div class="column column2">
         <div *ngIf="selectedTournament !== undefined">
-            <span class="s4Heading" [innerHtml]="getTournamentName()"></span>
+            <strong><span class="s4Heading smallCaps" [innerHtml]="getTournamentName()"></span></strong>
             <br />
             <br />
             <span [innerHtml]="getTournamentDescription()"></span>

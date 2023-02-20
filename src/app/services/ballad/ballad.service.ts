@@ -107,6 +107,7 @@ export class BalladService {
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
 
     if (!relatedSubzone.isTown) {
       var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(relatedSubzone.type);

@@ -5,8 +5,12 @@ export class ChthonicPowers {
     agilityBoostLevel: number;
     luckBoostLevel: number;
     resistanceBoostLevel: number;
+    isChthonicFavorUnlocked: boolean;
+    isChthonicResetUnlocked: boolean;
 
     constructor() {
+        this.isChthonicResetUnlocked = false;
+        this.isChthonicFavorUnlocked = false;
         this.attackBoostLevel = 0;
         this.defenseBoostLevel = 0;
         this.maxHpBoostLevel = 0;

@@ -3,3 +3,12 @@
     width: 100%;
     height: 100%;
 }
+
+.oneItem {
+    max-width: 33.3333%;
+}
+
+.twoItems {
+    max-width: 65%;
+    display: inline-flex;
+}

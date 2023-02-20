@@ -1,4 +1,4 @@
-<button mat-menu-item customToolTip #tooltip [contentTemplate]="itemPopover">
+<button [ngClass]="{'oneItem': totalItemAmount === 1, 'twoItems': totalItemAmount === 2}" mat-menu-item customToolTip #tooltip [contentTemplate]="itemPopover">
     <img class="itemImage" [src]="lookupService.getItemImage(item)"
         (click)="selectItemFromMenu(item)">
 </button>

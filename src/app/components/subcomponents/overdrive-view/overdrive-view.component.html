@@ -1,9 +1,9 @@
+<div class="centeredText mainPageSectionHeader">
+    <span class="s2Heading">Overdrives</span>
+</div>
 <div class="container">
-    <div class="column">
+    <div class="overflowable column">
         <div class="listList">
-            <span class="centeredText mainPageSectionHeader">overdrives</span>
-            <br />
-            <br />
             <div class="listBackground">
                 <div *ngFor="let overdrive of getOverdrives(); let i = index" (click)="chooseOverdrive(overdrive)"
                     class="listItem"
@@ -21,7 +21,7 @@
     </div>
     <div class="column column2">
         <div *ngIf="selectedOverdriveInfo !== undefined">
-            <span class="s4Heading" [innerHtml]="getOverdriveName()"></span>
+            <strong><span class="s4Heading smallCaps" [innerHtml]="getOverdriveName()"></span></strong>
             <br />
             <br />
             <span [innerHtml]="getOverdriveDescription()"></span>

@@ -107,17 +107,17 @@ export class AltarOverviewComponent implements OnInit {
     var keybinds = this.globalService.globalVar.keybinds;
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openFirstAvailableAltar"))) {
-      if (this.altar1 !== undefined)
+      if (this.altar1 !== undefined && this.altar1.conditionCount >= this.altar1.conditionMax)
         this.altarService.pray(this.altar1);
     }
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openSecondAvailableAltar"))) {
-      if (this.altar2 !== undefined)
+      if (this.altar2 !== undefined && this.altar2.conditionCount >= this.altar2.conditionMax)
         this.altarService.pray(this.altar2);
     }
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openThirdAvailableAltar"))) {
-      if (this.altar3 !== undefined)
+      if (this.altar3 !== undefined && this.altar3.conditionCount >= this.altar3.conditionMax)
         this.altarService.pray(this.altar3);
     }
   }

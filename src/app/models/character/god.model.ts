@@ -60,7 +60,9 @@ export class God {
         else if (type === GodEnum.Ares)
             return new CharacterStats(.85, 1.075, .7, 1.2, 1.2, .85); //5.875 total
         else if (type === GodEnum.Poseidon)
-            return new CharacterStats(0, 1.1, 0, 0, 0, 0);
+            return new CharacterStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
+        else if (type === GodEnum.Hades)
+            return new CharacterStats(0, 1.08, 0, 0, 0, 0);
 
         return new CharacterStats(0, 0, 0, 0, 0, 0);
     }

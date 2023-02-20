@@ -145,6 +145,30 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.MoltenRing, ItemTypeEnum.Equipment, amount);
     }
+    if (type === ItemsEnum.FracturedAmethystRing)
+    {
+      return new ResourceValue(ItemsEnum.FracturedAmethystRing, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.FracturedRubyRing)
+    {
+      return new ResourceValue(ItemsEnum.FracturedRubyRing, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.FracturedTopazRing)
+    {
+      return new ResourceValue(ItemsEnum.FracturedTopazRing, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.FracturedEmeraldRing)
+    {
+      return new ResourceValue(ItemsEnum.FracturedEmeraldRing, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.FracturedOpalRing)
+    {
+      return new ResourceValue(ItemsEnum.FracturedOpalRing, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.FracturedAquamarineRing)
+    {
+      return new ResourceValue(ItemsEnum.FracturedAquamarineRing, ItemTypeEnum.Equipment, amount);
+    }
 
     //equippables
     if (type === ItemsEnum.HealingHerb)

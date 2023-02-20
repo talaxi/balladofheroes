@@ -19,6 +19,10 @@ export class CharacterStats {
     elementalDamageResistance: ElementalStats;
     abilityCooldownReduction: number;
     autoAttackCooldownReduction: number;
+    armorPenetration: number;
+    overdriveGain: number;
+    healingReceived: number;
+    debuffDuration: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
@@ -35,6 +39,10 @@ export class CharacterStats {
         this.elementalDamageResistance = new ElementalStats();
         this.abilityCooldownReduction = 0; 
         this.autoAttackCooldownReduction = 0; 
+        this.armorPenetration = 0;
+        this.overdriveGain = 0;
+        this.healingReceived = 0;
+        this.debuffDuration = 0;
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {

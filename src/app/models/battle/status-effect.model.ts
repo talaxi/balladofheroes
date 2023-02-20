@@ -1,4 +1,5 @@
 import { Character } from "../character/character.model";
+import { CharacterEnum } from "../enums/character-enum.model";
 import { dotTypeEnum } from "../enums/damage-over-time-type-enum.model";
 import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { StatusEffectEnum } from "../enums/status-effects-enum.model";
@@ -16,6 +17,7 @@ export class StatusEffect {
     maxCount: number;
     isPositive: boolean;
     caster: string;
+    castingCharacterEnum: CharacterEnum;
     threshold: number;
     effectStacks: boolean;
     stackCount: number;
@@ -41,6 +43,7 @@ export class StatusEffect {
         this.maxCount = 0;
         this.dotType = dotTypeEnum.BasedOnDamage;
         this.element = ElementalTypeEnum.None;
+        this.castingCharacterEnum = CharacterEnum.None;
         this.effectStacks = false;
         this.stackCount = 1;
     }
@@ -60,11 +63,13 @@ export class StatusEffect {
         copy.caster = this.caster;
         copy.refreshes = this.refreshes;
         copy.effectStacks = this.effectStacks;
+        copy.castingCharacterEnum = this.castingCharacterEnum;
 
         copy.associatedAbilityName = this.associatedAbilityName;
         copy.tickFrequency = this.tickFrequency;
         copy.tickTimer = this.tickTimer;
         copy.dotType = this.dotType;
+        copy.element = this.element;
 
         return copy;
     }

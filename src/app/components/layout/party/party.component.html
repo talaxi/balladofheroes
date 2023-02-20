@@ -29,7 +29,7 @@
                             <span *ngIf="!character.overdriveInfo.overdriveAutoMode"
                                 class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
-                                class="red-progress characterBar overdriveProgressBar"
+                                class="red-progress characterBar overdriveProgressBar highBar"
                                 [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.overdriveAutoMode}">
                             </mat-progress-bar> <span class="hpMpText">
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
@@ -109,7 +109,7 @@
     <table>
         <tr *ngFor="let cells of battleItemRows;">
             <td *ngFor="let c of cells;">
-                <app-item-menu-item [item]="c.item" [openedSlotNumber]="openedSlotNumber"></app-item-menu-item>
+                <app-item-menu-item [item]="c.item" [openedSlotNumber]="openedSlotNumber" [totalItemAmount]="battleItems.length"></app-item-menu-item>
             </td>
         </tr>
     </table>

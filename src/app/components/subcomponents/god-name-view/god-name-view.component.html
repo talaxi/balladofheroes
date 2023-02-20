@@ -1,8 +1,8 @@
 <div class="godGrid">
     <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" class="god1"
         [ngClass]="lookupService.getGodColorClass(character.assignedGod1)"  (click)="goToGodDetails(1)">
-        <span customToolTip [contentTemplate]="god1Popover">
-            <span [ngClass]="{'buttonCursor': isButtonActive()}" class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
+        <span [ngClass]="{'buttonCursor': isButtonActive()}" customToolTip [contentTemplate]="god1Popover">
+            <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
             <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span> <span class="levelUpAnimationText"
                 [ngClass]="{'levelUpAnimation': showGod1LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
         <div class="flex xpBarWidth" customToolTip [contentTemplate]="xp1Popover">
@@ -13,7 +13,7 @@
             (contextmenu)="toggleAuto(1)">
             <span *ngIf="!isGodSpecificAbilityAuto(1)" class="manualGodAbilityText">OFF</span>
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(1)"
-                class="apolloProgressBarColor characterBar xpHighBar"
+                class="apolloProgressBarColor characterBar xpHighBar removeTransition"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(1)}">
             </mat-progress-bar>
         </div>
@@ -34,7 +34,7 @@
             (contextmenu)="toggleAuto(2)">
             <span *ngIf="!isGodSpecificAbilityAuto(2)" class="manualGodAbilityText">OFF</span>
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(2)"
-                class="apolloProgressBarColor characterBar xpHighBar"
+                class="apolloProgressBarColor characterBar xpHighBar removeTransition"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(2)}">
             </mat-progress-bar>
         </div>

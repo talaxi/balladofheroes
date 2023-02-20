@@ -216,7 +216,9 @@ export class GodNameViewComponent implements OnInit {
     if (god.type === GodEnum.Apollo) {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
       if (ostinato !== undefined)
-        return 100 - ((ostinato.currentCooldown / ostinato.cooldown) * 100);
+      {
+        return 100 - ((ostinato.currentCooldown / this.lookupService.getAbilityCooldown(ostinato, this.character)) * 100);
+      }
     }
 
     return 0;

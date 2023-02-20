@@ -44,6 +44,7 @@ export class ZoneNavigationComponent implements OnInit {
   trackedResourcesColumn1: ItemsEnum[] = [];
   trackedResourcesColumn2: ItemsEnum[] = [];
   tooltipDirection = DirectionEnum.Up;
+  quickLinksUnlocked = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -78,10 +79,16 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
       this.townsAvailable = true;
 
+    if (this.balladService.findSubzone(SubZoneEnum.AigosthenaLowerCoast)?.isAvailable)
+      this.quickLinksUnlocked = true;
+
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.autoProgress = this.globalService.globalVar.settings.get("autoProgress");
       if (!this.townsAvailable && this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
         this.townsAvailable = true;
+
+      if (this.balladService.findSubzone(SubZoneEnum.AigosthenaLowerCoast)?.isAvailable)
+        this.quickLinksUnlocked = true;
 
       this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
       var selectedBallad = this.balladService.getActiveBallad();
@@ -182,13 +189,14 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
 
     var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
     if (enemyOptions.length > 0) {
       var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
       this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
     }
-  }  
+  }
 
   jumpToLatestShop() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();

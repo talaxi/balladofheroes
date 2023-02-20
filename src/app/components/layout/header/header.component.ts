@@ -66,6 +66,8 @@ export class HeaderComponent implements OnInit {
     }    
     else
       this.layoutService.changeLayout(NavigationEnum.Default);
+
+    this.utilityService.removeExcessOverlayDivs();
   }
 
   togglePerformanceMode() {

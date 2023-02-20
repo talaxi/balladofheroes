@@ -331,6 +331,19 @@ export class LookupService {
     //rings
     else if (type === ItemsEnum.MoltenRing)
       name = "Molten Ring";
+    else if (type === ItemsEnum.FracturedAmethystRing)
+      name = "Fractured Amethyst Ring";
+    else if (type === ItemsEnum.FracturedAquamarineRing)
+      name = "Fractured Aquamarine Ring";
+    else if (type === ItemsEnum.FracturedEmeraldRing)
+      name = "Fractured Emerald Ring";
+    else if (type === ItemsEnum.FracturedOpalRing)
+      name = "Fractured Opal Ring";
+    else if (type === ItemsEnum.FracturedRubyRing)
+      name = "Fractured Ruby Ring";
+    else if (type === ItemsEnum.FracturedTopazRing)
+      name = "Fractured Topaz Ring";
+
 
     //crafting materials
     else if (type === ItemsEnum.LightLeather)
@@ -361,6 +374,20 @@ export class LookupService {
       name = "Asphodelus";
     else if (type === ItemsEnum.ToxicIchor)
       name = "Toxic Ichor";
+    else if (type === ItemsEnum.BrokenNecklace)
+      name = "Broken Necklace";
+    else if (type === ItemsEnum.SmallAmethyst)
+      name = "Small Amethyst";
+    else if (type === ItemsEnum.SmallOpal)
+      name = "Small Opal";
+    else if (type === ItemsEnum.SmallAquamarine)
+      name = "Small Aquamarine";
+    else if (type === ItemsEnum.SmallEmerald)
+      name = "Small Emerald";
+    else if (type === ItemsEnum.SmallTopaz)
+      name = "Small Topaz";
+    else if (type === ItemsEnum.SmallRuby)
+      name = "Small Ruby";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -435,6 +462,38 @@ export class LookupService {
       name = "Small Charm of Earth Protection";
     else if (type === ItemsEnum.LargeCharmOfEarthProtection)
       name = "Large Charm of Earth Protection";
+      else if (type === ItemsEnum.SmallCharmOfAthena)
+      name = "Small Charm of Athena";
+      else if (type === ItemsEnum.LargeCharmOfAthena)
+      name = "Large Charm of Athena";
+      else if (type === ItemsEnum.SmallCharmOfArtemis)
+      name = "Small Charm of Artemis";
+      else if (type === ItemsEnum.LargeCharmOfArtemis)
+      name = "Large Charm of Artemis";
+      else if (type === ItemsEnum.SmallCharmOfHermes)
+      name = "Small Charm of Hermes";
+      else if (type === ItemsEnum.LargeCharmOfHermes)
+      name = "Large Charm of Hermes";
+      else if (type === ItemsEnum.SmallCharmOfApollo)
+      name = "Small Charm of Apollo";
+      else if (type === ItemsEnum.LargeCharmOfApollo)
+      name = "Large Charm of Apollo";
+      else if (type === ItemsEnum.SmallCharmOfAres)
+      name = "Small Charm of Ares";
+      else if (type === ItemsEnum.LargeCharmOfAres)
+      name = "Large Charm of Ares";
+      else if (type === ItemsEnum.SmallCharmOfZeus)
+      name = "Small Charm of Zeus";
+      else if (type === ItemsEnum.LargeCharmOfZeus)
+      name = "Large Charm of Zeus";
+      else if (type === ItemsEnum.SmallCharmOfPoseidon)
+      name = "Small Charm of Poseidon";
+      else if (type === ItemsEnum.LargeCharmOfPoseidon)
+      name = "Large Charm of Poseidon";
+      else if (type === ItemsEnum.SmallCharmOfHades)
+      name = "Small Charm of Hades";
+      else if (type === ItemsEnum.LargeCharmOfHades)
+      name = "Large Charm of Hades";
 
     //other
     else if (type === ItemsEnum.WarriorClass)
@@ -590,7 +649,7 @@ export class LookupService {
 
       var rewards = this.subzoneGeneratorService.getTreasureChestRewards(subzoneValue);
 
-      if (rewards.some(loot => loot.item === item)) {        
+      if (rewards.some(loot => loot.item === item)) {
         matchingSubzones.push(subzoneValue);
       }
     }
@@ -675,90 +734,90 @@ export class LookupService {
     //swords
     if (type === ItemsEnum.IronSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Basic, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 5, 0, 3, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 4, 0, 3, 0, 0);
     }
     if (type === ItemsEnum.BronzeSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 10, 0, 6, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 8, 0, 6, 0, 0);
     }
     if (type === ItemsEnum.FortifiedBronzeSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 15, 0, 9, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 12, 0, 9, 0, 0);
     }
     if (type === ItemsEnum.SteelSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 20, 0, 12, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 16, 0, 12, 0, 0);
     }
     if (type === ItemsEnum.GoldenSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 40, 0, 24, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 32, 0, 24, 0, 0);
     }
 
     //hammers
     if (type === ItemsEnum.IronHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Basic, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 9, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 7, 0, 0, 0, 0);
     }
     if (type === ItemsEnum.BronzeHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 18, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 14, 0, 0, 0, 0);
     }
     if (type === ItemsEnum.FortifiedBronzeHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 27, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 21, 0, 0, 0, 0);
     }
     if (type === ItemsEnum.SteelHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 36, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 28, 0, 0, 0, 0);
     }
     if (type === ItemsEnum.DiamondHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 72, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 56, 0, 0, 0, 0);
     }
 
     //bows
     if (type === ItemsEnum.ShortBow) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Basic, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 6, 0, 0, 5, 0);
+      equipmentPiece.stats = new CharacterStats(0, 5, 0, 0, 4, 0);
     }
     if (type === ItemsEnum.LongBow) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 12, 0, 0, 10, 0);
+      equipmentPiece.stats = new CharacterStats(0, 10, 0, 0, 8, 0);
     }
     if (type === ItemsEnum.Venomstrike) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 18, 0, 0, 15, 0);
+      equipmentPiece.stats = new CharacterStats(0, 15, 0, 0, 12, 0);
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
-      equipmentPiece.equipmentEffect.chance = .25;
+      equipmentPiece.equipmentEffect.chance = .2;
       equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 3, 15, "Venomstrike", dotTypeEnum.TrueDamage));
     }
     if (type === ItemsEnum.Wolfsbane) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 24, 0, 0, 20, 0);
+      equipmentPiece.stats = new CharacterStats(0, 20, 0, 0, 16, 0);
     }
     if (type === ItemsEnum.EagleEye) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 40, 0, 0, 50, 0);
+      equipmentPiece.stats = new CharacterStats(0, 40, 0, 0, 40, 0);
     }
 
     //shields
     if (type === ItemsEnum.IronShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Basic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 8, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 7, 0, 0, 0);
     }
     if (type === ItemsEnum.BronzeShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Uncommon);
-      equipmentPiece.stats = new CharacterStats(0, 0, 16, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 14, 0, 0, 0);
     }
     if (type === ItemsEnum.Aegis) {
-      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Uncommon);
-      equipmentPiece.stats = new CharacterStats(0, 0, 15, 0, 0, 0);
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Rare);
+      equipmentPiece.stats = new CharacterStats(0, 0, 13, 0, 0, 0);
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 3, false, true, false, type.toString()));
     }
     if (type === ItemsEnum.MoltenShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 30, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 25, 0, 0, 0);
       equipmentPiece.stats.hpRegen += 5;
       equipmentPiece.stats.elementalDamageResistance.fire += .05;
     }
@@ -766,46 +825,49 @@ export class LookupService {
     //armor
     if (type === ItemsEnum.LinenArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Basic);
-      equipmentPiece.stats = new CharacterStats(25, 0, 2, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(20, 0, 2, 0, 0, 0);
     }
     if (type === ItemsEnum.IronArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Basic);
-      equipmentPiece.stats = new CharacterStats(60, 0, 3, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(40, 0, 3, 0, 0, 0);
     }
     if (type === ItemsEnum.BronzeArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Uncommon);
-      equipmentPiece.stats = new CharacterStats(120, 0, 6, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(80, 0, 5, 0, 0, 0);
     }
     if (type === ItemsEnum.FortifiedBronzeArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Uncommon);
-      equipmentPiece.stats = new CharacterStats(180, 0, 10, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(120, 0, 10, 0, 0, 0);
     }
     if (type === ItemsEnum.SteelArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(400, 0, 15, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(240, 0, 15, 0, 0, 0);
     }
     if (type === ItemsEnum.MoltenArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(350, 0, 10, 10, 0, 0);
+      equipmentPiece.stats = new CharacterStats(300, 0, 10, 10, 0, 0);
       equipmentPiece.stats.elementalDamageResistance.fire += .05;
     }
 
     //necklace
     if (type === ItemsEnum.ForgottenLocket) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 5, 5, 5, 5, 5);
+      equipmentPiece.stats = new CharacterStats(0, 4, 4, 4, 4, 4);
     }
     if (type === ItemsEnum.PendantOfFortune) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 25, 0);
+      equipmentPiece.stats.criticalMultiplier = .1;
     }
     if (type === ItemsEnum.PendantOfPower) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 25, 0, 0, 0, 0);
+      equipmentPiece.stats.armorPenetration = .05;
     }
     if (type === ItemsEnum.PendantOfSpeed) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 25, 0, 0);
+      equipmentPiece.stats.overdriveGain = .1;
     }
 
     //ring
@@ -813,6 +875,18 @@ export class LookupService {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 10);
       equipmentPiece.stats.elementalDamageResistance.fire += .10;
+    }
+    if (type === ItemsEnum.FracturedRubyRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Uncommon);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Fire));
+    }
+    if (type === ItemsEnum.FracturedAmethystRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Uncommon);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Air));
     }
 
     return equipmentPiece;
@@ -925,7 +999,7 @@ export class LookupService {
       description = "Reach character level 20. <i>(" + character.level + ")</i>";
     }
     if (type === OverdriveNameEnum.Protection) {
-      description = "Take " + this.utilityService.overdriveDamageNeededToUnlockProtection + " damage. <i>(" + character.trackedStats.damageTaken + ")</i>";
+      description = "Take " + this.utilityService.overdriveDamageNeededToUnlockProtection.toLocaleString() + " damage. <i>(" + character.trackedStats.damageTaken.toLocaleString() + ")</i>";
     }
     if (type === OverdriveNameEnum.Nature) {
       description = "Use at least " + this.utilityService.overdriveAttacksNeededToUnlockNature + " different elemental attacks. <i>(" + character.trackedStats.elementalAttacksUsed.getCountOfNonZeroElements() + ")</i>";
@@ -944,19 +1018,19 @@ export class LookupService {
     overdriveInfo.selectedOverdrive = type;
 
     if (type === OverdriveNameEnum.Fervor) {
-      overdriveInfo.overdriveGaugeTotal = 150;
+      overdriveInfo.overdriveGaugeTotal = 120;
       overdriveInfo.overdriveActiveLength = 20;
     }
     if (type === OverdriveNameEnum.Smash) {
-      overdriveInfo.overdriveGaugeTotal = 100;
+      overdriveInfo.overdriveGaugeTotal = 80;
       overdriveInfo.overdriveActiveLength = 20;
     }
     if (type === OverdriveNameEnum.Nature) {
-      overdriveInfo.overdriveGaugeTotal = 200;
+      overdriveInfo.overdriveGaugeTotal = 150;
       overdriveInfo.overdriveActiveLength = 20;
     }
     if (type === OverdriveNameEnum.Protection) {
-      overdriveInfo.overdriveGaugeTotal = 200;
+      overdriveInfo.overdriveGaugeTotal = 150;
       overdriveInfo.overdriveActiveLength = 10;
     }
 
@@ -1425,29 +1499,29 @@ export class LookupService {
       description = "Increase Coin gain from battle by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
 */
     if (effect.type === AltarEffectsEnum.AttackUp)
-      description = "Increase Attack of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.AthenaDefenseUp)
-      description = "Increase Defense of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase Defense of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.AthenaHeal)
       description = "When the duration expires, heal all party members for " + effect.effectiveness + " HP.";
     if (effect.type === AltarEffectsEnum.AthenaHealOverTime)
-      description = "Heal all party members for " + effect.effectiveness + " every " + effect.tickFrequency + " seconds.";
+      description = "Heal all party members for " + effect.effectiveness + " HP every " + effect.tickFrequency + " seconds.";
     if (effect.type === AltarEffectsEnum.ArtemisLuckUp)
-      description = "Increase Luck of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase Luck of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ArtemisCriticalDamageUp)
-      description = "Increase Critical Damage Multiplier of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase Critical Damage Multiplier of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ArtemisDefenseDebuff)
-      description = "When the duration expires, reduce all enemies' Defense by " + Math.round((1 - effect.effectiveness) * 100) + "%.";
+      description = "When the duration expires, reduce all enemies' Defense by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.HermesAgilityUp)
-      description = "Increase Agility of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase Agility of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.HermesAutoAttackUp)
-      description = "Increase Auto Attack Damage of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase Auto Attack Damage of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.HermesAbilityCooldown)
-      description = "When the duration expires, reduce all party members' cooldowns by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "When the duration expires, reduce all party members' cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ApolloBuffDurationUp)
-      description = "Increase the duration of any buffs applied while this is active by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ApolloResistanceUp)
-      description = "Increase Resistance of all party members by " + Math.round((effect.effectiveness - 1) * 100) + "%.";
+      description = "Increase Resistance of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ApolloHeal)
       description = "Heal the party member with the lowest HP % for " + effect.effectiveness + " HP.";
 
@@ -1496,6 +1570,56 @@ export class LookupService {
 
     if (resource.amount < 0)
       resource.amount = 0;
+
+    if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Equipment) {
+      var equipCount = this.getItemEquipCount(type);
+      if (equipCount > 0 && resource.amount < equipCount) { 
+        while (resource.amount < equipCount) {
+          var character = this.getCharacterTypeEquippedWithItem(type);          
+          this.globalService.unequipItem(this.getEquipmentPieceByItemType(type)?.equipmentType, character);
+
+          equipCount -= 1;
+        }
+      }
+    }
+  }
+
+  getItemEquipCount(type: ItemsEnum) {
+    var equipCount = 0;
+
+    this.globalService.getActivePartyCharacters(true).forEach(member => {
+      if (member.equipmentSet.weapon !== undefined && member.equipmentSet.weapon.itemType === type)
+        equipCount += 1;
+      if (member.equipmentSet.shield !== undefined && member.equipmentSet.shield.itemType === type)
+        equipCount += 1;
+      if (member.equipmentSet.armor !== undefined && member.equipmentSet.armor.itemType === type)
+        equipCount += 1;
+      if (member.equipmentSet.necklace !== undefined && member.equipmentSet.necklace.itemType === type)
+        equipCount += 1;
+      if (member.equipmentSet.ring !== undefined && member.equipmentSet.ring.itemType === type)
+        equipCount += 1;
+    })
+
+    return equipCount;
+  }
+
+  getCharacterTypeEquippedWithItem(type: ItemsEnum) {
+    var characterType = CharacterEnum.None;
+
+    this.globalService.getActivePartyCharacters(true).forEach(member => {
+      if (member.equipmentSet.weapon !== undefined && member.equipmentSet.weapon.itemType === type)
+        characterType = member.type;
+      if (member.equipmentSet.shield !== undefined && member.equipmentSet.shield.itemType === type)
+        characterType = member.type;
+      if (member.equipmentSet.armor !== undefined && member.equipmentSet.armor.itemType === type)
+        characterType = member.type;
+      if (member.equipmentSet.necklace !== undefined && member.equipmentSet.necklace.itemType === type)
+        characterType = member.type;
+      if (member.equipmentSet.armor !== undefined && member.equipmentSet.armor.itemType === type)
+        characterType = member.type;
+    })
+
+    return characterType;
   }
 
   gainResource(item: ResourceValue) {
@@ -1579,11 +1703,48 @@ export class LookupService {
     return itemEffect;
   }
 
-  getTotalAutoAttackCount(character: Character) {
-    var adjustedAgility = this.getAdjustedAgility(character);
-    var agilityPerAdditionalAttack = 250; //TODO: agility per additional attack needs to increase each time
+  getTotalAutoAttackCount(character: Character, forPartyMember: boolean = true) {
+    var adjustedAgility = this.getAdjustedAgility(character, forPartyMember);
+    var agilityPerAdditionalAttack = 250;
+    var remainingAgility = adjustedAgility;
+    var attackCount = 0;
+    var attackRemainder = 0;
+    var reachedFinalBreakpoint = false;
 
-    return 1 + (adjustedAgility / agilityPerAdditionalAttack);
+    while (remainingAgility > 0 && !reachedFinalBreakpoint) {
+      agilityPerAdditionalAttack = this.getAgilityPerAttackForAttackCount(attackCount + 1);
+
+      if (remainingAgility > agilityPerAdditionalAttack) {
+        remainingAgility -= agilityPerAdditionalAttack;
+        attackCount += 1;
+      }
+      else {
+        reachedFinalBreakpoint = true;
+      }
+    }
+
+    attackRemainder = remainingAgility / agilityPerAdditionalAttack;
+
+    return 1 + attackCount + attackRemainder; //(adjustedAgility / agilityPerAdditionalAttack);
+  }
+
+  getAgilityPerAttackForAttackCount(attackCount: number) {
+    var agilityCost = 0;
+
+    if (attackCount === 1)
+      agilityCost = 250;
+    else if (attackCount === 2)
+      agilityCost = 1000;
+    else if (attackCount === 3)
+      agilityCost = 2500;
+    else if (attackCount === 4)
+      agilityCost = 10000;
+    else if (attackCount === 5)
+      agilityCost = 25000;
+    else
+      agilityCost = attackCount * 50000;
+
+    return agilityCost;
   }
 
   getDamageCriticalChance(attacker: Character, target: Character) {
@@ -1643,7 +1804,7 @@ export class LookupService {
     return criticalChance;
   }
 
-  getAdjustedMaxHp(character: Character) {
+  getAdjustedMaxHp(character: Character, forPartyMember: boolean = true) {
     var maxHp = character.battleStats.maxHp;
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
@@ -1675,7 +1836,7 @@ export class LookupService {
     return maxHp;
   }
 
-  getAdjustedAgility(character: Character) {
+  getAdjustedAgility(character: Character, forPartyMember: boolean = true) {
     var agility = character.battleStats.agility;
     var activeStaccato: any;
     var party = this.globalService.getActivePartyCharacters(true);
@@ -1706,7 +1867,7 @@ export class LookupService {
       }
     }
 
-    if (this.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp) !== undefined) {
+    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp) !== undefined) {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp);
       agility *= relevantAltarEffect!.effectiveness;
     }
@@ -1714,7 +1875,7 @@ export class LookupService {
     return agility;
   }
 
-  getAdjustedLuck(character: Character) {
+  getAdjustedLuck(character: Character, forPartyMember: boolean = true) {
     var luck = character.battleStats.luck;
     var activeCoda: any;
     var party = this.globalService.getActivePartyCharacters(true);
@@ -1745,7 +1906,7 @@ export class LookupService {
       }
     }
 
-    if (this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp) !== undefined) {
+    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp) !== undefined) {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp);
       luck *= relevantAltarEffect!.effectiveness;
     }
@@ -1753,7 +1914,7 @@ export class LookupService {
     return luck;
   }
 
-  getAdjustedResistance(character: Character) {
+  getAdjustedResistance(character: Character, forPartyMember: boolean = true) {
     var resistance = character.battleStats.resistance;
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
@@ -1771,7 +1932,7 @@ export class LookupService {
       }
     }
 
-    if (this.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp) !== undefined) {
+    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp) !== undefined) {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp);
       resistance *= relevantAltarEffect!.effectiveness;
     }
@@ -1779,7 +1940,7 @@ export class LookupService {
     return resistance;
   }
 
-  getAdjustedAttack(character: Character, ability?: Ability) {
+  getAdjustedAttack(character: Character, ability?: Ability, forPartyMember: boolean = true) {
     var attack = character.battleStats.attack;
     var activeFortissimo: any;
     var party = this.globalService.getActivePartyCharacters(true);
@@ -1810,7 +1971,7 @@ export class LookupService {
       }
     }
 
-    if (this.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
+    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
       attack *= relevantAltarEffect!.effectiveness;
     }
@@ -1827,7 +1988,7 @@ export class LookupService {
     return attack;
   }
 
-  getAdjustedDefense(character: Character) {
+  getAdjustedDefense(character: Character, forPartyMember: boolean = true) {
     var defense = character.battleStats.defense;
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
@@ -1845,7 +2006,7 @@ export class LookupService {
       }
     }
 
-    if (this.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp) !== undefined) {
+    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp) !== undefined) {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp);
       defense *= relevantAltarEffect!.effectiveness;
     }
@@ -1866,16 +2027,28 @@ export class LookupService {
     return this.globalService.getAutoAttackTime(character);//character.battleInfo.timeToAutoAttack - character.battleStats.autoAttackCooldownReduction;
   }
 
-  getAdjustedCriticalMultiplier(character: Character) {
+  getAdjustedCriticalMultiplier(character: Character, forPartyMember: boolean = true) {
     var defaultMultiplier = 1.25;
 
     var altarIncrease = 0;
-    if (this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp) !== undefined) {
+    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp) !== undefined) {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp);
       altarIncrease *= relevantAltarEffect!.effectiveness;
     }
 
     return defaultMultiplier + character.battleStats.criticalMultiplier + altarIncrease;
+  }
+
+  getOverdriveGainMultiplier(character: Character) {
+    var defaultMultiplier = 1;
+
+    return defaultMultiplier + character.battleStats.overdriveGain;
+  }
+
+  getArmorPenetrationMultiplier(character: Character) {
+    var defaultMultiplier = 1;
+
+    return defaultMultiplier - character.battleStats.armorPenetration;
   }
 
   getChthonicFavorMultiplier() {
@@ -1918,6 +2091,10 @@ export class LookupService {
       equipmentStats += "+" + equipment.stats.hpRegen + " HP / 5 Sec<br />";
     if (equipment.stats.criticalMultiplier > 0)
       equipmentStats += "+" + (equipment.stats.criticalMultiplier * 100) + "% Critical Damage Bonus<br />";
+    if (equipment.stats.armorPenetration > 0)
+      equipmentStats += "+" + (equipment.stats.armorPenetration * 100) + "% Armor Penetration<br />";
+    if (equipment.stats.overdriveGain > 0)
+      equipmentStats += "+" + (equipment.stats.overdriveGain * 100) + "% Overdrive Gain Bonus<br />";
     if (equipment.stats.abilityCooldownReduction > 0)
       equipmentStats += "+" + (equipment.stats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction<br />";
     if (equipment.stats.autoAttackCooldownReduction > 0)
@@ -2172,6 +2349,15 @@ export class LookupService {
     logItem.dateReceived = formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
 
     this.globalService.globalVar.logData.push(logItem);
+
+    var logLengthTotal = 5;
+    var currentItemLog = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Loot);
+    if (currentItemLog.length > logLengthTotal) {
+      for (var i = currentItemLog.length; i > logLengthTotal; i--) {
+        this.globalService.globalVar.logData = this.globalService.globalVar.logData.filter(item => item != currentItemLog[0]);
+        currentItemLog = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Loot);
+      }
+    }
   }
 
   getCharacterDps(character: Character, target?: Character) {
@@ -2319,6 +2505,22 @@ export class LookupService {
     return "Increase the amount of damage dealt when dealing a critical hit.";
   }
 
+  getArmorPenetrationDescription() {
+    return "Reduce target's defense by this percentage before any attack.";
+  }
+
+  getOverdriveGainBonusDescription() {
+    return "Increase the amount of overdrive gauge gained from attacking and being attacked.";
+  }
+
+  getHealingReceivedBonusDescription() {
+    return "Increase the amount of healing received.";
+  }
+
+  getDebuffDurationBonusDescription() {
+    return "Increase the duration of any debuff you inflict.";
+  }
+
   getAbilityCooldownReductionDescription() {
     return "Reduces cooldown for all abilities.";
   }
@@ -2449,6 +2651,50 @@ export class LookupService {
       breakdown += "Base Stat Gain: +" + Math.round(god.statGain.criticalMultiplier * 100) + "%<br />";
     if (god.permanentStatGain.criticalMultiplier > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.criticalMultiplier * 100) + "%<br />";
+
+    return breakdown;
+  }
+
+  getGodArmorPenetrationStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.armorPenetration > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.armorPenetration * 100) + "%<br />";
+    if (god.permanentStatGain.armorPenetration > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.armorPenetration * 100) + "%<br />";
+
+    return breakdown;
+  }
+
+  getGodOverdriveGainBonusStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.overdriveGain > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.overdriveGain * 100) + "%<br />";
+    if (god.permanentStatGain.overdriveGain > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.overdriveGain * 100) + "%<br />";
+
+    return breakdown;
+  }
+  
+  getGodHealingReceivedBonusStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.healingReceived > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.healingReceived * 100) + "%<br />";
+    if (god.permanentStatGain.healingReceived > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.healingReceived * 100) + "%<br />";
+
+    return breakdown;
+  }
+  
+  getGodDebuffDurationBonusStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.debuffDuration > 0)
+      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.debuffDuration * 100) + "%<br />";
+    if (god.permanentStatGain.debuffDuration > 0)
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.debuffDuration * 100) + "%<br />";
 
     return breakdown;
   }
@@ -2757,15 +3003,15 @@ export class LookupService {
 
     var charmGain = this.charmService.getTotalHpRegenAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
-      breakdown += "Charm Total: " + charmGain + "<br />";
+      breakdown += "Charm Total: +" + charmGain + "<br />";
     }
 
-    /*if (character.equipmentSet.getTotalHpRegenGain() > 0)
+    if (character.equipmentSet.getTotalHpRegenGain() > 0)
       breakdown += "Equipment: +" + character.equipmentSet.getTotalHpRegenGain() + "<br />";
-
-    if (this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent() > 0)
-      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent())+ "<br />";
-*/
+    /*
+        if (this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent() > 0)
+          breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent())+ "<br />";
+    */
     return breakdown;
   }
 
@@ -2791,15 +3037,136 @@ export class LookupService {
 
     var charmGain = this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
-      breakdown += "Charm Total: " + Math.round(charmGain * 100) + "%<br />";
+      breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
     }
 
-    /*if (character.equipmentSet.getTotalCriticalMultiplierGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalCriticalMultiplierGain() + "<br />";
+    if (character.equipmentSet.getTotalCriticalMultiplierGain() > 0)
+      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalCriticalMultiplierGain() * 100) + "%<br />";
 
-    if (this.globalService.globalVar.chthonicPowers.getCriticalMultiplierBoostPercent() > 0)
-      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getCriticalMultiplierBoostPercent())+ "<br />";
-*/
+    return breakdown;
+  }
+
+  getOverdriveGainBonusStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.overdriveGain > 0)
+      breakdown += "Base Stat Gain: +" + Math.round((character.baseStats.overdriveGain) * 100) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.overdriveGain + assignedGod1.permanentStatGain.overdriveGain;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.overdriveGain + assignedGod2.permanentStatGain.overdriveGain;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    var charmGain = this.charmService.getTotalOverdriveGainAdditionFromCharms(this.globalService.globalVar.resources);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
+    }
+
+    if (character.equipmentSet.getTotalOverdriveGain() > 0)
+      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";
+
+    return breakdown;
+  }
+
+  getHealingReceivedBonusStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.healingReceived > 0)
+      breakdown += "Base Stat Gain: +" + Math.round((character.baseStats.healingReceived) * 100) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.healingReceived + assignedGod1.permanentStatGain.healingReceived;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.healingReceived + assignedGod2.permanentStatGain.healingReceived;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    var charmGain = this.charmService.getTotalHealingReceivedAdditionFromCharms(this.globalService.globalVar.resources, character);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
+    }
+
+    /*if (character.equipmentSet.getTotalOverdriveGain() > 0)
+      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";*/
+
+    return breakdown;
+  }
+
+  getDebuffDurationBonusStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.debuffDuration > 0)
+      breakdown += "Base Stat Gain: +" + Math.round((character.baseStats.debuffDuration) * 100) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.debuffDuration + assignedGod1.permanentStatGain.debuffDuration;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.debuffDuration + assignedGod2.permanentStatGain.debuffDuration;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    var charmGain = this.charmService.getTotalDebuffDurationAdditionFromCharms(this.globalService.globalVar.resources, character);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
+    }
+
+    /*if (character.equipmentSet.getTotalOverdriveGain() > 0)
+      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";*/
+
+    return breakdown;
+  }
+
+  getArmorPenetrationStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.armorPenetration > 0)
+      breakdown += "Base Stat Gain: +" + Math.round((character.baseStats.armorPenetration) * 100) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.armorPenetration + assignedGod1.permanentStatGain.armorPenetration;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.armorPenetration + assignedGod2.permanentStatGain.armorPenetration;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    var charmGain = this.charmService.getTotalArmorPenetrationAdditionFromCharms(this.globalService.globalVar.resources);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
+    }
+
+    if (character.equipmentSet.getTotalArmorPenetrationGain() > 0)
+      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalArmorPenetrationGain() * 100) + "%<br />";
+
     return breakdown;
   }
 
@@ -2828,9 +3195,10 @@ export class LookupService {
       breakdown += "Charm Total: *" + Math.round(charmGain * 100) + "%<br />";
     }
 
+    if (character.equipmentSet.getTotalAbilityCooldownReductionGain() > 0)
+      breakdown += "Equipment: *" + Math.round(character.equipmentSet.getTotalAbilityCooldownReductionGain() * 100) + "%<br />";
 
-    /*if (character.equipmentSet.getTotalAbilityCooldownReductionGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalAbilityCooldownReductionGain() + "<br />";
+    /*
 
     if (this.globalService.globalVar.chthonicPowers.getAbilityCooldownReductionBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAbilityCooldownReductionBoostPercent())+ "<br />";
@@ -2863,9 +3231,10 @@ export class LookupService {
       breakdown += "Charm Total: *" + Math.round(charmGain * 100) + "%<br />";
     }
 
-    /*if (character.equipmentSet.getTotalAutoAttackCooldownReductionGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalAutoAttackCooldownReductionGain() + "<br />";
+    if (character.equipmentSet.getTotalAutoAttackCooldownReductionGain() > 0)
+      breakdown += "Equipment: *" + Math.round(character.equipmentSet.getTotalAutoAttackCooldownReductionGain() * 100) + "%<br />";
 
+    /*
     if (this.globalService.globalVar.chthonicPowers.getAutoAttackCooldownReductionBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAutoAttackCooldownReductionBoostPercent())+ "<br />";
 */

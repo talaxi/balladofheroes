@@ -11,7 +11,9 @@ import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
+import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
+import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GodLevelIncreaseEnum } from 'src/app/models/enums/god-level-increase-enum.model';
@@ -63,7 +65,7 @@ export class GlobalService {
     adventurer.name = "Adventurer";
     adventurer.type = CharacterEnum.Adventurer;
     adventurer.isAvailable = true;
-    adventurer.baseStats = new CharacterStats(200, 12, 8, 0, 5, 10);
+    adventurer.baseStats = new CharacterStats(190, 10, 9, 0, 5, 8);
     adventurer.battleStats = adventurer.baseStats.makeCopy();
     adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
     this.assignAbilityInfo(adventurer);
@@ -75,7 +77,7 @@ export class GlobalService {
     archer.name = "Archer";
     archer.type = CharacterEnum.Archer;
     archer.isAvailable = false;
-    archer.baseStats = new CharacterStats(220, 12, 10, 10, 15, 5);
+    archer.baseStats = new CharacterStats(200, 10, 6, 5, 13, 6);
     archer.battleStats = archer.baseStats.makeCopy();
     archer.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
     this.calculateCharacterBattleStats(archer);
@@ -87,7 +89,7 @@ export class GlobalService {
     warrior.name = "Warrior";
     warrior.type = CharacterEnum.Warrior;
     warrior.isAvailable = false;
-    warrior.baseStats = new CharacterStats(250, 10, 10, 10, 5, 5);
+    warrior.baseStats = new CharacterStats(225, 12, 12, 8, 8, 12);
     warrior.battleStats = warrior.baseStats.makeCopy();
     warrior.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
     this.calculateCharacterBattleStats(warrior);
@@ -99,7 +101,7 @@ export class GlobalService {
     priest.name = "Priest";
     priest.type = CharacterEnum.Priest;
     priest.isAvailable = false;
-    priest.baseStats = new CharacterStats(220, 10, 10, 10, 5, 5);
+    priest.baseStats = new CharacterStats(175, 13, 9, 6, 7, 10);
     priest.battleStats = priest.baseStats.makeCopy();
     priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
     this.calculateCharacterBattleStats(priest);
@@ -581,7 +583,9 @@ export class GlobalService {
     }
   }
 
-  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean, isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false) {
+  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean, 
+    isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false, 
+    element: ElementalTypeEnum = ElementalTypeEnum.None) {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -592,6 +596,7 @@ export class GlobalService {
     statusEffect.refreshes = false;
     statusEffect.threshold = threshold;
     statusEffect.effectStacks = effectStacks;
+    statusEffect.element = element;
 
     if (duration === -1)
       statusEffect.isPermanent = true;
@@ -653,9 +658,6 @@ export class GlobalService {
 
     character.battleStats = character.baseStats.makeCopy(inBattle);
 
-    if (inBattle)
-      character.battleStats.currentHp = currentHp;
-
     //equipment
     character.battleStats.maxHp += character.equipmentSet.getTotalMaxHpGain();
     character.battleStats.attack += character.equipmentSet.getTotalAttackGain();
@@ -665,6 +667,8 @@ export class GlobalService {
     character.battleStats.resistance += character.equipmentSet.getTotalResistanceGain();
     character.battleStats.hpRegen = character.equipmentSet.getTotalHpRegenGain();
     character.battleStats.criticalMultiplier = character.equipmentSet.getTotalCriticalMultiplierGain();
+    character.battleStats.armorPenetration = character.equipmentSet.getTotalArmorPenetrationGain();
+    character.battleStats.overdriveGain = character.equipmentSet.getTotalOverdriveGain();
     character.battleStats.abilityCooldownReduction = (1 - character.equipmentSet.getTotalAbilityCooldownReductionGain());
     character.battleStats.autoAttackCooldownReduction = (1 - character.equipmentSet.getTotalAutoAttackCooldownReductionGain());
     character.battleStats.elementalDamageIncrease.holy = character.equipmentSet.getTotalHolyDamageIncreaseGain();
@@ -678,7 +682,7 @@ export class GlobalService {
     character.battleStats.elementalDamageResistance.water = character.equipmentSet.getTotalWaterDamageResistanceGain();
     character.battleStats.elementalDamageResistance.lightning = character.equipmentSet.getTotalLightningDamageResistanceGain();
     character.battleStats.elementalDamageResistance.air = character.equipmentSet.getTotalAirDamageResistanceGain();
-    character.battleStats.elementalDamageResistance.earth = character.equipmentSet.getTotalEarthDamageResistanceGain();
+    character.battleStats.elementalDamageResistance.earth = character.equipmentSet.getTotalEarthDamageResistanceGain();    
 
     //gods
     var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
@@ -694,6 +698,10 @@ export class GlobalService {
       character.battleStats.abilityCooldownReduction *= (1 - (god1.statGain.abilityCooldownReduction + god1.permanentStatGain.abilityCooldownReduction));
       character.battleStats.autoAttackCooldownReduction *= (1 - (god1.statGain.autoAttackCooldownReduction + god1.permanentStatGain.autoAttackCooldownReduction));
       character.battleStats.criticalMultiplier += god1.statGain.criticalMultiplier + god1.permanentStatGain.criticalMultiplier;
+      character.battleStats.overdriveGain += god1.statGain.overdriveGain + god1.permanentStatGain.overdriveGain;
+      character.battleStats.armorPenetration += god1.statGain.armorPenetration + god1.permanentStatGain.armorPenetration;
+      character.battleStats.healingReceived += god1.statGain.healingReceived + god1.permanentStatGain.healingReceived;
+      character.battleStats.debuffDuration += god1.statGain.debuffDuration + god1.permanentStatGain.debuffDuration;
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.statGain.elementalDamageIncrease);
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.permanentStatGain.elementalDamageIncrease);
       character.battleStats.elementalDamageResistance.increaseByStatArray(god1.statGain.elementalDamageResistance);
@@ -713,6 +721,10 @@ export class GlobalService {
       character.battleStats.abilityCooldownReduction *= (1 - (god2.statGain.abilityCooldownReduction + god2.permanentStatGain.abilityCooldownReduction));
       character.battleStats.autoAttackCooldownReduction *= (1 - (god2.statGain.autoAttackCooldownReduction + god2.permanentStatGain.autoAttackCooldownReduction));
       character.battleStats.criticalMultiplier += god2.statGain.criticalMultiplier + god2.permanentStatGain.criticalMultiplier;
+      character.battleStats.overdriveGain += god2.statGain.overdriveGain + god2.permanentStatGain.overdriveGain;
+      character.battleStats.armorPenetration += god2.statGain.armorPenetration + god2.permanentStatGain.armorPenetration;
+      character.battleStats.healingReceived += god2.statGain.healingReceived + god2.permanentStatGain.healingReceived;
+      character.battleStats.debuffDuration += god2.statGain.debuffDuration + god2.permanentStatGain.debuffDuration;
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.statGain.elementalDamageIncrease);
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.permanentStatGain.elementalDamageIncrease);
       character.battleStats.elementalDamageResistance.increaseByStatArray(god2.statGain.elementalDamageResistance);
@@ -722,8 +734,12 @@ export class GlobalService {
     //charms
     character.battleStats.hpRegen += this.charmService.getTotalHpRegenAdditionFromCharms(this.globalVar.resources);
     character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.armorPenetration += this.charmService.getTotalArmorPenetrationAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.overdriveGain += this.charmService.getTotalOverdriveGainAdditionFromCharms(this.globalVar.resources);
     character.battleStats.abilityCooldownReduction *= (1 - this.charmService.getTotalAbilityCooldownReductionAdditionFromCharms(this.globalVar.resources));
     character.battleStats.autoAttackCooldownReduction *= (1 - this.charmService.getTotalAutoAttackCooldownReductionAdditionFromCharms(this.globalVar.resources));
+    character.battleStats.healingReceived += this.charmService.getTotalHealingReceivedAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.debuffDuration += this.charmService.getTotalDebuffDurationAdditionFromCharms(this.globalVar.resources, character);
 
     character.battleStats.elementalDamageIncrease.holy += this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalVar.resources);
     character.battleStats.elementalDamageIncrease.fire += this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalVar.resources);
@@ -747,6 +763,11 @@ export class GlobalService {
     character.battleStats.agility *= 1 + this.globalVar.chthonicPowers.getAgilityBoostPercent();
     character.battleStats.luck *= 1 + this.globalVar.chthonicPowers.getLuckBoostPercent();
     character.battleStats.resistance *= 1 + this.globalVar.chthonicPowers.getResistanceBoostPercent();
+
+    if (inBattle)
+      character.battleStats.currentHp = currentHp;
+    else
+      character.battleStats.currentHp = character.battleStats.maxHp;
   }
 
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam) {
@@ -829,11 +850,12 @@ export class GlobalService {
   }
 
   getCharacterLevelStatIncrease(character: Character) {
-    var statIncrease = 2; /* For levels 1-20 */
+    var statIncrease = 1; /* For levels 1-20 */
     var maxHpBonusMultiplier = 5;
 
+    statIncrease *= Math.ceil(character.level / 10);
     if (character.level % 10 === 6)
-      statIncrease = 5;
+      statIncrease *= 3;
 
     character.baseStats.attack += statIncrease;
     character.baseStats.agility += statIncrease;
@@ -1401,16 +1423,16 @@ export class GlobalService {
     }
     else if (godLevel % 50 === 0) {
       if (god.type === GodEnum.Athena) {
-        stats.defense += godLevel;
+        stats.defense += godLevel / 2;
       }
       else if (god.type === GodEnum.Artemis) {
-        stats.luck += godLevel;
+        stats.luck += godLevel / 2;
       }
       else if (god.type === GodEnum.Hermes) {
-        stats.agility += godLevel;
+        stats.agility += godLevel / 2;
       }
       else if (god.type === GodEnum.Apollo) {
-        stats.resistance += godLevel;
+        stats.resistance += godLevel / 2;
       }
     }
 
@@ -1454,6 +1476,8 @@ export class GlobalService {
     god.permanentStatGain.criticalMultiplier += upgradedStats.criticalMultiplier;
     god.permanentStatGain.abilityCooldownReduction += upgradedStats.abilityCooldownReduction;
     god.permanentStatGain.autoAttackCooldownReduction += upgradedStats.autoAttackCooldownReduction;
+    god.permanentStatGain.armorPenetration += upgradedStats.armorPenetration;
+    god.permanentStatGain.overdriveGain += upgradedStats.overdriveGain;
   }
 
   //set this up entirely so you can tell what is going on. when leveling up, consult this before calling any function
@@ -1570,13 +1594,12 @@ export class GlobalService {
   }
 
   getGodXpToNextLevel(level: number) {
-    var baseXp = 500;
+    var baseXp = 335;
 
-    var factor = 1.021;
-    var additive = (baseXp - 100) * (level - 1);
+    var factor = 1.023;
+    var additive = (baseXp) * (level - 1);
     var exponential = (baseXp * (factor ** (level)));
 
-    //
     return exponential + additive;
   }
 
@@ -1638,5 +1661,70 @@ export class GlobalService {
         }
       }
     });
+  }
+  
+  unequipItem(type: EquipmentTypeEnum | undefined, characterType: CharacterEnum) { 
+    var character = this.globalVar.characters.find(item => item.type === characterType);
+
+    if (character === undefined || type === undefined)
+      return;
+
+    if (type === EquipmentTypeEnum.Weapon)
+    {
+      if (character.equipmentSet.weapon?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.weapon.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.weapon.equipmentEffect.userEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
+      character.equipmentSet.weapon = undefined;
+    }
+    if (type === EquipmentTypeEnum.Shield)
+    {
+      if (character.equipmentSet.shield?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.shield.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.shield.equipmentEffect.userEffect[0] : character.equipmentSet.shield.equipmentEffect.targetEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
+      character.equipmentSet.shield = undefined;
+    }
+    if (type === EquipmentTypeEnum.Armor)
+    {
+      if (character.equipmentSet.armor?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.armor.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.armor.equipmentEffect.userEffect[0] : character.equipmentSet.armor.equipmentEffect.targetEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
+      character.equipmentSet.armor = undefined;
+    }
+    if (type === EquipmentTypeEnum.Ring)
+    {
+      if (character.equipmentSet.ring?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.ring.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.ring.equipmentEffect.userEffect[0] : character.equipmentSet.ring.equipmentEffect.targetEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
+      character.equipmentSet.ring = undefined;    
+    }
+    if (type === EquipmentTypeEnum.Necklace)
+    {
+      if (character.equipmentSet.necklace?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+      {
+        var effect = character.equipmentSet.necklace.equipmentEffect.userEffect.length > 0 ? 
+        character.equipmentSet.necklace.equipmentEffect.userEffect[0] : character.equipmentSet.necklace.equipmentEffect.targetEffect[0];
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      }
+
+      character.equipmentSet.necklace = undefined;
+    }
+
+    this.calculateCharacterBattleStats(character); 
   }
 }

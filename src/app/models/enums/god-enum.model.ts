@@ -6,5 +6,6 @@ export enum GodEnum {
   Apollo,
   Hermes,
   Poseidon,
-  Artemis
+  Artemis,
+  Hades
 }

@@ -37,9 +37,9 @@ export class AchievementService {
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 20));
 
     else if (subzoneType === SubZoneEnum.DodonaDelphiOutskirts)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));
     else if (subzoneType === SubZoneEnum.DodonaCoastalRoadsOfLocris)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));
     else if (subzoneType === SubZoneEnum.DodonaCountryside)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 25));
     else if (subzoneType === SubZoneEnum.DodonaMountainOpening)
@@ -53,7 +53,7 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.DodonaAmbracianGulf)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 10));
     else if (subzoneType === SubZoneEnum.LibyaBeach)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 750));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     else if (subzoneType === SubZoneEnum.LibyaRockyOutcrops)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 20));
     else if (subzoneType === SubZoneEnum.LibyaDeeperPath)
@@ -113,26 +113,26 @@ export class AchievementService {
     if (subzoneType === SubZoneEnum.AigosthenaUpperCoast)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaBay)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaLowerCoast)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaWesternWoodlands)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
 
     else if (subzoneType === SubZoneEnum.DodonaDelphiOutskirts)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaCoastalRoadsOfLocris)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaCountryside)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaMountainOpening)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaMountainPassOne)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaLakeTrichonida)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaMountainPassTwo)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaAmbracianGulf)
@@ -157,13 +157,13 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.AsphodelDarkenedMeadows)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelLetheBasin)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumElysianFields)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumOpenPlains)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
 

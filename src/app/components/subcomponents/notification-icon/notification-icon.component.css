@@ -5,3 +5,19 @@
     padding: 0 .5rem;
     margin-right: .25rem;
   }
+
+  .availableIconSideQuest {
+    background: orange !important;
+  }
+
+  .availableIconProfession {
+    background: purple !important;
+  }
+  
+  .availableIconReset {
+    background: green !important;
+  }
+
+  .onButton {
+    padding: 0 .7rem !important;
+  }

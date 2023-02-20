@@ -18,10 +18,9 @@
         <br />
         <div *ngFor="let resource of resources;">
             <div class="resourceDiv">
-                <button class="screenMarginLeft buttonAsText clickableText trackingButton"
-                     (click)="setTrackingResource(resource)">
+                <button class="screenMarginLeft buttonAsText clickableText trackingButton">
                     <!--{{lookupService.getItemName(resource.item)}} x{{resource.amount}}-->
-                    <app-resource-item-view [resource]="resource.item"></app-resource-item-view>
+                    <app-resource-item-view [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
                 </button>
                 <span *ngIf="isResourceTracked(resource)" class="sectionHeaderText sectionHeading screenMarginRight">tracking</span>
             </div>

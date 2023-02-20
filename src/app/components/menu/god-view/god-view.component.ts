@@ -206,6 +206,14 @@ export class GodViewComponent implements OnInit {
           rewards += Math.round(increaseValues.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.autoAttackCooldownReduction > 0)
           rewards += Math.round(increaseValues.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.armorPenetration > 0)
+          rewards += Math.round(increaseValues.armorPenetration  * 100) + "% Armor Penetration Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.overdriveGain > 0)
+          rewards += Math.round(increaseValues.overdriveGain  * 100) + "% Overdrive Gain Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.healingReceived > 0)
+          rewards += Math.round(increaseValues.healingReceived  * 100) + "% Healing Received Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.debuffDuration > 0)
+          rewards += Math.round(increaseValues.debuffDuration  * 100) + "% Debuff Duration Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.elementalDamageIncrease.holy > 0)
           rewards += (increaseValues.elementalDamageIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
@@ -297,6 +305,22 @@ export class GodViewComponent implements OnInit {
 
   getCriticalMultiplierBonus() {
     return this.god.statGain.criticalMultiplier + this.god.permanentStatGain.criticalMultiplier;
+  }
+
+  getArmorPenetrationBonus() {
+    return this.god.statGain.armorPenetration + this.god.permanentStatGain.armorPenetration;
+  }
+
+  getOverdriveGainBonus() {
+    return this.god.statGain.overdriveGain + this.god.permanentStatGain.overdriveGain;
+  }
+
+  getHealingReceivedBonus() {
+    return this.god.statGain.healingReceived + this.god.permanentStatGain.healingReceived;
+  }
+
+  getDebuffDurationBonus() {
+    return this.god.statGain.debuffDuration + this.god.permanentStatGain.debuffDuration;
   }
 
   getAbilityCooldownReductionBonus() {

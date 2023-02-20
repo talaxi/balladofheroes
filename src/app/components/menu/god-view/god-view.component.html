@@ -71,6 +71,18 @@
                 [contentTemplate]="autoAttackCooldownReductionPopover"><strong [ngClass]="getGodColor()" class="statLabel">Auto
                     Attack Cooldown Reduction:</strong>
                 {{getAutoAttackCooldownBonus() | number : '1.0-2'}} sec<br /></span>
+                <span *ngIf="getArmorPenetrationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="armorPenetrationPopover"><strong [ngClass]="getGodColor()" class="statLabel">Armor Penetration:</strong>
+                    {{(getArmorPenetrationBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                <span *ngIf="getOverdriveGainBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="overdriveGainBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Overdrive Gain Bonus:</strong>
+                    {{(getOverdriveGainBonus() * 100) | number : '1.0-2'}}%<br /></span>  
+                    <span *ngIf="getHealingReceivedBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="healingReceivedBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Healing Received Bonus:</strong>
+                        {{(getHealingReceivedBonus() * 100) | number : '1.0-2'}}%<br /></span>  
+                        <span *ngIf="getDebuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="debuffDurationBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Debuff Duration Bonus:</strong>
+                            {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>                    
             <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Holy Damage
                     Bonus:</strong> {{(getHolyDamageBonus() *
@@ -232,6 +244,46 @@
         <span class="description" [innerHtml]="this.lookupService.getCriticalMultiplierDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodCriticalMultiplierStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #overdriveGainBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getOverdriveGainBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodOverdriveGainBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #healingReceivedBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getHealingReceivedBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodHealingReceivedBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #debuffDurationBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getDebuffDurationBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodDebuffDurationBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #armorPenetrationPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getArmorPenetrationDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodArmorPenetrationStatBreakdown(this.god)">
 
         </div>
     </div>

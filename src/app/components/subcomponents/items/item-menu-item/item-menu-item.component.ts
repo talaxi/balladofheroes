@@ -10,6 +10,7 @@ import { ToolTipRendererDirective } from '../../custom-tooltip/tool-tip-renderer
   styleUrls: ['./item-menu-item.component.css']
 })
 export class ItemMenuItemComponent implements OnInit {
+  @Input() totalItemAmount: number;
   @Input() item: ItemsEnum;
   @Input() openedSlotNumber: number;
   showTooltip = true;

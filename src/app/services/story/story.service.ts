@@ -7,6 +7,7 @@ import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.mode
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
@@ -31,7 +32,7 @@ export class StoryService {
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private balladService: BalladService,
     private utilityService: UtilityService, private tutorialService: TutorialService, private gameLogService: GameLogService,
-    private resourceGeneratorService: ResourceGeneratorService) { }
+    private resourceGeneratorService: ResourceGeneratorService, private achievementService: AchievementService) { }
 
   checkForNewStoryScene() {
     if (this.globalService.globalVar.currentStoryId === 0)
@@ -89,7 +90,7 @@ export class StoryService {
         sceneText = "Today is the Festival of Gods in your small village in Greece. " +
           "Musicians are performing, children are playing, men and women are eating and drinking. <br/><br/>You, Thales of Aigosthena, are racing.<br/><br/>" +
           "Every year, you and many others set out inland to the Temple of Athena. It is modest compared to the one in Athens, but it is the " +
-          "largest most people in your village will ever see. From generation to generation, the story has held that the first person to reach the temple on the day of the Festival will be granted an audience with Athena herself.";
+          "largest most people in your village will ever see. From generation to generation, the story has held that the first person to reach the temple on the day of the Festival will be graced with the presence of Athena herself.";
       else if (pageCount === 2)
         sceneText = "Some believe the stories and race to prove their piety. Others race to prove their skill and honor Athena in their own way. You race simply because every year you have tried, and every year you have failed. You have always yearned for greatness, but come up short. This year was going to be different.";
     }
@@ -111,8 +112,8 @@ export class StoryService {
     }
     else if (storyId === 3) {
       if (pageCount === 1)
-        sceneText = "You find your way out of Delphi while trying to take in your meeting with Athena. Could you walk the path of champions? You know all of the stories by heart -- the trials of Heracles, the winding journey of Odysseus, the triumph and fall of Jason. Could you truly be in the same conversations as these heroes? <br/><br/>" +
-          "Your feet unconsciously make their way northwest towards Dodona, following the path of Perseus. As you cross the countryside between Locris and Aetolia, you get the feeling you are being followed. You've battled numerous bandits on your path and before this one can get the jump on you, you go on the offensive.";
+        sceneText = "You find your way out of Delphi while processing your meeting with Athena. Could you walk the path of champions? You know all of the stories by heart -- the trials of Heracles, the winding journey of Odysseus, the triumph and fall of Jason. Could you truly be in the same conversations as these heroes? <br/><br/>" +
+          "Your feet unconsciously make their way northwest towards Dodona, following the path of Perseus on his journey to defeat the monstrous Medusa. As you cross the countryside between Locris and Aetolia, you get the feeling you are being followed. You've battled numerous bandits on your path and before this one can get the jump on you, you go on the offensive.";
     }
     else if (storyId === 4) {
       if (pageCount === 1)
@@ -157,18 +158,19 @@ export class StoryService {
           "Darkness is all you see as you float down. <br/><br/>" +
           "Down. Down to the Underworld.";
       else if (pageCount === 2)
-        sceneText = "<span class='hermesColor bold'>“Guess you <i>were</i> a little too green. Don't be disappointed, not everyone can be the ultimate champion of the gods can they?”</span> You hear from a familiar voice." +
+        sceneText = "<span class='hermesColor bold'>“Guess you <i>were</i> a little too green. Don't be disappointed, not everyone can be the ultimate champion of the gods can they?”</span> You hear from a familiar voice. " +
           "<span class='hermesColor bold'>“Get up, let's get you situated here. Time to go see Hades.”</span>";
     }
     else if (storyId === 9) {
       if (pageCount === 1)
-        sceneText = "<span class='hadesColor bold'>“Asphodel.” Hades</span> commands. You have been assigned to the afterlife of all ordinary souls. You shuffle out of the procession of souls waiting to be given their final resting place as your partner steps up to take your place at the head of the line. <br/><br/>" +
-          "<span class='hermesColor bold'>“He's a man of few words. Much like yourself lately!” Hermes<span class='hermesColor bold'> whispers to you, cracking a smile. Hermes guides all souls down to the underworld, so it would seem the gravity of dying means little to him. You say nothing as you hear Hades decree that your partner will be joining you in Asphodel. <br/><br/>" +
+        sceneText = "<span class='hadesColor bold'>“Asphodel.” Hades</span> commands, assigning you to the afterlife of the ordinary. You shuffle out of the procession of souls waiting to be given their final resting place as your partner steps up to take your place at the head of the line. <br/><br/>" +
+          "<span class='hermesColor bold'>“He's a man of few words. Much like yourself lately!”</span> Hermes whispers to you, cracking a smile. Hermes guides all souls down to the underworld, so it would seem the gravity of dying means little to him. You say nothing as you hear Hades decree that your partner will be joining you in Asphodel. <br/><br/>" +
           "<span class='hadesColor bold'>“Hermes. A word.”</span>";
       if (pageCount === 2)
-        sceneText = "<span class='archerColor bold'>“Asphodel? <i>Really?</i>”</span> Your partner moves out of the line towards you while <span class='hermesColor bold'>Hermes</span> and <span class='hadesColor bold'>Hades</span> converse. <span class='archerColor bold'>“All I've done... and still I go to Asphodel?”</span> Zosime's thoughts mirror your own. You thought your destiny was to be a hero -- but that had all gone up in smoke. Is this all you were meant for?<br/><br/>" +
-          "<span class='hermesColor bold'>“Right, well I've left you two to brood long enough. Let's have a quick chat.” Hermes</span> says as he leads you to an empty part of the room. <span class='hermesColor bold'>“Believe it or not, even Hades is concerned about the impending war for Olympus. There is to be a tournament in the Coliseum of Elysium. Hades is granting the winner, or winners, passage from the Underworld so long as they fight with Olympus when the time comes. I don't know if you really have what it takes but… why not give it a shot?”</span> <br/><br/>" +
-          "<span class='archerColor bold'>Zosime</span> looks to you, but you offer up no response. <span class='archerColor bold'>“Let's do this. Our story doesn't have to be over yet.”</span> She says.";
+        sceneText = "<span class='archerColor bold'>“Asphodel? <i>Really?</i>”</span> Your partner moves out of the line towards you while <span class='hermesColor bold'>Hermes</span> and <span class='hadesColor bold'>Hades</span> converse. <span class='archerColor bold'>“All I've done... and still I go to Asphodel?”</span> Zosime's thoughts mirror your own. You thought your destiny was to be a hero -- but that had all gone up in smoke. Is this all you were meant for?";          
+      if (pageCount === 3)
+        sceneText = "<span class='hermesColor bold'>“Right, well I've left you two to brood long enough. Let's have a quick chat.”</span> Hermes says as he leads you to an empty part of the room. <span class='hermesColor bold'>“Believe it or not, even Hades is concerned about the impending war for Olympus. There's going to be a tournament in the Coliseum of Elysium. Hades is granting the winner, or winners, passage from the Underworld so long as they fight with Olympus when the time comes. I don't know if you really have what it takes but… why not give it a shot?”</span> <br/><br/>" +
+        "<span class='archerColor bold'>Zosime</span> looks to you, but you offer up no response. <span class='archerColor bold'>“Let's do this. Our story doesn't have to be over yet.”</span> She says.";
     }
     else if (storyId === 10) {
       if (pageCount === 1)
@@ -216,6 +218,11 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
     sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
     sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
+    sceneText = sceneText.replaceAll("Heracles", "<span class='commonCharacterColor storyCharacterName'>Heracles</span>");
+    sceneText = sceneText.replaceAll("Jason", "<span class='commonCharacterColor storyCharacterName'>Jason</span>");
+    sceneText = sceneText.replaceAll("Odysseus", "<span class='commonCharacterColor storyCharacterName'>Odysseus</span>");
+    sceneText = sceneText.replaceAll("Theseus", "<span class='commonCharacterColor storyCharacterName'>Theseus</span>");
+    sceneText = sceneText.replaceAll("Perseus", "<span class='commonCharacterColor storyCharacterName'>Perseus</span>");
 
     return sceneText;
   }
@@ -259,6 +266,18 @@ export class StoryService {
     }
     if (this.globalService.globalVar.currentStoryId === 9) {
       //Speak to Hades for the first time
+      this.pageCount = 3;
+    }
+    if (this.globalService.globalVar.currentStoryId === 10) {     
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 11) {     
+      this.pageCount = 3;
+    }
+    if (this.globalService.globalVar.currentStoryId === 12) {     
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 13) {     
       this.pageCount = 2;
     }
 
@@ -289,6 +308,9 @@ export class StoryService {
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis));
+        var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
@@ -302,7 +324,16 @@ export class StoryService {
         }, 5000);
       }
       if (this.globalService.globalVar.currentStoryId === 10) {
-        this.globalService.globalVar.isBattlePaused = false;
+        var theDepths = this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths);
+        if (theDepths !== undefined)
+        {
+          theDepths.isAvailable = true;
+
+          this.achievementService.createDefaultAchievementsForSubzone(theDepths.type).forEach(achievement => {
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+        /*this.globalService.globalVar.isBattlePaused = false;
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
           championBallad.isAvailable = true;
@@ -314,8 +345,7 @@ export class StoryService {
         var laborsBallad = this.balladService.findBallad(BalladEnum.Labors);
         if (laborsBallad !== undefined)
           laborsBallad.isAvailable = true;
-
-        this.globalService.globalVar.currentStoryId = 9;
+*/  
       }
     }
 
@@ -336,13 +366,21 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "You enter into a room filled with an array of flowers, herbs, vials, and scents. You marvel at the sheer number of plants that you wouldn't expect to make it in the underworld.<br/><br/>" +
           "“Hello child. Can I help you?” Asked the goddess Hecate, her back turned to you as she prepared herbs in a bowl. A black dog laid curled up to the goddess's right with its eyes on you. You feel warmth emanating from the pair.<br/><br/>" +
-          "“Sorry, I was just wandering by and was curious.” <br/><br/>" +
-          "“No need to apologize. Come, join me.”";
+          "“Sorry, I was just passing by and was curious.” <br/><br/>" +
+          "“You do not need to apologize. Come, you may join me.”";
     }
     if (scene === OptionalSceneEnum.ChthonicFavor) {
       if (pageCount === 1)
         sceneText = "“Psst. Hey, you.” You hear a voice echoing from the back side of the great hall. Walking towards the voice, you find a ghastly spirit huddled in a corner. “Listen, I got what you need if you got what I want. And what I want is a little taste of Olympus.  Understand? You give me a little of what you got, and I'll put in a good word around here.”";
     }
+
+    sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
+    sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
+    sceneText = sceneText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
+    sceneText = sceneText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
+    sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
+    sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
+    sceneText = sceneText.replaceAll("Hecate", "<span class='commonCharacterColor storyCharacterName'>Hecate</span>");
 
     return sceneText;
   }
@@ -364,10 +402,24 @@ export class StoryService {
     }
 
     if (this.currentPage > this.pageCount) {
+      if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
+        //this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 5 Olives and Fennel.");
+        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 5);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);
+        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 5);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavor) {        
+        this.globalService.globalVar.chthonicPowers.isChthonicResetUnlocked = true;
+      }
+
       this.currentPage = 1;
       this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);
       this.showOptionalStory = OptionalSceneEnum.None;
-      this.returnedFromOptionalScene = true;
+      this.returnedFromOptionalScene = true;      
     }
 
     if (this.showOptionalStory === OptionalSceneEnum.None)

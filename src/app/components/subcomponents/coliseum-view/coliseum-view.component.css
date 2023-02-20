@@ -1,13 +1,21 @@
 .container {
-    display: flex;
-    height: 100%;
-    width: 100%;
+    display: flex;    
+    height: 40vh;
+    margin: 1rem;
+    background-color: var(--background-quarternary);
+    color: var(--foreground-default);
+    padding: .5rem;
 }
 
 .vr {
     display: flex;
     height: auto;
 }
+
+.overflowable {
+    overflow-y: auto;
+}
+
 
 .vrHr {
     margin: 0 1rem;
@@ -37,6 +45,8 @@
     vertical-align: middle;
     margin-left: .25rem;
     margin-top: .5rem;
+    font-variant: small-caps;
+    font-weight: bold;
 }
 
 .listItem:hover {

@@ -103,7 +103,7 @@ export enum ItemsEnum {
   BrokenNecklace,
   SmallRuby,
   SmallTopaz,
-  SmallEmerald,
+  SmallEmerald,  
   LargeCharmOfAthena,
   SmallCharmOfAthena,
   SmallCharmOfArtemis,
@@ -119,5 +119,18 @@ export enum ItemsEnum {
   SmallCharmOfPoseidon,
   LargeCharmOfPoseidon,
   WarriorClass,
-  PriestClass
+  PriestClass,
+  SmallAquamarine,
+  SmallOpal,
+  SmallAmethyst,
+  FracturedRubyRing,
+  FracturedTopazRing,
+  FracturedEmeraldRing,
+  FracturedAquamarineRing,
+  FracturedOpalRing,
+  FracturedAmethystRing,
+  SmallCharmOfIngenuity,
+  LargeCharmOfIngenuity,
+  SmallCharmOfHades,
+  LargeCharmOfHades
 }

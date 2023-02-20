@@ -1,3 +1,8 @@
 .relative {
     position: relative;
 }
+
+.absolute {
+    position: fixed;
+    width: 100%;
+}

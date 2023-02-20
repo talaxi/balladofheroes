@@ -54,23 +54,23 @@ export class AlchemyService {
     var duration = 0;
 
     if (action === AlchemyActionsEnum.PrepareWaterSmallPot)
-      duration = 1 * 2;
+      duration = 1 * 20;
     if (action === AlchemyActionsEnum.CombineIngredientsPot)
-      duration = 1 * 1;
+      duration = 1 * 10;
     if (action === AlchemyActionsEnum.CombineIngredientsPotion)
       duration = 1 * 15;
     if (action === AlchemyActionsEnum.HeatMixture)
-      duration = 1 * 3;
+      duration = 1 * 30;
     if (action === AlchemyActionsEnum.CrushIngredients)
-      duration = 1 * 3;
+      duration = 1 * 30;
     if (action === AlchemyActionsEnum.CombineIngredients)
       duration = 1 * 15;
     if (action === AlchemyActionsEnum.MixOil)
-      duration = 1 * 1;
+      duration = 1 * 10;
     if (action === AlchemyActionsEnum.MeltWax)
-      duration = 1 * 2;
+      duration = 1 * 20;
     if (action === AlchemyActionsEnum.StrainMixture)
-      duration = 1 * 1;
+      duration = 1 * 10;
 
     return duration;
   }

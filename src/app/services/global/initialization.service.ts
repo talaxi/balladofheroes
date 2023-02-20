@@ -145,10 +145,11 @@ export class InitializationService {
   initializeGameLogSettings() {
     this.globalService.globalVar.gameLogSettings.set("partyAutoAttacks", true);
     this.globalService.globalVar.gameLogSettings.set("partyAbilityUse", true);
+    this.globalService.globalVar.gameLogSettings.set("partyUseOverdrive", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAutoAttacks", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
-    
-    this.globalService.globalVar.gameLogSettings.set("partyEquipmentEffect", true);
+    this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
+    this.globalService.globalVar.gameLogSettings.set("prayToAltar", true);
     this.globalService.globalVar.gameLogSettings.set("partyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("enemyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("battleRewards", true);
@@ -268,6 +269,13 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallAmethyst, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallEmerald, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallOpal, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, ItemTypeEnum.BattleItem, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, 10));
 

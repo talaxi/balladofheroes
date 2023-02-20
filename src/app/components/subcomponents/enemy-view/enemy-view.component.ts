@@ -130,7 +130,7 @@ export class EnemyViewComponent implements OnInit {
   }
 
   getCharacterCurrentHp() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.currentHp + this.getCharacterBarrierValue(this.character));
+    return this.utilityService.bigNumberReducer(Math.ceil(this.character.battleStats.currentHp + this.getCharacterBarrierValue(this.character)));
   }
 
   getCharacterMaxHp() {

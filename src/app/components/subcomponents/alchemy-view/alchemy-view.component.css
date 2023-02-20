@@ -1,17 +1,14 @@
 .recipeBook {
     height: 40vh;
-    display: grid;
-    grid-template-columns: 40% 1fr 40%;
-    gap: 1rem;
-    grid-template-rows: 1fr;
-    justify-content: stretch;
-    grid-template-areas:
-      "recipeList . recipeInfo"; 
-
+    display: flex;
     margin: 1rem;
     background-color: var(--background-quarternary);
     color: var(--foreground-default);
     padding: .5rem;
+  }
+
+  .column {
+    width: 100%;
   }
 
   .progress {
@@ -45,6 +42,8 @@
     vertical-align: middle;
     margin-left: .25rem;
     margin-top: .5rem;
+    font-variant: small-caps;
+    font-weight: bold;
 }
 
 .recipeItem:hover {

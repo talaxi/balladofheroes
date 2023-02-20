@@ -71,10 +71,10 @@
     <div class="altars" *ngIf="globalService.globalVar.altarInfo.length > 0">
         <app-altar-options-view></app-altar-options-view>
     </div>-->
-    <div *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0" class="hr gap2">
+    <div *ngIf="quickLinksUnlocked" class="hr gap2">
         <hr />
     </div>
-    <div *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0" class="quickLink">
+    <div *ngIf="quickLinksUnlocked" class="quickLink">
         <div class="quickLinkIcons">
             <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Overview)"
                 customToolTip [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
@@ -88,8 +88,8 @@
                     src="assets/svg/resourcesQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
             </button>
-            <div>
-                <button class="buttonAsText clickableText iconButton" *ngIf="areAltarsAvailable()"
+            <div *ngIf="areAltarsAvailable()">
+                <button class="buttonAsText clickableText iconButton"
                     (click)="setQuickView(quickViewEnum.Altars)" customToolTip [contentTemplate]="overviewIconPopover"
                     [tooltipDirection]="tooltipDirection">
                     <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"
@@ -129,17 +129,18 @@
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.Coin) > 0"><span
                                 class="resource bold">Coins:</span><span>
                                 {{lookupService.getResourceAmount(itemsEnum.Coin) |
-                                number}}</span></span> <br />
-                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
-                            class="resource chthonicFavorKeyword" customToolTip
-                            [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
-                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
-                                : '1.0-2'}}</span></span>
+                                number}}</span></span>
                         <br />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
                             class="resource chthonicPowerKeyword" customToolTip
                             [contentTemplate]="chthonicPowerPopover">Chthonic Power:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
+                                : '1.0-2'}}</span></span>
+                                <br />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
+                            class="resource chthonicFavorKeyword" customToolTip
+                            [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
                                 : '1.0-2'}}</span></span>
                     </div>
                 </div>
