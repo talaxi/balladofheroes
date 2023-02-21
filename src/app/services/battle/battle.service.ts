@@ -342,7 +342,7 @@ export class BattleService {
       if (subzone.type === SubZoneEnum.DodonaMountainOpening && subzone.victoryCount >= 0 &&
         !this.globalService.globalVar.freeTreasureChests.dodonaMountainOpening) {
         treasureChestChance = 1;
-        this.globalService.globalVar.freeTreasureChests.dodonaMountainOpening = true;        
+        this.globalService.globalVar.freeTreasureChests.dodonaMountainOpening = true;
       }
 
       if (rng <= treasureChestChance) {
@@ -382,7 +382,7 @@ export class BattleService {
     }
 
     var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
-    this.battle.currentEnemies = randomEnemyTeam;    
+    this.battle.currentEnemies = randomEnemyTeam;
     this.battle.battleDuration = 0;
   }
 
@@ -488,6 +488,10 @@ export class BattleService {
 
     if (character.overdriveInfo.overdriveIsActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Nature)
       elementalType = character.overdriveInfo.lastUsedElement;
+
+    if (elementalType === ElementalTypeEnum.None) {
+      elementalType = this.checkUserForEnElement(character);
+    }
 
     var elementalText = "";
     if (elementalType !== ElementalTypeEnum.None)
@@ -600,7 +604,7 @@ export class BattleService {
       }
     }
 
-    if (character.level >= this.utilityService.characterOverdriveLevel) {      
+    if (character.level >= this.utilityService.characterOverdriveLevel) {
       character.overdriveInfo.overdriveGaugeAmount += character.overdriveInfo.gainPerAutoAttack * this.lookupService.getOverdriveGainMultiplier(character);
       if (character.overdriveInfo.overdriveGaugeAmount > character.overdriveInfo.overdriveGaugeTotal)
         character.overdriveInfo.overdriveGaugeAmount = character.overdriveInfo.overdriveGaugeTotal;
@@ -815,7 +819,8 @@ export class BattleService {
         this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
       }
     }
-
+    
+    this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets);
     this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt);
     this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt);
 
@@ -842,7 +847,7 @@ export class BattleService {
     }
 
     if (user.level >= this.utilityService.characterOverdriveLevel) {
-      user.overdriveInfo.overdriveGaugeAmount += user.overdriveInfo.gainPerAbility * this.lookupService.getOverdriveGainMultiplier(user);      
+      user.overdriveInfo.overdriveGaugeAmount += user.overdriveInfo.gainPerAbility * this.lookupService.getOverdriveGainMultiplier(user);
       if (user.overdriveInfo.overdriveGaugeAmount > user.overdriveInfo.overdriveGaugeTotal)
         user.overdriveInfo.overdriveGaugeAmount = user.overdriveInfo.overdriveGaugeTotal;
     }
@@ -961,6 +966,7 @@ export class BattleService {
       });
     }
 
+    console.log(target.battleInfo.statusEffects);
     //check all instant effects (maybe make its own function?)
     if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
       target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
@@ -969,6 +975,18 @@ export class BattleService {
 
           if (target !== undefined)
             this.gainHp(target, healAmount);
+        }
+
+        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {          
+          if (target !== undefined)
+          {
+            var trueDamageDealt = this.dealTrueDamage(isPartyUsing, target, instantEffect.effectiveness);
+            var elementalText = "";
+            if (instantEffect.element !== ElementalTypeEnum.None)
+              elementalText = this.getElementalDamageText(instantEffect.element);
+            var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + Math.round(trueDamageDealt) + elementalText + " damage.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+          }
         }
 
         if (instantEffect.type === StatusEffectEnum.DebuffDurationIncrease) {
@@ -1067,7 +1085,7 @@ export class BattleService {
     }
 
     if (!appliedStatusEffect.isPositive && castingCharacter !== undefined &&
-      castingCharacter.battleStats.debuffDuration > 0) {         
+      castingCharacter.battleStats.debuffDuration > 0) {
       appliedStatusEffect.duration *= 1 + castingCharacter.battleStats.debuffDuration;
     }
 
@@ -1155,8 +1173,8 @@ export class BattleService {
     if (elementalType === undefined)
       elementalType = ElementalTypeEnum.None;
 
-    var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);    
-    var adjustedDefense = this.lookupService.getAdjustedDefense(target, !isPartyAttacking) * this.lookupService.getArmorPenetrationMultiplier(attacker);    
+    var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);
+    var adjustedDefense = this.lookupService.getAdjustedDefense(target, !isPartyAttacking) * this.lookupService.getArmorPenetrationMultiplier(attacker);
     var adjustedCriticalMultiplier = 1;
     if (isCritical)
       adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(attacker, isPartyAttacking);
@@ -1182,7 +1200,7 @@ export class BattleService {
         attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);
     }
 
-    //2 * Attack^2 / (Attack + Defense)
+    //2 * Attack^2 / (Attack + Defense)    
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementalDamageIncrease * elementalDamageDecrease
       * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
@@ -1988,7 +2006,9 @@ export class BattleService {
             targetGainsEffects.push(effect.makeCopy());
         }
         else
+        {          
           targetGainsEffects.push(effect.makeCopy());
+        }
       });
     }
 
@@ -2093,9 +2113,11 @@ export class BattleService {
 
       this.handleuserEffects(true, userGainsEffects, user, party, targets);
     }
-
+    
     if (targetGainsEffects.length > 0)
+    {      
       this.handletargetEffects(true, targetGainsEffects, user, target, targets, party);
+    }
   }
 
   applyToxin(user: Character, target: Character, party: Character[], targets: Character[]) {
@@ -2126,6 +2148,17 @@ export class BattleService {
     }
   }
 
+  checkUserForEnElement(character: Character) {
+    var elementalType = ElementalTypeEnum.None;
+
+    var enfire = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enfire);
+    if (enfire !== undefined) {
+      elementalType = ElementalTypeEnum.Fire;      
+    }
+
+    return elementalType;
+  }
+
   checkOverdriveStatus(character: Character, deltaTime: number) {
     if (character.overdriveInfo.overdriveGaugeAmount === character.overdriveInfo.overdriveGaugeTotal &&
       (character.overdriveInfo.overdriveAutoMode || character.overdriveInfo.manuallyTriggered)) {
@@ -2152,7 +2185,7 @@ export class BattleService {
           this.gainHp(character, character.overdriveInfo.damageTaken / 2);
           character.overdriveInfo.damageTaken = 0;
         }
-      }    
+      }
     }
   }
 }

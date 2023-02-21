@@ -183,16 +183,16 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   setSellItem(equipment: ResourceValue) {
-    if (!this.itemToSellSelected) {
-      var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(equipment.item);
+    var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(equipment.item);
+
+    if (!this.itemToSellSelected || this.itemToSell.itemType !== equipmentPiece?.itemType) {      
       if (equipmentPiece !== undefined) {
         this.itemToSell = equipmentPiece;
         this.itemToSellSelected = true;
         this.itemToSellPrice = this.lookupService.getItemSellPrice(equipment.item);
       }
     }
-    else {
-      if (equipment.item === this.itemToSell.itemType)
+    else {      
         this.itemToSellSelected = false;
     }
   }

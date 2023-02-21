@@ -20,7 +20,7 @@ export class ColiseumService {
 
     if (type === ColiseumTournamentEnum.HadesTrial) {
       tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 60;
+      tournament.tournamentTimerLength = 120;
     }
 
     return tournament;
@@ -33,10 +33,9 @@ export class ColiseumService {
   }
 
   getTournamentDescription(type: ColiseumTournamentEnum) {
-    if (type === ColiseumTournamentEnum.HadesTrial)
-      return "5 rounds. 60 seconds.";
+    var info = this.getColiseumInfoFromType(type);
 
-    return "";
+    return "Complete " + info.maxRounds + " rounds in " + info.tournamentTimerLength + " seconds.";
   }
 
   generateBattleOptions(type: ColiseumTournamentEnum, round: number) {
@@ -44,8 +43,6 @@ export class ColiseumService {
 
     if (type === ColiseumTournamentEnum.HadesTrial && round === 1) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
       battleOptions.push(enemyTeam);

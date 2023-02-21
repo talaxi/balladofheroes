@@ -605,7 +605,7 @@ export class GlobalService {
       type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.InstantHealAfterAutoAttack)
       statusEffect.refreshes = true;
 
-    if (type === StatusEffectEnum.RecentlyDefeated)
+    if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin)
       statusEffect.persistsDeath = true;
 
     return statusEffect;
@@ -618,7 +618,7 @@ export class GlobalService {
     statusEffect.tickFrequency = tickFrequency;
     statusEffect.associatedAbilityName = associatedAbilityName;
     statusEffect.dotType = dotType;
-    statusEffect.element = associatedElement;
+    statusEffect.element = associatedElement;        
 
     return statusEffect;
   }
@@ -925,12 +925,14 @@ export class GlobalService {
     var ability = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
     if (ability === undefined)
       return;
+      
+    var targetGainsEffect = ability.targetEffect[0];
 
     if (character.type === CharacterEnum.Adventurer) {
       ability.effectiveness += .05;
     }
-    if (character.type === CharacterEnum.Archer) {
-      ability.effectiveness += .025;
+    if (character.type === CharacterEnum.Archer) {      
+      targetGainsEffect.effectiveness += .025;      
     }
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
@@ -1538,11 +1540,11 @@ export class GlobalService {
     }
     else if (godLevel === 35) {
       ability = passiveAbility;
-      upgradeLevel = 2;
+      upgradeLevel = 3;
     }
     else if (godLevel === 40) {
       ability = ability2;
-      upgradeLevel = 2;
+      upgradeLevel = 3;
     }
     else if (godLevel === 45) {
       ability = defaultAbility;
@@ -1550,7 +1552,7 @@ export class GlobalService {
     }
     else if (godLevel === 55) {
       ability = ability2;
-      upgradeLevel = 3;
+      upgradeLevel = 4;
     }
     else if (godLevel === 60) {
       ability = defaultAbility;
@@ -1558,14 +1560,14 @@ export class GlobalService {
     }
     else if (godLevel === 65) {
       ability = passiveAbility;
-      upgradeLevel = 3;
+      upgradeLevel = 4;
     }
     else if (godLevel === 70) {
       ability = defaultAbility;
       upgradeLevel = 5;
     }
     else {
-      //5 3 3 1 at this point
+      //5 4 4 1 at this point
       //needs to rotate 3 abilities twice then passive, then repeat
       var repeaterLevel = (godLevel - 70) % 35;
       var repeaterCount = Math.ceil((godLevel - 70) / 35);

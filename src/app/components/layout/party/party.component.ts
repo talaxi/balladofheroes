@@ -582,7 +582,7 @@ export class PartyComponent implements OnInit {
   }
 
   getMaxHp(character: Character) {
-    return this.utilityService.bigNumberReducer(character.battleStats.maxHp);
+    return this.utilityService.bigNumberReducer(Math.ceil(character.battleStats.maxHp));
   }
 
   ngOnDestroy() {

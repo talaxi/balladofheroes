@@ -132,6 +132,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Dodge) {
       src += "dodge.svg";
     }
+    if (effect.type === StatusEffectEnum.Enfire) {
+      src += "dodge.svg";
+    }
 
     return src;
   }

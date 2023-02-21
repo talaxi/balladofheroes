@@ -58,7 +58,7 @@ export class AltarService {
 
     if (altar.condition === AltarConditionEnum.OverdriveUse) {
       if (altar.type === AltarEnum.Small)
-        maxCount = 2;
+        maxCount = 1;
     }
     if (altar.condition === AltarConditionEnum.Victories) {
       if (altar.type === AltarEnum.Small)

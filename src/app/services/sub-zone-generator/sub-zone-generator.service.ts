@@ -397,14 +397,7 @@ export class SubZoneGeneratorService {
       enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IncoherentBanshee));
       enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Revenant));
       enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Wretched));
-      battleOptions.push(enemyTeam5);
-      
-      var enemyTeam6: EnemyTeam = new EnemyTeam();
-      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EngorgedShade));
-      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Revenant));
-      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Wretched));
-      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IncoherentBanshee));
-      battleOptions.push(enemyTeam6);
+      battleOptions.push(enemyTeam5);      
 
       var enemyTeam7: EnemyTeam = new EnemyTeam();
       enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.IncoherentBanshee));

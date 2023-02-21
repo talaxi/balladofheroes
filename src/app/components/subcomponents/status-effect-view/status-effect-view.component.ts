@@ -22,7 +22,7 @@ export class StatusEffectViewComponent implements OnInit {
   }
 
   getNegativeStatusEffects() {
-    return this.character.battleInfo.statusEffects.filter(item => !item.isPositive  && !this.isEffectInvisible(item));
+    return this.character.battleInfo.statusEffects.filter(item => !item.isPositive && !this.isEffectInvisible(item));
   }
 
   isEffectInvisible(effect: StatusEffect) {

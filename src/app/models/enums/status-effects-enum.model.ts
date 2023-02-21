@@ -54,5 +54,6 @@ export enum StatusEffectEnum {
     Stagger,
     Barrier,
     Sap,
-    AbsorbElementalDamage
+    AbsorbElementalDamage,
+    InstantTrueDamage,
   }

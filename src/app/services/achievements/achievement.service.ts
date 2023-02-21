@@ -62,7 +62,7 @@ export class AchievementService {
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 10));
 
     else if (subzoneType === SubZoneEnum.AsphodelTheDepths)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1500));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1000));
     else if (subzoneType === SubZoneEnum.AsphodelForgottenHalls)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelEndlessStaircase)
@@ -235,7 +235,7 @@ export class AchievementService {
       }
 
       var thousandVictories = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.ThousandVictories);
-      if (thousandVictories !== undefined && subzone.victoryCount >= 1000 && !thousandVictories.completed && thousandVictories.bonusResources !== undefined) {
+      if (thousandVictories !== undefined && subzone.victoryCount >= 500 && !thousandVictories.completed && thousandVictories.bonusResources !== undefined) {
         completedAchievement.push(thousandVictories);
         thousandVictories.completed = true;
         thousandVictories.bonusResources.forEach(bonus => {
@@ -243,9 +243,8 @@ export class AchievementService {
         });
       }
 
-      //TODO: victory count should be 3000
       var tenThousandVictories = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.TenThousandVictories);
-      if (tenThousandVictories !== undefined && subzone.victoryCount >= 3000 && !tenThousandVictories.completed && tenThousandVictories.bonusResources !== undefined) {
+      if (tenThousandVictories !== undefined && subzone.victoryCount >= 2500 && !tenThousandVictories.completed && tenThousandVictories.bonusResources !== undefined) {
         completedAchievement.push(tenThousandVictories);
         tenThousandVictories.completed = true;
         tenThousandVictories.bonusResources.forEach(bonus => {

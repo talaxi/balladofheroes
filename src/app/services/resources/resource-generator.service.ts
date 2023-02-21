@@ -29,6 +29,10 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.SteelSword, ItemTypeEnum.Equipment, amount);
     }
+    if (type === ItemsEnum.SwordOfFlames)
+    {
+      return new ResourceValue(ItemsEnum.SwordOfFlames, ItemTypeEnum.Equipment, amount);
+    }
     if (type === ItemsEnum.GoldenSword)
     {
       return new ResourceValue(ItemsEnum.GoldenSword, ItemTypeEnum.Equipment, amount);
@@ -68,6 +72,10 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.Venomstrike)
     {
       return new ResourceValue(ItemsEnum.Venomstrike, ItemTypeEnum.Equipment, amount);
+    }
+    if (type === ItemsEnum.ElysianOakBow)
+    {
+      return new ResourceValue(ItemsEnum.ElysianOakBow, ItemTypeEnum.Equipment, amount);
     }
     if (type === ItemsEnum.Wolfsbane)
     {

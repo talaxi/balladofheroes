@@ -175,7 +175,7 @@ export class StoryService {
     else if (storyId === 10) {
       if (pageCount === 1)
         sceneText = "You go through the motions as you ascend your way through Asphodel. Hit this, dodge that, keep moving. Your fall from such high heights down to the depths of failure remind you of your thoughts as a youth. You've known how to go through the motions, but you were always one step behind.<br/><br/>" +
-          "Zosime, noticing the stark contrast in your demeanor, pauses for a moment. " + this.zosimeText("“Well on the plus side, it looks like Artemis and Athena still favor us. Maybe this was part of their  plan?”") + "She says.";
+          "Zosime, noticing the stark contrast in your demeanor, pauses for a moment. " + this.zosimeText("“Well on the plus side, it looks like Artemis and Athena still favor us. Maybe this was part of their  plan?”") + " She says.";
 
       else if (pageCount === 2)
         sceneText = this.zosimeText("“Listen Thales. All my life, I've been a hunter. When you're alone in the forest, tracking a wild animal for days.. things don't always go as planned. Maybe you lose the trail, maybe what you're tracking gets the better of you. Setbacks happen. But just because you lose the trail doesn't mean you can't pick it up again.”") + "<br/><br/>" +

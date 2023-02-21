@@ -92,11 +92,15 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.SteelSword)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 850));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 750));
     }
     if (item === ItemsEnum.SteelHammer)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 850));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 750));
+    }
+    if (item === ItemsEnum.ElysianOakBow)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 750));
     }
     if (item === ItemsEnum.SteelArmor)
     {
