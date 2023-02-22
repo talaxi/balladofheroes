@@ -6,13 +6,17 @@ export class ColiseumTournament {
     type: ColiseumTournamentEnum;
     tournamentTimer: number;
     tournamentTimerLength: number;
+    quickVictoryThreshold: number;
     currentRound: number;
     maxRounds: number;
     @Type(() => ResourceValue)
-    bonusResources: ResourceValue[];
+    completionReward: ResourceValue[];
+    @Type(() => ResourceValue)
+    quickCompletionReward: ResourceValue[];
 
     constructor() {
         this.type = ColiseumTournamentEnum.None;
-        this.bonusResources = [];
+        this.completionReward = [];
+        this.quickCompletionReward = [];
     }
 }

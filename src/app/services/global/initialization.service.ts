@@ -5,13 +5,17 @@ import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
+import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
+import { AlchemyUpgrades } from 'src/app/models/professions/alchemy-upgrades.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
@@ -41,6 +45,7 @@ export class InitializationService {
     this.initializeKeybinds();
     this.initializeBestiaryDefeatCount();
     this.initializeColiseumDefeatCount();
+    this.initializeAlchemy();
   }
 
   initializeBallads() {    
@@ -139,7 +144,9 @@ export class InitializationService {
 
   initializeSettings() {
     this.globalService.globalVar.settings.set("activeOverview", QuickViewEnum.Overview);  
+    this.globalService.globalVar.settings.set("activeLog", LogViewEnum.Tutorials);  
     this.globalService.globalVar.settings.set("autoProgress", false);    
+    this.globalService.globalVar.settings.set("storyStyle", StoryStyleSettingEnum.Medium);    
   }
 
   initializeGameLogSettings() {
@@ -381,5 +388,21 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
     //console.log(this.globalService.globalVar.achievements);
+  }
+
+  initializeAlchemy() {
+    for (const [propertyKey, propertyValue] of Object.entries(EquipmentQualityEnum))
+    {
+      if (!Number.isNaN(Number(propertyKey))) {
+        continue;
+      }
+
+      var enumValue = propertyValue as EquipmentQualityEnum;
+      if (enumValue !== EquipmentQualityEnum.None)
+      {
+        var alchemyUpgrade = new AlchemyUpgrades(enumValue);
+        this.globalService.globalVar.alchemy.upgrades.push(alchemyUpgrade);
+      }
+    }
   }
 }

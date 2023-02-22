@@ -56,7 +56,7 @@
 .flexBetween {
   display:flex;
   justify-content:  space-between;
-  width: 60%; /* needs to match .leftAlignedMiniHr */
+  width: 70%; /* needs to match .leftAlignedMiniHr */
 }
 
 .filterOption {

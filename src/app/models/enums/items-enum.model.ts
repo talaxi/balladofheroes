@@ -132,5 +132,6 @@ export enum ItemsEnum {
   SmallCharmOfIngenuity,
   LargeCharmOfIngenuity,
   SmallCharmOfHades,
-  LargeCharmOfHades
+  LargeCharmOfHades,
+  UnderworldAccess
 }

@@ -1,5 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
@@ -182,7 +183,7 @@ export class ZoneNavigationComponent implements OnInit {
     subzone.isSelected = true;
     subzone.showNewNotification = false;
     this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
-    this.globalService.resetCooldowns(); //todo: maybe?
+    this.globalService.resetCooldowns(); 
 
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -190,6 +191,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
     var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
     if (enemyOptions.length > 0) {
@@ -227,7 +229,12 @@ export class ZoneNavigationComponent implements OnInit {
     if (relatedBallad !== undefined)
       relatedBallad.isSelected = true;
     this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
-    this.globalService.resetCooldowns(); //todo: maybe?
+    this.globalService.resetCooldowns();
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -264,7 +271,12 @@ export class ZoneNavigationComponent implements OnInit {
     if (relatedBallad !== undefined)
       relatedBallad.isSelected = true;
     this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
-    this.globalService.resetCooldowns(); //todo: maybe?
+    this.globalService.resetCooldowns();
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -278,6 +290,15 @@ export class ZoneNavigationComponent implements OnInit {
       this.balladService.setActiveSubZone(startingPoint.type);
       this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
     }
+
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    
+    var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + startingPoint?.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
   }
@@ -402,7 +423,7 @@ export class ZoneNavigationComponent implements OnInit {
     var passedTime = 0;
 
     for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) {
-      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]);
+      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i])  * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
       totalLength += actionLength;
 
       if (this.globalService.globalVar.alchemy.alchemyStep > i + 1) {
@@ -429,7 +450,7 @@ export class ZoneNavigationComponent implements OnInit {
 
     for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++) {
       var step = this.globalService.globalVar.alchemy.creatingRecipe.steps[i - 1];
-      timeRemaining += this.alchemyService.getActionLength(step);
+      timeRemaining += this.alchemyService.getActionLength(step) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
     }
 
     if (timeRemaining > 60 * 60)

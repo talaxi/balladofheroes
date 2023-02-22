@@ -173,7 +173,7 @@
     justify-content: stretch;
     grid-template-areas:
         "battleItem1 battleItem2 battleItem3 battleItem4";
-    gap: 15%;
+    gap: 14.75%;
 }
 
 .battleItem1 {
@@ -250,12 +250,13 @@
 .cancelBattleItemButton {
     width: 100%;
     font-size: .75rem;
+    margin-top: .15rem;
 }
 
 .itemAmount {
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: .1rem;
 }
 
 ::ng-deep .mat-menu-panel {

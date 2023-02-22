@@ -60,3 +60,7 @@
 .activeText {
     color: var(--foreground-secondary) !important;
 }
+
+.rewardAlreadyObtained {
+    text-decoration: line-through;
+}

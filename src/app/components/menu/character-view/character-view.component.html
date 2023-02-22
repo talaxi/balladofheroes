@@ -206,7 +206,7 @@
             </div>
         </div>
         <br />
-        <div *ngIf="hasGodEquipped()">
+        <div *ngIf="multipleGodsAvailable()">
             <span class="sectionHeaderText sectionHeading middleAlign">Equipped God Abilities</span>
             <button *ngIf="changeGodsAvailable" class="changeButton buttonStyled buttonOffset"
                 (click)="openChangeGodMenu(changeGodView)">Change Gods</button>

@@ -8,15 +8,23 @@
 }
 
 .cancelBattleItemButton {
+    margin-top: .1rem;
     width: 100%;
 }
 
 .itemAmount {
     position: absolute;
     bottom: 0;
-    right: 0;
+    right: .1rem;
 }
 
 .targetModeActive {
     border: 2px solid red !important;
+}
+
+.customButtonStyle {
+    background-color: var(--button-background-color);
+    color: var(--foreground-quaternary);
+    font-weight: bold;
+    font-size: .95rem;
 }

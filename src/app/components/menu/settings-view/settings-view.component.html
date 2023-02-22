@@ -1,47 +1,62 @@
-<div class="saveLoad">
-    <span class="s4Heading">Save/Load</span>
-    <br />
-    <div class="importExportDiv">
-        <textarea id="importExport" name="importExport" rows="10" [(ngModel)]="importExportValue"></textarea>
-        <div class="importExportButtons">
-            <button (click)="LoadGame()">
-                Import
-            </button>
-            <button (click)="SaveGame()">
-                Export
-            </button>
-        </div>
+<div class="settingsGrid">
+    <div class="settings">
+        <div>
+        <span>Story speed</span>
         <br/>
-        <div class="importExportButtons">
-            <div>
-                <button (click)="LoadGameFromFile()">
-                    Import from File
+        <mat-button-toggle-group [(ngModel)]="storyStyle" aria-label="Font Style" (change)="setStoryStyle()">
+            <mat-button-toggle [value]="storyStyleEnum.Slow">Slow</mat-button-toggle>
+            <mat-button-toggle [value]="storyStyleEnum.Medium">Medium</mat-button-toggle>
+            <mat-button-toggle [value]="storyStyleEnum.Fast">Fast</mat-button-toggle>
+            <mat-button-toggle [value]="storyStyleEnum.Skip">Skip</mat-button-toggle>
+          </mat-button-toggle-group>
+        </div>
+        <br />
+        <div class="updateKeybinds">
+            <button class="buttonStyled" (click)="openKeybinds(keybindContent)">Update Keybinds</button>
+        </div>
+    </div>
+    <div class="saveLoad">
+        <span class="s4Heading">Save/Load</span>
+        <br />
+        <div class="importExportDiv">
+            <textarea id="importExport" name="importExport" rows="10" [(ngModel)]="importExportValue"></textarea>
+            <div class="importExportButtons">
+                <button class="buttonStyled" (click)="LoadGame()">
+                    Import
                 </button>
-                <input type='file' class="spaced" id="fileUpload" (change)="fileChanged($event)">
+                <button class="buttonStyled" (click)="SaveGame()">
+                    Export
+                </button>
             </div>
-            <button (click)="SaveGameToFile()">
-                Export to File
-            </button>
+            <br />
+            <div class="importExportButtons">
+                <div>
+                    <button class="buttonStyled" (click)="LoadGameFromFile()">
+                        Import from File
+                    </button>
+                    <input type='file' class="spaced" id="fileUpload" (change)="fileChanged($event)">
+                </div>
+                <button class="buttonStyled" (click)="SaveGameToFile()">
+                    Export to File
+                </button>
+            </div>
         </div>
-    </div>
-    <br />
-    <br />
-    <div class="codeRedemptionDiv">
-        <span class="s4Heading">Code Redemption</span>
         <br />
         <br />
-        <div class="codeRedemption">
-            <label for="codeRedemptionText">Code: </label>
-            <input id="codeRedemptionText" type="text" class="spaced codeRedemptionInput"
-                [(ngModel)]="enteredRedemptionCode">
-            <button class="screenMarginLeft" (click)="enterRedemptionCode()">
-                Enter
-            </button>
+        <div class="codeRedemptionDiv">
+            <span class="s4Heading">Code Redemption</span>
+            <br />
+            <br />
+            <div class="codeRedemption">
+                <label for="codeRedemptionText">Code: </label>
+                <input id="codeRedemptionText" type="text" class="spaced codeRedemptionInput"
+                    [(ngModel)]="enteredRedemptionCode">
+                <button class="screenMarginLeft buttonStyled" (click)="enterRedemptionCode()">
+                    Enter
+                </button>
+            </div>
+            <br />
         </div>
-        <br/>
-    </div>
-    <div class="updateKeybinds">
-        <button (click)="openKeybinds(keybindContent)">Update Keybinds</button>
     </div>
 </div>
 

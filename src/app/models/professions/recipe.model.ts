@@ -1,5 +1,6 @@
 import { Type } from "class-transformer";
 import { AlchemyActionsEnum } from "../enums/alchemy-actions-enum.model";
+import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
 import { ItemTypeEnum } from "../enums/item-type-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
 import { ResourceValue } from "../resources/resource-value.model";
@@ -13,6 +14,7 @@ export class Recipe {
     numberOfSteps: number;
     steps: AlchemyActionsEnum[];
     expGain: number;
+    quality: EquipmentQualityEnum;
 
     constructor() {
         this.ingredients = [];

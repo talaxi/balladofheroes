@@ -267,7 +267,7 @@ export class LookupService {
       name = "Fortified Bronze Sword";
     else if (type === ItemsEnum.SteelSword)
       name = "Steel Sword";
-      else if (type === ItemsEnum.SwordOfFlames)
+    else if (type === ItemsEnum.SwordOfFlames)
       name = "Sword of Flames";
     else if (type === ItemsEnum.GoldenSword)
       name = "Golden Sword";
@@ -391,9 +391,9 @@ export class LookupService {
     else if (type === ItemsEnum.SmallTopaz)
       name = "Small Topaz";
     else if (type === ItemsEnum.SmallRuby)
-      name = "Small Ruby";      
+      name = "Small Ruby";
     else if (type === ItemsEnum.Narcissus)
-    name = "Narcissus";
+      name = "Narcissus";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -500,12 +500,18 @@ export class LookupService {
       name = "Small Charm of Hades";
     else if (type === ItemsEnum.LargeCharmOfHades)
       name = "Large Charm of Hades";
+      else if (type === ItemsEnum.SmallCharmOfIngenuity)
+      name = "Small Charm of Ingenuity";
+    else if (type === ItemsEnum.LargeCharmOfIngenuity)
+      name = "Large Charm of Ingenuity";
 
     //other
     else if (type === ItemsEnum.WarriorClass)
       name = "<span class='warriorColor'>Warrior</span>";
     else if (type === ItemsEnum.PriestClass)
       name = "<span class='priestColor'>Priest</span>";
+    else if (type === ItemsEnum.UnderworldAccess)
+      name = "Freely Enter and Leave Underworld";
 
     return name;
   }
@@ -566,7 +572,7 @@ export class LookupService {
     else if (type === ItemsEnum.DebilitatingToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's agility by 10% for 5 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.PoisonousToxin)
-      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 6 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 8 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.HeroicElixir)
       name = "Increase user's Attack by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
 
@@ -674,7 +680,7 @@ export class LookupService {
         if (matchedBallad !== undefined && !matchedBallad.isAvailable) {
           name = "<span class='subzoneUnavailable'>" + name + " (Unavailable)</span>";
           locations += "<div class='" + subzone.toString() + "'>" + name + "</div>";
-        }        
+        }
         else if (matchedSubzone.isAvailable) {
           //TODO: clear count should be relevant here, <100 clears = ???, >100 clears gives info maybe
           locations += "<div class='subzoneClickableItem " + subzone.toString() + "'>" + name + "</div>";
@@ -760,10 +766,10 @@ export class LookupService {
     }
     if (type === ItemsEnum.SwordOfFlames) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 20, 0, 18, 0, 0);      
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.OnAbilityUse;      
+      equipmentPiece.stats = new CharacterStats(0, 20, 0, 18, 0, 0);
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.OnAbilityUse;
       equipmentPiece.stats.elementalDamageIncrease.fire += .1;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 30, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire));        
+      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 30, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire));
     }
     if (type === ItemsEnum.GoldenSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
@@ -1002,7 +1008,7 @@ export class LookupService {
       description = "For 20 seconds, your auto attacks deal 50% increased damage.";
     }
     if (type === OverdriveNameEnum.Protection) {
-      description = "After 10 seconds, you recover 50% of the damage you took while this effect was active.";
+      description = "After 20 seconds, you recover 50% of the damage you took while this effect was active.";
     }
     if (type === OverdriveNameEnum.Nature) {
       description = "For 20 seconds, all non elemental attacks take on the element of the last elemental attack you used while this effect is active.";
@@ -1050,7 +1056,7 @@ export class LookupService {
     }
     if (type === OverdriveNameEnum.Protection) {
       overdriveInfo.overdriveGaugeTotal = 150;
-      overdriveInfo.overdriveActiveLength = 10;
+      overdriveInfo.overdriveActiveLength = 20;
     }
 
     return overdriveInfo;
@@ -1205,7 +1211,7 @@ export class LookupService {
     if (abilityName === "Divine Strike")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
     if (abilityName === "Heavenly Shield")
-      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. " + cooldown + " second cooldown.";
+      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Blinding Light")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Blind them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
@@ -1707,7 +1713,7 @@ export class LookupService {
     }
     if (item === ItemsEnum.PoisonousToxin) {
       itemEffect.dealsDamage = false;
-      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PoisonousToxin, 30 * 60, .1, false, true));
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PoisonousToxin, 30 * 60, .1, false, true, undefined, "Poisonous Toxin"));
     }
     if (item === ItemsEnum.PoisonExtractPotion) {
       itemEffect.dealsDamage = true;
@@ -2173,7 +2179,7 @@ export class LookupService {
         }
 
         if (equipment.itemType === ItemsEnum.SwordOfFlames)
-            equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
+          equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
       });
     }
 

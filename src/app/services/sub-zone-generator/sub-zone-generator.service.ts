@@ -615,6 +615,34 @@ export class SubZoneGeneratorService {
       enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul)); 
       battleOptions.push(enemyTeam5);
     }
+    if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlessedShade));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlessedShade));
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));                   
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      battleOptions.push(enemyTeam3);
+
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExiledHoplite));
+      battleOptions.push(enemyTeam4);
+      
+      var enemyTeam5: EnemyTeam = new EnemyTeam();
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul)); 
+      battleOptions.push(enemyTeam5);
+    }
     
 
     battleOptions.forEach(enemyTeam => {
@@ -706,6 +734,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.LibyaIsleCenter) {
       balladEnums.push(BalladEnum.Labors);
     }
+    if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {
+      balladEnums.push(BalladEnum.Boar);
+    }
 
     return balladEnums;
   }
@@ -724,6 +755,9 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.AsphodelLetheTributary) {
       zoneEnums.push(ZoneEnum.Elysium);
+    }
+    if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {
+      zoneEnums.push(ZoneEnum.PeloposNisos);
     }
 
     return zoneEnums;
@@ -818,6 +852,9 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.ElysiumOpenPlains) {
       subZoneEnums.push(SubZoneEnum.ElysiumColiseum);      
+    }
+    if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {
+      subZoneEnums.push(SubZoneEnum.PeloposNisosMouthOfTheUnderworld);      
     }
 
     return subZoneEnums;

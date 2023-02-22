@@ -57,9 +57,9 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 11 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum)
       this.showStory = true;
-    else if (this.globalService.globalVar.currentStoryId === 12 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum && this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial)!.defeatCount > 0)
+    else if (this.globalService.globalVar.currentStoryId === 12 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum && this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead)!.defeatCount > 0)
       this.showStory = true;
-    else if (this.globalService.globalVar.currentStoryId === 13 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumGatesOfHornAndIvory)
+    else if (this.globalService.globalVar.currentStoryId === 13 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ElysiumGatesOfHornAndIvory))
       this.showStory = true;
 
     if (this.showStory)
@@ -167,10 +167,10 @@ export class StoryService {
           "<span class='hermesColor bold'>“He's a man of few words. Much like yourself lately!”</span> Hermes whispers to you, cracking a smile. Hermes guides all souls down to the underworld, so it would seem the gravity of dying means little to him. You say nothing as you hear Hades decree that your partner will be joining you in Asphodel. <br/><br/>" +
           "<span class='hadesColor bold'>“Hermes. A word.”</span>";
       if (pageCount === 2)
-        sceneText = "<span class='archerColor bold'>“Asphodel? <i>Really?</i>”</span> Your partner moves out of the line towards you while <span class='hermesColor bold'>Hermes</span> and <span class='hadesColor bold'>Hades</span> converse. <span class='archerColor bold'>“All I've done... and still I go to Asphodel?”</span> Zosime's thoughts mirror your own. You thought your destiny was to be a hero -- but that had all gone up in smoke. Is this all you were meant for?";          
+        sceneText = "<span class='archerColor bold'>“Asphodel? <i>Really?</i>”</span> Your partner moves out of the line towards you while <span class='hermesColor bold'>Hermes</span> and <span class='hadesColor bold'>Hades</span> converse. <span class='archerColor bold'>“All I've done... and still I go to Asphodel?”</span> Zosime's thoughts mirror your own. You thought your destiny was to be a hero -- but that had all gone up in smoke. Is this all you were meant for?";
       if (pageCount === 3)
         sceneText = "<span class='hermesColor bold'>“Right, well I've left you two to brood long enough. Let's have a quick chat.”</span> Hermes says as he leads you to an empty part of the room. <span class='hermesColor bold'>“Believe it or not, even Hades is concerned about the impending war for Olympus. There's going to be a tournament in the Coliseum of Elysium. Hades is granting the winner, or winners, passage from the Underworld so long as they fight with Olympus when the time comes. I don't know if you really have what it takes but… why not give it a shot?”</span> <br/><br/>" +
-        "<span class='archerColor bold'>Zosime</span> looks to you, but you offer up no response. <span class='archerColor bold'>“Let's do this. Our story doesn't have to be over yet.”</span> She says.";
+          "<span class='archerColor bold'>Zosime</span> looks to you, but you offer up no response. <span class='archerColor bold'>“Let's do this. Our story doesn't have to be over yet.”</span> She says.";
     }
     else if (storyId === 10) {
       if (pageCount === 1)
@@ -229,7 +229,7 @@ export class StoryService {
 
   handleScene(deltaTime: number) {
     this.globalService.globalVar.isBattlePaused = true;
-    if (this.globalService.globalVar.currentStoryId === 0) {     
+    if (this.globalService.globalVar.currentStoryId === 0) {
       this.pageCount = 2;
     }
 
@@ -268,16 +268,16 @@ export class StoryService {
       //Speak to Hades for the first time
       this.pageCount = 3;
     }
-    if (this.globalService.globalVar.currentStoryId === 10) {     
+    if (this.globalService.globalVar.currentStoryId === 10) {
       this.pageCount = 2;
     }
-    if (this.globalService.globalVar.currentStoryId === 11) {     
+    if (this.globalService.globalVar.currentStoryId === 11) {
       this.pageCount = 3;
     }
-    if (this.globalService.globalVar.currentStoryId === 12) {     
+    if (this.globalService.globalVar.currentStoryId === 12) {
       this.pageCount = 2;
     }
-    if (this.globalService.globalVar.currentStoryId === 13) {     
+    if (this.globalService.globalVar.currentStoryId === 13) {
       this.pageCount = 2;
     }
 
@@ -325,15 +325,16 @@ export class StoryService {
       }
       if (this.globalService.globalVar.currentStoryId === 10) {
         var theDepths = this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths);
-        if (theDepths !== undefined)
-        {
+        if (theDepths !== undefined) {
           theDepths.isAvailable = true;
 
           this.achievementService.createDefaultAchievementsForSubzone(theDepths.type).forEach(achievement => {
             this.globalService.globalVar.achievements.push(achievement);
           });
         }
-        /*this.globalService.globalVar.isBattlePaused = false;
+
+      }
+      if (this.globalService.globalVar.currentStoryId === 14) {
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
           championBallad.isAvailable = true;
@@ -342,10 +343,9 @@ export class StoryService {
         if (gorgonBallad !== undefined)
           gorgonBallad.isAvailable = true;
 
-        var laborsBallad = this.balladService.findBallad(BalladEnum.Labors);
-        if (laborsBallad !== undefined)
-          laborsBallad.isAvailable = true;
-*/  
+        var boarBallad = this.balladService.findBallad(BalladEnum.Boar);
+        if (boarBallad !== undefined)
+          boarBallad.isAvailable = true;
       }
     }
 
@@ -412,14 +412,14 @@ export class StoryService {
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
       }
-      if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavor) {        
+      if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavor) {
         this.globalService.globalVar.chthonicPowers.isChthonicResetUnlocked = true;
       }
 
       this.currentPage = 1;
       this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);
       this.showOptionalStory = OptionalSceneEnum.None;
-      this.returnedFromOptionalScene = true;      
+      this.returnedFromOptionalScene = true;
     }
 
     if (this.showOptionalStory === OptionalSceneEnum.None)

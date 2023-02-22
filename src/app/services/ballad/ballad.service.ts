@@ -1,5 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Battle } from 'src/app/models/battle/battle.model';
+import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -108,6 +109,7 @@ export class BalladService {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
     if (!relatedSubzone.isTown) {
       var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(relatedSubzone.type);

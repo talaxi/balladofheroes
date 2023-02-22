@@ -112,14 +112,36 @@ export class ChangeGodViewComponent implements OnInit {
   }
 
   selectNewGod(type: GodEnum) {
+    var party = this.globalService.getActivePartyCharacters(true);
+    var swappedGod = GodEnum.None;
+
+    if (this.swappingGod === 1)
+      swappedGod = this.character.assignedGod1;
+    else if (this.swappingGod === 2)
+      swappedGod = this.character.assignedGod2;
+
+    var swappingUndefinedGod = false;
+    if ((this.swappingGod === 1 && this.character.assignedGod1 === GodEnum.None) ||
+    (this.swappingGod === 2 && this.character.assignedGod2 === GodEnum.None))
+      swappingUndefinedGod = true;
+
     if (this.isCurrentlyAssigned(type))
     {
-      var party = this.globalService.getActivePartyCharacters(true);
       party.forEach(member => {
         if (member.assignedGod1 === type)
-          member.assignedGod1 = this.character.assignedGod1;
+        {
+          if (swappingUndefinedGod)
+            member.assignedGod1 = GodEnum.None;
+          else
+            member.assignedGod1 = swappedGod;
+        }
         else if (member.assignedGod2 === type)
-          member.assignedGod2 = this.character.assignedGod2;
+        {
+          if (swappingUndefinedGod)
+            member.assignedGod2 = GodEnum.None;
+          else
+            member.assignedGod2 = swappedGod;
+        }
       })
     }
 
@@ -129,6 +151,15 @@ export class ChangeGodViewComponent implements OnInit {
       this.character.assignedGod2 = type;
 
     this.swappingGod = undefined;
+
+    //if member has a god in slot 2 but not 1, reverse them
+    party.forEach(member => {
+      if (member.assignedGod1 === GodEnum.None && member.assignedGod2 !== GodEnum.None)
+      {
+        member.assignedGod1 = member.assignedGod2;
+        member.assignedGod2 = GodEnum.None;
+      }
+    });
   }
 
   isCurrentlyAssigned(type: GodEnum) {

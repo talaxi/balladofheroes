@@ -9,12 +9,12 @@
 </div>
 <hr />
 <div class="centeredText" *ngIf="creatingRecipe()">
-    <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth"
+    <span class='offsetWidth' *ngIf="this.getTotalAmountToCreate() > 1"></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth"
         *ngIf="this.getTotalAmountToCreate() > 1"><i>({{this.getAmountCreated() + 1}} of
             {{this.getTotalAmountToCreate()}})</i></span>
     <br />
     <mat-progress-bar mode="determinate" [value]="getStepProgress()"
-        class="purple-progress centeredBar removeAnimation">
+        class="purple-progress centeredBar removeAnimation removeTransition">
     </mat-progress-bar>
     <span><i>{{getRecipeStepName()}}.. ({{getTimeRemaining()}} remaining)</i></span>
 </div>

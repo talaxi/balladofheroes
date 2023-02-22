@@ -43,7 +43,7 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   getCraftedItemName(recipe: Recipe) {
-    return this.lookupService.getItemName(recipe.createdItem);
+    return this.lookupService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.alchemyService.getAmountCanCreate(recipe) + " available)</i>";
   }
 
   getRecipeList() {
@@ -70,26 +70,26 @@ export class AlchemyViewComponent implements OnInit {
     if (this.selectedRecipe === undefined)
       return "";
 
-      this.selectedRecipe.ingredients.forEach(resource => {
-        var displayName = this.lookupService.getItemName(resource.item);
-        var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
-        var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";  
-  
-        ingredients += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" +(resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";      
-      });
-  
-      if (ingredients.length > 0) {
-        ingredients = this.utilityService.getSanitizedHtml(ingredients);
-      }   
+    this.selectedRecipe.ingredients.forEach(resource => {
+      var displayName = this.lookupService.getItemName(resource.item);
+      var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
+      var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
-      return ingredients;
+      ingredients += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
+    });
+
+    if (ingredients.length > 0) {
+      ingredients = this.utilityService.getSanitizedHtml(ingredients);
+    }
+
+    return ingredients;
   }
 
   getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum, amountNeeded: number, amountOwned: number) {
     var classText = "resourceKeyword";
-    
+
     if (amountOwned < amountNeeded)
-      classText = "insufficientResourcesKeyword";  
+      classText = "insufficientResourcesKeyword";
 
     return classText;
   }
@@ -104,13 +104,11 @@ export class AlchemyViewComponent implements OnInit {
     var totalLength = 0;
     var passedTime = 0;
 
-    for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) 
-    {
-      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]);
+    for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) {
+      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
       totalLength += actionLength;
 
-      if (this.globalService.globalVar.alchemy.alchemyStep > i + 1)
-      {
+      if (this.globalService.globalVar.alchemy.alchemyStep > i + 1) {
         passedTime += actionLength;
       }
     }
@@ -123,7 +121,7 @@ export class AlchemyViewComponent implements OnInit {
   getRecipeStepName() {
     if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
       return "";
-    return this.lookupService.getAlchemyActionName(this.globalService.globalVar.alchemy.creatingRecipe.steps[this.globalService.globalVar.alchemy.alchemyStep-1]);
+    return this.lookupService.getAlchemyActionName(this.globalService.globalVar.alchemy.creatingRecipe.steps[this.globalService.globalVar.alchemy.alchemyStep - 1]);
   }
 
   getSelectedRecipeDescription() {
@@ -133,38 +131,39 @@ export class AlchemyViewComponent implements OnInit {
   getTimeRemaining() {
     if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
       return "";
-
+    
     var timeRemaining = this.globalService.globalVar.alchemy.alchemyTimerLength - this.globalService.globalVar.alchemy.alchemyTimer;
 
-    for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++)
-    {
-      var step = this.globalService.globalVar.alchemy.creatingRecipe.steps[i-1];
-      timeRemaining += this.alchemyService.getActionLength(step);
+    for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++) {
+      var step = this.globalService.globalVar.alchemy.creatingRecipe.steps[i - 1];
+      timeRemaining += this.alchemyService.getActionLength(step) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
     }
 
-    if (timeRemaining > 60*60)
+    if (timeRemaining > 60 * 60)
       return this.utilityService.convertSecondsToHHMMSS(timeRemaining);
 
     return this.utilityService.convertSecondsToMMSS(timeRemaining);
   }
 
   createSelectedRecipe() {
-    if (this.canCreateItem())
-    {
-      this.spendResourcesOnItem();
+    if (this.canCreateItem()) {
+      var rng = this.utilityService.getRandomNumber(0, 1);
+      if (rng >= this.alchemyService.getMaterialRetentionChance(this.selectedRecipe.quality)) {
+        this.spendResourcesOnItem();
+      }
       this.alchemyService.initializeCreation(this.selectedRecipe, this.createAmount);
     }
   }
 
   canCreateItem() {
     var canBuy = this.alchemyService.canCreateItem(this.selectedRecipe);
-   
+
     return canBuy;
   }
 
   spendResourcesOnItem() {
     this.alchemyService.spendResourcesOnRecipe(this.selectedRecipe);
-    
+
   }
 
   changeCreateAmount(amount: number) {

@@ -200,7 +200,7 @@ export class GlobalService {
       shieldSlam.effectiveness = 1.4;
       shieldSlam.secondaryEffectiveness = .25;
       shieldSlam.dealsDirectDamage = true;
-      shieldSlam.cooldown = shieldSlam.currentCooldown = 5;
+      shieldSlam.cooldown = shieldSlam.currentCooldown = 43;
       character.abilityList.push(shieldSlam);
     }
 
@@ -214,7 +214,7 @@ export class GlobalService {
       heal.heals = true;
       heal.targetsAllies = true;
       heal.dealsDirectDamage = false;
-      heal.cooldown = heal.currentCooldown = 5;
+      heal.cooldown = heal.currentCooldown = 17;
       character.abilityList.push(heal);
 
       var faith = new Ability();
@@ -235,7 +235,7 @@ export class GlobalService {
       barrier.targetsAllies = true;
       barrier.effectiveness = .7;
       barrier.threshold = .10;
-      barrier.cooldown = barrier.currentCooldown = 45;
+      barrier.cooldown = barrier.currentCooldown = 44;
       barrier.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .7, true, true, true, "", .1));
       character.abilityList.push(barrier);
     }
@@ -287,7 +287,7 @@ export class GlobalService {
       divineStrike.name = "Divine Strike";
       divineStrike.isAvailable = false;
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      divineStrike.cooldown = divineStrike.currentCooldown = 30;
+      divineStrike.cooldown = divineStrike.currentCooldown = 33;
       divineStrike.dealsDirectDamage = true;
       divineStrike.effectiveness = 1.6;
       divineStrike.elementalType = ElementalTypeEnum.Holy;
@@ -306,7 +306,7 @@ export class GlobalService {
       blindingLight.name = "Blinding Light";
       blindingLight.requiredLevel = this.utilityService.godAbility3Level;
       blindingLight.isAvailable = false;
-      blindingLight.cooldown = blindingLight.currentCooldown = 50;
+      blindingLight.cooldown = blindingLight.currentCooldown = 51;
       blindingLight.isAoe = true;
       blindingLight.dealsDirectDamage = true;
       blindingLight.effectiveness = .6;
@@ -339,7 +339,7 @@ export class GlobalService {
       electricVolley.name = "Paralyzing Volley";
       electricVolley.isAvailable = false;
       electricVolley.requiredLevel = this.utilityService.godAbility2Level;
-      electricVolley.cooldown = electricVolley.currentCooldown = 60;
+      electricVolley.cooldown = electricVolley.currentCooldown = 55;
       electricVolley.effectiveness = .5;
       electricVolley.isAoe = true;
       electricVolley.dealsDirectDamage = true;
@@ -350,7 +350,7 @@ export class GlobalService {
       exposeWeakness.name = "Expose Weakness";
       exposeWeakness.isAvailable = false;
       exposeWeakness.requiredLevel = this.utilityService.godAbility3Level;
-      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 60;
+      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 58;
       exposeWeakness.dealsDirectDamage = true;
       exposeWeakness.effectiveness = 2.3;
       exposeWeakness.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
@@ -414,9 +414,9 @@ export class GlobalService {
       trickShot.name = "Nimble Strike";
       trickShot.isAvailable = false;
       trickShot.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      trickShot.cooldown = trickShot.currentCooldown = 8;
+      trickShot.cooldown = trickShot.currentCooldown = 12;
       trickShot.dealsDirectDamage = true;
-      trickShot.effectiveness = 1.2;
+      trickShot.effectiveness = 1.1;
       god.abilityList.push(trickShot);
 
       var embellish = new Ability();
@@ -433,7 +433,7 @@ export class GlobalService {
       specialDelivery.name = "Special Delivery";
       specialDelivery.requiredLevel = this.utilityService.godAbility3Level;
       specialDelivery.isAvailable = false;
-      specialDelivery.cooldown = specialDelivery.currentCooldown = 35;
+      specialDelivery.cooldown = specialDelivery.currentCooldown = 34;
       specialDelivery.dealsDirectDamage = false;
       specialDelivery.effectiveness = 1.1;
       specialDelivery.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.1, true, true));
@@ -602,7 +602,13 @@ export class GlobalService {
       statusEffect.isPermanent = true;
 
     if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark || type === StatusEffectEnum.Stun || type === StatusEffectEnum.Blind ||
-      type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.InstantHealAfterAutoAttack)
+      type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.InstantHealAfterAutoAttack || type === StatusEffectEnum.AgilityDown || 
+      type === StatusEffectEnum.AgilityUp || type === StatusEffectEnum.AttackDown || type === StatusEffectEnum.AttackUp || 
+      type === StatusEffectEnum.DefenseDown || type === StatusEffectEnum.DefenseUp || type === StatusEffectEnum.ResistanceDown || type === StatusEffectEnum.ResistanceUp || 
+      type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp || 
+      type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
+      type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
+      || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts)
       statusEffect.refreshes = true;
 
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin)
@@ -1189,7 +1195,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 40)
         userGainsEffect.effectiveness += .05;
       else
-        ability.effectiveness += .3;
+        ability.effectiveness += .25;
     }
     else if (god.type === GodEnum.Artemis) {
       //every 10 upgrades until level 100, reduce cooldown
@@ -1203,7 +1209,7 @@ export class GlobalService {
           targetGainsEffect.duration += 1;
       }
       else
-        ability.effectiveness += .35;
+        ability.effectiveness += .3;
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1255,7 +1261,7 @@ export class GlobalService {
       else if (ability.abilityUpgradeLevel % 10 === 5 && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += 1;
       else
-        ability.effectiveness += .15;
+        ability.effectiveness += .1;
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1304,7 +1310,7 @@ export class GlobalService {
       else if ((ability.abilityUpgradeLevel === 35 || ability.abilityUpgradeLevel === 70) && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += 1;
       else
-        ability.effectiveness += .2;
+        ability.effectiveness += .15;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1312,7 +1318,7 @@ export class GlobalService {
       else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.effectiveness += .01;
       else
-        ability.effectiveness += .4;
+        ability.effectiveness += .35;
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1349,7 +1355,7 @@ export class GlobalService {
 
     if (god.type === GodEnum.Athena) {
       if (ability.abilityUpgradeLevel <= 100)
-        userGainsEffect.effectiveness += .05;
+        userGainsEffect.effectiveness += .01;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel <= 100)
@@ -1363,7 +1369,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= 2;
       else
-        ability.effectiveness += .3;
+        ability.effectiveness += .15;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1425,16 +1431,16 @@ export class GlobalService {
     }
     else if (godLevel % 50 === 0) {
       if (god.type === GodEnum.Athena) {
-        stats.defense += godLevel / 2;
+        stats.defense += Math.round(godLevel / (3 + (1/3)));
       }
       else if (god.type === GodEnum.Artemis) {
-        stats.luck += godLevel / 2;
+        stats.luck += Math.round(godLevel / (3 + (1/3)));
       }
       else if (god.type === GodEnum.Hermes) {
-        stats.agility += godLevel / 2;
+        stats.agility += Math.round(godLevel / (3 + (1/3)));
       }
       else if (god.type === GodEnum.Apollo) {
-        stats.resistance += godLevel / 2;
+        stats.resistance += Math.round(godLevel / (3 + (1/3)));
       }
     }
 

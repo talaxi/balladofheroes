@@ -161,8 +161,8 @@ export class CharacterViewComponent implements OnInit {
     return this.globalService.globalVar.gods.some(item => item.isAvailable);
   }
 
-  hasGodEquipped() {
-    return this.character.assignedGod1 !== GodEnum.None || this.character.assignedGod2 !== GodEnum.None;
+  multipleGodsAvailable() {
+    return this.globalService.globalVar.gods.filter(item => item.isAvailable).length >= 2;
   }
 
   getHpRegenBonus() {

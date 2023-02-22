@@ -46,5 +46,6 @@ export enum BestiaryEnum {
   ExiledHoplite,
   Ixion,
   Castor,
-  Pollux
+  Pollux,
+  Sisyphus
 }

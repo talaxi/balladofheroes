@@ -89,3 +89,7 @@
     font-variant: small-caps;
     font-weight: bold;
 }
+
+.globalHeaderItem {
+    color: var(--foreground-quaternary);
+}

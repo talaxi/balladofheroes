@@ -7,9 +7,14 @@ export class Timers {
     chestLength: number;
     townHpGainLength: number;
 
+    skipStorySpeed = 0;
+    fastStorySpeed = 15;
+    mediumStorySpeed = 30;
+    slowStorySpeed = 60;
+
     constructor() {
         this.scenePageTimer = 0;
-        this.scenePageLength = 30; 
+        this.scenePageLength = this.mediumStorySpeed; 
 
         this.chestTimer = 0;
         this.chestLength = 5;

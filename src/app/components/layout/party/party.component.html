@@ -95,8 +95,8 @@
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"
             [class]="'battleItem' + (i + 1)">
             <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}"
-                (menuOpened)="openItemModal(i)" mat-icon-button #itemMenuTrigger
-                [matMenuTriggerFor]="battleItems.length > 0 ? itemMenu : emptyItemMenu" [disableRipple]="true">
+                (menuOpened)="openItemModal(i)" class="buttonStyled" #itemMenuTrigger
+                [matMenuTriggerFor]="battleItems.length > 0 ? itemMenu : emptyItemMenu">
                 <img class="itemImage" src="assets/svg/emptyItemSlot.svg"></button>
             <div *ngIf="!isBattleItemSlotUnequipped(i)">
                 <app-item-belt-item [slotNumber]="i"></app-item-belt-item>

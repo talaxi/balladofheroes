@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { plainToInstance } from 'class-transformer';
+import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -17,6 +18,8 @@ export class SettingsViewComponent implements OnInit {
   importExportValue: string;
   file: any;
   enteredRedemptionCode: string;
+  storyStyle: StoryStyleSettingEnum;
+  storyStyleEnum = StoryStyleSettingEnum;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog) { }
@@ -24,6 +27,13 @@ export class SettingsViewComponent implements OnInit {
   ngOnInit(): void {
     console.log(this.globalService.globalVar);
     console.log(JSON.stringify(this.globalService.globalVar));
+
+    var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
+    if (storyStyle === undefined)
+      this.storyStyle = StoryStyleSettingEnum.Medium;
+    else
+      this.storyStyle = storyStyle;
+
   }
 
   public SaveGame() {
@@ -88,6 +98,19 @@ export class SettingsViewComponent implements OnInit {
       }
       fileReader.readAsText(this.file);
     }
+  }
+  
+  setStoryStyle() {
+    if (this.storyStyle === StoryStyleSettingEnum.Fast)
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.fastStorySpeed;
+      if (this.storyStyle === StoryStyleSettingEnum.Skip)
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.skipStorySpeed;
+      if (this.storyStyle === StoryStyleSettingEnum.Medium)
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.mediumStorySpeed;
+      if (this.storyStyle === StoryStyleSettingEnum.Slow)
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.slowStorySpeed;
+
+    this.globalService.globalVar.settings.set("storyStyle", this.storyStyle);
   }
 
   openKeybinds(content: any) {    

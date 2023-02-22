@@ -30,6 +30,9 @@ export class GameLogService {
     if (type === GameLogEntryEnum.Alchemy) {
       entry = "<span class='alchemyText'>" + entry + "</span>";
     }
+    if (type === GameLogEntryEnum.Overdrive) {
+      entry = "<span class='overdriveText'>" + entry + "</span>";
+    }
 
     this.gameLog.push(entry + "<br/>");
 

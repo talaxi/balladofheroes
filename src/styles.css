@@ -97,14 +97,16 @@
   --background-quarternary: #2A2C31;
   --background-five: #007bff;
   --background-light: #54595E;
+  --button-background-color: #272b35;
   --button-color: #F0F0F0;
   --button-hover: #54595E;
   --button-selected: #1e2023;
+  --section-header: #08090A;
   --primary-default: #5dfdcb;
   --primary-light: #b2ffe7;
 
   --positive-status-effect: #24b286;
-  --negative-status-effect: #c72b2d;
+  --negative-status-effect: #E62B2D;
 
   --battle-update-text: #e0d01d;
   --battle-item-text: #05CF51;
@@ -150,6 +152,7 @@
   --insufficientResourcesKeywordColor: #7a818c;
   --chthonicFavorColor: #ABB5DC;
   --chthonicPowerColor: #83C2A6;
+  --overdriveColor: #FA989E;
 
   --barrierColor: #0FCCC6;
 
@@ -423,10 +426,12 @@ h6 {
 }
 
 .buttonStyled {
-  background-color: var(--background-quarternary);
+  background-color: var(--button-background-color);
   color: var(--foreground-quaternary);
   font-weight: bold;
   font-size: .95rem;
+  padding: .25rem .5rem;
+  margin: .25rem .25rem;
 }
 
 .buttonStyled:hover {
@@ -485,7 +490,7 @@ button:active:enabled {
 }
 
 .leftAlignedMiniHr {
-  width: 60%;
+  width: 70%;
   opacity: .75;
   margin-left: 0;
 }
@@ -550,6 +555,10 @@ html, body { height: 100%; }
 
 .alchemyText {
   color: var(--alchemyColor);
+}
+
+.overdriveText {
+  color: var(--overdriveColor);
 }
 
 .tutorialText {
@@ -810,7 +819,7 @@ button {
 .sectionHeaderText
 {
   color: var(--foreground-quaternary);
-  background-color: var(--button-selected);
+  background-color: var(--section-header);
   padding: 0 1rem;
 }
 
@@ -931,4 +940,9 @@ button {
 .hades-progress .mdc-linear-progress__buffer-bar {
   background-color: var(--hadesColor) !important;
   filter: brightness(50%);
+}
+
+
+.amountAvailable {
+  font-variant: normal !important;
 }

@@ -1,13 +1,14 @@
 import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as seedrandom from "seedrandom";
+import * as pluralize from 'pluralize';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilityService {
   //glossary
-  public activeTimeLimit = 1 * 20 * 60; 
+  public activeTimeLimit = 1 * 20 * 60;
   public extraSpeedTimeLimit = 8 * 60 * 60;
 
   public quickAutoAttackSpeed = 5;
@@ -220,7 +221,7 @@ export class UtilityService {
     var fib = [0, 1];
 
     for (i = 0; i <= level; i++) {
-      fib[i + 2] = fib[i] + fib[i + 1];    
+      fib[i + 2] = fib[i] + fib[i + 1];
     }
 
     return fib[level + 2];
@@ -228,17 +229,15 @@ export class UtilityService {
 
   bigNumberReducer(originalAmount: number) {
     var originalAmount = Math.round(originalAmount);
-    var reducedNumber = "";    
+    var reducedNumber = "";
 
     if (this.getDigitCount(originalAmount) <= 3)
       reducedNumber = originalAmount.toString();
-    else if (this.getDigitCount(originalAmount) <= 6)
-    {
-      var leadingNumberCount = this.getDigitCount(originalAmount) - 3;      
+    else if (this.getDigitCount(originalAmount) <= 6) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 3;
       reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
-      if (3 - leadingNumberCount > 0)
-      {
-        var remainingCount = 3 - leadingNumberCount;        
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
         reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
       }
 
@@ -256,11 +255,27 @@ export class UtilityService {
   removeExcessOverlayDivs() {
     var elements = document.getElementsByClassName('cdk-overlay-container');
     var elementLength = elements.length;
-    
+
     if (elements !== null && elements !== undefined && elementLength > 0) {
-      for (var i = 0; i < elementLength; i++) {        
+      for (var i = 0; i < elementLength; i++) {
         elements[0].replaceChildren();
       }
-    } 
+    }
+  }
+
+  handlePlural(text: string) {
+    if (text === "Boon of Olympus" || text === "Fennel")
+      return text;
+
+    if (text === "Vial of the Lethe")
+      return "Vials of the Lethe";
+
+    if (text === "Essence of Fire")
+      return "Essences of Fire";
+
+    if (text === "Small Topaz")
+      return "Small Topazes";
+
+    return pluralize(text);
   }
 }

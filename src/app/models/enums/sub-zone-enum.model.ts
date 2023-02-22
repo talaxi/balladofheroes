@@ -37,5 +37,6 @@ export enum SubZoneEnum {
   ElysiumElysianFields,
   ElysiumOpenPlains,
   ElysiumColiseum,
-  ElysiumGatesOfHornAndIvory
+  ElysiumGatesOfHornAndIvory,
+  PeloposNisosMouthOfTheUnderworld
 }

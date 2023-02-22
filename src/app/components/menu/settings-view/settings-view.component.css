@@ -1,5 +1,24 @@
+.settingsGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 50%;
+    grid-template-rows: 1fr;
+    column-gap: 2rem;
+    justify-content: stretch;
+    grid-template-areas:
+        "saveLoad settings";
+}
+
+.settings {
+    grid-area: settings;
+}
+
+.saveLoad {
+    grid-area: saveLoad;
+}
+
 .importExportDiv {
-    width: 50%;
+    width: 100%;
 }
 
 #importExport {

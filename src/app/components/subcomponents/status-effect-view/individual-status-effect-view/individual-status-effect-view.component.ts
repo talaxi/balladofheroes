@@ -55,8 +55,6 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "DMG";
     if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown)
       return "TKN";
-    if (effect.type === StatusEffectEnum.Taunt)
-      return "TNT";
     if (effect.type === StatusEffectEnum.Dead)
       return "KO";
 
@@ -133,7 +131,10 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "dodge.svg";
     }
     if (effect.type === StatusEffectEnum.Enfire) {
-      src += "dodge.svg";
+      src += "enfire.svg";
+    }
+    if (effect.type === StatusEffectEnum.Taunt) {
+      src += "taunt.svg";
     }
 
     return src;

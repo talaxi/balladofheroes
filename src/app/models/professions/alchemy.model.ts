@@ -1,4 +1,5 @@
 import { Type } from "class-transformer";
+import { AlchemyUpgrades } from "./alchemy-upgrades.model";
 import { Recipe } from "./recipe.model";
 
 export class Alchemy {
@@ -7,6 +8,8 @@ export class Alchemy {
     exp: number;
     expToNextLevel: number;
     isUnlocked: boolean;
+    @Type(() => AlchemyUpgrades)
+    upgrades: AlchemyUpgrades[]; //each array item is for a different quality of recipe
     @Type(() => Recipe)
     availableRecipes: Recipe[];
 
@@ -21,6 +24,7 @@ export class Alchemy {
     constructor() {
         this.level = 0;
         this.availableRecipes = [];
+        this.upgrades = [];
         this.isUnlocked = false;
         this.alchemyTimer = 0;
         this.alchemyTimerLength = 0;

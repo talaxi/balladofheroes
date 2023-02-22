@@ -5,12 +5,12 @@
             <span class="sectionHeaderText sectionHeading">Equipment</span>
         </div>
         <br />
-        <p *ngFor="let equipment of equipmentItems;">
+        <div *ngFor="let equipment of equipmentItems;">
             <span class="screenMarginLeft">
-                {{lookupService.getItemName(equipment.item)}} x{{equipment.amount}}
+                <strong>{{lookupService.getItemName(equipment.item)}}:</strong> {{equipment.amount}}
                 <hr class="marginHr" />
             </span>
-        </p>
+        </div>
     </div>
     <div class="resources">
         <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Resources & Crafting
@@ -32,21 +32,21 @@
     <div class="progression">
         <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Progression</span></div>
         <br />
-        <p *ngFor="let progression of progressionResources;">
+        <div *ngFor="let progression of progressionResources;">
             <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
-                {{lookupService.getItemName(progression.item)}} x{{progression.amount}}
+                <strong>{{lookupService.getItemName(progression.item)}}:</strong> {{progression.amount}}
                 <hr class="marginHr" />
             </span>
-        </p>
+        </div>
     </div>
     <div class="charms">
         <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Charms</span></div>
         <br />
-        <p *ngFor="let charm of charmResources;">
+        <div *ngFor="let charm of charmResources;">
             <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
-                {{lookupService.getItemName(charm.item)}} x{{charm.amount}}
+                <strong>{{lookupService.getItemName(charm.item)}}:</strong> {{charm.amount}}
                 <hr class="marginHr" />
             </span>
-        </p>
+        </div>
     </div>
 </div>

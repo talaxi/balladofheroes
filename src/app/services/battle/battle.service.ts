@@ -133,6 +133,7 @@ export class BattleService {
 
           if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
             this.battle.activeTournament = new ColiseumTournament();
+            this.coliseumService.handleColiseumLoss();
           }
         }
       }
@@ -239,7 +240,7 @@ export class BattleService {
       }
     }
 
-    if (this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial)!.defeatCount > 0) {
+    if (this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead)!.defeatCount > 0) {
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       if (hermes !== undefined && !hermes.isAvailable) {
         hermes.isAvailable = true;
@@ -354,7 +355,7 @@ export class BattleService {
           this.lookupService.gainResource(reward);
           this.lookupService.addLootToLog(reward.item, reward.amount);
           if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
-            var itemName = (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : pluralize(this.lookupService.getItemName(reward.item)));
+            var itemName = (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item)));
             if (reward.type === ItemTypeEnum.Equipment) {
               var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item));
               itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
@@ -1089,7 +1090,7 @@ export class BattleService {
       appliedStatusEffect.duration *= 1 + castingCharacter.battleStats.debuffDuration;
     }
 
-    if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
+    if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {      
       potentialTargets.forEach(enemy => {
         var existingApplication = enemy.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
         if (existingApplication !== undefined) {
@@ -1102,6 +1103,8 @@ export class BattleService {
             if (appliedStatusEffect.duration > existingApplication.duration)
               existingApplication.duration = appliedStatusEffect.duration;
           }
+          else
+            enemy.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
         }
         else
           enemy.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
@@ -1110,7 +1113,7 @@ export class BattleService {
     else {
       var existingApplication = target.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
       if (existingApplication !== undefined) {
-        if (appliedStatusEffect.effectStacks) {
+        if (appliedStatusEffect.effectStacks) {          
           existingApplication.effectiveness += appliedStatusEffect.effectiveness - 1;
           existingApplication.stackCount += 1;
         }
@@ -1119,9 +1122,13 @@ export class BattleService {
           if (appliedStatusEffect.duration > existingApplication.duration)
             existingApplication.duration = appliedStatusEffect.duration;
         }
+        else
+          target.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
       }
       else
+      {
         target.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
+      }
     }
   }
 
@@ -1254,10 +1261,36 @@ export class BattleService {
     if (damage < 0)
       damage = 0;
 
-    target.battleStats.currentHp -= damage;
+      var totalDamageDealt = damage;
 
-    if (target.battleStats.currentHp < 0)
-      target.battleStats.currentHp = 0;
+      target.trackedStats.damageTaken += totalDamageDealt;
+      if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
+        !target.unlockedOverdrives.some(item => item === OverdriveNameEnum.Protection))
+        target.unlockedOverdrives.push(OverdriveNameEnum.Protection);
+      if (target.overdriveInfo.overdriveIsActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection)
+        target.overdriveInfo.damageTaken += totalDamageDealt;
+  
+      if (target.level >= this.utilityService.characterOverdriveLevel) {
+        target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked * this.lookupService.getOverdriveGainMultiplier(target);
+        if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
+          target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
+      }
+  
+      if (target.battleInfo.barrierValue > 0) {
+        target.battleInfo.barrierValue -= damage;
+        damage = 0;
+  
+        if (target.battleInfo.barrierValue < 0) {
+          //deal remaining damage to hp
+          damage = -target.battleInfo.barrierValue;
+          target.battleInfo.barrierValue = 0;
+        }
+      }
+  
+      target.battleStats.currentHp -= damage;
+  
+      if (target.battleStats.currentHp < 0)
+        target.battleStats.currentHp = 0;
 
     if (isPartyAttacking)
       this.dpsCalculatorService.addPartyDamageAction(damage);
@@ -1594,7 +1627,7 @@ export class BattleService {
     if (loot !== undefined && loot.length > 0) {
       loot.forEach(item => {
         if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : pluralize(this.lookupService.getItemName(item.item))) + "</strong>.");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>.");
         }
         this.lookupService.addLootToLog(item.item, item.amount);
         this.addLootToResources(item);
@@ -1608,20 +1641,7 @@ export class BattleService {
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       if (this.battle.activeTournament.currentRound >= this.battle.activeTournament.maxRounds) {
         //handle victory situation
-        var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.battle.activeTournament.type);
-        if (tournamentType !== undefined)
-          tournamentType.defeatCount += 1;
-
-        this.battle.activeTournament.bonusResources.forEach(reward => {
-          this.lookupService.gainResource(reward);
-          this.lookupService.addLootToLog(reward.item, reward.amount);
-          if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : pluralize(this.lookupService.getItemName(reward.item))) + "</strong>.");
-          }
-        });
-
-        //then reset
-        this.battle.activeTournament = new ColiseumTournament();
+        this.coliseumService.handleColiseumVictory(this.battle.activeTournament.type);        
       }
       else
         this.battle.activeTournament.currentRound += 1;
@@ -1675,7 +1695,7 @@ export class BattleService {
     if (coin > 0) {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, coin));
       if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain <strong>" + Math.round(coin) + " " + (Math.round(coin) === 1 ? this.lookupService.getItemName(ItemsEnum.Coin) : pluralize(this.lookupService.getItemName(ItemsEnum.Coin))) + "</strong>.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain <strong>" + Math.round(coin) + " " + (Math.round(coin) === 1 ? this.lookupService.getItemName(ItemsEnum.Coin) : this.utilityService.handlePlural(this.lookupService.getItemName(ItemsEnum.Coin))) + "</strong>.");
       }
     }
   }
@@ -1685,7 +1705,7 @@ export class BattleService {
       var achievementBonus = "";
       if (achievement.bonusResources !== undefined && achievement.bonusResources.length > 0) {
         achievement.bonusResources.forEach(item => {
-          achievementBonus += "<strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : pluralize(this.lookupService.getItemName(item.item))) + "</strong>, ";
+          achievementBonus += "<strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>, ";
         });
 
         achievementBonus = achievementBonus.substring(0, achievementBonus.length - 2);
@@ -1902,7 +1922,7 @@ export class BattleService {
     if (this.battleItemInUse === ItemsEnum.PoisonFang || this.battleItemInUse === ItemsEnum.StranglingGasPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
-
+      
       this.applyStatusEffect(effect.targetEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
 
@@ -2128,9 +2148,9 @@ export class BattleService {
       if (poisonousToxin !== undefined) {
         var rng = this.utilityService.getRandomNumber(0, 1);
         if (rng <= poisonousToxin.effectiveness) {
-          var damageDealt = 6;
+          var damageDealt = 8;
           this.dealTrueDamage(true, target, damageDealt, false);
-          var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + Math.round(damageDealt) + " damage from " + poisonousToxin.associatedAbilityName + "'s effect.";
+          var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + Math.round(damageDealt) + " damage from " + poisonousToxin.caster + "'s effect.";
 
           if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
@@ -2167,7 +2187,7 @@ export class BattleService {
       this.altarService.incrementAltarCount(AltarConditionEnum.OverdriveUse);
 
       if (this.globalService.globalVar.gameLogSettings.get("partyUseOverdrive")) {
-        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses overdrive " + this.lookupService.getOverdriveName(character.overdriveInfo.selectedOverdrive) + ".";
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses Overdrive: " + this.lookupService.getOverdriveName(character.overdriveInfo.selectedOverdrive) + ".";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Overdrive, gameLogEntry);
       }
     }
@@ -2175,6 +2195,7 @@ export class BattleService {
     character.overdriveInfo.manuallyTriggered = false;
 
     if (character.overdriveInfo.overdriveIsActive) {
+      console.log(character.overdriveInfo.overdriveActiveDuration);
       character.overdriveInfo.overdriveActiveDuration += deltaTime;
 
       if (character.overdriveInfo.overdriveActiveDuration >= character.overdriveInfo.overdriveActiveLength) {

@@ -5,8 +5,11 @@ import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.mo
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ColiseumService } from 'src/app/services/battle/coliseum.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { LookupService } from 'src/app/services/lookup.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-coliseum-view',
@@ -16,10 +19,11 @@ import { GlobalService } from 'src/app/services/global/global.service';
 export class ColiseumViewComponent implements OnInit {
   selectedTournament: ColiseumTournament;
 
-  constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog) { }
+  constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
+    private lookupService: LookupService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
-    this.selectedTournament = this.coliseumService.getColiseumInfoFromType(ColiseumTournamentEnum.HadesTrial);
+    this.selectedTournament = this.coliseumService.getColiseumInfoFromType(ColiseumTournamentEnum.TournamentOfTheDead);
   }
 
   getColiseumTournaments() {
@@ -54,6 +58,60 @@ export class ColiseumViewComponent implements OnInit {
 
   getTournamentDescription() {
     return this.coliseumService.getTournamentDescription(this.selectedTournament.type);
+  }
+
+  getRequiredDpsForSelectedTournament() {
+    return this.utilityService.roundTo(this.coliseumService.getRequiredDps(this.selectedTournament.type), 0);
+  }
+
+  getFirstTimeCompletionRewards() {
+    var reward = "";    
+
+    this.selectedTournament.completionReward.forEach(item => {
+        var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+        if (item.type === ItemTypeEnum.Equipment) {
+          var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
+          
+          itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
+        }
+
+        reward += item.amount + " " + itemName;             
+    });
+
+    return reward;
+  }
+
+  firstTimeRewardAlreadyObtained() {    
+    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);    
+    if (tournamentType?.defeatCount !== undefined && tournamentType?.defeatCount >= 1)
+      return true;
+
+    return false;
+  }
+  
+  getQuickCompletionRewards() {
+    var reward = "";
+ 
+    this.selectedTournament.quickCompletionReward.forEach(item => {
+        var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+        if (item.type === ItemTypeEnum.Equipment) {
+          var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
+         
+          itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
+        }
+
+        reward += item.amount + " " + itemName;             
+    });
+
+    return reward;
+  }
+  
+  quickCompletionRewardAlreadyObtained() {    
+    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);    
+    if (tournamentType?.quickVictoryCompleted)
+      return true;
+
+    return false;
   }
 
   startTournament() {

@@ -5,8 +5,8 @@
     <div class="overflowable column">
         <div class="listList">
             <div class="listBackground">
-                <div *ngFor="let tournament of getColiseumTournaments(); let i = index" (click)="chooseColiseumTournament(tournament)"
-                    class="listItem"
+                <div *ngFor="let tournament of getColiseumTournaments(); let i = index"
+                    (click)="chooseColiseumTournament(tournament)" class="listItem"
                     [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}">
                     <button class="buttonAsText clickableText listItemButton"
                         [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}"
@@ -26,8 +26,15 @@
             <br />
             <span [innerHtml]="getTournamentDescription()"></span>
             <hr />
+            <span><strong>DPS Required To Complete:</strong> {{getRequiredDpsForSelectedTournament()}}</span>
+            <hr/>
             <div>
-                
+                <div [ngClass]="{'rewardAlreadyObtained': firstTimeRewardAlreadyObtained()}">
+                    <strong>First Time Completion Reward: </strong> <span [innerHtml]='getFirstTimeCompletionRewards()'></span>
+                </div>
+                <div  [ngClass]="{'rewardAlreadyObtained': quickCompletionRewardAlreadyObtained()}">
+                    <strong>Quick Completion Reward: </strong> <span [innerHtml]='getQuickCompletionRewards()'></span>
+                </div>
                 <br />
                 <br />
                 <button (click)="startTournament()">Start Tournament</button>
