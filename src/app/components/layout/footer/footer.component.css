@@ -2,4 +2,13 @@
     font-weight: bold;
     vertical-align: middle;
     font-size: 1.2rem;
+    margin-left: .5rem;
+}
+
+.subheader {
+    font-weight: bold;
+    vertical-align: middle;
+    font-size: .9rem;
+    font-variant: small-caps;
+    margin-left: .5rem;
 }

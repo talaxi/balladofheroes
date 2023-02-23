@@ -6,5 +6,6 @@ export enum ZoneEnum {
   Nemea,
   Asphodel,
   Elysium,
-  PeloposNisos
+  PeloposNisos,
+  Calydon
 }

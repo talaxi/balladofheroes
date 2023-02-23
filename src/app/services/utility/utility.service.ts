@@ -33,7 +33,7 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 385;
 
-  public godStatGainLevelIncrement = .08333333; //1/12
+  public godStatGainLevelIncrement = (1/14);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;

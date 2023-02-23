@@ -32,7 +32,9 @@ export class BalladService {
     if (type === BalladEnum.Labors)
       name = "Ballad of the Labors";
     if (type === BalladEnum.Underworld)
-      name = "Ballad of the Underworld";
+      name = "Ballad of the Underworld";      
+    if (type === BalladEnum.Boar)
+      name = "Ballad of the Boar";
 
     return name;
   }

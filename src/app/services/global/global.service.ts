@@ -1417,16 +1417,16 @@ export class GlobalService {
 
     if (godLevel % 100 === 0) {
       if (god.type === GodEnum.Athena) {
-        stats.elementalDamageIncrease.holy += .05;
+        stats.elementalDamageIncrease.holy += godLevel / 25000; //should lead to +60% holy damage
       }
       else if (god.type === GodEnum.Artemis) {
-        stats.criticalMultiplier += .1;
+        stats.criticalMultiplier += godLevel / 20000; //should lead to +75% crit damage increase
       }
       else if (god.type === GodEnum.Hermes) {
-        stats.autoAttackCooldownReduction += .05;
+        stats.autoAttackCooldownReduction += godLevel / 100000; //should lead to +15% auto attack CD reduction
       }
-      else if (god.type === GodEnum.Apollo) {
-        stats.hpRegen += 5;
+      else if (god.type === GodEnum.Apollo) { 
+        stats.hpRegen += godLevel / 250; //should lead to 60 hp per 5 sec
       }
     }
     else if (godLevel % 50 === 0) {

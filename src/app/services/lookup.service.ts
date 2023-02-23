@@ -1753,21 +1753,16 @@ export class LookupService {
     return 1 + attackCount + attackRemainder; //(adjustedAgility / agilityPerAdditionalAttack);
   }
 
-  getAgilityPerAttackForAttackCount(attackCount: number) {
-    var agilityCost = 0;
+  getAgilityPerAttackForAttackCount(attackCount: number) {    
+    var agilityCost = 500; //for a specific attack
+    var totalAgilityCost = agilityCost; //overall agility required
 
-    if (attackCount === 1)
-      agilityCost = 250;
-    else if (attackCount === 2)
-      agilityCost = 1000;
-    else if (attackCount === 3)
-      agilityCost = 2500;
-    else if (attackCount === 4)
-      agilityCost = 10000;
-    else if (attackCount === 5)
-      agilityCost = 25000;
-    else
-      agilityCost = attackCount * 50000;
+    for (var i = 2; i <= attackCount; i++)
+    {      
+      agilityCost = totalAgilityCost * 4;
+      totalAgilityCost += agilityCost;
+    }
+    //1 = 500, 2 = 2,000, 3 = 10,000, 4 = 50,000, 5 = 250,000   
 
     return agilityCost;
   }

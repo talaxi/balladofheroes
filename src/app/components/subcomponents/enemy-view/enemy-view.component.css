@@ -92,7 +92,7 @@
 .enemy {
     margin-top: .7rem;
     display: grid;
-    grid-template-columns: 72% 1fr;
+    grid-template-columns: 71% 1fr;
     justify-content: stretch;
     grid-template-areas:
         "hpBar hpAmount";

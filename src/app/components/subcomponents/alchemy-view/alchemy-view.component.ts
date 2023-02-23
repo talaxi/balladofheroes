@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Recipe } from 'src/app/models/professions/recipe.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
@@ -85,6 +86,22 @@ export class AlchemyViewComponent implements OnInit {
     return ingredients;
   }
 
+  getSelectedRecipeIngredient(resource: ResourceValue) {
+    var ingredient = "";
+
+    var displayName = this.lookupService.getItemName(resource.item);
+    var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
+    var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
+
+    ingredient += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
+
+    if (ingredient.length > 0) {
+      ingredient = this.utilityService.getSanitizedHtml(ingredient);
+    }
+
+    return ingredient;
+  }
+
   getItemKeywordClass(type: ItemTypeEnum, item: ItemsEnum, amountNeeded: number, amountOwned: number) {
     var classText = "resourceKeyword";
 
@@ -131,7 +148,7 @@ export class AlchemyViewComponent implements OnInit {
   getTimeRemaining() {
     if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
       return "";
-    
+
     var timeRemaining = this.globalService.globalVar.alchemy.alchemyTimerLength - this.globalService.globalVar.alchemy.alchemyTimer;
 
     for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++) {

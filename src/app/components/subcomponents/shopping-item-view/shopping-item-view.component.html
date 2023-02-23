@@ -23,7 +23,7 @@
     <div class="purchaseDescription">
         <br />
         <div *ngFor="let resource of item.purchasePrice">
-            <app-resource-required-view [resource]="resource"></app-resource-required-view>
+            <app-resource-required-view [resource]="resource" [isSmall]="true"></app-resource-required-view>
         </div>
         <!--<div class="resourceKeyword" [innerHtml]="purchaseResourcesRequired">
         </div>-->

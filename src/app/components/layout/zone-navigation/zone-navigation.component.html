@@ -90,7 +90,7 @@
             </button>
             <div *ngIf="areAltarsAvailable()">
                 <button class="buttonAsText clickableText iconButton"
-                    (click)="setQuickView(quickViewEnum.Altars)" customToolTip [contentTemplate]="overviewIconPopover"
+                    (click)="setQuickView(quickViewEnum.Altars)" customToolTip [contentTemplate]="altarIconPopover"
                     [tooltipDirection]="tooltipDirection">
                     <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"
                         src="assets/svg/smallAltar.svg">
@@ -211,6 +211,12 @@
     <div>
         See all tracked resources. To track a specific resource, go to the 'Resources' tab in the menu and click an
         item.
+    </div>
+</ng-template>
+
+<ng-template #altarIconPopover>
+    <div>
+        See available altars to pray for boons.
     </div>
 </ng-template>
 

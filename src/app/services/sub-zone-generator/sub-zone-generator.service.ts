@@ -854,7 +854,7 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.ElysiumColiseum);      
     }
     if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {
-      subZoneEnums.push(SubZoneEnum.PeloposNisosMouthOfTheUnderworld);      
+      subZoneEnums.push(SubZoneEnum.PeloposNisosGatesOfTheUnderworld);      
     }
 
     return subZoneEnums;
@@ -935,12 +935,12 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
     }
 
-    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedAmethystRing, SubZoneEnum.ElysiumColiseum));
+    /*availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedAmethystRing, SubZoneEnum.ElysiumColiseum));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedAquamarineRing, SubZoneEnum.ElysiumColiseum));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedEmeraldRing, SubZoneEnum.ElysiumColiseum));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedOpalRing, SubZoneEnum.ElysiumColiseum));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedRubyRing, SubZoneEnum.ElysiumColiseum));
-    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedTopazRing, SubZoneEnum.ElysiumColiseum));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FracturedTopazRing, SubZoneEnum.ElysiumColiseum));*/
 
 
     return shopOptions;

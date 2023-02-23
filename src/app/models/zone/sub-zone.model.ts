@@ -111,7 +111,7 @@ export class SubZone {
             name = "Coliseum";
         if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory)
             name = "Gates of Horn and Ivory";
-            if (type === SubZoneEnum.PeloposNisosMouthOfTheUnderworld)
+            if (type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
             name = "Mouth of the Underworld";
         return name;
     }

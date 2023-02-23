@@ -28,15 +28,22 @@ export class ColiseumViewComponent implements OnInit {
 
   getColiseumTournaments() {
     var tournaments: ColiseumTournamentEnum[] = [];
-    for (const [propertyKey, propertyValue] of Object.entries(ColiseumTournamentEnum))
-    {
+    for (const [propertyKey, propertyValue] of Object.entries(ColiseumTournamentEnum)) {
       if (!Number.isNaN(Number(propertyKey))) {
         continue;
       }
 
       var enumValue = propertyValue as ColiseumTournamentEnum;
-      if (enumValue !== ColiseumTournamentEnum.None)
-        tournaments.push(enumValue);
+      if (enumValue !== ColiseumTournamentEnum.None && enumValue !== ColiseumTournamentEnum.MonstersOfTheLethe) { //TODO: when monsters of the lethe implemented, remove it from this
+        if (enumValue === ColiseumTournamentEnum.TournamentOfTheDead)
+          tournaments.push(enumValue)
+        else {
+          var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === enumValue);
+          if (tournamentType !== undefined && tournamentType.isAvailable) {
+            tournaments.push(enumValue);
+          }
+        }
+      }
     }
 
     return tournaments;
@@ -46,10 +53,8 @@ export class ColiseumViewComponent implements OnInit {
     this.selectedTournament = this.coliseumService.getColiseumInfoFromType(tournament);
   }
 
-  getTournamentName(type?: ColiseumTournamentEnum)
-  {
-    if (type === undefined)
-    {
+  getTournamentName(type?: ColiseumTournamentEnum) {
+    if (type === undefined) {
       return this.coliseumService.getTournamentName(this.selectedTournament.type);
     }
     else
@@ -65,49 +70,49 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   getFirstTimeCompletionRewards() {
-    var reward = "";    
+    var reward = "";
 
     this.selectedTournament.completionReward.forEach(item => {
-        var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
-        if (item.type === ItemTypeEnum.Equipment) {
-          var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
-          
-          itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
-        }
+      var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+      if (item.type === ItemTypeEnum.Equipment) {
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
 
-        reward += item.amount + " " + itemName;             
+        itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
+      }
+
+      reward += item.amount + " " + itemName;
     });
 
     return reward;
   }
 
-  firstTimeRewardAlreadyObtained() {    
-    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);    
+  firstTimeRewardAlreadyObtained() {
+    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);
     if (tournamentType?.defeatCount !== undefined && tournamentType?.defeatCount >= 1)
       return true;
 
     return false;
   }
-  
+
   getQuickCompletionRewards() {
     var reward = "";
- 
-    this.selectedTournament.quickCompletionReward.forEach(item => {
-        var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
-        if (item.type === ItemTypeEnum.Equipment) {
-          var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
-         
-          itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
-        }
 
-        reward += item.amount + " " + itemName;             
+    this.selectedTournament.quickCompletionReward.forEach(item => {
+      var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+      if (item.type === ItemTypeEnum.Equipment) {
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
+
+        itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
+      }
+
+      reward += item.amount + " " + itemName;
     });
 
     return reward;
   }
-  
-  quickCompletionRewardAlreadyObtained() {    
-    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);    
+
+  quickCompletionRewardAlreadyObtained() {
+    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);
     if (tournamentType?.quickVictoryCompleted)
       return true;
 
@@ -118,7 +123,7 @@ export class ColiseumViewComponent implements OnInit {
     var battle = new Battle();
     battle.activeTournament = this.selectedTournament;
 
-    this.globalService.globalVar.activeBattle = battle;  
-    this.dialog.closeAll();  
+    this.globalService.globalVar.activeBattle = battle;
+    this.dialog.closeAll();
   }
 }

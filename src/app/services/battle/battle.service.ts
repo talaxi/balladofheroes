@@ -56,6 +56,7 @@ export class BattleService {
   targetCharacterMode: boolean = false;
   showNewEnemyGroup = false;
   currentSubzoneType: SubZoneEnum;
+  pityCoinTimer = 0;
 
   constructor(private globalService: GlobalService, private subzoneGeneratorService: SubZoneGeneratorService,
     private balladService: BalladService, private utilityService: UtilityService, private gameLogService: GameLogService,
@@ -902,6 +903,11 @@ export class BattleService {
             }
           }
 
+          if (instantEffect.type === StatusEffectEnum.SelfKO) {
+            user.battleStats.currentHp = 0;
+            this.isCharacterDefeated(user);
+          }
+
           if (instantEffect.type === StatusEffectEnum.Barrier) {
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             if (instantEffect.isAoe) {
@@ -967,7 +973,6 @@ export class BattleService {
       });
     }
 
-    console.log(target.battleInfo.statusEffects);
     //check all instant effects (maybe make its own function?)
     if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
       target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
@@ -1605,8 +1610,7 @@ export class BattleService {
     this.altarService.incrementAltarCount(AltarConditionEnum.Victories);
 
     console.log("Completed in: " + this.battle.battleDuration);
-    if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {
-      console.log("New time");
+    if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {      
       subZone.fastestCompletionSpeed = this.battle.battleDuration;
     }
 
@@ -1679,18 +1683,36 @@ export class BattleService {
 
   getCoinRewards(defeatedEnemies: EnemyTeam) {
     var coin = 0;
+    var fullCoinDurationCutoff = 5;
+    var noCoinGainDueToFastClear = false;
 
     if (defeatedEnemies.enemyList.length === 0)
       return;
 
-    var altarMultiplier = 1;
-    /*var relevantAltarEffect = this.globalService.globalVar.activeAltarEffects.find(effect => effect.type === AltarEffectsEnum.SmallAltarPrayFortune);
-    if (relevantAltarEffect !== undefined)
-      altarMultiplier = relevantAltarEffect.effectiveness;
-*/
+    if (this.battle.battleDuration < fullCoinDurationCutoff)
+    {
+      noCoinGainDueToFastClear = true;
+    }
+
     defeatedEnemies.enemyList.forEach(enemy => {
-      coin += enemy.coinGainFromDefeat * altarMultiplier;
+      var coinGain = enemy.coinGainFromDefeat;
+      if (this.battle.battleDuration < fullCoinDurationCutoff && this.pityCoinTimer < fullCoinDurationCutoff)
+      {
+        coinGain = Math.round(coinGain * (this.battle.battleDuration / fullCoinDurationCutoff));
+        //coinGain = this.utilityService.getRandomInteger(0, possibleCoinGain);        
+        if (enemy.coinGainFromDefeat > 0 && coinGain > 0)
+          noCoinGainDueToFastClear = false;
+      }
+      coin += coinGain;
     });
+
+    if (this.pityCoinTimer >= fullCoinDurationCutoff)
+    this.pityCoinTimer = 0;
+
+    if (noCoinGainDueToFastClear)  
+      this.pityCoinTimer += this.battle.battleDuration;    
+    else
+      this.pityCoinTimer = 0;
 
     if (coin > 0) {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, coin));
@@ -1749,7 +1771,7 @@ export class BattleService {
     if (balladUnlocks !== undefined && balladUnlocks.length > 0) {
       balladUnlocks.forEach(ballad => {
         var unlockedBallad = this.balladService.findBallad(ballad);
-        if (unlockedBallad !== undefined && !unlockedBallad.isAvailable) {
+        if (unlockedBallad !== undefined && !unlockedBallad.isAvailable) {          
           unlockedBallad.isAvailable = true;
           unlockedBallad.showNewNotification = true;
         }
@@ -1759,7 +1781,7 @@ export class BattleService {
     if (zoneUnlocks !== undefined && zoneUnlocks.length > 0) {
       zoneUnlocks.forEach(zone => {
         var unlockedZone = this.balladService.findZone(zone);
-        if (unlockedZone !== undefined && !unlockedZone.isAvailable) {
+        if (unlockedZone !== undefined && !unlockedZone.isAvailable) {          
           unlockedZone.isAvailable = true;
           unlockedZone.showNewNotification = true;
         }
@@ -1769,7 +1791,7 @@ export class BattleService {
     if (subZoneUnlocks !== undefined && subZoneUnlocks.length > 0) {
       subZoneUnlocks.forEach(subZone => {
         var unlockedSubZone = this.balladService.findSubzone(subZone);
-        if (unlockedSubZone !== undefined && !unlockedSubZone.isAvailable) {
+        if (unlockedSubZone !== undefined && !unlockedSubZone.isAvailable) {          
           unlockedSubZone.isAvailable = true;
           unlockedSubZone.showNewNotification = true;
           this.achievementService.createDefaultAchievementsForSubzone(subZone).forEach(achievement => {
@@ -2195,7 +2217,6 @@ export class BattleService {
     character.overdriveInfo.manuallyTriggered = false;
 
     if (character.overdriveInfo.overdriveIsActive) {
-      console.log(character.overdriveInfo.overdriveActiveDuration);
       character.overdriveInfo.overdriveActiveDuration += deltaTime;
 
       if (character.overdriveInfo.overdriveActiveDuration >= character.overdriveInfo.overdriveActiveLength) {

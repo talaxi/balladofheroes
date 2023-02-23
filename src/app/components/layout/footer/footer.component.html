@@ -1,1 +1,8 @@
 <span class="pageHeader gameTitle">Ballad of Heroes</span>
+<span customToolTip [contentTemplate]="versionPopover" class="subheader">beta</span>
+
+<ng-template #versionPopover>
+    <div>
+        This game is still in beta. At this point, all save data may eventually be wiped when version 1.0 is released.
+    </div>
+</ng-template>

@@ -2,7 +2,13 @@
     position: relative;
 }
 
-.absolute {
+.tooltip {
     position: sticky;
+    width: 50%;
+    display: block;
+    margin: auto;
+}
+
+.smallTooltip {
     width: 100%;
 }

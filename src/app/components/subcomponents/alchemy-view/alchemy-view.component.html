@@ -52,7 +52,8 @@
             <br />
             <span [innerHtml]="getSelectedRecipeDescription()"></span>
             <hr />
-            <div [innerHtml]="listSelectedRecipeIngredients()">
+            <div *ngFor="let ingredient of this.selectedRecipe.ingredients; let i = index">                
+                <app-resource-required-view [resource]="ingredient"></app-resource-required-view>
             </div>
             <br />
             <br />

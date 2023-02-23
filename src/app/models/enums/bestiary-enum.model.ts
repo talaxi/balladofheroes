@@ -47,5 +47,15 @@ export enum BestiaryEnum {
   Ixion,
   Castor,
   Pollux,
-  Sisyphus
+  Sisyphus,
+  ExplodingSoul,
+  Tantalus,
+  Lycaon,
+  Atreus,
+  Melampus,
+  Helenus,
+  Cassandra,
+  Rhadamanthus,
+  Aeacus,
+  Minos
 }

@@ -166,7 +166,7 @@ export class AltarService {
   getRandomEffect(altar: AltarInfo) {
     var possibleEffects: AltarEffectsEnum[] = [];
 
-    possibleEffects.push(AltarEffectsEnum.AttackUp);
+    //possibleEffects.push(AltarEffectsEnum.AttackUp); //this should be for Zeus, not everyone
 
     if (altar.god === GodEnum.Athena) {
       possibleEffects.push(AltarEffectsEnum.AthenaDefenseUp);

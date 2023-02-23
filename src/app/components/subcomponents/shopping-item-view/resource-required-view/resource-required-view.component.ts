@@ -10,6 +10,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 })
 export class ResourceRequiredViewComponent implements OnInit {
   @Input() resource: ResourceValue;
+  @Input() isSmall: boolean = false;
   displayName = "";
   insufficientText = 0;
   showTooltip: boolean = false;

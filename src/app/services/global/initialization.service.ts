@@ -140,6 +140,22 @@ export class InitializationService {
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumGatesOfHornAndIvory));
     underworldBallad.zones.push(elysium);
     this.globalService.globalVar.ballads.push(underworldBallad);
+
+    var boarBallad = new Ballad(BalladEnum.Boar);
+    var peloposNisos = new Zone();
+    peloposNisos.type = ZoneEnum.PeloposNisos;
+    peloposNisos.zoneName = "Pelopos Nisos";
+    peloposNisos.subzones.push(new SubZone(SubZoneEnum.PeloposNisosGatesOfTheUnderworld));
+    
+    boarBallad.zones.push(peloposNisos);
+
+    var calydon = new Zone();
+    calydon.type = ZoneEnum.Calydon;
+    calydon.zoneName = "Calydon";
+    
+    boarBallad.zones.push(calydon);
+
+    this.globalService.globalVar.ballads.push(boarBallad);
   }
 
   initializeSettings() {

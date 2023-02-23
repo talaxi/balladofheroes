@@ -56,4 +56,7 @@ export enum StatusEffectEnum {
     Sap,
     AbsorbElementalDamage,
     InstantTrueDamage,
+    SelfDamage,
+    SelfKO,
+    BlessingOfDionysus
   }
