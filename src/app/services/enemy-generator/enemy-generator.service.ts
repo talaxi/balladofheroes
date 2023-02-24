@@ -557,8 +557,9 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(494, 90, 90, 60, 50, 150); 
       enemy.battleStats.elementalDamageResistance.water = this.utilityService.enemyMediumElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 105; 
+      enemy.xpGainFromDefeat = 105;       
       enemy.loot.push(new LootItem(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 1, .033));
       enemy.loot.push(new LootItem(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 1, .15));
 
@@ -599,6 +600,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(565, 85, 118, 85, 85, 150); 
       enemy.battleStats.elementalDamageResistance.water = this.utilityService.enemyMediumElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 114; 
       enemy.loot.push(new LootItem(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 2, .075));
@@ -664,6 +666,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 124; 
       enemy.loot.push(new LootItem(ItemsEnum.SwordOfFlames, ItemTypeEnum.Equipment, 1, .0075));
       enemy.loot.push(new LootItem(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 1, .01));
+      enemy.battleStats.elementalDamageIncrease.fire = .1;
       
       var dualSlice = new Ability();
       dualSlice.name = "Dual Slice";

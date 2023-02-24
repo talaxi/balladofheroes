@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { BestiaryEnum } from "../enums/bestiary-enum.model";
 import { CharacterEnum } from "../enums/character-enum.model";
+import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { StatusEffect } from "./status-effect.model";
 
 export class BattleInfo {
@@ -14,6 +15,7 @@ export class BattleInfo {
     fastAutoAttackCount: number;
     hpRegenTimer: number;
     hpRegenTimerLength: number;
+    elementalType: ElementalTypeEnum;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
@@ -25,14 +27,6 @@ export class BattleInfo {
         this.hpRegenTimer = 0;
         this.hpRegenTimerLength = 5;
         this.statusEffects = [];
-
-        if (characterType === CharacterEnum.Warrior)
-        {
-            this.timeToAutoAttack = 5;
-        }
-        if (characterType === CharacterEnum.Adventurer)
-        {
-            this.timeToAutoAttack = 3;
-        }
+        this.elementalType = ElementalTypeEnum.None;
     }
 }

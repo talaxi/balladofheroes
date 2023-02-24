@@ -404,11 +404,11 @@ export class StoryService {
     if (this.currentPage > this.pageCount) {
       if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
         //this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 5 Olives and Fennel.");
-        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 5);
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 15 Olives and Fennel.");
+        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 15);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 5);
+        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 15);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
       }

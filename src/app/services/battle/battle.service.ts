@@ -375,8 +375,12 @@ export class BattleService {
 
         if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
           //deal damage
-          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness);
-          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes " + Math.round(damageDealt) + " damage from " + effect.associatedAbilityName + "'s effect.";
+          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness, undefined, effect.element);
+          var elementalText = "";
+          if (effect.element !== ElementalTypeEnum.None)
+            elementalText = this.getElementalDamageText(effect.element);
+
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes " + Math.round(damageDealt) + elementalText + " damage from " + effect.associatedAbilityName + "'s effect.";
 
           if ((isPartyMember && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
             (!isPartyMember && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
@@ -444,7 +448,7 @@ export class BattleService {
     var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier) * totalAutoAttackCount;
     var isCritical = this.isDamageCritical(character, target);
     var overdriveMultiplier = 1;
-    var elementalType = ElementalTypeEnum.None;
+    var elementalType = character.battleInfo.elementalType;
 
     if (character.overdriveInfo.overdriveIsActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Smash)
       overdriveMultiplier = 1.5;
@@ -946,7 +950,7 @@ export class BattleService {
 
         if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
           if (target !== undefined) {
-            var trueDamageDealt = this.dealTrueDamage(isPartyUsing, target, instantEffect.effectiveness);
+            var trueDamageDealt = this.dealTrueDamage(isPartyUsing, target, instantEffect.effectiveness, user, instantEffect.element);
             var elementalText = "";
             if (instantEffect.element !== ElementalTypeEnum.None)
               elementalText = this.getElementalDamageText(instantEffect.element);
@@ -1221,11 +1225,26 @@ export class BattleService {
   }
 
   //DoTs
-  dealTrueDamage(isPartyAttacking: boolean, target: Character, damage: number, excludeFromDps: boolean = false) {
+  dealTrueDamage(isPartyAttacking: boolean, target: Character, damage: number, attacker?: Character, elementalType: ElementalTypeEnum = ElementalTypeEnum.None) {
     if (damage < 0)
       damage = 0;
 
-    var totalDamageDealt = damage;
+    var elementalDamageIncrease = 1;
+    var elementalDamageDecrease = 1;
+    if (elementalType !== ElementalTypeEnum.None) {
+      elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);      
+    }
+
+    if (attacker !== undefined) {
+      elementalDamageIncrease = this.getElementalDamageIncrease(elementalType, attacker);
+      attacker.overdriveInfo.lastUsedElement = elementalType;
+      attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);
+      if (attacker.trackedStats.elementalAttacksUsed.getCountOfNonZeroElements() >= this.utilityService.overdriveAttacksNeededToUnlockNature &&
+        !attacker.unlockedOverdrives.some(item => item === OverdriveNameEnum.Nature))
+        attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);
+    }
+
+    var totalDamageDealt = damage * elementalDamageIncrease * elementalDamageDecrease;
 
     target.trackedStats.damageTaken += totalDamageDealt;
     if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
@@ -1241,27 +1260,27 @@ export class BattleService {
     }
 
     if (target.battleInfo.barrierValue > 0) {
-      target.battleInfo.barrierValue -= damage;
-      damage = 0;
+      target.battleInfo.barrierValue -= totalDamageDealt;
+      totalDamageDealt = 0;
 
       if (target.battleInfo.barrierValue < 0) {
         //deal remaining damage to hp
-        damage = -target.battleInfo.barrierValue;
+        totalDamageDealt = -target.battleInfo.barrierValue;
         target.battleInfo.barrierValue = 0;
       }
     }
 
-    target.battleStats.currentHp -= damage;
+    target.battleStats.currentHp -= totalDamageDealt;
 
     if (target.battleStats.currentHp < 0)
       target.battleStats.currentHp = 0;
 
     if (isPartyAttacking)
-      this.dpsCalculatorService.addPartyDamageAction(damage);
+      this.dpsCalculatorService.addPartyDamageAction(totalDamageDealt);
     else
-      this.dpsCalculatorService.addEnemyDamageAction(damage);
+      this.dpsCalculatorService.addEnemyDamageAction(totalDamageDealt);
 
-    return damage;
+    return totalDamageDealt;
   }
 
   getElementalDamageIncrease(element: ElementalTypeEnum, attacker: Character) {
@@ -1483,7 +1502,7 @@ export class BattleService {
       }
 
       if (this.globalService.globalVar.gameLogSettings.get("battleUpdates")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "Your party has been defeated. Maybe Hermes can help you out of here?");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "Your party has been defeated. You hurry back to the safety of town.");
       }
     }
     else if (this.balladService.getActiveSubZone().type === SubZoneEnum.NemeaCountryRoadsOne) {
@@ -1871,11 +1890,19 @@ export class BattleService {
       if (character.battleStats.currentHp <= 0)
         return;
 
-      var damage = this.dealTrueDamage(true, character, effect.trueDamageAmount, true)
+      var elementalType = ElementalTypeEnum.None;
+      if (this.battleItemInUse === ItemsEnum.FirePotion)
+        elementalType = ElementalTypeEnum.Fire;
+
+      var elementalText = "";
+      if (elementalType !== ElementalTypeEnum.None)
+        elementalText = this.getElementalDamageText(elementalType);
+
+      var damage = this.dealTrueDamage(true, character, effect.trueDamageAmount, undefined, elementalType);
       this.lookupService.useResource(this.battleItemInUse, 1);
 
       if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
-        var gameLogEntry = "<strong>" + character.name + "</strong>" + " is hit by " + itemName + ", dealing " + damage + " damage.";
+        var gameLogEntry = "<strong>" + character.name + "</strong>" + " is hit by " + itemName + ", dealing " + damage + elementalText + " damage.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
       }
     }
@@ -2129,7 +2156,7 @@ export class BattleService {
         var rng = this.utilityService.getRandomNumber(0, 1);
         if (rng <= poisonousToxin.effectiveness) {
           var damageDealt = 8;
-          this.dealTrueDamage(true, target, damageDealt, false);
+          this.dealTrueDamage(true, target, damageDealt);
           var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + Math.round(damageDealt) + " damage from " + poisonousToxin.caster + "'s effect.";
 
           if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
