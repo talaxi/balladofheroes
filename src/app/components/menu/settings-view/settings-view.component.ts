@@ -25,8 +25,8 @@ export class SettingsViewComponent implements OnInit {
     private utilityService: UtilityService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    console.log(this.globalService.globalVar);
-    console.log(JSON.stringify(this.globalService.globalVar));
+    //console.log(this.globalService.globalVar);
+    //console.log(JSON.stringify(this.globalService.globalVar));
 
     var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
     if (storyStyle === undefined)
@@ -92,7 +92,7 @@ export class SettingsViewComponent implements OnInit {
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
-          console.log(this.globalService.globalVar);
+          //console.log(this.globalService.globalVar);
           //this.versionControlService.updatePlayerVersion(); //TODO
         }
       }

@@ -260,42 +260,7 @@ export class BattleService {
           character1.assignedGod2 = GodEnum.Hermes;
         }
       }
-    }
-
-    //TODO: THIS IS JUST FOR THE TUTORIAL RELEASE BUT WILL EVENTUALLY BE REMOVED
-    //VVV
-    /*if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
-      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
-      if (hermes !== undefined && !hermes.isAvailable) {
-        hermes.isAvailable = true;
-
-        hermes.abilityList.forEach(ability => {
-          if (hermes!.level >= ability.requiredLevel)
-            ability.isAvailable = true;
-        });
-
-        var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
-        if (character1 !== undefined) {
-          character1.assignedGod2 = GodEnum.Hermes;
-        }
-      }
-
-      var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
-      if (apollo !== undefined && !apollo.isAvailable) {
-        apollo.isAvailable = true;
-
-        apollo.abilityList.forEach(ability => {
-          if (apollo!.level >= ability.requiredLevel)
-            ability.isAvailable = true;
-        });
-
-        var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
-        if (character2 !== undefined) {
-          character2.assignedGod2 = GodEnum.Apollo;
-        }
-      }
-    }*/
-    //^^^
+    }    
   }
 
   checkScene() {
@@ -307,11 +272,7 @@ export class BattleService {
       this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Story;
     }
     else {
-      //TODO: get random % for other scenes
-      //get % per subzone of treasure chest
       var treasureChestChance = this.subzoneGeneratorService.generateTreasureChestChance(subzone.type);
-      //get % per subzone of altar
-      var altarChance = 0;
 
       var rng = this.utilityService.getRandomNumber(0, 1);
       var showBattleItemTutorial = false;
@@ -468,8 +429,7 @@ export class BattleService {
     character.battleInfo.autoAttackManuallyTriggered = false;
   }
 
-  handleAutoAttack(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], additionalDamageMultiplier?: number) {
-    //TODO: handle targetting system -- default to random but have options to target highest or lowest hp and other conditions
+  handleAutoAttack(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], additionalDamageMultiplier?: number) {    
     var target = this.getTarget(character, targets);
 
     if (target === undefined)
@@ -1609,7 +1569,7 @@ export class BattleService {
     subZone.victoryCount += 1;
     this.altarService.incrementAltarCount(AltarConditionEnum.Victories);
 
-    console.log("Completed in: " + this.battle.battleDuration);
+    //console.log("Completed in: " + this.battle.battleDuration);
     if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {      
       subZone.fastestCompletionSpeed = this.battle.battleDuration;
     }
