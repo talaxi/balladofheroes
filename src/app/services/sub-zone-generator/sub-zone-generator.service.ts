@@ -457,7 +457,6 @@ export class SubZoneGeneratorService {
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Butcher));
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FloatingFlame));
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WheelOfFire));
-      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WheelOfFire));
       battleOptions.push(enemyTeam3);
 
       var enemyTeam4: EnemyTeam = new EnemyTeam();
@@ -477,7 +476,6 @@ export class SubZoneGeneratorService {
       battleOptions.push(enemyTeam6);
 
       var enemyTeam7: EnemyTeam = new EnemyTeam();
-      enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FloatingFlame));
       enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FloatingFlame));
       enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FloatingFlame));
       enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FloatingFlame));
@@ -546,6 +544,7 @@ export class SubZoneGeneratorService {
       battleOptions.push(enemyTeam6);
 
       var enemyTeam7: EnemyTeam = new EnemyTeam();
+      enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.InsaneSoul));
       enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.InsaneSoul));
       enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.InsaneSoul));
       battleOptions.push(enemyTeam7);
