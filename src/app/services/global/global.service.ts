@@ -1636,7 +1636,14 @@ export class GlobalService {
   }
 
   getGodXpToNextLevel(level: number) {
-    var baseXp = 335;
+    var baseXp = 200;
+
+    if (level < 15)
+    {
+      baseXp += level * 10;
+    }
+    else
+      baseXp = 350;
 
     var factor = 1.023;
     var additive = (baseXp) * (level - 1);
