@@ -80,7 +80,7 @@ export class ColiseumViewComponent implements OnInit {
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }
 
-      reward += item.amount + " " + itemName;
+      reward += item.amount + " " + itemName + "<br/>";
     });
 
     return reward;
@@ -105,7 +105,7 @@ export class ColiseumViewComponent implements OnInit {
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }
 
-      reward += item.amount + " " + itemName;
+      reward += item.amount + " " + itemName + "<br/>";
     });
 
     return reward;

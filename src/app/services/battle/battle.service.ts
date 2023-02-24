@@ -1443,7 +1443,7 @@ export class BattleService {
         });
     });
 
-    var recentlyDefeatedDebuff = this.globalService.createStatusEffect(StatusEffectEnum.RecentlyDefeated, 60, .75, false, false, true);
+    var recentlyDefeatedDebuff = this.globalService.createStatusEffect(StatusEffectEnum.RecentlyDefeated, 30, .75, false, false, true);
     this.globalService.getActivePartyCharacters(true).forEach(member => {
       member.battleStats.currentHp = member.battleStats.maxHp * .25;
 

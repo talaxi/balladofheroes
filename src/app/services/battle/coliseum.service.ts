@@ -43,8 +43,9 @@ export class ColiseumService {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 180;
       tournament.quickVictoryThreshold = 60;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 2500));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     }
     if (type === ColiseumTournamentEnum.ForgottenKings) {
       tournament.maxRounds = 5;
@@ -119,12 +120,16 @@ export class ColiseumService {
               });
             }
           }
+          else if (reward.item === ItemsEnum.BonusXp) {
+            this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), reward.amount);
+          }
           else {
             this.lookupService.gainResource(reward);
-            this.lookupService.addLootToLog(reward.item, reward.amount);
-            if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item))) + "</strong>.");
-            }
+            this.lookupService.addLootToLog(reward.item, reward.amount);            
+          }
+
+          if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item))) + "</strong>.");
           }
         });
       }

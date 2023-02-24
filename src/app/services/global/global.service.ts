@@ -583,8 +583,8 @@ export class GlobalService {
     }
   }
 
-  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean, 
-    isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false, 
+  createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean,
+    isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false,
     element: ElementalTypeEnum = ElementalTypeEnum.None) {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
@@ -602,10 +602,10 @@ export class GlobalService {
       statusEffect.isPermanent = true;
 
     if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark || type === StatusEffectEnum.Stun || type === StatusEffectEnum.Blind ||
-      type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.InstantHealAfterAutoAttack || type === StatusEffectEnum.AgilityDown || 
-      type === StatusEffectEnum.AgilityUp || type === StatusEffectEnum.AttackDown || type === StatusEffectEnum.AttackUp || 
-      type === StatusEffectEnum.DefenseDown || type === StatusEffectEnum.DefenseUp || type === StatusEffectEnum.ResistanceDown || type === StatusEffectEnum.ResistanceUp || 
-      type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp || 
+      type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.InstantHealAfterAutoAttack || type === StatusEffectEnum.AgilityDown ||
+      type === StatusEffectEnum.AgilityUp || type === StatusEffectEnum.AttackDown || type === StatusEffectEnum.AttackUp ||
+      type === StatusEffectEnum.DefenseDown || type === StatusEffectEnum.DefenseUp || type === StatusEffectEnum.ResistanceDown || type === StatusEffectEnum.ResistanceUp ||
+      type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp ||
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
       || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts)
@@ -624,7 +624,7 @@ export class GlobalService {
     statusEffect.tickFrequency = tickFrequency;
     statusEffect.associatedAbilityName = associatedAbilityName;
     statusEffect.dotType = dotType;
-    statusEffect.element = associatedElement;        
+    statusEffect.element = associatedElement;
 
     return statusEffect;
   }
@@ -688,7 +688,7 @@ export class GlobalService {
     character.battleStats.elementalDamageResistance.water = character.equipmentSet.getTotalWaterDamageResistanceGain();
     character.battleStats.elementalDamageResistance.lightning = character.equipmentSet.getTotalLightningDamageResistanceGain();
     character.battleStats.elementalDamageResistance.air = character.equipmentSet.getTotalAirDamageResistanceGain();
-    character.battleStats.elementalDamageResistance.earth = character.equipmentSet.getTotalEarthDamageResistanceGain();    
+    character.battleStats.elementalDamageResistance.earth = character.equipmentSet.getTotalEarthDamageResistanceGain();
 
     //gods
     var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
@@ -776,6 +776,40 @@ export class GlobalService {
       character.battleStats.currentHp = character.battleStats.maxHp;
   }
 
+  giveCharactersBonusExp(party: Character[], bonusXp: number) {
+    var activeParty = this.getActivePartyCharacters(true);
+
+    activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel
+      && !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
+        //needs to have some sort of modification factor on beating enemies at a certain lvl compared to you
+        partyMember.exp += bonusXp;
+      });
+
+    //active gods
+    this.globalVar.gods.filter(god => god.isAvailable &&
+      activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {
+        this.giveGodExp(god, bonusXp);
+      });
+
+    //inactive gods
+    this.globalVar.gods.filter(god => god.isAvailable &&
+      (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
+        //todo: should xp be halved for inactive gods?
+        this.giveGodExp(god, bonusXp);
+      });
+
+
+    party.forEach(partyMember => {
+      var previousXp: number | undefined = undefined;
+      while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
+        previousXp = partyMember.exp;
+        this.levelUpPartyMember(partyMember);
+        if (partyMember.level === partyMember.maxLevel)
+          partyMember.exp = 0;
+      }
+    });
+  }
+
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam) {
     var activeParty = this.getActivePartyCharacters(true);
 
@@ -826,8 +860,8 @@ export class GlobalService {
       affinityIncreaseCount += 1;
 
     affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
-    
-    god.exp += xpAmount * BoonOfOlympusValue * affinityBoost;    
+
+    god.exp += xpAmount * BoonOfOlympusValue * affinityBoost;
 
     var previousXp: number | undefined = undefined;
     while (god.exp >= god.expToNextLevel && (previousXp === undefined || god.exp < previousXp)) {
@@ -931,14 +965,14 @@ export class GlobalService {
     var ability = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
     if (ability === undefined)
       return;
-      
+
     var targetGainsEffect = ability.targetEffect[0];
 
     if (character.type === CharacterEnum.Adventurer) {
       ability.effectiveness += .05;
     }
-    if (character.type === CharacterEnum.Archer) {      
-      targetGainsEffect.effectiveness += .025;      
+    if (character.type === CharacterEnum.Archer) {
+      targetGainsEffect.effectiveness += .025;
     }
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
@@ -1425,22 +1459,22 @@ export class GlobalService {
       else if (god.type === GodEnum.Hermes) {
         stats.autoAttackCooldownReduction += godLevel / 100000; //should lead to +15% auto attack CD reduction
       }
-      else if (god.type === GodEnum.Apollo) { 
+      else if (god.type === GodEnum.Apollo) {
         stats.hpRegen += godLevel / 250; //should lead to 60 hp per 5 sec
       }
     }
     else if (godLevel % 50 === 0) {
       if (god.type === GodEnum.Athena) {
-        stats.defense += Math.round(godLevel / (3 + (1/3)));
+        stats.defense += Math.round(godLevel / (3 + (1 / 3)));
       }
       else if (god.type === GodEnum.Artemis) {
-        stats.luck += Math.round(godLevel / (3 + (1/3)));
+        stats.luck += Math.round(godLevel / (3 + (1 / 3)));
       }
       else if (god.type === GodEnum.Hermes) {
-        stats.agility += Math.round(godLevel / (3 + (1/3)));
+        stats.agility += Math.round(godLevel / (3 + (1 / 3)));
       }
       else if (god.type === GodEnum.Apollo) {
-        stats.resistance += Math.round(godLevel / (3 + (1/3)));
+        stats.resistance += Math.round(godLevel / (3 + (1 / 3)));
       }
     }
 
@@ -1670,69 +1704,59 @@ export class GlobalService {
       }
     });
   }
-  
-  unequipItem(type: EquipmentTypeEnum | undefined, characterType: CharacterEnum) { 
+
+  unequipItem(type: EquipmentTypeEnum | undefined, characterType: CharacterEnum) {
     var character = this.globalVar.characters.find(item => item.type === characterType);
 
     if (character === undefined || type === undefined)
       return;
 
-    if (type === EquipmentTypeEnum.Weapon)
-    {
-      if (character.equipmentSet.weapon?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-      {
-        var effect = character.equipmentSet.weapon.equipmentEffect.userEffect.length > 0 ? 
-        character.equipmentSet.weapon.equipmentEffect.userEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetEffect[0];
+    if (type === EquipmentTypeEnum.Weapon) {
+      if (character.equipmentSet.weapon?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+        var effect = character.equipmentSet.weapon.equipmentEffect.userEffect.length > 0 ?
+          character.equipmentSet.weapon.equipmentEffect.userEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
       character.equipmentSet.weapon = undefined;
     }
-    if (type === EquipmentTypeEnum.Shield)
-    {
-      if (character.equipmentSet.shield?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-      {
-        var effect = character.equipmentSet.shield.equipmentEffect.userEffect.length > 0 ? 
-        character.equipmentSet.shield.equipmentEffect.userEffect[0] : character.equipmentSet.shield.equipmentEffect.targetEffect[0];
+    if (type === EquipmentTypeEnum.Shield) {
+      if (character.equipmentSet.shield?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+        var effect = character.equipmentSet.shield.equipmentEffect.userEffect.length > 0 ?
+          character.equipmentSet.shield.equipmentEffect.userEffect[0] : character.equipmentSet.shield.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
       character.equipmentSet.shield = undefined;
     }
-    if (type === EquipmentTypeEnum.Armor)
-    {
-      if (character.equipmentSet.armor?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-      {
-        var effect = character.equipmentSet.armor.equipmentEffect.userEffect.length > 0 ? 
-        character.equipmentSet.armor.equipmentEffect.userEffect[0] : character.equipmentSet.armor.equipmentEffect.targetEffect[0];
+    if (type === EquipmentTypeEnum.Armor) {
+      if (character.equipmentSet.armor?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+        var effect = character.equipmentSet.armor.equipmentEffect.userEffect.length > 0 ?
+          character.equipmentSet.armor.equipmentEffect.userEffect[0] : character.equipmentSet.armor.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
       character.equipmentSet.armor = undefined;
     }
-    if (type === EquipmentTypeEnum.Ring)
-    {
-      if (character.equipmentSet.ring?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-      {
-        var effect = character.equipmentSet.ring.equipmentEffect.userEffect.length > 0 ? 
-        character.equipmentSet.ring.equipmentEffect.userEffect[0] : character.equipmentSet.ring.equipmentEffect.targetEffect[0];
+    if (type === EquipmentTypeEnum.Ring) {
+      if (character.equipmentSet.ring?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+        var effect = character.equipmentSet.ring.equipmentEffect.userEffect.length > 0 ?
+          character.equipmentSet.ring.equipmentEffect.userEffect[0] : character.equipmentSet.ring.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
-      character.equipmentSet.ring = undefined;    
+      character.equipmentSet.ring = undefined;
     }
-    if (type === EquipmentTypeEnum.Necklace)
-    {
-      if (character.equipmentSet.necklace?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-      {
-        var effect = character.equipmentSet.necklace.equipmentEffect.userEffect.length > 0 ? 
-        character.equipmentSet.necklace.equipmentEffect.userEffect[0] : character.equipmentSet.necklace.equipmentEffect.targetEffect[0];
+    if (type === EquipmentTypeEnum.Necklace) {
+      if (character.equipmentSet.necklace?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+        var effect = character.equipmentSet.necklace.equipmentEffect.userEffect.length > 0 ?
+          character.equipmentSet.necklace.equipmentEffect.userEffect[0] : character.equipmentSet.necklace.equipmentEffect.targetEffect[0];
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 
       character.equipmentSet.necklace = undefined;
     }
 
-    this.calculateCharacterBattleStats(character); 
+    this.calculateCharacterBattleStats(character);
   }
 }

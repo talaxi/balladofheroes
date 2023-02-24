@@ -512,6 +512,8 @@ export class LookupService {
       name = "<span class='priestColor'>Priest</span>";
     else if (type === ItemsEnum.UnderworldAccess)
       name = "Freely Enter and Leave Underworld";
+    else if (type === ItemsEnum.BonusXp)
+      name = "Bonus XP";
 
     return name;
   }

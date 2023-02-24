@@ -1,6 +1,6 @@
 .container {
     display: flex;    
-    height: 40vh;
+    height: 45vh;
     margin: 1rem;
     background-color: var(--background-quarternary);
     color: var(--foreground-default);

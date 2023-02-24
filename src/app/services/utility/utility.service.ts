@@ -264,7 +264,7 @@ export class UtilityService {
   }
 
   handlePlural(text: string) {
-    if (text === "Boon of Olympus" || text === "Fennel")
+    if (text === "Boon of Olympus" || text === "Fennel" || text === "Bonus XP")
       return text;
 
     if (text === "Vial of the Lethe")

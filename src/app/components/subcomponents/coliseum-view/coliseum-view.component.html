@@ -30,10 +30,11 @@
             <hr/>
             <div>
                 <div [ngClass]="{'rewardAlreadyObtained': firstTimeRewardAlreadyObtained()}">
-                    <strong>First Time Completion Reward: </strong> <span [innerHtml]='getFirstTimeCompletionRewards()'></span>
+                    <strong>First Time Completion Reward: </strong> <br/> <span [innerHtml]='getFirstTimeCompletionRewards()'></span>
                 </div>
+                <br/>
                 <div  [ngClass]="{'rewardAlreadyObtained': quickCompletionRewardAlreadyObtained()}">
-                    <strong>Quick Completion Reward: </strong> <span [innerHtml]='getQuickCompletionRewards()'></span>
+                    <strong>Quick Completion Reward: </strong> <br/> <span [innerHtml]='getQuickCompletionRewards()'></span>
                 </div>
                 <br />
                 <br />

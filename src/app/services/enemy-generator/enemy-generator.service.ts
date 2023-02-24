@@ -403,7 +403,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Medusa)
     {
       enemy.name = "Medusa";
-      enemy.battleStats = new CharacterStats(1500, 103, 116, 82, 40, 175); 
+      enemy.battleStats = new CharacterStats(1800, 103, 116, 82, 40, 175); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 175; 
@@ -467,7 +467,7 @@ export class EnemyGeneratorService {
     {
       //somewhat easy to rebound from resetting gods
       enemy.name = "Lost Soul";
-      enemy.battleStats = new CharacterStats(383, 43, 71, 37, 40, 85);      
+      enemy.battleStats = new CharacterStats(383, 43, 71, 37, 30, 85);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 78; 
@@ -478,7 +478,7 @@ export class EnemyGeneratorService {
       enemy.name = "Wretched";
       enemy.battleStats = new CharacterStats(298, 52, 92, 53, 40, 85); 
       enemy.battleStats.elementalDamageResistance.holy = this.utilityService.enemyMinorElementalWeakness;
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 84; 
       enemy.loot.push(new LootItem(ItemsEnum.MoltenShield, ItemTypeEnum.Equipment, 1, .01));
