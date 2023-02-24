@@ -135,11 +135,22 @@ export class AltarViewComponent implements OnInit {
   getAltarDescription() {
     var description = "";
     var godType = GodEnum.None;
+    var keybindKey = "";
+    var keybindString = "openFirstAvailableAltar";
+
+    if (this.globalService.globalVar.altars.altar2 === this.altar)
+      keybindString = "openSecondAvailableAltar";
+      if (this.globalService.globalVar.altars.altar3 === this.altar)
+      keybindString = "openThirdAvailableAltar";
+
+    var keybind = this.globalService.globalVar.keybinds.settings.find(item => item[0] === keybindString);
+    if (keybind !== undefined)
+      keybindKey = this.keybindService.getBindingString(keybind[1]);
 
     if (this.altar !== undefined && this.altar.type === AltarEnum.Small) {
       godType = this.altar.god;
 
-      description = "When the condition is met, click to pray at a <strong>Small Altar</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
+      description = "When the condition is met, click or press <span class='keybind'>" + keybindKey + "</span> to pray at a <strong>Small Altar</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
     }
 
     return description;
@@ -177,7 +188,7 @@ export class AltarViewComponent implements OnInit {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
 
-      if (this.animationSubscription !== undefined)
+    if (this.animationSubscription !== undefined)
       this.animationSubscription.unsubscribe();
   }
 }

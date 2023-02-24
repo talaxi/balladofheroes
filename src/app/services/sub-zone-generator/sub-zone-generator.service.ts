@@ -243,6 +243,11 @@ export class SubZoneGeneratorService {
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lamia));
       battleOptions.push(enemyTeam6);
+
+      var enemyTeam7: EnemyTeam = new EnemyTeam();
+      enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));
+      enemyTeam7.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FledglingLamia));      
+      battleOptions.push(enemyTeam7);
     }
     if (type === SubZoneEnum.DodonaAmbracianGulf) {
       var enemyTeam: EnemyTeam = new EnemyTeam();

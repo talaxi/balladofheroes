@@ -946,3 +946,7 @@ button {
 .amountAvailable {
   font-variant: normal !important;
 }
+
+.keybind {
+  font-weight: bold;
+}

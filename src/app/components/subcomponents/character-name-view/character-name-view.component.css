@@ -67,10 +67,6 @@
     align-self: center;
 }
 
-.keybind {
-    font-weight: bold;
-}
-
 @keyframes levelUpAnimation {    
     25% {        
         transform: scale(1.1);   

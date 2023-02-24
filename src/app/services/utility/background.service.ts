@@ -74,7 +74,7 @@ export class BackgroundService {
   }
 
   gainHpInTown(party: Character[], deltaTime: number) {
-    var hpGainPercent = .05;
+    var hpGainPercent = .1;
 
     this.globalService.globalVar.timers.townHpGainTimer += deltaTime;
     var teamNeedsHealing = party.some(item => item.battleStats.currentHp < item.battleStats.maxHp);

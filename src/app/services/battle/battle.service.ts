@@ -24,6 +24,7 @@ import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.mode
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
@@ -260,7 +261,7 @@ export class BattleService {
           character1.assignedGod2 = GodEnum.Hermes;
         }
       }
-    }    
+    }
   }
 
   checkScene() {
@@ -429,7 +430,7 @@ export class BattleService {
     character.battleInfo.autoAttackManuallyTriggered = false;
   }
 
-  handleAutoAttack(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], additionalDamageMultiplier?: number) {    
+  handleAutoAttack(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], additionalDamageMultiplier?: number) {
     var target = this.getTarget(character, targets);
 
     if (target === undefined)
@@ -781,7 +782,7 @@ export class BattleService {
         this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
       }
     }
-    
+
     this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets);
     this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt);
     this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt);
@@ -943,9 +944,8 @@ export class BattleService {
             this.gainHp(target, healAmount);
         }
 
-        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {          
-          if (target !== undefined)
-          {
+        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
+          if (target !== undefined) {
             var trueDamageDealt = this.dealTrueDamage(isPartyUsing, target, instantEffect.effectiveness);
             var elementalText = "";
             if (instantEffect.element !== ElementalTypeEnum.None)
@@ -1055,7 +1055,7 @@ export class BattleService {
       appliedStatusEffect.duration *= 1 + castingCharacter.battleStats.debuffDuration;
     }
 
-    if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {      
+    if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
       potentialTargets.forEach(enemy => {
         var existingApplication = enemy.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
         if (existingApplication !== undefined) {
@@ -1078,7 +1078,7 @@ export class BattleService {
     else {
       var existingApplication = target.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
       if (existingApplication !== undefined) {
-        if (appliedStatusEffect.effectStacks) {          
+        if (appliedStatusEffect.effectStacks) {
           existingApplication.effectiveness += appliedStatusEffect.effectiveness - 1;
           existingApplication.stackCount += 1;
         }
@@ -1090,8 +1090,7 @@ export class BattleService {
         else
           target.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
       }
-      else
-      {
+      else {
         target.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
       }
     }
@@ -1226,36 +1225,36 @@ export class BattleService {
     if (damage < 0)
       damage = 0;
 
-      var totalDamageDealt = damage;
+    var totalDamageDealt = damage;
 
-      target.trackedStats.damageTaken += totalDamageDealt;
-      if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
-        !target.unlockedOverdrives.some(item => item === OverdriveNameEnum.Protection))
-        target.unlockedOverdrives.push(OverdriveNameEnum.Protection);
-      if (target.overdriveInfo.overdriveIsActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection)
-        target.overdriveInfo.damageTaken += totalDamageDealt;
-  
-      if (target.level >= this.utilityService.characterOverdriveLevel) {
-        target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked * this.lookupService.getOverdriveGainMultiplier(target);
-        if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
-          target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
+    target.trackedStats.damageTaken += totalDamageDealt;
+    if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
+      !target.unlockedOverdrives.some(item => item === OverdriveNameEnum.Protection))
+      target.unlockedOverdrives.push(OverdriveNameEnum.Protection);
+    if (target.overdriveInfo.overdriveIsActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection)
+      target.overdriveInfo.damageTaken += totalDamageDealt;
+
+    if (target.level >= this.utilityService.characterOverdriveLevel) {
+      target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked * this.lookupService.getOverdriveGainMultiplier(target);
+      if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
+        target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
+    }
+
+    if (target.battleInfo.barrierValue > 0) {
+      target.battleInfo.barrierValue -= damage;
+      damage = 0;
+
+      if (target.battleInfo.barrierValue < 0) {
+        //deal remaining damage to hp
+        damage = -target.battleInfo.barrierValue;
+        target.battleInfo.barrierValue = 0;
       }
-  
-      if (target.battleInfo.barrierValue > 0) {
-        target.battleInfo.barrierValue -= damage;
-        damage = 0;
-  
-        if (target.battleInfo.barrierValue < 0) {
-          //deal remaining damage to hp
-          damage = -target.battleInfo.barrierValue;
-          target.battleInfo.barrierValue = 0;
-        }
-      }
-  
-      target.battleStats.currentHp -= damage;
-  
-      if (target.battleStats.currentHp < 0)
-        target.battleStats.currentHp = 0;
+    }
+
+    target.battleStats.currentHp -= damage;
+
+    if (target.battleStats.currentHp < 0)
+      target.battleStats.currentHp = 0;
 
     if (isPartyAttacking)
       this.dpsCalculatorService.addPartyDamageAction(damage);
@@ -1521,11 +1520,14 @@ export class BattleService {
       }
 
       //trigger underworld flow
-      this.storyService.triggerFirstTimeUnderworldScene = true;
-      setTimeout(() => {
-        this.storyService.showFirstTimeUnderworldStory = true;
-        this.storyService.checkForNewStoryScene();
-      }, 3500);
+      var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
+      if (storyStyle !== StoryStyleSettingEnum.Skip) {
+        this.storyService.triggerFirstTimeUnderworldScene = true;
+        setTimeout(() => {
+          this.storyService.showFirstTimeUnderworldStory = true;
+          this.storyService.checkForNewStoryScene();
+        }, 3500);
+      }
     }
     else {
       //haven't unlocked underworld yet but passed tutorial
@@ -1570,7 +1572,7 @@ export class BattleService {
     this.altarService.incrementAltarCount(AltarConditionEnum.Victories);
 
     //console.log("Completed in: " + this.battle.battleDuration);
-    if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {      
+    if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {
       subZone.fastestCompletionSpeed = this.battle.battleDuration;
     }
 
@@ -1605,7 +1607,7 @@ export class BattleService {
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       if (this.battle.activeTournament.currentRound >= this.battle.activeTournament.maxRounds) {
         //handle victory situation
-        this.coliseumService.handleColiseumVictory(this.battle.activeTournament.type);        
+        this.coliseumService.handleColiseumVictory(this.battle.activeTournament.type);
       }
       else
         this.battle.activeTournament.currentRound += 1;
@@ -1649,15 +1651,13 @@ export class BattleService {
     if (defeatedEnemies.enemyList.length === 0)
       return;
 
-    if (this.battle.battleDuration < fullCoinDurationCutoff)
-    {
+    if (this.battle.battleDuration < fullCoinDurationCutoff) {
       noCoinGainDueToFastClear = true;
     }
 
     defeatedEnemies.enemyList.forEach(enemy => {
       var coinGain = enemy.coinGainFromDefeat;
-      if (this.battle.battleDuration < fullCoinDurationCutoff && this.pityCoinTimer < fullCoinDurationCutoff)
-      {
+      if (this.battle.battleDuration < fullCoinDurationCutoff && this.pityCoinTimer < fullCoinDurationCutoff) {
         coinGain = Math.round(coinGain * (this.battle.battleDuration / fullCoinDurationCutoff));
         //coinGain = this.utilityService.getRandomInteger(0, possibleCoinGain);        
         if (enemy.coinGainFromDefeat > 0 && coinGain > 0)
@@ -1667,10 +1667,10 @@ export class BattleService {
     });
 
     if (this.pityCoinTimer >= fullCoinDurationCutoff)
-    this.pityCoinTimer = 0;
+      this.pityCoinTimer = 0;
 
-    if (noCoinGainDueToFastClear)  
-      this.pityCoinTimer += this.battle.battleDuration;    
+    if (noCoinGainDueToFastClear)
+      this.pityCoinTimer += this.battle.battleDuration;
     else
       this.pityCoinTimer = 0;
 
@@ -1731,7 +1731,7 @@ export class BattleService {
     if (balladUnlocks !== undefined && balladUnlocks.length > 0) {
       balladUnlocks.forEach(ballad => {
         var unlockedBallad = this.balladService.findBallad(ballad);
-        if (unlockedBallad !== undefined && !unlockedBallad.isAvailable) {          
+        if (unlockedBallad !== undefined && !unlockedBallad.isAvailable) {
           unlockedBallad.isAvailable = true;
           unlockedBallad.showNewNotification = true;
         }
@@ -1741,7 +1741,7 @@ export class BattleService {
     if (zoneUnlocks !== undefined && zoneUnlocks.length > 0) {
       zoneUnlocks.forEach(zone => {
         var unlockedZone = this.balladService.findZone(zone);
-        if (unlockedZone !== undefined && !unlockedZone.isAvailable) {          
+        if (unlockedZone !== undefined && !unlockedZone.isAvailable) {
           unlockedZone.isAvailable = true;
           unlockedZone.showNewNotification = true;
         }
@@ -1751,7 +1751,7 @@ export class BattleService {
     if (subZoneUnlocks !== undefined && subZoneUnlocks.length > 0) {
       subZoneUnlocks.forEach(subZone => {
         var unlockedSubZone = this.balladService.findSubzone(subZone);
-        if (unlockedSubZone !== undefined && !unlockedSubZone.isAvailable) {          
+        if (unlockedSubZone !== undefined && !unlockedSubZone.isAvailable) {
           unlockedSubZone.isAvailable = true;
           unlockedSubZone.showNewNotification = true;
           this.achievementService.createDefaultAchievementsForSubzone(subZone).forEach(achievement => {
@@ -1904,7 +1904,7 @@ export class BattleService {
     if (this.battleItemInUse === ItemsEnum.PoisonFang || this.battleItemInUse === ItemsEnum.StranglingGasPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
-      
+
       this.applyStatusEffect(effect.targetEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
 
@@ -2007,8 +2007,7 @@ export class BattleService {
           if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
         }
-        else
-        {          
+        else {
           targetGainsEffects.push(effect.makeCopy());
         }
       });
@@ -2115,9 +2114,8 @@ export class BattleService {
 
       this.handleuserEffects(true, userGainsEffects, user, party, targets);
     }
-    
-    if (targetGainsEffects.length > 0)
-    {      
+
+    if (targetGainsEffects.length > 0) {
       this.handletargetEffects(true, targetGainsEffects, user, target, targets, party);
     }
   }
@@ -2155,7 +2153,7 @@ export class BattleService {
 
     var enfire = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enfire);
     if (enfire !== undefined) {
-      elementalType = ElementalTypeEnum.Fire;      
+      elementalType = ElementalTypeEnum.Fire;
     }
 
     return elementalType;
