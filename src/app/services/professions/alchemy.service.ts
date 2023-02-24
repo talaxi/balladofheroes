@@ -445,7 +445,7 @@ export class AlchemyService {
   }
 
   getExpToNextLevel(level: number) {
-    var baseAmount = 2;
+    var baseAmount = 20;
     var multiplier = 30;
 
     return baseAmount + (multiplier * (level-1));
