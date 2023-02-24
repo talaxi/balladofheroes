@@ -368,9 +368,8 @@ export class SubZoneGeneratorService {
       battleOptions.push(enemyTeam3);
 
       var enemyTeam4: EnemyTeam = new EnemyTeam();
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LostSoul));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Wretched));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LostSoul));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Revenant));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Wretched));      
       battleOptions.push(enemyTeam4);
 
       var enemyTeam5: EnemyTeam = new EnemyTeam();
