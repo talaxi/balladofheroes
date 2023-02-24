@@ -115,7 +115,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Bandit)
     {
       enemy.name = "Bandit";
-      enemy.battleStats = new CharacterStats(35, 19, 12, 7, 10, 10); 
+      enemy.battleStats = new CharacterStats(35, 16, 12, 7, 10, 10); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.xpGainFromDefeat = 40; 
       enemy.coinGainFromDefeat = 1;
@@ -124,7 +124,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Thief)
     {
       enemy.name = "Thief";
-      enemy.battleStats = new CharacterStats(26, 15, 8, 10, 5, 5); 
+      enemy.battleStats = new CharacterStats(26, 13, 8, 10, 5, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 40; 
       enemy.coinGainFromDefeat = 3;      
@@ -133,8 +133,8 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Highwayman)
     {
       enemy.name = "Highwayman";
-      enemy.battleStats = new CharacterStats(60, 13, 18, 10, 10, 20); 
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(60, 14, 17, 10, 10, 20); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.xpGainFromDefeat = 45; 
       enemy.coinGainFromDefeat = 2;
       enemy.loot.push(new LootItem(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 1, .08));
@@ -1101,7 +1101,7 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(bronti);
 
       var risingSun = new Ability();
-      risingSun.name = "Bronti";
+      risingSun.name = "Rising Sun";
       risingSun.isAvailable = true;
       risingSun.effectiveness = 2.2;
       risingSun.cooldown = risingSun.currentCooldown = 14;
@@ -1132,6 +1132,16 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250; 
+      
+      var oneStepAhead = new Ability();
+      oneStepAhead.name = "One Step Ahead";
+      oneStepAhead.isAvailable = true;
+      oneStepAhead.effectiveness = 1;
+      oneStepAhead.dealsDirectDamage = true;
+      oneStepAhead.cooldown = oneStepAhead.currentCooldown = 19;
+      oneStepAhead = this.randomizeCooldown(oneStepAhead);
+      oneStepAhead.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .9, false, false));
+      enemy.abilityList.push(oneStepAhead);
     }
     if (type === BestiaryEnum.Rhadamanthus)
     {
