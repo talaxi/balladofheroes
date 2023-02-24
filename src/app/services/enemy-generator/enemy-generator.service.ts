@@ -467,7 +467,7 @@ export class EnemyGeneratorService {
     {
       //somewhat easy to rebound from resetting gods
       enemy.name = "Lost Soul";
-      enemy.battleStats = new CharacterStats(383, 43, 71, 37, 30, 85);      
+      enemy.battleStats = new CharacterStats(363, 43, 64, 37, 30, 85);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 78; 
@@ -476,7 +476,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Wretched)
     {
       enemy.name = "Wretched";
-      enemy.battleStats = new CharacterStats(298, 52, 92, 53, 40, 85); 
+      enemy.battleStats = new CharacterStats(278, 52, 82, 53, 40, 85); 
       enemy.battleStats.elementalDamageResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
