@@ -84,7 +84,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.KillerBees)
     {
       enemy.name = "Killer Bees";
-      enemy.battleStats = new CharacterStats(12, 17, 7, 15, 20, 10); 
+      enemy.battleStats = new CharacterStats(12, 15, 7, 15, 20, 10); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 20; 
       enemy.coinGainFromDefeat = 1;
@@ -102,7 +102,7 @@ export class EnemyGeneratorService {
       var slash = new Ability();
       slash.name = "Slash";
       slash.isAvailable = true;
-      slash.effectiveness = 1.1;
+      slash.effectiveness = 1;
       slash.dealsDirectDamage = true;
       slash.cooldown = slash.currentCooldown = 19;
       slash = this.randomizeCooldown(slash);
