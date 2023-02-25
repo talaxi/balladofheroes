@@ -114,7 +114,7 @@ export class GlobalVariables {
         this.isGamePaused = false;
         this.isBattlePaused = false;
         this.altarOfAsclepus = new Character();
-        this.altarOfAsclepus.battleStats.maxHp = 25000;
+        this.altarOfAsclepus.battleStats.maxHp = 20000;
         this.altarOfAsclepus.battleStats.currentHp = 0;
     }
 }

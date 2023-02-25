@@ -10,6 +10,7 @@ import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
@@ -171,6 +172,10 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   selectSubZone(subzone: SubZone, zone: Zone) {
+    if (zone.type === ZoneEnum.PeloposNisos) {
+      return; //TODO: Move this as you release new stuff and need to put 'To Be Continued' in the list
+    }
+
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.zones !== undefined && ballad.zones.length > 0)
         ballad.zones.forEach(zone => {
@@ -184,7 +189,7 @@ export class ZoneNavigationComponent implements OnInit {
     subzone.isSelected = true;
     subzone.showNewNotification = false;
     this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
-    this.globalService.resetCooldowns(); 
+    this.globalService.resetCooldowns();
 
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -236,7 +241,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-    
+
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
@@ -297,7 +302,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-    
+
     var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + startingPoint?.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
@@ -361,11 +366,24 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
   }
 
+  isSubZoneToBeContinued(subzone: SubZone) {
+    if (subzone.type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
+      return true;
+
+    return false;
+  }
+
   getSubZoneSubText(subzone: SubZone) {
     var text = "";
 
+    if (this.isSubZoneToBeContinued(subzone))
+      return text;
+
     if (subzone.isTown)
       text = "(Town)";
+    else if (subzone.isSubzoneSideQuest(subzone.type)) {
+      text = "(Special)";
+    }
     else {
       text = "(" + subzone.victoryCount.toString();
       if (subzone.victoriesNeededToProceed > subzone.victoryCount)
@@ -424,7 +442,7 @@ export class ZoneNavigationComponent implements OnInit {
     var passedTime = 0;
 
     for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) {
-      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i])  * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
+      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
       totalLength += actionLength;
 
       if (this.globalService.globalVar.alchemy.alchemyStep > i + 1) {

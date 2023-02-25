@@ -66,7 +66,7 @@ export class AltarComponent implements OnInit {
   }
 
   getAsclepiusHpThreshold1() {
-    var percentComplete = (this.globalService.globalVar.altarOfAsclepus.battleStats.currentHp / this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .25) * 100;
+    var percentComplete = (this.globalService.globalVar.altarOfAsclepus.battleStats.currentHp / (this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .25)) * 100;
 
     if (percentComplete > 100)
       percentComplete = 100;
@@ -79,7 +79,7 @@ export class AltarComponent implements OnInit {
     if (startingHp < 0)
       startingHp = 0;
 
-    var percentComplete = (startingHp / this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .25) * 100;
+    var percentComplete = (startingHp / (this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .25)) * 100;
     
     if (percentComplete > 100)
       percentComplete = 100;
@@ -92,7 +92,7 @@ export class AltarComponent implements OnInit {
     if (startingHp < 0)
       startingHp = 0;
 
-    var percentComplete = (startingHp / this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .5) * 100;
+    var percentComplete = (startingHp / (this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .5)) * 100;
     
     if (percentComplete > 100)
       percentComplete = 100;

@@ -291,7 +291,7 @@ export class AlchemyService {
       recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
       recipe.steps.push(AlchemyActionsEnum.HeatMixture);
 
-      recipe.expGain = 5;
+      recipe.expGain = 6;
     }
 
     if (item === ItemsEnum.DebilitatingToxin) {

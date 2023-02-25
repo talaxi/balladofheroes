@@ -46,7 +46,7 @@
                                 <span class="subzoneSpacer">&#8618;</span><span><button
                                         class="buttonAsTextKeepColor z3Heading clickableText"
                                         [ngClass]="getSubzoneClass(subzone)"
-                                        (click)="selectSubZone(subzone, zone)">{{subzone.name}}
+                                        (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone) ? "To Be Continued!" : subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
                                         <app-notification-icon *ngIf="subzone.showNewNotification">
                                         </app-notification-icon>
