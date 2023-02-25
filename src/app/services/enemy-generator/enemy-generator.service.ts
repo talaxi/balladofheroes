@@ -713,11 +713,11 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.FieryNewt)
     {
       enemy.name = "Fiery Newt";
-      enemy.battleStats = new CharacterStats(717, 83, 98, 85, 60, 100); 
+      enemy.battleStats = new CharacterStats(717, 63, 98, 85, 60, 100); 
       enemy.battleStats.elementalDamageResistance.water = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 112; 
+      enemy.xpGainFromDefeat = 110; 
       enemy.loot.push(new LootItem(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 2, .05));
 
       var fireBreath = new Ability();
@@ -726,7 +726,7 @@ export class EnemyGeneratorService {
       fireBreath.cooldown = fireBreath.currentCooldown = 22;
       fireBreath = this.randomizeCooldown(fireBreath);
       fireBreath.dealsDirectDamage = true;
-      fireBreath.effectiveness = 1.3;     
+      fireBreath.effectiveness = 1.2;     
       fireBreath.elementalType = ElementalTypeEnum.Fire; 
       fireBreath.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .8, false, false));
       enemy.abilityList.push(fireBreath);
@@ -737,6 +737,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(2350, 175, 200, 95, 80, 180); 
       enemy.battleStats.elementalDamageResistance.water = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats.elementalDamageIncrease.fire += .1;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 325; 
       enemy.loot.push(new LootItem(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 2, .1));
@@ -749,18 +750,19 @@ export class EnemyGeneratorService {
       tailSwing.cooldown = tailSwing.currentCooldown = 16;
       tailSwing = this.randomizeCooldown(tailSwing);
       tailSwing.dealsDirectDamage = true;
-      tailSwing.effectiveness = 1.5;     
+      tailSwing.effectiveness = 1.2;     
       tailSwing.elementalType = ElementalTypeEnum.Fire;       
       enemy.abilityList.push(tailSwing);
 
       var regeneration = new Ability();
       regeneration.name = "Regeneration";
       regeneration.isAvailable = true;
-      regeneration.cooldown = regeneration.currentCooldown = 30;
+      regeneration.cooldown = regeneration.currentCooldown = 35;
       regeneration = this.randomizeCooldown(regeneration);
       regeneration.dealsDirectDamage = false;
       regeneration.heals = true;
-      regeneration.effectiveness = .75;     
+      regeneration.effectiveness = .6;     
+      regeneration.targetsAllies = true;
       enemy.abilityList.push(regeneration);
     }
     if (type === BestiaryEnum.FallenHero)
