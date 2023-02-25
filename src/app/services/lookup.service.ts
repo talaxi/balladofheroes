@@ -1389,7 +1389,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Stagger") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Reduce target's cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Reduce target's auto attack cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Fire Breath") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -1485,7 +1485,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Dead)
       description = "This character is dead.";
     if (statusEffect.type === StatusEffectEnum.Dodge)
-      description = "Avoid all auto attacks and abilities.";
+      description = "Avoid all auto attacks.";
     if (statusEffect.type === StatusEffectEnum.InstantHealAfterAutoAttack)
       description = "Your next auto attack will also heal you for " + Math.round((statusEffect.effectiveness) * 100) + "% of the damage dealt.";
     if (statusEffect.type === StatusEffectEnum.Mark)
@@ -1502,11 +1502,13 @@ export class LookupService {
       description = "Taking damage over time.";
     if (statusEffect.type === StatusEffectEnum.Thorns)
       description = "Dealing damage back to auto attackers.";
+    if (statusEffect.type === StatusEffectEnum.Stagger)
+      description = "Decrease auto attack cooldown speed by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
-      description = "10% chance on auto attack to reduce target's agility by 10% for 5 seconds.";
+      description = "10% chance on auto attack to reduce target's agility by 10% for 8 seconds.";
     if (statusEffect.type === StatusEffectEnum.PoisonousToxin)
-      description = "10% chance on auto attack to deal 6 additional damage.";
+      description = "10% chance on auto attack to deal 8 additional damage.";
 
     if (statusEffect.type === StatusEffectEnum.HeroicElixir)
       description = "Increase Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -3205,27 +3207,27 @@ export class LookupService {
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
     if (character.baseStats.abilityCooldownReduction > 0)
-      breakdown += "Base Stat Gain: *" + Math.round(character.baseStats.abilityCooldownReduction * 100) + "%<br />";
+      breakdown += "Base Stat Gain: *" + this.utilityService.roundTo(character.baseStats.abilityCooldownReduction * 100, 2) + "%<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.abilityCooldownReduction + assignedGod1.permanentStatGain.abilityCooldownReduction;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: *" + Math.round(godStatGain * 100) + "%<br />";
+        breakdown += assignedGod1.name + " Stat Gain: *" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.abilityCooldownReduction + assignedGod2.permanentStatGain.abilityCooldownReduction;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: *" + Math.round(godStatGain * 100) + "%<br />";
+        breakdown += assignedGod2.name + " Stat Gain: *" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
     }
 
     var charmGain = this.charmService.getTotalAbilityCooldownReductionAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
-      breakdown += "Charm Total: *" + Math.round(charmGain * 100) + "%<br />";
+      breakdown += "Charm Total: *" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
     if (character.equipmentSet.getTotalAbilityCooldownReductionGain() > 0)
-      breakdown += "Equipment: *" + Math.round(character.equipmentSet.getTotalAbilityCooldownReductionGain() * 100) + "%<br />";
+      breakdown += "Equipment: *" + this.utilityService.roundTo(character.equipmentSet.getTotalAbilityCooldownReductionGain() * 100, 2) + "%<br />";
 
     /*
 
@@ -3241,27 +3243,27 @@ export class LookupService {
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
     if (character.baseStats.autoAttackCooldownReduction > 0)
-      breakdown += "Base Stat Gain: *" + Math.round(character.baseStats.autoAttackCooldownReduction * 100) + "%<br />";
+      breakdown += "Base Stat Gain: *" + this.utilityService.roundTo(character.baseStats.autoAttackCooldownReduction * 100, 2) + "%<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.autoAttackCooldownReduction + assignedGod1.permanentStatGain.autoAttackCooldownReduction;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: *" + Math.round(godStatGain * 100) + "%<br />";
+        breakdown += assignedGod1.name + " Stat Gain: *" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.autoAttackCooldownReduction + assignedGod2.permanentStatGain.autoAttackCooldownReduction;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: *" + Math.round(godStatGain * 100) + "%<br />";
+        breakdown += assignedGod2.name + " Stat Gain: *" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
     }
 
     var charmGain = this.charmService.getTotalAutoAttackCooldownReductionAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
-      breakdown += "Charm Total: *" + Math.round(charmGain * 100) + "%<br />";
+      breakdown += "Charm Total: *" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
     if (character.equipmentSet.getTotalAutoAttackCooldownReductionGain() > 0)
-      breakdown += "Equipment: *" + Math.round(character.equipmentSet.getTotalAutoAttackCooldownReductionGain() * 100) + "%<br />";
+      breakdown += "Equipment: *" + this.utilityService.roundTo(character.equipmentSet.getTotalAutoAttackCooldownReductionGain() * 100, 2) + "%<br />";
 
     /*
     if (this.globalService.globalVar.chthonicPowers.getAutoAttackCooldownReductionBoostPercent() > 0)

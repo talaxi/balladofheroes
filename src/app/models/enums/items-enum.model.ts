@@ -135,5 +135,6 @@ export enum ItemsEnum {
   LargeCharmOfHades,
   UnderworldAccess,
   BonusXp,
-  EarlyDevMark
+  EarlyDevMark,
+  HeroicElixirRecipe
 }

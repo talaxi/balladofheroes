@@ -210,7 +210,7 @@ export class AchievementService {
     if (subzoneType === SubZoneEnum.LibyaIsleCenter)
     {
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
-      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 1500));
+      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 2500));
     }
 
     if (completeClear.bonusResources.length > 0)

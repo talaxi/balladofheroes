@@ -366,7 +366,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
   }
 
-  isSubZoneToBeContinued(subzone: SubZone) {
+  isSubZoneToBeContinued(subzone: SubZone) {    
     if (subzone.type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
       return true;
 

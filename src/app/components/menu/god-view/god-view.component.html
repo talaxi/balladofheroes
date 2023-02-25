@@ -16,31 +16,31 @@
                 <span *ngIf="getMaxHpBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="maxHpPopover"><strong [ngClass]="getGodColor()" class="statLabel">Max
                         HP: </strong><span class="statValue"> {{getMaxHpBonus() | number : '1.0-0'}}
-                    </span><br /></span>                
+                    </span><br /></span>
                 <span *ngIf="getAttackBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="attackPopover"><strong [ngClass]="getGodColor()" class="statLabel">Attack:
                     </strong>
                     <span class="statValue">{{getAttackBonus() | number : '1.0-0'}}
                     </span>
-                <br />
+                    <br />
                 </span>
                 <span *ngIf="getAgilityBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="agilityPopover"><strong [ngClass]="getGodColor()" class="statLabel">Agility:
                     </strong>
                     <span class="statValue">{{getAgilityBonus() | number :
                         '1.0-0'}}</span>
-                <br />
+                    <br />
                 </span>
                 <span *ngIf="getLuckBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="luckPopover"><strong [ngClass]="getGodColor()" class="statLabel">Luck: </strong>
                     <span class="statValue">{{getLuckBonus() | number : '1.0-0'}}</span>
-                 <br /></span>               
+                    <br /></span>
                 <span *ngIf="getDefenseBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="defensePopover"><strong [ngClass]="getGodColor()" class="statLabel">Defense:
                     </strong>
                     <span class="statValue">{{getDefenseBonus() | number :
                         '1.0-0'}}</span>
-                <br />
+                    <br />
                 </span>
                 <span *ngIf="getResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="resistancePopover"><strong [ngClass]="getGodColor()"
@@ -60,41 +60,51 @@
                 '1.0-2'}} HP /
                 5 seconds<br /></span>
             <span *ngIf="getCriticalMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="criticalMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Critical
+                [contentTemplate]="criticalMultiplierPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Critical
                     Damage Bonus:</strong>
                 {{(getCriticalMultiplierBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getAbilityCooldownReductionBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="abilityCooldownReductionPopover"><strong [ngClass]="getGodColor()" class="statLabel">Ability
+                [contentTemplate]="abilityCooldownReductionPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Ability
                     Cooldown Reduction:</strong>
-                {{getAbilityCooldownReductionBonus() | number : '1.0-2'}} sec<br /></span>
+                {{getAbilityCooldownReductionBonus() * 100 | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getAutoAttackCooldownBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="autoAttackCooldownReductionPopover"><strong [ngClass]="getGodColor()" class="statLabel">Auto
+                [contentTemplate]="autoAttackCooldownReductionPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Auto
                     Attack Cooldown Reduction:</strong>
-                {{getAutoAttackCooldownBonus() | number : '1.0-2'}} sec<br /></span>
-                <span *ngIf="getArmorPenetrationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                    [contentTemplate]="armorPenetrationPopover"><strong [ngClass]="getGodColor()" class="statLabel">Armor Penetration:</strong>
-                    {{(getArmorPenetrationBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                <span *ngIf="getOverdriveGainBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                    [contentTemplate]="overdriveGainBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Overdrive Gain Bonus:</strong>
-                    {{(getOverdriveGainBonus() * 100) | number : '1.0-2'}}%<br /></span>  
-                    <span *ngIf="getHealingReceivedBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="healingReceivedBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Healing Received Bonus:</strong>
-                        {{(getHealingReceivedBonus() * 100) | number : '1.0-2'}}%<br /></span>  
-                        <span *ngIf="getDebuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                            [contentTemplate]="debuffDurationBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Debuff Duration Bonus:</strong>
-                            {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>                    
+                {{getAutoAttackCooldownBonus() * 100 | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getArmorPenetrationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="armorPenetrationPopover"><strong [ngClass]="getGodColor()" class="statLabel">Armor
+                    Penetration:</strong>
+                {{(getArmorPenetrationBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getOverdriveGainBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="overdriveGainBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Overdrive Gain Bonus:</strong>
+                {{(getOverdriveGainBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getHealingReceivedBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="healingReceivedBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Healing Received Bonus:</strong>
+                {{(getHealingReceivedBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getDebuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="debuffDurationBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Debuff Duration Bonus:</strong>
+                {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Holy Damage
+                [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Holy
+                    Damage
                     Bonus:</strong> {{(getHolyDamageBonus() *
                 100)
                 | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getFireDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="fireDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Fire Damage
+                [contentTemplate]="fireDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Fire
+                    Damage
                     Bonus:</strong> {{(getFireDamageBonus() *
                 100)
                 | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getLightningDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="lightningDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Lightning
+                [contentTemplate]="lightningDamageBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Lightning
                     Damage Bonus:</strong>
                 {{(getLightningDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getAirDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
@@ -103,12 +113,14 @@
                 100) |
                 number : '1.0-2'}}%<br /></span>
             <span *ngIf="getWaterDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="waterDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Water Damage
+                [contentTemplate]="waterDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Water
+                    Damage
                     Bonus:</strong> {{(getWaterDamageBonus()
                 *
                 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getEarthDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="earthDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Earth Damage
+                [contentTemplate]="earthDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Earth
+                    Damage
                     Bonus:</strong> {{(getEarthDamageBonus()
                 *
                 100) | number : '1.0-2'}}%<br /></span>
@@ -121,19 +133,23 @@
                     Resistance Bonus:</strong>
                 {{(getFireResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getLightningResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="lightningResistanceBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Lightning
+                [contentTemplate]="lightningResistanceBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Lightning
                     Resistance Bonus:</strong>
                 {{(getLightningResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getAirResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="airResistanceBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Air Resistance
+                [contentTemplate]="airResistanceBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Air
+                    Resistance
                     Bonus:</strong>
                 {{(getAirResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getWaterResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="waterResistanceBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Water
+                [contentTemplate]="waterResistanceBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Water
                     Resistance Bonus:</strong>
                 {{(getWaterResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getEarthResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="earthResistanceBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Earth
+                [contentTemplate]="earthResistanceBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Earth
                     Resistance Bonus:</strong>
                 {{(getEarthResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
         </div>
@@ -155,15 +171,17 @@
                     [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
             </div>
         </div>
-        <br/><br/>
+        <br /><br />
         <span class="sectionHeaderText sectionHeading">Affinity</span>
         <div class="sectionInfo">
             <span class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel}}</span>
             <br />
-            <span>{{god.affinityExp | number : '1.0-0'}} / {{god.affinityExpToNextLevel | number : '1.0-0'}} XP to <span  class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel +
-                1}}</span></span>
+            <span>{{god.affinityExp | number : '1.0-0'}} / {{god.affinityExpToNextLevel | number : '1.0-0'}} XP to <span
+                    class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel +
+                    1}}</span></span>
             <br />
-            <span><span class="statLabel" [ngClass]="getGodColor()">Next Reward: </span> <span class="statValue">{{getNextAffinityReward()}}</span></span>
+            <span><span class="statLabel" [ngClass]="getGodColor()">Next Reward: </span> <span
+                    class="statValue">{{getNextAffinityReward()}}</span></span>
         </div>
     </div>
 </div>
@@ -293,7 +311,8 @@
     <div>
         <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionDescription()"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodAbilityCooldownReductionStatBreakdown(this.god)">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodAbilityCooldownReductionStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -303,7 +322,8 @@
     <div>
         <span class="description" [innerHtml]="this.lookupService.getAutoAttackCooldownReductionDescription()"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodAutoAttackCooldownReductionStatBreakdown(this.god)">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodAutoAttackCooldownReductionStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -311,9 +331,11 @@
 
 <ng-template #holyDamageBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Holy')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Holy')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Holy')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Holy')">
 
         </div>
     </div>
@@ -321,9 +343,11 @@
 
 <ng-template #fireDamageBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Fire')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Fire')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"  [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Fire')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Fire')">
 
         </div>
     </div>
@@ -331,9 +355,11 @@
 
 <ng-template #lightningDamageBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Lightning')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Lightning')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"  [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Lightning')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Lightning')">
 
         </div>
     </div>
@@ -341,9 +367,11 @@
 
 <ng-template #waterDamageBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Water')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Water')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"  [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Water')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Water')">
 
         </div>
     </div>
@@ -351,9 +379,11 @@
 
 <ng-template #earthDamageBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Earth')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Earth')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"  [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Earth')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Earth')">
 
         </div>
     </div>
@@ -361,9 +391,11 @@
 
 <ng-template #airDamageBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Air')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalDamageIncreaseDescription(undefined, 'Air')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"  [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Air')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageIncreaseStatBreakdown(this.god, undefined, 'Air')">
 
         </div>
     </div>
@@ -371,9 +403,11 @@
 
 <ng-template #holyResistanceBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Holy')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Holy')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Holy')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Holy')">
 
         </div>
     </div>
@@ -381,9 +415,11 @@
 
 <ng-template #fireResistanceBonusPopover>
     <div>
-        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Fire')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Fire')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Fire')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Fire')">
 
         </div>
     </div>
@@ -391,9 +427,11 @@
 
 <ng-template #lightningResistanceBonusPopover>
     <div>
-        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Lightning')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Lightning')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Lightning')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Lightning')">
 
         </div>
     </div>
@@ -401,9 +439,11 @@
 
 <ng-template #waterResistanceBonusPopover>
     <div>
-        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Water')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Water')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Water')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Water')">
 
         </div>
     </div>
@@ -411,9 +451,11 @@
 
 <ng-template #airResistanceBonusPopover>
     <div>
-        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Air')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Air')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Air')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Air')">
 
         </div>
     </div>
@@ -421,9 +463,11 @@
 
 <ng-template #earthResistanceBonusPopover>
     <div>
-        <span class="description"  [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Earth')"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getElementalResistanceIncreaseDescription(undefined, 'Earth')"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Earth')">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Earth')">
 
         </div>
     </div>

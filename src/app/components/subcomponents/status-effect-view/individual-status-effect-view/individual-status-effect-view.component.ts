@@ -136,6 +136,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Taunt) {
       src += "taunt.svg";
     }
+    if (effect.type === StatusEffectEnum.Stagger) {
+      src += "stagger.svg";
+    }
 
     return src;
   }
