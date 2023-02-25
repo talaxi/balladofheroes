@@ -272,8 +272,7 @@ export class BattleService {
       this.globalService.globalVar.activeBattle.atScene = true;
       this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Story;
     }
-    else {
-      console.log("Not story but checking")
+    else {      
       //check for side quests
       if (subzone.type === SubZoneEnum.CalydonAltarOfAsclepius) {
         this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.SideQuest;
@@ -1862,6 +1861,7 @@ export class BattleService {
   }
 
   useBattleItemOnCharacter(character: Character, party: Character[]) {
+    console.log("Use battle item");
     if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
       return;
 
@@ -1870,6 +1870,7 @@ export class BattleService {
     var effect = this.lookupService.getBattleItemEffect(this.battleItemInUse);
 
     if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice) {
+      console.log(character.battleStats.currentHp + " === " + character.battleStats.maxHp);
       if (character.battleStats.currentHp === character.battleStats.maxHp)
         return;
 
@@ -2187,7 +2188,7 @@ export class BattleService {
       if (debilitatingToxin !== undefined) {
         var rng = this.utilityService.getRandomNumber(0, 1);
         if (rng <= debilitatingToxin.effectiveness) {
-          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 5, .9, false, false), target, undefined, user);
+          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 8, .9, false, false), target, undefined, user);
         }
       }
     }

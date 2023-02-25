@@ -208,7 +208,10 @@ export class AchievementService {
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
     if (subzoneType === SubZoneEnum.LibyaIsleCenter)
+    {
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
+      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 1500));
+    }
 
     if (completeClear.bonusResources.length > 0)
       newAchievements.push(completeClear);
@@ -282,6 +285,9 @@ export class AchievementService {
         complete.bonusResources.forEach(bonus => {
           if (bonus.item === ItemsEnum.ItemBeltUp) {
             this.lookupService.increaseItemBeltSize();
+          }
+          else if (bonus.item === ItemsEnum.BonusXp) {
+            this.lookupService.giveCharactersBonusExp(bonus.amount);
           }
           else
             this.lookupService.gainResource(bonus);

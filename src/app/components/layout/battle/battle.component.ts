@@ -4,6 +4,7 @@ import * as pluralize from 'pluralize';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
@@ -244,6 +245,10 @@ export class BattleComponent implements OnInit {
     var value = this.utilityService.convertSecondsToMMSS(timeRemaining);
 
     return value;
+  }
+
+  atAltarOfAsclepius() {
+    return this.activeSubzone.type === SubZoneEnum.CalydonAltarOfAsclepius;
   }
 
   ngOnDestroy() {

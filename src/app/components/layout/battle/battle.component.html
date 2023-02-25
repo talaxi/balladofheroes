@@ -74,10 +74,10 @@
             <!--<hr class='hr' />-->
         </div>
         <div *ngIf="isAtAltarScene()" class="altar">
-           <app-altar></app-altar>
+           
         </div>
-        <div *ngIf="isAtSideQuestScene()">
-            <span>SideQ</span>            
+        <div *ngIf="isAtSideQuestScene()" class="sidequest">
+            <app-altar *ngIf="atAltarOfAsclepius()"></app-altar>          
         </div>
         <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene() && !isAtSideQuestScene()" class="shopGrid">
             <app-shop-view></app-shop-view>

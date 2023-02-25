@@ -106,6 +106,18 @@ export class ShopItemGeneratorService {
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1000));
     }
+    if (item === ItemsEnum.MoltenArmor)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1000));
+    }
+    if (item === ItemsEnum.MoltenShield)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 600));
+    }
+    if (item === ItemsEnum.MoltenRing)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2000));
+    }
     if (item === ItemsEnum.PendantOfFortune)
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.SmallEmerald, ItemTypeEnum.CraftingMaterial, 3));

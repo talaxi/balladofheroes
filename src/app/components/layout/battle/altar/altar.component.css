@@ -46,3 +46,12 @@
 .hr {
     width: 100%;
 }
+
+.characterTargeted:hover,
+.targetModeActive {
+    border: 2px solid red !important;
+}
+
+.characterTargeted {
+    border: 2px solid var(--background-default);
+}

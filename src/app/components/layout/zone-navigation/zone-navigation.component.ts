@@ -370,7 +370,7 @@ export class ZoneNavigationComponent implements OnInit {
       text = "(" + subzone.victoryCount.toString();
       if (subzone.victoriesNeededToProceed > subzone.victoryCount)
         text += "/" + subzone.victoriesNeededToProceed;
-      text += " wins)";
+      text += subzone.victoryCount === 1 && subzone.victoriesNeededToProceed <= subzone.victoryCount ? " win)" : " wins)";
     }
 
     return text;

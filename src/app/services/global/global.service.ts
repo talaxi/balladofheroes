@@ -167,10 +167,10 @@ export class GlobalService {
       pinningShot.name = "Pinning Shot";
       pinningShot.requiredLevel = this.utilityService.characterAbility2Level;
       pinningShot.isAvailable = false;
-      pinningShot.cooldown = pinningShot.currentCooldown = 35;
+      pinningShot.cooldown = pinningShot.currentCooldown = 36;
       pinningShot.dealsDirectDamage = true;
       pinningShot.effectiveness = 1.6;
-      pinningShot.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 2, 0, false, false));
+      pinningShot.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));
       character.abilityList.push(pinningShot);
     }
 

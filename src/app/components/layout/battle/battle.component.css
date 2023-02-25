@@ -229,3 +229,7 @@
 .battleUpdates:hover > .showOnHover {
     display: block;
 }
+
+.sidequest {
+    height: 100%;
+}

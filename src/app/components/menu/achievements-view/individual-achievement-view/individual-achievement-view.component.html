@@ -1,5 +1,8 @@
 <div>
 <span class="challenge" [innerHtml]="getAchievementDescription(achievement.achievementType)"></span>
 <br/>
-<span class="reward">+{{getAchievementReward()}}</span>
+<span class="reward" *ngFor='let reward of achievement.bonusResources'>
+    +{{getAchievementReward(reward)}}
+    <br/>
+</span>
 </div>

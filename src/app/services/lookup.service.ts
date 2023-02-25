@@ -518,6 +518,10 @@ export class LookupService {
     return name;
   }
 
+  giveCharactersBonusExp(amount: number) {
+    this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), amount);
+  }
+
   getItemDescription(type: ItemsEnum): string {
     var name = "";
     var effect = this.getBattleItemEffect(type);
@@ -572,7 +576,7 @@ export class LookupService {
     else if (type === ItemsEnum.PoisonExtractPotion)
       name = "Poison all enemies, dealing " + relatedTargetGainStatusEffectEffectiveness + " damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
     else if (type === ItemsEnum.DebilitatingToxin)
-      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's agility by 10% for 5 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's agility by 10% for 8 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.PoisonousToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 8 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.HeroicElixir)
@@ -1698,11 +1702,11 @@ export class LookupService {
     }
     if (item === ItemsEnum.ExplodingPotion) {
       itemEffect.dealsDamage = true;
-      itemEffect.trueDamageAmount = 18;
+      itemEffect.trueDamageAmount = 20;
     }
     if (item === ItemsEnum.FirePotion) {
       itemEffect.dealsDamage = true;
-      itemEffect.trueDamageAmount = 23;
+      itemEffect.trueDamageAmount = 26;
       itemEffect.elementalProperty = ElementalTypeEnum.Fire;
     }
     if (item === ItemsEnum.StranglingGasPotion) {

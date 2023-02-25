@@ -82,6 +82,7 @@ export class GlobalVariables {
     optionalScenesViewed: OptionalSceneEnum[];
     areBattleItemsUnlocked = false;
     isDpsUnlocked = false;
+    altarOfAsclepus: Character; //better place to put this? sidequest data maybe?
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -112,5 +113,8 @@ export class GlobalVariables {
         this.guid = Guid.create().toString();
         this.isGamePaused = false;
         this.isBattlePaused = false;
+        this.altarOfAsclepus = new Character();
+        this.altarOfAsclepus.battleStats.maxHp = 25000;
+        this.altarOfAsclepus.battleStats.currentHp = 0;
     }
 }
