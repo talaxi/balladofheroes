@@ -2666,9 +2666,9 @@ export class LookupService {
     var breakdown = "";
 
     if (god.statGain.hpRegen > 0)
-      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.hpRegen) + "<br />";
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.hpRegen, 2) + "<br />";
     if (god.permanentStatGain.hpRegen > 0)
-      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.hpRegen) + "<br />";
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.hpRegen, 2) + "<br />";
 
     return breakdown;
   }
@@ -2677,9 +2677,9 @@ export class LookupService {
     var breakdown = "";
 
     if (god.statGain.criticalMultiplier > 0)
-      breakdown += "Base Stat Gain: +" + Math.round(god.statGain.criticalMultiplier * 100) + "%<br />";
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.criticalMultiplier * 100, 2) + "%<br />";
     if (god.permanentStatGain.criticalMultiplier > 0)
-      breakdown += "Permanent Stat Gain: +" + Math.round(god.permanentStatGain.criticalMultiplier * 100) + "%<br />";
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.criticalMultiplier * 100, 2) + "%<br />";
 
     return breakdown;
   }
@@ -3016,27 +3016,27 @@ export class LookupService {
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
     if (character.baseStats.hpRegen > 0)
-      breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.hpRegen) + "<br />";
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(character.baseStats.hpRegen, 2) + "<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.hpRegen + assignedGod1.permanentStatGain.hpRegen;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain, 2) + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.hpRegen + assignedGod2.permanentStatGain.hpRegen;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain, 2) + "<br />";
     }
 
     var charmGain = this.charmService.getTotalHpRegenAdditionFromCharms(this.globalService.globalVar.resources);
     if (charmGain > 0) {
-      breakdown += "Charm Total: +" + charmGain + "<br />";
+      breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain, 2) + "<br />";
     }
 
     if (character.equipmentSet.getTotalHpRegenGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalHpRegenGain() + "<br />";
+      breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalHpRegenGain(), 2) + "<br />";
     /*
         if (this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent() > 0)
           breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent())+ "<br />";
