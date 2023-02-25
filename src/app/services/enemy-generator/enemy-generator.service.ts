@@ -470,7 +470,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(363, 43, 64, 37, 30, 85);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 84; 
+      enemy.xpGainFromDefeat = 92; 
       enemy.loot.push(new LootItem(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 1, .05));
     }
     if (type === BestiaryEnum.Wretched)
@@ -480,7 +480,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementalDamageResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 89; 
+      enemy.xpGainFromDefeat = 93; 
       enemy.loot.push(new LootItem(ItemsEnum.MoltenShield, ItemTypeEnum.Equipment, 1, .01));
 
       var deathsTouch = new Ability();
@@ -500,7 +500,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementalDamageResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 94; 
+      enemy.xpGainFromDefeat = 97; 
       enemy.loot.push(new LootItem(ItemsEnum.MoltenShield, ItemTypeEnum.Equipment, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1, .075));
 

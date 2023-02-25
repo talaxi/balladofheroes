@@ -2,5 +2,6 @@ export enum SceneTypeEnum {
   None,
   Story,
   Chest,
-  Altar
+  Altar,
+  SideQuest
 }

@@ -8,6 +8,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
+import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
@@ -235,7 +236,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-
+    
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 

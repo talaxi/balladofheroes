@@ -146,6 +146,16 @@ export class BattleComponent implements OnInit {
     return false;
   }
 
+  isAtSideQuestScene() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
+    {
+      //console.log(this.globalService.globalVar.activeBattle.atScene + " && " + (this.globalService.globalVar.activeBattle.sceneType === SceneTypeEnum.SideQuest));
+      return this.globalService.globalVar.activeBattle.atScene && this.globalService.globalVar.activeBattle.sceneType === SceneTypeEnum.SideQuest;
+    }
+
+    return false;
+  }
+
   displayStorySegment() {
     return this.utilityService.getSanitizedHtml(this.storyService.sceneText);
   }

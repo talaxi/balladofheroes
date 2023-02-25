@@ -91,7 +91,7 @@ export class SubZone {
             name = "The Depths";
         if (type === SubZoneEnum.AsphodelForgottenHalls)
             name = "Forgotten Halls";
-            if (type === SubZoneEnum.AsphodelLostHaven)
+        if (type === SubZoneEnum.AsphodelLostHaven)
             name = "Lost Haven";
         if (type === SubZoneEnum.AsphodelEndlessStaircase)
             name = "Endless Staircase";
@@ -111,8 +111,10 @@ export class SubZone {
             name = "Coliseum";
         if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory)
             name = "Gates of Horn and Ivory";
-            if (type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
+        if (type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
             name = "Mouth of the Underworld";
+        if (type === SubZoneEnum.CalydonAltarOfAsclepius)
+            name = "Altar of Asclepius";
         return name;
     }
 
@@ -197,6 +199,14 @@ export class SubZone {
     isGeneralStore() {
         if (this.type === SubZoneEnum.DodonaDelphi || this.type === SubZoneEnum.DodonaArta ||
             this.type === SubZoneEnum.AsphodelLostHaven) {
+            return true;
+        }
+
+        return false;
+    }
+
+    isSubzoneSideQuest(type: SubZoneEnum) {
+        if (type === SubZoneEnum.CalydonAltarOfAsclepius) {
             return true;
         }
 

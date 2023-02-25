@@ -3,6 +3,7 @@ import { Battle } from 'src/app/models/battle/battle.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';

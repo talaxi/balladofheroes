@@ -12,7 +12,7 @@
     <div class="scene"
         [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
         <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation, 'removeTransition': noTransition }"
-            *ngIf="!isAtScene() && !isAtTown()">
+            *ngIf="!isAtScene() && !isAtTown() && !isAtSideQuestScene()">
             <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight && !currentEnemies.isDoubleBossFight"
                 class="enemiesGrid">
                 <app-enemy-view [character]="currentEnemies.enemyList[0]" [enemyParty]="currentEnemies.enemyList"
@@ -76,7 +76,10 @@
         <div *ngIf="isAtAltarScene()" class="altar">
            <app-altar></app-altar>
         </div>
-        <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene()" class="shopGrid">
+        <div *ngIf="isAtSideQuestScene()">
+            <span>SideQ</span>            
+        </div>
+        <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene() && !isAtSideQuestScene()" class="shopGrid">
             <app-shop-view></app-shop-view>
         </div>
     </div>

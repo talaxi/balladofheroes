@@ -69,7 +69,7 @@ export class BattleService {
     var lastPerformanceNow = performance.now();
     var subZone = this.balladService.getActiveSubZone();
 
-    if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {
+    if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {      
       this.checkScene();
     }
     this.currentSubzoneType = subZone.type;
@@ -92,7 +92,7 @@ export class BattleService {
       else if (this.battle.sceneType === SceneTypeEnum.Chest) {
         continueShowing = this.handleChest(deltaTime);
       }
-      else if (this.battle.sceneType === SceneTypeEnum.Altar) {
+      else if (this.battle.sceneType === SceneTypeEnum.SideQuest) {
         continueShowing = true;
       }
 
@@ -273,6 +273,20 @@ export class BattleService {
       this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Story;
     }
     else {
+      console.log("Not story but checking")
+      //check for side quests
+      if (subzone.type === SubZoneEnum.CalydonAltarOfAsclepius) {
+        this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.SideQuest;
+        this.globalService.globalVar.activeBattle.atScene = true;
+      }
+      else
+      {
+        //expecting this to be reset below if you are actually at a scene
+        this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.None;
+        this.globalService.globalVar.activeBattle.atScene = false;
+      }
+
+      //check for treasure chests
       var treasureChestChance = this.subzoneGeneratorService.generateTreasureChestChance(subzone.type);
 
       var rng = this.utilityService.getRandomNumber(0, 1);
@@ -336,7 +350,7 @@ export class BattleService {
 
   initializeEnemyList() {
     var subZone = this.balladService.getActiveSubZone();
-    
+
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       //tournament battles
       var enemyOptions = this.coliseumService.generateBattleOptions(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
@@ -1236,7 +1250,7 @@ export class BattleService {
     var elementalDamageIncrease = 1;
     var elementalDamageDecrease = 1;
     if (elementalType !== ElementalTypeEnum.None) {
-      elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);      
+      elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);
     }
 
     if (attacker !== undefined) {

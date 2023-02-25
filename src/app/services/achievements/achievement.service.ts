@@ -66,7 +66,7 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.AsphodelForgottenHalls)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelEndlessStaircase)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 30));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelFieryPassage)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelDarkenedMeadows)
@@ -76,7 +76,7 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 50));
     else if (subzoneType === SubZoneEnum.ElysiumElysianFields)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 40));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 40));
     else if (subzoneType === SubZoneEnum.ElysiumOpenPlains)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Narcissus, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)

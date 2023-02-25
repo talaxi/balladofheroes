@@ -152,6 +152,7 @@ export class InitializationService {
     var calydon = new Zone();
     calydon.type = ZoneEnum.Calydon;
     calydon.zoneName = "Calydon";
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonAltarOfAsclepius));
     
     boarBallad.zones.push(calydon);
 
