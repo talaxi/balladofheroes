@@ -55,3 +55,11 @@
 .characterTargeted {
     border: 2px solid var(--background-default);
 }
+
+.threshold1, .threshold2 {
+    width: 25%;
+}
+
+.threshold3 {
+    width: 50%;
+}

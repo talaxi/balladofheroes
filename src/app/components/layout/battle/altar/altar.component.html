@@ -4,6 +4,10 @@
         <img draggable="false" class="altarIcon" src="assets/svg/smallAltar.svg">
     </div>
     <div class="text" [innerHtml]="this.displayAltarText()"></div>
-    <mat-progress-bar mode="determinate" [value]="getAsclepiusHp()" class="green-progress characterBar hpBar highBar">
+    <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold1()" class="apollo-progress characterBar hpBar altarHighBar threshold1">
+    </mat-progress-bar>
+    <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold2()" class="apollo-progress characterBar hpBar altarHighBar threshold2">
+    </mat-progress-bar>
+    <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold3()" class="apollo-progress characterBar hpBar altarHighBar threshold3">
     </mat-progress-bar>
 </div>

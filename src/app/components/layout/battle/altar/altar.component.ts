@@ -65,7 +65,38 @@ export class AltarComponent implements OnInit {
       this.battleService.useBattleItemOnCharacter(this.globalService.globalVar.altarOfAsclepus, this.globalService.getActivePartyCharacters(true));
   }
 
-  getAsclepiusHp() {
-    return (this.globalService.globalVar.altarOfAsclepus.battleStats.currentHp / this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp) * 100;
+  getAsclepiusHpThreshold1() {
+    var percentComplete = (this.globalService.globalVar.altarOfAsclepus.battleStats.currentHp / this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .25) * 100;
+
+    if (percentComplete > 100)
+      percentComplete = 100;
+
+    return percentComplete;
+  }
+  
+  getAsclepiusHpThreshold2() {
+    var startingHp = this.globalService.globalVar.altarOfAsclepus.battleStats.currentHp - this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .25;
+    if (startingHp < 0)
+      startingHp = 0;
+
+    var percentComplete = (startingHp / this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .25) * 100;
+    
+    if (percentComplete > 100)
+      percentComplete = 100;
+
+    return percentComplete;
+  }
+  
+  getAsclepiusHpThreshold3() {
+    var startingHp = this.globalService.globalVar.altarOfAsclepus.battleStats.currentHp - this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .5;
+    if (startingHp < 0)
+      startingHp = 0;
+
+    var percentComplete = (startingHp / this.globalService.globalVar.altarOfAsclepus.battleStats.maxHp * .5) * 100;
+    
+    if (percentComplete > 100)
+      percentComplete = 100;
+
+    return percentComplete;
   }
 }

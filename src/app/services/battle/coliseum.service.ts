@@ -34,23 +34,23 @@ export class ColiseumService {
 
     if (type === ColiseumTournamentEnum.TournamentOfTheDead) {
       tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 180;
-      tournament.quickVictoryThreshold = 60;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, ItemTypeEnum.Progression, 1));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, ItemTypeEnum.Charm, 1));
     }
     if (type === ColiseumTournamentEnum.FlamesOfTartarus) {
       tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 180;
-      tournament.quickVictoryThreshold = 60;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
       tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 2500));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     }
     if (type === ColiseumTournamentEnum.ForgottenKings) {
       tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 180;
-      tournament.quickVictoryThreshold = 60;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1));
     }
