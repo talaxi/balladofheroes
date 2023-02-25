@@ -575,7 +575,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.Butcher)
     {
       enemy.name = "Butcher";
-      enemy.battleStats = new CharacterStats(718, 102, 119, 80, 40, 140); 
+      enemy.battleStats = new CharacterStats(718, 98, 119, 80, 40, 140); 
       enemy.battleStats.elementalDamageResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
@@ -597,7 +597,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.WheelOfFire)
     {
       enemy.name = "Wheel of Fire";
-      enemy.battleStats = new CharacterStats(565, 85, 118, 85, 85, 150); 
+      enemy.battleStats = new CharacterStats(565, 83, 118, 85, 80, 150); 
       enemy.battleStats.elementalDamageResistance.water = this.utilityService.enemyMediumElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
@@ -613,14 +613,14 @@ export class EnemyGeneratorService {
       rollThrough = this.randomizeCooldown(rollThrough);
       rollThrough.dealsDirectDamage = true;
       rollThrough.isAoe = true;
-      rollThrough.effectiveness = 1.5;     
+      rollThrough.effectiveness = 1.4;     
       rollThrough.elementalType = ElementalTypeEnum.Fire; 
       enemy.abilityList.push(rollThrough);
     }
     if (type === BestiaryEnum.Empusa)
     {
       enemy.name = "Empusa";
-      enemy.battleStats = new CharacterStats(800, 112, 95, 80, 45, 75); 
+      enemy.battleStats = new CharacterStats(800, 104, 95, 80, 45, 75); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 118; 
@@ -639,7 +639,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.InsaneSoul)
     {
       enemy.name = "Insane Soul";
-      enemy.battleStats = new CharacterStats(732, 100, 119, 104, 50, 150); 
+      enemy.battleStats = new CharacterStats(732, 94, 119, 104, 50, 150); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 113; 
@@ -650,7 +650,7 @@ export class EnemyGeneratorService {
       var slam = new Ability();
       slam.name = "Slam";
       slam.isAvailable = true;
-      slam.cooldown = slam.currentCooldown = 11;
+      slam.cooldown = slam.currentCooldown = 16;
       slam = this.randomizeCooldown(slam);
       slam.dealsDirectDamage = true;
       slam.effectiveness = 1;           
@@ -659,7 +659,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.DualWieldingButcher)
     {
       enemy.name = "Dual-Wielding Butcher";
-      enemy.battleStats = new CharacterStats(953, 82, 125, 120, 55, 125); 
+      enemy.battleStats = new CharacterStats(953, 78, 125, 130, 55, 125); 
       enemy.battleStats.elementalDamageResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
@@ -674,7 +674,7 @@ export class EnemyGeneratorService {
       dualSlice.cooldown = dualSlice.currentCooldown = 24;
       dualSlice = this.randomizeCooldown(dualSlice);
       dualSlice.dealsDirectDamage = true;
-      dualSlice.effectiveness = 2;     
+      dualSlice.effectiveness = 1.8;     
       dualSlice.elementalType = ElementalTypeEnum.Fire; 
       dualSlice.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.5, false, true));
       enemy.abilityList.push(dualSlice);
@@ -713,7 +713,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.FieryNewt)
     {
       enemy.name = "Fiery Newt";
-      enemy.battleStats = new CharacterStats(717, 94, 98, 85, 60, 100); 
+      enemy.battleStats = new CharacterStats(717, 83, 98, 85, 60, 100); 
       enemy.battleStats.elementalDamageResistance.water = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;

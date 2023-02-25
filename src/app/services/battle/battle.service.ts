@@ -335,18 +335,22 @@ export class BattleService {
   }
 
   initializeEnemyList() {
+    var subZone = this.balladService.getActiveSubZone();
+    
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       //tournament battles
       var enemyOptions = this.coliseumService.generateBattleOptions(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
     }
     else {
       //all standard battles
-      var subZone = this.balladService.getActiveSubZone();
       var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subZone.type);
     }
 
     var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
-    this.battle.currentEnemies = randomEnemyTeam;
+    if (subZone.type === SubZoneEnum.AigosthenaUpperCoast && subZone.victoryCount < 2)
+      this.battle.currentEnemies = enemyOptions[0];
+    else
+      this.battle.currentEnemies = randomEnemyTeam;
     this.battle.battleDuration = 0;
   }
 
