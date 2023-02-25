@@ -14,6 +14,7 @@ import { BalladService } from '../ballad/ballad.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
+import { AlchemyService } from '../professions/alchemy.service';
 import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
 
@@ -24,7 +25,7 @@ export class ColiseumService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private balladService: BalladService) { }
+    private balladService: BalladService, private alchemyService: AlchemyService) { }
 
   getColiseumInfoFromType(type: ColiseumTournamentEnum) {
     var tournament = new ColiseumTournament();
@@ -44,15 +45,16 @@ export class ColiseumService {
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 2500));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 4000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     }
     if (type === ColiseumTournamentEnum.ForgottenKings) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, ItemTypeEnum.Resource, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 7500));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Resource, 1));
     }
 
     return tournament;
@@ -119,6 +121,9 @@ export class ColiseumService {
                 this.globalService.globalVar.achievements.push(achievement);
               });
             }
+          }
+          if (reward.item === ItemsEnum.HeroicElixirRecipe) {
+            this.alchemyService.learnRecipe(ItemsEnum.HeroicElixir);
           }
           else if (reward.item === ItemsEnum.BonusXp) {
             this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), reward.amount);

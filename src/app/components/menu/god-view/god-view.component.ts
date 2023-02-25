@@ -328,6 +328,7 @@ export class GodViewComponent implements OnInit {
   }
 
   getAutoAttackCooldownBonus() {
+    console.log(this.god.statGain.autoAttackCooldownReduction + " + " + this.god.permanentStatGain.autoAttackCooldownReduction);
     return this.god.statGain.autoAttackCooldownReduction + this.god.permanentStatGain.autoAttackCooldownReduction;
   }
 

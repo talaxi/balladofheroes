@@ -418,6 +418,11 @@ export class BattleService {
   }
 
   handleAutoAttackTimer(character: Character, deltaTime: number) {
+    var stagger = character.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Stagger);
+    if (stagger !== undefined) {
+      deltaTime *= 1 - stagger.effectiveness;
+    }
+
     if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
       character.battleInfo.autoAttackTimer += deltaTime;
   }
@@ -1860,8 +1865,7 @@ export class BattleService {
     return isTargetable;
   }
 
-  useBattleItemOnCharacter(character: Character, party: Character[]) {
-    console.log("Use battle item");
+  useBattleItemOnCharacter(character: Character, party: Character[]) {    
     if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
       return;
 
@@ -1869,8 +1873,7 @@ export class BattleService {
 
     var effect = this.lookupService.getBattleItemEffect(this.battleItemInUse);
 
-    if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice) {
-      console.log(character.battleStats.currentHp + " === " + character.battleStats.maxHp);
+    if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice) {      
       if (character.battleStats.currentHp === character.battleStats.maxHp)
         return;
 
