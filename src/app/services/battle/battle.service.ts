@@ -1802,6 +1802,9 @@ export class BattleService {
           if (unlockedSubZone.type === SubZoneEnum.AigosthenaBay) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.NewSubzone));
           }
+          if (unlockedSubZone.type === SubZoneEnum.AigosthenaLowerCoast) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView));
+          }
         }
       });
     }

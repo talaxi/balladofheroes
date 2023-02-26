@@ -26,6 +26,7 @@ import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { KeybindService } from '../utility/keybind.service';
+import { VersionControlService } from '../utility/version-control.service';
 import { GlobalService } from './global.service';
 
 @Injectable({
@@ -35,9 +36,12 @@ export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
     private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService, private keybindService: KeybindService,
-    private altarService: AltarService) { }
+    private altarService: AltarService, private versionControlService: VersionControlService) { }
 
   initializeVariables() {
+    this.globalService.globalVar.startingVersion = this.versionControlService.getCurrentVersion();
+    this.globalService.globalVar.currentVersion = this.versionControlService.getCurrentVersion();
+
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
     this.initializeSettings();   
     this.initializeGameLogSettings(); 

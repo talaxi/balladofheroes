@@ -46,6 +46,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Achievements) {
       text = "You've gained a reward by completing an achievement. View all achievements and rewards in the menu under Achievements.";
     }
+    else if (type === TutorialTypeEnum.QuickView) {
+      text = "Use the section on the right to quickly view useful information such as the amount of coins you currently have. Hover over each quick view icon for more information.";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

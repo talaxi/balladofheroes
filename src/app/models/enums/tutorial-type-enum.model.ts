@@ -9,5 +9,6 @@ export enum TutorialTypeEnum {
   SkipStory,
   Equipment,
   Altars,
-  Achievements
+  Achievements,
+  QuickView
 }
