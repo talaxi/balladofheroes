@@ -577,7 +577,7 @@ export class BattleService {
 
     var instantHeal = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack);
     if (instantHeal !== undefined) {
-      var healAmount = damageDealt * instantHeal.effectiveness;
+      var healAmount = damageDealt * instantHeal.effectiveness * (1 + character.battleStats.healingDone);
 
       if (character !== undefined) {
         this.gainHp(character, healAmount);
@@ -594,7 +594,7 @@ export class BattleService {
     }
 
     if (character.level >= this.utilityService.characterOverdriveLevel) {
-      character.overdriveInfo.overdriveGaugeAmount += character.overdriveInfo.gainPerAutoAttack * this.lookupService.getOverdriveGainMultiplier(character);
+      character.overdriveInfo.overdriveGaugeAmount += character.overdriveInfo.gainPerAutoAttack * this.lookupService.getOverdriveGainMultiplier(character, true);
       if (character.overdriveInfo.overdriveGaugeAmount > character.overdriveInfo.overdriveGaugeTotal)
         character.overdriveInfo.overdriveGaugeAmount = character.overdriveInfo.overdriveGaugeTotal;
     }
@@ -730,7 +730,7 @@ export class BattleService {
       }
     }
     else if (ability.heals) {
-      var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, ability, isPartyUsing);
+      var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, ability, isPartyUsing) * (1 + user.battleStats.healingDone);
       var adjustedCriticalMultiplier = 1;
       var isCritical = this.isHealCritical(user);
       if (isCritical)
@@ -863,7 +863,7 @@ export class BattleService {
       if (member.battleInfo.statusEffects.some(item => item.isInstant)) {
         member.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
           if (instantEffect.type === StatusEffectEnum.InstantHeal) {
-            var healAmount = damageDealt * instantEffect.effectiveness;
+            var healAmount = damageDealt * instantEffect.effectiveness * (1 + member.battleStats.healingDone);
 
             if (member !== undefined)
               this.gainHp(member, healAmount);
@@ -964,7 +964,7 @@ export class BattleService {
     if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
       target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
         if (instantEffect.type === StatusEffectEnum.InstantHeal) {
-          var healAmount = damageDealt * instantEffect.effectiveness;
+          var healAmount = damageDealt * instantEffect.effectiveness * (1 + target.battleStats.healingDone);
 
           if (target !== undefined)
             this.gainHp(target, healAmount);

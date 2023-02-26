@@ -159,6 +159,8 @@ export class ChangeGodViewComponent implements OnInit {
         member.assignedGod1 = member.assignedGod2;
         member.assignedGod2 = GodEnum.None;
       }
+
+      this.globalService.calculateCharacterBattleStats(member);
     });
   }
 

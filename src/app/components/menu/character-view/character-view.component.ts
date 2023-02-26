@@ -38,6 +38,7 @@ export class CharacterViewComponent implements OnInit {
     var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);    
     if (selectedCharacter !== undefined)
     {
+      console.log(selectedCharacter);
       this.character = selectedCharacter;    
       this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
         return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
@@ -192,6 +193,14 @@ export class CharacterViewComponent implements OnInit {
 
   getDebuffDurationBonus() {
     return this.character.battleStats.debuffDuration;
+  }
+
+  getOverdriveGainFromAutoAttacksBonus() {
+    return this.character.battleStats.overdriveGainFromAutoAttacks;
+  }
+
+  getHealingDoneBonus() {
+    return this.character.battleStats.healingDone;
   }
   
   getArmorPenetrationBonus() {    

@@ -90,6 +90,14 @@
                 [contentTemplate]="debuffDurationBonusPopover"><strong [ngClass]="getGodColor()"
                     class="statLabel">Debuff Duration Bonus:</strong>
                 {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="overdriveGainFromAutoAttacksBonusPopover"><strong [ngClass]="getGodColor()"
+                        class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
+                    {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="healingDoneBonusPopover"><strong [ngClass]="getGodColor()"
+                            class="statLabel">Healing Done Bonus:</strong>
+                        {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Holy
                     Damage
@@ -292,6 +300,26 @@
         <span class="description" [innerHtml]="this.lookupService.getDebuffDurationBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodDebuffDurationBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #overdriveGainFromAutoAttacksBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getOverdriveGainFromAutoAttacksBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodOverdriveGainFromAutoAttacksBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #healingDoneBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getHealingDoneBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodHealingDoneBonusStatBreakdown(this.god)">
 
         </div>
     </div>

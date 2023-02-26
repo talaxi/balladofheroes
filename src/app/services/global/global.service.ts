@@ -210,11 +210,11 @@ export class GlobalService {
       heal.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       heal.targetType = TargetEnum.LowestHpPercent;
       heal.isAvailable = false;
-      heal.effectiveness = 1.4;
+      heal.effectiveness = .6;
       heal.heals = true;
       heal.targetsAllies = true;
       heal.dealsDirectDamage = false;
-      heal.cooldown = heal.currentCooldown = 17;
+      heal.cooldown = heal.currentCooldown = 22;
       character.abilityList.push(heal);
 
       var faith = new Ability();
@@ -244,39 +244,51 @@ export class GlobalService {
   initializeGods() {
     var athena = new God(GodEnum.Athena);
     athena.name = "Athena";
+    athena.displayOrder = 1;
     this.assignGodAbilityInfo(athena);
     this.globalVar.gods.push(athena);
 
     var artemis = new God(GodEnum.Artemis);
     artemis.name = "Artemis";
+    artemis.displayOrder = 2;
     this.assignGodAbilityInfo(artemis);
     this.globalVar.gods.push(artemis);
 
     var apollo = new God(GodEnum.Apollo);
     apollo.name = "Apollo";
+    apollo.displayOrder = 4;
     this.assignGodAbilityInfo(apollo);
     this.globalVar.gods.push(apollo);
 
     var hermes = new God(GodEnum.Hermes);
     hermes.name = "Hermes";
+    hermes.displayOrder = 3;
     this.assignGodAbilityInfo(hermes);
     this.globalVar.gods.push(hermes);
 
     var zeus = new God(GodEnum.Zeus);
     zeus.name = "Zeus";
+    zeus.displayOrder = 7;
     this.assignGodAbilityInfo(zeus);
     this.globalVar.gods.push(zeus);
 
     var ares = new God(GodEnum.Ares);
     ares.name = "Ares";
+    ares.displayOrder = 5;
     this.assignGodAbilityInfo(ares);
     this.globalVar.gods.push(ares);
 
     var poseidon = new God(GodEnum.Poseidon);
     poseidon.name = "Poseidon";
+    poseidon.displayOrder = 8;
     this.assignGodAbilityInfo(poseidon);
     this.globalVar.gods.push(poseidon);
 
+    var hades = new God(GodEnum.Hades);
+    hades.name = "Hades";
+    hades.displayOrder = 6;
+    this.assignGodAbilityInfo(hades);
+    this.globalVar.gods.push(hades);
   }
 
   assignGodAbilityInfo(god: God) {
@@ -433,7 +445,7 @@ export class GlobalService {
       specialDelivery.name = "Special Delivery";
       specialDelivery.requiredLevel = this.utilityService.godAbility3Level;
       specialDelivery.isAvailable = false;
-      specialDelivery.cooldown = specialDelivery.currentCooldown = 34;
+      specialDelivery.cooldown = specialDelivery.currentCooldown = 42;
       specialDelivery.dealsDirectDamage = false;
       specialDelivery.effectiveness = 1.1;
       specialDelivery.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.1, true, true));
@@ -708,6 +720,8 @@ export class GlobalService {
       character.battleStats.armorPenetration += god1.statGain.armorPenetration + god1.permanentStatGain.armorPenetration;
       character.battleStats.healingReceived += god1.statGain.healingReceived + god1.permanentStatGain.healingReceived;
       character.battleStats.debuffDuration += god1.statGain.debuffDuration + god1.permanentStatGain.debuffDuration;
+      character.battleStats.overdriveGainFromAutoAttacks += god1.statGain.overdriveGainFromAutoAttacks + god1.permanentStatGain.overdriveGainFromAutoAttacks;
+      character.battleStats.healingDone += god1.statGain.healingDone + god1.permanentStatGain.healingDone;
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.statGain.elementalDamageIncrease);
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.permanentStatGain.elementalDamageIncrease);
       character.battleStats.elementalDamageResistance.increaseByStatArray(god1.statGain.elementalDamageResistance);
@@ -731,6 +745,8 @@ export class GlobalService {
       character.battleStats.armorPenetration += god2.statGain.armorPenetration + god2.permanentStatGain.armorPenetration;
       character.battleStats.healingReceived += god2.statGain.healingReceived + god2.permanentStatGain.healingReceived;
       character.battleStats.debuffDuration += god2.statGain.debuffDuration + god2.permanentStatGain.debuffDuration;
+      character.battleStats.overdriveGainFromAutoAttacks += god2.statGain.overdriveGainFromAutoAttacks + god2.permanentStatGain.overdriveGainFromAutoAttacks;
+      character.battleStats.healingDone += god2.statGain.healingDone + god2.permanentStatGain.healingDone;
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.statGain.elementalDamageIncrease);
       character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.permanentStatGain.elementalDamageIncrease);
       character.battleStats.elementalDamageResistance.increaseByStatArray(god2.statGain.elementalDamageResistance);
@@ -746,6 +762,8 @@ export class GlobalService {
     character.battleStats.autoAttackCooldownReduction *= (1 - this.charmService.getTotalAutoAttackCooldownReductionAdditionFromCharms(this.globalVar.resources));
     character.battleStats.healingReceived += this.charmService.getTotalHealingReceivedAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.debuffDuration += this.charmService.getTotalDebuffDurationAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.overdriveGainFromAutoAttacks += this.charmService.getTotalOverdriveGainFromAutoAttacksAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.healingDone += this.charmService.getTotalHealingDoneAdditionFromCharms(this.globalVar.resources, character);
 
     character.battleStats.elementalDamageIncrease.holy += this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalVar.resources);
     character.battleStats.elementalDamageIncrease.fire += this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalVar.resources);

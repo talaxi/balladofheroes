@@ -119,6 +119,14 @@
                     [contentTemplate]="debuffDurationPopover"><strong [ngClass]="getCharacterColor()"
                         class="statLabel">Debuff Duration Bonus:</strong>
                     {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="overdriveGainFromAutoAttacksPopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
+                        {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="healingDonePopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Healing Done Bonus:</strong>
+                            {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
                 <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getCharacterColor()"
                         class="statLabel">Holy Damage
@@ -344,6 +352,26 @@
         <span class="description" [innerHtml]="this.lookupService.getDebuffDurationBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getDebuffDurationBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #overdriveGainFromAutoAttacksPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getOverdriveGainFromAutoAttacksBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getOverdriveGainFromAutoAttacksBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #healingDonePopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getHealingDoneBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getHealingDoneBonusStatBreakdown(this.character)">
 
         </div>
     </div>

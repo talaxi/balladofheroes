@@ -1,6 +1,7 @@
 <div class="shoppingItem">
     <div class="itemDescription">
-        <div *ngIf="isEquipment()" customToolTip [tooltipDirection]="tooltipDirection" [isDelayed]="false" [contentTemplate]="equipmentComparisonTemplate">
+        <div *ngIf="isEquipment()" customToolTip [tooltipDirection]="tooltipDirection" [isDelayed]="false"
+            [contentTemplate]="equipmentComparisonTemplate">
             <div [class]="getEquipmentClass()">
                 <span class="s4Heading" [innerHtml]="lookupService.getItemName(item.shopItem)"></span>
                 <br />
@@ -22,15 +23,18 @@
     </div>
     <div class="purchaseDescription">
         <br />
-        <div *ngFor="let resource of item.purchasePrice">
-            <app-resource-required-view [resource]="resource" [isSmall]="true"></app-resource-required-view>
+        <div *ngIf="outOfStock">
+            Out of Stock
         </div>
-        <!--<div class="resourceKeyword" [innerHtml]="purchaseResourcesRequired">
-        </div>-->
-        <br />
+        <div *ngIf="!outOfStock">
+            <div *ngFor="let resource of item.purchasePrice">
+                <app-resource-required-view [resource]="resource" [isSmall]="true"></app-resource-required-view>
+            </div>
+            <br />
+        </div>
     </div>
     <div class="purchaseButton">
-        <button (click)="buyItem()" [disabled]="!canBuyItem()">Buy</button>
+        <button (click)="buyItem()" [disabled]="!canBuyItem() || outOfStock">Buy</button>
     </div>
 </div>
 
@@ -48,5 +52,5 @@
 </ng-template>
 
 <ng-template #testTemplate>
-   Test
+    Test
 </ng-template>

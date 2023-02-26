@@ -119,6 +119,10 @@ export class ChangeClassViewComponent implements OnInit {
     this.swappingClass = undefined;
     this.currentParty = this.globalService.getActivePartyCharacters(false);
     this.setupDisplayClasses();
+
+    this.currentParty.forEach(member => {
+      this.globalService.calculateCharacterBattleStats(member);
+    });
   }
 
   /*isCurrentlyAssigned(type: CharacterEnum) {

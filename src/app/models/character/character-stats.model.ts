@@ -23,6 +23,8 @@ export class CharacterStats {
     overdriveGain: number;
     healingReceived: number;
     debuffDuration: number;
+    overdriveGainFromAutoAttacks: number;
+    healingDone: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
@@ -43,6 +45,8 @@ export class CharacterStats {
         this.overdriveGain = 0;
         this.healingReceived = 0;
         this.debuffDuration = 0;
+        this.overdriveGainFromAutoAttacks = 0;
+        this.healingDone = 0;
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {

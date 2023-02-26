@@ -26,6 +26,7 @@ export class God {
     affinityLevel: number;
     affinityExp: number;  
     affinityExpToNextLevel: number;
+    displayOrder: number;
 
     constructor(type: GodEnum) {
         this.type = type;
@@ -44,6 +45,7 @@ export class God {
         this.affinityLevel = 0;
         this.affinityExp = 0;
         this.affinityExpToNextLevel = 5;
+        this.displayOrder = 0;
     }
 
     private getGainModifier(type: GodEnum) {
@@ -62,8 +64,8 @@ export class God {
         else if (type === GodEnum.Poseidon)
             return new CharacterStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
         else if (type === GodEnum.Hades)
-            return new CharacterStats(0, 1.08, 0, 0, 0, 0);
+            return new CharacterStats(1, 1.08, 1, 1, 1, 1);
 
-        return new CharacterStats(0, 0, 0, 0, 0, 0);
+        return new CharacterStats(1, 1, 1, 1, 1, 1);
     }
 }

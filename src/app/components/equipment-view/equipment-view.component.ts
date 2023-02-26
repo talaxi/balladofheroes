@@ -198,7 +198,7 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   getTotalItemToSellAmount() {
-    return this.lookupService.getResourceAmount(this.itemToSell.itemType);
+    return this.lookupService.getResourceAmount(this.itemToSell.itemType) - this.lookupService.getItemEquipCount(this.itemToSell.itemType);
   }
 
   changeSellAmount(amount: number) {

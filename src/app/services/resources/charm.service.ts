@@ -45,8 +45,8 @@ export class CharmService {
 
   getTotalOverdriveGainAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = .02;
+    var largeCharmValue = .06;
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfDetermination);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfDetermination);
@@ -61,8 +61,8 @@ export class CharmService {
 
   getTotalArmorPenetrationAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = .015;
+    var largeCharmValue = .045;
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfIngenuity);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfIngenuity);
@@ -77,8 +77,8 @@ export class CharmService {
 
   getTotalAbilityCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = .005;
+    var largeCharmValue = .015;
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfPreparation);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfPreparation);
@@ -93,8 +93,8 @@ export class CharmService {
 
   getTotalAutoAttackCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .1;
-    var largeCharmValue = .3;
+    var smallCharmValue = .005;
+    var largeCharmValue = .015;
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHaste);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHaste);
@@ -301,8 +301,8 @@ export class CharmService {
 
   getTotalHealingReceivedAdditionFromCharms(resources: ResourceValue[], character: Character) {
     var amount = 0;
-    var smallCharmValue = .1;
-    var largeCharmValue = .3;
+    var smallCharmValue = .025;
+    var largeCharmValue = .075;
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfAthena);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfAthena);
@@ -319,8 +319,8 @@ export class CharmService {
 
   getTotalDebuffDurationAdditionFromCharms(resources: ResourceValue[], character: Character) {
     var amount = 0;
-    var smallCharmValue = .1;
-    var largeCharmValue = .3;
+    var smallCharmValue = .015;
+    var largeCharmValue = .045;
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfArtemis);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfArtemis);
@@ -330,6 +330,42 @@ export class CharmService {
       amount += smallCharmValue * smallCharm.amount;
     if (largeCharm !== undefined && largeCharm.amount > 0 && 
       (character.assignedGod1 === GodEnum.Artemis || character.assignedGod2 === GodEnum.Artemis))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getTotalOverdriveGainFromAutoAttacksAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = .05;
+    var largeCharmValue = .15;
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHermes);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHermes);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Hermes))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Hermes || character.assignedGod2 === GodEnum.Hermes))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getTotalHealingDoneAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = .025;
+    var largeCharmValue = .075;
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfApollo);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfApollo);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Apollo))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Apollo || character.assignedGod2 === GodEnum.Apollo))
       amount += largeCharmValue * largeCharm.amount;
 
     return amount;

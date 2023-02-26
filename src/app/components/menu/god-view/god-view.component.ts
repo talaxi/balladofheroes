@@ -199,21 +199,25 @@ export class GodViewComponent implements OnInit {
           rewards += Math.round(increaseValues.resistance) + " Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.hpRegen > 0)
-          rewards += Math.round(increaseValues.hpRegen) + " HP Regen per 5 sec Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.hpRegen, 2) + " HP Regen per 5 sec Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.criticalMultiplier > 0)
-          rewards += Math.round(increaseValues.criticalMultiplier  * 100) + "% Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.criticalMultiplier  * 100, 2) + "% Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.abilityCooldownReduction > 0)
-          rewards += Math.round(increaseValues.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.abilityCooldownReduction * 100, 3) + "% Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.autoAttackCooldownReduction > 0)
-          rewards += Math.round(increaseValues.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.autoAttackCooldownReduction * 100, 3) + "% Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           if (increaseValues.armorPenetration > 0)
-          rewards += Math.round(increaseValues.armorPenetration  * 100) + "% Armor Penetration Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.armorPenetration  * 100, 2) + "% Armor Penetration Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           if (increaseValues.overdriveGain > 0)
-          rewards += Math.round(increaseValues.overdriveGain  * 100) + "% Overdrive Gain Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.overdriveGain  * 100, 2) + "% Overdrive Gain Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           if (increaseValues.healingReceived > 0)
-          rewards += Math.round(increaseValues.healingReceived  * 100) + "% Healing Received Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.healingReceived  * 100, 2) + "% Healing Received Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           if (increaseValues.debuffDuration > 0)
-          rewards += Math.round(increaseValues.debuffDuration  * 100) + "% Debuff Duration Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.debuffDuration  * 100, 2) + "% Debuff Duration Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.overdriveGainFromAutoAttacks > 0)
+          rewards += this.utilityService.roundTo(increaseValues.overdriveGainFromAutoAttacks  * 100, 2) + "% Overdrive Gain From Auto Attacks Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.healingDone > 0)
+          rewards += this.utilityService.roundTo(increaseValues.healingDone  * 100, 2) + "% Healing Done Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.elementalDamageIncrease.holy > 0)
           rewards += (increaseValues.elementalDamageIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
@@ -323,12 +327,19 @@ export class GodViewComponent implements OnInit {
     return this.god.statGain.debuffDuration + this.god.permanentStatGain.debuffDuration;
   }
 
+  getOverdriveGainFromAutoAttacksBonus() {
+    return this.god.statGain.overdriveGainFromAutoAttacks + this.god.permanentStatGain.overdriveGainFromAutoAttacks;
+  }
+
+  getHealingDoneBonus() {
+    return this.god.statGain.healingDone + this.god.permanentStatGain.healingDone;
+  }
+
   getAbilityCooldownReductionBonus() {
     return this.god.statGain.abilityCooldownReduction + this.god.permanentStatGain.abilityCooldownReduction;
   }
 
-  getAutoAttackCooldownBonus() {
-    console.log(this.god.statGain.autoAttackCooldownReduction + " + " + this.god.permanentStatGain.autoAttackCooldownReduction);
+  getAutoAttackCooldownBonus() {    
     return this.god.statGain.autoAttackCooldownReduction + this.god.permanentStatGain.autoAttackCooldownReduction;
   }
 

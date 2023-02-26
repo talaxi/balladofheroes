@@ -24,6 +24,7 @@ export class ShoppingItemViewComponent implements OnInit {
   partyMembers: Character[];
   subscription: any;  
   tooltipDirection = DirectionEnum.Right;
+  outOfStock: boolean = false;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService) { }
@@ -32,10 +33,23 @@ export class ShoppingItemViewComponent implements OnInit {
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
     this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
     this.setItemPurchasePrice();
+    this.outOfStock = this.isItemOutOfStock();
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.setItemPurchasePrice();
+      this.outOfStock = this.isItemOutOfStock();
     });
+  }
+
+  isItemOutOfStock() {
+    var outOfStock = false;
+
+    if (this.item.shopItem === ItemsEnum.WarriorClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior)?.isAvailable)
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.PriestClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest)?.isAvailable)
+      outOfStock = true;
+
+    return outOfStock;
   }
 
   setItemPurchasePrice() {
