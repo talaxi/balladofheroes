@@ -12,3 +12,8 @@
     font-variant: small-caps;
     margin-left: .5rem;
 }
+
+.gameName
+{
+    width: fit-content;
+}

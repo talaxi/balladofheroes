@@ -43,6 +43,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Altars) {
       text = "As you proceed on your journey, you will have access to different altars to honor the gods. Select the Altar on the right and pray to Athena to gain a party-wide buff and affinity EXP for Athena.";
     }
+    else if (type === TutorialTypeEnum.Achievements) {
+      text = "You've gained a reward by completing an achievement. View all achievements and rewards in the menu under Achievements.";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

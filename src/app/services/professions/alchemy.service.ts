@@ -56,9 +56,9 @@ export class AlchemyService {
     var duration = 0;
 
     if (action === AlchemyActionsEnum.PrepareWaterSmallPot)
-      duration = 1 * 20;
+      duration = 1 * 2;
     if (action === AlchemyActionsEnum.CombineIngredientsPot)
-      duration = 1 * 10;
+      duration = 1 * 1;
     if (action === AlchemyActionsEnum.CombineIngredientsPotion)
       duration = 1 * 15;
     if (action === AlchemyActionsEnum.HeatMixture)
@@ -83,17 +83,21 @@ export class AlchemyService {
       return;
 
     var gainAmount = alchemy.creatingRecipe.createdAmount;
-    var rng = this.utilityService.getRandomNumber(0, 1);    
+    var rng = this.utilityService.getRandomNumber(0, 1);
     if (rng < this.get5xItemChance(alchemy.creatingRecipe.quality)) {
-      var gameLogEntry = "<strong>Bonus: 5X Items Created!</strong>";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
+        var gameLogEntry = "<strong>Bonus: 5X Items Created!</strong>";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      }
       gainAmount *= 5;
     }
     else {
       var rng2 = this.utilityService.getRandomNumber(0, 1);
       if (rng2 < this.get2xItemChance(alchemy.creatingRecipe.quality)) {
-        var gameLogEntry = "<strong>Bonus: 2X Items Created!</strong>";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
+          var gameLogEntry = "<strong>Bonus: 2X Items Created!</strong>";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        }
         gainAmount *= 2;
       }
     }
@@ -148,10 +152,11 @@ export class AlchemyService {
         if (rng >= this.getMaterialRetentionChance(alchemy.creatingRecipe.quality)) {
           this.spendResourcesOnRecipe(alchemy.creatingRecipe);
         }
-        else
-        {
-          var gameLogEntry = "<strong>Bonus: No Materials Used!</strong>";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        else {
+          if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
+            var gameLogEntry = "<strong>Bonus: No Materials Used!</strong>";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+          }
         }
       }
       else {
@@ -190,42 +195,49 @@ export class AlchemyService {
       if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HealingPoultice)) {
         this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HealingPoultice));
         newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.HealingPoultice);
       }
     }
     if (this.globalService.globalVar.alchemy.level >= 2) {
       if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.ExplodingPotion)) {
         this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.ExplodingPotion));
         newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ExplodingPotion);
       }
     }
     if (this.globalService.globalVar.alchemy.level >= 4) {
       if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.DebilitatingToxin)) {
         this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.DebilitatingToxin));
         newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.DebilitatingToxin);
       }
     }
     if (this.globalService.globalVar.alchemy.level >= 7) {
       if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HealingSalve)) {
         this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HealingSalve));
         newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.HealingSalve);
       }
     }
     if (this.globalService.globalVar.alchemy.level >= 10) {
       if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.FirePotion)) {
         this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.FirePotion));
         newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.FirePotion);
       }
     }
     if (this.globalService.globalVar.alchemy.level >= 15) {
       if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PoisonousToxin)) {
         this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PoisonousToxin));
         newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.PoisonousToxin);
       }
     }
     if (this.globalService.globalVar.alchemy.level >= 20) {
       if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.StranglingGasPotion)) {
         this.globalService.globalVar.alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.StranglingGasPotion));
         newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.StranglingGasPotion);
       }
     }
 
@@ -247,22 +259,53 @@ export class AlchemyService {
 
     if (this.globalService.globalVar.alchemy.level === 3 || this.globalService.globalVar.alchemy.level === 6 ||
       this.globalService.globalVar.alchemy.level === 11 || this.globalService.globalVar.alchemy.level === 14 ||
-      this.globalService.globalVar.alchemy.level === 16 || this.globalService.globalVar.alchemy.level === 23)
+      this.globalService.globalVar.alchemy.level === 16 || this.globalService.globalVar.alchemy.level === 23) {
       upgrades.chanceTo2xItem += additionalChanceTo2x;
+
+      if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
+        var gameLogEntry = "<strong>You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making a Basic quality Alchemy recipe.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      }
+    }
 
     if (this.globalService.globalVar.alchemy.level === 5 || this.globalService.globalVar.alchemy.level === 8 ||
       this.globalService.globalVar.alchemy.level === 13 || this.globalService.globalVar.alchemy.level === 19 ||
-      this.globalService.globalVar.alchemy.level === 21)
+      this.globalService.globalVar.alchemy.level === 21) {
       upgrades.durationReduction += additionalDurationReduction;
+
+      if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
+        var gameLogEntry = "<strong>The time it takes to create a Basic quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      }
+    }
 
     if (this.globalService.globalVar.alchemy.level === 9 || this.globalService.globalVar.alchemy.level === 12 ||
       this.globalService.globalVar.alchemy.level === 17 || this.globalService.globalVar.alchemy.level === 22 ||
-      this.globalService.globalVar.alchemy.level === 24)
+      this.globalService.globalVar.alchemy.level === 24) {
       upgrades.chanceToRetainMaterials += additionalChanceToRetainMaterials;
 
-    if (this.globalService.globalVar.alchemy.level === 18 || this.globalService.globalVar.alchemy.level === 25)
+      if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
+        var gameLogEntry = "<strong>You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a Basic quality Alchemy recipe.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      }
+    }
+
+    if (this.globalService.globalVar.alchemy.level === 18 || this.globalService.globalVar.alchemy.level === 25) {
       upgrades.chanceTo5xItem += additionalChanceTo5x;
 
+      if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
+        var gameLogEntry = "<strong>You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making a Basic quality Alchemy recipe.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      }
+    }
+
+  }
+
+  updateGameLogWithNewRecipe(type: ItemsEnum) {
+    if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
+      var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.lookupService.getItemName(type) + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+    }
   }
 
   getRecipe(item: ItemsEnum) {
@@ -448,6 +491,6 @@ export class AlchemyService {
     var baseAmount = 20;
     var multiplier = 30;
 
-    return baseAmount + (multiplier * (level-1));
+    return baseAmount + (multiplier * (level - 1));
   }
 }

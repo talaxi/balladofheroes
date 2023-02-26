@@ -8,5 +8,6 @@ export enum TutorialTypeEnum {
   Crafting,
   SkipStory,
   Equipment,
-  Altars
+  Altars,
+  Achievements
 }

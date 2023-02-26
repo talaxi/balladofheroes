@@ -92,7 +92,7 @@ export class StoryService {
           "Every year, you and many others set out inland to the Temple of Athena. It is modest compared to the one in Athens, but it is the " +
           "largest most people in your village will ever see. From generation to generation, the story has held that the first person to reach the temple on the day of the Festival will be graced with the presence of Athena herself.";
       else if (pageCount === 2)
-        sceneText = "Some believe the stories and race to prove their piety. Others race to prove their skill and honor Athena in their own way. You race simply because every year you have tried, and every year you have failed. You have always yearned for greatness, but come up short. This year was going to be different.";
+        sceneText = "Some believe the stories and race to prove their piety. Others race to prove their skill and honor Athena in their own way. You race simply because every year you have tried, and every year you have failed. You have always yearned for greatness, but could never quite reach it. This year was going to be different.";
     }
     else if (storyId === 1) {
       if (pageCount === 1)
@@ -179,28 +179,28 @@ export class StoryService {
 
       else if (pageCount === 2)
         sceneText = this.zosimeText("“Listen Thales. All my life, I've been a hunter. When you're alone in the forest, tracking a wild animal for days.. things don't always go as planned. Maybe you lose the trail, maybe what you're tracking gets the better of you. Setbacks happen. But just because you lose the trail doesn't mean you can't pick it up again.”") + "<br/><br/>" +
-          "You look at Zosime and nod. " + this.thalesText("“You're right. Thank you.”") + " You do feel a little better. Together, you continue to press forward.";
+          "You look at Zosime as she speaks. The fire in her heart and belief in herself is contagious. " + this.thalesText("“You're right. Thank you.”") + " You do feel a little better. Together, you continue to press forward.";
     }
     else if (storyId === 11) {
       if (pageCount === 1)
         sceneText = "As you traverse the underworld, you start to understand the madness of the souls you've met. You've always taken for granted the welcoming sound of the wind at your back, the birds chirping to each other, the leaves rustling as dogs run past you. But here, there is nothing but deafening silence. All you have to hear are the screams of souls long dead, and your own thoughts.<br/><br/>" +
           "As you finally approach the coliseum, your contemplative trance is finally broken by the hustle and bustle of a small town. This seems to be the largest gathering of souls in the underworld and you two aren't the only ones who want a ticket out. " + this.zosimeText("“I'll go sign us up, wait here.”") + " Zosime says as she walks into the coliseum gates.<br/><br/>" +
-          "“Hello, young one.”";
+          "“Hello, child.”";
       else if (pageCount === 2)
         sceneText = "You look to your side as an old man approaches you. " + this.thalesText("“Sorry, have we met?”") + " You reply.<br/><br/>" +
-          "“Perhaps not in the flesh, but I have been with you since your journey began. I hear that you slayed the lady Medusa. Tell me, haven't you wondered how? She was already dead, defeated by the Founder of Mycenae. How can that be?”" +
+          "“Perhaps not in the flesh, but I have been with you since your journey began. I hear that you slayed the lady Medusa. Tell me, haven't you wondered how? She was already dead, slain by the Founder of Mycenae. How can that be?”" +
           "You had wondered how all of this was possible, ever since you were taken from Aigosthena to Delphi in an instant. " + this.thalesText("“I just assumed Athena used magic..”");
       else if (pageCount === 3)
         sceneText = "The old man chuckled. “A simple answer, but not wrong. I am Khronos, keeper of time. Yes, Athena approached me and together we devised a spell that would allow someone to slip in and out of the past to see those who are no longer living.<br/><br/>" +
-          "When she came to me, I did not think it a good idea at first. Time is a delicate thing, you see. But I relented for one reason. I think your journey is a necessary one. I hope that one day, you will be able to tell me truthfully what it means to be a hero. You, above all, will have the experience necessary. I wish you luck.”<br/><br/>" +
+          "When she first came to me, I must confess I did not like the idea. Time is a delicate thing, you see. But I relented for one reason. I think your journey is a necessary one. I hope that one day, you will be able to tell me truthfully what it means to be a hero. You, above all, will have the experience necessary. I wish you luck.”<br/><br/>" +
           "With that, the man turned and walked away. As you absorb the conversation that just occurred, you see Zosime making her way back to you. " + this.zosimeText("“Hey, we're up next. Ready?”");
     }
     else if (storyId === 12) {
       if (pageCount === 1)
-        sceneText = "You win! The crowd cheers as you make your way to the front of the arena where Hades is presiding. " + this.hadesText("“Continue past the coliseum and you will find Charon ready to ferry you back to the surface. You are free to go, under one condition. Under <i>NO CIRCUMSTANCES</i> will the fools of Olympus be allowed to fall. I will not have them here. Now go.”");
+        sceneText = "You win! The crowd of souls cheer as you make your way to the front of the arena. Hades sits here above all others, staring at you with a piercing gaze. " + this.hadesText("“Continue past the coliseum and you will find Charon ready to ferry you back to the surface. You are free to go, under one condition. Under <i>NO CIRCUMSTANCES</i> will the fools of Olympus be allowed to fall. I will not have them here. Now go.”");
       else if (pageCount === 2)
         sceneText = "As you make your way out of the arena, you find Hermes waiting for you at the front gates. " + this.hermesText("“Well done! Couldn't have done too much better myself. I think I may have been mistaken about you two. You're not wrong for the job, you just need a little guidance. Call on me when you need help, I'm never too far. See you around!”") + "<br/><br/>" +
-          "Free from gods for the time being, you begin the short trek to ferryman of the underworld.";
+          "Free from gods for the time being, you begin the short trek to the ferryman of the Underworld.";
     }
     else if (storyId === 13) {
       if (pageCount === 1)
@@ -208,7 +208,7 @@ export class StoryService {
           this.zosimeText("“Any ideas on where to go next?”") + " Zosime asks you, snapping you out of your thoughts.<br/><br/>" +
           this.thalesText("“Before we fell, I felt invincible. As if there was nothing any hero had done that we couldn't do. But now, honestly, I don't know.”") + " You say to Zosime, uncertain.";
       else if (pageCount === 2)
-        sceneText = this.zosimeText("“Great, then I'll decide. Let's go to Calydon. Since I was a child, I wanted to be just like Atalanta. Once, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Given that we were just given a second chance… I can't miss this opportunity!”") +
+        sceneText = this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Given that we were just given a second chance… I can't miss this opportunity!”") +
           "You nod your head, just happy to have someone else make the decision. " + this.thalesText("“Lead the way.”");
     }
 
@@ -223,6 +223,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Odysseus", "<span class='commonCharacterColor storyCharacterName'>Odysseus</span>");
     sceneText = sceneText.replaceAll("Theseus", "<span class='commonCharacterColor storyCharacterName'>Theseus</span>");
     sceneText = sceneText.replaceAll("Perseus", "<span class='commonCharacterColor storyCharacterName'>Perseus</span>");
+    sceneText = sceneText.replaceAll("Khronos", "<span class='commonCharacterColor storyCharacterName'>Khronos</span>");
 
     return sceneText;
   }

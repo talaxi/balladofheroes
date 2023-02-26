@@ -1,5 +1,7 @@
-<span class="pageHeader gameTitle">Ballad of Heroes</span>
-<span customToolTip [contentTemplate]="versionPopover" class="subheader">v0.1 beta</span>
+<div class="gameName" customToolTip [contentTemplate]="versionPopover" [tooltipDirection]="tooltipDirection">
+    <span class="pageHeader gameTitle">Ballad of Heroes</span>
+    <span class="subheader">v0.1 beta</span>
+</div>
 
 <ng-template #versionPopover>
     <div>

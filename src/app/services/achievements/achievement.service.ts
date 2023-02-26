@@ -1,12 +1,16 @@
 import { Injectable } from '@angular/core';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
+import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
 
@@ -15,7 +19,8 @@ import { AlchemyService } from '../professions/alchemy.service';
 })
 export class AchievementService {
 
-  constructor(private lookupService: LookupService, private alchemyService: AlchemyService) { }
+  constructor(private lookupService: LookupService, private alchemyService: AlchemyService, private tutorialService: TutorialService,
+    private gameLogService: GameLogService) { }
 
   createDefaultAchievementsForSubzone(subzoneType: SubZoneEnum) {
     var newAchievements: Achievement[] = [];
@@ -208,7 +213,7 @@ export class AchievementService {
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
     if (subzoneType === SubZoneEnum.LibyaIsleCenter)
-    {
+    {      
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 2500));
     }
@@ -283,8 +288,11 @@ export class AchievementService {
         completedAchievement.push(complete);
         complete.completed = true;
         complete.bonusResources.forEach(bonus => {
-          if (bonus.item === ItemsEnum.ItemBeltUp) {
+          if (bonus.item === ItemsEnum.ItemBeltUp) {            
             this.lookupService.increaseItemBeltSize();
+
+            if (subzone.type === SubZoneEnum.LibyaIsleCenter)
+              this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements));
           }
           else if (bonus.item === ItemsEnum.BonusXp) {
             this.lookupService.giveCharactersBonusExp(bonus.amount);
