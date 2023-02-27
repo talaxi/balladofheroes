@@ -84,7 +84,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.KillerBees)
     {
       enemy.name = "Killer Bees";
-      enemy.battleStats = new CharacterStats(12, 11, 7, 10, 15, 10); 
+      enemy.battleStats = new CharacterStats(12, 9, 7, 10, 15, 10); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.xpGainFromDefeat = 20; 
       enemy.coinGainFromDefeat = 1;
