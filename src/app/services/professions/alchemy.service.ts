@@ -56,9 +56,9 @@ export class AlchemyService {
     var duration = 0;
 
     if (action === AlchemyActionsEnum.PrepareWaterSmallPot)
-      duration = 1 * 2;
+      duration = 1 * 20;
     if (action === AlchemyActionsEnum.CombineIngredientsPot)
-      duration = 1 * 1;
+      duration = 1 * 10;
     if (action === AlchemyActionsEnum.CombineIngredientsPotion)
       duration = 1 * 15;
     if (action === AlchemyActionsEnum.HeatMixture)
@@ -263,7 +263,7 @@ export class AlchemyService {
       upgrades.chanceTo2xItem += additionalChanceTo2x;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "<strong>You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making a Basic quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making a Basic quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
@@ -274,7 +274,7 @@ export class AlchemyService {
       upgrades.durationReduction += additionalDurationReduction;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "<strong>The time it takes to create a Basic quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
+        var gameLogEntry = "The time it takes to create a Basic quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
@@ -285,7 +285,7 @@ export class AlchemyService {
       upgrades.chanceToRetainMaterials += additionalChanceToRetainMaterials;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "<strong>You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a Basic quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a Basic quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
@@ -294,7 +294,7 @@ export class AlchemyService {
       upgrades.chanceTo5xItem += additionalChanceTo5x;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "<strong>You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making a Basic quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making a Basic quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
