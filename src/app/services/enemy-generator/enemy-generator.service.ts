@@ -66,7 +66,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.StarvingMongrel)
     {
       enemy.name = "Starving Mongrel";
-      enemy.battleStats = new CharacterStats(17, 13, 9, 10, 5, 5); 
+      enemy.battleStats = new CharacterStats(17, 12, 9, 10, 5, 5); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 1;
       enemy.xpGainFromDefeat = 35; 
