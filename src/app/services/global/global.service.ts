@@ -210,11 +210,11 @@ export class GlobalService {
       heal.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       heal.targetType = TargetEnum.LowestHpPercent;
       heal.isAvailable = false;
-      heal.effectiveness = .6;
+      heal.effectiveness = .3;
       heal.heals = true;
       heal.targetsAllies = true;
       heal.dealsDirectDamage = false;
-      heal.cooldown = heal.currentCooldown = 22;
+      heal.cooldown = heal.currentCooldown = 13;
       character.abilityList.push(heal);
 
       var faith = new Ability();
@@ -597,7 +597,7 @@ export class GlobalService {
 
   createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean,
     isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false,
-    element: ElementalTypeEnum = ElementalTypeEnum.None) {
+    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0) {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -609,6 +609,7 @@ export class GlobalService {
     statusEffect.threshold = threshold;
     statusEffect.effectStacks = effectStacks;
     statusEffect.element = element;
+    statusEffect.triggersEvery = triggersEvery;
 
     if (duration === -1)
       statusEffect.isPermanent = true;

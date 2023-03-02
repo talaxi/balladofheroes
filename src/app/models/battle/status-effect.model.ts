@@ -21,6 +21,7 @@ export class StatusEffect {
     threshold: number;
     effectStacks: boolean;
     stackCount: number;
+    triggersEvery: number; //for effects that trigger every X seconds
 
     //for DoTs
     associatedAbilityName: string;
@@ -46,6 +47,7 @@ export class StatusEffect {
         this.castingCharacterEnum = CharacterEnum.None;
         this.effectStacks = false;
         this.stackCount = 1;
+        this.triggersEvery = 0;
     }
 
     makeCopy() {
@@ -64,12 +66,14 @@ export class StatusEffect {
         copy.refreshes = this.refreshes;
         copy.effectStacks = this.effectStacks;
         copy.castingCharacterEnum = this.castingCharacterEnum;
+        copy.threshold = this.threshold;
 
         copy.associatedAbilityName = this.associatedAbilityName;
         copy.tickFrequency = this.tickFrequency;
         copy.tickTimer = this.tickTimer;
         copy.dotType = this.dotType;
         copy.element = this.element;
+        copy.triggersEvery = this.triggersEvery;
 
         return copy;
     }

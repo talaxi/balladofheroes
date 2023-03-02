@@ -9,6 +9,6 @@ export class VersionControlService {
   constructor(public globalService: GlobalService) { }
 
   getCurrentVersion() {
-    return .1;
+    return .2;
   }
 }

@@ -907,17 +907,48 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 10);
       equipmentPiece.stats.elementalDamageResistance.fire += .10;
     }
+    //+% to elemental damage, absorb certain amount of elemental damage
     if (type === ItemsEnum.FracturedRubyRing) {
-      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Uncommon);
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Fire));
+      equipmentPiece.stats.elementalDamageIncrease.fire += .25;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 50, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Fire, 90));
     }
     if (type === ItemsEnum.FracturedAmethystRing) {
-      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Uncommon);
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.elementalDamageIncrease.air += .25;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Air));
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 50, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Air, 90));
+    }
+    if (type === ItemsEnum.FracturedAquamarineRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.elementalDamageIncrease.water += .25;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 50, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Water, 90));
+    }
+    if (type === ItemsEnum.FracturedEmeraldRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.elementalDamageIncrease.earth += .25;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 50, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Earth, 90));
+    }
+    if (type === ItemsEnum.FracturedOpalRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.elementalDamageIncrease.lightning += .25;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 50, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Lightning, 90));
+    }
+    if (type === ItemsEnum.FracturedTopazRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.elementalDamageIncrease.holy += .25;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 50, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Holy, 90));
     }
 
     return equipmentPiece;
@@ -2175,6 +2206,8 @@ export class LookupService {
       equipmentEffects += "On Ability Use: ";
     if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnHit)
       equipmentEffects += "On Hit: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
+      equipmentEffects += "Triggers Over Time: ";
     if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
       equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
 
@@ -2186,7 +2219,7 @@ export class LookupService {
         }
 
         if (equipment.itemType === ItemsEnum.SwordOfFlames)
-          equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
+          equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";        
       });
     }
 
@@ -2195,6 +2228,9 @@ export class LookupService {
         if (effect.type === StatusEffectEnum.Thorns) {
           equipmentEffects += "Deal 3 damage to those who auto attack you. <br/>";
         }
+
+        if (equipment.itemType === ItemsEnum.FracturedRubyRing)
+          equipmentEffects += "Absorb " + effect.effectiveness + " Fire damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
       });
     }
 

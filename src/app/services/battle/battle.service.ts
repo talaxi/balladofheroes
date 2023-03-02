@@ -69,7 +69,7 @@ export class BattleService {
     var lastPerformanceNow = performance.now();
     var subZone = this.balladService.getActiveSubZone();
 
-    if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {      
+    if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {
       this.checkScene();
     }
     this.currentSubzoneType = subZone.type;
@@ -262,6 +262,12 @@ export class BattleService {
         }
       }
     }
+
+    if (subzone.type === SubZoneEnum.ElysiumWavesOfOceanus && subzone.victoryCount === 1 &&
+       this.globalService.globalVar.chthonicPowers.preferredGod === GodEnum.None)
+    {
+      this.globalService.globalVar.chthonicPowers.preferredGod = this.lookupService.getRandomGodEnum(false);
+    }
   }
 
   checkScene() {
@@ -272,14 +278,13 @@ export class BattleService {
       this.globalService.globalVar.activeBattle.atScene = true;
       this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Story;
     }
-    else {      
+    else {
       //check for side quests
       if (subzone.type === SubZoneEnum.CalydonAltarOfAsclepius) {
         this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.SideQuest;
         this.globalService.globalVar.activeBattle.atScene = true;
       }
-      else
-      {
+      else {
         //expecting this to be reset below if you are actually at a scene
         this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.None;
         this.globalService.globalVar.activeBattle.atScene = false;
@@ -899,11 +904,13 @@ export class BattleService {
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             if (instantEffect.isAoe) {
               party.forEach(partyMember => {
-                partyMember.battleInfo.barrierValue += barrierAmount;
+                if (partyMember.battleInfo.barrierValue < partyMember.battleStats.maxHp * instantEffect.threshold) {
+                  partyMember.battleInfo.barrierValue += barrierAmount;
 
-                if (partyMember.battleInfo.barrierValue > partyMember.battleStats.maxHp * instantEffect.threshold) {
-                  //TODO: maybe don't overwrite existing effect though if it was already higher
-                  partyMember.battleInfo.barrierValue = Math.round(partyMember.battleStats.maxHp * instantEffect.threshold);
+                  //if you went over threshold, set it back down 
+                  if (partyMember.battleInfo.barrierValue > partyMember.battleStats.maxHp * instantEffect.threshold) {
+                    partyMember.battleInfo.barrierValue = Math.round(partyMember.battleStats.maxHp * instantEffect.threshold);
+                  }
                 }
 
                 partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Barrier);
@@ -1220,6 +1227,21 @@ export class BattleService {
         target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
     }
 
+    var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
+    if (matchingAbsorption !== undefined) {
+      if (matchingAbsorption.effectiveness > 0) {
+        matchingAbsorption.effectiveness -= damage;
+        damage = 0;
+
+        if (matchingAbsorption.effectiveness < 0) {
+          //deal remaining damage to hp
+          damage = -matchingAbsorption.effectiveness;
+          matchingAbsorption.effectiveness = 0;
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== matchingAbsorption);
+        }
+      }
+    }
+
     if (target.battleInfo.barrierValue > 0) {
       target.battleInfo.barrierValue -= damage;
       damage = 0;
@@ -1279,6 +1301,21 @@ export class BattleService {
       target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked * this.lookupService.getOverdriveGainMultiplier(target);
       if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
         target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
+    }
+
+    var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
+    if (matchingAbsorption !== undefined) {
+      if (matchingAbsorption.effectiveness > 0) {
+        matchingAbsorption.effectiveness -= damage;
+        damage = 0;
+
+        if (matchingAbsorption.effectiveness < 0) {
+          //deal remaining damage to hp
+          damage = -matchingAbsorption.effectiveness;
+          matchingAbsorption.effectiveness = 0;
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== matchingAbsorption);
+        }
+      }
     }
 
     if (target.battleInfo.barrierValue > 0) {
@@ -1868,7 +1905,7 @@ export class BattleService {
     return isTargetable;
   }
 
-  useBattleItemOnCharacter(character: Character, party: Character[]) {    
+  useBattleItemOnCharacter(character: Character, party: Character[]) {
     if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
       return;
 
@@ -1876,7 +1913,7 @@ export class BattleService {
 
     var effect = this.lookupService.getBattleItemEffect(this.battleItemInUse);
 
-    if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice) {      
+    if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice) {
       if (character.battleStats.currentHp === character.battleStats.maxHp)
         return;
 
@@ -2036,7 +2073,7 @@ export class BattleService {
     return text;
   }
 
-  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character, party: Character[], targets: Character[]) {
+  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character | undefined, party: Character[], targets: Character[], deltaTime: number = 0) {
     var userGainsEffects: StatusEffect[] = [];
     var targetGainsEffects: StatusEffect[] = [];
     var rng = 0;
@@ -2049,6 +2086,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2058,6 +2104,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
         }
         else {
           targetGainsEffects.push(effect.makeCopy());
@@ -2072,6 +2127,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.shield!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2081,6 +2145,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.shield!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2094,6 +2167,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.armor!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2103,6 +2185,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.armor!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2116,6 +2207,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2125,6 +2225,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2138,6 +2247,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2147,6 +2265,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2159,7 +2286,7 @@ export class BattleService {
         userGainsEffects.forEach(effect => {
           if (user.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster))
             effect.type = StatusEffectEnum.None;
-        })
+        });
 
         userGainsEffects = userGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
       }
@@ -2167,7 +2294,17 @@ export class BattleService {
       this.handleuserEffects(true, userGainsEffects, user, party, targets);
     }
 
-    if (targetGainsEffects.length > 0) {
+    if (targetGainsEffects.length > 0 && target !== undefined) {
+      //if it's already active, don't reapply
+      if (trigger === EffectTriggerEnum.AlwaysActive) {
+        targetGainsEffects.forEach(effect => {
+          if (target.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster))
+            effect.type = StatusEffectEnum.None;
+        });
+
+        targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
+      }
+
       this.handletargetEffects(true, targetGainsEffects, user, target, targets, party);
     }
   }

@@ -172,8 +172,8 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   selectSubZone(subzone: SubZone, zone: Zone) {
-    if (zone.type === ZoneEnum.PeloposNisos) {
-      return; //TODO: Move this as you release new stuff and need to put 'To Be Continued' in the list
+    if (this.isSubZoneToBeContinued(subzone)) {
+      return;
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
@@ -367,8 +367,8 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   isSubZoneToBeContinued(subzone: SubZone) {    
-    if (subzone.type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
-      return true;
+    //if (subzone.type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
+      //return true;
 
     return false;
   }

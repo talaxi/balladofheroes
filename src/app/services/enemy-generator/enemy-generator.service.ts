@@ -1172,6 +1172,320 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250; 
     }
+    if (type === BestiaryEnum.UnrulyHound)
+    {
+      enemy.name = "Unruly Hound";
+      enemy.battleStats = new CharacterStats(1960, 202, 263, 100, 100, 250);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.FirebreathingSerpent)
+    {
+      enemy.name = "Fire-Breathing Serpent";
+      enemy.battleStats = new CharacterStats(1960, 202, 263, 100, 100, 250);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.RogueNymph)
+    {
+      enemy.name = "Rogue Nymph";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.StymphalianVulture)
+    {
+      enemy.name = "Stymphalian Vulture";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.ForestWisp)
+    {
+      enemy.name = "Forest Wisp";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.BrownBear)
+    {
+      enemy.name = "Brown Bear";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.CentaurScout)
+    {
+      enemy.name = "Centaur Scout";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.CentaurArcher)
+    {
+      enemy.name = "Centaur Archer";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.CentaurWarrior)
+    {
+      enemy.name = "Centaur Warrior";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.CentaurMystic)
+    {
+      enemy.name = "Centaur Mystic";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.StoneElemental)
+    {
+      enemy.name = "Stone Elemental";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.ShadyTraveler)
+    {
+      enemy.name = "Shady Traveler";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.PushyMerchant)
+    {
+      enemy.name = "Centaur Mystic";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.FeistyBadger)
+    {
+      enemy.name = "Feisty Badger";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.GoldenJackal)
+    {
+      enemy.name = "Golden Jackal";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.FrenziedWisp)
+    {
+      enemy.name = "Frenzied Wisp";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.PatrinosBandit)
+    {
+      enemy.name = "Patrinos Bandit";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.PatrinosRogue)
+    {
+      enemy.name = "Patrinos Rogue";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.PatrinosRuffian)
+    {
+      enemy.name = "Patrinos Ruffian";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    if (type === BestiaryEnum.PatrinosGangLeader)
+    {
+      enemy.name = "Patrinos Gang Leader";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    
+    if (type === BestiaryEnum.WoodlandNymph)
+    {
+      enemy.name = "Woodland Nymph";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }    
+    if (type === BestiaryEnum.HornedViper)
+    {
+      enemy.name = "Centaur Mystic";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.PoisonSpewingFungi)
+    {
+      enemy.name = "Poison Spewing Fungi";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }       
+    if (type === BestiaryEnum.ForestDryad)
+    {
+      enemy.name = "Forest Dryad";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.GreyWolf)
+    {
+      enemy.name = "Grey Wolf";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }       
+    if (type === BestiaryEnum.AggravatedHunter)
+    {
+      enemy.name = "Aggravated Hunter";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }      
+    if (type === BestiaryEnum.Trapper)
+    {
+      enemy.name = "Trapper";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.FeralBoar)
+    {
+      enemy.name = "Feral Boar";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.CarnivorousFlora)
+    {
+      enemy.name = "Carnivorous Flora";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.RedSpeckledToad)
+    {
+      enemy.name = "Red-Speckled Toad";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.YellowSpeckledToad)
+    {
+      enemy.name = "Yellow-Speckled Toad";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }       
+    if (type === BestiaryEnum.WanderingIbex)
+    {
+      enemy.name = "Forest Dryad";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.GriffonVulture)
+    {
+      enemy.name = "Griffon Vulture";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.Leopard)
+    {
+      enemy.name = "Leopard";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.Bobcat)
+    {
+      enemy.name = "Bobcat";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.PitViper)
+    {
+      enemy.name = "Pit Viper";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    } 
+    if (type === BestiaryEnum.AlphaGreyWolf)
+    {
+      enemy.name = "Alpha Grey Wolf";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.DenMother)
+    {
+      enemy.name = "Den Mother";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }   
+    if (type === BestiaryEnum.CalydonianBoar)
+    {
+      enemy.name = "Calydonian Boar";
+      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600); 
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;      
+      enemy.coinGainFromDefeat = 2;
+      enemy.xpGainFromDefeat = 250; 
+    }
+    
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

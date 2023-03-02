@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { AltarEffect } from 'src/app/models/altar/altar-effect.model';
 import { Character } from 'src/app/models/character/character.model';
+import { Enemy } from 'src/app/models/character/enemy.model';
 import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
@@ -23,6 +24,10 @@ export class BackgroundService {
     this.alchemyService.handleAlchemyTimer(deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
+    var enemies: Enemy[] = [];
+
+    if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined)
+      enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {
       //check for defeated      
@@ -31,6 +36,7 @@ export class BackgroundService {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleHpRegen(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
+        this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, undefined, party, enemies, deltaTime);
 
         if (!isInTown)
         {

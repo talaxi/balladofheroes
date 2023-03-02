@@ -14,12 +14,14 @@ export class UsableItemEffect {
     @Type(() => StatusEffect)
     targetEffect: StatusEffect[];
     chance: number; //for effects that don't land every time
-    elementalProperty: ElementalTypeEnum;
+    elementalProperty: ElementalTypeEnum;    
+    triggersEveryCount: number;
 
     constructor() {
         this.userEffect = [];
         this.targetEffect = [];
         this.chance = 0;
+        this.triggersEveryCount = 0;
         this.elementalProperty = ElementalTypeEnum.None;
     }
 }

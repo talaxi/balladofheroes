@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
@@ -106,6 +107,14 @@ export class EquipmentViewComponent implements OnInit {
       character.equipmentSet.ring = selectedEquipmentPiece;
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Necklace)
       character.equipmentSet.necklace = selectedEquipmentPiece;
+
+    if (selectedEquipmentPiece.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery &&
+      selectedEquipmentPiece.equipmentEffect.triggersEveryCount === 0) {
+      if (selectedEquipmentPiece.equipmentEffect.userEffect.length > 0)
+        selectedEquipmentPiece.equipmentEffect.triggersEveryCount = selectedEquipmentPiece.equipmentEffect.userEffect[0].triggersEvery;
+      else if (selectedEquipmentPiece.equipmentEffect.targetEffect.length > 0)
+        selectedEquipmentPiece.equipmentEffect.triggersEveryCount = selectedEquipmentPiece.equipmentEffect.targetEffect[0].triggersEvery;
+    }
 
     this.globalService.calculateCharacterBattleStats(character);
     this.setUpAvailableEquipment();

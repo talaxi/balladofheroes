@@ -112,9 +112,64 @@ export class SubZone {
         if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory)
             name = "Gates of Horn and Ivory";
         if (type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
-            name = "Mouth of the Underworld";
+            name = "Gates of the Underworld";
+        if (type === SubZoneEnum.PeloposNisosArcadianRoads)
+            name = "Arcadian Roads";
+        if (type === SubZoneEnum.PeloposNisosTravelPost)
+            name = "Travel Post";
+        if (type === SubZoneEnum.PeloposNisosFootOfTheMountain)
+            name = "Foot of the Mountain";
+        if (type === SubZoneEnum.PeloposNisosSteepAscent)
+            name = "Steep Ascent";
+        if (type === SubZoneEnum.PeloposNisosMountParthenionCaverns)
+            name = "Mount Parthenion Caverns";
+        if (type === SubZoneEnum.PeloposNisosValleyOpening)
+            name = "Valley Opening";
+        if (type === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
+            name = "Trek Across Arcadia";
+        if (type === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
+            name = "Trek Across Acheae";
+        if (type === SubZoneEnum.PeloposNisosPatrasBorder)
+            name = "Patras Border";
+        if (type === SubZoneEnum.CalydonTownMarket)
+            name = "Town Market";
         if (type === SubZoneEnum.CalydonAltarOfAsclepius)
             name = "Altar of Asclepius";
+        if (type === SubZoneEnum.ElysiumWindingPaths)
+            name = "Winding Paths";
+        if (type === SubZoneEnum.ElysiumWaterloggedMarsh)
+            name = "Water-logged Marsh";
+        if (type === SubZoneEnum.ElysiumEdgeOfTheUnderworld)
+            name = "Edge of the Underworld";
+        if (type === SubZoneEnum.ElysiumWavesOfOceanus)
+            name = "Waves of Oceanus";
+        if (type === SubZoneEnum.CalydonForestPassage)
+            name = "Forest Passage";
+        if (type === SubZoneEnum.CalydonHeavyThicket)
+            name = "Heavy Thicket";
+        if (type === SubZoneEnum.CalydonWelltroddenPathway)
+            name = "Well-trodden Pathway";
+        if (type === SubZoneEnum.CalydonSparseClearing)
+            name = "Sparse Clearing";
+        if (type === SubZoneEnum.CalydonShroudedFoliage)
+            name = "Shrouded Foliage";
+        if (type === SubZoneEnum.CalydonBabblingStream)
+            name = "Babbling Stream";
+        if (type === SubZoneEnum.CalydonMudpit)
+            name = "Mudpit";
+        if (type === SubZoneEnum.CalydonMarkedTreeTrail)
+            name = "Marked Tree Trail";
+        if (type === SubZoneEnum.CalydonOvergrownVerdure)
+            name = "Overgrown Verdure";
+        if (type === SubZoneEnum.CalydonWornDownBarn)
+            name = "Worn Down Barn";
+        if (type === SubZoneEnum.CalydonWateringHole)
+            name = "Watering Hole";
+        if (type === SubZoneEnum.CalydonTallGrass)
+            name = "Tall Grass";
+        if (type === SubZoneEnum.CalydonDeadEnd)
+            name = "Dead End";
+
         return name;
     }
 
@@ -181,15 +236,37 @@ export class SubZone {
         if (type === SubZoneEnum.AsphodelLetheTributary)
             victories = bossVictories;
 
-        if (type === SubZoneEnum.ElysiumElysianFields || type === SubZoneEnum.ElysiumOpenPlains || type === SubZoneEnum.ElysiumGatesOfHornAndIvory)
+        if (type === SubZoneEnum.ElysiumElysianFields || type === SubZoneEnum.ElysiumOpenPlains || type === SubZoneEnum.ElysiumGatesOfHornAndIvory
+            || type === SubZoneEnum.ElysiumWindingPaths || type === SubZoneEnum.ElysiumEdgeOfTheUnderworld || type === SubZoneEnum.ElysiumWaterloggedMarsh)
             victories = defaultVictories;
+
+        if (type === SubZoneEnum.ElysiumWavesOfOceanus)
+            victories = bossVictories;
+
+        if (type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld || type === SubZoneEnum.PeloposNisosArcadianRoads || type === SubZoneEnum.PeloposNisosFootOfTheMountain
+            || type === SubZoneEnum.PeloposNisosSteepAscent || type === SubZoneEnum.PeloposNisosMountParthenionCaverns || type === SubZoneEnum.PeloposNisosValleyOpening
+            || type === SubZoneEnum.PeloposNisosTrekAcrossArcadia || type === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
+            victories = defaultVictories;
+
+        if (type === SubZoneEnum.PeloposNisosPatrasBorder)
+            victories = bossVictories;
+
+        if (type === SubZoneEnum.CalydonHeavyThicket || type === SubZoneEnum.CalydonForestPassage || type === SubZoneEnum.CalydonWelltroddenPathway ||
+            type === SubZoneEnum.CalydonSparseClearing || type === SubZoneEnum.CalydonShroudedFoliage || type === SubZoneEnum.CalydonBabblingStream ||
+            type === SubZoneEnum.CalydonMudpit || type === SubZoneEnum.CalydonMarkedTreeTrail || type === SubZoneEnum.CalydonOvergrownVerdure ||
+            type === SubZoneEnum.CalydonWateringHole || type === SubZoneEnum.CalydonDeadEnd)
+            victories = defaultVictories;
+
+        if (type === SubZoneEnum.CalydonWornDownBarn || type === SubZoneEnum.CalydonTallGrass)
+            victories = bossVictories;
 
         return victories;
     }
 
     isSubzoneTown(type: SubZoneEnum) {
         if (type === SubZoneEnum.DodonaDelphi || type === SubZoneEnum.DodonaArta || type === SubZoneEnum.AsphodelPalaceOfHades ||
-            type === SubZoneEnum.AsphodelLostHaven || type === SubZoneEnum.ElysiumColiseum) {
+            type === SubZoneEnum.AsphodelLostHaven || type === SubZoneEnum.ElysiumColiseum || type === SubZoneEnum.PeloposNisosTravelPost
+            || type === SubZoneEnum.CalydonTownMarket) {
             return true;
         }
 
