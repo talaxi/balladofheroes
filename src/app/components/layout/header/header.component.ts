@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
@@ -22,6 +23,7 @@ export class HeaderComponent implements OnInit {
 
   navigationEnum = NavigationEnum;
   textMode = true;
+  tooltipDirection = DirectionEnum.Down;
 
   constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
     public utilityService: UtilityService, public globalService: GlobalService, public deploymentService: DeploymentService,

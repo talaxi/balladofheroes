@@ -268,7 +268,7 @@
 
 <ng-template #agilityPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getAgilityDescription()"></span>
+        <span class="description" [innerHtml]="this.lookupService.getAgilityDescription(this.character)"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getAgilityStatBreakdown(this.character)">
 

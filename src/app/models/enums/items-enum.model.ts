@@ -137,5 +137,17 @@ export enum ItemsEnum {
   BonusXp,
   EarlyDevMark,
   HeroicElixirRecipe,
-  HeftyStone
+  HeftyStone,
+  RejuvenatingElixir,
+  VialOfLakeLerna,
+  RestorativeHerb,
+  ShieldOfTheHealer,
+  HardenedLeatherArmor,
+  BoarskinArmor,
+  BearskinArmor,
+  BedazzledRing,
+  ThickLeather,
+  Goldroot,
+  Violet,
+  Lousewort
 }

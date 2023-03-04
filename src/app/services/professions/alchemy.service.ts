@@ -73,6 +73,10 @@ export class AlchemyService {
       duration = 1 * 20;
     if (action === AlchemyActionsEnum.StrainMixture)
       duration = 1 * 10;
+    if (action === AlchemyActionsEnum.ExtractEssence)
+      duration = 1 * 45;
+    if (action === AlchemyActionsEnum.Infuse)
+      duration = 1 * 60;
 
     return duration;
   }
@@ -396,23 +400,40 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.PoisonExtractPotion) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PoisonFang, ItemTypeEnum.CraftingMaterial, 1));
 
-      recipe.numberOfSteps = 2;
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(AlchemyActionsEnum.PrepareWaterSmallPot);
+      recipe.steps.push(AlchemyActionsEnum.ExtractEssence);
       recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
 
-      recipe.expGain = 15;
+      recipe.expGain = 12;
     }
     if (item === ItemsEnum.HeroicElixir) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 2));
+      //TODO: change ingredients with something you get from pelops nisos
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 3));
 
-      recipe.numberOfSteps = 2;
+      recipe.numberOfSteps = 3;
       recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+      recipe.steps.push(AlchemyActionsEnum.Infuse);
+      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
+
+      recipe.expGain = 15;
+    }
+    if (item === ItemsEnum.RejuvenatingElixir) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      //TODO: change ingredients with something you get from calydon forest
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 1));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);      
+      recipe.steps.push(AlchemyActionsEnum.Infuse);
+      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
 
       recipe.expGain = 15;
     }

@@ -6,6 +6,7 @@ import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
+import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
@@ -16,6 +17,7 @@ import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { AlchemyUpgrades } from 'src/app/models/professions/alchemy-upgrades.model';
+import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
@@ -170,15 +172,15 @@ export class InitializationService {
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonForestPassage));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonOvergrownVerdure));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonShroudedFoliage));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWornDownBarn));    
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWornDownBarn));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonHeavyThicket));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonBabblingStream));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWateringHole));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWelltroddenPathway));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMudpit));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonTallGrass));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonSparseClearing));        
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMarkedTreeTrail));        
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonSparseClearing));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMarkedTreeTrail));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonDeadEnd));
     boarBallad.zones.push(calydon);
 
@@ -189,6 +191,8 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("activeOverview", QuickViewEnum.Overview);
     this.globalService.globalVar.settings.set("activeLog", LogViewEnum.Tutorials);
     this.globalService.globalVar.settings.set("autoProgress", false);
+    this.globalService.globalVar.settings.set("showOnlyUncompletedAchievements", false);
+    this.globalService.globalVar.settings.set("achievementsPerPage", 5);
     this.globalService.globalVar.settings.set("storyStyle", StoryStyleSettingEnum.Medium);
   }
 
@@ -315,6 +319,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Wax, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingPoultice, ItemTypeEnum.HealingItem, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallAmethyst, ItemTypeEnum.CraftingMaterial, 10000));
@@ -326,7 +331,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, ItemTypeEnum.BattleItem, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, ItemTypeEnum.Charm, 5));
+    /*this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfApollo, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHermes, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHermes, ItemTypeEnum.Charm, 5));
@@ -369,23 +374,16 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 5));
-
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 5));*/
 
     this.globalService.globalVar.currentStoryId = 10000;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
+    this.setPowerLevel(1);
 
     //this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer)!.isAvailable = true;
     //this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer)!.isAvailable = true;
-
-    this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-    this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
-    this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
-    this.globalService.globalVar.itemBeltSize = 1;
-    this.globalService.globalVar.alchemy.level = 25;
-    this.alchemyService.checkForNewRecipes();
 
     this.globalService.globalVar.altars.altar1 = this.altarService.getTutorialAltar();
     this.globalService.globalVar.altars.altar2 = this.altarService.getTutorialAltar();
@@ -393,59 +391,6 @@ export class InitializationService {
 
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
-
-    var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
-    if (character1 !== undefined) {
-      character1.assignedGod1 = GodEnum.Athena;
-      character1.assignedGod2 = GodEnum.Hermes;
-    }
-
-    var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
-
-    if (character2 !== undefined) {
-      character2.assignedGod1 = GodEnum.Artemis;
-      character2.assignedGod2 = GodEnum.Apollo;
-    }
-
-    character1?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    character2?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest)?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior)?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
-    athena!.isAvailable = true;
-    athena?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
-    hermes!.isAvailable = true;
-    hermes?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
-    apollo!.isAvailable = true;
-    apollo?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
-
-    var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
-    artemis!.isAvailable = true;
-    artemis?.abilityList.forEach(ability => {
-      ability.isAvailable = true;
-    });
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld)
@@ -479,6 +424,116 @@ export class InitializationService {
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
     //console.log(this.globalService.globalVar.achievements);
+  }
+
+  setPowerLevel(level: number) {
+    if (level === 1) {
+      this.globalService.globalVar.chthonicPowers.attackBoostLevel = 5;
+      this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 5;
+      this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 5;
+      this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 5;
+      this.globalService.globalVar.chthonicPowers.luckBoostLevel = 5;
+      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 5;
+
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+
+      var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SwordOfFlames, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SwordOfFlames, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MoltenShield, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MoltenShield, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MoltenArmor, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MoltenArmor, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MoltenRing, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MoltenRing, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PendantOfPower, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+      resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PendantOfSpeed, 1);
+      if (resource !== undefined)
+        this.lookupService.gainResource(resource);
+
+      this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
+      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
+      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
+      this.globalService.globalVar.itemBeltSize = 1;
+      this.globalService.globalVar.alchemy.level = 25;
+      this.alchemyService.checkForNewRecipes();
+
+      var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
+      if (character1 !== undefined) {
+        character1.assignedGod1 = GodEnum.Athena;
+        character1.assignedGod2 = GodEnum.Hermes;
+        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SwordOfFlames);
+        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
+        character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
+        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenRing);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfSpeed);
+      }
+
+      var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
+      if (character2 !== undefined) {
+        character2.assignedGod1 = GodEnum.Artemis;
+        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SwordOfFlames);
+        character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
+        character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
+        character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenRing);
+        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
+      }
+
+      var characterLevel = 19;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+
+        this.globalService.calculateCharacterBattleStats(character);
+      });
+
+      var godLevel = 49;
+      var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
+      athena!.isAvailable = true;
+      for (var i = 0; i < godLevel; i++) {
+        this.globalService.levelUpGod(athena!);
+      }
+      athena!.exp = 0;
+
+      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+      hermes!.isAvailable = true;
+      for (var i = 0; i < godLevel; i++) {
+        this.globalService.levelUpGod(hermes!);
+      }
+      hermes!.exp = 0;
+
+      var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+      apollo!.isAvailable = true;
+      for (var i = 0; i < godLevel; i++) {
+        this.globalService.levelUpGod(apollo!);
+      }
+      apollo!.exp = 0;
+
+      var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
+      artemis!.isAvailable = true;
+      for (var i = 0; i < godLevel; i++) {
+        this.globalService.levelUpGod(artemis!);
+      }
+      artemis!.exp = 0;
+    }
   }
 
   initializeAlchemy() {

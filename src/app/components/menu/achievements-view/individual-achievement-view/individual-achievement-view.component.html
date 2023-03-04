@@ -1,8 +1,16 @@
 <div>
-<span class="challenge" [innerHtml]="getAchievementDescription(achievement.achievementType)"></span>
-<br/>
-<span class="reward" *ngFor='let reward of achievement.bonusResources'>
-    +{{getAchievementReward(reward)}}
-    <br/>
-</span>
+    <span class="challenge" [innerHtml]="getAchievementDescription(achievement.achievementType)"></span>
+    <br />
+    <span customToolTip [contentTemplate]="achievementRewardPopover" [tooltipDirection]="tooltipDirection" class="reward"
+        *ngFor='let reward of achievement.bonusResources'>
+        +{{getAchievementReward(reward)}}
+        <br />
+    </span>
 </div>
+
+
+<ng-template #achievementRewardPopover>
+    <div [innerHtml]="getRewardDescription()">
+        
+    </div>
+</ng-template>

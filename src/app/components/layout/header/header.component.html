@@ -18,7 +18,7 @@
     </div>    
 
     <div class="extraTimeItem centerAlign globalHeaderItem">
-        <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover"> ({{getExtraSpeedTime()}})</span></span>
+        <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover" [tooltipDirection]="tooltipDirection"> ({{getExtraSpeedTime()}})</span></span>
     </div>
 
     <div class="storyItem">        

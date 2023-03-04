@@ -58,5 +58,20 @@ export enum StatusEffectEnum {
     InstantTrueDamage,
     SelfDamage,
     SelfKO,
-    BlessingOfDionysus
+    BlessingOfDionysus,
+    RejuvenatingElixir,
+    HolyDamageUp,
+    HolyDamageDown,
+    FireDamageUp,
+    FireDamageDown,
+    WaterDamageUp,
+    WaterDamageDown,
+    LightningDamageUp,
+    LightningDamageDown,
+    AirDamageUp,
+    AirDamageDown,
+    EarthDamageUp,
+    EarthDamageDown,
+    RandomPrimaryStatUp,
+    RandomPrimaryStatDown
   }

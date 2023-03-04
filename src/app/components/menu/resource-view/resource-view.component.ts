@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -14,6 +15,7 @@ export class ResourceViewComponent implements OnInit {
   equipmentItems: ResourceValue[] = [];
   progressionResources: ResourceValue[] = [];
   charmResources: ResourceValue[] = [];
+  tooltipDirection = DirectionEnum.Down;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService) { }
 
@@ -42,5 +44,10 @@ export class ResourceViewComponent implements OnInit {
     {
       this.globalService.globalVar.trackedResources.push(resource.item);
     }
+  }
+
+  getCharmDescription(charm: ResourceValue) {
+    var description = this.lookupService.getItemDescription(charm.item);
+    return description;
   }
 }

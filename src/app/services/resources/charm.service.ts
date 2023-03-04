@@ -13,8 +13,8 @@ export class CharmService {
 
   getTotalHpRegenAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = 1;
-    var largeCharmValue = 3;
+    var smallCharmValue = this.getSmallCharmOfRejuvenationValue();
+    var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfRejuvenation);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
@@ -27,10 +27,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfRejuvenationValue() {
+    return 1;
+  }
+
+  getLargeCharmOfRejuvenationValue() {
+    return 3;
+  }
+
   getTotalCriticalMultiplierAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfVulnerabilityValue();
+    var largeCharmValue = this.getLargeCharmOfVulnerabilityValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfVulnerability);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfVulnerability);
@@ -43,10 +51,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfVulnerabilityValue() {
+    return .05;
+  }
+
+  getLargeCharmOfVulnerabilityValue() {
+    return .15;
+  }
+
   getTotalOverdriveGainAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .02;
-    var largeCharmValue = .06;
+    var smallCharmValue = this.getSmallCharmOfDeterminationValue();
+    var largeCharmValue = this.getLargeCharmOfDeterminationValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfDetermination);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfDetermination);
@@ -59,10 +75,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfDeterminationValue() {
+    return .02;
+  }
+
+  getLargeCharmOfDeterminationValue() {
+    return .06;
+  }
+
   getTotalArmorPenetrationAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .015;
-    var largeCharmValue = .045;
+    var smallCharmValue = this.getSmallCharmOfIngenuityValue();
+    var largeCharmValue = this.getLargeCharmOfIngenuityValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfIngenuity);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfIngenuity);
@@ -75,10 +99,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfIngenuityValue() {
+    return .02;
+  }
+
+  getLargeCharmOfIngenuityValue() {
+    return .06;
+  }
+
   getTotalAbilityCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .005;
-    var largeCharmValue = .015;
+    var smallCharmValue = this.getSmallCharmOfPreparationValue();
+    var largeCharmValue = this.getLargeCharmOfPreparationValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfPreparation);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfPreparation);
@@ -91,10 +123,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfPreparationValue() {
+    return .005;
+  }
+
+  getLargeCharmOfPreparationValue() {
+    return .015;
+  }
+
   getTotalAutoAttackCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .005;
-    var largeCharmValue = .015;
+    var smallCharmValue = this.getSmallCharmOfHasteValue();
+    var largeCharmValue = this.getLargeCharmOfHasteValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHaste);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHaste);
@@ -107,10 +147,34 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfHasteValue() {
+    return .005;
+  }
+
+  getLargeCharmOfHasteValue() {
+    return .015;
+  }
+
+  getSmallCharmOfElementalDestructionValue() {
+    return .05;
+  }
+
+  getLargeCharmOfElementalDestructionValue() {
+    return .15;
+  }
+
+  getSmallCharmOfElementalResistanceValue() {
+    return .01;
+  }
+
+  getLargeCharmOfElementalResistanceValue() {
+    return .03;
+  }
+
   getTotalHolyDamageIncreaseAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfElementalDestructionValue();
+    var largeCharmValue = this.getLargeCharmOfElementalDestructionValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHolyDestruction);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHolyDestruction);
@@ -125,8 +189,8 @@ export class CharmService {
 
   getTotalFireDamageIncreaseAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfElementalDestructionValue();
+    var largeCharmValue = this.getLargeCharmOfElementalDestructionValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfFireDestruction);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfFireDestruction);
@@ -141,8 +205,8 @@ export class CharmService {
 
   getTotalLightningDamageIncreaseAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfElementalDestructionValue();
+    var largeCharmValue = this.getLargeCharmOfElementalDestructionValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfLightningDestruction);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfLightningDestruction);
@@ -157,8 +221,8 @@ export class CharmService {
 
   getTotalAirDamageIncreaseAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfElementalDestructionValue();
+    var largeCharmValue = this.getLargeCharmOfElementalDestructionValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfAirDestruction);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfAirDestruction);
@@ -173,8 +237,8 @@ export class CharmService {
 
   getTotalWaterDamageIncreaseAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfElementalDestructionValue();
+    var largeCharmValue = this.getLargeCharmOfElementalDestructionValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfWaterDestruction);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfWaterDestruction);
@@ -189,8 +253,8 @@ export class CharmService {
 
   getTotalEarthDamageIncreaseAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfElementalDestructionValue();
+    var largeCharmValue = this.getLargeCharmOfElementalDestructionValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfEarthDestruction);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfEarthDestruction);
@@ -205,8 +269,8 @@ export class CharmService {
 
   getTotalHolyDamageResistanceAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .01;
-    var largeCharmValue = .03;
+    var smallCharmValue = this.getSmallCharmOfElementalResistanceValue();
+    var largeCharmValue = this.getLargeCharmOfElementalResistanceValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHolyProtection);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHolyProtection);
@@ -221,8 +285,8 @@ export class CharmService {
 
   getTotalFireDamageResistanceAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .01;
-    var largeCharmValue = .03;
+    var smallCharmValue = this.getSmallCharmOfElementalResistanceValue();
+    var largeCharmValue = this.getLargeCharmOfElementalResistanceValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfFireProtection);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfFireProtection);
@@ -237,8 +301,8 @@ export class CharmService {
 
   getTotalLightningDamageResistanceAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .01;
-    var largeCharmValue = .03;
+    var smallCharmValue = this.getSmallCharmOfElementalResistanceValue();
+    var largeCharmValue = this.getLargeCharmOfElementalResistanceValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfLightningProtection);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfLightningProtection);
@@ -253,8 +317,8 @@ export class CharmService {
 
   getTotalAirDamageResistanceAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .01;
-    var largeCharmValue = .03;
+    var smallCharmValue = this.getSmallCharmOfElementalResistanceValue();
+    var largeCharmValue = this.getLargeCharmOfElementalResistanceValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfAirProtection);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfAirProtection);
@@ -269,8 +333,8 @@ export class CharmService {
 
   getTotalWaterDamageResistanceAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .01;
-    var largeCharmValue = .03;
+    var smallCharmValue = this.getSmallCharmOfElementalResistanceValue();
+    var largeCharmValue = this.getLargeCharmOfElementalResistanceValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfWaterProtection);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfWaterProtection);
@@ -285,8 +349,8 @@ export class CharmService {
 
   getTotalEarthDamageResistanceAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
-    var smallCharmValue = .01;
-    var largeCharmValue = .03;
+    var smallCharmValue = this.getSmallCharmOfElementalResistanceValue();
+    var largeCharmValue = this.getLargeCharmOfElementalResistanceValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfEarthProtection);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfEarthProtection);
@@ -301,8 +365,8 @@ export class CharmService {
 
   getTotalHealingReceivedAdditionFromCharms(resources: ResourceValue[], character: Character) {
     var amount = 0;
-    var smallCharmValue = .025;
-    var largeCharmValue = .075;
+    var smallCharmValue = this.getSmallCharmOfAthenaValue();
+    var largeCharmValue = this.getLargeCharmOfAthenaValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfAthena);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfAthena);
@@ -317,10 +381,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfAthenaValue() {
+    return .025;
+  }
+
+  getLargeCharmOfAthenaValue() {
+    return .075;
+  }
+
   getTotalDebuffDurationAdditionFromCharms(resources: ResourceValue[], character: Character) {
     var amount = 0;
-    var smallCharmValue = .015;
-    var largeCharmValue = .045;
+    var smallCharmValue = this.getSmallCharmOfArtemisValue();
+    var largeCharmValue = this.getLargeCharmOfArtemisValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfArtemis);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfArtemis);
@@ -335,10 +407,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfArtemisValue() {
+    return .015;
+  }
+
+  getLargeCharmOfArtemisValue() {
+    return .045;
+  }
+
   getTotalOverdriveGainFromAutoAttacksAdditionFromCharms(resources: ResourceValue[], character: Character) {
     var amount = 0;
-    var smallCharmValue = .05;
-    var largeCharmValue = .15;
+    var smallCharmValue = this.getSmallCharmOfHermesValue();
+    var largeCharmValue = this.getLargeCharmOfHermesValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHermes);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHermes);
@@ -353,10 +433,18 @@ export class CharmService {
     return amount;
   }
 
+  getSmallCharmOfHermesValue() {
+    return .05;
+  }
+
+  getLargeCharmOfHermesValue() {
+    return .15;
+  }
+
   getTotalHealingDoneAdditionFromCharms(resources: ResourceValue[], character: Character) {
     var amount = 0;
-    var smallCharmValue = .025;
-    var largeCharmValue = .075;
+    var smallCharmValue = this.getSmallCharmOfApolloValue();
+    var largeCharmValue = this.getLargeCharmOfApolloValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfApollo);
     var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfApollo);
@@ -369,5 +457,13 @@ export class CharmService {
       amount += largeCharmValue * largeCharm.amount;
 
     return amount;
+  }
+
+  getSmallCharmOfApolloValue() {
+    return .025;
+  }
+
+  getLargeCharmOfApolloValue() {
+    return .075;
   }
 }

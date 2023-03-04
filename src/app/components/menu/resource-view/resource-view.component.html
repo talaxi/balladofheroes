@@ -6,10 +6,18 @@
         </div>
         <br />
         <div *ngFor="let equipment of equipmentItems;">
-            <span class="screenMarginLeft">
+            <span customToolTip [contentTemplate]="equipmentContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
                 <strong>{{lookupService.getItemName(equipment.item)}}:</strong> {{equipment.amount}}
                 <hr class="marginHr" />
             </span>
+
+            <ng-template #equipmentContent>
+                <div class="compareEquipment">
+                  <span class="item">
+                    <app-equipment-item-view [equipment]="lookupService.getEquipmentPieceByItemType(equipment.item)"></app-equipment-item-view>
+                  </span>                  
+                </div>
+              </ng-template>
         </div>
     </div>
     <div class="resources">
@@ -43,10 +51,15 @@
         <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Charms</span></div>
         <br />
         <div *ngFor="let charm of charmResources;">
-            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
+            <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
                 <strong>{{lookupService.getItemName(charm.item)}}:</strong> {{charm.amount}}
                 <hr class="marginHr" />
             </span>
+            <ng-template #charmContent>
+                <div class="popoverClass">
+                    <span [innerHTML]="this.getCharmDescription(charm)"></span>
+                </div>
+            </ng-template>
         </div>
     </div>
 </div>

@@ -160,6 +160,10 @@ export class LookupService {
       name = "Combining ingredients together";
     if (action === AlchemyActionsEnum.CrushIngredients)
       name = "Crushing ingredients into a powder";
+    if (action === AlchemyActionsEnum.ExtractEssence)
+      name = "Extract essence from ingredients";
+    if (action === AlchemyActionsEnum.Infuse)
+      name = "Steep ingredients in liquid and infuse";
 
     return name;
   }
@@ -168,7 +172,26 @@ export class LookupService {
     var isACharm = false;
 
     if (type === ItemsEnum.LargeCharmOfDetermination || type === ItemsEnum.LargeCharmOfRejuvenation || type === ItemsEnum.LargeCharmOfVulnerability ||
-      type === ItemsEnum.SmallCharmOfDetermination || type === ItemsEnum.SmallCharmOfRejuvenation || type === ItemsEnum.SmallCharmOfVulnerability)
+      type === ItemsEnum.SmallCharmOfDetermination || type === ItemsEnum.SmallCharmOfRejuvenation || type === ItemsEnum.SmallCharmOfVulnerability ||
+      type === ItemsEnum.SmallCharmOfHaste || type === ItemsEnum.LargeCharmOfHaste || 
+      type === ItemsEnum.SmallCharmOfPreparation || type === ItemsEnum.LargeCharmOfPreparation || 
+      type === ItemsEnum.SmallCharmOfIngenuity || type === ItemsEnum.LargeCharmOfIngenuity || 
+      type === ItemsEnum.SmallCharmOfHolyDestruction || type === ItemsEnum.LargeCharmOfHolyDestruction || 
+      type === ItemsEnum.SmallCharmOfFireDestruction || type === ItemsEnum.LargeCharmOfFireDestruction || 
+      type === ItemsEnum.SmallCharmOfLightningDestruction || type === ItemsEnum.LargeCharmOfLightningDestruction || 
+      type === ItemsEnum.SmallCharmOfAirDestruction || type === ItemsEnum.LargeCharmOfAirDestruction || 
+      type === ItemsEnum.SmallCharmOfWaterDestruction || type === ItemsEnum.LargeCharmOfWaterDestruction || 
+      type === ItemsEnum.SmallCharmOfEarthDestruction || type === ItemsEnum.LargeCharmOfEarthDestruction || 
+      type === ItemsEnum.SmallCharmOfHolyProtection || type === ItemsEnum.LargeCharmOfHolyProtection || 
+      type === ItemsEnum.SmallCharmOfFireProtection || type === ItemsEnum.LargeCharmOfFireProtection ||
+      type === ItemsEnum.SmallCharmOfAirProtection || type === ItemsEnum.LargeCharmOfAirProtection ||
+      type === ItemsEnum.SmallCharmOfLightningProtection || type === ItemsEnum.LargeCharmOfLightningProtection ||
+      type === ItemsEnum.SmallCharmOfWaterProtection || type === ItemsEnum.LargeCharmOfWaterProtection ||
+      type === ItemsEnum.SmallCharmOfEarthProtection || type === ItemsEnum.LargeCharmOfEarthProtection ||
+      type === ItemsEnum.SmallCharmOfAthena || type === ItemsEnum.LargeCharmOfAthena ||
+      type === ItemsEnum.SmallCharmOfArtemis || type === ItemsEnum.LargeCharmOfArtemis ||
+      type === ItemsEnum.SmallCharmOfHermes || type === ItemsEnum.LargeCharmOfHermes ||
+      type === ItemsEnum.SmallCharmOfApollo || type === ItemsEnum.LargeCharmOfApollo)
       isACharm = true;
 
     return isACharm;
@@ -188,7 +211,7 @@ export class LookupService {
       return ItemTypeEnum.Toxin;
     }
 
-    if (type === ItemsEnum.HeroicElixir) {
+    if (type === ItemsEnum.HeroicElixir || type === ItemsEnum.RejuvenatingElixir) {
       return ItemTypeEnum.Elixir;
     }
 
@@ -236,10 +259,14 @@ export class LookupService {
       name = "Healing Poultice";
     if (type === ItemsEnum.HealingSalve)
       name = "Healing Salve";
+    if (type === ItemsEnum.RestorativeHerb)
+      name = "Restorative Herb";
 
     //battle items
     else if (type === ItemsEnum.ThrowingStone)
       name = "Throwing Stone";
+    else if (type === ItemsEnum.HeftyStone)
+      name = "Hefty Stone";
     else if (type === ItemsEnum.PoisonFang)
       name = "Poison Fang";
     else if (type === ItemsEnum.PoisonousToxin)
@@ -256,6 +283,8 @@ export class LookupService {
       name = "Poison Extract Potion";
     else if (type === ItemsEnum.HeroicElixir)
       name = "Heroic Elixir";
+    else if (type === ItemsEnum.RejuvenatingElixir)
+      name = "Rejuvenating Elixir";
 
     //equipment
     //swords
@@ -307,6 +336,8 @@ export class LookupService {
       name = "Aegis";
     else if (type === ItemsEnum.MoltenShield)
       name = "Molten Shield";
+    else if (type === ItemsEnum.ShieldOfTheHealer)
+      name = "Shield of the Healer";
 
     //necklaces
     else if (type === ItemsEnum.ForgottenLocket)
@@ -331,6 +362,12 @@ export class LookupService {
       name = "Steel Armor";
     else if (type === ItemsEnum.MoltenArmor)
       name = "Molten Armor";
+    else if (type === ItemsEnum.HardenedLeatherArmor)
+      name = "Hardened Leather Armor";
+    else if (type === ItemsEnum.BoarskinArmor)
+      name = "Boarskin Armor";
+    else if (type === ItemsEnum.BearskinArmor)
+      name = "Bearskin Armor";
 
     //rings
     else if (type === ItemsEnum.MoltenRing)
@@ -347,7 +384,8 @@ export class LookupService {
       name = "Fractured Ruby Ring";
     else if (type === ItemsEnum.FracturedTopazRing)
       name = "Fractured Topaz Ring";
-
+    else if (type === ItemsEnum.BedazzledRing)
+      name = "Bedazzled Ring";
 
     //crafting materials
     else if (type === ItemsEnum.LightLeather)
@@ -500,7 +538,7 @@ export class LookupService {
       name = "Small Charm of Hades";
     else if (type === ItemsEnum.LargeCharmOfHades)
       name = "Large Charm of Hades";
-      else if (type === ItemsEnum.SmallCharmOfIngenuity)
+    else if (type === ItemsEnum.SmallCharmOfIngenuity)
       name = "Small Charm of Ingenuity";
     else if (type === ItemsEnum.LargeCharmOfIngenuity)
       name = "Large Charm of Ingenuity";
@@ -581,12 +619,17 @@ export class LookupService {
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 8 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.HeroicElixir)
       name = "Increase user's Attack by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
+    else if (type === ItemsEnum.RejuvenatingElixir)
+      name = "Increase user's HP Regen by " + relatedUserGainStatusEffectEffectiveness + " per 5 seconds for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
+
 
     //resources    
     else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Resource || this.getItemTypeFromItemEnum(type) === ItemTypeEnum.CraftingMaterial)
       name = this.getResourceDescription(type);
 
     //progression
+    else if (type === ItemsEnum.BoonOfOlympus)
+      name = "Increase experience gained by all gods.";
     else if (type === ItemsEnum.ChthonicFavor)
       name = "Increase Chthonic Power gain by " + (this.getChthonicFavorMultiplier() * 100).toFixed(0) + "%.";
     else if (type === ItemsEnum.ChthonicPower)
@@ -596,6 +639,10 @@ export class LookupService {
     else if (this.getEquipmentPieceByItemType(type) !== undefined) {
       name = this.getEquipmentStats(this.getEquipmentPieceByItemType(type)) + "<br/><br/>" + this.getEquipmentEffects(this.getEquipmentPieceByItemType(type));
     }
+    //equipment
+    else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Charm) {
+      name = this.getCharmDescription(type);
+    }
 
     else if (type === ItemsEnum.WarriorClass)
       name = "New Class: Warrior";
@@ -603,6 +650,122 @@ export class LookupService {
       name = "New Class: Priest";
 
     return name;
+  }
+
+  getCharmDescription(type: ItemsEnum) {
+    var description = "";
+
+    if (type === ItemsEnum.SmallCharmOfRejuvenation)
+      description = "Increase all characters' HP Regen by <span class='charmDescriptor'>" + this.charmService.getSmallCharmOfRejuvenationValue() + " HP / 5 seconds</span>.";
+    if (type === ItemsEnum.LargeCharmOfRejuvenation)
+      description = "Increase all characters' HP Regen by <span class='charmDescriptor'>" + this.charmService.getLargeCharmOfRejuvenationValue() + " HP / 5 seconds</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfDetermination)
+      description = "Increase Overdrive gauge gain from all sources by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfDeterminationValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfDetermination)
+      description = "Increase Overdrive gauge gain from all sources by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfDeterminationValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfVulnerability)
+      description = "Increase all characters' Critical Damage Multiplier by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfVulnerabilityValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfVulnerability)
+      description = "Increase all characters' Critical Damage Multiplier by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfVulnerabilityValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfPreparation)
+      description = "Reduce all characters' Ability Cooldowns by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfPreparationValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfPreparation)
+      description = "Reduce all characters' Ability Cooldowns by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfPreparationValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfHaste)
+      description = "Reduce all characters' Auto Attack Cooldowns by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfPreparationValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfHaste)
+      description = "Reduce all characters' Auto Attack Cooldowns by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfPreparationValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfIngenuity)
+      description = "Increase all characters' Armor Penetration by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfIngenuityValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfIngenuity)
+      description = "Increase all characters' Armor Penetration by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfIngenuityValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfHolyDestruction)
+      description = "Increase all characters' Holy damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalDestructionValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfHolyDestruction)
+      description = "Increase all characters' Holy damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalDestructionValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfFireDestruction)
+      description = "Increase all characters' Fire damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalDestructionValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfFireDestruction)
+      description = "Increase all characters' Fire damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalDestructionValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfWaterDestruction)
+      description = "Increase all characters' Water damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalDestructionValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfWaterDestruction)
+      description = "Increase all characters' Water damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalDestructionValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfLightningDestruction)
+      description = "Increase all characters' Lightning damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalDestructionValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfLightningDestruction)
+      description = "Increase all characters' Lightning damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalDestructionValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfAirDestruction)
+      description = "Increase all characters' Air damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalDestructionValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfAirDestruction)
+      description = "Increase all characters' Air damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalDestructionValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfEarthDestruction)
+      description = "Increase all characters' Earth damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalDestructionValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfEarthDestruction)
+      description = "Increase all characters' Earth damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalDestructionValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfHolyProtection)
+      description = "Reduce all characters' Holy damage taken by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalResistanceValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfHolyProtection)
+      description = "Reduce all characters' Holy damage taken by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalResistanceValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfFireProtection)
+      description = "Reduce all characters' Fire damage taken by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalResistanceValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfFireProtection)
+      description = "Reduce all characters' Fire damage taken by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalResistanceValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfLightningProtection)
+      description = "Reduce all characters' Lightning damage taken by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalResistanceValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfLightningProtection)
+      description = "Reduce all characters' Lightning damage taken by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalResistanceValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfWaterProtection)
+      description = "Reduce all characters' Water damage taken by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalResistanceValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfWaterProtection)
+      description = "Reduce all characters' Water damage taken by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalResistanceValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfAirProtection)
+      description = "Reduce all characters' Air damage taken by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalResistanceValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfAirProtection)
+      description = "Reduce all characters' Air damage taken by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalResistanceValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfEarthProtection)
+      description = "Reduce all characters' Earth damage taken by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfElementalResistanceValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfEarthProtection)
+      description = "Reduce all characters' Earth damage taken by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfElementalResistanceValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfAthena)
+      description = "Increase Healing Received from all sources by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfAthenaValue() * 100) + "%</span> for the character equipped with Athena.";
+    if (type === ItemsEnum.LargeCharmOfAthena)
+      description = "Increase Healing Received from all sources by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfAthenaValue() * 100) + "%</span> for the character equipped with Athena.";
+
+    if (type === ItemsEnum.SmallCharmOfArtemis)
+      description = "Increase Debuff Duration by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfArtemisValue() * 100) + "%</span> for all debuffs created by the character equipped with Artemis.";
+    if (type === ItemsEnum.LargeCharmOfAthena)
+      description = "Increase Debuff Duration by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfArtemisValue() * 100) + "%</span> for all debuffs created by the character equipped with Artemis.";
+
+    if (type === ItemsEnum.SmallCharmOfHermes)
+      description = "Increase Overdrive gauge gain from auto attacks by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfHermesValue() * 100) + "%</span> for the character equipped with Hermes.";
+    if (type === ItemsEnum.LargeCharmOfHermes)
+      description = "Increase Overdrive gauge gain from auto attacks by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfHermesValue() * 100) + "%</span> for the character equipped with Hermes.";
+
+    if (type === ItemsEnum.SmallCharmOfApollo)
+      description = "Increase Healing Done by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfApolloValue() * 100) + "%</span> for the character equipped with Apollo.";
+    if (type === ItemsEnum.LargeCharmOfApollo)
+      description = "Increase Healing Done by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfApolloValue() * 100) + "%</span> for the character equipped with Apollo.";
+
+    return description;
   }
 
   getResourceDescription(item: ItemsEnum) {
@@ -775,7 +938,7 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(0, 20, 0, 18, 0, 0);
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.OnAbilityUse;
       equipmentPiece.stats.elementalDamageIncrease.fire += .1;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 30, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire));
+      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 30, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire, undefined, false));
     }
     if (type === ItemsEnum.GoldenSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
@@ -1244,7 +1407,7 @@ export class LookupService {
 
     //Athena
     if (abilityName === "Second Wind")
-      abilityDescription = "After using an ability, your next auto attack heals for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. Passive.";
+      abilityDescription = "After using an ability, your next auto attack heals for <strong>" + relatedUserGainStatusEffectEffectiveness + "</strong> HP. Passive.";
     if (abilityName === "Divine Strike")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
     if (abilityName === "Heavenly Shield")
@@ -1543,6 +1706,9 @@ export class LookupService {
 
     if (statusEffect.type === StatusEffectEnum.HeroicElixir)
       description = "Increase Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.RejuvenatingElixir)
+      description = "Increase HP Regen by " + statusEffect.effectiveness + " per 5 seconds.";
+
 
     return description;
   }
@@ -1763,6 +1929,10 @@ export class LookupService {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.HeroicElixir, 30 * 60, 1.1, false, true));
     }
+    if (item === ItemsEnum.RejuvenatingElixir) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RejuvenatingElixir, 30 * 60, 5, false, true));
+    }
 
     return itemEffect;
   }
@@ -1792,12 +1962,11 @@ export class LookupService {
     return 1 + attackCount + attackRemainder; //(adjustedAgility / agilityPerAdditionalAttack);
   }
 
-  getAgilityPerAttackForAttackCount(attackCount: number) {    
+  getAgilityPerAttackForAttackCount(attackCount: number) {
     var agilityCost = 500; //for a specific attack
     var totalAgilityCost = agilityCost; //overall agility required
 
-    for (var i = 2; i <= attackCount; i++)
-    {      
+    for (var i = 2; i <= attackCount; i++) {
       agilityCost = totalAgilityCost * 4;
       totalAgilityCost += agilityCost;
     }
@@ -2206,7 +2375,7 @@ export class LookupService {
       equipmentEffects += "On Ability Use: ";
     if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnHit)
       equipmentEffects += "On Hit: ";
-      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
+    if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
       equipmentEffects += "Triggers Over Time: ";
     if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
       equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
@@ -2219,7 +2388,7 @@ export class LookupService {
         }
 
         if (equipment.itemType === ItemsEnum.SwordOfFlames)
-          equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";        
+          equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
       });
     }
 
@@ -2295,6 +2464,9 @@ export class LookupService {
     }
     if (type === ItemsEnum.HeroicElixir) {
       src += "heroicElixir.svg";
+    }
+    if (type === ItemsEnum.RejuvenatingElixir) {
+      src += "rejuvenatingElixir.svg";
     }
     if (type === ItemsEnum.PoisonExtractPotion) {
       src += "poisonExtractPotion.svg";
@@ -2556,12 +2728,29 @@ export class LookupService {
     return "Reduce damage taken from enemy attacks.";
   }
 
-  getAgilityDescription() {
-    return "Increase the number of auto attacks you complete per cycle.";
+  getAgilityDescription(character?: Character) {
+    if (character === undefined)
+    {
+      return "Increase auto attack damage.";
+    }
+
+    var totalAutoAttackCount = this.getTotalAutoAttackCount(character);
+    var description = "Multiply auto attack damage by <strong>" + this.utilityService.roundTo(totalAutoAttackCount, 3) + "</strong>.";
+    if (totalAutoAttackCount >= 2)
+      description += "On Hit effects occur <strong>" + Math.floor(totalAutoAttackCount) + "</strong> times from auto attacks.";
+    return description;
   }
 
-  getLuckDescription() {
-    return "Increase your chance to deal a critical hit.";
+  getLuckDescription(character?: Character) {
+    var description = "Increase your chance to deal a critical hit.";
+
+    if (character === undefined)
+      return description;
+
+      //best way to do this?
+    //description += "<br/>Odds to critically hit an enemy with " + character.battleStats.luck + " Resistance: " + this.getDamageCriticalChance()
+    
+    return description;
   }
 
   getResistanceDescription() {
@@ -2594,7 +2783,7 @@ export class LookupService {
 
   getOverdriveGainFromAutoAttacksBonusDescription() {
     return "Increase the amount of overdrive gauge gained from auto attacking.";
-  }
+  } 
 
   getHealingDoneBonusDescription() {
     return "Increase the amount of healing done.";
@@ -3599,7 +3788,7 @@ export class LookupService {
       if (assignedGod2 !== undefined) {
         var godStatGain = assignedGod2.statGain.elementalDamageResistance.lightning + assignedGod2.permanentStatGain.elementalDamageResistance.lightning;
         if (godStatGain > 0)
-          breakdown += assignedGod2.name + " Stat Gain: +" +this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
+          breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (character.equipmentSet.getTotalLightningDamageResistanceGain() > 0)

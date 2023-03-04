@@ -332,7 +332,7 @@ export class GlobalService {
       secondWind.isAvailable = false;
       secondWind.isPassive = true;
       secondWind.isActivatable = false;
-      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, -1, .05, false, true));
+      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, -1, 3, false, true));
       god.abilityList.push(secondWind);
     }
 
@@ -597,7 +597,7 @@ export class GlobalService {
 
   createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean,
     isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false,
-    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0) {
+    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0, targetsAllies: boolean = false) {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -610,6 +610,7 @@ export class GlobalService {
     statusEffect.effectStacks = effectStacks;
     statusEffect.element = element;
     statusEffect.triggersEvery = triggersEvery;
+    statusEffect.targetsAllies = targetsAllies;
 
     if (duration === -1)
       statusEffect.isPermanent = true;
@@ -621,7 +622,8 @@ export class GlobalService {
       type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp ||
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
-      || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts)
+      || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
+      type === StatusEffectEnum.RejuvenatingElixir)
       statusEffect.refreshes = true;
 
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin)
@@ -1407,8 +1409,9 @@ export class GlobalService {
     var userGainsEffect = ability.userEffect[0];
 
     if (god.type === GodEnum.Athena) {
+      //TODO: bigger boost at 10s or something maybe?
       if (ability.abilityUpgradeLevel <= 100)
-        userGainsEffect.effectiveness += .01;
+        userGainsEffect.effectiveness += 2;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel <= 100)

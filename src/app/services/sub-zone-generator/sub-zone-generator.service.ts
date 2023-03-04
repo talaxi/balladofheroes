@@ -1536,6 +1536,20 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
     }
 
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HeftyStone, SubZoneEnum.CalydonTownMarket));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RestorativeHerb, SubZoneEnum.CalydonTownMarket));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ShieldOfTheHealer, SubZoneEnum.CalydonTownMarket));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BedazzledRing, SubZoneEnum.CalydonTownMarket));
+
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HardenedLeatherArmor, SubZoneEnum.CalydonTownMarket));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BoarskinArmor, SubZoneEnum.CalydonTownMarket));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BearskinArmor, SubZoneEnum.CalydonTownMarket));
+
+    if (subzoneType === SubZoneEnum.CalydonTownMarket) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+    }
+
     return shopOptions;
   }
 }

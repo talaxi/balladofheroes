@@ -81,13 +81,13 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.FortifiedBronzeArmor)
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.BronzeArmor, ItemTypeEnum.Equipment, 1));
-      purchasePrice.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 15));
+      purchasePrice.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     }
     if (item === ItemsEnum.Venomstrike)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 10));
-      purchasePrice.push(new ResourceValue(ItemsEnum.LamiaHeart, ItemTypeEnum.CraftingMaterial, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 6));
+      purchasePrice.push(new ResourceValue(ItemsEnum.LamiaHeart, ItemTypeEnum.CraftingMaterial, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     }
     if (item === ItemsEnum.SteelSword)

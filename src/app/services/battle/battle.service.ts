@@ -264,8 +264,7 @@ export class BattleService {
     }
 
     if (subzone.type === SubZoneEnum.ElysiumWavesOfOceanus && subzone.victoryCount === 1 &&
-       this.globalService.globalVar.chthonicPowers.preferredGod === GodEnum.None)
-    {
+      this.globalService.globalVar.chthonicPowers.preferredGod === GodEnum.None) {
       this.globalService.globalVar.chthonicPowers.preferredGod = this.lookupService.getRandomGodEnum(false);
     }
   }
@@ -582,7 +581,7 @@ export class BattleService {
 
     var instantHeal = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack);
     if (instantHeal !== undefined) {
-      var healAmount = damageDealt * instantHeal.effectiveness * (1 + character.battleStats.healingDone);
+      var healAmount = instantHeal.effectiveness * (1 + character.battleStats.healingDone);
 
       if (character !== undefined) {
         this.gainHp(character, healAmount);
@@ -814,9 +813,9 @@ export class BattleService {
       }
     }
 
-    this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets);
+    this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets, undefined, ability.targetsAllies);
     this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt);
-    this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt);
+    this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt, ability.targetsAllies);
 
     if (isPartyUsing)
       this.altarService.incrementAltarCount(AltarConditionEnum.AbilityUse);
@@ -939,16 +938,18 @@ export class BattleService {
     });
   }
 
-  handletargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0) {
+  handletargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0, abilityTargetedAllies: boolean = false) {
     if (targetEffect.length > 0) {
       targetEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = gainedStatusEffect.makeCopy();
 
-        if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
+        if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {          
           if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnAttack)
             appliedStatusEffect.effectiveness = user.battleStats.attack * appliedStatusEffect.effectiveness;
           else if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnDamage)
-            appliedStatusEffect.effectiveness = damageDealt * appliedStatusEffect.effectiveness;
+          {
+            appliedStatusEffect.effectiveness = damageDealt * appliedStatusEffect.effectiveness;            
+          }
         }
 
         if (target !== undefined) {
@@ -978,12 +979,17 @@ export class BattleService {
         }
 
         if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
-          if (target !== undefined) {
-            var trueDamageDealt = this.dealTrueDamage(isPartyUsing, target, instantEffect.effectiveness, user, instantEffect.element);
+          var newTarget: Character | undefined = target;          
+          if (abilityTargetedAllies && !instantEffect.targetsAllies) {
+            newTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);  
+          }         
+          
+          if (newTarget !== undefined) {
+            var trueDamageDealt = this.dealTrueDamage(isPartyUsing, newTarget, instantEffect.effectiveness, user, instantEffect.element);
             var elementalText = "";
             if (instantEffect.element !== ElementalTypeEnum.None)
               elementalText = this.getElementalDamageText(instantEffect.element);
-            var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + Math.round(trueDamageDealt) + elementalText + " damage.";
+            var gameLogEntry = "<strong>" + newTarget.name + "</strong>" + " takes " + Math.round(trueDamageDealt) + elementalText + " damage.";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
         }
@@ -1921,8 +1927,14 @@ export class BattleService {
       this.lookupService.useResource(this.battleItemInUse, 1);
 
       if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
-        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+        if (character.name === "Asclepius") {
+          var gameLogEntry = "You leave one " + itemName + " worth " + Math.round(healedAmount) + " HP at the altar in honor of <strong>Asclepius</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+        }
+        else {
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+        }
       }
     }
 
@@ -1935,8 +1947,14 @@ export class BattleService {
           var healedAmount = this.gainHp(member, effect.healAmount)
 
           if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+            if (character.name === "Asclepius") {
+              var gameLogEntry = "You leave one " + itemName + " worth " + Math.round(healedAmount) + " HP at the altar in honor of <strong>Asclepius</strong>.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+            }
+            else {
+              var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+            }
           }
         }
       })
@@ -2016,7 +2034,7 @@ export class BattleService {
       }
     }
 
-    if (this.battleItemInUse === ItemsEnum.HeroicElixir) {
+    if (this.battleItemInUse === ItemsEnum.HeroicElixir || this.battleItemInUse === ItemsEnum.RejuvenatingElixir) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -2048,6 +2066,12 @@ export class BattleService {
     character.battleInfo.hpRegenTimer += deltaTime;
     if (character.battleInfo.hpRegenTimer >= character.battleInfo.hpRegenTimerLength) {
       var totalHpRegen = character.battleStats.hpRegen;
+
+      var rejuvenatingElixir = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.RejuvenatingElixir);
+      if (rejuvenatingElixir !== undefined) {
+        totalHpRegen += rejuvenatingElixir.effectiveness;
+      }
+
       this.gainHp(character, totalHpRegen);
       character.battleInfo.hpRegenTimer -= character.battleInfo.hpRegenTimerLength;
     }
@@ -2073,7 +2097,7 @@ export class BattleService {
     return text;
   }
 
-  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character | undefined, party: Character[], targets: Character[], deltaTime: number = 0) {
+  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character | undefined, party: Character[], targets: Character[], deltaTime: number = 0, originalTriggerTargetedAllies: boolean = false) {
     var userGainsEffects: StatusEffect[] = [];
     var targetGainsEffects: StatusEffect[] = [];
     var rng = 0;
@@ -2305,7 +2329,7 @@ export class BattleService {
         targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
       }
 
-      this.handletargetEffects(true, targetGainsEffects, user, target, targets, party);
+      this.handletargetEffects(true, targetGainsEffects, user, target, targets, party, undefined, originalTriggerTargetedAllies);
     }
   }
 

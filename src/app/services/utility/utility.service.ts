@@ -39,6 +39,7 @@ export class UtilityService {
   public godPermanentStatGain2ObtainCap = 10;
 
   public firstAlchemyLevelCap = 25;
+  public alchemyLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
   public largeAltarAffinityGain = 2;

@@ -950,3 +950,7 @@ button {
 .keybind {
   font-weight: bold;
 }
+
+.charmDescriptor {
+  font-weight: bold;
+}
