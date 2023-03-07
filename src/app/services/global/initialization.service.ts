@@ -144,6 +144,10 @@ export class InitializationService {
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumOpenPlains));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumColiseum));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumGatesOfHornAndIvory));
+    
+    elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWindingPaths));
+    elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWaterloggedMarsh));
+    elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWavesOfOceanus));
     underworldBallad.zones.push(elysium);
     this.globalService.globalVar.ballads.push(underworldBallad);
 

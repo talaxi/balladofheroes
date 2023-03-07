@@ -135,7 +135,7 @@ export class StoryService {
           "<span class='adventurerColor bold'>“I... just wanted to follow in the footsteps of a real hero.”</span> You reply.";
       else if (pageCount === 3)
         sceneText = "<span class='hermesColor bold'>“That's well and good, but we need a real hero of our own. Use those sandals and see if you have what it takes to defeat Medusa. I've got another pair for your friend there hiding in the shadows as well. Good luck!”</span> <br/><br/>" +
-          "<span class='athenaColor bold'>“We will see you soon. Farewell.” Athena</span> says as she and <span class='hermesColor bold'>Hermes</span> vanish back into the grove. Zosime steps out from behind the trees, grabbing a pair of sandals. <span class='archerColor bold'>“Sounds like we're heading to Libya.”</span>";
+          "<span class='athenaColor bold'>“We will see you soon. Farewell.” Athena</span> says as she and <span class='hermesColor bold'>Hermes</span> vanish back into the grove. Zosime steps out from behind the trees, grabbing a pair of sandals and putting them on. <span class='archerColor bold'>“Sounds like we're heading to Libya.”</span>";
     }
     else if (storyId === 6) {
       if (pageCount === 1)
@@ -374,6 +374,26 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "“Psst. Hey, you.” You hear a voice echoing from the back side of the great hall. Walking towards the voice, you find a ghastly spirit huddled in a corner. “Listen, I got what you need if you got what I want. And what I want is a little taste of Olympus.  Understand? You give me a little of what you got, and I'll put in a good word around here.”";
     }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade1Scene1) {
+      if (pageCount === 1)
+        sceneText = "As you make your way through Elysium, you notice a shade darting towards you. All of the shades you've seen look more or less the same, but theres something familiar about this one.<br/><br/>" +
+        "“Hey hey, you two remember me don'tcha? We met back at the palace! You scratch my back, I scratch yours, remember?” The shade says, floating around you. That's right -- this is the one who claimed to help you out in exchange for the favor of the gods.";
+      else if (pageCount === 2)
+        sceneText = "“Listen, I don't know if you've noticed but we're supposed to be in a little paradise down here right? Elysium's where all the important people get to sit around on little islands and enjoy the sea breeze and the waves off the coast. But there's no breeze! No waves!<br/><br/>" +
+        "You're pretty tough. Won a whole bunch of fights at the coliseum right? I think something's upsetting the big guy. He gets that way sometimes. You know, Oceanus? Big titan, in charge of all the rivers? Look, you go down the river to the coast and see what's wrong, and I'll make it worth you're while alright? I can't take anymore yapping from the other shades about no breeze!”";
+    }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade1Scene2) {
+      if (pageCount === 1)
+        sceneText = "You step into the still waters off the coast of Elysium and look out across the sea separating the living from the dead. You share a look with Zosime who shrugs her shoulders. " + this.zosimeText("“What are we doing here, exactly?”") + " She wonders aloud.<br/><br/>" +
+        "“Who dares to step into the great ocean without paying the proper respects!?” Comes from a voice deep in the waters. A creature  rose from the depths looking eerily human, yet it was anything but. “I am Acheron, son of Oceanus. You shall leave this place!”";      
+    }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade1Scene3) {
+      if (pageCount === 1)
+        sceneText = "As your fight winds down, Acheron finally seems to calm down." + this.thalesText("“We mean no disrespect. We come as representatives of the souls of Elysium. We wish to honor Oceanus how he deserves, and more souls will come to pray here daily. Please accept our praise.”") + " You say, kneeling down.<br/><br/>" +
+        "“That is a start. See that it continues.” Acheron says, sinking back into the depths of the sea.";
+      else if (pageCount === 2)
+        sceneText = "As soon as Acheron is out of sight, the familiar shade darts towards you again. “I saw the whole thing! How much prayin' does someone need, I mean sheesh! Well, I'll let the boys know to start coming out here and say sweet nothins' to Oceanus if they want their sea breeze. You start coming by at the palace and I'll sweeten our deal alright?”"; 
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -382,6 +402,8 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
     sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
     sceneText = sceneText.replaceAll("Hecate", "<span class='commonCharacterColor storyCharacterName'>Hecate</span>");
+    sceneText = sceneText.replaceAll("Acheron", "<span class='commonCharacterColor storyCharacterName'>Acheron</span>");
+    sceneText = sceneText.replaceAll("Oceanus", "<span class='commonCharacterColor storyCharacterName'>Oceanus</span>");
 
     return sceneText;
   }
@@ -392,6 +414,15 @@ export class StoryService {
     }
     if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavor) {
       this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade1Scene1) {
+      this.pageCount = 2;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade1Scene2) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade1Scene3) {
+      this.pageCount = 2;
     }
 
     this.sceneText = this.getOptionalStoryText(this.showOptionalStory, this.currentPage);

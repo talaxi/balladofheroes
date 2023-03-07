@@ -97,5 +97,7 @@ export enum BestiaryEnum {
   PitViper,
   AlphaGreyWolf,
   DenMother,
-  CalydonianBoar
+  CalydonianBoar,
+  CreatureFromTheDeep,
+  Acheron
 }

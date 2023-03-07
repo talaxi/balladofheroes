@@ -48,7 +48,7 @@
                                         [ngClass]="getSubzoneClass(subzone)"
                                         (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone) ? "To Be Continued!" : subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
-                                        <app-notification-icon *ngIf="subzone.showNewNotification">
+                                        <app-notification-icon *ngIf="subzone.showNewNotification" [notificationColor]="subzone.notificationType">
                                         </app-notification-icon>
                                     </button>
                                 </span>

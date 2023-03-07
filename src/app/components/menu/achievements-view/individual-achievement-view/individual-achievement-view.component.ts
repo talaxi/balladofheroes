@@ -49,7 +49,7 @@ export class IndividualAchievementViewComponent implements OnInit {
 
       if (i < this.achievement.bonusResources.length - 1)
       {
-        description += "<br/><br/>";
+        description += "<br/>";
       }
     }
 

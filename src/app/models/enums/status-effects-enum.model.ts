@@ -72,6 +72,20 @@ export enum StatusEffectEnum {
     AirDamageDown,
     EarthDamageUp,
     EarthDamageDown,
+    HolyDamageTakenUp,
+    HolyDamageTakenDown,
+    FireDamageTakenUp,
+    FireDamageTakenDown,
+    WaterDamageTakenUp,
+    WaterDamageTakenDown,
+    LightningDamageTakenUp,
+    LightningDamageTakenDown,
+    AirDamageTakenUp,
+    AirDamageTakenDown,
+    EarthDamageTakenUp,
+    EarthDamageTakenDown,
     RandomPrimaryStatUp,
-    RandomPrimaryStatDown
+    RandomPrimaryStatDown,
+    Unsteady,
+    BattleItemDamageUp
   }

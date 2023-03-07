@@ -149,5 +149,12 @@ export enum ItemsEnum {
   ThickLeather,
   Goldroot,
   Violet,
-  Lousewort
+  Lousewort,
+  SpiritBow,
+  FendingMace,
+  GemmedNecklace,
+  ChthonicFavorUpgrade1,
+  ChthonicFavorUpgrade2,
+  BoarHide,
+  BearHide
 }

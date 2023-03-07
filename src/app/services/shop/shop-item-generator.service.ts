@@ -174,6 +174,41 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.SmallOpal, ItemTypeEnum.CraftingMaterial, 25));      
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
     }
+    if (item === ItemsEnum.BedazzledRing)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
+    }
+    if (item === ItemsEnum.ShieldOfTheHealer)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 7500));
+    }
+    if (item === ItemsEnum.HeftyStone)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 100));
+    }
+    if (item === ItemsEnum.RestorativeHerb)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 250));
+    }
+    if (item === ItemsEnum.HardenedLeatherArmor)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 30));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 8));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 3500));
+    }
+    if (item === ItemsEnum.BearskinArmor)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 3));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
+    }
+    if (item === ItemsEnum.BoarskinArmor)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, 3));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
+    }
+
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

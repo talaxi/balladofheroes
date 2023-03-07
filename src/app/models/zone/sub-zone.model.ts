@@ -1,6 +1,7 @@
 import { Type } from "class-transformer";
 import { EnemyTeam } from "../character/enemy-team.model";
 import { BalladEnum } from "../enums/ballad-enum.model";
+import { NotificationTypeEnum } from "../enums/notification-type-enum.model";
 import { SubZoneEnum } from "../enums/sub-zone-enum.model";
 import { ZoneEnum } from "../enums/zone-enum.model";
 
@@ -16,6 +17,7 @@ export class SubZone {
     victoriesNeededToProceed: number;
     isAvailable: boolean;
     showNewNotification: boolean;
+    notificationType: NotificationTypeEnum;
     treasureChestChance: number;
 
     constructor(enumVal?: SubZoneEnum) {
@@ -33,6 +35,7 @@ export class SubZone {
         this.isAvailable = false;
         this.isTown = this.isSubzoneTown(this.type);
         this.treasureChestChance = 0;
+        this.notificationType = this.shouldShowSideQuestNotification(this.type);
     }
 
     setSubZoneName(type: SubZoneEnum) {
@@ -122,7 +125,7 @@ export class SubZone {
         if (type === SubZoneEnum.PeloposNisosSteepAscent)
             name = "Steep Ascent";
         if (type === SubZoneEnum.PeloposNisosMountParthenionCaverns)
-            name = "Mount Parthenion Caverns";
+            name = "Mt. Parthenion Caverns";
         if (type === SubZoneEnum.PeloposNisosValleyOpening)
             name = "Valley Opening";
         if (type === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
@@ -139,8 +142,6 @@ export class SubZone {
             name = "Winding Paths";
         if (type === SubZoneEnum.ElysiumWaterloggedMarsh)
             name = "Water-logged Marsh";
-        if (type === SubZoneEnum.ElysiumEdgeOfTheUnderworld)
-            name = "Edge of the Underworld";
         if (type === SubZoneEnum.ElysiumWavesOfOceanus)
             name = "Waves of Oceanus";
         if (type === SubZoneEnum.CalydonForestPassage)
@@ -237,7 +238,7 @@ export class SubZone {
             victories = bossVictories;
 
         if (type === SubZoneEnum.ElysiumElysianFields || type === SubZoneEnum.ElysiumOpenPlains || type === SubZoneEnum.ElysiumGatesOfHornAndIvory
-            || type === SubZoneEnum.ElysiumWindingPaths || type === SubZoneEnum.ElysiumEdgeOfTheUnderworld || type === SubZoneEnum.ElysiumWaterloggedMarsh)
+            || type === SubZoneEnum.ElysiumWindingPaths || type === SubZoneEnum.ElysiumWaterloggedMarsh)
             victories = defaultVictories;
 
         if (type === SubZoneEnum.ElysiumWavesOfOceanus)
@@ -280,6 +281,14 @@ export class SubZone {
         }
 
         return false;
+    }
+
+    shouldShowSideQuestNotification(type: SubZoneEnum) {
+        if (type === SubZoneEnum.ElysiumWindingPaths || type === SubZoneEnum.ElysiumWaterloggedMarsh || type === SubZoneEnum.ElysiumWavesOfOceanus ||
+            type === SubZoneEnum.CalydonAltarOfAsclepius)
+            return NotificationTypeEnum.SideQuest;
+
+        return NotificationTypeEnum.Story;
     }
 
     isSubzoneSideQuest(type: SubZoneEnum) {

@@ -199,6 +199,11 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
+    if (subzone.isTown)
+    {
+      this.globalService.globalVar.settings.set("autoProgress", false);
+    }
+
     var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
     if (enemyOptions.length > 0) {
       var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];

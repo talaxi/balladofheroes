@@ -86,6 +86,31 @@ export class AchievementService {
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Narcissus, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingSalve, ItemTypeEnum.HealingItem, 10));
+    else if (subzoneType === SubZoneEnum.ElysiumWindingPaths)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingPoultice, ItemTypeEnum.HealingItem, 20));
+    else if (subzoneType === SubZoneEnum.ElysiumWaterloggedMarsh)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 40));
+    else if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
+
+    else if (subzoneType === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 30));
+    else if (subzoneType === SubZoneEnum.PeloposNisosArcadianRoads)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 20));
+    else if (subzoneType === SubZoneEnum.PeloposNisosFootOfTheMountain)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
+    else if (subzoneType === SubZoneEnum.PeloposNisosSteepAscent)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 3));
+    else if (subzoneType === SubZoneEnum.PeloposNisosMountParthenionCaverns)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 15));
+    else if (subzoneType === SubZoneEnum.PeloposNisosValleyOpening)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 3));
+    else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 3));
+    else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
+    else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
 
     if (hundredVictories.bonusResources.length > 0)
       newAchievements.push(hundredVictories);
@@ -97,6 +122,8 @@ export class AchievementService {
     var libyaBoonBonus = .03;
     var asphodelBoonBonus = .03;
     var elysiumBoonBonus = .03;
+    var peloposNisosBoonBonus = .03;
+    var calydonBoonBonus = .03;
 
     if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
       thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, aigosthenaBoonBonus));
@@ -108,6 +135,10 @@ export class AchievementService {
       thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, asphodelBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Elysium))
       thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, elysiumBoonBonus));
+    else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.PeloposNisos))
+      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, peloposNisosBoonBonus));
+    else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Calydon))
+      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, calydonBoonBonus));
 
 
     if (thousandVictories.bonusResources.length > 0)
@@ -171,8 +202,31 @@ export class AchievementService {
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.ElysiumWindingPaths)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.ElysiumWaterloggedMarsh)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
 
-      //from here on you should intersperse some more larges in maybe?
+    else if (subzoneType === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosArcadianRoads)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosFootOfTheMountain)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosSteepAscent)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosMountParthenionCaverns)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosValleyOpening)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
 
     if (tenThousandVictories.bonusResources.length > 0)
       newAchievements.push(tenThousandVictories);
@@ -190,6 +244,10 @@ export class AchievementService {
       thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
       thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+    if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
+      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+    if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
+      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
 
     if (thirtySecondClear.bonusResources.length > 0)
       newAchievements.push(thirtySecondClear);
@@ -207,15 +265,21 @@ export class AchievementService {
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+    if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
+      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
+      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
 
     if (tenSecondClear.bonusResources.length > 0)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
-    if (subzoneType === SubZoneEnum.LibyaIsleCenter)
-    {      
+    if (subzoneType === SubZoneEnum.LibyaIsleCenter) {
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 2500));
+    }
+    if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus) {
+      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade1, ItemTypeEnum.Progression, 1));
     }
 
     if (completeClear.bonusResources.length > 0)
@@ -288,7 +352,7 @@ export class AchievementService {
         completedAchievement.push(complete);
         complete.completed = true;
         complete.bonusResources.forEach(bonus => {
-          if (bonus.item === ItemsEnum.ItemBeltUp) {            
+          if (bonus.item === ItemsEnum.ItemBeltUp) {
             this.lookupService.increaseItemBeltSize();
 
             if (subzone.type === SubZoneEnum.LibyaIsleCenter)
@@ -296,6 +360,9 @@ export class AchievementService {
           }
           else if (bonus.item === ItemsEnum.BonusXp) {
             this.lookupService.giveCharactersBonusExp(bonus.amount);
+          }
+          else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade1) {
+            this.lookupService.enableChthonicFavoredGod();
           }
           else
             this.lookupService.gainResource(bonus);

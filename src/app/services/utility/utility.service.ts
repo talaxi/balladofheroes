@@ -55,11 +55,18 @@ export class UtilityService {
   public killCountDisplayFullEnemyLoot = 50;
 
   public overdriveDamageNeededToUnlockProtection = 100000;
-  public overdriveAttacksNeededToUnlockNature = 3;
+  public overdriveAttacksNeededToUnlockNature = 3000;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
   public enemyMajorElementalWeakness = -.5;
+
+  public preferredGodStartTime1 = 4;
+  public preferredGodEndTime1 = 12;
+  public preferredGodStartTime2 = 12;
+  public preferredGodEndTime2 = 20;
+  public preferredGodStartTime3 = 20;
+  public preferredGodEndTime3 = 4;
 
   constructor(public sanitizer: DomSanitizer) { }
 

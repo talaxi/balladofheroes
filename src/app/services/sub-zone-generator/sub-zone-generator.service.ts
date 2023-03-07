@@ -645,6 +645,76 @@ export class SubZoneGeneratorService {
       enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));
       battleOptions.push(enemyTeam5);
     }
+    if (type === SubZoneEnum.ElysiumWindingPaths) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExiledHoplite));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlessedShade));      
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlessedShade));      
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingSoul));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));
+      battleOptions.push(enemyTeam3);
+
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));
+      battleOptions.push(enemyTeam4);
+
+      var enemyTeam5: EnemyTeam = new EnemyTeam();
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));
+      battleOptions.push(enemyTeam5);
+    }
+    if (type === SubZoneEnum.ElysiumWaterloggedMarsh) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CreatureFromTheDeep));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CreatureFromTheDeep));
+      battleOptions.push(enemyTeam);
+
+      var enemyTeam2: EnemyTeam = new EnemyTeam();
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingSoul));
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingSoul));            
+      battleOptions.push(enemyTeam2);
+
+      var enemyTeam3: EnemyTeam = new EnemyTeam();
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CreatureFromTheDeep));
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingSoul));
+      battleOptions.push(enemyTeam3);
+
+      var enemyTeam4: EnemyTeam = new EnemyTeam();
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExiledHoplite));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExplodingSoul));      
+      battleOptions.push(enemyTeam4);
+
+      var enemyTeam5: EnemyTeam = new EnemyTeam();
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExiledHoplite));
+      enemyTeam5.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ExiledHoplite));      
+      battleOptions.push(enemyTeam5);
+      
+      var enemyTeam6: EnemyTeam = new EnemyTeam();
+      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
+      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));
+      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TwistedSoul));      
+      battleOptions.push(enemyTeam6);
+    }
+    if (type === SubZoneEnum.ElysiumWavesOfOceanus) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Acheron));      
+      battleOptions.push(enemyTeam);
+    }
     if (type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.UnrulyHound));
@@ -1142,7 +1212,7 @@ export class SubZoneGeneratorService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SavageBear));            
       battleOptions.push(enemyTeam);
     }
-    if (type === SubZoneEnum.CalydonWateringHole) {
+    if (type === SubZoneEnum.CalydonDeadEnd) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GriffonVulture));      
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GriffonVulture));      
@@ -1382,6 +1452,13 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {
       subZoneEnums.push(SubZoneEnum.PeloposNisosGatesOfTheUnderworld);
+      subZoneEnums.push(SubZoneEnum.ElysiumWindingPaths);
+    }
+    if (type === SubZoneEnum.ElysiumWindingPaths) {
+      subZoneEnums.push(SubZoneEnum.ElysiumWaterloggedMarsh);
+    }
+    if (type === SubZoneEnum.ElysiumWaterloggedMarsh) {
+      subZoneEnums.push(SubZoneEnum.ElysiumWavesOfOceanus);
     }
     if (type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld) {
       subZoneEnums.push(SubZoneEnum.PeloposNisosArcadianRoads);

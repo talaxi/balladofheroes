@@ -4,6 +4,7 @@ import { plainToInstance } from 'class-transformer';
 import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -22,10 +23,11 @@ export class SettingsViewComponent implements OnInit {
   storyStyleEnum = StoryStyleSettingEnum;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
-    private utilityService: UtilityService, public dialog: MatDialog) { }
+    private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {
-    //console.log(this.globalService.globalVar);
+    if (this.deploymentService.devModeActive)
+      console.log(this.globalService.globalVar);
     //console.log(JSON.stringify(this.globalService.globalVar));
 
     var storyStyle = this.globalService.globalVar.settings.get("storyStyle");

@@ -51,7 +51,6 @@ export enum SubZoneEnum {
   CalydonAltarOfAsclepius,
   ElysiumWindingPaths,
   ElysiumWaterloggedMarsh,
-  ElysiumEdgeOfTheUnderworld,
   ElysiumWavesOfOceanus,
   CalydonForestPassage,
   CalydonHeavyThicket,
