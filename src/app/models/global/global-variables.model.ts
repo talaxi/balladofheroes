@@ -22,6 +22,7 @@ import { AltarEffect } from "../altar/altar-effect.model";
 import { OptionalSceneEnum } from "../enums/optional-scene-enum.model";
 import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
 import { Altars } from "../altar/altars.model";
+import { SidequestData } from "../utility/sidequest-data.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -75,14 +76,13 @@ export class GlobalVariables {
     enemyDefeatCount: EnemyDefeatCount[];
     @Type(() => ColiseumDefeatCount)
     coliseumDefeatCount: ColiseumDefeatCount[];
-    //@Type(() => AltarInfo)
-    //altarInfo: AltarInfo[];
     @Type(() => Altars)
     altars: Altars;
     optionalScenesViewed: OptionalSceneEnum[];
     areBattleItemsUnlocked = false;
     isDpsUnlocked = false;
-    altarOfAsclepus: Character; //better place to put this? sidequest data maybe?
+    @Type(() => SidequestData)
+    sidequestData: SidequestData;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -97,7 +97,6 @@ export class GlobalVariables {
         this.enemyDefeatCount = [];
         this.coliseumDefeatCount = [];
         this.itemBeltSize = 1;
-        //this.activeBattle = new Battle();
         this.playerNavigation = new PlayerNavigation();
         this.timers = new Timers();
         this.settings = new Settings();
@@ -113,9 +112,5 @@ export class GlobalVariables {
         this.guid = Guid.create().toString();
         this.isGamePaused = false;
         this.isBattlePaused = false;
-        this.altarOfAsclepus = new Character();
-        this.altarOfAsclepus.name = "Asclepius";
-        this.altarOfAsclepus.battleStats.maxHp = 20000;
-        this.altarOfAsclepus.battleStats.currentHp = 0;
     }
 }
