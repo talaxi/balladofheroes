@@ -1411,7 +1411,7 @@ export class GlobalService {
     if (god.type === GodEnum.Athena) {
       //TODO: bigger boost at 10s or something maybe?
       if (ability.abilityUpgradeLevel <= 100)
-        userGainsEffect.effectiveness += 2;
+        userGainsEffect.effectiveness += 3;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel <= 100)

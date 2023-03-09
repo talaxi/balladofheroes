@@ -81,7 +81,7 @@
 
 :root {
   /* Colors */
-  --foreground-secondary: #6B8CA5; /* B3A0A2, 628599? */ 
+  --foreground-secondary: #6D8EA7; /* old: 6B8CA5 */ 
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
@@ -953,4 +953,9 @@ button {
 
 .charmDescriptor {
   font-weight: bold;
+}
+
+.commonCharacterText {
+  font-weight: bold;
+  color: var(--foreground-accent);
 }

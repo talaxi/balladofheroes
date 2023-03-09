@@ -86,6 +86,7 @@ import { ChangeClassViewComponent } from './components/menu/character-view/chang
 import { AltarViewComponent } from './components/subcomponents/altar-options-view/altar-view/altar-view.component';
 import { ResourceRequiredViewComponent } from './components/subcomponents/shopping-item-view/resource-required-view/resource-required-view.component';
 import { AltarOverviewComponent } from './components/layout/zone-navigation/altar-overview/altar-overview.component';
+import { ConfirmationBoxComponent } from './components/subcomponents/utility/confirmation-box/confirmation-box.component';
 
 @NgModule({
   declarations: [
@@ -136,7 +137,8 @@ import { AltarOverviewComponent } from './components/layout/zone-navigation/alta
     ChangeClassViewComponent,
     AltarViewComponent,
     ResourceRequiredViewComponent,
-    AltarOverviewComponent
+    AltarOverviewComponent,
+    ConfirmationBoxComponent
   ],
   imports: [
     BrowserModule,

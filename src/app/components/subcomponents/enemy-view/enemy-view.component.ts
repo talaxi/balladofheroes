@@ -54,7 +54,7 @@ export class EnemyViewComponent implements OnInit {
         {
           this.enemyName.nativeElement.classList.add('verySmallText');      
         }
-        if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.5) < this.enemyName.nativeElement.offsetHeight)
+        else if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.5) < this.enemyName.nativeElement.offsetHeight)
         {
           this.enemyName.nativeElement.classList.add('smallText');      
         }
@@ -191,6 +191,40 @@ export class EnemyViewComponent implements OnInit {
       src += "priestTarget.svg";  
 
     return src;
+  }
+
+  getCharacterAttackSpeed() {
+    if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyAverageAutoAttackSpeed)
+      return "Average";
+      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyQuickAutoAttackSpeed)
+      return "Quick";
+      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyLongAutoAttackSpeed)
+      return "Long";      
+      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyVeryLongAutoAttackSpeed)
+      return "Very Long";
+      
+      return "";
+  }
+
+  getElementalStrengths() {
+    var increases = "";
+    if (this.character.battleStats.elementalDamageIncrease.fire > 0)
+      increases += "Fire Damage Dealt: +" + this.character.battleStats.elementalDamageIncrease.fire * 100 + "%";
+
+    return increases;
+  }
+
+  getElementalWeaknesses() {
+    var decreases = "";
+    if (this.character.battleStats.elementalDamageResistance.fire > 0)
+    decreases += "Fire Damage Taken: +" + this.character.battleStats.elementalDamageIncrease.fire * 100 + "%";
+
+    if (this.character.battleStats.elementalDamageResistance.water > 0)
+    decreases += "Water Damage Taken: -" + this.character.battleStats.elementalDamageIncrease.water * 100 + "%";
+    if (this.character.battleStats.elementalDamageResistance.water < 0)
+    decreases += "Water Damage Taken: +" + this.character.battleStats.elementalDamageIncrease.water * 100 + "%";
+
+    return decreases;
   }
 
   ngOnDestroy() {

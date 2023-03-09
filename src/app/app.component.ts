@@ -30,7 +30,7 @@ export class AppComponent {
   title = 'Ballad of Heroes';
   newGame = true;
   saveTime = 0;
-  saveFrequency = 10; //in seconds
+  saveFrequency = 5; //in seconds
   bankedTime = 0;
   catchupDialog: MatDialogRef<unknown, any> | undefined = undefined;
 

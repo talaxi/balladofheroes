@@ -31,10 +31,6 @@
                         '1.0-0'}}</span>
                     <br />
                 </span>
-                <span *ngIf="getLuckBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                    [contentTemplate]="luckPopover"><strong [ngClass]="getGodColor()" class="statLabel">Luck: </strong>
-                    <span class="statValue">{{getLuckBonus() | number : '1.0-0'}}</span>
-                    <br /></span>
                 <span *ngIf="getDefenseBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="defensePopover"><strong [ngClass]="getGodColor()" class="statLabel">Defense:
                     </strong>
@@ -42,6 +38,10 @@
                         '1.0-0'}}</span>
                     <br />
                 </span>
+                <span *ngIf="getLuckBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="luckPopover"><strong [ngClass]="getGodColor()" class="statLabel">Luck: </strong>
+                    <span class="statValue">{{getLuckBonus() | number : '1.0-0'}}</span>
+                    <br /></span>                
                 <span *ngIf="getResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="resistancePopover"><strong [ngClass]="getGodColor()"
                         class="statLabel">Resistance:

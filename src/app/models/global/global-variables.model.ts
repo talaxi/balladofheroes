@@ -23,6 +23,7 @@ import { OptionalSceneEnum } from "../enums/optional-scene-enum.model";
 import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
 import { Altars } from "../altar/altars.model";
 import { SidequestData } from "../utility/sidequest-data.model";
+import { FollowerData } from "../followers/follower-data.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -83,6 +84,8 @@ export class GlobalVariables {
     isDpsUnlocked = false;
     @Type(() => SidequestData)
     sidequestData: SidequestData;
+    @Type(() => FollowerData)
+    followerData: FollowerData;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -112,5 +115,7 @@ export class GlobalVariables {
         this.guid = Guid.create().toString();
         this.isGamePaused = false;
         this.isBattlePaused = false;
+        this.sidequestData = new SidequestData();
+        this.followerData = new FollowerData();
     }
 }

@@ -55,8 +55,13 @@
                     <br />
                     <span class='statLabel'>Resistance:</span> {{character.battleStats.resistance}}
                 </div>
+            </div>            
+            <div>
+                Attack Speed: {{getCharacterAttackSpeed()}}
+                <span [innerHtml]="getElementalStrengths()"></span>                
+                <span [innerHtml]="getElementalWeaknesses()"></span>                
             </div>
-            <br />
+            <br />            
             <span *ngIf="character.abilityList.length === 0">No abilities.</span>
             <div *ngIf="character.abilityList.length > 0">
                 <div *ngFor="let ability of character.abilityList">

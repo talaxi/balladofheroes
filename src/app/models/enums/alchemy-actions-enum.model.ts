@@ -10,5 +10,6 @@ export enum AlchemyActionsEnum {
   CrushIngredients,
   CombineIngredients,
   ExtractEssence,
-  Infuse
+  Infuse,
+  
 }

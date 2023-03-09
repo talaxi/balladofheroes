@@ -276,7 +276,7 @@ export class AchievementService {
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
     if (subzoneType === SubZoneEnum.LibyaIsleCenter) {
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
-      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 2500));
+      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 4000));
     }
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus) {
       completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade1, ItemTypeEnum.Progression, 1));

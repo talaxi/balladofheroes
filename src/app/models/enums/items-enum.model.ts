@@ -156,5 +156,15 @@ export enum ItemsEnum {
   ChthonicFavorUpgrade1,
   ChthonicFavorUpgrade2,
   BoarHide,
-  BearHide
+  BearHide,
+  WitheringToxin,
+  ExplosivePotion,
+  ElixirOfFortitude,
+  VenomousToxin,
+  RestorativePoultice,
+  RestorativeSalve,
+  BlindingPotion,
+  SpiritEssence,
+  VialOfTheBlackSea,
+  Sorrel
 }

@@ -333,6 +333,18 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, amount);
     }
+    if (type === ItemsEnum.SpiritEssence)
+    {
+      return new ResourceValue(ItemsEnum.SpiritEssence, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.Sorrel)
+    {
+      return new ResourceValue(ItemsEnum.Sorrel, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.VialOfTheBlackSea)
+    {
+      return new ResourceValue(ItemsEnum.VialOfTheBlackSea, ItemTypeEnum.CraftingMaterial, amount);
+    }
 
     //charms
     if (type === ItemsEnum.SmallCharmOfDetermination)

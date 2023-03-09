@@ -1,12 +1,14 @@
 import { Character } from "../character/character.model";
 
 export class SidequestData {
-    altarOfAsclepus: Character;
+    isAltarOfAsclepiusUnlocked: boolean;
+    altarOfAsclepius: Character;
 
-    constructor() {        
-        this.altarOfAsclepus = new Character();
-        this.altarOfAsclepus.name = "Asclepius";
-        this.altarOfAsclepus.battleStats.maxHp = 20000;
-        this.altarOfAsclepus.battleStats.currentHp = 0;
+    constructor() {       
+        this.isAltarOfAsclepiusUnlocked = false; 
+        this.altarOfAsclepius = new Character();
+        this.altarOfAsclepius.name = "Asclepius";
+        this.altarOfAsclepius.battleStats.maxHp = 20000;
+        this.altarOfAsclepius.battleStats.currentHp = 0;
     }
 }

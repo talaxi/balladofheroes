@@ -98,15 +98,35 @@ export class EquipmentViewComponent implements OnInit {
       return;
 
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Weapon)
+    {
+      if (character.equipmentSet.weapon !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
       character.equipmentSet.weapon = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Shield)
+    {
+      if (character.equipmentSet.shield !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
       character.equipmentSet.shield = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Armor)
+    {
+      if (character.equipmentSet.armor !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
       character.equipmentSet.armor = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Ring)
+    {
+      if (character.equipmentSet.ring !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Ring, character.type);
       character.equipmentSet.ring = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Necklace)
+    {
+      if (character.equipmentSet.necklace !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
       character.equipmentSet.necklace = selectedEquipmentPiece;
+    }
 
     if (selectedEquipmentPiece.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery &&
       selectedEquipmentPiece.equipmentEffect.triggersEveryCount === 0) {

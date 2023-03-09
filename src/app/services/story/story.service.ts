@@ -82,6 +82,10 @@ export class StoryService {
     return "<span class='hermesColor'>" + text + "</span>";
   }
 
+  commonCharacterText(text: string) {
+    return "<span class='commonCharacterText'>" + text + "</span>";
+  }
+
   getStoryText(storyId: number, pageCount: number) {
     var sceneText = "";
 
@@ -103,7 +107,7 @@ export class StoryService {
     }
     else if (storyId === 2) {
       if (pageCount === 1)
-        sceneText = "You arrive at the temple. The lone figure inside is an oracle, mixing powders together under the light of a single flame. <span class='adventurerColor bold'>“Am I the first?”</span> you ask, falling to your knees. <span class='bold'>“You are.”</span> She replies, the strong scent of incense filling the room. You've done it. Year after year you have tried, and you have finally succeeded. As you kneel, elated, exhausted, you begin to offer up a prayer. <br/><br/>" +
+        sceneText = "You arrive at the temple. The lone figure inside is an oracle, mixing powders together under the light of a single flame. <span class='adventurerColor bold'>“Am I the first?”</span> you ask, falling to your knees. " + this.commonCharacterText("“You are.”") + " She replies, the strong scent of incense filling the room. You've done it. Year after year you have tried, and you have finally succeeded. As you kneel, elated, exhausted, you begin to offer up a prayer. <br/><br/>" +
           "<span class='athenaColor bold'>“Your resolve is impressive.”</span> a voice says from behind. The Goddess of Wisdom and Warfare. Athena.";
       else if (pageCount === 2)
         sceneText = "<span class='athenaColor bold'>“Be warned, mortal, for my mother has foreseen the impending fall of Olympus. She sees the Giants and Titans joining forces and planning a coordinated attack against us. We cannot hope to stand against both of them on our own. <br/><br/>" +
@@ -149,7 +153,7 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "As you work your way around the roads of Nemea, you find a towering figure blocking the path. " +
           "A Giant?! You hadn't expected to encounter one so early on your journey, but here was one in your way. It seems like he was waiting for you.<br/><br/>" +
-          "<span class='bold'>“Little heroes! I've been looking for ya. Come on over, don't be shy!”</span> it bellows as it makes its way towards you. <br/> <br/>" +
+          this.commonCharacterText("“Little heroes! I've been looking for ya. Come on over, don't be shy!”") + " it bellows as it makes its way towards you. <br/> <br/>" +
           "This is what <span class='athenaColor bold'>Athena</span> trusted you to handle. Time to make her proud.";
     }
     else if (storyId === 8) {
@@ -185,14 +189,14 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "As you traverse the underworld, you start to understand the madness of the souls you've met. You've always taken for granted the welcoming sound of the wind at your back, the birds chirping to each other, the leaves rustling as dogs run past you. But here, there is nothing but deafening silence. All you have to hear are the screams of souls long dead, and your own thoughts.<br/><br/>" +
           "As you finally approach the coliseum, your contemplative trance is finally broken by the hustle and bustle of a small town. This seems to be the largest gathering of souls in the underworld and you two aren't the only ones who want a ticket out. " + this.zosimeText("“I'll go sign us up, wait here.”") + " Zosime says as she walks into the coliseum gates.<br/><br/>" +
-          "“Hello, child.”";
+          this.commonCharacterText("“Hello, child.”");
       else if (pageCount === 2)
         sceneText = "You look to your side as an old man approaches you. " + this.thalesText("“Sorry, have we met?”") + " You reply.<br/><br/>" +
-          "“Perhaps not in the flesh, but I have been with you since your journey began. I hear that you slayed the lady Medusa. Tell me, haven't you wondered how? She was already dead, slain by the Founder of Mycenae. How can that be?”" +
-          "You had wondered how all of this was possible, ever since you were taken from Aigosthena to Delphi in an instant. " + this.thalesText("“I just assumed Athena used magic..”");
+        this.commonCharacterText("“Perhaps not in the flesh, but I have been with you since your journey began. I hear that you slayed the lady Medusa. Tell me, haven't you wondered how? She was already dead, slain by the Founder of Mycenae. How can that be?”") +
+          " You had wondered how all of this was possible, ever since you were taken from Aigosthena to Delphi in an instant. " + this.thalesText("“I just assumed Athena used magic..”");
       else if (pageCount === 3)
-        sceneText = "The old man chuckled. “A simple answer, but not wrong. I am Khronos, keeper of time. Yes, Athena approached me and together we devised a spell that would allow someone to slip in and out of the past to see those who are no longer living.<br/><br/>" +
-          "When she first came to me, I must confess I did not like the idea. Time is a delicate thing, you see. But I relented for one reason. I think your journey is a necessary one. I hope that one day, you will be able to tell me truthfully what it means to be a hero. You, above all, will have the experience necessary. I wish you luck.”<br/><br/>" +
+        sceneText = "The old man chuckled. " + this.commonCharacterText("“A simple answer, but not wrong. I am Khronos, keeper of time. Yes, Athena approached me and together we devised a spell that would allow someone to slip in and out of the past to see those who are no longer living.") + "<br/><br/>" +
+        this.commonCharacterText("When she first came to me, I must confess I did not like the idea. Time is a delicate thing, you see. But I relented for one reason. I think your journey is a necessary one. I hope that one day, you will be able to tell me truthfully what it means to be a hero. You, above all, will have the experience necessary. I wish you luck.”") + "<br/><br/>" +
           "With that, the man turned and walked away. As you absorb the conversation that just occurred, you see Zosime making her way back to you. " + this.zosimeText("“Hey, we're up next. Ready?”");
     }
     else if (storyId === 12) {
@@ -204,7 +208,7 @@ export class StoryService {
     }
     else if (storyId === 13) {
       if (pageCount === 1)
-        sceneText = "As you emerge from the Underworld, you feel the warmth of the sun on your skin for the first time in what feels like ages. You close your eyes against the brightness, hoping the sun will wash away some of your self-doubt as well. Your conversation with Khronos still lingered on your mind. What is it to be a hero? Am I really capable of answering that question?<br/><br/>" +
+        sceneText = "As you emerge from the Underworld, you feel the warmth of the sun on your skin for the first time in what feels like ages. You close your eyes against the brightness, hoping the sun will wash away some of your self-doubt as well. Your conversation with Khronos still lingers on your mind. What is it to be a hero? Am I really capable of answering that question?<br/><br/>" +
           this.zosimeText("“Any ideas on where to go next?”") + " Zosime asks you, snapping you out of your thoughts.<br/><br/>" +
           this.thalesText("“Before we fell, I felt invincible. As if there was nothing any hero had done that we couldn't do. But now, honestly, I don't know.”") + " You say to Zosime, uncertain.";
       else if (pageCount === 2)
@@ -319,7 +323,8 @@ export class StoryService {
       if (this.globalService.globalVar.currentStoryId === 9) {
         this.showFirstTimeUnderworldStory = false;
         this.triggerFirstTimeUnderworldScene = false;
-        this.endFirstTimeUnderworldScene = true;
+        this.endFirstTimeUnderworldScene = true;        
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications));
         setTimeout(() => {
           this.endFirstTimeUnderworldScene = false;
         }, 5000);
@@ -336,6 +341,7 @@ export class StoryService {
 
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests));
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
           championBallad.isAvailable = true;
@@ -366,33 +372,33 @@ export class StoryService {
         sceneText = "You make your way around the great hall of the Palace, inspecting numerous trinkets and oddities. Despite the never ending stream of souls awaiting their judgment, the palace remained exceptionally quiet. The sound of clinking glasses in a room off to the side draws your attention.";
       else if (pageCount === 2)
         sceneText = "You enter into a room filled with an array of flowers, herbs, vials, and scents. You marvel at the sheer number of plants that you wouldn't expect to make it in the underworld.<br/><br/>" +
-          "“Hello child. Can I help you?” Asked the goddess Hecate, her back turned to you as she prepared herbs in a bowl. A black dog laid curled up to the goddess's right with its eyes on you. You feel warmth emanating from the pair.<br/><br/>" +
-          "“Sorry, I was just passing by and was curious.” <br/><br/>" +
-          "“You do not need to apologize. Come, you may join me.”";
+        this.commonCharacterText("“Hello child. Can I help you?”") + " Asked the goddess Hecate, her back turned to you as she prepared herbs in a bowl. A black dog laid curled up to the goddess's right with its eyes on you. You feel warmth emanating from the pair.<br/><br/>" +
+          this.thalesText("“Sorry, I was just passing by and was curious.”") + " <br/><br/>" +
+          this.commonCharacterText("“You do not need to apologize. Come, you may join me.”");
     }
     if (scene === OptionalSceneEnum.ChthonicFavor) {
       if (pageCount === 1)
-        sceneText = "“Psst. Hey, you.” You hear a voice echoing from the back side of the great hall. Walking towards the voice, you find a ghastly spirit huddled in a corner. “Listen, I got what you need if you got what I want. And what I want is a little taste of Olympus.  Understand? You give me a little of what you got, and I'll put in a good word around here.”";
+        sceneText = this.commonCharacterText("“Psst. Hey, you.”") + " You hear a voice echoing from the back side of the great hall. Walking towards the voice, you find a ghastly spirit huddled in a corner. " + this.commonCharacterText("“Listen, I got what you need if you got what I want. And what I want is a little taste of Olympus.  Understand? You give me a little of what you got, and I'll put in a good word around here.”");
     }
     if (scene === OptionalSceneEnum.ChthonicFavorUpgrade1Scene1) {
       if (pageCount === 1)
         sceneText = "As you make your way through Elysium, you notice a shade darting towards you. All of the shades you've seen look more or less the same, but theres something familiar about this one.<br/><br/>" +
-        "“Hey hey, you two remember me don'tcha? We met back at the palace! You scratch my back, I scratch yours, remember?” The shade says, floating around you. That's right -- this is the one who claimed to help you out in exchange for the favor of the gods.";
+        this.commonCharacterText("“Hey hey, you two remember me don'tcha? We met back at the palace! You scratch my back, I scratch yours, remember?”") + " The shade says, floating around you. That's right -- this is the one who claimed to help you out in exchange for the favor of the gods.";
       else if (pageCount === 2)
-        sceneText = "“Listen, I don't know if you've noticed but we're supposed to be in a little paradise down here right? Elysium's where all the important people get to sit around on little islands and enjoy the sea breeze and the waves off the coast. But there's no breeze! No waves!<br/><br/>" +
-        "You're pretty tough. Won a whole bunch of fights at the coliseum right? I think something's upsetting the big guy. He gets that way sometimes. You know, Oceanus? Big titan, in charge of all the rivers? Look, you go down the river to the coast and see what's wrong, and I'll make it worth you're while alright? I can't take anymore yapping from the other shades about no breeze!”";
+        sceneText = this.commonCharacterText("“Listen, I don't know if you've noticed but we're supposed to be in a little paradise down here right? Elysium's where all the important people get to sit around on little islands and enjoy the sea breeze and the waves off the coast. But there's no breeze! No waves!") + "<br/><br/>" +
+        this.commonCharacterText("You're pretty tough. Won a whole bunch of fights at the coliseum right? I think something's upsetting the big guy. He gets that way sometimes. You know, Oceanus? Big titan, in charge of all the rivers? Look, you go down the river to the coast and see what's wrong, and I'll make it worth you're while alright? I can't take anymore yapping from the other shades about no breeze!”");
     }
     if (scene === OptionalSceneEnum.ChthonicFavorUpgrade1Scene2) {
       if (pageCount === 1)
         sceneText = "You step into the still waters off the coast of Elysium and look out across the sea separating the living from the dead. You share a look with Zosime who shrugs her shoulders. " + this.zosimeText("“What are we doing here, exactly?”") + " She wonders aloud.<br/><br/>" +
-        "“Who dares to step into the great ocean without paying the proper respects!?” Comes from a voice deep in the waters. A creature  rose from the depths looking eerily human, yet it was anything but. “I am Acheron, son of Oceanus. You shall leave this place!”";      
+        this.commonCharacterText("“Who dares to step into the great ocean without paying the proper respects!?”") + " Comes from a voice deep in the waters. A creature  rose from the depths looking eerily human, yet it was anything but. " +this.commonCharacterText("“I am Acheron, son of Oceanus. You shall leave this place!”");      
     }
     if (scene === OptionalSceneEnum.ChthonicFavorUpgrade1Scene3) {
       if (pageCount === 1)
         sceneText = "As your fight winds down, Acheron finally seems to calm down." + this.thalesText("“We mean no disrespect. We come as representatives of the souls of Elysium. We wish to honor Oceanus how he deserves, and more souls will come to pray here daily. Please accept our praise.”") + " You say, kneeling down.<br/><br/>" +
-        "“That is a start. See that it continues.” Acheron says, sinking back into the depths of the sea.";
+        this.commonCharacterText("“That is a start. See that it continues.”") + " Acheron says, sinking back into the depths of the sea.";
       else if (pageCount === 2)
-        sceneText = "As soon as Acheron is out of sight, the familiar shade darts towards you again. “I saw the whole thing! How much prayin' does someone need, I mean sheesh! Well, I'll let the boys know to start coming out here and say sweet nothins' to Oceanus if they want their sea breeze. You start coming by at the palace and I'll sweeten our deal alright?”"; 
+        sceneText = "As soon as Acheron is out of sight, the familiar shade darts towards you again. " + this.commonCharacterText("“I saw the whole thing! How much prayin' does someone need, I mean sheesh! Well, I'll let the boys know to start coming out here and say sweet nothins' to Oceanus if they want their sea breeze. You start coming by at the palace and I'll sweeten our deal alright?”"); 
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");

@@ -38,7 +38,8 @@ export class CharacterViewComponent implements OnInit {
     var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);    
     if (selectedCharacter !== undefined)
     {
-      this.character = selectedCharacter;    
+      this.character = selectedCharacter; 
+      console.log(this.character);   
       this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
         return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
       }).filter(item => item.isAvailable);

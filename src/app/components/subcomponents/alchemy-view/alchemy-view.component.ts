@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Recipe } from 'src/app/models/professions/recipe.model';
@@ -16,6 +16,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class AlchemyViewComponent implements OnInit {
   selectedRecipe: Recipe;
   createAmount = 1;
+  @ViewChild('confirmationBox') confirmationBox: any;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
     private alchemyService: AlchemyService) { }
@@ -163,13 +164,32 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   createSelectedRecipe() {
-    if (this.canCreateItem()) {
-      var rng = this.utilityService.getRandomNumber(0, 1);
-      if (rng >= this.alchemyService.getMaterialRetentionChance(this.selectedRecipe.quality)) {
-        this.spendResourcesOnItem();
-      }
-      this.alchemyService.initializeCreation(this.selectedRecipe, this.createAmount);
+    var confirm = false;
+    if (this.globalService.globalVar.alchemy.creatingRecipe) {
+      confirm = true;
     }
+    
+    if (confirm) {
+      var dialogRef = this.utilityService.openConfirmationDialog();
+
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (dialogResult && this.canCreateItem())
+          this.startRecipe();
+      });
+    }
+    else {
+      if (this.canCreateItem()) {
+        this.startRecipe();
+      }
+    }
+  }
+
+  startRecipe() {
+    var rng = this.utilityService.getRandomNumber(0, 1);
+    if (rng >= this.alchemyService.getMaterialRetentionChance(this.selectedRecipe.quality)) {
+      this.spendResourcesOnItem();
+    }
+    this.alchemyService.initializeCreation(this.selectedRecipe, this.createAmount);
   }
 
   canCreateItem() {
@@ -193,5 +213,9 @@ export class AlchemyViewComponent implements OnInit {
 
   getAmountCreated() {
     return this.globalService.globalVar.alchemy.alchemyCurrentAmountCreated;
+  }
+
+  getTotalItemToCreateAmount() {
+    return this.alchemyService.getAmountCanCreate(this.selectedRecipe);
   }
 }

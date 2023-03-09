@@ -2,13 +2,15 @@ import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as seedrandom from "seedrandom";
 import * as pluralize from 'pluralize';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utility/confirmation-box/confirmation-box.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilityService {
   //glossary
-  public activeTimeLimit = 1 * 20 * 60;
+  public activeTimeLimit = 1 * 30 * 60;
   public extraSpeedTimeLimit = 8 * 60 * 60;
 
   public quickAutoAttackSpeed = 5;
@@ -33,7 +35,7 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 385;
 
-  public godStatGainLevelIncrement = (1/14);
+  public godStatGainLevelIncrement = (1 / 14);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
@@ -50,12 +52,12 @@ export class UtilityService {
   public affinityRewardGodXpBonus = .1;
   public basePrayGodXpIncrease = 20;
 
-  public killCountDisplayEnemyStatsAbilities = 10;
-  public killCountDisplayBasicEnemyLoot = 30;
-  public killCountDisplayFullEnemyLoot = 50;
+  public killCountDisplayEnemyStatsAbilities = 1;
+  public killCountDisplayBasicEnemyLoot = 10;
+  public killCountDisplayFullEnemyLoot = 30;
 
   public overdriveDamageNeededToUnlockProtection = 100000;
-  public overdriveAttacksNeededToUnlockNature = 3000;
+  public overdriveAttacksNeededToUnlockNature = 50000;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
@@ -68,7 +70,7 @@ export class UtilityService {
   public preferredGodStartTime3 = 20;
   public preferredGodEndTime3 = 4;
 
-  constructor(public sanitizer: DomSanitizer) { }
+  constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
   getSanitizedHtml(text: string) {
     var sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(text));
@@ -278,6 +280,12 @@ export class UtilityService {
     if (text === "Vial of the Lethe")
       return "Vials of the Lethe";
 
+    if (text === "Vial of Lake Lerna")
+      return "Vials of the Lake Lerna";
+
+    if (text === "Vial of the Black Sea")
+      return "Vials of the Black Sea";
+
     if (text === "Essence of Fire")
       return "Essences of Fire";
 
@@ -285,5 +293,9 @@ export class UtilityService {
       return "Small Topazes";
 
     return pluralize(text);
+  }
+
+  openConfirmationDialog() {          
+    return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });  
   }
 }

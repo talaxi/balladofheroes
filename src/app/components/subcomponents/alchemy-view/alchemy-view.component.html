@@ -9,7 +9,8 @@
 </div>
 <hr />
 <div class="centeredText" *ngIf="creatingRecipe()">
-    <span class='offsetWidth' *ngIf="this.getTotalAmountToCreate() > 1"></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth"
+    <span class='offsetWidth' *ngIf="this.getTotalAmountToCreate() > 1"></span><span
+        class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth"
         *ngIf="this.getTotalAmountToCreate() > 1"><i>({{this.getAmountCreated() + 1}} of
             {{this.getTotalAmountToCreate()}})</i></span>
     <br />
@@ -52,7 +53,7 @@
             <br />
             <span [innerHtml]="getSelectedRecipeDescription()"></span>
             <hr />
-            <div *ngFor="let ingredient of this.selectedRecipe.ingredients; let i = index">                
+            <div *ngFor="let ingredient of this.selectedRecipe.ingredients; let i = index">
                 <app-resource-required-view [resource]="ingredient"></app-resource-required-view>
             </div>
             <br />
@@ -66,9 +67,16 @@
                     [ngClass]="{'filterActive': createAmount === 25}" (click)="changeCreateAmount(25)">25x</button>
                 <button class="buttonAsText clickableText filterOption"
                     [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100)">100x</button>
+                <button class="buttonAsText clickableText filterOption"
+                    [ngClass]="{'filterActive': createAmount !== 1 && createAmount !== 5 && createAmount !== 25 && createAmount !== 100 && createAmount === getTotalItemToCreateAmount()}"
+                    (click)="changeCreateAmount(getTotalItemToCreateAmount())">All</button>
             </div>
             <br />
             <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
         </div>
     </div>
 </div>
+
+<ng-template #confirmationBox>
+    <app-confirmation-box></app-confirmation-box>
+</ng-template>

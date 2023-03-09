@@ -60,14 +60,14 @@
                     <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="agilityPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Agility: </strong>
                         <span class="statValue">{{character.battleStats.agility | number : '1.0-0'}}</span></span>
+                    <br />                    
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="defensePopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Defense: </strong>
+                        <span class="statValue">{{character.battleStats.defense | number : '1.0-0'}}</span></span>
                     <br />
                     <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="luckPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Luck: </strong>
                         <span class="statValue">{{character.battleStats.luck | number : '1.0-0'}}</span></span>
-                    <br />
-                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="defensePopover">
-                        <strong [ngClass]="getCharacterColor()" class="statLabel">Defense: </strong>
-                        <span class="statValue">{{character.battleStats.defense | number : '1.0-0'}}</span></span>
                     <br />
                     <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="resistancePopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Resistance: </strong>

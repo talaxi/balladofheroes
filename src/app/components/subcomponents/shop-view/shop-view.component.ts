@@ -192,6 +192,8 @@ export class ShopViewComponent implements OnInit {
     this.shopItemCells = [];
     this.shopItemRows = [];
 
+    this.shopItems = this.shopItems.filter(item => this.balladService.findSubzone(item.originalStore)?.isAvailable);
+
     var filteredItems = this.filterItems(this.shopItems);
 
     var maxColumns = 4;
