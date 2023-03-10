@@ -8,6 +8,7 @@ import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model'
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { Zone } from 'src/app/models/zone/zone.model';
 import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { TutorialService } from '../global/tutorial.service';
@@ -267,7 +268,7 @@ export class AchievementService {
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
-      if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
+    if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
 
     if (tenSecondClear.bonusResources.length > 0)
@@ -383,5 +384,20 @@ export class AchievementService {
     var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);
 
     return subzoneRelatedAchievements.filter(item => !item.completed).length;
+  }
+
+  getCompletedAchievementPercentByZone(zone: Zone | undefined, achievements: Achievement[]) {
+    if (zone === undefined)
+      return 0;
+    
+    var relatedAchievements: Achievement[] = [];
+
+    zone.subzones.forEach(subzone => {
+      achievements.filter(item => item.relatedSubzone === subzone.type).forEach(achievement => {
+        relatedAchievements.push(achievement);
+      });
+    });
+
+    return relatedAchievements.filter(item => item.completed).length / relatedAchievements.length;
   }
 }

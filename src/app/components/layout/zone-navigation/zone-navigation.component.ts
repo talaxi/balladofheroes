@@ -11,6 +11,8 @@ import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
+import { FollowerData } from 'src/app/models/followers/follower-data.model';
+import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
@@ -61,6 +63,15 @@ export class ZoneNavigationComponent implements OnInit {
     private alchemyService: AlchemyService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {
+    //TODO: can get rid of this after implementing versioning  vvvvv    
+    if (this.globalService.globalVar.followerData === undefined)
+      this.globalService.globalVar.followerData = new FollowerData();
+    else if (this.globalService.globalVar.followerData.availableFollowers === 0) {
+      this.globalService.globalVar.followerData.availableFollowers = 1;
+      this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
+    }
+    //^^    
+
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
       this.autoProgress = false;
@@ -314,6 +325,29 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.settings.set("autoProgress", false);
   }
 
+  jumpToColiseum() {
+    var startingPoint = this.balladService.findSubzone(SubZoneEnum.ElysiumColiseum);
+    if (startingPoint !== undefined) {
+      this.balladService.setActiveSubZone(startingPoint.type);
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
+    }
+
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+
+    var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + startingPoint?.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+
+    this.globalService.globalVar.settings.set("autoProgress", false);
+  }
+
+  viewFollowers(content: any) {
+    this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
+  }
+
   getBalladClass(ballad: Ballad) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
@@ -505,6 +539,18 @@ export class ZoneNavigationComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  isColiseumAvailable() {
+    var coliseum = this.balladService.findSubzone(SubZoneEnum.ElysiumColiseum);
+    if (coliseum !== undefined && coliseum.isAvailable) {
+      return true;
+    }
+    return false;
+  }
+
+  areFollowersAvailable() {
+    return this.globalService.globalVar.followerData.availableFollowers > 0;
   }
 
   setupKeybinds(event: KeyboardEvent) {

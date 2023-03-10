@@ -118,11 +118,14 @@
                     <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
                         (click)="jumpToLatestShop()">Latest Town</button>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
-                        (click)="jumpToLatestGeneralStore()">Latest General Store</button>
-                    <br />
                     <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()"
                         (click)="jumpToPalaceOfHades()">Palace of Hades</button>
+                        <br/>
+                        <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()"
+                        (click)="jumpToColiseum()">Coliseum</button>
+                        <br/>
+                        <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
+                        (click)="viewFollowers(followers)">Followers</button>
                 </div>
                 <div class="peekResources centeredText">
                     <div class="textLeftAligned inlineBlock">
@@ -186,6 +189,12 @@
 <ng-template #alchemyRecipeBook>
     <div>
         <app-alchemy-view></app-alchemy-view>
+    </div>
+</ng-template>
+
+<ng-template #followers>
+    <div>
+        <app-follower-default-view></app-follower-default-view>
     </div>
 </ng-template>
 

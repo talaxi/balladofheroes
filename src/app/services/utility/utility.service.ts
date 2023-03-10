@@ -70,6 +70,8 @@ export class UtilityService {
   public preferredGodStartTime3 = 20;
   public preferredGodEndTime3 = 4;
 
+  public followerSearchZoneInterval = 60;
+
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
   getSanitizedHtml(text: string) {

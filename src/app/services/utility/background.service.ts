@@ -4,10 +4,17 @@ import { Character } from 'src/app/models/character/character.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
+import { FollowerActionEnum } from 'src/app/models/enums/follower-action-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { BalladService } from '../ballad/ballad.service';
 import { BattleService } from '../battle/battle.service';
+import { GameLogService } from '../battle/game-log.service';
+import { FollowersService } from '../followers/followers.service';
 import { GlobalService } from '../global/global.service';
+import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
 import { UtilityService } from './utility.service';
 
@@ -17,12 +24,14 @@ import { UtilityService } from './utility.service';
 export class BackgroundService {
 
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
-    private alchemyService: AlchemyService) { }
+    private alchemyService: AlchemyService, private followerService: FollowersService, private lookupService: LookupService,
+    private gameLogService: GameLogService, private balladService: BalladService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.alchemyService.handleAlchemyTimer(deltaTime);
     this.handleAltarEffectDurations(deltaTime);
+    this.handleFollowerSearch(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
 
@@ -38,8 +47,7 @@ export class BackgroundService {
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, undefined, party, enemies, deltaTime);
 
-        if (!isInTown)
-        {
+        if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
           this.handleAbilityCooldowns(partyMember, deltaTime);
         }
@@ -176,7 +184,7 @@ export class BackgroundService {
           a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
       });
       var target = party[0];
-      
+
       this.battleService.gainHp(target, effect.effectiveness);
     }
 
@@ -206,6 +214,44 @@ export class BackgroundService {
               });
           }
         }
+      });
+    }
+  }
+
+  handleFollowerSearch(deltaTime: number) {
+    //TODO: delete after implementing versioning
+    if (this.globalService.globalVar.timers.followerSearchZoneTimer === undefined)
+    {
+      this.globalService.globalVar.timers.followerSearchZoneTimer = 0;
+      this.globalService.globalVar.timers.followerSearchZoneTimerLength = 60;
+    }
+    // ^^
+
+    var hour = 1 * 60 * 60; //average per hour
+    var checkTime = this.globalService.globalVar.timers.followerSearchZoneTimerLength;
+    this.globalService.globalVar.timers.followerSearchZoneTimer += deltaTime;
+
+    if (this.globalService.globalVar.timers.followerSearchZoneTimer >= this.globalService.globalVar.timers.followerSearchZoneTimerLength) {      
+      this.globalService.globalVar.timers.followerSearchZoneTimer -= this.globalService.globalVar.timers.followerSearchZoneTimerLength;
+      this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.SearchingZone).forEach(follower => {
+        var rewards = this.followerService.getZoneSearchRewards(follower.assignedZone); //TODO: bring this out of the for loop? only if performance is poor
+        var zone = this.balladService.findZone(follower.assignedZone);
+        var zoneName = zone !== undefined ? zone.zoneName : "";
+
+        rewards.forEach(reward => {
+          var chance = reward.amount / (hour / checkTime); //average = amount per hour divided by how often we check
+          var rng = this.utilityService.getRandomNumber(0, 1);
+          var rewardAmount = 1;
+          
+          if (rng <= chance) {
+            var foundReward = new ResourceValue(reward.item, reward.type, rewardAmount);
+            if (this.globalService.globalVar.gameLogSettings.get("followerSearch")) {
+              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.lookupService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".");
+            }
+            this.lookupService.addLootToLog(foundReward.item, foundReward.amount);
+            this.lookupService.gainResource(foundReward);
+          }
+        });
       });
     }
   }

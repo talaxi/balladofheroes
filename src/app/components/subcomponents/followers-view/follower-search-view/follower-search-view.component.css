@@ -1,0 +1,12 @@
+.followerCount {
+    margin-left: 2rem;
+}
+
+.scrollable {
+    overflow-y: auto;
+}
+
+.zoneName {
+    color: var(--foreground-secondary);
+    font-weight: bold;
+}

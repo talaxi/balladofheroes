@@ -7,6 +7,7 @@ import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
+import { FollowerTabEnum } from 'src/app/models/enums/follower-tab-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
@@ -194,6 +195,7 @@ export class InitializationService {
   initializeSettings() {
     this.globalService.globalVar.settings.set("activeOverview", QuickViewEnum.Overview);
     this.globalService.globalVar.settings.set("activeLog", LogViewEnum.Tutorials);
+    this.globalService.globalVar.settings.set("activeFollowerTab", FollowerTabEnum.Overview);
     this.globalService.globalVar.settings.set("autoProgress", false);
     this.globalService.globalVar.settings.set("showOnlyUncompletedAchievements", false);
     this.globalService.globalVar.settings.set("achievementsPerPage", 5);
@@ -219,6 +221,8 @@ export class InitializationService {
     this.globalService.globalVar.gameLogSettings.set("alchemyCreation", true);
     this.globalService.globalVar.gameLogSettings.set("battleUpdates", true);
     this.globalService.globalVar.gameLogSettings.set("useBattleItem", true);
+    this.globalService.globalVar.gameLogSettings.set("followerSearch", true);
+    this.globalService.globalVar.gameLogSettings.set("followerPrayer", true);
   }
 
   initializeQuickView() {

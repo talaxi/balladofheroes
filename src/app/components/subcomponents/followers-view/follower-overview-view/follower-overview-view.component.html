@@ -1,0 +1,19 @@
+<div class="textCentered">
+    <span class="s2Heading">Assigned Followers: {{getAssignedFollowers()}} / {{getTotalFollowers()}}</span> <button class="buttonStyled" (click)="unassignAll()">Unassign All</button>
+    <br />
+    <br />
+    You can assign a follower to any zone that you have cleared. Gaining achievements in a zone will increase the yield
+    your followers may find.
+</div>
+<hr/>
+<div>
+    <span class="sectionHeaderText sectionHeading">search</span>
+    <br/>
+    <div class="sectionInfo" [innerHtml]="getSearchingOverviewText()">
+    </div>
+</div>
+<hr/>
+<div>
+    <span class="sectionHeaderText sectionHeading">prayer</span>
+    <br/>
+</div>

@@ -291,7 +291,10 @@ export class SubZone {
         return NotificationTypeEnum.Story;
     }
 
-    isSubzoneSideQuest(type: SubZoneEnum) {
+    isSubzoneSideQuest(type?: SubZoneEnum) {
+        if (type === undefined)
+            type = this.type;
+
         if (type === SubZoneEnum.CalydonAltarOfAsclepius) {
             return true;
         }

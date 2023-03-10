@@ -44,8 +44,7 @@ export class IndividualAchievementViewComponent implements OnInit {
 
     for (var i = 0; i < this.achievement.bonusResources.length; i++) {
       var resource = this.achievement.bonusResources[i];
-      description += this.lookupService.getItemDescription(resource.item);
-      console.log("Get description for " + resource.item);
+      description += this.lookupService.getItemDescription(resource.item);      
 
       if (i < this.achievement.bonusResources.length - 1)
       {

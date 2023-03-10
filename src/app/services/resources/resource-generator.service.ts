@@ -273,6 +273,14 @@ export class ResourceGeneratorService {
     }
 
     //materials
+    if (type === ItemsEnum.LightLeather)
+    {
+      return new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.Leather)
+    {
+      return new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, amount);
+    }
     if (type === ItemsEnum.Wax)
     {
       return new ResourceValue(ItemsEnum.Wax, ItemTypeEnum.CraftingMaterial, amount);

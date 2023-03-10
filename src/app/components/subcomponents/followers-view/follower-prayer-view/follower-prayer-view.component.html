@@ -1,0 +1,33 @@
+<div class="textCentered">
+    <span class="s2Heading">Unassigned Followers: {{getUnassignedFollowers()}} / {{getTotalFollowers()}}</span>
+    <br />
+    <br />
+    You can assign a follower to any zone that you have cleared. Gaining achievements in a zone will increase the yield
+    your followers may find.
+</div>
+<hr />
+<br />
+<div>
+    <span class="sectionHeaderText sectionHeading">activate</span>
+    <br />
+    <div class="sectionInfo">
+        <span class="s4Heading smallCaps zoneName">Small Altars</span>
+        <span class="s4Heading followerCount">
+            <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Activate, altarType.Small)"
+                (click)="decrementPrayerFollowers(followerPrayerType.Activate, altarType.Small)">-</button>
+            {{getFollowersAssignedToPrayer(followerPrayerType.Activate, altarType.Small)}}
+            <button class='buttonStyled' [disabled]="!canIncrement(followerPrayerType.Activate, altarType.Small)"
+                (click)="incrementPrayerFollowers(followerPrayerType.Activate, altarType.Small)">+</button>
+        </span>
+        <br />
+        Each follower provides a 10% chance per minute to activate a random Small Altar that has met its necessary
+        conditions.
+    </div>
+</div>
+<hr />
+<div>
+    <span class="sectionHeaderText sectionHeading">pray</span>
+    <br />
+    <div class="sectionInfo">
+    </div>
+</div>

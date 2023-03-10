@@ -81,7 +81,7 @@
 
 :root {
   /* Colors */
-  --foreground-secondary: #6D8EA7; /* old: 6B8CA5 */ 
+  --foreground-secondary: #6D8EAA; /* old: 6B8CA5 */ 
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
@@ -153,6 +153,7 @@
   --chthonicFavorColor: #ABB5DC;
   --chthonicPowerColor: #83C2A6;
   --overdriveColor: #FA989E;
+  --followerColor: #3DB6D1;
 
   --barrierColor: #0FCCC6;
 
@@ -561,6 +562,10 @@ html, body { height: 100%; }
   color: var(--overdriveColor);
 }
 
+.followerText {
+  color: var(--followerColor);
+}
+
 .tutorialText {
   font-weight: bold;
   font-style: italic;
@@ -958,4 +963,8 @@ button {
 .commonCharacterText {
   font-weight: bold;
   color: var(--foreground-accent);
+}
+
+button:disabled {
+  opacity: .5;
 }
