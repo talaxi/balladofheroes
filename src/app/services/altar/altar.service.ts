@@ -8,6 +8,7 @@ import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model'
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { AltarPrayOptionsEnum } from 'src/app/models/enums/altar-pray-options-enum.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -36,12 +37,12 @@ export class AltarService {
     return altar;
   }
 
-  getNewSmallAltar(specifiedGod: GodEnum = GodEnum.None) {
+  getNewSmallAltar(specifiedGod: GodEnum = GodEnum.None, noRepeatingAltars: boolean = true) {
     var altar = new AltarInfo();
 
     altar.type = AltarEnum.Small;
     if (specifiedGod === GodEnum.None)
-      altar.god = this.lookupService.getRandomGodEnum(true);
+      altar.god = this.lookupService.getRandomGodEnum(noRepeatingAltars);
     else
       altar.god = specifiedGod;
     altar.condition = this.getRandomSmallAltarCondition();
@@ -119,7 +120,7 @@ export class AltarService {
     return text;
   }
 
-  pray(altar: AltarInfo) {
+  pray(altar: AltarInfo, comingFromFollowers: boolean = false, followersActivatingAltar: boolean = false) {
     if (altar.type === AltarEnum.Small) {
       var effect = this.getRandomEffect(altar);
       this.setAltarEffect(effect, altar);
@@ -142,9 +143,23 @@ export class AltarService {
           }
         }
 
-        if (this.globalService.globalVar.gameLogSettings.get("prayToAltar")) {
-          var gameLogEntry = "You pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon. <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+        if (comingFromFollowers) {
+          if (this.globalService.globalVar.gameLogSettings.get("followerPrayer")) {
+            if (followersActivatingAltar) {
+              var gameLogEntry = "Your followers activate your altar to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+            }
+            else {
+              var gameLogEntry = "Your followers pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+            }
+          }
+        }
+        else {
+          if (this.globalService.globalVar.gameLogSettings.get("prayToAltar")) {
+            var gameLogEntry = "You pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+          }
         }
       }
 
@@ -291,15 +306,29 @@ export class AltarService {
       var effectivenessIncreaseCount = Math.floor(god.affinityLevel / 4);
       if (god.affinityLevel % 4 >= 2)
         effectivenessIncreaseCount += 1;
-      
-      if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1)
-      {        
+
+      if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1) {
         altarEffect.effectiveness = (altarEffect.effectiveness - 1) * (1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness)) + 1;
       }
       else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1)
         altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness)));
       else
-        altarEffect.effectiveness *= 1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness);            
+        altarEffect.effectiveness *= 1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness);
+
+      var priest = this.globalService.getActivePartyCharacters(true).find(member => member.type === CharacterEnum.Priest);
+      if (priest !== undefined) {
+        var faith = priest.abilityList.find(item => item.name === "Faith" && item.isAvailable);
+        if (faith !== undefined) {
+          //console.log(altarEffect.effectiveness + " * " + faith.effectiveness + " = " + altarEffect.effectiveness * faith.effectiveness);
+          if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1) {
+            altarEffect.effectiveness = (altarEffect.effectiveness - 1) * (faith.effectiveness) + 1;
+          }
+          else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1)
+            altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (faith.effectiveness));
+          else
+            altarEffect.effectiveness *= faith.effectiveness;    
+        }
+      }
     }
 
     if (altar === this.globalService.globalVar.altars.altar1)

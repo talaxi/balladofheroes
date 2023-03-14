@@ -1,4 +1,7 @@
 import { Component } from '@angular/core';
+import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
+import { FollowerActionEnum } from 'src/app/models/enums/follower-action-enum.model';
+import { FollowerPrayerTypeEnum } from 'src/app/models/enums/follower-prayer-type-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
@@ -20,6 +23,10 @@ export class FollowerSearchViewComponent {
     private utilityService: UtilityService, private balladService: BalladService, private achievementService: AchievementService) { }
 
   ngOnInit(): void {
+  }
+
+  getAssignedFollowers() {
+    return this.followerService.getAssignedFollowers();
   }
 
   getUnassignedFollowers() {
@@ -47,7 +54,7 @@ export class FollowerSearchViewComponent {
   }
 
   canIncrement(type: ZoneEnum) {
-    return this.followerService.canIncrement();
+    return this.followerService.canIncrementZoneSearch(type);
   }
 
   getRewardLevel(type: ZoneEnum) {
@@ -60,6 +67,10 @@ export class FollowerSearchViewComponent {
 
   getFollowersAssignedToZone(type: ZoneEnum) {
     return this.followerService.getFollowersAssignedToZone(type);
+  }
+
+  getMaxFollowersAssignedToZone(type: ZoneEnum) {
+    return this.followerService.getMaxFollowersAssignedToZone(type);
   }
 
   getZoneSearchRewards(type: ZoneEnum) {
@@ -76,5 +87,14 @@ export class FollowerSearchViewComponent {
     }
 
     return rewardDescription;
+  }
+
+  unassignAll() {
+    this.globalService.globalVar.followerData.followers.forEach(follower => {
+      follower.assignedTo = FollowerActionEnum.None;
+      follower.assignedZone = ZoneEnum.None;
+      follower.assignedAltarType = AltarEnum.None;
+      follower.assignedPrayerType = FollowerPrayerTypeEnum.None;
+    });
   }
 }

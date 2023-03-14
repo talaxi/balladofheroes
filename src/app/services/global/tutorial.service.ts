@@ -55,6 +55,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.SideQuests) {
       text = "An orange notification icon means there is a side quest available. You do not need to follow the path of a side quest to progress the story, but typically there will be a useful reward at the end.";
     }
+    else if (type === TutorialTypeEnum.Followers) {
+      text = "Your triumphs have inspired the people of Greece and have motivated some to follow you. Use the Followers menu to assign followers to search completed zones for items or pray to the gods for boons.";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

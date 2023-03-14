@@ -1,14 +1,18 @@
 import { Injectable } from '@angular/core';
 import { AltarEffect } from 'src/app/models/altar/altar-effect.model';
+import { AltarInfo } from 'src/app/models/altar/altar-info.model';
 import { Character } from 'src/app/models/character/character.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
+import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { FollowerActionEnum } from 'src/app/models/enums/follower-action-enum.model';
+import { FollowerPrayerTypeEnum } from 'src/app/models/enums/follower-prayer-type-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { AltarService } from '../altar/altar.service';
 import { BalladService } from '../ballad/ballad.service';
 import { BattleService } from '../battle/battle.service';
 import { GameLogService } from '../battle/game-log.service';
@@ -25,13 +29,14 @@ export class BackgroundService {
 
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
     private alchemyService: AlchemyService, private followerService: FollowersService, private lookupService: LookupService,
-    private gameLogService: GameLogService, private balladService: BalladService) { }
+    private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.alchemyService.handleAlchemyTimer(deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
+    this.handleFollowerPrayer(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
 
@@ -220,8 +225,7 @@ export class BackgroundService {
 
   handleFollowerSearch(deltaTime: number) {
     //TODO: delete after implementing versioning
-    if (this.globalService.globalVar.timers.followerSearchZoneTimer === undefined)
-    {
+    if (this.globalService.globalVar.timers.followerSearchZoneTimer === undefined) {
       this.globalService.globalVar.timers.followerSearchZoneTimer = 0;
       this.globalService.globalVar.timers.followerSearchZoneTimerLength = 60;
     }
@@ -231,7 +235,7 @@ export class BackgroundService {
     var checkTime = this.globalService.globalVar.timers.followerSearchZoneTimerLength;
     this.globalService.globalVar.timers.followerSearchZoneTimer += deltaTime;
 
-    if (this.globalService.globalVar.timers.followerSearchZoneTimer >= this.globalService.globalVar.timers.followerSearchZoneTimerLength) {      
+    if (this.globalService.globalVar.timers.followerSearchZoneTimer >= this.globalService.globalVar.timers.followerSearchZoneTimerLength) {
       this.globalService.globalVar.timers.followerSearchZoneTimer -= this.globalService.globalVar.timers.followerSearchZoneTimerLength;
       this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.SearchingZone).forEach(follower => {
         var rewards = this.followerService.getZoneSearchRewards(follower.assignedZone); //TODO: bring this out of the for loop? only if performance is poor
@@ -242,7 +246,7 @@ export class BackgroundService {
           var chance = reward.amount / (hour / checkTime); //average = amount per hour divided by how often we check
           var rng = this.utilityService.getRandomNumber(0, 1);
           var rewardAmount = 1;
-          
+
           if (rng <= chance) {
             var foundReward = new ResourceValue(reward.item, reward.type, rewardAmount);
             if (this.globalService.globalVar.gameLogSettings.get("followerSearch")) {
@@ -252,6 +256,57 @@ export class BackgroundService {
             this.lookupService.gainResource(foundReward);
           }
         });
+      });
+    }
+  }
+
+  handleFollowerPrayer(deltaTime: number) {
+    if (this.globalService.globalVar.timers.followerPrayerTimer === undefined) {
+      this.globalService.globalVar.timers.followerPrayerTimer = 0;
+      this.globalService.globalVar.timers.followerPrayerTimerLength = 60;
+    }
+
+    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;    
+    if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {
+      this.globalService.globalVar.timers.followerPrayerTimer -= this.globalService.globalVar.timers.followerPrayerTimerLength;
+      this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.Praying).forEach(follower => {
+        if (follower.assignedPrayerType === FollowerPrayerTypeEnum.Activate) {
+          if (follower.assignedAltarType === AltarEnum.Small) {
+            var chance = this.utilityService.smallAltarActivationChancePerFollower; //default is 10%
+            var rng = this.utilityService.getRandomNumber(0, 1);
+            
+            if (rng <= chance) {
+              //find available altar, activate it
+              var altarOptions: AltarInfo[] = [];
+              if (this.globalService.globalVar.altars.altar1 !== undefined && this.globalService.globalVar.altars.altar1.type === follower.assignedAltarType &&
+                this.globalService.globalVar.altars.altar1.conditionCount >= this.globalService.globalVar.altars.altar1.conditionMax)
+                altarOptions.push(this.globalService.globalVar.altars.altar1);
+              if (this.globalService.globalVar.altars.altar2 !== undefined && this.globalService.globalVar.altars.altar2.type === follower.assignedAltarType &&
+                this.globalService.globalVar.altars.altar2.conditionCount >= this.globalService.globalVar.altars.altar2.conditionMax)
+                altarOptions.push(this.globalService.globalVar.altars.altar2);
+              if (this.globalService.globalVar.altars.altar3 !== undefined && this.globalService.globalVar.altars.altar3.type === follower.assignedAltarType &&
+                this.globalService.globalVar.altars.altar3.conditionCount >= this.globalService.globalVar.altars.altar3.conditionMax)
+                altarOptions.push(this.globalService.globalVar.altars.altar3);
+
+              if (altarOptions.length > 0)
+              {
+                var altarRng = this.utilityService.getRandomInteger(0, altarOptions.length - 1);
+                this.altarService.pray(altarOptions[altarRng], true, true);
+              }
+            }
+          }
+        }
+        else if (follower.assignedPrayerType === FollowerPrayerTypeEnum.Pray) {
+          if (follower.assignedAltarType === AltarEnum.Small) {
+            var chance = this.utilityService.smallAltarPrayChancePerFollower; //default is 1%
+            var rng = this.utilityService.getRandomNumber(0, 1);
+            
+            if (rng <= chance) {              
+              var altar = this.altarService.getNewSmallAltar(undefined, false);                                            
+              this.altarService.pray(altar, true);              
+            }
+          }
+        }
       });
     }
   }

@@ -135,7 +135,8 @@ export class BattleService {
           this.battle.activeTournament.tournamentTimer += deltaTime;
 
           if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
-            this.battle.activeTournament = new ColiseumTournament();
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + " of " + this.battle.activeTournament.maxRounds + ".");
+            this.battle.activeTournament = new ColiseumTournament();            
             this.coliseumService.handleColiseumLoss();
           }
         }
@@ -609,7 +610,7 @@ export class BattleService {
         if (Math.round(healAmount) > 0) {
           if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
             (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong> gains " + Math.round(healAmount) + " HP.";
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong> gains " + Math.round(healAmount) + " HP" + (instantHeal.associatedAbilityName !== undefined && instantHeal.associatedAbilityName !== "" ? " from " + instantHeal.associatedAbilityName : "") + ".";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
         }
@@ -904,6 +905,9 @@ export class BattleService {
           if (instantEffect.type === StatusEffectEnum.InstantHeal) {
             var healAmount = damageDealt * instantEffect.effectiveness * (1 + member.battleStats.healingDone);
 
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong> gains " + Math.round(healAmount) + " HP" + (instantEffect.associatedAbilityName !== undefined && instantEffect.associatedAbilityName !== "" ? " from " + instantEffect.associatedAbilityName : "") + ".";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+
             if (member !== undefined)
               this.gainHp(member, healAmount);
           }
@@ -1092,13 +1096,13 @@ export class BattleService {
     var effectiveness = ability.effectiveness;
 
     //check for faith
-    var priest = party.find(member => member.type === CharacterEnum.Priest);
+    /*var priest = party.find(member => member.type === CharacterEnum.Priest);
     if (priest !== undefined) {
       var faith = priest.abilityList.find(item => item.name === "Faith" && item.isAvailable);
       if (faith !== undefined && isGodAbility) {
         effectiveness *= faith.effectiveness;
       }
-    }
+    }*/
 
     return effectiveness;
   }
@@ -1311,10 +1315,13 @@ export class BattleService {
       //attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);      
     }
 
-    //2 * Attack^2 / (Attack + Defense)    
+    //2 * Attack^2 / (Attack + Defense)      
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementalDamageIncrease * elementalDamageDecrease
       * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
+      
+      //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
+      //+ " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     if (damage < 0)
       damage = 0;
@@ -1933,9 +1940,11 @@ export class BattleService {
   }
 
   unlockNextSubzone(subZone: SubZone) {
+    var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);    
+
     var subZoneUnlocks = this.subzoneGeneratorService.getSubZoneUnlocks(subZone.type);
     var zoneUnlocks = this.subzoneGeneratorService.getZoneUnlocks(subZone.type);
-    var balladUnlocks = this.subzoneGeneratorService.getBalladUnlocks(subZone.type);
+    var balladUnlocks = this.subzoneGeneratorService.getBalladUnlocks(subZone.type, underworld === undefined ? false : underworld.isAvailable);
 
     if (balladUnlocks !== undefined && balladUnlocks.length > 0) {
       balladUnlocks.forEach(ballad => {

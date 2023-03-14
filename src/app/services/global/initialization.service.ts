@@ -513,7 +513,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 49;
+      var godLevel = 1999;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

@@ -1,12 +1,20 @@
-.followerCount {
-    margin-left: 2rem;
-}
+
 
 .scrollable {
     overflow-y: auto;
 }
 
 .zoneName {
-    color: var(--foreground-secondary);
+    color: var(--followerColor);
     font-weight: bold;
+}
+
+.headerSpacing {
+    min-width: 40%;
+    display: inline-block;
+}
+
+.buttonSpaced {
+    width: 25%;
+    display: inline-block;
 }

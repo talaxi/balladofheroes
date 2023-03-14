@@ -33,7 +33,7 @@ export class UtilityService {
   public godAbility3Level = 75;
   public permanentPassiveGodLevel = 125;
   public permanentGodAbility2Level = 175;
-  public permanentGodAbility3Level = 385;
+  public permanentGodAbility3Level = 375;
 
   public godStatGainLevelIncrement = (1 / 14);
   public godStatGainBaseAmount = 6;
@@ -57,7 +57,7 @@ export class UtilityService {
   public killCountDisplayFullEnemyLoot = 30;
 
   public overdriveDamageNeededToUnlockProtection = 100000;
-  public overdriveAttacksNeededToUnlockNature = 50000;
+  public overdriveAttacksNeededToUnlockNature = 75000;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
@@ -71,6 +71,8 @@ export class UtilityService {
   public preferredGodEndTime3 = 4;
 
   public followerSearchZoneInterval = 60;
+  public smallAltarActivationChancePerFollower = .1;
+  public smallAltarPrayChancePerFollower = .01;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 

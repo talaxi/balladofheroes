@@ -12,5 +12,6 @@ export enum TutorialTypeEnum {
   Achievements,
   QuickView,
   Notifications,
-  SideQuests
+  SideQuests,
+  Followers
 }

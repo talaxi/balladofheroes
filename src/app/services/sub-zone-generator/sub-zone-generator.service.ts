@@ -1312,13 +1312,13 @@ export class SubZoneGeneratorService {
     return rewards;
   }
 
-  getBalladUnlocks(type: SubZoneEnum) {
-    var balladEnums: BalladEnum[] = [];
+  getBalladUnlocks(type: SubZoneEnum, isUnderworldAvailable: boolean) {
+    var balladEnums: BalladEnum[] = [];    
 
     if (type === SubZoneEnum.AigosthenaHeartOfTheWoods) {
       balladEnums.push(BalladEnum.Gorgon);
-    }
-    if (type === SubZoneEnum.LibyaIsleCenter) {
+    }    
+    if (type === SubZoneEnum.LibyaIsleCenter && !isUnderworldAvailable) {
       balladEnums.push(BalladEnum.Labors);
     }
     if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {

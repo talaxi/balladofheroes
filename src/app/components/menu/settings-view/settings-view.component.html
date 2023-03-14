@@ -4,6 +4,7 @@
         <span>Story speed</span>
         <br/>
         <mat-button-toggle-group [(ngModel)]="storyStyle" aria-label="Font Style" (change)="setStoryStyle()">
+            <mat-button-toggle customToolTip [contentTemplate]="storyStylePausePopover" [value]="storyStyleEnum.Pause">Pause</mat-button-toggle>
             <mat-button-toggle [value]="storyStyleEnum.Slow">Slow</mat-button-toggle>
             <mat-button-toggle [value]="storyStyleEnum.Medium">Medium</mat-button-toggle>
             <mat-button-toggle [value]="storyStyleEnum.Fast">Fast</mat-button-toggle>
@@ -63,5 +64,11 @@
 <ng-template #keybindContent>
     <div>
         <app-update-keybinds-view></app-update-keybinds-view>
+    </div>
+</ng-template>
+
+<ng-template #storyStylePausePopover>
+    <div>
+        Pause story scenes when they come up. To advance, press the continue button.
     </div>
 </ng-template>

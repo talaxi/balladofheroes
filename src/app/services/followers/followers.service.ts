@@ -35,13 +35,11 @@ export class FollowersService {
     var clearedZones: Zone[] = [];
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.isAvailable) {
-        ballad.zones.forEach(zone => {
-          if (zone.isAvailable && !zone.subzones.some(item => !item.isTown && !item.isSubzoneSideQuest() && item.victoryCount < item.victoriesNeededToProceed)) {
-            clearedZones.push(zone);
-          }
-        })
-      }
+      ballad.zones.forEach(zone => {
+        if (zone.isAvailable && !zone.subzones.some(item => !item.isTown && !item.isSubzoneSideQuest() && item.victoryCount < item.victoriesNeededToProceed)) {
+          clearedZones.push(zone);
+        }
+      });
     });
 
     return clearedZones;
@@ -55,6 +53,8 @@ export class FollowersService {
 
     unassignedFollower.assignedTo = FollowerActionEnum.SearchingZone;
     unassignedFollower.assignedZone = type;
+    unassignedFollower.assignedPrayerType = FollowerPrayerTypeEnum.None;
+    unassignedFollower.assignedAltarType = AltarEnum.None;
   }
 
   decrementZoneFollowers(type: ZoneEnum) {
@@ -66,6 +66,8 @@ export class FollowersService {
 
     assignedFollower.assignedTo = FollowerActionEnum.None;
     assignedFollower.assignedZone = ZoneEnum.None;
+    assignedFollower.assignedPrayerType = FollowerPrayerTypeEnum.None;
+    assignedFollower.assignedAltarType = AltarEnum.None;
   }
 
   canDecrement(type: ZoneEnum) {
@@ -73,6 +75,14 @@ export class FollowersService {
       .find(follower => follower.assignedTo === FollowerActionEnum.SearchingZone && follower.assignedZone === type);
 
     return assignedFollower !== undefined;
+  }
+
+  canIncrementZoneSearch(type: ZoneEnum) {
+    var unassignedFollower = this.globalService.globalVar.followerData.followers.find(follower => follower.assignedTo === FollowerActionEnum.None);
+    var assignedFollowers = this.globalService.globalVar.followerData.followers
+    .filter(follower => follower.assignedTo === FollowerActionEnum.SearchingZone && follower.assignedZone === type);
+
+    return unassignedFollower !== undefined && assignedFollowers.length < this.getMaxFollowersAssignedToZone(type);
   }
 
   canIncrement() {
@@ -86,9 +96,13 @@ export class FollowersService {
       .filter(follower => follower.assignedTo === FollowerActionEnum.SearchingZone && follower.assignedZone === type).length;
   }
 
+  getMaxFollowersAssignedToZone(type: ZoneEnum) {
+    return this.getZoneAchievementRewardLevel(type);
+  }
+
   getFollowersAssignedToPrayer(followerPrayerType: FollowerPrayerTypeEnum, altarType: AltarEnum) {
     return this.globalService.globalVar.followerData.followers
-      .filter(follower => follower.assignedTo === FollowerActionEnum.Praying && 
+      .filter(follower => follower.assignedTo === FollowerActionEnum.Praying &&
         follower.assignedPrayerType === followerPrayerType && follower.assignedAltarType === altarType).length;
   }
 
@@ -112,7 +126,6 @@ export class FollowersService {
     var rewards: ResourceValue[] = [];
     if (type === ZoneEnum.Aigosthena) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.LightLeather, 3));
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.LightLeather, 3)); //TODO: DELETE
       if (rewardLevel >= 2)
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 5));
       if (rewardLevel >= 3)
@@ -123,12 +136,11 @@ export class FollowersService {
     }
     if (type === ZoneEnum.Dodona) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 3));
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.LightLeather, 3)); //TODO: DELETE
       if (rewardLevel >= 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Leather, 3));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Leather, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 3));
       }
       if (rewardLevel >= 4) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.LamiaHeart, 2));
@@ -208,6 +220,7 @@ export class FollowersService {
     unassignedFollower.assignedTo = FollowerActionEnum.Praying;
     unassignedFollower.assignedPrayerType = followerPrayerType;
     unassignedFollower.assignedAltarType = altarType;
+    unassignedFollower.assignedZone = ZoneEnum.None;
   }
 
   decrementPrayerFollowers(followerPrayerType: FollowerPrayerTypeEnum, altarType: AltarEnum) {
@@ -220,6 +233,8 @@ export class FollowersService {
 
     assignedFollower.assignedTo = FollowerActionEnum.None;
     assignedFollower.assignedZone = ZoneEnum.None;
+    assignedFollower.assignedPrayerType = FollowerPrayerTypeEnum.None;
+    assignedFollower.assignedAltarType = AltarEnum.None;
   }
 
   canDecrementPrayerFollowers(followerPrayerType: FollowerPrayerTypeEnum, altarType: AltarEnum) {
@@ -228,5 +243,19 @@ export class FollowersService {
         follower.assignedAltarType === altarType);
 
     return assignedFollower !== undefined;
+  }
+
+  getPriceForNextFollower() {
+    var repeaterTotal = Math.floor(this.globalService.globalVar.followerData.numberOfFollowersPurchased / 3);
+    var repeaterOrder = this.globalService.globalVar.followerData.numberOfFollowersPurchased % 3;
+
+    if (repeaterOrder === 0)
+      return 10 * Math.pow(10, 2 + repeaterTotal);
+    if (repeaterOrder === 1)
+      return 25 * Math.pow(10, 2 + repeaterTotal);
+    if (repeaterOrder === 2)
+      return 50 * Math.pow(10, 2 + repeaterTotal);
+
+    return 0;
   }
 }

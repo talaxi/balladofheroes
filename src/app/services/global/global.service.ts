@@ -301,9 +301,9 @@ export class GlobalService {
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       divineStrike.cooldown = divineStrike.currentCooldown = 33;
       divineStrike.dealsDirectDamage = true;
-      divineStrike.effectiveness = 1.6;
+      divineStrike.effectiveness = 1.65;
       divineStrike.elementalType = ElementalTypeEnum.Holy;
-      divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
+      divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Divine Strike"));
       god.abilityList.push(divineStrike);
 
       var aegis = new Ability();
@@ -332,7 +332,7 @@ export class GlobalService {
       secondWind.isAvailable = false;
       secondWind.isPassive = true;
       secondWind.isActivatable = false;
-      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, -1, 3, false, true));
+      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, -1, 3, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Second Wind"));
       god.abilityList.push(secondWind);
     }
 
@@ -597,7 +597,7 @@ export class GlobalService {
 
   createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean,
     isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false,
-    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0, targetsAllies: boolean = false) {
+    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0, targetsAllies: boolean = false, associatedAbilityName: string = "") {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -611,6 +611,7 @@ export class GlobalService {
     statusEffect.element = element;
     statusEffect.triggersEvery = triggersEvery;
     statusEffect.targetsAllies = targetsAllies;
+    statusEffect.associatedAbilityName = associatedAbilityName;
 
     if (duration === -1)
       statusEffect.isPermanent = true;
@@ -1220,13 +1221,13 @@ export class GlobalService {
     if (ability.ability.requiredLevel === this.utilityService.defaultGodAbilityLevel) {
       this.upgradeGodAbility1(god);
     }
-    else if (ability.ability.requiredLevel === this.utilityService.godAbility2Level) {
+    else if (ability.ability.requiredLevel === this.utilityService.godAbility2Level) {      
       this.upgradeGodAbility2(god);
     }
-    else if (ability.ability.requiredLevel === this.utilityService.godAbility3Level) {
+    else if (ability.ability.requiredLevel === this.utilityService.godAbility3Level) {      
       this.upgradeGodAbility3(god);
     }
-    else if (ability.ability.requiredLevel === this.utilityService.godPassiveLevel) {
+    else if (ability.ability.requiredLevel === this.utilityService.godPassiveLevel) {      
       this.upgradeGodPassive(god);
     }
 
@@ -1250,7 +1251,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 40)
         userGainsEffect.effectiveness += .05;
       else
-        ability.effectiveness += .25;
+        ability.effectiveness += .2;
     }
     else if (god.type === GodEnum.Artemis) {
       //every 10 upgrades until level 100, reduce cooldown
@@ -1279,7 +1280,7 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .05;
+        userGainsEffect.effectiveness += .025;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1294,7 +1295,7 @@ export class GlobalService {
     if (ability === undefined)
       return;
 
-    ability.abilityUpgradeLevel += 1;
+    ability.abilityUpgradeLevel += 1;    
     var userGainsEffect = ability.userEffect[0];
     var userGainsSecondEffect = ability.userEffect[1];
     var targetGainsEffect = ability.targetEffect[0];
@@ -1303,12 +1304,12 @@ export class GlobalService {
       //30 levels of reducing cooldown to 45 seconds
       if (ability.abilityUpgradeLevel % 3 === 1 && ability.abilityUpgradeLevel <= 90)
         ability.cooldown -= .5;
-      //30 levels of increasuing duration to 14 seconds
+      //30 levels of increasing duration to 14 seconds
       else if (ability.abilityUpgradeLevel % 3 === 2 && ability.abilityUpgradeLevel <= 90)
         userGainsEffect.duration += .2;
       else
-        //40 levels of increasing effectiveness to 60% reduction
-        userGainsEffect.effectiveness -= .01;
+        //40 levels of increasing effectiveness to 70% reduction
+        userGainsEffect.effectiveness -= .0125;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1326,8 +1327,8 @@ export class GlobalService {
         userGainsSecondEffect.duration += .5;
       }
       else {
-        userGainsEffect.effectiveness += .025;
-        userGainsSecondEffect.effectiveness += .025;
+        userGainsEffect.effectiveness += .01;
+        userGainsSecondEffect.effectiveness += .01;
       }
     }
     else if (god.type === GodEnum.Apollo) {
@@ -1337,7 +1338,7 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .05;
+        userGainsEffect.effectiveness += .025;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1352,7 +1353,7 @@ export class GlobalService {
     if (ability === undefined)
       return;
 
-    ability.abilityUpgradeLevel += 1;
+    ability.abilityUpgradeLevel += 1;    
     var userGainsEffect = ability.userEffect[0];
     var targetGainsEffect = ability.targetEffect[0];
 
@@ -1390,7 +1391,7 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .05;
+        userGainsEffect.effectiveness += .025;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1410,7 +1411,9 @@ export class GlobalService {
 
     if (god.type === GodEnum.Athena) {
       //TODO: bigger boost at 10s or something maybe?
-      if (ability.abilityUpgradeLevel <= 100)
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.effectiveness *= 2;
+      else if (ability.abilityUpgradeLevel <= 100)
         userGainsEffect.effectiveness += 3;
     }
     else if (god.type === GodEnum.Artemis) {
@@ -1425,7 +1428,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= 2;
       else
-        ability.effectiveness += .15;
+        ability.effectiveness += .075;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1560,7 +1563,7 @@ export class GlobalService {
       increaseType = GodLevelIncreaseEnum.PermanentAbility;
     }
     else if ((level === 50 || level === 100 || level === 150 || level === 200 ||
-      (level > 200 && level <= 500 && level % 25 === 0))) {
+      (level > 200 && level <= 500 && level % 50 === 0))) { //TODO: % 50 was % 25, is this correct?
       if (this.isGodPermanentStatStillObtainable(god, level))
         increaseType = GodLevelIncreaseEnum.PermanentStats;
       else
@@ -1593,20 +1596,19 @@ export class GlobalService {
       ability = passiveAbility;
     }
     else if (godLevel === 25) {
-      ability = passiveAbility;
+      ability = defaultAbility;
       upgradeLevel = 2;
     }
     else if (godLevel === 30) {
       ability = ability2;
-      upgradeLevel = 2;
     }
     else if (godLevel === 35) {
       ability = passiveAbility;
-      upgradeLevel = 3;
+      upgradeLevel = 2;
     }
     else if (godLevel === 40) {
       ability = ability2;
-      upgradeLevel = 3;
+      upgradeLevel = 2;
     }
     else if (godLevel === 45) {
       ability = defaultAbility;
@@ -1614,7 +1616,7 @@ export class GlobalService {
     }
     else if (godLevel === 55) {
       ability = ability2;
-      upgradeLevel = 4;
+      upgradeLevel = 3;
     }
     else if (godLevel === 60) {
       ability = defaultAbility;
@@ -1622,36 +1624,77 @@ export class GlobalService {
     }
     else if (godLevel === 65) {
       ability = passiveAbility;
-      upgradeLevel = 4;
+      upgradeLevel = 3;
     }
     else if (godLevel === 70) {
       ability = defaultAbility;
       upgradeLevel = 5;
     }
     else {
-      //5 4 4 1 at this point
+      var repeaterLevelStart = 75;
+
+      //5 3 3 1 at this point
       //needs to rotate 3 abilities twice then passive, then repeat
-      var repeaterLevel = (godLevel - 70) % 35;
-      var repeaterCount = Math.ceil((godLevel - 70) / 35);
+      var repeaterLevel = (godLevel - repeaterLevelStart) % 35;
+      var repeaterCount = Math.ceil((godLevel - repeaterLevelStart) / 35);
+      var permanentStatSlotCount = 0;//ability upgrades are ignored and permanent stats are gained instead
+      var maxPermanentStatLevel = 500; //permanent stats are no longer a thing at 500 but may change in the future
+      var repeaterCheck1 = 0;
+      var repeaterCheck2 = 0;
+
+      //repeater levels 10 and 25
+      //does not match on god level 100 (30) and does match on 150 (80)
+
       //starts at 75 aka 5 here
       //a1 upgrade at 5 and 20, a2 at 10 and 25, a3 at 15 and 30, passive at 35 (or 0 for mod)
       //at a certain cut off level this might change because certain abilities can only grow so much like athena a2
       if (repeaterLevel === 0) {
         ability = passiveAbility;
         upgradeLevel = repeaterCount + 3;
+
+        repeaterCheck1 = 0;
+        repeaterCheck2 = -100; //doesn't repeat a second time
       }
       else if (repeaterLevel === 5 || repeaterLevel === 20) {
         ability = defaultAbility;
-        upgradeLevel = repeaterLevel === 5 ? repeaterCount + 5 : repeaterCount + 5;
+        upgradeLevel = repeaterLevel === 5 ? ((repeaterCount - 1) * 2) + 6 : ((repeaterCount - 1) * 2) + 7;
+
+        repeaterCheck1 = 5;
+        repeaterCheck2 = 20;
       }
       else if (repeaterLevel === 10 || repeaterLevel === 25) {
         ability = ability2;
-        upgradeLevel = repeaterLevel === 10 ? repeaterCount + 3 : repeaterCount + 4;
+        upgradeLevel = repeaterLevel === 10 ? ((repeaterCount - 1) * 2) + 4 : ((repeaterCount - 1) * 2) + 5;
+
+        repeaterCheck1 = 10;
+        repeaterCheck2 = 25;
       }
       else if (repeaterLevel === 15 || repeaterLevel === 30) {
         ability = ability3;
-        upgradeLevel = repeaterLevel === 15 ? repeaterCount + 1 : repeaterCount + 2;
+        upgradeLevel = repeaterLevel === 15 ? ((repeaterCount - 1) * 2) + 1 : ((repeaterCount - 1) * 2) + 2;
+
+        repeaterCheck1 = 15;
+        repeaterCheck2 = 30;
       }
+
+      for (var i = 100; i <= maxPermanentStatLevel; i += 50) {
+        var adjustedLevel = i - repeaterLevelStart;
+        if (godLevel >= i && (adjustedLevel % 35 === repeaterCheck1 || adjustedLevel % 35 === repeaterCheck2))
+          permanentStatSlotCount += 1;
+      }
+
+      //check for matching permanent abilitys
+      if (godLevel >= this.utilityService.permanentGodAbility2Level &&
+        ((this.utilityService.permanentGodAbility2Level - repeaterLevelStart) % 35 === repeaterCheck1 || (this.utilityService.permanentGodAbility2Level - repeaterLevelStart) % 35 === repeaterCheck2))
+        permanentStatSlotCount += 1;
+      if (godLevel >= this.utilityService.permanentGodAbility3Level &&
+        ((this.utilityService.permanentGodAbility3Level - repeaterLevelStart) % 35 === repeaterCheck1 || (this.utilityService.permanentGodAbility3Level - repeaterLevelStart) % 35 === repeaterCheck2))
+        permanentStatSlotCount += 1;
+      if (godLevel >= this.utilityService.permanentPassiveGodLevel &&
+        ((this.utilityService.permanentPassiveGodLevel - repeaterLevelStart) % 35 === repeaterCheck1 || (this.utilityService.permanentPassiveGodLevel - repeaterLevelStart) % 35 === repeaterCheck2))
+        permanentStatSlotCount += 1;
+
+      upgradeLevel -= permanentStatSlotCount;
     }
 
     return { ability, upgradeLevel };
@@ -1660,8 +1703,7 @@ export class GlobalService {
   getGodXpToNextLevel(level: number) {
     var baseXp = 200;
 
-    if (level < 15)
-    {
+    if (level < 15) {
       baseXp += level * 10;
     }
     else
@@ -1787,5 +1829,12 @@ export class GlobalService {
     }
 
     this.calculateCharacterBattleStats(character);
+  }
+
+  getAchievementsForNextFollower() {
+    if (this.globalVar.followerData.numberOfFollowersGainedFromAchievements === 0)
+      return 1;
+    else
+      return 20;
   }
 }

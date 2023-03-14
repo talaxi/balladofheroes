@@ -218,4 +218,8 @@ export class AlchemyViewComponent implements OnInit {
   getTotalItemToCreateAmount() {
     return this.alchemyService.getAmountCanCreate(this.selectedRecipe);
   }
+
+  getSelectedRecipeQualityStars() {
+    return this.lookupService.getQualityStars(this.selectedRecipe.quality);
+  }
 }

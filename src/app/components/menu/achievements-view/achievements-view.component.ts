@@ -64,6 +64,7 @@ export class AchievementsViewComponent implements OnInit {
 
     this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);
     this.getAchievementsByPage();
+    this.filterList();
   }
 
   getAchievementsByPage() {

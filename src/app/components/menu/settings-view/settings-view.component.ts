@@ -27,12 +27,6 @@ export class SettingsViewComponent implements OnInit {
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {
-    //TODO: DELETE
-    for (var i = 0; i < 10; i++) {
-      this.globalService.globalVar.followerData.availableFollowers += 1;
-      this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
-    }
-
     if (this.deploymentService.devModeActive)
       console.log(this.globalService.globalVar);
     //console.log(JSON.stringify(this.globalService.globalVar));
@@ -117,7 +111,9 @@ export class SettingsViewComponent implements OnInit {
     if (this.storyStyle === StoryStyleSettingEnum.Medium)
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.mediumStorySpeed;
     if (this.storyStyle === StoryStyleSettingEnum.Slow)
-      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.slowStorySpeed;
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.slowStorySpeed;    
+    if (this.storyStyle === StoryStyleSettingEnum.Pause)
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.pauseStorySpeed;
 
     this.globalService.globalVar.settings.set("storyStyle", this.storyStyle);
   }

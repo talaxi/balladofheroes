@@ -36,7 +36,7 @@
         <span class="s2Heading">{{character.name}}</span>
         <hr />
         <div *ngIf="this.defeatCount < this.utilityService.killCountDisplayEnemyStatsAbilities">
-            Defeat {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount}} more times for more
+            Defeat {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount}} more {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount === 1 ? "time" : "times"}} for more
             info.
         </div>
         <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayEnemyStatsAbilities">
@@ -55,24 +55,27 @@
                     <br />
                     <span class='statLabel'>Resistance:</span> {{character.battleStats.resistance}}
                 </div>
-            </div>            
+            </div>
+            <br/>            
             <div>
-                Attack Speed: {{getCharacterAttackSpeed()}}
-                <span [innerHtml]="getElementalStrengths()"></span>                
-                <span [innerHtml]="getElementalWeaknesses()"></span>                
+                <span class='statLabel'>Attack Speed: </span> <span class="statValue"> {{getCharacterAttackSpeed()}}</span>
+                <br *ngIf="getElementalStrengths() !== ''"/>
+                <span *ngIf="getElementalStrengths() !== ''" [innerHtml]="getElementalStrengths()"></span>                
+                <br *ngIf="getElementalWeaknesses() !== ''"/>
+                <span *ngIf="getElementalWeaknesses() !== ''" [innerHtml]="getElementalWeaknesses()"></span>                
             </div>
             <br />            
             <span *ngIf="character.abilityList.length === 0">No abilities.</span>
             <div *ngIf="character.abilityList.length > 0">
                 <div *ngFor="let ability of character.abilityList">
-                    <span class='statLabel'>{{ability.name}}</span> - <span
+                    <span class='statLabel'>{{ability.name}}</span> - <span class="statValue"
                         [innerHtml]='lookupService.getEnemyAbilityDescription(character, ability)'></span>
                 </div>
             </div>
             <!-- abilities -->
             <hr />
             <div *ngIf="this.defeatCount < this.utilityService.killCountDisplayBasicEnemyLoot">
-                Defeat {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount}} more times for more
+                Defeat {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount}} more {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount === 1 ? "time" : "times"}} for more
                 info.
             </div>
             <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot">
@@ -89,7 +92,7 @@
             <div
                 *ngIf="this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot && this.defeatCount < this.utilityService.killCountDisplayFullEnemyLoot">
                 <hr />
-                Defeat {{this.utilityService.killCountDisplayFullEnemyLoot - this.defeatCount}} more times for more
+                Defeat {{this.utilityService.killCountDisplayFullEnemyLoot - this.defeatCount}} more {{this.utilityService.killCountDisplayFullEnemyLoot - this.defeatCount === 1 ? "time" : "times"}} for more
                 info.
             </div>
         </div>

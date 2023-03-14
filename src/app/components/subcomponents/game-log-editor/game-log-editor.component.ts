@@ -25,6 +25,7 @@ export class GameLogEditorComponent implements OnInit {
   useBattleItem = false;
   followerSearch = false;
   followerPrayer = false;
+  prayToAltar = false;
 
   followersUnlocked = false;
   alchemyUnlocked = false;
@@ -94,6 +95,12 @@ export class GameLogEditorComponent implements OnInit {
       this.godLevelUp = false;
     else
       this.godLevelUp = godLevelUp;
+
+      var prayToAltar = this.globalService.globalVar.gameLogSettings.get("prayToAltar");
+      if (prayToAltar === undefined)
+        this.prayToAltar = false;
+      else
+        this.prayToAltar = prayToAltar;  
 
     var achievementUnlocked = this.globalService.globalVar.gameLogSettings.get("achievementUnlocked");
     if (achievementUnlocked === undefined)
@@ -176,6 +183,10 @@ export class GameLogEditorComponent implements OnInit {
 
   godLevelUpToggle() {
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", this.godLevelUp);
+  }
+  
+  prayToAltarToggle() {
+    this.globalService.globalVar.gameLogSettings.set("prayToAltar", this.prayToAltar);
   }
 
   achievementUnlockedToggle() {

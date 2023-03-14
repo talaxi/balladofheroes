@@ -32,6 +32,7 @@ export class GlobalVariables {
     startDate: Date;    
     isGamePaused: boolean;
     isBattlePaused: boolean;
+    totalAchievementsCompleted: number;
     @Type(() => Character)
     characters: Character[];
     @Type(() => God)
@@ -100,6 +101,7 @@ export class GlobalVariables {
         this.enemyDefeatCount = [];
         this.coliseumDefeatCount = [];
         this.itemBeltSize = 1;
+        this.totalAchievementsCompleted = 0;
         this.playerNavigation = new PlayerNavigation();
         this.timers = new Timers();
         this.settings = new Settings();

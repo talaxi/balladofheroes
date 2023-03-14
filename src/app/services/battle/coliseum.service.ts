@@ -122,7 +122,7 @@ export class ColiseumService {
               });
             }
           }
-          if (reward.item === ItemsEnum.HeroicElixirRecipe) {
+          else if (reward.item === ItemsEnum.HeroicElixirRecipe) {
             this.alchemyService.learnRecipe(ItemsEnum.HeroicElixir);
           }
           else if (reward.item === ItemsEnum.BonusXp) {

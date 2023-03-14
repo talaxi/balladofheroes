@@ -1,9 +1,10 @@
 <div class="textCentered">
-    <span class="s2Heading">Unassigned Followers: {{getUnassignedFollowers()}} / {{getTotalFollowers()}}</span>
+    <span class="buttonSpaced"></span>
+    <span class="s2Heading smallCaps followerText">Assigned Followers: {{getAssignedFollowers()}} / {{getTotalFollowers()}}</span> 
+    <span class="buttonSpaced"><button class="buttonStyled" (click)="unassignAll()">Unassign All</button></span>
     <br />
     <br />
-    You can assign a follower to any zone that you have cleared. Gaining achievements in a zone will increase the yield
-    your followers may find.
+    You can assign a follower to pray to the gods for your success.
 </div>
 <hr />
 <br />
@@ -11,7 +12,7 @@
     <span class="sectionHeaderText sectionHeading">activate</span>
     <br />
     <div class="sectionInfo">
-        <span class="s4Heading smallCaps zoneName">Small Altars</span>
+        <span class="s4Heading smallCaps altarName">Small Altars</span>
         <span class="s4Heading followerCount">
             <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Activate, altarType.Small)"
                 (click)="decrementPrayerFollowers(followerPrayerType.Activate, altarType.Small)">-</button>
@@ -20,7 +21,7 @@
                 (click)="incrementPrayerFollowers(followerPrayerType.Activate, altarType.Small)">+</button>
         </span>
         <br />
-        Each follower provides a 10% chance per minute to activate a random Small Altar that has met its necessary
+        Each follower provides a {{getSmallAltarActivationChance()}}% chance per minute to activate a random Small Altar that has met its necessary
         conditions.
     </div>
 </div>
@@ -29,5 +30,15 @@
     <span class="sectionHeaderText sectionHeading">pray</span>
     <br />
     <div class="sectionInfo">
+        <span class="s4Heading smallCaps altarName">Small Altars</span>
+        <span class="s4Heading followerCount">
+            <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Pray, altarType.Small)"
+                (click)="decrementPrayerFollowers(followerPrayerType.Pray, altarType.Small)">-</button>
+            {{getFollowersAssignedToPrayer(followerPrayerType.Pray, altarType.Small)}}
+            <button class='buttonStyled' [disabled]="!canIncrement(followerPrayerType.Pray, altarType.Small)"
+                (click)="incrementPrayerFollowers(followerPrayerType.Pray, altarType.Small)">+</button>
+        </span>
+        <br />
+        Each follower provides a {{getSmallAltarPrayerChance()}}% chance per minute to pray to a random god's Small Altar and receive a boon for the party. Only one boon per god can be active at a time.
     </div>
 </div>

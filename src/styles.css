@@ -125,7 +125,7 @@
   --aresColor: #EE665F;
   --apolloColor: #eda324;
   --poseidonColor: #00baa1;
-  --hermesColor: #f0f0f0; /*#faf9eb maybe instead */
+  --hermesColor: #efefef; /*#faf9eb maybe instead */
   --artemisColor: #97BBB0;
   --hadesColor: #BBAFC5;  
 
@@ -216,7 +216,7 @@
   --c2-spacing: 0.1px;
 
   --e2-size: 1.175rem;
-  --e3-size: .8rem;
+  --e3-size: 1.025rem;
 
   --s1-size: 3rem;
   --s1-weight: 600;
@@ -433,6 +433,7 @@ h6 {
   font-size: .95rem;
   padding: .1rem .5rem;
   margin: .1rem .2rem;
+  border-style: solid;
 }
 
 .buttonStyled:hover {
@@ -967,4 +968,8 @@ button {
 
 button:disabled {
   opacity: .5;
+}
+
+.bold {
+  font-weight: bold;
 }

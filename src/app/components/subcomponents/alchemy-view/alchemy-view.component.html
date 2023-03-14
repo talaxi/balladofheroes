@@ -50,6 +50,7 @@
         <div *ngIf="selectedRecipe !== undefined">
             <strong><span class="s4Heading smallCaps" [innerHtml]="getSelectedRecipeName()"></span></strong>
             <br />
+            <span [innerHtml]="getSelectedRecipeQualityStars()"></span>
             <br />
             <span [innerHtml]="getSelectedRecipeDescription()"></span>
             <hr />

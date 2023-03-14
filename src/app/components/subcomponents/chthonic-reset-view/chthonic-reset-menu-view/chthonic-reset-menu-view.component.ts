@@ -45,6 +45,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       this.bonusGodText = "Tell me you're back with Apollo's favor. He's the god of <strong><i>AVERTING EVIL</i></strong>! You know how much evil there is down here that needs averting? I could use about 5 Apollos here at all times!";
     }
 
+    this.bonusGodText = "<strong>" + this.bonusGodText + "</strong>";
     this.bonusGodText = this.bonusGodText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");

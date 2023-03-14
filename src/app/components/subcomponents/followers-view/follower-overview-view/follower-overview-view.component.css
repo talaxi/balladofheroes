@@ -1,0 +1,9 @@
+.spaceEvenly {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.buttonSpaced {
+    width: 25%;
+    display: inline-block;
+}

@@ -62,16 +62,7 @@ export class ZoneNavigationComponent implements OnInit {
     private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService, public dialog: MatDialog,
     private alchemyService: AlchemyService, private keybindService: KeybindService) { }
 
-  ngOnInit(): void {
-    //TODO: can get rid of this after implementing versioning  vvvvv    
-    if (this.globalService.globalVar.followerData === undefined)
-      this.globalService.globalVar.followerData = new FollowerData();
-    else if (this.globalService.globalVar.followerData.availableFollowers === 0) {
-      this.globalService.globalVar.followerData.availableFollowers = 1;
-      this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
-    }
-    //^^    
-
+  ngOnInit(): void {  
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
       this.autoProgress = false;

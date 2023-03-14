@@ -139,7 +139,7 @@ export class AppComponent {
     this.globalService.globalVar.isBattlePaused = false;
   }
 
-  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {
+  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {    
     if (deltaTime > this.utilityService.activeTimeLimit) {
       this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
       deltaTime = this.utilityService.activeTimeLimit;

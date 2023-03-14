@@ -148,3 +148,7 @@
 .barrier {
     color: var(--barrierColor);
 }
+
+.statValue {
+    vertical-align: middle;
+}

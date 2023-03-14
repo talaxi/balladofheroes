@@ -59,7 +59,7 @@ export class GodNameViewComponent implements OnInit {
 
       if (god2Level > this.previousGod2Level) {
         this.showGod2LevelUpAnimation = true;
-        this.previousGod2Level = god1Level;
+        this.previousGod2Level = god2Level;
       }
 
       if (this.showGod2LevelUpAnimation) {

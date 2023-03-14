@@ -42,7 +42,7 @@
         <br />
         <div *ngFor="let progression of progressionResources;">
             <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
-                <strong>{{lookupService.getItemName(progression.item)}}:</strong> {{progression.amount  | number : '1.0-3'}}
+                <strong>{{lookupService.getItemName(progression.item)}}:</strong> {{(isItemPercentage(progression.item) ? progression.amount * 100 : progression.amount)  | number : '1.0-3'}}{{(isItemPercentage(progression.item) ? "%" : "")}} 
                 <hr class="marginHr" />
             </span>
         </div>

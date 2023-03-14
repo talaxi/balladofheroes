@@ -6,10 +6,12 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
+import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { GameLogService } from '../battle/game-log.service';
+import { FollowersService } from '../followers/followers.service';
 import { GlobalService } from '../global/global.service';
 import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
@@ -21,7 +23,7 @@ import { AlchemyService } from '../professions/alchemy.service';
 export class AchievementService {
 
   constructor(private lookupService: LookupService, private alchemyService: AlchemyService, private tutorialService: TutorialService,
-    private gameLogService: GameLogService) { }
+    private gameLogService: GameLogService, private globalService: GlobalService) { }
 
   createDefaultAchievementsForSubzone(subzoneType: SubZoneEnum) {
     var newAchievements: Achievement[] = [];
@@ -268,7 +270,7 @@ export class AchievementService {
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
-    if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
+    if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
 
     if (tenSecondClear.bonusResources.length > 0)
@@ -355,9 +357,6 @@ export class AchievementService {
         complete.bonusResources.forEach(bonus => {
           if (bonus.item === ItemsEnum.ItemBeltUp) {
             this.lookupService.increaseItemBeltSize();
-
-            if (subzone.type === SubZoneEnum.LibyaIsleCenter)
-              this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements));
           }
           else if (bonus.item === ItemsEnum.BonusXp) {
             this.lookupService.giveCharactersBonusExp(bonus.amount);
@@ -371,6 +370,32 @@ export class AchievementService {
       }
     }
 
+    //this.lookupService.addToAchievementCount(completedAchievement.length);
+    //TODO: can remove this with versioning vvv
+    if (this.globalService.globalVar.totalAchievementsCompleted === undefined)
+    this.globalService.globalVar.totalAchievementsCompleted = 0;
+    if (this.globalService.globalVar.followerData.achievementCompletionCounter === undefined)
+    this.globalService.globalVar.followerData.achievementCompletionCounter = 0;
+    // ^^^^
+
+    var count = completedAchievement.length;
+    var previousAchievementCount = this.globalService.globalVar.totalAchievementsCompleted;
+    this.globalService.globalVar.followerData.achievementCompletionCounter += count;
+    this.globalService.globalVar.totalAchievementsCompleted += count;
+
+    if (previousAchievementCount === 0 && this.globalService.globalVar.totalAchievementsCompleted > 0)
+    {
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Followers));
+    }
+
+    if (this.globalService.globalVar.followerData.achievementCompletionCounter >= this.globalService.getAchievementsForNextFollower()) {
+      this.globalService.globalVar.followerData.achievementCompletionCounter -= this.globalService.getAchievementsForNextFollower();
+      this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements += 1;
+      this.globalService.globalVar.followerData.availableFollowers += 1;
+      this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
+    }
+    
     return completedAchievement;
   }
 
