@@ -115,6 +115,7 @@ export class GlobalVariables {
         this.altars = new Altars();
         this.optionalScenesViewed = [];
         this.guid = Guid.create().toString();
+        this.startDate = new Date();
         this.isGamePaused = false;
         this.isBattlePaused = false;
         this.sidequestData = new SidequestData();

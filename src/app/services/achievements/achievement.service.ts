@@ -82,9 +82,9 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.AsphodelLetheBasin)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 50));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 45));
     else if (subzoneType === SubZoneEnum.ElysiumElysianFields)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 40));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.ElysiumOpenPlains)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Narcissus, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)
@@ -103,13 +103,13 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.PeloposNisosFootOfTheMountain)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosSteepAscent)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 3));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosMountParthenionCaverns)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 15));
     else if (subzoneType === SubZoneEnum.PeloposNisosValleyOpening)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 3));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 3));
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)

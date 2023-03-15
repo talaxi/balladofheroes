@@ -1320,8 +1320,8 @@ export class BattleService {
       * elementalDamageIncrease * elementalDamageDecrease
       * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
       
-      //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
-      //+ " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+      console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
+      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     if (damage < 0)
       damage = 0;

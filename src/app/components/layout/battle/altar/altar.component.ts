@@ -30,12 +30,7 @@ export class AltarComponent implements OnInit {
     private battleService: BattleService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private alchemyService: AlchemyService, private utilityService: UtilityService) { }
 
-  ngOnInit(): void {
-    if (this.globalService.globalVar.activeBattle.selectedAltar !== undefined) {
-      this.altar = this.globalService.globalVar.activeBattle.selectedAltar;
-      this.buttonOptions = this.altarService.getButtonOptions(this.altar);
-    }
-
+  ngOnInit(): void {    
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.checkThresholds();
     });
@@ -119,7 +114,20 @@ export class AltarComponent implements OnInit {
     if (startingHp < 0)
       startingHp = 0;
 
-    var percentComplete = (startingHp / (this.globalService.globalVar.sidequestData.altarOfAsclepius.battleStats.maxHp * .5)) * 100;
+    var percentComplete = (startingHp / (this.globalService.globalVar.sidequestData.altarOfAsclepius.battleStats.maxHp * .25)) * 100;
+
+    if (percentComplete > 100)
+      percentComplete = 100;
+
+    return percentComplete;
+  }
+
+  getAsclepiusHpThreshold4() {
+    var startingHp = this.globalService.globalVar.sidequestData.altarOfAsclepius.battleStats.currentHp - this.globalService.globalVar.sidequestData.altarOfAsclepius.battleStats.maxHp * .75;
+    if (startingHp < 0)
+      startingHp = 0;
+
+    var percentComplete = (startingHp / (this.globalService.globalVar.sidequestData.altarOfAsclepius.battleStats.maxHp * .25)) * 100;
 
     if (percentComplete > 100)
       percentComplete = 100;
@@ -159,6 +167,13 @@ export class AltarComponent implements OnInit {
   }
 
   gainThreshold3Reward() {
+    this.globalService.globalVar.altars.largeAltarsUnlocked = true;
+
+    var gameLogEntry = "To further your devotion to the gods, you have begun praying to <strong>Large Altars</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry);
+  }
+
+  gainThreshold4Reward() {
     this.globalService.globalVar.alchemy.maxLevel += this.utilityService.alchemyLevelCapGain;
     
     var gameLogEntry = "Your max Alchemy level has increased to <strong>" + this.globalService.globalVar.alchemy.maxLevel + "</strong>.";

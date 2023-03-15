@@ -227,19 +227,19 @@ export class StoryService {
         this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. It's hard to imagine a less likely hero than a babe alone in such a dangerous place. And yet, to survive and accomplish all that she did!”");
       else if (pageCount === 2)
       sceneText = this.zosimeText("“Artemis took to her and she became Artemis's arrow. Where countless men had failed, she saved Calydon from the boar rampaging the countryside.”") +
-      "As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet." +
+      " As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " +
       this.zosimeText("“Artemis has looked after me as well. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
     }
     else if (storyId === 15) {
       if (pageCount === 1)
-        sceneText = "The commotion and activity of Calydon is a welcome sight after your long journey. Even though you've now traveled all across Greece, seeing so many people in one place still amazes you. Outside of Delphi, this is the largest city you've ever been in. The intricate architecture of the buildings and wealth of goods for sale in the streets leaves you in awe and feeling a little overwhelmed.<br/><br/>" +
+        sceneText = "The commotion and activity of Calydon is a welcome sight after your long journey. Even though you've now traveled all across Greece, seeing so many people in one place still amazes you. Outside of Delphi, this is the largest city you've ever been in. The intricate architecture of the buildings and array of goods for sale in the streets leaves you in awe and feeling a little overwhelmed.<br/><br/>" +
         "If Zosime felt this way, she did not show it. It was clear that she was ready to continue on and find the fabled forest where Atalanta shed the blood of the Calydonian Boar for the first time. Zosime's unfailing spirit and the passion in her heart takes you back to the question: What is it to be a hero?";
       else if (pageCount === 2)
-        sceneText = "The stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?" +
+        sceneText = "The stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?<br/><br/>" +
         "Growing up without a family, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was still turned away from joining so many other heroes on the Argo? Did Atalanta doubt herself the way you did?";
       else if (pageCount === 3)
         sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back.<br/><br/>" +
-        "While you consider the definition of heroism, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
+        "While you consider this, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");

@@ -219,9 +219,11 @@ export class EquipmentViewComponent implements OnInit {
         this.itemToSell = equipmentPiece;
         this.itemToSellSelected = true;
         this.itemToSellPrice = this.lookupService.getItemSellPrice(equipment.item);
+        this.sellAmount = 1;
       }
     }
     else {      
+        this.sellAmount = 1;
         this.itemToSellSelected = false;
     }
   }
@@ -243,6 +245,7 @@ export class EquipmentViewComponent implements OnInit {
 
     if (this.getTotalItemToSellAmount() <= 0)
     {
+      this.sellAmount = 1;
       this.itemToSellSelected = false;
     }
     

@@ -39,7 +39,6 @@ export class CharacterViewComponent implements OnInit {
     if (selectedCharacter !== undefined)
     {
       this.character = selectedCharacter; 
-      console.log(this.character);   
       this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
         return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
       }).filter(item => item.isAvailable);

@@ -166,5 +166,6 @@ export enum ItemsEnum {
   BlindingPotion,
   SpiritEssence,
   VialOfTheBlackSea,
-  Sorrel
+  Sorrel,
+  SparringMatch
 }

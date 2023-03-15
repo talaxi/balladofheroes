@@ -381,6 +381,10 @@ export class ResourceGeneratorService {
     }
 
     //other
+    if (type === ItemsEnum.SparringMatch)
+    {
+      return new ResourceValue(ItemsEnum.SparringMatch, ItemTypeEnum.Resource, amount);
+    }
     if (type === ItemsEnum.WarriorClass)
     {
       return new ResourceValue(ItemsEnum.WarriorClass, ItemTypeEnum.Progression, amount);

@@ -50,7 +50,7 @@
                                         Be Continued!" : subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
                                         <app-notification-icon *ngIf="subzone.showNewNotification"
-                                            [notificationColor]="subzone.notificationType">
+                                            [notificationColor]="subzone.notificationType" [notificationStyle]="getSubzoneNotificationStyle(subzone)">
                                         </app-notification-icon>
                                     </button>
                                 </span>

@@ -131,7 +131,7 @@ export class FollowersService {
       if (rewardLevel >= 3)
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingHerb, 3));
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.LightLeather, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Leather, 2));
       }
     }
     if (type === ZoneEnum.Dodona) {
@@ -147,7 +147,7 @@ export class FollowersService {
       }
     }
     if (type === ZoneEnum.Libya) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 5));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 4));
       if (rewardLevel >= 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 2));
       }
@@ -188,7 +188,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallEmerald, 1));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Leather, 4));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAmethyst, 4));
       }
       if (rewardLevel >= 4) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAquamarine, 2));

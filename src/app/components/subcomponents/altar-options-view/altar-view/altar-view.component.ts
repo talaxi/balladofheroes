@@ -140,7 +140,7 @@ export class AltarViewComponent implements OnInit {
 
     if (this.globalService.globalVar.altars.altar2 === this.altar)
       keybindString = "openSecondAvailableAltar";
-      if (this.globalService.globalVar.altars.altar3 === this.altar)
+    if (this.globalService.globalVar.altars.altar3 === this.altar)
       keybindString = "openThirdAvailableAltar";
 
     var keybind = this.globalService.globalVar.keybinds.settings.find(item => item[0] === keybindString);
@@ -179,6 +179,17 @@ export class AltarViewComponent implements OnInit {
       return false;
 
     return this.altar.conditionCount >= this.altar.conditionMax;
+  }
+
+  getAltarImage() {
+    var image = "assets/svg/";
+
+    if (this.altar.type === AltarEnum.Small)
+      image += "smallAltar.svg";
+    if (this.altar.type === AltarEnum.Large)
+      image += "largeAltar.svg";
+
+    return image;
   }
 
   ngOnDestroy() {

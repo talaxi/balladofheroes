@@ -126,7 +126,7 @@ export class GlobalService {
 
       var barrage = new Ability();
       barrage.name = "Barrage";
-      barrage.effectiveness = .25;
+      barrage.effectiveness = .2;
       barrage.requiredLevel = this.utilityService.characterPassiveLevel;
       barrage.maxCount = 4;
       barrage.isAvailable = false;
@@ -303,7 +303,7 @@ export class GlobalService {
       divineStrike.dealsDirectDamage = true;
       divineStrike.effectiveness = 1.65;
       divineStrike.elementalType = ElementalTypeEnum.Holy;
-      divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Divine Strike"));
+      divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .05, true, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Divine Strike"));
       god.abilityList.push(divineStrike);
 
       var aegis = new Ability();
@@ -971,10 +971,16 @@ export class GlobalService {
       return;
 
     if (character.type === CharacterEnum.Adventurer) {
-      ability1.effectiveness += .25;
+      ability1.effectiveness += .5;
     }
     if (character.type === CharacterEnum.Archer) {
-      ability1.effectiveness += .2;
+      ability1.effectiveness += .4;
+    }
+    if (character.type === CharacterEnum.Priest) {
+      ability1.effectiveness += .1;
+    }
+    if (character.type === CharacterEnum.Warrior) {
+      ability1.cooldown -= 2;
     }
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
@@ -991,10 +997,16 @@ export class GlobalService {
     var targetGainsEffect = ability.targetEffect[0];
 
     if (character.type === CharacterEnum.Adventurer) {
-      ability.effectiveness += .05;
+      ability.effectiveness += .1;
     }
     if (character.type === CharacterEnum.Archer) {
       targetGainsEffect.effectiveness += .025;
+    }
+    if (character.type === CharacterEnum.Priest) {
+      ability.effectiveness += .1;
+    }
+    if (character.type === CharacterEnum.Warrior) {
+      ability.effectiveness += .1;
     }
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
@@ -1012,6 +1024,12 @@ export class GlobalService {
       ability1.effectiveness += .025;
     }
     if (character.type === CharacterEnum.Archer) {
+      ability1.effectiveness += .4;
+    }
+    if (character.type === CharacterEnum.Priest) {
+      ability1.effectiveness += .1;
+    }
+    if (character.type === CharacterEnum.Warrior) {
       ability1.effectiveness += .3;
     }
 
@@ -1084,7 +1102,7 @@ export class GlobalService {
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
 
-    var getLevelUpType = this.getGodLevelIncreaseTypeByLevel(god, god.level);
+    var getLevelUpType = this.getGodLevelIncreaseTypeByLevel(god, god.level);    
     if (getLevelUpType === GodLevelIncreaseEnum.Stats)
       this.doGodLevelStatIncrease(god);
     else if (getLevelUpType === GodLevelIncreaseEnum.NewAbility)
@@ -1174,22 +1192,20 @@ export class GlobalService {
     });
   }
 
-  checkForNewGodPermanentAbilities(god: God) {
-    if (god.level === this.utilityService.permanentPassiveGodLevel) {
-      var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.permanentPassiveGodLevel);
-      if (ability !== undefined) {
+  checkForNewGodPermanentAbilities(god: God) {    
+    if (god.level === this.utilityService.permanentPassiveGodLevel) {      
+      var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+      if (ability !== undefined) {        
         ability.isAbilityPermanent = true;
         if (this.globalVar.gameLogSettings.get("godLevelUp")) {
-          if (this.globalVar.gameLogSettings.get("godLevelUp")) {
-            var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
-          }
+          var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
         }
       }
     }
 
     if (god.level === this.utilityService.permanentGodAbility2Level) {
-      var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.permanentGodAbility2Level);
+      var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level);
       if (ability !== undefined) {
         ability.isAbilityPermanent = true;
         if (this.globalVar.gameLogSettings.get("godLevelUp")) {
@@ -1200,7 +1216,7 @@ export class GlobalService {
     }
 
     if (god.level === this.utilityService.permanentGodAbility3Level) {
-      var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.permanentGodAbility3Level);
+      var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level);
       if (ability !== undefined) {
         ability.isAbilityPermanent = true;
         if (this.globalVar.gameLogSettings.get("godLevelUp")) {
@@ -1221,13 +1237,13 @@ export class GlobalService {
     if (ability.ability.requiredLevel === this.utilityService.defaultGodAbilityLevel) {
       this.upgradeGodAbility1(god);
     }
-    else if (ability.ability.requiredLevel === this.utilityService.godAbility2Level) {      
+    else if (ability.ability.requiredLevel === this.utilityService.godAbility2Level) {
       this.upgradeGodAbility2(god);
     }
-    else if (ability.ability.requiredLevel === this.utilityService.godAbility3Level) {      
+    else if (ability.ability.requiredLevel === this.utilityService.godAbility3Level) {
       this.upgradeGodAbility3(god);
     }
-    else if (ability.ability.requiredLevel === this.utilityService.godPassiveLevel) {      
+    else if (ability.ability.requiredLevel === this.utilityService.godPassiveLevel) {
       this.upgradeGodPassive(god);
     }
 
@@ -1295,7 +1311,7 @@ export class GlobalService {
     if (ability === undefined)
       return;
 
-    ability.abilityUpgradeLevel += 1;    
+    ability.abilityUpgradeLevel += 1;
     var userGainsEffect = ability.userEffect[0];
     var userGainsSecondEffect = ability.userEffect[1];
     var targetGainsEffect = ability.targetEffect[0];
@@ -1353,7 +1369,7 @@ export class GlobalService {
     if (ability === undefined)
       return;
 
-    ability.abilityUpgradeLevel += 1;    
+    ability.abilityUpgradeLevel += 1;
     var userGainsEffect = ability.userEffect[0];
     var targetGainsEffect = ability.targetEffect[0];
 
@@ -1709,6 +1725,7 @@ export class GlobalService {
     else
       baseXp = 350;
 
+    //TODO: tier off the factor. like up to lvl 500 its 1.023, then 1.005 for levels after that or something
     var factor = 1.023;
     var additive = (baseXp) * (level - 1);
     var exponential = (baseXp * (factor ** (level)));

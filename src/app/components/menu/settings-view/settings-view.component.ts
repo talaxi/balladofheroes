@@ -27,7 +27,7 @@ export class SettingsViewComponent implements OnInit {
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {
-    if (this.deploymentService.devModeActive)
+    //if (this.deploymentService.devModeActive)
       console.log(this.globalService.globalVar);
     //console.log(JSON.stringify(this.globalService.globalVar));
 

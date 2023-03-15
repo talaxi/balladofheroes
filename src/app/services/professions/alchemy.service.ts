@@ -433,7 +433,7 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.PoisonousToxin) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 3));
 
       recipe.numberOfSteps = 1;
       recipe.steps.push(AlchemyActionsEnum.CrushIngredients);

@@ -564,6 +564,13 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.settings.set("activeOverview", this.quickView);
   }
 
+  getSubzoneNotificationStyle(subzone: SubZone) {
+    if (this.lookupService.subzoneHasObscurredPath(subzone.type))
+      return "?";
+
+    return "!";
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
