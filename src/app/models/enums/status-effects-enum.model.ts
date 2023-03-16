@@ -88,5 +88,6 @@ export enum StatusEffectEnum {
     RandomPrimaryStatDown,
     Unsteady,
     BattleItemDamageUp,
-    ReduceDirectDamage
+    ReduceDirectDamage,
+    ReduceHealing
   }

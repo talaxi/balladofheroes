@@ -624,7 +624,7 @@ export class GlobalService {
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
       || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
-      type === StatusEffectEnum.RejuvenatingElixir)
+      type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing)
       statusEffect.refreshes = true;
 
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin)

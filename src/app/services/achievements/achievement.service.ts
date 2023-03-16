@@ -115,6 +115,34 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
       hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
 
+
+    else if (subzoneType === SubZoneEnum.CalydonForestPassage)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.RestorativeHerb, ItemTypeEnum.HealingItem, 10));
+    else if (subzoneType === SubZoneEnum.CalydonHeavyThicket)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 25));
+    else if (subzoneType === SubZoneEnum.CalydonWelltroddenPathway)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 7500));
+    else if (subzoneType === SubZoneEnum.CalydonSparseClearing)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 25));
+    else if (subzoneType === SubZoneEnum.CalydonShroudedFoliage)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 25));
+    else if (subzoneType === SubZoneEnum.CalydonBabblingStream)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HeftyStone, ItemTypeEnum.BattleItem, 20));
+    else if (subzoneType === SubZoneEnum.CalydonMudpit)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 40));
+    else if (subzoneType === SubZoneEnum.CalydonMarkedTreeTrail)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 8));
+    else if (subzoneType === SubZoneEnum.CalydonOvergrownVerdure)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 35));
+    else if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, 3));
+    else if (subzoneType === SubZoneEnum.CalydonWateringHole)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 35));
+    else if (subzoneType === SubZoneEnum.CalydonTallGrass)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 35));
+    else if (subzoneType === SubZoneEnum.CalydonDeadEnd)
+      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 3));
+
     if (hundredVictories.bonusResources.length > 0)
       newAchievements.push(hundredVictories);
 
@@ -142,7 +170,6 @@ export class AchievementService {
       thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, peloposNisosBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Calydon))
       thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, calydonBoonBonus));
-
 
     if (thousandVictories.bonusResources.length > 0)
       newAchievements.push(thousandVictories);
@@ -231,6 +258,33 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
       tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
 
+    else if (subzoneType === SubZoneEnum.CalydonForestPassage)
+      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonHeavyThicket)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonWelltroddenPathway)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonSparseClearing)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonShroudedFoliage)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonBabblingStream)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonMudpit)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonMarkedTreeTrail)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonOvergrownVerdure)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonWateringHole)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonTallGrass)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
+    else if (subzoneType === SubZoneEnum.CalydonDeadEnd)
+    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
+
     if (tenThousandVictories.bonusResources.length > 0)
       newAchievements.push(tenThousandVictories);
 
@@ -250,7 +304,11 @@ export class AchievementService {
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
+      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
+      if (subzoneType === SubZoneEnum.CalydonTallGrass)
+      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
 
     if (thirtySecondClear.bonusResources.length > 0)
       newAchievements.push(thirtySecondClear);
@@ -272,6 +330,10 @@ export class AchievementService {
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
       tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+      if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
+      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      if (subzoneType === SubZoneEnum.CalydonTallGrass)
+      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, ItemTypeEnum.Charm, 1));
 
     if (tenSecondClear.bonusResources.length > 0)
       newAchievements.push(tenSecondClear);
@@ -373,9 +435,9 @@ export class AchievementService {
     //this.lookupService.addToAchievementCount(completedAchievement.length);
     //TODO: can remove this with versioning vvv
     if (this.globalService.globalVar.totalAchievementsCompleted === undefined)
-    this.globalService.globalVar.totalAchievementsCompleted = 0;
+      this.globalService.globalVar.totalAchievementsCompleted = 0;
     if (this.globalService.globalVar.followerData.achievementCompletionCounter === undefined)
-    this.globalService.globalVar.followerData.achievementCompletionCounter = 0;
+      this.globalService.globalVar.followerData.achievementCompletionCounter = 0;
     // ^^^^
 
     var count = completedAchievement.length;
@@ -383,8 +445,7 @@ export class AchievementService {
     this.globalService.globalVar.followerData.achievementCompletionCounter += count;
     this.globalService.globalVar.totalAchievementsCompleted += count;
 
-    if (previousAchievementCount === 0 && this.globalService.globalVar.totalAchievementsCompleted > 0)
-    {
+    if (previousAchievementCount === 0 && this.globalService.globalVar.totalAchievementsCompleted > 0) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements));
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Followers));
     }
@@ -395,7 +456,7 @@ export class AchievementService {
       this.globalService.globalVar.followerData.availableFollowers += 1;
       this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
     }
-    
+
     return completedAchievement;
   }
 
@@ -414,7 +475,7 @@ export class AchievementService {
   getCompletedAchievementPercentByZone(zone: Zone | undefined, achievements: Achievement[]) {
     if (zone === undefined)
       return 0;
-    
+
     var relatedAchievements: Achievement[] = [];
 
     zone.subzones.forEach(subzone => {

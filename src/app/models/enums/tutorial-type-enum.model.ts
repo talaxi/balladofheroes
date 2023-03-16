@@ -13,5 +13,6 @@ export enum TutorialTypeEnum {
   QuickView,
   Notifications,
   SideQuests,
-  Followers
+  Followers,
+  ObscurredNotification
 }

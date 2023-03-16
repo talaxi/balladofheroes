@@ -58,6 +58,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Followers) {
       text = "Your triumphs have inspired the people of Greece and have motivated some to follow you. Use the Followers menu to assign followers to search completed zones for items or pray to the gods for boons.";
     }
+    else if (type === TutorialTypeEnum.ObscurredNotification) {
+      text = "If the path forward is not linear, the notification icon will be marked with a ?. Try the available paths in front of you and see if you can find the right way!";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

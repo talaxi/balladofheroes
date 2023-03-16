@@ -3054,9 +3054,10 @@ export class LookupService {
     }
 
     var totalAutoAttackCount = this.getTotalAutoAttackCount(character, true, true);
-    var description = "Increases the number of times you hit when auto attacking, multiplying auto attack damage by <strong>" + this.utilityService.roundTo(totalAutoAttackCount, 3) + "</strong>.<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)) + "</strong>.";
+    var description = "Increases the number of times you hit when auto attacking, multiplying auto attack damage by <strong>" + this.utilityService.roundTo(totalAutoAttackCount, 3) + "</strong>.";
     if (totalAutoAttackCount >= 2)
-      description += "On Hit effects occur <strong>" + Math.floor(totalAutoAttackCount) + "</strong> times from auto attacks.";
+      description += " On Hit effects occur <strong>" + Math.floor(totalAutoAttackCount) + "</strong> times from auto attacks.";
+    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)) + "</strong>.";    
     return description;
   }
 

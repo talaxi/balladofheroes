@@ -3,16 +3,20 @@ import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from '../ballad/ballad.service';
+import { GameLogService } from '../battle/game-log.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
+import { TutorialService } from '../global/tutorial.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { ShopItemGeneratorService } from '../shop/shop-item-generator.service';
 
@@ -1271,6 +1275,42 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.DodonaAmbracianGulf) {
       chance = .05;
     }
+    if (type === SubZoneEnum.AsphodelForgottenHalls) {
+      chance = .075;
+    }
+    if (type === SubZoneEnum.AsphodelFieryPassage) {
+      chance = .025;
+    }
+    if (type === SubZoneEnum.AsphodelLetheBasin) {
+      chance = .05;
+    }
+    if (type === SubZoneEnum.ElysiumOpenPlains) {
+      chance = .03;
+    }
+    if (type === SubZoneEnum.PeloposNisosArcadianRoads) {
+      chance = .025;
+    }
+    if (type === SubZoneEnum.PeloposNisosSteepAscent) {
+      chance = .03;
+    }
+    if (type === SubZoneEnum.PeloposNisosMountParthenionCaverns) {
+      chance = .04;
+    }
+    if (type === SubZoneEnum.PeloposNisosTrekAcrossAcheae) {
+      chance = .05;
+    }
+    if (type === SubZoneEnum.CalydonOvergrownVerdure) {
+      chance = .025;
+    }
+    if (type === SubZoneEnum.CalydonHeavyThicket) {
+      chance = .075;
+    }
+    if (type === SubZoneEnum.CalydonTallGrass) {
+      chance = .08;
+    }
+    if (type === SubZoneEnum.CalydonShroudedFoliage) {
+      chance = .08;
+    }
 
     return chance;
   }
@@ -1307,6 +1347,42 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.DodonaAmbracianGulf) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 2));
+    }
+    if (type === SubZoneEnum.AsphodelForgottenHalls) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheLethe, 1));
+    }
+    if (type === SubZoneEnum.AsphodelFieryPassage) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SoulSpark, 2));
+    }
+    if (type === SubZoneEnum.AsphodelLetheBasin) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheLethe, 2));
+    }
+    if (type === SubZoneEnum.ElysiumOpenPlains) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallEmerald, 1));
+    }
+    if (type === SubZoneEnum.PeloposNisosArcadianRoads) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfLakeLerna, 2));
+    }
+    if (type === SubZoneEnum.PeloposNisosSteepAscent) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAmethyst, 1));
+    }
+    if (type === SubZoneEnum.PeloposNisosMountParthenionCaverns) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallOpal, 1));
+    }
+    if (type === SubZoneEnum.PeloposNisosTrekAcrossAcheae) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HeftyStone, 2));
+    }
+    if (type === SubZoneEnum.CalydonOvergrownVerdure) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Goldroot, 3));
+    }
+    if (type === SubZoneEnum.CalydonHeavyThicket) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Lousewort, 1));
+    }
+    if (type === SubZoneEnum.CalydonTallGrass) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Violet, 2));
+    }
+    if (type === SubZoneEnum.CalydonShroudedFoliage) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Goldroot, 1));
     }
 
     return rewards;
@@ -1483,7 +1559,7 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.CalydonAltarOfAsclepius);
       subZoneEnums.push(SubZoneEnum.CalydonForestPassage);
     }
-    if (type === SubZoneEnum.CalydonForestPassage) {
+    if (type === SubZoneEnum.CalydonForestPassage) {      
       subZoneEnums.push(SubZoneEnum.CalydonHeavyThicket);
       subZoneEnums.push(SubZoneEnum.CalydonWelltroddenPathway);
       subZoneEnums.push(SubZoneEnum.CalydonSparseClearing);

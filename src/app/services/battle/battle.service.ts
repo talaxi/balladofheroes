@@ -136,7 +136,7 @@ export class BattleService {
 
           if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + " of " + this.battle.activeTournament.maxRounds + ".");
-            this.battle.activeTournament = new ColiseumTournament();            
+            this.battle.activeTournament = new ColiseumTournament();
             this.coliseumService.handleColiseumLoss();
           }
         }
@@ -268,6 +268,10 @@ export class BattleService {
     if (subzone.type === SubZoneEnum.ElysiumWavesOfOceanus && subzone.victoryCount === 1 &&
       this.globalService.globalVar.chthonicPowers.preferredGod === GodEnum.None) {
       this.globalService.globalVar.chthonicPowers.preferredGod = this.lookupService.getPreferredGod();
+    }
+
+    if (subzone.type === SubZoneEnum.CalydonForestPassage && subzone.victoryCount === 10) {
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ObscurredNotification));
     }
   }
 
@@ -716,8 +720,11 @@ export class BattleService {
   }
 
   avoidAbilityRedundancy(ability: Ability, partyMembers: Character[]) {
-    if (!ability.isActivatable)
+    var partyNotFullHp = partyMembers.some(member => member.battleStats.currentHp !== member.battleStats.maxHp);
+
+    if (!ability.manuallyTriggered && (!ability.isActivatable || (!partyNotFullHp && ability.name === "Heal")))
       return false;
+
     return true;
   }
 
@@ -727,21 +734,26 @@ export class BattleService {
     var target = this.getTarget(user, ability.targetsAllies ? party : targets, ability.targetType !== undefined ? ability.targetType : TargetEnum.Random);
     var damageDealt = 0;
     var elementalText = "";
+    var elementalType = ability.elementalType;
 
     if (target === undefined)
       return false;
 
+    if (elementalType === ElementalTypeEnum.None) {
+      elementalType = this.checkUserForEnElement(user);
+    }
+
     var abilityEffectiveness = this.getAbilityEffectiveness(user, target, ability, party, isGodAbility);
 
     if (ability.dealsDirectDamage) {
-      var damageMultiplier = this.getDamageMultiplier(user, target, undefined, false, ability.elementalType);
+      var damageMultiplier = this.getDamageMultiplier(user, target, undefined, false, elementalType);
       var isCritical = this.isDamageCritical(user, target);
-      if (ability.elementalType !== ElementalTypeEnum.None)
-        elementalText = this.getElementalDamageText(ability.elementalType);
+      if (elementalType !== ElementalTypeEnum.None)
+        elementalText = this.getElementalDamageText(elementalType);
 
       if (ability.isAoe) {
         potentialTargets.forEach(potentialTarget => {
-          damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, ability, ability.elementalType);
+          damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, ability, elementalType);
           if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
             (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
             var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(potentialTarget.type) + "'>" + potentialTarget.name + "</strong> for " + damageDealt + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
@@ -750,7 +762,7 @@ export class BattleService {
         })
       }
       else {
-        damageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, ability, ability.elementalType);
+        damageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, ability, elementalType);
         if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
           (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
@@ -1319,9 +1331,17 @@ export class BattleService {
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementalDamageIncrease * elementalDamageDecrease
       * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
-      
-      console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
-      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+
+    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
+    //+ " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+
+      if (ability?.damageModifierRange !== undefined) {
+        var rng = this.utilityService.getRandomNumber(1 - ability.damageModifierRange, 1 + ability.damageModifierRange);
+        console.log("Sloppy Shot RNG: " + rng);
+        console.log("Damage before: " + damage);
+        damage *= rng;
+        console.log("Damage after: " + damage);
+      }
 
     if (damage < 0)
       damage = 0;
@@ -1523,6 +1543,10 @@ export class BattleService {
 
     if (character.battleStats.healingReceived > 0)
       healModifier = 1 + character.battleStats.healingReceived;
+
+    var reduceHealingDebuff = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceHealing);
+    if (reduceHealingDebuff !== undefined)
+      healModifier *= reduceHealingDebuff.effectiveness;
 
     healAmount = healAmount * healModifier;
 
@@ -1940,7 +1964,7 @@ export class BattleService {
   }
 
   unlockNextSubzone(subZone: SubZone) {
-    var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);    
+    var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);
 
     var subZoneUnlocks = this.subzoneGeneratorService.getSubZoneUnlocks(subZone.type);
     var zoneUnlocks = this.subzoneGeneratorService.getZoneUnlocks(subZone.type);
@@ -2512,6 +2536,31 @@ export class BattleService {
     var enfire = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enfire);
     if (enfire !== undefined) {
       elementalType = ElementalTypeEnum.Fire;
+    }
+
+    var enholy = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enholy);
+    if (enholy !== undefined) {
+      elementalType = ElementalTypeEnum.Holy;
+    }
+
+    var enwater = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enwater);
+    if (enwater !== undefined) {
+      elementalType = ElementalTypeEnum.Water;
+    }
+
+    var enearth = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enearth);
+    if (enearth !== undefined) {
+      elementalType = ElementalTypeEnum.Earth;
+    }
+
+    var enlightning = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enlightning);
+    if (enlightning !== undefined) {
+      elementalType = ElementalTypeEnum.Lightning;
+    }
+
+    var enair = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enair);
+    if (enair !== undefined) {
+      elementalType = ElementalTypeEnum.Air;
     }
 
     return elementalType;
