@@ -57,6 +57,10 @@ export class HeaderComponent implements OnInit {
     return time;
   }
 
+  toggleExtraSpeed() {
+    this.globalService.globalVar.extraSpeedEnabled = !this.globalService.globalVar.extraSpeedEnabled;
+  }
+
   openMenu() {
     if (this.layoutService.navigation === NavigationEnum.Default)
     {

@@ -140,14 +140,14 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Leather, 3));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 4));
       }
       if (rewardLevel >= 4) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.LamiaHeart, 2));
       }
     }
     if (type === ZoneEnum.Libya) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 4));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 3));
       if (rewardLevel >= 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 2));
       }
@@ -159,7 +159,7 @@ export class FollowersService {
       }
     }
     if (type === ZoneEnum.Asphodel) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SoulSpark, 4));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SoulSpark, 3));
       if (rewardLevel >= 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheLethe, 2));
       }
@@ -171,9 +171,9 @@ export class FollowersService {
       }
     }
     if (type === ZoneEnum.Elysium) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheLethe, 4));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheLethe, 3));
       if (rewardLevel >= 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Narcissus, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Narcissus, 2));
       }
       if (rewardLevel >= 3) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingSalve, 1));
@@ -183,12 +183,12 @@ export class FollowersService {
       }
     }
     if (type === ZoneEnum.PeloposNisos) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfLakeLerna, 4));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfLakeLerna, 3));
       if (rewardLevel >= 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallEmerald, 1));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAmethyst, 4));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAmethyst, 3));
       }
       if (rewardLevel >= 4) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAquamarine, 2));

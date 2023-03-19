@@ -172,6 +172,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Earth) {
       src += "barearth.svg";
     }
+    if (effect.type === StatusEffectEnum.ReduceHealing) {
+      src += "reduceHealing.svg";
+    }
+    if (effect.type === StatusEffectEnum.ReduceDirectDamage) {
+      src += "reduceDirectDamage.svg";
+    }
 
     return src;
   }

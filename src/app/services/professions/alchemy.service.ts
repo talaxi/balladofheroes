@@ -442,8 +442,8 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.StranglingGasPotion) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 3));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
@@ -454,7 +454,7 @@ export class AlchemyService {
     if (item === ItemsEnum.PoisonExtractPotion) {
       recipe.quality = EquipmentQualityEnum.Basic;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.PoisonFang, ItemTypeEnum.CraftingMaterial, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PoisonFang, ItemTypeEnum.CraftingMaterial, 2));
 
       recipe.numberOfSteps = 3;
       recipe.steps.push(AlchemyActionsEnum.PrepareWaterSmallPot);

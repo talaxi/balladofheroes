@@ -93,3 +93,11 @@
 .globalHeaderItem {
     color: var(--foreground-quaternary);
 }
+
+.normalFontSize {
+    font-size: 1rem;
+}
+
+.extraSpeedDisabled {
+    opacity: .5;
+}

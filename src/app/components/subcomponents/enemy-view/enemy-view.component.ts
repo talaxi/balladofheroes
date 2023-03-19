@@ -50,15 +50,16 @@ export class EnemyViewComponent implements OnInit {
           this.enemyName.nativeElement.classList.remove('verySmallText');
         }
           
-        //cotd looks good at 2.148148125, harpy looks good at 2.14814815
-        if ((this.enemyNameContainer.nativeElement.offsetHeight * 2.1481481375) < this.enemyName.nativeElement.offsetHeight)
+        if (this.enemyName.nativeElement.classList.contains('smallText') && (this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight)
         {
+          this.enemyName.nativeElement.classList.remove('smallText');
           this.enemyName.nativeElement.classList.add('verySmallText');      
-        }
-        else if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight)
+        }   
+
+        if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight)
         {
           this.enemyName.nativeElement.classList.add('smallText');      
-        }
+        }     
   
         this.previousName = this.character.name;  
       }

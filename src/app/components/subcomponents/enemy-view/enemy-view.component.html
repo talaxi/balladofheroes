@@ -14,7 +14,7 @@
         </span>
     </span>
     <div [ngClass]="{'boss': isBoss, 'enemy': !isBoss}">
-        <div class="hpBarSpace hpBarGrid">
+        <div class="hpBarSpace hpBarGrid" #hpBar>
             <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
                 class="green-progress characterBar hpBar highBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>

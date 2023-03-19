@@ -1785,9 +1785,9 @@ export class EnemyGeneratorService {
       emitSpores.isAvailable = true;      
       emitSpores.cooldown = emitSpores.currentCooldown = 21;
       emitSpores = this.randomizeCooldown(emitSpores);     
-      emitSpores.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 12, .8, false, false, false)); 
-      emitSpores.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 12, .8, false, false, false)); 
-      emitSpores.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 12, .8, false, false, false)); 
+      emitSpores.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 12, .8, false, false, true)); 
+      emitSpores.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 12, .8, false, false, true)); 
+      emitSpores.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 12, .8, false, false, true)); 
       enemy.abilityList.push(emitSpores);
     }       
     if (type === BestiaryEnum.ForestDryad)
@@ -1805,6 +1805,7 @@ export class EnemyGeneratorService {
       spines.effectiveness = 1.9;
       spines.cooldown = spines.currentCooldown = 13;
       spines = this.randomizeCooldown(spines);
+      spines.elementalType = ElementalTypeEnum.Earth; 
       spines.dealsDirectDamage = true;            
       enemy.abilityList.push(spines);
 
@@ -1829,7 +1830,7 @@ export class EnemyGeneratorService {
       var crunch = new Ability();
       crunch.name = "Crunch";
       crunch.isAvailable = true;
-      crunch.effectiveness = 2;
+      crunch.effectiveness = 1.8;
       crunch.cooldown = crunch.currentCooldown = 13;
       crunch = this.randomizeCooldown(crunch);
       crunch.dealsDirectDamage = true;      
@@ -2210,7 +2211,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.DenMother)
     {
       enemy.name = "Den Mother";
-      enemy.battleStats = new CharacterStats(9640, 587, 982, 581, 425, 650); 
+      enemy.battleStats = new CharacterStats(12840, 587, 1082, 581, 425, 650); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;      
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 800;
@@ -2252,14 +2253,14 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.CalydonianBoar)
     {
       enemy.name = "Calydonian Boar";
-      enemy.battleStats = new CharacterStats(14234, 658, 1093, 440, 550, 750); 
+      enemy.battleStats = new CharacterStats(19234, 658, 1263, 440, 550, 750); 
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;      
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 1050;
       enemy.loot.push(new LootItem(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, 1, .25));
       enemy.loot.push(new LootItem(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 2, .15)); 
       enemy.loot.push(new LootItem(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 1, .3)); 
-      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 100, false, true, false));      
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 150, false, true, false));      
 
       var bodySlam = new Ability();
       bodySlam.name = "Body Slam";

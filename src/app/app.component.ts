@@ -150,7 +150,8 @@ export class AppComponent {
 
     //if speed up time remains, use it (only if not doing batches which causes issues)
     if (!this.globalService.globalVar.isCatchingUp) {
-      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2) {
+      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2 &&
+      this.globalService.globalVar.extraSpeedEnabled) {
         if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
           deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
           this.globalService.globalVar.extraSpeedTimeRemaining = 0;

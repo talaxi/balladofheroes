@@ -50,6 +50,10 @@ export class AltarComponent implements OnInit {
       this.gainThreshold3Reward();
       this.globalService.globalVar.sidequestData.altarOfAsclepius.exp = 3;
     }
+    if (this.getAsclepiusHpThreshold4() >= 100 && this.globalService.globalVar.sidequestData.altarOfAsclepius.exp < 4) {
+      this.gainThreshold4Reward();
+      this.globalService.globalVar.sidequestData.altarOfAsclepius.exp = 4;
+    }
   }
 
   displayAltarText() {

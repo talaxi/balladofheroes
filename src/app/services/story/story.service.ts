@@ -65,7 +65,7 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 15 && this.balladService.getActiveSubZone().type === SubZoneEnum.CalydonTownMarket)
       this.showStory = true;
-    else if (this.globalService.globalVar.currentStoryId === 16 && this.balladService.getActiveSubZone().type === SubZoneEnum.CalydonWornDownBarn)
+    else if (this.globalService.globalVar.currentStoryId === 16 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CalydonWornDownBarn))
       this.showStory = true;
 
     if (this.showStory)
@@ -233,13 +233,24 @@ export class StoryService {
     else if (storyId === 15) {
       if (pageCount === 1)
         sceneText = "The commotion and activity of Calydon is a welcome sight after your long journey. Even though you've now traveled all across Greece, seeing so many people in one place still amazes you. Outside of Delphi, this is the largest city you've ever been in. The intricate architecture of the buildings and array of goods for sale in the streets leaves you in awe and feeling a little overwhelmed.<br/><br/>" +
-        "If Zosime felt this way, she did not show it. It was clear that she was ready to continue on and find the fabled forest where Atalanta shed the blood of the Calydonian Boar for the first time. Zosime's unfailing spirit and the passion in her heart takes you back to the question: What is it to be a hero?";
+        "If Zosime felt this way, she did not show it. It was clear that she was ready to continue on and find the fabled forest where Atalanta shed the blood of the Calydonian Boar for the first time. Somehow, it seems Zosime wasn't shaken at all by your encounter with Enceladus. Was this what it was like to be a hero, to ignore your failings and never stray from the path?";
       else if (pageCount === 2)
-        sceneText = "The stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?<br/><br/>" +
-        "Growing up without a family, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was still turned away from joining so many other heroes on the Argo? Did Atalanta doubt herself the way you did?";
+        sceneText = "The famous stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?<br/><br/>" +
+        "Growing up alone in the hard wilderness, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was turned away from joining the other heroes on the Argo? How many times did she stumble before putting an arrow through the Calydonian Boar?";
       else if (pageCount === 3)
-        sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back.<br/><br/>" +
-        "While you consider this, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
+        sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back. On the other hand, Atalanta was never swatted down like an insect by a Giant as far as you knew. You're pretty confident that if Athena had Atalanta instead of you, Enceladus would no longer have a head.<br/><br/>" +
+        "While you are lost in your own head, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
+    }
+    else if (storyId === 16) {
+      if (pageCount === 1)
+        sceneText = "After a grueling battle, the wild beast finally stills. " + this.thalesText("“Another one off your list, Zosime!”") + " You say as you catch your breath, caught up in the thrill of victory. She grins as she eagerly examines the boar. You can tell this moment means a lot to her. <br/><br/>" +
+        "Nearby sounds of leaves rustling immediately put you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
+      else if (pageCount === 2)
+        sceneText = this.zosimeText("That's Artemis's stag!”") + " Zosime says from behind you. She begins a silent prayer as the majestic beast returns to grazing the forest. " + this.thalesText("“The gods are still with us.”") + " You whisper, feeling a great relief. What greater reassurance can you receive than to know that you may not believe in yourself, but the gods do?<br/><br/>" +
+        "The stag's grazing pattern eventually puts it out of sight. You attempt to follow it, but there is no tracking a beast whose very nature is the forest. You return to Zosime, still in prayer.";
+      else if (pageCount === 3)
+        sceneText = this.thalesText("“I've decided that we should go to Iolcus next. My favorite story growing up was Jason's travels. I always loved hearing about so many heroes working together. Besides, I've spent my whole life on the coast and it's been too long since I've been near the water.”") + "<br/><br/>" +
+        this.zosimeText("“Lead the way.”") + " Zosime says, happy to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -315,6 +326,9 @@ export class StoryService {
       this.pageCount = 2;
     }
     if (this.globalService.globalVar.currentStoryId === 15) {
+      this.pageCount = 3;
+    }
+    if (this.globalService.globalVar.currentStoryId === 16) {
       this.pageCount = 3;
     }
 
@@ -433,6 +447,11 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "As soon as Acheron is out of sight, the familiar shade darts towards you again. " + this.commonCharacterText("“I saw the whole thing! How much prayin' does someone need, I mean sheesh! Well, I'll let the boys know to start coming out here and say sweet nothins' to Oceanus if they want their sea breeze. You start coming by at the palace and I'll sweeten our deal alright?”");
     }
+    if (scene === OptionalSceneEnum.CalydonDenMother) {
+      if (pageCount === 1)
+        sceneText = this.thalesText("“Here!”") + " You exclaim after catching a glimpse of a trail. You've watched Zosime examining animal tracks in search of the boar and finally found some yourself. " + this.thalesText("“It's this way!”") + " You call out, excitedly following your new found trail.<br/><br/>" +
+        "Zosime follows behind you more cautiously, seeing the tracks for the first time. " + this.zosimeText("“Thales… I don't think these are boar tracks.”") + " She says as she catches up to you. The tracks have led you down a wooded ravine to a small cave. As you peek your head inside expecting to see your prey, you are instead greeted by the angry bear who lives in this cave.";      
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -463,6 +482,9 @@ export class StoryService {
     }
     if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade1Scene3) {
       this.pageCount = 2;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.CalydonDenMother) {
+      this.pageCount = 1;
     }
 
     this.sceneText = this.getOptionalStoryText(this.showOptionalStory, this.currentPage);

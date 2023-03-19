@@ -341,7 +341,7 @@ export class GlobalService {
       woundingArrow.name = "Wounding Arrow";
       woundingArrow.isAvailable = false;
       woundingArrow.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      woundingArrow.cooldown = woundingArrow.currentCooldown = 28;
+      woundingArrow.cooldown = woundingArrow.currentCooldown = 38;
       woundingArrow.effectiveness = 2;
       woundingArrow.dealsDirectDamage = true;
       woundingArrow.targetEffect.push(this.createStatusEffect(StatusEffectEnum.AttackDown, 7, .9, false, false));
@@ -362,7 +362,7 @@ export class GlobalService {
       exposeWeakness.name = "Expose Weakness";
       exposeWeakness.isAvailable = false;
       exposeWeakness.requiredLevel = this.utilityService.godAbility3Level;
-      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 58;
+      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 62;
       exposeWeakness.dealsDirectDamage = true;
       exposeWeakness.effectiveness = 2.3;
       exposeWeakness.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
@@ -413,11 +413,11 @@ export class GlobalService {
       ostinato.isAvailable = false;
       ostinato.requiredLevel = this.utilityService.godPassiveLevel;
       ostinato.isPassive = true;
-      ostinato.effectiveness = .8;
+      ostinato.effectiveness = .4;
       ostinato.heals = true;
       ostinato.targetsAllies = true;
       ostinato.targetType = TargetEnum.LowestHpPercent;
-      ostinato.cooldown = ostinato.currentCooldown = 40;
+      ostinato.cooldown = ostinato.currentCooldown = 20;
       god.abilityList.push(ostinato);
     }
 
@@ -426,7 +426,7 @@ export class GlobalService {
       trickShot.name = "Nimble Strike";
       trickShot.isAvailable = false;
       trickShot.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      trickShot.cooldown = trickShot.currentCooldown = 12;
+      trickShot.cooldown = trickShot.currentCooldown = 15;
       trickShot.dealsDirectDamage = true;
       trickShot.effectiveness = 1.1;
       god.abilityList.push(trickShot);
@@ -445,10 +445,9 @@ export class GlobalService {
       specialDelivery.name = "Special Delivery";
       specialDelivery.requiredLevel = this.utilityService.godAbility3Level;
       specialDelivery.isAvailable = false;
-      specialDelivery.cooldown = specialDelivery.currentCooldown = 42;
+      specialDelivery.cooldown = specialDelivery.currentCooldown = 54;
       specialDelivery.dealsDirectDamage = false;
       specialDelivery.effectiveness = 1.1;
-      specialDelivery.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.1, true, true));
       specialDelivery.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.1, true, true));
       specialDelivery.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantAutoAttack, 0, 1.1, true, true));
       god.abilityList.push(specialDelivery);
@@ -465,7 +464,7 @@ export class GlobalService {
     }
 
     if (god.type === GodEnum.Zeus) {
-      var divineStrike = new Ability();
+      /*var divineStrike = new Ability();
       divineStrike.name = "Divine Strike";
       divineStrike.isAvailable = false;
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
@@ -502,11 +501,11 @@ export class GlobalService {
       secondWind.isPassive = true;
       secondWind.dealsDirectDamage = true;
       secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
-      god.abilityList.push(secondWind);
+      god.abilityList.push(secondWind);*/
     }
 
     if (god.type === GodEnum.Ares) {
-      var divineStrike = new Ability();
+      /*var divineStrike = new Ability();
       divineStrike.name = "Divine Strike";
       divineStrike.isAvailable = false;
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
@@ -543,11 +542,11 @@ export class GlobalService {
       secondWind.isPassive = true;
       secondWind.dealsDirectDamage = true;
       secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
-      god.abilityList.push(secondWind);
+      god.abilityList.push(secondWind);*/
     }
 
     if (god.type === GodEnum.Poseidon) {
-      var divineStrike = new Ability();
+      /*var divineStrike = new Ability();
       divineStrike.name = "Divine Strike";
       divineStrike.isAvailable = false;
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
@@ -584,7 +583,7 @@ export class GlobalService {
       secondWind.isPassive = true;
       secondWind.dealsDirectDamage = true;
       secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
-      god.abilityList.push(secondWind);
+      god.abilityList.push(secondWind);*/
     }
 
   }
@@ -1267,7 +1266,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 40)
         userGainsEffect.effectiveness += .05;
       else
-        ability.effectiveness += .2;
+        ability.effectiveness += .15;
     }
     else if (god.type === GodEnum.Artemis) {
       //every 10 upgrades until level 100, reduce cooldown
@@ -1281,13 +1280,13 @@ export class GlobalService {
           targetGainsEffect.duration += 1;
       }
       else
-        ability.effectiveness += .3;
+        ability.effectiveness += .20;
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= .25;
       else
-        ability.effectiveness += .1;
+        ability.effectiveness += .075;
     }
     else if (god.type === GodEnum.Apollo) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1394,8 +1393,8 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
-        ability.cooldown -= 1;
-      else if ((ability.abilityUpgradeLevel === 45 || ability.abilityUpgradeLevel === 90) && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= 1.2;
+      else if (ability.abilityUpgradeLevel === 15 || ability.abilityUpgradeLevel === 45 || ability.abilityUpgradeLevel === 75)
         ability.userEffect.push(userGainsEffect.makeCopy());
       else
         ability.userEffect.forEach(effect => { effect.effectiveness += .01 });
@@ -1442,9 +1441,9 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Apollo) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
-        ability.cooldown -= 2;
+        ability.cooldown -= .5;
       else
-        ability.effectiveness += .075;
+        ability.effectiveness += .035;
     }
     else if (god.type === GodEnum.Zeus) {
 

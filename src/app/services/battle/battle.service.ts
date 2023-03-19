@@ -290,6 +290,11 @@ export class BattleService {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade1Scene3)) {
       this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade1Scene3);
     }
+
+    if (this.balladService.getActiveSubZone().type === SubZoneEnum.CalydonTallGrass &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CalydonDenMother)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.CalydonDenMother);
+    }
   }
 
   checkScene() {
@@ -1335,22 +1340,19 @@ export class BattleService {
     //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
     //+ " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
-      if (ability?.damageModifierRange !== undefined) {
-        var rng = this.utilityService.getRandomNumber(1 - ability.damageModifierRange, 1 + ability.damageModifierRange);
-        console.log("Sloppy Shot RNG: " + rng);
-        console.log("Damage before: " + damage);
-        damage *= rng;
-        console.log("Damage after: " + damage);
-      }
+    if (ability?.damageModifierRange !== undefined) {
+      var rng = this.utilityService.getRandomNumber(1 - ability.damageModifierRange, 1 + ability.damageModifierRange);
+      damage = Math.round(damage * rng);
+    }
+
+    var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
+    if (reduceDamage !== undefined)
+      damage -= reduceDamage.effectiveness;
 
     if (damage < 0)
       damage = 0;
 
     var totalDamageDealt = damage;
-
-    var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
-    if (reduceDamage !== undefined)
-      totalDamageDealt -= reduceDamage.effectiveness;
 
     target.trackedStats.damageTaken += totalDamageDealt;
     if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
@@ -1439,6 +1441,8 @@ export class BattleService {
     if (reduceDamage !== undefined && isReducable)
       totalDamageDealt -= reduceDamage.effectiveness;
 
+    if (totalDamageDealt < 0)
+      totalDamageDealt = 0;
 
     target.trackedStats.damageTaken += totalDamageDealt;
     if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
@@ -2285,7 +2289,7 @@ export class BattleService {
 
           if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             userGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2304,7 +2308,7 @@ export class BattleService {
 
           if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             targetGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else {
@@ -2326,7 +2330,7 @@ export class BattleService {
 
           if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             userGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2345,7 +2349,7 @@ export class BattleService {
 
           if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             targetGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2366,7 +2370,7 @@ export class BattleService {
 
           if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             userGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2385,7 +2389,7 @@ export class BattleService {
 
           if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             targetGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2406,7 +2410,7 @@ export class BattleService {
 
           if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             userGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2425,7 +2429,7 @@ export class BattleService {
 
           if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             targetGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2446,7 +2450,7 @@ export class BattleService {
 
           if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             userGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else
@@ -2465,7 +2469,7 @@ export class BattleService {
 
           if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             targetGainsEffects.push(effect.makeCopy());
-            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount -= effect.triggersEvery;
+            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount = 0;
           }
         }
         else

@@ -87,6 +87,7 @@ export class GlobalVariables {
     sidequestData: SidequestData;
     @Type(() => FollowerData)
     followerData: FollowerData;
+    extraSpeedEnabled: boolean;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -120,5 +121,6 @@ export class GlobalVariables {
         this.isBattlePaused = false;
         this.sidequestData = new SidequestData();
         this.followerData = new FollowerData();
+        this.extraSpeedEnabled = true;
     }
 }

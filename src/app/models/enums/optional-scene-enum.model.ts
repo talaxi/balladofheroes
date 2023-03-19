@@ -5,4 +5,5 @@ export enum OptionalSceneEnum {
   ChthonicFavorUpgrade1Scene1,
   ChthonicFavorUpgrade1Scene2,
   ChthonicFavorUpgrade1Scene3,
+  CalydonDenMother
 }
