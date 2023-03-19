@@ -32,6 +32,7 @@ export class Ability {
     manuallyTriggered: boolean;
     abilityUpgradeLevel: number;
     isAbilityPermanent: boolean;
+    damageModifierRange: number; 
 
     constructor() {
         this.effectiveness = 1;

@@ -60,14 +60,14 @@
                     <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="agilityPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Agility: </strong>
                         <span class="statValue">{{character.battleStats.agility | number : '1.0-0'}}</span></span>
+                    <br />                    
+                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="defensePopover">
+                        <strong [ngClass]="getCharacterColor()" class="statLabel">Defense: </strong>
+                        <span class="statValue">{{character.battleStats.defense | number : '1.0-0'}}</span></span>
                     <br />
                     <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="luckPopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Luck: </strong>
                         <span class="statValue">{{character.battleStats.luck | number : '1.0-0'}}</span></span>
-                    <br />
-                    <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="defensePopover">
-                        <strong [ngClass]="getCharacterColor()" class="statLabel">Defense: </strong>
-                        <span class="statValue">{{character.battleStats.defense | number : '1.0-0'}}</span></span>
                     <br />
                     <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="resistancePopover">
                         <strong [ngClass]="getCharacterColor()" class="statLabel">Resistance: </strong>
@@ -268,7 +268,7 @@
 
 <ng-template #agilityPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getAgilityDescription()"></span>
+        <span class="description" [innerHtml]="this.lookupService.getAgilityDescription(this.character)"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getAgilityStatBreakdown(this.character)">
 
@@ -278,7 +278,7 @@
 
 <ng-template #luckPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getLuckDescription()"></span>
+        <span class="description" [innerHtml]="this.lookupService.getLuckDescription(this.character)"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getLuckStatBreakdown(this.character)">
 
@@ -298,7 +298,7 @@
 
 <ng-template #resistancePopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getResistanceDescription()"></span>
+        <span class="description" [innerHtml]="this.lookupService.getResistanceDescription(this.character)"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getResistanceStatBreakdown(this.character)">
 

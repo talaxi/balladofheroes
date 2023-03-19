@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
@@ -97,15 +98,43 @@ export class EquipmentViewComponent implements OnInit {
       return;
 
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Weapon)
+    {
+      if (character.equipmentSet.weapon !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
       character.equipmentSet.weapon = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Shield)
+    {
+      if (character.equipmentSet.shield !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
       character.equipmentSet.shield = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Armor)
+    {
+      if (character.equipmentSet.armor !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
       character.equipmentSet.armor = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Ring)
+    {
+      if (character.equipmentSet.ring !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Ring, character.type);
       character.equipmentSet.ring = selectedEquipmentPiece;
+    }
     if (selectedEquipmentPiece.equipmentType === EquipmentTypeEnum.Necklace)
+    {
+      if (character.equipmentSet.necklace !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
       character.equipmentSet.necklace = selectedEquipmentPiece;
+    }
+
+    if (selectedEquipmentPiece.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery &&
+      selectedEquipmentPiece.equipmentEffect.triggersEveryCount === 0) {
+      if (selectedEquipmentPiece.equipmentEffect.userEffect.length > 0)
+        selectedEquipmentPiece.equipmentEffect.triggersEveryCount = selectedEquipmentPiece.equipmentEffect.userEffect[0].triggersEvery;
+      else if (selectedEquipmentPiece.equipmentEffect.targetEffect.length > 0)
+        selectedEquipmentPiece.equipmentEffect.triggersEveryCount = selectedEquipmentPiece.equipmentEffect.targetEffect[0].triggersEvery;
+    }
 
     this.globalService.calculateCharacterBattleStats(character);
     this.setUpAvailableEquipment();
@@ -190,9 +219,11 @@ export class EquipmentViewComponent implements OnInit {
         this.itemToSell = equipmentPiece;
         this.itemToSellSelected = true;
         this.itemToSellPrice = this.lookupService.getItemSellPrice(equipment.item);
+        this.sellAmount = 1;
       }
     }
     else {      
+        this.sellAmount = 1;
         this.itemToSellSelected = false;
     }
   }
@@ -214,6 +245,7 @@ export class EquipmentViewComponent implements OnInit {
 
     if (this.getTotalItemToSellAmount() <= 0)
     {
+      this.sellAmount = 1;
       this.itemToSellSelected = false;
     }
     

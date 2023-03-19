@@ -81,7 +81,7 @@
 
 :root {
   /* Colors */
-  --foreground-secondary: #6B8CA5; /* B3A0A2, 628599? */ 
+  --foreground-secondary: #6D8EAA; /* old: 6B8CA5 */ 
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
@@ -125,7 +125,7 @@
   --aresColor: #EE665F;
   --apolloColor: #eda324;
   --poseidonColor: #00baa1;
-  --hermesColor: #f0f0f0; /*#faf9eb maybe instead */
+  --hermesColor: #efefef; /*#faf9eb maybe instead */
   --artemisColor: #97BBB0;
   --hadesColor: #BBAFC5;  
 
@@ -153,6 +153,7 @@
   --chthonicFavorColor: #ABB5DC;
   --chthonicPowerColor: #83C2A6;
   --overdriveColor: #FA989E;
+  --followerColor: #3DB6D1;
 
   --barrierColor: #0FCCC6;
 
@@ -215,7 +216,7 @@
   --c2-spacing: 0.1px;
 
   --e2-size: 1.175rem;
-  --e3-size: .8rem;
+  --e3-size: 1.025rem;
 
   --s1-size: 3rem;
   --s1-weight: 600;
@@ -432,6 +433,7 @@ h6 {
   font-size: .95rem;
   padding: .1rem .5rem;
   margin: .1rem .2rem;
+  border-style: solid;
 }
 
 .buttonStyled:hover {
@@ -559,6 +561,10 @@ html, body { height: 100%; }
 
 .overdriveText {
   color: var(--overdriveColor);
+}
+
+.followerText {
+  color: var(--followerColor);
 }
 
 .tutorialText {
@@ -948,5 +954,22 @@ button {
 }
 
 .keybind {
+  font-weight: bold;
+}
+
+.charmDescriptor {
+  font-weight: bold;
+}
+
+.commonCharacterText {
+  font-weight: bold;
+  color: var(--foreground-accent);
+}
+
+button:disabled {
+  opacity: .5;
+}
+
+.bold {
   font-weight: bold;
 }

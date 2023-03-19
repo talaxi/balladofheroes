@@ -4,7 +4,7 @@
         <div class="centeredBox">
             <div #spinnerDiv class="ability">
                 <div>
-                    <span class='abilityTimer'><img class="abilityImage" src="assets/svg/smallAltar.svg" /></span>
+                    <span class='abilityTimer'><img class="abilityImage" [src]='getAltarImage()' /></span>
                 </div>
                 <div [ngClass]="{'altarUnavailable': !isAltarReady() }">
                     <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()"

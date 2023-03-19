@@ -42,6 +42,14 @@ export class AchievementsViewComponent implements OnInit {
     this.zones.push(new Zone());
     this.subzones.push(new SubZone());
 
+    var showOnlyUncompletedAchievements = this.globalService.globalVar.settings.get("showOnlyUncompletedAchievements");
+    if (showOnlyUncompletedAchievements !== undefined)
+      this.showUncompleted = showOnlyUncompletedAchievements;
+
+    var achievementsPerPage = this.globalService.globalVar.settings.get("achievementsPerPage");
+    if (achievementsPerPage !== undefined)
+      this.itemsPerPage = achievementsPerPage;
+
     this.globalService.globalVar.achievements.forEach(achievement => {
       var achievementSubsection = this.achievementsBySubZone.find(item => item[0].relatedSubzone === achievement.relatedSubzone)
       if (achievementSubsection !== undefined) {
@@ -56,6 +64,7 @@ export class AchievementsViewComponent implements OnInit {
 
     this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);
     this.getAchievementsByPage();
+    this.filterList();
   }
 
   getAchievementsByPage() {
@@ -182,6 +191,7 @@ export class AchievementsViewComponent implements OnInit {
 
   showUncompletedToggle() {
     this.filterList();
+    this.globalService.globalVar.settings.set("showOnlyUncompletedAchievements", this.showUncompleted);
   }
 
   filterList() {
@@ -233,7 +243,7 @@ export class AchievementsViewComponent implements OnInit {
     this.getAchievementsByPage();
   }
 
-  jumpToNextPage() {    
+  jumpToNextPage() {
     if (this.currentPage < this.lastPage)
       this.currentPage += 1;
 
@@ -248,7 +258,8 @@ export class AchievementsViewComponent implements OnInit {
   setPageAmount(amount: number) {
     this.itemsPerPage = amount;
     this.currentPage = 1;
-    this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);
+    this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);    
+    this.globalService.globalVar.settings.set("achievementsPerPage", this.itemsPerPage);
     this.getAchievementsByPage();
   }
 }

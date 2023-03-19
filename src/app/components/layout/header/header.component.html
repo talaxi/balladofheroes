@@ -17,8 +17,10 @@
         </button>        
     </div>    
 
-    <div class="extraTimeItem centerAlign globalHeaderItem">
-        <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover"> ({{getExtraSpeedTime()}})</span></span>
+    <div class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
+      <button class="buttonAsText clickableText globalHeaderItem normalFontSize" (click)="toggleExtraSpeed()">
+        <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover" [tooltipDirection]="tooltipDirection"> ({{getExtraSpeedTime()}})</span></span>
+      </button>
     </div>
 
     <div class="storyItem">        
@@ -43,7 +45,7 @@
 
   <ng-template #extraTimePopover>
     <div>
-      The amount of banked time you've gained while away from the game. While this is available, the game will run at 2x the speed.
+      The amount of banked time you've gained while away from the game. While this is available, the game will run at 2x the speed. Click to toggle on or off.
     </div>
   </ng-template>
 

@@ -2,13 +2,15 @@ import { Injectable, SecurityContext } from '@angular/core';
 import { DomSanitizer } from '@angular/platform-browser';
 import * as seedrandom from "seedrandom";
 import * as pluralize from 'pluralize';
+import { MatDialog } from '@angular/material/dialog';
+import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utility/confirmation-box/confirmation-box.component';
 
 @Injectable({
   providedIn: 'root'
 })
 export class UtilityService {
   //glossary
-  public activeTimeLimit = 1 * 20 * 60;
+  public activeTimeLimit = 1 * 30 * 60;
   public extraSpeedTimeLimit = 8 * 60 * 60;
 
   public quickAutoAttackSpeed = 5;
@@ -31,14 +33,15 @@ export class UtilityService {
   public godAbility3Level = 75;
   public permanentPassiveGodLevel = 125;
   public permanentGodAbility2Level = 175;
-  public permanentGodAbility3Level = 385;
+  public permanentGodAbility3Level = 375;
 
-  public godStatGainLevelIncrement = (1/14);
+  public godStatGainLevelIncrement = (1 / 14);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
 
   public firstAlchemyLevelCap = 25;
+  public alchemyLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
   public largeAltarAffinityGain = 2;
@@ -49,18 +52,29 @@ export class UtilityService {
   public affinityRewardGodXpBonus = .1;
   public basePrayGodXpIncrease = 20;
 
-  public killCountDisplayEnemyStatsAbilities = 10;
-  public killCountDisplayBasicEnemyLoot = 30;
-  public killCountDisplayFullEnemyLoot = 50;
+  public killCountDisplayEnemyStatsAbilities = 1;
+  public killCountDisplayBasicEnemyLoot = 10;
+  public killCountDisplayFullEnemyLoot = 30;
 
   public overdriveDamageNeededToUnlockProtection = 100000;
-  public overdriveAttacksNeededToUnlockNature = 3;
+  public overdriveAttacksNeededToUnlockNature = 75000;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
   public enemyMajorElementalWeakness = -.5;
 
-  constructor(public sanitizer: DomSanitizer) { }
+  public preferredGodStartTime1 = 4;
+  public preferredGodEndTime1 = 12;
+  public preferredGodStartTime2 = 12;
+  public preferredGodEndTime2 = 20;
+  public preferredGodStartTime3 = 20;
+  public preferredGodEndTime3 = 4;
+
+  public followerSearchZoneInterval = 60;
+  public smallAltarActivationChancePerFollower = .1;
+  public smallAltarPrayChancePerFollower = .01;
+
+  constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
   getSanitizedHtml(text: string) {
     var sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(text));
@@ -270,6 +284,12 @@ export class UtilityService {
     if (text === "Vial of the Lethe")
       return "Vials of the Lethe";
 
+    if (text === "Vial of Lake Lerna")
+      return "Vials of the Lake Lerna";
+
+    if (text === "Vial of the Black Sea")
+      return "Vials of the Black Sea";
+
     if (text === "Essence of Fire")
       return "Essences of Fire";
 
@@ -277,5 +297,9 @@ export class UtilityService {
       return "Small Topazes";
 
     return pluralize(text);
+  }
+
+  openConfirmationDialog() {          
+    return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });  
   }
 }

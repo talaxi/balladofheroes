@@ -1,0 +1,20 @@
+<table>
+    <tr>
+        <td class="clickableText tabItem" [ngClass]="{'active': selectedTab === followerTabEnum.Overview }" (click)="changeView(followerTabEnum.Overview)">
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': selectedTab === followerTabEnum.Overview }">Overview</button>
+        </td>
+        <td class="clickableText tabItem" [ngClass]="{'active': selectedTab === followerTabEnum.Search }" (click)="changeView(followerTabEnum.Search)">
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': selectedTab === followerTabEnum.Search }">Search</button>
+        </td>
+        <td class="clickableText tabItem" [ngClass]="{'active': selectedTab === followerTabEnum.Prayer }" (click)="changeView(followerTabEnum.Prayer)">
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': selectedTab === followerTabEnum.Prayer }">Prayer</button>
+        </td>
+    </tr>
+</table>
+
+<hr class="noMargin" />
+<div class="info">
+    <app-follower-overview-view *ngIf="selectedTab === followerTabEnum.Overview"></app-follower-overview-view>
+    <app-follower-search-view *ngIf="selectedTab === followerTabEnum.Search"></app-follower-search-view>
+    <app-follower-prayer-view *ngIf="selectedTab === followerTabEnum.Prayer"></app-follower-prayer-view>
+</div>

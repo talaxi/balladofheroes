@@ -46,9 +46,11 @@
                                 <span class="subzoneSpacer">&#8618;</span><span><button
                                         class="buttonAsTextKeepColor z3Heading clickableText"
                                         [ngClass]="getSubzoneClass(subzone)"
-                                        (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone) ? "To Be Continued!" : subzone.name}}
+                                        (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone) ? "To
+                                        Be Continued!" : subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
-                                        <app-notification-icon *ngIf="subzone.showNewNotification">
+                                        <app-notification-icon *ngIf="subzone.showNewNotification"
+                                            [notificationColor]="subzone.notificationType" [notificationStyle]="getSubzoneNotificationStyle(subzone)">
                                         </app-notification-icon>
                                     </button>
                                 </span>
@@ -89,15 +91,14 @@
                 <img class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
             </button>
             <div *ngIf="areAltarsAvailable()">
-                <button class="buttonAsText clickableText iconButton"
-                    (click)="setQuickView(quickViewEnum.Altars)" customToolTip [contentTemplate]="altarIconPopover"
-                    [tooltipDirection]="tooltipDirection">
+                <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Altars)"
+                    customToolTip [contentTemplate]="altarIconPopover" [tooltipDirection]="tooltipDirection">
                     <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"
                         src="assets/svg/smallAltar.svg">
-                    <img class="icon iconDisabled" src="assets/svg/altarsOverviewDisabled.svg">                    
+                    <img class="icon iconDisabled" src="assets/svg/altarsOverviewDisabled.svg">
                 </button>
                 <app-notification-icon
-                        *ngIf="globalService.globalVar.altars.showNewNotification"></app-notification-icon>
+                    *ngIf="globalService.globalVar.altars.showNewNotification"></app-notification-icon>
             </div>
             <button class="buttonAsText clickableText iconButton" *ngIf="isAlchemyAvailable()"
                 (click)="setQuickView(quickViewEnum.Alchemy)" customToolTip [contentTemplate]="alchemyIconPopover"
@@ -118,16 +119,15 @@
                     <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
                         (click)="jumpToLatestShop()">Latest Town</button>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
-                        (click)="jumpToLatestGeneralStore()">Latest General Store</button>
-                    <br />
                     <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()"
                         (click)="jumpToPalaceOfHades()">Palace of Hades</button>
+                    <br />
+                    <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()"
+                        (click)="jumpToColiseum()">Coliseum</button>
                 </div>
                 <div class="peekResources centeredText">
                     <div class="textLeftAligned inlineBlock">
-                        <span><span
-                                class="resource bold">Coins:</span><span>
+                        <span><span class="resource bold">Coins:</span><span>
                                 {{lookupService.getResourceAmount(itemsEnum.Coin) |
                                 number}}</span></span>
                         <br />
@@ -136,12 +136,15 @@
                             [contentTemplate]="chthonicPowerPopover">Chthonic Power:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
                                 : '1.0-2'}}</span></span>
-                                <br />
+                        <br />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
                             class="resource chthonicFavorKeyword" customToolTip
                             [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
                                 : '1.0-2'}}</span></span>
+                        <br />
+                        <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
+                            (click)="viewFollowers(followers)">View Followers</button>
                     </div>
                 </div>
             </div>
@@ -186,6 +189,12 @@
 <ng-template #alchemyRecipeBook>
     <div>
         <app-alchemy-view></app-alchemy-view>
+    </div>
+</ng-template>
+
+<ng-template #followers>
+    <div>
+        <app-follower-default-view></app-follower-default-view>
     </div>
 </ng-template>
 

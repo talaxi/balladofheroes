@@ -49,6 +49,18 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.QuickView) {
       text = "Use the section on the right to quickly view useful information such as the amount of coins you currently have. Hover over each quick view icon for more information.";
     }
+    else if (type === TutorialTypeEnum.Notifications) {
+      text = "Different notification colors indicate different things. Blue notification icons always indicate the way to go to progress the main story. Purple notification icons are optional professions that you may take on to improve your combat capabilities. Green notification icons lead to resets, which usually mean you weaken yourself in the short term to get stronger in the long term.";
+    }
+    else if (type === TutorialTypeEnum.SideQuests) {
+      text = "An orange notification icon means there is a side quest available. You do not need to follow the path of a side quest to progress the story, but typically there will be a useful reward at the end.";
+    }
+    else if (type === TutorialTypeEnum.Followers) {
+      text = "Your triumphs have inspired the people of Greece and have motivated some to follow you. Use the Followers menu to assign followers to search completed zones for items or pray to the gods for boons.";
+    }
+    else if (type === TutorialTypeEnum.ObscurredNotification) {
+      text = "If the path forward is not linear, the notification icon will be marked with a ?. Try the available paths in front of you and see if you can find the right way!";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

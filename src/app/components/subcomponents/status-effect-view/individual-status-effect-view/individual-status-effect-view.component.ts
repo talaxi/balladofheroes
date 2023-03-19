@@ -1,5 +1,6 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
+import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -33,6 +34,13 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     return false;
   }
 
+  isSplitStatUpDownEffect(effect: StatusEffect) {
+    if (effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown)
+      return true;
+
+    return false;
+  }
+
   hasImage(effect: StatusEffect) {
     var imageSrc = this.getStatusEffectImage(effect);
     return imageSrc.charAt(imageSrc.length - 1) !== "/";
@@ -51,7 +59,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "LCK";
     if (effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp)
       return "RES";
-    if (effect.type === StatusEffectEnum.DamageDealtUp || effect.type === StatusEffectEnum.DamageDealtDown)
+    if (effect.type === StatusEffectEnum.DamageDealtUp || effect.type === StatusEffectEnum.DamageDealtDown ||
+      effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown)
       return "DMG";
     if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown)
       return "TKN";
@@ -59,6 +68,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "KO";
 
     return effect.type;
+  }
+
+  getSplitStatImage(effect: StatusEffect) {
+    var img = "assets/svg/statUpSE.svg";
+
+    if (effect.type === StatusEffectEnum.EarthDamageUp)
+      img = "assets/svg/earth.svg";
+
+    return img;
   }
 
   getStatUpImage(effect: StatusEffect) {
@@ -124,6 +142,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";
     }
+    if (effect.type === StatusEffectEnum.RejuvenatingElixir) {
+      src += "rejuvenatingElixir.svg";
+    }
     if (effect.type === StatusEffectEnum.Thorns) {
       src += "thorns.svg";
     }
@@ -133,11 +154,29 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Enfire) {
       src += "enfire.svg";
     }
+    if (effect.type === StatusEffectEnum.Enearth) {
+      src += "enearth.svg";
+    }
     if (effect.type === StatusEffectEnum.Taunt) {
       src += "taunt.svg";
     }
     if (effect.type === StatusEffectEnum.Stagger) {
       src += "stagger.svg";
+    }
+    if (effect.type === StatusEffectEnum.Unsteady) {
+      src += "unbalanced.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Fire) {
+      src += "barfire.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Earth) {
+      src += "barearth.svg";
+    }
+    if (effect.type === StatusEffectEnum.ReduceHealing) {
+      src += "reduceHealing.svg";
+    }
+    if (effect.type === StatusEffectEnum.ReduceDirectDamage) {
+      src += "reduceDirectDamage.svg";
     }
 
     return src;

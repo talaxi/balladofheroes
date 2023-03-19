@@ -9,6 +9,7 @@ import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enu
 export class NotificationIconComponent implements OnInit {
   @Input() notificationColor = NotificationTypeEnum.Story; 
   @Input() isButton = false;
+  @Input() notificationStyle = "!";
 
   constructor() { }
 
@@ -23,6 +24,10 @@ export class NotificationIconComponent implements OnInit {
     }
 
     return className;
+  }
+
+  getNotificationStyle() {
+    return this.notificationStyle;
   }
 
   getIconColor() {

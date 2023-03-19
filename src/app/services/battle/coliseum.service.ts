@@ -45,7 +45,7 @@ export class ColiseumService {
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 4000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 8000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     }
     if (type === ColiseumTournamentEnum.ForgottenKings) {
@@ -53,7 +53,7 @@ export class ColiseumService {
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, ItemTypeEnum.Resource, 1));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 7500));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 15000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Resource, 1));
     }
 
@@ -122,7 +122,7 @@ export class ColiseumService {
               });
             }
           }
-          if (reward.item === ItemsEnum.HeroicElixirRecipe) {
+          else if (reward.item === ItemsEnum.HeroicElixirRecipe) {
             this.alchemyService.learnRecipe(ItemsEnum.HeroicElixir);
           }
           else if (reward.item === ItemsEnum.BonusXp) {
@@ -223,6 +223,7 @@ export class ColiseumService {
 
     if (type === ColiseumTournamentEnum.FlamesOfTartarus && round === 1) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WheelOfFire));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WheelOfFire));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WheelOfFire));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WheelOfFire));

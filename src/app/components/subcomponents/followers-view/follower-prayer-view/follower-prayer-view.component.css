@@ -1,0 +1,11 @@
+.altarName {
+    color: var(--followerColor);
+    font-weight: bold;
+    min-width: 40%;
+    display: inline-block;
+}
+
+.buttonSpaced {
+    width: 25%;
+    display: inline-block;
+}

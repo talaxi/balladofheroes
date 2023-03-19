@@ -1,0 +1,41 @@
+<div class="textCentered">
+    <span class="buttonSpaced"></span>
+    <span class="s2Heading smallCaps followerText">Assigned Followers: {{getAssignedFollowers()}} / {{getTotalFollowers()}}</span> 
+    <span class="buttonSpaced"><button class="buttonStyled" (click)="unassignAll()">Unassign All</button></span>
+    <br />
+    <br />
+    The story of your accomplishments has spread all throughout Greece. Some people have taken to follow you and are able to assist you in various ways.
+</div>
+<hr />
+<div>
+    <span class="sectionHeaderText sectionHeading">new followers</span>
+    <br />
+    <div class="sectionInfo spaceEvenly textCentered">
+        <div class="byAchievement">
+            <span class="s4Heading smallCaps bold followerText">Achievements</span>
+            <br/>
+            <span [innerHtml]="getFollowerAchievementPrice()"></span>
+        </div>
+        <div class="byPurchase">
+            <span class="s4Heading smallCaps bold followerText">Purchase</span>
+            <br/>
+            <span [innerHtml]="getFollowerPurchasePrice()"></span>
+            <br/>
+            <button [disabled]="!canBuyFollower()" (click)="buyFollower()">Buy</button>
+        </div>
+    </div>
+</div>
+<hr />
+<div>
+    <span class="sectionHeaderText sectionHeading">search</span>
+    <br />
+    <div class="sectionInfo" [innerHtml]="getSearchingOverviewText()">
+    </div>
+</div>
+<hr />
+<div>
+    <span class="sectionHeaderText sectionHeading">prayer</span>
+    <br />
+    <div class="sectionInfo" [innerHtml]="getPrayerOverviewText()">
+    </div>
+</div>

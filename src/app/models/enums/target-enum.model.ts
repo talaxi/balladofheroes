@@ -1,5 +1,6 @@
 export enum TargetEnum {    
     None,
     Random,
-    LowestHpPercent
+    LowestHpPercent,
+    Self
   }

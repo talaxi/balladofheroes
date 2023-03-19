@@ -69,7 +69,8 @@ export class BattleService {
     var lastPerformanceNow = performance.now();
     var subZone = this.balladService.getActiveSubZone();
 
-    if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {      
+    if (this.currentSubzoneType !== undefined && this.currentSubzoneType !== subZone.type) {
+      this.checkForOptionalScene();
       this.checkScene();
     }
     this.currentSubzoneType = subZone.type;
@@ -134,6 +135,7 @@ export class BattleService {
           this.battle.activeTournament.tournamentTimer += deltaTime;
 
           if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + " of " + this.battle.activeTournament.maxRounds + ".");
             this.battle.activeTournament = new ColiseumTournament();
             this.coliseumService.handleColiseumLoss();
           }
@@ -262,6 +264,37 @@ export class BattleService {
         }
       }
     }
+
+    if (subzone.type === SubZoneEnum.ElysiumWavesOfOceanus && subzone.victoryCount === 1 &&
+      this.globalService.globalVar.chthonicPowers.preferredGod === GodEnum.None) {
+      this.globalService.globalVar.chthonicPowers.preferredGod = this.lookupService.getPreferredGod();
+    }
+
+    if (subzone.type === SubZoneEnum.CalydonForestPassage && subzone.victoryCount === 10) {
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ObscurredNotification));
+    }
+  }
+
+  checkForOptionalScene() {
+    if (this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumWindingPaths &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade1Scene1)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade1Scene1);
+    }
+
+    if (this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumWavesOfOceanus &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade1Scene2)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade1Scene2);
+    }
+
+    if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ElysiumWavesOfOceanus) &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade1Scene3)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade1Scene3);
+    }
+
+    if (this.balladService.getActiveSubZone().type === SubZoneEnum.CalydonTallGrass &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.CalydonDenMother)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.CalydonDenMother);
+    }
   }
 
   checkScene() {
@@ -272,14 +305,13 @@ export class BattleService {
       this.globalService.globalVar.activeBattle.atScene = true;
       this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Story;
     }
-    else {      
+    else {
       //check for side quests
       if (subzone.type === SubZoneEnum.CalydonAltarOfAsclepius) {
         this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.SideQuest;
         this.globalService.globalVar.activeBattle.atScene = true;
       }
-      else
-      {
+      else {
         //expecting this to be reset below if you are actually at a scene
         this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.None;
         this.globalService.globalVar.activeBattle.atScene = false;
@@ -392,7 +424,7 @@ export class BattleService {
 
         if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
           //deal damage
-          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness, undefined, effect.element);
+          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness, undefined, effect.element, false);
           var elementalText = "";
           if (effect.element !== ElementalTypeEnum.None)
             elementalText = this.getElementalDamageText(effect.element);
@@ -467,7 +499,6 @@ export class BattleService {
     }
 
     var totalAutoAttackCount = this.lookupService.getTotalAutoAttackCount(character, isPartyAttacking);
-    var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier) * totalAutoAttackCount;
     var isCritical = this.isDamageCritical(character, target);
     var overdriveMultiplier = 1;
     var elementalType = character.battleInfo.elementalType;
@@ -489,6 +520,8 @@ export class BattleService {
     if (isPartyAttacking)
       this.altarService.incrementAltarCount(AltarConditionEnum.AutoAttackUse);
 
+    var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier, true, elementalType) * totalAutoAttackCount;
+
     var damageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, overdriveMultiplier, damageMultiplier, undefined, elementalType);
 
     var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attacks <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
@@ -507,7 +540,7 @@ export class BattleService {
 
     var thorns = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
     if (thorns !== undefined) {
-      this.dealTrueDamage(!isPartyAttacking, character, thorns.effectiveness);
+      this.dealTrueDamage(!isPartyAttacking, character, thorns.effectiveness, undefined, undefined, false);
       if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
         (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
         var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes <strong>" + thorns.effectiveness + "</strong> damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Thorns effect.";
@@ -534,7 +567,7 @@ export class BattleService {
 
             var thorns = additionalTarget.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
             if (thorns !== undefined) {
-              this.dealTrueDamage(!isPartyAttacking, character, thorns.effectiveness);
+              this.dealTrueDamage(!isPartyAttacking, character, thorns.effectiveness, undefined, undefined, false);
               if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
                 (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
                 var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes <strong>" + thorns.effectiveness + "</strong> damage from <strong class='" + this.globalService.getCharacterColorClassText(additionalTarget.type) + "'>" + additionalTarget.name + "</strong>'s Thorns effect.";
@@ -577,7 +610,7 @@ export class BattleService {
 
     var instantHeal = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack);
     if (instantHeal !== undefined) {
-      var healAmount = damageDealt * instantHeal.effectiveness * (1 + character.battleStats.healingDone);
+      var healAmount = instantHeal.effectiveness * (1 + character.battleStats.healingDone);
 
       if (character !== undefined) {
         this.gainHp(character, healAmount);
@@ -586,7 +619,7 @@ export class BattleService {
         if (Math.round(healAmount) > 0) {
           if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
             (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong> gains " + Math.round(healAmount) + " HP.";
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong> gains " + Math.round(healAmount) + " HP" + (instantHeal.associatedAbilityName !== undefined && instantHeal.associatedAbilityName !== "" ? " from " + instantHeal.associatedAbilityName : "") + ".";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
         }
@@ -666,6 +699,11 @@ export class BattleService {
     if (!ability.isActivatable)
       return;
 
+    var unsteady = character.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Unsteady);
+    if (unsteady !== undefined) {
+      deltaTime *= 1 - unsteady.effectiveness;
+    }
+
     if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
       ability.currentCooldown -= deltaTime;
   }
@@ -687,8 +725,11 @@ export class BattleService {
   }
 
   avoidAbilityRedundancy(ability: Ability, partyMembers: Character[]) {
-    if (!ability.isActivatable)
+    var partyNotFullHp = partyMembers.some(member => member.battleStats.currentHp !== member.battleStats.maxHp);
+
+    if (!ability.manuallyTriggered && (!ability.isActivatable || (!partyNotFullHp && ability.name === "Heal")))
       return false;
+
     return true;
   }
 
@@ -698,21 +739,26 @@ export class BattleService {
     var target = this.getTarget(user, ability.targetsAllies ? party : targets, ability.targetType !== undefined ? ability.targetType : TargetEnum.Random);
     var damageDealt = 0;
     var elementalText = "";
+    var elementalType = ability.elementalType;
 
     if (target === undefined)
       return false;
 
+    if (elementalType === ElementalTypeEnum.None) {
+      elementalType = this.checkUserForEnElement(user);
+    }
+
     var abilityEffectiveness = this.getAbilityEffectiveness(user, target, ability, party, isGodAbility);
 
     if (ability.dealsDirectDamage) {
-      var damageMultiplier = this.getDamageMultiplier(user, target);
+      var damageMultiplier = this.getDamageMultiplier(user, target, undefined, false, elementalType);
       var isCritical = this.isDamageCritical(user, target);
-      if (ability.elementalType !== ElementalTypeEnum.None)
-        elementalText = this.getElementalDamageText(ability.elementalType);
+      if (elementalType !== ElementalTypeEnum.None)
+        elementalText = this.getElementalDamageText(elementalType);
 
       if (ability.isAoe) {
         potentialTargets.forEach(potentialTarget => {
-          damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, ability, ability.elementalType);
+          damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, ability, elementalType);
           if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
             (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
             var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(potentialTarget.type) + "'>" + potentialTarget.name + "</strong> for " + damageDealt + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
@@ -721,7 +767,7 @@ export class BattleService {
         })
       }
       else {
-        damageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, ability, ability.elementalType);
+        damageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, ability, elementalType);
         if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
           (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + ability.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + damageDealt + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
@@ -809,9 +855,9 @@ export class BattleService {
       }
     }
 
-    this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets);
+    this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets, undefined, ability.targetsAllies);
     this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt);
-    this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt);
+    this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt, ability.targetsAllies);
 
     if (isPartyUsing)
       this.altarService.incrementAltarCount(AltarConditionEnum.AbilityUse);
@@ -862,8 +908,22 @@ export class BattleService {
     party.forEach(member => {
       if (member.battleInfo.statusEffects.some(item => item.isInstant)) {
         member.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
+          if (instantEffect.type === StatusEffectEnum.RandomPrimaryStatDown) {
+            var statusEffect = this.globalService.createStatusEffect(this.getRandomPrimaryStatDownStatusEffect(), instantEffect.duration, instantEffect.effectiveness, false, false, instantEffect.isAoe);
+            this.applyStatusEffect(statusEffect, user, party, user);
+            party.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RandomPrimaryStatDown); });
+          }
+          if (instantEffect.type === StatusEffectEnum.RandomPrimaryStatUp) {
+            var statusEffect = this.globalService.createStatusEffect(this.getRandomPrimaryStatUpStatusEffect(), instantEffect.duration, instantEffect.effectiveness, false, true, instantEffect.isAoe);
+            this.applyStatusEffect(statusEffect, user, party, user);
+            party.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RandomPrimaryStatUp); });
+          }
+
           if (instantEffect.type === StatusEffectEnum.InstantHeal) {
             var healAmount = damageDealt * instantEffect.effectiveness * (1 + member.battleStats.healingDone);
+
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong> gains " + Math.round(healAmount) + " HP" + (instantEffect.associatedAbilityName !== undefined && instantEffect.associatedAbilityName !== "" ? " from " + instantEffect.associatedAbilityName : "") + ".";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
 
             if (member !== undefined)
               this.gainHp(member, healAmount);
@@ -885,7 +945,7 @@ export class BattleService {
             var sapDamage = instantEffect.effectiveness * member.battleStats.attack;
             var target = this.getTarget(user, targets, TargetEnum.Random);
             if (target !== undefined) {
-              this.dealTrueDamage(isPartyUsing, target, sapDamage);
+              sapDamage = this.dealTrueDamage(isPartyUsing, target, sapDamage, undefined, undefined, true);
               this.gainHp(user, sapDamage);
             }
           }
@@ -899,11 +959,13 @@ export class BattleService {
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             if (instantEffect.isAoe) {
               party.forEach(partyMember => {
-                partyMember.battleInfo.barrierValue += barrierAmount;
+                if (partyMember.battleInfo.barrierValue < partyMember.battleStats.maxHp * instantEffect.threshold) {
+                  partyMember.battleInfo.barrierValue += barrierAmount;
 
-                if (partyMember.battleInfo.barrierValue > partyMember.battleStats.maxHp * instantEffect.threshold) {
-                  //TODO: maybe don't overwrite existing effect though if it was already higher
-                  partyMember.battleInfo.barrierValue = Math.round(partyMember.battleStats.maxHp * instantEffect.threshold);
+                  //if you went over threshold, set it back down 
+                  if (partyMember.battleInfo.barrierValue > partyMember.battleStats.maxHp * instantEffect.threshold) {
+                    partyMember.battleInfo.barrierValue = Math.round(partyMember.battleStats.maxHp * instantEffect.threshold);
+                  }
                 }
 
                 partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Barrier);
@@ -912,9 +974,13 @@ export class BattleService {
             else {
               user.battleInfo.barrierValue += barrierAmount;
 
-              if (user.battleInfo.barrierValue > user.battleStats.maxHp * instantEffect.threshold) {
-                //TODO: maybe don't overwrite existing effect though if it was already higher
-                user.battleInfo.barrierValue = user.battleStats.maxHp * instantEffect.threshold;
+              if (user.battleInfo.barrierValue < user.battleStats.maxHp * instantEffect.threshold) {
+                user.battleInfo.barrierValue += barrierAmount;
+
+                //if you went over threshold, set it back down 
+                if (user.battleInfo.barrierValue > user.battleStats.maxHp * instantEffect.threshold) {
+                  user.battleInfo.barrierValue = Math.round(user.battleStats.maxHp * instantEffect.threshold);
+                }
               }
             }
 
@@ -932,7 +998,7 @@ export class BattleService {
     });
   }
 
-  handletargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0) {
+  handletargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0, abilityTargetedAllies: boolean = false) {
     if (targetEffect.length > 0) {
       targetEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = gainedStatusEffect.makeCopy();
@@ -940,8 +1006,9 @@ export class BattleService {
         if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
           if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnAttack)
             appliedStatusEffect.effectiveness = user.battleStats.attack * appliedStatusEffect.effectiveness;
-          else if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnDamage)
+          else if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnDamage) {
             appliedStatusEffect.effectiveness = damageDealt * appliedStatusEffect.effectiveness;
+          }
         }
 
         if (target !== undefined) {
@@ -963,6 +1030,17 @@ export class BattleService {
     //check all instant effects (maybe make its own function?)
     if (target.battleInfo.statusEffects.some(item => item.isInstant)) {
       target.battleInfo.statusEffects.filter(item => item.isInstant).forEach(instantEffect => {
+        if (instantEffect.type === StatusEffectEnum.RandomPrimaryStatDown) {
+          var statusEffect = this.globalService.createStatusEffect(this.getRandomPrimaryStatDownStatusEffect(), instantEffect.duration, instantEffect.effectiveness, false, false, instantEffect.isAoe);
+          this.applyStatusEffect(statusEffect, target, potentialTargets, user);
+          potentialTargets.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RandomPrimaryStatDown); });
+        }
+        if (instantEffect.type === StatusEffectEnum.RandomPrimaryStatUp) {
+          var statusEffect = this.globalService.createStatusEffect(this.getRandomPrimaryStatUpStatusEffect(), instantEffect.duration, instantEffect.effectiveness, false, true, instantEffect.isAoe);
+          this.applyStatusEffect(statusEffect, target, potentialTargets, user);
+          potentialTargets.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RandomPrimaryStatUp); });
+        }
+
         if (instantEffect.type === StatusEffectEnum.InstantHeal) {
           var healAmount = damageDealt * instantEffect.effectiveness * (1 + target.battleStats.healingDone);
 
@@ -971,12 +1049,17 @@ export class BattleService {
         }
 
         if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
-          if (target !== undefined) {
-            var trueDamageDealt = this.dealTrueDamage(isPartyUsing, target, instantEffect.effectiveness, user, instantEffect.element);
+          var newTarget: Character | undefined = target;
+          if (abilityTargetedAllies && !instantEffect.targetsAllies) {
+            newTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
+          }
+
+          if (newTarget !== undefined) {
+            var trueDamageDealt = this.dealTrueDamage(isPartyUsing, newTarget, instantEffect.effectiveness, user, instantEffect.element, true);
             var elementalText = "";
             if (instantEffect.element !== ElementalTypeEnum.None)
               elementalText = this.getElementalDamageText(instantEffect.element);
-            var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + Math.round(trueDamageDealt) + elementalText + " damage.";
+            var gameLogEntry = "<strong>" + newTarget.name + "</strong>" + " takes " + Math.round(trueDamageDealt) + elementalText + " damage.";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
         }
@@ -999,23 +1082,49 @@ export class BattleService {
     }
   }
 
+  getRandomPrimaryStatDownStatusEffect() {
+    var options = [];
+    options.push(StatusEffectEnum.AgilityDown);
+    options.push(StatusEffectEnum.AttackDown);
+    options.push(StatusEffectEnum.ResistanceDown);
+    options.push(StatusEffectEnum.MaxHpDown);
+    options.push(StatusEffectEnum.DefenseDown);
+    options.push(StatusEffectEnum.LuckDown);
+    var rng = this.utilityService.getRandomInteger(0, options.length - 1);
+
+    return options[rng];
+  }
+
+  getRandomPrimaryStatUpStatusEffect() {
+    var options = [];
+    options.push(StatusEffectEnum.AgilityUp);
+    options.push(StatusEffectEnum.AttackUp);
+    options.push(StatusEffectEnum.ResistanceUp);
+    options.push(StatusEffectEnum.MaxHpUp);
+    options.push(StatusEffectEnum.DefenseUp);
+    options.push(StatusEffectEnum.LuckUp);
+    var rng = this.utilityService.getRandomInteger(0, options.length - 1);
+
+    return options[rng];
+  }
+
   getAbilityEffectiveness(character: Character, target: Character, ability: Ability, party: Character[], isGodAbility: boolean) {
     //return ability effectivness * faith boost
     var effectiveness = ability.effectiveness;
 
     //check for faith
-    var priest = party.find(member => member.type === CharacterEnum.Priest);
+    /*var priest = party.find(member => member.type === CharacterEnum.Priest);
     if (priest !== undefined) {
       var faith = priest.abilityList.find(item => item.name === "Faith" && item.isAvailable);
       if (faith !== undefined && isGodAbility) {
         effectiveness *= faith.effectiveness;
       }
-    }
+    }*/
 
     return effectiveness;
   }
 
-  getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false) {
+  getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None) {
     var overallDamageMultiplier = 1;
 
     if (additionalDamageMultiplier !== undefined)
@@ -1030,25 +1139,51 @@ export class BattleService {
 
     //check for basic damage up/down buffs
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
+      var damageDealtUpAggregate = 1;
+
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.DamageDealtDown ||
-        effect.type === StatusEffectEnum.DamageDealtUp);
+        effect.type === StatusEffectEnum.DamageDealtUp ||
+        (elementalType === ElementalTypeEnum.Holy && (effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown)) ||
+        (elementalType === ElementalTypeEnum.Fire && (effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown)) ||
+        (elementalType === ElementalTypeEnum.Lightning && (effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageDown)) ||
+        (elementalType === ElementalTypeEnum.Air && (effect.type === StatusEffectEnum.AirDamageUp || effect.type === StatusEffectEnum.AirDamageDown)) ||
+        (elementalType === ElementalTypeEnum.Water && (effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageDown)) ||
+        (elementalType === ElementalTypeEnum.Earth && (effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown)));
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
-          overallDamageMultiplier *= effect.effectiveness;
+          if (effect.effectiveness > 1)
+            damageDealtUpAggregate += effect.effectiveness - 1;
+          else if (effect.effectiveness < 1)
+            damageDealtUpAggregate -= 1 - effect.effectiveness;
         });
       }
+
+      overallDamageMultiplier *= damageDealtUpAggregate;
     }
 
     if (target.battleInfo !== undefined && target.battleInfo.statusEffects.length > 0) {
+      var damageTakenAggregate = 1;
+
       var relevantStatusEffects = target.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.DamageTakenDown ||
-        effect.type === StatusEffectEnum.DamageTakenUp);
+        effect.type === StatusEffectEnum.DamageTakenUp ||
+        (elementalType === ElementalTypeEnum.Holy && (effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.HolyDamageTakenDown)) ||
+        (elementalType === ElementalTypeEnum.Fire && (effect.type === StatusEffectEnum.FireDamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenDown)) ||
+        (elementalType === ElementalTypeEnum.Lightning && (effect.type === StatusEffectEnum.LightningDamageTakenUp || effect.type === StatusEffectEnum.LightningDamageTakenDown)) ||
+        (elementalType === ElementalTypeEnum.Air && (effect.type === StatusEffectEnum.AirDamageTakenUp || effect.type === StatusEffectEnum.AirDamageTakenDown)) ||
+        (elementalType === ElementalTypeEnum.Water && (effect.type === StatusEffectEnum.WaterDamageTakenUp || effect.type === StatusEffectEnum.WaterDamageTakenDown)) ||
+        (elementalType === ElementalTypeEnum.Earth && (effect.type === StatusEffectEnum.EarthDamageTakenUp || effect.type === StatusEffectEnum.EarthDamageTakenDown)));
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
-          overallDamageMultiplier *= effect.effectiveness;
+          if (effect.effectiveness > 1)
+            damageTakenAggregate += effect.effectiveness - 1;
+          else if (effect.effectiveness < 1)
+            damageTakenAggregate -= 1 - effect.effectiveness;
         });
       }
+
+      overallDamageMultiplier *= damageTakenAggregate;
     }
 
     //each unique status effect is its own multiplier. or perhaps they should be additive, i'm not sure
@@ -1140,7 +1275,10 @@ export class BattleService {
           return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
             a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
         });
-        var target = potentialTargets[0];
+        target = potentialTargets[0];
+      }
+      else if (targetType === TargetEnum.Self) {
+        target = user;
       }
     }
 
@@ -1191,16 +1329,25 @@ export class BattleService {
       elementalDamageIncrease = this.getElementalDamageIncrease(elementalType, attacker);
       elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);
       attacker.overdriveInfo.lastUsedElement = elementalType;
-      attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);
-      if (attacker.trackedStats.elementalAttacksUsed.getCountOfNonZeroElements() >= this.utilityService.overdriveAttacksNeededToUnlockNature &&
-        !attacker.unlockedOverdrives.some(item => item === OverdriveNameEnum.Nature))
-        attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);
+      //attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);      
     }
 
-    //2 * Attack^2 / (Attack + Defense)    
+    //2 * Attack^2 / (Attack + Defense)      
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementalDamageIncrease * elementalDamageDecrease
       * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
+
+    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
+    //+ " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+
+    if (ability?.damageModifierRange !== undefined) {
+      var rng = this.utilityService.getRandomNumber(1 - ability.damageModifierRange, 1 + ability.damageModifierRange);
+      damage = Math.round(damage * rng);
+    }
+
+    var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
+    if (reduceDamage !== undefined)
+      damage -= reduceDamage.effectiveness;
 
     if (damage < 0)
       damage = 0;
@@ -1214,10 +1361,32 @@ export class BattleService {
     if (target.overdriveInfo.overdriveIsActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection)
       target.overdriveInfo.damageTaken += totalDamageDealt;
 
+    if (elementalType !== ElementalTypeEnum.None) {
+      attacker.trackedStats.elementalDamageDealt += totalDamageDealt;
+      if (attacker.trackedStats.elementalDamageDealt >= this.utilityService.overdriveAttacksNeededToUnlockNature &&
+        !attacker.unlockedOverdrives.some(item => item === OverdriveNameEnum.Nature))
+        attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);
+    }
+
     if (target.level >= this.utilityService.characterOverdriveLevel) {
       target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked * this.lookupService.getOverdriveGainMultiplier(target);
       if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
         target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
+    }
+
+    var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
+    if (matchingAbsorption !== undefined) {
+      if (matchingAbsorption.effectiveness > 0) {
+        matchingAbsorption.effectiveness -= damage;
+        damage = 0;
+
+        if (matchingAbsorption.effectiveness < 0) {
+          //deal remaining damage to hp
+          damage = -matchingAbsorption.effectiveness;
+          matchingAbsorption.effectiveness = 0;
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== matchingAbsorption);
+        }
+      }
     }
 
     if (target.battleInfo.barrierValue > 0) {
@@ -1247,7 +1416,7 @@ export class BattleService {
   }
 
   //DoTs
-  dealTrueDamage(isPartyAttacking: boolean, target: Character, damage: number, attacker?: Character, elementalType: ElementalTypeEnum = ElementalTypeEnum.None) {
+  dealTrueDamage(isPartyAttacking: boolean, target: Character, damage: number, attacker?: Character, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, isReducable: boolean = true) {
     if (damage < 0)
       damage = 0;
 
@@ -1268,6 +1437,13 @@ export class BattleService {
 
     var totalDamageDealt = damage * elementalDamageIncrease * elementalDamageDecrease;
 
+    var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
+    if (reduceDamage !== undefined && isReducable)
+      totalDamageDealt -= reduceDamage.effectiveness;
+
+    if (totalDamageDealt < 0)
+      totalDamageDealt = 0;
+
     target.trackedStats.damageTaken += totalDamageDealt;
     if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
       !target.unlockedOverdrives.some(item => item === OverdriveNameEnum.Protection))
@@ -1275,10 +1451,32 @@ export class BattleService {
     if (target.overdriveInfo.overdriveIsActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection)
       target.overdriveInfo.damageTaken += totalDamageDealt;
 
+    if (attacker !== undefined && elementalType !== ElementalTypeEnum.None) {
+      attacker.trackedStats.elementalDamageDealt += totalDamageDealt;
+      if (attacker.trackedStats.elementalDamageDealt >= this.utilityService.overdriveAttacksNeededToUnlockNature &&
+        !attacker.unlockedOverdrives.some(item => item === OverdriveNameEnum.Nature))
+        attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);
+    }
+
     if (target.level >= this.utilityService.characterOverdriveLevel) {
       target.overdriveInfo.overdriveGaugeAmount += target.overdriveInfo.gainPerBeingAttacked * this.lookupService.getOverdriveGainMultiplier(target);
       if (target.overdriveInfo.overdriveGaugeAmount > target.overdriveInfo.overdriveGaugeTotal)
         target.overdriveInfo.overdriveGaugeAmount = target.overdriveInfo.overdriveGaugeTotal;
+    }
+
+    var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
+    if (matchingAbsorption !== undefined) {
+      if (matchingAbsorption.effectiveness > 0) {
+        matchingAbsorption.effectiveness -= damage;
+        damage = 0;
+
+        if (matchingAbsorption.effectiveness < 0) {
+          //deal remaining damage to hp
+          damage = -matchingAbsorption.effectiveness;
+          matchingAbsorption.effectiveness = 0;
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== matchingAbsorption);
+        }
+      }
     }
 
     if (target.battleInfo.barrierValue > 0) {
@@ -1349,6 +1547,10 @@ export class BattleService {
 
     if (character.battleStats.healingReceived > 0)
       healModifier = 1 + character.battleStats.healingReceived;
+
+    var reduceHealingDebuff = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceHealing);
+    if (reduceHealingDebuff !== undefined)
+      healModifier *= reduceHealingDebuff.effectiveness;
 
     healAmount = healAmount * healModifier;
 
@@ -1453,6 +1655,7 @@ export class BattleService {
 
     if (stateChanged) {
       this.battle.battleDuration = 0;
+      this.checkForOptionalScene();
       this.checkScene();
       this.checkBreakpoints();
     }
@@ -1765,9 +1968,11 @@ export class BattleService {
   }
 
   unlockNextSubzone(subZone: SubZone) {
+    var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);
+
     var subZoneUnlocks = this.subzoneGeneratorService.getSubZoneUnlocks(subZone.type);
     var zoneUnlocks = this.subzoneGeneratorService.getZoneUnlocks(subZone.type);
-    var balladUnlocks = this.subzoneGeneratorService.getBalladUnlocks(subZone.type);
+    var balladUnlocks = this.subzoneGeneratorService.getBalladUnlocks(subZone.type, underworld === undefined ? false : underworld.isAvailable);
 
     if (balladUnlocks !== undefined && balladUnlocks.length > 0) {
       balladUnlocks.forEach(ballad => {
@@ -1868,15 +2073,23 @@ export class BattleService {
     return isTargetable;
   }
 
-  useBattleItemOnCharacter(character: Character, party: Character[]) {    
+  useBattleItemOnCharacter(character: Character, party: Character[]) {
     if (!this.targetbattleItemMode || this.battleItemInUse === undefined || this.battleItemInUse === ItemsEnum.None)
       return;
 
     var itemName = this.lookupService.getItemName(this.battleItemInUse);
 
     var effect = this.lookupService.getBattleItemEffect(this.battleItemInUse);
+    var damageMultiplier = 1;
 
-    if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice) {      
+    this.globalService.getActivePartyCharacters(true).forEach(character => {
+      var itemEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BattleItemDamageUp);
+      if (itemEffect !== undefined)
+        damageMultiplier += itemEffect.effectiveness - 1;
+    });
+
+    if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice
+      || this.battleItemInUse === ItemsEnum.RestorativeHerb) {
       if (character.battleStats.currentHp === character.battleStats.maxHp)
         return;
 
@@ -1884,8 +2097,14 @@ export class BattleService {
       this.lookupService.useResource(this.battleItemInUse, 1);
 
       if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
-        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+        if (character.name === "Asclepius") {
+          var gameLogEntry = "You leave one " + itemName + " worth " + Math.round(healedAmount) + " HP at the altar in honor of <strong>Asclepius</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+        }
+        else {
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+        }
       }
     }
 
@@ -1898,8 +2117,14 @@ export class BattleService {
           var healedAmount = this.gainHp(member, effect.healAmount)
 
           if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+            if (character.name === "Asclepius") {
+              var gameLogEntry = "You leave one " + itemName + " worth " + Math.round(healedAmount) + " HP at the altar in honor of <strong>Asclepius</strong>.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+            }
+            else {
+              var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
+            }
           }
         }
       })
@@ -1911,7 +2136,7 @@ export class BattleService {
     }
 
     if (this.battleItemInUse === ItemsEnum.ThrowingStone || this.battleItemInUse === ItemsEnum.ExplodingPotion ||
-      this.battleItemInUse === ItemsEnum.FirePotion) {
+      this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -1923,7 +2148,7 @@ export class BattleService {
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
 
-      var damage = this.dealTrueDamage(true, character, effect.trueDamageAmount, undefined, elementalType);
+      var damage = this.dealTrueDamage(true, character, effect.trueDamageAmount * damageMultiplier, undefined, elementalType, true);
       this.lookupService.useResource(this.battleItemInUse, 1);
 
       if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
@@ -1934,6 +2159,7 @@ export class BattleService {
 
     if (this.battleItemInUse === ItemsEnum.PoisonExtractPotion) {
       var itemUsed = false;
+      effect.targetEffect[0].effectiveness *= damageMultiplier;
 
       party.forEach(member => {
         if (member.battleStats.currentHp > 0) {
@@ -1957,6 +2183,8 @@ export class BattleService {
       if (character.battleStats.currentHp <= 0)
         return;
 
+      effect.targetEffect[0].effectiveness *= damageMultiplier;
+
       this.applyStatusEffect(effect.targetEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
 
@@ -1979,7 +2207,7 @@ export class BattleService {
       }
     }
 
-    if (this.battleItemInUse === ItemsEnum.HeroicElixir) {
+    if (this.battleItemInUse === ItemsEnum.HeroicElixir || this.battleItemInUse === ItemsEnum.RejuvenatingElixir) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -2011,6 +2239,12 @@ export class BattleService {
     character.battleInfo.hpRegenTimer += deltaTime;
     if (character.battleInfo.hpRegenTimer >= character.battleInfo.hpRegenTimerLength) {
       var totalHpRegen = character.battleStats.hpRegen;
+
+      var rejuvenatingElixir = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.RejuvenatingElixir);
+      if (rejuvenatingElixir !== undefined) {
+        totalHpRegen += rejuvenatingElixir.effectiveness;
+      }
+
       this.gainHp(character, totalHpRegen);
       character.battleInfo.hpRegenTimer -= character.battleInfo.hpRegenTimerLength;
     }
@@ -2036,7 +2270,7 @@ export class BattleService {
     return text;
   }
 
-  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character, party: Character[], targets: Character[]) {
+  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character | undefined, party: Character[], targets: Character[], deltaTime: number = 0, originalTriggerTargetedAllies: boolean = false) {
     var userGainsEffects: StatusEffect[] = [];
     var targetGainsEffects: StatusEffect[] = [];
     var rng = 0;
@@ -2049,6 +2283,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount = 0;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2058,6 +2301,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount = 0;
+          }
         }
         else {
           targetGainsEffects.push(effect.makeCopy());
@@ -2072,6 +2324,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.shield!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount = 0;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2081,6 +2342,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.shield!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount = 0;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2094,6 +2364,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.armor!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount = 0;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2103,6 +2382,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.armor!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount = 0;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2116,6 +2404,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount = 0;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2125,6 +2422,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount = 0;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2138,6 +2444,15 @@ export class BattleService {
           if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            userGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount = 0;
+          }
+        }
         else
           userGainsEffects.push(effect.makeCopy());
       });
@@ -2147,6 +2462,15 @@ export class BattleService {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.TriggersEvery) {
+          //this could be problematic if there are multiple triggers every effects
+          user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount += deltaTime;
+
+          if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+            targetGainsEffects.push(effect.makeCopy());
+            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount = 0;
+          }
         }
         else
           targetGainsEffects.push(effect.makeCopy());
@@ -2159,7 +2483,7 @@ export class BattleService {
         userGainsEffects.forEach(effect => {
           if (user.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster))
             effect.type = StatusEffectEnum.None;
-        })
+        });
 
         userGainsEffects = userGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
       }
@@ -2167,8 +2491,18 @@ export class BattleService {
       this.handleuserEffects(true, userGainsEffects, user, party, targets);
     }
 
-    if (targetGainsEffects.length > 0) {
-      this.handletargetEffects(true, targetGainsEffects, user, target, targets, party);
+    if (targetGainsEffects.length > 0 && target !== undefined) {
+      //if it's already active, don't reapply
+      if (trigger === EffectTriggerEnum.AlwaysActive) {
+        targetGainsEffects.forEach(effect => {
+          if (target.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster))
+            effect.type = StatusEffectEnum.None;
+        });
+
+        targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
+      }
+
+      this.handletargetEffects(true, targetGainsEffects, user, target, targets, party, undefined, originalTriggerTargetedAllies);
     }
   }
 
@@ -2180,8 +2514,8 @@ export class BattleService {
       if (poisonousToxin !== undefined) {
         var rng = this.utilityService.getRandomNumber(0, 1);
         if (rng <= poisonousToxin.effectiveness) {
-          var damageDealt = 8;
-          this.dealTrueDamage(true, target, damageDealt);
+          var damageDealt = 22;
+          this.dealTrueDamage(true, target, damageDealt, user, undefined, true);
           var gameLogEntry = "<strong>" + target.name + "</strong>" + " takes " + Math.round(damageDealt) + " damage from " + poisonousToxin.caster + "'s effect.";
 
           if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
@@ -2208,6 +2542,31 @@ export class BattleService {
       elementalType = ElementalTypeEnum.Fire;
     }
 
+    var enholy = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enholy);
+    if (enholy !== undefined) {
+      elementalType = ElementalTypeEnum.Holy;
+    }
+
+    var enwater = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enwater);
+    if (enwater !== undefined) {
+      elementalType = ElementalTypeEnum.Water;
+    }
+
+    var enearth = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enearth);
+    if (enearth !== undefined) {
+      elementalType = ElementalTypeEnum.Earth;
+    }
+
+    var enlightning = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enlightning);
+    if (enlightning !== undefined) {
+      elementalType = ElementalTypeEnum.Lightning;
+    }
+
+    var enair = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Enair);
+    if (enair !== undefined) {
+      elementalType = ElementalTypeEnum.Air;
+    }
+
     return elementalType;
   }
 
@@ -2232,6 +2591,10 @@ export class BattleService {
       if (character.overdriveInfo.overdriveActiveDuration >= character.overdriveInfo.overdriveActiveLength) {
         character.overdriveInfo.overdriveIsActive = false;
         character.overdriveInfo.overdriveActiveDuration = 0;
+        if (this.globalService.globalVar.gameLogSettings.get("partyUseOverdrive")) {
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>'s overdrive ends.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Overdrive, gameLogEntry);
+        }
 
         if (character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection) {
           this.gainHp(character, character.overdriveInfo.damageTaken / 2);

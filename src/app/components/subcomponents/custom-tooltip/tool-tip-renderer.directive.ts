@@ -65,7 +65,7 @@ export class ToolTipRendererDirective {
           originY: 'top',
           overlayX: 'start',
           overlayY: 'bottom',
-          offsetY: 5,
+          offsetY: -5,
         }]);
     }
     else if (this.tooltipDirection === DirectionEnum.Left) {
@@ -76,7 +76,7 @@ export class ToolTipRendererDirective {
           originY: 'center',
           overlayX: 'end',
           overlayY: 'center',
-          offsetY: 5,
+          offsetX: -5,
         }]);
     }
     else {
@@ -87,7 +87,7 @@ export class ToolTipRendererDirective {
           originY: 'center',
           overlayX: 'start',
           overlayY: 'center',
-          offsetY: 5,
+          offsetX: 5,
         }]);
     }
     

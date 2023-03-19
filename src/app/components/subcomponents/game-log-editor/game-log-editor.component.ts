@@ -23,13 +23,18 @@ export class GameLogEditorComponent implements OnInit {
   alchemyCreation = false;
   battleUpdates = false;
   useBattleItem = false;
+  followerSearch = false;
+  followerPrayer = false;
+  prayToAltar = false;
 
+  followersUnlocked = false;
   alchemyUnlocked = false;
 
   constructor(private globalService: GlobalService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.alchemyUnlocked = this.globalService.globalVar.alchemy.isUnlocked;
+    this.followersUnlocked = this.globalService.globalVar.followerData.availableFollowers > 0;
 
     var partyAutoAttacks = this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks");
     if (partyAutoAttacks === undefined)
@@ -91,6 +96,12 @@ export class GameLogEditorComponent implements OnInit {
     else
       this.godLevelUp = godLevelUp;
 
+      var prayToAltar = this.globalService.globalVar.gameLogSettings.get("prayToAltar");
+      if (prayToAltar === undefined)
+        this.prayToAltar = false;
+      else
+        this.prayToAltar = prayToAltar;  
+
     var achievementUnlocked = this.globalService.globalVar.gameLogSettings.get("achievementUnlocked");
     if (achievementUnlocked === undefined)
       this.achievementUnlocked = false;
@@ -120,6 +131,18 @@ export class GameLogEditorComponent implements OnInit {
       this.useBattleItem = false;
     else
       this.useBattleItem = useBattleItem;
+
+      var followerSearch = this.globalService.globalVar.gameLogSettings.get("followerSearch");
+      if (followerSearch === undefined)
+        this.followerSearch = false;
+      else
+        this.followerSearch = followerSearch;
+  
+      var followerPrayer = this.globalService.globalVar.gameLogSettings.get("followerPrayer");
+      if (followerPrayer === undefined)
+        this.followerPrayer = false;
+      else
+        this.followerPrayer = followerPrayer;
   }
 
   partyAutoAttacksToggle() {
@@ -161,6 +184,10 @@ export class GameLogEditorComponent implements OnInit {
   godLevelUpToggle() {
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", this.godLevelUp);
   }
+  
+  prayToAltarToggle() {
+    this.globalService.globalVar.gameLogSettings.set("prayToAltar", this.prayToAltar);
+  }
 
   achievementUnlockedToggle() {
     this.globalService.globalVar.gameLogSettings.set("achievementUnlocked", this.achievementUnlocked);
@@ -180,5 +207,13 @@ export class GameLogEditorComponent implements OnInit {
 
   useBattleItemToggle() {
     this.globalService.globalVar.gameLogSettings.set("useBattleItem", this.useBattleItem);
+  }
+
+  followerSearchToggle() {
+    this.globalService.globalVar.gameLogSettings.set("followerSearch", this.followerSearch);
+  }
+
+  followerPrayerToggle() {
+    this.globalService.globalVar.gameLogSettings.set("followerPrayer", this.followerPrayer);
   }
 }

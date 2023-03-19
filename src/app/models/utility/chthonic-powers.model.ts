@@ -1,3 +1,5 @@
+import { GodEnum } from "../enums/god-enum.model";
+
 export class ChthonicPowers {
     attackBoostLevel: number;
     defenseBoostLevel: number;
@@ -7,10 +9,12 @@ export class ChthonicPowers {
     resistanceBoostLevel: number;
     isChthonicFavorUnlocked: boolean;
     isChthonicResetUnlocked: boolean;
+    preferredGod: GodEnum;
 
     constructor() {
         this.isChthonicResetUnlocked = false;
         this.isChthonicFavorUnlocked = false;
+        this.preferredGod = GodEnum.None;
         this.attackBoostLevel = 0;
         this.defenseBoostLevel = 0;
         this.maxHpBoostLevel = 0;

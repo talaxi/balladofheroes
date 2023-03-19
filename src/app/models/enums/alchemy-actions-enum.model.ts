@@ -9,4 +9,7 @@ export enum AlchemyActionsEnum {
   HeatMixture,
   CrushIngredients,
   CombineIngredients,
+  ExtractEssence,
+  Infuse,
+  
 }

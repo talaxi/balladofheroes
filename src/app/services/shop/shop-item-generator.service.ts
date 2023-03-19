@@ -81,13 +81,13 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.FortifiedBronzeArmor)
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.BronzeArmor, ItemTypeEnum.Equipment, 1));
-      purchasePrice.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 15));
+      purchasePrice.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     }
     if (item === ItemsEnum.Venomstrike)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 10));
-      purchasePrice.push(new ResourceValue(ItemsEnum.LamiaHeart, ItemTypeEnum.CraftingMaterial, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 6));
+      purchasePrice.push(new ResourceValue(ItemsEnum.LamiaHeart, ItemTypeEnum.CraftingMaterial, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     }
     if (item === ItemsEnum.SteelSword)
@@ -116,6 +116,10 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.MoltenRing)
     {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1500));
+    }
+    if (item === ItemsEnum.SwordOfFlames)
+    {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2000));
     }
     if (item === ItemsEnum.PendantOfFortune)
@@ -143,6 +147,86 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.PriestClass)
     {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
+    }
+    if (item === ItemsEnum.FracturedRubyRing)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 25));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 4000));
+    }
+    if (item === ItemsEnum.FracturedEmeraldRing)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SmallEmerald, ItemTypeEnum.CraftingMaterial, 25));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 4000));
+    }
+    if (item === ItemsEnum.FracturedAmethystRing)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SmallAmethyst, ItemTypeEnum.CraftingMaterial, 25));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 4000));
+    }
+    if (item === ItemsEnum.FracturedTopazRing)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 25));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 4000));
+    }
+    if (item === ItemsEnum.FracturedAquamarineRing)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 25));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 4000));
+    }
+    if (item === ItemsEnum.FracturedOpalRing)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SmallOpal, ItemTypeEnum.CraftingMaterial, 25));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 4000));
+    }
+    if (item === ItemsEnum.BedazzledRing)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
+    }
+    if (item === ItemsEnum.ShieldOfTheHealer)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 7500));
+    }
+    if (item === ItemsEnum.HeftyStone)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 100));
+    }
+    if (item === ItemsEnum.RestorativeHerb)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 250));
+    }
+    if (item === ItemsEnum.HardenedLeatherArmor)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 30));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 8));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 3500));
+    }
+    if (item === ItemsEnum.BearskinArmor)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 3));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
+    }
+    if (item === ItemsEnum.BoarskinArmor)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, 3));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 5000));
+    }
+    if (item === ItemsEnum.SparringMatch)
+    {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2000));
+    }
+    if (item === ItemsEnum.SpiritBow)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
+    }
+    if (item === ItemsEnum.FendingMace)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
+    }
+    if (item === ItemsEnum.GemmedNecklace)
+    {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 3000));
     }
 
     return new ShopItem(item, purchasePrice, originalStore);

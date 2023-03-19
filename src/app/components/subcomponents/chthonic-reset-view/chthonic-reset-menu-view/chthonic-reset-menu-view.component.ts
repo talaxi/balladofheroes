@@ -2,6 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
@@ -15,49 +16,79 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
   styleUrls: ['./chthonic-reset-menu-view.component.css']
 })
 export class ChthonicResetMenuViewComponent implements OnInit {
-
   availableGods: God[];
+  bonusGod: GodEnum = GodEnum.None;
+  godEnum = GodEnum;
+  bonusGodText = "";
+  bonusGodName: string;
 
   constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.availableGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
+
+    if (this.globalService.globalVar.chthonicPowers.preferredGod !== GodEnum.None)    
+      this.bonusGod = this.globalService.globalVar.chthonicPowers.preferredGod = this.lookupService.getPreferredGod();
+
+    this.bonusGodName = this.globalService.globalVar.gods.find(item => item.type === this.bonusGod) !== undefined ? this.globalService.globalVar.gods.find(item => item.type === this.bonusGod)!.name : "";
+
+    if (this.bonusGod === GodEnum.Athena) {
+      this.bonusGodText = "Between you and me, I think Athena's the reason I'm here in the first place. One day you're fightin' in some war, the next day you're down here. Guess the other side was prayin' a little more. Well, guess it's never too late to start. Bring me a little favor from Athena."; //think athena brought me here
+    }
+    if (this.bonusGod === GodEnum.Artemis) {
+      this.bonusGodText = "Look, I do <strong><i>not</i></strong> want to get on Artemis's bad side okay? The last guy I knew who didn't pray to Artemis, she turned him into a squirrel! How long do you think a squirrel is gonna last down here? Bring me some of Artemis's favor and I'll make it worth your while.";
+    }
+    if (this.bonusGod === GodEnum.Hermes) {
+      this.bonusGodText = "How could you not love Hermes? If it wasn't for him, the whole world would be fulla spirits just ramblin' around! Cheers to Hermes!";
+    }
+    if (this.bonusGod === GodEnum.Apollo) {
+      this.bonusGodText = "Tell me you're back with Apollo's favor. He's the god of <strong><i>AVERTING EVIL</i></strong>! You know how much evil there is down here that needs averting? I could use about 5 Apollos here at all times!";
+    }
+
+    this.bonusGodText = "<strong>" + this.bonusGodText + "</strong>";
+    this.bonusGodText = this.bonusGodText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Apollos", "<span class='apolloColor storyCharacterName'>Apollos</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Apollo", "<span class='apolloColor storyCharacterName'>Apollo</span>");
   }
 
-  getChthonicPower(god: God)
-  {
+  getChthonicPower(god: God) {
     //should give slightly more per level and also have a multiplier from favor
     var chthonicFavorMultiplier = this.lookupService.getChthonicFavorMultiplier();
-    
+    var preferredGodBoost = 1;
+
     //give more for more levels at once so that there isn't a benefit in coming back every single level to stack favor
     var multiLevelBoost = 0;
-    if (god.level > 2)
-    {
+    if (god.level > 2) {
       multiLevelBoost = (god.level - 2) * .1;
     }
 
-    return this.utilityService.roundTo((((god.level-1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier), 2);
+    if (god.type === this.globalService.globalVar.chthonicPowers.preferredGod) {
+      preferredGodBoost = 1.25;
+    }
+
+    return this.utilityService.roundTo((((god.level - 1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
   }
 
-  getChthonicFavor(god: God)
-  {
+  getChthonicFavor(god: God) {
     //gives a linear small amount
-    return this.utilityService.roundTo((god.level-1) / 20, 2);
+    return this.utilityService.roundTo((god.level - 1) / 20, 2);
   }
 
-  resetGod(god: God)
-  {
+  resetGod(god: God) {
     var powerGain = this.getChthonicPower(god);
     var favorGain = this.getChthonicFavor(god);
 
     if (this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked)
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicFavor, ItemTypeEnum.Progression, favorGain));
-        
+
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, ItemTypeEnum.Progression, powerGain));
 
     god.level = 1;
     god.exp = 0;
-    god.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);    
+    god.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
     god.lastStatGain = CharacterStatEnum.Resistance;
     god.statGainCount = 0;
     god.expToNextLevel = 200;
@@ -66,22 +97,19 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     var isPassivePermanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.isAbilityPermanent;
     this.globalService.assignGodAbilityInfo(god);
 
-    if (isAbility2Permanent)
-    {
+    if (isAbility2Permanent) {
       var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level);
       if (newAbility !== undefined)
         newAbility.isAvailable = true;
     }
 
-    if (isAbility3Permanent)
-    {
+    if (isAbility3Permanent) {
       var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level);
       if (newAbility !== undefined)
         newAbility.isAvailable = true;
     }
 
-    if (isPassivePermanent)
-    {
+    if (isPassivePermanent) {
       var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
       if (newAbility !== undefined)
         newAbility.isAvailable = true;
@@ -94,6 +122,37 @@ export class ChthonicResetMenuViewComponent implements OnInit {
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {
       this.globalService.calculateCharacterBattleStats(member, false);
-    });    
+    });
+  }
+
+  getRemainingPreferredGodTime() {
+    var date = new Date();
+    var endDate = new Date();
+
+    var remainingTime = 0;
+
+    if (date.getHours() >= this.utilityService.preferredGodStartTime2 && date.getHours() < this.utilityService.preferredGodEndTime2) {
+      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime2);
+      endDate.setMinutes(0, 0, 0);
+    }
+    else if (date.getHours() >= this.utilityService.preferredGodStartTime3 || date.getHours() < this.utilityService.preferredGodEndTime3) //between 8 PM and 3:59 AM
+    {
+      //in day prior
+      if (date.getHours() >= this.utilityService.preferredGodStartTime3)
+      {
+        endDate = new Date(new Date().setDate(new Date().getDate() + 1));
+        
+      }
+      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime3);
+      endDate.setMinutes(0, 0, 0);
+    }
+    else {
+      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime1);
+      endDate.setMinutes(0, 0, 0);
+    }
+
+    remainingTime = (endDate.getTime() - date.getTime()) / 1000;
+
+    return this.utilityService.convertSecondsToHHMMSS(remainingTime);
   }
 }

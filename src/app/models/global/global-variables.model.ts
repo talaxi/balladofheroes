@@ -22,6 +22,8 @@ import { AltarEffect } from "../altar/altar-effect.model";
 import { OptionalSceneEnum } from "../enums/optional-scene-enum.model";
 import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
 import { Altars } from "../altar/altars.model";
+import { SidequestData } from "../utility/sidequest-data.model";
+import { FollowerData } from "../followers/follower-data.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -30,6 +32,7 @@ export class GlobalVariables {
     startDate: Date;    
     isGamePaused: boolean;
     isBattlePaused: boolean;
+    totalAchievementsCompleted: number;
     @Type(() => Character)
     characters: Character[];
     @Type(() => God)
@@ -75,14 +78,16 @@ export class GlobalVariables {
     enemyDefeatCount: EnemyDefeatCount[];
     @Type(() => ColiseumDefeatCount)
     coliseumDefeatCount: ColiseumDefeatCount[];
-    //@Type(() => AltarInfo)
-    //altarInfo: AltarInfo[];
     @Type(() => Altars)
     altars: Altars;
     optionalScenesViewed: OptionalSceneEnum[];
     areBattleItemsUnlocked = false;
     isDpsUnlocked = false;
-    altarOfAsclepus: Character; //better place to put this? sidequest data maybe?
+    @Type(() => SidequestData)
+    sidequestData: SidequestData;
+    @Type(() => FollowerData)
+    followerData: FollowerData;
+    extraSpeedEnabled: boolean;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -97,7 +102,7 @@ export class GlobalVariables {
         this.enemyDefeatCount = [];
         this.coliseumDefeatCount = [];
         this.itemBeltSize = 1;
-        //this.activeBattle = new Battle();
+        this.totalAchievementsCompleted = 0;
         this.playerNavigation = new PlayerNavigation();
         this.timers = new Timers();
         this.settings = new Settings();
@@ -111,10 +116,11 @@ export class GlobalVariables {
         this.altars = new Altars();
         this.optionalScenesViewed = [];
         this.guid = Guid.create().toString();
+        this.startDate = new Date();
         this.isGamePaused = false;
         this.isBattlePaused = false;
-        this.altarOfAsclepus = new Character();
-        this.altarOfAsclepus.battleStats.maxHp = 20000;
-        this.altarOfAsclepus.battleStats.currentHp = 0;
+        this.sidequestData = new SidequestData();
+        this.followerData = new FollowerData();
+        this.extraSpeedEnabled = true;
     }
 }

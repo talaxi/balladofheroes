@@ -17,6 +17,7 @@ export class MainComponent implements OnInit {
   public navigationEnum = NavigationEnum;
   underworldAnimation = false;
   maxBankedTime = 0;
+  displayFunFacts = false;
 
   constructor(private layoutService: LayoutService, private gameLoopService: GameLoopService, public lookupService: LookupService,
     public storyService: StoryService) { }

@@ -3,28 +3,39 @@
         <app-header [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>
     <div class="mainArea"
-        [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu && !storyService.triggerFirstTimeUnderworldScene }">
+        [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu && !storyService.triggerFirstTimeUnderworldScene && !storyService.endFirstTimeUnderworldScene }">
         <div class="mainContainer"
             [ngClass]="{ 'hide': lookupService.isUIHidden, 'darken': storyService.triggerFirstTimeUnderworldScene, 'lighten': storyService.endFirstTimeUnderworldScene }">
             <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
                 <app-party class="partyArea"
-                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-party>
+                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-party>
                 <app-battle class="battleArea"
-                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory, 'dark': storyService.showFirstTimeUnderworldStory }"></app-battle>
+                    [ngClass]="{ 'hide': (storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory) || storyService.endFirstTimeUnderworldScene, 'dark': storyService.showFirstTimeUnderworldStory }"></app-battle>
                 <app-zone-navigation class="navArea"
-                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-zone-navigation>
+                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-zone-navigation>
             </div>
             <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
                 <app-menu-options class="menuOptions"></app-menu-options>
                 <app-menu-display class="menuDisplay screenMargin"></app-menu-display>
             </div>
         </div>
-        <div class="s1Heading loadingContainer" *ngIf="lookupService.isUIHidden">
+        <div class="loadingContainer" *ngIf="lookupService.isUIHidden">
             <div>
-                Loading...
-                <br />
-                <mat-progress-bar mode="indeterminate" class="green-progress barHeight xpHighBar">
-                </mat-progress-bar>
+                <div class="centeredText">
+                    <span class="s1Heading">Loading...</span>
+                    <br />
+                    <mat-progress-bar mode="indeterminate" class="green-progress barHeight xpHighBar loadingBar">
+                    </mat-progress-bar>
+                </div>
+                <br/>
+                <div>
+                    <i>Up to 30 minutes of away time is automated. After that, up to 8 hours is banked and allows
+                        you to run the game at double speed.</i>
+                </div>
+                <div *ngIf="displayFunFacts">
+                    <br/>
+                    <br/>
+                </div>
             </div>
         </div>
     </div>

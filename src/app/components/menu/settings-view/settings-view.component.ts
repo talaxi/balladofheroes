@@ -2,8 +2,10 @@ import { Component, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { plainToInstance } from 'class-transformer';
 import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
+import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -22,10 +24,11 @@ export class SettingsViewComponent implements OnInit {
   storyStyleEnum = StoryStyleSettingEnum;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
-    private utilityService: UtilityService, public dialog: MatDialog) { }
+    private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService) { }
 
   ngOnInit(): void {
-    //console.log(this.globalService.globalVar);
+    //if (this.deploymentService.devModeActive)
+      console.log(this.globalService.globalVar);
     //console.log(JSON.stringify(this.globalService.globalVar));
 
     var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
@@ -37,7 +40,7 @@ export class SettingsViewComponent implements OnInit {
   }
 
   public SaveGame() {
-    var globalData = JSON.stringify(this.globalService.globalVar);    
+    var globalData = JSON.stringify(this.globalService.globalVar);
     var compressedData = LZString.compressToBase64(globalData);
     this.importExportValue = compressedData;
   }
@@ -52,7 +55,7 @@ export class SettingsViewComponent implements OnInit {
       var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
       if (loadDataJson !== null && loadDataJson !== undefined) {
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
-        
+
         this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
         this.storyService.showStory = false;
         this.globalService.globalVar.isBattlePaused = false;
@@ -99,22 +102,24 @@ export class SettingsViewComponent implements OnInit {
       fileReader.readAsText(this.file);
     }
   }
-  
+
   setStoryStyle() {
     if (this.storyStyle === StoryStyleSettingEnum.Fast)
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.fastStorySpeed;
-      if (this.storyStyle === StoryStyleSettingEnum.Skip)
+    if (this.storyStyle === StoryStyleSettingEnum.Skip)
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.skipStorySpeed;
-      if (this.storyStyle === StoryStyleSettingEnum.Medium)
+    if (this.storyStyle === StoryStyleSettingEnum.Medium)
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.mediumStorySpeed;
-      if (this.storyStyle === StoryStyleSettingEnum.Slow)
-      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.slowStorySpeed;
+    if (this.storyStyle === StoryStyleSettingEnum.Slow)
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.slowStorySpeed;    
+    if (this.storyStyle === StoryStyleSettingEnum.Pause)
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.pauseStorySpeed;
 
     this.globalService.globalVar.settings.set("storyStyle", this.storyStyle);
   }
 
-  openKeybinds(content: any) {    
-      this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });    
+  openKeybinds(content: any) {
+    this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
   }
 
   enterRedemptionCode() {

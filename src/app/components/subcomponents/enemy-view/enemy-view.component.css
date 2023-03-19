@@ -43,7 +43,7 @@
 }
 
 .hpMpText {
-    font-size: .8rem;
+    font-size: .7925rem;
     font-weight: bold;
     /*position: absolute;
     right: .25rem;*/
@@ -147,4 +147,8 @@
 
 .barrier {
     color: var(--barrierColor);
+}
+
+.statValue {
+    vertical-align: middle;
 }

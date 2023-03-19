@@ -4,5 +4,7 @@ export enum BalladEnum {
   Gorgon,
   Labors,
   Underworld,
-  Boar
+  Boar,
+  Argo,
+  Olympus
 }

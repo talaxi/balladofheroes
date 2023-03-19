@@ -10,5 +10,9 @@ export enum TutorialTypeEnum {
   Equipment,
   Altars,
   Achievements,
-  QuickView
+  QuickView,
+  Notifications,
+  SideQuests,
+  Followers,
+  ObscurredNotification
 }

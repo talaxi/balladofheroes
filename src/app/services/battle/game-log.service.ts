@@ -33,6 +33,9 @@ export class GameLogService {
     if (type === GameLogEntryEnum.Overdrive) {
       entry = "<span class='overdriveText'>" + entry + "</span>";
     }
+    if (type === GameLogEntryEnum.FollowerPrayer || type === GameLogEntryEnum.FollowerSearch) {
+      entry = "<span class='followerText'>" + entry + "</span>";
+    }
 
     this.gameLog.push(entry + "<br/>");
 

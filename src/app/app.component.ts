@@ -30,7 +30,7 @@ export class AppComponent {
   title = 'Ballad of Heroes';
   newGame = true;
   saveTime = 0;
-  saveFrequency = 10; //in seconds
+  saveFrequency = 5; //in seconds
   bankedTime = 0;
   catchupDialog: MatDialogRef<unknown, any> | undefined = undefined;
 
@@ -139,7 +139,7 @@ export class AppComponent {
     this.globalService.globalVar.isBattlePaused = false;
   }
 
-  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {
+  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {    
     if (deltaTime > this.utilityService.activeTimeLimit) {
       this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
       deltaTime = this.utilityService.activeTimeLimit;
@@ -150,7 +150,8 @@ export class AppComponent {
 
     //if speed up time remains, use it (only if not doing batches which causes issues)
     if (!this.globalService.globalVar.isCatchingUp) {
-      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2) {
+      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2 &&
+      this.globalService.globalVar.extraSpeedEnabled) {
         if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
           deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
           this.globalService.globalVar.extraSpeedTimeRemaining = 0;

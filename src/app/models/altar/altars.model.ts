@@ -4,6 +4,8 @@ import { AltarInfo } from "./altar-info.model";
 
 export class Altars {
     isUnlocked: boolean;
+    largeAltarsUnlocked: boolean;
+    pyresUnlocked: boolean;
     showNewNotification: boolean;
     @Type(() => AltarInfo)
     altar1: AltarInfo | undefined;
@@ -22,5 +24,7 @@ export class Altars {
     constructor() {
         this.isUnlocked = false;
         this.showNewNotification = false;
+        this.largeAltarsUnlocked = false;
+        this.pyresUnlocked = false;
     }
 }

@@ -108,7 +108,7 @@ export class PartyComponent implements OnInit {
   }
 
   getCharacterHpPercent(character: Character) {    
-    return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
+    return (character.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(character)) * 100;
   }
 
   getCharacterBarrierValue(character: Character) {    
@@ -574,7 +574,7 @@ export class PartyComponent implements OnInit {
   }
 
   getCharacterBarrierPercent(character: Character) {
-    return (character.battleInfo.barrierValue / character.battleStats.maxHp) * 100;
+    return (character.battleInfo.barrierValue / this.lookupService.getAdjustedMaxHp(character)) * 100;
   }
 
   getCurrentHp(character: Character) {
@@ -582,7 +582,7 @@ export class PartyComponent implements OnInit {
   }
 
   getMaxHp(character: Character) {
-    return this.utilityService.bigNumberReducer(Math.ceil(character.battleStats.maxHp));
+    return this.utilityService.bigNumberReducer(Math.ceil(this.lookupService.getAdjustedMaxHp(character)));
   }
 
   ngOnDestroy() {

@@ -61,6 +61,10 @@
                 Achievement Unlocked
             </mat-checkbox>
             <br />
+            <mat-checkbox class='prayText' [(ngModel)]="prayToAltar" (input)="prayToAltarToggle()">
+                Pray To Altar
+            </mat-checkbox>
+            <br />
             <div *ngIf="alchemyUnlocked">
                 <mat-checkbox class='alchemyText' [(ngModel)]="alchemyLevelUp" (input)="alchemyLevelUpToggle()">
                     Alchemy Level Up
@@ -68,6 +72,15 @@
                 <br />
                 <mat-checkbox class='alchemyText' [(ngModel)]="alchemyCreation" (input)="alchemyCreationToggle()">
                     Alchemy Creation
+                </mat-checkbox>                
+            </div>
+            <div *ngIf="followersUnlocked">
+                <mat-checkbox class='followerText' [(ngModel)]="followerSearch" (input)="followerSearchToggle()">
+                    Follower Search
+                </mat-checkbox>
+                <br />
+                <mat-checkbox class='followerText' [(ngModel)]="followerPrayer" (input)="followerPrayerToggle()">
+                    Follower Prayer
                 </mat-checkbox>
             </div>
         </div>

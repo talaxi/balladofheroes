@@ -49,15 +49,17 @@ export class EnemyViewComponent implements OnInit {
           this.enemyName.nativeElement.classList.remove('smallText');
           this.enemyName.nativeElement.classList.remove('verySmallText');
         }
-  
-        if ((this.enemyNameContainer.nativeElement.offsetHeight * 2.5) < this.enemyName.nativeElement.offsetHeight)
+          
+        if (this.enemyName.nativeElement.classList.contains('smallText') && (this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight)
         {
+          this.enemyName.nativeElement.classList.remove('smallText');
           this.enemyName.nativeElement.classList.add('verySmallText');      
-        }
-        if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.5) < this.enemyName.nativeElement.offsetHeight)
+        }   
+
+        if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight)
         {
           this.enemyName.nativeElement.classList.add('smallText');      
-        }
+        }     
   
         this.previousName = this.character.name;  
       }
@@ -191,6 +193,68 @@ export class EnemyViewComponent implements OnInit {
       src += "priestTarget.svg";  
 
     return src;
+  }
+
+  getCharacterAttackSpeed() {
+    if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyAverageAutoAttackSpeed)
+      return "Average";
+      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyQuickAutoAttackSpeed)
+      return "Quick";
+      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyLongAutoAttackSpeed)
+      return "Long";      
+      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyVeryLongAutoAttackSpeed)
+      return "Very Long";
+      
+      return "";
+  }
+
+  getElementalStrengths() {
+    var increases = "";
+    if (this.character.battleStats.elementalDamageIncrease.fire > 0)
+      increases += "<span class='statLabel'>Fire Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementalDamageIncrease.fire * 100 + "%</span>";
+      if (this.character.battleStats.elementalDamageIncrease.holy > 0)
+      increases += "<span class='statLabel'>Holy Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementalDamageIncrease.holy * 100 + "%</span>";
+      if (this.character.battleStats.elementalDamageIncrease.water > 0)
+      increases += "<span class='statLabel'>Water Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementalDamageIncrease.water * 100 + "%</span>";
+      if (this.character.battleStats.elementalDamageIncrease.air > 0)
+      increases += "<span class='statLabel'>Air Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementalDamageIncrease.air * 100 + "%</span>";
+      if (this.character.battleStats.elementalDamageIncrease.earth > 0)
+      increases += "<span class='statLabel'>Earth Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementalDamageIncrease.earth * 100 + "%</span>";
+      if (this.character.battleStats.elementalDamageIncrease.lightning > 0)
+      increases += "<span class='statLabel'>Lightning Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementalDamageIncrease.lightning * 100 + "%</span>";
+
+    return increases;
+  }
+
+  getElementalWeaknesses() {
+    var decreases = "";
+    if (this.character.battleStats.elementalDamageResistance.water > 0)
+    decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementalDamageResistance.water * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.fire > 0)
+    decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementalDamageResistance.fire * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.holy > 0)
+    decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementalDamageResistance.holy * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.air > 0)
+    decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementalDamageResistance.air * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.earth > 0)
+    decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementalDamageResistance.earth * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.lightning > 0)
+    decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementalDamageResistance.lightning * 100 + "%</span>";
+
+    if (this.character.battleStats.elementalDamageResistance.water < 0)
+    decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementalDamageResistance.water) * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.holy < 0)
+    decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementalDamageResistance.holy) * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.air < 0)
+    decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementalDamageResistance.air) * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.earth < 0)
+    decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementalDamageResistance.earth) * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.fire < 0)
+    decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementalDamageResistance.fire) * 100 + "%</span>";
+    if (this.character.battleStats.elementalDamageResistance.lightning < 0)
+    decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementalDamageResistance.lightning) * 100 + "%</span>";
+
+    return decreases;
   }
 
   ngOnDestroy() {

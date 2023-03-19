@@ -4,5 +4,6 @@ export enum EffectTriggerEnum {
   ChanceOnAutoAttack,
   OnAutoAttack,
   OnAbilityUse,
-  OnHit, //auto attack or ability  
+  OnHit, //auto attack or ability  ,
+  TriggersEvery //triggers every X seconds
 }
