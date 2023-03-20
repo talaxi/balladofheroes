@@ -233,3 +233,16 @@
 .sidequest {
     height: 100%;
 }
+
+@media (max-width: 800px) {
+    .gridContainer {
+        grid-template-rows: auto 1fr;
+        grid-template-areas:
+            "header"
+            "scene";
+    }
+
+    .enemies {
+        height: 98%;
+    }
+}

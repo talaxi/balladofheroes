@@ -91,6 +91,10 @@ import { FollowerOverviewViewComponent } from './components/subcomponents/follow
 import { FollowerSearchViewComponent } from './components/subcomponents/followers-view/follower-search-view/follower-search-view.component';
 import { FollowerPrayerViewComponent } from './components/subcomponents/followers-view/follower-prayer-view/follower-prayer-view.component';
 import { FollowerDefaultViewComponent } from './components/subcomponents/followers-view/follower-default-view/follower-default-view.component';
+import { QuickViewComponent } from './components/mobile-components/quick-view/quick-view.component';
+import { MainOverviewComponent } from './components/layout/zone-navigation/main-overview/main-overview.component';
+import { AlchemyOverviewComponent } from './components/layout/zone-navigation/alchemy-overview/alchemy-overview.component';
+import { ItemBeltOverviewComponent } from './components/layout/zone-navigation/item-belt-overview/item-belt-overview.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +150,11 @@ import { FollowerDefaultViewComponent } from './components/subcomponents/followe
     FollowerOverviewViewComponent,
     FollowerSearchViewComponent,
     FollowerPrayerViewComponent,
-    FollowerDefaultViewComponent
+    FollowerDefaultViewComponent,
+    QuickViewComponent,
+    MainOverviewComponent,
+    AlchemyOverviewComponent,
+    ItemBeltOverviewComponent
   ],
   imports: [
     BrowserModule,

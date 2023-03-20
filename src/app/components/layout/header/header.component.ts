@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
@@ -20,7 +20,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
   styleUrls: ['./header.component.css']
 })
 export class HeaderComponent implements OnInit {
-
+  @Input() isMobile = false;
   navigationEnum = NavigationEnum;
   textMode = true;
   tooltipDirection = DirectionEnum.Down;
@@ -32,12 +32,12 @@ export class HeaderComponent implements OnInit {
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;
-  
-    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("openMenu"))) {
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openMenu"))) {
       this.openMenu();
     }
-      
-    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("togglePauseGame"))) {
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("togglePauseGame"))) {
       this.pauseGame();
     }
   }
@@ -46,7 +46,7 @@ export class HeaderComponent implements OnInit {
   }
 
   pauseGame() {
-    this.battleService.togglePause();    
+    this.battleService.togglePause();
   }
 
   getExtraSpeedTime() {
@@ -62,18 +62,22 @@ export class HeaderComponent implements OnInit {
   }
 
   openMenu() {
-    if (this.layoutService.navigation === NavigationEnum.Default)
-    {
-      this.layoutService.changeLayout(NavigationEnum.Menu);
-      if (this.menuService.selectedMenuDisplay === MenuEnum.Characters && this.menuService.selectedCharacter === CharacterEnum.None)
-        this.menuService.setSelectedCharacter(CharacterEnum.Adventurer);
-      if (this.menuService.selectedMenuDisplay === MenuEnum.Gods && this.menuService.selectedGod === GodEnum.None)
-        this.menuService.setSelectedGod(GodEnum.Athena);
-    }    
-    else
-      this.layoutService.changeLayout(NavigationEnum.Default);
+    if (this.isMobile) {
+      this.layoutService.mobileMenuOpen = true;
+    }
+    else {
+      if (this.layoutService.navigation === NavigationEnum.Default) {
+        this.layoutService.changeLayout(NavigationEnum.Menu);
+        if (this.menuService.selectedMenuDisplay === MenuEnum.Characters && this.menuService.selectedCharacter === CharacterEnum.None)
+          this.menuService.setSelectedCharacter(CharacterEnum.Adventurer);
+        if (this.menuService.selectedMenuDisplay === MenuEnum.Gods && this.menuService.selectedGod === GodEnum.None)
+          this.menuService.setSelectedGod(GodEnum.Athena);
+      }
+      else
+        this.layoutService.changeLayout(NavigationEnum.Default);
 
-    this.utilityService.removeExcessOverlayDivs();
+      this.utilityService.removeExcessOverlayDivs();
+    }
   }
 
   togglePerformanceMode() {
@@ -81,7 +85,7 @@ export class HeaderComponent implements OnInit {
     this.textMode = !this.textMode;
   }
 
-  openLog(content: any) {          
-    this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });  
+  openLog(content: any) {
+    this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
   }
 }

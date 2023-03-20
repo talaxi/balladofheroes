@@ -1,4 +1,5 @@
 <div class="gridContainer" [ngClass]="{'hide': lookupService.isUIHidden}">
+    <hr *ngIf="isMobile" class="hr" />
     <div *ngFor="let character of party; let i = index" [class]="'character' + (i + 1)">
         <div *ngIf="character.type === noCharacter" class="partyMember">
         </div>
@@ -36,12 +37,12 @@
                             </span>
                         </div>
                     </div>
-                    <div>
+                    <div class="fullHeight">
                         <app-status-effect-view [character]="character"></app-status-effect-view>
                     </div>
                     <div>
                         <app-god-name-view [character]="character"></app-god-name-view>
-                        <br />
+                        <br *ngIf="!isMobile" />
                     </div>
                 </div>
                 <div class="abilities">
@@ -78,9 +79,9 @@
                 </div>
             </div>
         </div>
-        <hr *ngIf="activeCharacterCount > 1" />
+        <hr *ngIf="activeCharacterCount > 1 && (!isMobile || (isMobile && i === 0))" />
     </div>
-    <div>
+    <div *ngIf="!isMobile">
         <div *ngIf="displayDps" class="dps" class="s4Heading textCentered pageHeader dpsChecks">
             <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
                 Party DPS: {{getPartyDps() | number : '1.0-0'}}
@@ -91,7 +92,7 @@
         </div>
         <hr *ngIf="unlockedBattleItems" class="noMargin" />
     </div>
-    <div *ngIf="unlockedBattleItems" class="options battleItemGrid">
+    <div *ngIf="unlockedBattleItems && !isMobile" class="options battleItemGrid">
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"
             [class]="'battleItem' + (i + 1)">
             <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}"

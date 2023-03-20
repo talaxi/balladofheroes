@@ -1,0 +1,112 @@
+<div *ngIf="quickLinksUnlocked" class="quickLink">
+    <div class="quickLinkIcons">
+        <button class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Overview)">
+            <img *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled"
+                src="assets/svg/overviewQuickView.svg">
+            <img class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
+        </button>
+        <button class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.ItemBelt)">
+            <img *ngIf="quickView === quickViewEnum.ItemBelt" class="icon iconEnabled"
+                src="assets/svg/itemBeltOverview.svg">
+            <img class="icon iconDisabled" src="assets/svg/itemBeltOverviewDisabled.svg">
+        </button>
+        <div *ngIf="areAltarsAvailable()">
+            <button class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Altars)">
+                <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"
+                    src="assets/svg/smallAltar.svg">
+                <img class="icon iconDisabled" src="assets/svg/altarsOverviewDisabled.svg">
+            </button>
+            <app-notification-icon
+                *ngIf="globalService.globalVar.altars.showNewNotification"></app-notification-icon>
+        </div>
+        <button class="buttonAsText clickableText iconButton" *ngIf="isAlchemyAvailable()"
+            (click)="openQuickView(quickViewEnum.Alchemy)">
+            <img *ngIf="quickView === quickViewEnum.Alchemy" class="icon iconEnabled"
+                src="assets/svg/alchemyQuickView.svg">
+            <img class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
+        </button>
+    </div>
+    <div class="overlay" *ngIf="quickView !== quickViewEnum.None">
+        <div class="overviewQuickView centeredText" *ngIf="quickView === quickViewEnum.Overview">
+            <app-main-overview></app-main-overview>
+        </div>
+        <div class="itemBeltQuickView centeredText" *ngIf="quickView === quickViewEnum.ItemBelt">
+            <app-item-belt-overview></app-item-belt-overview>
+        </div>
+        <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
+            <app-alchemy-overview></app-alchemy-overview>
+        </div>
+        <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
+            <app-altar-overview></app-altar-overview>
+        </div>
+    </div>
+    <!--<div class="overviewQuickView" *ngIf="quickView === quickViewEnum.Overview">
+        <div class="quickLinkGrid">
+            <div *ngIf="townsAvailable" class="quickJump centeredText">
+                <span>Jump to..</span>
+                <br />
+                <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
+                    (click)="jumpToLatestShop()">Latest Town</button>
+                <br />
+                <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()"
+                    (click)="jumpToPalaceOfHades()">Palace of Hades</button>
+                <br />
+                <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()"
+                    (click)="jumpToColiseum()">Coliseum</button>
+            </div>
+            <div class="peekResources centeredText">
+                <div class="textLeftAligned inlineBlock">
+                    <span><span class="resource bold">Coins:</span><span>
+                            {{lookupService.getResourceAmount(itemsEnum.Coin) |
+                            number}}</span></span>
+                    <br />
+                    <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
+                        class="resource chthonicPowerKeyword" customToolTip
+                        [contentTemplate]="chthonicPowerPopover">Chthonic Power:
+                        <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
+                            : '1.0-2'}}</span></span>
+                    <br />
+                    <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
+                        class="resource chthonicFavorKeyword" customToolTip
+                        [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
+                        <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
+                            : '1.0-2'}}</span></span>
+                    <br />
+                    <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
+                        (click)="viewFollowers(followers)">View Followers</button>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="resourcesQuickView centeredText" *ngIf="quickView === quickViewEnum.Resources">
+        <div class="quickLinkGrid">
+            <div *ngIf="trackedResourcesColumn1.length > 0" class="peekResources">
+                <div *ngFor="let resource of trackedResourcesColumn1" class="resource">
+                    <app-resource-item-view [resource]="resource"></app-resource-item-view>
+                </div>
+            </div>
+            <div *ngIf="trackedResourcesColumn2.length > 0" class="quickJump">
+                <div *ngFor="let resource of trackedResourcesColumn2" class="resource">
+                    <app-resource-item-view [resource]="resource"></app-resource-item-view>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
+        <div *ngIf="creatingRecipe()">
+            <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span
+                class="offsetWidth" *ngIf="this.getTotalAmountToCreate() > 1">&nbsp;<i>({{this.getAmountCreated() +
+                    1}} of {{this.getTotalAmountToCreate()}})</i></span>
+            <br />
+            <mat-progress-bar mode="determinate" [value]="getStepProgress()"
+                class="purple-progress centeredBar removeAnimation removeTransition">
+            </mat-progress-bar>
+            <span><i>({{getTimeRemaining()}} remaining)</i></span>
+        </div>
+        <div *ngIf="!creatingRecipe()">
+            <strong>Not Currently Brewing</strong>
+        </div>
+        <br />
+        <button class="buttonStyled" (click)="openAlchemy(alchemyRecipeBook)">Open Recipe Book</button>
+    </div>-->
+</div>

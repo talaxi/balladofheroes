@@ -2,10 +2,12 @@
  'menuGridContainer': this.layoutService.navigation === navigationEnum.Menu}">
     <button *ngIf="textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader globalHeaderItem" (click)="openMenu()">menu</button>
     <button *ngIf="!textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()"><img *ngIf="!textMode" class="icon" src="assets/svg/menu.svg"></button>
-
-    <div class="performanceState" *ngIf="deploymentService.performanceModeAvailable && globalService.globalVar.isGamePaused">
-      <button (click)="togglePerformanceMode()">Perf Mode</button>
+    <div *ngIf="isMobile && layoutService.mobileMenuOpen" class="menuOverlay">      
+      <app-menu-options [isMobile]="true" class="menuOptions"></app-menu-options>
     </div>
+    <!--<div class="performanceState" *ngIf="deploymentService.performanceModeAvailable && globalService.globalVar.isGamePaused">
+      <button (click)="togglePerformanceMode()">Perf Mode</button>
+    </div>-->
 
     <div class="centerAlign gameState">
       <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/play.svg"></span>

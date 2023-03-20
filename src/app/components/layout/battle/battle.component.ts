@@ -1,4 +1,4 @@
-import { Component, ElementRef, EventEmitter, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
@@ -39,6 +39,7 @@ export class BattleComponent implements OnInit {
   showSkipButtonMessage = false;
   showStoryAnimation = false;
   storyAnimationTimerCap = .5;
+  @Input() isMobile = false;
 
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
@@ -98,7 +99,8 @@ export class BattleComponent implements OnInit {
   }
 
   ngAfterViewInit() {
-    this.skipToBottom(this.gameLogScroll.nativeElement);
+    if (this.gameLogScroll !== undefined && this.gameLogScroll.nativeElement !== undefined)
+      this.skipToBottom(this.gameLogScroll.nativeElement);
   }
 
   skipStory() {
@@ -249,6 +251,10 @@ export class BattleComponent implements OnInit {
 
   atAltarOfAsclepius() {
     return this.activeSubzone.type === SubZoneEnum.CalydonAltarOfAsclepius;
+  }
+
+  openZoneNavigation(content: any) {
+    this.dialog.open(content, { width: '75%', maxHeight: '75%' });
   }
 
   ngOnDestroy() {

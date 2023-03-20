@@ -1,9 +1,11 @@
-import { Component, EventEmitter, HostListener, OnInit, Output } from '@angular/core';
+import { Component, EventEmitter, HostListener, Input, OnInit, Output } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
@@ -19,6 +21,7 @@ export class MenuOptionsComponent implements OnInit {
   
   public partyMembers: Character[];
   public gods: God[];
+  @Input() isMobile = false;
 
   godsAvailable = false;
   
@@ -55,7 +58,8 @@ export class MenuOptionsComponent implements OnInit {
     }
   }
 
-  constructor(public menuService: MenuService, private globalService: GlobalService, private keybindService: KeybindService) { }
+  constructor(public menuService: MenuService, private globalService: GlobalService, private keybindService: KeybindService,
+    private layoutService: LayoutService) { }
 
   ngOnInit(): void {    
     this.partyMembers = this.globalService.globalVar.characters.filter(item => item.isAvailable);
@@ -67,6 +71,11 @@ export class MenuOptionsComponent implements OnInit {
   }
 
   switchView(type: MenuEnum) {
+    if (this.isMobile) {
+      this.layoutService.changeLayout(NavigationEnum.Menu);
+      this.layoutService.mobileMenuOpen = false;      
+    }
+
     this.menuService.selectedMenuDisplay = type;
 
     if (type === MenuEnum.Characters && this.menuService.selectedCharacter === CharacterEnum.None)

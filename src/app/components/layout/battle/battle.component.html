@@ -2,16 +2,20 @@
     <div class="header">
         <div class="headerFlex">
             <div class="alignCenter" *ngIf="doingColiseumFight()">
-                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} of {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>
-            <div class="s4Heading textCentered selectedSubzone pageHeader"><strong>{{activeSubzone.name}}</strong> <span
-                    *ngIf="showDevStats"> EPS: {{getExpectedExpPerSec()}}</span></div>
+                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} of
+                {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>
+            <div class="s4Heading textCentered selectedSubzone pageHeader">
+                <strong>{{activeSubzone.name}}</strong> 
+                <button *ngIf="isMobile" class="buttonStyled" (click)="openZoneNavigation(zoneNavigationContent)">V</button>
+            </div>
             <div class="alignCenter" *ngIf="doingColiseumFight()">{{getTournamentTimeRemaining()}} remaining</div>
         </div>
         <hr />
     </div>
     <div class="scene"
         [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
-        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation, 'removeTransition': noTransition }"
+        <div class="enemies"
+            [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation, 'removeTransition': noTransition }"
             *ngIf="!isAtScene() && !isAtTown() && !isAtSideQuestScene()">
             <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight && !currentEnemies.isDoubleBossFight"
                 class="enemiesGrid">
@@ -74,27 +78,34 @@
             <!--<hr class='hr' />-->
         </div>
         <div *ngIf="isAtAltarScene()" class="altar">
-           
+
         </div>
         <div *ngIf="isAtSideQuestScene()" class="sidequest">
-            <app-altar *ngIf="atAltarOfAsclepius()"></app-altar>          
+            <app-altar *ngIf="atAltarOfAsclepius()"></app-altar>
         </div>
         <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene() && !isAtSideQuestScene()" class="shopGrid">
             <app-shop-view></app-shop-view>
         </div>
     </div>
-    <hr class='gap hr' />
-    <div class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
-        <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
-            [innerHtml]="this.displayGameUpdates()"></div>
-        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover"><img
-                class="settingsIcon icon" src="assets/svg/gear.svg"></button>
-        <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
-            class="skipToBottom arrow gameLogButton"><img class="arrowDownIcon icon"
-                src="assets/svg/arrowDown.svg"></button>
+    <div *ngIf="!isMobile">
+        <hr class='gap hr' />
+        <div class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
+            <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
+                [innerHtml]="this.displayGameUpdates()"></div>
+            <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover"><img
+                    class="settingsIcon icon" src="assets/svg/gear.svg"></button>
+            <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
+                class="skipToBottom arrow gameLogButton"><img class="arrowDownIcon icon"
+                    src="assets/svg/arrowDown.svg"></button>
+        </div>
     </div>
 </div>
 
 <ng-template #gameLogEditorModal>
     <app-game-log-editor></app-game-log-editor>
+</ng-template>
+
+
+<ng-template #zoneNavigationContent>
+    <app-zone-navigation></app-zone-navigation>
 </ng-template>

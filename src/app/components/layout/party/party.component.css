@@ -3,7 +3,7 @@
     height: 100%;
     margin-right: .5rem;
     grid-template-columns: auto;
-    grid-template-rows:  40% 40% 5.5% 14.5%;
+    grid-template-rows: 40% 40% 5.5% 14.5%;
     justify-content: stretch;
     grid-template-areas:
         "character1"
@@ -19,7 +19,7 @@
 }
 
 .dps {
-    grid-area: dps;    
+    grid-area: dps;
 }
 
 .dpsChecks {
@@ -219,7 +219,7 @@
     grid-area: abilitySwap;
 }
 
-.mdc-linear-progress__bar-inner{
+.mdc-linear-progress__bar-inner {
     height: 1rem !important;
     border-top-width: var(--mdc-linear-progress-track-height, 1rem);
 }
@@ -309,7 +309,8 @@ table tr td:nth-child(4n-3) {
     z-index: 5;
     opacity: 1;
     text-align: center;
-    width: 75%; /* needs to match .characterBar */
+    width: 75%;
+    /* needs to match .characterBar */
     bottom: .1rem;
     height: 1rem;
 }
@@ -356,4 +357,38 @@ table tr td:nth-child(4n-3) {
 
 .hpBar {
     grid-area: hpBarSlot;
+}
+
+
+@media (max-width: 800px) {
+    .gridContainer {
+        grid-template-rows: auto 1fr 1fr;
+        justify-content: stretch;
+        grid-template-areas:
+            "hr"
+            "character1"
+            "character2";
+    }
+
+    .hr {
+        grid-area: hr;
+        width: 100%;
+    }
+
+    .fullHeight {
+        height: 100%;
+    }
+
+    .overdriveProgressBar {
+        width: 72%;
+    }
+    
+    .characterHp {
+        grid-template-columns: 72% 1fr;
+    }
+    
+    .manualOverdriveText {
+        width: 72%
+    }
+    
 }

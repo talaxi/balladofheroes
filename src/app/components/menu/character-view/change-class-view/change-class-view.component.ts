@@ -18,9 +18,21 @@ export class ChangeClassViewComponent implements OnInit {
   classRows: Character[][];
   classCells: Character[];
 
+  swapEquipment: boolean;
+  swapGods: Boolean;
+
   constructor(private lookupService: LookupService, private globalService: GlobalService) { }
 
   ngOnInit(): void {
+    var changeClassSwapEquipment = this.globalService.globalVar.settings.get("changeClassSwapEquipment");
+    if (changeClassSwapEquipment !== undefined)
+      this.swapEquipment = changeClassSwapEquipment;
+    console.log(this.swapEquipment);
+      
+    var changeClassSwapGods = this.globalService.globalVar.settings.get("changeClassSwapGods");
+    if (changeClassSwapGods !== undefined)
+      this.swapGods = changeClassSwapGods;
+
     this.currentParty = this.globalService.getActivePartyCharacters(false);
 
     if (this.character.type === this.currentParty[0].type)
@@ -34,6 +46,14 @@ export class ChangeClassViewComponent implements OnInit {
 
   swapClass(whichClass: number) {
     this.swappingClass = whichClass;
+  }
+
+  swapEquipmentToggle() {
+    this.globalService.globalVar.settings.set("changeClassSwapEquipment", this.swapEquipment);
+  }
+
+  swapGodsToggle() {
+    this.globalService.globalVar.settings.set("changeClassSwapGods", this.swapGods);
   }
 
   getClassName(whichClass?: number, type?: CharacterEnum) {

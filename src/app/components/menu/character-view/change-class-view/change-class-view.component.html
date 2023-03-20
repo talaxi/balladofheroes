@@ -2,15 +2,15 @@
     <div class="currentClasses">
         <div [ngClass]="getClassColor(1)" class="class1">
             <div class="classContainer" [ngClass]="{'active': swappingClass === 1 }">
-            <span class="s6Heading" [innerHtml]="getClassName(1)"></span>
-            <br/>
-            <span class="s6Heading" [innerHtml]="getClassLevel(1)"></span>
-            <br />
-            <br />
-            <span [innerHtml]="getClassDescription(1)"></span>
-            <br/>
-            <br/>
-            <button (click)="swapClass(1)">Swap</button>
+                <span class="s6Heading" [innerHtml]="getClassName(1)"></span>
+                <br />
+                <span class="s6Heading" [innerHtml]="getClassLevel(1)"></span>
+                <br />
+                <br />
+                <span [innerHtml]="getClassDescription(1)"></span>
+                <br />
+                <br />
+                <button (click)="swapClass(1)">Swap</button>
             </div>
         </div>
         <div class="vr">
@@ -18,16 +18,16 @@
         </div>
         <div [ngClass]="getClassColor(2)" class="class2">
             <div class="classContainer" [ngClass]="{'active': swappingClass === 2 }">
-            <span class="s6Heading" [innerHtml]="getClassName(2)"></span>
-            <br/>
-            <span class="s6Heading" [innerHtml]="getClassLevel(2)"></span>
-            <br />
-            <br />
-            <span [innerHtml]="getClassDescription(2)"></span>
-            <br/>
-            <br/>
-            <button (click)="swapClass(2)">Swap</button>
-        </div>
+                <span class="s6Heading" [innerHtml]="getClassName(2)"></span>
+                <br />
+                <span class="s6Heading" [innerHtml]="getClassLevel(2)"></span>
+                <br />
+                <br />
+                <span [innerHtml]="getClassDescription(2)"></span>
+                <br />
+                <br />
+                <button (click)="swapClass(2)">Swap</button>
+            </div>
         </div>
     </div>
     <hr class="noMargin" />
@@ -36,15 +36,26 @@
             <tr *ngFor="let cells of classRows;">
                 <td [ngClass]="getClassColor(undefined, c.type)" class="item" *ngFor="let c of cells;">
                     <span class="s3Heading" [innerHtml]="getClassName(undefined, c.type)"></span>
-                    <br/>
-                    <span class="s3Heading" [innerHtml]="getClassLevel(undefined, c.type)"></span>                                        
+                    <br />
+                    <span class="s3Heading" [innerHtml]="getClassLevel(undefined, c.type)"></span>
                     <br />
                     <span [innerHtml]="getClassDescription(undefined, c.type)"></span>
                     <br />
                     <br />
-                    <button *ngIf="swapClass !== undefined" [disabled]="currentlyAssignedToSameCharacter(c.type)" (click)="selectNewClass(c.type)">Select</button>
+                    <button *ngIf="swapClass !== undefined" [disabled]="currentlyAssignedToSameCharacter(c.type)"
+                        (click)="selectNewClass(c.type)">Select</button>
                 </td>
             </tr>
         </table>
+    </div>
+    <div class="bottomPosition">
+        <div class="options">
+            <mat-checkbox class="example-margin" [(ngModel)]="swapEquipment" (input)="swapEquipmentToggle()">Swap
+                Equipment
+            </mat-checkbox>
+
+            <mat-checkbox class="example-margin" [(ngModel)]="swapGods" (input)="swapGodsToggle()">Swap Gods
+            </mat-checkbox>
+        </div>
     </div>
 </div>

@@ -73,3 +73,13 @@
     text-align: center;
 }
 
+@media (max-width: 800px) {
+    .positiveStatusEffectList, .negativeStatusEffectList {     
+        width: min-content;
+        /*margin: -.2rem;*/
+    }
+
+    .statusEffectView {
+        height: 100%;
+    }
+}

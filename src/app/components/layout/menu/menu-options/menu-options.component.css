@@ -79,3 +79,10 @@
     background-color: var(--button-selected) !important;
 }
 
+
+
+@media (max-width: 800px) {
+    .vr {
+        display: none;
+    }
+}

@@ -200,6 +200,8 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("showOnlyUncompletedAchievements", false);
     this.globalService.globalVar.settings.set("achievementsPerPage", 5);
     this.globalService.globalVar.settings.set("storyStyle", StoryStyleSettingEnum.Medium);
+    this.globalService.globalVar.settings.set("changeClassSwapEquipment", true);
+    this.globalService.globalVar.settings.set("changeClassSwapGods", true);
   }
 
   initializeGameLogSettings() {
@@ -513,7 +515,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 1250;
+      var godLevel = 100;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

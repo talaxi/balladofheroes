@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, QueryList, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, QueryList, ViewChild } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -42,6 +42,7 @@ export class PartyComponent implements OnInit {
   partyMember2CheckSubscription: any;
   displayDps = false;
   unlockedBattleItems = false;
+  @Input() isMobile = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    

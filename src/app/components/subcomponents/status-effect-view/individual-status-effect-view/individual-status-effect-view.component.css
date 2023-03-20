@@ -17,26 +17,26 @@
     display: flex;
 }
 
-.positiveStatUpDownGrid {    
+.positiveStatUpDownGrid {
     aspect-ratio: 1 / 1;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 50% 50%;
     justify-content: stretch;
     grid-template-areas:
-      "halfImage"
-      "textDiv";
+        "halfImage"
+        "textDiv";
 }
 
-.negativeStatUpDownGrid {    
+.negativeStatUpDownGrid {
     aspect-ratio: 1 / 1;
     display: grid;
     grid-template-columns: auto;
     grid-template-rows: 50% 50%;
     justify-content: stretch;
-    grid-template-areas:      
-      "textDiv"
-      "halfImage";
+    grid-template-areas:
+        "textDiv"
+        "halfImage";
 }
 
 .halfImage {
@@ -53,4 +53,16 @@
 
 .splitImage {
     width: 49%;
+}
+
+@media (max-width: 800px) {
+    .textDiv {
+        font-size: unset;
+    }
+
+
+    .negativeStatusEffect,
+    .negativeStatusEffect {
+        width: 83%;
+    }
 }

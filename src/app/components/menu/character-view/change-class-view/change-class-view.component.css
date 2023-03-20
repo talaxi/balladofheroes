@@ -8,6 +8,10 @@
     height: auto;
 }
 
+.container {
+  height: 100%;
+}
+
 .currentClasses {
     display: flex;
     width: 100%;
@@ -20,6 +24,8 @@
 
 .classContainer {
     padding: 1rem;
+    box-sizing: border-box;
+    height:100%;
 }
 
 .active {
@@ -55,4 +61,15 @@ td {
 
   table tr td:nth-child(4n-3) { 
     border-left: none;
+  }
+
+  .options {
+    display: flex;
+    justify-content: space-evenly;
+  }
+
+  .bottomPosition {
+    position: absolute;
+    bottom: 1rem;
+    width: 100%;
   }
