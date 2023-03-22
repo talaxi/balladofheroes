@@ -51,7 +51,7 @@
     <div class="headerArea">
         <app-header [isMobile]="true" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>
-    <div class="mainArea"
+    <div class="mainArea" (click)="closeMobileMenu()"
         [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu && !storyService.triggerFirstTimeUnderworldScene && !storyService.endFirstTimeUnderworldScene }">
         <div class="mainContainer"
             [ngClass]="{ 'hide': lookupService.isUIHidden, 'darken': storyService.triggerFirstTimeUnderworldScene, 'lighten': storyService.endFirstTimeUnderworldScene }">
@@ -63,7 +63,7 @@
                     [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-party>                                
             </div>
             <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
-                <app-menu-display class="menuDisplay screenMargin"></app-menu-display>
+                <app-menu-display [isMobile]="true" class="menuDisplay screenMargin"></app-menu-display>
             </div>
         </div>
         <div class="loadingContainer" *ngIf="lookupService.isUIHidden">

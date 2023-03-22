@@ -28,4 +28,16 @@
 .importExportButtons {
     display: flex;
     justify-content: space-between;
-  }
+}
+
+@media (max-width: 800px) {
+    .settingsGrid {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto;
+        column-gap: 2rem;
+        justify-content: stretch;
+        grid-template-areas:
+            "settings"
+            "saveLoad";
+    }
+}

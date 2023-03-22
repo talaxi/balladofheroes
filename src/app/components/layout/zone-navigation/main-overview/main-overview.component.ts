@@ -13,6 +13,7 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-main-overview',
@@ -24,7 +25,8 @@ export class MainOverviewComponent {
   townsAvailable = false;
   
   constructor(public globalService: GlobalService, public lookupService: LookupService, private balladService: BalladService,
-    private dpsCalculatorService: DpsCalculatorService, private gameLogService: GameLogService, public dialog: MatDialog) {
+    private dpsCalculatorService: DpsCalculatorService, private gameLogService: GameLogService, public dialog: MatDialog,
+    private deviceDetectorService: DeviceDetectorService) {
 
   }
   
@@ -176,6 +178,9 @@ export class MainOverviewComponent {
   }
 
   viewFollowers(content: any) {
+    if (this.deviceDetectorService.isMobile())
+    this.dialog.open(content, { width: '95%', height: '80%' });
+  else 
     this.dialog.open(content, { width: '90%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
   }
 }

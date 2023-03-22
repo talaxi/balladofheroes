@@ -5,6 +5,11 @@
                 src="assets/svg/overviewQuickView.svg">
             <img class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
         </button>
+        <button class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.GameText)">
+            <img *ngIf="quickView === quickViewEnum.GameText" class="icon iconEnabled"
+                src="assets/svg/gameText.svg">
+            <img class="icon iconDisabled" src="assets/svg/gameTextDisabled.svg">
+        </button>
         <button class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.ItemBelt)">
             <img *ngIf="quickView === quickViewEnum.ItemBelt" class="icon iconEnabled"
                 src="assets/svg/itemBeltOverview.svg">
@@ -26,7 +31,7 @@
             <img class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
         </button>
     </div>
-    <div class="overlay" *ngIf="quickView !== quickViewEnum.None">
+    <div class="overlay" [ngClass]="{'flipOverlay': overlayShouldFlip}" *ngIf="quickView !== quickViewEnum.None">
         <div class="overviewQuickView centeredText" *ngIf="quickView === quickViewEnum.Overview">
             <app-main-overview></app-main-overview>
         </div>
@@ -38,6 +43,9 @@
         </div>
         <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
             <app-altar-overview></app-altar-overview>
+        </div>
+        <div class="gameTextQuickView centeredText" *ngIf="quickView === quickViewEnum.GameText">
+            <app-game-text-overview></app-game-text-overview>
         </div>
     </div>
     <!--<div class="overviewQuickView" *ngIf="quickView === quickViewEnum.Overview">

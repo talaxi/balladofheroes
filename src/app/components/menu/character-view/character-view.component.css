@@ -47,6 +47,10 @@
     grid-area: god2Info;    
 }
 
+.webVersion {
+    display: inline-block;
+}
+
 .statContainer {
     display: grid;
     height: 100%;
@@ -96,3 +100,48 @@
     vertical-align: middle;
 }
 
+@media (max-width: 800px) {
+    .webVersion {
+        display: none;
+    }
+
+    .gridContainer {
+        grid-template-columns: 1fr;
+        grid-template-rows: auto auto auto auto;
+        row-gap: 1.75rem;
+        grid-template-areas:
+            "characterInfo"
+            "characterStats"
+            "secondaryStats"
+            "characterAbilities";
+    }
+
+    .secondaryStatColumns {
+        display: grid;
+        height: 100%;
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto;
+        justify-content: stretch;
+        grid-template-areas:
+            "secondaryStatColumn1 secondaryStatColumn2";
+    }
+
+    .secondaryStatColumn1 {
+        grid-area: secondaryStatColumn1;
+    }
+
+    .secondaryStatColumn2 {
+        grid-area: secondaryStatColumn2;
+    }
+    
+    .characterInfo {
+        grid-area: characterInfo;    
+        display: grid;
+        height: 100%;
+        grid-template-columns: 1fr 1fr 1fr;
+        grid-template-rows: auto;
+        justify-content: stretch;
+        grid-template-areas:
+            "god1Info baseInfo god2Info";
+    }
+}

@@ -4,6 +4,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { CustomTooltipComponent } from './custom-tooltip.component';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Directive({
   selector: '[customToolTip]'
@@ -33,7 +34,8 @@ export class ToolTipRendererDirective {
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
     private _elementRef: ElementRef,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   /**
    * Init life cycle event handler
@@ -100,7 +102,48 @@ export class ToolTipRendererDirective {
    * This method will show the tooltip by instantiating the McToolTipComponent and attaching to the overlay
    */
   @HostListener('mouseenter')
-  show() {    
+  show() { 
+    if (!this.deviceDetectorService.isMobile())   
+      this.openToolTip();
+  }
+
+  @HostListener('touchstart')
+  mobileShow(event: any) { 
+    if (this.deviceDetectorService.isMobile()) {        
+      event?.preventDefault();
+      this.openToolTip();      
+    }
+  }
+
+  /**
+   * This method will be called when mouse goes out of the host element
+   * i.e. where this directive is applied
+   * This method will close the tooltip by detaching the overlay from the view
+   */
+  @HostListener('mouseleave')
+  hide() {    
+    if (!this.deviceDetectorService.isMobile())   
+      this.closeToolTip();
+  }
+
+  @HostListener('touchend')
+  mobileHide() {    
+    if (this.deviceDetectorService.isMobile())   
+      this.closeToolTip();
+  }
+
+  /**
+   * Destroy lifecycle event handler
+   * This method will make sure to close the tooltip
+   * It will be needed in case when app is navigating to different page
+   * and user is still seeing the tooltip; In that case we do not want to hang around the
+   * tooltip after the page [on which tooltip visible] is destroyed
+   */
+  ngOnDestroy() {
+    this.closeToolTip();
+  }
+
+  openToolTip() {
     if (this.isDelayed) {
       this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
         this.delayTimer += deltaTime;
@@ -120,27 +163,6 @@ export class ToolTipRendererDirective {
         tooltipRef.instance.contentTemplate = this.contentTemplate;        
       }
     }
-  }
-
-  /**
-   * This method will be called when mouse goes out of the host element
-   * i.e. where this directive is applied
-   * This method will close the tooltip by detaching the overlay from the view
-   */
-  @HostListener('mouseleave')
-  hide() {    
-    this.closeToolTip();
-  }
-
-  /**
-   * Destroy lifecycle event handler
-   * This method will make sure to close the tooltip
-   * It will be needed in case when app is navigating to different page
-   * and user is still seeing the tooltip; In that case we do not want to hang around the
-   * tooltip after the page [on which tooltip visible] is destroyed
-   */
-  ngOnDestroy() {
-    this.closeToolTip();
   }
 
   /**

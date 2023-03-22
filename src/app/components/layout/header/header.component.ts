@@ -63,7 +63,10 @@ export class HeaderComponent implements OnInit {
 
   openMenu() {
     if (this.isMobile) {
-      this.layoutService.mobileMenuOpen = true;
+      if (this.layoutService.mobileMenuOpen)
+        this.layoutService.mobileMenuOpen = false;
+      else
+        this.layoutService.mobileMenuOpen = true;
     }
     else {
       if (this.layoutService.navigation === NavigationEnum.Default) {
@@ -80,12 +83,20 @@ export class HeaderComponent implements OnInit {
     }
   }
 
+  backToMainView() {
+    this.layoutService.mobileMenuOpen = false;
+    this.layoutService.changeLayout(NavigationEnum.Default);
+  }
+
   togglePerformanceMode() {
     this.globalService.globalVar.performanceMode = !this.globalService.globalVar.performanceMode;
     this.textMode = !this.textMode;
   }
 
   openLog(content: any) {
+    if (this.isMobile)
+    this.dialog.open(content, { width: '95%', height: '80%' });
+  else 
     this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
   }
 }

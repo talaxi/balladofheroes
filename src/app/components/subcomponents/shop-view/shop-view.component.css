@@ -79,3 +79,10 @@ td {
   table tr td:nth-child(4n-3) { 
     border-left: none;
   }
+
+  
+@media (max-width: 800px) {
+ table {
+  height: unset;
+ }
+}

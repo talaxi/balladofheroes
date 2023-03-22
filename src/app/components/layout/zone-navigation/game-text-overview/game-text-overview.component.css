@@ -1,0 +1,36 @@
+.battleUpdates {
+    grid-area: battleUpdates;
+
+    overflow-x: hidden;
+    overflow-y: auto;
+    position: relative;
+    height: 100%;
+}
+
+.innerContainer {
+    position: relative;
+    height: 100%;
+    overflow: auto;
+}
+
+.gameLogEditor {
+    position: absolute;
+    top: 0;
+    right: 1.5rem;
+}
+
+.skipToBottom {
+    position: absolute;
+    bottom: 0;
+    right: 1.5rem;
+}
+
+.icon {
+    height: 1.5rem;
+    width: 1.5rem;
+    vertical-align: middle;
+}
+
+.gameLogButton {
+    padding: 0;
+}

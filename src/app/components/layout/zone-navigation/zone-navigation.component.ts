@@ -1,5 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
@@ -50,6 +51,7 @@ export class ZoneNavigationComponent implements OnInit {
   trackedResourcesColumn2: ItemsEnum[] = [];
   tooltipDirection = DirectionEnum.Up;
   quickLinksUnlocked = false;
+  isMobile = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -60,9 +62,11 @@ export class ZoneNavigationComponent implements OnInit {
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
     private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService, public dialog: MatDialog,
-    private alchemyService: AlchemyService, private keybindService: KeybindService) { }
+    private alchemyService: AlchemyService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {  
+    this.isMobile = this.deviceDetectorService.isMobile();
+
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
       this.autoProgress = false;
@@ -215,6 +219,11 @@ export class ZoneNavigationComponent implements OnInit {
       var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
       this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
     }
+
+    if (this.isMobile)
+    {
+      this.dialog.closeAll();
+    }
   }
 
   jumpToLatestShop() {
@@ -257,6 +266,11 @@ export class ZoneNavigationComponent implements OnInit {
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+
+    if (this.isMobile)
+    {
+      this.dialog.closeAll();
+    }
   }
 
   jumpToLatestGeneralStore() {
@@ -299,6 +313,10 @@ export class ZoneNavigationComponent implements OnInit {
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+    if (this.isMobile)
+    {
+      this.dialog.closeAll();
+    }
   }
 
   jumpToPalaceOfHades() {
@@ -318,6 +336,10 @@ export class ZoneNavigationComponent implements OnInit {
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+    if (this.isMobile)
+    {
+      this.dialog.closeAll();
+    }
   }
 
   jumpToColiseum() {
@@ -337,9 +359,16 @@ export class ZoneNavigationComponent implements OnInit {
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+    if (this.isMobile)
+    {
+      this.dialog.closeAll();
+    }
   }
 
   viewFollowers(content: any) {
+    if (this.deviceDetectorService.isMobile())
+    this.dialog.open(content, { width: '95%', height: '80%' });
+  else 
     this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
   }
 
@@ -455,6 +484,9 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   openAlchemy(content: any) {
+    if (this.deviceDetectorService.isMobile())
+    this.dialog.open(content, { width: '95%', height: '80%' });
+  else 
     this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
   }
 

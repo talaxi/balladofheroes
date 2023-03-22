@@ -380,15 +380,18 @@ table tr td:nth-child(4n-3) {
     }
 
     .overdriveProgressBar {
-        width: 72%;
+        width: 68%;
     }
     
     .characterHp {
-        grid-template-columns: 72% 1fr;
+        grid-template-columns: 68% 1fr;
     }
     
     .manualOverdriveText {
-        width: 72%
+        width: 68%;
     }
     
+    .hpMpText {
+        font-size: .9rem;
+    }
 }

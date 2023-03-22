@@ -28,6 +28,10 @@ export class MainComponent implements OnInit {
     });
   }
 
+  closeMobileMenu() {
+    this.layoutService.mobileMenuOpen = false;
+  }
+
   ngOnDestroy() {    
   }
 }

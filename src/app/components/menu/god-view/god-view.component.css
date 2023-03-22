@@ -58,3 +58,21 @@
 .statValue {
     vertical-align: middle;
 }
+
+@media (max-width: 800px) {
+    .webVersion {
+        display: none;
+    }
+
+    .gridContainer {
+        grid-template-columns: 1fr 1fr;
+        grid-template-rows: auto auto auto auto;
+        row-gap: 1.75rem;
+        justify-content: stretch;
+        grid-template-areas:
+            "godInfo godInfo"
+            "godPrimaryStats godSecondaryStats"
+            "godUpcoming godUpcoming"
+            "godAbilities godAbilities";
+    }
+}

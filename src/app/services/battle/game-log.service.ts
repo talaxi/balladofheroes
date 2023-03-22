@@ -1,4 +1,5 @@
-import { Injectable } from '@angular/core';
+import { Injectable, Type } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GameLoopService } from '../game-loop/game-loop.service';
 import { GlobalService } from '../global/global.service';
@@ -9,8 +10,9 @@ import { GlobalService } from '../global/global.service';
 export class GameLogService {
   gameLog: string[] = [];
   gameLogMaxLength = 100;
+  notificationOverlayBuffer: [string, GameLogEntryEnum, number][] = [];
 
-  constructor() {
+  constructor(private deviceDetectorService: DeviceDetectorService) {
 
   }
 
@@ -42,6 +44,23 @@ export class GameLogService {
     if (this.gameLog.length > this.gameLogMaxLength) {
       for (var i = this.gameLog.length; i > this.gameLogMaxLength; i--) {
         this.gameLog = this.gameLog.filter(item => item != this.gameLog[0]);
+      }
+    }
+
+    //add certain items to the overlay
+    //TODO: add settings to hide certain items
+    if (this.deviceDetectorService.isMobile())
+    {
+      var tutorialDuration = 30;
+      var rewardDuration = 5;
+
+      if (type === GameLogEntryEnum.Tutorial)
+      {
+        this.notificationOverlayBuffer.push([entry, type, tutorialDuration]);
+      }
+      if (type === GameLogEntryEnum.BattleRewards)
+      {
+        this.notificationOverlayBuffer.push([entry, type, rewardDuration]);
       }
     }
   }

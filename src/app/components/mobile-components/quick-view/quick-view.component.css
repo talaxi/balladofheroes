@@ -46,6 +46,10 @@
     height: calc(100% - 2.5rem);
 }
 
+.gameTextQuickView {
+    height: 100%;
+}
+
 .overlay {
     position: absolute;
     z-index: 10;
@@ -57,4 +61,8 @@
 
 .itemBeltQuickView {
     height: 100%;
+}
+
+.flipOverlay {
+    margin-top: -55%;
 }

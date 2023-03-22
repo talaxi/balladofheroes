@@ -95,6 +95,7 @@ import { QuickViewComponent } from './components/mobile-components/quick-view/qu
 import { MainOverviewComponent } from './components/layout/zone-navigation/main-overview/main-overview.component';
 import { AlchemyOverviewComponent } from './components/layout/zone-navigation/alchemy-overview/alchemy-overview.component';
 import { ItemBeltOverviewComponent } from './components/layout/zone-navigation/item-belt-overview/item-belt-overview.component';
+import { GameTextOverviewComponent } from './components/layout/zone-navigation/game-text-overview/game-text-overview.component';
 
 @NgModule({
   declarations: [
@@ -154,7 +155,8 @@ import { ItemBeltOverviewComponent } from './components/layout/zone-navigation/i
     QuickViewComponent,
     MainOverviewComponent,
     AlchemyOverviewComponent,
-    ItemBeltOverviewComponent
+    ItemBeltOverviewComponent,
+    GameTextOverviewComponent
   ],
   imports: [
     BrowserModule,

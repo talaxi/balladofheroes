@@ -40,6 +40,7 @@ export class BattleComponent implements OnInit {
   showStoryAnimation = false;
   storyAnimationTimerCap = .5;
   @Input() isMobile = false;
+  notificationOverlayMessage = "";
 
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
@@ -49,7 +50,7 @@ export class BattleComponent implements OnInit {
   ngOnInit(): void {
     if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
       this.showSkipButtonMessage = true;
-      
+
     this.activeSubzone = this.balladService.getActiveSubZone();
     this.showDevStats = this.deploymentService.showStats;
 
@@ -57,6 +58,10 @@ export class BattleComponent implements OnInit {
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
+      if (this.isMobile) {
+        this.checkForNotificationOverlayMessage(deltaTime);
+      }
+
       if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
         this.showSkipButtonMessage = true;
       else
@@ -64,9 +69,8 @@ export class BattleComponent implements OnInit {
 
       this.activeSubzone = this.balladService.getActiveSubZone();
 
-      if (this.globalService.globalVar.activeBattle !== undefined)
-      {
-        this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;        
+      if (this.globalService.globalVar.activeBattle !== undefined) {
+        this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
       }
 
       if (this.battleService.showNewEnemyGroup) {
@@ -79,8 +83,7 @@ export class BattleComponent implements OnInit {
         this.animationTimer += deltaTime;
         this.noTransitionTimer += deltaTime;
 
-        if (this.noTransitionTimer >= this.noTransitionTimerCap)
-        {
+        if (this.noTransitionTimer >= this.noTransitionTimerCap) {
           this.noTransitionTimer = 0;
           this.noTransition = false;
         }
@@ -91,9 +94,9 @@ export class BattleComponent implements OnInit {
         }
       }
 
-      if (this.isAtStoryScene() && this.globalService.globalVar.timers.scenePageTimer < this.storyAnimationTimerCap)      
-        this.showStoryAnimation = true;      
-      else 
+      if (this.isAtStoryScene() && this.globalService.globalVar.timers.scenePageTimer < this.storyAnimationTimerCap)
+        this.showStoryAnimation = true;
+      else
         this.showStoryAnimation = false;
     });
   }
@@ -125,7 +128,7 @@ export class BattleComponent implements OnInit {
     if (this.globalService.globalVar.activeBattle !== undefined)
       return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
 
-  return false;
+    return false;
   }
 
   isAtStoryScene() {
@@ -150,8 +153,7 @@ export class BattleComponent implements OnInit {
   }
 
   isAtSideQuestScene() {
-    if (this.globalService.globalVar.activeBattle !== undefined)
-    {
+    if (this.globalService.globalVar.activeBattle !== undefined) {
       //console.log(this.globalService.globalVar.activeBattle.atScene + " && " + (this.globalService.globalVar.activeBattle.sceneType === SceneTypeEnum.SideQuest));
       return this.globalService.globalVar.activeBattle.atScene && this.globalService.globalVar.activeBattle.sceneType === SceneTypeEnum.SideQuest;
     }
@@ -177,7 +179,7 @@ export class BattleComponent implements OnInit {
     var text = "You found a chest containing " + chestRewards + ".";
     return text;
   }
-  
+
   getPagePercent() {
     return (this.globalService.globalVar.timers.scenePageTimer / this.globalService.globalVar.timers.scenePageLength) * 100;
   }
@@ -254,7 +256,91 @@ export class BattleComponent implements OnInit {
   }
 
   openZoneNavigation(content: any) {
-    this.dialog.open(content, { width: '75%', maxHeight: '75%' });
+    this.dialog.open(content, { width: '95%', height: '80%' });
+  }
+
+  getSubzoneVictoryCount() {
+    var text = "";
+
+    if (this.activeSubzone.isTown)
+      text = "(Town)";
+    else if (this.activeSubzone.isSubzoneSideQuest(this.activeSubzone.type)) {
+      text = "(Special)";
+    }
+    else {
+      text = "(" + this.activeSubzone.victoryCount.toString();
+      if (this.activeSubzone.victoriesNeededToProceed > this.activeSubzone.victoryCount)
+        text += "/" + this.activeSubzone.victoriesNeededToProceed;
+      text += this.activeSubzone.victoryCount === 1 && this.activeSubzone.victoriesNeededToProceed <= this.activeSubzone.victoryCount ? " win)" : " wins)";
+    }
+
+    return text;
+  }
+
+  newSubzoneUnlocked() {
+    var newSubzoneAvailable = false;
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      if (ballad.isAvailable) {
+        ballad.zones.forEach(zone => {
+          zone.subzones.forEach(subzone => {
+            if (subzone.showNewNotification)
+              newSubzoneAvailable = true;
+          });
+        });
+      }
+    });
+
+    return newSubzoneAvailable;
+  }
+
+  checkForNotificationOverlayMessage(deltaTime: number) {
+    if (this.globalService.globalVar.isGamePaused)
+      deltaTime = 0;
+
+    this.notificationOverlayMessage = "";
+
+    if (this.gameLogService.notificationOverlayBuffer === undefined || this.gameLogService.notificationOverlayBuffer.length === 0)
+      return;
+
+    var nextMessage = this.gameLogService.notificationOverlayBuffer[0];
+    this.notificationOverlayMessage = nextMessage[0];
+    nextMessage[2] -= deltaTime;
+
+    if (nextMessage[2] <= 0)
+      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== nextMessage);
+
+    var hardStop = 5;
+    var extraItemCount = 1;
+    //if the next message type matches the current one, include it
+    while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
+      this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
+      var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
+      this.notificationOverlayMessage += "<br/>" + additionalMessage[0];
+      additionalMessage[2] -= deltaTime;
+
+      if (additionalMessage[2] <= 0)
+        this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);
+
+      extraItemCount += 1;
+    }
+  }
+
+  skipOverlayMessage() {
+    if (this.gameLogService.notificationOverlayBuffer === undefined || this.gameLogService.notificationOverlayBuffer.length < 0)
+      return;
+
+    var nextMessage = this.gameLogService.notificationOverlayBuffer[0];
+    nextMessage[2] = 0;
+
+    var hardStop = 5;
+    var extraItemCount = 1;
+    //if the next message type matches the current one, include it
+    while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
+      this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
+      var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
+      additionalMessage[2] = 0;
+      extraItemCount += 1;
+    }
   }
 
   ngOnDestroy() {

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { plainToInstance } from 'class-transformer';
 import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
@@ -22,6 +22,7 @@ export class SettingsViewComponent implements OnInit {
   enteredRedemptionCode: string;
   storyStyle: StoryStyleSettingEnum;
   storyStyleEnum = StoryStyleSettingEnum;
+  @Input() isMobile = false;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService) { }

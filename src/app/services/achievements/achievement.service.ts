@@ -355,7 +355,7 @@ export class AchievementService {
 
   checkForSubzoneAchievement(subzoneType: SubZoneEnum, achievements: Achievement[]) {
     var completedAchievement: Achievement[] = [];
-    var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);
+    var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);    
 
     if (subzoneRelatedAchievements !== undefined && subzoneRelatedAchievements.length > 0) {
       var subzone = this.lookupService.getSubZoneByType(subzoneType);
@@ -367,7 +367,7 @@ export class AchievementService {
         completedAchievement.push(hundredVictories);
         hundredVictories.completed = true;
         hundredVictories.bonusResources.forEach(bonus => {
-          this.lookupService.gainResource(bonus);
+          this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
@@ -376,7 +376,7 @@ export class AchievementService {
         completedAchievement.push(thousandVictories);
         thousandVictories.completed = true;
         thousandVictories.bonusResources.forEach(bonus => {
-          this.lookupService.gainResource(bonus);
+          this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
@@ -385,7 +385,7 @@ export class AchievementService {
         completedAchievement.push(tenThousandVictories);
         tenThousandVictories.completed = true;
         tenThousandVictories.bonusResources.forEach(bonus => {
-          this.lookupService.gainResource(bonus);
+          this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
@@ -399,7 +399,7 @@ export class AchievementService {
             this.alchemyService.learnRecipe(ItemsEnum.PoisonExtractPotion);
           }
           else
-            this.lookupService.gainResource(bonus);
+            this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
@@ -408,7 +408,7 @@ export class AchievementService {
         completedAchievement.push(thirtySecondClear);
         thirtySecondClear.completed = true;
         thirtySecondClear.bonusResources.forEach(bonus => {
-          this.lookupService.gainResource(bonus);
+          this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
@@ -427,7 +427,7 @@ export class AchievementService {
             this.lookupService.enableChthonicFavoredGod();
           }
           else
-            this.lookupService.gainResource(bonus);
+            this.lookupService.gainResource(bonus.makeCopy());
         });
       }
     }

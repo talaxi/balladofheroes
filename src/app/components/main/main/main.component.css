@@ -216,7 +216,7 @@
     width: 100%;
     height: 100%;
     grid-template-columns: auto;
-    grid-template-rows: 45% 5% 50%;
+    grid-template-rows: 43% 4% 53%;
     justify-content: stretch;
     grid-template-areas:
       "battle"

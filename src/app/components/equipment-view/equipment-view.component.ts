@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -33,7 +34,7 @@ export class EquipmentViewComponent implements OnInit {
   sellAmount: number = 1;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
-    private menuService: MenuService, private utilityService: UtilityService) { }
+    private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
@@ -250,6 +251,10 @@ export class EquipmentViewComponent implements OnInit {
     }
     
     this.setUpAvailableEquipment();
+  }
+
+  closeModal() {
+    this.dialog.closeAll();
   }
 
   ngOnDestroy() {

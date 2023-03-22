@@ -13,7 +13,7 @@
     <div class="navigation">
         <div class="zoneGrid">
             <div class="balladList">
-                <div *ngFor="let ballad of availableBallads">
+                <div class="eachBallad" *ngFor="let ballad of availableBallads">
                     <div *ngIf="!ballad.isSelected">
                         <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading"
                             [ngClass]="getBalladClass(ballad)"
@@ -21,16 +21,57 @@
                             <app-notification-icon *ngIf="ballad.showNewNotification"></app-notification-icon>
                         </button>
                     </div>
-                    <div *ngIf="ballad.isSelected" class="spaceBetween">
+                    <div *ngIf="ballad.isSelected">
                         <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected"><strong
                                 [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></button>
-                        <span class="selectedArrow textRightAligned">
+                        <span *ngIf="!isMobile" class="selectedArrow textRightAligned">
                             <strong class="selected">&#8594;</strong>
                         </span>
+                        <!--TODO: Should this all be its own component? vvv-->
+                        <div *ngIf="isMobile" class="zoneList">
+                            <div *ngFor="let zone of availableZones">
+                                <div *ngIf="!zone.isSelected">
+                                    <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
+                                        [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)">{{zone.zoneName}}
+                                        <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
+                                    </button>
+                                </div>
+                                <div *ngIf="zone.isSelected">
+                                    <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText selected"><strong
+                                            [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></button>
+                                    <div *ngFor="let subzone of availableSubZones">
+                                        <div *ngIf="!subzone.isSelected">
+                                            <span class="subzoneSpacer">&#8618;</span><span><button
+                                                    class="buttonAsTextKeepColor z3Heading clickableText"
+                                                    [ngClass]="getSubzoneClass(subzone)"
+                                                    (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone)
+                                                    ? "To Be Continued!" :
+                                                    subzone.name}}
+                                                    {{getSubZoneSubText(subzone)}}
+                                                    <app-notification-icon *ngIf="subzone.showNewNotification"
+                                                        [notificationColor]="subzone.notificationType"
+                                                        [notificationStyle]="getSubzoneNotificationStyle(subzone)">
+                                                    </app-notification-icon>
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="subzone.isSelected">
+                                            <strong><button
+                                                    class="buttonAsTextKeepColor z3Heading clickableText selected"><span
+                                                        class="subzoneSpacer">&#8618;</span><strong><span
+                                                            [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
+                                                            {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                        <!--TODO: Should this all be its own component? ^^^-->
                     </div>
+                    <hr class="transparentHr" *ngIf="isMobile" />
                 </div>
             </div>
-            <div class="zoneList">
+            <div *ngIf="!isMobile" class="zoneList">
                 <div *ngFor="let zone of availableZones">
                     <div *ngIf="!zone.isSelected">
                         <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
@@ -47,10 +88,12 @@
                                         class="buttonAsTextKeepColor z3Heading clickableText"
                                         [ngClass]="getSubzoneClass(subzone)"
                                         (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone) ? "To
-                                        Be Continued!" : subzone.name}}
+                                        Be Continued!" :
+                                        subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
                                         <app-notification-icon *ngIf="subzone.showNewNotification"
-                                            [notificationColor]="subzone.notificationType" [notificationStyle]="getSubzoneNotificationStyle(subzone)">
+                                            [notificationColor]="subzone.notificationType"
+                                            [notificationStyle]="getSubzoneNotificationStyle(subzone)">
                                         </app-notification-icon>
                                     </button>
                                 </span>
@@ -77,7 +120,7 @@
         <hr />
     </div>
     <div *ngIf="quickLinksUnlocked" class="quickLink">
-        <div class="quickLinkIcons">
+        <div *ngIf="!isMobile" class="quickLinkIcons">
             <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Overview)"
                 customToolTip [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
                 <img *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled"
@@ -108,9 +151,6 @@
                 <img class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
             </button>
         </div>
-        <!--<div class="centeredText mainPageSectionHeader">
-            {{getQuickViewTitleName()}} Quick View
-        </div>-->
         <div class="overviewQuickView" *ngIf="quickView === quickViewEnum.Overview">
             <div class="quickLinkGrid">
                 <div *ngIf="townsAvailable" class="quickJump centeredText">

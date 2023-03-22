@@ -37,7 +37,7 @@
             <span class="sectionHeaderText sectionHeading middleAlign">Equipment</span>
             <span>
                 <button class="changeButton buttonStyled buttonOffset"
-                    (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
+                    (click)="openEquipmentModal(equipmentModal)">Change <span class='webVersion'>Equipment</span></button>
             </span>
             <div class="sectionInfo">
                 <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
@@ -81,7 +81,8 @@
         <div class="leftAlignText">
             <span class="sectionHeaderText sectionHeading">Secondary Stats</span>
             <br />
-            <div class="sectionInfo">
+            <div class="sectionInfo secondaryStatColumns">
+                <div class="secondaryStatColumn1">
                 <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="hpRegenPopover"><strong [ngClass]="getCharacterColor()" class="statLabel">HP
                         Regen:</strong>
@@ -127,7 +128,9 @@
                             [contentTemplate]="healingDonePopover"><strong [ngClass]="getCharacterColor()"
                                 class="statLabel">Healing Done Bonus:</strong>
                             {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            </div>
+                <div class="secondaryColumn2">
+                            <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getCharacterColor()"
                         class="statLabel">Holy Damage
                         Bonus:</strong> {{(getHolyDamageBonus() *
@@ -193,6 +196,7 @@
                         class="statLabel">Earth
                         Resistance Bonus:</strong>
                     {{(getEarthResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                </div>
             </div>
         </div>
     </div>

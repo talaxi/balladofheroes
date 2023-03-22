@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
@@ -44,13 +45,13 @@ export class ShopViewComponent implements OnInit {
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
     private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.getShopOptions();
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
         this.activeSubzoneType = this.balladService.getActiveSubZone().type;
         this.getShopOptions();
@@ -98,15 +99,13 @@ export class ShopViewComponent implements OnInit {
 
   openShop(option: ShopOption, content: any) {
     var optionalSceneToDisplay = this.optionalSceneToDisplay(option);
-    if (optionalSceneToDisplay !== OptionalSceneEnum.None)
-    {
+    if (optionalSceneToDisplay !== OptionalSceneEnum.None) {
       //display optional scene from shop 
       this.storyService.displayOptionalScene(optionalSceneToDisplay);
       this.battleService.checkScene();
       //subscribe to story service
-      this.openShopSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {           
-        if (this.storyService.returnedFromOptionalScene)
-        {
+      this.openShopSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+        if (this.storyService.returnedFromOptionalScene) {
           this.openShop(option, content);
           this.openShopSubscription.unsubscribe();
         }
@@ -117,17 +116,24 @@ export class ShopViewComponent implements OnInit {
 
     var dialogRef: any;
 
-    if (option.type === ShopTypeEnum.Coliseum)
-      this.dialog.open(content, { width: '75%', maxHeight: '75%'});
-    else
-      dialogRef = this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
-
-    if (dialogRef !== undefined) {
-      
+    if (option.type === ShopTypeEnum.Coliseum) {
+      if (this.deviceDetectorService.isMobile())
+        this.dialog.open(content, { width: '95%', height: '80%' });
+      else
+        this.dialog.open(content, { width: '75%', maxHeight: '75%' });
+    }
+    else {
+      if (this.deviceDetectorService.isMobile())
+        dialogRef = this.dialog.open(content, { width: '95%', height: '80%', id: "dialogNoPadding" });
+      else
+        dialogRef = this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
     }
 
-    if (option.type === ShopTypeEnum.Alchemist)
-    {      
+    if (dialogRef !== undefined) {
+
+    }
+
+    if (option.type === ShopTypeEnum.Alchemist) {
       this.alchemyService.handleShopOpen(this.activeSubzoneType);
       this.alchemyService.checkForNewRecipes();
     }
@@ -170,17 +176,18 @@ export class ShopViewComponent implements OnInit {
           return positive;
         else {
           if (equipmentA.weaponType > equipmentB.weaponType)
-          return negative;
-        else if (equipmentA.weaponType < equipmentB.weaponType)
-          return positive;
-        else {
-          if (equipmentA.quality > equipmentB.quality)
-            return positive;
-          else if (equipmentA.quality < equipmentB.quality)
             return negative;
+          else if (equipmentA.weaponType < equipmentB.weaponType)
+            return positive;
           else {
-            return 0;
-          }}
+            if (equipmentA.quality > equipmentB.quality)
+              return positive;
+            else if (equipmentA.quality < equipmentB.quality)
+              return negative;
+            else {
+              return 0;
+            }
+          }
         }
       }
       else
@@ -196,7 +203,7 @@ export class ShopViewComponent implements OnInit {
 
     var filteredItems = this.filterItems(this.shopItems);
 
-    var maxColumns = 4;
+    var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
 
     for (var i = 1; i <= filteredItems.length; i++) {
       this.shopItemCells.push(filteredItems[i - 1]);
@@ -278,13 +285,11 @@ export class ShopViewComponent implements OnInit {
     var scene = OptionalSceneEnum.None;
 
     if (option.type === ShopTypeEnum.Alchemist && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&
-    !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HecateAlchemy))
-    {
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HecateAlchemy)) {
       scene = OptionalSceneEnum.HecateAlchemy;
     }
     if (option.type === ShopTypeEnum.ChthonicFavor && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&
-    !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavor))
-    {
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavor)) {
       scene = OptionalSceneEnum.ChthonicFavor;
     }
 

@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -24,6 +24,7 @@ export class AchievementsViewComponent implements OnInit {
   currentPage = 1;
   itemsPerPage = 5;
   lastPage = 0;
+  @Input() isMobile = false;
 
   ballads: Ballad[] = [];
   zones: Zone[] = [];
@@ -37,6 +38,9 @@ export class AchievementsViewComponent implements OnInit {
     private achievementService: AchievementService) { }
 
   ngOnInit(): void {
+    if (this.isMobile)
+      this.cellsPerRow = 2;
+
     this.ballads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
     this.ballads.unshift(new Ballad());
     this.zones.push(new Zone());
@@ -129,7 +133,7 @@ export class AchievementsViewComponent implements OnInit {
         columns = section.length;
     }
     else {
-      columns = section.length % 3;
+      columns = section.length % this.cellsPerRow;
       if (columns === 0)
         columns = this.cellsPerRow;
     }

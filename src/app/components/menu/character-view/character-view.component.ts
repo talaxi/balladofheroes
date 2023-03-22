@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
@@ -27,6 +27,7 @@ export class CharacterViewComponent implements OnInit {
   otherClassesAvailable = false;
   overdriveAvailable = false;
   changeGodsAvailable = false;
+  @Input() isMobile = false;
 
   constructor(public menuService: MenuService, public lookupService: LookupService, private globalService: GlobalService,
     private gameLoopService: GameLoopService, public dialog: MatDialog, private utilityService: UtilityService) { }
@@ -67,20 +68,32 @@ export class CharacterViewComponent implements OnInit {
     return this.lookupService.getOverdriveName(this.character.overdriveInfo.selectedOverdrive);
   }
 
-  openOverdriveMenu(content: any) {          
+  openOverdriveMenu(content: any) { 
+    if (this.isMobile)
+    this.dialog.open(content, { width: '95%', height: '80%' });
+  else                  
     this.dialog.open(content, { width: '75%', maxHeight: '75%'});
   }
 
-  openChangeGodMenu(content: any) {          
+  openChangeGodMenu(content: any) {     
+    if (this.isMobile)
+    this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+  else              
     this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding'  });  
   }
 
-  openChangeClassMenu(content: any) {          
+  openChangeClassMenu(content: any) { 
+    if (this.isMobile)
+    this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+  else         
     this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding'  });  
   }
 
   openEquipmentModal(content: any) {
-    this.dialog.open(content, { width: '50%', height: '55%', panelClass: 'mat-dialog-no-scroll' });
+    if (this.isMobile)
+      this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialog.open(content, { width: '50%', height: '55%', panelClass: 'mat-dialog-no-scroll' });
   }
 
   getCharacterGodAbilities() {

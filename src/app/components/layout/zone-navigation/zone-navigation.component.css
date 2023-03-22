@@ -153,3 +153,43 @@
 .altarsQuickView {
     height: calc(100% - 2.5rem);
 }
+
+@media (max-width: 800px) {
+    .zoneGrid {
+        display: grid;
+        height: 100%;    
+        grid-template-columns: 1fr;
+        gap: 1.5rem;
+        grid-template-rows: auto;
+        justify-content: stretch;
+        grid-template-areas:
+            "balladList";
+    }
+
+    .navigationGrid {
+        grid-template-rows: auto 1fr 1rem auto;
+        grid-template-areas:
+            "header"
+            "navigation"
+            "gap2"
+            "quickLink";
+    }
+
+    .zoneSpacer {
+        margin-left: .5rem;
+    }
+    
+    .subzoneSpacer {
+        margin-left: 1rem;
+    }
+
+    .eachBallad {
+        margin-bottom: .5rem;
+    }
+
+    .transparentHr {
+        border: 0;
+        border-top: 1px solid rgba(255, 255, 255, .5);
+        width: 75%;
+    }
+}

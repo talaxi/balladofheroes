@@ -85,4 +85,8 @@
     .vr {
         display: none;
     }
+    
+    .navItem {        
+        background-color: var(--button-selected) !important;
+    }
 }
