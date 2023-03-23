@@ -1,21 +1,34 @@
 <div class="textCentered">
-    <span class="buttonSpaced"></span>
-    <span class="s2Heading smallCaps followerText">Assigned Followers: {{getAssignedFollowers()}} / {{getTotalFollowers()}}</span> 
+    <span *ngIf="!isMobile" class="buttonSpaced"></span>
+    <span class="s2Heading smallCaps followerText">Assigned Followers: {{getAssignedFollowers()}} /
+        {{getTotalFollowers()}}</span>
+        <br *ngIf="isMobile"/>
     <span class="buttonSpaced"><button class="buttonStyled" (click)="unassignAll()">Unassign All</button></span>
     <br />
     <br />
-    You can assign a follower to any zone that you have cleared. Gaining achievements in a zone will increase the yield
+    You can assign a follower to any zone that you have cleared. Gaining achievements in a zone will increase the level
+    of that zone, increasing the yield
     your followers may find.
 </div>
 <hr />
 <br />
 <div class="scrollable">
     <div *ngFor="let zone of getClearedZones()">
-        <span class="headerSpacing"><span class="s4Heading smallCaps zoneName">{{zone.zoneName}} </span> <span class="smallCaps"> (Lv {{getRewardLevel(zone.type)}} - Ach {{getZoneAchievementPercent(zone.type) * 100 | number : '1.0-1' }}% Complete)</span></span>
+        <span class="headerSpacing"><span class="s4Heading smallCaps zoneName">{{zone.zoneName}} </span>
+            <span *ngIf='!isMobile' class="smallCaps">
+                (Lv {{getRewardLevel(zone.type)}} - Ach {{getZoneAchievementPercent(zone.type) * 100 | number : '1.0-1'
+                }}% Complete)
+            </span>
+            <span *ngIf='isMobile' class="smallCaps">
+                (Lv {{getRewardLevel(zone.type)}})
+            </span>
+        </span>
         <span class="s4Heading followerCount">
-            <button class='buttonStyled' [disabled]="!canDecrement(zone.type)" (click)="decrementZoneFollowers(zone.type)">-</button>
+            <button class='buttonStyled' [disabled]="!canDecrement(zone.type)"
+                (click)="decrementZoneFollowers(zone.type)">-</button>
             {{getFollowersAssignedToZone(zone.type)}} / {{getMaxFollowersAssignedToZone(zone.type)}}
-            <button class='buttonStyled' [disabled]="!canIncrement(zone.type)" (click)="incrementZoneFollowers(zone.type)">+</button>
+            <button class='buttonStyled' [disabled]="!canIncrement(zone.type)"
+                (click)="incrementZoneFollowers(zone.type)">+</button>
         </span>
         <br />
         <span [innerHtml]="getZoneSearchRewards(zone.type)"></span>

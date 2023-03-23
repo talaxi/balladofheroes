@@ -1,1 +1,21 @@
-<p>alchemy-overview works!</p>
+<div *ngIf="creatingRecipe()">
+    <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth"
+        *ngIf="this.getTotalAmountToCreate() > 1">&nbsp;<i>({{this.getAmountCreated() +
+            1}} of {{this.getTotalAmountToCreate()}})</i></span>
+    <br />
+    <mat-progress-bar mode="determinate" [value]="getStepProgress()"
+        class="purple-progress centeredBar removeAnimation removeTransition">
+    </mat-progress-bar>
+    <span><i>({{getTimeRemaining()}} remaining)</i></span>
+</div>
+<div *ngIf="!creatingRecipe()">
+    <strong>Not Currently Brewing</strong>
+</div>
+<br />
+<button class="buttonStyled" (click)="openAlchemy(alchemyRecipeBook)">Open Recipe Book</button>
+
+<ng-template #alchemyRecipeBook>
+    <div>
+        <app-alchemy-view></app-alchemy-view>
+    </div>
+</ng-template>

@@ -267,6 +267,14 @@ export class CharacterViewComponent implements OnInit {
     return this.character.battleStats.elementalDamageResistance.earth;
   }
 
+  getAbilityUpgradeLevel(ability: Ability) {
+    return ability.abilityUpgradeLevel;
+  }
+
+  getAbilityUpgradeBreakdown(ability: Ability) {
+    return "Placeholder";
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

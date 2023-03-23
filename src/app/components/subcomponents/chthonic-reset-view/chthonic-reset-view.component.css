@@ -50,3 +50,9 @@ table tr td:nth-child(2n) {
     margin: 0px;
     padding: 0px;
 }
+
+@media (max-width: 800px) {
+    table {
+        height: unset;
+    }
+}

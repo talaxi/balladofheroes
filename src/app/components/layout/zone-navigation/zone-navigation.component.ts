@@ -108,123 +108,17 @@ export class ZoneNavigationComponent implements OnInit {
         this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
 
       var currentSubzone = this.availableSubZones.find(item => item.isSelected);
-      //console.log(this.autoProgress + " && " + (currentSubzone !== undefined) + " && (");
-      //if (currentSubzone !== undefined)
-        //console.log((currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount) + " <= 0 || " + currentSubzone.isTown);
 
       if (this.autoProgress && currentSubzone !== undefined &&
         (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
-        this.selectNextSubzone();
+        this.balladService.selectNextSubzone();
       }
 
       this.trackedResourcesColumn1 = this.globalService.globalVar.trackedResources.slice(0, 5);
       if (this.globalService.globalVar.trackedResources.length > 5)
         this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
     });
-  }
-
-  selectNextSubzone() {
-    var nextSubzoneFound = false;
-    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).slice().reverse();
-    reverseOrderBallads.forEach(ballad => {
-      if (!nextSubzoneFound) {
-        var reverseZones = ballad.zones.filter(item => item.isAvailable).slice().reverse();
-        reverseZones.forEach(zone => {
-          var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
-          reverseSubzones.forEach(subzone => {
-            if (!nextSubzoneFound && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {
-              nextSubzoneFound = true;
-              this.selectBallad(ballad)
-              this.selectZone(zone);
-              this.selectSubZone(subzone, zone);
-            }
-          });
-        })
-      }
-    });
-
-    /*var currentBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
-
-    if (currentBallad !== undefined) {
-      var currentZone = currentBallad.zones.find(item => item.isSelected);
-
-      if (currentZone !== undefined)
-      {
-        var incompleteSubzone = currentZone.subzones.find(item => !item.isTown && item.victoriesNeededToProceed - item.victoryCount > 0);
-        
-        if (incompleteSubzone !== undefined)
-          this.selectSubZone(incompleteSubzone, currentZone);
-      }
-    }*/
-  }
-
-  selectBallad(ballad: Ballad) {
-    this.globalService.globalVar.ballads.forEach(ballad => {
-      ballad.isSelected = false;
-    });
-
-    ballad.isSelected = true;
-    ballad.showNewNotification = false;
-    this.availableZones = ballad.zones.filter(item => item.isAvailable);
-  }
-
-  selectZone(zone: Zone) {
-    this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.zones !== undefined && ballad.zones.length > 0)
-        ballad.zones.forEach(zone => {
-          zone.isSelected = false;
-        });
-    });
-
-    zone.isSelected = true;
-    zone.showNewNotification = false;
-    this.availableSubZones = zone.subzones.filter(item => item.isAvailable);
-  }
-
-  selectSubZone(subzone: SubZone, zone: Zone) {
-    if (this.isSubZoneToBeContinued(subzone)) {
-      return;
-    }
-
-    this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.zones !== undefined && ballad.zones.length > 0)
-        ballad.zones.forEach(zone => {
-          if (zone.subzones !== undefined && zone.subzones.length > 0)
-            zone.subzones.forEach(subzone => {
-              subzone.isSelected = false;
-            });
-        });
-    });
-
-    subzone.isSelected = true;
-    subzone.showNewNotification = false;
-    this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
-    this.globalService.resetCooldowns();
-
-    var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-    this.dpsCalculatorService.rollingAverageTimer = 0;
-    this.dpsCalculatorService.partyDamagingActions = [];
-    this.dpsCalculatorService.enemyDamagingActions = [];
-    this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-
-    if (subzone.isTown)
-    {
-      this.globalService.globalVar.settings.set("autoProgress", false);
-    }
-
-    var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
-    if (enemyOptions.length > 0) {
-      var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
-      this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
-    }
-
-    if (this.isMobile)
-    {
-      this.dialog.closeAll();
-    }
-  }
+  }  
 
   jumpToLatestShop() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();
@@ -427,19 +321,12 @@ export class ZoneNavigationComponent implements OnInit {
 
   autoProgressToggle() {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
-  }
-
-  isSubZoneToBeContinued(subzone: SubZone) {    
-    //if (subzone.type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
-      //return true;
-
-    return false;
-  }
+  }  
 
   getSubZoneSubText(subzone: SubZone) {
     var text = "";
 
-    if (this.isSubZoneToBeContinued(subzone))
+    if (this.balladService.isSubZoneToBeContinued(subzone))
       return text;
 
     if (subzone.isTown)
@@ -481,76 +368,7 @@ export class ZoneNavigationComponent implements OnInit {
       name = "Overview ";
 
     return name;
-  }
-
-  openAlchemy(content: any) {
-    if (this.deviceDetectorService.isMobile())
-    this.dialog.open(content, { width: '95%', height: '80%' });
-  else 
-    this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
-  }
-
-  getCreatingRecipeName() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe !== undefined)
-      return this.lookupService.getItemName(this.globalService.globalVar.alchemy.creatingRecipe.createdItem);
-
-    return "";
-  }
-
-  creatingRecipe() {
-    return this.globalService.globalVar.alchemy.creatingRecipe !== undefined;
-  }
-
-  getStepProgress() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
-      return 0;
-    var totalLength = 0;
-    var passedTime = 0;
-
-    for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) {
-      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
-      totalLength += actionLength;
-
-      if (this.globalService.globalVar.alchemy.alchemyStep > i + 1) {
-        passedTime += actionLength;
-      }
-    }
-
-    passedTime += this.globalService.globalVar.alchemy.alchemyTimer;
-    return (passedTime / totalLength) * 100;
-    //return (this.globalService.globalVar.alchemy.alchemyTimer / this.globalService.globalVar.alchemy.alchemyTimerLength) * 100;
-  }
-
-  getRecipeStepName() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
-      return "";
-    return this.lookupService.getAlchemyActionName(this.globalService.globalVar.alchemy.creatingRecipe.steps[this.globalService.globalVar.alchemy.alchemyStep - 1]);
-  }
-
-  getTimeRemaining() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
-      return "";
-
-    var timeRemaining = this.globalService.globalVar.alchemy.alchemyTimerLength - this.globalService.globalVar.alchemy.alchemyTimer;
-
-    for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++) {
-      var step = this.globalService.globalVar.alchemy.creatingRecipe.steps[i - 1];
-      timeRemaining += this.alchemyService.getActionLength(step) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
-    }
-
-    if (timeRemaining > 60 * 60)
-      return this.utilityService.convertSecondsToHHMMSS(timeRemaining);
-
-    return this.utilityService.convertSecondsToMMSS(timeRemaining);
-  }
-
-  getTotalAmountToCreate() {
-    return this.globalService.globalVar.alchemy.alchemyCreateAmount;
-  }
-
-  getAmountCreated() {
-    return this.globalService.globalVar.alchemy.alchemyCurrentAmountCreated;
-  }
+  }  
 
   isAlchemyAvailable() {
     return this.globalService.globalVar.alchemy.isUnlocked;

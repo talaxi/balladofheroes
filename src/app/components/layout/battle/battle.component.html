@@ -3,13 +3,17 @@
         <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumFight(), 'headerFlex': !doingColiseumFight() }">
             <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
                 round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} of
-                {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>
+                {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>            
+                <button *ngIf="isMobile" class="buttonStyled zoneDropdown"
+                (click)="openZoneNavigation(zoneNavigationContent)">
+                <img class="dropdownIcon" src="assets/svg/dropdown.svg">
+            </button>
             <div class="s4Heading textCentered selectedSubzone pageHeader">
                 <strong>{{activeSubzone.name}}</strong>
             </div>
-            <button *ngIf="isMobile" class="buttonStyled zoneDropdown"
-                (click)="openZoneNavigation(zoneNavigationContent)">
-                <img class="dropdownIcon" src="assets/svg/dropdown.svg">
+            <button *ngIf="isMobile && isNextSubzoneButtonAvailable()" class="buttonStyled nextSubzone"
+                (click)="goToNextSubzone()">
+                <img class="dropdownIcon" src="assets/svg/rightarrow.svg">
             </button>
             <div class="alignCenter coliseumTime" *ngIf="doingColiseumFight()">{{getTournamentTimeRemaining()}}
                 remaining</div>
@@ -96,7 +100,8 @@
             <app-shop-view></app-shop-view>
         </div>
     </div>
-    <div *ngIf="isMobile && notificationOverlayMessage.length > 0" class="notificationOverlay">
+    <div *ngIf="isMobile && notificationOverlayMessage.length > 0 && !isAtChestScene() && !isAtStoryScene()"
+        class="notificationOverlay">
         <div class="notificationMessage">
             <span [innerHtml]="notificationOverlayMessage"></span>
             <span class="buttonStyled skipOverlay" (click)="skipOverlayMessage()">X</span>

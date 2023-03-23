@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
@@ -26,11 +27,15 @@ export class GodViewComponent implements OnInit {
   subscription: any;
   abilityList: Ability[] = [];
   tooltipDirection = DirectionEnum.Down;
+  leftTooltipDirection = DirectionEnum.Left;
+  isMobile = false;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
-    private menuService: MenuService, private utilityService: UtilityService) { }
+    private menuService: MenuService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
+
     var selectedGod = this.globalService.globalVar.gods.find(item => item.type === this.menuService.selectedGod);
     if (selectedGod !== undefined) {
       this.god = selectedGod;
@@ -117,14 +122,12 @@ export class GodViewComponent implements OnInit {
           //set next level to multiple of 5
           nextLevel = Math.ceil(nextLevel / 5) * 5;
         }
-
       }
 
       var nextLevelType = this.globalService.getGodLevelIncreaseTypeByLevel(this.god, nextLevel);
       if (nextLevel - previousLevel > 1)
         rewards += "...<br/>";
       
-
       rewards += "<strong class='smallCaps " + this.globalService.getGodColorClassText(this.god.type) + "'>level " + nextLevel + " </strong>- ";
 
       if (nextLevelType === GodLevelIncreaseEnum.Stats) {
@@ -152,13 +155,13 @@ export class GodViewComponent implements OnInit {
       }
       if (nextLevelType === GodLevelIncreaseEnum.NewAbility) {
         if (nextLevel === this.utilityService.godPassiveLevel) {
-          rewards += this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " (Passive Ability)";
+          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " (Passive Ability)</span>";
         }
         if (nextLevel === this.utilityService.godAbility2Level) {
-          rewards += this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + " (Ability 2)";
+          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + " (Ability 2)</span>";
         }
         if (nextLevel === this.utilityService.godAbility3Level) {
-          rewards += this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " (Ability 3)";
+          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " (Ability 3)</span>";
         }
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {        
@@ -260,6 +263,11 @@ export class GodViewComponent implements OnInit {
     var increaseValues = this.getGodLevelStatIncreaseValues(god, statToIncrease, statGainAmount);*/
 
     return rewards;
+  }
+
+  //TODO: maybe come back to this but seems like an insane amount of work just to display the effectiveness upgrade
+  getAbilityUpgradeDescription(ability: { ability: Ability, upgradeLevel: number }) {
+    return ability.upgradeLevel;
   }
 
   getNextAffinityReward() {

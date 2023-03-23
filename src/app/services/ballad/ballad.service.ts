@@ -1,4 +1,6 @@
 import { Injectable } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Battle } from 'src/app/models/battle/battle.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
@@ -21,7 +23,8 @@ import { UtilityService } from '../utility/utility.service';
 export class BalladService {
 
   constructor(private globalService: GlobalService, private gameLogService: GameLogService, private dpsCalculatorService: DpsCalculatorService,
-    private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService) { }
+    private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService,
+    public dialog: MatDialog) { }
 
   getBalladName(type?: BalladEnum) {
     var name = "";
@@ -231,5 +234,101 @@ export class BalladService {
     });
 
     return inZone;
+  }
+
+  selectNextSubzone() {
+    var nextSubzoneFound = false;
+    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).slice().reverse();
+    reverseOrderBallads.forEach(ballad => {
+      if (!nextSubzoneFound) {
+        var reverseZones = ballad.zones.filter(item => item.isAvailable).slice().reverse();
+        reverseZones.forEach(zone => {
+          var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
+          reverseSubzones.forEach(subzone => {
+            if (!nextSubzoneFound && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {
+              nextSubzoneFound = true;
+              this.selectBallad(ballad)
+              this.selectZone(zone);
+              this.selectSubZone(subzone, zone);
+            }
+          });
+        })
+      }
+    });
+  }
+
+  selectBallad(ballad: Ballad) {
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.isSelected = false;
+    });
+
+    ballad.isSelected = true;
+    ballad.showNewNotification = false;
+    return ballad.zones.filter(item => item.isAvailable);
+  }
+
+  selectZone(zone: Zone) {
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      if (ballad.zones !== undefined && ballad.zones.length > 0)
+        ballad.zones.forEach(zone => {
+          zone.isSelected = false;
+        });
+    });
+
+    zone.isSelected = true;
+    zone.showNewNotification = false;
+    return zone.subzones.filter(item => item.isAvailable);
+  }
+
+  selectSubZone(subzone: SubZone, zone: Zone) {
+    if (this.isSubZoneToBeContinued(subzone)) {
+      return;
+    }
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      if (ballad.zones !== undefined && ballad.zones.length > 0)
+        ballad.zones.forEach(zone => {
+          if (zone.subzones !== undefined && zone.subzones.length > 0)
+            zone.subzones.forEach(subzone => {
+              subzone.isSelected = false;
+            });
+        });
+    });
+
+    subzone.isSelected = true;
+    subzone.showNewNotification = false;
+    this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
+    this.globalService.resetCooldowns();
+
+    var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + subzone.name + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+
+    if (subzone.isTown)
+    {
+      this.globalService.globalVar.settings.set("autoProgress", false);
+    }
+
+    var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subzone.type);
+    if (enemyOptions.length > 0) {
+      var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
+      this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
+    }
+
+    if (this.deviceDetectorService.isMobile())
+    {
+      this.dialog.closeAll();
+    }
+  }
+
+  isSubZoneToBeContinued(subzone: SubZone) {    
+    //if (subzone.type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
+      //return true;
+
+    return false;
   }
 }

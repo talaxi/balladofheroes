@@ -18,6 +18,8 @@ import { LookupService } from './services/lookup.service';
 import { StoryService } from './services/story/story.service';
 import { ColiseumTournamentEnum } from './models/enums/coliseum-tournament-enum.model';
 import { OptionalSceneEnum } from './models/enums/optional-scene-enum.model';
+import { VersionControlService } from './services/utility/version-control.service';
+import { GameLogService } from './services/battle/game-log.service';
 declare var LZString: any;
 
 @Component({
@@ -37,7 +39,8 @@ export class AppComponent {
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
     private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
     private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
-    private utilityService: UtilityService, private lookupService: LookupService, private storyService: StoryService) {
+    private utilityService: UtilityService, private lookupService: LookupService, private storyService: StoryService,
+    private versionControlService: VersionControlService, private gameLogService: GameLogService) {
 
   }
 
@@ -77,6 +80,8 @@ export class AppComponent {
     if (devMode) {
       this.initializationService.devMode();
     }
+
+    this.versionControlService.updatePlayerVersion();
 
     var lastPerformanceNow = 0;
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
@@ -168,6 +173,7 @@ export class AppComponent {
     if (deltaTime > batchTime) {
       this.lookupService.isUIHidden = true;
       this.globalService.globalVar.isCatchingUp = true;
+      this.gameLogService.disableOverlayBuffer = true;
       this.bankedTime += deltaTime - batchTime;
       deltaTime = batchTime;
 
@@ -182,6 +188,7 @@ export class AppComponent {
         this.bankedTime = 0;
         this.lookupService.isUIHidden = false;
         this.globalService.globalVar.isCatchingUp = false;
+        this.gameLogService.disableOverlayBuffer = false;
 
         if (this.catchupDialog !== undefined) {
           this.catchupDialog.close();

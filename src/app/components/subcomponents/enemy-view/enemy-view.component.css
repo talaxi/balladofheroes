@@ -169,4 +169,9 @@
     /*.fullHeight {
         height: 100%;
     }*/
+
+    .characterTargeted:hover, .characterTargetedAdventurer:hover, .characterTargetedArcher:hover,
+    .characterTargetedWarrior:hover, .characterTargetedPriest:hover {
+        border: 2px solid var(--background-default);
+    }
 }

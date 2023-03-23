@@ -8,3 +8,9 @@
     width: 16.666%;
     text-align: center;
 }
+
+@media (max-width: 800px) {
+    .chthonicStatUpgrade {
+        width: 33.3333%;
+    }
+}

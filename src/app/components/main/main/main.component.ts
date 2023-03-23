@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -18,11 +19,14 @@ export class MainComponent implements OnInit {
   underworldAnimation = false;
   maxBankedTime = 0;
   displayFunFacts = false;
+  isMobile = false;
 
   constructor(private layoutService: LayoutService, private gameLoopService: GameLoopService, public lookupService: LookupService,
-    public storyService: StoryService) { }
+    public storyService: StoryService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
+    
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.navigation = this.layoutService.navigation;
     });

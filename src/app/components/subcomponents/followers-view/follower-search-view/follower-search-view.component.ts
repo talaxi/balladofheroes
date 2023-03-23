@@ -10,6 +10,7 @@ import { FollowersService } from 'src/app/services/followers/followers.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-follower-search-view',
@@ -18,11 +19,14 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class FollowerSearchViewComponent {
   clearedZones: Zone[];
+  isMobile = false;
 
   constructor(private globalService: GlobalService, private followerService: FollowersService, private lookupService: LookupService,
-    private utilityService: UtilityService, private balladService: BalladService, private achievementService: AchievementService) { }
+    private utilityService: UtilityService, private balladService: BalladService, private achievementService: AchievementService, 
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
   }
 
   getAssignedFollowers() {

@@ -1,6 +1,7 @@
 <div class="textCentered">
-    <span class="buttonSpaced"></span>
+    <span *ngIf="!isMobile" class="buttonSpaced"></span>
     <span class="s2Heading smallCaps followerText">Assigned Followers: {{getAssignedFollowers()}} / {{getTotalFollowers()}}</span> 
+    <br *ngIf="isMobile"/>
     <span class="buttonSpaced"><button class="buttonStyled" (click)="unassignAll()">Unassign All</button></span>
     <br />
     <br />

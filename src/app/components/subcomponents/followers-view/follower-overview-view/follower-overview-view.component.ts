@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { FollowerActionEnum } from 'src/app/models/enums/follower-action-enum.model';
 import { FollowerPrayerTypeEnum } from 'src/app/models/enums/follower-prayer-type-enum.model';
@@ -18,10 +19,14 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
   styleUrls: ['./follower-overview-view.component.css']
 })
 export class FollowerOverviewViewComponent {
+  isMobile = false;
+
   constructor(private globalService: GlobalService, private followerService: FollowersService, private balladService: BalladService,
-    private utilityService: UtilityService, private lookupService: LookupService) { }
+    private utilityService: UtilityService, private lookupService: LookupService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
+    console.log(this.isMobile);
   }
 
   getAssignedFollowers() {

@@ -11,6 +11,7 @@ export class GameLogService {
   gameLog: string[] = [];
   gameLogMaxLength = 100;
   notificationOverlayBuffer: [string, GameLogEntryEnum, number][] = [];
+  disableOverlayBuffer: boolean = false;
 
   constructor(private deviceDetectorService: DeviceDetectorService) {
 
@@ -49,7 +50,7 @@ export class GameLogService {
 
     //add certain items to the overlay
     //TODO: add settings to hide certain items
-    if (this.deviceDetectorService.isMobile())
+    if (this.deviceDetectorService.isMobile() && !this.disableOverlayBuffer)
     {
       var tutorialDuration = 30;
       var rewardDuration = 5;

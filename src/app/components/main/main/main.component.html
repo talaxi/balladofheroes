@@ -1,5 +1,5 @@
 <!-- web version -->
-<div class="gridContainer webVersion">
+<div *ngIf="!isMobile" class="gridContainer webVersion">
     <div class="headerArea">
         <app-header [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>
@@ -29,7 +29,7 @@
                     </mat-progress-bar>
                 </div>
                 <br/>
-                <div>
+                <div class="centeredText">
                     <i>Up to 30 minutes of away time is automated. After that, up to 8 hours is banked and allows
                         you to run the game at double speed.</i>
                 </div>
@@ -47,7 +47,7 @@
 
 
 <!-- mobile version -->
-<div class="gridContainer mobileVersion">
+<div *ngIf="isMobile" class="gridContainer mobileVersion">
     <div class="headerArea">
         <app-header [isMobile]="true" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>

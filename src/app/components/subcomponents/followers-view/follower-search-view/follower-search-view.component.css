@@ -18,3 +18,10 @@
     width: 25%;
     display: inline-block;
 }
+
+
+@media (max-width: 800px) {
+    .headerSpacing {
+        min-width: 60%;
+    }
+}

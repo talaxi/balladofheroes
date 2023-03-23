@@ -9,6 +9,7 @@ import { DeploymentService } from 'src/app/services/deployment/deployment.servic
 import { GlobalService } from 'src/app/services/global/global.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { VersionControlService } from 'src/app/services/utility/version-control.service';
 declare var LZString: any;
 
 @Component({
@@ -25,7 +26,8 @@ export class SettingsViewComponent implements OnInit {
   @Input() isMobile = false;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
-    private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService) { }
+    private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
+    private versionControlService: VersionControlService) { }
 
   ngOnInit(): void {
     //if (this.deploymentService.devModeActive)
@@ -56,6 +58,7 @@ export class SettingsViewComponent implements OnInit {
       var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
       if (loadDataJson !== null && loadDataJson !== undefined) {
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
+        this.versionControlService.updatePlayerVersion();
 
         this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
         this.storyService.showStory = false;
@@ -92,12 +95,12 @@ export class SettingsViewComponent implements OnInit {
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
           this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
+          this.versionControlService.updatePlayerVersion();
 
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
           //console.log(this.globalService.globalVar);
-          //this.versionControlService.updatePlayerVersion(); //TODO
         }
       }
       fileReader.readAsText(this.file);

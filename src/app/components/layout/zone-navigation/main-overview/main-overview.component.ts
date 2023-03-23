@@ -179,7 +179,7 @@ export class MainOverviewComponent {
 
   viewFollowers(content: any) {
     if (this.deviceDetectorService.isMobile())
-    this.dialog.open(content, { width: '95%', height: '80%' });
+    this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
   else 
     this.dialog.open(content, { width: '90%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
   }

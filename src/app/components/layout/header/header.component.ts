@@ -31,13 +31,13 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    var keybinds = this.globalService.globalVar.keybinds;
+    var keybinds = this.globalService.globalVar.keybinds;    
 
-    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openMenu"))) {
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openMenu"))) {      
       this.openMenu();
     }
 
-    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("togglePauseGame"))) {
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("togglePauseGame"))) {      
       this.pauseGame();
     }
   }

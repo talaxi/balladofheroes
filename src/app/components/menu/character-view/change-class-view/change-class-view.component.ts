@@ -77,6 +77,9 @@ export class ChangeClassViewComponent implements OnInit {
   }
 
   currentlyAssignedToSameCharacter(type: CharacterEnum) {
+    var swappingType = this.swappingClass === 1 ? this.currentParty[0].type : this.currentParty[1].type;
+    
+    return swappingType === type;
     //return this.character.assignedClass1 === type || this.character.assignedClass2 === type;
   }
 
@@ -134,12 +137,12 @@ export class ChangeClassViewComponent implements OnInit {
       
     if (this.globalService.globalVar.activePartyMember1 === type && this.swappingClass === 2)
     {      
-      this.globalService.globalVar.activePartyMember2 = this.globalService.globalVar.activePartyMember1;
+      this.globalService.globalVar.activePartyMember1 = this.globalService.globalVar.activePartyMember2;
     }
 
     if (this.globalService.globalVar.activePartyMember2 === type && this.swappingClass === 1)
     {      
-      this.globalService.globalVar.activePartyMember1 = this.globalService.globalVar.activePartyMember2;
+      this.globalService.globalVar.activePartyMember2 = this.globalService.globalVar.activePartyMember1;
     }
 
     if (this.swappingClass === 1)
@@ -207,28 +210,4 @@ export class ChangeClassViewComponent implements OnInit {
     character1.assignedGod2 = character2God2;
     character2.assignedGod2 = character1God2;
   }
-
-  /*isCurrentlyAssigned(type: CharacterEnum) {
-    var isAssigned = false;
-    var party = this.globalService.getActivePartyCharacters(true);
-
-    party.forEach(member => {
-      if (member.assignedClass1 === type || member.assignedClass2 === type)
-        isAssigned = true;
-    });
-
-    return isAssigned;
-  }*/
-
-  /*GetCurrentlyAssignedCharacter(type: CharacterEnum) {
-    var party = this.globalService.getActivePartyCharacters(true);
-    var assignedCharacter = new Character();
-
-    party.forEach(member => {
-      if (member.assignedClass1 === type || member.assignedClass2 === type)
-        assignedCharacter = member;
-    });
-
-    return "<span class='" + this.globalService.getCharacterColorClassText(assignedCharacter.type) + "'>" + assignedCharacter.name + "</span>";
-  }*/
 }

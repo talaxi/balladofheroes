@@ -26,9 +26,6 @@
     grid-area: characterStats;
 }
 
-.secondaryStats {
-    grid-area: secondaryStats;
-}
 
 .characterAbilities {
     grid-area: characterAbilities;
@@ -132,6 +129,10 @@
 
     .secondaryStatColumn2 {
         grid-area: secondaryStatColumn2;
+    }
+        
+    .secondaryStats { 
+        text-align: left;
     }
     
     .characterInfo {

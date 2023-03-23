@@ -60,6 +60,15 @@ export class BattleComponent implements OnInit {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
       if (this.isMobile) {
         this.checkForNotificationOverlayMessage(deltaTime);
+
+        //handle auto progress here instead of zone navigation because zone navigation may not always be active
+        var currentSubzone = this.balladService.getActiveSubZone();
+        var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
+
+        if (autoProgress && currentSubzone !== undefined &&
+          (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
+          this.balladService.selectNextSubzone();
+        }
       }
 
       if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
@@ -341,6 +350,31 @@ export class BattleComponent implements OnInit {
       additionalMessage[2] = 0;
       extraItemCount += 1;
     }
+  }
+
+  isNextSubzoneButtonAvailable() {
+    var currentSubzone = this.balladService.getActiveSubZone();
+    var nextSubzoneFound = false;
+    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).slice().reverse();
+    reverseOrderBallads.forEach(ballad => {
+      if (!nextSubzoneFound) {
+        var reverseZones = ballad.zones.filter(item => item.isAvailable).slice().reverse();
+        reverseZones.forEach(zone => {
+          var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
+          reverseSubzones.forEach(subzone => {
+            if (currentSubzone.type !== subzone.type && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {              
+              nextSubzoneFound = true;
+            }
+          });
+        })
+      }
+    });
+
+    return nextSubzoneFound;
+  }
+
+  goToNextSubzone() {
+    this.balladService.selectNextSubzone();
   }
 
   ngOnDestroy() {

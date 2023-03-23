@@ -53,6 +53,7 @@ export class InitializationService {
     this.initializeBestiaryDefeatCount();
     this.initializeColiseumDefeatCount();
     this.initializeAlchemy();
+    this.initializeJewelcrafting();
   }
 
   initializeBallads() {
@@ -506,7 +507,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
       }
 
-      var characterLevel = 19;
+      var characterLevel = 8;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
@@ -515,7 +516,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 100;
+      var godLevel = 3;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -558,5 +559,10 @@ export class InitializationService {
         this.globalService.globalVar.alchemy.upgrades.push(alchemyUpgrade);
       }
     }
+  }
+
+  //TODO: Use this as a guide for future new items on the global var. Make this work for both version control and new players
+  initializeJewelcrafting() {
+
   }
 }

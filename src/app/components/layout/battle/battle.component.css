@@ -193,6 +193,7 @@
 .text {
     grid-area: text;
     margin: auto;
+    font-size: 1.025rem;
 }
 
 .storyTextAnimation {
@@ -307,8 +308,8 @@
         grid-template-rows: 1fr 1fr;
         justify-content: stretch;
         grid-template-areas:
-            ". selectedSubzone zoneDropdown"
-            ". victoryCount zoneDropdown";
+            "zoneDropdown selectedSubzone nextSubzone"
+            "zoneDropdown victoryCount nextSubzone";
         font-variant: small-caps;
     }
     
@@ -319,13 +320,17 @@
         grid-template-rows: 1fr 1fr;
         justify-content: stretch;
         grid-template-areas:
-            "coliseumRound . selectedSubzone zoneDropdown coliseumTime"
-            ". . victoryCount zoneDropdown .";
+            "coliseumRound zoneDropdown selectedSubzone nextSubzone coliseumTime"
+            ". zoneDropdown victoryCount nextSubzone .";
         font-variant: small-caps;
     }
 
     .victoryCount {
         grid-area: victoryCount;
+    }
+
+    .nextSubzone {
+        grid-area: nextSubzone;
     }
 
     .notificationOverlay {
@@ -347,5 +352,9 @@
     .notificationMessage {
         display: flex;
         justify-content: space-between;
+    }
+
+    .storyGrid {
+        gap:.25rem;
     }
 }

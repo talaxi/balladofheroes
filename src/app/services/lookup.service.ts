@@ -109,13 +109,13 @@ export class LookupService {
     var description = "";
 
     if (type === CharacterEnum.Adventurer)
-      description = "The Adventurer class focuses on speed over damage, having access to agility buffs and increasing damage based on how many attacks you can perform in quick succession.";
+      description = "The Adventurer class focuses on speed with access to agility buffs and increased damage based on how many actions you perform in quick succession.";
     if (type === CharacterEnum.Archer)
-      description = "The Archer class focuses on debilitating enemies, having access to damage over time and stunning effects.";
+      description = "The Archer class focuses on debilitating enemies with access to damage over time and stunning effects.";
     if (type === CharacterEnum.Warrior)
-      description = "The Warrior class focuses on taking damage over dealing damage, having the ability to force enemies' attention and increasing defense when HP drops low.";
+      description = "The Warrior class focuses on taking damage over dealing damage with the ability to force enemies' attention and increasing defense when HP is low.";
     if (type === CharacterEnum.Priest)
-      description = "The Priest class focuses on keeping the party alive, having access to healing and barrier effects.";
+      description = "The Priest class focuses on keeping the party healthy with healing and barrier effects.";
 
 
     return description;
@@ -1419,7 +1419,7 @@ export class LookupService {
     if (abilityName === "Quick Hit")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage and increase Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Barrage")
-      abilityDescription = "Every <strong>" + this.utilityService.ordinalSuffixOf(abilityCount) + "</strong> auto attack hits all additional enemies for <strong>" + effectiveAmountPercent + "%</strong> of the damage dealt. Passive.";
+      abilityDescription = "Every <strong>" + this.utilityService.ordinalSuffixOf(abilityCount) + "</strong> auto attack hits all additional enemies for <strong>" + effectivenessPercent + "%</strong> of the damage dealt. Passive.";
     if (abilityName === "Thousand Cuts")
       abilityDescription = "For <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds, deal an additional <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> damage after each auto attack or ability. " + cooldown + " second cooldown.";
 

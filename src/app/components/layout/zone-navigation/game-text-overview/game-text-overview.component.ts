@@ -15,7 +15,6 @@ export class GameTextOverviewComponent {
   scrollButtonDelay = 0;
   scrollButtonDelayTotalCount = 5;
   previousLogHeight = 0;
-  subscription: any;
 
   constructor(public dialog: MatDialog, private gameLogService: GameLogService, private utilityService: UtilityService,
     public storyService: StoryService, private gameLoopService: GameLoopService)
@@ -28,10 +27,7 @@ export class GameTextOverviewComponent {
     {
       this.skipToBottom(this.gameLogScroll.nativeElement);
       this.gameLogService.notificationOverlayBuffer = [];
-
-      this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-        this.gameLogService.notificationOverlayBuffer = [];
-      });
+      this.gameLogService.disableOverlayBuffer = true;
     }
   }
 
@@ -73,8 +69,6 @@ export class GameTextOverviewComponent {
     if (this.previousLogHeight > 1000)
       offsetMultiplier = .995;
 
-    console.log(scrollToTop.scrollTop + " + " + scrollToTop.offsetHeight + " >= " + this.previousLogHeight + " * " + offsetMultiplier);
-
     if (Math.ceil(scrollToTop.scrollTop + scrollToTop.offsetHeight) >= (this.previousLogHeight * offsetMultiplier)) {
       this.scrollButtonDelay = 0;
       return false;
@@ -83,7 +77,6 @@ export class GameTextOverviewComponent {
       this.scrollButtonDelay += 1;
       if (this.scrollButtonDelay >= this.scrollButtonDelayTotalCount)
       {
-        console.log("Show button");
         return true;
       }
       else
@@ -92,7 +85,6 @@ export class GameTextOverviewComponent {
   }
 
   ngOnDestroy() {
-    if (this.subscription !== undefined)
-      this.subscription.unsubscribe();
+    this.gameLogService.disableOverlayBuffer = false;
   }
 }

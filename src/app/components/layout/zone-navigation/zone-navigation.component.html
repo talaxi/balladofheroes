@@ -17,7 +17,7 @@
                     <div *ngIf="!ballad.isSelected">
                         <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading"
                             [ngClass]="getBalladClass(ballad)"
-                            (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
+                            (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
                             <app-notification-icon *ngIf="ballad.showNewNotification"></app-notification-icon>
                         </button>
                     </div>
@@ -32,7 +32,7 @@
                             <div *ngFor="let zone of availableZones">
                                 <div *ngIf="!zone.isSelected">
                                     <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
-                                        [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)">{{zone.zoneName}}
+                                        [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)">{{zone.zoneName}}
                                         <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
                                     </button>
                                 </div>
@@ -44,7 +44,7 @@
                                             <span class="subzoneSpacer">&#8618;</span><span><button
                                                     class="buttonAsTextKeepColor z3Heading clickableText"
                                                     [ngClass]="getSubzoneClass(subzone)"
-                                                    (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone)
+                                                    (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone)
                                                     ? "To Be Continued!" :
                                                     subzone.name}}
                                                     {{getSubZoneSubText(subzone)}}
@@ -75,7 +75,7 @@
                 <div *ngFor="let zone of availableZones">
                     <div *ngIf="!zone.isSelected">
                         <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
-                            (click)="selectZone(zone)">{{zone.zoneName}}
+                            (click)="balladService.selectZone(zone)">{{zone.zoneName}}
                             <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
                         </button>
                     </div>
@@ -87,8 +87,7 @@
                                 <span class="subzoneSpacer">&#8618;</span><span><button
                                         class="buttonAsTextKeepColor z3Heading clickableText"
                                         [ngClass]="getSubzoneClass(subzone)"
-                                        (click)="selectSubZone(subzone, zone)">{{isSubZoneToBeContinued(subzone) ? "To
-                                        Be Continued!" :
+                                        (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
                                         subzone.name}}
                                         {{getSubZoneSubText(subzone)}}
                                         <app-notification-icon *ngIf="subzone.showNewNotification"
@@ -207,30 +206,10 @@
             <app-altar-overview></app-altar-overview>
         </div>
         <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
-            <div *ngIf="creatingRecipe()">
-                <span class='offsetWidth'></span><span class="s4Heading">{{getCreatingRecipeName()}}</span><span
-                    class="offsetWidth" *ngIf="this.getTotalAmountToCreate() > 1">&nbsp;<i>({{this.getAmountCreated() +
-                        1}} of {{this.getTotalAmountToCreate()}})</i></span>
-                <br />
-                <mat-progress-bar mode="determinate" [value]="getStepProgress()"
-                    class="purple-progress centeredBar removeAnimation removeTransition">
-                </mat-progress-bar>
-                <span><i>({{getTimeRemaining()}} remaining)</i></span>
-            </div>
-            <div *ngIf="!creatingRecipe()">
-                <strong>Not Currently Brewing</strong>
-            </div>
-            <br />
-            <button class="buttonStyled" (click)="openAlchemy(alchemyRecipeBook)">Open Recipe Book</button>
+            <app-alchemy-overview></app-alchemy-overview>
         </div>
     </div>
 </div>
-
-<ng-template #alchemyRecipeBook>
-    <div>
-        <app-alchemy-view></app-alchemy-view>
-    </div>
-</ng-template>
 
 <ng-template #followers>
     <div>
