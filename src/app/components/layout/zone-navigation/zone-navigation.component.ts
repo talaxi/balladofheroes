@@ -53,6 +53,13 @@ export class ZoneNavigationComponent implements OnInit {
   quickLinksUnlocked = false;
   isMobile = false;
 
+  displayQuickViewOverview: boolean;
+  displayQuickViewResources: boolean;
+  displayQuickViewGameText: boolean;
+  displayQuickViewItemBelt: boolean;
+  displayQuickViewAltars: boolean;
+  displayQuickViewAlchemy: boolean;
+
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
     this.setupKeybinds(event);
@@ -66,6 +73,13 @@ export class ZoneNavigationComponent implements OnInit {
 
   ngOnInit(): void {  
     this.isMobile = this.deviceDetectorService.isMobile();
+
+    this.displayQuickViewOverview = this.globalService.globalVar.settings.get("displayQuickViewOverview") ?? false;
+    this.displayQuickViewResources = this.globalService.globalVar.settings.get("displayQuickViewResources") ?? false;
+    this.displayQuickViewGameText = this.globalService.globalVar.settings.get("displayQuickViewGameText") ?? false;
+    this.displayQuickViewItemBelt = this.globalService.globalVar.settings.get("displayQuickViewItemBelt") ?? false;
+    this.displayQuickViewAltars = this.globalService.globalVar.settings.get("displayQuickViewAltars") ?? false;
+    this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
 
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
@@ -110,7 +124,7 @@ export class ZoneNavigationComponent implements OnInit {
       var currentSubzone = this.availableSubZones.find(item => item.isSelected);
 
       if (this.autoProgress && currentSubzone !== undefined &&
-        (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
+        (currentSubzone.winsNeeded - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
         this.balladService.selectNextSubzone();
       }
 
@@ -272,7 +286,7 @@ export class ZoneNavigationComponent implements OnInit {
 
     ballad.zones.forEach(zone => {
       zone.subzones.filter(item => !item.isTown).forEach(subzone => {
-        if (subzone.victoryCount < subzone.victoriesNeededToProceed)
+        if (subzone.victoryCount < subzone.winsNeeded)
           allSubZonesCleared = false;
         if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
           this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
@@ -292,7 +306,7 @@ export class ZoneNavigationComponent implements OnInit {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
     zone.subzones.filter(item => !item.isTown).forEach(subzone => {
-      if (subzone.victoryCount < subzone.victoriesNeededToProceed)
+      if (subzone.victoryCount < subzone.winsNeeded)
         allSubZonesCleared = false;
       if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
         this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
@@ -313,8 +327,8 @@ export class ZoneNavigationComponent implements OnInit {
 
     return {
       'selected': subzone.isSelected,
-      'unclearedSubzoneColor': subzone.victoriesNeededToProceed > subzone.victoryCount,
-      'clearedSubzoneColor': subzone.victoriesNeededToProceed <= subzone.victoryCount && !achievementsCompleted,
+      'unclearedSubzoneColor': subzone.winsNeeded > subzone.victoryCount,
+      'clearedSubzoneColor': subzone.winsNeeded <= subzone.victoryCount && !achievementsCompleted,
       'completedSubzoneColor': achievementsCompleted
     };
   }
@@ -336,9 +350,9 @@ export class ZoneNavigationComponent implements OnInit {
     }
     else {
       text = "(" + subzone.victoryCount.toString();
-      if (subzone.victoriesNeededToProceed > subzone.victoryCount)
-        text += "/" + subzone.victoriesNeededToProceed;
-      text += subzone.victoryCount === 1 && subzone.victoriesNeededToProceed <= subzone.victoryCount ? " win)" : " wins)";
+      if (subzone.winsNeeded > subzone.victoryCount)
+        text += "/" + subzone.winsNeeded;
+      text += subzone.victoryCount === 1 && subzone.winsNeeded <= subzone.victoryCount ? " win)" : " wins)";
     }
 
     return text;

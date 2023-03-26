@@ -63,9 +63,9 @@
         <div *ngFor="let subsection of achievementsBySubZonePaged; let i = index">
             <div class="grid">
                 <div class="subzoneName">
-                    <span class="s7Heading" [innerHtml]="getSubZoneBalladName(subsection[0].relatedSubzone)"></span>
+                    <span class="s7Heading" [innerHtml]="getSubZoneBalladName(subsection[0].subzone)"></span>
                     <br />
-                    <span [innerHtml]="getSubZoneName(subsection[0].relatedSubzone)" class="sectionHeading"></span>
+                    <span [innerHtml]="getSubZoneName(subsection[0].subzone)" class="sectionHeading"></span>
                 </div>
                 <div class="achievementRow">
                     <div class="row" *ngFor="let _ of [].constructor(getSubZoneRows(subsection)); let rowIndex = index">
@@ -82,9 +82,9 @@
         <div class="filters">
             <hr />
             <div class="filterFlex">
-                <button class="buttonAsText clickableText m2Heading" (click)="jumpToFirstPage()"><img class="icon"
+                <button class="buttonAsText clickableText m2Heading" (click)="jumpToFirstPage()"><img (contextmenu)="preventRightClick()" class="icon"
                         src="assets/svg/chevrondoubleleft.svg"></button>
-                <button class="buttonAsText clickableText m2Heading" (click)="jumpToPreviousPage()"><img class="icon"
+                <button class="buttonAsText clickableText m2Heading" (click)="jumpToPreviousPage()"><img (contextmenu)="preventRightClick()" class="icon"
                         src="assets/svg/chevronleft.svg"></button>
                 <span class="itemsPerPage"></span>
                 <span>Page: <select [(ngModel)]="currentPage" (change)="getAchievementsByPage()">
@@ -102,9 +102,9 @@
                         (click)="setPageAmount(25)">25</button>&nbsp;
                     <span> per page</span>
                 </span>
-                <button class="buttonAsText clickableText m2Heading" (click)="jumpToNextPage()"><img class="icon"
+                <button class="buttonAsText clickableText m2Heading" (click)="jumpToNextPage()"><img (contextmenu)="preventRightClick()" class="icon"
                         src="assets/svg/chevronright.svg"></button>
-                <button class="buttonAsText clickableText m2Heading" (click)="jumpToLastPage()"><img class="icon"
+                <button class="buttonAsText clickableText m2Heading" (click)="jumpToLastPage()"><img (contextmenu)="preventRightClick()" class="icon"
                         src="assets/svg/chevrondoubleright.svg"></button>
             </div>
             <hr />

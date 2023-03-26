@@ -1,5 +1,5 @@
 <button [ngClass]="{'oneItem': totalItemAmount === 1, 'twoItems': totalItemAmount === 2}" mat-menu-item customToolTip #tooltip [contentTemplate]="itemPopover">
-    <img draggable="false" class="itemImage" [src]="lookupService.getItemImage(item)"
+    <img draggable="false" (contextmenu)="preventRightClick()" class="itemImage" [src]="lookupService.getItemImage(item)"
         (click)="selectItemFromMenu(item)">
 </button>
 

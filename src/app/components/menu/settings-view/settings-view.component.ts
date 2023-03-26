@@ -8,9 +8,13 @@ import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { StoryService } from 'src/app/services/story/story.service';
+import { CodeCreationService } from 'src/app/services/utility/code-creation.service';
+import { CodeRedemptionService } from 'src/app/services/utility/code-redemption.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { VersionControlService } from 'src/app/services/utility/version-control.service';
 declare var LZString: any;
+import { loadStripe } from '@stripe/stripe-js';
+import { Stripe } from 'stripe';
 
 @Component({
   selector: 'app-settings-view',
@@ -27,12 +31,16 @@ export class SettingsViewComponent implements OnInit {
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
-    private versionControlService: VersionControlService) { }
+    private versionControlService: VersionControlService, private codeCreationService: CodeCreationService,
+    private codeRedemptionService: CodeRedemptionService) { }
 
   ngOnInit(): void {
-    //if (this.deploymentService.devModeActive)
+    if (this.deploymentService.devModeActive)
       console.log(this.globalService.globalVar);
     //console.log(JSON.stringify(this.globalService.globalVar));
+
+    if (this.deploymentService.codeCreationMode)
+      console.log(this.codeCreationService.createCode());
 
     var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
     if (storyStyle === undefined)
@@ -115,7 +123,7 @@ export class SettingsViewComponent implements OnInit {
     if (this.storyStyle === StoryStyleSettingEnum.Medium)
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.mediumStorySpeed;
     if (this.storyStyle === StoryStyleSettingEnum.Slow)
-      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.slowStorySpeed;    
+      this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.slowStorySpeed;
     if (this.storyStyle === StoryStyleSettingEnum.Pause)
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.pauseStorySpeed;
 
@@ -123,20 +131,13 @@ export class SettingsViewComponent implements OnInit {
   }
 
   openKeybinds(content: any) {
-    this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
+    if (this.isMobile)
+      this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
+    else
+      this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '50%', id: 'dialogNoPadding' });
   }
 
   enterRedemptionCode() {
-    /*var wasSuccessful = this.codeRedemptionService.redeemCode(this.enteredRedemptionCode);
-
-    if (wasSuccessful) {
-      var items = this.codeRedemptionService.getCodeItems(this.enteredRedemptionCode);
-      if (items !== undefined) {
-        var itemList = "";
-        items.forEach(item => itemList += item.amount + " " + item.name + ", ");
-        itemList = itemList.replace(/,\s*$/, "")
-        alert("You received: " + itemList);        
-      }
-    }*/
+    this.codeRedemptionService.redeemCode(this.enteredRedemptionCode);
   }
 }

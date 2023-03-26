@@ -120,20 +120,20 @@
     </div>
     <div *ngIf="quickLinksUnlocked" class="quickLink">
         <div *ngIf="!isMobile" class="quickLinkIcons">
-            <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Overview)"
+            <button *ngIf="displayQuickViewOverview" class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Overview)"
                 customToolTip [contentTemplate]="overviewIconPopover" [tooltipDirection]="tooltipDirection">
                 <img *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled"
                     src="assets/svg/overviewQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
             </button>
-            <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Resources)"
+            <button *ngIf="displayQuickViewResources" class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Resources)"
                 customToolTip [contentTemplate]="resourcesIconPopover" [tooltipDirection]="tooltipDirection">
                 <img *ngIf="quickView === quickViewEnum.Resources" class="icon iconEnabled"
                     src="assets/svg/resourcesQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
             </button>
             <div *ngIf="areAltarsAvailable()">
-                <button class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Altars)"
+                <button *ngIf="displayQuickViewAltars" class="buttonAsText clickableText iconButton" (click)="setQuickView(quickViewEnum.Altars)"
                     customToolTip [contentTemplate]="altarIconPopover" [tooltipDirection]="tooltipDirection">
                     <img *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"
                         src="assets/svg/smallAltar.svg">
@@ -142,7 +142,7 @@
                 <app-notification-icon
                     *ngIf="globalService.globalVar.altars.showNewNotification"></app-notification-icon>
             </div>
-            <button class="buttonAsText clickableText iconButton" *ngIf="isAlchemyAvailable()"
+            <button class="buttonAsText clickableText iconButton" *ngIf="isAlchemyAvailable() && displayQuickViewAlchemy"
                 (click)="setQuickView(quickViewEnum.Alchemy)" customToolTip [contentTemplate]="alchemyIconPopover"
                 [tooltipDirection]="tooltipDirection">
                 <img *ngIf="quickView === quickViewEnum.Alchemy" class="icon iconEnabled"
@@ -169,13 +169,13 @@
                         <span><span class="resource bold">Coins:</span><span>
                                 {{lookupService.getResourceAmount(itemsEnum.Coin) |
                                 number}}</span></span>
-                        <br />
+                        <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
                             class="resource chthonicPowerKeyword" customToolTip
                             [contentTemplate]="chthonicPowerPopover">Chthonic Power:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
                                 : '1.0-2'}}</span></span>
-                        <br />
+                        <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" />
                         <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
                             class="resource chthonicFavorKeyword" customToolTip
                             [contentTemplate]="chthonicFavorPopover">Chthonic Favor:

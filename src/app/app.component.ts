@@ -21,6 +21,9 @@ import { OptionalSceneEnum } from './models/enums/optional-scene-enum.model';
 import { VersionControlService } from './services/utility/version-control.service';
 import { GameLogService } from './services/battle/game-log.service';
 declare var LZString: any;
+import { ActivatedRoute, Router } from '@angular/router';
+import { loadStripe } from '@stripe/stripe-js';
+import { Stripe } from 'stripe';
 
 @Component({
   selector: 'app-root',
@@ -35,12 +38,14 @@ export class AppComponent {
   saveFrequency = 5; //in seconds
   bankedTime = 0;
   catchupDialog: MatDialogRef<unknown, any> | undefined = undefined;
+  @ViewChild('confirmationBox') confirmationBox: any;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
     private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
     private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
     private utilityService: UtilityService, private lookupService: LookupService, private storyService: StoryService,
-    private versionControlService: VersionControlService, private gameLogService: GameLogService) {
+    private versionControlService: VersionControlService, private gameLogService: GameLogService, private activatedRoute: ActivatedRoute,
+    private router: Router) {
 
   }
 
@@ -81,6 +86,7 @@ export class AppComponent {
       this.initializationService.devMode();
     }
 
+    this.checkForSupporterConfirmation();
     this.versionControlService.updatePlayerVersion();
 
     var lastPerformanceNow = 0;
@@ -89,7 +95,7 @@ export class AppComponent {
 
       this.gameCheckup(deltaTime);
 
-      if (this.globalService.globalVar.performanceMode) {      
+      if (this.globalService.globalVar.performanceMode) {
         var checkupDiff = performance.now() - checkupPerformanceNow;
         console.log("Check up performance: " + checkupDiff + " ms");
       }
@@ -100,7 +106,7 @@ export class AppComponent {
         this.gameSaveService.saveGame();
       }
 
-      if (this.globalService.globalVar.performanceMode) {      
+      if (this.globalService.globalVar.performanceMode) {
         var performanceNow = performance.now();
         var diff = performanceNow - lastPerformanceNow;
         console.log('Full Game Loop: ' + diff + " ms");
@@ -128,7 +134,7 @@ export class AppComponent {
     if (isInTown)
       this.backgroundService.handleTown(deltaTime, this.loading);
     else
-      this.globalService.globalVar.timers.townHpGainTimer = 0;    
+      this.globalService.globalVar.timers.townHpGainTimer = 0;
 
     this.battleService.handleBattle(deltaTime, this.loading);
   }
@@ -137,14 +143,14 @@ export class AppComponent {
     //TODO: after beta, remove this
     if (this.globalService.globalVar.betaSave === undefined)
       this.globalService.globalVar.betaSave = true;
-      
+
     this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
     this.storyService.showStory = false;
     this.storyService.showOptionalStory = OptionalSceneEnum.None;
     this.globalService.globalVar.isBattlePaused = false;
   }
 
-  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {    
+  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {
     if (deltaTime > this.utilityService.activeTimeLimit) {
       this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
       deltaTime = this.utilityService.activeTimeLimit;
@@ -156,7 +162,7 @@ export class AppComponent {
     //if speed up time remains, use it (only if not doing batches which causes issues)
     if (!this.globalService.globalVar.isCatchingUp) {
       if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2 &&
-      this.globalService.globalVar.extraSpeedEnabled) {
+        this.globalService.globalVar.extraSpeedEnabled) {
         if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
           deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
           this.globalService.globalVar.extraSpeedTimeRemaining = 0;
@@ -178,7 +184,7 @@ export class AppComponent {
       deltaTime = batchTime;
 
       //if (this.bankedTime > 60 && this.catchupDialog === undefined)
-        //this.catchupDialog = this.openCatchUpModal(loadingContent);
+      //this.catchupDialog = this.openCatchUpModal(loadingContent);
     }
 
     if (deltaTime < batchTime && this.bankedTime > 0) {
@@ -220,6 +226,53 @@ export class AppComponent {
 
   openCatchUpModal(content: any) {
     var dialog = this.dialog.open(content, { width: '50%' });
+
+    return dialog;
+  }
+
+  checkForSupporterConfirmation() {
+    var setAsSubscriber = false;
+    this.activatedRoute.queryParams.subscribe(async params => {
+      if (params === undefined || params.co === undefined)
+        return;
+
+      var checkoutConfirmation = params.co;
+
+      //TODO: This is my test version key and needs to be replaced with prod version when the time comes      
+      var stripe = new Stripe(environment.STRIPESECRET, {
+        apiVersion: '2022-11-15'
+      });
+
+      if (stripe === undefined)
+        return;
+
+      var session = await stripe.checkout.sessions.retrieve(checkoutConfirmation);
+
+      var createdMilliseconds = session.created * 1000;
+      var expirationDate = new Date(createdMilliseconds).setHours(new Date(createdMilliseconds).getHours() + 24);
+
+      //if we can confirm user paid, the user paid within 24 hours to verify nothing weird is going on with passing links,
+      //and that the user hasn't already received rewards
+      if (session.payment_status === 'paid' && new Date() <= new Date(expirationDate) && !this.globalService.globalVar.isSubscriber) {
+        setAsSubscriber = true;
+        this.globalService.setAsSubscriber(new Date(createdMilliseconds));
+      }
+      this.gameSaveService.saveGame();
+      this.router.navigate(
+        [],
+        {
+          relativeTo: this.activatedRoute,
+          queryParams: null,
+          queryParamsHandling: '',
+          replaceUrl: true
+        });
+
+        this.openSubscriberModal();
+    });
+  }
+
+  openSubscriberModal() {
+    var dialog = this.dialog.open(this.confirmationBox, { width: '50%' });
 
     return dialog;
   }

@@ -245,7 +245,7 @@ export class BalladService {
         reverseZones.forEach(zone => {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
           reverseSubzones.forEach(subzone => {
-            if (!nextSubzoneFound && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {
+            if (!nextSubzoneFound && !subzone.isTown && subzone.winsNeeded - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
               this.selectZone(zone);

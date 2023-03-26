@@ -51,29 +51,29 @@
                         </app-ability-view>
                         <app-ability-view class="ability1" [character]="character"
                             *ngIf="isCharacterAbilityAvailable(character, 0)"
-                            [ability]="getCharacterAbility(character, 0)"></app-ability-view>
+                            [ability]="getCharacterAbility(character, 0)" [abilityIndex]="0"></app-ability-view>
                         <app-ability-view class="ability2" [character]="character"
                             *ngIf="isCharacterAbilityAvailable(character, 1)"
-                            [ability]="getCharacterAbility(character, 1)"></app-ability-view>
+                            [ability]="getCharacterAbility(character, 1)" [abilityIndex]="1"></app-ability-view>
 
                         <app-ability-view class="god1ability1" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 0)" [ability]="getGodAbility(character, 1, 0)">
+                            *ngIf="isGodAbilityAvailable(character, 1, 0)" [ability]="getGodAbility(character, 1, 0)" [abilityIndex]="0">
                         </app-ability-view>
                         <app-ability-view class="god1ability2" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 1)" [ability]="getGodAbility(character, 1, 1)">
+                            *ngIf="isGodAbilityAvailable(character, 1, 1)" [ability]="getGodAbility(character, 1, 1)" [abilityIndex]="1">
                         </app-ability-view>
                         <app-ability-view class="god1ability3" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 2)" [ability]="getGodAbility(character, 1, 2)">
+                            *ngIf="isGodAbilityAvailable(character, 1, 2)" [ability]="getGodAbility(character, 1, 2)" [abilityIndex]="2">
                         </app-ability-view>
 
                         <app-ability-view class="god2ability1" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 0)" [ability]="getGodAbility(character, 2, 0)">
+                            *ngIf="isGodAbilityAvailable(character, 2, 0)" [ability]="getGodAbility(character, 2, 0)" [abilityIndex]="0">
                         </app-ability-view>
                         <app-ability-view class="god2ability2" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 1)" [ability]="getGodAbility(character, 2, 1)">
+                            *ngIf="isGodAbilityAvailable(character, 2, 1)" [ability]="getGodAbility(character, 2, 1)" [abilityIndex]="1">
                         </app-ability-view>
                         <app-ability-view class="god2ability3" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 2)" [ability]="getGodAbility(character, 2, 2)">
+                            *ngIf="isGodAbilityAvailable(character, 2, 2)" [ability]="getGodAbility(character, 2, 2)" [abilityIndex]="2">
                         </app-ability-view>
                     </div>
                 </div>

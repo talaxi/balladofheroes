@@ -36,7 +36,7 @@ export class FollowersService {
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       ballad.zones.forEach(zone => {
-        if (zone.isAvailable && !zone.subzones.some(item => !item.isTown && !item.isSubzoneSideQuest() && item.victoryCount < item.victoriesNeededToProceed)) {
+        if (zone.isAvailable && !zone.subzones.some(item => !item.isTown && !item.isSubzoneSideQuest() && item.victoryCount < item.winsNeeded)) {
           clearedZones.push(zone);
         }
       });

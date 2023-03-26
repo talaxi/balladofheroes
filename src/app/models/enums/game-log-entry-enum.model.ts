@@ -19,5 +19,6 @@ export enum GameLogEntryEnum {
   Overdrive,
   Pray,
   FollowerSearch,
-  FollowerPrayer
+  FollowerPrayer,
+  CodeRedemption
 }

@@ -692,18 +692,18 @@ export class GlobalService {
     character.battleStats.overdriveGain = character.equipmentSet.getTotalOverdriveGain();
     character.battleStats.abilityCooldownReduction = (1 - character.equipmentSet.getTotalAbilityCooldownReductionGain());
     character.battleStats.autoAttackCooldownReduction = (1 - character.equipmentSet.getTotalAutoAttackCooldownReductionGain());
-    character.battleStats.elementalDamageIncrease.holy = character.equipmentSet.getTotalHolyDamageIncreaseGain();
-    character.battleStats.elementalDamageIncrease.fire = character.equipmentSet.getTotalFireDamageIncreaseGain();
-    character.battleStats.elementalDamageIncrease.water = character.equipmentSet.getTotalWaterDamageIncreaseGain();
-    character.battleStats.elementalDamageIncrease.lightning = character.equipmentSet.getTotalLightningDamageIncreaseGain();
-    character.battleStats.elementalDamageIncrease.air = character.equipmentSet.getTotalAirDamageIncreaseGain();
-    character.battleStats.elementalDamageIncrease.earth = character.equipmentSet.getTotalEarthDamageIncreaseGain();
-    character.battleStats.elementalDamageResistance.holy = character.equipmentSet.getTotalHolyDamageResistanceGain();
-    character.battleStats.elementalDamageResistance.fire = character.equipmentSet.getTotalFireDamageResistanceGain();
-    character.battleStats.elementalDamageResistance.water = character.equipmentSet.getTotalWaterDamageResistanceGain();
-    character.battleStats.elementalDamageResistance.lightning = character.equipmentSet.getTotalLightningDamageResistanceGain();
-    character.battleStats.elementalDamageResistance.air = character.equipmentSet.getTotalAirDamageResistanceGain();
-    character.battleStats.elementalDamageResistance.earth = character.equipmentSet.getTotalEarthDamageResistanceGain();
+    character.battleStats.elementIncrease.holy = character.equipmentSet.getTotalHolyDamageIncreaseGain();
+    character.battleStats.elementIncrease.fire = character.equipmentSet.getTotalFireDamageIncreaseGain();
+    character.battleStats.elementIncrease.water = character.equipmentSet.getTotalWaterDamageIncreaseGain();
+    character.battleStats.elementIncrease.lightning = character.equipmentSet.getTotalLightningDamageIncreaseGain();
+    character.battleStats.elementIncrease.air = character.equipmentSet.getTotalAirDamageIncreaseGain();
+    character.battleStats.elementIncrease.earth = character.equipmentSet.getTotalEarthDamageIncreaseGain();
+    character.battleStats.elementResistance.holy = character.equipmentSet.getTotalHolyDamageResistanceGain();
+    character.battleStats.elementResistance.fire = character.equipmentSet.getTotalFireDamageResistanceGain();
+    character.battleStats.elementResistance.water = character.equipmentSet.getTotalWaterDamageResistanceGain();
+    character.battleStats.elementResistance.lightning = character.equipmentSet.getTotalLightningDamageResistanceGain();
+    character.battleStats.elementResistance.air = character.equipmentSet.getTotalAirDamageResistanceGain();
+    character.battleStats.elementResistance.earth = character.equipmentSet.getTotalEarthDamageResistanceGain();
 
     //gods
     var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
@@ -725,10 +725,10 @@ export class GlobalService {
       character.battleStats.debuffDuration += god1.statGain.debuffDuration + god1.permanentStatGain.debuffDuration;
       character.battleStats.overdriveGainFromAutoAttacks += god1.statGain.overdriveGainFromAutoAttacks + god1.permanentStatGain.overdriveGainFromAutoAttacks;
       character.battleStats.healingDone += god1.statGain.healingDone + god1.permanentStatGain.healingDone;
-      character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.statGain.elementalDamageIncrease);
-      character.battleStats.elementalDamageIncrease.increaseByStatArray(god1.permanentStatGain.elementalDamageIncrease);
-      character.battleStats.elementalDamageResistance.increaseByStatArray(god1.statGain.elementalDamageResistance);
-      character.battleStats.elementalDamageResistance.increaseByStatArray(god1.permanentStatGain.elementalDamageResistance);
+      character.battleStats.elementIncrease.increaseByStatArray(god1.statGain.elementIncrease);
+      character.battleStats.elementIncrease.increaseByStatArray(god1.permanentStatGain.elementIncrease);
+      character.battleStats.elementResistance.increaseByStatArray(god1.statGain.elementResistance);
+      character.battleStats.elementResistance.increaseByStatArray(god1.permanentStatGain.elementResistance);
     }
 
     var god2 = this.globalVar.gods.find(item => character.assignedGod2 === item.type);
@@ -750,10 +750,10 @@ export class GlobalService {
       character.battleStats.debuffDuration += god2.statGain.debuffDuration + god2.permanentStatGain.debuffDuration;
       character.battleStats.overdriveGainFromAutoAttacks += god2.statGain.overdriveGainFromAutoAttacks + god2.permanentStatGain.overdriveGainFromAutoAttacks;
       character.battleStats.healingDone += god2.statGain.healingDone + god2.permanentStatGain.healingDone;
-      character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.statGain.elementalDamageIncrease);
-      character.battleStats.elementalDamageIncrease.increaseByStatArray(god2.permanentStatGain.elementalDamageIncrease);
-      character.battleStats.elementalDamageResistance.increaseByStatArray(god2.statGain.elementalDamageResistance);
-      character.battleStats.elementalDamageResistance.increaseByStatArray(god2.permanentStatGain.elementalDamageResistance);
+      character.battleStats.elementIncrease.increaseByStatArray(god2.statGain.elementIncrease);
+      character.battleStats.elementIncrease.increaseByStatArray(god2.permanentStatGain.elementIncrease);
+      character.battleStats.elementResistance.increaseByStatArray(god2.statGain.elementResistance);
+      character.battleStats.elementResistance.increaseByStatArray(god2.permanentStatGain.elementResistance);
     }
 
     //charms
@@ -768,19 +768,19 @@ export class GlobalService {
     character.battleStats.overdriveGainFromAutoAttacks += this.charmService.getTotalOverdriveGainFromAutoAttacksAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.healingDone += this.charmService.getTotalHealingDoneAdditionFromCharms(this.globalVar.resources, character);
 
-    character.battleStats.elementalDamageIncrease.holy += this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageIncrease.fire += this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageIncrease.lightning += this.charmService.getTotalLightningDamageIncreaseAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageIncrease.water += this.charmService.getTotalWaterDamageIncreaseAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageIncrease.air += this.charmService.getTotalAirDamageIncreaseAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageIncrease.earth += this.charmService.getTotalEarthDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementIncrease.holy += this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementIncrease.fire += this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementIncrease.lightning += this.charmService.getTotalLightningDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementIncrease.water += this.charmService.getTotalWaterDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementIncrease.air += this.charmService.getTotalAirDamageIncreaseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementIncrease.earth += this.charmService.getTotalEarthDamageIncreaseAdditionFromCharms(this.globalVar.resources);
 
-    character.battleStats.elementalDamageResistance.holy += this.charmService.getTotalHolyDamageResistanceAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageResistance.fire += this.charmService.getTotalFireDamageResistanceAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageResistance.lightning += this.charmService.getTotalLightningDamageResistanceAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageResistance.water += this.charmService.getTotalWaterDamageResistanceAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageResistance.air += this.charmService.getTotalAirDamageResistanceAdditionFromCharms(this.globalVar.resources);
-    character.battleStats.elementalDamageResistance.earth += this.charmService.getTotalEarthDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementResistance.holy += this.charmService.getTotalHolyDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementResistance.fire += this.charmService.getTotalFireDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementResistance.lightning += this.charmService.getTotalLightningDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementResistance.water += this.charmService.getTotalWaterDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementResistance.air += this.charmService.getTotalAirDamageResistanceAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.elementResistance.earth += this.charmService.getTotalEarthDamageResistanceAdditionFromCharms(this.globalVar.resources);
 
 
     //chthonic powers    
@@ -867,7 +867,8 @@ export class GlobalService {
     });
   }
 
-  giveGodExp(god: God, xpAmount: number) {
+  getGodExpBonus(god: God) {
+    var bonus = 1;
     var BoonOfOlympus = this.globalVar.resources.find(item => item.item === ItemsEnum.BoonOfOlympus);
     var BoonOfOlympusValue = 1;
     if (BoonOfOlympus !== undefined)
@@ -882,7 +883,12 @@ export class GlobalService {
 
     affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
 
-    god.exp += xpAmount * BoonOfOlympusValue * affinityBoost;
+    bonus *= BoonOfOlympusValue * affinityBoost;
+    return bonus;
+  }
+
+  giveGodExp(god: God, xpAmount: number) {    
+    god.exp += xpAmount * this.getGodExpBonus(god);
 
     var previousXp: number | undefined = undefined;
     while (god.exp >= god.expToNextLevel && (previousXp === undefined || god.exp < previousXp)) {
@@ -1491,7 +1497,7 @@ export class GlobalService {
 
     if (godLevel % 100 === 0) {
       if (god.type === GodEnum.Athena) {
-        stats.elementalDamageIncrease.holy += godLevel / 25000; //should lead to +60% holy damage
+        stats.elementIncrease.holy += godLevel / 25000; //should lead to +60% holy damage
       }
       else if (god.type === GodEnum.Artemis) {
         stats.criticalMultiplier += godLevel / 20000; //should lead to +75% crit damage increase
@@ -1553,8 +1559,8 @@ export class GlobalService {
     god.permanentStatGain.resistance += upgradedStats.resistance;
 
     god.permanentStatGain.hpRegen += upgradedStats.hpRegen;
-    god.permanentStatGain.elementalDamageIncrease.increaseByStatArray(upgradedStats.elementalDamageIncrease);
-    god.permanentStatGain.elementalDamageResistance.increaseByStatArray(upgradedStats.elementalDamageResistance);
+    god.permanentStatGain.elementIncrease.increaseByStatArray(upgradedStats.elementIncrease);
+    god.permanentStatGain.elementResistance.increaseByStatArray(upgradedStats.elementResistance);
     god.permanentStatGain.criticalMultiplier += upgradedStats.criticalMultiplier;
     god.permanentStatGain.abilityCooldownReduction += upgradedStats.abilityCooldownReduction;
     god.permanentStatGain.autoAttackCooldownReduction += upgradedStats.autoAttackCooldownReduction;
@@ -1852,5 +1858,10 @@ export class GlobalService {
       return 1;
     else
       return 20;
+  }
+
+  setAsSubscriber(date: Date) {
+    this.globalVar.isSubscriber = true;
+    this.globalVar.subscribedDate = date;
   }
 }

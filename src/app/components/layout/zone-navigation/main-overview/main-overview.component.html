@@ -16,12 +16,12 @@
             <span><span class="resource bold">Coins:</span><span>
                     {{lookupService.getResourceAmount(itemsEnum.Coin) |
                     number}}</span></span>
-            <br />
+            <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" />
             <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
                 class="resource chthonicPowerKeyword">Chthonic Power:
                 <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
                     : '1.0-2'}}</span></span>
-            <br />
+            <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" />
             <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
                 class="resource chthonicFavorKeyword">Chthonic Favor:
                 <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number

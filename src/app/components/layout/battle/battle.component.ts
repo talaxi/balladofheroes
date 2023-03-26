@@ -3,6 +3,7 @@ import { MatDialog as MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
@@ -66,7 +67,7 @@ export class BattleComponent implements OnInit {
         var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
 
         if (autoProgress && currentSubzone !== undefined &&
-          (currentSubzone.victoriesNeededToProceed - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
+          (currentSubzone.winsNeeded - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
           this.balladService.selectNextSubzone();
         }
       }
@@ -278,9 +279,9 @@ export class BattleComponent implements OnInit {
     }
     else {
       text = "(" + this.activeSubzone.victoryCount.toString();
-      if (this.activeSubzone.victoriesNeededToProceed > this.activeSubzone.victoryCount)
-        text += "/" + this.activeSubzone.victoriesNeededToProceed;
-      text += this.activeSubzone.victoryCount === 1 && this.activeSubzone.victoriesNeededToProceed <= this.activeSubzone.victoryCount ? " win)" : " wins)";
+      if (this.activeSubzone.winsNeeded > this.activeSubzone.victoryCount)
+        text += "/" + this.activeSubzone.winsNeeded;
+      text += this.activeSubzone.victoryCount === 1 && this.activeSubzone.winsNeeded <= this.activeSubzone.victoryCount ? " win)" : " wins)";
     }
 
     return text;
@@ -308,10 +309,13 @@ export class BattleComponent implements OnInit {
 
     this.notificationOverlayMessage = "";
 
+    this.pruneOverlayBuffer();
+
     if (this.gameLogService.notificationOverlayBuffer === undefined || this.gameLogService.notificationOverlayBuffer.length === 0)
       return;
+    
+    var nextMessage = this.gameLogService.notificationOverlayBuffer[0];    
 
-    var nextMessage = this.gameLogService.notificationOverlayBuffer[0];
     this.notificationOverlayMessage = nextMessage[0];
     nextMessage[2] -= deltaTime;
 
@@ -352,6 +356,18 @@ export class BattleComponent implements OnInit {
     }
   }
 
+  pruneOverlayBuffer() {
+    if (!this.globalService.globalVar.settings.get("displayOverlayTutorials"))
+    {
+      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item[1] !== GameLogEntryEnum.Tutorial);
+    }
+
+    if (!this.globalService.globalVar.settings.get("displayOverlayBattleRewards"))
+    {
+      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item[1] !== GameLogEntryEnum.BattleRewards);
+    }
+  }
+
   isNextSubzoneButtonAvailable() {
     var currentSubzone = this.balladService.getActiveSubZone();
     var nextSubzoneFound = false;
@@ -362,7 +378,7 @@ export class BattleComponent implements OnInit {
         reverseZones.forEach(zone => {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
           reverseSubzones.forEach(subzone => {
-            if (currentSubzone.type !== subzone.type && !subzone.isTown && subzone.victoriesNeededToProceed - subzone.victoryCount > 0) {              
+            if (currentSubzone.type !== subzone.type && !subzone.isTown && subzone.winsNeeded - subzone.victoryCount > 0) {              
               nextSubzoneFound = true;
             }
           });

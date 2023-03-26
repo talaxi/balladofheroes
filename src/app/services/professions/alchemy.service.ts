@@ -578,6 +578,18 @@ export class AlchemyService {
 
       recipe.expGain = 28;
     }
+    if (item === ItemsEnum.FocusPotion) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 3));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(AlchemyActionsEnum.Infuse);
+      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
+
+      recipe.expGain = 18;
+    }
 
     return recipe;
   }

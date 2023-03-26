@@ -4,7 +4,7 @@
         <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}"
             (menuOpened)="openItemModal(i)" class="buttonStyled" #itemMenuTrigger
             [matMenuTriggerFor]="battleItems.length > 0 ? itemMenu : emptyItemMenu">
-            <img class="itemImage" src="assets/svg/emptyItemSlot.svg"></button>
+            <img class="itemImage" src="assets/svg/emptyItemSlot.svg" (contextmenu)="preventRightClick()"></button>
         <div *ngIf="!isBattleItemSlotUnequipped(i)">
             <app-item-belt-item [slotNumber]="i"></app-item-belt-item>
         </div>

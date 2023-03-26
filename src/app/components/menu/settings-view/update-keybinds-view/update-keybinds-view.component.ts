@@ -51,6 +51,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var menuGoToAchievements = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToAchievements");
     if (menuGoToAchievements !== undefined)
       this.menuKeybinds.push(menuGoToAchievements);
+    
+      var menuGoToProfessions = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToProfessions");
+      if (menuGoToProfessions !== undefined)
+        this.menuKeybinds.push(menuGoToProfessions);
 
     var menuGoToSettings = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToSettings");
     if (menuGoToSettings !== undefined)
@@ -71,6 +75,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var openMenu = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openMenu");
     if (openMenu !== undefined)
       this.battleKeybinds.push(openMenu);
+
+      var openLog = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openLog");
+      if (openLog !== undefined)
+        this.battleKeybinds.push(openLog);
 
     var openOverviewQuickView = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openOverviewQuickView");
     if (openOverviewQuickView !== undefined)
@@ -280,7 +288,9 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (name === "menuGoToResources")
       updatedName = "Open Resources Page";
     if (name === "menuGoToAchievements")
-      updatedName = "Open Achievements Page";
+      updatedName = "Open Achievements Page";      
+    if (name === "menuGoToProfessions")
+    updatedName = "Open Professions Page";
     if (name === "menuGoToSettings")
       updatedName = "Open Settings Page";
     if (name === "menuTraverseSubMenuUp")
@@ -291,6 +301,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Toggle Pause/Play";
     if (name === "openMenu")
       updatedName = "Open Menu";
+      if (name === "openLog")
+        updatedName = "Open Log";
     if (name === "openOverviewQuickView")
       updatedName = "Open Overview Quick View";
     if (name === "openResourcesQuickView")

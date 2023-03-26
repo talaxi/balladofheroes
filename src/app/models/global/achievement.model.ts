@@ -4,18 +4,18 @@ import { SubZoneEnum } from "../enums/sub-zone-enum.model";
 import { ResourceValue } from "../resources/resource-value.model";
 
 export class Achievement {
-    relatedSubzone: SubZoneEnum;
-    achievementType: AchievementTypeEnum;
+    subzone: SubZoneEnum;
+    type: AchievementTypeEnum;
     @Type(() => ResourceValue)
-    bonusResources: ResourceValue[];
+    rewards: ResourceValue[];
     completed: boolean;
 
-    constructor(achievementType: AchievementTypeEnum, relatedSubzone?: SubZoneEnum) {
-        this.achievementType = achievementType;
-        this.bonusResources = [];
+    constructor(achievementType: AchievementTypeEnum, subzone?: SubZoneEnum) {
+        this.type = achievementType;
+        this.rewards = [];
         this.completed = false;
 
-        if (relatedSubzone !== undefined)
-            this.relatedSubzone = relatedSubzone;
+        if (subzone !== undefined)
+            this.subzone = subzone;
     }    
 }

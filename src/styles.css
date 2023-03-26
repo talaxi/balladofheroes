@@ -432,6 +432,17 @@ h6 {
   font-weight: 550;
 }
 
+.aHrefStyledAsButton {
+  background-color: var(--button-background-color);
+  color: var(--foreground-quaternary);
+  font-weight: bold;
+  font-size: .95rem;
+  padding: .1rem .5rem;
+  margin: .1rem .2rem;
+  border: solid 2px black;
+  cursor: pointer;
+}
+
 .buttonStyled {
   background-color: var(--button-background-color);
   color: var(--foreground-quaternary);
@@ -440,6 +451,11 @@ h6 {
   padding: .1rem .5rem;
   margin: .1rem .2rem;
   border-style: solid;
+}
+
+.smallButtonStyled {
+  padding: 0 .3rem !important;
+  margin: .1rem .1rem !important;
 }
 
 .buttonStyled:hover {

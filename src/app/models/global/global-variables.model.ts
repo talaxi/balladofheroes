@@ -24,6 +24,7 @@ import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
 import { Altars } from "../altar/altars.model";
 import { SidequestData } from "../utility/sidequest-data.model";
 import { FollowerData } from "../followers/follower-data.model";
+import { RedeemableCode } from "../utility/redeemable-code.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -88,6 +89,10 @@ export class GlobalVariables {
     @Type(() => FollowerData)
     followerData: FollowerData;
     extraSpeedEnabled: boolean;
+    @Type(() => RedeemableCode)
+    redeemedCodes: RedeemableCode[];
+    isSubscriber: boolean;
+    subscribedDate: Date;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -122,5 +127,7 @@ export class GlobalVariables {
         this.sidequestData = new SidequestData();
         this.followerData = new FollowerData();
         this.extraSpeedEnabled = true;
+        this.redeemedCodes = [];
+        this.isSubscriber = false;        
     }
 }

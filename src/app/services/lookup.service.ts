@@ -24,6 +24,7 @@ import { ItemTypeEnum } from '../models/enums/item-type-enum.model';
 import { ItemsEnum } from '../models/enums/items-enum.model';
 import { LogViewEnum } from '../models/enums/log-view-enum.model';
 import { OverdriveNameEnum } from '../models/enums/overdrive-name-enum.model';
+import { ProfessionEnum } from '../models/enums/professions-enum.model';
 import { StatusEffectEnum } from '../models/enums/status-effects-enum.model';
 import { SubZoneEnum } from '../models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from '../models/enums/tutorial-type-enum.model';
@@ -69,7 +70,7 @@ export class LookupService {
       });
     });
 
-    return chosenSubzone.victoryCount >= chosenSubzone.victoriesNeededToProceed;
+    return chosenSubzone.victoryCount >= chosenSubzone.winsNeeded;
   }
 
   getSubZoneByType(type: SubZoneEnum) {
@@ -90,7 +91,7 @@ export class LookupService {
   getAchievementName(achievement: Achievement) {
     var name = "";
 
-    name += "'" + this.getSubZoneByType(achievement.relatedSubzone).name + " - " + this.getAchievementDescription(achievement.achievementType) + "'";
+    name += "'" + this.getSubZoneByType(achievement.subzone).name + " - " + this.getAchievementDescription(achievement.type) + "'";
 
     return name;
   }
@@ -202,7 +203,7 @@ export class LookupService {
 
   getItemTypeFromItemEnum(type: ItemsEnum) {
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.HealingSalve ||
-      type === ItemsEnum.RestorativeHerb) {
+      type === ItemsEnum.RestorativeHerb || type === ItemsEnum.FocusPotion) {
       return ItemTypeEnum.HealingItem;
     }
 
@@ -269,6 +270,8 @@ export class LookupService {
       name = "Healing Salve";
     if (type === ItemsEnum.RestorativeHerb)
       name = "Restorative Herb";
+      else if (type === ItemsEnum.FocusPotion)
+      name = "Focus Potion";
 
     //battle items
     else if (type === ItemsEnum.ThrowingStone)
@@ -470,6 +473,10 @@ export class LookupService {
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Poison Extract Potion Recipe";
+      else if (type === ItemsEnum.HeroicElixirRecipe)
+      name = "Heroic Elixir Recipe";
+      else if (type === ItemsEnum.FocusPotionRecipe)
+      name = "Focus Potion Recipe";
 
     //charms
     else if (type === ItemsEnum.SmallCharmOfDetermination)
@@ -647,6 +654,9 @@ export class LookupService {
 
     else if (type === ItemsEnum.HealingSalve)
       name = "Heal both party members for " + effect.healAmount + " HP.";
+
+      else if (type === ItemsEnum.FocusPotion)
+      name = "Fill " + relatedUserGainStatusEffectEffectivenessPercent + "% of a party member's Overdrive gauge.";
 
     //battle items
     else if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.ExplodingPotion || type === ItemsEnum.HeftyStone)
@@ -1074,7 +1084,7 @@ export class LookupService {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 25, 0, 0, 0);
       equipmentPiece.stats.hpRegen += 3;
-      equipmentPiece.stats.elementalDamageResistance.fire += .05;
+      equipmentPiece.stats.elementResistance.fire += .05;
     }
     if (type === ItemsEnum.ShieldOfTheHealer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Rare);
@@ -1107,7 +1117,7 @@ export class LookupService {
     if (type === ItemsEnum.MoltenArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(300, 0, 20, 10, 0, 0);
-      equipmentPiece.stats.elementalDamageResistance.fire += .05;
+      equipmentPiece.stats.elementResistance.fire += .05;
     }
     if (type === ItemsEnum.HardenedLeatherArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
@@ -1118,7 +1128,7 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(600, 0, 30, 55, 0, 0);
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
       equipmentPiece.equipmentEffect.chance = .25;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));      
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
     }
     if (type === ItemsEnum.BoarskinArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
@@ -1150,55 +1160,55 @@ export class LookupService {
     if (type === ItemsEnum.GemmedNecklace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 25);
-      equipmentPiece.stats.elementalDamageResistance.earth += .1;
+      equipmentPiece.stats.elementResistance.earth += .1;
     }
 
     //ring
     if (type === ItemsEnum.MoltenRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 10);
-      equipmentPiece.stats.elementalDamageResistance.fire += .10;
+      equipmentPiece.stats.elementResistance.fire += .10;
     }
     //+% to elemental damage, absorb certain amount of elemental damage
     if (type === ItemsEnum.FracturedRubyRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.stats.elementalDamageIncrease.fire += .25;
+      equipmentPiece.stats.elementIncrease.fire += .25;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Fire, 90));
     }
     if (type === ItemsEnum.FracturedAmethystRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.stats.elementalDamageIncrease.air += .25;
+      equipmentPiece.stats.elementIncrease.air += .25;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Air, 90));
     }
     if (type === ItemsEnum.FracturedAquamarineRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.stats.elementalDamageIncrease.water += .25;
+      equipmentPiece.stats.elementIncrease.water += .25;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Water, 90));
     }
     if (type === ItemsEnum.FracturedEmeraldRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.stats.elementalDamageIncrease.earth += .25;
+      equipmentPiece.stats.elementIncrease.earth += .25;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Earth, 90));
     }
     if (type === ItemsEnum.FracturedOpalRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.stats.elementalDamageIncrease.lightning += .25;
+      equipmentPiece.stats.elementIncrease.lightning += .25;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Lightning, 90));
     }
     if (type === ItemsEnum.FracturedTopazRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.stats.elementalDamageIncrease.holy += .25;
+      equipmentPiece.stats.elementIncrease.holy += .25;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 90, 500, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Holy, 90));
     }
@@ -1619,9 +1629,9 @@ export class LookupService {
         secondaryRelatedTargetGainStatusEffectDuration = Math.round(secondaryRelatedTargetGainStatusEffect.duration);
         secondaryRelatedTargetGainStatusEffectEffectiveness = secondaryRelatedTargetGainStatusEffect.effectiveness;
         if (secondaryRelatedTargetGainStatusEffectEffectiveness < 1)
-        secondaryRelatedTargetGainStatusEffectEffectivenessPercent = Math.round((secondaryRelatedTargetGainStatusEffectEffectiveness) * 100);
+          secondaryRelatedTargetGainStatusEffectEffectivenessPercent = Math.round((secondaryRelatedTargetGainStatusEffectEffectiveness) * 100);
         else
-        secondaryRelatedTargetGainStatusEffectEffectivenessPercent = Math.round((secondaryRelatedTargetGainStatusEffectEffectiveness - 1) * 100);
+          secondaryRelatedTargetGainStatusEffectEffectivenessPercent = Math.round((secondaryRelatedTargetGainStatusEffectEffectiveness - 1) * 100);
         secondaryRelatedTargetGainStatusEffectTickFrequency = secondaryRelatedTargetGainStatusEffect.tickFrequency;
       }
     }
@@ -1852,10 +1862,10 @@ export class LookupService {
       abilityDescription = "Increase the user's Attack and Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Sloppy Shot") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) +"% to " + ((damageModifierRange + 1) * 100) +"%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Full Burst") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) +"% to " + ((damageModifierRange + 1) * 100) +"%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Immobilize") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2254,6 +2264,10 @@ export class LookupService {
     if (item === ItemsEnum.RestorativeHerb) {
       itemEffect.dealsDamage = false;
       itemEffect.healAmount = 150;
+    }
+    if (item === ItemsEnum.FocusPotion) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FillOverdriveGauge, 0, .1, true, true));
     }
     if (item === ItemsEnum.ThrowingStone) {
       itemEffect.dealsDamage = true;
@@ -2710,30 +2724,30 @@ export class LookupService {
       equipmentStats += "+" + (equipment.stats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction<br />";
     if (equipment.stats.autoAttackCooldownReduction > 0)
       equipmentStats += "+" + (equipment.stats.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction<br />";
-    if (equipment.stats.elementalDamageIncrease.holy > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageIncrease.holy * 100) + "% Holy Damage Bonus<br />";
-    if (equipment.stats.elementalDamageIncrease.fire > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageIncrease.fire * 100) + "% Fire Damage Bonus<br />";
-    if (equipment.stats.elementalDamageIncrease.lightning > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageIncrease.lightning * 100) + "% Lightning Damage Bonus<br />";
-    if (equipment.stats.elementalDamageIncrease.water > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageIncrease.water * 100) + "% Water Damage Bonus<br />";
-    if (equipment.stats.elementalDamageIncrease.air > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageIncrease.air * 100) + "% Air Damage Bonus<br />";
-    if (equipment.stats.elementalDamageIncrease.earth > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageIncrease.earth * 100) + "% Earth Damage Bonus<br />";
-    if (equipment.stats.elementalDamageResistance.holy > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageResistance.holy * 100) + "% Holy Resistance Bonus<br />";
-    if (equipment.stats.elementalDamageResistance.fire > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageResistance.fire * 100) + "% Fire Resistance Bonus<br />";
-    if (equipment.stats.elementalDamageResistance.lightning > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageResistance.lightning * 100) + "% Lightning Resistance Bonus<br />";
-    if (equipment.stats.elementalDamageResistance.air > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageResistance.air * 100) + "% Air Resistance Bonus<br />";
-    if (equipment.stats.elementalDamageResistance.water > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageResistance.water * 100) + "% Water Resistance Bonus<br />";
-    if (equipment.stats.elementalDamageResistance.earth > 0)
-      equipmentStats += "+" + (equipment.stats.elementalDamageResistance.earth * 100) + "% Earth Resistance Bonus<br />";
+    if (equipment.stats.elementIncrease.holy > 0)
+      equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% Holy Damage Bonus<br />";
+    if (equipment.stats.elementIncrease.fire > 0)
+      equipmentStats += "+" + (equipment.stats.elementIncrease.fire * 100) + "% Fire Damage Bonus<br />";
+    if (equipment.stats.elementIncrease.lightning > 0)
+      equipmentStats += "+" + (equipment.stats.elementIncrease.lightning * 100) + "% Lightning Damage Bonus<br />";
+    if (equipment.stats.elementIncrease.water > 0)
+      equipmentStats += "+" + (equipment.stats.elementIncrease.water * 100) + "% Water Damage Bonus<br />";
+    if (equipment.stats.elementIncrease.air > 0)
+      equipmentStats += "+" + (equipment.stats.elementIncrease.air * 100) + "% Air Damage Bonus<br />";
+    if (equipment.stats.elementIncrease.earth > 0)
+      equipmentStats += "+" + (equipment.stats.elementIncrease.earth * 100) + "% Earth Damage Bonus<br />";
+    if (equipment.stats.elementResistance.holy > 0)
+      equipmentStats += "+" + (equipment.stats.elementResistance.holy * 100) + "% Holy Resistance Bonus<br />";
+    if (equipment.stats.elementResistance.fire > 0)
+      equipmentStats += "+" + (equipment.stats.elementResistance.fire * 100) + "% Fire Resistance Bonus<br />";
+    if (equipment.stats.elementResistance.lightning > 0)
+      equipmentStats += "+" + (equipment.stats.elementResistance.lightning * 100) + "% Lightning Resistance Bonus<br />";
+    if (equipment.stats.elementResistance.air > 0)
+      equipmentStats += "+" + (equipment.stats.elementResistance.air * 100) + "% Air Resistance Bonus<br />";
+    if (equipment.stats.elementResistance.water > 0)
+      equipmentStats += "+" + (equipment.stats.elementResistance.water * 100) + "% Water Resistance Bonus<br />";
+    if (equipment.stats.elementResistance.earth > 0)
+      equipmentStats += "+" + (equipment.stats.elementResistance.earth * 100) + "% Earth Resistance Bonus<br />";
 
     equipmentStats = this.utilityService.getSanitizedHtml(equipmentStats);
 
@@ -2845,6 +2859,12 @@ export class LookupService {
     };
   }
 
+  getProfessionColorClass(type: ProfessionEnum) {
+    return {
+      'alchemyText': type === ProfessionEnum.Alchemy
+    };
+  }
+
   getItemImage(type: ItemsEnum) {
     var src = "assets/svg/";
 
@@ -2871,6 +2891,9 @@ export class LookupService {
     }
     if (type === ItemsEnum.HealingSalve) {
       src += "healingSalve.svg";
+    }
+    if (type === ItemsEnum.FocusPotion) {
+      src += "focusPotion.svg";
     }
     if (type === ItemsEnum.FirePotion) {
       src += "firePotion.svg";
@@ -2991,7 +3014,7 @@ export class LookupService {
     var logItem = new LogData();
     logItem.type = LogViewEnum.Tutorials;
     logItem.relevantEnumValue = type;
-    logItem.dateReceived = formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
+    logItem.dateReceived = new Date().getTime(); //formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
 
     this.globalService.globalVar.logData.push(logItem);
   }
@@ -3000,7 +3023,7 @@ export class LookupService {
     var logItem = new LogData();
     logItem.type = LogViewEnum.Story;
     logItem.relevantEnumValue = type;
-    logItem.dateReceived = formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
+    logItem.dateReceived = new Date().getTime();//formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
 
     if (!this.globalService.globalVar.logData.some(item => item.relevantEnumValue === type && item.type === LogViewEnum.Story))
       this.globalService.globalVar.logData.push(logItem);
@@ -3011,7 +3034,7 @@ export class LookupService {
     logItem.type = LogViewEnum.Loot;
     logItem.relevantEnumValue = type;
     logItem.amount = amount;
-    logItem.dateReceived = formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
+    logItem.dateReceived = new Date().getTime();//formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
 
     this.globalService.globalVar.logData.push(logItem);
 
@@ -3138,6 +3161,48 @@ export class LookupService {
     return matchingAbility;
   }
 
+  getQualityEnumList() {
+    var qualityTypes: EquipmentQualityEnum[] = [];
+    for (const [propertyKey, propertyValue] of Object.entries(EquipmentQualityEnum))
+    {
+      if (!Number.isNaN(Number(propertyKey))) {
+        continue;
+      }
+
+      var enumValue = propertyValue as EquipmentQualityEnum;
+      if (enumValue !== EquipmentQualityEnum.None)
+        qualityTypes.push(enumValue);
+    }
+
+    return qualityTypes;
+  }
+
+  getGodXpBreakdown(god: God) {
+    var breakdown = "Total God XP Bonus: " + this.utilityService.roundTo((this.globalService.getGodExpBonus(god) - 1) * 100, 2) + "% <hr/>";
+
+    var boonOfOlympus = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.BoonOfOlympus);
+    var boonOfOlympusValue = 1;
+    if (boonOfOlympus !== undefined)
+      boonOfOlympusValue += boonOfOlympus.amount;
+
+    if (boonOfOlympusValue > 1)
+      breakdown += "Boon of Olympus: *" + boonOfOlympusValue + "<br/>";
+
+    var affinityBoost = 1;
+
+    //repeats every 4 levels, duration increase is at level X3
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 3)
+      affinityIncreaseCount += 1;
+
+    affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
+
+    if (affinityBoost > 1)
+      breakdown += "Affinity Boost: *" + affinityBoost + "<br/>";
+
+    return breakdown;
+  }
+
   getMaxHpDescription() {
     return "The amount of damage you can take before being knocked unconscious. If your entire party is unconscious, you must retreat to a town.";
   }
@@ -3159,7 +3224,7 @@ export class LookupService {
     var description = "Increases the number of times you hit when auto attacking, multiplying auto attack damage by <strong>" + this.utilityService.roundTo(totalAutoAttackCount, 3) + "</strong>.";
     if (totalAutoAttackCount >= 2)
       description += " On Hit effects occur <strong>" + Math.floor(totalAutoAttackCount) + "</strong> times from auto attacks.";
-    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)) + "</strong>.";    
+    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)) + "</strong>.";
     return description;
   }
 
@@ -3492,40 +3557,40 @@ export class LookupService {
     var breakdown = "";
 
     if (type === ElementalTypeEnum.Holy || name === "Holy") {
-      if (god.statGain.elementalDamageIncrease.holy > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageIncrease.holy * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageIncrease.holy > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageIncrease.holy * 100, 2) + "%<br />";
+      if (god.statGain.elementIncrease.holy > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementIncrease.holy * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementIncrease.holy > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementIncrease.holy * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Fire || name === "Fire") {
-      if (god.statGain.elementalDamageIncrease.fire > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageIncrease.fire * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageIncrease.fire > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageIncrease.fire * 100, 2) + "%<br />";
+      if (god.statGain.elementIncrease.fire > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementIncrease.fire * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementIncrease.fire > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementIncrease.fire * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
-      if (god.statGain.elementalDamageIncrease.lightning > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageIncrease.lightning * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageIncrease.lightning > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageIncrease.lightning * 100, 2) + "%<br />";
+      if (god.statGain.elementIncrease.lightning > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementIncrease.lightning * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementIncrease.lightning > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementIncrease.lightning * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Water || name === "Water") {
-      if (god.statGain.elementalDamageIncrease.water > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageIncrease.water * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageIncrease.water > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageIncrease.water * 100, 2) + "%<br />";
+      if (god.statGain.elementIncrease.water > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementIncrease.water * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementIncrease.water > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementIncrease.water * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Air || name === "Air") {
-      if (god.statGain.elementalDamageIncrease.air > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageIncrease.air * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageIncrease.air > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageIncrease.air * 100, 2) + "%<br />";
+      if (god.statGain.elementIncrease.air > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementIncrease.air * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementIncrease.air > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementIncrease.air * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Earth || name === "Earth") {
-      if (god.statGain.elementalDamageIncrease.earth > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageIncrease.earth * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageIncrease.earth > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageIncrease.earth * 100, 2) + "%<br />";
+      if (god.statGain.elementIncrease.earth > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementIncrease.earth * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementIncrease.earth > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementIncrease.earth * 100, 2) + "%<br />";
     }
 
     return breakdown;
@@ -3535,40 +3600,40 @@ export class LookupService {
     var breakdown = "";
 
     if (type === ElementalTypeEnum.Holy || name === "Holy") {
-      if (god.statGain.elementalDamageResistance.holy > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageResistance.holy * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageResistance.holy > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageResistance.holy * 100, 2) + "%<br />";
+      if (god.statGain.elementResistance.holy > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistance.holy * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementResistance.holy > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistance.holy * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Fire || name === "Fire") {
-      if (god.statGain.elementalDamageResistance.fire > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageResistance.fire * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageResistance.fire > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageResistance.fire * 100, 2) + "%<br />";
+      if (god.statGain.elementResistance.fire > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistance.fire * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementResistance.fire > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistance.fire * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
-      if (god.statGain.elementalDamageResistance.lightning > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageResistance.lightning * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageResistance.lightning > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageResistance.lightning * 100, 2) + "%<br />";
+      if (god.statGain.elementResistance.lightning > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistance.lightning * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementResistance.lightning > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistance.lightning * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Water || name === "Water") {
-      if (god.statGain.elementalDamageResistance.water > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageResistance.water * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageResistance.water > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageResistance.water * 100, 2) + "%<br />";
+      if (god.statGain.elementResistance.water > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistance.water * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementResistance.water > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistance.water * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Air || name === "Air") {
-      if (god.statGain.elementalDamageResistance.air > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageResistance.air * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageResistance.air > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageResistance.air * 100, 2) + "%<br />";
+      if (god.statGain.elementResistance.air > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistance.air * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementResistance.air > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistance.air * 100, 2) + "%<br />";
     }
     else if (type === ElementalTypeEnum.Earth || name === "Earth") {
-      if (god.statGain.elementalDamageResistance.earth > 0)
-        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementalDamageResistance.earth * 100, 2) + "%<br />";
-      if (god.permanentStatGain.elementalDamageResistance.earth > 0)
-        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementalDamageResistance.earth * 100, 2) + "%<br />";
+      if (god.statGain.elementResistance.earth > 0)
+        breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistance.earth * 100, 2) + "%<br />";
+      if (god.permanentStatGain.elementResistance.earth > 0)
+        breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistance.earth * 100, 2) + "%<br />";
     }
 
     return breakdown;
@@ -4077,13 +4142,13 @@ export class LookupService {
 
     if (type === ElementalTypeEnum.Holy || name === "Holy") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.holy + assignedGod1.permanentStatGain.elementalDamageIncrease.holy;
+        var godStatGain = assignedGod1.statGain.elementIncrease.holy + assignedGod1.permanentStatGain.elementIncrease.holy;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.holy + assignedGod2.permanentStatGain.elementalDamageIncrease.holy;
+        var godStatGain = assignedGod2.statGain.elementIncrease.holy + assignedGod2.permanentStatGain.elementIncrease.holy;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4098,13 +4163,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Fire || name === "Fire") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.fire + assignedGod1.permanentStatGain.elementalDamageIncrease.fire;
+        var godStatGain = assignedGod1.statGain.elementIncrease.fire + assignedGod1.permanentStatGain.elementIncrease.fire;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.fire + assignedGod2.permanentStatGain.elementalDamageIncrease.fire;
+        var godStatGain = assignedGod2.statGain.elementIncrease.fire + assignedGod2.permanentStatGain.elementIncrease.fire;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4119,13 +4184,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.lightning + assignedGod1.permanentStatGain.elementalDamageIncrease.lightning;
+        var godStatGain = assignedGod1.statGain.elementIncrease.lightning + assignedGod1.permanentStatGain.elementIncrease.lightning;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.lightning + assignedGod2.permanentStatGain.elementalDamageIncrease.lightning;
+        var godStatGain = assignedGod2.statGain.elementIncrease.lightning + assignedGod2.permanentStatGain.elementIncrease.lightning;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4140,13 +4205,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Water || name === "Water") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.water + assignedGod1.permanentStatGain.elementalDamageIncrease.water;
+        var godStatGain = assignedGod1.statGain.elementIncrease.water + assignedGod1.permanentStatGain.elementIncrease.water;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.water + assignedGod2.permanentStatGain.elementalDamageIncrease.water;
+        var godStatGain = assignedGod2.statGain.elementIncrease.water + assignedGod2.permanentStatGain.elementIncrease.water;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4161,13 +4226,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Air || name === "Air") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.air + assignedGod1.permanentStatGain.elementalDamageIncrease.air;
+        var godStatGain = assignedGod1.statGain.elementIncrease.air + assignedGod1.permanentStatGain.elementIncrease.air;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.air + assignedGod2.permanentStatGain.elementalDamageIncrease.air;
+        var godStatGain = assignedGod2.statGain.elementIncrease.air + assignedGod2.permanentStatGain.elementIncrease.air;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4182,13 +4247,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Earth || name === "Earth") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageIncrease.earth + assignedGod1.permanentStatGain.elementalDamageIncrease.earth;
+        var godStatGain = assignedGod1.statGain.elementIncrease.earth + assignedGod1.permanentStatGain.elementIncrease.earth;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageIncrease.earth + assignedGod2.permanentStatGain.elementalDamageIncrease.earth;
+        var godStatGain = assignedGod2.statGain.elementIncrease.earth + assignedGod2.permanentStatGain.elementIncrease.earth;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4214,13 +4279,13 @@ export class LookupService {
 
     if (type === ElementalTypeEnum.Holy || name === "Holy") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageResistance.holy + assignedGod1.permanentStatGain.elementalDamageResistance.holy;
+        var godStatGain = assignedGod1.statGain.elementResistance.holy + assignedGod1.permanentStatGain.elementResistance.holy;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageResistance.holy + assignedGod2.permanentStatGain.elementalDamageResistance.holy;
+        var godStatGain = assignedGod2.statGain.elementResistance.holy + assignedGod2.permanentStatGain.elementResistance.holy;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4235,13 +4300,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Fire || name === "Fire") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageResistance.fire + assignedGod1.permanentStatGain.elementalDamageResistance.fire;
+        var godStatGain = assignedGod1.statGain.elementResistance.fire + assignedGod1.permanentStatGain.elementResistance.fire;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageResistance.fire + assignedGod2.permanentStatGain.elementalDamageResistance.fire;
+        var godStatGain = assignedGod2.statGain.elementResistance.fire + assignedGod2.permanentStatGain.elementResistance.fire;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4257,13 +4322,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Lightning || name === "Lightning") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageResistance.lightning + assignedGod1.permanentStatGain.elementalDamageResistance.lightning;
+        var godStatGain = assignedGod1.statGain.elementResistance.lightning + assignedGod1.permanentStatGain.elementResistance.lightning;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageResistance.lightning + assignedGod2.permanentStatGain.elementalDamageResistance.lightning;
+        var godStatGain = assignedGod2.statGain.elementResistance.lightning + assignedGod2.permanentStatGain.elementResistance.lightning;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4279,13 +4344,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Water || name === "Water") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageResistance.water + assignedGod1.permanentStatGain.elementalDamageResistance.water;
+        var godStatGain = assignedGod1.statGain.elementResistance.water + assignedGod1.permanentStatGain.elementResistance.water;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageResistance.water + assignedGod2.permanentStatGain.elementalDamageResistance.water;
+        var godStatGain = assignedGod2.statGain.elementResistance.water + assignedGod2.permanentStatGain.elementResistance.water;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4301,13 +4366,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Air || name === "Air") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageResistance.air + assignedGod1.permanentStatGain.elementalDamageResistance.air;
+        var godStatGain = assignedGod1.statGain.elementResistance.air + assignedGod1.permanentStatGain.elementResistance.air;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageResistance.air + assignedGod2.permanentStatGain.elementalDamageResistance.air;
+        var godStatGain = assignedGod2.statGain.elementResistance.air + assignedGod2.permanentStatGain.elementResistance.air;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4323,13 +4388,13 @@ export class LookupService {
     }
     else if (type === ElementalTypeEnum.Earth || name === "Earth") {
       if (assignedGod1 !== undefined) {
-        var godStatGain = assignedGod1.statGain.elementalDamageResistance.earth + assignedGod1.permanentStatGain.elementalDamageResistance.earth;
+        var godStatGain = assignedGod1.statGain.elementResistance.earth + assignedGod1.permanentStatGain.elementResistance.earth;
         if (godStatGain > 0)
           breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
       if (assignedGod2 !== undefined) {
-        var godStatGain = assignedGod2.statGain.elementalDamageResistance.earth + assignedGod2.permanentStatGain.elementalDamageResistance.earth;
+        var godStatGain = assignedGod2.statGain.elementResistance.earth + assignedGod2.permanentStatGain.elementResistance.earth;
         if (godStatGain > 0)
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
@@ -4350,7 +4415,7 @@ export class LookupService {
   isSubzoneATown(subzoneEnum: SubZoneEnum) {
     if (subzoneEnum === SubZoneEnum.DodonaDelphi || subzoneEnum === SubZoneEnum.DodonaArta || subzoneEnum === SubZoneEnum.AsphodelPalaceOfHades ||
       subzoneEnum === SubZoneEnum.AsphodelLostHaven || subzoneEnum === SubZoneEnum.ElysiumColiseum || subzoneEnum === SubZoneEnum.PeloposNisosTravelPost
-      || subzoneEnum === SubZoneEnum.CalydonTownMarket)
+      || subzoneEnum === SubZoneEnum.CalydonTownMarket || subzoneEnum === SubZoneEnum.CalydonAltarOfAsclepius)
       return true;
 
     return false;
@@ -4519,6 +4584,34 @@ export class LookupService {
     return name;
   }
 
+  
+  getQualityTypeName(quality: EquipmentQualityEnum, includeClass: boolean = false) {
+    var name = "";
+
+    if (quality === EquipmentQualityEnum.Basic)
+      name = "Basic";
+    if (quality === EquipmentQualityEnum.Uncommon)
+      name = "Uncommon";
+    if (quality === EquipmentQualityEnum.Rare)
+      name = "Rare";
+    if (quality === EquipmentQualityEnum.Epic)
+      name = "Epic";
+    if (quality === EquipmentQualityEnum.Special)
+      name = "Special";
+    if (quality === EquipmentQualityEnum.Extraordinary)
+      name = "Extraordinary";
+    if (quality === EquipmentQualityEnum.Unique)
+      name = "Unique";
+
+    if (includeClass)
+    {
+      name = "<span class='" + name.toLowerCase() + "Equipment'>" + name + "</span>";
+    }
+    
+    return name;
+  }
+
+
   getQualityStars(quality: EquipmentQualityEnum) {
     if (quality === EquipmentQualityEnum.Basic)
       return "★";
@@ -4540,6 +4633,13 @@ export class LookupService {
 
   getAbilityGameLogMessage() {
 
+  }
+
+  getProfessionName(profession: ProfessionEnum) {
+    if (profession === ProfessionEnum.Alchemy)
+      return "Alchemy";
+
+    return "";
   }
 
   subzoneHasObscurredPath(type: SubZoneEnum) {

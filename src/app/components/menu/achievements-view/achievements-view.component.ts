@@ -55,7 +55,7 @@ export class AchievementsViewComponent implements OnInit {
       this.itemsPerPage = achievementsPerPage;
 
     this.globalService.globalVar.achievements.forEach(achievement => {
-      var achievementSubsection = this.achievementsBySubZone.find(item => item[0].relatedSubzone === achievement.relatedSubzone)
+      var achievementSubsection = this.achievementsBySubZone.find(item => item[0].subzone === achievement.subzone)
       if (achievementSubsection !== undefined) {
         achievementSubsection.push(achievement);
       }
@@ -151,7 +151,7 @@ export class AchievementsViewComponent implements OnInit {
   getAchievementStatus(section: Achievement[], rowCount: number, columnCount: number) {
     var achievement = this.getAchievement(section, rowCount, columnCount);
 
-    var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(achievement.relatedSubzone, this.globalService.globalVar.achievements) === 0;
+    var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(achievement.subzone, this.globalService.globalVar.achievements) === 0;
 
     return {
       'achievementUncompleted': !achievement.completed && !achievementsCompleted,
@@ -203,15 +203,15 @@ export class AchievementsViewComponent implements OnInit {
     var mainList = this.globalService.globalVar.achievements;
 
     if (this.selectedBallad !== undefined && parseInt(this.selectedBallad.toString()) !== BalladEnum.None) {
-      mainList = mainList.filter(item => this.balladService.isSubzoneInBallad(item.relatedSubzone, this.selectedBallad));
+      mainList = mainList.filter(item => this.balladService.isSubzoneInBallad(item.subzone, this.selectedBallad));
     }
 
     if (this.selectedZone !== undefined && parseInt(this.selectedZone.toString()) !== ZoneEnum.None) {
-      mainList = mainList.filter(item => this.balladService.isSubzoneInZone(item.relatedSubzone, this.selectedZone));
+      mainList = mainList.filter(item => this.balladService.isSubzoneInZone(item.subzone, this.selectedZone));
     }
 
     if (this.selectedSubzone !== undefined && parseInt(this.selectedSubzone.toString()) !== SubZoneEnum.None) {
-      mainList = mainList.filter(item => item.relatedSubzone === parseInt(this.selectedSubzone.toString()));
+      mainList = mainList.filter(item => item.subzone === parseInt(this.selectedSubzone.toString()));
     }
 
     if (this.showUncompleted) {
@@ -219,7 +219,7 @@ export class AchievementsViewComponent implements OnInit {
     }
 
     mainList.forEach(achievement => {
-      var achievementSubsection = this.achievementsBySubZone.find(item => item[0].relatedSubzone === achievement.relatedSubzone)
+      var achievementSubsection = this.achievementsBySubZone.find(item => item[0].subzone === achievement.subzone)
       if (achievementSubsection !== undefined) {
         achievementSubsection.push(achievement);
       }
@@ -265,5 +265,9 @@ export class AchievementsViewComponent implements OnInit {
     this.lastPage = Math.ceil(this.achievementsBySubZone.length / this.itemsPerPage);    
     this.globalService.globalVar.settings.set("achievementsPerPage", this.itemsPerPage);
     this.getAchievementsByPage();
+  }
+
+  preventRightClick() {
+    return false;
   }
 }

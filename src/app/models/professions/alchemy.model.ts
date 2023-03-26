@@ -1,4 +1,5 @@
 import { Type } from "class-transformer";
+import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
 import { AlchemyUpgrades } from "./alchemy-upgrades.model";
 import { Recipe } from "./recipe.model";
 
@@ -21,10 +22,13 @@ export class Alchemy {
     alchemyCurrentAmountCreated: number;
     alchemyCreateAmount: number;
 
+    recipeBookQualityToggle: [EquipmentQualityEnum, boolean][];
+
     constructor() {
         this.level = 0;
         this.availableRecipes = [];
         this.upgrades = [];
+        this.recipeBookQualityToggle = [];
         this.isUnlocked = false;
         this.alchemyTimer = 0;
         this.alchemyTimerLength = 0;

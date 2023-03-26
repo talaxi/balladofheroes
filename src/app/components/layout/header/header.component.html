@@ -36,14 +36,20 @@
 </div>
 
 <ng-template #pausedPopover>
-    <div>
-      The game is paused. Click or press the <strong>P</strong> key to unpause.
+    <div *ngIf="!isMobile">
+      The game is paused. Click or press the <span [innerHtml]="getPauseKeybindKey()"></span> key to unpause.
+    </div>
+    <div *ngIf="isMobile">
+      The game is paused. Tap to unpause.
     </div>
   </ng-template>
 
   <ng-template #unpausedPopover>
-    <div>
-      The game is playing. Click or press the <strong>P</strong> key to pause.
+    <div *ngIf="!isMobile">
+      The game is playing. Click or press the <span [innerHtml]="getPauseKeybindKey()"></span> key to pause.
+    </div>
+    <div *ngIf="isMobile">
+      The game is playing. Tap to pause.
     </div>
   </ng-template>
 

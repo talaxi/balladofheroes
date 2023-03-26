@@ -289,19 +289,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageIncrease.holy;
+            total += this.weapon.stats.elementIncrease.holy;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageIncrease.holy;
+            total += this.shield.stats.elementIncrease.holy;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageIncrease.holy;
+            total += this.armor.stats.elementIncrease.holy;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageIncrease.holy;
+            total += this.necklace.stats.elementIncrease.holy;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageIncrease.holy;
+            total += this.ring.stats.elementIncrease.holy;
 
         return total;
     }
@@ -310,19 +310,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageIncrease.fire;
+            total += this.weapon.stats.elementIncrease.fire;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageIncrease.fire;
+            total += this.shield.stats.elementIncrease.fire;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageIncrease.fire;
+            total += this.armor.stats.elementIncrease.fire;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageIncrease.fire;
+            total += this.necklace.stats.elementIncrease.fire;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageIncrease.fire;
+            total += this.ring.stats.elementIncrease.fire;
 
         return total;
     }
@@ -331,19 +331,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageIncrease.lightning;
+            total += this.weapon.stats.elementIncrease.lightning;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageIncrease.lightning;
+            total += this.shield.stats.elementIncrease.lightning;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageIncrease.lightning;
+            total += this.armor.stats.elementIncrease.lightning;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageIncrease.lightning;
+            total += this.necklace.stats.elementIncrease.lightning;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageIncrease.lightning;
+            total += this.ring.stats.elementIncrease.lightning;
 
         return total;
     }
@@ -352,19 +352,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageIncrease.water;
+            total += this.weapon.stats.elementIncrease.water;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageIncrease.water;
+            total += this.shield.stats.elementIncrease.water;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageIncrease.water;
+            total += this.armor.stats.elementIncrease.water;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageIncrease.water;
+            total += this.necklace.stats.elementIncrease.water;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageIncrease.water;
+            total += this.ring.stats.elementIncrease.water;
 
         return total;
     }
@@ -373,19 +373,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageIncrease.air;
+            total += this.weapon.stats.elementIncrease.air;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageIncrease.air;
+            total += this.shield.stats.elementIncrease.air;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageIncrease.air;
+            total += this.armor.stats.elementIncrease.air;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageIncrease.air;
+            total += this.necklace.stats.elementIncrease.air;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageIncrease.air;
+            total += this.ring.stats.elementIncrease.air;
 
         return total;
     }
@@ -394,19 +394,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageIncrease.earth;
+            total += this.weapon.stats.elementIncrease.earth;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageIncrease.earth;
+            total += this.shield.stats.elementIncrease.earth;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageIncrease.earth;
+            total += this.armor.stats.elementIncrease.earth;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageIncrease.earth;
+            total += this.necklace.stats.elementIncrease.earth;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageIncrease.earth;
+            total += this.ring.stats.elementIncrease.earth;
 
         return total;
     }
@@ -415,19 +415,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageResistance.holy;
+            total += this.weapon.stats.elementResistance.holy;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageResistance.holy;
+            total += this.shield.stats.elementResistance.holy;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageResistance.holy;
+            total += this.armor.stats.elementResistance.holy;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageResistance.holy;
+            total += this.necklace.stats.elementResistance.holy;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageResistance.holy;
+            total += this.ring.stats.elementResistance.holy;
 
         return total;
     }
@@ -436,19 +436,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageResistance.fire;
+            total += this.weapon.stats.elementResistance.fire;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageResistance.fire;
+            total += this.shield.stats.elementResistance.fire;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageResistance.fire;
+            total += this.armor.stats.elementResistance.fire;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageResistance.fire;
+            total += this.necklace.stats.elementResistance.fire;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageResistance.fire;
+            total += this.ring.stats.elementResistance.fire;
 
         return total;
     }
@@ -457,19 +457,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageResistance.lightning;
+            total += this.weapon.stats.elementResistance.lightning;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageResistance.lightning;
+            total += this.shield.stats.elementResistance.lightning;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageResistance.lightning;
+            total += this.armor.stats.elementResistance.lightning;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageResistance.lightning;
+            total += this.necklace.stats.elementResistance.lightning;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageResistance.lightning;
+            total += this.ring.stats.elementResistance.lightning;
 
         return total;
     }
@@ -478,19 +478,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageResistance.water;
+            total += this.weapon.stats.elementResistance.water;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageResistance.water;
+            total += this.shield.stats.elementResistance.water;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageResistance.water;
+            total += this.armor.stats.elementResistance.water;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageResistance.water;
+            total += this.necklace.stats.elementResistance.water;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageResistance.water;
+            total += this.ring.stats.elementResistance.water;
 
         return total;
     }
@@ -499,19 +499,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageResistance.air;
+            total += this.weapon.stats.elementResistance.air;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageResistance.air;
+            total += this.shield.stats.elementResistance.air;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageResistance.air;
+            total += this.armor.stats.elementResistance.air;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageResistance.air;
+            total += this.necklace.stats.elementResistance.air;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageResistance.air;
+            total += this.ring.stats.elementResistance.air;
 
         return total;
     }
@@ -520,19 +520,19 @@ export class EquipmentSet {
         var total = 0;
 
         if (this.weapon !== undefined)
-            total += this.weapon.stats.elementalDamageResistance.earth;
+            total += this.weapon.stats.elementResistance.earth;
 
         if (this.shield !== undefined)
-            total += this.shield.stats.elementalDamageResistance.earth;
+            total += this.shield.stats.elementResistance.earth;
 
         if (this.armor !== undefined)
-            total += this.armor.stats.elementalDamageResistance.earth;
+            total += this.armor.stats.elementResistance.earth;
 
         if (this.necklace !== undefined)
-            total += this.necklace.stats.elementalDamageResistance.earth;
+            total += this.necklace.stats.elementResistance.earth;
 
         if (this.ring !== undefined)
-            total += this.ring.stats.elementalDamageResistance.earth;
+            total += this.ring.stats.elementResistance.earth;
 
         return total;
     }

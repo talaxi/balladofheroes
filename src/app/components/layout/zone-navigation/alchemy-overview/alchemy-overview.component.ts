@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -12,6 +12,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
   styleUrls: ['./alchemy-overview.component.css']
 })
 export class AlchemyOverviewComponent {
+@Input() expandedView = false;
 
 constructor(private deviceDetectorService: DeviceDetectorService, private lookupService: LookupService,
   private globalService: GlobalService, private alchemyService: AlchemyService, public dialog: MatDialog,
@@ -86,5 +87,21 @@ openAlchemy(content: any) {
 
   getAmountCreated() {
     return this.globalService.globalVar.alchemy.alchemyCurrentAmountCreated;
+  }
+
+  atMaxLevel() {
+    return this.globalService.globalVar.alchemy.level >= this.globalService.globalVar.alchemy.maxLevel;
+  }
+
+  getLevel() {
+    return this.globalService.globalVar.alchemy.level;
+  }
+
+  getExp() {
+    return this.globalService.globalVar.alchemy.exp;
+  }
+
+  getExpToNextLevel() {
+    return this.globalService.globalVar.alchemy.expToNextLevel;
   }
 }

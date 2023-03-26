@@ -1,4 +1,5 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Recipe } from 'src/app/models/professions/recipe.model';
@@ -48,8 +49,8 @@ export class AlchemyViewComponent implements OnInit {
     return this.lookupService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.alchemyService.getAmountCanCreate(recipe) + " available)</i>";
   }
 
-  getRecipeList() {
-    return this.globalService.globalVar.alchemy.availableRecipes;
+  getRecipeList(quality: EquipmentQualityEnum) {
+    return this.globalService.globalVar.alchemy.availableRecipes.filter(item => item.quality === quality);
   }
 
   getSelectedRecipeName() {
@@ -221,5 +222,43 @@ export class AlchemyViewComponent implements OnInit {
 
   getSelectedRecipeQualityStars() {
     return this.lookupService.getQualityStars(this.selectedRecipe.quality);
+  }
+
+  getQualityTypeList() {
+    return this.lookupService.getQualityEnumList().sort(function (a, b) {
+      return a > b ? -1 : a < b ? 1 : 0;
+    });
+  }
+
+  getQualityTypeName(quality: EquipmentQualityEnum) {
+    var name = this.lookupService.getQualityTypeName(quality);
+
+    return "<span class='" + name.toLowerCase() + "Equipment bold'>" + name.toUpperCase() + " RECIPES</span>";
+  }
+
+  recipesAtQualityLevelAmount(quality: EquipmentQualityEnum) {
+    return this.globalService.globalVar.alchemy.availableRecipes.filter(item => item.quality === quality).length;
+  }
+
+  toggleQualitySection(quality: EquipmentQualityEnum) {
+    var qualityToggle = this.globalService.globalVar.alchemy.recipeBookQualityToggle.find(item => item[0] === quality);
+
+    if (qualityToggle === undefined)
+    {
+      this.globalService.globalVar.alchemy.recipeBookQualityToggle.push([quality, true]);
+    }
+    else
+    {
+      qualityToggle[1] = !qualityToggle[1];
+    }
+  }
+
+  hideRecipesByQuality(quality: EquipmentQualityEnum) {
+    var qualityToggle = this.globalService.globalVar.alchemy.recipeBookQualityToggle.find(item => item[0] === quality);
+
+    if (qualityToggle === undefined)
+      return false;
+    else 
+      return qualityToggle[1];
   }
 }

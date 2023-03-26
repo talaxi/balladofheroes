@@ -15,6 +15,21 @@
         <div *ngIf="!isMobile" class="updateKeybinds">
             <button class="buttonStyled" (click)="openKeybinds(keybindContent)">Update Keybinds</button>
         </div>
+        <div *ngIf="isMobile" class="updateKeybinds">
+            <button class="buttonStyled" (click)="openKeybinds(overlayNotificationsContent)">Update Overlay Notifications</button>
+        </div>
+        <div *ngIf="isMobile" class="updateKeybinds">
+            <button class="buttonStyled" (click)="openKeybinds(gameLogContent)">Update Game Log</button>
+        </div>
+        <div class="updateKeybinds">
+            <button class="buttonStyled" (click)="openKeybinds(quickViewOptionsContent)">Update Quick View Options</button>
+        </div>
+        <!--TODO: This is just for testing, remove for now-->
+        <div class="updateKeybinds">
+            <!--TEST URL--><a class="aHrefStyledAsButton" href="https://buy.stripe.com/test_28odSu7ez3JDdwYeUU">Buy Supporter</a>       
+            <!--PROD URL--><!--<a class="aHrefStyledAsButton" href="https://buy.stripe.com/28o5nUe9722tgMMbIJ">Buy Supporter</a>-->
+        </div>
+        <!--^^^^-->
     </div>
     <div class="saveLoad">
         <span class="s4Heading">Save/Load</span>
@@ -64,6 +79,24 @@
 <ng-template #keybindContent>
     <div>
         <app-update-keybinds-view></app-update-keybinds-view>
+    </div>
+</ng-template>
+
+<ng-template #gameLogContent>
+    <div>
+        <app-game-log-editor></app-game-log-editor>
+    </div>
+</ng-template>
+
+<ng-template #quickViewOptionsContent>
+    <div>
+        <app-quick-view-options></app-quick-view-options>
+    </div>
+</ng-template>
+
+<ng-template #overlayNotificationsContent>
+    <div>
+        <app-overlay-notification-options></app-overlay-notification-options>
     </div>
 </ng-template>
 

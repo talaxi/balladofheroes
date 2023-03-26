@@ -5,8 +5,10 @@ import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 
@@ -21,6 +23,8 @@ export class MenuOptionsComponent implements OnInit {
   
   public partyMembers: Character[];
   public gods: God[];
+  public professions: ProfessionEnum[] = [];
+  public professionsAvailable: boolean = false;
   @Input() isMobile = false;
 
   godsAvailable = false;
@@ -53,13 +57,17 @@ export class MenuOptionsComponent implements OnInit {
       this.switchView(MenuEnum.Settings);
     }
 
+    if (this.professionsAvailable && this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToProfessions"))) {
+      this.switchView(MenuEnum.Professions);
+    }
+
     if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToAchievements"))) {
       this.switchView(MenuEnum.Achievements);
     }
   }
 
   constructor(public menuService: MenuService, private globalService: GlobalService, private keybindService: KeybindService,
-    private layoutService: LayoutService) { }
+    private layoutService: LayoutService, private lookupService: LookupService) { }
 
   ngOnInit(): void {    
     this.partyMembers = this.globalService.globalVar.characters.filter(item => item.isAvailable);
@@ -68,6 +76,7 @@ export class MenuOptionsComponent implements OnInit {
       return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
     }).filter(item => item.isAvailable);
     this.godsAvailable = this.gods.length > 0;
+    this.getProfessions();
   }
 
   switchView(type: MenuEnum) {
@@ -82,6 +91,8 @@ export class MenuOptionsComponent implements OnInit {
       this.menuService.setSelectedCharacter(CharacterEnum.Adventurer);
     if (type === MenuEnum.Gods && this.menuService.selectedGod === GodEnum.None)
       this.menuService.setSelectedGod(GodEnum.Athena);
+      if (type === MenuEnum.Professions && this.menuService.selectedProfession === ProfessionEnum.None)
+      this.menuService.setSelectedProfession(ProfessionEnum.Alchemy);
   }
 
   selectPartyMember(character: Character) {
@@ -90,6 +101,21 @@ export class MenuOptionsComponent implements OnInit {
 
   selectGod(god: God) {
     this.menuService.setSelectedGod(god.type);
+  }
+
+  selectProfession(profession: ProfessionEnum) {
+    this.menuService.setSelectedProfession(profession);
+  }
+
+  getProfessions() {
+    if (this.globalService.globalVar.alchemy.isUnlocked)
+      this.professions.push(ProfessionEnum.Alchemy);
+
+    this.professionsAvailable = this.professions.length > 0;
+  }
+
+  getProfessionName(profession: ProfessionEnum) {
+    return this.lookupService.getProfessionName(profession);
   }
 
   toggleSubMenuOptions(direction: number) {

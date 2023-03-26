@@ -28,7 +28,7 @@ export class IndividualAchievementViewComponent implements OnInit {
   //you were adding bonus xp to medusa so you need to make this an ngFor and display all possible achievements
   getAchievementReward(resource: ResourceValue) {
     var reward = "";
-    //this.achievement.bonusResources.forEach(resource => {
+    //this.achievement.rewards.forEach(resource => {
     var amount = resource.amount.toString();
     if (resource.item === ItemsEnum.BoonOfOlympus)
       amount = (resource.amount * 100) + "%";
@@ -42,11 +42,11 @@ export class IndividualAchievementViewComponent implements OnInit {
   getRewardDescription() {
     var description = "";
 
-    for (var i = 0; i < this.achievement.bonusResources.length; i++) {
-      var resource = this.achievement.bonusResources[i];
+    for (var i = 0; i < this.achievement.rewards.length; i++) {
+      var resource = this.achievement.rewards[i];
       description += this.lookupService.getItemDescription(resource.item);      
 
-      if (i < this.achievement.bonusResources.length - 1)
+      if (i < this.achievement.rewards.length - 1)
       {
         description += "<br/>";
       }

@@ -3,9 +3,11 @@
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getGodColor()">{{god.name}}</span>
             <br />
-            <span>Level {{god.level}}</span>
+            <span customToolTip [tooltipDirection]="tooltipDirection"
+            [contentTemplate]="godXpPopover">Level {{god.level}}</span>
             <br />
-            <span>{{god.exp | number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
+            <span customToolTip [tooltipDirection]="tooltipDirection"
+            [contentTemplate]="godXpPopover">{{god.exp | number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
                 1}}</span>
         </div>
     </div>
@@ -497,6 +499,14 @@
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Earth')">
 
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #godXpPopover>
+    <div>        
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodXpBreakdown(this.god)">
         </div>
     </div>
 </ng-template>

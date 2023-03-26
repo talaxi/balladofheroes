@@ -13,22 +13,22 @@ export class SubZone {
     @Type(() => EnemyTeam)
     battleOptions: EnemyTeam[];
     victoryCount: number;
-    fastestCompletionSpeed: number;
-    victoriesNeededToProceed: number;
+    fastestCompletion: number;
+    winsNeeded: number; //wins needed to proceed to next subzone
     isAvailable: boolean;
     showNewNotification: boolean;
     notificationType: NotificationTypeEnum;
     treasureChestChance: number;
 
     constructor(enumVal?: SubZoneEnum) {
-        this.victoriesNeededToProceed = 0;
+        this.winsNeeded = 0;
         this.type = SubZoneEnum.None;
         this.name = "None";
 
         if (enumVal !== undefined) {
             this.type = enumVal;
             this.name = this.setSubZoneName(this.type);
-            this.victoriesNeededToProceed = this.getVictoriesNeededToProceed(this.type);
+            this.winsNeeded = this.getVictoriesNeededToProceed(this.type);
         }
         this.battleOptions = [];
         this.victoryCount = 0;

@@ -169,6 +169,10 @@ export class ItemBeltOverviewComponent {
     } 
   }
 
+  preventRightClick() {
+    return false;
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

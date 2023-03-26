@@ -39,6 +39,7 @@ import { GlobalService } from '../global/global.service';
 import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
 import { MenuService } from '../menu/menu.service';
+import { AlchemyService } from '../professions/alchemy.service';
 import { StoryService } from '../story/story.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
@@ -63,7 +64,8 @@ export class BattleService {
     private balladService: BalladService, private utilityService: UtilityService, private gameLogService: GameLogService,
     private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService,
     private menuService: MenuService, public dialog: MatDialog, private tutorialService: TutorialService,
-    private dpsCalculatorService: DpsCalculatorService, private coliseumService: ColiseumService, private altarService: AltarService) { }
+    private dpsCalculatorService: DpsCalculatorService, private coliseumService: ColiseumService, private altarService: AltarService,
+    private alchemyService: AlchemyService) { }
 
   handleBattle(deltaTime: number, loadingContent: any) {
     var lastPerformanceNow = performance.now();
@@ -1323,10 +1325,10 @@ export class BattleService {
       (adjustedDefense * (2 / 5))) * adjustedCriticalMultiplier);  
     */
 
-    var elementalDamageIncrease = 1;
+    var elementIncrease = 1;
     var elementalDamageDecrease = 1;
     if (elementalType !== ElementalTypeEnum.None) {
-      elementalDamageIncrease = this.getElementalDamageIncrease(elementalType, attacker);
+      elementIncrease = this.getElementalDamageIncrease(elementalType, attacker);
       elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);
       attacker.overdriveInfo.lastUsedElement = elementalType;
       //attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);      
@@ -1334,10 +1336,10 @@ export class BattleService {
 
     //2 * Attack^2 / (Attack + Defense)      
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
-      * elementalDamageIncrease * elementalDamageDecrease
+      * elementIncrease * elementalDamageDecrease
       * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
 
-    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementalDamageIncrease
+    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
     //+ " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     if (ability?.damageModifierRange !== undefined) {
@@ -1420,14 +1422,14 @@ export class BattleService {
     if (damage < 0)
       damage = 0;
 
-    var elementalDamageIncrease = 1;
+    var elementIncrease = 1;
     var elementalDamageDecrease = 1;
     if (elementalType !== ElementalTypeEnum.None) {
       elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);
     }
 
     if (attacker !== undefined) {
-      elementalDamageIncrease = this.getElementalDamageIncrease(elementalType, attacker);
+      elementIncrease = this.getElementalDamageIncrease(elementalType, attacker);
       attacker.overdriveInfo.lastUsedElement = elementalType;
       attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);
       if (attacker.trackedStats.elementalAttacksUsed.getCountOfNonZeroElements() >= this.utilityService.overdriveAttacksNeededToUnlockNature &&
@@ -1435,7 +1437,7 @@ export class BattleService {
         attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);
     }
 
-    var totalDamageDealt = damage * elementalDamageIncrease * elementalDamageDecrease;
+    var totalDamageDealt = damage * elementIncrease * elementalDamageDecrease;
 
     var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
     if (reduceDamage !== undefined && isReducable)
@@ -1507,17 +1509,17 @@ export class BattleService {
     var increase = 0;
 
     if (element === ElementalTypeEnum.Holy)
-      increase = attacker.battleStats.elementalDamageIncrease.holy;
+      increase = attacker.battleStats.elementIncrease.holy;
     if (element === ElementalTypeEnum.Fire)
-      increase = attacker.battleStats.elementalDamageIncrease.fire;
+      increase = attacker.battleStats.elementIncrease.fire;
     if (element === ElementalTypeEnum.Lightning)
-      increase = attacker.battleStats.elementalDamageIncrease.lightning;
+      increase = attacker.battleStats.elementIncrease.lightning;
     if (element === ElementalTypeEnum.Air)
-      increase = attacker.battleStats.elementalDamageIncrease.air;
+      increase = attacker.battleStats.elementIncrease.air;
     if (element === ElementalTypeEnum.Water)
-      increase = attacker.battleStats.elementalDamageIncrease.water;
+      increase = attacker.battleStats.elementIncrease.water;
     if (element === ElementalTypeEnum.Earth)
-      increase = attacker.battleStats.elementalDamageIncrease.earth;
+      increase = attacker.battleStats.elementIncrease.earth;
 
     return 1 + increase;
   }
@@ -1526,17 +1528,17 @@ export class BattleService {
     var decrease = 0;
 
     if (element === ElementalTypeEnum.Holy)
-      decrease = target.battleStats.elementalDamageResistance.holy;
+      decrease = target.battleStats.elementResistance.holy;
     if (element === ElementalTypeEnum.Fire)
-      decrease = target.battleStats.elementalDamageResistance.fire;
+      decrease = target.battleStats.elementResistance.fire;
     if (element === ElementalTypeEnum.Lightning)
-      decrease = target.battleStats.elementalDamageResistance.lightning;
+      decrease = target.battleStats.elementResistance.lightning;
     if (element === ElementalTypeEnum.Air)
-      decrease = target.battleStats.elementalDamageResistance.air;
+      decrease = target.battleStats.elementResistance.air;
     if (element === ElementalTypeEnum.Water)
-      decrease = target.battleStats.elementalDamageResistance.water;
+      decrease = target.battleStats.elementResistance.water;
     if (element === ElementalTypeEnum.Earth)
-      decrease = target.battleStats.elementalDamageResistance.earth;
+      decrease = target.battleStats.elementResistance.earth;
 
     return 1 - decrease;
   }
@@ -1816,8 +1818,8 @@ export class BattleService {
     this.altarService.incrementAltarCount(AltarConditionEnum.Victories);
 
     //console.log("Completed in: " + this.battle.battleDuration);
-    if (subZone.fastestCompletionSpeed === undefined || this.battle.battleDuration < subZone.fastestCompletionSpeed) {
-      subZone.fastestCompletionSpeed = this.battle.battleDuration;
+    if (subZone.fastestCompletion === undefined || this.battle.battleDuration < subZone.fastestCompletion) {
+      subZone.fastestCompletion = this.utilityService.roundTo(this.battle.battleDuration, 5);
     }
 
     var achievements = this.achievementService.checkForSubzoneAchievement(subZone.type, this.globalService.globalVar.achievements);
@@ -1840,11 +1842,17 @@ export class BattleService {
           this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>.");
         }
         this.lookupService.addLootToLog(item.item, item.amount);
-        this.addLootToResources(item);
+        if (item.item === ItemsEnum.FocusPotionRecipe) {
+          console.log("learn focus potion");
+          this.alchemyService.learnRecipe(ItemsEnum.FocusPotion);
+        }
+        else {
+          this.addLootToResources(item);
+        }
       });
     }
 
-    if (subZone.victoryCount >= subZone.victoriesNeededToProceed) {
+    if (subZone.victoryCount >= subZone.winsNeeded) {
       this.unlockNextSubzone(subZone);
     }
 
@@ -1929,9 +1937,12 @@ export class BattleService {
   addAchievementToGameLog(achievements: Achievement[]) {
     achievements.forEach(achievement => {
       var achievementBonus = "";
-      if (achievement.bonusResources !== undefined && achievement.bonusResources.length > 0) {
-        achievement.bonusResources.forEach(item => {
-          achievementBonus += "<strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>, ";
+      if (achievement.rewards !== undefined && achievement.rewards.length > 0) {
+        achievement.rewards.forEach(item => {
+          var amount = item.amount.toString();
+          if (item.item === ItemsEnum.BoonOfOlympus)
+            amount = item.amount * 100 + "%";
+          achievementBonus += "<strong>" + amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>, ";
         });
 
         achievementBonus = achievementBonus.substring(0, achievementBonus.length - 2);
@@ -2105,6 +2116,24 @@ export class BattleService {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses " + itemName + ", gaining " + Math.round(healedAmount) + " HP.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
         }
+      }
+    }
+
+    if (this.battleItemInUse === ItemsEnum.FocusPotion) {
+      if (character.overdriveInfo.overdriveGaugeAmount === character.overdriveInfo.overdriveGaugeTotal)
+        return;
+
+      var gainedAmount = effect.userEffect[0].effectiveness * character.overdriveInfo.overdriveGaugeTotal;
+      character.overdriveInfo.overdriveGaugeAmount += gainedAmount;
+
+      if (character.overdriveInfo.overdriveGaugeAmount > character.overdriveInfo.overdriveGaugeTotal)
+        character.overdriveInfo.overdriveGaugeAmount = character.overdriveInfo.overdriveGaugeTotal;
+
+      this.lookupService.useResource(this.battleItemInUse, 1);
+
+      if (this.globalService.globalVar.gameLogSettings.get("useBattleItem")) {
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses " + itemName + ", gaining " + effect.userEffect[0].effectiveness * 100 + "% to their Overdrive gauge.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
       }
     }
 

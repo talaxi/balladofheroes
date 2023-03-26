@@ -96,6 +96,9 @@ import { MainOverviewComponent } from './components/layout/zone-navigation/main-
 import { AlchemyOverviewComponent } from './components/layout/zone-navigation/alchemy-overview/alchemy-overview.component';
 import { ItemBeltOverviewComponent } from './components/layout/zone-navigation/item-belt-overview/item-belt-overview.component';
 import { GameTextOverviewComponent } from './components/layout/zone-navigation/game-text-overview/game-text-overview.component';
+import { QuickViewOptionsComponent } from './components/menu/settings-view/quick-view-options/quick-view-options.component';
+import { OverlayNotificationOptionsComponent } from './components/menu/settings-view/overlay-notification-options/overlay-notification-options.component';
+import { ProfessionsViewComponent } from './components/menu/professions-view/professions-view.component';
 
 @NgModule({
   declarations: [
@@ -156,7 +159,10 @@ import { GameTextOverviewComponent } from './components/layout/zone-navigation/g
     MainOverviewComponent,
     AlchemyOverviewComponent,
     ItemBeltOverviewComponent,
-    GameTextOverviewComponent
+    GameTextOverviewComponent,
+    QuickViewOptionsComponent,
+    OverlayNotificationOptionsComponent,
+    ProfessionsViewComponent,    
   ],
   imports: [
     BrowserModule,

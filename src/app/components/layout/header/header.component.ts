@@ -1,5 +1,6 @@
-import { Component, HostListener, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
@@ -24,10 +25,12 @@ export class HeaderComponent implements OnInit {
   navigationEnum = NavigationEnum;
   textMode = true;
   tooltipDirection = DirectionEnum.Down;
+  @ViewChild('logContent') logContent: any;
 
   constructor(private battleService: BattleService, public layoutService: LayoutService, private menuService: MenuService,
     public utilityService: UtilityService, public globalService: GlobalService, public deploymentService: DeploymentService,
-    public dialog: MatDialog, private keybindService: KeybindService, private lookupService: LookupService) { }
+    public dialog: MatDialog, private keybindService: KeybindService, private lookupService: LookupService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -39,6 +42,10 @@ export class HeaderComponent implements OnInit {
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("togglePauseGame"))) {      
       this.pauseGame();
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openLog"))) {      
+      this.openLog(this.logContent);
     }
   }
 
@@ -98,5 +105,16 @@ export class HeaderComponent implements OnInit {
     this.dialog.open(content, { width: '95%', height: '80%' });
   else 
     this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
+  }
+
+  getPauseKeybindKey() {
+    var keybindKey = "";
+    var keybindString = "togglePauseGame";
+
+    var keybind = this.globalService.globalVar.keybinds.settings.find(item => item[0] === keybindString);
+    if (keybind !== undefined)
+      keybindKey = this.keybindService.getBindingString(keybind[1]);
+
+    return "<span class='keybind'>" + keybindKey + "</span>";
   }
 }

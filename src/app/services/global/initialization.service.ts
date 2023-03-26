@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count.model';
 import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
@@ -39,7 +40,7 @@ export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
     private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService, private keybindService: KeybindService,
-    private altarService: AltarService, private versionControlService: VersionControlService) { }
+    private altarService: AltarService, private versionControlService: VersionControlService, private deviceDetectorService: DeviceDetectorService) { }
 
   initializeVariables() {
     this.globalService.globalVar.startingVersion = this.versionControlService.getCurrentVersion();
@@ -146,7 +147,7 @@ export class InitializationService {
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumOpenPlains));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumColiseum));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumGatesOfHornAndIvory));
-    
+
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWindingPaths));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWaterloggedMarsh));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWavesOfOceanus));
@@ -203,6 +204,31 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("storyStyle", StoryStyleSettingEnum.Medium);
     this.globalService.globalVar.settings.set("changeClassSwapEquipment", true);
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
+
+    this.globalService.globalVar.settings.set("displayQuickViewOverview", true);
+    if (this.deviceDetectorService.isMobile())
+      this.globalService.globalVar.settings.set("displayQuickViewResources", false);
+    else
+      this.globalService.globalVar.settings.set("displayQuickViewResources", true);
+    if (this.deviceDetectorService.isMobile())
+      this.globalService.globalVar.settings.set("displayQuickViewGameText", true);
+    else
+      this.globalService.globalVar.settings.set("displayQuickViewGameText", false);
+    if (this.deviceDetectorService.isMobile())
+      this.globalService.globalVar.settings.set("displayQuickViewItemBelt", true);
+    else
+      this.globalService.globalVar.settings.set("displayQuickViewItemBelt", false);
+    this.globalService.globalVar.settings.set("displayQuickViewAltars", true);
+    this.globalService.globalVar.settings.set("displayQuickViewAlchemy", true);
+
+    if (this.deviceDetectorService.isMobile()) {
+      this.globalService.globalVar.settings.set("displayOverlayTutorials", true);
+      this.globalService.globalVar.settings.set("displayOverlayBattleRewards", true);
+    }
+    else {
+      this.globalService.globalVar.settings.set("displayOverlayTutorials", false);
+      this.globalService.globalVar.settings.set("displayOverlayBattleRewards", false);
+    }
   }
 
   initializeGameLogSettings() {
@@ -238,14 +264,16 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("menuGoToResources", "keyR");
     this.globalService.globalVar.keybinds.set("menuGoToAchievements", "keyA");
     this.globalService.globalVar.keybinds.set("menuGoToSettings", "keyS");
+    this.globalService.globalVar.keybinds.set("menuGoToProfessions", "keyY");
     this.globalService.globalVar.keybinds.set("menuTraverseSubMenuUp", "arrowup");
     this.globalService.globalVar.keybinds.set("menuTraverseSubMenuDown", "arrowdown");
 
     this.globalService.globalVar.keybinds.set("togglePauseGame", "keyP");
     this.globalService.globalVar.keybinds.set("openMenu", "keyM");
+    this.globalService.globalVar.keybinds.set("openLog", "keyL");
     this.globalService.globalVar.keybinds.set("openOverviewQuickView", "keyO");
     this.globalService.globalVar.keybinds.set("openResourcesQuickView", "keyR");
-    this.globalService.globalVar.keybinds.set("openAlchemyQuickView", "keyL");
+    this.globalService.globalVar.keybinds.set("openAlchemyQuickView", "keyH");
     this.globalService.globalVar.keybinds.set("openAltarsQuickView", "keyA");
 
     this.globalService.globalVar.keybinds.set("openFirstAvailableAltar", "keyZ");
@@ -342,7 +370,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, ItemTypeEnum.BattleItem, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, 10));
-    /*this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, ItemTypeEnum.Charm, 5));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfApollo, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHermes, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHermes, ItemTypeEnum.Charm, 5));
@@ -385,7 +413,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 5));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 5));*/
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 5));
 
     this.globalService.globalVar.currentStoryId = 10000;
     this.globalService.globalVar.isDpsUnlocked = true;
@@ -507,7 +535,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
       }
 
-      var characterLevel = 8;
+      var characterLevel = 19;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
@@ -516,7 +544,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 3;
+      var godLevel = 100;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

@@ -220,51 +220,51 @@ export class CharacterViewComponent implements OnInit {
   }
 
   getHolyDamageBonus() {
-    return this.character.battleStats.elementalDamageIncrease.holy;
+    return this.character.battleStats.elementIncrease.holy;
   }
 
   getFireDamageBonus() {
-    return this.character.battleStats.elementalDamageIncrease.fire;
+    return this.character.battleStats.elementIncrease.fire;
   }
   
   getLightningDamageBonus() {
-    return this.character.battleStats.elementalDamageIncrease.lightning;
+    return this.character.battleStats.elementIncrease.lightning;
   }
 
   getAirDamageBonus() {
-    return this.character.battleStats.elementalDamageIncrease.air;
+    return this.character.battleStats.elementIncrease.air;
   }
 
   getWaterDamageBonus() {
-    return this.character.battleStats.elementalDamageIncrease.water;
+    return this.character.battleStats.elementIncrease.water;
   }
 
   getEarthDamageBonus() {
-    return this.character.battleStats.elementalDamageIncrease.earth;
+    return this.character.battleStats.elementIncrease.earth;
   }
 
   getHolyResistanceBonus() {
-    return this.character.battleStats.elementalDamageResistance.holy;
+    return this.character.battleStats.elementResistance.holy;
   }
 
   getFireResistanceBonus() {    
-    return this.character.battleStats.elementalDamageResistance.fire;
+    return this.character.battleStats.elementResistance.fire;
   }
 
   getAirResistanceBonus() {
-    return this.character.battleStats.elementalDamageResistance.air;
+    return this.character.battleStats.elementResistance.air;
   }
 
   getLightningResistanceBonus() {
-    return this.character.battleStats.elementalDamageResistance.lightning;
+    return this.character.battleStats.elementResistance.lightning;
   }
 
   getWaterResistanceBonus() {
-    return this.character.battleStats.elementalDamageResistance.water;
+    return this.character.battleStats.elementResistance.water;
   }
 
   getEarthResistanceBonus() {
-    return this.character.battleStats.elementalDamageResistance.earth;
+    return this.character.battleStats.elementResistance.earth;
   }
 
   getAbilityUpgradeLevel(ability: Ability) {

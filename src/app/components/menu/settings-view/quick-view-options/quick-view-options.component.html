@@ -1,0 +1,31 @@
+<div class="container">
+    <div class="header">Quick View Options Editor</div>
+    <hr />
+    <div class="options">
+        <div class='column1'>
+            <mat-checkbox [(ngModel)]="displayQuickViewOverview" (input)="displayQuickViewOverviewToggle()">
+                Overview
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="displayQuickViewResources" (input)="displayQuickViewResourcesToggle()">
+                Resources
+            </mat-checkbox>
+            <br *ngIf="isMobile" />
+            <mat-checkbox *ngIf="isMobile" [(ngModel)]="displayQuickViewGameText" (input)="displayQuickViewGameTextToggle()">
+                Game Text
+            </mat-checkbox>
+            <br *ngIf="isMobile" />
+            <mat-checkbox *ngIf="isMobile" [(ngModel)]="displayQuickViewItemBelt" (input)="displayQuickViewItemBeltToggle()">
+                Item Belt
+            </mat-checkbox>
+            <br />
+            <mat-checkbox *ngIf="altarsUnlocked" [(ngModel)]="displayQuickViewAltars" (input)="displayQuickViewAltarsToggle()">
+                Altars
+            </mat-checkbox>
+            <br />
+            <mat-checkbox *ngIf="alchemyUnlocked" [(ngModel)]="displayQuickViewAlchemy" (input)="displayQuickViewAlchemyToggle()">
+                Alchemy
+            </mat-checkbox>
+        </div>
+    </div>
+</div>

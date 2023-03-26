@@ -72,4 +72,8 @@ export class ItemBeltItemComponent implements OnInit {
   getItemDescription() {
     return this.lookupService.getItemDescription(this.item);
   }
+  
+  preventRightClick() {
+    return false;
+  }
 }

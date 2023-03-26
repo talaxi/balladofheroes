@@ -34,116 +34,116 @@ export class AchievementService {
     var hundredVictories = new Achievement(AchievementTypeEnum.HundredVictories, subzoneType);
 
     if (subzoneType === SubZoneEnum.AigosthenaUpperCoast)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10));
     else if (subzoneType === SubZoneEnum.AigosthenaBay)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 10));
     else if (subzoneType === SubZoneEnum.AigosthenaLowerCoast)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 10));
     else if (subzoneType === SubZoneEnum.AigosthenaWesternWoodlands)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10));
     else if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 20));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.LightLeather, ItemTypeEnum.CraftingMaterial, 20));
 
     else if (subzoneType === SubZoneEnum.DodonaDelphiOutskirts)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));
     else if (subzoneType === SubZoneEnum.DodonaCoastalRoadsOfLocris)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 300));
     else if (subzoneType === SubZoneEnum.DodonaCountryside)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 25));
     else if (subzoneType === SubZoneEnum.DodonaMountainOpening)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 20));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 20));
     else if (subzoneType === SubZoneEnum.DodonaMountainPassOne)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ThrowingStone, ItemTypeEnum.BattleItem, 25));
     else if (subzoneType === SubZoneEnum.DodonaLakeTrichonida)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.PoisonFang, ItemTypeEnum.BattleItem, 15));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.PoisonFang, ItemTypeEnum.BattleItem, 15));
     else if (subzoneType === SubZoneEnum.DodonaMountainPassTwo)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 30));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 30));
     else if (subzoneType === SubZoneEnum.DodonaAmbracianGulf)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 10));
     else if (subzoneType === SubZoneEnum.LibyaBeach)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 500));
     else if (subzoneType === SubZoneEnum.LibyaRockyOutcrops)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 20));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 20));
     else if (subzoneType === SubZoneEnum.LibyaDeeperPath)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 10));
     else if (subzoneType === SubZoneEnum.LibyaIsleCenter)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, 10));
 
     else if (subzoneType === SubZoneEnum.AsphodelTheDepths)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1000));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 1000));
     else if (subzoneType === SubZoneEnum.AsphodelForgottenHalls)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelEndlessStaircase)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelFieryPassage)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelDarkenedMeadows)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 30));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 30));
     else if (subzoneType === SubZoneEnum.AsphodelLetheBasin)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 45));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 45));
     else if (subzoneType === SubZoneEnum.ElysiumElysianFields)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.ElysiumOpenPlains)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Narcissus, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Narcissus, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingSalve, ItemTypeEnum.HealingItem, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.HealingSalve, ItemTypeEnum.HealingItem, 10));
     else if (subzoneType === SubZoneEnum.ElysiumWindingPaths)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HealingPoultice, ItemTypeEnum.HealingItem, 20));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.HealingPoultice, ItemTypeEnum.HealingItem, 20));
     else if (subzoneType === SubZoneEnum.ElysiumWaterloggedMarsh)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 40));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 40));
     else if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
 
     else if (subzoneType === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 30));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 30));
     else if (subzoneType === SubZoneEnum.PeloposNisosArcadianRoads)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 20));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 20));
     else if (subzoneType === SubZoneEnum.PeloposNisosFootOfTheMountain)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosSteepAscent)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 5));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosMountParthenionCaverns)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 15));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 15));
     else if (subzoneType === SubZoneEnum.PeloposNisosValleyOpening)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 5));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 5));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
 
 
     else if (subzoneType === SubZoneEnum.CalydonForestPassage)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.RestorativeHerb, ItemTypeEnum.HealingItem, 10));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.RestorativeHerb, ItemTypeEnum.HealingItem, 10));
     else if (subzoneType === SubZoneEnum.CalydonHeavyThicket)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.CalydonWelltroddenPathway)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 7500));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 7500));
     else if (subzoneType === SubZoneEnum.CalydonSparseClearing)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.CalydonShroudedFoliage)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 25));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 25));
     else if (subzoneType === SubZoneEnum.CalydonBabblingStream)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.HeftyStone, ItemTypeEnum.BattleItem, 20));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.HeftyStone, ItemTypeEnum.BattleItem, 20));
     else if (subzoneType === SubZoneEnum.CalydonMudpit)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 40));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 40));
     else if (subzoneType === SubZoneEnum.CalydonMarkedTreeTrail)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 8));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 8));
     else if (subzoneType === SubZoneEnum.CalydonOvergrownVerdure)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 35));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 35));
     else if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, 3));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, 3));
     else if (subzoneType === SubZoneEnum.CalydonWateringHole)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 35));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 35));
     else if (subzoneType === SubZoneEnum.CalydonTallGrass)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 35));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 35));
     else if (subzoneType === SubZoneEnum.CalydonDeadEnd)
-      hundredVictories.bonusResources.push(new ResourceValue(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 3));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 3));
 
-    if (hundredVictories.bonusResources.length > 0)
+    if (hundredVictories.rewards.length > 0)
       newAchievements.push(hundredVictories);
 
     var thousandVictories = new Achievement(AchievementTypeEnum.ThousandVictories, subzoneType);
@@ -157,197 +157,197 @@ export class AchievementService {
     var calydonBoonBonus = .03;
 
     if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
-      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, aigosthenaBoonBonus));
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, aigosthenaBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Dodona))
-      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, dodonaBoonBonus));
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, dodonaBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Libya))
-      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, libyaBoonBonus));
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, libyaBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Asphodel))
-      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, asphodelBoonBonus));
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, asphodelBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Elysium))
-      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, elysiumBoonBonus));
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, elysiumBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.PeloposNisos))
-      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, peloposNisosBoonBonus));
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, peloposNisosBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Calydon))
-      thousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, calydonBoonBonus));
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, calydonBoonBonus));
 
-    if (thousandVictories.bonusResources.length > 0)
+    if (thousandVictories.rewards.length > 0)
       newAchievements.push(thousandVictories);
 
     var tenThousandVictories = new Achievement(AchievementTypeEnum.TenThousandVictories, subzoneType);
 
     if (subzoneType === SubZoneEnum.AigosthenaUpperCoast)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaBay)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaLowerCoast)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaWesternWoodlands)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
 
     else if (subzoneType === SubZoneEnum.DodonaDelphiOutskirts)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaCoastalRoadsOfLocris)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaCountryside)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaMountainOpening)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaMountainPassOne)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaLakeTrichonida)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaMountainPassTwo)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.DodonaAmbracianGulf)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.LibyaBeach)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.LibyaRockyOutcrops)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.LibyaDeeperPath)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.LibyaIsleCenter)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 1));
 
     else if (subzoneType === SubZoneEnum.AsphodelTheDepths)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelForgottenHalls)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelEndlessStaircase)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelFieryPassage)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelDarkenedMeadows)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelLetheBasin)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumElysianFields)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumOpenPlains)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumWindingPaths)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumWaterloggedMarsh)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
 
     else if (subzoneType === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosArcadianRoads)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosFootOfTheMountain)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosSteepAscent)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosMountParthenionCaverns)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosValleyOpening)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
 
     else if (subzoneType === SubZoneEnum.CalydonForestPassage)
-      tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+      tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonHeavyThicket)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonWelltroddenPathway)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonSparseClearing)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonShroudedFoliage)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonBabblingStream)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonMudpit)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonMarkedTreeTrail)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonOvergrownVerdure)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonWateringHole)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonTallGrass)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.CalydonDeadEnd)
-    tenThousandVictories.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
+    tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
 
-    if (tenThousandVictories.bonusResources.length > 0)
+    if (tenThousandVictories.rewards.length > 0)
       newAchievements.push(tenThousandVictories);
 
     var thirtySecondClear = new Achievement(AchievementTypeEnum.ThirtySecondClear, subzoneType);
     if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.DodonaCountryside)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.DodonaLakeTrichonida)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.LibyaDeeperPath)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.LibyaIsleCenter)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
       if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 1));
       if (subzoneType === SubZoneEnum.CalydonTallGrass)
-      thirtySecondClear.bonusResources.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 1));
 
-    if (thirtySecondClear.bonusResources.length > 0)
+    if (thirtySecondClear.rewards.length > 0)
       newAchievements.push(thirtySecondClear);
 
     var tenSecondClear = new Achievement(AchievementTypeEnum.TenSecondClear, subzoneType);
     if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.DodonaCountryside)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.DodonaLakeTrichonida)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.PoisonExtractPotionRecipe, ItemTypeEnum.Resource, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.PoisonExtractPotionRecipe, ItemTypeEnum.Resource, 1));
     if (subzoneType === SubZoneEnum.LibyaDeeperPath)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.LibyaIsleCenter)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
       if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
       if (subzoneType === SubZoneEnum.CalydonTallGrass)
-      tenSecondClear.bonusResources.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, ItemTypeEnum.Charm, 1));
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, ItemTypeEnum.Charm, 1));
 
-    if (tenSecondClear.bonusResources.length > 0)
+    if (tenSecondClear.rewards.length > 0)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
     if (subzoneType === SubZoneEnum.LibyaIsleCenter) {
-      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
-      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 4000));
+      completeClear.rewards.push(new ResourceValue(ItemsEnum.ItemBeltUp, ItemTypeEnum.Progression, 1));
+      completeClear.rewards.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 4000));
     }
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus) {
-      completeClear.bonusResources.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade1, ItemTypeEnum.Progression, 1));
+      completeClear.rewards.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade1, ItemTypeEnum.Progression, 1));
     }
 
-    if (completeClear.bonusResources.length > 0)
+    if (completeClear.rewards.length > 0)
       newAchievements.push(completeClear);
 
     return newAchievements;
@@ -355,45 +355,45 @@ export class AchievementService {
 
   checkForSubzoneAchievement(subzoneType: SubZoneEnum, achievements: Achievement[]) {
     var completedAchievement: Achievement[] = [];
-    var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);    
+    var subzoneRelatedAchievements = achievements.filter(item => item.subzone === subzoneType);    
 
     if (subzoneRelatedAchievements !== undefined && subzoneRelatedAchievements.length > 0) {
       var subzone = this.lookupService.getSubZoneByType(subzoneType);
       if (subzone === undefined)
         return completedAchievement;
 
-      var hundredVictories = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.HundredVictories);
-      if (hundredVictories !== undefined && subzone.victoryCount >= 100 && !hundredVictories.completed && hundredVictories.bonusResources !== undefined) {
+      var hundredVictories = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.HundredVictories);
+      if (hundredVictories !== undefined && subzone.victoryCount >= 100 && !hundredVictories.completed && hundredVictories.rewards !== undefined) {
         completedAchievement.push(hundredVictories);
         hundredVictories.completed = true;
-        hundredVictories.bonusResources.forEach(bonus => {
+        hundredVictories.rewards.forEach(bonus => {
           this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
-      var thousandVictories = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.ThousandVictories);
-      if (thousandVictories !== undefined && subzone.victoryCount >= 500 && !thousandVictories.completed && thousandVictories.bonusResources !== undefined) {
+      var thousandVictories = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.ThousandVictories);
+      if (thousandVictories !== undefined && subzone.victoryCount >= 500 && !thousandVictories.completed && thousandVictories.rewards !== undefined) {
         completedAchievement.push(thousandVictories);
         thousandVictories.completed = true;
-        thousandVictories.bonusResources.forEach(bonus => {
+        thousandVictories.rewards.forEach(bonus => {
           this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
-      var tenThousandVictories = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.TenThousandVictories);
-      if (tenThousandVictories !== undefined && subzone.victoryCount >= 2500 && !tenThousandVictories.completed && tenThousandVictories.bonusResources !== undefined) {
+      var tenThousandVictories = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenThousandVictories);
+      if (tenThousandVictories !== undefined && subzone.victoryCount >= 2500 && !tenThousandVictories.completed && tenThousandVictories.rewards !== undefined) {
         completedAchievement.push(tenThousandVictories);
         tenThousandVictories.completed = true;
-        tenThousandVictories.bonusResources.forEach(bonus => {
+        tenThousandVictories.rewards.forEach(bonus => {
           this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
-      var tenSecondClear = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.TenSecondClear);
-      if (tenSecondClear !== undefined && subzone.fastestCompletionSpeed <= 10 && !tenSecondClear.completed && tenSecondClear.bonusResources !== undefined) {
+      var tenSecondClear = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenSecondClear);
+      if (tenSecondClear !== undefined && subzone.fastestCompletion <= 10 && !tenSecondClear.completed && tenSecondClear.rewards !== undefined) {
         completedAchievement.push(tenSecondClear);
         tenSecondClear.completed = true;
-        tenSecondClear.bonusResources.forEach(bonus => {
+        tenSecondClear.rewards.forEach(bonus => {
 
           if (bonus.item === ItemsEnum.PoisonExtractPotionRecipe) {
             this.alchemyService.learnRecipe(ItemsEnum.PoisonExtractPotion);
@@ -403,20 +403,20 @@ export class AchievementService {
         });
       }
 
-      var thirtySecondClear = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.ThirtySecondClear);
-      if (thirtySecondClear !== undefined && subzone.fastestCompletionSpeed <= 30 && !thirtySecondClear.completed && thirtySecondClear.bonusResources !== undefined) {
+      var thirtySecondClear = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.ThirtySecondClear);
+      if (thirtySecondClear !== undefined && subzone.fastestCompletion <= 30 && !thirtySecondClear.completed && thirtySecondClear.rewards !== undefined) {
         completedAchievement.push(thirtySecondClear);
         thirtySecondClear.completed = true;
-        thirtySecondClear.bonusResources.forEach(bonus => {
+        thirtySecondClear.rewards.forEach(bonus => {
           this.lookupService.gainResource(bonus.makeCopy());
         });
       }
 
-      var complete = subzoneRelatedAchievements.find(item => item.achievementType === AchievementTypeEnum.Complete);
-      if (complete !== undefined && subzone.victoryCount >= 1 && !complete.completed && complete.bonusResources !== undefined) {
+      var complete = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.Complete);
+      if (complete !== undefined && subzone.victoryCount >= 1 && !complete.completed && complete.rewards !== undefined) {
         completedAchievement.push(complete);
         complete.completed = true;
-        complete.bonusResources.forEach(bonus => {
+        complete.rewards.forEach(bonus => {
           if (bonus.item === ItemsEnum.ItemBeltUp) {
             this.lookupService.increaseItemBeltSize();
           }
@@ -461,13 +461,13 @@ export class AchievementService {
   }
 
   getAchievementsBySubZone(subzoneType: SubZoneEnum, achievements: Achievement[]) {
-    var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);
+    var subzoneRelatedAchievements = achievements.filter(item => item.subzone === subzoneType);
 
     return subzoneRelatedAchievements;
   }
 
   getUncompletedAchievementCountBySubZone(subzoneType: SubZoneEnum, achievements: Achievement[]) {
-    var subzoneRelatedAchievements = achievements.filter(item => item.relatedSubzone === subzoneType);
+    var subzoneRelatedAchievements = achievements.filter(item => item.subzone === subzoneType);
 
     return subzoneRelatedAchievements.filter(item => !item.completed).length;
   }
@@ -479,7 +479,7 @@ export class AchievementService {
     var relatedAchievements: Achievement[] = [];
 
     zone.subzones.forEach(subzone => {
-      achievements.filter(item => item.relatedSubzone === subzone.type).forEach(achievement => {
+      achievements.filter(item => item.subzone === subzone.type).forEach(achievement => {
         relatedAchievements.push(achievement);
       });
     });

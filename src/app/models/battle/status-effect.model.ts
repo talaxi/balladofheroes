@@ -17,7 +17,7 @@ export class StatusEffect {
     maxCount: number;
     isPositive: boolean;
     caster: string;
-    castingCharacterEnum: CharacterEnum;
+    casterEnum: CharacterEnum;
     threshold: number;
     effectStacks: boolean;
     stackCount: number;
@@ -45,7 +45,7 @@ export class StatusEffect {
         this.maxCount = 0;
         this.dotType = dotTypeEnum.BasedOnDamage;
         this.element = ElementalTypeEnum.None;
-        this.castingCharacterEnum = CharacterEnum.None;
+        this.casterEnum = CharacterEnum.None;
         this.effectStacks = false;
         this.stackCount = 1;
         this.triggersEvery = 0;
@@ -67,7 +67,7 @@ export class StatusEffect {
         copy.caster = this.caster;
         copy.refreshes = this.refreshes;
         copy.effectStacks = this.effectStacks;
-        copy.castingCharacterEnum = this.castingCharacterEnum;
+        copy.casterEnum = this.casterEnum;
         copy.threshold = this.threshold;
         copy.targetsAllies = this.targetsAllies;
 

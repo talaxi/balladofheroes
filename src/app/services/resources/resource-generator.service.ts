@@ -271,6 +271,10 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.RestorativeHerb, ItemTypeEnum.HealingItem, amount);
     }
+    if (type === ItemsEnum.FocusPotion)
+    {
+      return new ResourceValue(ItemsEnum.FocusPotion, ItemTypeEnum.HealingItem, amount);
+    }
 
     //materials
     if (type === ItemsEnum.LightLeather)
@@ -353,6 +357,30 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.VialOfTheBlackSea, ItemTypeEnum.CraftingMaterial, amount);
     }
+    if (type === ItemsEnum.SmallEmerald)
+    {
+      return new ResourceValue(ItemsEnum.SmallEmerald, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SmallRuby)
+    {
+      return new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SmallOpal)
+    {
+      return new ResourceValue(ItemsEnum.SmallOpal, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SmallAquamarine)
+    {
+      return new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SmallTopaz)
+    {
+      return new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SmallAmethyst)
+    {
+      return new ResourceValue(ItemsEnum.SmallAmethyst, ItemTypeEnum.CraftingMaterial, amount);
+    }
 
     //charms
     if (type === ItemsEnum.SmallCharmOfDetermination)
@@ -392,6 +420,10 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.PriestClass)
     {
       return new ResourceValue(ItemsEnum.PriestClass, ItemTypeEnum.Progression, amount);
+    }
+    if (type === ItemsEnum.Coin)
+    {
+      return new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, amount);
     }
 
     return new ResourceValue(ItemsEnum.None, ItemTypeEnum.None, 0);

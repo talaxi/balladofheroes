@@ -54,7 +54,7 @@ export class ColiseumService {
       tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, ItemTypeEnum.Resource, 1));
       tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 15000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Resource, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
     }
 
     return tournament;

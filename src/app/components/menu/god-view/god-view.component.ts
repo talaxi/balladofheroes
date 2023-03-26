@@ -222,31 +222,31 @@ export class GodViewComponent implements OnInit {
           if (increaseValues.healingDone > 0)
           rewards += this.utilityService.roundTo(increaseValues.healingDone  * 100, 2) + "% Healing Done Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
-        if (increaseValues.elementalDamageIncrease.holy > 0)
-          rewards += (increaseValues.elementalDamageIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageIncrease.fire > 0)
-          rewards += (increaseValues.elementalDamageIncrease.fire * 100) + "% Fire Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageIncrease.lightning > 0)
-          rewards += (increaseValues.elementalDamageIncrease.lightning * 100) + "% Lightning Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageIncrease.water > 0)
-          rewards += (increaseValues.elementalDamageIncrease.water * 100) + "% Water Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageIncrease.earth > 0)
-          rewards += (increaseValues.elementalDamageIncrease.earth * 100) + "% Earth Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageIncrease.air > 0)
-          rewards += (increaseValues.elementalDamageIncrease.air * 100) + "% Air Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementIncrease.holy > 0)
+          rewards += (increaseValues.elementIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementIncrease.fire > 0)
+          rewards += (increaseValues.elementIncrease.fire * 100) + "% Fire Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementIncrease.lightning > 0)
+          rewards += (increaseValues.elementIncrease.lightning * 100) + "% Lightning Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementIncrease.water > 0)
+          rewards += (increaseValues.elementIncrease.water * 100) + "% Water Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementIncrease.earth > 0)
+          rewards += (increaseValues.elementIncrease.earth * 100) + "% Earth Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementIncrease.air > 0)
+          rewards += (increaseValues.elementIncrease.air * 100) + "% Air Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
-        if (increaseValues.elementalDamageResistance.holy > 0)
-          rewards += (increaseValues.elementalDamageResistance.holy * 100) + "% Holy Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageResistance.fire > 0)
-          rewards += (increaseValues.elementalDamageResistance.fire * 100) + "% Fire Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageResistance.lightning > 0)
-          rewards += (increaseValues.elementalDamageResistance.lightning * 100) + "% Lightning Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageResistance.water > 0)
-          rewards += (increaseValues.elementalDamageResistance.water * 100) + "% Water Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageResistance.earth > 0)
-          rewards += (increaseValues.elementalDamageResistance.earth * 100) + "% Earth Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-        if (increaseValues.elementalDamageResistance.air > 0)
-          rewards += (increaseValues.elementalDamageResistance.air * 100) + "% Air Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementResistance.holy > 0)
+          rewards += (increaseValues.elementResistance.holy * 100) + "% Holy Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementResistance.fire > 0)
+          rewards += (increaseValues.elementResistance.fire * 100) + "% Fire Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementResistance.lightning > 0)
+          rewards += (increaseValues.elementResistance.lightning * 100) + "% Lightning Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementResistance.water > 0)
+          rewards += (increaseValues.elementResistance.water * 100) + "% Water Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementResistance.earth > 0)
+          rewards += (increaseValues.elementResistance.earth * 100) + "% Earth Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.elementResistance.air > 0)
+          rewards += (increaseValues.elementResistance.air * 100) + "% Air Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (rewards !== "")
           rewards = rewards.substring(0, rewards.length - 2);
@@ -352,51 +352,51 @@ export class GodViewComponent implements OnInit {
   }
 
   getHolyDamageBonus() {
-    return this.god.statGain.elementalDamageIncrease.holy + this.god.permanentStatGain.elementalDamageIncrease.holy;
+    return this.god.statGain.elementIncrease.holy + this.god.permanentStatGain.elementIncrease.holy;
   }
 
   getFireDamageBonus() {
-    return this.god.statGain.elementalDamageIncrease.fire + this.god.permanentStatGain.elementalDamageIncrease.fire;
+    return this.god.statGain.elementIncrease.fire + this.god.permanentStatGain.elementIncrease.fire;
   }
   
   getLightningDamageBonus() {
-    return this.god.statGain.elementalDamageIncrease.lightning + this.god.permanentStatGain.elementalDamageIncrease.lightning;
+    return this.god.statGain.elementIncrease.lightning + this.god.permanentStatGain.elementIncrease.lightning;
   }
 
   getAirDamageBonus() {
-    return this.god.statGain.elementalDamageIncrease.air + this.god.permanentStatGain.elementalDamageIncrease.air;
+    return this.god.statGain.elementIncrease.air + this.god.permanentStatGain.elementIncrease.air;
   }
 
   getWaterDamageBonus() {
-    return this.god.statGain.elementalDamageIncrease.water + this.god.permanentStatGain.elementalDamageIncrease.water;
+    return this.god.statGain.elementIncrease.water + this.god.permanentStatGain.elementIncrease.water;
   }
 
   getEarthDamageBonus() {
-    return this.god.statGain.elementalDamageIncrease.earth + this.god.permanentStatGain.elementalDamageIncrease.earth;
+    return this.god.statGain.elementIncrease.earth + this.god.permanentStatGain.elementIncrease.earth;
   }
 
   getHolyResistanceBonus() {
-    return this.god.statGain.elementalDamageResistance.holy + this.god.permanentStatGain.elementalDamageResistance.holy;
+    return this.god.statGain.elementResistance.holy + this.god.permanentStatGain.elementResistance.holy;
   }
 
   getFireResistanceBonus() {
-    return this.god.statGain.elementalDamageResistance.fire + this.god.permanentStatGain.elementalDamageResistance.fire;
+    return this.god.statGain.elementResistance.fire + this.god.permanentStatGain.elementResistance.fire;
   }
 
   getAirResistanceBonus() {
-    return this.god.statGain.elementalDamageResistance.air + this.god.permanentStatGain.elementalDamageResistance.air;
+    return this.god.statGain.elementResistance.air + this.god.permanentStatGain.elementResistance.air;
   }
 
   getLightningResistanceBonus() {
-    return this.god.statGain.elementalDamageResistance.lightning + this.god.permanentStatGain.elementalDamageResistance.lightning;
+    return this.god.statGain.elementResistance.lightning + this.god.permanentStatGain.elementResistance.lightning;
   }
 
   getWaterResistanceBonus() {
-    return this.god.statGain.elementalDamageResistance.water + this.god.permanentStatGain.elementalDamageResistance.water;
+    return this.god.statGain.elementResistance.water + this.god.permanentStatGain.elementResistance.water;
   }
 
   getEarthResistanceBonus() {
-    return this.god.statGain.elementalDamageResistance.earth + this.god.permanentStatGain.elementalDamageResistance.earth;
+    return this.god.statGain.elementResistance.earth + this.god.permanentStatGain.elementResistance.earth;
   }
 
   getMaxHpStatBreakdown() {
