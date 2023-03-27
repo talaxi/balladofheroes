@@ -8,7 +8,10 @@ const envConfigFile = `export const environment = {
     production: true,
     staging: false,
     devEnvironment: false,
-    CODEREDEMPTIONSECRET: '${process.env.CODEREDEMPTIONSECRET}'  
+    CODEREDEMPTIONSECRET: '${process.env.CODEREDEMPTIONSECRET}',
+    STRIPESECRET: '${process.env.STRIPESECRET}',
+    PATREONCLIENTID: '${process.env.PATREONCLIENTID}',
+    PATREONCLIENTSECRET: '${process.env.PATREONCLIENTSECRET}'
 };
 `;
 

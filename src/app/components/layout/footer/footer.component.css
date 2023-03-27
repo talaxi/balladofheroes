@@ -17,3 +17,30 @@
 {
     width: fit-content;
 }
+
+.container {
+    display: flex;
+    justify-content: space-between;
+}
+
+.links {
+    align-self: center;
+    margin-right: .5rem;
+}
+
+a {
+    font-variant: small-caps;
+    font-weight: bold;
+}
+
+a:visited {
+    color: var(--foreground-accent);
+}
+
+a:hover {
+    color: var(--foreground-secondary) !important;
+}
+
+a:link {
+    color: var(--foreground-quarternary);
+}

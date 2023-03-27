@@ -810,8 +810,8 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Sisyphus) {
       enemy.name = "Sisyphus";
-      enemy.battleStats = new CharacterStats(4770, 263, 423, 40, 50, 550);
-      enemy.battleInfo.barrierValue = enemy.battleStats.maxHp * .2;
+      enemy.battleStats = new CharacterStats(4970, 283, 448, 40, 50, 600);
+      enemy.battleInfo.barrierValue = enemy.battleStats.maxHp * .25;
       enemy.battleStats.elementIncrease.fire += .25;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
@@ -825,7 +825,7 @@ export class EnemyGeneratorService {
       rockslide = this.randomizeCooldown(rockslide);
       rockslide.dealsDirectDamage = true;
       rockslide.elementalType = ElementalTypeEnum.Earth;
-      rockslide.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 8, .5, false, true));
+      rockslide.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 10, .5, false, true));
       enemy.abilityList.push(rockslide);
 
       //todo: Ability that reduces damage taken until hit by an auto attack maybe?
@@ -841,7 +841,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Ixion) {
       enemy.name = "Ixion";
-      enemy.battleStats = new CharacterStats(4030, 162, 327, 150, 125, 450);
+      enemy.battleStats = new CharacterStats(4430, 167, 369, 150, 125, 475);
       enemy.battleInfo.barrierValue = enemy.battleStats.maxHp * .1;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
@@ -880,7 +880,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Tantalus) {
       enemy.name = "Tantalus";
-      enemy.battleStats = new CharacterStats(3680, 204, 348, 76, 120, 450);
+      enemy.battleStats = new CharacterStats(3684, 204, 349, 76, 125, 450);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250;
@@ -986,10 +986,10 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Lycaon) {
       enemy.name = "Lycaon";
-      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600);
+      enemy.battleStats = new CharacterStats(8208, 345, 613, 240, 200, 750);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 250;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 450;
 
       var claw = new Ability();
       claw.name = "Savage Claw";
@@ -1021,36 +1021,43 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(howl);
     }
     if (type === BestiaryEnum.Melampus) {
-      //TODO: need to add ability descriptions
       enemy.name = "Melampus";
-      enemy.battleStats = new CharacterStats(7320, 330, 600, 240, 200, 600);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 250;
-      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.BlessingOfDionysus, -1, 1.25, false, true, true));
+      enemy.battleStats = new CharacterStats(10320, 389, 742, 300, 320, 750);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 500;
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.BlessingOfDionysus, -1, .5, false, true, true));
+      
+      var prod = new Ability();
+      prod.name = "Prod";
+      prod.isAvailable = true;
+      prod.effectiveness = 2.1;
+      prod.cooldown = prod.currentCooldown = 16;
+      prod = this.randomizeCooldown(prod);
+      prod.dealsDirectDamage = true;      
+      enemy.abilityList.push(prod);
 
       var drink = new Ability();
       drink.name = "Drink";
       drink.isAvailable = true;
-      drink.cooldown = drink.currentCooldown = 10;
+      drink.cooldown = drink.currentCooldown = 9;
       drink = this.randomizeCooldown(drink);
       drink.dealsDirectDamage = false;
-      drink.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .7, true, true, false, enemy.name, 1));
+      drink.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2.5, true, true, false, enemy.name, 1));
       enemy.abilityList.push(drink);
     }
     if (type === BestiaryEnum.Atreus) {
-      //TODO: need to add ability descriptions
       enemy.name = "Atreus";
-      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
+      enemy.battleStats = new CharacterStats(16732, 515, 872, 361, 450, 850);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
       enemy.battleStats.elementIncrease.lightning = .25;
-      enemy.xpGainFromDefeat = 250;
+      enemy.xpGainFromDefeat = 650;
 
       var bronti = new Ability();
       bronti.name = "Bronti";
       bronti.isAvailable = true;
-      bronti.effectiveness = 2.2;
+      bronti.effectiveness = 2;
       bronti.cooldown = bronti.currentCooldown = 18;
       bronti.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false));
       bronti = this.randomizeCooldown(bronti);
@@ -1061,7 +1068,7 @@ export class EnemyGeneratorService {
       var risingSun = new Ability();
       risingSun.name = "Rising Sun";
       risingSun.isAvailable = true;
-      risingSun.effectiveness = 2.2;
+      risingSun.effectiveness = 2;
       risingSun.cooldown = risingSun.currentCooldown = 14;
       risingSun = this.randomizeCooldown(risingSun);
       risingSun.dealsDirectDamage = true;
@@ -1069,28 +1076,27 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(risingSun);
     }
     if (type === BestiaryEnum.Cassandra) {
-      //TODO: need to add ability descriptions
       enemy.name = "Cassandra";
-      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 250;
+      enemy.battleStats = new CharacterStats(10450, 487, 815, 294, 483, 850);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 500;
 
-      //TODO: implement, should apply just before taking direct damage
       var foresight = new Ability();
       foresight.name = "Foresight";
       foresight.isAvailable = true;
       foresight.dealsDirectDamage = false;
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .25, true, true, false, enemy.name, 1));
+      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .8, true, true, false, enemy.name, 1));
       enemy.abilityList.push(foresight);
 
       var straightArrow = new Ability();
       straightArrow.name = "Straight Arrow";
       straightArrow.isAvailable = true;
-      straightArrow.effectiveness = 1.4;
+      straightArrow.effectiveness = 1.9;
       straightArrow.cooldown = straightArrow.currentCooldown = 15;
       straightArrow = this.randomizeCooldown(straightArrow);
       straightArrow.dealsDirectDamage = true;
+      straightArrow.targetEffect.push(this.globalService.createDamageOverTimeEffect(8, 4, .4, straightArrow.name, dotTypeEnum.BasedOnAttack));
       enemy.abilityList.push(straightArrow);
 
       //if she dies first, heal Helenus 50% of his HP
@@ -1101,23 +1107,21 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(lastBreath);
     }
     if (type === BestiaryEnum.Helenus) {
-      //TODO: need to add ability descriptions
       enemy.name = "Helenus";
-      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 250;
+      enemy.battleStats = new CharacterStats(12967, 684, 908, 285, 418, 850);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 500;
 
       var slice = new Ability();
       slice.name = "Slice";
       slice.isAvailable = true;
-      slice.effectiveness = 1.4;
-      slice.cooldown = slice.currentCooldown = 15;
-      straightArrow = this.randomizeCooldown(slice);
+      slice.effectiveness = 1.8;
+      slice.cooldown = slice.currentCooldown = 18;
+      slice = this.randomizeCooldown(slice);
       slice.dealsDirectDamage = true;
       enemy.abilityList.push(slice);
-
-      //TODO: should this deal damage? should apply before auto attacks
+      
       var oneStepAhead = new Ability();
       oneStepAhead.name = "One Step Ahead";
       oneStepAhead.isAvailable = true;
@@ -1125,41 +1129,105 @@ export class EnemyGeneratorService {
       oneStepAhead.dealsDirectDamage = true;
       oneStepAhead.cooldown = oneStepAhead.currentCooldown = 19;
       oneStepAhead = this.randomizeCooldown(oneStepAhead);
-      oneStepAhead.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .9, false, false));
+      oneStepAhead.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .8, false, false));
       enemy.abilityList.push(oneStepAhead);
 
-      //if he dies first, increase Helenus's attack by 50% permanently
-      //TODO: implement
+      //if he dies first, increase Helenus's attack by 50% permanently      
       var dyingWish = new Ability();
       dyingWish.name = "Dying Wish";
       dyingWish.isAvailable = true;
       dyingWish.dealsDirectDamage = false;
+      dyingWish.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.5, false, true, false));
       enemy.abilityList.push(dyingWish);
     }
     if (type === BestiaryEnum.Rhadamanthus) {
-      //TODO: need to add ability descriptions
       enemy.name = "Rhadamanthus";
-      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600);
+      enemy.battleStats = new CharacterStats(14998, 436, 1292, 415, 415, 1000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 250;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 650;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Lightning;
+
+      var lightningStrike = new Ability();
+      lightningStrike.name = "Lightning Strike";
+      lightningStrike.isAvailable = true;
+      lightningStrike.effectiveness = 2.1;
+      lightningStrike.cooldown = lightningStrike.currentCooldown = 17;
+      lightningStrike.dealsDirectDamage = true;
+      lightningStrike.elementalType = ElementalTypeEnum.Lightning;
+      lightningStrike.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.15, false, true, false, undefined, undefined, true));
+      enemy.abilityList.push(lightningStrike);
+
+      var favoredSon = new Ability();
+      favoredSon.name = "Favored Son";
+      favoredSon.isAvailable = true;
+      favoredSon.cooldown = favoredSon.currentCooldown = 15;
+      favoredSon = this.randomizeCooldown(favoredSon);
+      favoredSon.dealsDirectDamage = false;
+      favoredSon.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 7, 1.25, false, true, false));
+      favoredSon.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 7, 1.25, false, true, false));
+      enemy.abilityList.push(favoredSon); 
     }
     if (type === BestiaryEnum.Aeacus) {
-      //TODO: need to add ability descriptions
       enemy.name = "Aeacus";
-      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 250;
+      enemy.battleStats = new CharacterStats(16815, 602, 1489, 483, 395, 1000);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 650;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Holy;
+
+      var divineProtection = new Ability();
+      divineProtection.name = "Divine Protection";
+      divineProtection.isAvailable = true;
+      divineProtection.effectiveness = 1.75;
+      divineProtection.cooldown = divineProtection.currentCooldown = 17;
+      divineProtection.dealsDirectDamage = true;
+      divineProtection.elementalType = ElementalTypeEnum.Holy;
+      divineProtection.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, -1, 1.15, false, true, false, undefined, undefined, true));
+      enemy.abilityList.push(divineProtection);
+      
+      var inflexibility = new Ability();
+      inflexibility.name = "Inflexibility";
+      inflexibility.isAvailable = true;
+      inflexibility.cooldown = inflexibility.currentCooldown = 23;
+      inflexibility = this.randomizeCooldown(inflexibility);
+      inflexibility.dealsDirectDamage = false;      
+      inflexibility.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 15, 1.5, false, true, false));
+      enemy.abilityList.push(inflexibility); 
     }
     if (type === BestiaryEnum.Minos) {
-      //TODO: need to add ability descriptions
       enemy.name = "Minos";
-      enemy.battleStats = new CharacterStats(8200, 330, 600, 240, 200, 600);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 250;
-      enemy.battleInfo.elementalType = ElementalTypeEnum.Holy;
+      enemy.battleStats = new CharacterStats(22401, 748, 1582, 500, 550, 1200);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 4;
+      enemy.xpGainFromDefeat = 800;
+
+      var slamOfTheGavel = new Ability();
+      slamOfTheGavel.name = "Slam of the Gavel";
+      slamOfTheGavel.isAvailable = true;
+      slamOfTheGavel.effectiveness = 1.5;
+      slamOfTheGavel.cooldown = slamOfTheGavel.currentCooldown = 14;
+      slamOfTheGavel.dealsDirectDamage = true;
+      enemy.abilityList.push(slamOfTheGavel);
+
+      var lastHearing = new Ability();
+      lastHearing.name = "Last Hearing";
+      lastHearing.isAvailable = true;
+      lastHearing.cooldown = lastHearing.currentCooldown = 25;
+      lastHearing = this.randomizeCooldown(lastHearing);
+      lastHearing.dealsDirectDamage = false;
+      lastHearing.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 13, 1.45, false, true, false));
+      lastHearing.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 13, 1.45, false, true, false));
+      lastHearing.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 13, 1.45, false, true, false));
+      enemy.abilityList.push(lastHearing);      
+
+      var finalJudgment = new Ability();
+      finalJudgment.name = "Final Judgment";
+      finalJudgment.isAvailable = true;
+      finalJudgment.effectiveness = 2;
+      finalJudgment.cooldown = finalJudgment.currentCooldown = 40;
+      finalJudgment.dealsDirectDamage = true;
+      enemy.abilityList.push(finalJudgment);
     }
     if (type === BestiaryEnum.CreatureFromTheDeep) {
       enemy.name = "Creature From The Deep";
@@ -1304,7 +1372,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 218;
-      enemy.loot.push(new LootItem(ItemsEnum.SpiritEssence, ItemTypeEnum.CraftingMaterial, 1, .125));
+      enemy.loot.push(new LootItem(ItemsEnum.SpiritEssence, ItemTypeEnum.CraftingMaterial, 1, .1));
 
       var phase = new Ability();
       phase.name = "Ethereal";
@@ -1446,6 +1514,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementResistance.earth += .25;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 242;
+      enemy.loot.push(new LootItem(ItemsEnum.SpiritEssence, ItemTypeEnum.CraftingMaterial, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.SmallOpal, ItemTypeEnum.CraftingMaterial, 1, .04));
       enemy.loot.push(new LootItem(ItemsEnum.SmallAmethyst, ItemTypeEnum.CraftingMaterial, 1, .04));
 

@@ -6,7 +6,9 @@ export const environment = {
   production: false,
   staging: false,
   CODEREDEMPTIONSECRET: 'testsecret',
-  STRIPESECRET: 'teststripe'
+  STRIPESECRET: 'teststripe',
+  PATREONCLIENTID: 'patreonclientid',
+  PATREONCLIENTSECRET: 'patreonclientsecret'
 };
 
 /*

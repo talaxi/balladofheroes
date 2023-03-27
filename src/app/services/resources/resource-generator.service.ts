@@ -275,6 +275,34 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.FocusPotion, ItemTypeEnum.HealingItem, amount);
     }
+    if (type === ItemsEnum.WitheringToxin)
+    {
+      return new ResourceValue(ItemsEnum.WitheringToxin, ItemTypeEnum.Toxin, amount);
+    }
+    if (type === ItemsEnum.VenomousToxin)
+    {
+      return new ResourceValue(ItemsEnum.VenomousToxin, ItemTypeEnum.Toxin, amount);
+    }
+    if (type === ItemsEnum.ElixirOfFortitude)
+    {
+      return new ResourceValue(ItemsEnum.ElixirOfFortitude, ItemTypeEnum.Elixir, amount);
+    }
+    if (type === ItemsEnum.UnstablePotion)
+    {
+      return new ResourceValue(ItemsEnum.UnstablePotion, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.BoomingPotion)
+    {
+      return new ResourceValue(ItemsEnum.BoomingPotion, ItemTypeEnum.BattleItem, amount);
+    }
+    if (type === ItemsEnum.RestorativePoultice)
+    {
+      return new ResourceValue(ItemsEnum.RestorativePoultice, ItemTypeEnum.HealingItem, amount);
+    }
+    if (type === ItemsEnum.RestorativeSalve)
+    {
+      return new ResourceValue(ItemsEnum.RestorativeSalve, ItemTypeEnum.HealingItem, amount);
+    }
 
     //materials
     if (type === ItemsEnum.LightLeather)
@@ -312,6 +340,18 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.SoulSpark)
     {
       return new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SatchelOfHerbs)
+    {
+      return new ResourceValue(ItemsEnum.SatchelOfHerbs, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.SoulEssence)
+    {
+      return new ResourceValue(ItemsEnum.SoulEssence, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.BushelOfHerbs)
+    {
+      return new ResourceValue(ItemsEnum.BushelOfHerbs, ItemTypeEnum.CraftingMaterial, amount);
     }
     if (type === ItemsEnum.VialOfLakeLerna)
     {

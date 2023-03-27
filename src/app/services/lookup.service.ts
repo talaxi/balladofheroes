@@ -168,6 +168,8 @@ export class LookupService {
       name = "Extract essence from ingredients";
     if (action === AlchemyActionsEnum.Infuse)
       name = "Steep ingredients in liquid and infuse";
+    if (action === AlchemyActionsEnum.StoreIngredients)
+      name = "Store ingredients for future use";
 
     return name;
   }
@@ -203,21 +205,23 @@ export class LookupService {
 
   getItemTypeFromItemEnum(type: ItemsEnum) {
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.HealingSalve ||
-      type === ItemsEnum.RestorativeHerb || type === ItemsEnum.FocusPotion) {
+      type === ItemsEnum.RestorativeHerb || type === ItemsEnum.FocusPotion || type === ItemsEnum.RestorativePoultice ||
+      type === ItemsEnum.RestorativeSalve) {
       return ItemTypeEnum.HealingItem;
     }
 
     if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.PoisonFang || type === ItemsEnum.ExplodingPotion
       || type === ItemsEnum.FirePotion || type === ItemsEnum.StranglingGasPotion || type === ItemsEnum.PoisonExtractPotion ||
-      type === ItemsEnum.HeftyStone) {
+      type === ItemsEnum.HeftyStone || type === ItemsEnum.UnstablePotion || type === ItemsEnum.BoomingPotion) {
       return ItemTypeEnum.BattleItem;
     }
 
-    if (type === ItemsEnum.PoisonousToxin || type === ItemsEnum.DebilitatingToxin) {
+    if (type === ItemsEnum.PoisonousToxin || type === ItemsEnum.DebilitatingToxin || type === ItemsEnum.WitheringToxin ||
+      type === ItemsEnum.VenomousToxin) {
       return ItemTypeEnum.Toxin;
     }
 
-    if (type === ItemsEnum.HeroicElixir || type === ItemsEnum.RejuvenatingElixir) {
+    if (type === ItemsEnum.HeroicElixir || type === ItemsEnum.RejuvenatingElixir || type === ItemsEnum.ElixirOfFortitude) {
       return ItemTypeEnum.Elixir;
     }
 
@@ -226,7 +230,8 @@ export class LookupService {
       type === ItemsEnum.Olive || type === ItemsEnum.SoulSpark || type === ItemsEnum.VialOfTheLethe || type === ItemsEnum.EssenceOfFire ||
       type === ItemsEnum.Narcissus || type === ItemsEnum.ThickLeather || type === ItemsEnum.SmallRuby || type === ItemsEnum.SmallEmerald || type === ItemsEnum.SmallTopaz ||
       type === ItemsEnum.SmallOpal || type === ItemsEnum.SmallAmethyst || type === ItemsEnum.SmallAquamarine || type === ItemsEnum.Goldroot || type === ItemsEnum.Lousewort ||
-      type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence) {
+      type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence ||
+      type === ItemsEnum.SatchelOfHerbs || type === ItemsEnum.BushelOfHerbs || type === ItemsEnum.SoulEssence) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -270,6 +275,10 @@ export class LookupService {
       name = "Healing Salve";
     if (type === ItemsEnum.RestorativeHerb)
       name = "Restorative Herb";
+      if (type === ItemsEnum.RestorativePoultice)
+      name = "Restorative Poultice";
+      if (type === ItemsEnum.RestorativeSalve)
+      name = "Restorative Salve";
       else if (type === ItemsEnum.FocusPotion)
       name = "Focus Potion";
 
@@ -284,6 +293,10 @@ export class LookupService {
       name = "Poisonous Toxin";
     else if (type === ItemsEnum.DebilitatingToxin)
       name = "Debilitating Toxin";
+      else if (type === ItemsEnum.WitheringToxin)
+      name = "Withering Toxin";
+      else if (type === ItemsEnum.VenomousToxin)
+      name = "Venomous Toxin";
     else if (type === ItemsEnum.FirePotion)
       name = "Fire Potion";
     else if (type === ItemsEnum.ExplodingPotion)
@@ -292,10 +305,16 @@ export class LookupService {
       name = "Strangling Gas Potion";
     else if (type === ItemsEnum.PoisonExtractPotion)
       name = "Poison Extract Potion";
+      else if (type === ItemsEnum.UnstablePotion)
+      name = "Unstable Potion";
+      else if (type === ItemsEnum.BoomingPotion)
+      name = "Booming Potion";
     else if (type === ItemsEnum.HeroicElixir)
       name = "Heroic Elixir";
     else if (type === ItemsEnum.RejuvenatingElixir)
       name = "Rejuvenating Elixir";
+      else if (type === ItemsEnum.ElixirOfFortitude)
+      name = "Elixir of Fortitude";
 
     //equipment
     //swords
@@ -433,6 +452,12 @@ export class LookupService {
       name = "Asphodelus";
     else if (type === ItemsEnum.ToxicIchor)
       name = "Toxic Ichor";
+      else if (type === ItemsEnum.SatchelOfHerbs)
+      name = "Satchel of Herbs";
+      else if (type === ItemsEnum.SoulEssence)
+      name = "Soul Essence";
+      else if (type === ItemsEnum.BushelOfHerbs)
+      name = "Bushel of Herbs";
     else if (type === ItemsEnum.BrokenNecklace)
       name = "Broken Necklace";
     else if (type === ItemsEnum.SmallAmethyst)
@@ -649,10 +674,11 @@ export class LookupService {
       }
     }
 
-    if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.RestorativeHerb)
+    if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.RestorativeHerb ||
+      type === ItemsEnum.RestorativePoultice)
       name = "Heal a party member for " + effect.healAmount + " HP.";
 
-    else if (type === ItemsEnum.HealingSalve)
+    else if (type === ItemsEnum.HealingSalve || type === ItemsEnum.RestorativeSalve)
       name = "Heal both party members for " + effect.healAmount + " HP.";
 
       else if (type === ItemsEnum.FocusPotion)
@@ -661,21 +687,30 @@ export class LookupService {
     //battle items
     else if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.ExplodingPotion || type === ItemsEnum.HeftyStone)
       name = "Deal " + effect.trueDamageAmount + " damage to a target.";
+      else if (type === ItemsEnum.UnstablePotion)
+      name = "Deal " + effect.trueDamageAmount + " damage to all targets.";
     else if (type === ItemsEnum.FirePotion)
       name = "Deal " + effect.trueDamageAmount + " Fire damage to a target.";
     else if (type === ItemsEnum.PoisonFang || type === ItemsEnum.StranglingGasPotion)
       name = "Poison an enemy, dealing " + relatedTargetGainStatusEffectEffectiveness + " damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
     else if (type === ItemsEnum.PoisonExtractPotion)
       name = "Poison all enemies, dealing " + relatedTargetGainStatusEffectEffectiveness + " damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
+      else if (type === ItemsEnum.BoomingPotion)
+      name = "Reduce target's Resistance by " + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "% for " + relatedTargetGainStatusEffectDuration + " seconds.";
     else if (type === ItemsEnum.DebilitatingToxin)
-      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's agility by 10% for 8 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's Agility by 10% for 8 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.PoisonousToxin)
       name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 22 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
+      else if (type === ItemsEnum.WitheringToxin)
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to reduce a target's Attack by 10% for 12 seconds. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
+    else if (type === ItemsEnum.VenomousToxin)
+      name = "Apply a toxin to a party member's weapon, giving their auto attacks a 10% chance to deal an additional 165 damage. Lasts for 30 minutes. Only one toxin can be applied per party member at a time.";
     else if (type === ItemsEnum.HeroicElixir)
       name = "Increase user's max HP by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
     else if (type === ItemsEnum.RejuvenatingElixir)
       name = "Increase user's HP Regen by " + relatedUserGainStatusEffectEffectiveness + " per 5 seconds for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
-
+      else if (type === ItemsEnum.ElixirOfFortitude)
+      name = "Increase user's Defense by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
 
     //resources    
     else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Resource || this.getItemTypeFromItemEnum(type) === ItemTypeEnum.CraftingMaterial)
@@ -812,7 +847,7 @@ export class LookupService {
 
     if (type === ItemsEnum.SmallCharmOfArtemis)
       description = "Increase Debuff Duration by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfArtemisValue() * 100) + "%</span> for all debuffs created by the character equipped with Artemis.";
-    if (type === ItemsEnum.LargeCharmOfAthena)
+    if (type === ItemsEnum.LargeCharmOfArtemis)
       description = "Increase Debuff Duration by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfArtemisValue() * 100) + "%</span> for all debuffs created by the character equipped with Artemis.";
 
     if (type === ItemsEnum.SmallCharmOfHermes)
@@ -832,10 +867,14 @@ export class LookupService {
     var description = "";
     if (item === ItemsEnum.Coin)
       description = "Use to trade with merchants.";
-    else //if (item === ItemsEnum.LightLeather)
-      description = "Used for crafting. <hr/>Can be found at:<br/>" +
-        this.getResourceItemLocations(item);
+    else {      
+      description = "Used for crafting.";
+      if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs)
+        return description;
 
+      var locations = this.getResourceItemLocations(item);
+      description += "<hr/>Can be found at:<br/>" + locations;
+    }
     return description;
   }
 
@@ -1915,6 +1954,57 @@ export class LookupService {
     if (ability.name === "Thick Skin") {
       abilityDescription = "Increase the user's Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
+    if (ability.name === "Prod") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Drink") {
+      abilityDescription = "Give yourself a Barrier of <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "% of Attack</strong> HP. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Bronti") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage to a target and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Rising Sun") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to a target. " + cooldown + " second cooldown.";
+    }  
+    if (ability.name === "Foresight") {
+      abilityDescription = "Just before being attacked, give yourself a Barrier of <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "% of Attack</strong> HP. " + cooldown + " second cooldown.";
+    }  
+    if (ability.name === "Straight Arrow") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Last Breath") {
+      abilityDescription = "If Cassandra is defeated before Helenus, restore 50% of Helenus's HP.";
+    } 
+    if (ability.name === "Dying Wish") {
+      abilityDescription = "If Helenus is defeated before Cassandra, permanently increase Cassandra's Attack by 50%.";
+    } 
+    if (ability.name === "Slice") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    } 
+    if (ability.name === "One Step Ahead") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    } 
+    if (ability.name === "Lightning Strike") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage to a target and increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Favored Son") {
+      abilityDescription = "Increase the user's Agility and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Divine Protection") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Holy damage to a target and increase the user's Defense by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Inflexibility") {
+      abilityDescription = "Increase the user's Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Last Hearing") {
+      abilityDescription = "Increase the user's Agility, Luck, and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Slam of the Gavel") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }   
+    if (ability.name === "Final Judgment") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is multiplied by the number of allies still remaining. " + cooldown + " second cooldown.";
+    }   
 
     return abilityDescription;
   }
@@ -2067,17 +2157,25 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.AbsorbElementalDamage && statusEffect.element === ElementalTypeEnum.Earth)
       description = "Absorbing Earth damage.";
     if (statusEffect.type === StatusEffectEnum.ReduceDirectDamage)
-      description = "Decrease any direct damage by " + Math.round(statusEffect.effectiveness) + ".";
+      description = "Decrease any direct damage by " + Math.round(statusEffect.effectiveness) + ".";      
+    if (statusEffect.type === StatusEffectEnum.BlessingOfDionysus)
+      description = Math.round((1 - statusEffect.effectiveness) * 100) + "% chance to avoid negative status effects.";
 
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
-      description = "10% chance on auto attack to reduce target's agility by 10% for 8 seconds.";
+      description = "10% chance on auto attack to reduce target's Agility by 10% for 8 seconds.";
     if (statusEffect.type === StatusEffectEnum.PoisonousToxin)
       description = "10% chance on auto attack to deal 22 additional damage.";
+      if (statusEffect.type === StatusEffectEnum.WitheringToxin)
+      description = "10% chance on auto attack to reduce target's Attack by 10% for 12 seconds.";
+    if (statusEffect.type === StatusEffectEnum.VenomousToxin)
+      description = "10% chance on auto attack to deal 165 additional damage.";
 
     if (statusEffect.type === StatusEffectEnum.HeroicElixir)
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.RejuvenatingElixir)
       description = "Increase HP Regen by " + statusEffect.effectiveness + " per 5 seconds.";
+      if (statusEffect.type === StatusEffectEnum.ElixirOfFortitude)
+        description = "Increase Defense by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
 
     return description;
@@ -2265,6 +2363,15 @@ export class LookupService {
       itemEffect.dealsDamage = false;
       itemEffect.healAmount = 150;
     }
+    if (item === ItemsEnum.RestorativePoultice) {
+      itemEffect.dealsDamage = false;
+      itemEffect.healAmount = 500;
+    }
+    if (item === ItemsEnum.RestorativeSalve) {
+      itemEffect.dealsDamage = false;
+      itemEffect.healAmount = 350;
+      itemEffect.isAoe = true;
+    }
     if (item === ItemsEnum.FocusPotion) {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FillOverdriveGauge, 0, .1, true, true));
@@ -2290,6 +2397,15 @@ export class LookupService {
       itemEffect.dealsDamage = true;
       itemEffect.trueDamageAmount = 32;
     }
+    if (item === ItemsEnum.UnstablePotion) {
+      itemEffect.dealsDamage = true;
+      itemEffect.isAoe = true;
+      itemEffect.trueDamageAmount = 85;
+    }
+    if (item === ItemsEnum.BoomingPotion) {
+      itemEffect.dealsDamage = false;      
+      itemEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 20, .8, false, false, true));
+    }
     if (item === ItemsEnum.StranglingGasPotion) {
       itemEffect.dealsDamage = true;
       itemEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(9, 3, 22, "Strangling Gas", dotTypeEnum.TrueDamage));
@@ -2301,6 +2417,14 @@ export class LookupService {
     if (item === ItemsEnum.PoisonousToxin) {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PoisonousToxin, 30 * 60, .1, false, true, undefined, "Poisonous Toxin"));
+    }
+    if (item === ItemsEnum.WitheringToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.WitheringToxin, 30 * 60, .1, false, true, undefined, "Withering Toxin"));
+    }
+    if (item === ItemsEnum.VenomousToxin) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.VenomousToxin, 30 * 60, .1, false, true, undefined, "Venomous Toxin"));
     }
     if (item === ItemsEnum.PoisonExtractPotion) {
       itemEffect.dealsDamage = true;
@@ -2314,6 +2438,10 @@ export class LookupService {
     if (item === ItemsEnum.RejuvenatingElixir) {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RejuvenatingElixir, 30 * 60, 5, false, true));
+    }
+        if (item === ItemsEnum.ElixirOfFortitude) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ElixirOfFortitude, 30 * 60, 1.1, false, true));
     }
 
     return itemEffect;
@@ -2397,8 +2525,8 @@ export class LookupService {
       criticalChance = Math.log10(horizontalStretch * differential) + horizontalPosition;
     }
     else if (differential < 1) {
-      //.25 * log(9^x) - .25      
-      var amplifier = .25;
+      //.2 * log(9^x) - .25      
+      var amplifier = .2;
       var horizontalStretch = 9;
       var horizontalPosition = -.25;
 
@@ -2411,8 +2539,8 @@ export class LookupService {
   getHealingCriticalChanceByNumbers(attackerLuck: number) {
     var criticalChance = .05;
 
-    var amplifier = 20;
-    var horizontalStretch = .05;
+    var amplifier = 10;
+    var horizontalStretch = .4;
     var horizontalPosition = 5;
 
     //500 * (log(.0035 * 10 + 1)) + 50      
@@ -2565,7 +2693,7 @@ export class LookupService {
     var activeFortissimo: any;
     var party = this.globalService.getActivePartyCharacters(true);
 
-    if (party.length > 0) {
+    if (party.length > 0 && forPartyMember) {
       party.forEach(character => {
         var effect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Fortissimo);
         if (effect !== undefined)
@@ -2907,14 +3035,35 @@ export class LookupService {
     if (type === ItemsEnum.PoisonousToxin) {
       src += "poisonousToxin.svg";
     }
+    if (type === ItemsEnum.PoisonExtractPotion) {
+      src += "poisonExtractPotion.svg";
+    }
     if (type === ItemsEnum.HeroicElixir) {
       src += "heroicElixir.svg";
     }
     if (type === ItemsEnum.RejuvenatingElixir) {
       src += "rejuvenatingElixir.svg";
     }
-    if (type === ItemsEnum.PoisonExtractPotion) {
-      src += "poisonExtractPotion.svg";
+    if (type === ItemsEnum.WitheringToxin) {
+      src += "witheringToxin.svg";
+    }
+    if (type === ItemsEnum.VenomousToxin) {
+      src += "venomousToxin.svg";
+    }
+    if (type === ItemsEnum.UnstablePotion) {
+      src += "unstablePotion.svg";
+    }
+    if (type === ItemsEnum.BoomingPotion) {
+      src += "boomingPotion.svg";
+    }
+    if (type === ItemsEnum.ElixirOfFortitude) {
+      src += "elixirOfFortitude.svg";
+    }
+    if (type === ItemsEnum.RestorativePoultice) {
+      src += "restorativePoultice.svg";
+    }
+    if (type === ItemsEnum.RestorativeSalve) {
+      src += "restorativeSalve.svg";
     }
 
     return src;

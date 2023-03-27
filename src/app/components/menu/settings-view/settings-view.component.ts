@@ -15,6 +15,7 @@ import { VersionControlService } from 'src/app/services/utility/version-control.
 declare var LZString: any;
 import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
+import { PatreonAccessService } from 'src/app/services/utility/patreon-access.service';
 
 @Component({
   selector: 'app-settings-view',
@@ -32,12 +33,14 @@ export class SettingsViewComponent implements OnInit {
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
     private versionControlService: VersionControlService, private codeCreationService: CodeCreationService,
-    private codeRedemptionService: CodeRedemptionService) { }
+    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService) { }
 
   ngOnInit(): void {
     if (this.deploymentService.devModeActive)
       console.log(this.globalService.globalVar);
     //console.log(JSON.stringify(this.globalService.globalVar));
+    
+    this.patreonAccessService.getPatronList();
 
     if (this.deploymentService.codeCreationMode)
       console.log(this.codeCreationService.createCode());

@@ -1,7 +1,15 @@
+<div class='container'>
 <div class="gameName" customToolTip [contentTemplate]="versionPopover" [tooltipDirection]="tooltipDirection">
     <span class="pageHeader gameTitle">Ballad of Heroes</span>
     <span class="subheader">v{{getVersion()}} beta</span>
 </div>
+<div class="links">
+    <div class="rightAlign">            
+        <span><a href="https://www.patreon.com/BalladOfHeroes" rel="noopener noreferrer" target="_blank">patreon</a> | <a href="https://discord.gg/gcRvF2AJGV" rel="noopener noreferrer" target="_blank">discord</a> | <a href="mailto:BalladOfHeroes@gmail.com">email</a></span>
+    </div>
+</div>
+</div>
+
 
 <!--
     <span class="version versionMargin clickableText" [ngbPopover]="latestVersionChangesContent"

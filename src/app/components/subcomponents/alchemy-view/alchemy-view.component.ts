@@ -50,7 +50,9 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   getRecipeList(quality: EquipmentQualityEnum) {
-    return this.globalService.globalVar.alchemy.availableRecipes.filter(item => item.quality === quality);
+    return this.globalService.globalVar.alchemy.availableRecipes.filter(item => item.quality === quality).reverse(); /*.sort(function (a, b) {
+      return a. && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
+    });*/
   }
 
   getSelectedRecipeName() {
@@ -233,7 +235,7 @@ export class AlchemyViewComponent implements OnInit {
   getQualityTypeName(quality: EquipmentQualityEnum) {
     var name = this.lookupService.getQualityTypeName(quality);
 
-    return "<span class='" + name.toLowerCase() + "Equipment bold'>" + name.toUpperCase() + " RECIPES</span>";
+    return "<span class='" + name.toLowerCase() + "Equipment bold'>" + name.toLowerCase() + " recipes</span>";
   }
 
   recipesAtQualityLevelAmount(quality: EquipmentQualityEnum) {

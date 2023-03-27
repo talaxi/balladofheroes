@@ -28,6 +28,7 @@ export class AbilityViewComponent implements OnInit {
   autoMode: boolean;
   spinnerDivSubscription: any;
   isMobile: boolean = false;
+  longPressStartTime = 0;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     private globalService: GlobalService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
@@ -97,7 +98,20 @@ export class AbilityViewComponent implements OnInit {
     return this.utilityService.getSanitizedHtml(description);
   }
 
-  toggleAuto() {
+  longPressStart() {
+    this.longPressStartTime = performance.now();
+  }
+
+  longPressEnd() {
+    var timePassed = performance.now() - this.longPressStartTime;
+    this.longPressStartTime = 0;
+
+    if (timePassed > 500 && this.isMobile) { //longer than .5 seconds
+      this.toggleAuto();
+    }
+  }
+
+  toggleAuto() {    
     this.autoMode = !this.autoMode;
     if (this.ability !== undefined)
       this.ability.autoMode = this.autoMode;
@@ -191,7 +205,7 @@ export class AbilityViewComponent implements OnInit {
     return "<span class='keybind'>" + keybindKey + "</span>";
   }
 
-  preventRightClick() {
+  preventRightClick() {    
     return false;
   }
 

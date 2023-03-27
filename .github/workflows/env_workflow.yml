@@ -21,6 +21,9 @@ jobs:
         npm run-script deploy
       env:
         CODEREDEMPTIONSECRET: ${{ secrets.CODEREDEMPTIONSECRET }}
+        STRIPESECRET: ${{ secrets.STRIPESECRET }}
+        PATREONCLIENTID: ${{ secrets.PATREONCLIENTID }}
+        PATREONCLIENTSECRET: ${{ secrets.PATREONCLIENTSECRET }}
     
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v0

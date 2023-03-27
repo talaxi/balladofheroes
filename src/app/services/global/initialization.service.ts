@@ -355,8 +355,15 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 1000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 1000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheBlackSea, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Sorrel, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Wax, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SpiritEssence, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingPoultice, ItemTypeEnum.HealingItem, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 10000));
@@ -370,51 +377,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, ItemTypeEnum.CraftingMaterial, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, ItemTypeEnum.BattleItem, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfApollo, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHermes, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHermes, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAthena, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAthena, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfArtemis, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfArtemis, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHaste, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, 5));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, 5));
-
+        
     this.globalService.globalVar.currentStoryId = 10000;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
@@ -467,6 +430,52 @@ export class InitializationService {
 
   setPowerLevel(level: number) {
     if (level === 1) {
+      var allCharmCount = level;
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfApollo, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHermes, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHermes, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAthena, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAthena, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfArtemis, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfArtemis, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHaste, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, ItemTypeEnum.Charm, allCharmCount));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, ItemTypeEnum.Charm, allCharmCount));  
+
       this.globalService.globalVar.chthonicPowers.attackBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 5;
@@ -511,7 +520,7 @@ export class InitializationService {
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
       this.globalService.globalVar.itemBeltSize = 1;
-      this.globalService.globalVar.alchemy.level = 25;
+      this.globalService.globalVar.alchemy.level = 50;
       this.alchemyService.checkForNewRecipes();
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
@@ -528,6 +537,7 @@ export class InitializationService {
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
         character2.assignedGod1 = GodEnum.Artemis;
+        character2.assignedGod2 = GodEnum.Apollo;
         character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SwordOfFlames);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
         character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
@@ -544,7 +554,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 100;
+      var godLevel = 148;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

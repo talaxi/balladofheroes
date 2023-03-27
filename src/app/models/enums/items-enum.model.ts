@@ -158,16 +158,19 @@ export enum ItemsEnum {
   BoarHide,
   BearHide,
   WitheringToxin,
-  ExplosivePotion,
+  UnstablePotion,
   ElixirOfFortitude,
   VenomousToxin,
   RestorativePoultice,
   RestorativeSalve,
-  BlindingPotion,
+  BoomingPotion,
   SpiritEssence,
   VialOfTheBlackSea,
   Sorrel,
   SparringMatch,
   FocusPotion,
-  FocusPotionRecipe
+  FocusPotionRecipe,
+  SatchelOfHerbs,
+  SoulEssence,
+  BushelOfHerbs
 }
