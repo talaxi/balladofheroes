@@ -23,7 +23,7 @@ export class DeploymentService {
 
   setStagingMode() {
     this.devModeActive = true;
-    this.forceStartNewGame = false;
+    this.forceStartNewGame = true;
     this.codeCreationMode = true;
     this.showStats = false;
     this.performanceModeAvailable = true;

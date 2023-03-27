@@ -351,6 +351,7 @@ export class StoryService {
       if (this.globalService.globalVar.currentStoryId === 1) {
         this.globalService.globalVar.isBattlePaused = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay));
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);

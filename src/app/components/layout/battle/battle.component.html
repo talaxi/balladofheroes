@@ -100,8 +100,8 @@
             <app-shop-view></app-shop-view>
         </div>
     </div>
-    <div *ngIf="isMobile && notificationOverlayMessage.length > 0 && !isAtChestScene() && !isAtStoryScene()"
-        class="notificationOverlay">
+    <div *ngIf="isMobile && !isAtChestScene() && !isAtStoryScene()"
+        class="notificationOverlay" [ngClass]="{ 'opaque': notificationOverlayMessage.length > 0 }">
         <div class="notificationMessage">
             <span [innerHtml]="notificationOverlayMessage"></span>
             <span class="buttonStyled skipOverlay" (click)="skipOverlayMessage()">X</span>

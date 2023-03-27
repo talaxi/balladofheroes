@@ -224,10 +224,12 @@ export class InitializationService {
     if (this.deviceDetectorService.isMobile()) {
       this.globalService.globalVar.settings.set("displayOverlayTutorials", true);
       this.globalService.globalVar.settings.set("displayOverlayBattleRewards", true);
+      this.globalService.globalVar.settings.set("displayOverlayPray", true);
     }
     else {
       this.globalService.globalVar.settings.set("displayOverlayTutorials", false);
       this.globalService.globalVar.settings.set("displayOverlayBattleRewards", false);
+      this.globalService.globalVar.settings.set("displayOverlayPray", false);
     }
   }
 

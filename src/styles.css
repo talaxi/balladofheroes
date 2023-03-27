@@ -999,6 +999,24 @@ button:disabled {
   font-weight: bold;
 }
 
+.fading {
+  color: red;
+  -webkit-animation: fadingAnimation 3s forwards;
+  animation: fadingAnimation 3s forwards;
+}
+
+@keyframes fadingAnimation {
+  0% {
+      opacity: 100%;
+      color: red;
+  }
+  
+  100% {
+      opacity: 0%;
+      color: blue;
+  }
+}
+
 @media (max-width: 800px) {
   html {
     -moz-user-select: -moz-none;

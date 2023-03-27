@@ -2,6 +2,7 @@ import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild }
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
+import { AnimationStateEnum } from 'src/app/models/enums/animation-state-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
@@ -313,28 +314,51 @@ export class BattleComponent implements OnInit {
 
     if (this.gameLogService.notificationOverlayBuffer === undefined || this.gameLogService.notificationOverlayBuffer.length === 0)
       return;
-    
-    var nextMessage = this.gameLogService.notificationOverlayBuffer[0];    
+
+    var nextMessage = this.gameLogService.notificationOverlayBuffer[0];
+    //if you want to do some sort of initial animation, do it now
+    if (nextMessage[3] === AnimationStateEnum.Initial)
+      nextMessage[3] = AnimationStateEnum.Display;
 
     this.notificationOverlayMessage = nextMessage[0];
     nextMessage[2] -= deltaTime;
 
-    if (nextMessage[2] <= 0)
-      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== nextMessage);
+    //first animate
+    if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Display) {
+      nextMessage[2] = 3; //this is the duration of the fade out hiding animation
+      nextMessage[3] = AnimationStateEnum.Hiding;
+      nextMessage[0] = nextMessage[0].replace("gameText", "fading gameText");
+    }
+
+    if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Hiding) {
+      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== nextMessage);      
+    }
 
     var hardStop = 5;
     var extraItemCount = 1;
     //if the next message type matches the current one, include it
-    while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
-      this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
-      var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
-      this.notificationOverlayMessage += "<br/>" + additionalMessage[0];
-      additionalMessage[2] -= deltaTime;
+    if (nextMessage[1] === GameLogEntryEnum.BattleRewards) {
+      while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
+        this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
+        var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
+        this.notificationOverlayMessage += "<br/>" + additionalMessage[0];
+        if (additionalMessage[3] === AnimationStateEnum.Initial)
+        additionalMessage[3] = AnimationStateEnum.Display;
+        additionalMessage[2] -= deltaTime;
 
-      if (additionalMessage[2] <= 0)
-        this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);
+        //first animate
+        if (additionalMessage[2] <= 0 && additionalMessage[3] === AnimationStateEnum.Display) {
+          additionalMessage[2] = 3; //this is the duration of the fade out hiding animation
+          additionalMessage[3] = AnimationStateEnum.Hiding;
+          additionalMessage[0].replace("gameText", "fading gameText");
+        }
 
-      extraItemCount += 1;
+        if (additionalMessage[2] <= 0 && additionalMessage[3] === AnimationStateEnum.Hiding) {
+          this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);
+        }
+
+        extraItemCount += 1;
+      }
     }
   }
 
@@ -348,23 +372,28 @@ export class BattleComponent implements OnInit {
     var hardStop = 5;
     var extraItemCount = 1;
     //if the next message type matches the current one, include it
-    while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
-      this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
-      var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
-      additionalMessage[2] = 0;
-      extraItemCount += 1;
+
+    if (nextMessage[1] === GameLogEntryEnum.BattleRewards) {
+      while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
+        this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
+        var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
+        additionalMessage[2] = 0;
+        extraItemCount += 1;
+      }
     }
   }
 
   pruneOverlayBuffer() {
-    if (!this.globalService.globalVar.settings.get("displayOverlayTutorials"))
-    {
+    if (!this.globalService.globalVar.settings.get("displayOverlayTutorials")) {
       this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item[1] !== GameLogEntryEnum.Tutorial);
     }
 
-    if (!this.globalService.globalVar.settings.get("displayOverlayBattleRewards"))
-    {
+    if (!this.globalService.globalVar.settings.get("displayOverlayBattleRewards")) {
       this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item[1] !== GameLogEntryEnum.BattleRewards);
+    }
+
+    if (!this.globalService.globalVar.settings.get("displayOverlayPray")) {
+      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item[1] !== GameLogEntryEnum.Pray);
     }
   }
 
@@ -378,7 +407,7 @@ export class BattleComponent implements OnInit {
         reverseZones.forEach(zone => {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
           reverseSubzones.forEach(subzone => {
-            if (currentSubzone.type !== subzone.type && !subzone.isTown && subzone.winsNeeded - subzone.victoryCount > 0) {              
+            if (currentSubzone.type !== subzone.type && !subzone.isTown && subzone.winsNeeded - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
             }
           });

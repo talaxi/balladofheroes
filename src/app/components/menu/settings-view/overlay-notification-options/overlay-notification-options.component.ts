@@ -9,6 +9,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 export class OverlayNotificationOptionsComponent {
   displayOverlayBattleRewards: boolean;
   displayOverlayTutorials: boolean;
+  displayOverlayPray: boolean;
 
   constructor(private globalService: GlobalService) {
 
@@ -20,13 +21,18 @@ export class OverlayNotificationOptionsComponent {
       this.displayOverlayTutorials = false;
     else
       this.displayOverlayTutorials = displayOverlayTutorials;
-
       
     var displayOverlayBattleRewards = this.globalService.globalVar.settings.get("displayOverlayBattleRewards");
     if (displayOverlayBattleRewards === undefined)
       this.displayOverlayBattleRewards = false;
     else
       this.displayOverlayBattleRewards = displayOverlayBattleRewards;
+      
+    var displayOverlayPray = this.globalService.globalVar.settings.get("displayOverlayPray");
+    if (displayOverlayPray === undefined)
+      this.displayOverlayPray = false;
+    else
+      this.displayOverlayPray = displayOverlayPray;
   }
 
   displayOverlayBattleRewardsToggle() {
@@ -35,5 +41,9 @@ export class OverlayNotificationOptionsComponent {
   
   displayOverlayTutorialsToggle() {
     this.globalService.globalVar.settings.set("displayOverlayTutorials", this.displayOverlayTutorials);
+  }
+
+  displayOverlayPrayToggle() {
+    this.globalService.globalVar.settings.set("displayOverlayPray", this.displayOverlayPray);
   }
 }

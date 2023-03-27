@@ -86,6 +86,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.ObscurredNotification) {
       text = "If the path forward is not linear, the notification icon will be marked with a ?. Try the available paths in front of you and see if you can find the right way!";
     }
+    else if (type === TutorialTypeEnum.MobileOverlay) {
+      text = "Important information will display here such as tutorial hints and battle rewards. You can adjust what displays by going to the 'Settings' page after tapping 'Menu' on the top left of the screen.";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

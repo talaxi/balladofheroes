@@ -14,5 +14,6 @@ export enum TutorialTypeEnum {
   Notifications,
   SideQuests,
   Followers,
-  ObscurredNotification
+  ObscurredNotification,
+  MobileOverlay
 }

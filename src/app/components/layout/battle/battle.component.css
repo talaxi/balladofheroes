@@ -284,6 +284,10 @@
     display: none;
 }
 
+.hide {
+    display: none;
+}
+
 @media (max-width: 800px) {
     .gridContainer {
         position: relative;
@@ -343,6 +347,12 @@
         background-color: var(--background-quarternary);
         width: calc(100% - 1rem);
         padding: .25rem;
+        opacity: 0;
+        transition: opacity .25s;
+    }
+
+    .opaque {
+        opacity: 1;
     }
 
     .skipOverlay {
