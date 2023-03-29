@@ -28,11 +28,11 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.IronHammer)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 60));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 50));
     }
     if (item === ItemsEnum.ShortBow)
     {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 60));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 50));
     }
     if (item === ItemsEnum.IronShield)
     {

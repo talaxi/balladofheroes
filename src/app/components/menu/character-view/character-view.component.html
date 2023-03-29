@@ -1,12 +1,9 @@
 <div class="gridContainer">
     <div class="characterInfo">
         <div class="god1Info">
-            <br />
-            <!--<div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod"
-                    [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
-                    <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
-                    <strong><span>Lv {{getCharacterGodLevel(character, 1)}}</span></strong>
-                </div>-->
+            <div *ngIf="isMobile && hasMoreThanOneCharacter()" class="centeredText">
+                <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon" src="assets/svg/uparrow.svg"></button>
+            </div>
         </div>
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getCharacterColor()">{{character.name}}</span>
@@ -23,14 +20,11 @@
             <button *ngIf="otherClassesAvailable" class="changeButton buttonStyled"
                 (click)="openChangeClassMenu(changeClassView)">Change Class</button>
         </div>
-        <!--<div class="god2Info">
-            <br/>
-            <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod"
-                    [ngClass]="lookupService.getGodColorClass(character.assignedGod2)">
-                    <span class="s3Heading">{{getCharacterGodName(character, 2)}} </span>
-                    <strong><span>Lv {{getCharacterGodLevel(character, 2)}}</span></strong>
-                </div>
-        </div>-->
+        <div class="god2Info">
+            <div *ngIf="isMobile && hasMoreThanOneCharacter()" class="centeredText">
+            <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon" src="assets/svg/dropdown.svg"></button>
+            </div>
+        </div>
     </div>
     <div class="characterStats statContainer">
         <div class="equipment">

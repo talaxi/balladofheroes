@@ -1,5 +1,10 @@
 <div class="gridContainer">
     <div class="godInfo">
+        <div class="traverseUp">
+            <div *ngIf="isMobile && hasMoreThanOneGod()" class="centeredText">
+                <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon" src="assets/svg/uparrow.svg"></button>
+            </div>
+        </div>
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getGodColor()">{{god.name}}</span>
             <br />
@@ -9,6 +14,11 @@
             <span customToolTip [tooltipDirection]="tooltipDirection"
             [contentTemplate]="godXpPopover">{{god.exp | number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
                 1}}</span>
+        </div>
+        <div class="traverseDown">
+            <div *ngIf="isMobile && hasMoreThanOneGod()" class="centeredText">
+                <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon" src="assets/svg/dropdown.svg"></button>
+            </div>
         </div>
     </div>
     <div class="godPrimaryStats">

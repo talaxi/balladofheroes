@@ -2215,13 +2215,37 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.HermesAutoAttackUp)
       description = "Increase Auto Attack Damage of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.HermesAbilityCooldown)
-      description = "When the duration expires, reduce all party members' cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      description = "When the duration expires, reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ApolloBuffDurationUp)
       description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ApolloResistanceUp)
       description = "Increase Resistance of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ApolloHeal)
       description = "Heal the party member with the lowest HP % for " + effect.effectiveness + " HP.";
+      if (effect.type === AltarEffectsEnum.AthenaRareHealOverTime)
+        description = "Heal all party members for " + effect.effectiveness + " HP every " + effect.tickFrequency + " seconds.";
+        if (effect.type === AltarEffectsEnum.AthenaRareBlind)
+      description = "When the duration expires, apply a " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% Blind debuff to all enemies.";
+      if (effect.type === AltarEffectsEnum.AthenaRareHolyDamageIncrease)
+      description = "Increase Holy Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.ArtemisRareAttackDebuff)
+      description = "When the duration expires, reduce all enemies' Attack by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.ArtemisRareCriticalDamageUp)
+      description = "Increase Critical Damage Multiplier of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.ArtemisRareDebuffDurationUp)
+      description = "Increase the duration of any debuffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.HermesRareAutoAttackUp)
+      description = "Increase Auto Attack Damage of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime)
+      description = "Reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% every " + effect.tickFrequency + " seconds.";
+      if (effect.type === AltarEffectsEnum.HermesRareReduceAutoAttackCooldown)
+      description = "While this is active, reduce all party members' auto attack cooldown by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.ApolloRareHpRegenIncrease)
+      description = "Increase HP Regen of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.ApolloRareBuffDurationUp)
+      description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.ApolloRareOstinato)
+      description = "When the duration expires, trigger an Ostinato at " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% effectiveness.";
 
     description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
     return description;
@@ -2615,8 +2639,8 @@ export class LookupService {
       }
     }
 
-    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp) !== undefined) {
-      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAgilityUp);
       agility *= relevantAltarEffect!.effectiveness;
     }
 
@@ -2654,8 +2678,8 @@ export class LookupService {
       }
     }
 
-    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp) !== undefined) {
-      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisLuckUp);
       luck *= relevantAltarEffect!.effectiveness;
     }
 
@@ -2680,8 +2704,8 @@ export class LookupService {
       }
     }
 
-    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp) !== undefined) {
-      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloResistanceUp);
       resistance *= relevantAltarEffect!.effectiveness;
     }
 
@@ -2719,8 +2743,8 @@ export class LookupService {
       }
     }
 
-    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
-      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
       attack *= relevantAltarEffect!.effectiveness;
     }
 
@@ -2755,8 +2779,8 @@ export class LookupService {
       }
     }
 
-    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp) !== undefined) {
-      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaDefenseUp);
       defense *= relevantAltarEffect!.effectiveness;
     }
 
@@ -2780,8 +2804,13 @@ export class LookupService {
     var defaultMultiplier = 1.25;
 
     var altarIncrease = 0;
-    if (forPartyMember && this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp) !== undefined) {
-      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp);
+      altarIncrease *= relevantAltarEffect!.effectiveness;
+    }
+
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisRareCriticalDamageUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisRareCriticalDamageUp);
       altarIncrease *= relevantAltarEffect!.effectiveness;
     }
 
@@ -4684,22 +4713,6 @@ export class LookupService {
     return reward;
   }
 
-  getAltarEffectWithEffect(effect: AltarEffectsEnum) {
-    if (this.globalService.globalVar.altars.activeAltarEffect1 !== undefined &&
-      this.globalService.globalVar.altars.activeAltarEffect1.type === effect)
-      return this.globalService.globalVar.altars.activeAltarEffect1;
-
-    if (this.globalService.globalVar.altars.activeAltarEffect2 !== undefined &&
-      this.globalService.globalVar.altars.activeAltarEffect2.type === effect)
-      return this.globalService.globalVar.altars.activeAltarEffect2;
-
-    if (this.globalService.globalVar.altars.activeAltarEffect3 !== undefined &&
-      this.globalService.globalVar.altars.activeAltarEffect3.type === effect)
-      return this.globalService.globalVar.altars.activeAltarEffect3;
-
-    return undefined;
-  }
-
   getBoonName(effect: AltarEffectsEnum) {
     var name = "";
     if (effect === AltarEffectsEnum.AthenaDefenseUp)
@@ -4708,6 +4721,12 @@ export class LookupService {
       name = "Heal Party After";
     if (effect === AltarEffectsEnum.AthenaHealOverTime)
       name = "Heal Party Over Time";
+      if (effect === AltarEffectsEnum.AthenaRareHealOverTime)
+      name = "Large Heal Party Over Time";
+      if (effect === AltarEffectsEnum.AthenaRareHolyDamageIncrease)
+      name = "Holy Damage Dealt Up";
+      if (effect === AltarEffectsEnum.AthenaRareBlind)
+      name = "Blind Debuff After";
 
     if (effect === AltarEffectsEnum.ArtemisCriticalDamageUp)
       name = "Critical Damage Up";
@@ -4715,6 +4734,12 @@ export class LookupService {
       name = "Luck Up";
     if (effect === AltarEffectsEnum.ArtemisDefenseDebuff)
       name = "Defense Debuff After";
+      if (effect === AltarEffectsEnum.ArtemisRareAttackDebuff)
+      name = "Attack Debuff After";
+      if (effect === AltarEffectsEnum.ArtemisRareCriticalDamageUp)
+      name = "Large Critical Damage Up";
+      if (effect === AltarEffectsEnum.ArtemisRareDebuffDurationUp)
+      name = "Debuff Duration Up";
 
     if (effect === AltarEffectsEnum.HermesAbilityCooldown)
       name = "Ability Cooldown Reduction After";
@@ -4722,6 +4747,12 @@ export class LookupService {
       name = "Agility Up";
     if (effect === AltarEffectsEnum.HermesAutoAttackUp)
       name = "Auto Attack Damage Up";
+      if (effect === AltarEffectsEnum.HermesRareReduceAutoAttackCooldown)
+      name = "Auto Attack Cooldown Reduction";
+      if (effect === AltarEffectsEnum.HermesRareAutoAttackUp)
+      name = "Large Auto Attack Damage Up";
+      if (effect === AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime)
+      name = "Ability Cooldown Reduction Over Time";
 
     if (effect === AltarEffectsEnum.ApolloHeal)
       name = "Heal After";
@@ -4729,6 +4760,12 @@ export class LookupService {
       name = "Resistance Up";
     if (effect === AltarEffectsEnum.ApolloBuffDurationUp)
       name = "Buff Duration Up";
+      if (effect === AltarEffectsEnum.ApolloRareBuffDurationUp)
+      name = "Large Buff Duration Up";
+      if (effect === AltarEffectsEnum.ApolloRareHpRegenIncrease)
+      name = "HP Regen Up";
+      if (effect === AltarEffectsEnum.ApolloRareOstinato)
+      name = "Ostinato After";
 
     return name;
   }

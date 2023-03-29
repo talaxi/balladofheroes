@@ -13,4 +13,9 @@
     .chthonicStatUpgrade {
         width: 33.3333%;
     }
+
+    .chthonicStats {
+        flex-wrap: wrap;
+        row-gap: 3rem;
+    }
 }

@@ -34,10 +34,10 @@ export class QuickViewComponent {
 
   constructor(private balladService: BalladService, public globalService: GlobalService, private gameLoopService: GameLoopService,
     private battleService: BattleService, private lookupService: LookupService) {
-    
+
   }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.displayQuickViewOverview = this.globalService.globalVar.settings.get("displayQuickViewOverview") ?? false;
     this.displayQuickViewResources = this.globalService.globalVar.settings.get("displayQuickViewResources") ?? false;
     this.displayQuickViewGameText = this.globalService.globalVar.settings.get("displayQuickViewGameText") ?? false;
@@ -47,12 +47,22 @@ export class QuickViewComponent {
     this.trackedResourcesColumn1 = this.globalService.globalVar.trackedResources.slice(0, 5);
     if (this.globalService.globalVar.trackedResources.length > 5)
       this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
-      
+
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      if (this.battleService.targetbattleItemMode && this.itemTargetsAllies(this.lookupService.getItemTypeFromItemEnum(this.battleService.battleItemInUse)))
-        this.overlayShouldFlip = true;
-      else
+      var flippedOverlay = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
+
+      if (flippedOverlay) {
+        if (this.battleService.targetbattleItemMode && !this.itemTargetsAllies(this.lookupService.getItemTypeFromItemEnum(this.battleService.battleItemInUse)))
         this.overlayShouldFlip = false;
+      else
+        this.overlayShouldFlip = true;
+      }
+      else {
+        if (this.battleService.targetbattleItemMode && this.itemTargetsAllies(this.lookupService.getItemTypeFromItemEnum(this.battleService.battleItemInUse)))
+          this.overlayShouldFlip = true;
+        else
+          this.overlayShouldFlip = false;
+      }
     });
   }
 
@@ -77,6 +87,10 @@ export class QuickViewComponent {
 
   areAltarsAvailable() {
     return this.globalService.globalVar.altars.isUnlocked;
+  }
+
+  isQuickViewAvailable() {
+    return this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AigosthenaBay);
   }
 
   openQuickView(type: QuickViewEnum) {

@@ -9,7 +9,7 @@
     <div class="god">
         <span class="godName" [ngClass]="lookupService.getGodColorClass(god.type)">{{god.name}}</span>
         <span class="godLevel" [ngClass]="lookupService.getGodColorClass(god.type)">Lv {{god.level}}</span>
-        <span class="godResetText">results in..</span>
+        <span class="godResetText">{{isMobile ? "gain.." : "results in.."}}</span>
         <div class="godResetResult">
             <span class="chthonicFavorKeyword" *ngIf="globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked">{{getChthonicFavor(god) | number : '1.0-2'}} Chthonic Favor<br /></span>
             <span class="chthonicPowerKeyword">{{getChthonicPower(god) | number : '1.0-2'}} Chthonic Power</span>

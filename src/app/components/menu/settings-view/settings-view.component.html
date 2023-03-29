@@ -11,6 +11,12 @@
             <mat-button-toggle [value]="storyStyleEnum.Skip">Skip</mat-button-toggle>
           </mat-button-toggle-group>
         </div>
+        <br *ngIf="isMobile"/>
+        <span *ngIf="isMobile">
+            <mat-checkbox class="example-margin" [(ngModel)]="quickViewOverlayFlipped"
+                (input)="quickViewOverlayFlippedToggle()">Flip Quick Link Area
+            </mat-checkbox>
+        </span>
         <br />
         <div *ngIf="!isMobile" class="updateKeybinds">
             <button class="buttonStyled" (click)="openKeybinds(keybindContent)">Update Keybinds</button>
@@ -23,13 +29,7 @@
         </div>
         <div class="updateKeybinds">
             <button class="buttonStyled" (click)="openKeybinds(quickViewOptionsContent)">Update Quick View Options</button>
-        </div>
-        <!--TODO: This is just for testing, remove for now-->
-        <div class="updateKeybinds">
-            <!--TEST URL--><a class="aHrefStyledAsButton" href="https://buy.stripe.com/test_28odSu7ez3JDdwYeUU">Buy Supporter</a>       
-            <!--PROD URL--><!--<a class="aHrefStyledAsButton" href="https://buy.stripe.com/28o5nUe9722tgMMbIJ">Buy Supporter</a>-->
-        </div>
-        <!--^^^^-->
+        </div>        
     </div>
     <div class="saveLoad">
         <span class="s4Heading">Save/Load</span>

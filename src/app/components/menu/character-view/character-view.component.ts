@@ -36,27 +36,25 @@ export class CharacterViewComponent implements OnInit {
     this.otherClassesAvailable = this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 2;
     this.changeGodsAvailable = this.globalService.globalVar.gods.filter(item => item.isAvailable).length >= 2;
 
-    var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);    
-    if (selectedCharacter !== undefined)
-    {
-      this.character = selectedCharacter; 
+    var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);
+    if (selectedCharacter !== undefined) {
+      this.character = selectedCharacter;
       this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
         return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
       }).filter(item => item.isAvailable);
       this.getCharacterGodAbilities();
-      
+
       this.overdriveAvailable = this.character.level >= this.utilityService.characterOverdriveLevel;
     }
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.menuService.selectedCharacter !== undefined && this.menuService.selectedCharacter !== this.character.type) {
-        var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);        
-        if (selectedCharacter !== undefined)
-        {
+        var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);
+        if (selectedCharacter !== undefined) {
           this.character = selectedCharacter;
           this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
             return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
-          }).filter(item => item.isAvailable);          
+          }).filter(item => item.isAvailable);
         }
       }
 
@@ -68,25 +66,25 @@ export class CharacterViewComponent implements OnInit {
     return this.lookupService.getOverdriveName(this.character.overdriveInfo.selectedOverdrive);
   }
 
-  openOverdriveMenu(content: any) { 
+  openOverdriveMenu(content: any) {
     if (this.isMobile)
-    this.dialog.open(content, { width: '95%', height: '80%' });
-  else                  
-    this.dialog.open(content, { width: '75%', maxHeight: '75%'});
+      this.dialog.open(content, { width: '95%', height: '80%' });
+    else
+      this.dialog.open(content, { width: '75%', maxHeight: '75%' });
   }
 
-  openChangeGodMenu(content: any) {     
+  openChangeGodMenu(content: any) {
     if (this.isMobile)
-    this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
-  else              
-    this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding'  });  
+      this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+    else
+      this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
   }
 
-  openChangeClassMenu(content: any) { 
+  openChangeClassMenu(content: any) {
     if (this.isMobile)
-    this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
-  else         
-    this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding'  });  
+      this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+    else
+      this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
   }
 
   openEquipmentModal(content: any) {
@@ -98,8 +96,7 @@ export class CharacterViewComponent implements OnInit {
 
   getCharacterGodAbilities() {
     this.god1AbilityList = [];
-    if (this.character.assignedGod1 !== undefined && this.character.assignedGod1 !== GodEnum.None)
-    {
+    if (this.character.assignedGod1 !== undefined && this.character.assignedGod1 !== GodEnum.None) {
       var god = this.globalService.globalVar.gods.find(item => item.type === this.character.assignedGod1);
       if (god !== undefined)
         this.god1AbilityList = god.abilityList.sort(function (a, b) {
@@ -108,8 +105,7 @@ export class CharacterViewComponent implements OnInit {
     }
 
     this.god2AbilityList = [];
-    if (this.character.assignedGod2 !== undefined && this.character.assignedGod2 !== GodEnum.None)
-    {
+    if (this.character.assignedGod2 !== undefined && this.character.assignedGod2 !== GodEnum.None) {
       var god = this.globalService.globalVar.gods.find(item => item.type === this.character.assignedGod2);
       if (god !== undefined)
         this.god2AbilityList = god.abilityList.sort(function (a, b) {
@@ -124,7 +120,7 @@ export class CharacterViewComponent implements OnInit {
       matchTo = character.assignedGod2;
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
-    
+
     if (god !== undefined) {
       return god.name;
     }
@@ -194,7 +190,7 @@ export class CharacterViewComponent implements OnInit {
   getAutoAttackCooldownBonus() {
     return (1 - this.character.battleStats.autoAttackCooldownReduction) * 100;
   }
-  
+
   getOverdriveGainBonus() {
     return this.character.battleStats.overdriveGain;
   }
@@ -214,8 +210,8 @@ export class CharacterViewComponent implements OnInit {
   getHealingDoneBonus() {
     return this.character.battleStats.healingDone;
   }
-  
-  getArmorPenetrationBonus() {    
+
+  getArmorPenetrationBonus() {
     return this.character.battleStats.armorPenetration;
   }
 
@@ -226,7 +222,7 @@ export class CharacterViewComponent implements OnInit {
   getFireDamageBonus() {
     return this.character.battleStats.elementIncrease.fire;
   }
-  
+
   getLightningDamageBonus() {
     return this.character.battleStats.elementIncrease.lightning;
   }
@@ -247,7 +243,7 @@ export class CharacterViewComponent implements OnInit {
     return this.character.battleStats.elementResistance.holy;
   }
 
-  getFireResistanceBonus() {    
+  getFireResistanceBonus() {
     return this.character.battleStats.elementResistance.fire;
   }
 
@@ -273,6 +269,23 @@ export class CharacterViewComponent implements OnInit {
 
   getAbilityUpgradeBreakdown(ability: Ability) {
     return "Placeholder";
+  }
+
+  hasMoreThanOneCharacter() {
+    return this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 1;
+  }
+
+  traverseSubMenu(direction: number) {
+    var partyMembers = this.globalService.globalVar.characters.filter(item => item.isAvailable);
+    var currentIndex = partyMembers.findIndex(item => item.type === this.menuService.selectedCharacter);
+    currentIndex += direction;
+
+    if (currentIndex < 0)
+      currentIndex = partyMembers.length - 1;
+    if (currentIndex > partyMembers.length - 1)
+      currentIndex = 0;
+
+    this.menuService.setSelectedCharacter(partyMembers[currentIndex].type);
   }
 
   ngOnDestroy() {

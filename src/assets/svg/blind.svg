@@ -28,7 +28,7 @@
      inkscape:cx="423.04926"
      inkscape:cy="567.82413"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer1"
+     inkscape:current-layer="layer2"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -38,7 +38,12 @@
      inkscape:window-maximized="1"
      inkscape:snap-global="true"
      showguides="true"
-     inkscape:guide-bbox="true" />
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="149.225,217.80278"
+       orientation="1,0"
+       id="guide10804" />
+  </sodipodi:namedview>
   <metadata
      id="metadata58">
     <rdf:RDF>
@@ -86,26 +91,26 @@
     <circle
        style="fill:#000000;stroke:#000000;stroke-width:1.29763;stroke-linecap:round"
        id="path6396"
-       cx="129.85719"
+       cx="116.09892"
        cy="172.25537"
        r="32.440762" />
     <circle
        style="fill:#000000;stroke:#000000;stroke-width:1.29763;stroke-linecap:round"
        id="path6396-2"
-       cx="220.95445"
+       cx="207.1963"
        cy="172.25537"
        r="32.440762" />
     <path
        style="fill:none;stroke:#000000;stroke-width:5.19052;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 158.23926,171.97761 h 35.70646"
+       d="M 144.48084,171.97761 H 180.1873"
        id="path6422" />
     <path
        style="fill:none;stroke:#000000;stroke-width:5.19052;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 116.12394,153.20883 66.226449,93.698058 c 0,0 -11.444377,-16.02207 -18.311004,-3.204426"
+       d="M 102.36552,153.20883 52.468107,93.698058 c 0,0 -11.444377,-16.02207 -18.311004,-3.204426"
        id="path6987" />
     <path
        style="fill:none;stroke:#000000;stroke-width:5.19052;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 211.71955,149.06389 -49.8975,-59.510785 c 0,0 -11.44438,-16.022069 -18.311,-3.204411"
+       d="m 197.96113,149.06389 -49.8975,-59.510785 c 0,0 -11.44438,-16.022069 -18.311,-3.204411"
        id="path6987-5" />
   </g>
 </svg>

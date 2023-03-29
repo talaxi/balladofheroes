@@ -325,7 +325,7 @@ export class BattleComponent implements OnInit {
 
     //first animate
     if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Display) {
-      nextMessage[2] = 3; //this is the duration of the fade out hiding animation
+      nextMessage[2] = .3; //this is the duration of the fade out hiding animation
       nextMessage[3] = AnimationStateEnum.Hiding;
       nextMessage[0] = nextMessage[0].replace("gameText", "fading gameText");
     }
@@ -339,7 +339,8 @@ export class BattleComponent implements OnInit {
     //if the next message type matches the current one, include it
     if (nextMessage[1] === GameLogEntryEnum.BattleRewards) {
       while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
-        this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
+        this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1] && //same type
+        this.gameLogService.notificationOverlayBuffer[extraItemCount][4] === nextMessage[4]) { //same time
         var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
         this.notificationOverlayMessage += "<br/>" + additionalMessage[0];
         if (additionalMessage[3] === AnimationStateEnum.Initial)
@@ -348,9 +349,9 @@ export class BattleComponent implements OnInit {
 
         //first animate
         if (additionalMessage[2] <= 0 && additionalMessage[3] === AnimationStateEnum.Display) {
-          additionalMessage[2] = 3; //this is the duration of the fade out hiding animation
+          additionalMessage[2] = .3; //this is the duration of the fade out hiding animation
           additionalMessage[3] = AnimationStateEnum.Hiding;
-          additionalMessage[0].replace("gameText", "fading gameText");
+          additionalMessage[0] = additionalMessage[0].replace("gameText", "fading gameText");
         }
 
         if (additionalMessage[2] <= 0 && additionalMessage[3] === AnimationStateEnum.Hiding) {
@@ -375,7 +376,8 @@ export class BattleComponent implements OnInit {
 
     if (nextMessage[1] === GameLogEntryEnum.BattleRewards) {
       while (extraItemCount < hardStop && this.gameLogService.notificationOverlayBuffer.length > extraItemCount &&
-        this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1]) {
+        this.gameLogService.notificationOverlayBuffer[extraItemCount][1] === nextMessage[1] && //same type
+        this.gameLogService.notificationOverlayBuffer[extraItemCount][4] === nextMessage[4]) { //same time
         var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
         additionalMessage[2] = 0;
         extraItemCount += 1;

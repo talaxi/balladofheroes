@@ -143,6 +143,7 @@ export class AppComponent {
     //TODO: after beta, remove this
     if (this.globalService.globalVar.betaSave === undefined)
       this.globalService.globalVar.betaSave = true;
+    //^^^
 
     this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
     this.storyService.showStory = false;

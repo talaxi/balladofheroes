@@ -44,13 +44,14 @@ export class UtilityService {
   public alchemyLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
-  public largeAltarAffinityGain = 2;
-  public pyreAffinityGain = 3;
+  public largeAltarAffinityGain = 5;
+  public pyreAffinityGain = 20;
 
   public affinityRewardPrayerDuration = .5;
   public affinityRewardPrayerEffectiveness = .5;
   public affinityRewardGodXpBonus = .1;
   public basePrayGodXpIncrease = 20;
+  public largeAltarPrayGodXpIncrease = 250;
 
   public killCountDisplayEnemyStatsAbilities = 1;
   public killCountDisplayBasicEnemyLoot = 10;

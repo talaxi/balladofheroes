@@ -114,3 +114,14 @@
 .clickableText:hover {
     color: var(--foreground-secondary) !important;
 }
+
+
+@media (max-width: 800px) {
+    .gridContainer {        
+        grid-template-columns: 1fr 25% 1fr 25% 1fr;
+    }
+
+    .globalHeaderItem {
+        font-size: 1.5rem;
+    }
+}

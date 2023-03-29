@@ -337,7 +337,7 @@ export class PartyComponent implements OnInit {
 
     dps = this.dpsCalculatorService.calculatePartyDps();
 
-    return dps;
+    return this.utilityService.bigNumberReducer(Math.round(dps));
   }
 
   getEnemyDps() {
@@ -345,7 +345,7 @@ export class PartyComponent implements OnInit {
 
     dps = this.dpsCalculatorService.calculateEnemyDps();
 
-    return dps;
+    return this.utilityService.bigNumberReducer(Math.round(dps));
   }
 
   setupKeybinds(event: KeyboardEvent) {

@@ -404,6 +404,26 @@ export class GodViewComponent implements OnInit {
   getMaxHpStatBreakdown() {
     return this.lookupService.getGodMaxHpStatBreakdown(this.god);
   }
+
+  hasMoreThanOneGod() {
+    return this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 0;
+  }
+
+  traverseSubMenu(direction: number) {
+    var gods = this.globalService.globalVar.gods.sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+    }).filter(item => item.isAvailable);
+
+    var currentIndex = gods.findIndex(item => item.type === this.menuService.selectedGod);
+    currentIndex += direction;
+
+    if (currentIndex < 0)
+      currentIndex = gods.length - 1;
+    if (currentIndex > gods.length - 1)
+      currentIndex = 0;
+
+      this.menuService.setSelectedGod(gods[currentIndex].type);
+  }
   
   ngOnDestroy() {
     if (this.subscription !== undefined)

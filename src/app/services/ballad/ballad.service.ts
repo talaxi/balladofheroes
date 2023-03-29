@@ -77,7 +77,7 @@ export class BalladService {
   setActiveSubZone(type: SubZoneEnum) {
     var relatedZone: Zone | undefined = this.getActiveZone();
     var relatedBallad: Ballad | undefined = this.getActiveBallad();
-    var relatedSubzone: SubZone = this.getActiveSubZone();;
+    var relatedSubzone: SubZone = this.getActiveSubZone();
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       ballad.isSelected = false;

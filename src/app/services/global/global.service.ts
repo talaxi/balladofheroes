@@ -7,6 +7,7 @@ import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { God } from 'src/app/models/character/god.model';
+import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
@@ -1764,7 +1765,28 @@ export class GlobalService {
     if (character.overdriveInfo.overdriveIsActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Fervor)
       timeToAutoAttack *= .5;
 
+    if (character.type !== CharacterEnum.Enemy && this.getAltarEffectWithEffect(AltarEffectsEnum.HermesRareReduceAutoAttackCooldown) !== undefined) {
+      var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.HermesRareReduceAutoAttackCooldown);
+      timeToAutoAttack *= relevantAltarEffect!.effectiveness;
+    }
+
     return timeToAutoAttack;
+  }
+
+  getAltarEffectWithEffect(effect: AltarEffectsEnum) {
+    if (this.globalVar.altars.activeAltarEffect1 !== undefined &&
+      this.globalVar.altars.activeAltarEffect1.type === effect)
+      return this.globalVar.altars.activeAltarEffect1;
+
+    if (this.globalVar.altars.activeAltarEffect2 !== undefined &&
+      this.globalVar.altars.activeAltarEffect2.type === effect)
+      return this.globalVar.altars.activeAltarEffect2;
+
+    if (this.globalVar.altars.activeAltarEffect3 !== undefined &&
+      this.globalVar.altars.activeAltarEffect3.type === effect)
+      return this.globalVar.altars.activeAltarEffect3;
+
+    return undefined;
   }
 
   resetCooldowns() {
@@ -1865,5 +1887,16 @@ export class GlobalService {
   setAsSubscriber(date: Date) {
     this.globalVar.isSubscriber = true;
     this.globalVar.subscribedDate = date;
+  }
+  
+  isGodEquipped(type: GodEnum) {
+    var isEquipped = false;
+
+    this.getActivePartyCharacters(true).forEach(member => {
+      if (member.assignedGod1 === type || member.assignedGod2 === type)
+        isEquipped = true;
+    });
+
+    return isEquipped;
   }
 }

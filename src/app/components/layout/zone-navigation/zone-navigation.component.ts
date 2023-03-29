@@ -121,7 +121,7 @@ export class ZoneNavigationComponent implements OnInit {
       if (selectedZone !== undefined)
         this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
 
-      var currentSubzone = this.availableSubZones.find(item => item.isSelected);
+      var currentSubzone = this.availableSubZones?.find(item => item.isSelected);
 
       if (this.autoProgress && currentSubzone !== undefined &&
         (currentSubzone.winsNeeded - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {

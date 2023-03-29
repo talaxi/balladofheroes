@@ -153,9 +153,38 @@ export class BackgroundService {
     effect.tickTimer += deltaTime;
 
     if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
-      if (effect.type === AltarEffectsEnum.AthenaHealOverTime) {
+      if (effect.type === AltarEffectsEnum.AthenaHealOverTime || effect.type === AltarEffectsEnum.AthenaRareHealOverTime) {
         party.forEach(member => {
           this.battleService.gainHp(member, effect.effectiveness);
+        });
+      }
+
+      if (effect.type === AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime) {
+        party.forEach(member => {
+          if (member.abilityList !== undefined && member.abilityList.length > 0)
+            member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+              ability.currentCooldown /= effect.effectiveness;
+            });
+  
+          if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
+            var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod1);
+            if (god !== undefined) {
+              if (god.abilityList !== undefined && god.abilityList.length > 0)
+                god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+                  ability.currentCooldown /= effect.effectiveness;
+                });
+            }
+          }
+  
+          if (member.assignedGod2 !== undefined && member.assignedGod2 !== GodEnum.None) {
+            var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod2);
+            if (god !== undefined) {
+              if (god.abilityList !== undefined && god.abilityList.length > 0)
+                god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+                  ability.currentCooldown /= effect.effectiveness;
+                });
+            }
+          }
         });
       }
 
@@ -217,6 +246,36 @@ export class BackgroundService {
               god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
                 ability.currentCooldown /= effect.effectiveness;
               });
+          }
+        }
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.AthenaRareBlind) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 6, effect.effectiveness, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.ArtemisRareAttackDebuff) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 12, effect.effectiveness, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.ApolloRareOstinato) {
+      party.forEach(member => {
+        if (member.assignedGod1 === GodEnum.Apollo || member.assignedGod2 === GodEnum.Apollo) {
+          //this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantOstinato, -1, effect.effectiveness, true, true), member, enemies);
+          //this.battleService.handleuserEffects(true, )
+          var ostinato = this.lookupService.characterHasAbility("Ostinato", member); 
+          if (ostinato !== undefined)
+          {            
+            this.battleService.useAbility(true, ostinato, member, enemies, party, true, effect.effectiveness - 1);
           }
         }
       });
@@ -302,7 +361,7 @@ export class BackgroundService {
             var rng = this.utilityService.getRandomNumber(0, 1);
             
             if (rng <= chance) {              
-              var altar = this.altarService.getNewSmallAltar(undefined, false);                                            
+              var altar = this.altarService.getNewAltar(AltarEnum.Small, undefined, false);                                            
               this.altarService.pray(altar, true);              
             }
           }

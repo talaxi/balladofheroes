@@ -6,6 +6,7 @@ import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
@@ -82,6 +83,8 @@ export class HeaderComponent implements OnInit {
           this.menuService.setSelectedCharacter(CharacterEnum.Adventurer);
         if (this.menuService.selectedMenuDisplay === MenuEnum.Gods && this.menuService.selectedGod === GodEnum.None)
           this.menuService.setSelectedGod(GodEnum.Athena);
+          if (this.menuService.selectedMenuDisplay === MenuEnum.Professions && this.menuService.selectedProfession === ProfessionEnum.None)
+          this.menuService.setSelectedProfession(ProfessionEnum.Alchemy);
       }
       else
         this.layoutService.changeLayout(NavigationEnum.Default);
@@ -92,6 +95,9 @@ export class HeaderComponent implements OnInit {
 
   backToMainView() {
     this.layoutService.mobileMenuOpen = false;
+    this.menuService.setSelectedCharacter(CharacterEnum.None);
+    this.menuService.setSelectedGod(GodEnum.None);
+    this.menuService.setSelectedProfession(ProfessionEnum.None);
     this.layoutService.changeLayout(NavigationEnum.Default);
   }
 

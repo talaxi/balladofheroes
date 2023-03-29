@@ -89,4 +89,13 @@
     .flex {
         width: 68%;
     }
+    
+    .extraClickSpace {
+        margin: -1rem !important;
+        padding: 1rem !important;
+    }
+
+    .targetInactive {
+        filter: grayscale(1);
+    }
 }

@@ -26,6 +26,21 @@
 
 .godInfo {
     grid-area: godInfo;
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "traverseUp baseInfo traverseDown";
+}
+
+.traverseUp {
+    grid-area: traverseUp;
+}
+
+.traverseDown {
+    grid-area: traverseDown;
 }
 
 .godUpcoming {
@@ -74,5 +89,9 @@
             "godPrimaryStats godSecondaryStats"
             "godUpcoming godUpcoming"
             "godAbilities godAbilities";
+    }
+
+    .dropdownIcon {
+        height: 1rem;
     }
 }

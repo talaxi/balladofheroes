@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
@@ -21,10 +22,13 @@ export class ChthonicResetMenuViewComponent implements OnInit {
   godEnum = GodEnum;
   bonusGodText = "";
   bonusGodName: string;
+  isMobile: boolean = false;
 
-  constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService) { }
+  constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
     this.availableGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
 
     if (this.globalService.globalVar.chthonicPowers.preferredGod !== GodEnum.None)    

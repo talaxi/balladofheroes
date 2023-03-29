@@ -1,25 +1,25 @@
 <div *ngIf="quickLinksUnlocked" class="quickLink">
     <div class="quickLinkIcons">
-        <button *ngIf="displayQuickViewOverview" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Overview)">
-            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled"
-                src="assets/svg/overviewQuickView.svg">
-            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
-        </button>
-        <button *ngIf="displayQuickViewResources" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Resources)">
-            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Resources" class="icon iconEnabled"
-                src="assets/svg/resourcesQuickView.svg">
-            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
-        </button>
-        <button *ngIf="displayQuickViewGameText" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.GameText)">
-            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.GameText" class="icon iconEnabled"
-                src="assets/svg/gameText.svg">
-            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/gameTextDisabled.svg">
-        </button>
         <button *ngIf="displayQuickViewItemBelt" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.ItemBelt)">
             <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.ItemBelt" class="icon iconEnabled"
                 src="assets/svg/itemBeltOverview.svg">
             <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/itemBeltOverviewDisabled.svg">
         </button>
+        <button *ngIf="isQuickViewAvailable() && displayQuickViewOverview" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Overview)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled"
+                src="assets/svg/overviewQuickView.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
+        </button>
+        <button *ngIf="isQuickViewAvailable() && displayQuickViewResources" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Resources)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Resources" class="icon iconEnabled"
+                src="assets/svg/resourcesQuickView.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
+        </button>
+        <button *ngIf="isQuickViewAvailable() && displayQuickViewGameText" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.GameText)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.GameText" class="icon iconEnabled"
+                src="assets/svg/gameText.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/gameTextDisabled.svg">
+        </button>        
         <div *ngIf="areAltarsAvailable()">
             <button *ngIf="displayQuickViewAltars" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Altars)">
                 <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"

@@ -7,6 +7,7 @@ import { environment } from 'src/environments/environment';
 
 //docs: https://docs.patreon.com/
 //guide I was using: https://www.npmjs.com/package/patreon
+//TODO: IF YOU'RE GOING TO PURSUE THIS, YOU NEED TO RECREATE YOUR CLIENT ID/SECRET AND UPDATE GITHUB WITH IT. HAD TO RECREATE PATREON ACCOUNT
 
 export class PatreonAccessService {
   //url = require('url');

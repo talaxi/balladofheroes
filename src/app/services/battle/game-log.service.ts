@@ -11,7 +11,8 @@ import { GlobalService } from '../global/global.service';
 export class GameLogService {
   gameLog: string[] = [];
   gameLogMaxLength = 100;
-  notificationOverlayBuffer: [string, GameLogEntryEnum, number, AnimationStateEnum][] = [];
+  //event text, entry type, remaining duration, animation state, time the item was added to log
+  notificationOverlayBuffer: [string, GameLogEntryEnum, number, AnimationStateEnum, number][] = [];
   disableOverlayBuffer: boolean = false;
 
   constructor(private deviceDetectorService: DeviceDetectorService) {
@@ -54,24 +55,26 @@ export class GameLogService {
     }
 
     //add certain items to the overlay
-    //TODO: add settings to hide certain items
-    if (this.deviceDetectorService.isMobile() && !this.disableOverlayBuffer)
+    var overlayTotalThreshold = 5;
+    if (this.deviceDetectorService.isMobile() && !this.disableOverlayBuffer && 
+    this.notificationOverlayBuffer.length < overlayTotalThreshold)
     {
-      var tutorialDuration = 15;
-      var rewardDuration = 3;
-      var altarDuration = 3;
+      var tutorialDuration = 20;
+      var rewardDuration = 2;
+      var altarDuration = 4;
 
+      //set time to be within .5s of each other
       if (type === GameLogEntryEnum.Tutorial)
       {
-        this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial]);
+        this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
       }
       if (type === GameLogEntryEnum.BattleRewards)
       {
-        this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial]);
+        this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
       }
       if (type === GameLogEntryEnum.Pray)
       {
-        this.notificationOverlayBuffer.push([entry, type, altarDuration, AnimationStateEnum.Initial]);
+        this.notificationOverlayBuffer.push([entry, type, altarDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
       }
     }
   }

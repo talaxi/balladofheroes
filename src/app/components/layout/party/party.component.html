@@ -84,10 +84,10 @@
     <div *ngIf="!isMobile">
         <div *ngIf="displayDps" class="dps" class="s4Heading textCentered pageHeader dpsChecks">
             <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
-                Party DPS: {{getPartyDps() | number : '1.0-0'}}
+                Party DPS: {{getPartyDps()}}
             </span>
             <span class='smallText enemyDps' customToolTip [contentTemplate]="dpsTemplate">
-                Incoming DPS: {{getEnemyDps() | number : '1.0-0'}}
+                Incoming DPS: {{getEnemyDps()}}
             </span>
         </div>
         <hr *ngIf="unlockedBattleItems" class="noMargin" />

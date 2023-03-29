@@ -28,6 +28,7 @@ export class SettingsViewComponent implements OnInit {
   enteredRedemptionCode: string;
   storyStyle: StoryStyleSettingEnum;
   storyStyleEnum = StoryStyleSettingEnum;
+  quickViewOverlayFlipped: boolean = false;
   @Input() isMobile = false;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
@@ -36,7 +37,7 @@ export class SettingsViewComponent implements OnInit {
     private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService) { }
 
   ngOnInit(): void {
-    if (this.deploymentService.devModeActive)
+    if (this.deploymentService.codeCreationMode)
       console.log(this.globalService.globalVar);
     //console.log(JSON.stringify(this.globalService.globalVar));
     
@@ -51,6 +52,7 @@ export class SettingsViewComponent implements OnInit {
     else
       this.storyStyle = storyStyle;
 
+    this.quickViewOverlayFlipped = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
   }
 
   public SaveGame() {
@@ -142,5 +144,9 @@ export class SettingsViewComponent implements OnInit {
 
   enterRedemptionCode() {
     this.codeRedemptionService.redeemCode(this.enteredRedemptionCode);
+  }
+
+  quickViewOverlayFlippedToggle() {
+    this.globalService.globalVar.settings.set("quickViewOverlayFlipped", this.quickViewOverlayFlipped);
   }
 }
