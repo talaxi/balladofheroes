@@ -207,4 +207,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
 
     return durationString;
   }
+
+  preventRightClick() {
+    return false;
+  }
 }

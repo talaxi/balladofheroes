@@ -2,6 +2,7 @@ import { Component } from '@angular/core';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
@@ -73,16 +74,13 @@ export class QuickViewComponent {
     return false;
   }
 
-  getTotalAmountToCreate() {
-    return this.globalService.globalVar.alchemy.alchemyCreateAmount;
-  }
-
-  getAmountCreated() {
-    return this.globalService.globalVar.alchemy.alchemyCurrentAmountCreated;
-  }
-
   isAlchemyAvailable() {
-    return this.globalService.globalVar.alchemy.isUnlocked;
+    var isAvailable = false;
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    if (alchemy === undefined)
+      return isAvailable;
+
+    return alchemy.isUnlocked;
   }
 
   areAltarsAvailable() {

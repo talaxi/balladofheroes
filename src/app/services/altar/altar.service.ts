@@ -234,8 +234,8 @@ export class AltarService {
         possibleEffects.push(AltarEffectsEnum.ApolloBuffDurationUp);
       }
       else if (altar.type === AltarEnum.Large) {
-        //possibleEffects.push(AltarEffectsEnum.ApolloRareBuffDurationUp);
-        //possibleEffects.push(AltarEffectsEnum.ApolloRareHpRegenIncrease);
+        possibleEffects.push(AltarEffectsEnum.ApolloRareBuffDurationUp);
+        possibleEffects.push(AltarEffectsEnum.ApolloRareHpRegenIncrease);
         if (this.globalService.isGodEquipped(altar.god))
           possibleEffects.push(AltarEffectsEnum.ApolloRareOstinato);
       }

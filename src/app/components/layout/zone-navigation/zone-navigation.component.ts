@@ -8,6 +8,7 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -65,11 +66,11 @@ export class ZoneNavigationComponent implements OnInit {
     this.setupKeybinds(event);
   }
 
-  constructor(public globalService: GlobalService, public balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
+  constructor(public globalService: GlobalService, public balladService: BalladService,
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
     private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService, public dialog: MatDialog,
-    private alchemyService: AlchemyService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
+    private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {  
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -285,7 +286,7 @@ export class ZoneNavigationComponent implements OnInit {
     var allSubZonesCompleted = true;
 
     ballad.zones.forEach(zone => {
-      zone.subzones.filter(item => !item.isTown).forEach(subzone => {
+      zone.subzones.filter(item => !item.isTown && !item.isSubzoneSideQuest()).forEach(subzone => {
         if (subzone.victoryCount < subzone.winsNeeded)
           allSubZonesCleared = false;
         if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
@@ -305,7 +306,7 @@ export class ZoneNavigationComponent implements OnInit {
   getZoneClass(zone: Zone) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
-    zone.subzones.filter(item => !item.isTown).forEach(subzone => {
+    zone.subzones.filter(item => !item.isTown && !item.isSubzoneSideQuest()).forEach(subzone => {
       if (subzone.victoryCount < subzone.winsNeeded)
         allSubZonesCleared = false;
       if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
@@ -385,7 +386,7 @@ export class ZoneNavigationComponent implements OnInit {
   }  
 
   isAlchemyAvailable() {
-    return this.globalService.globalVar.alchemy.isUnlocked;
+    return this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)?.isUnlocked;
   }
 
   areAltarsAvailable() {
@@ -421,7 +422,7 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openResourcesQuickView"))) {
       this.setQuickView(QuickViewEnum.Resources);
     }
-    if (this.globalService.globalVar.alchemy.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAlchemyQuickView"))) {
+    if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)?.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAlchemyQuickView"))) {
       this.setQuickView(QuickViewEnum.Alchemy);
     }
     if (this.globalService.globalVar.altars.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAltarsQuickView"))) {

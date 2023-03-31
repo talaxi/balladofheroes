@@ -170,6 +170,16 @@ export class SubZone {
             name = "Tall Grass";
         if (type === SubZoneEnum.CalydonDeadEnd)
             name = "Dead End";
+        if (type === SubZoneEnum.TheLetheLetheBasin2)
+            name = "Lethe Basin 2";
+        if (type === SubZoneEnum.TheLetheFerryRide)
+            name = "Ferry Ride";
+        if (type === SubZoneEnum.TheLetheRiverDivergence)
+            name = "River Divergence";
+        if (type === SubZoneEnum.TheLetheStillWaters)
+            name = "Still Waters";
+        if (type === SubZoneEnum.TheLetheHypnosIsland)
+            name = "Hypnos' Island";
 
         return name;
     }
@@ -261,6 +271,13 @@ export class SubZone {
         if (type === SubZoneEnum.CalydonWornDownBarn || type === SubZoneEnum.CalydonTallGrass)
             victories = bossVictories;
 
+        if (type === SubZoneEnum.TheLetheLetheBasin2 || type === SubZoneEnum.TheLetheFerryRide || type === SubZoneEnum.TheLetheRiverDivergence ||
+            type === SubZoneEnum.TheLetheStillWaters)
+            victories = defaultVictories;
+
+        if (type === SubZoneEnum.TheLetheHypnosIsland)
+            victories = bossVictories;
+
         return victories;
     }
 
@@ -285,7 +302,8 @@ export class SubZone {
 
     shouldShowSideQuestNotification(type: SubZoneEnum) {
         if (type === SubZoneEnum.ElysiumWindingPaths || type === SubZoneEnum.ElysiumWaterloggedMarsh || type === SubZoneEnum.ElysiumWavesOfOceanus ||
-            type === SubZoneEnum.CalydonAltarOfAsclepius)
+            type === SubZoneEnum.CalydonAltarOfAsclepius || type === SubZoneEnum.TheLetheLetheBasin2 || type === SubZoneEnum.TheLetheFerryRide ||
+            type === SubZoneEnum.TheLetheRiverDivergence || type === SubZoneEnum.TheLetheStillWaters || type === SubZoneEnum.TheLetheHypnosIsland)
             return NotificationTypeEnum.SideQuest;
 
         return NotificationTypeEnum.Story;

@@ -107,15 +107,15 @@ export class FollowersService {
   }
 
   getZoneAchievementRewardLevel(type: ZoneEnum) {
-    var rewardLevel = 1; //should range from 1 to 3 based on achievement completion
+    var rewardLevel = 4;//1; //TODO: set this back to 1 and remove comments below
 
-    var achievementPercent = this.achievementService.getCompletedAchievementPercentByZone(this.balladService.findZone(type), this.globalService.globalVar.achievements);
+    /*var achievementPercent = this.achievementService.getCompletedAchievementPercentByZone(this.balladService.findZone(type), this.globalService.globalVar.achievements);
     if (achievementPercent >= (1 / 3) && achievementPercent < (2 / 3))
       rewardLevel = 2;
     else if (achievementPercent >= (2 / 3))
       rewardLevel = 3;
     else if (achievementPercent === 1)
-      rewardLevel = 4;
+      rewardLevel = 4;*/
 
     return rewardLevel;
   }
@@ -151,11 +151,11 @@ export class FollowersService {
       if (rewardLevel >= 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 2));
       }
-      if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PetrifiedBark, 2));
+      if (rewardLevel === 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PetrifiedBark, 5));
       }
-      if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PetrifiedBark, 3));
+      if (rewardLevel === 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PetrifiedBark, 2));
       }
     }
     if (type === ZoneEnum.Asphodel) {
@@ -185,13 +185,13 @@ export class FollowersService {
     if (type === ZoneEnum.PeloposNisos) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfLakeLerna, 3));
       if (rewardLevel >= 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallEmerald, 1));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughEmeraldFragment, 1));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAmethyst, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAmethystFragment, 3));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAquamarine, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAquamarineFragment, 2));
       }
     }
     if (type === ZoneEnum.Calydon) {

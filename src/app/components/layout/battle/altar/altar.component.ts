@@ -6,6 +6,7 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { AltarService } from 'src/app/services/altar/altar.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
@@ -162,8 +163,10 @@ export class AltarComponent implements OnInit {
   }
 
   gainThreshold2Reward() {
-    if (!this.globalService.globalVar.alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.RejuvenatingElixir)) {
-      this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.RejuvenatingElixir));
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+
+    if (alchemy !== undefined && !alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.RejuvenatingElixir)) {
+      alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.RejuvenatingElixir));
       
       var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.lookupService.getItemName(ItemsEnum.RejuvenatingElixir) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);      
@@ -178,10 +181,15 @@ export class AltarComponent implements OnInit {
   }
 
   gainThreshold4Reward() {
-    this.globalService.globalVar.alchemy.maxLevel += this.utilityService.alchemyLevelCapGain;
-    
-    var gameLogEntry = "Your max Alchemy level has increased to <strong>" + this.globalService.globalVar.alchemy.maxLevel + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+
+    if (alchemy !== undefined)
+    {
+      alchemy.maxLevel += this.utilityService.alchemyLevelCapGain;
+      
+      var gameLogEntry = "Your max Alchemy level has increased to <strong>" + alchemy.maxLevel + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+    }
   }
 
   ngOnDestroy() {

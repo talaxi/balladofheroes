@@ -1,7 +1,7 @@
 import { Component } from '@angular/core';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
-import { AlchemyUpgrades } from 'src/app/models/professions/alchemy-upgrades.model';
+import { ProfessionUpgrades } from 'src/app/models/professions/profession-upgrades.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
@@ -14,21 +14,20 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 export class ProfessionsViewComponent {
   selectedProfession: ProfessionEnum;
   professionEnum = ProfessionEnum;
-  upgrades: AlchemyUpgrades[] = [];
+  upgrades: ProfessionUpgrades[] = [];
   qualityEnumList: EquipmentQualityEnum[] = [];
-  upgradesRows: AlchemyUpgrades[][];
-  upgradesCells: AlchemyUpgrades[];
+  upgradesRows: ProfessionUpgrades[][];
+  upgradesCells: ProfessionUpgrades[];
 
   constructor(private lookupService: LookupService, private menuService: MenuService, private globalService: GlobalService) {
 
   }
 
   ngOnInit() {
-    this.selectedProfession = this.menuService.selectedProfession;
-    if (this.selectedProfession === ProfessionEnum.Alchemy)
-    {
-      this.upgrades = this.globalService.globalVar.alchemy.upgrades;
-    }
+    this.selectedProfession = this.menuService.selectedProfession;    
+    if (this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession) === undefined)
+      return;
+    this.upgrades = this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession)!.upgrades;    
     this.qualityEnumList = this.setupQualityList();
     //this.setupDisplayUpgrades();
   }
@@ -61,7 +60,7 @@ export class ProfessionsViewComponent {
     return this.upgrades.filter(item => item.quality === quality);
   }
 
-  getUpgradeValues(upgrade: AlchemyUpgrades) {    
+  getUpgradeValues(upgrade: ProfessionUpgrades) {    
     var description = "";
 
     //TODO: maybe show how many recipes are available and how many they have?
@@ -85,7 +84,7 @@ export class ProfessionsViewComponent {
     return this.lookupService.getQualityTypeName(upgrade.quality) + " (" + this.lookupService.getQualityStars(upgrade.quality) + ")" + "<br/>" + description;
   }
 
-  getUpgradeValue(upgrade: AlchemyUpgrades) {
+  getUpgradeValue(upgrade: ProfessionUpgrades) {
     var value = 0;
 
     return value;

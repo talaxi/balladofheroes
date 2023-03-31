@@ -1,10 +1,12 @@
 import { Type } from "class-transformer";
 import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
+import { ProfessionEnum } from "../enums/professions-enum.model";
 import { ProfessionUpgrades } from "./profession-upgrades.model";
 import { Recipe } from "./recipe.model";
 
-export class Alchemy {
-    /*level: number;
+export class Profession {
+    type: ProfessionEnum;
+    level: number;
     maxLevel: number;
     exp: number;
     expToNextLevel: number;
@@ -15,27 +17,29 @@ export class Alchemy {
     availableRecipes: Recipe[];
 
     creatingRecipe: Recipe | undefined;
-    alchemyTimer: number;
-    alchemyTimerLength: number;
-    alchemyStep: number;
+    creationTimer: number;
+    creationTimerLength: number;
+    creationStep: number;
 
-    alchemyCurrentAmountCreated: number;
-    alchemyCreateAmount: number;
+    creationCurrentAmountCreated: number;
+    creationCreateAmount: number;
 
     recipeBookQualityToggle: [EquipmentQualityEnum, boolean][];
 
     constructor() {
+        this.type = ProfessionEnum.None;
         this.level = 0;
+        this.maxLevel = 0;
         this.availableRecipes = [];
         this.upgrades = [];
         this.recipeBookQualityToggle = [];
         this.isUnlocked = false;
-        this.alchemyTimer = 0;
-        this.alchemyTimerLength = 0;
-        this.alchemyStep = 0;
+        this.creationTimer = 0;
+        this.creationTimerLength = 0;
+        this.creationStep = 0;
         this.exp = 0;
         this.expToNextLevel = 20;
-        this.alchemyCurrentAmountCreated = 0;
-        this.alchemyCreateAmount = 1;
-    }*/
+        this.creationCurrentAmountCreated = 0;
+        this.creationCreateAmount = 1;
+    }
 }

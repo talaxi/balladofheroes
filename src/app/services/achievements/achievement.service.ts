@@ -3,6 +3,7 @@ import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
@@ -16,13 +17,14 @@ import { GlobalService } from '../global/global.service';
 import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
+import { ProfessionService } from '../professions/profession.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class AchievementService {
 
-  constructor(private lookupService: LookupService, private alchemyService: AlchemyService, private tutorialService: TutorialService,
+  constructor(private lookupService: LookupService, private professionService: ProfessionService, private tutorialService: TutorialService,
     private gameLogService: GameLogService, private globalService: GlobalService) { }
 
   createDefaultAchievementsForSubzone(subzoneType: SubZoneEnum) {
@@ -95,6 +97,16 @@ export class AchievementService {
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 40));
     else if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
+      else if (subzoneType === SubZoneEnum.TheLetheLetheBasin2)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SpiritEssence, ItemTypeEnum.Resource, 15));
+      else if (subzoneType === SubZoneEnum.TheLetheFerryRide)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, ItemTypeEnum.Resource, 5));
+      else if (subzoneType === SubZoneEnum.TheLetheRiverDivergence)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.FishScales, ItemTypeEnum.Resource, 15)); 
+      else if (subzoneType === SubZoneEnum.TheLetheStillWaters)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500)); //TODO: Weak Slot Item
+      else if (subzoneType === SubZoneEnum.TheLetheHypnosIsland)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ChthonicFavor, ItemTypeEnum.Progression, 5));
 
     else if (subzoneType === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 30));
@@ -103,18 +115,17 @@ export class AchievementService {
     else if (subzoneType === SubZoneEnum.PeloposNisosFootOfTheMountain)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosSteepAscent)
-      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, 5));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosMountParthenionCaverns)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 15));
     else if (subzoneType === SubZoneEnum.PeloposNisosValleyOpening)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
-      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, 5));
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.RoughTopazFragment, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 5));
     else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 10000));
-
 
     else if (subzoneType === SubZoneEnum.CalydonForestPassage)
       hundredVictories.rewards.push(new ResourceValue(ItemsEnum.RestorativeHerb, ItemTypeEnum.HealingItem, 10));
@@ -155,6 +166,7 @@ export class AchievementService {
     var elysiumBoonBonus = .03;
     var peloposNisosBoonBonus = .03;
     var calydonBoonBonus = .03;
+    var theLetheBoonBonus = .03;
 
     if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
       thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, aigosthenaBoonBonus));
@@ -170,6 +182,8 @@ export class AchievementService {
       thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, peloposNisosBoonBonus));
     else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Calydon))
       thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, calydonBoonBonus));
+    else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.TheLethe))
+      thousandVictories.rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, ItemTypeEnum.Progression, theLetheBoonBonus));
 
     if (thousandVictories.rewards.length > 0)
       newAchievements.push(thousandVictories);
@@ -238,6 +252,16 @@ export class AchievementService {
       tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, ItemTypeEnum.Charm, 1));
     else if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+      else if (subzoneType === SubZoneEnum.TheLetheLetheBasin2)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, ItemTypeEnum.Charm, 1));
+      else if (subzoneType === SubZoneEnum.TheLetheFerryRide)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, ItemTypeEnum.Charm, 1));
+      else if (subzoneType === SubZoneEnum.TheLetheRiverDivergence)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, ItemTypeEnum.Charm, 1)); 
+      else if (subzoneType === SubZoneEnum.TheLetheStillWaters)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1)); 
+      else if (subzoneType === SubZoneEnum.TheLetheHypnosIsland)
+      hundredVictories.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, ItemTypeEnum.Charm, 1));
 
     else if (subzoneType === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
       tenThousandVictories.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, ItemTypeEnum.Charm, 1));
@@ -303,6 +327,8 @@ export class AchievementService {
       thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, ItemTypeEnum.Charm, 1));
+    if (subzoneType === SubZoneEnum.TheLetheHypnosIsland)
+      thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.ChthonicFavor, ItemTypeEnum.Progression, 10));
     if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
       thirtySecondClear.rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, ItemTypeEnum.Charm, 1));
       if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
@@ -328,6 +354,8 @@ export class AchievementService {
       tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus)
       tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      if (subzoneType === SubZoneEnum.TheLetheHypnosIsland)
+      tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, ItemTypeEnum.Charm, 1));
     if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
       tenSecondClear.rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
       if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
@@ -345,6 +373,9 @@ export class AchievementService {
     }
     if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus) {
       completeClear.rewards.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade1, ItemTypeEnum.Progression, 1));
+    }
+    if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus) {
+      completeClear.rewards.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade2, ItemTypeEnum.Progression, 1));
     }
 
     if (completeClear.rewards.length > 0)
@@ -396,7 +427,7 @@ export class AchievementService {
         tenSecondClear.rewards.forEach(bonus => {
 
           if (bonus.item === ItemsEnum.PoisonExtractPotionRecipe) {
-            this.alchemyService.learnRecipe(ItemsEnum.PoisonExtractPotion);
+            this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PoisonExtractPotion);
           }
           else
             this.lookupService.gainResource(bonus.makeCopy());
@@ -425,6 +456,9 @@ export class AchievementService {
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade1) {
             this.lookupService.enableChthonicFavoredGod();
+          }
+          else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade2) {
+            this.lookupService.enableChthonicFavor();
           }
           else
             this.lookupService.gainResource(bonus.makeCopy());

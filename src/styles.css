@@ -59,6 +59,14 @@
   background-color: #381142 !important;
 }
 
+.jewelcrafting-progress {
+  --mdc-linear-progress-active-indicator-color: var(--jewelcraftingColor) !important;
+}
+
+.jewelcrafting-progress .mdc-linear-progress__buffer-bar {
+  filter: brightness(50%);
+}
+
 .barrier-progress {
   --mdc-linear-progress-active-indicator-color: var(--barrierColor) !important;
 }
@@ -153,6 +161,7 @@
   --extraordinaryEquipmentColor: #F79721;
   --uniqueEquipmentColor: #FF6250;
   --alchemyColor: #CE66E9;
+  --jewelcraftingColor: #C5B45A;
 
   --resourceKeywordColor: #EAAD91;
   --insufficientResourcesKeywordColor: #7a818c;
@@ -263,14 +272,17 @@
 
   /* Zone Navigation */
   --z1-size: 1.1rem;
+  --mz1-size: 1.4rem;
   --z1-weight: 400;
   --z1-spacing: 0.1px;
 
   --z2-size: 1.05rem;
+  --mz2-size: 1.2rem;
   --z2-weight: 400;
   --z2-spacing: 0.1px;
 
   --z3-size: .935rem;
+  --mz3-size: 1.1rem;
   --z3-weight: 400;
   --z3-spacing: 0.1px;
 }
@@ -583,6 +595,10 @@ body {
 
 .alchemyText {
   color: var(--alchemyColor);
+}
+
+.jewelcraftingText {
+  color: var(--jewelcraftingColor);
 }
 
 .overdriveText {

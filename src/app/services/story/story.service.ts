@@ -265,6 +265,8 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Theseus", "<span class='commonCharacterColor storyCharacterName'>Theseus</span>");
     sceneText = sceneText.replaceAll("Perseus", "<span class='commonCharacterColor storyCharacterName'>Perseus</span>");
     sceneText = sceneText.replaceAll("Khronos", "<span class='commonCharacterColor storyCharacterName'>Khronos</span>");
+    sceneText = sceneText.replaceAll("Orpheus", "<span class='commonCharacterColor storyCharacterName'>Orpheus</span>");
+    sceneText = sceneText.replaceAll("Asclepius", "<span class='commonCharacterColor storyCharacterName'>Asclepius</span>");
 
     return sceneText;
   }
@@ -402,6 +404,10 @@ export class StoryService {
         if (boarBallad !== undefined)
           boarBallad.isAvailable = true;
       }
+
+      if (this.globalService.globalVar.currentStoryId === 17) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new sidequest is available in the Ballad of the Underworld.");
+      }
     }
 
     return this.showStory;
@@ -453,6 +459,27 @@ export class StoryService {
         sceneText = this.thalesText("“Here!”") + " You exclaim after catching a glimpse of a trail. You've watched Zosime examining animal tracks in search of the boar and finally found some yourself. " + this.thalesText("“It's this way!”") + " You call out, excitedly following your new found trail.<br/><br/>" +
         "Zosime follows behind you more cautiously, seeing the tracks for the first time. " + this.zosimeText("“Thales… I don't think these are boar tracks.”") + " She says as she catches up to you. The tracks have led you down a wooded ravine to a small cave. As you peek your head inside expecting to see your prey, you are instead greeted by the angry bear who lives in this cave.";      
     }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene1) {
+      if (pageCount === 1)
+        sceneText = "Your journey has brought you to and from the Underworld more than you ever expected. If you look past the fiery pits and distressed souls, the calm was quite relaxing. The calm was often interrupted, however, by your friendly bartering shade.<br/><br/>" +
+          this.commonCharacterText("“Hey! Just the two I wanted to see!”") + " Came from just the shade as you were traveling through Asphodel.<br/><br/>" +
+          this.commonCharacterText("“Got another problem for ya if you've got the time!”");
+      else if (pageCount === 2)
+        sceneText = this.commonCharacterText("Look, we got a good thing going down here. The big guy doesn't just let all of us waltz in and out whenever we want like you, sure, but it beats what happened to all the feisty little guys that keep picking fights with ya!") + "<br/><br/>" +
+          this.commonCharacterText("Back in the day, everyone down in Asphodel had to drink from the river and lose their damn mind! Bit by bit you just forget everything you know until you got nothing left. But that all changed once the boss brought his Queen down here. Things started getting a little more lax around here, and so did all the people who enforce the rules!”");
+      else if (pageCount === 3)
+        sceneText = this.commonCharacterText("“But here's the thing. I don't know what it is, but somethin's going on with Hypnos. He usually just sleeps in his little cave on the Lethe, but there's been some reeeeal weird sounds coming from over there. Check it out for me, will ya? I don't want anything rocking the boat down here! One god starts complaining, then another, next thing you know boss is gonna be ruling with an iron fist again!”");
+    }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene2) {
+      if (pageCount === 1)
+        sceneText = "The closer you get to Hypnos' isle, the darker it seems to be. By the time you reach the island, you can barely see your own hand in front of your face. You exit the ferry taking you across the Lethe and carefully make your way to Hypnos' resting place.<br/><br/>" +
+          "When you arrive, you find Hypnos sleeping as he often is. A dark shadow looking exactly like Hypnos stands above him, whispering into his ear and causing Hypnos fits while he sleeps. The shadow notices you immediately as you enter, focusing its gaze on you and beginning to speak the same nightmares it was sharing with Hypnos to you.";
+    }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
+      if (pageCount === 1)
+        sceneText = "With a final blow, the shadow dissolves into nothingness. Almost immediately, the area brightens back to normal levels. All of the fighting seems to have barely phased Hypnos, although he did seem to waken.<br/><br/>" +
+          this.commonCharacterText("“I was having quite the nightmares. Thanks for that...”") + " He murmurs, falling back asleep. Your job complete, you make your way back to the shade to deliver the good news.";      
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -463,6 +490,9 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Hecate", "<span class='commonCharacterColor storyCharacterName'>Hecate</span>");
     sceneText = sceneText.replaceAll("Acheron", "<span class='commonCharacterColor storyCharacterName'>Acheron</span>");
     sceneText = sceneText.replaceAll("Oceanus", "<span class='commonCharacterColor storyCharacterName'>Oceanus</span>");
+    sceneText = sceneText.replaceAll("Orpheus", "<span class='commonCharacterColor storyCharacterName'>Orpheus</span>");
+    sceneText = sceneText.replaceAll("Asclepius", "<span class='commonCharacterColor storyCharacterName'>Asclepius</span>");
+    sceneText = sceneText.replaceAll("Hypnos", "<span class='commonCharacterColor storyCharacterName'>Hypnos</span>");
 
     return sceneText;
   }
@@ -485,6 +515,15 @@ export class StoryService {
       this.pageCount = 2;
     }
     if (this.showOptionalStory === OptionalSceneEnum.CalydonDenMother) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene1) {
+      this.pageCount = 3;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene2) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
       this.pageCount = 1;
     }
 
@@ -511,6 +550,9 @@ export class StoryService {
       }
       if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavor) {
         this.globalService.globalVar.chthonicPowers.isChthonicResetUnlocked = true;
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
+        this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked = true;
       }
 
       this.currentPage = 1;

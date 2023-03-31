@@ -4,8 +4,10 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { Profession } from 'src/app/models/professions/profession.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
@@ -31,6 +33,7 @@ export class ShopViewComponent implements OnInit {
   openShopSubscription: any;
   resetNotification = NotificationTypeEnum.Reset;
   professionNotification = NotificationTypeEnum.Profession;
+  alchemy: Profession | undefined;
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -50,6 +53,7 @@ export class ShopViewComponent implements OnInit {
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.getShopOptions();
+    this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {

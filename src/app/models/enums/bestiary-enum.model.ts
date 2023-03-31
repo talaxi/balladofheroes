@@ -99,5 +99,14 @@ export enum BestiaryEnum {
   DenMother,
   CalydonianBoar,
   CreatureFromTheDeep,
-  Acheron
+  Acheron,
+  ForgetfulShade,
+  SpottedSalamander,
+  ArmoredRevenant,
+  DrownedAbomination,
+  RiverKarp,
+  FloatingSpirit,
+  WheelOfFlames,
+  NightmareMonstrosity,
+  ShadeOfHypnos
 }

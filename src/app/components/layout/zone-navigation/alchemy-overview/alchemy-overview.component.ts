@@ -1,9 +1,12 @@
 import { Component, Input } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { Profession } from 'src/app/models/professions/profession.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
+import { ProfessionService } from 'src/app/services/professions/profession.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -13,11 +16,16 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class AlchemyOverviewComponent {
 @Input() expandedView = false;
+alchemy: Profession | undefined;
 
 constructor(private deviceDetectorService: DeviceDetectorService, private lookupService: LookupService,
   private globalService: GlobalService, private alchemyService: AlchemyService, public dialog: MatDialog,
-  private utilityService: UtilityService) {
+  private utilityService: UtilityService, private professionService: ProfessionService) {
 
+}
+
+ngOnInit() {
+  this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
 }
 
 openAlchemy(content: any) {
@@ -28,51 +36,51 @@ openAlchemy(content: any) {
   }
 
   getCreatingRecipeName() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe !== undefined)
-      return this.lookupService.getItemName(this.globalService.globalVar.alchemy.creatingRecipe.createdItem);
+    if (this.alchemy !== undefined && this.alchemy.creatingRecipe !== undefined)
+      return this.lookupService.getItemName(this.alchemy.creatingRecipe.createdItem);
 
     return "";
   }
 
   creatingRecipe() {
-    return this.globalService.globalVar.alchemy.creatingRecipe !== undefined;
+    return this.alchemy !== undefined && this.alchemy.creatingRecipe !== undefined;
   }
 
   getStepProgress() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+    if (this.alchemy === undefined || this.alchemy.creatingRecipe === undefined)
       return 0;
     var totalLength = 0;
     var passedTime = 0;
 
-    for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) {
-      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
+    for (var i = 0; i < this.alchemy.creatingRecipe.steps.length; i++) {
+      var actionLength = this.alchemyService.getActionLength(this.alchemy.creatingRecipe.steps[i]) * this.professionService.getDurationReduction(this.alchemy.type, this.alchemy.creatingRecipe.quality);
       totalLength += actionLength;
 
-      if (this.globalService.globalVar.alchemy.alchemyStep > i + 1) {
+      if (this.alchemy.creationStep > i + 1) {
         passedTime += actionLength;
       }
     }
 
-    passedTime += this.globalService.globalVar.alchemy.alchemyTimer;
+    passedTime += this.alchemy.creationTimer;
     return (passedTime / totalLength) * 100;
-    //return (this.globalService.globalVar.alchemy.alchemyTimer / this.globalService.globalVar.alchemy.alchemyTimerLength) * 100;
+    //return (this.alchemy.alchemyTimer / this.alchemy.alchemyTimerLength) * 100;
   }
 
   getRecipeStepName() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+    if (this.alchemy === undefined || this.alchemy.creatingRecipe === undefined)
       return "";
-    return this.lookupService.getAlchemyActionName(this.globalService.globalVar.alchemy.creatingRecipe.steps[this.globalService.globalVar.alchemy.alchemyStep - 1]);
+    return this.lookupService.getAlchemyActionName(this.alchemy.creatingRecipe.steps[this.alchemy.creationStep - 1]);
   }
 
   getTimeRemaining() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+    if (this.alchemy === undefined || this.alchemy.creatingRecipe === undefined)
       return "";
 
-    var timeRemaining = this.globalService.globalVar.alchemy.alchemyTimerLength - this.globalService.globalVar.alchemy.alchemyTimer;
+    var timeRemaining = this.alchemy.creationTimerLength - this.alchemy.creationTimer;
 
-    for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++) {
-      var step = this.globalService.globalVar.alchemy.creatingRecipe.steps[i - 1];
-      timeRemaining += this.alchemyService.getActionLength(step) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
+    for (var i = this.alchemy.creationStep + 1; i <= this.alchemy.creatingRecipe.numberOfSteps; i++) {
+      var step = this.alchemy.creatingRecipe.steps[i - 1];
+      timeRemaining += this.alchemyService.getActionLength(step) * this.professionService.getDurationReduction(this.alchemy.type, this.alchemy.creatingRecipe.quality);
     }
 
     if (timeRemaining > 60 * 60)
@@ -82,26 +90,38 @@ openAlchemy(content: any) {
   }
 
   getTotalAmountToCreate() {
-    return this.globalService.globalVar.alchemy.alchemyCreateAmount;
+    if (this.alchemy === undefined)
+      return 0;
+    return this.alchemy.creationCreateAmount;
   }
 
   getAmountCreated() {
-    return this.globalService.globalVar.alchemy.alchemyCurrentAmountCreated;
+    if (this.alchemy === undefined)
+      return 0;
+    return this.alchemy.creationCurrentAmountCreated;
   }
 
   atMaxLevel() {
-    return this.globalService.globalVar.alchemy.level >= this.globalService.globalVar.alchemy.maxLevel;
+    if (this.alchemy === undefined)
+      return false;
+    return this.alchemy.level >= this.alchemy.maxLevel;
   }
 
   getLevel() {
-    return this.globalService.globalVar.alchemy.level;
+    if (this.alchemy === undefined)
+      return 0;
+    return this.alchemy.level;
   }
 
   getExp() {
-    return this.globalService.globalVar.alchemy.exp;
+    if (this.alchemy === undefined)
+      return 0;
+    return this.alchemy.exp;
   }
 
   getExpToNextLevel() {
-    return this.globalService.globalVar.alchemy.expToNextLevel;
+    if (this.alchemy === undefined)
+      return 0;
+    return this.alchemy.expToNextLevel;
   }
 }

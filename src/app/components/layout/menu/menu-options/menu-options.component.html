@@ -1,7 +1,7 @@
 <div class="navigation">
   <div class="menuOptions">
     <div class="clickableText navItem" (click)="switchView(menuEnum.Characters)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Characters }">
-      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Characters }" (click)="switchView(menuEnum.Characters)">Characters</button>
+      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Characters }" (click)="switchView(menuEnum.Characters)">Classes</button>
       <hr class='transparentHr' [ngClass]="{'hide': menuService.selectedMenuDisplay !== menuEnum.Characters && !isMobile }"/>
       <div class="characterSelect" [ngClass]="{'submenu': menuService.selectedMenuDisplay !== menuEnum.Characters && !isMobile }">        
         <div class="partyMemberOption" *ngFor="let member of partyMembers; let i = index" (click)="selectPartyMember(member)">

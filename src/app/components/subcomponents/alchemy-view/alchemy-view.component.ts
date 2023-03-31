@@ -2,11 +2,14 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { Profession } from 'src/app/models/professions/profession.model';
 import { Recipe } from 'src/app/models/professions/recipe.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
+import { ProfessionService } from 'src/app/services/professions/profession.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -18,11 +21,13 @@ export class AlchemyViewComponent implements OnInit {
   selectedRecipe: Recipe;
   createAmount = 1;
   @ViewChild('confirmationBox') confirmationBox: any;
+  alchemy: Profession | undefined;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
-    private alchemyService: AlchemyService) { }
+    private alchemyService: AlchemyService, private professionService: ProfessionService) { }
 
   ngOnInit(): void {
+    this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
   }
 
   selectRecipe(recipe: Recipe) {
@@ -30,29 +35,38 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   atMaxLevel() {
-    return this.globalService.globalVar.alchemy.level >= this.globalService.globalVar.alchemy.maxLevel;
+    if (this.alchemy === undefined)
+      return false;
+
+    return this.alchemy.level >= this.alchemy.maxLevel;
   }
 
   getLevel() {
-    return this.globalService.globalVar.alchemy.level;
+    if (this.alchemy === undefined)
+    return 0;
+    return this.alchemy.level;
   }
 
   getExp() {
-    return this.globalService.globalVar.alchemy.exp;
+    if (this.alchemy === undefined)
+    return 0;
+    return this.alchemy.exp;
   }
 
   getExpToNextLevel() {
-    return this.globalService.globalVar.alchemy.expToNextLevel;
+    if (this.alchemy === undefined)
+    return 0;
+    return this.alchemy.expToNextLevel;
   }
 
   getCraftedItemName(recipe: Recipe) {
-    return this.lookupService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.alchemyService.getAmountCanCreate(recipe) + " available)</i>";
+    return this.lookupService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
   }
 
   getRecipeList(quality: EquipmentQualityEnum) {
-    return this.globalService.globalVar.alchemy.availableRecipes.filter(item => item.quality === quality).reverse(); /*.sort(function (a, b) {
-      return a. && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
-    });*/
+    if (this.alchemy === undefined)
+      return [];
+    return this.alchemy.availableRecipes.filter(item => item.quality === quality).reverse();
   }
 
   getSelectedRecipeName() {
@@ -63,8 +77,8 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   getCreatingRecipeName() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe !== undefined)
-      return this.lookupService.getItemName(this.globalService.globalVar.alchemy.creatingRecipe.createdItem);
+    if (this.alchemy !== undefined && this.alchemy.creatingRecipe !== undefined)
+      return this.lookupService.getItemName(this.alchemy.creatingRecipe.createdItem);
 
     return "";
   }
@@ -116,33 +130,32 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   creatingRecipe() {
-    return this.globalService.globalVar.alchemy.creatingRecipe !== undefined;
+    return this.alchemy !== undefined && this.alchemy.creatingRecipe !== undefined;
   }
 
   getStepProgress() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+    if (this.alchemy === undefined || this.alchemy.creatingRecipe === undefined)
       return 0;
     var totalLength = 0;
     var passedTime = 0;
 
-    for (var i = 0; i < this.globalService.globalVar.alchemy.creatingRecipe.steps.length; i++) {
-      var actionLength = this.alchemyService.getActionLength(this.globalService.globalVar.alchemy.creatingRecipe.steps[i]) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
+    for (var i = 0; i < this.alchemy.creatingRecipe.steps.length; i++) {
+      var actionLength = this.alchemyService.getActionLength(this.alchemy.creatingRecipe.steps[i]) * this.professionService.getDurationReduction(this.alchemy.type, this.alchemy.creatingRecipe.quality);
       totalLength += actionLength;
 
-      if (this.globalService.globalVar.alchemy.alchemyStep > i + 1) {
+      if (this.alchemy.creationStep > i + 1) {
         passedTime += actionLength;
       }
     }
 
-    passedTime += this.globalService.globalVar.alchemy.alchemyTimer;
+    passedTime += this.alchemy.creationTimer;
     return (passedTime / totalLength) * 100;
-    //return (this.globalService.globalVar.alchemy.alchemyTimer / this.globalService.globalVar.alchemy.alchemyTimerLength) * 100;
   }
 
   getRecipeStepName() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+    if (this.alchemy === undefined ||this.alchemy.creatingRecipe === undefined)
       return "";
-    return this.lookupService.getAlchemyActionName(this.globalService.globalVar.alchemy.creatingRecipe.steps[this.globalService.globalVar.alchemy.alchemyStep - 1]);
+    return this.lookupService.getAlchemyActionName(this.alchemy.creatingRecipe.steps[this.alchemy.creationStep - 1]);
   }
 
   getSelectedRecipeDescription() {
@@ -150,14 +163,14 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   getTimeRemaining() {
-    if (this.globalService.globalVar.alchemy.creatingRecipe === undefined)
+    if (this.alchemy === undefined || this.alchemy.creatingRecipe === undefined)
       return "";
 
-    var timeRemaining = this.globalService.globalVar.alchemy.alchemyTimerLength - this.globalService.globalVar.alchemy.alchemyTimer;
+    var timeRemaining = this.alchemy.creationTimerLength - this.alchemy.creationTimer;
 
-    for (var i = this.globalService.globalVar.alchemy.alchemyStep + 1; i <= this.globalService.globalVar.alchemy.creatingRecipe.numberOfSteps; i++) {
-      var step = this.globalService.globalVar.alchemy.creatingRecipe.steps[i - 1];
-      timeRemaining += this.alchemyService.getActionLength(step) * this.alchemyService.getDurationReduction(this.globalService.globalVar.alchemy.creatingRecipe.quality);
+    for (var i = this.alchemy.creationStep + 1; i <= this.alchemy.creatingRecipe.numberOfSteps; i++) {
+      var step = this.alchemy.creatingRecipe.steps[i - 1];
+      timeRemaining += this.alchemyService.getActionLength(step) * this.professionService.getDurationReduction(this.alchemy.type, this.alchemy.creatingRecipe.quality);
     }
 
     if (timeRemaining > 60 * 60)
@@ -168,7 +181,7 @@ export class AlchemyViewComponent implements OnInit {
 
   createSelectedRecipe() {
     var confirm = false;
-    if (this.globalService.globalVar.alchemy.creatingRecipe) {
+    if (this.alchemy !== undefined && this.alchemy.creatingRecipe) {
       confirm = true;
     }
     
@@ -188,22 +201,24 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   startRecipe() {
+    if (this.alchemy === undefined)
+      return;
+
     var rng = this.utilityService.getRandomNumber(0, 1);
-    if (rng >= this.alchemyService.getMaterialRetentionChance(this.selectedRecipe.quality)) {
+    if (rng >= this.professionService.getMaterialRetentionChance(this.alchemy.type, this.selectedRecipe.quality)) {
       this.spendResourcesOnItem();
     }
-    this.alchemyService.initializeCreation(this.selectedRecipe, this.createAmount);
+    this.professionService.initializeCreation(this.alchemy.type, this.selectedRecipe, this.createAmount);
   }
 
   canCreateItem() {
-    var canBuy = this.alchemyService.canCreateItem(this.selectedRecipe);
+    var canBuy = this.professionService.canCreateItem(this.selectedRecipe);
 
     return canBuy;
   }
 
   spendResourcesOnItem() {
-    this.alchemyService.spendResourcesOnRecipe(this.selectedRecipe);
-
+    this.professionService.spendResourcesOnRecipe(this.selectedRecipe);
   }
 
   changeCreateAmount(amount: number) {
@@ -211,15 +226,19 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   getTotalAmountToCreate() {
-    return this.globalService.globalVar.alchemy.alchemyCreateAmount;
+    if (this.alchemy === undefined)
+    return 0;
+    return this.alchemy.creationCreateAmount;
   }
 
   getAmountCreated() {
-    return this.globalService.globalVar.alchemy.alchemyCurrentAmountCreated;
+    if (this.alchemy === undefined)
+    return 0;
+    return this.alchemy.creationCurrentAmountCreated;
   }
 
   getTotalItemToCreateAmount() {
-    return this.alchemyService.getAmountCanCreate(this.selectedRecipe);
+    return this.professionService.getAmountCanCreate(this.selectedRecipe);
   }
 
   getSelectedRecipeQualityStars() {
@@ -239,15 +258,15 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   recipesAtQualityLevelAmount(quality: EquipmentQualityEnum) {
-    return this.globalService.globalVar.alchemy.availableRecipes.filter(item => item.quality === quality).length;
+    return this.alchemy?.availableRecipes.filter(item => item.quality === quality).length;
   }
 
   toggleQualitySection(quality: EquipmentQualityEnum) {
-    var qualityToggle = this.globalService.globalVar.alchemy.recipeBookQualityToggle.find(item => item[0] === quality);
+    var qualityToggle = this.alchemy?.recipeBookQualityToggle.find(item => item[0] === quality);
 
     if (qualityToggle === undefined)
     {
-      this.globalService.globalVar.alchemy.recipeBookQualityToggle.push([quality, true]);
+      this.alchemy?.recipeBookQualityToggle.push([quality, true]);
     }
     else
     {
@@ -256,7 +275,7 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   hideRecipesByQuality(quality: EquipmentQualityEnum) {
-    var qualityToggle = this.globalService.globalVar.alchemy.recipeBookQualityToggle.find(item => item[0] === quality);
+    var qualityToggle = this.alchemy?.recipeBookQualityToggle.find(item => item[0] === quality);
 
     if (qualityToggle === undefined)
       return false;

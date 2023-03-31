@@ -10,6 +10,7 @@ import { FollowerActionEnum } from 'src/app/models/enums/follower-action-enum.mo
 import { FollowerPrayerTypeEnum } from 'src/app/models/enums/follower-prayer-type-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AltarService } from '../altar/altar.service';
@@ -20,6 +21,7 @@ import { FollowersService } from '../followers/followers.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
+import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from './utility.service';
 
 @Injectable({
@@ -28,12 +30,12 @@ import { UtilityService } from './utility.service';
 export class BackgroundService {
 
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
-    private alchemyService: AlchemyService, private followerService: FollowersService, private lookupService: LookupService,
+    private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
     private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
-    this.alchemyService.handleAlchemyTimer(deltaTime);
+    this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
     this.handleFollowerPrayer(deltaTime);
@@ -96,21 +98,21 @@ export class BackgroundService {
     var hpGainPercent = .1;
 
     this.globalService.globalVar.timers.townHpGainTimer += deltaTime;
-    var teamNeedsHealing = party.some(item => item.battleStats.currentHp < item.battleStats.maxHp);
+    var teamNeedsHealing = party.some(item => item.battleStats.currentHp < this.lookupService.getAdjustedMaxHp(item));
 
     while (this.globalService.globalVar.timers.townHpGainTimer > this.globalService.globalVar.timers.townHpGainLength && teamNeedsHealing) {
       party.forEach(partyMember => {
-        if (partyMember.battleStats.currentHp < partyMember.battleStats.maxHp) {
-          partyMember.battleStats.currentHp += Math.ceil(partyMember.battleStats.maxHp * hpGainPercent);
+        if (partyMember.battleStats.currentHp < this.lookupService.getAdjustedMaxHp(partyMember)) {
+          partyMember.battleStats.currentHp += Math.ceil(this.lookupService.getAdjustedMaxHp(partyMember) * hpGainPercent);
         }
 
-        if (partyMember.battleStats.currentHp >= partyMember.battleStats.maxHp) {
-          partyMember.battleStats.currentHp = partyMember.battleStats.maxHp;
+        if (partyMember.battleStats.currentHp >= this.lookupService.getAdjustedMaxHp(partyMember)) {
+          partyMember.battleStats.currentHp = this.lookupService.getAdjustedMaxHp(partyMember);
         }
       });
 
       this.globalService.globalVar.timers.townHpGainTimer -= this.globalService.globalVar.timers.townHpGainLength;
-      teamNeedsHealing = party.some(item => item.battleStats.currentHp < item.battleStats.maxHp);
+      teamNeedsHealing = party.some(item => item.battleStats.currentHp < this.lookupService.getAdjustedMaxHp(item));
 
       if (!teamNeedsHealing)
         this.globalService.globalVar.timers.townHpGainTimer = 0;

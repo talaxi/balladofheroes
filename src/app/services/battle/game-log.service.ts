@@ -35,6 +35,9 @@ export class GameLogService {
     if (type === GameLogEntryEnum.Alchemy) {
       entry = "<span class='gameText alchemyText'>" + entry + "</span>";
     }
+    if (type === GameLogEntryEnum.Jewelcrafting) {
+      entry = "<span class='gameText jewelcraftingText'>" + entry + "</span>";
+    }
     if (type === GameLogEntryEnum.Overdrive) {
       entry = "<span class='gameText overdriveText'>" + entry + "</span>";
     }

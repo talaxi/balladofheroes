@@ -7,6 +7,7 @@ import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AchievementService } from '../achievements/achievement.service';
@@ -14,7 +15,7 @@ import { BalladService } from '../ballad/ballad.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
-import { AlchemyService } from '../professions/alchemy.service';
+import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
 
@@ -25,7 +26,7 @@ export class ColiseumService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private balladService: BalladService, private alchemyService: AlchemyService) { }
+    private balladService: BalladService, private professionService: ProfessionService) { }
 
   getColiseumInfoFromType(type: ColiseumTournamentEnum) {
     var tournament = new ColiseumTournament();
@@ -123,7 +124,7 @@ export class ColiseumService {
             }
           }
           else if (reward.item === ItemsEnum.HeroicElixirRecipe) {
-            this.alchemyService.learnRecipe(ItemsEnum.HeroicElixir);
+            this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.HeroicElixir);
           }
           else if (reward.item === ItemsEnum.BonusXp) {
             this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), reward.amount);
@@ -296,6 +297,27 @@ export class ColiseumService {
         if (duplicateNameList.length > 1) {
           var count = "A";
           duplicateNameList.forEach(duplicateEnemy => {
+            if (duplicateEnemy.abilityList.length > 0)
+            {
+            //go through user/target effects, look for caster, update name
+              duplicateEnemy.abilityList.forEach(ability => {
+                if (ability.userEffect.length > 0 && ability.userEffect.filter(item => item.caster !== "").length > 0)
+                {
+                  ability.userEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                    effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+
+                if (ability.targetEffect.length > 0 && ability.targetEffect.filter(item => item.caster !== "").length > 0)
+                {
+                  ability.targetEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                    effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+              })
+            }
             duplicateEnemy.name += " " + count;
 
             var charCode = count.charCodeAt(0);

@@ -65,4 +65,9 @@ export enum SubZoneEnum {
   CalydonWateringHole,
   CalydonTallGrass,
   CalydonDeadEnd,
+  TheLetheLetheBasin2,
+  TheLetheFerryRide,
+  TheLetheRiverDivergence,
+  TheLetheStillWaters,
+  TheLetheHypnosIsland
 }

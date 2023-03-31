@@ -2,7 +2,7 @@
   <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter || option.type === shopTypeEnum.Traveler"
     class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
   <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText"
-    (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}} <app-notification-icon *ngIf="!globalService.globalVar.alchemy.isUnlocked" [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
+    (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}} <app-notification-icon *ngIf="alchemy !== undefined && !alchemy.isUnlocked" [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText"
     (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}} 
     <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true" [notificationColor]="resetNotification"></app-notification-icon>

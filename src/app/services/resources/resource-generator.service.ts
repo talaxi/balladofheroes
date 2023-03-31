@@ -397,29 +397,133 @@ export class ResourceGeneratorService {
     {
       return new ResourceValue(ItemsEnum.VialOfTheBlackSea, ItemTypeEnum.CraftingMaterial, amount);
     }
-    if (type === ItemsEnum.SmallEmerald)
+    if (type === ItemsEnum.RoughEmeraldFragment)
     {
-      return new ResourceValue(ItemsEnum.SmallEmerald, ItemTypeEnum.CraftingMaterial, amount);
+      return new ResourceValue(ItemsEnum.RoughEmeraldFragment, ItemTypeEnum.CraftingMaterial, amount);
     }
     if (type === ItemsEnum.SmallRuby)
     {
       return new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, amount);
     }
-    if (type === ItemsEnum.SmallOpal)
+    if (type === ItemsEnum.RoughOpalFragment)
     {
-      return new ResourceValue(ItemsEnum.SmallOpal, ItemTypeEnum.CraftingMaterial, amount);
+      return new ResourceValue(ItemsEnum.RoughOpalFragment, ItemTypeEnum.CraftingMaterial, amount);
     }
-    if (type === ItemsEnum.SmallAquamarine)
+    if (type === ItemsEnum.RoughAquamarineFragment)
     {
-      return new ResourceValue(ItemsEnum.SmallAquamarine, ItemTypeEnum.CraftingMaterial, amount);
+      return new ResourceValue(ItemsEnum.RoughAquamarineFragment, ItemTypeEnum.CraftingMaterial, amount);
     }
-    if (type === ItemsEnum.SmallTopaz)
+    if (type === ItemsEnum.RoughTopazFragment)
     {
-      return new ResourceValue(ItemsEnum.SmallTopaz, ItemTypeEnum.CraftingMaterial, amount);
+      return new ResourceValue(ItemsEnum.RoughTopazFragment, ItemTypeEnum.CraftingMaterial, amount);
     }
-    if (type === ItemsEnum.SmallAmethyst)
+    if (type === ItemsEnum.RoughAmethystFragment)
     {
-      return new ResourceValue(ItemsEnum.SmallAmethyst, ItemTypeEnum.CraftingMaterial, amount);
+      return new ResourceValue(ItemsEnum.RoughAmethystFragment, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.PetrifiedBark)
+    {
+      return new ResourceValue(ItemsEnum.PetrifiedBark, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.FishScales)
+    {
+      return new ResourceValue(ItemsEnum.FishScales, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.MetalScraps)
+    {
+      return new ResourceValue(ItemsEnum.MetalScraps, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.CrackedRuby)
+    {
+      return new ResourceValue(ItemsEnum.CrackedRuby, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.CrackedEmerald)
+    {
+      return new ResourceValue(ItemsEnum.CrackedEmerald, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.CrackedAquamarine)
+    {
+      return new ResourceValue(ItemsEnum.CrackedAquamarine, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.CrackedTopaz)
+    {
+      return new ResourceValue(ItemsEnum.CrackedTopaz, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.CrackedOpal)
+    {
+      return new ResourceValue(ItemsEnum.CrackedOpal, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.CrackedAmethyst)
+    {
+      return new ResourceValue(ItemsEnum.CrackedAmethyst, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.LesserCrackedRuby)
+    {
+      return new ResourceValue(ItemsEnum.LesserCrackedRuby, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.LesserCrackedEmerald)
+    {
+      return new ResourceValue(ItemsEnum.LesserCrackedEmerald, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.LesserCrackedAquamarine)
+    {
+      return new ResourceValue(ItemsEnum.LesserCrackedAquamarine, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.LesserCrackedTopaz)
+    {
+      return new ResourceValue(ItemsEnum.LesserCrackedTopaz, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.LesserCrackedOpal)
+    {
+      return new ResourceValue(ItemsEnum.LesserCrackedOpal, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.LesserCrackedAmethyst)
+    {
+      return new ResourceValue(ItemsEnum.LesserCrackedAmethyst, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.DullRuby)
+    {
+      return new ResourceValue(ItemsEnum.DullRuby, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.DullEmerald)
+    {
+      return new ResourceValue(ItemsEnum.DullEmerald, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.DullAquamarine)
+    {
+      return new ResourceValue(ItemsEnum.DullAquamarine, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.DullTopaz)
+    {
+      return new ResourceValue(ItemsEnum.DullTopaz, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.DullOpal)
+    {
+      return new ResourceValue(ItemsEnum.DullOpal, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.DullAmethyst)
+    {
+      return new ResourceValue(ItemsEnum.DullAmethyst, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.MinorWeaponSlotAddition)
+    {
+      return new ResourceValue(ItemsEnum.MinorWeaponSlotAddition, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.MinorArmorSlotAddition)
+    {
+      return new ResourceValue(ItemsEnum.MinorArmorSlotAddition, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.MinorRingSlotAddition)
+    {
+      return new ResourceValue(ItemsEnum.MinorRingSlotAddition, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.MinorShieldSlotAddition)
+    {
+      return new ResourceValue(ItemsEnum.MinorShieldSlotAddition, ItemTypeEnum.CraftingMaterial, amount);
+    }
+    if (type === ItemsEnum.MinorNecklaceSlotAddition)
+    {
+      return new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, ItemTypeEnum.CraftingMaterial, amount);
     }
 
     //charms

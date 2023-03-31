@@ -107,9 +107,11 @@ export class MenuOptionsComponent implements OnInit {
     this.menuService.setSelectedProfession(profession);
   }
 
-  getProfessions() {
-    if (this.globalService.globalVar.alchemy.isUnlocked)
-      this.professions.push(ProfessionEnum.Alchemy);
+  getProfessions() {    
+    this.globalService.globalVar.professions.forEach(profession => {
+      if (profession.isUnlocked)
+        this.professions.push(profession.type);
+    });
 
     this.professionsAvailable = this.professions.length > 0;
   }

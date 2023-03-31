@@ -51,7 +51,10 @@ export class TutorialService {
       text = "Crafters can create unique items with materials found from battle. Keep an eye out for what loot you are receiving from individual enemies.";
     }
     else if (type === TutorialTypeEnum.SkipStory) {
-      text = "Under settings, you can adjust the speed at which story scenes progress or skip the story entirely.";
+      if (this.deviceDetectorService.isMobile())
+        text = "Under settings, you can adjust the speed at which story scenes progress or skip the story entirely. You can always review the story, as well as tutorial tips and recently gained loot, by tapping the Log button on the top right.";
+      else
+        text = "Under settings, you can adjust the speed at which story scenes progress or skip the story entirely. You can always review the story, as well as tutorial tips and recently gained loot, by clicking the Log button on the top right.";
     }
     else if (type === TutorialTypeEnum.Equipment) {
       if (this.deviceDetectorService.isMobile())

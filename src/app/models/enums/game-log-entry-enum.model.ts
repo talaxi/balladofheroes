@@ -20,5 +20,7 @@ export enum GameLogEntryEnum {
   Pray,
   FollowerSearch,
   FollowerPrayer,
-  CodeRedemption
+  CodeRedemption,
+  Jewelcrafting,
+  SideQuest
 }

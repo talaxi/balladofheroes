@@ -108,7 +108,7 @@ export class HeaderComponent implements OnInit {
 
   openLog(content: any) {
     if (this.isMobile)
-    this.dialog.open(content, { width: '95%', height: '80%' });
+    this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
   else 
     this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
   }

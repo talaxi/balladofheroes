@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 
 @Component({
@@ -26,7 +27,8 @@ export class QuickViewOptionsComponent {
   ngOnInit() {   
     this.isMobile = this.deviceDetectorService.isMobile();
     this.altarsUnlocked = this.globalService.globalVar.altars.isUnlocked;
-    this.alchemyUnlocked = this.globalService.globalVar.alchemy.isUnlocked;
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    this.alchemyUnlocked = alchemy !== undefined && alchemy.isUnlocked;
 
     var displayQuickViewOverview = this.globalService.globalVar.settings.get("displayQuickViewOverview");    
     if (displayQuickViewOverview === undefined)

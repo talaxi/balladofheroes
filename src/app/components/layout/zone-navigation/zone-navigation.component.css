@@ -192,4 +192,16 @@
         border-top: 1px solid rgba(255, 255, 255, .5);
         width: 75%;
     }
+
+    .z1Heading {
+        font-size: var(--mz1-size);
+    }
+
+    .z2Heading {
+        font-size: var(--mz2-size);
+    }
+
+    .z3Heading {
+        font-size: var(--mz3-size);
+    }
 }

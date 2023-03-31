@@ -28,7 +28,7 @@
                             <strong class="selected">&#8594;</strong>
                         </span>
                         <!--TODO: Should this all be its own component? vvv-->
-                        <div *ngIf="isMobile" class="zoneList">
+                        <div *ngIf="isMobile" class="zoneList mobileList">
                             <div *ngFor="let zone of availableZones">
                                 <div *ngIf="!zone.isSelected">
                                     <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
@@ -76,7 +76,7 @@
                     <div *ngIf="!zone.isSelected">
                         <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
                             (click)="balladService.selectZone(zone)">{{zone.zoneName}}
-                            <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
+                            <app-notification-icon *ngIf="zone.showNewNotification" [notificationColor]="zone.notificationType"></app-notification-icon>
                         </button>
                     </div>
                     <div *ngIf="zone.isSelected">
