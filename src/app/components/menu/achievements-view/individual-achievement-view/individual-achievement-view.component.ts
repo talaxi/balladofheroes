@@ -4,6 +4,7 @@ import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { AchievementService } from 'src/app/services/achievements/achievement.service';
 import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
@@ -14,39 +15,43 @@ import { LookupService } from 'src/app/services/lookup.service';
 export class IndividualAchievementViewComponent implements OnInit {
   @Input() achievement: Achievement;
   tooltipDirection = DirectionEnum.Down;
+  rewards: ResourceValue[];
 
-  constructor(private lookupService: LookupService) { }
+  constructor(private lookupService: LookupService, private achievementService: AchievementService) { }
 
   ngOnInit(): void {
+    this.rewards = this.getAchievementRewards();
   }
 
+  getAchievementRewards() {
+    return this.achievementService.getAchievementReward(this.achievement.subzone, this.achievement.type);
+  }
 
   getAchievementDescription(type: AchievementTypeEnum) {
     return this.lookupService.getAchievementDescription(type);
   }
 
-  //you were adding bonus xp to medusa so you need to make this an ngFor and display all possible achievements
   getAchievementReward(resource: ResourceValue) {
     var reward = "";
-    //this.achievement.rewards.forEach(resource => {
     var amount = resource.amount.toString();
     if (resource.item === ItemsEnum.BoonOfOlympus)
       amount = (resource.amount * 100) + "%";
 
     reward += amount + " " + this.lookupService.getItemName(resource.item);
-    //});
 
     return reward;
   }
 
   getRewardDescription() {
     var description = "";
+    var rewards = this.achievementService.getAchievementReward(this.achievement.subzone, this.achievement.type);
+    console.log(rewards);
 
-    for (var i = 0; i < this.achievement.rewards.length; i++) {
-      var resource = this.achievement.rewards[i];
+    for (var i = 0; i < rewards.length; i++) {
+      var resource = rewards[i];
       description += this.lookupService.getItemDescription(resource.item);      
 
-      if (i < this.achievement.rewards.length - 1)
+      if (i < rewards.length - 1)
       {
         description += "<br/>";
       }

@@ -2,7 +2,7 @@
     <span class="challenge" [innerHtml]="getAchievementDescription(achievement.type)"></span>
     <br />
     <span customToolTip [contentTemplate]="achievementRewardPopover" [tooltipDirection]="tooltipDirection" class="reward"
-        *ngFor='let reward of achievement.rewards'>
+        *ngFor='let reward of rewards'>
         +{{getAchievementReward(reward)}}
         <br />
     </span>

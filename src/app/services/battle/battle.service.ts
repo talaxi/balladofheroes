@@ -2069,8 +2069,9 @@ export class BattleService {
   addAchievementToGameLog(achievements: Achievement[]) {
     achievements.forEach(achievement => {
       var achievementBonus = "";
-      if (achievement.rewards !== undefined && achievement.rewards.length > 0) {
-        achievement.rewards.forEach(item => {
+      var rewards = this.achievementService.getAchievementReward(achievement.subzone, achievement.type);
+      if (rewards !== undefined && rewards.length > 0) {
+        rewards.forEach(item => {
           var amount = item.amount.toString();
           if (item.item === ItemsEnum.BoonOfOlympus)
             amount = item.amount * 100 + "%";

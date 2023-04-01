@@ -236,7 +236,7 @@ export class InitializationService {
     if (this.deviceDetectorService.isMobile()) {
       this.globalService.globalVar.settings.set("displayOverlayTutorials", true);
       this.globalService.globalVar.settings.set("displayOverlayBattleRewards", true);
-      this.globalService.globalVar.settings.set("displayOverlayPray", true);            
+      this.globalService.globalVar.settings.set("displayOverlayPray", true);
     }
     else {
       this.globalService.globalVar.settings.set("displayOverlayTutorials", false);
@@ -395,7 +395,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 1));
-        
+
     this.globalService.globalVar.currentStoryId = 100000;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
@@ -413,23 +413,26 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
+    var allAchievementsComplete = false;
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld)
       ballad.isAvailable = true;
-      ballad.notify=true;
+      ballad.notify = true;
       ballad.zones.forEach(zone => {
         zone.isAvailable = true;
-        zone.notify=true;
+        zone.notify = true;
         zone.subzones.forEach(subzone => {
           subzone.isAvailable = true;
-          subzone.notify =true;
+          subzone.notify = true;
           if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
             this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
-              achievement.completed = true;
               this.globalService.globalVar.achievements.push(achievement);
-              achievement.rewards.forEach(bonus => {
-                this.lookupService.gainResource(bonus.makeCopy());
-              });
+              if (allAchievementsComplete) {
+                achievement.completed = true;
+                this.achievementService.getAchievementReward(achievement.subzone, achievement.type).forEach(bonus => {
+                  this.lookupService.gainResource(bonus.makeCopy());
+                });
+              }
             });
           }
         })
@@ -620,11 +623,11 @@ export class InitializationService {
 
       var enumValue = propertyValue as EquipmentQualityEnum;
       if (enumValue !== EquipmentQualityEnum.None) {
-        var alchemyUpgrade = new ProfessionUpgrades(enumValue);        
+        var alchemyUpgrade = new ProfessionUpgrades(enumValue);
         alchemy.upgrades.push(alchemyUpgrade);
       }
     }
-    
+
     this.globalService.globalVar.professions.push(alchemy);
   }
 
@@ -640,11 +643,11 @@ export class InitializationService {
 
       var enumValue = propertyValue as EquipmentQualityEnum;
       if (enumValue !== EquipmentQualityEnum.None) {
-        var jewelcraftingUpgrade = new ProfessionUpgrades(enumValue);        
+        var jewelcraftingUpgrade = new ProfessionUpgrades(enumValue);
         jewelcrafting.upgrades.push(jewelcraftingUpgrade);
       }
     }
-    
+
     this.globalService.globalVar.professions.push(jewelcrafting);
   }
 

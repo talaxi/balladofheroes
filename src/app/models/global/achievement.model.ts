@@ -7,12 +7,10 @@ export class Achievement {
     subzone: SubZoneEnum;
     type: AchievementTypeEnum;
     @Type(() => ResourceValue)
-    rewards: ResourceValue[];
     completed: boolean;
 
     constructor(achievementType: AchievementTypeEnum, subzone?: SubZoneEnum) {
         this.type = achievementType;
-        this.rewards = [];
         this.completed = false;
 
         if (subzone !== undefined)

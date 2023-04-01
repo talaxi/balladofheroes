@@ -4,11 +4,9 @@ import { ItemsEnum } from "../enums/items-enum.model";
 export class ResourceValue {    
     item: ItemsEnum;
     amount: number;
-    //type: ItemTypeEnum;
 
     constructor(item: ItemsEnum, amount: number) {
         this.item = item;
-        //this.type = type;
         this.amount = amount;
     }
 
