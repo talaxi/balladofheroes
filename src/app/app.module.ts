@@ -99,6 +99,7 @@ import { GameTextOverviewComponent } from './components/layout/zone-navigation/g
 import { QuickViewOptionsComponent } from './components/menu/settings-view/quick-view-options/quick-view-options.component';
 import { OverlayNotificationOptionsComponent } from './components/menu/settings-view/overlay-notification-options/overlay-notification-options.component';
 import { ProfessionsViewComponent } from './components/menu/professions-view/professions-view.component';
+import { SlotMenuViewComponent } from './components/equipment-view/slot-menu-view/slot-menu-view.component';
 
 @NgModule({
   declarations: [
@@ -162,7 +163,8 @@ import { ProfessionsViewComponent } from './components/menu/professions-view/pro
     GameTextOverviewComponent,
     QuickViewOptionsComponent,
     OverlayNotificationOptionsComponent,
-    ProfessionsViewComponent,    
+    ProfessionsViewComponent,
+    SlotMenuViewComponent,    
   ],
   imports: [
     BrowserModule,

@@ -101,7 +101,7 @@ export enum ItemsEnum {
   PendantOfFortune,
   PoisonExtractPotionRecipe,
   BrokenNecklace,
-  SmallRuby,
+  RoughRubyFragment,
   RoughTopazFragment,
   RoughEmeraldFragment,  
   LargeCharmOfAthena,

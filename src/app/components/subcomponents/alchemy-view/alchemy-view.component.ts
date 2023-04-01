@@ -94,7 +94,7 @@ export class AlchemyViewComponent implements OnInit {
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
       var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
-      ingredients += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
+      ingredients += "<span class='" + this.getItemKeywordClass(this.lookupService.getItemTypeFromItemEnum(resource.item), resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
     });
 
     if (ingredients.length > 0) {
@@ -111,7 +111,7 @@ export class AlchemyViewComponent implements OnInit {
     var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
     var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
-    ingredient += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
+    ingredient += "<span class='" + this.getItemKeywordClass(this.lookupService.getItemTypeFromItemEnum(resource.item), resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
 
     if (ingredient.length > 0) {
       ingredient = this.utilityService.getSanitizedHtml(ingredient);

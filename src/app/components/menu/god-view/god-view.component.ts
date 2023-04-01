@@ -405,8 +405,8 @@ export class GodViewComponent implements OnInit {
     return this.lookupService.getGodMaxHpStatBreakdown(this.god);
   }
 
-  hasMoreThanOneGod() {
-    return this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 0;
+  hasMoreThanOneGod() {    
+    return this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 1;
   }
 
   traverseSubMenu(direction: number) {

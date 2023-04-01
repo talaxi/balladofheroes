@@ -150,8 +150,8 @@ export class ItemBeltOverviewComponent {
   }
  
   getViableBattleItems() {
-    return this.globalService.globalVar.resources.filter(item => (item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
-      item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir) && item.amount > 0);   
+    return this.globalService.globalVar.resources.filter(item => (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.HealingItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.BattleItem ||
+    this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Toxin || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Elixir) && item.amount > 0);   
   }
 
   ngAfterViewInit() {

@@ -38,24 +38,24 @@ export class ColiseumService {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, ItemTypeEnum.Progression, 1));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, ItemTypeEnum.Charm, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
     }
     if (type === ColiseumTournamentEnum.FlamesOfTartarus) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 8000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 2500));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 8000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
     }
     if (type === ColiseumTournamentEnum.ForgottenKings) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, ItemTypeEnum.Resource, 1));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 15000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Charm, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
     }
 
     return tournament;
@@ -105,11 +105,11 @@ export class ColiseumService {
 
     var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === type);
     if (tournamentType !== undefined) {
-      tournamentType.defeatCount += 1;
+      tournamentType.count += 1;
 
       var tournamentInfo = this.getColiseumInfoFromType(type);
 
-      if (tournamentType.defeatCount === 1) {
+      if (tournamentType.count === 1) {
         this.unlockNextColiseumTournament(type);
 
         tournamentInfo.completionReward.forEach(reward => {

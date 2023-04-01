@@ -15,6 +15,8 @@ export class Equipment {
     @Type(() => UsableItemEffect)
     equipmentEffect: UsableItemEffect;
     quality: EquipmentQualityEnum;
+    slotCount: number;
+    slots: ItemsEnum[];
 
     constructor(itemType: ItemsEnum, equipmentType: EquipmentTypeEnum, quality: EquipmentQualityEnum, weaponType?: WeaponTypeEnum) {
         this.itemType = itemType;
@@ -26,5 +28,7 @@ export class Equipment {
             this.weaponType = WeaponTypeEnum.None;
         
         this.equipmentEffect = new UsableItemEffect();
+        this.slotCount = 0;
+        this.slots = [];
     }
 }

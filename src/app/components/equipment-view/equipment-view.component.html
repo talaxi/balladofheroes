@@ -13,10 +13,19 @@
               <span class="equipmentItem" customToolTip [isDelayed]="false" [contentTemplate]="template"
                 [innerHtml]="getEquipmentName(equipment)"></span>
             </button>
+            <div class='buttonOptions'>
+            <button class="buttonStyled" *ngIf="equipmentPieceHasSlots(equipment)" (click)="openSlotMenu(equipment, slotMenuContent)">Slot</button>
             <button class="buttonStyled" (click)="setSellItem(equipment)"><img class="icon"
                 src="assets/svg/resourcesQuickView.svg"></button>
+            </div>
           </div>
           <hr class="leftAlignedMiniHr" />
+
+          <ng-template #slotMenuContent>
+            <div class="popoverClass">
+                Test
+            </div>
+        </ng-template>
         </div>
       </div>
     </div>

@@ -65,7 +65,7 @@ export class EnemyViewComponent implements OnInit {
       }
 
       if (defeatCount !== undefined)
-        this.defeatCount = defeatCount.defeatCount;
+        this.defeatCount = defeatCount.count;
       else
         this.defeatCount = 0;
 

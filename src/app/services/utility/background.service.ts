@@ -309,7 +309,7 @@ export class BackgroundService {
           var rewardAmount = 1;
 
           if (rng <= chance) {
-            var foundReward = new ResourceValue(reward.item, reward.type, rewardAmount);
+            var foundReward = new ResourceValue(reward.item, rewardAmount);
             if (this.globalService.globalVar.gameLogSettings.get("followerSearch")) {
               this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.lookupService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".");
             }

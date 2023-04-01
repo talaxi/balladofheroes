@@ -91,6 +91,7 @@ export class AppComponent {
 
     var lastPerformanceNow = 0;
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
+      deltaTime = this.utilityService.roundTo(deltaTime, 5);
       var checkupPerformanceNow = performance.now();
 
       this.gameCheckup(deltaTime);
@@ -126,7 +127,7 @@ export class AppComponent {
       deltaTime = 0;
 
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
-    var isInTown = activeSubzone.isTown && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
+    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
 
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
@@ -219,7 +220,7 @@ export class AppComponent {
   getBatchRunTime(subzone: SubZone) {
     var batchRunTime = 5;
 
-    if (subzone.isTown)
+    if (this.balladService.isSubzoneTown(subzone.type))
       batchRunTime = 30;
 
     return batchRunTime;

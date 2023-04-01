@@ -57,7 +57,7 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 11 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum)
       this.showStory = true;
-    else if (this.globalService.globalVar.currentStoryId === 12 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum && this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead)!.defeatCount > 0)
+    else if (this.globalService.globalVar.currentStoryId === 12 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum && this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead)!.count > 0)
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 13 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ElysiumGatesOfHornAndIvory))
       this.showStory = true;
@@ -228,7 +228,7 @@ export class StoryService {
       else if (pageCount === 2)
       sceneText = this.zosimeText("“Artemis took to her and she became Artemis's arrow. Where countless men had failed, she saved Calydon from the boar rampaging the countryside.”") +
       " As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " +
-      this.zosimeText("“Artemis has looked after me as well. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
+      this.zosimeText("“Artemis has looked after me as well, while no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
     }
     else if (storyId === 15) {
       if (pageCount === 1)
@@ -238,7 +238,7 @@ export class StoryService {
         sceneText = "The famous stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?<br/><br/>" +
         "Growing up alone in the hard wilderness, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was turned away from joining the other heroes on the Argo? How many times did she stumble before putting an arrow through the Calydonian Boar?";
       else if (pageCount === 3)
-        sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back. On the other hand, Atalanta was never swatted down like an insect by a Giant as far as you knew. You're pretty confident that if Athena had Atalanta instead of you, Enceladus would no longer have a head.<br/><br/>" +
+        sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back. On the other hand, Atalanta was never swatted down like an insect by a Giant as far as you knew... You're pretty confident that if Athena had Atalanta instead of you, Enceladus would no longer have a head.<br/><br/>" +
         "While you are lost in your own head, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
     }
     else if (storyId === 16) {
@@ -406,7 +406,7 @@ export class StoryService {
       }
 
       if (this.globalService.globalVar.currentStoryId === 17) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new sidequest is available in the Ballad of the Underworld.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new side quest is available in the Ballad of the Underworld.");
       }
     }
 

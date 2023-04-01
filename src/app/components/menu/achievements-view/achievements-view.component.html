@@ -17,7 +17,7 @@
                 </select>
             </span>
             <span class="s5Heading leftShift">Subzone: <select [(ngModel)]="selectedSubzone" (change)="filterList()">
-                    <option *ngFor="let subzone of subzones" [value]="subzone.type">{{subzone.name}}
+                    <option *ngFor="let subzone of subzones" [value]="subzone.type">{{getUnstyledSubzoneName(subzone.type)}}
                     </option>
                 </select>
             </span>
@@ -45,7 +45,7 @@
                 </span>
                 <span class="s5Heading leftShift">Subzone: <select [(ngModel)]="selectedSubzone"
                         (change)="filterList()">
-                        <option *ngFor="let subzone of subzones" [value]="subzone.type">{{subzone.name}}
+                        <option *ngFor="let subzone of subzones" [value]="subzone.type">{{getUnstyledSubzoneName(subzone.type)}}
                         </option>
                     </select>
                 </span>

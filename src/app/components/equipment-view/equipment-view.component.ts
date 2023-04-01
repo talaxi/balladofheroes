@@ -1,5 +1,6 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -34,7 +35,7 @@ export class EquipmentViewComponent implements OnInit {
   sellAmount: number = 1;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
-    private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog) { }
+    private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
@@ -52,7 +53,7 @@ export class EquipmentViewComponent implements OnInit {
 
   setUpAvailableEquipment() {
     this.availableEquipment = [];
-    this.globalService.globalVar.resources.filter(item => item.type === ItemTypeEnum.Equipment).forEach(equip => {
+    this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment).forEach(equip => {
       if (equip !== undefined)
         this.availableEquipment.push(equip.makeCopy());
     });
@@ -241,7 +242,7 @@ export class EquipmentViewComponent implements OnInit {
     if (this.getTotalItemToSellAmount() >= this.sellAmount)
     {
       this.lookupService.useResource(this.itemToSell.itemType, this.sellAmount);
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, this.sellAmount * this.itemToSellPrice)); 
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, this.sellAmount * this.itemToSellPrice)); 
     }
 
     if (this.getTotalItemToSellAmount() <= 0)
@@ -251,6 +252,19 @@ export class EquipmentViewComponent implements OnInit {
     }
     
     this.setUpAvailableEquipment();
+  }
+
+  //TODO
+  equipmentPieceHasSlots(equipment: ResourceValue) {
+    return true;
+    //return equipment.
+  }
+
+  openSlotMenu(equipment: ResourceValue, slotMenuContent: any) {    
+  if (this.deviceDetectorService.isMobile())
+    this.dialog.open(slotMenuContent, { width: '95%', height: '80%' });
+  else 
+    this.dialog.open(slotMenuContent, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });  
   }
 
   closeModal() {

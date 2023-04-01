@@ -29,7 +29,7 @@ export class CodeRedemptionService {
     if (parsedRewards !== null && parsedRewards !== undefined && parsedRewards.rewards.length > 0) {
 
       parsedRewards.rewards.forEach(reward => {
-        list.push(new ResourceValue(reward.item, reward.type, reward.amount));        
+        list.push(new ResourceValue(reward.item, reward.amount));        
       });
     }
 

@@ -84,6 +84,10 @@ export class AchievementsViewComponent implements OnInit {
     }
   }
 
+  getUnstyledSubzoneName(type: SubZoneEnum) {
+    return this.balladService.getSubZoneName(type);
+  }
+
   getSubZoneBalladName(type: SubZoneEnum) {
     var ballad = this.balladService.findBalladOfSubzone(type);
 
@@ -109,7 +113,7 @@ export class AchievementsViewComponent implements OnInit {
       className = 'completedSubzoneColor';
 
     if (subzone !== undefined)
-      return "<span class='" + className + "'>" + subzone.name + "</span>";
+      return "<span class='" + className + "'>" + this.balladService.getSubZoneName(subzone.type) + "</span>";
 
     return "";
   }

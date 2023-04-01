@@ -75,6 +75,8 @@ export class UtilityService {
   public smallAltarActivationChancePerFollower = .1;
   public smallAltarPrayChancePerFollower = .01;
 
+  public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
+
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
   getSanitizedHtml(text: string) {

@@ -41,6 +41,9 @@ export class GameLogService {
     if (type === GameLogEntryEnum.Overdrive) {
       entry = "<span class='gameText overdriveText'>" + entry + "</span>";
     }
+    if (type === GameLogEntryEnum.SideQuest) {
+      entry = "<span class='gameText sidequestText'>" + entry + "</span>";
+    }
     if (type === GameLogEntryEnum.FollowerPrayer || type === GameLogEntryEnum.FollowerSearch) {
       entry = "<span class='gameText followerText'>" + entry + "</span>";
     }

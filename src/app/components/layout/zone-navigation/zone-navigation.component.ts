@@ -125,7 +125,7 @@ export class ZoneNavigationComponent implements OnInit {
       var currentSubzone = this.availableSubZones?.find(item => item.isSelected);
 
       if (this.autoProgress && currentSubzone !== undefined &&
-        (currentSubzone.winsNeeded - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
+        (this.balladService.getVictoriesNeededToProceed(currentSubzone.type) - currentSubzone.victoryCount <= 0 || this.balladService.isSubzoneTown(currentSubzone.type))) {
         this.balladService.selectNextSubzone();
       }
 
@@ -134,6 +134,14 @@ export class ZoneNavigationComponent implements OnInit {
         this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
     });
   }  
+
+  getSubzoneName(subzone: SubZone) {
+    return this.balladService.getSubZoneName(subzone.type);
+  }
+
+  getSubzoneNotificationType(subzone: SubZone) {
+    return this.balladService.shouldSubzoneShowSideQuestNotification(subzone.type);
+  }
 
   jumpToLatestShop() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();
@@ -148,7 +156,7 @@ export class ZoneNavigationComponent implements OnInit {
           if (zone.subzones !== undefined && zone.subzones.length > 0)
             zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
               subzone.isSelected = false;
-              if (subzone.isTown) {
+              if (this.balladService.isSubzoneTown(subzone.type)) {
                 latestShop = subzone;
                 relatedZone = zone;
                 relatedBallad = ballad;
@@ -158,7 +166,7 @@ export class ZoneNavigationComponent implements OnInit {
     });
 
     latestShop.isSelected = true;
-    latestShop.showNewNotification = false;
+    latestShop.notify = false;
     if (relatedZone !== undefined)
       relatedZone.isSelected = true;
     if (relatedBallad !== undefined)
@@ -171,7 +179,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
-    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
+    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
@@ -182,7 +190,7 @@ export class ZoneNavigationComponent implements OnInit {
     }
   }
 
-  jumpToLatestGeneralStore() {
+  /*jumpToLatestGeneralStore() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();
     var relatedZone: Zone | undefined = this.balladService.getActiveZone();
     var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
@@ -205,7 +213,7 @@ export class ZoneNavigationComponent implements OnInit {
     });
 
     latestShop.isSelected = true;
-    latestShop.showNewNotification = false;
+    latestShop.notify = false;
     if (relatedZone !== undefined)
       relatedZone.isSelected = true;
     if (relatedBallad !== undefined)
@@ -226,14 +234,14 @@ export class ZoneNavigationComponent implements OnInit {
     {
       this.dialog.closeAll();
     }
-  }
+  }*/
 
   jumpToPalaceOfHades() {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades);
     if (startingPoint !== undefined) {
       this.balladService.setActiveSubZone(startingPoint.type);
       this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
-    }
+    
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
@@ -241,10 +249,11 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
-    var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + startingPoint?.name + "</strong>.";
+    var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+    }
     if (this.isMobile)
     {
       this.dialog.closeAll();
@@ -255,8 +264,7 @@ export class ZoneNavigationComponent implements OnInit {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.ElysiumColiseum);
     if (startingPoint !== undefined) {
       this.balladService.setActiveSubZone(startingPoint.type);
-      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
-    }
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;    
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
@@ -264,10 +272,11 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
-    var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + startingPoint?.name + "</strong>.";
+    var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+    }
     if (this.isMobile)
     {
       this.dialog.closeAll();
@@ -286,8 +295,8 @@ export class ZoneNavigationComponent implements OnInit {
     var allSubZonesCompleted = true;
 
     ballad.zones.forEach(zone => {
-      zone.subzones.filter(item => !item.isTown && !item.isSubzoneSideQuest()).forEach(subzone => {
-        if (subzone.victoryCount < subzone.winsNeeded)
+      zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
+        if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
           allSubZonesCleared = false;
         if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
           this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
@@ -306,8 +315,8 @@ export class ZoneNavigationComponent implements OnInit {
   getZoneClass(zone: Zone) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
-    zone.subzones.filter(item => !item.isTown && !item.isSubzoneSideQuest()).forEach(subzone => {
-      if (subzone.victoryCount < subzone.winsNeeded)
+    zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
+      if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
         allSubZonesCleared = false;
       if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
         this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
@@ -328,8 +337,8 @@ export class ZoneNavigationComponent implements OnInit {
 
     return {
       'selected': subzone.isSelected,
-      'unclearedSubzoneColor': subzone.winsNeeded > subzone.victoryCount,
-      'clearedSubzoneColor': subzone.winsNeeded <= subzone.victoryCount && !achievementsCompleted,
+      'unclearedSubzoneColor': this.balladService.getVictoriesNeededToProceed(subzone.type) > subzone.victoryCount,
+      'clearedSubzoneColor': this.balladService.getVictoriesNeededToProceed(subzone.type) <= subzone.victoryCount && !achievementsCompleted,
       'completedSubzoneColor': achievementsCompleted
     };
   }
@@ -344,16 +353,16 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.balladService.isSubZoneToBeContinued(subzone))
       return text;
 
-    if (subzone.isTown)
+    if (this.balladService.isSubzoneTown(subzone.type))
       text = "(Town)";
-    else if (subzone.isSubzoneSideQuest(subzone.type)) {
+    else if (this.balladService.isSubzoneSideQuest(subzone.type)) {
       text = "(Special)";
     }
     else {
       text = "(" + subzone.victoryCount.toString();
-      if (subzone.winsNeeded > subzone.victoryCount)
-        text += "/" + subzone.winsNeeded;
-      text += subzone.victoryCount === 1 && subzone.winsNeeded <= subzone.victoryCount ? " win)" : " wins)";
+      if (this.balladService.getVictoriesNeededToProceed(subzone.type) > subzone.victoryCount)
+        text += "/" + this.balladService.getVictoriesNeededToProceed(subzone.type);
+      text += subzone.victoryCount === 1 && this.balladService.getVictoriesNeededToProceed(subzone.type) <= subzone.victoryCount ? " win)" : " wins)";
     }
 
     return text;

@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
 import { AltarConditionEnum } from 'src/app/models/enums/altar-condition-enum.model';
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
@@ -38,10 +39,13 @@ export class AltarViewComponent implements OnInit {
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     public globalService: GlobalService, private changeDetectorRef: ChangeDetectorRef, private altarService: AltarService,
-    private keybindService: KeybindService) { }
+    private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.isReady = this.isAltarReady();
+
+    if (this.deviceDetectorService.isMobile())
+      this.tooltipDirection = DirectionEnum.Up;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var isReadyNow = this.isAltarReady();

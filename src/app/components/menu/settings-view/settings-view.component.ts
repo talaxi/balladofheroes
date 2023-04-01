@@ -39,7 +39,7 @@ export class SettingsViewComponent implements OnInit {
   ngOnInit(): void {
     if (this.deploymentService.codeCreationMode)
       console.log(this.globalService.globalVar);
-    //console.log(JSON.stringify(this.globalService.globalVar));
+    console.log(JSON.stringify(this.globalService.globalVar));
     
     this.patreonAccessService.getPatronList();
 

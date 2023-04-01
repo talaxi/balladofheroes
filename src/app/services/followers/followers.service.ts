@@ -9,6 +9,7 @@ import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
+import { LookupService } from '../lookup.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 
 @Injectable({
@@ -17,7 +18,7 @@ import { ResourceGeneratorService } from '../resources/resource-generator.servic
 export class FollowersService {
 
   constructor(private globalService: GlobalService, private resourceGeneratorService: ResourceGeneratorService,
-    private achievementService: AchievementService, private balladService: BalladService) { }
+    private lookupService: LookupService, private balladService: BalladService) { }
 
   getAssignedFollowers() {
     return this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo !== FollowerActionEnum.None).length;
@@ -36,7 +37,7 @@ export class FollowersService {
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       ballad.zones.forEach(zone => {
-        if (zone.isAvailable && !zone.subzones.some(item => !item.isTown && !item.isSubzoneSideQuest() && item.victoryCount < item.winsNeeded)) {
+        if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
           clearedZones.push(zone);
         }
       });
@@ -179,19 +180,19 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingSalve, 1));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallRuby, 1));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughRubyFragment, 1));
       }
     }
     if (type === ZoneEnum.PeloposNisos) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfLakeLerna, 3));
       if (rewardLevel >= 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughEmeraldFragment, 1));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughTopazFragment, 2));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAmethystFragment, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAmethystFragment, 2));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAquamarineFragment, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughOpalFragment, 2));
       }
     }
     if (type === ZoneEnum.Calydon) {
@@ -204,6 +205,18 @@ export class FollowersService {
       }
       if (rewardLevel >= 4) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Violet, 4));
+      }
+    }
+    if (type === ZoneEnum.TheLethe) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SpiritEssence, 3));
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughEmeraldFragment, 2));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAquamarineFragment, 2));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 2));
       }
     }
 

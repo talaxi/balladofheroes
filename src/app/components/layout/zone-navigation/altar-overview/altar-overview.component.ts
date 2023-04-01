@@ -36,6 +36,9 @@ export class AltarOverviewComponent implements OnInit {
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
+    if (this.isMobile)
+      this.buffTooltipDirection = DirectionEnum.Up;
+
     this.updateAltars();
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {

@@ -8,7 +8,7 @@ export class Zone {
     type: ZoneEnum;
     isSelected: boolean;
     isAvailable: boolean;
-    showNewNotification: boolean;
+    notify: boolean;
     @Type(() => SubZone)
     subzones: SubZone[];
     notificationType: NotificationTypeEnum;
@@ -20,7 +20,10 @@ export class Zone {
         this.notificationType = this.shouldShowSideQuestNotification(this.type);
     }
     
-    shouldShowSideQuestNotification(type: ZoneEnum) {
+    shouldShowSideQuestNotification(type?: ZoneEnum) {
+        if (type === undefined)
+            type = this.type;
+
         if (type === ZoneEnum.TheLethe)
             return NotificationTypeEnum.SideQuest;
 

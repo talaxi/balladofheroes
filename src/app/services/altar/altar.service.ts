@@ -125,10 +125,10 @@ export class AltarService {
         god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
 
         if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
-          this.lookupService.gainResource(new ResourceValue(this.getSmallCharmOfGod(god.type), ItemTypeEnum.Charm, 1));
+          this.lookupService.gainResource(new ResourceValue(this.getSmallCharmOfGod(god.type), 1));
         }
         else if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.LargeCharm) {
-          this.lookupService.gainResource(new ResourceValue(this.getLargeCharmOfGod(god.type), ItemTypeEnum.Charm, 1));
+          this.lookupService.gainResource(new ResourceValue(this.getLargeCharmOfGod(god.type), 1));
         }
       }
 

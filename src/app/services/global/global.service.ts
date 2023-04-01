@@ -597,7 +597,7 @@ export class GlobalService {
 
   createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean,
     isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false,
-    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0, targetsAllies: boolean = false, associatedAbilityName: string = "") {
+    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0, targetsAllies: boolean = false, abilityName: string = "") {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -605,16 +605,33 @@ export class GlobalService {
     statusEffect.isPositive = isPositive;
     statusEffect.isAoe = isAoe;
     statusEffect.caster = caster;
-    statusEffect.refreshes = false;
     statusEffect.threshold = threshold;
     statusEffect.effectStacks = effectStacks;
     statusEffect.element = element;
     statusEffect.triggersEvery = triggersEvery;
     statusEffect.targetsAllies = targetsAllies;
-    statusEffect.associatedAbilityName = associatedAbilityName;
+    statusEffect.abilityName = abilityName;
 
     if (duration === -1)
       statusEffect.isPermanent = true;
+
+    return statusEffect;
+  }
+
+  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, abilityName: string, dotType: dotTypeEnum = dotTypeEnum.BasedOnAttack, associatedElement: ElementalTypeEnum = ElementalTypeEnum.None) {
+    var statusEffect = new StatusEffect(StatusEffectEnum.DamageOverTime);
+    statusEffect.duration = duration;
+    statusEffect.effectiveness = multiplier;
+    statusEffect.tickFrequency = tickFrequency;
+    statusEffect.abilityName = abilityName;
+    statusEffect.dotType = dotType;
+    statusEffect.element = associatedElement;
+
+    return statusEffect;
+  }
+
+  doesStatusEffectRefresh(type: StatusEffectEnum) {
+    var refreshes = false;
 
     if (type === StatusEffectEnum.Taunt || type === StatusEffectEnum.Mark || type === StatusEffectEnum.Stun || type === StatusEffectEnum.Blind ||
       type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.InstantHealAfterAutoAttack || type === StatusEffectEnum.AgilityDown ||
@@ -626,25 +643,19 @@ export class GlobalService {
       || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.WitheringToxin || 
       type === StatusEffectEnum.VenomousToxin)
-      statusEffect.refreshes = true;
+      refreshes = true;
 
-    if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
-        type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin)
-      statusEffect.persistsDeath = true;
-
-    return statusEffect;
+      return refreshes;
   }
 
-  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, associatedAbilityName: string, dotType: dotTypeEnum = dotTypeEnum.BasedOnAttack, associatedElement: ElementalTypeEnum = ElementalTypeEnum.None) {
-    var statusEffect = new StatusEffect(StatusEffectEnum.DamageOverTime);
-    statusEffect.duration = duration;
-    statusEffect.effectiveness = multiplier;
-    statusEffect.tickFrequency = tickFrequency;
-    statusEffect.associatedAbilityName = associatedAbilityName;
-    statusEffect.dotType = dotType;
-    statusEffect.element = associatedElement;
+  doesStatusEffectPersistDeath(type: StatusEffectEnum) {
+    var persistsDeath = false;
 
-    return statusEffect;
+    if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
+      type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.Dead)
+      persistsDeath = true;
+
+    return persistsDeath;
   }
 
   getActivePartyCharacters(excludeEmptySlots: boolean) {
@@ -798,6 +809,39 @@ export class GlobalService {
       character.battleStats.currentHp = currentHp;
     else
       character.battleStats.currentHp = character.battleStats.maxHp;
+
+    //round to save data space
+    character.battleStats = this.roundCharacterStats(character.battleStats);    
+  }
+
+  roundCharacterStats(stats: CharacterStats, roundAmount?: number) {
+    if (roundAmount === undefined)
+      roundAmount = this.utilityService.genericRoundTo;
+
+    stats.maxHp = this.utilityService.roundTo(stats.maxHp, roundAmount);
+    stats.currentHp = this.utilityService.roundTo(stats.currentHp, roundAmount);
+    stats.attack = this.utilityService.roundTo(stats.attack, roundAmount);
+    stats.agility = this.utilityService.roundTo(stats.agility, roundAmount);
+    stats.luck = this.utilityService.roundTo(stats.luck, roundAmount);
+    stats.defense = this.utilityService.roundTo(stats.defense, roundAmount);
+    stats.resistance = this.utilityService.roundTo(stats.resistance, roundAmount);
+
+    //do secondary stuff too
+    stats.elementIncrease.fire = this.utilityService.roundTo(stats.elementIncrease.fire, roundAmount);
+    stats.elementIncrease.holy = this.utilityService.roundTo(stats.elementIncrease.holy, roundAmount);
+    stats.elementIncrease.earth = this.utilityService.roundTo(stats.elementIncrease.earth, roundAmount);
+    stats.elementIncrease.water = this.utilityService.roundTo(stats.elementIncrease.water, roundAmount);
+    stats.elementIncrease.lightning = this.utilityService.roundTo(stats.elementIncrease.lightning, roundAmount);
+    stats.elementIncrease.air = this.utilityService.roundTo(stats.elementIncrease.air, roundAmount);
+
+    stats.elementResistance.fire = this.utilityService.roundTo(stats.elementResistance.fire, roundAmount);
+    stats.elementResistance.holy = this.utilityService.roundTo(stats.elementResistance.holy, roundAmount);
+    stats.elementResistance.earth = this.utilityService.roundTo(stats.elementResistance.earth, roundAmount);
+    stats.elementResistance.water = this.utilityService.roundTo(stats.elementResistance.water, roundAmount);
+    stats.elementResistance.lightning = this.utilityService.roundTo(stats.elementResistance.lightning, roundAmount);
+    stats.elementResistance.air = this.utilityService.roundTo(stats.elementResistance.air, roundAmount);
+
+    return stats;
   }
 
   giveCharactersBonusExp(party: Character[], bonusXp: number) {
@@ -1097,7 +1141,7 @@ export class GlobalService {
       var factor = 1.09;
       var additive = 1500;
 
-      return baseXp * (factor ** level) + (additive * (level - 1));
+      return this.utilityService.roundTo(baseXp * (factor ** level) + (additive * (level - 1)), 5);
     }
   }
 
@@ -1161,6 +1205,8 @@ export class GlobalService {
     god.statGain.luck += increaseValues.luck;
     god.statGain.resistance += increaseValues.resistance;
 
+    god.statGain = this.roundCharacterStats(god.statGain);
+
     var statGainText = "";
     if (increaseValues.maxHp > 0)
       statGainText += Math.round(increaseValues.maxHp) + " Max HP, ";
@@ -1204,7 +1250,7 @@ export class GlobalService {
     if (god.level === this.utilityService.permanentPassiveGodLevel) {      
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
       if (ability !== undefined) {        
-        ability.isAbilityPermanent = true;
+        ability.isPermanent = true;
         if (this.globalVar.gameLogSettings.get("godLevelUp")) {
           var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
@@ -1215,7 +1261,7 @@ export class GlobalService {
     if (god.level === this.utilityService.permanentGodAbility2Level) {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level);
       if (ability !== undefined) {
-        ability.isAbilityPermanent = true;
+        ability.isPermanent = true;
         if (this.globalVar.gameLogSettings.get("godLevelUp")) {
           var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
@@ -1226,7 +1272,7 @@ export class GlobalService {
     if (god.level === this.utilityService.permanentGodAbility3Level) {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level);
       if (ability !== undefined) {
-        ability.isAbilityPermanent = true;
+        ability.isPermanent = true;
         if (this.globalVar.gameLogSettings.get("godLevelUp")) {
           var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
@@ -1569,6 +1615,8 @@ export class GlobalService {
     god.permanentStatGain.autoAttackCooldownReduction += upgradedStats.autoAttackCooldownReduction;
     god.permanentStatGain.armorPenetration += upgradedStats.armorPenetration;
     god.permanentStatGain.overdriveGain += upgradedStats.overdriveGain;
+
+    god.permanentStatGain = this.roundCharacterStats(god.permanentStatGain);
   }
 
   //set this up entirely so you can tell what is going on. when leveling up, consult this before calling any function
@@ -1738,7 +1786,7 @@ export class GlobalService {
     var additive = (baseXp) * (level - 1);
     var exponential = (baseXp * (factor ** (level)));
 
-    return exponential + additive;
+    return this.utilityService.roundTo(exponential + additive, 5);
   }
 
   getNextStatToIncrease(lastStat: CharacterStatEnum) {
@@ -1762,7 +1810,7 @@ export class GlobalService {
 
   getAutoAttackTime(character: Character) {
     var timeToAutoAttack = character.battleInfo.timeToAutoAttack * (character.battleStats.autoAttackCooldownReduction);
-    if (character.overdriveInfo.overdriveIsActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Fervor)
+    if (character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Fervor)
       timeToAutoAttack *= .5;
 
     if (character.type !== CharacterEnum.Enemy && this.getAltarEffectWithEffect(AltarEffectsEnum.HermesRareReduceAutoAttackCooldown) !== undefined) {
@@ -1770,7 +1818,7 @@ export class GlobalService {
       timeToAutoAttack *= relevantAltarEffect!.effectiveness;
     }
 
-    return timeToAutoAttack;
+    return this.utilityService.roundTo(timeToAutoAttack, 4);
   }
 
   getAltarEffectWithEffect(effect: AltarEffectsEnum) {

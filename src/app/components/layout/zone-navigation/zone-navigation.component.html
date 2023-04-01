@@ -18,7 +18,7 @@
                         <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading"
                             [ngClass]="getBalladClass(ballad)"
                             (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
-                            <app-notification-icon *ngIf="ballad.showNewNotification"></app-notification-icon>
+                            <app-notification-icon *ngIf="ballad.notify"></app-notification-icon>
                         </button>
                     </div>
                     <div *ngIf="ballad.isSelected">
@@ -33,7 +33,7 @@
                                 <div *ngIf="!zone.isSelected">
                                     <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
                                         [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)">{{zone.zoneName}}
-                                        <app-notification-icon *ngIf="zone.showNewNotification"></app-notification-icon>
+                                        <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                                     </button>
                                 </div>
                                 <div *ngIf="zone.isSelected">
@@ -46,10 +46,10 @@
                                                     [ngClass]="getSubzoneClass(subzone)"
                                                     (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone)
                                                     ? "To Be Continued!" :
-                                                    subzone.name}}
+                                                    getSubzoneName(subzone)}}
                                                     {{getSubZoneSubText(subzone)}}
-                                                    <app-notification-icon *ngIf="subzone.showNewNotification"
-                                                        [notificationColor]="subzone.notificationType"
+                                                    <app-notification-icon *ngIf="subzone.notify"
+                                                        [notificationColor]="getSubzoneNotificationType(subzone)"
                                                         [notificationStyle]="getSubzoneNotificationStyle(subzone)">
                                                     </app-notification-icon>
                                                 </button>
@@ -59,7 +59,7 @@
                                             <strong><button
                                                     class="buttonAsTextKeepColor z3Heading clickableText selected"><span
                                                         class="subzoneSpacer">&#8618;</span><strong><span
-                                                            [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
+                                                            [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
                                                             {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
                                         </div>
                                     </div>
@@ -76,7 +76,7 @@
                     <div *ngIf="!zone.isSelected">
                         <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
                             (click)="balladService.selectZone(zone)">{{zone.zoneName}}
-                            <app-notification-icon *ngIf="zone.showNewNotification" [notificationColor]="zone.notificationType"></app-notification-icon>
+                            <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                         </button>
                     </div>
                     <div *ngIf="zone.isSelected">
@@ -88,10 +88,10 @@
                                         class="buttonAsTextKeepColor z3Heading clickableText"
                                         [ngClass]="getSubzoneClass(subzone)"
                                         (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
-                                        subzone.name}}
+                                        getSubzoneName(subzone)}}
                                         {{getSubZoneSubText(subzone)}}
-                                        <app-notification-icon *ngIf="subzone.showNewNotification"
-                                            [notificationColor]="subzone.notificationType"
+                                        <app-notification-icon *ngIf="subzone.notify"
+                                            [notificationColor]="getSubzoneNotificationType(subzone)"
                                             [notificationStyle]="getSubzoneNotificationStyle(subzone)">
                                         </app-notification-icon>
                                     </button>
@@ -100,7 +100,7 @@
                             <div *ngIf="subzone.isSelected">
                                 <strong><button class="buttonAsTextKeepColor z3Heading clickableText selected"><span
                                             class="subzoneSpacer">&#8618;</span><strong><span
-                                                [ngClass]="getSubzoneClass(subzone)">{{subzone.name}}
+                                                [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
                                                 {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
                             </div>
                         </div>

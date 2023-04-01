@@ -82,6 +82,7 @@ export class InitializationService {
     aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaHeartOfTheWoods));
     //aigosthena.subzones.push(new SubZone(SubZoneEnum.AigosthenaEasternWoodlands));
 
+    aigosthena.notificationType = aigosthena.shouldShowSideQuestNotification();
     championBallad.zones.push(aigosthena);
     this.globalService.globalVar.ballads.push(championBallad);
 
@@ -112,6 +113,9 @@ export class InitializationService {
     libya.subzones.push(new SubZone(SubZoneEnum.LibyaDeeperPath));
     libya.subzones.push(new SubZone(SubZoneEnum.LibyaIsleCenter));
 
+    dodona.notificationType = dodona.shouldShowSideQuestNotification();
+    libya.notificationType = libya.shouldShowSideQuestNotification();
+
     gorgonBallad.zones.push(dodona);
     gorgonBallad.zones.push(libya);
     this.globalService.globalVar.ballads.push(gorgonBallad);
@@ -140,6 +144,7 @@ export class InitializationService {
     asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelDarkenedMeadows));
     asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelLetheBasin));
     asphodel.subzones.push(new SubZone(SubZoneEnum.AsphodelLetheTributary));
+    asphodel.notificationType = asphodel.shouldShowSideQuestNotification();
     underworldBallad.zones.push(asphodel);
 
     var elysium = new Zone();
@@ -153,6 +158,7 @@ export class InitializationService {
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWindingPaths));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWaterloggedMarsh));
     elysium.subzones.push(new SubZone(SubZoneEnum.ElysiumWavesOfOceanus));
+    elysium.notificationType = elysium.shouldShowSideQuestNotification();
     underworldBallad.zones.push(elysium);
 
     underworldBallad.zones.push(this.initializeRiverLetheZone());
@@ -172,6 +178,7 @@ export class InitializationService {
     peloposNisos.subzones.push(new SubZone(SubZoneEnum.PeloposNisosTrekAcrossArcadia));
     peloposNisos.subzones.push(new SubZone(SubZoneEnum.PeloposNisosTrekAcrossAcheae));
     peloposNisos.subzones.push(new SubZone(SubZoneEnum.PeloposNisosPatrasBorder));
+    peloposNisos.notificationType = peloposNisos.shouldShowSideQuestNotification();
 
     boarBallad.zones.push(peloposNisos);
 
@@ -193,6 +200,7 @@ export class InitializationService {
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonSparseClearing));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMarkedTreeTrail));
     calydon.subzones.push(new SubZone(SubZoneEnum.CalydonDeadEnd));
+    calydon.notificationType = calydon.shouldShowSideQuestNotification();
     boarBallad.zones.push(calydon);
 
     this.globalService.globalVar.ballads.push(boarBallad);
@@ -359,34 +367,36 @@ export class InitializationService {
   }
 
   devMode() {
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 100000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, ItemTypeEnum.CraftingMaterial, 1000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Fennel, ItemTypeEnum.CraftingMaterial, 1000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheBlackSea, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Sorrel, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Wax, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SpiritEssence, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingHerb, ItemTypeEnum.HealingItem, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingPoultice, ItemTypeEnum.HealingItem, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Asphodelus, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughAmethystFragment, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughAquamarineFragment, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallRuby, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughTopazFragment, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughEmeraldFragment, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughOpalFragment, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, ItemTypeEnum.CraftingMaterial, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, ItemTypeEnum.BattleItem, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, ItemTypeEnum.Elixir, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, 100000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, 1000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Fennel, 1000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheLethe, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfLakeLerna, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Goldroot, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Lousewort, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Sorrel, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SoulSpark, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Wax, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Violet, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SpiritEssence, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingHerb, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HealingPoultice, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Asphodelus, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.EssenceOfFire, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughAmethystFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughRubyFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughTopazFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughOpalFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 1));
         
-    this.globalService.globalVar.currentStoryId = 10000;
+    this.globalService.globalVar.currentStoryId = 100000;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
@@ -406,13 +416,13 @@ export class InitializationService {
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld)
       ballad.isAvailable = true;
-      ballad.showNewNotification=true;
+      ballad.notify=true;
       ballad.zones.forEach(zone => {
         zone.isAvailable = true;
-        zone.showNewNotification=true;
+        zone.notify=true;
         zone.subzones.forEach(subzone => {
           subzone.isAvailable = true;
-          subzone.showNewNotification =true;
+          subzone.notify =true;
           if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
             this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
               achievement.completed = true;
@@ -647,6 +657,7 @@ export class InitializationService {
     theLethe.subzones.push(new SubZone(SubZoneEnum.TheLetheRiverDivergence));
     theLethe.subzones.push(new SubZone(SubZoneEnum.TheLetheStillWaters));
     theLethe.subzones.push(new SubZone(SubZoneEnum.TheLetheHypnosIsland));
+    theLethe.notificationType = theLethe.shouldShowSideQuestNotification();
     return theLethe;
   }
 }

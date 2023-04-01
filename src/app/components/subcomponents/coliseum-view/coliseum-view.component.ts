@@ -74,7 +74,7 @@ export class ColiseumViewComponent implements OnInit {
 
     this.selectedTournament.completionReward.forEach(item => {
       var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
-      if (item.type === ItemTypeEnum.Equipment) {
+      if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
 
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
@@ -88,7 +88,7 @@ export class ColiseumViewComponent implements OnInit {
 
   firstTimeRewardAlreadyObtained() {
     var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);
-    if (tournamentType?.defeatCount !== undefined && tournamentType?.defeatCount >= 1)
+    if (tournamentType?.count !== undefined && tournamentType?.count >= 1)
       return true;
 
     return false;
@@ -99,7 +99,7 @@ export class ColiseumViewComponent implements OnInit {
 
     this.selectedTournament.quickCompletionReward.forEach(item => {
       var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
-      if (item.type === ItemTypeEnum.Equipment) {
+      if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
 
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";

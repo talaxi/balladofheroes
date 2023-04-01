@@ -27,11 +27,11 @@
                         </div>
                         <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex"
                             (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
-                            <span *ngIf="!character.overdriveInfo.overdriveAutoMode"
+                            <span *ngIf="!character.overdriveInfo.autoMode"
                                 class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
                                 class="red-progress characterBar overdriveProgressBar highBar"
-                                [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.overdriveAutoMode}">
+                                [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.autoMode}">
                             </mat-progress-bar> <span class="hpMpText">
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                             </span>

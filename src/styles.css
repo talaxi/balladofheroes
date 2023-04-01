@@ -169,6 +169,7 @@
   --chthonicPowerColor: #83C2A6;
   --overdriveColor: #FA989E;
   --followerColor: #3DB6D1;
+  --sidequestColor: #cc6f12;
 
   --barrierColor: #0FCCC6;
 
@@ -609,6 +610,11 @@ body {
   color: var(--followerColor);
 }
 
+.sidequestText {
+  color: var(--sidequestColor);
+}
+
+
 .tutorialText {
   font-weight: bold;
   font-style: italic;
@@ -1037,5 +1043,11 @@ button:disabled {
     -webkit-user-select: none;
     -ms-user-select: none;
     user-select: none;
+
+    overscroll-behavior: none;
+  }
+
+  body {
+    overscroll-behavior: none;
   }
 }

@@ -49,6 +49,7 @@
     font-weight: bold;
     color: var(--positive-status-effect);    
     display: none;
+    z-index: 100;
 }
 
 .levelUpAnimation {

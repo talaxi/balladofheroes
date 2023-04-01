@@ -7,7 +7,7 @@
   }
 
   .availableIconSideQuest {
-    background: #cc6f12 !important;
+    background: var(--sidequestColor) !important;
   }
 
   .availableIconProfession {

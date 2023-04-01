@@ -68,7 +68,7 @@ export class MainOverviewComponent {
           if (zone.subzones !== undefined && zone.subzones.length > 0)
             zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
               subzone.isSelected = false;
-              if (subzone.isTown) {
+              if (this.balladService.isSubzoneTown(subzone.type)) {
                 latestShop = subzone;
                 relatedZone = zone;
                 relatedBallad = ballad;
@@ -78,7 +78,7 @@ export class MainOverviewComponent {
     });
 
     latestShop.isSelected = true;
-    latestShop.showNewNotification = false;
+    latestShop.notify = false;
     if (relatedZone !== undefined)
       relatedZone.isSelected = true;
     if (relatedBallad !== undefined)
@@ -91,13 +91,13 @@ export class MainOverviewComponent {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
-    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
+    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
   }
 
-  jumpToLatestGeneralStore() {
+  /*jumpToLatestGeneralStore() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();
     var relatedZone: Zone | undefined = this.balladService.getActiveZone();
     var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
@@ -120,7 +120,7 @@ export class MainOverviewComponent {
     });
 
     latestShop.isSelected = true;
-    latestShop.showNewNotification = false;
+    latestShop.notify = false;
     if (relatedZone !== undefined)
       relatedZone.isSelected = true;
     if (relatedBallad !== undefined)
@@ -137,14 +137,14 @@ export class MainOverviewComponent {
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
-  }
+  }*/
 
   jumpToPalaceOfHades() {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades);
     if (startingPoint !== undefined) {
       this.balladService.setActiveSubZone(startingPoint.type);
       this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
-    }
+    
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
@@ -152,18 +152,18 @@ export class MainOverviewComponent {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
-    var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + startingPoint?.name + "</strong>.";
+    var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+    }
   }
 
   jumpToColiseum() {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.ElysiumColiseum);
     if (startingPoint !== undefined) {
       this.balladService.setActiveSubZone(startingPoint.type);
-      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
-    }
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;    
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
@@ -171,10 +171,11 @@ export class MainOverviewComponent {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
 
-    var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + startingPoint?.name + "</strong>.";
+    var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+    }
   }
 
   viewFollowers(content: any) {

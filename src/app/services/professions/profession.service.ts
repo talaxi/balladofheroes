@@ -69,8 +69,7 @@ export class ProfessionService {
       }
     }
 
-    this.lookupService.gainResource(new ResourceValue(selectedProfession.creatingRecipe.createdItem, selectedProfession.creatingRecipe.createdItemType,
-      gainAmount));
+    this.lookupService.gainResource(new ResourceValue(selectedProfession.creatingRecipe.createdItem, gainAmount));
 
     selectedProfession.creationStep = 0;
 

@@ -68,7 +68,7 @@ export class BattleComponent implements OnInit {
         var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
 
         if (autoProgress && currentSubzone !== undefined &&
-          (currentSubzone.winsNeeded - currentSubzone.victoryCount <= 0 || currentSubzone.isTown)) {
+          (this.balladService.getVictoriesNeededToProceed(currentSubzone.type) - currentSubzone.victoryCount <= 0 || this.balladService.isSubzoneTown(currentSubzone.type))) {
           this.balladService.selectNextSubzone();
         }
       }
@@ -123,7 +123,7 @@ export class BattleComponent implements OnInit {
 
   isAtTown() {
     if (this.activeSubzone !== undefined) {
-      return this.activeSubzone.isTown && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
+      return this.balladService.isSubzoneTown(this.activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
     }
     return false;
   }
@@ -270,19 +270,23 @@ export class BattleComponent implements OnInit {
     this.dialog.open(content, { width: '95%', height: '80%' });
   }
 
+  getActiveSubzoneName() {
+    return this.balladService.getSubZoneName(this.activeSubzone.type);
+  }
+
   getSubzoneVictoryCount() {
     var text = "";
 
-    if (this.activeSubzone.isTown)
+    if (this.balladService.isSubzoneTown(this.activeSubzone.type))
       text = "(Town)";
-    else if (this.activeSubzone.isSubzoneSideQuest(this.activeSubzone.type)) {
+    else if (this.balladService.isSubzoneSideQuest(this.activeSubzone.type)) {
       text = "(Special)";
     }
     else {
       text = "(" + this.activeSubzone.victoryCount.toString();
-      if (this.activeSubzone.winsNeeded > this.activeSubzone.victoryCount)
-        text += "/" + this.activeSubzone.winsNeeded;
-      text += this.activeSubzone.victoryCount === 1 && this.activeSubzone.winsNeeded <= this.activeSubzone.victoryCount ? " win)" : " wins)";
+      if (this.balladService.getVictoriesNeededToProceed(this.activeSubzone.type) > this.activeSubzone.victoryCount)
+        text += "/" + this.balladService.getVictoriesNeededToProceed(this.activeSubzone.type);
+      text += this.activeSubzone.victoryCount === 1 && this.balladService.getVictoriesNeededToProceed(this.activeSubzone.type) <= this.activeSubzone.victoryCount ? " win)" : " wins)";
     }
 
     return text;
@@ -294,7 +298,7 @@ export class BattleComponent implements OnInit {
       if (ballad.isAvailable) {
         ballad.zones.forEach(zone => {
           zone.subzones.forEach(subzone => {
-            if (subzone.showNewNotification)
+            if (subzone.notify)
               newSubzoneAvailable = true;
           });
         });
@@ -409,7 +413,7 @@ export class BattleComponent implements OnInit {
         reverseZones.forEach(zone => {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
           reverseSubzones.forEach(subzone => {
-            if (currentSubzone.type !== subzone.type && !subzone.isTown && subzone.winsNeeded - subzone.victoryCount > 0) {
+            if (currentSubzone.type !== subzone.type && !this.balladService.isSubzoneTown(subzone.type) && this.balladService.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
             }
           });
