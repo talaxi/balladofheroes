@@ -143,7 +143,7 @@ export class ShoppingItemViewComponent implements OnInit {
 
     var equipment = this.lookupService.getEquipmentPieceByItemType(item);
     if (equipment !== undefined) {
-      var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));
+      var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType)?.quality);
 
       return qualityClass;
     }

@@ -47,6 +47,9 @@ import { ShopItemGeneratorService } from './shop/shop-item-generator.service';
 import { SubZoneGeneratorService } from './sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from './utility/utility.service';
 import { NotificationTypeEnum } from "../models/enums/notification-type-enum.model";
+import { ResourceGeneratorService } from './resources/resource-generator.service';
+import { CdkVirtualForOf } from '@angular/cdk/scrolling';
+import { EquipmentService } from './resources/equipment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -57,7 +60,8 @@ export class LookupService {
 
   constructor(private globalService: GlobalService, private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService,
     private charmService: CharmService, private enemyGeneratorService: EnemyGeneratorService, private balladService: BalladService,
-    private shopItemGeneratorService: ShopItemGeneratorService) { }  
+    private shopItemGeneratorService: ShopItemGeneratorService, private resourceGeneratorService: ResourceGeneratorService,
+    private equipmentService: EquipmentService) { }
 
   getSubZoneCompletionByType(type: SubZoneEnum) {
     var chosenSubzone = new SubZone();
@@ -204,6 +208,22 @@ export class LookupService {
     return isACharm;
   }
 
+  getSlotItemQuality(type: ItemsEnum) {
+    if (type === ItemsEnum.CrackedRuby || type === ItemsEnum.CrackedTopaz || type === ItemsEnum.CrackedOpal ||
+      type === ItemsEnum.CrackedAmethyst || type === ItemsEnum.CrackedEmerald || type === ItemsEnum.CrackedAquamarine ||
+      type === ItemsEnum.LesserCrackedRuby || type === ItemsEnum.LesserCrackedTopaz || type === ItemsEnum.LesserCrackedOpal ||
+      type === ItemsEnum.LesserCrackedAmethyst || type === ItemsEnum.LesserCrackedEmerald || type === ItemsEnum.LesserCrackedAquamarine)
+      return EquipmentQualityEnum.Basic;
+
+    if (type === ItemsEnum.DullRuby || type === ItemsEnum.DullTopaz || type === ItemsEnum.DullOpal || type === ItemsEnum.DullAmethyst ||
+      type === ItemsEnum.DullEmerald || type === ItemsEnum.DullAquamarine || type === ItemsEnum.MinorWeaponSlotAddition ||
+      type === ItemsEnum.MinorRingSlotAddition || type === ItemsEnum.MinorShieldSlotAddition || type === ItemsEnum.MinorArmorSlotAddition ||
+      type === ItemsEnum.MinorNecklaceSlotAddition)
+      return EquipmentQualityEnum.Uncommon;
+
+    return EquipmentQualityEnum.Basic;
+  }
+
   getItemTypeFromItemEnum(type: ItemsEnum) {
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.HealingSalve ||
       type === ItemsEnum.RestorativeHerb || type === ItemsEnum.FocusPotion || type === ItemsEnum.RestorativePoultice ||
@@ -240,16 +260,19 @@ export class LookupService {
     if (this.isItemACharm(type))
       return ItemTypeEnum.Charm;
 
-    if (type === ItemsEnum.Coin || type === ItemsEnum.CrackedRuby || type === ItemsEnum.CrackedTopaz || type === ItemsEnum.CrackedOpal ||
+    if (type === ItemsEnum.Coin)
+      return ItemTypeEnum.Resource;
+
+
+    if (type === ItemsEnum.CrackedRuby || type === ItemsEnum.CrackedTopaz || type === ItemsEnum.CrackedOpal ||
       type === ItemsEnum.CrackedAmethyst || type === ItemsEnum.CrackedEmerald || type === ItemsEnum.CrackedAquamarine ||
       type === ItemsEnum.LesserCrackedRuby || type === ItemsEnum.LesserCrackedTopaz || type === ItemsEnum.LesserCrackedOpal ||
       type === ItemsEnum.LesserCrackedAmethyst || type === ItemsEnum.LesserCrackedEmerald || type === ItemsEnum.LesserCrackedAquamarine ||
       type === ItemsEnum.DullRuby || type === ItemsEnum.DullTopaz || type === ItemsEnum.DullOpal || type === ItemsEnum.DullAmethyst ||
       type === ItemsEnum.DullEmerald || type === ItemsEnum.DullAquamarine || type === ItemsEnum.MinorWeaponSlotAddition ||
       type === ItemsEnum.MinorRingSlotAddition || type === ItemsEnum.MinorShieldSlotAddition || type === ItemsEnum.MinorArmorSlotAddition ||
-      type === ItemsEnum.MinorNecklaceSlotAddition) {
-      return ItemTypeEnum.Resource;
-    }
+      type === ItemsEnum.MinorNecklaceSlotAddition)
+      return ItemTypeEnum.SlotItem;
 
     if (this.getEquipmentPieceByItemType(type) !== undefined) {
       return ItemTypeEnum.Equipment;
@@ -800,9 +823,15 @@ export class LookupService {
     else if (this.getEquipmentPieceByItemType(type) !== undefined) {
       name = this.getEquipmentStats(this.getEquipmentPieceByItemType(type)) + "<br/><br/>" + this.getEquipmentEffects(this.getEquipmentPieceByItemType(type));
     }
-    //equipment
+
+    //charm
     else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Charm) {
       name = this.getCharmDescription(type);
+    }
+
+    //slot item
+    else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.SlotItem) {
+      name = this.getSlotItemDescription(type);
     }
 
     else if (type === ItemsEnum.SparringMatch)
@@ -931,6 +960,27 @@ export class LookupService {
       description = "Increase Healing Done by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfApolloValue() * 100) + "%</span> for the character equipped with Apollo.";
     if (type === ItemsEnum.LargeCharmOfApollo)
       description = "Increase Healing Done by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfApolloValue() * 100) + "%</span> for the character equipped with Apollo.";
+
+    return description;
+  }
+
+  getSlotItemDescription(item: ItemsEnum) {
+    var description = "";
+
+    var slotItemValues = this.resourceGeneratorService.getSlotItemValues(item);
+
+    if (slotItemValues.maxHp > 0)
+      description = "+<b>" + slotItemValues.maxHp + " Max HP</b>";
+    if (slotItemValues.attack > 0)
+      description = "+<b>" + slotItemValues.attack + " Attack</b>";
+    if (slotItemValues.defense > 0)
+      description = "+<b>" + slotItemValues.defense + " Defense</b>";
+    if (slotItemValues.agility > 0)
+      description = "+<b>" + slotItemValues.agility + " Agility</b>";
+    if (slotItemValues.luck > 0)
+      description = "+<b>" + slotItemValues.luck + " Luck</b>";
+    if (slotItemValues.resistance > 0)
+      description = "+<b>" + slotItemValues.resistance + " Resistance</b>";
 
     return description;
   }
@@ -1351,24 +1401,24 @@ export class LookupService {
     return equipmentPiece;
   }
 
-  getEquipmentQualityClass(item?: Equipment) {
+  getEquipmentQualityClass(quality?: EquipmentQualityEnum) {
     var classText = "";
-    if (item === undefined)
+    if (quality === undefined)
       return classText;
 
-    if (item.quality === EquipmentQualityEnum.Basic)
+    if (quality === EquipmentQualityEnum.Basic)
       classText = "basicEquipment";
-    if (item.quality === EquipmentQualityEnum.Uncommon)
+    if (quality === EquipmentQualityEnum.Uncommon)
       classText = "uncommonEquipment";
-    if (item.quality === EquipmentQualityEnum.Rare)
+    if (quality === EquipmentQualityEnum.Rare)
       classText = "rareEquipment";
-    if (item.quality === EquipmentQualityEnum.Epic)
+    if (quality === EquipmentQualityEnum.Epic)
       classText = "epicEquipment";
-    if (item.quality === EquipmentQualityEnum.Special)
+    if (quality === EquipmentQualityEnum.Special)
       classText = "specialEquipment";
-    if (item.quality === EquipmentQualityEnum.Extraordinary)
+    if (quality === EquipmentQualityEnum.Extraordinary)
       classText = "extraordinaryEquipment";
-    if (item.quality === EquipmentQualityEnum.Unique)
+    if (quality === EquipmentQualityEnum.Unique)
       classText = "uniqueEquipment";
 
     return classText;
@@ -1376,7 +1426,7 @@ export class LookupService {
 
   getItemTextClass(item: ResourceValue) {
     if (this.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment)
-      return this.getEquipmentQualityClass(this.getEquipmentPieceByItemType(item.item));
+      return this.getEquipmentQualityClass(this.getEquipmentPieceByItemType(item.item)?.quality);
     else
       return "";
   }
@@ -2362,8 +2412,8 @@ export class LookupService {
     return name;
   }
 
-  getResourceAmount(type: ItemsEnum) {
-    var resource = this.globalService.globalVar.resources.find(item => item.item === type);
+  getResourceAmount(type: ItemsEnum, extras?: ItemsEnum[]) {
+    var resource = this.globalService.globalVar.resources.find(item => item.item === type && this.globalService.extraItemsAreEqual(item.extras, extras));
     if (resource === undefined)
       return 0;
 
@@ -2373,8 +2423,8 @@ export class LookupService {
     return resource.amount;
   }
 
-  useResource(type: ItemsEnum, amount: number) {
-    var resource = this.globalService.globalVar.resources.find(item => item.item === type);
+  useResource(type: ItemsEnum, amount: number, extras?: ItemsEnum[]) {
+    var resource = this.globalService.globalVar.resources.find(item => item.item === type && this.globalService.extraItemsAreEqual(item.extras, extras));
     if (resource === undefined)
       return;
 
@@ -2394,21 +2444,28 @@ export class LookupService {
         }
       }
     }
+
+    this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => item.amount > 0);
   }
 
-  getItemEquipCount(type: ItemsEnum) {
+  getItemEquipCount(type: ItemsEnum, associatedResource?: ResourceValue) {
     var equipCount = 0;
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {
-      if (member.equipmentSet.weapon !== undefined && member.equipmentSet.weapon.itemType === type)
+      if (member.equipmentSet.weapon !== undefined && member.equipmentSet.weapon.itemType === type &&
+        (associatedResource === undefined || (this.globalService.extraItemsAreEqual(associatedResource?.extras, member.equipmentSet.weapon.associatedResource?.extras))))
         equipCount += 1;
-      if (member.equipmentSet.shield !== undefined && member.equipmentSet.shield.itemType === type)
+      if (member.equipmentSet.shield !== undefined && member.equipmentSet.shield.itemType === type &&
+        (associatedResource === undefined || (this.globalService.extraItemsAreEqual(associatedResource?.extras, member.equipmentSet.shield.associatedResource?.extras))))
         equipCount += 1;
-      if (member.equipmentSet.armor !== undefined && member.equipmentSet.armor.itemType === type)
+      if (member.equipmentSet.armor !== undefined && member.equipmentSet.armor.itemType === type &&
+        (associatedResource === undefined || (this.globalService.extraItemsAreEqual(associatedResource?.extras, member.equipmentSet.armor.associatedResource?.extras))))
         equipCount += 1;
-      if (member.equipmentSet.necklace !== undefined && member.equipmentSet.necklace.itemType === type)
+      if (member.equipmentSet.necklace !== undefined && member.equipmentSet.necklace.itemType === type &&
+        (associatedResource === undefined || (this.globalService.extraItemsAreEqual(associatedResource?.extras, member.equipmentSet.necklace.associatedResource?.extras))))
         equipCount += 1;
-      if (member.equipmentSet.ring !== undefined && member.equipmentSet.ring.itemType === type)
+      if (member.equipmentSet.ring !== undefined && member.equipmentSet.ring.itemType === type &&
+        (associatedResource === undefined || (this.globalService.extraItemsAreEqual(associatedResource?.extras, member.equipmentSet.ring.associatedResource?.extras))))
         equipCount += 1;
     })
 
@@ -2944,7 +3001,7 @@ export class LookupService {
       return multiplier / 100;
   }
 
-  getEquipmentStats(equipment: Equipment | undefined) {
+  getEquipmentStats(equipment: Equipment | undefined, associatedResource?: ResourceValue) {
     var equipmentStats = "";
 
     if (equipment === undefined)
@@ -2975,6 +3032,14 @@ export class LookupService {
       equipmentStats += "+" + (equipment.stats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction<br />";
     if (equipment.stats.autoAttackCooldownReduction > 0)
       equipmentStats += "+" + (equipment.stats.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction<br />";
+      if (equipment.stats.healingReceived > 0)
+      equipmentStats += "+" + (equipment.stats.healingReceived * 100) + "% Healing Received<br />";
+      if (equipment.stats.debuffDuration > 0)
+      equipmentStats += "+" + (equipment.stats.debuffDuration * 100) + "% Debuff Duration<br />";
+      if (equipment.stats.overdriveGainFromAutoAttacks > 0)
+      equipmentStats += "+" + (equipment.stats.overdriveGainFromAutoAttacks * 100) + "% Overdrive Gain From Auto Attacks Bonus<br />";
+      if (equipment.stats.healingDone > 0)
+      equipmentStats += "+" + (equipment.stats.healingDone * 100) + "% Healing Done<br />";
     if (equipment.stats.elementIncrease.holy > 0)
       equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% Holy Damage Bonus<br />";
     if (equipment.stats.elementIncrease.fire > 0)
@@ -3000,15 +3065,23 @@ export class LookupService {
     if (equipment.stats.elementResistance.earth > 0)
       equipmentStats += "+" + (equipment.stats.elementResistance.earth * 100) + "% Earth Resistance Bonus<br />";
 
-    if (equipment.slots.length === 0 && equipment.slotCount > 0)
-      equipmentStats += "<b>" + equipment.slotCount + " Open Slots</b><br/>";
-    else if (equipment.slots.length > 0 && equipment.slotCount > 0) {
-      equipment.slots.forEach(filledSlot => {
-        equipmentStats += this.getItemName(filledSlot) + "<br/>";
-      });
+    if (associatedResource !== undefined) {
+      var totalSlotCount = equipment.slotCount;
 
-      if (equipment.slotCount > equipment.slots.length) {
-        equipmentStats += "<b>" + (equipment.slotCount - equipment.slots.length) + " Open Slots</b><br/>";
+      //check extras to see if slot count is increased      
+      if ((associatedResource.extras === undefined || associatedResource.extras.length === 0) && totalSlotCount > 0)
+        equipmentStats += "<b>" + equipment.slotCount + " Open " + (equipment.slotCount === 1 ? "Slot" : "Slots") + "</b><br/>";
+      else if (associatedResource.extras !== undefined && associatedResource.extras.length > 0 && totalSlotCount > 0) {
+        var filledSlotCount = 0;
+        associatedResource.extras.forEach(filledSlot => {
+          //equipmentStats += "<b>Slot: </b> <strong class='" + this.getEquipmentQualityClass(this.getSlotItemQuality(filledSlot)) + "'>" + this.getItemName(filledSlot) + "</strong><br/>";
+          equipmentStats += "<b>Slot: </b> <strong class='basicEquipment'>" + this.getItemDescription(filledSlot) + "</strong><br/>";
+          filledSlotCount += 1;
+        });
+
+        if (totalSlotCount > filledSlotCount) {
+          equipmentStats += "<b>" + (totalSlotCount - filledSlotCount) + " Open " + ((totalSlotCount - filledSlotCount) === 1 ? "Slot" : "Slots") + "</b><br/>";
+        }
       }
     }
 
@@ -3018,7 +3091,7 @@ export class LookupService {
   }
 
   getEquipmentEffects(equipment: Equipment | undefined) {
-    var equipmentEffects = "<b>";
+    var equipmentEffects = "<b><span class='basicEquipment'>"; //using basic equipment color for equipment effect
 
     if (equipment === undefined)
       return equipmentEffects;
@@ -3036,7 +3109,7 @@ export class LookupService {
     if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
       equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
 
-    equipmentEffects += "</b>";
+    equipmentEffects += "</span></b>";
 
     if (equipment.equipmentEffect.targetEffect !== undefined && equipment.equipmentEffect.targetEffect.length > 0) {
       equipment.equipmentEffect.targetEffect.forEach(effect => {
@@ -3050,6 +3123,10 @@ export class LookupService {
             equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
           else
             equipmentEffects += "Deal an additional " + effect.effectiveness + " damage.<br/>";
+        }
+
+        if (effect.type === StatusEffectEnum.RandomPrimaryStatDown) {
+          equipmentEffects += "Inflict a <strong>" + Math.round((1 - effect.effectiveness) * 100) + "%</strong> random primary stat reduction on a target for <strong>" + effect.duration + "</strong> seconds.";
         }
       });
     }
@@ -3081,7 +3158,6 @@ export class LookupService {
           equipmentEffects += "All auto attacks and non-elemental abilities have the Air element.<br/>";
         if (effect.type === StatusEffectEnum.Enlightning)
           equipmentEffects += "All auto attacks and non-elemental abilities have the Lightning element.<br/>";
-
 
         if (equipment.itemType === ItemsEnum.FracturedRubyRing)
           equipmentEffects += "Absorb " + effect.effectiveness + " Fire damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
@@ -3945,8 +4021,9 @@ export class LookupService {
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
 
-    if (character.equipmentSet.getTotalMaxHpGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalMaxHpGain() + "<br />";
+    var equipmentMaxHpGain = this.equipmentService.getTotalMaxHpGain(character.equipmentSet);
+    if (equipmentMaxHpGain > 0)
+      breakdown += "Equipment: +" + equipmentMaxHpGain + "<br />";
 
     if (this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent()) + "<br />";
@@ -3974,8 +4051,9 @@ export class LookupService {
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
 
-    if (character.equipmentSet.getTotalAttackGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalAttackGain() + "<br />";
+    var equipmentAttackGain = this.equipmentService.getTotalAttackGain(character.equipmentSet);
+    if (equipmentAttackGain > 0)
+      breakdown += "Equipment: +" + equipmentAttackGain + "<br />";
 
     if (this.globalService.globalVar.chthonicPowers.getAttackBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAttackBoostPercent()) + "<br />";
@@ -4003,8 +4081,9 @@ export class LookupService {
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
 
-    if (character.equipmentSet.getTotalDefenseGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalDefenseGain() + "<br />";
+    var equipmentDefenseGain = this.equipmentService.getTotalDefenseGain(character.equipmentSet);
+    if (equipmentDefenseGain > 0)
+      breakdown += "Equipment: +" + equipmentDefenseGain + "<br />";
 
     if (this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent()) + "<br />";
@@ -4032,8 +4111,9 @@ export class LookupService {
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
 
-    if (character.equipmentSet.getTotalAgilityGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalAgilityGain() + "<br />";
+    var equipmentAgilityGain = this.equipmentService.getTotalAgilityGain(character.equipmentSet);
+    if (equipmentAgilityGain > 0)
+      breakdown += "Equipment: +" + equipmentAgilityGain + "<br />";
 
     if (this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent()) + "<br />";
@@ -4061,8 +4141,9 @@ export class LookupService {
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
 
-    if (character.equipmentSet.getTotalLuckGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalLuckGain() + "<br />";
+    var equipmentLuckGain = this.equipmentService.getTotalLuckGain(character.equipmentSet);
+    if (equipmentLuckGain > 0)
+      breakdown += "Equipment: +" + equipmentLuckGain + "<br />";
 
     if (this.globalService.globalVar.chthonicPowers.getLuckBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getLuckBoostPercent()) + "<br />";
@@ -4090,8 +4171,9 @@ export class LookupService {
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
 
-    if (character.equipmentSet.getTotalResistanceGain() > 0)
-      breakdown += "Equipment: +" + character.equipmentSet.getTotalResistanceGain() + "<br />";
+    var equipmentResistanceGain = this.equipmentService.getTotalResistanceGain(character.equipmentSet);
+    if (equipmentResistanceGain > 0)
+      breakdown += "Equipment: +" + equipmentResistanceGain + "<br />";
 
     if (this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent()) + "<br />";
@@ -4124,8 +4206,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain, 2) + "<br />";
     }
 
-    if (character.equipmentSet.getTotalHpRegenGain() > 0)
-      breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalHpRegenGain(), 2) + "<br />";
+    var equipmentTotalHpRegenGain = this.equipmentService.getTotalHpRegenGain(character.equipmentSet);
+    if (equipmentTotalHpRegenGain > 0)
+      breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentTotalHpRegenGain, 2) + "<br />";
     /*
         if (this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent() > 0)
           breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getHpRegenBoostPercent())+ "<br />";
@@ -4158,8 +4241,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
     }
 
-    if (character.equipmentSet.getTotalCriticalMultiplierGain() > 0)
-      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalCriticalMultiplierGain() * 100) + "%<br />";
+    var equipmentTotalCriticalMultiplierGain = this.equipmentService.getTotalCriticalMultiplierGain(character.equipmentSet);
+    if (equipmentTotalCriticalMultiplierGain > 0)
+      breakdown += "Equipment: +" + Math.round(equipmentTotalCriticalMultiplierGain * 100) + "%<br />";
 
     return breakdown;
   }
@@ -4189,8 +4273,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
     }
 
-    if (character.equipmentSet.getTotalOverdriveGain() > 0)
-      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";
+    var equipmentOverdriveGain = this.equipmentService.getTotalOverdriveGain(character.equipmentSet);
+    if (equipmentOverdriveGain > 0)
+      breakdown += "Equipment: +" + Math.round(equipmentOverdriveGain * 100) + "%<br />";
 
     return breakdown;
   }
@@ -4220,8 +4305,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
-    /*if (character.equipmentSet.getTotalOverdriveGain() > 0)
-      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";*/
+    var equipmentHealingReceivedGain = this.equipmentService.getTotalHealingReceivedGain(character.equipmentSet);
+    if (equipmentHealingReceivedGain > 0)
+      breakdown += "Equipment: +" + Math.round(equipmentHealingReceivedGain * 100) + "%<br />";
 
     return breakdown;
   }
@@ -4251,8 +4337,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
-    /*if (character.equipmentSet.getTotalOverdriveGain() > 0)
-      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";*/
+    var equipmentDebuffDurationGain = this.equipmentService.getTotalDebuffDurationGain(character.equipmentSet);
+    if (equipmentDebuffDurationGain > 0)
+      breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentDebuffDurationGain * 100, 2) + "%<br />";
 
     return breakdown;
   }
@@ -4282,8 +4369,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
-    /*if (character.equipmentSet.getTotalOverdriveGain() > 0)
-      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";*/
+    var equipmentTotalOverdriveGainFromAutoAttacksGain = this.equipmentService.getTotalOverdriveGainFromAutoAttacksGain(character.equipmentSet);
+    if (equipmentTotalOverdriveGainFromAutoAttacksGain > 0)
+      breakdown += "Equipment: +" + equipmentTotalOverdriveGainFromAutoAttacksGain + "%<br />";
 
     return breakdown;
   }
@@ -4313,8 +4401,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
-    /*if (character.equipmentSet.getTotalOverdriveGain() > 0)
-      breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalOverdriveGain() * 100) + "%<br />";*/
+    var equipmentHealingDoneGain = this.equipmentService.getTotalHealingDoneGain(character.equipmentSet);
+    if (equipmentHealingDoneGain > 0)
+      breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentHealingDoneGain * 100, 2) + "%<br />";
 
     return breakdown;
   }
@@ -4344,8 +4433,9 @@ export class LookupService {
       breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
-    if (character.equipmentSet.getTotalArmorPenetrationGain() > 0)
-      breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalArmorPenetrationGain() * 100, 2) + "%<br />";
+    var equipmentArmorPenetrationGain = this.equipmentService.getTotalArmorPenetrationGain(character.equipmentSet);
+    if (equipmentArmorPenetrationGain > 0)
+      breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentArmorPenetrationGain * 100, 2) + "%<br />";
 
     return breakdown;
   }
@@ -4375,14 +4465,10 @@ export class LookupService {
       breakdown += "Charm Total: *" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
-    if (character.equipmentSet.getTotalAbilityCooldownReductionGain() > 0)
-      breakdown += "Equipment: *" + this.utilityService.roundTo(character.equipmentSet.getTotalAbilityCooldownReductionGain() * 100, 2) + "%<br />";
+    var equipmentAbilityCooldownReductionGain = this.equipmentService.getTotalAbilityCooldownReductionGain(character.equipmentSet);
+    if (equipmentAbilityCooldownReductionGain > 0)
+      breakdown += "Equipment: *" + this.utilityService.roundTo(equipmentAbilityCooldownReductionGain * 100, 2) + "%<br />";
 
-    /*
-
-    if (this.globalService.globalVar.chthonicPowers.getAbilityCooldownReductionBoostPercent() > 0)
-      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAbilityCooldownReductionBoostPercent())+ "<br />";
-*/
     return breakdown;
   }
 
@@ -4411,13 +4497,10 @@ export class LookupService {
       breakdown += "Charm Total: *" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
     }
 
-    if (character.equipmentSet.getTotalAutoAttackCooldownReductionGain() > 0)
-      breakdown += "Equipment: *" + this.utilityService.roundTo(character.equipmentSet.getTotalAutoAttackCooldownReductionGain() * 100, 2) + "%<br />";
+    var equipmentAutoAttackCooldownReductionGain = this.equipmentService.getTotalAutoAttackCooldownReductionGain(character.equipmentSet);
+    if (equipmentAutoAttackCooldownReductionGain > 0)
+      breakdown += "Equipment: *" + this.utilityService.roundTo(equipmentAutoAttackCooldownReductionGain * 100, 2) + "%<br />";
 
-    /*
-    if (this.globalService.globalVar.chthonicPowers.getAutoAttackCooldownReductionBoostPercent() > 0)
-      breakdown += "Chthonic Power: *" + (1 + this.globalService.globalVar.chthonicPowers.getAutoAttackCooldownReductionBoostPercent())+ "<br />";
-*/
     return breakdown;
   }
 
@@ -4439,8 +4522,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalHolyDamageIncreaseGain() > 0)
-        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalHolyDamageIncreaseGain() * 100) + "%<br />";
+      var equipmentHolyDamageIncreaseGain = this.equipmentService.getTotalHolyDamageIncreaseGain(character.equipmentSet);
+      if (equipmentHolyDamageIncreaseGain > 0)
+        breakdown += "Equipment: +" + Math.round(equipmentHolyDamageIncreaseGain * 100) + "%<br />";
 
       var charmGain = this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalService.globalVar.resources);
       if (charmGain > 0) {
@@ -4460,8 +4544,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalFireDamageIncreaseGain() > 0)
-        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalFireDamageIncreaseGain() * 100) + "%<br />";
+      var equipmentFireDamageIncreaseGain = this.equipmentService.getTotalFireDamageIncreaseGain(character.equipmentSet);
+      if (equipmentFireDamageIncreaseGain > 0)
+        breakdown += "Equipment: +" + Math.round(equipmentFireDamageIncreaseGain * 100) + "%<br />";
 
       var charmGain = this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalService.globalVar.resources);
       if (charmGain > 0) {
@@ -4481,8 +4566,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalLightningDamageIncreaseGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalLightningDamageIncreaseGain() * 100, 2) + "%<br />";
+      var equipmentLightningDamageIncreaseGain = this.equipmentService.getTotalLightningDamageIncreaseGain(character.equipmentSet);
+      if (equipmentLightningDamageIncreaseGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentLightningDamageIncreaseGain * 100, 2) + "%<br />";
 
       var charmGain = this.charmService.getTotalLightningDamageIncreaseAdditionFromCharms(this.globalService.globalVar.resources);
       if (charmGain > 0) {
@@ -4502,8 +4588,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalWaterDamageIncreaseGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalWaterDamageIncreaseGain() * 100, 2) + "%<br />";
+      var equipmentWaterDamageIncreaseGain = this.equipmentService.getTotalWaterDamageIncreaseGain(character.equipmentSet);
+      if (equipmentWaterDamageIncreaseGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentWaterDamageIncreaseGain * 100, 2) + "%<br />";
 
       var charmGain = this.charmService.getTotalWaterDamageIncreaseAdditionFromCharms(this.globalService.globalVar.resources);
       if (charmGain > 0) {
@@ -4523,8 +4610,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalAirDamageIncreaseGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalAirDamageIncreaseGain() * 100, 2) + "%<br />";
+      var equipmentAirDamageIncreaseGain = this.equipmentService.getTotalAirDamageIncreaseGain(character.equipmentSet);
+      if (equipmentAirDamageIncreaseGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentAirDamageIncreaseGain * 100, 2) + "%<br />";
 
       var charmGain = this.charmService.getTotalAirDamageIncreaseAdditionFromCharms(this.globalService.globalVar.resources);
       if (charmGain > 0) {
@@ -4544,8 +4632,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalEarthDamageIncreaseGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalEarthDamageIncreaseGain() * 100, 2) + "%<br />";
+      var equipmentEarthDamageIncreaseGain = this.equipmentService.getTotalEarthDamageIncreaseGain(character.equipmentSet);
+      if (equipmentEarthDamageIncreaseGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentEarthDamageIncreaseGain * 100, 2) + "%<br />";
 
       var charmGain = this.charmService.getTotalEarthDamageIncreaseAdditionFromCharms(this.globalService.globalVar.resources);
       if (charmGain > 0) {
@@ -4576,8 +4665,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalHolyDamageResistanceGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalHolyDamageResistanceGain() * 100, 2) + "%<br />";
+      var equipmentHolyDamageResistanceGain = this.equipmentService.getTotalHolyDamageResistanceGain(character.equipmentSet);
+      if (equipmentHolyDamageResistanceGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentHolyDamageResistanceGain * 100, 2) + "%<br />";
 
       var charmGain = this.charmService.getTotalHolyDamageResistanceAdditionFromCharms(this.globalService.globalVar.resources);
       if (charmGain > 0) {
@@ -4597,8 +4687,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalFireDamageResistanceGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalFireDamageResistanceGain() * 100, 2) + "%<br />";
+      var equipmentFireDamageResistanceGain = this.equipmentService.getTotalFireDamageResistanceGain(character.equipmentSet);
+      if (equipmentFireDamageResistanceGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentFireDamageResistanceGain * 100, 2) + "%<br />";
 
 
       var charmGain = this.charmService.getTotalFireDamageResistanceAdditionFromCharms(this.globalService.globalVar.resources);
@@ -4619,8 +4710,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalLightningDamageResistanceGain() > 0)
-        breakdown += "Equipment: +" + Math.round(character.equipmentSet.getTotalLightningDamageResistanceGain() * 100) + "%<br />";
+      var equipmentLightningDamageResistanceGain = this.equipmentService.getTotalLightningDamageResistanceGain(character.equipmentSet);
+      if (equipmentLightningDamageResistanceGain > 0)
+        breakdown += "Equipment: +" + Math.round(equipmentLightningDamageResistanceGain * 100) + "%<br />";
 
 
       var charmGain = this.charmService.getTotalLightningDamageResistanceAdditionFromCharms(this.globalService.globalVar.resources);
@@ -4641,8 +4733,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalWaterDamageResistanceGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalWaterDamageResistanceGain() * 100, 2) + "%<br />";
+      var equipmentWaterDamageResistanceGain = this.equipmentService.getTotalWaterDamageResistanceGain(character.equipmentSet);
+      if (equipmentWaterDamageResistanceGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentWaterDamageResistanceGain * 100, 2) + "%<br />";
 
 
       var charmGain = this.charmService.getTotalWaterDamageResistanceAdditionFromCharms(this.globalService.globalVar.resources);
@@ -4663,8 +4756,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalAirDamageResistanceGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalAirDamageResistanceGain() * 100, 2) + "%<br />";
+      var equipmentAirDamageResistanceGain = this.equipmentService.getTotalAirDamageResistanceGain(character.equipmentSet);
+      if (equipmentAirDamageResistanceGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentAirDamageResistanceGain * 100, 2) + "%<br />";
 
 
       var charmGain = this.charmService.getTotalAirDamageResistanceAdditionFromCharms(this.globalService.globalVar.resources);
@@ -4685,8 +4779,9 @@ export class LookupService {
           breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
       }
 
-      if (character.equipmentSet.getTotalEarthDamageResistanceGain() > 0)
-        breakdown += "Equipment: +" + this.utilityService.roundTo(character.equipmentSet.getTotalEarthDamageResistanceGain() * 100, 2) + "%<br />";
+      var equipmentEarthDamageResistanceGain = this.equipmentService.getTotalEarthDamageResistanceGain(character.equipmentSet);
+      if (equipmentEarthDamageResistanceGain > 0)
+        breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentEarthDamageResistanceGain * 100, 2) + "%<br />";
 
 
       var charmGain = this.charmService.getTotalEarthDamageResistanceAdditionFromCharms(this.globalService.globalVar.resources);
@@ -4945,5 +5040,68 @@ export class LookupService {
       return true;
 
     return false;
+  }
+
+  resourceHasSlotsAdded(resource: ResourceValue) {
+    var slotsAdded = false;
+
+    //TODO: when you add slotaddition items, you will want to check if they are in the extras
+    if (resource.extras !== undefined && resource.extras.length > 0)
+      return true;
+
+    return slotsAdded;
+  }
+
+  getEquipmentExtraNameAddition(resource?: ResourceValue) {
+    var addition = "";
+
+    if (resource !== undefined && resource.extras !== undefined && resource.extras.length > 0) {
+      //if (resource.extras.find(item => item === ItemsEnum.LesserCrackedRuby))
+      //  addition = "+LCR";
+      addition = "+" + resource.extras.length;
+    }
+
+    return addition;
+  }
+
+  equipmentPieceHasSlots(equipment?: ResourceValue) {
+    if (equipment === undefined)
+      return false;
+
+    var equipmentPiece = this.getEquipmentPieceByItemType(equipment.item);
+
+    if (this.resourceHasSlotsAdded(equipment) || (equipmentPiece !== undefined && equipmentPiece.slotCount > 0))
+      return true;
+
+    return false;
+  }
+
+  getNumberOfOpenSlots(item?: ResourceValue) {
+    var openSlots = 0;
+    if (item === undefined)
+      return openSlots;
+
+    var equipment = this.getEquipmentPieceByItemType(item.item);
+
+    if (item === undefined || equipment === undefined || equipment.slotCount === 0)
+      return openSlots;
+
+    var totalSlotCount = equipment.slotCount;
+
+    if ((item.extras === undefined || item.extras.length === 0) && totalSlotCount > 0)
+      return totalSlotCount;
+    else if (item.extras !== undefined && item.extras.length > 0 && totalSlotCount > 0) {
+      var filledSlotCount = 0;
+      item.extras.forEach(filledSlot => {
+        //Will need to check what each slot is eventually when you can add slots
+        filledSlotCount += 1;
+      });
+
+      if (totalSlotCount > filledSlotCount) {
+        openSlots = totalSlotCount - filledSlotCount;
+      }
+    }
+
+    return openSlots;
   }
 }

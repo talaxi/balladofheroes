@@ -61,6 +61,14 @@ export class FollowerPrayerViewComponent {
     return this.utilityService.smallAltarPrayChancePerFollower * 100;
   }
 
+  getLargeAltarActivationChance() {
+    return this.utilityService.largeAltarActivationChancePerFollower * 100;
+  }
+
+  getLargeAltarPrayerChance() {
+    return this.utilityService.largeAltarPrayChancePerFollower * 100;
+  }
+
   getAssignedFollowers() {
     return this.followerService.getAssignedFollowers();
   }

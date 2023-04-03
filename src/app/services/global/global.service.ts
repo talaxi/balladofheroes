@@ -25,6 +25,7 @@ import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
@@ -32,6 +33,7 @@ import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GameLogService } from '../battle/game-log.service';
 import { CharmService } from '../resources/charm.service';
+import { EquipmentService } from '../resources/equipment.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
 import { TutorialService } from './tutorial.service';
@@ -42,7 +44,8 @@ import { TutorialService } from './tutorial.service';
 export class GlobalService {
   globalVar = new GlobalVariables();
 
-  constructor(private utilityService: UtilityService, private gameLogService: GameLogService, private charmService: CharmService) { }
+  constructor(private utilityService: UtilityService, private gameLogService: GameLogService, private charmService: CharmService,
+    private equipmentService: EquipmentService) { }
 
   initializeGlobalVariables() {
     this.globalVar = new GlobalVariables();
@@ -694,30 +697,34 @@ export class GlobalService {
     character.battleStats = character.baseStats.makeCopy(inBattle);
 
     //equipment
-    character.battleStats.maxHp += character.equipmentSet.getTotalMaxHpGain();
-    character.battleStats.attack += character.equipmentSet.getTotalAttackGain();
-    character.battleStats.defense += character.equipmentSet.getTotalDefenseGain();
-    character.battleStats.agility += character.equipmentSet.getTotalAgilityGain();
-    character.battleStats.luck += character.equipmentSet.getTotalLuckGain();
-    character.battleStats.resistance += character.equipmentSet.getTotalResistanceGain();
-    character.battleStats.hpRegen = character.equipmentSet.getTotalHpRegenGain();
-    character.battleStats.criticalMultiplier = character.equipmentSet.getTotalCriticalMultiplierGain();
-    character.battleStats.armorPenetration = character.equipmentSet.getTotalArmorPenetrationGain();
-    character.battleStats.overdriveGain = character.equipmentSet.getTotalOverdriveGain();
-    character.battleStats.abilityCooldownReduction = (1 - character.equipmentSet.getTotalAbilityCooldownReductionGain());
-    character.battleStats.autoAttackCooldownReduction = (1 - character.equipmentSet.getTotalAutoAttackCooldownReductionGain());
-    character.battleStats.elementIncrease.holy = character.equipmentSet.getTotalHolyDamageIncreaseGain();
-    character.battleStats.elementIncrease.fire = character.equipmentSet.getTotalFireDamageIncreaseGain();
-    character.battleStats.elementIncrease.water = character.equipmentSet.getTotalWaterDamageIncreaseGain();
-    character.battleStats.elementIncrease.lightning = character.equipmentSet.getTotalLightningDamageIncreaseGain();
-    character.battleStats.elementIncrease.air = character.equipmentSet.getTotalAirDamageIncreaseGain();
-    character.battleStats.elementIncrease.earth = character.equipmentSet.getTotalEarthDamageIncreaseGain();
-    character.battleStats.elementResistance.holy = character.equipmentSet.getTotalHolyDamageResistanceGain();
-    character.battleStats.elementResistance.fire = character.equipmentSet.getTotalFireDamageResistanceGain();
-    character.battleStats.elementResistance.water = character.equipmentSet.getTotalWaterDamageResistanceGain();
-    character.battleStats.elementResistance.lightning = character.equipmentSet.getTotalLightningDamageResistanceGain();
-    character.battleStats.elementResistance.air = character.equipmentSet.getTotalAirDamageResistanceGain();
-    character.battleStats.elementResistance.earth = character.equipmentSet.getTotalEarthDamageResistanceGain();
+    character.battleStats.maxHp += this.equipmentService.getTotalMaxHpGain(character.equipmentSet);
+    character.battleStats.attack += this.equipmentService.getTotalAttackGain(character.equipmentSet);
+    character.battleStats.defense += this.equipmentService.getTotalDefenseGain(character.equipmentSet);
+    character.battleStats.agility += this.equipmentService.getTotalAgilityGain(character.equipmentSet);
+    character.battleStats.luck += this.equipmentService.getTotalLuckGain(character.equipmentSet);
+    character.battleStats.resistance += this.equipmentService.getTotalResistanceGain(character.equipmentSet);
+    character.battleStats.hpRegen = this.equipmentService.getTotalHpRegenGain(character.equipmentSet);
+    character.battleStats.criticalMultiplier = this.equipmentService.getTotalCriticalMultiplierGain(character.equipmentSet);
+    character.battleStats.armorPenetration = this.equipmentService.getTotalArmorPenetrationGain(character.equipmentSet);
+    character.battleStats.healingReceived = this.equipmentService.getTotalHealingReceivedGain(character.equipmentSet);
+    character.battleStats.healingDone = this.equipmentService.getTotalHealingDoneGain(character.equipmentSet);
+    character.battleStats.overdriveGainFromAutoAttacks = this.equipmentService.getTotalOverdriveGainFromAutoAttacksGain(character.equipmentSet);
+    character.battleStats.debuffDuration = this.equipmentService.getTotalDebuffDurationGain(character.equipmentSet);
+    character.battleStats.overdriveGain = this.equipmentService.getTotalOverdriveGain(character.equipmentSet);
+    character.battleStats.abilityCooldownReduction = (1 - this.equipmentService.getTotalAbilityCooldownReductionGain(character.equipmentSet));
+    character.battleStats.autoAttackCooldownReduction = (1 - this.equipmentService.getTotalAutoAttackCooldownReductionGain(character.equipmentSet));
+    character.battleStats.elementIncrease.holy = this.equipmentService.getTotalHolyDamageIncreaseGain(character.equipmentSet);
+    character.battleStats.elementIncrease.fire = this.equipmentService.getTotalFireDamageIncreaseGain(character.equipmentSet);
+    character.battleStats.elementIncrease.water = this.equipmentService.getTotalWaterDamageIncreaseGain(character.equipmentSet);
+    character.battleStats.elementIncrease.lightning = this.equipmentService.getTotalLightningDamageIncreaseGain(character.equipmentSet);
+    character.battleStats.elementIncrease.air = this.equipmentService.getTotalAirDamageIncreaseGain(character.equipmentSet);
+    character.battleStats.elementIncrease.earth = this.equipmentService.getTotalEarthDamageIncreaseGain(character.equipmentSet);
+    character.battleStats.elementResistance.holy = this.equipmentService.getTotalHolyDamageResistanceGain(character.equipmentSet);
+    character.battleStats.elementResistance.fire = this.equipmentService.getTotalFireDamageResistanceGain(character.equipmentSet);
+    character.battleStats.elementResistance.water = this.equipmentService.getTotalWaterDamageResistanceGain(character.equipmentSet);
+    character.battleStats.elementResistance.lightning = this.equipmentService.getTotalLightningDamageResistanceGain(character.equipmentSet);
+    character.battleStats.elementResistance.air = this.equipmentService.getTotalAirDamageResistanceGain(character.equipmentSet);
+    character.battleStats.elementResistance.earth = this.equipmentService.getTotalEarthDamageResistanceGain(character.equipmentSet);
 
     //gods
     var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
@@ -1946,5 +1953,86 @@ export class GlobalService {
     });
 
     return isEquipped;
+  }
+
+  addExtraToBaseResource(resourceToChange: ResourceValue, extraToAdd: ItemsEnum) {
+    //check if item exists, remove 1 from the existing amount of the resource
+    //create a second instance of the resource with the extra included, initialize extras array
+    //you will want to differentiate them in name
+    var modifiedResource: ResourceValue = new ResourceValue(resourceToChange.item, 1);
+    var existingResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && this.extraItemsAreEqual(item.extras, resourceToChange.extras));
+
+    if (existingResourcePool !== undefined && existingResourcePool.amount > 0) {      
+      existingResourcePool.amount -= 1;
+      //console.log("Existing Resource Pool now has " + existingResourcePool.amount);
+      this.globalVar.resources = this.globalVar.resources.filter(item => item.amount > 0);
+
+      var extraToAddList: ItemsEnum[] = resourceToChange.makeCopy().extras;
+      if (extraToAddList === undefined)
+        extraToAddList = [];
+      extraToAddList.push(extraToAdd);      
+
+      var existingModifiedResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && this.extraItemsAreEqual(item.extras, extraToAddList));
+
+      if (existingModifiedResourcePool) //if a resource already exists that perfectly matches what you are trying to do, just add to that
+      {
+        //console.log("New Resource Pool already exists with amount " + existingModifiedResourcePool.amount);
+        existingModifiedResourcePool.amount += 1;
+        modifiedResource = new ResourceValue(existingModifiedResourcePool.item, 1);
+        modifiedResource.extras = extraToAddList;        
+        //console.log("New Resource Pool new amount is " + existingModifiedResourcePool.amount);
+      }
+      else //else create a brand new resource
+      {
+        //console.log("Create brand new resource");
+        var newResource = new ResourceValue(resourceToChange.item, 1);
+        newResource.extras = [];
+        newResource.extras = extraToAddList;
+        modifiedResource = newResource;
+        this.globalVar.resources.push(modifiedResource);
+      }
+
+      //deduct the extra from resources
+      var extraItemResource = this.globalVar.resources.find(item => item.item === extraToAdd);
+      if (extraItemResource !== undefined && extraItemResource.amount > 0)
+      {
+        extraItemResource.amount -= 1;
+      }
+    }
+
+    return modifiedResource;
+  }
+
+  /*addExtraToModifiedResource(resourceToChange: ResourceValue, existingExtras: ItemsEnum[], extraToAdd: ItemsEnum) {
+    //check if item exists, remove 1 from the existing amount of the resource
+    //create a second instance of the resource with the extra included, initialize extras array
+    //you will want to differentiate them in name
+
+    //todo: does this equals work?
+    var existingResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && item.extras === existingExtras);
+
+  }*/
+
+  extraItemsAreEqual(existingExtras?: ItemsEnum[], comparedExtras?: ItemsEnum[]) {      
+    var areEqual = true;
+
+    if (existingExtras === undefined && comparedExtras === undefined) {
+      return areEqual;
+    }
+        
+    if ((existingExtras === undefined && comparedExtras !== undefined) ||
+    (existingExtras !== undefined && comparedExtras === undefined) || existingExtras!.length !== comparedExtras!.length)
+    {
+      areEqual = false;
+      return areEqual;
+    }
+
+    for (var i = 0; i < existingExtras!.length; i++) {
+      if (existingExtras!.sort()[i] !== comparedExtras!.sort()[i]) {
+        areEqual = false;
+      }
+    }
+
+    return areEqual;
   }
 }

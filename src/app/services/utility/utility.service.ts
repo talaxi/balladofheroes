@@ -58,7 +58,7 @@ export class UtilityService {
   public killCountDisplayFullEnemyLoot = 30;
 
   public overdriveDamageNeededToUnlockProtection = 100000;
-  public overdriveAttacksNeededToUnlockNature = 75000;
+  public overdriveAttacksNeededToUnlockNature = 250000;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
@@ -72,8 +72,10 @@ export class UtilityService {
   public preferredGodEndTime3 = 4;
 
   public followerSearchZoneInterval = 60;
-  public smallAltarActivationChancePerFollower = .1;
-  public smallAltarPrayChancePerFollower = .01;
+  public smallAltarActivationChancePerFollower = .25;
+  public smallAltarPrayChancePerFollower = .02;
+  public largeAltarActivationChancePerFollower = .1;
+  public largeAltarPrayChancePerFollower = .01;
 
   public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
 

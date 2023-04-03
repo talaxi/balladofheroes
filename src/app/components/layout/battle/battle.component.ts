@@ -368,7 +368,7 @@ export class BattleComponent implements OnInit {
   }
 
   skipOverlayMessage() {
-    if (this.gameLogService.notificationOverlayBuffer === undefined || this.gameLogService.notificationOverlayBuffer.length < 0)
+    if (this.gameLogService.notificationOverlayBuffer === undefined || this.gameLogService.notificationOverlayBuffer.length <= 0)
       return;
 
     var nextMessage = this.gameLogService.notificationOverlayBuffer[0];

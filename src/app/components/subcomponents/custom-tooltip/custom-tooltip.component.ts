@@ -25,6 +25,7 @@ export class CustomTooltipComponent implements OnInit {
   @Input() contentTemplate: TemplateRef<any>;
 
   @Input() isSticky: boolean = false;
+  @Input() isLargeTooltip: boolean = false;
 
   constructor(private balladService: BalladService, private globalService: GlobalService, public dialog: MatDialog) { }
 

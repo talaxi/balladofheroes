@@ -303,19 +303,19 @@ export class BattleService {
     }
 
     if (this.balladService.getActiveSubZone().type === SubZoneEnum.TheLetheLetheBasin2 &&
-    !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade2Scene1)) {
-    this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade2Scene1);
-  }
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade2Scene1)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade2Scene1);
+    }
 
-  if (this.balladService.getActiveSubZone().type === SubZoneEnum.TheLetheHypnosIsland &&
-    !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade2Scene2)) {
-    this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade2Scene2);
-  }
+    if (this.balladService.getActiveSubZone().type === SubZoneEnum.TheLetheHypnosIsland &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade2Scene2)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade2Scene2);
+    }
 
-  if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLetheHypnosIsland) &&
-    !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3)) {
-    this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade2Scene3);
-  }
+    if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLetheHypnosIsland) &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade2Scene3);
+    }
   }
 
   checkScene() {
@@ -386,7 +386,7 @@ export class BattleService {
           if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
             var itemName = (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item)));
             if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Equipment) {
-              var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item));
+              var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item)?.quality);
               itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
             }
 
@@ -770,13 +770,14 @@ export class BattleService {
     var abilityEffectiveness = this.getAbilityEffectiveness(ability, effectivenessModifier);
 
     if (ability.dealsDirectDamage) {
-      var damageMultiplier = this.getDamageMultiplier(user, target, undefined, false, elementalType, ability.name);
-      var isCritical = this.isDamageCritical(user, target);
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
 
       if (ability.isAoe) {
         potentialTargets.forEach(potentialTarget => {
+          var damageMultiplier = this.getDamageMultiplier(user, potentialTarget, undefined, false, elementalType, ability.name);
+          var isCritical = this.isDamageCritical(user, potentialTarget);
+
           damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, ability, elementalType);
           if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
             (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
@@ -786,6 +787,8 @@ export class BattleService {
         })
       }
       else {
+        var damageMultiplier = this.getDamageMultiplier(user, target, undefined, false, elementalType, ability.name);
+        var isCritical = this.isDamageCritical(user, target);
         damageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, ability, elementalType);
         if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
           (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
@@ -794,7 +797,7 @@ export class BattleService {
         }
       }
     }
-    else if (ability.heals) {      
+    else if (ability.heals) {
       var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, ability, isPartyUsing) * (1 + user.battleStats.healingDone);
       var adjustedCriticalMultiplier = 1;
       var isCritical = this.isHealCritical(user);
@@ -1076,7 +1079,7 @@ export class BattleService {
           }
 
           if (newTarget !== undefined) {
-            var totalHits = target.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.InstantTrueDamage && item.caster === instantEffect.caster).length;            
+            var totalHits = target.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.InstantTrueDamage && item.caster === instantEffect.caster).length;
 
             var trueDamageDealt = this.dealTrueDamage(isPartyUsing, newTarget, instantEffect.effectiveness, user, instantEffect.element, true);
 
@@ -1090,14 +1093,15 @@ export class BattleService {
               else
                 gameLogEntry += " from " + instantEffect.caster + "'s effect.";
 
-              this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+              if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
+                this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+              }
             }
             else {
               totalTrueDamageDealt += trueDamageDealt;
               totalTrueDamageHitCount += 1;
 
-              if (totalTrueDamageHitCount === totalHits)
-              {
+              if (totalTrueDamageHitCount === totalHits) {
                 var elementalText = "";
                 if (instantEffect.element !== ElementalTypeEnum.None)
                   elementalText = this.getElementalDamageText(instantEffect.element);
@@ -1106,9 +1110,11 @@ export class BattleService {
                 if (castEffect === "'s effect")
                   castEffect = "a damaging effect";
 
-                var gameLogEntry = "<strong>" + newTarget.name + "</strong>" + " takes " + totalHits + " hits from " + castEffect + " for a total of " + this.utilityService.bigNumberReducer(Math.round(totalTrueDamageDealt)) + elementalText + " damage.";                
-  
-                this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+                var gameLogEntry = "<strong>" + newTarget.name + "</strong>" + " takes " + totalHits + " hits from " + castEffect + " for a total of " + this.utilityService.bigNumberReducer(Math.round(totalTrueDamageDealt)) + elementalText + " damage.";
+
+                if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
+                  this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+                }
               }
             }
           }
@@ -1262,8 +1268,7 @@ export class BattleService {
     var enemySpecificAbilityIncrease = 1;
     if (abilityName === "Dreameater") {
       var dreameaterMultiplierAmount = .2;
-      enemySpecificAbilityIncrease += dreameaterMultiplierAmount * target.battleInfo.statusEffects.filter(item => !item.isPositive).length;
-      console.log("Dreameater damage increase against " + target.name + ": " + enemySpecificAbilityIncrease);
+      enemySpecificAbilityIncrease += dreameaterMultiplierAmount * target.battleInfo.statusEffects.filter(item => !item.isPositive).length;      
     }
 
     return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * enemySpecificAbilityIncrease;
@@ -1377,11 +1382,10 @@ export class BattleService {
       }
     }
 
-    var taunted = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Taunt);    
+    var taunted = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Taunt);
     if (taunted !== undefined) {
       var tauntCaster = targets.find(caster => caster.name === taunted!.caster);
-      if (tauntCaster !== undefined && !tauntCaster.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead))
-      {
+      if (tauntCaster !== undefined && !tauntCaster.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)) {
         target = tauntCaster;
       }
     }
@@ -2455,7 +2459,7 @@ export class BattleService {
       this.gainHp(character, totalHpRegen);
       character.battleInfo.hpRegenTimer -= character.battleInfo.hpRegenTimerLength;
       character.battleInfo.hpRegenTimer = this.utilityService.roundTo(character.battleInfo.hpRegenTimer, this.utilityService.genericRoundTo);
-    }    
+    }
   }
 
   getElementalDamageText(type: ElementalTypeEnum) {

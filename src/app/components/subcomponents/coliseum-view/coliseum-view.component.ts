@@ -75,7 +75,7 @@ export class ColiseumViewComponent implements OnInit {
     this.selectedTournament.completionReward.forEach(item => {
       var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
       if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }
@@ -100,7 +100,7 @@ export class ColiseumViewComponent implements OnInit {
     this.selectedTournament.quickCompletionReward.forEach(item => {
       var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
       if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }

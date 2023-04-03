@@ -218,17 +218,17 @@ export class StoryService {
           this.zosimeText("“Any ideas on where to go next?”") + " Zosime asks you, snapping you out of your thoughts.<br/><br/>" +
           this.thalesText("“Before we fell, I felt invincible. As if there was nothing any hero had done that we couldn't do. But now, honestly, I don't know.”") + " You say to Zosime, uncertain.";
       else if (pageCount === 2)
-        sceneText = this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Given that we were just given a second chance… I can't miss this opportunity!”") +
+        sceneText = this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Considering we were just given a second chance… I can't miss this opportunity!”") +
           " You nod your head, just happy to have someone else make the decision. " + this.thalesText("“Lead the way.”");
     }
     else if (storyId === 14) {
       if (pageCount === 1)
         sceneText = "As you make your way from the opening of the Underworld near Lake Lerna towards Calydon, Zosime insists on a detour through Mount Parthenion. The mountain is home to many a wild spirit and the birth place of several heroes' origin stories, Atalanta included. During a lull in your fighting, Zosime begins to tell you of her favorite hero.<br/><br/>" +
-        this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. It's hard to imagine a less likely hero than a babe alone in such a dangerous place. And yet, to survive and accomplish all that she did!”");
+        this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. Can you imagine, a babe alone in a dangerous place like this? And yet, to survive and accomplish all that she did!”");
       else if (pageCount === 2)
-      sceneText = this.zosimeText("“Artemis took to her and she became Artemis's arrow. Where countless men had failed, she saved Calydon from the boar rampaging the countryside.”") +
+      sceneText = this.zosimeText("“Artemis took to her and she became one with the wilds. And in turn, she became Artemis's arrow.”") +
       " As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " +
-      this.zosimeText("“Artemis has looked after me as well, while no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
+      this.zosimeText("“Artemis has looked after me as well, when no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
     }
     else if (storyId === 15) {
       if (pageCount === 1)
@@ -243,12 +243,13 @@ export class StoryService {
     }
     else if (storyId === 16) {
       if (pageCount === 1)
-        sceneText = "After a grueling battle, the wild beast finally stills. " + this.thalesText("“Another one off your list, Zosime!”") + " You say as you catch your breath, caught up in the thrill of victory. She grins as she eagerly examines the boar. You can tell this moment means a lot to her. <br/><br/>" +
+        sceneText = "Like Atalanta before her, Zosime's arrow spells the end for the massive boar. " + this.thalesText("“Another one off your list, Zosime!”") + " You say as you catch your breath, caught up in the thrill of victory. She grins as she eagerly examines the boar. You can tell this moment means a lot to her. <br/><br/>" +
         "Nearby sounds of leaves rustling immediately put you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
       else if (pageCount === 2)
         sceneText = this.zosimeText("That's Artemis's stag!”") + " Zosime says from behind you. She begins a silent prayer as the majestic beast returns to grazing the forest. " + this.thalesText("“The gods are still with us.”") + " You whisper, feeling a great relief. What greater reassurance can you receive than to know that you may not believe in yourself, but the gods do?<br/><br/>" +
         "The stag's grazing pattern eventually puts it out of sight. You attempt to follow it, but there is no tracking a beast whose very nature is the forest. You return to Zosime, still in prayer.";
       else if (pageCount === 3)
+        //TODO: this feels somewhat unearned, need at least a sentence here to explain why you confidently say this
         sceneText = this.thalesText("“I've decided that we should go to Iolcus next. My favorite story growing up was Jason's travels. I always loved hearing about so many heroes working together. Besides, I've spent my whole life on the coast and it's been too long since I've been near the water.”") + "<br/><br/>" +
         this.zosimeText("“Lead the way.”") + " Zosime says, happy to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
     }
@@ -363,7 +364,7 @@ export class StoryService {
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis));
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis)?.quality);
         var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);

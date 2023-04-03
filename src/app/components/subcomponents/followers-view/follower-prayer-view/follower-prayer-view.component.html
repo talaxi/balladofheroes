@@ -13,6 +13,7 @@
     <span class="sectionHeaderText sectionHeading">activate</span>
     <br />
     <div class="sectionInfo">
+        <div>
         <span class="s4Heading smallCaps altarName">Small Altars</span>
         <span class="s4Heading followerCount">
             <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Activate, altarType.Small)"
@@ -25,12 +26,27 @@
         Each follower provides a {{getSmallAltarActivationChance()}}% chance per minute to activate a random Small Altar that has met its necessary
         conditions.
     </div>
+    <div> <!--TODO: only if available-->
+        <span class="s4Heading smallCaps altarName">Large Altars</span>
+        <span class="s4Heading followerCount">
+            <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Activate, altarType.Large)"
+                (click)="decrementPrayerFollowers(followerPrayerType.Activate, altarType.Large)">-</button>
+            {{getFollowersAssignedToPrayer(followerPrayerType.Activate, altarType.Large)}}
+            <button class='buttonStyled' [disabled]="!canIncrement(followerPrayerType.Activate, altarType.Large)"
+                (click)="incrementPrayerFollowers(followerPrayerType.Activate, altarType.Large)">+</button>
+        </span>
+        <br />
+        Each follower provides a {{getLargeAltarActivationChance()}}% chance per minute to activate a random Large Altar that has met its necessary
+        conditions.
+    </div>
+    </div>
 </div>
 <hr />
 <div>
     <span class="sectionHeaderText sectionHeading">pray</span>
     <br />
     <div class="sectionInfo">
+        <div>
         <span class="s4Heading smallCaps altarName">Small Altars</span>
         <span class="s4Heading followerCount">
             <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Pray, altarType.Small)"
@@ -41,5 +57,18 @@
         </span>
         <br />
         Each follower provides a {{getSmallAltarPrayerChance()}}% chance per minute to pray to a random god's Small Altar and receive a boon for the party. Only one boon per god can be active at a time.
+    </div>
+    <div>
+        <span class="s4Heading smallCaps altarName">Large Altars</span>
+        <span class="s4Heading followerCount">
+            <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Pray, altarType.Large)"
+                (click)="decrementPrayerFollowers(followerPrayerType.Pray, altarType.Large)">-</button>
+            {{getFollowersAssignedToPrayer(followerPrayerType.Pray, altarType.Large)}}
+            <button class='buttonStyled' [disabled]="!canIncrement(followerPrayerType.Pray, altarType.Large)"
+                (click)="incrementPrayerFollowers(followerPrayerType.Pray, altarType.Large)">+</button>
+        </span>
+        <br />
+        Each follower provides a {{getLargeAltarPrayerChance()}}% chance per minute to pray to a random god's Large Altar and receive a boon for the party. Only one boon per god can be active at a time.
+    </div>
     </div>
 </div>

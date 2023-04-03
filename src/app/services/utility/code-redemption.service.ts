@@ -46,8 +46,7 @@ export class CodeRedemptionService {
     try {
       var parsedRewards = <RedeemableCode>JSON.parse(decrypted.toString(CryptoJS.enc.Utf8));
 
-      if (parsedRewards !== null && parsedRewards !== undefined && parsedRewards.rewards.length > 0) {
-        console.log(parsedRewards);
+      if (parsedRewards !== null && parsedRewards !== undefined && parsedRewards.rewards.length > 0) {        
         if (new Date().getTime() > new Date(parsedRewards.expirationDate).getTime())
         {
           alert("This code has expired.");

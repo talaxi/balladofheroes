@@ -14,6 +14,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class EquipmentItemViewComponent implements OnInit {
   @Input() equipment: Equipment | undefined;
+  @Input() associatedResource: ResourceValue | undefined;
   equipmentStats = "";
   equipmentEffects = "";
   subscription: any;
@@ -21,11 +22,11 @@ export class EquipmentItemViewComponent implements OnInit {
   constructor(public lookupService: LookupService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
-    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment);
+    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource);
     this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment);
+      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource);
       this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
     });
   }
@@ -59,7 +60,7 @@ export class EquipmentItemViewComponent implements OnInit {
     var equipment = this.lookupService.getEquipmentPieceByItemType(item);
     if (equipment !== undefined)
     {
-    var qualityClass = "s4Heading " + this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));
+    var qualityClass = "s4Heading " + this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType)?.quality);
 
     return qualityClass;
     }

@@ -18,7 +18,7 @@ import { ResourceGeneratorService } from '../resources/resource-generator.servic
 export class FollowersService {
 
   constructor(private globalService: GlobalService, private resourceGeneratorService: ResourceGeneratorService,
-    private lookupService: LookupService, private balladService: BalladService) { }
+    private lookupService: LookupService, private balladService: BalladService, private achievementService: AchievementService) { }
 
   getAssignedFollowers() {
     return this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo !== FollowerActionEnum.None).length;
@@ -108,15 +108,15 @@ export class FollowersService {
   }
 
   getZoneAchievementRewardLevel(type: ZoneEnum) {
-    var rewardLevel = 4;//1; //TODO: set this back to 1 and remove comments below
+    var rewardLevel = 1;
 
-    /*var achievementPercent = this.achievementService.getCompletedAchievementPercentByZone(this.balladService.findZone(type), this.globalService.globalVar.achievements);
+    var achievementPercent = this.achievementService.getCompletedAchievementPercentByZone(this.balladService.findZone(type), this.globalService.globalVar.achievements);
     if (achievementPercent >= (1 / 3) && achievementPercent < (2 / 3))
       rewardLevel = 2;
     else if (achievementPercent >= (2 / 3))
       rewardLevel = 3;
     else if (achievementPercent === 1)
-      rewardLevel = 4;*/
+      rewardLevel = 4;
 
     return rewardLevel;
   }

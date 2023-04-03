@@ -29,6 +29,7 @@ export class ToolTipRendererDirective {
   subscription: any;
   delayTimerCap = .35;
   @Input() isDelayed: boolean = true;
+  @Input() isLargeTooltip: boolean = false;
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
 
   constructor(private _overlay: Overlay,
@@ -153,6 +154,7 @@ export class ToolTipRendererDirective {
           const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
           tooltipRef.instance.text = this.text;
           tooltipRef.instance.contentTemplate = this.contentTemplate;
+          tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;
         }
       });
     }
@@ -160,7 +162,8 @@ export class ToolTipRendererDirective {
       if (this._overlayRef && !this._overlayRef.hasAttached()) {
         const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
         tooltipRef.instance.text = this.text;
-        tooltipRef.instance.contentTemplate = this.contentTemplate;        
+        tooltipRef.instance.contentTemplate = this.contentTemplate;  
+        tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;      
       }
     }
   }

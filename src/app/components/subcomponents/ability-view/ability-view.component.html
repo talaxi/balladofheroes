@@ -16,8 +16,9 @@
 
 <ng-template #abilityPopover>
     <div>
-        <strong><span [innerHtml]="getAbilityName()"></span></strong>
-        <hr class="miniHr" />
+        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong>
+        <!--<hr class="miniHr" />-->
+        <hr />
         <span [innerHtml]="getAbilityDescription()"></span>        
         <hr />
         <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>

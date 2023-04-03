@@ -10,11 +10,11 @@
         <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)">
           <div class="flexBetween">
             <button class="buttonAsText clickableText equipmentItemButton" (click)="equipItem(equipment)">
-              <span class="equipmentItem" customToolTip [isDelayed]="false" [contentTemplate]="template"
+              <span class="equipmentItem" customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="template"
                 [innerHtml]="getEquipmentName(equipment)"></span>
             </button>
             <div class='buttonOptions'>
-            <button class="buttonStyled" *ngIf="equipmentPieceHasSlots(equipment)" (click)="openSlotMenu(equipment, slotMenuContent)">Slot</button>
+            <button class="buttonStyled" *ngIf="equipmentPieceHasSlots(equipment)" (click)="openSlotMenu(slotMenuContent)">Slot</button>
             <button class="buttonStyled" (click)="setSellItem(equipment)"><img class="icon"
                 src="assets/svg/resourcesQuickView.svg"></button>
             </div>
@@ -22,9 +22,7 @@
           <hr class="leftAlignedMiniHr" />
 
           <ng-template #slotMenuContent>
-            <div class="popoverClass">
-                Test
-            </div>
+            <app-slot-menu-view [resource]="equipment" [dialogRef]="dialogRef" (itemSlottedEmitter)="itemSlotted($event)"></app-slot-menu-view>
         </ng-template>
         </div>
       </div>
@@ -65,10 +63,10 @@
   <ng-template #template>
     <div class="compareEquipment">
       <span class="item">
-        <app-equipment-item-view [equipment]="hoveredItem"></app-equipment-item-view>
+        <app-equipment-item-view [equipment]="hoveredItem" [associatedResource]="hoveredItemAsResource"></app-equipment-item-view>
       </span>
       <span class="item comparedEquipmentItem">
-        <app-equipment-item-view [equipment]="getEquippedComparisonItem()"></app-equipment-item-view>
+        <app-equipment-item-view [equipment]="getEquippedComparisonItem()" [associatedResource]="getEquippedComparisonItemAsResource()"></app-equipment-item-view>
       </span>
     </div>
   </ng-template>

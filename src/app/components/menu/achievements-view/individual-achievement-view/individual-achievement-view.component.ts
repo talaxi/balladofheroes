@@ -44,8 +44,7 @@ export class IndividualAchievementViewComponent implements OnInit {
 
   getRewardDescription() {
     var description = "";
-    var rewards = this.achievementService.getAchievementReward(this.achievement.subzone, this.achievement.type);
-    console.log(rewards);
+    var rewards = this.achievementService.getAchievementReward(this.achievement.subzone, this.achievement.type);    
 
     for (var i = 0; i < rewards.length; i++) {
       var resource = rewards[i];

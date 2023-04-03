@@ -4,6 +4,7 @@ import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
 import { EquipmentTypeEnum } from "../enums/equipment-type-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
 import { WeaponTypeEnum } from "../enums/weapon-type-enum.model";
+import { ResourceValue } from "./resource-value.model";
 import { UsableItemEffect } from "./usable-item-effect.model";
 
 export class Equipment {
@@ -16,7 +17,7 @@ export class Equipment {
     equipmentEffect: UsableItemEffect;
     quality: EquipmentQualityEnum;
     slotCount: number;
-    slots: ItemsEnum[];
+    associatedResource: ResourceValue | undefined;
 
     constructor(itemType: ItemsEnum, equipmentType: EquipmentTypeEnum, quality: EquipmentQualityEnum, weaponType?: WeaponTypeEnum) {
         this.itemType = itemType;
@@ -29,6 +30,5 @@ export class Equipment {
         
         this.equipmentEffect = new UsableItemEffect();
         this.slotCount = 0;
-        this.slots = [];
     }
 }

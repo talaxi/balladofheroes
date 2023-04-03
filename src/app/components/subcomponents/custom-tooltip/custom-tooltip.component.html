@@ -1,5 +1,5 @@
 <div [ngClass]="{'cssTooltip': isSticky }">
-    <div class="tooltip-container">
+    <div class="tooltip-container" [ngClass]="{'largeTooltip': isLargeTooltip }">
       <ng-template #simpleText>
         <span [innerHtml]='text'></span>
       </ng-template>

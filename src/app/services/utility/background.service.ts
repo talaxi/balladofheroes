@@ -167,7 +167,7 @@ export class BackgroundService {
             member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
               ability.currentCooldown /= effect.effectiveness;
             });
-  
+
           if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
             var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod1);
             if (god !== undefined) {
@@ -177,7 +177,7 @@ export class BackgroundService {
                 });
             }
           }
-  
+
           if (member.assignedGod2 !== undefined && member.assignedGod2 !== GodEnum.None) {
             var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod2);
             if (god !== undefined) {
@@ -274,9 +274,8 @@ export class BackgroundService {
         if (member.assignedGod1 === GodEnum.Apollo || member.assignedGod2 === GodEnum.Apollo) {
           //this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantOstinato, -1, effect.effectiveness, true, true), member, enemies);
           //this.battleService.handleuserEffects(true, )
-          var ostinato = this.lookupService.characterHasAbility("Ostinato", member); 
-          if (ostinato !== undefined)
-          {            
+          var ostinato = this.lookupService.characterHasAbility("Ostinato", member);
+          if (ostinato !== undefined) {
             this.battleService.useAbility(true, ostinato, member, enemies, party, true, effect.effectiveness - 1);
           }
         }
@@ -327,33 +326,35 @@ export class BackgroundService {
       this.globalService.globalVar.timers.followerPrayerTimerLength = 60;
     }
 
-    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;    
+    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;
     if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {
       this.globalService.globalVar.timers.followerPrayerTimer -= this.globalService.globalVar.timers.followerPrayerTimerLength;
       this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.Praying).forEach(follower => {
         if (follower.assignedPrayerType === FollowerPrayerTypeEnum.Activate) {
-          if (follower.assignedAltarType === AltarEnum.Small) {
-            var chance = this.utilityService.smallAltarActivationChancePerFollower; //default is 10%
-            var rng = this.utilityService.getRandomNumber(0, 1);
-            
-            if (rng <= chance) {
-              //find available altar, activate it
-              var altarOptions: AltarInfo[] = [];
-              if (this.globalService.globalVar.altars.altar1 !== undefined && this.globalService.globalVar.altars.altar1.type === follower.assignedAltarType &&
-                this.globalService.globalVar.altars.altar1.conditionCount >= this.globalService.globalVar.altars.altar1.conditionMax)
-                altarOptions.push(this.globalService.globalVar.altars.altar1);
-              if (this.globalService.globalVar.altars.altar2 !== undefined && this.globalService.globalVar.altars.altar2.type === follower.assignedAltarType &&
-                this.globalService.globalVar.altars.altar2.conditionCount >= this.globalService.globalVar.altars.altar2.conditionMax)
-                altarOptions.push(this.globalService.globalVar.altars.altar2);
-              if (this.globalService.globalVar.altars.altar3 !== undefined && this.globalService.globalVar.altars.altar3.type === follower.assignedAltarType &&
-                this.globalService.globalVar.altars.altar3.conditionCount >= this.globalService.globalVar.altars.altar3.conditionMax)
-                altarOptions.push(this.globalService.globalVar.altars.altar3);
+          var chance = 0;
+          if (follower.assignedAltarType === AltarEnum.Small)
+            chance = this.utilityService.smallAltarActivationChancePerFollower;
+          else if (follower.assignedAltarType === AltarEnum.Large)
+            chance = this.utilityService.largeAltarActivationChancePerFollower;
 
-              if (altarOptions.length > 0)
-              {
-                var altarRng = this.utilityService.getRandomInteger(0, altarOptions.length - 1);
-                this.altarService.pray(altarOptions[altarRng], true, true);
-              }
+          var rng = this.utilityService.getRandomNumber(0, 1);
+
+          if (rng <= chance) {
+            //find available altar, activate it
+            var altarOptions: AltarInfo[] = [];
+            if (this.globalService.globalVar.altars.altar1 !== undefined && this.globalService.globalVar.altars.altar1.type === follower.assignedAltarType &&
+              this.globalService.globalVar.altars.altar1.conditionCount >= this.globalService.globalVar.altars.altar1.conditionMax)
+              altarOptions.push(this.globalService.globalVar.altars.altar1);
+            if (this.globalService.globalVar.altars.altar2 !== undefined && this.globalService.globalVar.altars.altar2.type === follower.assignedAltarType &&
+              this.globalService.globalVar.altars.altar2.conditionCount >= this.globalService.globalVar.altars.altar2.conditionMax)
+              altarOptions.push(this.globalService.globalVar.altars.altar2);
+            if (this.globalService.globalVar.altars.altar3 !== undefined && this.globalService.globalVar.altars.altar3.type === follower.assignedAltarType &&
+              this.globalService.globalVar.altars.altar3.conditionCount >= this.globalService.globalVar.altars.altar3.conditionMax)
+              altarOptions.push(this.globalService.globalVar.altars.altar3);
+
+            if (altarOptions.length > 0) {
+              var altarRng = this.utilityService.getRandomInteger(0, altarOptions.length - 1);
+              this.altarService.pray(altarOptions[altarRng], true, true);
             }
           }
         }
@@ -361,10 +362,10 @@ export class BackgroundService {
           if (follower.assignedAltarType === AltarEnum.Small) {
             var chance = this.utilityService.smallAltarPrayChancePerFollower; //default is 1%
             var rng = this.utilityService.getRandomNumber(0, 1);
-            
-            if (rng <= chance) {              
-              var altar = this.altarService.getNewAltar(AltarEnum.Small, undefined, false);                                            
-              this.altarService.pray(altar, true);              
+
+            if (rng <= chance) {
+              var altar = this.altarService.getNewAltar(AltarEnum.Small, undefined, false);
+              this.altarService.pray(altar, true);
             }
           }
         }

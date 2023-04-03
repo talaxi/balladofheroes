@@ -91,7 +91,7 @@ export class CharacterViewComponent implements OnInit {
     if (this.isMobile)
       this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
     else
-      this.dialog.open(content, { width: '50%', height: '55%', panelClass: 'mat-dialog-no-scroll' });
+      this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
   }
 
   getCharacterGodAbilities() {

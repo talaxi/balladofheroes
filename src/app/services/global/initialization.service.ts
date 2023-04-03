@@ -257,6 +257,7 @@ export class InitializationService {
     this.globalService.globalVar.gameLogSettings.set("prayToAltar", true);
     this.globalService.globalVar.gameLogSettings.set("partyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("enemyStatusEffect", true);
+    this.globalService.globalVar.gameLogSettings.set("partyEquipmentEffect", true);    
     this.globalService.globalVar.gameLogSettings.set("battleRewards", true);
     this.globalService.globalVar.gameLogSettings.set("partyLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", true);
@@ -394,7 +395,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 4));
 
     this.globalService.globalVar.currentStoryId = 100000;
     this.globalService.globalVar.isDpsUnlocked = true;
@@ -413,7 +414,7 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
-    var allAchievementsComplete = false;
+    var allAchievementsComplete = true;
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld)
       ballad.isAvailable = true;

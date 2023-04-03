@@ -1,4 +1,5 @@
 import { Injectable } from '@angular/core';
+import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
@@ -9,7 +10,7 @@ import { GlobalService } from '../global/global.service';
 })
 export class ResourceGeneratorService {
 
-  constructor(private globalService: GlobalService) { }
+  constructor() { }
 
   getResourceFromItemType(type: ItemsEnum, amount: number) {
     //swords
@@ -437,5 +438,49 @@ export class ResourceGeneratorService {
     }
 
     return new ResourceValue(ItemsEnum.None, 0);
+  }
+
+  getSlotItemValues(item: ItemsEnum) {   
+    var baseLesserCrackedStatValue = 10; 
+    if (item === ItemsEnum.LesserCrackedOpal) {
+      return new CharacterStats(0, baseLesserCrackedStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.LesserCrackedRuby) {
+      return new CharacterStats(0, 0, 0, 0, baseLesserCrackedStatValue, 0);
+    }
+    if (item === ItemsEnum.LesserCrackedAquamarine) {
+      return new CharacterStats(0, 0, 0, baseLesserCrackedStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.LesserCrackedEmerald) {
+      return new CharacterStats(0, 0, baseLesserCrackedStatValue, 0, 0, 0);
+    }
+    if (item === ItemsEnum.LesserCrackedAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, baseLesserCrackedStatValue);
+    }
+    if (item === ItemsEnum.LesserCrackedTopaz) {
+      return new CharacterStats(baseLesserCrackedStatValue * 5, 0, 0, 0, 0, 0);
+    }
+
+    var baseCrackedStatValue = 20;
+    if (item === ItemsEnum.CrackedOpal) {
+      return new CharacterStats(0, baseCrackedStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.CrackedRuby) {
+      return new CharacterStats(0, 0, 0, 0, baseCrackedStatValue, 0);
+    }
+    if (item === ItemsEnum.CrackedAquamarine) {
+      return new CharacterStats(0, 0, 0, baseCrackedStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.CrackedEmerald) {
+      return new CharacterStats(0, 0, baseCrackedStatValue, 0, 0, 0);
+    }
+    if (item === ItemsEnum.CrackedAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, baseCrackedStatValue);
+    }
+    if (item === ItemsEnum.CrackedTopaz) {
+      return new CharacterStats(baseCrackedStatValue * 5, 0, 0, 0, 0, 0);
+    }
+
+    return new CharacterStats(0, 0, 0, 0, 0, 0);
   }
 }
