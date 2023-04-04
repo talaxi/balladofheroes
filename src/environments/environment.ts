@@ -4,7 +4,11 @@
 
 export const environment = {
   production: false,
-  staging: false
+  staging: false,
+  CODEREDEMPTIONSECRET: 'testsecret',
+  STRIPESECRET: 'teststripe',
+  PATREONCLIENTID: 'patreonclientid',
+  PATREONCLIENTSECRET: 'patreonclientsecret'
 };
 
 /*

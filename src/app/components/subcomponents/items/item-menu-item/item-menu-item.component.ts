@@ -33,4 +33,8 @@ export class ItemMenuItemComponent implements OnInit {
     this.globalService.globalVar.itemBelt[this.openedSlotNumber] = type;    
     this.customTooltip.closeToolTip();
   }
+
+  preventRightClick() {
+    return false;
+  }
 }

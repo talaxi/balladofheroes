@@ -1,18 +1,29 @@
 <div class="equipmentOverview">
-  <span class="s4Heading">Change Equipment</span>
+  <div class="flexHeaderBetween">
+    <span class="s4Heading">Change Equipment</span>
+    <button class="buttonStyled" (click)="closeModal()">X</button>
+  </div>
   <hr />
   <div class="equipmentView">
     <div class="availableEquipment">
       <div class="scrollable">
         <div *ngFor="let equipment of availableEquipment; let i = index" (mouseenter)="hoverItem(equipment)">
           <div class="flexBetween">
-            <button class="buttonAsText clickableText" (click)="equipItem(equipment)">
-              <span class="equipmentItem" customToolTip [isDelayed]="false" [contentTemplate]="template"
+            <button class="buttonAsText clickableText equipmentItemButton" (click)="equipItem(equipment)">
+              <span class="equipmentItem" customToolTip [isDelayed]="false" [isLargeTooltip]="true" [contentTemplate]="template"
                 [innerHtml]="getEquipmentName(equipment)"></span>
             </button>
-            <button class="buttonStyled" (click)="setSellItem(equipment)"><img class="icon" src="assets/svg/resourcesQuickView.svg"></button>
+            <div class='buttonOptions'>
+            <button class="buttonStyled" *ngIf="equipmentPieceHasSlots(equipment)" (click)="openSlotMenu(slotMenuContent)">Slot</button>
+            <button class="buttonStyled" (click)="setSellItem(equipment)"><img class="icon"
+                src="assets/svg/resourcesQuickView.svg"></button>
+            </div>
           </div>
           <hr class="leftAlignedMiniHr" />
+
+          <ng-template #slotMenuContent>
+            <app-slot-menu-view [resource]="equipment" [dialogRef]="dialogRef" (itemSlottedEmitter)="itemSlotted($event)"></app-slot-menu-view>
+        </ng-template>
         </div>
       </div>
     </div>
@@ -23,7 +34,8 @@
       </div>
       <hr />
       <div *ngIf="itemToSellSelected" class="sellItem">
-        <span>Selling {{sellAmount}}x <span [innerHtml]="getEquipmentNameFromEquipment(itemToSell)"></span> for <strong>{{(itemToSellPrice * sellAmount)}}</strong> coins</span>
+        <span>Selling {{sellAmount}}x <span [innerHtml]="getEquipmentNameFromEquipment(itemToSell)"></span> for
+          <strong>{{(itemToSellPrice * sellAmount)}}</strong> coins</span>
         <br />
         <br />
         <div class="flex">
@@ -33,7 +45,8 @@
             (click)="changeSellAmount(5)">5x</button>
           <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount === 25}"
             (click)="changeSellAmount(25)">25x</button>
-          <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount !== 1 && sellAmount !== 5 && sellAmount !== 25 && sellAmount === getTotalItemToSellAmount()}"
+          <button class="buttonAsText clickableText filterOption"
+            [ngClass]="{'filterActive': sellAmount !== 1 && sellAmount !== 5 && sellAmount !== 25 && sellAmount === getTotalItemToSellAmount()}"
             (click)="changeSellAmount(getTotalItemToSellAmount())">All</button>
         </div>
         <br />
@@ -50,10 +63,10 @@
   <ng-template #template>
     <div class="compareEquipment">
       <span class="item">
-        <app-equipment-item-view [equipment]="hoveredItem"></app-equipment-item-view>
+        <app-equipment-item-view [equipment]="hoveredItem" [associatedResource]="hoveredItemAsResource"></app-equipment-item-view>
       </span>
       <span class="item comparedEquipmentItem">
-        <app-equipment-item-view [equipment]="getEquippedComparisonItem()"></app-equipment-item-view>
+        <app-equipment-item-view [equipment]="getEquippedComparisonItem()" [associatedResource]="getEquippedComparisonItemAsResource()"></app-equipment-item-view>
       </span>
     </div>
   </ng-template>

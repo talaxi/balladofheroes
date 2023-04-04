@@ -1,5 +1,5 @@
 <button (click)="battleService.useBattleItem(slotNumber)" customToolTip #tooltip [contentTemplate]="itemPopover"
-    class="battleItemButton customButtonStyle" [ngClass]="{'targetModeActive': battleItemInUse(slotNumber)}"><img class="itemImage"
+    class="battleItemButton customButtonStyle" [ngClass]="{'targetModeActive': battleItemInUse(slotNumber)}"><img class="itemImage" (contextmenu)="preventRightClick()"
         [src]="getSelectedItemImage(slotNumber)"><strong class="itemAmount s3Heading">x{{getItemAmount(slotNumber)}}</strong></button>
 <button class="battleItemButton cancelBattleItemButton customButtonStyle" (click)="unselectItemSlot(slotNumber)"><strong>X</strong></button>
 

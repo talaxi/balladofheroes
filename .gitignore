@@ -38,6 +38,7 @@ testem.log
 /typings
 
 test-config.index.ts
+environment.prod.ts
 
 # System files
 .DS_Store

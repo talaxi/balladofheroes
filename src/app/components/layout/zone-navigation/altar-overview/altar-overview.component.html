@@ -6,6 +6,8 @@
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect1)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect1)">
         </mat-progress-bar>
+        <br *ngIf='isMobile'/>
+        <span *ngIf='isMobile' class="smallCaps bold">{{getAltarName(altarEffect1)}}</span>
     </div>
     <div *ngIf="altarEffect1 !== undefined" class="altarBoon1">
         <div class="buffs" customToolTip [contentTemplate]="altarEffect1Popover" [tooltipDirection]="buffTooltipDirection">
@@ -20,6 +22,8 @@
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect2)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect2)">
         </mat-progress-bar>
+        <br *ngIf='isMobile'/>
+        <span *ngIf='isMobile' class="smallCaps bold">{{getAltarName(altarEffect2)}}</span>
     </div>
     <div *ngIf="altarEffect2 !== undefined" class="altarBoon2">
         <div class="buffs" customToolTip [contentTemplate]="altarEffect2Popover" [tooltipDirection]="buffTooltipDirection">
@@ -34,6 +38,8 @@
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect3)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect3)">
         </mat-progress-bar>
+        <br *ngIf='isMobile'/>
+        <span *ngIf='isMobile' class="smallCaps bold">{{getAltarName(altarEffect3)}}</span>
     </div>
     <div *ngIf="altarEffect3 !== undefined" class="altarBoon3">
         <div class="buffs" customToolTip [contentTemplate]="altarEffect3Popover" [tooltipDirection]="buffTooltipDirection">

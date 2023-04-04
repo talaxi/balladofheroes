@@ -4,18 +4,22 @@ import { ItemsEnum } from "../enums/items-enum.model";
 export class ResourceValue {    
     item: ItemsEnum;
     amount: number;
-    type: ItemTypeEnum;
+    extras: ItemsEnum[];
 
-    constructor(item: ItemsEnum, type: ItemTypeEnum, amount: number) {
+    constructor(item: ItemsEnum, amount: number) {
         this.item = item;
-        this.type = type;
         this.amount = amount;
     }
 
     makeCopy() 
     {
-        var copy = new ResourceValue(this.item, this.type, this.amount);
-
+        var copy = new ResourceValue(this.item, this.amount);        
+        if (this.extras !== undefined && this.extras.length > 0) {
+            copy.extras = [];
+            this.extras.forEach(extra => {
+                copy.extras.push(extra);
+            });
+        }
         return copy;
     }
 }

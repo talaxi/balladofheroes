@@ -1,0 +1,47 @@
+<div class="slotOverview">
+    <div class="flexHeaderBetween">
+        <span class="s4Heading">Change Slots</span>
+        <button class="buttonStyled" (click)="closeModal()">X</button>
+    </div>
+    <hr />
+    <div class="slotView">
+            <div class="availableEquipment">
+                <div class="scrollable">
+                    <div *ngFor="let gem of availableGems; let i = index" (mouseenter)="hoverGem(gem)">
+                        <div class="flexBetween">
+                            <button class="buttonAsText clickableText equipmentItemButton" (click)="selectGem(gem)">
+                                <span class="equipmentItem" customToolTip [isDelayed]="false"
+                                    [contentTemplate]="template" [innerHtml]="getItemName(gem)"></span>
+                            </button>
+                        </div>
+                        <hr class="leftAlignedMiniHr" />
+
+                        <ng-template #template>
+                            <div class="compareEquipment" [innerHtml]="getItemDescription(gem)">
+                            </div>
+                        </ng-template>
+                    </div>
+                </div>
+            </div>
+        <!--<div class="spacer">
+            <div class="vr">
+                <hr class="vrHr" />
+            </div>
+        </div>-->
+        <div class="itemInfo column">
+            <app-equipment-item-view class="selectedResource"
+                [equipment]="resourceAsEquipment" [associatedResource]="resource"></app-equipment-item-view>
+            <hr *ngIf="selectedItem" class="divider" />
+            <div *ngIf="selectedItem" class="result centeredText">
+                <div class="slotItem">
+                    <span>Adding <span [innerHtml]='getItemName(selectedItem)'></span></span>
+                        <br />
+                        <span [innerHtml]="getItemDescription(selectedItem)"></span>
+                        <br />
+                        <br />
+                        <button [disabled]="!slotsAvailable()" (click)="slotItem()">Add</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

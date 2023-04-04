@@ -1,7 +1,8 @@
 <div class="menu">    
-    <app-character-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Characters"></app-character-view>
+    <app-character-view [isMobile]="isMobile" *ngIf="menuService.selectedMenuDisplay === menuEnum.Characters"></app-character-view>
     <app-god-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Gods"></app-god-view>    
     <app-resource-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Resources"></app-resource-view>
-    <app-achievements-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Achievements"></app-achievements-view>
-    <app-settings-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Settings"></app-settings-view>
+    <app-achievements-view [isMobile]="isMobile" *ngIf="menuService.selectedMenuDisplay === menuEnum.Achievements"></app-achievements-view>
+    <app-professions-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Professions"></app-professions-view>
+    <app-settings-view [isMobile]="isMobile" *ngIf="menuService.selectedMenuDisplay === menuEnum.Settings"></app-settings-view>
 </div>

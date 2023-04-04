@@ -1,4 +1,5 @@
 import { Component, HostListener, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarEffect } from 'src/app/models/altar/altar-effect.model';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
@@ -23,6 +24,7 @@ export class AltarOverviewComponent implements OnInit {
   altarEffect3: AltarEffect | undefined;
   buffTooltipDirection = DirectionEnum.Left;
   subscription: any;
+  isMobile: boolean = false;
   
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
@@ -30,9 +32,13 @@ export class AltarOverviewComponent implements OnInit {
   }
 
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private lookupService: LookupService,
-    private keybindService: KeybindService, private altarService: AltarService) { }
+    private keybindService: KeybindService, private altarService: AltarService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
+    if (this.isMobile)
+      this.buffTooltipDirection = DirectionEnum.Up;
+
     this.updateAltars();
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
@@ -120,6 +126,10 @@ export class AltarOverviewComponent implements OnInit {
       if (this.altar3 !== undefined && this.altar3.conditionCount >= this.altar3.conditionMax)
         this.altarService.pray(this.altar3);
     }
+  }
+
+  getAltarName(altarEffect: AltarEffect) {
+    return this.lookupService.getBoonName(altarEffect.type);
   }
 
   ngOnDestroy() {

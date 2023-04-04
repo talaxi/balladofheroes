@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -18,9 +19,20 @@ export class ChangeClassViewComponent implements OnInit {
   classRows: Character[][];
   classCells: Character[];
 
-  constructor(private lookupService: LookupService, private globalService: GlobalService) { }
+  swapEquipment: boolean;
+  swapGods: Boolean;
+
+  constructor(private lookupService: LookupService, private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    var changeClassSwapEquipment = this.globalService.globalVar.settings.get("changeClassSwapEquipment");
+    if (changeClassSwapEquipment !== undefined)
+      this.swapEquipment = changeClassSwapEquipment;
+      
+    var changeClassSwapGods = this.globalService.globalVar.settings.get("changeClassSwapGods");
+    if (changeClassSwapGods !== undefined)
+      this.swapGods = changeClassSwapGods;
+
     this.currentParty = this.globalService.getActivePartyCharacters(false);
 
     if (this.character.type === this.currentParty[0].type)
@@ -34,6 +46,14 @@ export class ChangeClassViewComponent implements OnInit {
 
   swapClass(whichClass: number) {
     this.swappingClass = whichClass;
+  }
+
+  swapEquipmentToggle() {
+    this.globalService.globalVar.settings.set("changeClassSwapEquipment", this.swapEquipment);
+  }
+
+  swapGodsToggle() {
+    this.globalService.globalVar.settings.set("changeClassSwapGods", this.swapGods);
   }
 
   getClassName(whichClass?: number, type?: CharacterEnum) {
@@ -57,6 +77,9 @@ export class ChangeClassViewComponent implements OnInit {
   }
 
   currentlyAssignedToSameCharacter(type: CharacterEnum) {
+    var swappingType = this.swappingClass === 1 ? this.currentParty[0].type : this.currentParty[1].type;
+    
+    return swappingType === type;
     //return this.character.assignedClass1 === type || this.character.assignedClass2 === type;
   }
 
@@ -86,7 +109,7 @@ export class ChangeClassViewComponent implements OnInit {
 
     //var filteredItems = this.filterItems(this.shopItems);
 
-    var maxColumns = 4;
+    var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
 
     for (var i = 1; i <= this.allClasses.length; i++) {
       this.classCells.push(this.allClasses[i - 1]);
@@ -100,15 +123,26 @@ export class ChangeClassViewComponent implements OnInit {
       this.classRows.push(this.classCells);
   }
 
-  selectNewClass(type: CharacterEnum) {
+  selectNewClass(type: CharacterEnum) {    
+    var swappingType = 1;
+    if (this.swappingClass === 1)
+      swappingType = this.globalService.globalVar.activePartyMember1;
+    if (this.swappingClass === 2)
+      swappingType = this.globalService.globalVar.activePartyMember2;
+
+    if (this.swapEquipment)    
+      this.swapCharacterEquipment(type, swappingType);      
+    if (this.swapGods)    
+      this.swapCharacterGods(type, swappingType);    
+      
     if (this.globalService.globalVar.activePartyMember1 === type && this.swappingClass === 2)
     {      
-      this.globalService.globalVar.activePartyMember2 = this.globalService.globalVar.activePartyMember1;
+      this.globalService.globalVar.activePartyMember1 = this.globalService.globalVar.activePartyMember2;
     }
 
     if (this.globalService.globalVar.activePartyMember2 === type && this.swappingClass === 1)
     {      
-      this.globalService.globalVar.activePartyMember1 = this.globalService.globalVar.activePartyMember2;
+      this.globalService.globalVar.activePartyMember2 = this.globalService.globalVar.activePartyMember1;
     }
 
     if (this.swappingClass === 1)
@@ -125,27 +159,55 @@ export class ChangeClassViewComponent implements OnInit {
     });
   }
 
-  /*isCurrentlyAssigned(type: CharacterEnum) {
-    var isAssigned = false;
-    var party = this.globalService.getActivePartyCharacters(true);
+  swapCharacterEquipment(newType: CharacterEnum, oldType: CharacterEnum) {
+    var character1 = this.globalService.globalVar.characters.find(item => item.type === newType);
+    var character2 = this.globalService.globalVar.characters.find(item => item.type === oldType);
 
-    party.forEach(member => {
-      if (member.assignedClass1 === type || member.assignedClass2 === type)
-        isAssigned = true;
-    });
+    if (character1 === undefined || character2 === undefined)
+      return;
 
-    return isAssigned;
-  }*/
+    var character1Weapon = character1.equipmentSet.weapon;
+    var character2Weapon = character2.equipmentSet.weapon;
+    character1.equipmentSet.weapon = character2Weapon;
+    character2.equipmentSet.weapon = character1Weapon;
 
-  /*GetCurrentlyAssignedCharacter(type: CharacterEnum) {
-    var party = this.globalService.getActivePartyCharacters(true);
-    var assignedCharacter = new Character();
+    var character1Armor = character1.equipmentSet.armor;
+    var character2Armor = character2.equipmentSet.armor;
+    character1.equipmentSet.armor = character2Armor;
+    character2.equipmentSet.armor = character1Armor;
 
-    party.forEach(member => {
-      if (member.assignedClass1 === type || member.assignedClass2 === type)
-        assignedCharacter = member;
-    });
+    var character1Shield = character1.equipmentSet.shield;
+    var character2Shield = character2.equipmentSet.shield;
+    character1.equipmentSet.shield = character2Shield;
+    character2.equipmentSet.shield = character1Shield;
 
-    return "<span class='" + this.globalService.getCharacterColorClassText(assignedCharacter.type) + "'>" + assignedCharacter.name + "</span>";
-  }*/
+    var character1Ring = character1.equipmentSet.ring;
+    var character2Ring = character2.equipmentSet.ring;
+    character1.equipmentSet.ring = character2Ring;
+    character2.equipmentSet.ring = character1Ring;
+
+    var character1Necklace = character1.equipmentSet.necklace;
+    var character2Necklace = character2.equipmentSet.necklace;
+    character1.equipmentSet.necklace = character2Necklace;
+    character2.equipmentSet.necklace = character1Necklace;
+  }
+
+  swapCharacterGods(newType: CharacterEnum, oldType: CharacterEnum) {
+    var character1 = this.globalService.globalVar.characters.find(item => item.type === newType);
+    var character2 = this.globalService.globalVar.characters.find(item => item.type === oldType);
+
+    if (character1 === undefined || character2 === undefined)
+      return;
+
+      
+    var character1God1 = character1.assignedGod1;
+    var character2God1 = character2.assignedGod1;
+    character1.assignedGod1 = character2God1;
+    character2.assignedGod1 = character1God1;
+
+    var character1God2 = character1.assignedGod2;
+    var character2God2 = character2.assignedGod2;
+    character1.assignedGod2 = character2God2;
+    character2.assignedGod2 = character1God2;
+  }
 }

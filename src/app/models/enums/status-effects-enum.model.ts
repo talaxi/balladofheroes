@@ -89,5 +89,9 @@ export enum StatusEffectEnum {
     Unsteady,
     BattleItemDamageUp,
     ReduceDirectDamage,
-    ReduceHealing
+    ReduceHealing,
+    FillOverdriveGauge,
+    WitheringToxin,
+    VenomousToxin,
+    ElixirOfFortitude    
   }

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
@@ -18,7 +19,7 @@ export class ChangeGodViewComponent implements OnInit {
   godRows: God[][];
   godCells: God[];
 
-  constructor(private lookupService: LookupService, private globalService: GlobalService) { }
+  constructor(private lookupService: LookupService, private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.allGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
@@ -97,7 +98,7 @@ export class ChangeGodViewComponent implements OnInit {
 
     //var filteredItems = this.filterItems(this.shopItems);
 
-    var maxColumns = 4;
+    var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
 
     for (var i = 1; i <= this.allGods.length; i++) {
       this.godCells.push(this.allGods[i - 1]);

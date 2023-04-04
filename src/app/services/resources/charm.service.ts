@@ -100,11 +100,11 @@ export class CharmService {
   }
 
   getSmallCharmOfIngenuityValue() {
-    return .02;
+    return .01;
   }
 
   getLargeCharmOfIngenuityValue() {
-    return .06;
+    return .03;
   }
 
   getTotalAbilityCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
@@ -156,11 +156,11 @@ export class CharmService {
   }
 
   getSmallCharmOfElementalDestructionValue() {
-    return .05;
+    return .025;
   }
 
   getLargeCharmOfElementalDestructionValue() {
-    return .15;
+    return .75;
   }
 
   getSmallCharmOfElementalResistanceValue() {

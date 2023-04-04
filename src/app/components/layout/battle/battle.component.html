@@ -1,17 +1,34 @@
 <div class="gridContainer">
     <div class="header">
-        <div class="headerFlex">
-            <div class="alignCenter" *ngIf="doingColiseumFight()">
-                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} of {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>
-            <div class="s4Heading textCentered selectedSubzone pageHeader"><strong>{{activeSubzone.name}}</strong> <span
-                    *ngIf="showDevStats"> EPS: {{getExpectedExpPerSec()}}</span></div>
-            <div class="alignCenter" *ngIf="doingColiseumFight()">{{getTournamentTimeRemaining()}} remaining</div>
+        <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumFight(), 'headerFlex': !doingColiseumFight() }">
+            <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
+                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} of
+                {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>            
+                <button *ngIf="isMobile" class="buttonStyled zoneDropdown"
+                (click)="openZoneNavigation(zoneNavigationContent)">
+                <img class="dropdownIcon" src="assets/svg/dropdown.svg">
+            </button>
+            <div class="s4Heading textCentered selectedSubzone pageHeader">
+                <strong>{{getActiveSubzoneName()}}</strong>
+            </div>
+            <button *ngIf="isMobile && isNextSubzoneButtonAvailable()" class="buttonStyled nextSubzone"
+                (click)="goToNextSubzone()">
+                <img class="dropdownIcon" src="assets/svg/rightarrow.svg">
+            </button>
+            <div class="alignCenter coliseumTime" *ngIf="doingColiseumFight()">{{getTournamentTimeRemaining()}}
+                remaining</div>
+            <div class="victoryCount" *ngIf="isMobile">
+                {{getSubzoneVictoryCount()}}
+                <app-notification-icon *ngIf="newSubzoneUnlocked()">
+                </app-notification-icon>
+            </div>
         </div>
         <hr />
     </div>
     <div class="scene"
         [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory }">
-        <div class="enemies" [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation, 'removeTransition': noTransition }"
+        <div class="enemies"
+            [ngClass]="{'slideAnimation': showNewEnemyGroupAnimation, 'removeTransition': noTransition }"
             *ngIf="!isAtScene() && !isAtTown() && !isAtSideQuestScene()">
             <div *ngIf="currentEnemies !== undefined && !currentEnemies.isBossFight && !currentEnemies.isDoubleBossFight"
                 class="enemiesGrid">
@@ -74,17 +91,24 @@
             <!--<hr class='hr' />-->
         </div>
         <div *ngIf="isAtAltarScene()" class="altar">
-           
+
         </div>
         <div *ngIf="isAtSideQuestScene()" class="sidequest">
-            <app-altar *ngIf="atAltarOfAsclepius()"></app-altar>          
+            <app-altar *ngIf="atAltarOfAsclepius()"></app-altar>
         </div>
         <div *ngIf="isAtTown() && !isAtChestScene() && !isAtStoryScene() && !isAtSideQuestScene()" class="shopGrid">
             <app-shop-view></app-shop-view>
         </div>
     </div>
-    <hr class='gap hr' />
-    <div class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
+    <div *ngIf="isMobile && !isAtChestScene() && !isAtStoryScene()"
+        class="notificationOverlay" [ngClass]="{ 'opaque': notificationOverlayMessage.length > 0 }">
+        <div class="notificationMessage">
+            <span [innerHtml]="notificationOverlayMessage"></span>
+            <span class="buttonStyled skipOverlay" (click)="skipOverlayMessage()">X</span>
+        </div>
+    </div>
+    <hr *ngIf="!isMobile" class='gap hr' />
+    <div *ngIf="!isMobile" class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
         <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover"><img
@@ -97,4 +121,9 @@
 
 <ng-template #gameLogEditorModal>
     <app-game-log-editor></app-game-log-editor>
+</ng-template>
+
+
+<ng-template #zoneNavigationContent>
+    <app-zone-navigation></app-zone-navigation>
 </ng-template>

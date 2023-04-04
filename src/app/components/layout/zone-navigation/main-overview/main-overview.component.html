@@ -1,0 +1,41 @@
+<div class="quickLinkGrid">
+    <div *ngIf="townsAvailable" class="quickJump centeredText">
+        <span>Jump to..</span>
+        <br />
+        <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
+            (click)="jumpToLatestShop()">Latest Town</button>
+        <br />
+        <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()"
+            (click)="jumpToPalaceOfHades()">Palace of Hades</button>
+        <br />
+        <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()"
+            (click)="jumpToColiseum()">Coliseum</button>
+    </div>
+    <div class="peekResources centeredText">
+        <div class="textLeftAligned inlineBlock">
+            <span><span class="resource bold">Coins:</span><span>
+                    {{lookupService.getResourceAmount(itemsEnum.Coin) |
+                    number}}</span></span>
+            <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0" />
+            <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicPower) > 0"
+                class="resource chthonicPowerKeyword">Chthonic Power:
+                <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicPower) | number
+                    : '1.0-2'}}</span></span>
+            <br *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0" />
+            <span *ngIf="lookupService.getResourceAmount(itemsEnum.ChthonicFavor) > 0"
+                class="resource chthonicFavorKeyword">Chthonic Favor:
+                <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
+                    : '1.0-2'}}</span></span>
+            <br />
+            <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
+                (click)="viewFollowers(followers)">View Followers</button>
+        </div>
+    </div>
+</div>
+
+
+<ng-template #followers>
+    <div>
+        <app-follower-default-view></app-follower-default-view>
+    </div>
+</ng-template>

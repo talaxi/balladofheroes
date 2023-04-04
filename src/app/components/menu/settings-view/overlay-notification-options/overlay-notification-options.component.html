@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="header">Overlay Notification Editor</div>
+    <hr />
+    <div class="options">
+        <div class='column1'>
+            <mat-checkbox [(ngModel)]="displayOverlayBattleRewards" (input)="displayOverlayBattleRewardsToggle()">
+                Battle Rewards
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="displayOverlayTutorials" (input)="displayOverlayTutorialsToggle()">
+                Tutorials
+            </mat-checkbox>
+            <br />
+            <mat-checkbox [(ngModel)]="displayOverlayPray" (input)="displayOverlayPrayToggle()">
+                Pray to Altars
+            </mat-checkbox>
+        </div>
+    </div>
+</div>

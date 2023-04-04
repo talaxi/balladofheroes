@@ -34,7 +34,7 @@ export class ColiseumViewComponent implements OnInit {
       }
 
       var enumValue = propertyValue as ColiseumTournamentEnum;
-      if (enumValue !== ColiseumTournamentEnum.None && enumValue !== ColiseumTournamentEnum.MonstersOfTheLethe) { //TODO: when monsters of the lethe implemented, remove it from this
+      if (enumValue !== ColiseumTournamentEnum.None && enumValue !== ColiseumTournamentEnum.RiverLords) { //TODO: when river lords is implemented, remove it from this
         if (enumValue === ColiseumTournamentEnum.TournamentOfTheDead)
           tournaments.push(enumValue)
         else {
@@ -74,8 +74,8 @@ export class ColiseumViewComponent implements OnInit {
 
     this.selectedTournament.completionReward.forEach(item => {
       var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
-      if (item.type === ItemTypeEnum.Equipment) {
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
+      if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }
@@ -88,7 +88,7 @@ export class ColiseumViewComponent implements OnInit {
 
   firstTimeRewardAlreadyObtained() {
     var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);
-    if (tournamentType?.defeatCount !== undefined && tournamentType?.defeatCount >= 1)
+    if (tournamentType?.count !== undefined && tournamentType?.count >= 1)
       return true;
 
     return false;
@@ -99,8 +99,8 @@ export class ColiseumViewComponent implements OnInit {
 
     this.selectedTournament.quickCompletionReward.forEach(item => {
       var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
-      if (item.type === ItemTypeEnum.Equipment) {
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item));
+      if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }

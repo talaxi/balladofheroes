@@ -49,6 +49,7 @@
     font-weight: bold;
     color: var(--positive-status-effect);    
     display: none;
+    z-index: 100;
 }
 
 .levelUpAnimation {
@@ -76,5 +77,26 @@
     100% {
         transform: translate(0, -30px) scale(.5);        
         opacity: 0;
+    }
+}
+
+
+
+@media (max-width: 800px) {
+    .xpBarWidth {
+        width: 68%;
+    }
+
+    .flex {
+        width: 68%;
+    }
+    
+    .extraClickSpace {
+        margin: -1rem !important;
+        padding: 1rem !important;
+    }
+
+    .targetInactive {
+        filter: grayscale(1);
     }
 }

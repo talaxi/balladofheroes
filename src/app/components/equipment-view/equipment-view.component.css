@@ -2,10 +2,15 @@
   height: 100%;
 }
 
+.flexHeaderBetween {
+  display: flex;
+  justify-content: space-between;
+}
+
 .equipmentView {
   display: grid;
   width: 100%;
-  height: 92%;
+  height: 90%;
   grid-template-columns: 1fr 1fr;
   grid-template-rows: 1fr;
   justify-content: stretch;
@@ -54,9 +59,14 @@
 }
 
 .flexBetween {
-  display:flex;
-  justify-content:  space-between;
-  width: 70%; /* needs to match .leftAlignedMiniHr */
+  display: flex;
+  justify-content: space-between;
+  width: 95%;
+  /* needs to match .leftAlignedMiniHr */
+}
+
+.leftAlignedMiniHr {
+  width: 95%;
 }
 
 .filterOption {
@@ -72,8 +82,24 @@
   text-align: center;
 }
 
+.equipmentItemButton {
+  text-align: left;
+}
+
 .icon {
   width: 1rem;
   height: 100%;
   aspect-ratio: 1/1;
+}
+
+
+@media (max-width: 800px) {
+  .compareEquipment {
+    flex-direction: column;
+  }
+
+  .comparedEquipmentItem {
+    border-top: 1px solid gray;
+    border-left: unset;
+  }
 }

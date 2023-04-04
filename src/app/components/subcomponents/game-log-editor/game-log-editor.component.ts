@@ -1,5 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 
 @Component({
@@ -33,7 +34,8 @@ export class GameLogEditorComponent implements OnInit {
   constructor(private globalService: GlobalService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
-    this.alchemyUnlocked = this.globalService.globalVar.alchemy.isUnlocked;
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    this.alchemyUnlocked = alchemy !== undefined && alchemy.isUnlocked;
     this.followersUnlocked = this.globalService.globalVar.followerData.availableFollowers > 0;
 
     var partyAutoAttacks = this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks");

@@ -1,6 +1,6 @@
 import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
 
-export class AlchemyUpgrades {
+export class ProfessionUpgrades {
     quality: EquipmentQualityEnum;
     durationReduction: number;
     chanceTo2xItem: number;

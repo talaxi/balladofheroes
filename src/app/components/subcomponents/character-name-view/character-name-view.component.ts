@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -33,12 +34,16 @@ export class CharacterNameViewComponent implements OnInit {
   levelUpAnimationText = "Lv Up!";
   characterName: string;
   targetKeybind: string = "";
+  isMobile: boolean = false;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
     private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService,
-    private gameLoopService: GameLoopService, private battleService: BattleService, private keybindService: KeybindService) { }
+    private gameLoopService: GameLoopService, private battleService: BattleService, private keybindService: KeybindService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
+
     if (this.character.type === this.globalService.globalVar.activePartyMember1)
     {
       var keybind = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter1TargetMode");
@@ -192,6 +197,10 @@ export class CharacterNameViewComponent implements OnInit {
     return this.lookupService.getCharacterDps(this.character);
   }
 
+  isTargetActivate() {
+    return this.battleService.targetCharacterMode && this.battleService.characterInTargetMode === this.character.type;
+  }
+
   activateTargetingMode() {
     this.battleService.targetCharacterMode = !this.battleService.targetCharacterMode;
     if (this.battleService.targetCharacterMode)
@@ -213,6 +222,10 @@ export class CharacterNameViewComponent implements OnInit {
       src += "priestTarget.svg";
 
       return src;
+  }
+
+  preventRightClick() {
+    return false;
   }
 
   ngOnDestroy() {

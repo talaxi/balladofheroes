@@ -1,0 +1,19 @@
+<div class="container">
+    <div class="centeredText">
+        <div class="s2Heading pageHeader" [ngClass]="getProfessionColor()">{{getProfessionName()}}</div>
+
+        <div *ngIf="selectedProfession === professionEnum.Alchemy">
+            <app-alchemy-overview [expandedView]="true"></app-alchemy-overview>
+        </div>
+    </div>
+    <br/>
+    <br/>
+    <span class="sectionHeaderText sectionHeading">Stats</span>
+    <div class="sectionInfo flex">
+        <div *ngFor="let quality of qualityEnumList">
+            <div *ngFor="let upgrade of getUpgradesByQuality(quality)">
+                <span [innerHtml]="getUpgradeValues(upgrade)"></span>
+            </div>
+        </div>
+    </div>
+</div>

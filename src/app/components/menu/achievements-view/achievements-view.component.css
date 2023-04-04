@@ -153,3 +153,9 @@ td {
 .itemsPerPageActive {
     color: var(--foreground-secondary) !important;   
 }
+
+@media (max-width: 800px) {
+    .item {
+        width: 100%;
+    }
+}

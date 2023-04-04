@@ -35,7 +35,7 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 375;
 
-  public godStatGainLevelIncrement = (1 / 14);
+  public godStatGainLevelIncrement = (1 / 15);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
@@ -44,20 +44,21 @@ export class UtilityService {
   public alchemyLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
-  public largeAltarAffinityGain = 2;
-  public pyreAffinityGain = 3;
+  public largeAltarAffinityGain = 5;
+  public pyreAffinityGain = 20;
 
   public affinityRewardPrayerDuration = .5;
   public affinityRewardPrayerEffectiveness = .5;
   public affinityRewardGodXpBonus = .1;
   public basePrayGodXpIncrease = 20;
+  public largeAltarPrayGodXpIncrease = 250;
 
   public killCountDisplayEnemyStatsAbilities = 1;
   public killCountDisplayBasicEnemyLoot = 10;
   public killCountDisplayFullEnemyLoot = 30;
 
   public overdriveDamageNeededToUnlockProtection = 100000;
-  public overdriveAttacksNeededToUnlockNature = 75000;
+  public overdriveAttacksNeededToUnlockNature = 250000;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
@@ -71,8 +72,12 @@ export class UtilityService {
   public preferredGodEndTime3 = 4;
 
   public followerSearchZoneInterval = 60;
-  public smallAltarActivationChancePerFollower = .1;
-  public smallAltarPrayChancePerFollower = .01;
+  public smallAltarActivationChancePerFollower = .25;
+  public smallAltarPrayChancePerFollower = .02;
+  public largeAltarActivationChancePerFollower = .1;
+  public largeAltarPrayChancePerFollower = .01;
+
+  public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 

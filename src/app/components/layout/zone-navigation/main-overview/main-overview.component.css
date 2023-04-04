@@ -1,0 +1,19 @@
+.quickLinkGrid {
+    margin-left: 1rem;
+    margin-right: 1rem;
+    display: grid;
+    height: auto;    
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "peekResources quickJump";
+}
+
+.quickJump {
+    grid-area: quickJump;
+}
+
+.peekResources {
+    grid-area: peekResources;
+}

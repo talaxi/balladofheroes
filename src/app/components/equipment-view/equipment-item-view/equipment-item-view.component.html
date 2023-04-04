@@ -2,9 +2,8 @@
     <div *ngIf="equipment === undefined">
         Unequipped
     </div>
-    <div *ngIf="equipment !== undefined">
-        <!--TODO: [class]="getEquipmentClass()" but it doesn't look great on tooltip-->
-        <span class="s4Heading">{{lookupService.getItemName(equipment.itemType)}}</span>
+    <div *ngIf="equipment !== undefined">        
+        <span class="s4Heading" [class]="getEquipmentClass()">{{lookupService.getItemName(equipment.itemType)}}</span>
         <br />
         <span>{{lookupService.getEquipmentTypeName(equipment)}}</span>
         <br/>

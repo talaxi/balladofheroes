@@ -1,4 +1,5 @@
-<div class="gridContainer">
+<!-- web version -->
+<div *ngIf="!isMobile" class="gridContainer webVersion">
     <div class="headerArea">
         <app-header [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
     </div>
@@ -28,7 +29,7 @@
                     </mat-progress-bar>
                 </div>
                 <br/>
-                <div>
+                <div class="centeredText">
                     <i>Up to 30 minutes of away time is automated. After that, up to 8 hours is banked and allows
                         you to run the game at double speed.</i>
                 </div>
@@ -42,4 +43,47 @@
     <div class="footerArea">
         <app-footer [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-footer>
     </div>
+</div>
+
+
+<!-- mobile version -->
+<div *ngIf="isMobile" class="gridContainer mobileVersion">
+    <div class="headerArea">
+        <app-header [isMobile]="true" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }"></app-header>
+    </div>
+    <div class="mainArea" (click)="closeMobileMenu()"
+        [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu && !storyService.triggerFirstTimeUnderworldScene && !storyService.endFirstTimeUnderworldScene }">
+        <div class="mainContainer"
+            [ngClass]="{ 'hide': lookupService.isUIHidden, 'darken': storyService.triggerFirstTimeUnderworldScene, 'lighten': storyService.endFirstTimeUnderworldScene }">
+            <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
+                <app-battle class="battleArea" [isMobile]="true"
+                    [ngClass]="{ 'hide': (storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory) || storyService.endFirstTimeUnderworldScene, 'dark': storyService.showFirstTimeUnderworldStory }"></app-battle>
+                <app-quick-view class="quickLinks" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-quick-view>
+                <app-party class="partyArea" [isMobile]="true"
+                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-party>                                
+            </div>
+            <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
+                <app-menu-display [isMobile]="true" class="menuDisplay screenMargin"></app-menu-display>
+            </div>
+        </div>
+        <div class="loadingContainer" *ngIf="lookupService.isUIHidden">
+            <div>
+                <div class="centeredText">
+                    <span class="s1Heading">Loading...</span>
+                    <br />
+                    <mat-progress-bar mode="indeterminate" class="green-progress barHeight xpHighBar mobileLoadingBar">
+                    </mat-progress-bar>
+                </div>
+                <br/>
+                <div class="centeredText">
+                    <i>Up to 30 minutes of away time is automated. After that, up to 8 hours is banked and allows
+                        you to run the game at double speed.</i>
+                </div>
+                <div *ngIf="displayFunFacts">
+                    <br/>
+                    <br/>
+                </div>
+            </div>
+        </div>
+    </div>    
 </div>

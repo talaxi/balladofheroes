@@ -37,20 +37,6 @@ export class AltarService {
     return altar;
   }
 
-  getNewSmallAltar(specifiedGod: GodEnum = GodEnum.None, noRepeatingAltars: boolean = true) {
-    var altar = new AltarInfo();
-
-    altar.type = AltarEnum.Small;
-    if (specifiedGod === GodEnum.None)
-      altar.god = this.lookupService.getRandomGodEnum(noRepeatingAltars);
-    else
-      altar.god = specifiedGod;
-    altar.condition = this.getRandomSmallAltarCondition();
-    altar.conditionMax = this.getAltarMaxConditions(altar);
-
-    return altar;
-  }
-
   getAltarMaxConditions(altar: AltarInfo) {
     var maxCount = 0;
     var tutorialAmount = false;
@@ -60,28 +46,32 @@ export class AltarService {
     if (altar.condition === AltarConditionEnum.OverdriveUse) {
       if (altar.type === AltarEnum.Small)
         maxCount = 1;
+      else if (altar.type === AltarEnum.Large)
+        maxCount = 2;
     }
     if (altar.condition === AltarConditionEnum.Victories) {
       if (altar.type === AltarEnum.Small)
         maxCount = 5;
+      if (altar.type === AltarEnum.Large)
+        maxCount = 10;
     }
     if (altar.condition === AltarConditionEnum.AutoAttackUse) {
       if (altar.type === AltarEnum.Small)
         maxCount = 20;
+      if (altar.type === AltarEnum.Large)
+        maxCount = 40;
     }
     if (altar.condition === AltarConditionEnum.AbilityUse) {
       if (altar.type === AltarEnum.Small)
         maxCount = tutorialAmount ? 10 : 20;
+      else if (altar.type === AltarEnum.Large)
+        maxCount = 40;
     }
 
     return maxCount;
   }
 
   incrementAltarCount(condition: AltarConditionEnum) {
-    /*this.globalService.globalVar.altarInfo.forEach(altar => {
-      if (altar.condition === condition && altar.conditionCount < altar.conditionMax)
-        altar.conditionCount += 1;
-    });*/
     var altar1 = this.globalService.globalVar.altars.altar1;
 
     if (altar1 !== undefined && altar1.condition === condition && altar1.conditionCount < altar1.conditionMax)
@@ -109,73 +99,88 @@ export class AltarService {
     return options;
   }
 
-  getButtonText(option: AltarPrayOptionsEnum, altar: AltarInfo) {
-    var text = "";
-
-    if (option === AltarPrayOptionsEnum.Strength)
-      text = "Pray for Strength";
-    if (option === AltarPrayOptionsEnum.Fortune)
-      text = "Pray for Fortune";
-
-    return text;
-  }
-
   pray(altar: AltarInfo, comingFromFollowers: boolean = false, followersActivatingAltar: boolean = false) {
-    if (altar.type === AltarEnum.Small) {
-      var effect = this.getRandomEffect(altar);
-      this.setAltarEffect(effect, altar);
+    var effect = this.getRandomEffect(altar);
+    this.setAltarEffect(effect, altar);
+    var affinityXpGain = 0;
+    var godXpGain = 0;
 
-      var god = this.globalService.globalVar.gods.find(item => item.type === altar.god);
-      if (god !== undefined) {
-        god.affinityExp += this.utilityService.smallAltarAffinityGain;
-        this.globalService.giveGodExp(god, this.utilityService.basePrayGodXpIncrease);
+    var god = this.globalService.globalVar.gods.find(item => item.type === altar.god);
+    if (god !== undefined) {
+      if (altar.type === AltarEnum.Small) {
+        affinityXpGain = this.utilityService.smallAltarAffinityGain;
+        godXpGain = this.utilityService.basePrayGodXpIncrease;
+      }
+      else if (altar.type === AltarEnum.Large) {
+        affinityXpGain = this.utilityService.largeAltarAffinityGain;
+        godXpGain = this.utilityService.largeAltarPrayGodXpIncrease;
+      }
+      
+      god.affinityExp += affinityXpGain;
+      this.globalService.giveGodExp(god, godXpGain);
 
-        if (god.affinityExp >= god.affinityExpToNextLevel) {
-          god.affinityExp -= god.affinityExpToNextLevel;
-          god.affinityLevel += 1;
-          god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
+      if (god.affinityExp >= god.affinityExpToNextLevel) {
+        god.affinityExp -= god.affinityExpToNextLevel;
+        god.affinityLevel += 1;
+        god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
 
-          if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
-            this.lookupService.gainResource(new ResourceValue(this.getSmallCharmOfGod(god.type), ItemTypeEnum.Charm, 1));
-          }
-          else if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.LargeCharm) {
-            this.lookupService.gainResource(new ResourceValue(this.getLargeCharmOfGod(god.type), ItemTypeEnum.Charm, 1));
-          }
+        if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
+          this.lookupService.gainResource(new ResourceValue(this.getSmallCharmOfGod(god.type), 1));
         }
-
-        if (comingFromFollowers) {
-          if (this.globalService.globalVar.gameLogSettings.get("followerPrayer")) {
-            if (followersActivatingAltar) {
-              var gameLogEntry = "Your followers activate your altar to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
-              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
-            }
-            else {
-              var gameLogEntry = "Your followers pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
-              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
-            }
-          }
-        }
-        else {
-          if (this.globalService.globalVar.gameLogSettings.get("prayToAltar")) {
-            var gameLogEntry = "You pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
-          }
+        else if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.LargeCharm) {
+          this.lookupService.gainResource(new ResourceValue(this.getLargeCharmOfGod(god.type), 1));
         }
       }
 
-      if (altar === this.globalService.globalVar.altars.altar1) {
-        this.globalService.globalVar.altars.altar1 = undefined;
-        this.globalService.globalVar.altars.altar1 = this.getNewSmallAltar();
+      if (comingFromFollowers) {
+        if (this.globalService.globalVar.gameLogSettings.get("followerPrayer")) {
+          if (followersActivatingAltar) {
+            var gameLogEntry = "Your followers activate your altar to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+          }
+          else {
+            var gameLogEntry = "Your followers pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+          }
+        }
       }
-      if (altar === this.globalService.globalVar.altars.altar2) {
-        this.globalService.globalVar.altars.altar2 = undefined;
-        this.globalService.globalVar.altars.altar2 = this.getNewSmallAltar();
-      }
-      if (altar === this.globalService.globalVar.altars.altar3) {
-        this.globalService.globalVar.altars.altar3 = undefined;
-        this.globalService.globalVar.altars.altar3 = this.getNewSmallAltar();
+      else {
+        if (this.globalService.globalVar.gameLogSettings.get("prayToAltar")) {
+          var gameLogEntry = "You pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+        }
       }
     }
+
+    if (altar === this.globalService.globalVar.altars.altar1) {
+      var altarType = this.globalService.globalVar.altars.altar1.type;
+      this.globalService.globalVar.altars.altar1 = undefined;      
+      this.globalService.globalVar.altars.altar1 = this.getNewAltar(altarType);
+    }
+    if (altar === this.globalService.globalVar.altars.altar2) {
+      var altarType = this.globalService.globalVar.altars.altar2.type;
+      this.globalService.globalVar.altars.altar2 = undefined;      
+      this.globalService.globalVar.altars.altar2 = this.getNewAltar(altarType);
+    }
+    if (altar === this.globalService.globalVar.altars.altar3) {
+      var altarType = this.globalService.globalVar.altars.altar3.type;
+      this.globalService.globalVar.altars.altar3 = undefined;      
+      this.globalService.globalVar.altars.altar3 = this.getNewAltar(altarType);
+    }
+  }
+
+  getNewAltar(type: AltarEnum, specifiedGod: GodEnum = GodEnum.None, noRepeatingAltars: boolean = true) {
+    var altar = new AltarInfo();
+
+    altar.type = type;
+    if (specifiedGod === GodEnum.None)
+      altar.god = this.lookupService.getRandomGodEnum(noRepeatingAltars);
+    else
+      altar.god = specifiedGod;
+    altar.condition = this.getRandomSmallAltarCondition();
+    altar.conditionMax = this.getAltarMaxConditions(altar);
+
+    return altar;
   }
 
   getRandomEffect(altar: AltarInfo) {
@@ -184,24 +189,56 @@ export class AltarService {
     //possibleEffects.push(AltarEffectsEnum.AttackUp); //this should be for Zeus, not everyone
 
     if (altar.god === GodEnum.Athena) {
-      possibleEffects.push(AltarEffectsEnum.AthenaDefenseUp);
-      possibleEffects.push(AltarEffectsEnum.AthenaHeal);
-      possibleEffects.push(AltarEffectsEnum.AthenaHealOverTime);
+      if (altar.type === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.AthenaDefenseUp);
+        possibleEffects.push(AltarEffectsEnum.AthenaHeal);
+        possibleEffects.push(AltarEffectsEnum.AthenaHealOverTime);
+      }
+      else if (altar.type === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.AthenaRareHealOverTime);
+        possibleEffects.push(AltarEffectsEnum.AthenaRareBlind);
+        if (this.globalService.isGodEquipped(altar.god))
+          possibleEffects.push(AltarEffectsEnum.AthenaRareHolyDamageIncrease);
+      }
     }
     if (altar.god === GodEnum.Artemis) {
-      possibleEffects.push(AltarEffectsEnum.ArtemisLuckUp);
-      possibleEffects.push(AltarEffectsEnum.ArtemisCriticalDamageUp);
-      possibleEffects.push(AltarEffectsEnum.ArtemisDefenseDebuff);
+      if (altar.type === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.ArtemisLuckUp);
+        possibleEffects.push(AltarEffectsEnum.ArtemisCriticalDamageUp);
+        possibleEffects.push(AltarEffectsEnum.ArtemisDefenseDebuff);
+      }
+      else if (altar.type === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.ArtemisRareAttackDebuff);
+        possibleEffects.push(AltarEffectsEnum.ArtemisRareCriticalDamageUp);
+        if (this.globalService.isGodEquipped(altar.god))
+          possibleEffects.push(AltarEffectsEnum.ArtemisRareDebuffDurationUp);
+      }
     }
     if (altar.god === GodEnum.Hermes) {
-      possibleEffects.push(AltarEffectsEnum.HermesAbilityCooldown);
-      possibleEffects.push(AltarEffectsEnum.HermesAgilityUp);
-      possibleEffects.push(AltarEffectsEnum.HermesAutoAttackUp);
+      if (altar.type === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.HermesAbilityCooldown);
+        possibleEffects.push(AltarEffectsEnum.HermesAgilityUp);
+        possibleEffects.push(AltarEffectsEnum.HermesAutoAttackUp);
+      }
+      else if (altar.type === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.HermesRareAutoAttackUp);
+        possibleEffects.push(AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime);
+        if (this.globalService.isGodEquipped(altar.god))
+          possibleEffects.push(AltarEffectsEnum.HermesRareReduceAutoAttackCooldown);
+      }
     }
     if (altar.god === GodEnum.Apollo) {
-      possibleEffects.push(AltarEffectsEnum.ApolloResistanceUp);
-      possibleEffects.push(AltarEffectsEnum.ApolloHeal);
-      possibleEffects.push(AltarEffectsEnum.ApolloBuffDurationUp);
+      if (altar.type === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.ApolloResistanceUp);
+        possibleEffects.push(AltarEffectsEnum.ApolloHeal);
+        possibleEffects.push(AltarEffectsEnum.ApolloBuffDurationUp);
+      }
+      else if (altar.type === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.ApolloRareBuffDurationUp);
+        possibleEffects.push(AltarEffectsEnum.ApolloRareHpRegenIncrease);
+        if (this.globalService.isGodEquipped(altar.god))
+          possibleEffects.push(AltarEffectsEnum.ApolloRareOstinato);
+      }
     }
 
     return possibleEffects[this.utilityService.getRandomInteger(0, possibleEffects.length - 1)];
@@ -284,6 +321,75 @@ export class AltarService {
       altarEffect.effectiveness = 1.02;
       altarEffect.stacks = false;
     }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.AthenaRareHolyDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.04;
+      altarEffect.stacks = false;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.AthenaRareHealOverTime) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 20;
+      altarEffect.tickFrequency = (60 / 10);
+      altarEffect.stacks = false;
+      altarEffect.isEffectMultiplier = false;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.AthenaRareBlind) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.ArtemisRareAttackDebuff) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = .95;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.ArtemisRareDebuffDurationUp) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.04;
+      altarEffect.stacks = false;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.ArtemisRareCriticalDamageUp) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.stacks = false;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.HermesRareAutoAttackUp) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.stacks = false;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.005;
+      altarEffect.tickFrequency = (60 / 5);
+      altarEffect.stacks = false;
+      altarEffect.isEffectMultiplier = false;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.HermesRareReduceAutoAttackCooldown) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = .98;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.ApolloRareHpRegenIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.stacks = false;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.ApolloRareOstinato) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+      altarEffect.isEffectMultiplier = true;
+    }
+    if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.ApolloRareBuffDurationUp) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+    }
 
     var god = this.globalService.globalVar.gods.find(item => item.type === altar.god);
 
@@ -326,7 +432,7 @@ export class AltarService {
           else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1)
             altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (faith.effectiveness));
           else
-            altarEffect.effectiveness *= faith.effectiveness;    
+            altarEffect.effectiveness *= faith.effectiveness;
         }
       }
     }
@@ -356,6 +462,8 @@ export class AltarService {
       item = ItemsEnum.SmallCharmOfZeus;
     if (type === GodEnum.Poseidon)
       item = ItemsEnum.SmallCharmOfPoseidon;
+      if (type === GodEnum.Hades)
+        item = ItemsEnum.SmallCharmOfHades;
 
     return item;
   }
@@ -377,6 +485,8 @@ export class AltarService {
       item = ItemsEnum.LargeCharmOfZeus;
     if (type === GodEnum.Poseidon)
       item = ItemsEnum.LargeCharmOfPoseidon;
+      if (type === GodEnum.Hades)
+        item = ItemsEnum.LargeCharmOfHades;
 
     return item;
   }

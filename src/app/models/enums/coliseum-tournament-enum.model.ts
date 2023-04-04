@@ -3,6 +3,6 @@ export enum ColiseumTournamentEnum {
   TournamentOfTheDead,
   FlamesOfTartarus,
   ForgottenKings,
-  MonstersOfTheLethe,
+  RiverLords,
   HadesTrial
 }

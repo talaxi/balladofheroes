@@ -31,7 +31,7 @@ export class Ability {
     autoMode: boolean; //users can swap between auto mode and manual mode
     manuallyTriggered: boolean;
     abilityUpgradeLevel: number;
-    isAbilityPermanent: boolean;
+    isPermanent: boolean;
     damageModifierRange: number; 
 
     constructor() {
@@ -52,6 +52,6 @@ export class Ability {
         this.autoMode = true;
         this.manuallyTriggered = false;
 
-        this.isAbilityPermanent = false;
+        this.isPermanent = false;
     }
 }

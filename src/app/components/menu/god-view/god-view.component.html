@@ -1,16 +1,28 @@
 <div class="gridContainer">
     <div class="godInfo">
+        <div class="traverseUp">
+            <div *ngIf="isMobile && hasMoreThanOneGod()" class="centeredText">
+                <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon" src="assets/svg/uparrow.svg"></button>
+            </div>
+        </div>
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getGodColor()">{{god.name}}</span>
             <br />
-            <span>Level {{god.level}}</span>
+            <span customToolTip [tooltipDirection]="tooltipDirection"
+            [contentTemplate]="godXpPopover">Level {{god.level}}</span>
             <br />
-            <span>{{god.exp | number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
+            <span customToolTip [tooltipDirection]="tooltipDirection"
+            [contentTemplate]="godXpPopover">{{god.exp | number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
                 1}}</span>
+        </div>
+        <div class="traverseDown">
+            <div *ngIf="isMobile && hasMoreThanOneGod()" class="centeredText">
+                <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon" src="assets/svg/dropdown.svg"></button>
+            </div>
         </div>
     </div>
     <div class="godPrimaryStats">
-        <span class="sectionHeaderText sectionHeading">Primary Stat Bonuses</span>
+        <span class="sectionHeaderText sectionHeading">{{isMobile ? "Primary Stats" : "Primary Stat Bonuses"}}</span>
         <div class="sectionInfo">
             <div class="primaryStats">
                 <span *ngIf="getMaxHpBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
@@ -51,7 +63,7 @@
         </div>
     </div>
     <div class="godSecondaryStats">
-        <span class="sectionHeaderText sectionHeading">Secondary Stat Bonuses</span>
+        <span class="sectionHeaderText sectionHeading">{{isMobile ? "Secondary Stats" : "Secondary Stat Bonuses"}}</span>
         <div class="sectionInfo secondaryStats">
             <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="hpRegenPopover"><strong [ngClass]="getGodColor()" class="statLabel">HP
@@ -165,7 +177,7 @@
 
     <div class="godUpcoming">
         <span class="sectionHeaderText sectionHeading">Upcoming Level Rewards</span>
-        <div class="sectionInfo">
+        <div class="sectionInfo" >
             <div [innerHtml]="getGodLevelRewards()">
             </div>
         </div>
@@ -497,6 +509,14 @@
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getGodElementalDamageResistanceStatBreakdown(this.god, undefined, 'Earth')">
 
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #godXpPopover>
+    <div>        
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodXpBreakdown(this.god)">
         </div>
     </div>
 </ng-template>

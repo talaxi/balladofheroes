@@ -4,6 +4,7 @@ import { ComponentPortal } from '@angular/cdk/portal';
 import { CustomTooltipComponent } from './custom-tooltip.component';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Directive({
   selector: '[customToolTip]'
@@ -28,12 +29,14 @@ export class ToolTipRendererDirective {
   subscription: any;
   delayTimerCap = .35;
   @Input() isDelayed: boolean = true;
+  @Input() isLargeTooltip: boolean = false;
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
 
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
     private _elementRef: ElementRef,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   /**
    * Init life cycle event handler
@@ -100,25 +103,16 @@ export class ToolTipRendererDirective {
    * This method will show the tooltip by instantiating the McToolTipComponent and attaching to the overlay
    */
   @HostListener('mouseenter')
-  show() {    
-    if (this.isDelayed) {
-      this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
-        this.delayTimer += deltaTime;
+  show() { 
+    if (!this.deviceDetectorService.isMobile())   
+      this.openToolTip();
+  }
 
-        //attach the component if it has not already attached to the overlay
-        if (this._overlayRef && !this._overlayRef.hasAttached() && this.delayTimer > this.delayTimerCap) {
-          const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
-          tooltipRef.instance.text = this.text;
-          tooltipRef.instance.contentTemplate = this.contentTemplate;
-        }
-      });
-    }
-    else {
-      if (this._overlayRef && !this._overlayRef.hasAttached()) {
-        const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
-        tooltipRef.instance.text = this.text;
-        tooltipRef.instance.contentTemplate = this.contentTemplate;        
-      }
+  @HostListener('touchstart')
+  mobileShow(event: any) { 
+    if (this.deviceDetectorService.isMobile()) {        
+      event?.preventDefault();
+      this.openToolTip();      
     }
   }
 
@@ -129,7 +123,14 @@ export class ToolTipRendererDirective {
    */
   @HostListener('mouseleave')
   hide() {    
-    this.closeToolTip();
+    if (!this.deviceDetectorService.isMobile())   
+      this.closeToolTip();
+  }
+
+  @HostListener('touchend')
+  mobileHide() {    
+    if (this.deviceDetectorService.isMobile())   
+      this.closeToolTip();
   }
 
   /**
@@ -141,6 +142,30 @@ export class ToolTipRendererDirective {
    */
   ngOnDestroy() {
     this.closeToolTip();
+  }
+
+  openToolTip() {
+    if (this.isDelayed) {
+      this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
+        this.delayTimer += deltaTime;
+
+        //attach the component if it has not already attached to the overlay
+        if (this._overlayRef && !this._overlayRef.hasAttached() && this.delayTimer > this.delayTimerCap) {
+          const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
+          tooltipRef.instance.text = this.text;
+          tooltipRef.instance.contentTemplate = this.contentTemplate;
+          tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;
+        }
+      });
+    }
+    else {
+      if (this._overlayRef && !this._overlayRef.hasAttached()) {
+        const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
+        tooltipRef.instance.text = this.text;
+        tooltipRef.instance.contentTemplate = this.contentTemplate;  
+        tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;      
+      }
+    }
   }
 
   /**

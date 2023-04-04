@@ -1,0 +1,61 @@
+.itemImage {
+    width: 100%;
+    height: 100%;
+}
+
+.battleItemButton {
+    position: relative;
+}
+
+.cancelBattleItemButton {
+    width: 100%;
+    font-size: .75rem;
+    margin-top: .15rem;
+}
+
+.itemAmount {
+    position: absolute;
+    bottom: 0;
+    right: .1rem;
+}
+
+::ng-deep .mat-menu-panel {
+    background: var(--background-light);
+}
+
+.selectableItem {
+    border: 2px solid black;
+}
+
+.battleItemGrid {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "battleItem1 battleItem2 battleItem3 battleItem4";
+    gap: 5%;
+}
+
+.battleItem1 {
+    grid-area: battleItem1;
+}
+
+.battleItem2 {
+    grid-area: battleItem2;
+}
+
+.battleItem3 {
+    grid-area: battleItem3;
+}
+
+.battleItem4 {
+    grid-area: battleItem4;
+}
+
+.battleItem {
+    display: flex;
+    align-self: center;
+    flex-direction: column;
+}

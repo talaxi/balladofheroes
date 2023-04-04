@@ -1,0 +1,71 @@
+.slotOverview {
+    height: 100%;
+  }
+  
+  .flexHeaderBetween {
+    display: flex;
+    justify-content: space-between;
+  }
+
+  .slotView {
+    display: grid;
+    width: 100%;
+    height: 85%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    gap: 1rem;
+    grid-template-areas:
+      "availableEquipment itemInfo";
+  
+    color: var(--foreground-default);
+  }
+
+.vr {
+    display: flex;
+    height: 100%;
+}
+
+.vrHr {
+    margin: 0 1rem;
+    padding: 0;
+    height: auto;
+}
+
+.column {
+    width: 100%;
+}
+
+.itemInfo {
+    display: grid;
+    width: 100%;
+    height: 100%;
+    grid-template-columns: 1fr;
+    grid-template-rows: 1fr auto auto;
+    justify-content: stretch;
+    gap: 1rem;
+    grid-template-areas:
+      "selectedResource"
+      "divider"
+      "result";
+  
+    color: var(--foreground-default);
+  }
+
+  .availableEquipment {
+    grid-area: availableEquipment;
+    overflow-y: auto;    
+  }
+
+  .itemInfo {
+    grid-area: itemInfo;
+  }
+
+  .divider {
+    width: 100%;
+  }
+
+  .equipmentItem {
+    font-size: 1rem;
+    font-weight: bold;
+  }

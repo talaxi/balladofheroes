@@ -107,7 +107,8 @@
         "hpBar hpAmount";
 }
 
-.boss .characterBar, .enemy .characterBar {
+.boss .characterBar,
+.enemy .characterBar {
     width: 97% !important;
 }
 
@@ -151,4 +152,34 @@
 
 .statValue {
     vertical-align: middle;
+}
+
+@media (max-width: 800px) {
+    .characterBar {
+        width: 64%;
+    }
+
+    .enemy {
+        grid-template-columns: 64% 1fr;
+    }
+
+    .boss {
+        grid-template-columns: 82% 1fr;
+    }
+
+    .hpMpText {
+        font-size: .9rem;
+    }
+
+    /*.fullHeight {
+        height: 100%;
+    }*/
+
+    .characterTargeted:hover,
+    .characterTargetedAdventurer:hover,
+    .characterTargetedArcher:hover,
+    .characterTargetedWarrior:hover,
+    .characterTargetedPriest:hover {
+        border: 2px solid var(--background-default);
+    }
 }

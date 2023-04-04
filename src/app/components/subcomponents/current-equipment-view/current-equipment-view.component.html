@@ -1,35 +1,94 @@
 <div class="existingEquipment">
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedWeapon"><strong class="statLabel">Weapon: </strong>
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedWeapon"><strong class="statLabel">Weapon:
+      </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Weapon)"></span>
     </span>
-    <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Weapon)" class="unequipButton buttonStyled" (click)="unequipItem(equipmentTypeEnum.Weapon)">X</button>
+    <div class="buttonOptions">
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Weapon)"
+        (click)="openSlotMenu(weaponSlotMenuContent)">Slot</button>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Weapon)" class="unequipButton buttonStyled"
+        (click)="unequipItem(equipmentTypeEnum.Weapon)">X</button>
+    </div>
   </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedShield"><strong class="statLabel">Shield: </strong>
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedShield"><strong class="statLabel">Shield:
+      </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Shield)"></span></span>
-      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Shield)" class="unequipButton buttonStyled" (click)="unequipItem(equipmentTypeEnum.Shield)">X</button>
+    <div class="buttonOptions">
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Shield)"
+        (click)="openSlotMenu(shieldSlotMenuContent)">Slot</button>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Shield)" class="unequipButton buttonStyled"
+        (click)="unequipItem(equipmentTypeEnum.Shield)">X</button>
+    </div>
   </div>
   <div class="equipmentDiv">
     <span customToolTip [isDelayed]="false" [contentTemplate]="equippedArmor"><strong class="statLabel">Armor: </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Armor)"></span></span>
-      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Armor)" class="unequipButton buttonStyled" (click)="unequipItem(equipmentTypeEnum.Armor)">X</button>
+    <div class="buttonOptions">
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Armor)"
+        (click)="openSlotMenu(armorSlotMenuContent)">Slot</button>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Armor)" class="unequipButton buttonStyled"
+        (click)="unequipItem(equipmentTypeEnum.Armor)">X</button>
+    </div>
   </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing"><strong class="statLabel">Ring: </strong>
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing"><strong class="statLabel">Ring:
+      </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
-      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Ring)" class="unequipButton buttonStyled" (click)="unequipItem(equipmentTypeEnum.Ring)">X</button>
-  </div>  
+    <div class="buttonOptions">
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Ring)"
+        (click)="openSlotMenu(ringSlotMenuContent)">Slot</button>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Ring)" class="unequipButton buttonStyled"
+        (click)="unequipItem(equipmentTypeEnum.Ring)">X</button>
+    </div>
+  </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong class="statLabel">Necklace: </strong>
+    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong class="statLabel">Necklace:
+      </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Necklace)"></span></span>
-      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Necklace)" class="unequipButton buttonStyled" (click)="unequipItem(equipmentTypeEnum.Necklace)">X</button>
+    <div class="buttonOptions">
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Necklace)"
+        (click)="openSlotMenu(necklaceSlotMenuContent)">Slot</button>
+      <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Necklace)"
+        class="unequipButton buttonStyled" (click)="unequipItem(equipmentTypeEnum.Necklace)">X</button>
+    </div>
   </div>
 </div>
 <!--<div *ngIf="canChangeEquipment">
   <br />
   <button (click)="openEquipmentModal(equipmentModal)">Change Equipment</button>
 </div>-->
+
+<ng-template #weaponSlotMenuContent>
+  <app-slot-menu-view [isResourceEquipped]="true" [equippedCharacter]="characterType"
+    [resource]="getEquippedItemResourceByType(equipmentTypeEnum.Weapon)!" [dialogRef]="dialogRef"
+    (itemSlottedEmitter)="itemSlotted($event)"></app-slot-menu-view>
+</ng-template>
+
+<ng-template #shieldSlotMenuContent>
+  <app-slot-menu-view [isResourceEquipped]="true" [equippedCharacter]="characterType"
+    [resource]="getEquippedItemResourceByType(equipmentTypeEnum.Shield)!" [dialogRef]="dialogRef"
+    (itemSlottedEmitter)="itemSlotted($event)"></app-slot-menu-view>
+</ng-template>
+
+<ng-template #armorSlotMenuContent>
+  <app-slot-menu-view [isResourceEquipped]="true" [equippedCharacter]="characterType"
+    [resource]="getEquippedItemResourceByType(equipmentTypeEnum.Armor)!" [dialogRef]="dialogRef"
+    (itemSlottedEmitter)="itemSlotted($event)"></app-slot-menu-view>
+</ng-template>
+
+<ng-template #necklaceSlotMenuContent>
+  <app-slot-menu-view [isResourceEquipped]="true" [equippedCharacter]="characterType"
+    [resource]="getEquippedItemResourceByType(equipmentTypeEnum.Necklace)!" [dialogRef]="dialogRef"
+    (itemSlottedEmitter)="itemSlotted($event)"></app-slot-menu-view>
+</ng-template>
+
+<ng-template #ringSlotMenuContent>
+  <app-slot-menu-view [isResourceEquipped]="true" [equippedCharacter]="characterType"
+    [resource]="getEquippedItemResourceByType(equipmentTypeEnum.Ring)!" [dialogRef]="dialogRef"
+    (itemSlottedEmitter)="itemSlotted($event)"></app-slot-menu-view>
+</ng-template>
 
 <ng-template #equipmentModal>
   <app-equipment-view *ngIf="canChangeEquipment && equipmentModalOpened" [characterType]="characterType">
@@ -39,7 +98,8 @@
 <ng-template #equippedWeapon>
   <div class="equippedItem">
     <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Weapon)"></app-equipment-item-view>
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Weapon)"
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Weapon)?.associatedResource"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -47,7 +107,8 @@
 <ng-template #equippedShield>
   <div class="equippedItem">
     <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Shield)"></app-equipment-item-view>
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Shield)"
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Shield)?.associatedResource"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -55,7 +116,8 @@
 <ng-template #equippedArmor>
   <div class="equippedItem">
     <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"></app-equipment-item-view>
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Armor)?.associatedResource"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -63,7 +125,8 @@
 <ng-template #equippedRightRing>
   <div class="equippedItem">
     <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"></app-equipment-item-view>
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Ring)?.associatedResource"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -71,7 +134,8 @@
 <ng-template #equippedNecklace>
   <div class="equippedItem">
     <div class="item">
-      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Necklace)">
+      <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Necklace)"
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Necklace)?.associatedResource">
       </app-equipment-item-view>
     </div>
   </div>

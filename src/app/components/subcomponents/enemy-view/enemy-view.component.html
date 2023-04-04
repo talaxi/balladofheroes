@@ -26,7 +26,7 @@
         <span class="hpMpText hpAmount"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
             {{getCharacterMaxHp()}}<br /></span>
     </div>
-    <div>
+    <div class="fullHeight">
         <app-status-effect-view [character]="character"></app-status-effect-view>
     </div>
 </div>

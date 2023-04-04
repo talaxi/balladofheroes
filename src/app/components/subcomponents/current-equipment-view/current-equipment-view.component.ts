@@ -1,5 +1,6 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
-import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
@@ -18,11 +19,22 @@ export class CurrentEquipmentViewComponent implements OnInit {
   @Input() canChangeEquipment: boolean = false;
   equipmentModalOpened = false;
   @Output() unequipEmitter = new EventEmitter<boolean>();
+  dialogRef: MatDialogRef<any, any>;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, public dialog: MatDialog,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+  }
+
+  getEquippedItemResourceByType(type: EquipmentTypeEnum) {
+    var item = this.getEquippedItemByType(type);
+    return item?.associatedResource;
+  }
+
+  equipmentPieceHasSlots(type: EquipmentTypeEnum) {
+    var item = this.getEquippedItemByType(type);    
+    return this.lookupService.equipmentPieceHasSlots(item?.associatedResource);
   }
 
   getEquippedItemNameByType(type: EquipmentTypeEnum) {
@@ -33,9 +45,10 @@ export class CurrentEquipmentViewComponent implements OnInit {
       return "Unequipped";
 
     var itemName = this.lookupService.getItemName(item.itemType);
-    var qualityClass = this.lookupService.getEquipmentQualityClass(item);
+    var qualityClass = this.lookupService.getEquipmentQualityClass(item.quality);
+    var extraNameAddition = this.lookupService.getEquipmentExtraNameAddition(item.associatedResource);
 
-    itemText = "<strong class='" + qualityClass + "'>" + itemName + "</strong>";
+    itemText = "<strong class='" + qualityClass + "'>" + itemName + extraNameAddition + "</strong>";
 
     return itemText;
   }
@@ -57,6 +70,13 @@ export class CurrentEquipmentViewComponent implements OnInit {
     this.dialog.open(content, { width: '50%', height: '55%', panelClass: 'mat-dialog-no-scroll' });
   }
 
+  openSlotMenu(slotMenuContent: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '60%', height: '65%', panelClass: 'mat-dialog-no-scroll' });
+  }
+
   isUnequipped(type: EquipmentTypeEnum) {
     var isUnequipped = false;
 
@@ -72,5 +92,9 @@ export class CurrentEquipmentViewComponent implements OnInit {
   unequipItem(type: EquipmentTypeEnum) { 
     this.globalService.unequipItem(type, this.characterType);
     this.unequipEmitter.emit(false); 
+  }
+
+  itemSlotted(slotted: boolean) {
+    //this.setUpAvailableEquipment();
   }
 }

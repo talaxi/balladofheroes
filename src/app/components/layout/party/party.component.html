@@ -1,4 +1,5 @@
 <div class="gridContainer" [ngClass]="{'hide': lookupService.isUIHidden}">
+    <hr *ngIf="isMobile" class="hr" />
     <div *ngFor="let character of party; let i = index" [class]="'character' + (i + 1)">
         <div *ngIf="character.type === noCharacter" class="partyMember">
         </div>
@@ -26,22 +27,22 @@
                         </div>
                         <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex"
                             (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
-                            <span *ngIf="!character.overdriveInfo.overdriveAutoMode"
+                            <span *ngIf="!character.overdriveInfo.autoMode"
                                 class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
                                 class="red-progress characterBar overdriveProgressBar highBar"
-                                [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.overdriveAutoMode}">
+                                [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.autoMode}">
                             </mat-progress-bar> <span class="hpMpText">
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                             </span>
                         </div>
                     </div>
-                    <div>
+                    <div class="fullHeight">
                         <app-status-effect-view [character]="character"></app-status-effect-view>
                     </div>
                     <div>
                         <app-god-name-view [character]="character"></app-god-name-view>
-                        <br />
+                        <br *ngIf="!isMobile" />
                     </div>
                 </div>
                 <div class="abilities">
@@ -50,48 +51,48 @@
                         </app-ability-view>
                         <app-ability-view class="ability1" [character]="character"
                             *ngIf="isCharacterAbilityAvailable(character, 0)"
-                            [ability]="getCharacterAbility(character, 0)"></app-ability-view>
+                            [ability]="getCharacterAbility(character, 0)" [abilityIndex]="0"></app-ability-view>
                         <app-ability-view class="ability2" [character]="character"
                             *ngIf="isCharacterAbilityAvailable(character, 1)"
-                            [ability]="getCharacterAbility(character, 1)"></app-ability-view>
+                            [ability]="getCharacterAbility(character, 1)" [abilityIndex]="1"></app-ability-view>
 
                         <app-ability-view class="god1ability1" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 0)" [ability]="getGodAbility(character, 1, 0)">
+                            *ngIf="isGodAbilityAvailable(character, 1, 0)" [ability]="getGodAbility(character, 1, 0)" [abilityIndex]="0">
                         </app-ability-view>
                         <app-ability-view class="god1ability2" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 1)" [ability]="getGodAbility(character, 1, 1)">
+                            *ngIf="isGodAbilityAvailable(character, 1, 1)" [ability]="getGodAbility(character, 1, 1)" [abilityIndex]="1">
                         </app-ability-view>
                         <app-ability-view class="god1ability3" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 2)" [ability]="getGodAbility(character, 1, 2)">
+                            *ngIf="isGodAbilityAvailable(character, 1, 2)" [ability]="getGodAbility(character, 1, 2)" [abilityIndex]="2">
                         </app-ability-view>
 
                         <app-ability-view class="god2ability1" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 0)" [ability]="getGodAbility(character, 2, 0)">
+                            *ngIf="isGodAbilityAvailable(character, 2, 0)" [ability]="getGodAbility(character, 2, 0)" [abilityIndex]="0">
                         </app-ability-view>
                         <app-ability-view class="god2ability2" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 1)" [ability]="getGodAbility(character, 2, 1)">
+                            *ngIf="isGodAbilityAvailable(character, 2, 1)" [ability]="getGodAbility(character, 2, 1)" [abilityIndex]="1">
                         </app-ability-view>
                         <app-ability-view class="god2ability3" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 2)" [ability]="getGodAbility(character, 2, 2)">
+                            *ngIf="isGodAbilityAvailable(character, 2, 2)" [ability]="getGodAbility(character, 2, 2)" [abilityIndex]="2">
                         </app-ability-view>
                     </div>
                 </div>
             </div>
         </div>
-        <hr *ngIf="activeCharacterCount > 1" />
+        <hr *ngIf="activeCharacterCount > 1 && (!isMobile || (isMobile && i === 0))" />
     </div>
-    <div>
+    <div *ngIf="!isMobile">
         <div *ngIf="displayDps" class="dps" class="s4Heading textCentered pageHeader dpsChecks">
             <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
-                Party DPS: {{getPartyDps() | number : '1.0-0'}}
+                Party DPS: {{getPartyDps()}}
             </span>
             <span class='smallText enemyDps' customToolTip [contentTemplate]="dpsTemplate">
-                Incoming DPS: {{getEnemyDps() | number : '1.0-0'}}
+                Incoming DPS: {{getEnemyDps()}}
             </span>
         </div>
         <hr *ngIf="unlockedBattleItems" class="noMargin" />
     </div>
-    <div *ngIf="unlockedBattleItems" class="options battleItemGrid">
+    <div *ngIf="unlockedBattleItems && !isMobile" class="options battleItemGrid">
         <div *ngFor="let _ of [].constructor(getItemBeltCount()); let i = index" class="battleItem"
             [class]="'battleItem' + (i + 1)">
             <button *ngIf="isBattleItemSlotUnequipped(i)" [ngClass]="{'hide': battleItems.length === 0}"

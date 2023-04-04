@@ -14,9 +14,9 @@ export class CharacterStats {
     hpRegen: number;
     criticalMultiplier: number;
     @Type(() => ElementalStats)
-    elementalDamageIncrease: ElementalStats;
+    elementIncrease: ElementalStats;
     @Type(() => ElementalStats)
-    elementalDamageResistance: ElementalStats;
+    elementResistance: ElementalStats;
     abilityCooldownReduction: number;
     autoAttackCooldownReduction: number;
     armorPenetration: number;
@@ -37,8 +37,8 @@ export class CharacterStats {
 
         this.hpRegen = 0;
         this.criticalMultiplier = 0;
-        this.elementalDamageIncrease = new ElementalStats();
-        this.elementalDamageResistance = new ElementalStats();
+        this.elementIncrease = new ElementalStats();
+        this.elementResistance = new ElementalStats();
         this.abilityCooldownReduction = 0; 
         this.autoAttackCooldownReduction = 0; 
         this.armorPenetration = 0;

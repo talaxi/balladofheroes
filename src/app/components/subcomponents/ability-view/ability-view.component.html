@@ -1,8 +1,10 @@
 <div customToolTip [contentTemplate]="abilityPopover" class="container">
     <div class="centeredBox">
-        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAuto()">
+        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAuto()"
+        (touchstart)="longPressStart()" (touchend)="longPressEnd()">
             <div>
-                <span class='abilityTimer' [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }"><img class="abilityImage" [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)"></span>                
+                <span class='abilityTimer' [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
+                <img class="abilityImage" (contextmenu)="preventRightClick()" [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)"></span>                
                 <span *ngIf="isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode " class="manualModeText"><strong>OFF</strong></span>
             </div>
             <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate" [diameter]="spinnerDiameter"
@@ -14,10 +16,12 @@
 
 <ng-template #abilityPopover>
     <div>
-        <strong><span [innerHtml]="getAbilityName()"></span></strong>
-        <hr class="miniHr" />
+        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong>
+        <!--<hr class="miniHr" />-->
+        <hr />
         <span [innerHtml]="getAbilityDescription()"></span>        
         <hr />
-        Right click to toggle between Manual and Auto mode. Left click to manually use ability.
+        <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
+        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>
     </div>
 </ng-template>

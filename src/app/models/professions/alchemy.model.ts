@@ -1,15 +1,16 @@
 import { Type } from "class-transformer";
-import { AlchemyUpgrades } from "./alchemy-upgrades.model";
+import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
+import { ProfessionUpgrades } from "./profession-upgrades.model";
 import { Recipe } from "./recipe.model";
 
 export class Alchemy {
-    level: number;
+    /*level: number;
     maxLevel: number;
     exp: number;
     expToNextLevel: number;
     isUnlocked: boolean;
-    @Type(() => AlchemyUpgrades)
-    upgrades: AlchemyUpgrades[]; //each array item is for a different quality of recipe
+    @Type(() => ProfessionUpgrades)
+    upgrades: ProfessionUpgrades[]; //each array item is for a different quality of recipe
     @Type(() => Recipe)
     availableRecipes: Recipe[];
 
@@ -21,10 +22,13 @@ export class Alchemy {
     alchemyCurrentAmountCreated: number;
     alchemyCreateAmount: number;
 
+    recipeBookQualityToggle: [EquipmentQualityEnum, boolean][];
+
     constructor() {
         this.level = 0;
         this.availableRecipes = [];
         this.upgrades = [];
+        this.recipeBookQualityToggle = [];
         this.isUnlocked = false;
         this.alchemyTimer = 0;
         this.alchemyTimerLength = 0;
@@ -33,5 +37,5 @@ export class Alchemy {
         this.expToNextLevel = 20;
         this.alchemyCurrentAmountCreated = 0;
         this.alchemyCreateAmount = 1;
-    }
+    }*/
 }

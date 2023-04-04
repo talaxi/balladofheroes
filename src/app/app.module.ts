@@ -91,6 +91,15 @@ import { FollowerOverviewViewComponent } from './components/subcomponents/follow
 import { FollowerSearchViewComponent } from './components/subcomponents/followers-view/follower-search-view/follower-search-view.component';
 import { FollowerPrayerViewComponent } from './components/subcomponents/followers-view/follower-prayer-view/follower-prayer-view.component';
 import { FollowerDefaultViewComponent } from './components/subcomponents/followers-view/follower-default-view/follower-default-view.component';
+import { QuickViewComponent } from './components/mobile-components/quick-view/quick-view.component';
+import { MainOverviewComponent } from './components/layout/zone-navigation/main-overview/main-overview.component';
+import { AlchemyOverviewComponent } from './components/layout/zone-navigation/alchemy-overview/alchemy-overview.component';
+import { ItemBeltOverviewComponent } from './components/layout/zone-navigation/item-belt-overview/item-belt-overview.component';
+import { GameTextOverviewComponent } from './components/layout/zone-navigation/game-text-overview/game-text-overview.component';
+import { QuickViewOptionsComponent } from './components/menu/settings-view/quick-view-options/quick-view-options.component';
+import { OverlayNotificationOptionsComponent } from './components/menu/settings-view/overlay-notification-options/overlay-notification-options.component';
+import { ProfessionsViewComponent } from './components/menu/professions-view/professions-view.component';
+import { SlotMenuViewComponent } from './components/equipment-view/slot-menu-view/slot-menu-view.component';
 
 @NgModule({
   declarations: [
@@ -146,7 +155,16 @@ import { FollowerDefaultViewComponent } from './components/subcomponents/followe
     FollowerOverviewViewComponent,
     FollowerSearchViewComponent,
     FollowerPrayerViewComponent,
-    FollowerDefaultViewComponent
+    FollowerDefaultViewComponent,
+    QuickViewComponent,
+    MainOverviewComponent,
+    AlchemyOverviewComponent,
+    ItemBeltOverviewComponent,
+    GameTextOverviewComponent,
+    QuickViewOptionsComponent,
+    OverlayNotificationOptionsComponent,
+    ProfessionsViewComponent,
+    SlotMenuViewComponent,    
   ],
   imports: [
     BrowserModule,

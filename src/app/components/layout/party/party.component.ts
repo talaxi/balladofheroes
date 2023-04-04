@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit, QueryList, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, QueryList, ViewChild } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -42,6 +42,7 @@ export class PartyComponent implements OnInit {
   partyMember2CheckSubscription: any;
   displayDps = false;
   unlockedBattleItems = false;
+  @Input() isMobile = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
@@ -84,8 +85,8 @@ export class PartyComponent implements OnInit {
   }
 
   getViableBattleItems() {
-    return this.globalService.globalVar.resources.filter(item => (item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem ||
-      item.type === ItemTypeEnum.Toxin || item.type === ItemTypeEnum.Elixir) && item.amount > 0);   
+    return this.globalService.globalVar.resources.filter(item => (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.HealingItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.BattleItem ||
+    this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Toxin || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Elixir) && item.amount > 0);   
   }
 
   ngAfterViewInit() {
@@ -116,7 +117,7 @@ export class PartyComponent implements OnInit {
   }
 
   getCharacterOverdrivePercent(character: Character) {
-    return (character.overdriveInfo.overdriveGaugeAmount / character.overdriveInfo.overdriveGaugeTotal) * 100;
+    return (character.overdriveInfo.gaugeAmount / character.overdriveInfo.gaugeTotal) * 100;
   }
 
   getCharacterGodName(character: Character, whichGod: number) {
@@ -322,7 +323,7 @@ export class PartyComponent implements OnInit {
   }
 
   toggleAuto(character: Character) {
-    character.overdriveInfo.overdriveAutoMode = !character.overdriveInfo.overdriveAutoMode; 
+    character.overdriveInfo.autoMode = !character.overdriveInfo.autoMode; 
     
     return false;
   }
@@ -336,7 +337,7 @@ export class PartyComponent implements OnInit {
 
     dps = this.dpsCalculatorService.calculatePartyDps();
 
-    return dps;
+    return this.utilityService.bigNumberReducer(Math.round(dps));
   }
 
   getEnemyDps() {
@@ -344,7 +345,7 @@ export class PartyComponent implements OnInit {
 
     dps = this.dpsCalculatorService.calculateEnemyDps();
 
-    return dps;
+    return this.utilityService.bigNumberReducer(Math.round(dps));
   }
 
   setupKeybinds(event: KeyboardEvent) {
@@ -457,7 +458,7 @@ export class PartyComponent implements OnInit {
     }
 
     if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter1Overdrive"))) {
-      this.party[0].overdriveInfo.overdriveAutoMode = !this.party[0].overdriveInfo.overdriveAutoMode;
+      this.party[0].overdriveInfo.autoMode = !this.party[0].overdriveInfo.autoMode;
     }
 
     //Character 2
@@ -568,7 +569,7 @@ export class PartyComponent implements OnInit {
       }
 
       if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("autoToggleCharacter2Overdrive"))) {
-        this.party[1].overdriveInfo.overdriveAutoMode = !this.party[1].overdriveInfo.overdriveAutoMode;
+        this.party[1].overdriveInfo.autoMode = !this.party[1].overdriveInfo.autoMode;
       }
     }
   }

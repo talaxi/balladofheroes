@@ -21,10 +21,10 @@ export class ResourceViewComponent implements OnInit {
   constructor(public lookupService: LookupService, private globalService: GlobalService) { }
 
   ngOnInit(): void {
-    this.resources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && (item.type === ItemTypeEnum.Resource || item.type === ItemTypeEnum.HealingItem || item.type === ItemTypeEnum.BattleItem || item.type === ItemTypeEnum.CraftingMaterial)).sort();
-    this.equipmentItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && item.type === ItemTypeEnum.Equipment).sort();   
-    this.progressionResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && item.type === ItemTypeEnum.Progression).sort();
-    this.charmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && item.type === ItemTypeEnum.Charm).sort();
+    this.resources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Resource || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.HealingItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.BattleItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.CraftingMaterial)).sort();
+    this.equipmentItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment).sort();   
+    this.progressionResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Progression).sort();
+    this.charmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm).sort();
   }
 
   isResourceTracked(resource: ResourceValue) {

@@ -35,3 +35,10 @@
 .godResetButton {
     grid-area: godResetButton;
 }
+
+
+@media (max-width: 800px) {
+    .god {        
+        grid-template-columns: 1fr 1fr 1fr 1.5fr 1fr;
+    }
+}

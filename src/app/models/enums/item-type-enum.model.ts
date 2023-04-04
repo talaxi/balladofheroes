@@ -8,5 +8,6 @@ export enum ItemTypeEnum {
   Resource,
   Progression,
   Toxin,
-  Elixir
+  Elixir,
+  SlotItem
 }

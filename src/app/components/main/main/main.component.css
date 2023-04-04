@@ -37,26 +37,6 @@
     "menuOptions menuDisplay";
 }
 
-@media (max-width: 800px) {
-  .gridContainer {
-    display: grid;
-    width: 100vw;
-    height: 100%;
-    position: fixed;
-    top: 0;
-    left: 0;
-    bottom: 0;
-    right: 0;
-    grid-template-columns: 1fr 1fr 1fr;
-    grid-template-rows: auto 1fr auto;
-    justify-content: stretch;
-    grid-template-areas:
-      "header header header"
-      "main main main"
-      "footer footer footer";
-  }
-}
-
 .mainArea {
   grid-area: main;
   justify-self: stretch;
@@ -197,4 +177,55 @@
 .loadingBar {
   max-width: 20vw;
   margin: auto;
+}
+
+.mobileLoadingBar {
+  max-width: 40vw;
+  margin: auto;
+}
+
+.mobileVersion {
+  display: none;
+}
+
+@media (max-width: 800px) {
+  .mobileVersion {
+    display: grid;
+  }
+
+  .webVersion {
+    display: none;
+  }
+  
+  .quickLinks {
+    grid-area: quickLinks;
+  }
+
+  .gridContainer {
+    width: 100vw;
+    height: 100%;      
+    position: fixed;
+    top: 0;
+    left: 0;
+    bottom: 0;
+    right: 0;
+    grid-template-columns: 1fr;
+    grid-template-rows: 5% 95%;
+    justify-content: stretch;
+    grid-template-areas:
+      "header"
+      "main";
+  }
+
+  .defaultDisplayGrid {
+    width: 100%;
+    height: 100%;
+    grid-template-columns: auto;
+    grid-template-rows: 43% 4% 53%;
+    justify-content: stretch;
+    grid-template-areas:
+      "battle"
+      "quickLinks"
+      "party";
+  }
 }

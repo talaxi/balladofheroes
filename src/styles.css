@@ -3,6 +3,10 @@
 @import url("https://fonts.googleapis.com/css?family=PT+Sans:400,700");
 @import url("https://fonts.googleapis.com/css?family=Inconsolata:400,700");
 
+.mat-checkbox-label {
+  align-self: center;
+}
+
 .mdc-dialog__container {
   color: var(--foreground-default);
 }
@@ -35,7 +39,7 @@
   --mdc-linear-progress-active-indicator-color: #0828d1 !important;
 }
 
-.blue-progress  .mdc-linear-progress__buffer-bar {
+.blue-progress .mdc-linear-progress__buffer-bar {
   background-color: #01082e !important;
 }
 
@@ -43,7 +47,7 @@
   --mdc-linear-progress-active-indicator-color: #c40e1d !important;
 }
 
-.red-progress  .mdc-linear-progress__buffer-bar {
+.red-progress .mdc-linear-progress__buffer-bar {
   background-color: #290609 !important;
 }
 
@@ -51,8 +55,16 @@
   --mdc-linear-progress-active-indicator-color: var(--alchemyColor) !important;
 }
 
-.purple-progress  .mdc-linear-progress__buffer-bar {
+.purple-progress .mdc-linear-progress__buffer-bar {
   background-color: #381142 !important;
+}
+
+.jewelcrafting-progress {
+  --mdc-linear-progress-active-indicator-color: var(--jewelcraftingColor) !important;
+}
+
+.jewelcrafting-progress .mdc-linear-progress__buffer-bar {
+  filter: brightness(50%);
 }
 
 .barrier-progress {
@@ -81,7 +93,8 @@
 
 :root {
   /* Colors */
-  --foreground-secondary: #6D8EAA; /* old: 6B8CA5 */ 
+  --foreground-secondary: #6D8EAA;
+  /* old: 6B8CA5 */
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
@@ -89,6 +102,7 @@
   --foreground-light: #FFFFFF;
   --active-filter: #FFFFFF;
   --inactive-filter: #6A808A;
+  --foreground-tooltip: #91afc7;
 
   /* 797C80 */
   --background-default: #41474D;
@@ -125,9 +139,10 @@
   --aresColor: #EE665F;
   --apolloColor: #eda324;
   --poseidonColor: #00baa1;
-  --hermesColor: #efefef; /*#faf9eb maybe instead */
+  --hermesColor: #efefef;
+  /*#faf9eb maybe instead */
   --artemisColor: #97BBB0;
-  --hadesColor: #BBAFC5;  
+  --hadesColor: #BBAFC5;
 
   --holyColor: #d9dbbf;
   --lightningColor: #fff30b;
@@ -147,6 +162,7 @@
   --extraordinaryEquipmentColor: #F79721;
   --uniqueEquipmentColor: #FF6250;
   --alchemyColor: #CE66E9;
+  --jewelcraftingColor: #C5B45A;
 
   --resourceKeywordColor: #EAAD91;
   --insufficientResourcesKeywordColor: #7a818c;
@@ -154,6 +170,7 @@
   --chthonicPowerColor: #83C2A6;
   --overdriveColor: #FA989E;
   --followerColor: #3DB6D1;
+  --sidequestColor: #cc6f12;
 
   --barrierColor: #0FCCC6;
 
@@ -253,20 +270,23 @@
 
   --m2-size: 1.1rem;
   --m2-weight: 400;
-  --m2-spacing: 0.1px; 
-  
+  --m2-spacing: 0.1px;
+
   /* Zone Navigation */
   --z1-size: 1.1rem;
+  --mz1-size: 1.4rem;
   --z1-weight: 400;
   --z1-spacing: 0.1px;
 
   --z2-size: 1.05rem;
+  --mz2-size: 1.2rem;
   --z2-weight: 400;
-  --z2-spacing: 0.1px; 
+  --z2-spacing: 0.1px;
 
   --z3-size: .935rem;
+  --mz3-size: 1.1rem;
   --z3-weight: 400;
-  --z3-spacing: 0.1px; 
+  --z3-spacing: 0.1px;
 }
 
 body {
@@ -411,7 +431,7 @@ h6 {
 }
 
 .baseWeight {
-  font-weight:normal;
+  font-weight: normal;
 }
 
 .crossed {
@@ -426,6 +446,17 @@ h6 {
   font-weight: 550;
 }
 
+.aHrefStyledAsButton {
+  background-color: var(--button-background-color);
+  color: var(--foreground-quaternary);
+  font-weight: bold;
+  font-size: .95rem;
+  padding: .1rem .5rem;
+  margin: .1rem .2rem;
+  border: solid 2px black;
+  cursor: pointer;
+}
+
 .buttonStyled {
   background-color: var(--button-background-color);
   color: var(--foreground-quaternary);
@@ -434,6 +465,11 @@ h6 {
   padding: .1rem .5rem;
   margin: .1rem .2rem;
   border-style: solid;
+}
+
+.smallButtonStyled {
+  padding: 0 .3rem !important;
+  margin: .1rem .1rem !important;
 }
 
 .buttonStyled:hover {
@@ -529,13 +565,17 @@ button:active:enabled {
   user-select: none;
 }
 
-html, body { height: 100%; }
-
-.mat-progress-spinner circle {
-  transition: none !important;    
+html,
+body {
+  height: 100%;
 }
 
-.mat-progress-spinner circle, .mat-spinner circle {
+.mat-progress-spinner circle {
+  transition: none !important;
+}
+
+.mat-progress-spinner circle,
+.mat-spinner circle {
   stroke: unset;
 }
 
@@ -559,6 +599,10 @@ html, body { height: 100%; }
   color: var(--alchemyColor);
 }
 
+.jewelcraftingText {
+  color: var(--jewelcraftingColor);
+}
+
 .overdriveText {
   color: var(--overdriveColor);
 }
@@ -566,6 +610,11 @@ html, body { height: 100%; }
 .followerText {
   color: var(--followerColor);
 }
+
+.sidequestText {
+  color: var(--sidequestColor);
+}
+
 
 .tutorialText {
   font-weight: bold;
@@ -604,52 +653,52 @@ html, body { height: 100%; }
 .adventurerColor {
   color: var(--adventurerColor);
   stroke: var(--adventurerColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--adventurerColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--adventurerColor) !important;
 }
 
 .archerColor {
   color: var(--archerColor);
   stroke: var(--archerColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--archerColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--archerColor) !important;
 }
 
 .warriorColor {
   color: var(--warriorColor);
   stroke: var(--warriorColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--warriorColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--warriorColor) !important;
 }
 
 .priestColor {
   color: var(--priestColor);
   stroke: var(--priestColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--priestColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--priestColor) !important;
 }
 
 .athenaColor {
   color: var(--athenaColor);
   stroke: var(--athenaColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--athenaColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--athenaColor) !important;
 }
 
 .zeusColor {
   color: var(--zeusColor);
   stroke: var(--zeusColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--zeusColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--zeusColor) !important;
 }
 
 .artemisColor {
   color: var(--artemisColor);
   stroke: var(--artemisColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--artemisColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--artemisColor) !important;
 }
 
 .apolloColor {
   color: var(--apolloColor);
   stroke: var(--apolloColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--apolloColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--apolloColor) !important;
 }
 
-.apolloProgressBarColor  {
+.apolloProgressBarColor {
   --mdc-linear-progress-active-indicator-color: var(--apolloColor) !important;
 }
 
@@ -660,25 +709,25 @@ html, body { height: 100%; }
 .poseidonColor {
   color: var(--poseidonColor);
   stroke: var(--poseidonColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--poseidonColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--poseidonColor) !important;
 }
 
 .aresColor {
   color: var(--aresColor);
   stroke: var(--aresColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--aresColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--aresColor) !important;
 }
 
 .hermesColor {
   color: var(--hermesColor);
   stroke: var(--hermesColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--hermesColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--hermesColor) !important;
 }
 
 .hadesColor {
   color: var(--hadesColor);
   stroke: var(--hadesColor) !important;
-  --mdc-circular-progress-active-indicator-color:  var(--hadesColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--hadesColor) !important;
 }
 
 .unclearedSubzoneColor {
@@ -799,7 +848,7 @@ html, body { height: 100%; }
 }
 
 .removeAnimation div .mat-progress-bar-fill {
-  transition: none !important;  
+  transition: none !important;
 }
 
 .mdc-circular-progress__determinate-circle {
@@ -822,8 +871,7 @@ button {
   margin: 0;
 }
 
-.sectionHeaderText
-{
+.sectionHeaderText {
   color: var(--foreground-quaternary);
   background-color: var(--section-header);
   padding: 0 1rem;
@@ -845,7 +893,7 @@ button {
 
 .statLabel {
   font-variant: small-caps;
-  vertical-align: middle;    
+  vertical-align: middle;
   font-weight: bold;
 }
 
@@ -889,7 +937,7 @@ button {
   --mdc-linear-progress-active-indicator-color: var(--artemisColor) !important;
 }
 
-.artemis-progress  .mdc-linear-progress__buffer-bar {
+.artemis-progress .mdc-linear-progress__buffer-bar {
   background-color: var(--artemisColor) !important;
   filter: brightness(50%);
 }
@@ -916,7 +964,7 @@ button {
   --mdc-linear-progress-active-indicator-color: var(--aresColor) !important;
 }
 
-.ares-progress  .mdc-linear-progress__buffer-bar {
+.ares-progress .mdc-linear-progress__buffer-bar {
   background-color: var(--aresColor) !important;
   filter: brightness(50%);
 }
@@ -972,4 +1020,35 @@ button:disabled {
 
 .bold {
   font-weight: bold;
+}
+
+.fading {
+  -webkit-animation: fadingAnimation .5s forwards;
+  animation: fadingAnimation .5s forwards;
+}
+
+@keyframes fadingAnimation {
+  0% {
+      opacity: 100%;
+  }
+  
+  100% {
+      opacity: 0%;
+  }
+}
+
+@media (max-width: 800px) {
+  html {
+    -moz-user-select: -moz-none;
+    -khtml-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+
+    overscroll-behavior: none;
+  }
+
+  body {
+    overscroll-behavior: none;
+  }
 }

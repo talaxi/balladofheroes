@@ -24,6 +24,8 @@ import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
 import { Altars } from "../altar/altars.model";
 import { SidequestData } from "../utility/sidequest-data.model";
 import { FollowerData } from "../followers/follower-data.model";
+import { RedeemableCode } from "../utility/redeemable-code.model";
+import { Profession } from "../professions/profession.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -62,8 +64,8 @@ export class GlobalVariables {
     isCatchingUp: boolean = false;
     @Type(() => ChthonicPowers)
     chthonicPowers: ChthonicPowers;
-    @Type(() => Alchemy)
-    alchemy: Alchemy;
+    @Type(() => Profession)
+    professions: Profession[];
     betaSave: boolean = false;
     @Type(() => Settings)
     gameLogSettings: Settings;
@@ -88,6 +90,10 @@ export class GlobalVariables {
     @Type(() => FollowerData)
     followerData: FollowerData;
     extraSpeedEnabled: boolean;
+    @Type(() => RedeemableCode)
+    redeemedCodes: RedeemableCode[];
+    isSubscriber: boolean;
+    subscribedDate: Date;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -111,7 +117,7 @@ export class GlobalVariables {
         this.currentStoryId = 0;
         this.extraSpeedTimeRemaining = 0;
         this.chthonicPowers = new ChthonicPowers();
-        this.alchemy = new Alchemy();
+        this.professions = [];
         this.keybinds = new Settings();
         this.altars = new Altars();
         this.optionalScenesViewed = [];
@@ -122,5 +128,7 @@ export class GlobalVariables {
         this.sidequestData = new SidequestData();
         this.followerData = new FollowerData();
         this.extraSpeedEnabled = true;
+        this.redeemedCodes = [];
+        this.isSubscriber = false;        
     }
 }

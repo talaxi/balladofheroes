@@ -139,11 +139,20 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.PoisonousToxin) {
       src += "poisonousToxin.svg";
     }
+    if (effect.type === StatusEffectEnum.WitheringToxin) {
+      src += "witheringToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.VenomousToxin) {
+      src += "venomousToxin.svg";
+    }
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";
     }
     if (effect.type === StatusEffectEnum.RejuvenatingElixir) {
       src += "rejuvenatingElixir.svg";
+    }
+    if (effect.type === StatusEffectEnum.ElixirOfFortitude) {
+      src += "elixirOfFortitude.svg";
     }
     if (effect.type === StatusEffectEnum.Thorns) {
       src += "thorns.svg";
@@ -197,5 +206,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       durationString = Math.ceil(duration / 60) + " minutes";
 
     return durationString;
+  }
+
+  preventRightClick() {
+    return false;
   }
 }

@@ -1,4 +1,5 @@
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
 import { AltarConditionEnum } from 'src/app/models/enums/altar-condition-enum.model';
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
@@ -38,18 +39,16 @@ export class AltarViewComponent implements OnInit {
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     public globalService: GlobalService, private changeDetectorRef: ChangeDetectorRef, private altarService: AltarService,
-    private keybindService: KeybindService) { }
+    private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.isReady = this.isAltarReady();
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
+    if (this.deviceDetectorService.isMobile())
+      this.tooltipDirection = DirectionEnum.Up;
+
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var isReadyNow = this.isAltarReady();
-      /*if (isReadyNow && !this.isReady)
-      {
-        if (this.globalService.globalVar.altarInfo.length < 5)
-          this.globalService.globalVar.altarInfo.push(this.altarService.getNewSmallAltar());
-      }*/
 
       this.isReady = isReadyNow;
     });
@@ -122,11 +121,13 @@ export class AltarViewComponent implements OnInit {
 
   getAltarName() {
     var typeName = "";
-    var godType = GodEnum.None;
+    var godType = this.altar.god;
 
     if (this.altar !== undefined && this.altar.type === AltarEnum.Small) {
       typeName = "Small Altar";
-      godType = this.altar.god;
+    }
+    else if (this.altar !== undefined && this.altar.type === AltarEnum.Large) {
+      typeName = "Large Altar";
     }
 
     return "<strong>" + typeName + "</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong>";
@@ -147,10 +148,25 @@ export class AltarViewComponent implements OnInit {
     if (keybind !== undefined)
       keybindKey = this.keybindService.getBindingString(keybind[1]);
 
-    if (this.altar !== undefined && this.altar.type === AltarEnum.Small) {
+      var typeName = "";
+    if (this.altar !== undefined) {
       godType = this.altar.god;
+      
+      var affinityXpGain = 0;
+      var godXpGain = 0;
 
-      description = "When the condition is met, click or press <span class='keybind'>" + keybindKey + "</span> to pray at a <strong>Small Altar</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + this.utilityService.basePrayGodXpIncrease + " XP and " + this.utilityService.smallAltarAffinityGain + " Affinity XP.";
+    if (this.altar.type === AltarEnum.Small) {
+      typeName = "Small Altar";
+      affinityXpGain = this.utilityService.smallAltarAffinityGain;
+      godXpGain = this.utilityService.basePrayGodXpIncrease;
+    }
+    else if (this.altar.type === AltarEnum.Large) {
+      typeName = "Large Altar";
+      affinityXpGain = this.utilityService.largeAltarAffinityGain;
+      godXpGain = this.utilityService.largeAltarPrayGodXpIncrease;
+    }
+
+      description = "When the condition is met, click or press <span class='keybind'>" + keybindKey + "</span> to pray at a <strong>" + typeName + "</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
     }
 
     return description;
@@ -158,7 +174,7 @@ export class AltarViewComponent implements OnInit {
 
   getAltarConditions() {
     var conditionText = "Condition: ";
-    if (this.altar !== undefined && this.altar.type === AltarEnum.Small) {
+    if (this.altar !== undefined) {
       conditionText += this.altar.conditionCount + " / " + this.altar.conditionMax + " ";
 
       if (this.altar.condition === AltarConditionEnum.AbilityUse)
@@ -190,6 +206,20 @@ export class AltarViewComponent implements OnInit {
       image += "largeAltar.svg";
 
     return image;
+  }
+
+  toggleAltarType() {
+    if (this.altar.type === AltarEnum.Small)    
+      this.altar.type = AltarEnum.Large;            
+    else if (this.altar.type === AltarEnum.Large)
+      this.altar.type = AltarEnum.Small;
+
+    this.altar.conditionMax = this.altarService.getAltarMaxConditions(this.altar);
+    return false;
+  }
+
+  preventRightClick() {
+    return false;
   }
 
   ngOnDestroy() {

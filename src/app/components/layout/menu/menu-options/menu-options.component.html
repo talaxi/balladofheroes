@@ -1,9 +1,9 @@
 <div class="navigation">
   <div class="menuOptions">
     <div class="clickableText navItem" (click)="switchView(menuEnum.Characters)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Characters }">
-      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Characters }" (click)="switchView(menuEnum.Characters)">Characters</button>
-      <hr class='transparentHr' [ngClass]="{'hide': menuService.selectedMenuDisplay !== menuEnum.Characters }"/>
-      <div class="characterSelect" [ngClass]="{'submenu': menuService.selectedMenuDisplay !== menuEnum.Characters }">        
+      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Characters }" (click)="switchView(menuEnum.Characters)">Classes</button>
+      <hr class='transparentHr' [ngClass]="{'hide': menuService.selectedMenuDisplay !== menuEnum.Characters && !isMobile }"/>
+      <div class="characterSelect" [ngClass]="{'submenu': menuService.selectedMenuDisplay !== menuEnum.Characters && !isMobile }">        
         <div class="partyMemberOption" *ngFor="let member of partyMembers; let i = index" (click)="selectPartyMember(member)">
           <hr class='miniTransparentHr' *ngIf="i !== 0" />
           <button class="buttonAsText clickableText" [ngClass]="{'activeText': menuService.selectedCharacter === member.type }" (click)="selectPartyMember(member)">
@@ -15,8 +15,8 @@
     <hr class='transparentHr' />
     <div class="clickableText navItem" (click)="switchView(menuEnum.Gods)" *ngIf="godsAvailable" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Gods }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Gods }" (click)="switchView(menuEnum.Gods)">Gods</button>
-      <hr class='transparentHr' [ngClass]="{'hide': menuService.selectedMenuDisplay !== menuEnum.Gods }"/>
-      <div class="godSelect" [ngClass]="{'submenu': menuService.selectedMenuDisplay !== menuEnum.Gods }">        
+      <hr class='transparentHr' [ngClass]="{'hide': menuService.selectedMenuDisplay !== menuEnum.Gods && !isMobile }"/>
+      <div class="godSelect" [ngClass]="{'submenu': menuService.selectedMenuDisplay !== menuEnum.Gods && !isMobile }">        
         <div class="godOption" *ngFor="let god of gods; let i = index" (click)="selectGod(god)">
           <hr class='miniTransparentHr' *ngIf="i !== 0" />
           <button class="buttonAsText clickableText" [ngClass]="{'activeText': menuService.selectedGod === god.type }" (click)="selectGod(god)">
@@ -29,6 +29,19 @@
     <div class="clickableText navItem" (click)="switchView(menuEnum.Resources)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Resources }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Resources }" (click)="switchView(menuEnum.Resources)">Resources</button>
     </div>
+    <hr class='transparentHr' *ngIf="professionsAvailable"/>
+    <div *ngIf="professionsAvailable" class="clickableText navItem" (click)="switchView(menuEnum.Professions)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Professions }">
+      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Professions }" (click)="switchView(menuEnum.Professions)">Professions</button>
+      <hr class='transparentHr' [ngClass]="{'hide': menuService.selectedMenuDisplay !== menuEnum.Professions && !isMobile }"/>
+      <div class="professionSelect" [ngClass]="{'submenu': menuService.selectedMenuDisplay !== menuEnum.Professions && !isMobile }">        
+        <div class="professionOption" *ngFor="let profession of professions; let i = index" (click)="selectProfession(profession)">
+          <hr class='miniTransparentHr' *ngIf="i !== 0" />
+          <button class="buttonAsText clickableText" [ngClass]="{'activeText': menuService.selectedProfession === profession }" (click)="selectProfession(profession)">
+            <span class="m2Heading">{{getProfessionName(profession)}}</span>
+          </button>
+        </div>
+      </div>
+    </div>
     <hr class='transparentHr'/>
     <div class="clickableText navItem" (click)="switchView(menuEnum.Achievements)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }" (click)="switchView(menuEnum.Achievements)">Achievements</button>
@@ -37,7 +50,8 @@
     <div class="clickableText navItem" (click)="switchView(menuEnum.Settings)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }" (click)="switchView(menuEnum.Settings)">Settings</button>
     </div>  
-    <hr class='transparentHr' />  
+    <!--This always needs to be the last HR-->
+    <hr *ngIf="!isMobile" class='transparentHr' />  
   </div>
   <div class="vr">
     <hr class="vrHr" />

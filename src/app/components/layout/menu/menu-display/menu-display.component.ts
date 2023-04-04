@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, Input, OnInit } from '@angular/core';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { MenuService } from 'src/app/services/menu/menu.service';
 
@@ -9,7 +9,8 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 })
 export class MenuDisplayComponent implements OnInit {
   public menuEnum = MenuEnum;
-  
+  @Input() isMobile = false;
+
   constructor(public menuService: MenuService) { }
 
   ngOnInit(): void {    

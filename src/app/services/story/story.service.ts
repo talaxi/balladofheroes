@@ -57,7 +57,7 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 11 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum)
       this.showStory = true;
-    else if (this.globalService.globalVar.currentStoryId === 12 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum && this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead)!.defeatCount > 0)
+    else if (this.globalService.globalVar.currentStoryId === 12 && this.balladService.getActiveSubZone().type === SubZoneEnum.ElysiumColiseum && this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead)!.count > 0)
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 13 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ElysiumGatesOfHornAndIvory))
       this.showStory = true;
@@ -218,39 +218,40 @@ export class StoryService {
           this.zosimeText("“Any ideas on where to go next?”") + " Zosime asks you, snapping you out of your thoughts.<br/><br/>" +
           this.thalesText("“Before we fell, I felt invincible. As if there was nothing any hero had done that we couldn't do. But now, honestly, I don't know.”") + " You say to Zosime, uncertain.";
       else if (pageCount === 2)
-        sceneText = this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Given that we were just given a second chance… I can't miss this opportunity!”") +
+        sceneText = this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Considering we were just given a second chance… I can't miss this opportunity!”") +
           " You nod your head, just happy to have someone else make the decision. " + this.thalesText("“Lead the way.”");
     }
     else if (storyId === 14) {
       if (pageCount === 1)
         sceneText = "As you make your way from the opening of the Underworld near Lake Lerna towards Calydon, Zosime insists on a detour through Mount Parthenion. The mountain is home to many a wild spirit and the birth place of several heroes' origin stories, Atalanta included. During a lull in your fighting, Zosime begins to tell you of her favorite hero.<br/><br/>" +
-        this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. It's hard to imagine a less likely hero than a babe alone in such a dangerous place. And yet, to survive and accomplish all that she did!”");
+        this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. Can you imagine, a babe alone in a dangerous place like this? And yet, to survive and accomplish all that she did!”");
       else if (pageCount === 2)
-      sceneText = this.zosimeText("“Artemis took to her and she became Artemis's arrow. Where countless men had failed, she saved Calydon from the boar rampaging the countryside.”") +
+      sceneText = this.zosimeText("“Artemis took to her and she became one with the wilds. And in turn, she became Artemis's arrow.”") +
       " As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " +
-      this.zosimeText("“Artemis has looked after me as well. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
+      this.zosimeText("“Artemis has looked after me as well, when no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
     }
     else if (storyId === 15) {
       if (pageCount === 1)
         sceneText = "The commotion and activity of Calydon is a welcome sight after your long journey. Even though you've now traveled all across Greece, seeing so many people in one place still amazes you. Outside of Delphi, this is the largest city you've ever been in. The intricate architecture of the buildings and array of goods for sale in the streets leaves you in awe and feeling a little overwhelmed.<br/><br/>" +
-        "If Zosime felt this way, she did not show it. It was clear that she was ready to continue on and find the fabled forest where Atalanta shed the blood of the Calydonian Boar for the first time. Somehow, it seems Zosime wasn't shaken at all by your encounter with Enceladus. Was this what it was like to be a hero, to ignore your failings and never stray from the path?";
+        "If Zosime also felt this way, she did not show it. It was clear that she was ready to continue on and find the forest where Atalanta shed the blood of the Calydonian Boar for the first time. Somehow, it seems Zosime wasn't shaken at all by your encounter with Enceladus. Was this what it was like to be a hero, to ignore your failings and never stray from the path?";
       else if (pageCount === 2)
         sceneText = "The famous stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?<br/><br/>" +
         "Growing up alone in the hard wilderness, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was turned away from joining the other heroes on the Argo? How many times did she stumble before putting an arrow through the Calydonian Boar?";
       else if (pageCount === 3)
-        sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back. On the other hand, Atalanta was never swatted down like an insect by a Giant as far as you knew. You're pretty confident that if Athena had Atalanta instead of you, Enceladus would no longer have a head.<br/><br/>" +
+        sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back. On the other hand, Atalanta was never swatted down like an insect by a Giant as far as you knew... You're pretty confident that if Athena had Atalanta instead of you, Enceladus would no longer have a head.<br/><br/>" +
         "While you are lost in your own head, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
     }
     else if (storyId === 16) {
       if (pageCount === 1)
-        sceneText = "After a grueling battle, the wild beast finally stills. " + this.thalesText("“Another one off your list, Zosime!”") + " You say as you catch your breath, caught up in the thrill of victory. She grins as she eagerly examines the boar. You can tell this moment means a lot to her. <br/><br/>" +
-        "Nearby sounds of leaves rustling immediately put you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
+        sceneText = "Like Atalanta before her, Zosime's arrow spells the end for the massive boar. " + this.thalesText("“Another one off your list, Zosime!”") + " You say as you catch your breath, caught up in the thrill of victory. She grins as she eagerly examines the boar. You can tell this moment means a lot to her. <br/><br/>" +
+        "The sound of leaves rustling immediately puts you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
       else if (pageCount === 2)
         sceneText = this.zosimeText("That's Artemis's stag!”") + " Zosime says from behind you. She begins a silent prayer as the majestic beast returns to grazing the forest. " + this.thalesText("“The gods are still with us.”") + " You whisper, feeling a great relief. What greater reassurance can you receive than to know that you may not believe in yourself, but the gods do?<br/><br/>" +
         "The stag's grazing pattern eventually puts it out of sight. You attempt to follow it, but there is no tracking a beast whose very nature is the forest. You return to Zosime, still in prayer.";
       else if (pageCount === 3)
-        sceneText = this.thalesText("“I've decided that we should go to Iolcus next. My favorite story growing up was Jason's travels. I always loved hearing about so many heroes working together. Besides, I've spent my whole life on the coast and it's been too long since I've been near the water.”") + "<br/><br/>" +
-        this.zosimeText("“Lead the way.”") + " Zosime says, happy to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
+        sceneText = "Whether you believe in yourself or not, whether you etch your name in the annals of history or not, you've decided it does not matter. You are needed, and you will try.<br/><br/>" +
+        this.thalesText("“I've decided that we should go to Iolcus next. My favorite story as a child was Jason's travels. I loved to hear so many heroes working together. Besides, I've spent my whole life on the coast and I've been away for too long.”") + "<br/><br/>" +
+        this.zosimeText("“What are we waiting for then?”") + " Zosime says cheerily, pleased to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -265,6 +266,8 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Theseus", "<span class='commonCharacterColor storyCharacterName'>Theseus</span>");
     sceneText = sceneText.replaceAll("Perseus", "<span class='commonCharacterColor storyCharacterName'>Perseus</span>");
     sceneText = sceneText.replaceAll("Khronos", "<span class='commonCharacterColor storyCharacterName'>Khronos</span>");
+    sceneText = sceneText.replaceAll("Orpheus", "<span class='commonCharacterColor storyCharacterName'>Orpheus</span>");
+    sceneText = sceneText.replaceAll("Asclepius", "<span class='commonCharacterColor storyCharacterName'>Asclepius</span>");
 
     return sceneText;
   }
@@ -351,6 +354,7 @@ export class StoryService {
       if (this.globalService.globalVar.currentStoryId === 1) {
         this.globalService.globalVar.isBattlePaused = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay));
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
@@ -360,7 +364,7 @@ export class StoryService {
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis));
+        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis)?.quality);
         var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
@@ -400,6 +404,10 @@ export class StoryService {
         var boarBallad = this.balladService.findBallad(BalladEnum.Boar);
         if (boarBallad !== undefined)
           boarBallad.isAvailable = true;
+      }
+
+      if (this.globalService.globalVar.currentStoryId === 17) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new side quest is available in the Ballad of the Underworld.");
       }
     }
 
@@ -452,6 +460,27 @@ export class StoryService {
         sceneText = this.thalesText("“Here!”") + " You exclaim after catching a glimpse of a trail. You've watched Zosime examining animal tracks in search of the boar and finally found some yourself. " + this.thalesText("“It's this way!”") + " You call out, excitedly following your new found trail.<br/><br/>" +
         "Zosime follows behind you more cautiously, seeing the tracks for the first time. " + this.zosimeText("“Thales… I don't think these are boar tracks.”") + " She says as she catches up to you. The tracks have led you down a wooded ravine to a small cave. As you peek your head inside expecting to see your prey, you are instead greeted by the angry bear who lives in this cave.";      
     }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene1) {
+      if (pageCount === 1)
+        sceneText = "Your journey has brought you to and from the Underworld more than you ever expected. If you look past the fiery pits and distressed souls, the calm was quite relaxing. The calm was often interrupted, however, by your friendly bartering shade.<br/><br/>" +
+          this.commonCharacterText("“Hey! Just the two I wanted to see!”") + " Came from just the shade as you were traveling through Asphodel.<br/><br/>" +
+          this.commonCharacterText("“Got another problem for ya if you've got the time!”");
+      else if (pageCount === 2)
+        sceneText = this.commonCharacterText("Look, we got a good thing going down here. The big guy doesn't just let all of us waltz in and out whenever we want like you, sure, but it beats what happened to all the feisty little guys that keep picking fights with ya!") + "<br/><br/>" +
+          this.commonCharacterText("Back in the day, everyone down in Asphodel had to drink from the river and lose their damn mind! Bit by bit you just forget everything you know until you got nothing left. But that all changed once the boss brought his Queen down here. Things started getting a little more lax around here, and so did all the people who enforce the rules!”");
+      else if (pageCount === 3)
+        sceneText = this.commonCharacterText("“But here's the thing. I don't know what it is, but somethin's going on with Hypnos. He usually just sleeps in his little cave on the Lethe, but there's been some reeeeal weird sounds coming from over there. Check it out for me, will ya? I don't want anything rocking the boat down here! One god starts complaining, then another, next thing you know boss is gonna be ruling with an iron fist again!”");
+    }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene2) {
+      if (pageCount === 1)
+        sceneText = "The closer you get to Hypnos' isle, the darker it seems to be. By the time you reach the island, you can barely see your own hand in front of your face. You exit the ferry taking you across the Lethe and carefully make your way to Hypnos' resting place.<br/><br/>" +
+          "When you arrive, you find Hypnos sleeping as he often is. A dark shadow looking exactly like Hypnos stands above him, whispering into his ear and causing Hypnos fits while he sleeps. The shadow notices you immediately as you enter, focusing its gaze on you and beginning to speak the same nightmares it was sharing with Hypnos to you.";
+    }
+    if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
+      if (pageCount === 1)
+        sceneText = "With a final blow, the shadow dissolves into nothingness. Almost immediately, the area brightens back to normal levels. All of the fighting seems to have barely phased Hypnos, although he did seem to waken.<br/><br/>" +
+          this.commonCharacterText("“I was having quite the nightmare. Thanks for that...”") + " He murmurs, falling back asleep. Your job complete, you make your way back to the shade to deliver the good news.";      
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -462,6 +491,9 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Hecate", "<span class='commonCharacterColor storyCharacterName'>Hecate</span>");
     sceneText = sceneText.replaceAll("Acheron", "<span class='commonCharacterColor storyCharacterName'>Acheron</span>");
     sceneText = sceneText.replaceAll("Oceanus", "<span class='commonCharacterColor storyCharacterName'>Oceanus</span>");
+    sceneText = sceneText.replaceAll("Orpheus", "<span class='commonCharacterColor storyCharacterName'>Orpheus</span>");
+    sceneText = sceneText.replaceAll("Asclepius", "<span class='commonCharacterColor storyCharacterName'>Asclepius</span>");
+    sceneText = sceneText.replaceAll("Hypnos", "<span class='commonCharacterColor storyCharacterName'>Hypnos</span>");
 
     return sceneText;
   }
@@ -484,6 +516,15 @@ export class StoryService {
       this.pageCount = 2;
     }
     if (this.showOptionalStory === OptionalSceneEnum.CalydonDenMother) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene1) {
+      this.pageCount = 3;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene2) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
       this.pageCount = 1;
     }
 
@@ -510,6 +551,9 @@ export class StoryService {
       }
       if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavor) {
         this.globalService.globalVar.chthonicPowers.isChthonicResetUnlocked = true;
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
+        this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked = true;
       }
 
       this.currentPage = 1;

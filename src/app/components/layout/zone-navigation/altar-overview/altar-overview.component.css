@@ -76,3 +76,9 @@
     width: 2.5rem;
     aspect-ratio: 1/1;
 }
+
+@media (max-width: 800px) {
+.grid {
+    row-gap: 3.3333%; 
+}
+}

@@ -1,0 +1,70 @@
+<div *ngIf="quickLinksUnlocked" class="quickLink">
+    <div class="quickLinkIcons">
+        <button *ngIf="displayQuickViewItemBelt" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.ItemBelt)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.ItemBelt" class="icon iconEnabled"
+                src="assets/svg/itemBeltOverview.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/itemBeltOverviewDisabled.svg">
+        </button>
+        <button *ngIf="isQuickViewAvailable() && displayQuickViewOverview" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Overview)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Overview" class="icon iconEnabled"
+                src="assets/svg/overviewQuickView.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/overviewDisabled.svg">
+        </button>
+        <button *ngIf="isQuickViewAvailable() && displayQuickViewResources" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Resources)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Resources" class="icon iconEnabled"
+                src="assets/svg/resourcesQuickView.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/resourcesDisabled.svg">
+        </button>
+        <button *ngIf="isQuickViewAvailable() && displayQuickViewGameText" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.GameText)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.GameText" class="icon iconEnabled"
+                src="assets/svg/gameText.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/gameTextDisabled.svg">
+        </button>        
+        <div *ngIf="areAltarsAvailable()">
+            <button *ngIf="displayQuickViewAltars" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Altars)">
+                <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Altars" class="icon iconEnabled"
+                    src="assets/svg/smallAltar.svg">
+                <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/altarsOverviewDisabled.svg">
+            </button>
+            <app-notification-icon
+                *ngIf="globalService.globalVar.altars.showNewNotification"></app-notification-icon>
+        </div>
+        <button class="buttonAsText clickableText iconButton" *ngIf="isAlchemyAvailable() && displayQuickViewAlchemy"
+            (click)="openQuickView(quickViewEnum.Alchemy)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Alchemy" class="icon iconEnabled"
+                src="assets/svg/alchemyQuickView.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
+        </button>
+    </div>
+    <div class="overlay" [ngClass]="{'flipOverlay': overlayShouldFlip}" *ngIf="quickView !== quickViewEnum.None">
+        <div class="overviewQuickView centeredText" *ngIf="quickView === quickViewEnum.Overview">
+            <app-main-overview></app-main-overview>
+        </div>
+        <div class="itemBeltQuickView centeredText" *ngIf="quickView === quickViewEnum.ItemBelt">
+            <app-item-belt-overview></app-item-belt-overview>
+        </div>
+        <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
+            <app-alchemy-overview></app-alchemy-overview>
+        </div>
+        <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
+            <app-altar-overview></app-altar-overview>
+        </div>
+        <div class="gameTextQuickView centeredText" *ngIf="quickView === quickViewEnum.GameText">
+            <app-game-text-overview></app-game-text-overview>
+        </div>
+        <div class="resourcesQuickView centeredText" *ngIf="quickView === quickViewEnum.Resources">
+            <div class="quickLinkGrid">
+                <div *ngIf="trackedResourcesColumn1.length > 0" class="peekResources">
+                    <div *ngFor="let resource of trackedResourcesColumn1" class="resource">
+                        <app-resource-item-view [resource]="resource"></app-resource-item-view>
+                    </div>
+                </div>
+                <div *ngIf="trackedResourcesColumn2.length > 0" class="quickJump">
+                    <div *ngFor="let resource of trackedResourcesColumn2" class="resource">
+                        <app-resource-item-view [resource]="resource"></app-resource-item-view>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

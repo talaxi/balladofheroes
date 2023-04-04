@@ -5,6 +5,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { TutorialService } from 'src/app/services/global/tutorial.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { StoryService } from 'src/app/services/story/story.service';
+import { formatDate } from '@angular/common';
 
 @Component({
   selector: 'app-log-view',
@@ -22,7 +23,9 @@ export class LogViewComponent implements OnInit {
     private storyService: StoryService) { }
 
   ngOnInit(): void {
-    this.currentLogView = LogViewEnum.Story;
+    this.currentLogView = this.globalService.globalVar.settings.get("activeLog");
+    if (this.currentLogView === undefined)
+      this.currentLogView = LogViewEnum.Story;
 
     this.tutorialData = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Tutorials).sort(function (a, b) {
       return a.dateReceived > b.dateReceived ? -1 : a.dateReceived < b.dateReceived ? 1 : 0;
@@ -37,28 +40,30 @@ export class LogViewComponent implements OnInit {
 
   toggleDisplayStoryView() {
     this.currentLogView = LogViewEnum.Story;
+    this.globalService.globalVar.settings.set("activeLog", this.currentLogView);
   }
 
   toggleDisplayTutorialsView() {
     this.currentLogView = LogViewEnum.Tutorials;
+    this.globalService.globalVar.settings.set("activeLog", this.currentLogView);
   }
 
   toggleDisplayLootView() {
     this.currentLogView = LogViewEnum.Loot;
+    this.globalService.globalVar.settings.set("activeLog", this.currentLogView);
   }
 
   getTutorialData(logData: LogData) {
     return this.tutorialService.getTutorialText(logData.relevantEnumValue, undefined, undefined, false);
   }
 
-  getStoryData(logData: LogData) {    
+  getStoryData(logData: LogData) {
     var pageCount = 1;
     var newStoryText = "new";
     var totalStoryText = "";
 
     //pagecount < 10 is just a safeguard
-    while (pageCount < 10 && newStoryText !== "")
-    {      
+    while (pageCount < 10 && newStoryText !== "") {
       newStoryText = this.storyService.getStoryText(logData.relevantEnumValue, pageCount);
       if (pageCount > 1 && newStoryText !== "")
         totalStoryText += "<br/><br/>";
@@ -70,6 +75,10 @@ export class LogViewComponent implements OnInit {
   }
 
   getLootData(logData: LogData) {
-    return "You received " + logData.amount + " " +  this.lookupService.getItemName(logData.relevantEnumValue) + ".";
+    return "You received " + logData.amount + " " + this.lookupService.getItemName(logData.relevantEnumValue) + ".";
+  }
+
+  formatDate(milliseconds: number) {
+    return formatDate(new Date(milliseconds), 'MMM d, y H:mm:ss', 'en');
   }
 }

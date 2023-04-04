@@ -1,19 +1,23 @@
-<div [ngClass]="{'gridContainer': this.layoutService.navigation !== navigationEnum.Menu,
- 'menuGridContainer': this.layoutService.navigation === navigationEnum.Menu}">
+<div [ngClass]="{'gridContainer': this.layoutService.navigation !== navigationEnum.Menu || this.isMobile,
+ 'menuGridContainer': this.layoutService.navigation === navigationEnum.Menu && !this.isMobile}">
     <button *ngIf="textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader globalHeaderItem" (click)="openMenu()">menu</button>
     <button *ngIf="!textMode" class="buttonAsText clickableText menuItem mainPageSectionHeader" (click)="openMenu()"><img *ngIf="!textMode" class="icon" src="assets/svg/menu.svg"></button>
-
-    <div class="performanceState" *ngIf="deploymentService.performanceModeAvailable && globalService.globalVar.isGamePaused">
-      <button (click)="togglePerformanceMode()">Perf Mode</button>
+    <div *ngIf="isMobile && layoutService.mobileMenuOpen" class="menuOverlay">      
+      <app-menu-options [isMobile]="true" class="menuOptions"></app-menu-options>
     </div>
+    <!--<div class="performanceState" *ngIf="deploymentService.performanceModeAvailable && globalService.globalVar.isGamePaused">
+      <button (click)="togglePerformanceMode()">Perf Mode</button>
+    </div>-->
+
+    <button *ngIf="textMode && isMobile && layoutService.navigation === navigationEnum.Menu" class="buttonAsText clickableText performanceState mainPageSectionHeader globalHeaderItem" (click)="backToMainView()">back</button>    
 
     <div class="centerAlign gameState">
       <span class="unpauseItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/play.svg"></span>
       <button class="buttonAsText clickableText gameState" (click)="pauseGame()">
             <span class="pauseItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!globalService.globalVar.isGamePaused  && !textMode"><img *ngIf="!textMode" class="icon" src="assets/svg/pause.svg"></span>
 
-            <span class="headerTextItems globalHeaderItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused  && textMode">play</span>
-            <span class="headerTextItems globalHeaderItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!globalService.globalVar.isGamePaused  && textMode">pause</span>
+            <span class="headerTextItems clickableText globalHeaderItem" customToolTip [contentTemplate]="pausedPopover" *ngIf="globalService.globalVar.isGamePaused  && textMode">play</span>
+            <span class="headerTextItems clickableText globalHeaderItem" customToolTip [contentTemplate]="unpausedPopover" *ngIf="!globalService.globalVar.isGamePaused  && textMode">pause</span>
         </button>        
     </div>    
 
@@ -26,20 +30,26 @@
     <div class="storyItem">        
       <button class="storyButton buttonAsText clickableText" (click)="openLog(logContent)">
         <img *ngIf="!textMode" class="icon" src="assets/svg/document.svg">
-        <span class="headerTextItems globalHeaderItem" *ngIf="textMode">log</span>
+        <span class="headerTextItems clickableText globalHeaderItem" *ngIf="textMode">log</span>
       </button>
     </div>
 </div>
 
 <ng-template #pausedPopover>
-    <div>
-      The game is paused. Click or press the <strong>P</strong> key to unpause.
+    <div *ngIf="!isMobile">
+      The game is paused. Click or press the <span [innerHtml]="getPauseKeybindKey()"></span> key to unpause.
+    </div>
+    <div *ngIf="isMobile">
+      The game is paused. Tap to unpause.
     </div>
   </ng-template>
 
   <ng-template #unpausedPopover>
-    <div>
-      The game is playing. Click or press the <strong>P</strong> key to pause.
+    <div *ngIf="!isMobile">
+      The game is playing. Click or press the <span [innerHtml]="getPauseKeybindKey()"></span> key to pause.
+    </div>
+    <div *ngIf="isMobile">
+      The game is playing. Tap to pause.
     </div>
   </ng-template>
 

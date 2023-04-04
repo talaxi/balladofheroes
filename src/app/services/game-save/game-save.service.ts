@@ -18,7 +18,7 @@ export class GameSaveService {
       // Create a new
       const worker = new Worker(new URL('../../webworker.worker', import.meta.url));
       worker.onmessage = ({ data }) => {
-        localStorage.setItem("theBalladOfHeroesBetaGameData", data);
+        localStorage.setItem("theBalladOfHeroesFinalGameData", data);
         worker.terminate();
       };
       worker.postMessage(this.globalService.globalVar);
@@ -28,7 +28,7 @@ export class GameSaveService {
       const data = this.globalService.globalVar;
       var globalData = JSON.stringify(data);
       var compressedData = LZString.compressToBase64(globalData);
-      localStorage.setItem("theBalladOfHeroesBetaGameData", compressedData);
+      localStorage.setItem("theBalladOfHeroesFinalGameData", compressedData);
     }
 
     if (this.globalService.globalVar.performanceMode) {      

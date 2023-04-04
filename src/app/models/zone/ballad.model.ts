@@ -7,7 +7,7 @@ export class Ballad {
     type: BalladEnum;
     isSelected: boolean;
     isAvailable: boolean;
-    showNewNotification: boolean;
+    notify: boolean;
     @Type(() => Zone)
     zones: Zone[];
 

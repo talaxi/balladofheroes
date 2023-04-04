@@ -4,6 +4,7 @@ import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { GlobalService } from '../global/global.service';
 
 @Injectable({
@@ -13,6 +14,7 @@ export class MenuService {
   selectedMenuDisplay: MenuEnum;
   selectedCharacter: CharacterEnum;
   selectedGod: GodEnum;
+  selectedProfession: ProfessionEnum;
 
   partyMember1: BehaviorSubject<CharacterEnum>;
   partyMember2: BehaviorSubject<CharacterEnum>;
@@ -29,11 +31,19 @@ export class MenuService {
   setSelectedCharacter(characterType: CharacterEnum) {
     this.selectedCharacter = characterType;
     this.selectedGod = GodEnum.None;
+    this.selectedProfession = ProfessionEnum.None;
   }
 
   setSelectedGod(godType: GodEnum) {
     this.selectedCharacter = CharacterEnum.None;
     this.selectedGod = godType;
+    this.selectedProfession = ProfessionEnum.None;
+  }
+
+  setSelectedProfession(profession: ProfessionEnum) {
+    this.selectedCharacter = CharacterEnum.None;
+    this.selectedGod = GodEnum.None;
+    this.selectedProfession = profession;
   }
 
   setNewPartyMember1(newCharacterType: CharacterEnum): void {

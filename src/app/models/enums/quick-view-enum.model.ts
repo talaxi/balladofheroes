@@ -4,5 +4,7 @@ export enum QuickViewEnum {
     Resources,
     Jump,
     Alchemy,
-    Altars
+    Altars,
+    ItemBelt,
+    GameText
   }

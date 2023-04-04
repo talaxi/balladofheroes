@@ -6,5 +6,6 @@ export enum MenuEnum {
   Shop,
   Settings,
   Resources,
-  Achievements
+  Achievements,
+  Professions
 }

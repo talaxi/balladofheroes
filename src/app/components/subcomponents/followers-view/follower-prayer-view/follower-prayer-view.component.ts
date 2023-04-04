@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { FollowerActionEnum } from 'src/app/models/enums/follower-action-enum.model';
 import { FollowerPrayerTypeEnum } from 'src/app/models/enums/follower-prayer-type-enum.model';
@@ -15,10 +16,15 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class FollowerPrayerViewComponent {
   followerPrayerType = FollowerPrayerTypeEnum;
   altarType = AltarEnum;
+  isMobile = false;
+  largeAltarsAvailable = false;
 
-  constructor(private globalService: GlobalService, private followerService: FollowersService, private utilityService: UtilityService) { }
+  constructor(private globalService: GlobalService, private followerService: FollowersService, private utilityService: UtilityService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
+    this.largeAltarsAvailable = this.globalService.globalVar.altars.largeAltarsUnlocked;
   }
 
   getUnassignedFollowers() {
@@ -55,6 +61,14 @@ export class FollowerPrayerViewComponent {
 
   getSmallAltarPrayerChance() {
     return this.utilityService.smallAltarPrayChancePerFollower * 100;
+  }
+
+  getLargeAltarActivationChance() {
+    return this.utilityService.largeAltarActivationChancePerFollower * 100;
+  }
+
+  getLargeAltarPrayerChance() {
+    return this.utilityService.largeAltarPrayChancePerFollower * 100;
   }
 
   getAssignedFollowers() {

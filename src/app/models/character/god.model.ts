@@ -3,13 +3,14 @@ import { CharacterStatEnum } from "../enums/character-stat-enum.model";
 import { GodEnum } from "../enums/god-enum.model";
 import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
+import { PrimaryStats } from "./primary-stats.model";
 
 export class God {
     name: string;
     type: GodEnum;
     level: number;
-    @Type(() => CharacterStats)
-    gainModifiers: CharacterStats;
+    @Type(() => PrimaryStats)
+    gainModifiers: PrimaryStats;
     @Type(() => CharacterStats)
     statGain: CharacterStats;
     @Type(() => CharacterStats)
@@ -50,22 +51,22 @@ export class God {
 
     private getGainModifier(type: GodEnum) {
         if (type === GodEnum.Athena)
-            return new CharacterStats(1.1, 1.05, 1.4, .8, .75, 1); //6.1 total
+            return new PrimaryStats(1.1, 1.05, 1.4, .8, .75, 1); //6.1 total
         else if (type === GodEnum.Artemis)
-            return new CharacterStats(.8, .985, .75, 1.2, 1.5, 1.1); //6.2 total
+            return new PrimaryStats(.8, .985, .75, 1.2, 1.5, 1.1); //6.2 total
         else if (type === GodEnum.Hermes)
-            return new CharacterStats(.7, 1.07, .9, 1.5, 1.1, .6); //5.87 total
+            return new PrimaryStats(.7, 1.07, .9, 1.5, 1.1, .6); //5.87 total
         else if (type === GodEnum.Apollo)
-            return new CharacterStats(1.1, .9, .8, .85, 1.175, 1.45); //6.285 total
+            return new PrimaryStats(1.075, .9, .8, .85, 1.175, 1.45); //6.26 total
         else if (type === GodEnum.Zeus)
-            return new CharacterStats(1.35, 1.1, .8, .55, 1.15, .95); //5.9 total
+            return new PrimaryStats(1.35, 1.1, .8, .55, 1.15, .95); //5.9 total
         else if (type === GodEnum.Ares)
-            return new CharacterStats(.85, 1.075, .7, 1.2, 1.2, .85); //5.875 total
+            return new PrimaryStats(.85, 1.075, .7, 1.2, 1.2, .85); //5.875 total
         else if (type === GodEnum.Poseidon)
-            return new CharacterStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
+            return new PrimaryStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
         else if (type === GodEnum.Hades)
-            return new CharacterStats(1, 1.08, 1, 1, 1, 1);
+            return new PrimaryStats(1, 1.08, 1, 1, 1, 1);
 
-        return new CharacterStats(1, 1, 1, 1, 1, 1);
+        return new PrimaryStats(1, 1, 1, 1, 1, 1);
     }
 }

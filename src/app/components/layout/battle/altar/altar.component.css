@@ -96,3 +96,10 @@
 .threshold4 {
     grid-area: threshold4;
 }
+
+
+@media (max-width: 800px) {
+    .altarIcon {
+        height: 25vh;
+    }
+}

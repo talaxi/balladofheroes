@@ -7,6 +7,7 @@ import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AchievementService } from '../achievements/achievement.service';
@@ -14,7 +15,7 @@ import { BalladService } from '../ballad/ballad.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
-import { AlchemyService } from '../professions/alchemy.service';
+import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
 
@@ -25,7 +26,7 @@ export class ColiseumService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private balladService: BalladService, private alchemyService: AlchemyService) { }
+    private balladService: BalladService, private professionService: ProfessionService) { }
 
   getColiseumInfoFromType(type: ColiseumTournamentEnum) {
     var tournament = new ColiseumTournament();
@@ -37,24 +38,24 @@ export class ColiseumService {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, ItemTypeEnum.Progression, 1));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, ItemTypeEnum.Charm, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
     }
     if (type === ColiseumTournamentEnum.FlamesOfTartarus) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, ItemTypeEnum.Resource, 2500));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 8000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, ItemTypeEnum.Charm, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 2500));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 8000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
     }
     if (type === ColiseumTournamentEnum.ForgottenKings) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, ItemTypeEnum.Resource, 1));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, ItemTypeEnum.Resource, 15000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, ItemTypeEnum.Resource, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
     }
 
     return tournament;
@@ -67,8 +68,8 @@ export class ColiseumService {
       return "Flames of Tartarus";
       if (type === ColiseumTournamentEnum.ForgottenKings)
       return "Forgotten Kings and Queens";
-      if (type === ColiseumTournamentEnum.MonstersOfTheLethe)
-      return "Monsters of the Lethe";
+      if (type === ColiseumTournamentEnum.RiverLords)
+      return "River Lords";
     else if (type === ColiseumTournamentEnum.HadesTrial)
       return "Hades' Trial";
     return "";
@@ -104,11 +105,11 @@ export class ColiseumService {
 
     var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === type);
     if (tournamentType !== undefined) {
-      tournamentType.defeatCount += 1;
+      tournamentType.count += 1;
 
       var tournamentInfo = this.getColiseumInfoFromType(type);
 
-      if (tournamentType.defeatCount === 1) {
+      if (tournamentType.count === 1) {
         this.unlockNextColiseumTournament(type);
 
         tournamentInfo.completionReward.forEach(reward => {
@@ -123,7 +124,7 @@ export class ColiseumService {
             }
           }
           else if (reward.item === ItemsEnum.HeroicElixirRecipe) {
-            this.alchemyService.learnRecipe(ItemsEnum.HeroicElixir);
+            this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.HeroicElixir);
           }
           else if (reward.item === ItemsEnum.BonusXp) {
             this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), reward.amount);
@@ -170,10 +171,10 @@ export class ColiseumService {
 
     if (type === ColiseumTournamentEnum.ForgottenKings)
     {
-      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.MonstersOfTheLethe);       
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.RiverLords);       
     }
 
-    if (type === ColiseumTournamentEnum.MonstersOfTheLethe)
+    if (type === ColiseumTournamentEnum.RiverLords)
     {
       tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);       
     }
@@ -296,6 +297,27 @@ export class ColiseumService {
         if (duplicateNameList.length > 1) {
           var count = "A";
           duplicateNameList.forEach(duplicateEnemy => {
+            if (duplicateEnemy.abilityList.length > 0)
+            {
+            //go through user/target effects, look for caster, update name
+              duplicateEnemy.abilityList.forEach(ability => {
+                if (ability.userEffect.length > 0 && ability.userEffect.filter(item => item.caster !== "").length > 0)
+                {
+                  ability.userEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                    effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+
+                if (ability.targetEffect.length > 0 && ability.targetEffect.filter(item => item.caster !== "").length > 0)
+                {
+                  ability.targetEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                    effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+              })
+            }
             duplicateEnemy.name += " " + count;
 
             var charCode = count.charCodeAt(0);

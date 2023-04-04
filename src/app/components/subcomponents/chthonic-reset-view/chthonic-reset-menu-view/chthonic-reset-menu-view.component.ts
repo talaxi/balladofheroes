@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
@@ -21,10 +22,13 @@ export class ChthonicResetMenuViewComponent implements OnInit {
   godEnum = GodEnum;
   bonusGodText = "";
   bonusGodName: string;
+  isMobile: boolean = false;
 
-  constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService) { }
+  constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
     this.availableGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
 
     if (this.globalService.globalVar.chthonicPowers.preferredGod !== GodEnum.None)    
@@ -82,9 +86,9 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     var favorGain = this.getChthonicFavor(god);
 
     if (this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked)
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicFavor, ItemTypeEnum.Progression, favorGain));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicFavor, favorGain));
 
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, ItemTypeEnum.Progression, powerGain));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, powerGain));
 
     god.level = 1;
     god.exp = 0;
@@ -92,9 +96,9 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     god.lastStatGain = CharacterStatEnum.Resistance;
     god.statGainCount = 0;
     god.expToNextLevel = 200;
-    var isAbility2Permanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.isAbilityPermanent;
-    var isAbility3Permanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.isAbilityPermanent;
-    var isPassivePermanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.isAbilityPermanent;
+    var isAbility2Permanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.isPermanent;
+    var isAbility3Permanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.isPermanent;
+    var isPassivePermanent = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.isPermanent;
     this.globalService.assignGodAbilityInfo(god);
 
     if (isAbility2Permanent) {

@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
@@ -27,13 +28,17 @@ export class ShoppingItemViewComponent implements OnInit {
   outOfStock: boolean = false;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
-    private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService) { }
+    private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
     this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
     this.setItemPurchasePrice();
     this.outOfStock = this.isItemOutOfStock();
+
+    if (this.deviceDetectorService.isMobile())    
+      this.tooltipDirection = DirectionEnum.Down;    
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.setItemPurchasePrice();
@@ -61,7 +66,7 @@ export class ShoppingItemViewComponent implements OnInit {
       //if (userResourceAmount < resource.amount)
       var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
-      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(resource.type, resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
+      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(this.lookupService.getItemTypeFromItemEnum(resource.item), resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
     });
 
     if (this.purchaseResourcesRequired.length > 0) {
@@ -138,7 +143,7 @@ export class ShoppingItemViewComponent implements OnInit {
 
     var equipment = this.lookupService.getEquipmentPieceByItemType(item);
     if (equipment !== undefined) {
-      var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType));
+      var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType)?.quality);
 
       return qualityClass;
     }
