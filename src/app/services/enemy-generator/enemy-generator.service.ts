@@ -326,7 +326,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Stheno) {
       enemy.name = "Stheno";
-      enemy.battleStats = new CharacterStats(700, 76, 75, 35, 20, 100);
+      enemy.battleStats = new CharacterStats(650, 75, 75, 35, 20, 100);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 125;
@@ -353,7 +353,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Euryale) {
       enemy.name = "Euryale";
-      enemy.battleStats = new CharacterStats(550, 65, 80, 40, 40, 110);
+      enemy.battleStats = new CharacterStats(525, 65, 80, 40, 40, 110);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 125;
