@@ -160,7 +160,7 @@ export class CharmService {
   }
 
   getLargeCharmOfElementalDestructionValue() {
-    return .75;
+    return .075;
   }
 
   getSmallCharmOfElementalResistanceValue() {
