@@ -6,6 +6,11 @@
     display: flex;
 }
 
+.flexBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
 .balladTitle {
     margin-top: auto;
     margin-bottom: auto;

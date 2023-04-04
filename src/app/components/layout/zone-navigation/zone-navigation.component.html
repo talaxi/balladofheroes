@@ -21,7 +21,7 @@
                             <app-notification-icon *ngIf="ballad.notify"></app-notification-icon>
                         </button>
                     </div>
-                    <div *ngIf="ballad.isSelected">
+                    <div *ngIf="ballad.isSelected" [ngClass]="{'flexBetween': !isMobile}">
                         <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected"><strong
                                 [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></button>
                         <span *ngIf="!isMobile" class="selectedArrow textRightAligned">
