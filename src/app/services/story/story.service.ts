@@ -1,4 +1,5 @@
 import { Injectable, Optional } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
@@ -32,7 +33,8 @@ export class StoryService {
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private balladService: BalladService,
     private utilityService: UtilityService, private tutorialService: TutorialService, private gameLogService: GameLogService,
-    private resourceGeneratorService: ResourceGeneratorService, private achievementService: AchievementService) { }
+    private resourceGeneratorService: ResourceGeneratorService, private achievementService: AchievementService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   checkForNewStoryScene() {
     if (this.globalService.globalVar.currentStoryId === 0)
@@ -354,6 +356,8 @@ export class StoryService {
       if (this.globalService.globalVar.currentStoryId === 1) {
         this.globalService.globalVar.isBattlePaused = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack));
+
+        if (this.deviceDetectorService.isMobile())
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay));
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
