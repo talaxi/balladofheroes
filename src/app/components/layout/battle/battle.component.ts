@@ -65,7 +65,7 @@ export class BattleComponent implements OnInit {
 
         //handle auto progress here instead of zone navigation because zone navigation may not always be active
         var currentSubzone = this.balladService.getActiveSubZone();
-        var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
+        var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
 
         if (autoProgress && currentSubzone !== undefined &&
           (this.balladService.getVictoriesNeededToProceed(currentSubzone.type) - currentSubzone.victoryCount <= 0 || this.balladService.isSubzoneTown(currentSubzone.type))) {

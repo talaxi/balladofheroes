@@ -209,12 +209,16 @@ export class AltarViewComponent implements OnInit {
   }
 
   toggleAltarType() {
+    if (this.globalService.globalVar.altars.largeAltarsUnlocked)
+    {
     if (this.altar.type === AltarEnum.Small)    
       this.altar.type = AltarEnum.Large;            
     else if (this.altar.type === AltarEnum.Large)
       this.altar.type = AltarEnum.Small;
 
     this.altar.conditionMax = this.altarService.getAltarMaxConditions(this.altar);
+    }
+    
     return false;
   }
 

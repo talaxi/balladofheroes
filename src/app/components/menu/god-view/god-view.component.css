@@ -94,4 +94,8 @@
     .dropdownIcon {
         height: 1rem;
     }
+
+    .godInfo {
+        grid-template-columns: 1fr 2fr 1fr;       
+    }
 }
