@@ -49,9 +49,8 @@ export class AppComponent {
 
   }
 
-  ngOnInit() {
-    //todo: when pushing v1, change all to theBalladOfHeroesFinalGameData
-    var compressedGameData = localStorage.getItem("theBalladOfHeroesBetaGameData");
+  ngOnInit() {    
+    var compressedGameData = localStorage.getItem("theBalladOfHeroesFinalGameData");
 
     if (compressedGameData !== null && compressedGameData !== undefined) {
       var gameData = LZString.decompressFromBase64(compressedGameData);
@@ -240,7 +239,7 @@ export class AppComponent {
 
       var checkoutConfirmation = params.co;
 
-      //TODO: This is my test version key and needs to be replaced with prod version when the time comes      
+      //TODO: This is my test version key and needs to be replaced with prod version on github when the time comes      
       var stripe = new Stripe(environment.STRIPESECRET, {
         apiVersion: '2022-11-15'
       });

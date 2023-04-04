@@ -17,12 +17,14 @@ export class FollowerPrayerViewComponent {
   followerPrayerType = FollowerPrayerTypeEnum;
   altarType = AltarEnum;
   isMobile = false;
+  largeAltarsAvailable = false;
 
   constructor(private globalService: GlobalService, private followerService: FollowersService, private utilityService: UtilityService,
     private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
+    this.largeAltarsAvailable = this.globalService.globalVar.altars.largeAltarsUnlocked;
   }
 
   getUnassignedFollowers() {

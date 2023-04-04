@@ -28,6 +28,7 @@ export class SettingsViewComponent implements OnInit {
   enteredRedemptionCode: string;
   storyStyle: StoryStyleSettingEnum;
   storyStyleEnum = StoryStyleSettingEnum;
+  tooltipTheme: boolean;
   quickViewOverlayFlipped: boolean = false;
   @Input() isMobile = false;
 
@@ -39,9 +40,9 @@ export class SettingsViewComponent implements OnInit {
   ngOnInit(): void {
     if (this.deploymentService.codeCreationMode)
       console.log(this.globalService.globalVar);
-    console.log(JSON.stringify(this.globalService.globalVar));
+    //console.log(JSON.stringify(this.globalService.globalVar));
     
-    this.patreonAccessService.getPatronList();
+    //this.patreonAccessService.getPatronList();
 
     if (this.deploymentService.codeCreationMode)
       console.log(this.codeCreationService.createCode());
@@ -51,6 +52,12 @@ export class SettingsViewComponent implements OnInit {
       this.storyStyle = StoryStyleSettingEnum.Medium;
     else
       this.storyStyle = storyStyle;
+      
+    var tooltipTheme = this.globalService.globalVar.settings.get("tooltipTheme");
+    if (tooltipTheme === undefined)
+      this.tooltipTheme = true;
+    else
+      this.tooltipTheme = tooltipTheme;
 
     this.quickViewOverlayFlipped = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
   }
@@ -133,6 +140,10 @@ export class SettingsViewComponent implements OnInit {
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.pauseStorySpeed;
 
     this.globalService.globalVar.settings.set("storyStyle", this.storyStyle);
+  }
+
+  setTooltipTheme() {
+    this.globalService.globalVar.settings.set("tooltipTheme", this.tooltipTheme);
   }
 
   openKeybinds(content: any) {

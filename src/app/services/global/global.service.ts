@@ -644,11 +644,11 @@ export class GlobalService {
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
       || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
-      type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.WitheringToxin || 
+      type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.WitheringToxin ||
       type === StatusEffectEnum.VenomousToxin)
       refreshes = true;
 
-      return refreshes;
+    return refreshes;
   }
 
   doesStatusEffectPersistDeath(type: StatusEffectEnum) {
@@ -818,7 +818,7 @@ export class GlobalService {
       character.battleStats.currentHp = character.battleStats.maxHp;
 
     //round to save data space
-    character.battleStats = this.roundCharacterStats(character.battleStats);    
+    character.battleStats = this.roundCharacterStats(character.battleStats);
   }
 
   roundCharacterStats(stats: CharacterStats, roundAmount?: number) {
@@ -941,7 +941,7 @@ export class GlobalService {
     return bonus;
   }
 
-  giveGodExp(god: God, xpAmount: number) {    
+  giveGodExp(god: God, xpAmount: number) {
     god.exp += xpAmount * this.getGodExpBonus(god);
 
     var previousXp: number | undefined = undefined;
@@ -1161,7 +1161,7 @@ export class GlobalService {
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
 
-    var getLevelUpType = this.getGodLevelIncreaseTypeByLevel(god, god.level);    
+    var getLevelUpType = this.getGodLevelIncreaseTypeByLevel(god, god.level);
     if (getLevelUpType === GodLevelIncreaseEnum.Stats)
       this.doGodLevelStatIncrease(god);
     else if (getLevelUpType === GodLevelIncreaseEnum.NewAbility)
@@ -1253,10 +1253,10 @@ export class GlobalService {
     });
   }
 
-  checkForNewGodPermanentAbilities(god: God) {    
-    if (god.level === this.utilityService.permanentPassiveGodLevel) {      
+  checkForNewGodPermanentAbilities(god: God) {
+    if (god.level === this.utilityService.permanentPassiveGodLevel) {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
-      if (ability !== undefined) {        
+      if (ability !== undefined) {
         ability.isPermanent = true;
         if (this.globalVar.gameLogSettings.get("godLevelUp")) {
           var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
@@ -1487,7 +1487,6 @@ export class GlobalService {
     var userGainsEffect = ability.userEffect[0];
 
     if (god.type === GodEnum.Athena) {
-      //TODO: bigger boost at 10s or something maybe?
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         userGainsEffect.effectiveness *= 2;
       else if (ability.abilityUpgradeLevel <= 100)
@@ -1642,7 +1641,7 @@ export class GlobalService {
       increaseType = GodLevelIncreaseEnum.PermanentAbility;
     }
     else if ((level === 50 || level === 100 || level === 150 || level === 200 ||
-      (level > 200 && level <= 500 && level % 50 === 0))) { //TODO: % 50 was % 25, is this correct?
+      (level > 200 && level <= 500 && level % 50 === 0))) { 
       if (this.isGodPermanentStatStillObtainable(god, level))
         increaseType = GodLevelIncreaseEnum.PermanentStats;
       else
@@ -1781,6 +1780,7 @@ export class GlobalService {
 
   getGodXpToNextLevel(level: number) {
     var baseXp = 200;
+    var tier1Breakpoint = 500;
 
     if (level < 15) {
       baseXp += level * 10;
@@ -1788,12 +1788,24 @@ export class GlobalService {
     else
       baseXp = 350;
 
-    //TODO: tier off the factor. like up to lvl 500 its 1.023, then 1.005 for levels after that or something
-    var factor = 1.023;
-    var additive = (baseXp) * (level - 1);
-    var exponential = (baseXp * (factor ** (level)));
+    var tier1Xp = 0;
+    var factor = 1.0155;
+    var tier1Level = level > tier1Breakpoint ? tier1Breakpoint : level;
+    var additive = (baseXp) * (tier1Level - 1);
+    var exponential = (baseXp * (factor ** (tier1Level)));
+    tier1Xp = this.utilityService.roundTo(exponential + additive, 5);
 
-    return this.utilityService.roundTo(exponential + additive, 5);
+    var tier2Xp = 0;
+    if (level > tier1Breakpoint) {
+      baseXp = 50000;
+      var factor = 1.0038;
+      var tier2Level = level - (tier1Breakpoint); 
+      var exponential = (baseXp * (factor ** (tier2Level)));
+      var additive = tier2Level * (baseXp / 10);
+      tier2Xp = this.utilityService.roundTo(exponential + additive, 5);
+    }
+
+    return tier1Xp + tier2Xp;
   }
 
   getNextStatToIncrease(lastStat: CharacterStatEnum) {
@@ -1943,7 +1955,7 @@ export class GlobalService {
     this.globalVar.isSubscriber = true;
     this.globalVar.subscribedDate = date;
   }
-  
+
   isGodEquipped(type: GodEnum) {
     var isEquipped = false;
 
@@ -1962,7 +1974,7 @@ export class GlobalService {
     var modifiedResource: ResourceValue = new ResourceValue(resourceToChange.item, 1);
     var existingResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && this.extraItemsAreEqual(item.extras, resourceToChange.extras));
 
-    if (existingResourcePool !== undefined && existingResourcePool.amount > 0) {      
+    if (existingResourcePool !== undefined && existingResourcePool.amount > 0) {
       existingResourcePool.amount -= 1;
       //console.log("Existing Resource Pool now has " + existingResourcePool.amount);
       this.globalVar.resources = this.globalVar.resources.filter(item => item.amount > 0);
@@ -1970,7 +1982,7 @@ export class GlobalService {
       var extraToAddList: ItemsEnum[] = resourceToChange.makeCopy().extras;
       if (extraToAddList === undefined)
         extraToAddList = [];
-      extraToAddList.push(extraToAdd);      
+      extraToAddList.push(extraToAdd);
 
       var existingModifiedResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && this.extraItemsAreEqual(item.extras, extraToAddList));
 
@@ -1979,7 +1991,7 @@ export class GlobalService {
         //console.log("New Resource Pool already exists with amount " + existingModifiedResourcePool.amount);
         existingModifiedResourcePool.amount += 1;
         modifiedResource = new ResourceValue(existingModifiedResourcePool.item, 1);
-        modifiedResource.extras = extraToAddList;        
+        modifiedResource.extras = extraToAddList;
         //console.log("New Resource Pool new amount is " + existingModifiedResourcePool.amount);
       }
       else //else create a brand new resource
@@ -1994,8 +2006,7 @@ export class GlobalService {
 
       //deduct the extra from resources
       var extraItemResource = this.globalVar.resources.find(item => item.item === extraToAdd);
-      if (extraItemResource !== undefined && extraItemResource.amount > 0)
-      {
+      if (extraItemResource !== undefined && extraItemResource.amount > 0) {
         extraItemResource.amount -= 1;
       }
     }
@@ -2003,26 +2014,15 @@ export class GlobalService {
     return modifiedResource;
   }
 
-  /*addExtraToModifiedResource(resourceToChange: ResourceValue, existingExtras: ItemsEnum[], extraToAdd: ItemsEnum) {
-    //check if item exists, remove 1 from the existing amount of the resource
-    //create a second instance of the resource with the extra included, initialize extras array
-    //you will want to differentiate them in name
-
-    //todo: does this equals work?
-    var existingResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && item.extras === existingExtras);
-
-  }*/
-
-  extraItemsAreEqual(existingExtras?: ItemsEnum[], comparedExtras?: ItemsEnum[]) {      
+  extraItemsAreEqual(existingExtras?: ItemsEnum[], comparedExtras?: ItemsEnum[]) {
     var areEqual = true;
 
     if (existingExtras === undefined && comparedExtras === undefined) {
       return areEqual;
     }
-        
+
     if ((existingExtras === undefined && comparedExtras !== undefined) ||
-    (existingExtras !== undefined && comparedExtras === undefined) || existingExtras!.length !== comparedExtras!.length)
-    {
+      (existingExtras !== undefined && comparedExtras === undefined) || existingExtras!.length !== comparedExtras!.length) {
       areEqual = false;
       return areEqual;
     }

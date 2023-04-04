@@ -26,7 +26,7 @@
         Each follower provides a {{getSmallAltarActivationChance()}}% chance per minute to activate a random Small Altar that has met its necessary
         conditions.
     </div>
-    <div> <!--TODO: only if available-->
+    <div *ngIf="largeAltarsAvailable">
         <span class="s4Heading smallCaps altarName">Large Altars</span>
         <span class="s4Heading followerCount">
             <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Activate, altarType.Large)"
@@ -58,7 +58,7 @@
         <br />
         Each follower provides a {{getSmallAltarPrayerChance()}}% chance per minute to pray to a random god's Small Altar and receive a boon for the party. Only one boon per god can be active at a time.
     </div>
-    <div>
+    <div *ngIf="largeAltarsAvailable">
         <span class="s4Heading smallCaps altarName">Large Altars</span>
         <span class="s4Heading followerCount">
             <button class='buttonStyled' [disabled]="!canDecrement(followerPrayerType.Pray, altarType.Large)"

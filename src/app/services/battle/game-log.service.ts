@@ -55,8 +55,8 @@ export class GameLogService {
     this.gameLog.push(entry + "<br/>");
 
     if (this.gameLog.length > this.gameLogMaxLength) {
-      for (var i = this.gameLog.length; i > this.gameLogMaxLength; i--) {
-        this.gameLog = this.gameLog.filter(item => item != this.gameLog[0]);
+      for (var i = this.gameLog.length; i > this.gameLogMaxLength; i--) {        
+        this.gameLog = this.gameLog.slice(1);
       }
     }
 

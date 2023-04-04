@@ -233,7 +233,7 @@ export class StoryService {
     else if (storyId === 15) {
       if (pageCount === 1)
         sceneText = "The commotion and activity of Calydon is a welcome sight after your long journey. Even though you've now traveled all across Greece, seeing so many people in one place still amazes you. Outside of Delphi, this is the largest city you've ever been in. The intricate architecture of the buildings and array of goods for sale in the streets leaves you in awe and feeling a little overwhelmed.<br/><br/>" +
-        "If Zosime felt this way, she did not show it. It was clear that she was ready to continue on and find the fabled forest where Atalanta shed the blood of the Calydonian Boar for the first time. Somehow, it seems Zosime wasn't shaken at all by your encounter with Enceladus. Was this what it was like to be a hero, to ignore your failings and never stray from the path?";
+        "If Zosime also felt this way, she did not show it. It was clear that she was ready to continue on and find the forest where Atalanta shed the blood of the Calydonian Boar for the first time. Somehow, it seems Zosime wasn't shaken at all by your encounter with Enceladus. Was this what it was like to be a hero, to ignore your failings and never stray from the path?";
       else if (pageCount === 2)
         sceneText = "The famous stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?<br/><br/>" +
         "Growing up alone in the hard wilderness, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was turned away from joining the other heroes on the Argo? How many times did she stumble before putting an arrow through the Calydonian Boar?";
@@ -244,14 +244,14 @@ export class StoryService {
     else if (storyId === 16) {
       if (pageCount === 1)
         sceneText = "Like Atalanta before her, Zosime's arrow spells the end for the massive boar. " + this.thalesText("“Another one off your list, Zosime!”") + " You say as you catch your breath, caught up in the thrill of victory. She grins as she eagerly examines the boar. You can tell this moment means a lot to her. <br/><br/>" +
-        "Nearby sounds of leaves rustling immediately put you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
+        "The sound of leaves rustling immediately puts you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
       else if (pageCount === 2)
         sceneText = this.zosimeText("That's Artemis's stag!”") + " Zosime says from behind you. She begins a silent prayer as the majestic beast returns to grazing the forest. " + this.thalesText("“The gods are still with us.”") + " You whisper, feeling a great relief. What greater reassurance can you receive than to know that you may not believe in yourself, but the gods do?<br/><br/>" +
         "The stag's grazing pattern eventually puts it out of sight. You attempt to follow it, but there is no tracking a beast whose very nature is the forest. You return to Zosime, still in prayer.";
       else if (pageCount === 3)
-        //TODO: this feels somewhat unearned, need at least a sentence here to explain why you confidently say this
-        sceneText = this.thalesText("“I've decided that we should go to Iolcus next. My favorite story growing up was Jason's travels. I always loved hearing about so many heroes working together. Besides, I've spent my whole life on the coast and it's been too long since I've been near the water.”") + "<br/><br/>" +
-        this.zosimeText("“Lead the way.”") + " Zosime says, happy to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
+        sceneText = "Whether you believe in yourself or not, whether you etch your name in the annals of history or not, you've decided it does not matter. You are needed, and you will try.<br/><br/>" +
+        this.thalesText("“I've decided that we should go to Iolcus next. My favorite story as a child was Jason's travels. I loved to hear so many heroes working together. Besides, I've spent my whole life on the coast and I've been away for too long.”") + "<br/><br/>" +
+        this.zosimeText("“What are we waiting for then?”") + " Zosime says cheerily, pleased to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -479,7 +479,7 @@ export class StoryService {
     if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
       if (pageCount === 1)
         sceneText = "With a final blow, the shadow dissolves into nothingness. Almost immediately, the area brightens back to normal levels. All of the fighting seems to have barely phased Hypnos, although he did seem to waken.<br/><br/>" +
-          this.commonCharacterText("“I was having quite the nightmares. Thanks for that...”") + " He murmurs, falling back asleep. Your job complete, you make your way back to the shade to deliver the good news.";      
+          this.commonCharacterText("“I was having quite the nightmare. Thanks for that...”") + " He murmurs, falling back asleep. Your job complete, you make your way back to the shade to deliver the good news.";      
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");

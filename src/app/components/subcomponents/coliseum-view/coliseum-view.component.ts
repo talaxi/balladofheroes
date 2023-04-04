@@ -34,7 +34,7 @@ export class ColiseumViewComponent implements OnInit {
       }
 
       var enumValue = propertyValue as ColiseumTournamentEnum;
-      if (enumValue !== ColiseumTournamentEnum.None && enumValue !== ColiseumTournamentEnum.MonstersOfTheLethe) { //TODO: when monsters of the lethe implemented, remove it from this
+      if (enumValue !== ColiseumTournamentEnum.None && enumValue !== ColiseumTournamentEnum.RiverLords) { //TODO: when river lords is implemented, remove it from this
         if (enumValue === ColiseumTournamentEnum.TournamentOfTheDead)
           tournaments.push(enumValue)
         else {

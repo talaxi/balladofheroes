@@ -214,6 +214,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("showOnlyUncompletedAchievements", false);
     this.globalService.globalVar.settings.set("achievementsPerPage", 5);
     this.globalService.globalVar.settings.set("storyStyle", StoryStyleSettingEnum.Medium);
+    this.globalService.globalVar.settings.set("tooltipTheme", true);
     this.globalService.globalVar.settings.set("changeClassSwapEquipment", true);
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
 
@@ -397,7 +398,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 4));
 
-    this.globalService.globalVar.currentStoryId = 100000;
+    this.globalService.globalVar.currentStoryId = 16;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
@@ -414,7 +415,7 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
-    var allAchievementsComplete = true;
+    var allAchievementsComplete = false;
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld)
       ballad.isAvailable = true;
@@ -546,10 +547,10 @@ export class InitializationService {
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
       this.globalService.globalVar.itemBeltSize = 1;
       //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 50;
-      this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.isUnlocked = true;
-      if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting) !== undefined)
-        this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
-      this.alchemyService.checkForNewRecipes();
+      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.isUnlocked = true;
+      //if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting) !== undefined)
+      //  this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
+      //this.alchemyService.checkForNewRecipes();
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
@@ -582,7 +583,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 148;
+      var godLevel = 498;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

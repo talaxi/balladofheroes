@@ -68,8 +68,8 @@ export class ColiseumService {
       return "Flames of Tartarus";
       if (type === ColiseumTournamentEnum.ForgottenKings)
       return "Forgotten Kings and Queens";
-      if (type === ColiseumTournamentEnum.MonstersOfTheLethe)
-      return "Monsters of the Lethe";
+      if (type === ColiseumTournamentEnum.RiverLords)
+      return "River Lords";
     else if (type === ColiseumTournamentEnum.HadesTrial)
       return "Hades' Trial";
     return "";
@@ -171,10 +171,10 @@ export class ColiseumService {
 
     if (type === ColiseumTournamentEnum.ForgottenKings)
     {
-      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.MonstersOfTheLethe);       
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.RiverLords);       
     }
 
-    if (type === ColiseumTournamentEnum.MonstersOfTheLethe)
+    if (type === ColiseumTournamentEnum.RiverLords)
     {
       tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);       
     }

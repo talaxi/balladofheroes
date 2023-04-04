@@ -828,8 +828,6 @@ export class EnemyGeneratorService {
       rockslide.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 10, .5, false, false));
       enemy.abilityList.push(rockslide);
 
-      //todo: Ability that reduces damage taken until hit by an auto attack maybe?
-
       var fistsOfFury = new Ability();
       fistsOfFury.name = "Enfire";
       fistsOfFury.isAvailable = true;
@@ -1941,7 +1939,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 302;
       enemy.loot.push(new LootItem(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 1, .1));
-      enemy.loot.push(new LootItem(ItemsEnum.FocusPotionRecipe, ItemTypeEnum.Resource, 1, 1)); //TODO: should be .01 chance
+      enemy.loot.push(new LootItem(ItemsEnum.FocusPotionRecipe, ItemTypeEnum.Resource, 1, .01));
 
       var devour = new Ability();
       devour.name = "Devour";

@@ -26,10 +26,12 @@ export class CustomTooltipComponent implements OnInit {
 
   @Input() isSticky: boolean = false;
   @Input() isLargeTooltip: boolean = false;
+  tooltipTheme: boolean = true;
 
   constructor(private balladService: BalladService, private globalService: GlobalService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
+    this.tooltipTheme = this.globalService.globalVar.settings.get("tooltipTheme") ?? true;    
   }
 
   ngAfterViewInit() {

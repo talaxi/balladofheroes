@@ -835,7 +835,10 @@ export class LookupService {
     }
 
     else if (type === ItemsEnum.SparringMatch)
-      name = "Instantly receive 5000 Bonus XP";
+    {
+      var xpAmount = 5000;
+      name = "Instantly receive " + xpAmount.toLocaleString() + " Bonus XP";
+    }
     else if (type === ItemsEnum.WarriorClass)
       name = "New Class: Warrior";
     else if (type === ItemsEnum.PriestClass)
@@ -3586,7 +3589,7 @@ export class LookupService {
     var description = "Increases the number of times you hit when auto attacking, multiplying auto attack damage by <strong>" + this.utilityService.roundTo(totalAutoAttackCount, 3) + "</strong>.";
     if (totalAutoAttackCount >= 2)
       description += " On Hit effects occur <strong>" + Math.floor(totalAutoAttackCount) + "</strong> times from auto attacks.";
-    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)) + "</strong>.";
+    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)).toLocaleString() + "</strong>.";
     return description;
   }
 
@@ -4834,25 +4837,6 @@ export class LookupService {
 
     return availableEnums[rng];
   }
-
-  /*addToAchievementCount(count: number) {
-    //TODO: can remove this with versioning vvv
-    if (this.globalService.globalVar.totalAchievementsCompleted === undefined)
-    this.globalService.globalVar.totalAchievementsCompleted = 0;
-    if (this.globalService.globalVar.followerData.achievementCompletionCounter === undefined)
-    this.globalService.globalVar.followerData.achievementCompletionCounter = 0;
-    // ^^^^
-
-    this.globalService.globalVar.followerData.achievementCompletionCounter += count;
-    this.globalService.globalVar.totalAchievementsCompleted += count;
-
-    if (this.globalService.globalVar.followerData.achievementCompletionCounter >= this.followerService.getAchievementsForNextFollower()) {
-      this.globalService.globalVar.followerData.achievementCompletionCounter -= this.followerService.getAchievementsForNextFollower();
-      this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements += 1;
-      this.globalService.globalVar.followerData.availableFollowers += 1;
-      this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
-    }
-  }*/
 
   //seeded by time
   getPreferredGod() {

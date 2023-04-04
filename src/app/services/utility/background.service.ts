@@ -284,13 +284,6 @@ export class BackgroundService {
   }
 
   handleFollowerSearch(deltaTime: number) {
-    //TODO: delete after implementing versioning
-    if (this.globalService.globalVar.timers.followerSearchZoneTimer === undefined) {
-      this.globalService.globalVar.timers.followerSearchZoneTimer = 0;
-      this.globalService.globalVar.timers.followerSearchZoneTimerLength = 60;
-    }
-    // ^^
-
     var hour = 1 * 60 * 60; //average per hour
     var checkTime = this.globalService.globalVar.timers.followerSearchZoneTimerLength;
     this.globalService.globalVar.timers.followerSearchZoneTimer += deltaTime;
@@ -298,7 +291,7 @@ export class BackgroundService {
     if (this.globalService.globalVar.timers.followerSearchZoneTimer >= this.globalService.globalVar.timers.followerSearchZoneTimerLength) {
       this.globalService.globalVar.timers.followerSearchZoneTimer -= this.globalService.globalVar.timers.followerSearchZoneTimerLength;
       this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.SearchingZone).forEach(follower => {
-        var rewards = this.followerService.getZoneSearchRewards(follower.assignedZone); //TODO: bring this out of the for loop? only if performance is poor
+        var rewards = this.followerService.getZoneSearchRewards(follower.assignedZone); //bring this out of the for loop? only if performance is poor
         var zone = this.balladService.findZone(follower.assignedZone);
         var zoneName = zone !== undefined ? zone.zoneName : "";
 

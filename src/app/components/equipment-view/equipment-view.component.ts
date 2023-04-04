@@ -39,7 +39,6 @@ export class EquipmentViewComponent implements OnInit {
   constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog, private deviceDetectorService: DeviceDetectorService) { }
 
-  //todo: need to emit back if slot changes here so you can update the list
   ngOnInit(): void {
     this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
     this.setUpAvailableEquipment();

@@ -113,7 +113,7 @@ export class GodViewComponent implements OnInit {
             nextLevel = this.utilityService.permanentGodAbility2Level;          
           else if (nextLevel < 200) //permanent stat 4
             nextLevel = 200;
-            else if (nextLevel < this.utilityService.permanentGodAbility3Level)
+          else if (nextLevel > (this.utilityService.permanentGodAbility3Level - 26) && nextLevel < this.utilityService.permanentGodAbility3Level)
             nextLevel = this.utilityService.permanentGodAbility3Level;   
           else if (nextLevel <= 500) //end of permanent stats
             nextLevel = Math.ceil(nextLevel / 25) * 25;
