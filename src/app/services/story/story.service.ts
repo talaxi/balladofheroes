@@ -129,7 +129,7 @@ export class StoryService {
     }
     else if (storyId === 4) {
       if (pageCount === 1)
-        sceneText = "Your power has grown significantly since being chosen by Athena, but you feel this Archer matches you in the same way. As your fight comes to a stalemate, you raise your hands in surrender. <br/><br/>" +
+        sceneText = "Your power has grown significantly since you were chosen by Athena, but you feel this Archer matches you in the same way. As your fight comes to a stalemate, you raise your hands in surrender. <br/><br/>" +
           "<span class='adventurerColor bold'>“I thought you were trying to mug me, but you fight harder than an ordinary bandit. Why are you following me?”</span><br/><br/>" +
           "<span class='archerColor bold'>“I didn't mean to startle you.”</span> Your opponent says, cautiously lowering her bow. <span class='archerColor bold'>“I was leaving Delphi at the same time as you, and couldn't help notice you cutting down the outlaws running these roads. Following you made it easier to travel.. and I was curious what you were after.”</span>";
       else if (pageCount === 2)
