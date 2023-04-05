@@ -2697,6 +2697,9 @@ export class LookupService {
 
       //log(.75 * x) + .325
       criticalChance = Math.log10(horizontalStretch * differential) + horizontalPosition;
+
+      if (criticalChance < .01)
+        criticalChance = .01;
     }
     else if (differential < 1) {
       //.2 * log(9^x) - .25      
@@ -2705,6 +2708,9 @@ export class LookupService {
       var horizontalPosition = -.25;
 
       criticalChance = amplifier * (Math.log10(horizontalStretch * differential + horizontalPosition));
+      
+      if (criticalChance > 1)
+        criticalChance = 1;
     }
 
     return criticalChance;

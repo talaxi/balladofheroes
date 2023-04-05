@@ -68,7 +68,7 @@ export class VersionControlService {
   }
 
   updatePlayerVersion() {
-    //TODO remove this after next deploy
+    //TODO: move this to v.4
     var adventurer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer);
     if (adventurer !== undefined)
       adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
