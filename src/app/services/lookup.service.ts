@@ -1489,10 +1489,10 @@ export class LookupService {
     var description = "";
 
     if (type === OverdriveNameEnum.Fervor) {
-      description = "For 20 seconds, your auto attack cooldown is twice as fast.";
+      description = "For 20 seconds, your auto attack cooldown is reduced by 33%.";
     }
     if (type === OverdriveNameEnum.Smash) {
-      description = "For 20 seconds, your auto attacks deal 50% increased damage.";
+      description = "For 20 seconds, your auto attacks deal 25% increased damage.";
     }
     if (type === OverdriveNameEnum.Protection) {
       description = "After 20 seconds, you recover 50% of the damage you took while this effect was active.";

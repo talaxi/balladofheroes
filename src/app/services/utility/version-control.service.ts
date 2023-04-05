@@ -1,12 +1,14 @@
 import { Injectable } from '@angular/core';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from '../global/global.service';
+import { UtilityService } from './utility.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VersionControlService {
 
-  constructor(public globalService: GlobalService) { }
+  constructor(public globalService: GlobalService, private utilityService: UtilityService) { }
 
   //add to this in descending order
   gameVersions = [0.3];
@@ -66,9 +68,23 @@ export class VersionControlService {
   }
 
   updatePlayerVersion() {
-    this.getListAscended().forEach(version => {      
-      if (this.globalService.globalVar.currentVersion < version) {        
+    //TODO remove this after next deploy
+    var adventurer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer);
+    if (adventurer !== undefined)
+      adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
+
+    var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+    if (warrior !== undefined)
+      warrior.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+
+    var archer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
+    if (archer !== undefined)
+      archer.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+
+    this.getListAscended().forEach(version => {
+      if (this.globalService.globalVar.currentVersion < version) {
         if (version === .4) {
+
         }
 
         /*if (version === 1.01) {

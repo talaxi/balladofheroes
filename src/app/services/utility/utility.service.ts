@@ -13,8 +13,8 @@ export class UtilityService {
   public activeTimeLimit = 1 * 30 * 60;
   public extraSpeedTimeLimit = 8 * 60 * 60;
 
-  public quickAutoAttackSpeed = 5;
-  public averageAutoAttackSpeed = 7.5;
+  public quickAutoAttackSpeed = 6;
+  public averageAutoAttackSpeed = 8;
   public longAutoAttackSpeed = 10;
 
   public enemyQuickAutoAttackSpeed = 5;

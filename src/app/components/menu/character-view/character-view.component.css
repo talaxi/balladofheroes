@@ -117,6 +117,7 @@
         display: grid;
         height: 100%;
         grid-template-columns: 1fr 1fr;
+        column-gap: 1rem;
         grid-template-rows: auto;
         justify-content: stretch;
         grid-template-areas:

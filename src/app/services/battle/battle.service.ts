@@ -525,7 +525,7 @@ export class BattleService {
     var elementalType = character.battleInfo.elementalType;
 
     if (character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Smash)
-      overdriveMultiplier = 1.5;
+      overdriveMultiplier = 1.25;
 
     if (character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Nature)
       elementalType = character.overdriveInfo.lastUsedElement;

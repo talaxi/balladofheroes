@@ -151,7 +151,7 @@ export class StoryService {
     }
     else if (storyId === 6) {
       if (pageCount === 1)
-        sceneText = "With one final attack, you slice Medusa's head clean off. With the power of the gods, what felt impossible before was now within your reach. Despite what Hermes said, your potential is undeniable. Your companion kneels beside you, inspecting the snake-like hair of the Gorgon. <br/><br/>" +
+        sceneText = "With one final attack, you slice Medusa's head clean off. With the power of the gods, what felt impossible before was now within your reach. Despite what Hermes said, your potential is undeniable! Your companion kneels beside you, inspecting the snake-like hair of the Gorgon. <br/><br/>" +
           "<span class='archerColor bold'>“That's one name off my list. Who's next?”</span>";
     }
     else if (storyId === 7) {
