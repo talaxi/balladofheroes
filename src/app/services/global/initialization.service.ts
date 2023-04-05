@@ -204,6 +204,8 @@ export class InitializationService {
     boarBallad.zones.push(calydon);
 
     this.globalService.globalVar.ballads.push(boarBallad);
+
+    this.initializeBalladOfTheArgo();
   }
 
   initializeSettings() {
@@ -664,5 +666,48 @@ export class InitializationService {
     theLethe.subzones.push(new SubZone(SubZoneEnum.TheLetheHypnosIsland));
     theLethe.notificationType = theLethe.shouldShowSideQuestNotification();
     return theLethe;
+  }
+
+  initializeBalladOfTheArgo() {
+    /*var boarBallad = new Ballad(BalladEnum.Argo);
+    var aegean = new Zone();
+    aegean.type = ZoneEnum.AegeanSea;
+    aegean.zoneName = "Pelopos Nisos";
+    aegean.subzones.push(new SubZone(SubZoneEnum.PeloposNisosGatesOfTheUnderworld));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanArcadianRoads));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanTravelPost));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanFootOfTheMountain));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanSteepAscent));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanMountParthenionCaverns));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanValleyOpening));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanTrekAcrossArcadia));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanTrekAcrossAcheae));
+    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanPatrasBorder));
+    aegean.notificationType = aegean.shouldShowSideQuestNotification();
+
+    boarBallad.zones.push(aegean);
+
+    var calydon = new Zone();
+    calydon.type = ZoneEnum.Calydon;
+    calydon.zoneName = "Calydon";
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonTownMarket));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonAltarOfAsclepius));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonForestPassage));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonOvergrownVerdure));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonShroudedFoliage));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWornDownBarn));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonHeavyThicket));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonBabblingStream));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWateringHole));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWelltroddenPathway));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMudpit));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonTallGrass));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonSparseClearing));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMarkedTreeTrail));
+    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonDeadEnd));
+    calydon.notificationType = calydon.shouldShowSideQuestNotification();
+    boarBallad.zones.push(calydon);
+
+    this.globalService.globalVar.ballads.push(boarBallad);*/
   }
 }
