@@ -834,8 +834,7 @@ export class LookupService {
       name = this.getSlotItemDescription(type);
     }
 
-    else if (type === ItemsEnum.SparringMatch)
-    {
+    else if (type === ItemsEnum.SparringMatch) {
       var xpAmount = 5000;
       name = "Instantly receive " + xpAmount.toLocaleString() + " Bonus XP";
     }
@@ -2674,6 +2673,12 @@ export class LookupService {
       criticalChance *= trueShot.effectiveness;
     }
 
+    if (criticalChance < .01)
+      criticalChance = .01;
+
+    if (criticalChance > 1)
+      criticalChance = 1;
+
     return criticalChance;
   }
 
@@ -2682,6 +2687,9 @@ export class LookupService {
 
     var attackerLuck = this.getAdjustedLuck(attacker);
     criticalChance = this.getHealingCriticalChanceByNumbers(attackerLuck);
+
+    if (criticalChance > 1)
+      criticalChance = 1;
 
     return criticalChance;
   }
@@ -2698,8 +2706,8 @@ export class LookupService {
       //log(.75 * x) + .325
       criticalChance = Math.log10(horizontalStretch * differential) + horizontalPosition;
 
-      if (criticalChance < .01)
-        criticalChance = .01;
+      if (criticalChance > 1)
+        criticalChance = 1;
     }
     else if (differential < 1) {
       //.2 * log(9^x) - .25      
@@ -2708,11 +2716,11 @@ export class LookupService {
       var horizontalPosition = -.25;
 
       criticalChance = amplifier * (Math.log10(horizontalStretch * differential + horizontalPosition));
-      
-      if (criticalChance > 1)
-        criticalChance = 1;
-    }
 
+      if (criticalChance < 0)
+        criticalChance = 0;
+    }
+    
     return criticalChance;
   }
 
@@ -3041,13 +3049,13 @@ export class LookupService {
       equipmentStats += "+" + (equipment.stats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction<br />";
     if (equipment.stats.autoAttackCooldownReduction > 0)
       equipmentStats += "+" + (equipment.stats.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction<br />";
-      if (equipment.stats.healingReceived > 0)
+    if (equipment.stats.healingReceived > 0)
       equipmentStats += "+" + (equipment.stats.healingReceived * 100) + "% Healing Received<br />";
-      if (equipment.stats.debuffDuration > 0)
+    if (equipment.stats.debuffDuration > 0)
       equipmentStats += "+" + (equipment.stats.debuffDuration * 100) + "% Debuff Duration<br />";
-      if (equipment.stats.overdriveGainFromAutoAttacks > 0)
+    if (equipment.stats.overdriveGainFromAutoAttacks > 0)
       equipmentStats += "+" + (equipment.stats.overdriveGainFromAutoAttacks * 100) + "% Overdrive Gain From Auto Attacks Bonus<br />";
-      if (equipment.stats.healingDone > 0)
+    if (equipment.stats.healingDone > 0)
       equipmentStats += "+" + (equipment.stats.healingDone * 100) + "% Healing Done<br />";
     if (equipment.stats.elementIncrease.holy > 0)
       equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% Holy Damage Bonus<br />";
