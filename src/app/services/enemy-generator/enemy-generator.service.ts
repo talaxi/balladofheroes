@@ -335,7 +335,7 @@ export class EnemyGeneratorService {
       var gaze = new Ability();
       gaze.name = "Gaze";
       gaze.isAvailable = true;
-      gaze.cooldown = gaze.currentCooldown = 25;
+      gaze.cooldown = gaze.currentCooldown = 26;
       gaze = this.randomizeCooldown(gaze);
       gaze.dealsDirectDamage = false;
       gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 6, 0, false, false));
@@ -344,7 +344,7 @@ export class EnemyGeneratorService {
       var bite = new Ability();
       bite.name = "Snake Bite";
       bite.isAvailable = true;
-      bite.effectiveness = 1.25;
+      bite.effectiveness = 1.2;
       bite.dealsDirectDamage = true;
       bite.cooldown = bite.currentCooldown = 13;
       bite = this.randomizeCooldown(bite);
@@ -362,7 +362,7 @@ export class EnemyGeneratorService {
       var gaze = new Ability();
       gaze.name = "Gaze";
       gaze.isAvailable = true;
-      gaze.cooldown = gaze.currentCooldown = 20;
+      gaze.cooldown = gaze.currentCooldown = 26;
       gaze = this.randomizeCooldown(gaze);
       gaze.dealsDirectDamage = false;
       gaze.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 6, 0, false, false));
@@ -374,7 +374,7 @@ export class EnemyGeneratorService {
       feint.dealsDirectDamage = false;
       feint.cooldown = feint.currentCooldown = 15;
       feint = this.randomizeCooldown(feint);
-      feint.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 7, .75, false, false));
+      feint.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 7, .8, false, false));
       enemy.abilityList.push(feint);
     }
     if (type === BestiaryEnum.Medusa) {
