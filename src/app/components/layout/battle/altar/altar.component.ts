@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
 import { Character } from 'src/app/models/character/character.model';
 import { AltarPrayOptionsEnum } from 'src/app/models/enums/altar-pray-options-enum.model';
@@ -29,7 +30,7 @@ export class AltarComponent implements OnInit {
 
   constructor(private globalService: GlobalService, private altarService: AltarService, private lookupService: LookupService,
     private battleService: BattleService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
-    private alchemyService: AlchemyService, private utilityService: UtilityService) { }
+    private alchemyService: AlchemyService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {    
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
@@ -176,7 +177,9 @@ export class AltarComponent implements OnInit {
   gainThreshold3Reward() {
     this.globalService.globalVar.altars.largeAltarsUnlocked = true;
 
-    var gameLogEntry = "To further your devotion to the gods, you have begun praying to <strong>Large Altars</strong>.";
+    var gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Right click Small Altars to toggle between the two options.";
+    if (this.deviceDetectorService.isMobile())
+      gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Tap and hold Small Altars to toggle between the two options.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry);
   }
 

@@ -20,7 +20,7 @@ export class GameLogService {
   }
 
   updateGameLog(type: GameLogEntryEnum, entry: string) {
-    if (type === GameLogEntryEnum.BattleUpdate || type === GameLogEntryEnum.BattleRewards) {
+    if (type === GameLogEntryEnum.BattleUpdate || type === GameLogEntryEnum.BattleRewards || type === GameLogEntryEnum.ColiseumUpdate) {
       entry = "<span class='gameText battleUpdateText'>" + entry + "</span>";
     }
     if (type === GameLogEntryEnum.UseBattleItem) {
@@ -75,6 +75,10 @@ export class GameLogService {
         this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
       }
       if (type === GameLogEntryEnum.BattleRewards)
+      {
+        this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
+      }
+      if (type === GameLogEntryEnum.ColiseumUpdate)
       {
         this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
       }

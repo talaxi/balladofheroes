@@ -57,6 +57,24 @@ export class ColiseumService {
       tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
     }
+    if (type === ColiseumTournamentEnum.RiverLords) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
+      //TODO: river lords rewards
+      //tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
+      //tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
+      //tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+    }
+    if (type === ColiseumTournamentEnum.HadesTrial) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
+      //TODO: hades trial rewards
+      //tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
+      //tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
+      //tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+    }
 
     return tournament;
   }
@@ -288,6 +306,36 @@ export class ColiseumService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Minos));      
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Rhadamanthus));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Aeacus));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.RiverLords && round === 1) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Acheron2));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.RiverLords && round === 2) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cocytus));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.RiverLords && round === 3) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lethe));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.RiverLords && round === 4) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Phlegethon));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.RiverLords && round === 5) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Styx));      
       battleOptions.push(enemyTeam);
     }
 

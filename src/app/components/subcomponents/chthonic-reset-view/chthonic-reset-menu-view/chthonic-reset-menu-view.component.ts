@@ -37,7 +37,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     this.bonusGodName = this.globalService.globalVar.gods.find(item => item.type === this.bonusGod) !== undefined ? this.globalService.globalVar.gods.find(item => item.type === this.bonusGod)!.name : "";
 
     if (this.bonusGod === GodEnum.Athena) {
-      this.bonusGodText = "Between you and me, I think Athena's the reason I'm here in the first place. One day you're fightin' in some war, the next day you're down here. Guess the other side was prayin' a little more. Well, guess it's never too late to start. Bring me a little favor from Athena."; //think athena brought me here
+      this.bonusGodText = "Between you and me, I think Athena's the reason I'm here in the first place. One day you're fightin' in some war, the next day you're down here. Guess the other side was prayin' a little more. Well, guess it's never too late to start. Bring me a little favor from Athena.";
     }
     if (this.bonusGod === GodEnum.Artemis) {
       this.bonusGodText = "Look, I do <strong><i>not</i></strong> want to get on Artemis's bad side okay? The last guy I knew who didn't pray to Artemis, she turned him into a squirrel! How long do you think a squirrel is gonna last down here? Bring me some of Artemis's favor and I'll make it worth your while.";
@@ -48,6 +48,12 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     if (this.bonusGod === GodEnum.Apollo) {
       this.bonusGodText = "Tell me you're back with Apollo's favor. He's the god of <strong><i>AVERTING EVIL</i></strong>! You know how much evil there is down here that needs averting? I could use about 5 Apollos here at all times!";
     }
+    if (this.bonusGod === GodEnum.Hades) {
+      this.bonusGodText = "I don't need anyone's favor here except the boss himself. There's no one smarter or stronger than Hades! And you make sure to tell him I said that, alright?";
+    }
+    if (this.bonusGod === GodEnum.Ares) {
+      this.bonusGodText = "You ever wake up with an unquenchable thirst for violence? Just me? Maybe I've been down here too long. Bring me a little favor from Ares so I can get a little taste.";
+    }
 
     this.bonusGodText = "<strong>" + this.bonusGodText + "</strong>";
     this.bonusGodText = this.bonusGodText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
@@ -56,6 +62,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     this.bonusGodText = this.bonusGodText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Apollos", "<span class='apolloColor storyCharacterName'>Apollos</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Apollo", "<span class='apolloColor storyCharacterName'>Apollo</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Ares", "<span class='aresColor storyCharacterName'>Ares</span>");
   }
 
   getChthonicPower(god: God) {

@@ -112,14 +112,21 @@ export class FollowerOverviewViewComponent {
     prayerCounts.forEach(item => {
       if (item[0] === FollowerPrayerTypeEnum.Activate) {
         if (item[1] === AltarEnum.Small) {
-          overviewText += item[2] + (item[2] === 1 ? " follower is " : " followers are ") + " attempting to activate a Small Altar that your party " +
-            "has fulfilled the conditions for, providing a " + Math.round(item[2] * this.utilityService.smallAltarActivationChancePerFollower * 100) + "% chance to activate every minute.<br/>";
+          overviewText += item[2] + (item[2] === 1 ? " follower is " : " followers are ") + " attempting to activate Small Altars that your party " +
+            "has fulfilled the conditions for, each providing a " + Math.round(this.utilityService.smallAltarActivationChancePerFollower * 100) + "% chance to activate any Small Altar among your three available altars every minute.<br/>";
+        }
+        if (item[1] === AltarEnum.Large) {
+          overviewText += item[2] + (item[2] === 1 ? " follower is " : " followers are ") + " attempting to activate Large Altars that your party " +
+            "has fulfilled the conditions for, providing a " + Math.round(item[2] * this.utilityService.smallAltarActivationChancePerFollower * 100) + "% chance to activate any Large Altar among your three available altars every minute.<br/>";
         }
       }
 
       if (item[0] === FollowerPrayerTypeEnum.Pray) {
         if (item[1] === AltarEnum.Small) {
-          overviewText += item[2] + (item[2] === 1 ? " follower is " : " followers are ") + " preparing a Small Altar to the gods, providing a " + Math.round(item[2] * this.utilityService.smallAltarPrayChancePerFollower * 100) + "% chance to pray to a random Small Altar every minute.<br/>";
+          overviewText += item[2] + (item[2] === 1 ? " follower is " : " followers are ") + " preparing Small Altars to the gods, each providing a " + Math.round(this.utilityService.smallAltarPrayChancePerFollower * 100) + "% chance to pray to a random god's Small Altar every minute.<br/>";
+        }
+        if (item[1] === AltarEnum.Large) {
+          overviewText += item[2] + (item[2] === 1 ? " follower is " : " followers are ") + " preparing a Large Altars to the gods, each providing a " + Math.round(this.utilityService.largeAltarPrayChancePerFollower * 100) + "% chance to pray to a random god's Large Altar every minute.<br/>";
         }
       }
     });

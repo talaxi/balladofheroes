@@ -34,6 +34,7 @@ import { ResourceGeneratorService } from '../resources/resource-generator.servic
 import { KeybindService } from '../utility/keybind.service';
 import { VersionControlService } from '../utility/version-control.service';
 import { GlobalService } from './global.service';
+import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 
 @Injectable({
   providedIn: 'root'
@@ -204,6 +205,8 @@ export class InitializationService {
     boarBallad.zones.push(calydon);
 
     this.globalService.globalVar.ballads.push(boarBallad);
+
+    //this.initializeBalladOfTheArgo();
   }
 
   initializeSettings() {
@@ -251,14 +254,14 @@ export class InitializationService {
   initializeGameLogSettings() {
     this.globalService.globalVar.gameLogSettings.set("partyAutoAttacks", true);
     this.globalService.globalVar.gameLogSettings.set("partyAbilityUse", true);
-    this.globalService.globalVar.gameLogSettings.set("partyUseOverdrive", true);
+    this.globalService.globalVar.gameLogSettings.set("partyOverdrives", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAutoAttacks", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
     this.globalService.globalVar.gameLogSettings.set("prayToAltar", true);
     this.globalService.globalVar.gameLogSettings.set("partyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("enemyStatusEffect", true);
-    this.globalService.globalVar.gameLogSettings.set("partyEquipmentEffect", true);    
+    this.globalService.globalVar.gameLogSettings.set("partyEquipmentEffect", true);
     this.globalService.globalVar.gameLogSettings.set("battleRewards", true);
     this.globalService.globalVar.gameLogSettings.set("partyLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", true);
@@ -396,6 +399,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RejuvenatingElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 4));
 
     this.globalService.globalVar.currentStoryId = 16;
@@ -416,29 +420,40 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
     var allAchievementsComplete = false;
+
+    if (allAchievementsComplete) {
+      this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
+      this.globalService.globalVar.followerData.availableFollowers = 100;
+      for (var i = 0; i < 100; i++)
+        this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
+    }
+
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld)
       ballad.isAvailable = true;
       ballad.notify = true;
       ballad.zones.forEach(zone => {
-        zone.isAvailable = true;
-        zone.notify = true;
-        zone.subzones.forEach(subzone => {
-          subzone.isAvailable = true;
-          subzone.notify = true;
-          if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
-            this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
-              this.globalService.globalVar.achievements.push(achievement);
-              if (allAchievementsComplete) {
-                achievement.completed = true;
-                this.achievementService.getAchievementReward(achievement.subzone, achievement.type).forEach(bonus => {
-                  this.lookupService.gainResource(bonus.makeCopy());
-                });
-              }
-            });
-          }
-        })
-      })
+        if (zone.type !== ZoneEnum.TheLethe) {
+          zone.isAvailable = true;
+          zone.notify = true;
+          zone.subzones.forEach(subzone => {
+            subzone.isAvailable = true;
+            subzone.notify = true;
+            //subzone.victoryCount = 100;
+            if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
+              this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+                if (allAchievementsComplete) {
+                  achievement.completed = true;
+                  this.achievementService.getAchievementReward(achievement.subzone, achievement.type).forEach(bonus => {
+                    this.lookupService.gainResource(bonus.makeCopy());
+                  });
+                }
+              });
+            }
+          })
+        }
+      });
     });
 
     var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
@@ -574,7 +589,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
       }
 
-      var characterLevel = 19;
+      var characterLevel = 8;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
@@ -583,7 +598,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 498;
+      var godLevel = 198;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -664,5 +679,53 @@ export class InitializationService {
     theLethe.subzones.push(new SubZone(SubZoneEnum.TheLetheHypnosIsland));
     theLethe.notificationType = theLethe.shouldShowSideQuestNotification();
     return theLethe;
+  }
+
+  initializeBalladOfTheArgo() {
+    var argoBallad = new Ballad(BalladEnum.Argo);
+    var aegean = new Zone();
+    aegean.type = ZoneEnum.AegeanSea;
+    aegean.zoneName = "Aegean Sea";
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaIolcus));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaOpenSeas));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaIslandOfLemnos));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaIslandOfImbros));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaHellespointPassage1));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaPropontis));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaHellespointPassage2));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaCoastalThrace));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaSalmydessus));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaDesertedPath));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaRockyOverhang));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaSympegadesOverlook));
+    aegean.notificationType = aegean.shouldShowSideQuestNotification();
+
+    argoBallad.zones.push(aegean);
+
+    var blackSea = new Zone();
+    blackSea.type = ZoneEnum.BlackSea;
+    blackSea.zoneName = "Black Sea";
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaStillWaters));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaMariandyna));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaUnderAssault));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaSeaEscape));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaStormySkies));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaAreonesosPassing));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaWindyGale));
+    blackSea.notificationType = blackSea.shouldShowSideQuestNotification();
+    argoBallad.zones.push(blackSea);
+
+    var colchis = new Zone();
+    colchis.type = ZoneEnum.Colchis;
+    colchis.zoneName = "Colchis";
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisCityCenter));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisGroveOfAres));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisReinforcementsFromAeetes));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisHurriedRetreat1));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisHurriedRetreat2));
+    colchis.notificationType = colchis.shouldShowSideQuestNotification();
+    argoBallad.zones.push(colchis);
+
+    this.globalService.globalVar.ballads.push(argoBallad);
   }
 }

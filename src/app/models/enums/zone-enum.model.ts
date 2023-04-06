@@ -9,4 +9,7 @@ export enum ZoneEnum {
   PeloposNisos,
   Calydon,
   TheLethe,
+  AegeanSea,
+  BlackSea,
+  Colchis
 }

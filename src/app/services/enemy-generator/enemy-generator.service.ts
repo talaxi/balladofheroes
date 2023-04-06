@@ -1139,7 +1139,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Rhadamanthus) {
       enemy.name = "Rhadamanthus";
-      enemy.battleStats = new CharacterStats(14698, 436, 1292, 415, 415, 1000);
+      enemy.battleStats = new CharacterStats(13698, 436, 1292, 415, 415, 1000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 650;
@@ -1167,7 +1167,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Aeacus) {
       enemy.name = "Aeacus";
-      enemy.battleStats = new CharacterStats(16815, 602, 1489, 483, 395, 1000);
+      enemy.battleStats = new CharacterStats(15815, 602, 1489, 483, 395, 1000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 650;
@@ -2486,6 +2486,7 @@ export class EnemyGeneratorService {
       enemy.name = "Nightmare Monstrosity";
       enemy.battleStats = new CharacterStats(11630, 361, 1062, 605, 565, 950);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.battleStats.elementResistance.holy = this.utilityService.enemyMediumElementalWeakness;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 400; 
       enemy.loot.push(new LootItem(ItemsEnum.LesserCrackedOpal, ItemTypeEnum.Resource, 1, .03));            
@@ -2512,6 +2513,7 @@ export class EnemyGeneratorService {
       enemy.name = "Shade of Hypnos";
       enemy.battleStats = new CharacterStats(42322, 562, 1660, 640, 750, 1250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats.elementResistance.holy = this.utilityService.enemyMediumElementalWeakness;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 1200;            
       enemy.loot.push(new LootItem(ItemsEnum.RingOfNightmares, ItemTypeEnum.Equipment, 1, .02));   
@@ -2553,6 +2555,247 @@ export class EnemyGeneratorService {
       dreameater.effectiveness = 2.2;
       dreameater.isAoe = true;
       enemy.abilityList.push(dreameater);
+    }
+    if (type === BestiaryEnum.Acheron2) {
+      enemy.name = "Acheron";
+      enemy.battleStats = new CharacterStats(27232, 560, 1375, 470, 450, 1200);
+      enemy.battleStats.elementIncrease.water += .2;
+      enemy.battleStats.elementResistance.fire += .2;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 4;
+      enemy.xpGainFromDefeat = 450;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
+      
+      var rush = new Ability();
+      rush.name = "Rush";
+      rush.isAvailable = true;
+      rush.cooldown = rush.currentCooldown = 16;
+      rush = this.randomizeCooldown(rush);
+      rush.dealsDirectDamage = true;
+      rush.effectiveness = 1.8;
+      rush.elementalType = ElementalTypeEnum.Water;      
+      enemy.abilityList.push(rush);
+
+      var acheronFlow = new Ability();
+      acheronFlow.name = "Acheron Flow";
+      acheronFlow.isAvailable = true;
+      acheronFlow.cooldown = acheronFlow.currentCooldown = 30;
+      acheronFlow = this.randomizeCooldown(acheronFlow);
+      acheronFlow.dealsDirectDamage = false;
+      acheronFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.25, false, true));
+      enemy.abilityList.push(acheronFlow);
+      
+      var spray = new Ability();
+      spray.name = "Spray";
+      spray.isAvailable = true;
+      spray.cooldown = spray.currentCooldown = 24;
+      spray = this.randomizeCooldown(spray);
+      spray.dealsDirectDamage = true;
+      spray.effectiveness = 1.4;
+      spray.isAoe = true;
+      spray.elementalType = ElementalTypeEnum.Water;
+      spray.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 10, .5, false, false, true));
+      enemy.abilityList.push(spray);
+
+      var defend = new Ability();
+      defend.name = "Defend";
+      defend.isAvailable = true;
+      defend.cooldown = defend.currentCooldown = 24;
+      defend = this.randomizeCooldown(defend);
+      defend.dealsDirectDamage = false;
+      defend.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 7, .5, false, true, false));
+      enemy.abilityList.push(defend);
+    }
+    if (type === BestiaryEnum.Cocytus) {
+      enemy.name = "Cocytus";
+      enemy.battleStats = new CharacterStats(29641, 463, 1245, 585, 450, 1200);
+      enemy.battleStats.elementIncrease.water += .2;
+      enemy.battleStats.elementResistance.fire += .2;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 4;
+      enemy.xpGainFromDefeat = 450;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
+
+      var acheronFlow = new Ability();
+      acheronFlow.name = "Cocytus Flow";
+      acheronFlow.isAvailable = true;
+      acheronFlow.cooldown = acheronFlow.currentCooldown = 30;
+      acheronFlow = this.randomizeCooldown(acheronFlow);
+      acheronFlow.dealsDirectDamage = false;
+      acheronFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.25, false, true));
+      acheronFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, -1, 1.25, false, true));
+      enemy.abilityList.push(acheronFlow);
+      
+      var weave = new Ability();
+      weave.name = "Weave";
+      weave.isAvailable = true;
+      weave.cooldown = weave.currentCooldown = 18;
+      weave = this.randomizeCooldown(weave);
+      weave.dealsDirectDamage = true;
+      weave.effectiveness = 1.9;
+      weave.elementalType = ElementalTypeEnum.Water;
+      weave.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 6, .75, false, false));
+      enemy.abilityList.push(weave);
+            
+      var wail = new Ability();
+      wail.name = "Wail";
+      wail.isAvailable = true;
+      wail.cooldown = wail.currentCooldown = 19;
+      wail = this.randomizeCooldown(wail);
+      wail.dealsDirectDamage = false;
+      wail.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 6, .7, false, false, true));
+      wail.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckDown, 6, .7, false, false, true));
+      enemy.abilityList.push(wail);
+    }
+    if (type === BestiaryEnum.Lethe) {
+      enemy.name = "Lethe";
+      enemy.battleStats = new CharacterStats(32087, 695, 1475, 425, 575, 1250);      
+      enemy.battleStats.elementResistance.fire += .2;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 4;
+      enemy.xpGainFromDefeat = 450;
+
+      var letheFlow = new Ability();
+      letheFlow.name = "Lethe Flow";
+      letheFlow.isAvailable = true;
+      letheFlow.cooldown = letheFlow.currentCooldown = 30;
+      letheFlow = this.randomizeCooldown(letheFlow);
+      letheFlow.dealsDirectDamage = false;
+      letheFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.25, false, true));
+      letheFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, -1, 1.25, false, true));
+      letheFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, -1, 1.25, false, true));
+      enemy.abilityList.push(letheFlow);
+      
+      var oblivion = new Ability();
+      oblivion.name = "Oblivion";
+      oblivion.isAvailable = true;
+      oblivion.cooldown = oblivion.currentCooldown = 40;
+      oblivion = this.randomizeCooldown(oblivion);
+      oblivion.dealsDirectDamage = true;
+      oblivion.effectiveness = 4.4;
+      oblivion.isAoe = true;            
+      enemy.abilityList.push(oblivion);
+
+      var rest = new Ability();
+      rest.name = "Rest";
+      rest.isAvailable = true;
+      rest.cooldown = rest.currentCooldown = 23;
+      rest = this.randomizeCooldown(rest);
+      rest.dealsDirectDamage = false;
+      rest.heals = true;
+      rest.effectiveness = 1.2;
+      rest.targetsAllies = true;
+      rest.targetType = TargetEnum.Self;
+      enemy.abilityList.push(rest);
+    }
+    if (type === BestiaryEnum.Phlegethon) {
+      enemy.name = "Phlegethon";
+      enemy.battleStats = new CharacterStats(34178, 593, 1525, 500, 600, 1250);      
+      enemy.battleStats.elementIncrease.fire += .25;
+      enemy.battleStats.elementResistance.fire += .5;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 4;
+      enemy.xpGainFromDefeat = 450;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
+
+      var phlegethonFlow = new Ability();
+      phlegethonFlow.name = "Phlegethon Flow";
+      phlegethonFlow.isAvailable = true;
+      phlegethonFlow.cooldown = phlegethonFlow.currentCooldown = 30;
+      phlegethonFlow = this.randomizeCooldown(phlegethonFlow);
+      phlegethonFlow.dealsDirectDamage = false;
+      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.25, false, true));
+      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, -1, 1.25, false, true));
+      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, -1, 1.25, false, true));
+      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, -1, 1.25, false, true));
+      enemy.abilityList.push(phlegethonFlow);
+      
+      var streamOfFire = new Ability();
+      streamOfFire.name = "Stream of Fire";
+      streamOfFire.isAvailable = true;
+      streamOfFire.cooldown = streamOfFire.currentCooldown = 21;
+      streamOfFire = this.randomizeCooldown(streamOfFire);
+      streamOfFire.dealsDirectDamage = true;
+      streamOfFire.effectiveness = 1.4;
+      streamOfFire.isAoe = true;
+      streamOfFire.elementalType = ElementalTypeEnum.Fire;
+      streamOfFire.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2, streamOfFire.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(streamOfFire);
+
+      var charredSkin = new Ability();
+      charredSkin.name = "Charred Skin";
+      charredSkin.isAvailable = true;
+      charredSkin.cooldown = charredSkin.currentCooldown = 24;
+      charredSkin = this.randomizeCooldown(charredSkin);
+      charredSkin.dealsDirectDamage = false;
+      charredSkin.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 8, 100, false, true));
+      enemy.abilityList.push(charredSkin);
+    }
+    if (type === BestiaryEnum.Styx) {
+      enemy.name = "Styx";
+      enemy.battleStats = new CharacterStats(39232, 622, 1675, 600, 750, 1400);
+      enemy.battleStats.elementIncrease.water += .2;
+      enemy.battleStats.elementResistance.fire += .2;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 4;
+      enemy.xpGainFromDefeat = 450;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
+
+      var styxFlow = new Ability();
+      styxFlow.name = "Styx Flow";
+      styxFlow.isAvailable = true;
+      styxFlow.cooldown = styxFlow.currentCooldown = 30;
+      styxFlow = this.randomizeCooldown(styxFlow);
+      styxFlow.dealsDirectDamage = false;
+      styxFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.25, false, true));
+      styxFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, -1, 1.25, false, true));
+      styxFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, -1, 1.25, false, true));
+      styxFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, -1, 1.25, false, true));
+      styxFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, -1, 1.25, false, true));
+      enemy.abilityList.push(styxFlow);
+      
+      //goddess of oaths, she can use one of each of the previous ones
+      var weave = new Ability();
+      weave.name = "Oath: Weave";
+      weave.isAvailable = true;
+      weave.cooldown = weave.currentCooldown = 18;
+      weave = this.randomizeCooldown(weave);
+      weave.dealsDirectDamage = true;
+      weave.effectiveness = 1.9;
+      weave.elementalType = ElementalTypeEnum.Water;
+      weave.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 6, .75, false, false));
+      enemy.abilityList.push(weave);
+
+      var defend = new Ability();
+      defend.name = "Oath: Defend";
+      defend.isAvailable = true;
+      defend.cooldown = defend.currentCooldown = 24;
+      defend = this.randomizeCooldown(defend);
+      defend.dealsDirectDamage = false;
+      defend.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 7, .75, false, true, false));
+      enemy.abilityList.push(defend);
+
+      var oblivion = new Ability();
+      oblivion.name = "Oath: Oblivion";
+      oblivion.isAvailable = true;
+      oblivion.cooldown = oblivion.currentCooldown = 40;
+      oblivion = this.randomizeCooldown(oblivion);
+      oblivion.dealsDirectDamage = true;
+      oblivion.effectiveness = 4.4;
+      oblivion.isAoe = true;            
+      enemy.abilityList.push(oblivion);
+
+      var streamOfFire = new Ability();
+      streamOfFire.name = "Oath: Stream of Fire";
+      streamOfFire.isAvailable = true;
+      streamOfFire.cooldown = streamOfFire.currentCooldown = 21;
+      streamOfFire = this.randomizeCooldown(streamOfFire);
+      streamOfFire.dealsDirectDamage = true;
+      streamOfFire.effectiveness = 1.4;
+      streamOfFire.isAoe = true;
+      streamOfFire.elementalType = ElementalTypeEnum.Fire;
+      streamOfFire.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2, streamOfFire.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(streamOfFire);
     }
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise

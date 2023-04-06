@@ -803,7 +803,7 @@ export class LookupService {
     else if (type === ItemsEnum.HeroicElixir)
       name = "Increase user's max HP by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
     else if (type === ItemsEnum.RejuvenatingElixir)
-      name = "Increase user's HP Regen by " + relatedUserGainStatusEffectEffectiveness + " per 5 seconds for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
+      name = "Increase user's HP Regen by " + relatedUserGainStatusEffectEffectiveness + " HP per 5 seconds for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
     else if (type === ItemsEnum.ElixirOfFortitude)
       name = "Increase user's Defense by " + relatedUserGainStatusEffectEffectivenessPercent + "% for " + durationInMinutes + " minutes. Only one elixir can be active per party member at a time.";
 
