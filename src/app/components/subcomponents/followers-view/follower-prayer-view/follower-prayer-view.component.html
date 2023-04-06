@@ -23,8 +23,8 @@
                 (click)="incrementPrayerFollowers(followerPrayerType.Activate, altarType.Small)">+</button>
         </span>
         <br />
-        Each follower provides a {{getSmallAltarActivationChance()}}% chance per minute to activate a random Small Altar that has met its necessary
-        conditions.
+        Each follower provides a {{getSmallAltarActivationChance()}}% chance per minute to activate any Small Altar among
+        your three available altars that have met their necessary activation conditions.
     </div>
     <div *ngIf="largeAltarsAvailable">
         <span class="s4Heading smallCaps altarName">Large Altars</span>
@@ -36,8 +36,8 @@
                 (click)="incrementPrayerFollowers(followerPrayerType.Activate, altarType.Large)">+</button>
         </span>
         <br />
-        Each follower provides a {{getLargeAltarActivationChance()}}% chance per minute to activate a random Large Altar that has met its necessary
-        conditions.
+        Each follower provides a {{getLargeAltarActivationChance()}}% chance per minute to activate any Large Altar among
+        your three available altars that have met their necessary activation conditions.
     </div>
     </div>
 </div>
@@ -56,7 +56,8 @@
                 (click)="incrementPrayerFollowers(followerPrayerType.Pray, altarType.Small)">+</button>
         </span>
         <br />
-        Each follower provides a {{getSmallAltarPrayerChance()}}% chance per minute to pray to a random god's Small Altar and receive a boon for the party. Only one boon per god can be active at a time.
+        Each follower provides a {{getSmallAltarPrayerChance()}}% chance per minute to pray to a random god's Small Altar and receive a boon for the party. 
+        This does not require an altar to be activated. Only one boon per god can be active at a time.
     </div>
     <div *ngIf="largeAltarsAvailable">
         <span class="s4Heading smallCaps altarName">Large Altars</span>
@@ -68,7 +69,8 @@
                 (click)="incrementPrayerFollowers(followerPrayerType.Pray, altarType.Large)">+</button>
         </span>
         <br />
-        Each follower provides a {{getLargeAltarPrayerChance()}}% chance per minute to pray to a random god's Large Altar and receive a boon for the party. Only one boon per god can be active at a time.
+        Each follower provides a {{getLargeAltarPrayerChance()}}% chance per minute to pray to a random god's Large Altar and receive a boon for the party. 
+        This does not require an altar to be activated. Only one boon per god can be active at a time.
     </div>
     </div>
 </div>

@@ -22,5 +22,6 @@ export enum GameLogEntryEnum {
   FollowerPrayer,
   CodeRedemption,
   Jewelcrafting,
-  SideQuest
+  SideQuest,
+  ColiseumUpdate
 }

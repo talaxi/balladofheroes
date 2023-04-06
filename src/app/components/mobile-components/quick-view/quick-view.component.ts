@@ -50,16 +50,19 @@ export class QuickViewComponent {
       this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      var activeSubzone = this.balladService.getActiveSubZone();
+
       var flippedOverlay = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
 
       if (flippedOverlay) {
         if (this.battleService.targetbattleItemMode && !this.itemTargetsAllies(this.lookupService.getItemTypeFromItemEnum(this.battleService.battleItemInUse)))
         this.overlayShouldFlip = false;
-      else
+      else if (activeSubzone !== undefined && activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius)
         this.overlayShouldFlip = true;
       }
       else {
-        if (this.battleService.targetbattleItemMode && this.itemTargetsAllies(this.lookupService.getItemTypeFromItemEnum(this.battleService.battleItemInUse)))
+        if (this.battleService.targetbattleItemMode && this.itemTargetsAllies(this.lookupService.getItemTypeFromItemEnum(this.battleService.battleItemInUse)) &&
+        activeSubzone !== undefined && activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius)
           this.overlayShouldFlip = true;
         else
           this.overlayShouldFlip = false;

@@ -141,7 +141,7 @@ export class BattleService {
           this.battle.activeTournament.tournamentTimer += deltaTime;
 
           if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + " of " + this.battle.activeTournament.maxRounds + ".");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + " of " + this.battle.activeTournament.maxRounds + ".");
             this.battle.activeTournament = new ColiseumTournament();
             this.coliseumService.handleColiseumLoss();
           }
@@ -944,8 +944,10 @@ export class BattleService {
           if (instantEffect.type === StatusEffectEnum.InstantHeal) {
             var healAmount = damageDealt * instantEffect.effectiveness * (1 + member.battleStats.healingDone);
 
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong> gains " + this.utilityService.bigNumberReducer(Math.round(healAmount)) + " HP" + (instantEffect.abilityName !== undefined && instantEffect.abilityName !== "" ? " from " + instantEffect.abilityName : "") + ".";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+            if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) {
+              var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong> gains " + this.utilityService.bigNumberReducer(Math.round(healAmount)) + " HP" + (instantEffect.abilityName !== undefined && instantEffect.abilityName !== "" ? " from " + instantEffect.abilityName : "") + ".";
+              this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+            }
 
             if (member !== undefined)
               this.gainHp(member, healAmount);
@@ -2816,7 +2818,7 @@ export class BattleService {
       character.overdriveInfo.gaugeAmount = 0;
       this.altarService.incrementAltarCount(AltarConditionEnum.OverdriveUse);
 
-      if (this.globalService.globalVar.gameLogSettings.get("partyUseOverdrive")) {
+      if (this.globalService.globalVar.gameLogSettings.get("partyOverdrives")) {
         var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " uses Overdrive: " + this.lookupService.getOverdriveName(character.overdriveInfo.selectedOverdrive) + ".";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Overdrive, gameLogEntry);
       }
@@ -2830,7 +2832,7 @@ export class BattleService {
       if (character.overdriveInfo.activeDuration >= character.overdriveInfo.activeLength) {
         character.overdriveInfo.isActive = false;
         character.overdriveInfo.activeDuration = 0;
-        if (this.globalService.globalVar.gameLogSettings.get("partyUseOverdrive")) {
+        if (this.globalService.globalVar.gameLogSettings.get("partyOverdrives")) {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>'s overdrive ends.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.Overdrive, gameLogEntry);
         }

@@ -138,6 +138,8 @@ export class AltarViewComponent implements OnInit {
     var godType = GodEnum.None;
     var keybindKey = "";
     var keybindString = "openFirstAvailableAltar";
+    var nextAltarType = AltarEnum.None;
+    var nextToggleText = "";
 
     if (this.globalService.globalVar.altars.altar2 === this.altar)
       keybindString = "openSecondAvailableAltar";
@@ -159,14 +161,24 @@ export class AltarViewComponent implements OnInit {
       typeName = "Small Altar";
       affinityXpGain = this.utilityService.smallAltarAffinityGain;
       godXpGain = this.utilityService.basePrayGodXpIncrease;
+
+      if (this.globalService.globalVar.altars.largeAltarsUnlocked)      
+        nextAltarType = AltarEnum.Large;      
     }
     else if (this.altar.type === AltarEnum.Large) {
       typeName = "Large Altar";
       affinityXpGain = this.utilityService.largeAltarAffinityGain;
       godXpGain = this.utilityService.largeAltarPrayGodXpIncrease;
+
+      nextAltarType = AltarEnum.Small;
     }
 
-      description = "When the condition is met, click or press <span class='keybind'>" + keybindKey + "</span> to pray at a <strong>" + typeName + "</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
+    if (nextAltarType === AltarEnum.Large)
+      nextToggleText = " Right click to toggle to a Large Altar.";
+      if (nextAltarType === AltarEnum.Small)
+      nextToggleText = " Right click to toggle to a Small Altar.";
+
+      description = "When the condition is met, click or press <span class='keybind'>" + keybindKey + "</span> to pray at a <strong>" + typeName + "</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP." + nextToggleText;
     }
 
     return description;

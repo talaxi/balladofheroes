@@ -11,12 +11,14 @@ import { GlobalService } from 'src/app/services/global/global.service';
 export class GameLogEditorComponent implements OnInit {
   partyAutoAttacks = false;
   partyAbilityUse = false;
+  partyOverdrives = false;
   enemyAutoAttacks = false;
   enemyAbilityUse = false;
   partyEquipmentEffect = false;
   partyStatusEffect = false;
   enemyStatusEffect = false;
   battleRewards = false;
+  foundTreasureChest = false;
   partyLevelUp = false;
   godLevelUp = false;
   achievementUnlocked = false;
@@ -28,6 +30,7 @@ export class GameLogEditorComponent implements OnInit {
   followerPrayer = false;
   prayToAltar = false;
 
+  overdrivesAvailable = false;
   followersUnlocked = false;
   alchemyUnlocked = false;
 
@@ -37,6 +40,10 @@ export class GameLogEditorComponent implements OnInit {
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.alchemyUnlocked = alchemy !== undefined && alchemy.isUnlocked;
     this.followersUnlocked = this.globalService.globalVar.followerData.availableFollowers > 0;
+    this.globalService.globalVar.characters.forEach(character => {
+      if (character.unlockedOverdrives.length > 0)
+        this.overdrivesAvailable = true;
+    });
 
     var partyAutoAttacks = this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks");
     if (partyAutoAttacks === undefined)
@@ -68,6 +75,12 @@ export class GameLogEditorComponent implements OnInit {
     else
       this.partyEquipmentEffect = partyEquipmentEffect;
 
+      var partyOverdrives = this.globalService.globalVar.gameLogSettings.get("partyOverdrives");
+      if (partyOverdrives === undefined)
+        this.partyOverdrives = false;
+      else
+        this.partyOverdrives = partyOverdrives;
+
     var partyStatusEffect = this.globalService.globalVar.gameLogSettings.get("partyStatusEffect");
     if (partyStatusEffect === undefined)
       this.partyStatusEffect = false;
@@ -86,6 +99,12 @@ export class GameLogEditorComponent implements OnInit {
     else
       this.battleRewards = battleRewards;
 
+    var foundTreasureChest = this.globalService.globalVar.gameLogSettings.get("foundTreasureChest");
+    if (foundTreasureChest === undefined)
+      this.foundTreasureChest = false;
+    else
+      this.foundTreasureChest = foundTreasureChest;
+
     var partyLevelUp = this.globalService.globalVar.gameLogSettings.get("partyLevelUp");
     if (partyLevelUp === undefined)
       this.partyLevelUp = partyLevelUp;
@@ -98,11 +117,11 @@ export class GameLogEditorComponent implements OnInit {
     else
       this.godLevelUp = godLevelUp;
 
-      var prayToAltar = this.globalService.globalVar.gameLogSettings.get("prayToAltar");
-      if (prayToAltar === undefined)
-        this.prayToAltar = false;
-      else
-        this.prayToAltar = prayToAltar;  
+    var prayToAltar = this.globalService.globalVar.gameLogSettings.get("prayToAltar");
+    if (prayToAltar === undefined)
+      this.prayToAltar = false;
+    else
+      this.prayToAltar = prayToAltar;
 
     var achievementUnlocked = this.globalService.globalVar.gameLogSettings.get("achievementUnlocked");
     if (achievementUnlocked === undefined)
@@ -134,17 +153,17 @@ export class GameLogEditorComponent implements OnInit {
     else
       this.useBattleItem = useBattleItem;
 
-      var followerSearch = this.globalService.globalVar.gameLogSettings.get("followerSearch");
-      if (followerSearch === undefined)
-        this.followerSearch = false;
-      else
-        this.followerSearch = followerSearch;
-  
-      var followerPrayer = this.globalService.globalVar.gameLogSettings.get("followerPrayer");
-      if (followerPrayer === undefined)
-        this.followerPrayer = false;
-      else
-        this.followerPrayer = followerPrayer;
+    var followerSearch = this.globalService.globalVar.gameLogSettings.get("followerSearch");
+    if (followerSearch === undefined)
+      this.followerSearch = false;
+    else
+      this.followerSearch = followerSearch;
+
+    var followerPrayer = this.globalService.globalVar.gameLogSettings.get("followerPrayer");
+    if (followerPrayer === undefined)
+      this.followerPrayer = false;
+    else
+      this.followerPrayer = followerPrayer;
   }
 
   partyAutoAttacksToggle() {
@@ -179,14 +198,22 @@ export class GameLogEditorComponent implements OnInit {
     this.globalService.globalVar.gameLogSettings.set("battleRewards", this.battleRewards);
   }
 
+  foundTreasureChestToggle() {
+    this.globalService.globalVar.gameLogSettings.set("foundTreasureChest", this.foundTreasureChest);
+  }
+
   partyLevelUpToggle() {
     this.globalService.globalVar.gameLogSettings.set("partyLevelUp", this.partyLevelUp);
+  }
+  
+  partyOverdrivesToggle() {
+    this.globalService.globalVar.gameLogSettings.set("partyOverdrives", this.partyOverdrives);
   }
 
   godLevelUpToggle() {
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", this.godLevelUp);
   }
-  
+
   prayToAltarToggle() {
     this.globalService.globalVar.gameLogSettings.set("prayToAltar", this.prayToAltar);
   }

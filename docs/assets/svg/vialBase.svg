@@ -13,7 +13,7 @@
    version="1.1"
    id="svg61"
    inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
-   sodipodi:docname="elixirOfFortitude.svg">
+   sodipodi:docname="vialBase.svg">
   <defs
      id="defs55" />
   <sodipodi:namedview
@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.74999999"
-     inkscape:cx="784.69987"
-     inkscape:cy="533.00185"
+     inkscape:cx="871.00574"
+     inkscape:cy="376.23312"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -53,8 +53,7 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1"
-     style="display:inline" />
+     id="layer1" />
   <g
      inkscape:groupmode="layer"
      id="layer3"
@@ -63,30 +62,31 @@
   <g
      inkscape:groupmode="layer"
      id="layer2"
-     inkscape:label="Layer 3" />
+     inkscape:label="Layer 3">
+    <path
+       style="fill:#fb682b;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m 110.06667,105.83333 h 79.72777 l 28.73489,49.72483 -19.56265,33.88351 H 100.89444 L 81.331786,155.55816 Z"
+       id="path3494" />
+    <path
+       style="fill:#ececec;stroke:none;stroke-width:0.264583px;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;fill-opacity:1"
+       d="m 110.06667,105.83333 23.89107,-41.425998 31.94564,-5e-6 23.89106,41.426003 h -79.72777"
+       id="path3504" />
+  </g>
   <g
      inkscape:groupmode="layer"
      id="layer4"
      inkscape:label="Layer 4">
     <path
-       style="fill:#4516c4;fill-opacity:1;stroke:none;stroke-width:1.616;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 85.563945,119.8402 H 214.43606 l 46.44712,80.3753 -31.6211,54.76937 H 70.737935 L 39.116826,200.2155 Z"
-       id="path3494" />
-    <path
-       style="fill:#ececec;fill-opacity:1;stroke:none;stroke-width:1.616;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 85.563945,119.8402 38.617565,-66.96106 51.63699,-8e-6 38.61756,66.961068 H 85.563945"
-       id="path3504" />
-    <path
        id="path3432"
-       style="fill:none;stroke:#000000;stroke-width:1.616;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 70.737935,254.98487 39.116826,200.2155 124.18151,52.87914 M 70.737935,254.98487 h 79.262075" />
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-opacity:1;stroke-miterlimit:4;stroke-dasharray:none"
+       d="M 100.89444,189.44167 81.331786,155.55816 133.95774,64.407332 m -33.0633,125.034338 h 49.03612" />
     <path
        id="path3432-9"
-       style="fill:none;stroke:#000000;stroke-width:1.616;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 229.26208,254.98487 260.88318,200.2155 175.8185,52.879136 m 53.44358,202.105734 h -79.26207" />
+       style="fill:none;stroke:#000000;stroke-width:1;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 198.96668,189.44167 19.56265,-33.88351 -52.62595,-91.150831 m 33.0633,125.034341 h -49.03612" />
     <path
-       style="fill:#ececec;stroke:#000000;stroke-width:1.616;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="m 111.71763,52.04031 c -0.38488,-0.334296 -0.55119,-1.674086 -0.45467,-3.662771 l 0.1521,-3.135663 h 39.08744 39.08742 l 0.15211,3.135663 c 0.0965,1.988685 -0.0697,3.328475 -0.45468,3.662771 -0.90798,0.788618 -76.6619,0.788618 -77.56988,0 z"
+       style="fill:#ececec;stroke:#000000;stroke-width:0.931683;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="m 126.24686,63.888383 c -0.23811,-0.206815 -0.341,-1.035687 -0.28129,-2.266003 l 0.0941,-1.939903 h 24.18176 24.18175 l 0.0941,1.939903 c 0.0597,1.230316 -0.0431,2.059188 -0.28129,2.266003 -0.56173,0.487885 -47.4275,0.487885 -47.98923,0 z"
        id="path2737" />
   </g>
 </svg>

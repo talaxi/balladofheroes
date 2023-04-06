@@ -1740,6 +1740,11 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.CalydonTallGrass);
       subZoneEnums.push(SubZoneEnum.CalydonDeadEnd);      
     }
+    if (type === SubZoneEnum.CalydonWornDownBarn) {
+      subZoneEnums.push(SubZoneEnum.TheLetheLetheBasin2);  
+      subZoneEnums.push(SubZoneEnum.AegeanSeaIolcus);      
+      subZoneEnums.push(SubZoneEnum.AegeanSeaOpenSeas);       
+    }
     if (type === SubZoneEnum.TheLetheLetheBasin2) {
       subZoneEnums.push(SubZoneEnum.TheLetheFerryRide);      
     }
@@ -1750,9 +1755,7 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.TheLetheStillWaters);      
     }
     if (type === SubZoneEnum.TheLetheStillWaters) {
-      subZoneEnums.push(SubZoneEnum.TheLetheHypnosIsland);   
-      subZoneEnums.push(SubZoneEnum.AegeanSeaIolcus);      
-      subZoneEnums.push(SubZoneEnum.AegeanSeaOpenSeas);      
+      subZoneEnums.push(SubZoneEnum.TheLetheHypnosIsland);     
     }
     if (type === SubZoneEnum.AegeanSeaOpenSeas) {
       subZoneEnums.push(SubZoneEnum.AegeanSeaIslandOfLemnos);      
