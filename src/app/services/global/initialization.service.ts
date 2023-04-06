@@ -205,7 +205,7 @@ export class InitializationService {
 
     this.globalService.globalVar.ballads.push(boarBallad);
 
-    this.initializeBalladOfTheArgo();
+    //this.initializeBalladOfTheArgo();
   }
 
   initializeSettings() {
@@ -585,7 +585,7 @@ export class InitializationService {
         this.globalService.calculateCharacterBattleStats(character);
       });
 
-      var godLevel = 498;
+      var godLevel = 198;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -669,45 +669,50 @@ export class InitializationService {
   }
 
   initializeBalladOfTheArgo() {
-    /*var boarBallad = new Ballad(BalladEnum.Argo);
+    var argoBallad = new Ballad(BalladEnum.Argo);
     var aegean = new Zone();
     aegean.type = ZoneEnum.AegeanSea;
-    aegean.zoneName = "Pelopos Nisos";
-    aegean.subzones.push(new SubZone(SubZoneEnum.PeloposNisosGatesOfTheUnderworld));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanArcadianRoads));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanTravelPost));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanFootOfTheMountain));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanSteepAscent));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanMountParthenionCaverns));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanValleyOpening));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanTrekAcrossArcadia));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanTrekAcrossAcheae));
-    aegean.subzones.push(new SubZone(SubZoneEnum.aegeanPatrasBorder));
+    aegean.zoneName = "Aegean Sea";
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaIolcus));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaOpenSeas));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaIslandOfLemnos));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaIslandOfImbros));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaHellespointPassage1));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaPropontis));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaHellespointPassage2));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaCoastalThrace));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaSalmydessus));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaDesertedPath));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaRockyOverhang));
+    aegean.subzones.push(new SubZone(SubZoneEnum.AegeanSeaSympegadesOverlook));    
     aegean.notificationType = aegean.shouldShowSideQuestNotification();
 
-    boarBallad.zones.push(aegean);
+    argoBallad.zones.push(aegean);
 
-    var calydon = new Zone();
-    calydon.type = ZoneEnum.Calydon;
-    calydon.zoneName = "Calydon";
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonTownMarket));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonAltarOfAsclepius));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonForestPassage));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonOvergrownVerdure));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonShroudedFoliage));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWornDownBarn));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonHeavyThicket));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonBabblingStream));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWateringHole));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonWelltroddenPathway));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMudpit));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonTallGrass));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonSparseClearing));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonMarkedTreeTrail));
-    calydon.subzones.push(new SubZone(SubZoneEnum.CalydonDeadEnd));
-    calydon.notificationType = calydon.shouldShowSideQuestNotification();
-    boarBallad.zones.push(calydon);
+    var blackSea = new Zone();
+    blackSea.type = ZoneEnum.BlackSea;
+    blackSea.zoneName = "Black Sea";
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaStillWaters));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaMariandyna));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaUnderAssault));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaSeaEscape));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaStormySkies));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaAreonesosPassing));
+    blackSea.subzones.push(new SubZone(SubZoneEnum.BlackSeaWindyGale));
+    blackSea.notificationType = blackSea.shouldShowSideQuestNotification();
+    argoBallad.zones.push(blackSea);
+    
+    var colchis = new Zone();
+    colchis.type = ZoneEnum.Colchis;
+    colchis.zoneName = "Colchis";
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisCityCenter));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisGroveOfAres));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisReinforcementsFromAeetes));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisHurriedRetreat1));
+    colchis.subzones.push(new SubZone(SubZoneEnum.ColchisHurriedRetreat2));    
+    colchis.notificationType = colchis.shouldShowSideQuestNotification();
+    argoBallad.zones.push(colchis);
 
-    this.globalService.globalVar.ballads.push(boarBallad);*/
+    this.globalService.globalVar.ballads.push(argoBallad);
   }
 }

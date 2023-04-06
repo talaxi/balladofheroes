@@ -1535,6 +1535,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.ElysiumGatesOfHornAndIvory) {
       balladEnums.push(BalladEnum.Boar);
     }
+    if (type === SubZoneEnum.CalydonWornDownBarn) {
+      balladEnums.push(BalladEnum.Argo);
+    }
 
     return balladEnums;
   }
@@ -1562,6 +1565,13 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.CalydonWornDownBarn) {
       zoneEnums.push(ZoneEnum.TheLethe);
+      zoneEnums.push(ZoneEnum.AegeanSea);
+    }
+    if (type === SubZoneEnum.AegeanSeaSympegadesOverlook) {
+      zoneEnums.push(ZoneEnum.BlackSea);
+    }
+    if (type === SubZoneEnum.BlackSeaWindyGale) {
+      zoneEnums.push(ZoneEnum.Colchis);
     }
 
     return zoneEnums;
@@ -1740,9 +1750,71 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.TheLetheStillWaters);      
     }
     if (type === SubZoneEnum.TheLetheStillWaters) {
-      subZoneEnums.push(SubZoneEnum.TheLetheHypnosIsland);      
+      subZoneEnums.push(SubZoneEnum.TheLetheHypnosIsland);   
+      subZoneEnums.push(SubZoneEnum.AegeanSeaIolcus);      
+      subZoneEnums.push(SubZoneEnum.AegeanSeaOpenSeas);      
     }
-
+    if (type === SubZoneEnum.AegeanSeaOpenSeas) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaIslandOfLemnos);      
+    }
+    if (type === SubZoneEnum.AegeanSeaIslandOfLemnos) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaIslandOfImbros);      
+    }
+    if (type === SubZoneEnum.AegeanSeaIslandOfImbros) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaHellespointPassage1);      
+    }
+    if (type === SubZoneEnum.AegeanSeaHellespointPassage1) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaPropontis);      
+    }
+    if (type === SubZoneEnum.AegeanSeaPropontis) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaHellespointPassage2);      
+    }
+    if (type === SubZoneEnum.AegeanSeaHellespointPassage2) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaCoastalThrace);      
+    }
+    if (type === SubZoneEnum.AegeanSeaCoastalThrace) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaSalmydessus);      
+      subZoneEnums.push(SubZoneEnum.AegeanSeaDesertedPath);      
+    }
+    if (type === SubZoneEnum.AegeanSeaDesertedPath) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaRockyOverhang);      
+    }
+    if (type === SubZoneEnum.AegeanSeaRockyOverhang) {
+      subZoneEnums.push(SubZoneEnum.AegeanSeaSympegadesOverlook);      
+    }
+    if (type === SubZoneEnum.AegeanSeaSympegadesOverlook) {
+      subZoneEnums.push(SubZoneEnum.BlackSeaStillWaters);      
+    }
+    if (type === SubZoneEnum.BlackSeaStillWaters) {
+      subZoneEnums.push(SubZoneEnum.BlackSeaMariandyna);      
+      subZoneEnums.push(SubZoneEnum.BlackSeaUnderAssault);      
+    }
+    if (type === SubZoneEnum.BlackSeaUnderAssault) {
+      subZoneEnums.push(SubZoneEnum.BlackSeaSeaEscape);      
+    }
+    if (type === SubZoneEnum.BlackSeaSeaEscape) {
+      subZoneEnums.push(SubZoneEnum.BlackSeaStormySkies);      
+    }
+    if (type === SubZoneEnum.BlackSeaStormySkies) {
+      subZoneEnums.push(SubZoneEnum.BlackSeaAreonesosPassing);      
+    }
+    if (type === SubZoneEnum.BlackSeaAreonesosPassing) {
+      subZoneEnums.push(SubZoneEnum.BlackSeaWindyGale);      
+    }
+    if (type === SubZoneEnum.BlackSeaWindyGale) {
+      subZoneEnums.push(SubZoneEnum.ColchisCityCenter);      
+      subZoneEnums.push(SubZoneEnum.ColchisGroveOfAres);      
+    }
+    if (type === SubZoneEnum.ColchisGroveOfAres) {
+      subZoneEnums.push(SubZoneEnum.ColchisReinforcementsFromAeetes);      
+    }
+    if (type === SubZoneEnum.ColchisReinforcementsFromAeetes) {
+      subZoneEnums.push(SubZoneEnum.ColchisHurriedRetreat1);      
+    }
+    if (type === SubZoneEnum.ColchisHurriedRetreat1) {
+      subZoneEnums.push(SubZoneEnum.ColchisHurriedRetreat2);      
+    }
+    
     return subZoneEnums;
   }
 

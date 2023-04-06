@@ -85,9 +85,13 @@ export enum SubZoneEnum {
   BlackSeaStillWaters,
   BlackSeaMariandyna,
   BlackSeaUnderAssault,
-  BlackSeaSeaRetreat,
+  BlackSeaSeaEscape,
   BlackSeaStormySkies,
   BlackSeaAreonesosPassing,
   BlackSeaWindyGale,
-  ColchisCityCenter
+  ColchisCityCenter,
+  ColchisGroveOfAres,
+  ColchisReinforcementsFromAeetes,
+  ColchisHurriedRetreat1,
+  ColchisHurriedRetreat2
 }
