@@ -402,7 +402,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RejuvenatingElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 4));
 
-    this.globalService.globalVar.currentStoryId = 1000;
+    this.globalService.globalVar.currentStoryId = 16;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
@@ -420,6 +420,14 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
     var allAchievementsComplete = false;
+
+    if (allAchievementsComplete) {
+      this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
+      this.globalService.globalVar.followerData.availableFollowers = 100;
+      for (var i = 0; i < 100; i++)
+        this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
+    }
+
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld)
       ballad.isAvailable = true;
@@ -431,7 +439,7 @@ export class InitializationService {
           zone.subzones.forEach(subzone => {
             subzone.isAvailable = true;
             subzone.notify = true;
-            subzone.victoryCount = 100;
+            //subzone.victoryCount = 100;
             if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
               this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
                 this.globalService.globalVar.achievements.push(achievement);
@@ -447,13 +455,6 @@ export class InitializationService {
         }
       });
     });
-
-    if (allAchievementsComplete) {
-      this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
-      this.globalService.globalVar.followerData.availableFollowers = 100;
-      for (var i = 0; i < 100; i++)
-        this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
-    }
 
     var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
     if (resource !== undefined)

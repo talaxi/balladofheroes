@@ -1392,10 +1392,11 @@ export class BattleService {
       }
     }
 
-    var targetsWithTaunt = potentialTargets.filter(target => target.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Taunt));
+    //??? what is this trying to accomplish?
+    /*var targetsWithTaunt = potentialTargets.filter(target => target.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Taunt));
     if (targetsWithTaunt.length > 0) {
       var target = targetsWithTaunt[this.utilityService.getRandomInteger(0, targetsWithTaunt.length - 1)];
-    }
+    }*/
 
     return target;
   }

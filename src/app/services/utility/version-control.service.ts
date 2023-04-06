@@ -6,13 +6,15 @@ import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { UtilityService } from './utility.service';
+import { AchievementService } from '../achievements/achievement.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class VersionControlService {
 
-  constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService) { }
+  constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService,
+    private achievementService: AchievementService) { }
 
   //add to this in descending order
   gameVersions = [0.31, 0.3];
@@ -92,56 +94,61 @@ export class VersionControlService {
           var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
           var letheBasin2 = this.balladService.findSubzone(SubZoneEnum.TheLetheLetheBasin2);
           if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
-            if (letheBasin2 !== undefined)
+            if (letheBasin2 !== undefined) {
               letheBasin2.isAvailable = true;
+              letheBasin2.notify = true;
+              this.achievementService.createDefaultAchievementsForSubzone(letheBasin2.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
           }
         }
-          /*if (version === .4) {          
-            var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
-            if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
-              var argo = this.balladService.findBallad(BalladEnum.Argo);
-              var aegeanSea = this.balladService.findZone(ZoneEnum.AegeanSea);
-              var iolcus = this.balladService.findSubzone(SubZoneEnum.AegeanSeaIolcus);
-              var openSeas = this.balladService.findSubzone(SubZoneEnum.AegeanSeaOpenSeas);
-  
-              if (argo !== undefined)
-                argo.isAvailable = true;
-              if (aegeanSea !== undefined)
-                aegeanSea.isAvailable = true;
-              if (iolcus !== undefined)
-                iolcus.isAvailable = true;
-              if (openSeas !== undefined)
-                openSeas.isAvailable = true;
-            }
-          }*/
+        /*if (version === .4) {          
+          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
+          if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
+            var argo = this.balladService.findBallad(BalladEnum.Argo);
+            var aegeanSea = this.balladService.findZone(ZoneEnum.AegeanSea);
+            var iolcus = this.balladService.findSubzone(SubZoneEnum.AegeanSeaIolcus);
+            var openSeas = this.balladService.findSubzone(SubZoneEnum.AegeanSeaOpenSeas);
+ 
+            if (argo !== undefined)
+              argo.isAvailable = true;
+            if (aegeanSea !== undefined)
+              aegeanSea.isAvailable = true;
+            if (iolcus !== undefined)
+              iolcus.isAvailable = true;
+            if (openSeas !== undefined)
+              openSeas.isAvailable = true;
+          }
+        }*/
 
-          /*if (version === 1.01) {
-            this.globalService.globalVar.notifications = new Notifications();
-            var breedLevelStatModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedLevelStatModifier");
-            if (breedLevelStatModifier !== undefined)
-              breedLevelStatModifier.value = .05;
-  
-            var breedGaugeMaxIncreaseModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedGaugeMaxIncreaseModifier");
-            if (breedGaugeMaxIncreaseModifier !== undefined)
-              breedGaugeMaxIncreaseModifier.value = 10;
-  
-            var breedingGroundsSpecializationModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedingGroundsSpecializationModifier");
-            if (breedingGroundsSpecializationModifier !== undefined)
-              breedingGroundsSpecializationModifier.value = .10;
-  
-            this.globalService.globalVar.animals.forEach(animal => {
-              animal.breedLevel = Math.round(animal.breedLevel / 2);
-              animal.breedGaugeXp = animal.breedGaugeXp * 2;
-            });
-  
-            var primaryDeck = this.globalService.globalVar.animalDecks.find(item => item.isPrimaryDeck);
-            if (primaryDeck !== null && primaryDeck !== undefined) {
-              primaryDeck.isEventDeck = true;
-            }
-          } */
+        /*if (version === 1.01) {
+          this.globalService.globalVar.notifications = new Notifications();
+          var breedLevelStatModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedLevelStatModifier");
+          if (breedLevelStatModifier !== undefined)
+            breedLevelStatModifier.value = .05;
+ 
+          var breedGaugeMaxIncreaseModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedGaugeMaxIncreaseModifier");
+          if (breedGaugeMaxIncreaseModifier !== undefined)
+            breedGaugeMaxIncreaseModifier.value = 10;
+ 
+          var breedingGroundsSpecializationModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedingGroundsSpecializationModifier");
+          if (breedingGroundsSpecializationModifier !== undefined)
+            breedingGroundsSpecializationModifier.value = .10;
+ 
+          this.globalService.globalVar.animals.forEach(animal => {
+            animal.breedLevel = Math.round(animal.breedLevel / 2);
+            animal.breedGaugeXp = animal.breedGaugeXp * 2;
+          });
+ 
+          var primaryDeck = this.globalService.globalVar.animalDecks.find(item => item.isPrimaryDeck);
+          if (primaryDeck !== null && primaryDeck !== undefined) {
+            primaryDeck.isEventDeck = true;
+          }
+        } */
 
-          this.globalService.globalVar.currentVersion = version;
-        }
-      });
+        this.globalService.globalVar.currentVersion = version;
+      }
+    });
   }
 }
