@@ -196,6 +196,8 @@ export class AppComponent {
         this.lookupService.isUIHidden = false;
         this.globalService.globalVar.isCatchingUp = false;
         this.gameLogService.disableOverlayBuffer = false;
+        //TODO: need to figure out some solution to this        
+        //this.utilityService.removeExcessOverlayDivs();
 
         if (this.catchupDialog !== undefined) {
           this.catchupDialog.close();

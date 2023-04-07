@@ -93,5 +93,7 @@ export enum StatusEffectEnum {
     FillOverdriveGauge,
     WitheringToxin,
     VenomousToxin,
-    ElixirOfFortitude    
+    ElixirOfFortitude,
+    Focus,
+    AllElementalResistanceDown
   }
