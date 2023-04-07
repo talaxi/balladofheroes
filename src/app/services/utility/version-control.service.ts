@@ -17,7 +17,7 @@ export class VersionControlService {
     private achievementService: AchievementService) { }
 
   //add to this in descending order
-  gameVersions = [0.31, 0.3];
+  gameVersions = [0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -48,6 +48,8 @@ export class VersionControlService {
   getVersionChanges(version: number) {
     var changes = "";
 
+    if (version === 0.32)
+      changes = "Bug fixes";
     if (version === 0.31)
       changes = "Bug fixes";
     if (version === 0.3)
@@ -70,6 +72,8 @@ export class VersionControlService {
     if (version === .3)
       date = new Date('2022-04-03 12:00:00');
     if (version === .31)
+      date = new Date('2022-04-06 12:00:00');
+    if (version === .32)
       date = new Date('2022-04-06 12:00:00');
 
     return date.toDateString().replace(/^\S+\s/, '');
@@ -102,6 +106,20 @@ export class VersionControlService {
               });
             }
           }
+        }
+        if (version === .32) {
+          var priest = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);          
+          if (priest !== undefined)
+            priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
+
+          this.globalService.globalVar.ballads = this.globalService.globalVar.ballads.filter(item => item.type !== BalladEnum.None);
+          this.globalService.globalVar.ballads.forEach(ballad => {
+            ballad.zones = ballad.zones.filter(item => item.type !== ZoneEnum.None);
+            ballad.zones.forEach(zone => {
+              zone.subzones = zone.subzones.filter(item => item.type !== SubZoneEnum.None);              
+            });
+          });
+
         }
         /*if (version === .4) {          
           var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);

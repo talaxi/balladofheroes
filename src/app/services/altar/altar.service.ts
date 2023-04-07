@@ -365,7 +365,7 @@ export class AltarService {
       altarEffect.effectiveness = 1.005;
       altarEffect.tickFrequency = (60 / 5);
       altarEffect.stacks = false;
-      altarEffect.isEffectMultiplier = false;
+      //altarEffect.isEffectMultiplier = false;
     }
     if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.HermesRareReduceAutoAttackCooldown) {
       altarEffect.duration = altarEffect.totalDuration = 60;

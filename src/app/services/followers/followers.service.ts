@@ -36,7 +36,7 @@ export class FollowersService {
     var clearedZones: Zone[] = [];
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      ballad.zones.forEach(zone => {
+      ballad.zones.forEach(zone => {        
         if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
           clearedZones.push(zone);
         }

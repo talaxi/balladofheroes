@@ -26,9 +26,9 @@ export class AchievementsViewComponent implements OnInit {
   lastPage = 0;
   @Input() isMobile = false;
 
-  ballads: Ballad[] = [];
-  zones: Zone[] = [];
-  subzones: SubZone[] = [];
+  ballads: BalladEnum[] = [];
+  zones: ZoneEnum[] = [];
+  subzones: SubZoneEnum[] = [];
   selectedBallad: BalladEnum = BalladEnum.None;
   selectedZone: ZoneEnum = ZoneEnum.None;
   selectedSubzone: SubZoneEnum = SubZoneEnum.None;
@@ -41,10 +41,15 @@ export class AchievementsViewComponent implements OnInit {
     if (this.isMobile)
       this.cellsPerRow = 2;
 
-    this.ballads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
-    this.ballads.unshift(new Ballad());
-    this.zones.push(new Zone());
-    this.subzones.push(new SubZone());
+    this.ballads.push(BalladEnum.None);
+    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
+      this.ballads.push(ballad.type);
+    });
+
+    //this.ballads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
+    //this.ballads.unshift(new Ballad());
+    this.zones.push(ZoneEnum.None);
+    this.subzones.push(SubZoneEnum.None);
 
     var showOnlyUncompletedAchievements = this.globalService.globalVar.settings.get("showOnlyUncompletedAchievements");
     if (showOnlyUncompletedAchievements !== undefined)
@@ -82,6 +87,10 @@ export class AchievementsViewComponent implements OnInit {
         this.achievementsBySubZonePaged.push(this.achievementsBySubZone[i]);
       }
     }
+  }
+
+  getZoneName(type: ZoneEnum) {
+    return this.balladService.findZone(type)?.zoneName;
   }
 
   getUnstyledSubzoneName(type: SubZoneEnum) {
@@ -167,33 +176,37 @@ export class AchievementsViewComponent implements OnInit {
   populateZones() {
     this.zones = [];
     this.subzones = [];
+    this.zones.push(ZoneEnum.None);
+    this.subzones.push(SubZoneEnum.None);
 
-    var selectedBallad = this.balladService.findBallad(parseInt(this.selectedBallad.toString()));
-    //TODO: you have to make copies here (?? what does this mean?)
+    var selectedBallad = this.balladService.findBallad(parseInt(this.selectedBallad.toString()));    
     if (selectedBallad !== undefined)
-      this.zones = selectedBallad?.zones;
-
-    this.zones.unshift(new Zone());
-    this.subzones.unshift(new SubZone());
+    {
+      selectedBallad.zones.forEach(zone => {
+        this.zones.push(zone.type);
+      });      
+    }
 
     if (parseInt(this.selectedBallad.toString()) === BalladEnum.None) {
-      this.selectedZone = this.zones[0].type;
-      this.selectedSubzone = this.subzones[0].type;
+      this.selectedZone = this.zones[0];
+      this.selectedSubzone = this.subzones[0];
     }
   }
 
   populateSubzones() {
     this.subzones = [];
+    this.subzones.push(SubZoneEnum.None);
 
-    var selectedZone = this.balladService.findZone(parseInt(this.selectedZone.toString()));
-    //TODO: you have to make copies here
+    var selectedZone = this.balladService.findZone(parseInt(this.selectedZone.toString()));    
     if (selectedZone !== undefined)
-      this.subzones = selectedZone?.subzones;
-
-    this.subzones.unshift(new SubZone());
+    {
+      selectedZone.subzones.forEach(subzone => {
+        this.subzones.push(subzone.type);
+      });      
+    }    
 
     if (parseInt(this.selectedZone.toString()) === ZoneEnum.None) {
-      this.selectedSubzone = this.subzones[0].type;
+      this.selectedSubzone = this.subzones[0];
     }
   }
 

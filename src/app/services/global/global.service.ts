@@ -645,7 +645,7 @@ export class GlobalService {
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
       || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.WitheringToxin ||
-      type === StatusEffectEnum.VenomousToxin)
+      type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.Unsteady)
       refreshes = true;
 
     return refreshes;
@@ -1827,7 +1827,7 @@ export class GlobalService {
     return nextStat;
   }
 
-  getAutoAttackTime(character: Character) {
+  getAutoAttackTime(character: Character) {    
     var timeToAutoAttack = character.battleInfo.timeToAutoAttack * (character.battleStats.autoAttackCooldownReduction);
     if (character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Fervor)
       timeToAutoAttack *= .67;
@@ -1836,7 +1836,7 @@ export class GlobalService {
       var relevantAltarEffect = this.getAltarEffectWithEffect(AltarEffectsEnum.HermesRareReduceAutoAttackCooldown);
       timeToAutoAttack *= relevantAltarEffect!.effectiveness;
     }
-
+    
     return this.utilityService.roundTo(timeToAutoAttack, 4);
   }
 

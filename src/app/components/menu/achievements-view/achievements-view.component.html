@@ -5,19 +5,19 @@
         <div *ngIf="!isMobile" class="filterFlex">
             <span class="s5Heading leftShift">Ballad: <select [(ngModel)]="selectedBallad"
                     (change)="populateZones(); filterList();">
-                    <option *ngFor="let ballad of ballads" [value]="ballad.type">
-                        {{balladService.getBalladName(ballad.type)}}
+                    <option *ngFor="let ballad of ballads" [value]="ballad">
+                        {{balladService.getBalladName(ballad)}}
                     </option>
                 </select>
             </span>
             <span class="s5Heading leftShift">Zone: <select [(ngModel)]="selectedZone"
                     (change)="populateSubzones(); filterList();">
-                    <option *ngFor="let zone of zones" [value]="zone.type">{{zone.zoneName}}
+                    <option *ngFor="let zone of zones" [value]="zone">{{getZoneName(zone)}}
                     </option>
                 </select>
             </span>
             <span class="s5Heading leftShift">Subzone: <select [(ngModel)]="selectedSubzone" (change)="filterList()">
-                    <option *ngFor="let subzone of subzones" [value]="subzone.type">{{getUnstyledSubzoneName(subzone.type)}}
+                    <option *ngFor="let subzone of subzones" [value]="subzone">{{getUnstyledSubzoneName(subzone)}}
                     </option>
                 </select>
             </span>
@@ -32,20 +32,20 @@
             <div class="filterFlex">
                 <span class="s5Heading leftShift">Ballad: <select [(ngModel)]="selectedBallad"
                         (change)="populateZones(); filterList();">
-                        <option *ngFor="let ballad of ballads" [value]="ballad.type">
-                            {{balladService.getBalladName(ballad.type)}}
+                        <option *ngFor="let ballad of ballads" [value]="ballad">
+                            {{balladService.getBalladName(ballad)}}
                         </option>
                     </select>
                 </span>
                 <span class="s5Heading leftShift">Zone: <select [(ngModel)]="selectedZone"
                         (change)="populateSubzones(); filterList();">
-                        <option *ngFor="let zone of zones" [value]="zone.type">{{zone.zoneName}}
+                        <option *ngFor="let zone of zones" [value]="zone">{{getZoneName(zone)}}
                         </option>
                     </select>
                 </span>
                 <span class="s5Heading leftShift">Subzone: <select [(ngModel)]="selectedSubzone"
                         (change)="filterList()">
-                        <option *ngFor="let subzone of subzones" [value]="subzone.type">{{getUnstyledSubzoneName(subzone.type)}}
+                        <option *ngFor="let subzone of subzones" [value]="subzone">{{getUnstyledSubzoneName(subzone)}}
                         </option>
                     </select>
                 </span>
