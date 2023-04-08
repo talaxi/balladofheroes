@@ -24,6 +24,7 @@ declare var LZString: any;
 import { ActivatedRoute, Router } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
+import { SubZoneEnum } from './models/enums/sub-zone-enum.model';
 
 @Component({
   selector: 'app-root',
@@ -221,7 +222,7 @@ export class AppComponent {
   getBatchRunTime(subzone: SubZone) {
     var batchRunTime = 5;
 
-    if (this.balladService.isSubzoneTown(subzone.type))
+    if (this.balladService.isSubzoneTown(subzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
       batchRunTime = 30;
 
     return batchRunTime;

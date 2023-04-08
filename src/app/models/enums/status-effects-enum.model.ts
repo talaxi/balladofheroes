@@ -95,5 +95,8 @@ export enum StatusEffectEnum {
     VenomousToxin,
     ElixirOfFortitude,
     Focus,
-    AllElementalResistanceDown
+    AllElementalResistanceDown,
+    RepeatAbility,
+    LordOfTheUnderworld,
+    Onslaught
   }

@@ -113,7 +113,7 @@ export class FollowersService {
     var achievementPercent = this.achievementService.getCompletedAchievementPercentByZone(this.balladService.findZone(type), this.globalService.globalVar.achievements);
     if (achievementPercent >= (1 / 3) && achievementPercent < (2 / 3))
       rewardLevel = 2;
-    else if (achievementPercent >= (2 / 3))
+    else if (achievementPercent >= (2 / 3) && achievementPercent < 1)
       rewardLevel = 3;
     else if (achievementPercent === 1)
       rewardLevel = 4;
@@ -132,7 +132,7 @@ export class FollowersService {
       if (rewardLevel >= 3)
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingHerb, 3));
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Leather, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Wax, 2));
       }
     }
     if (type === ZoneEnum.Dodona) {
@@ -180,7 +180,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingSalve, 1));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughRubyFragment, 1));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughRubyFragment, 2));
       }
     }
     if (type === ZoneEnum.PeloposNisos) {

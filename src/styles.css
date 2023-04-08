@@ -143,6 +143,8 @@
   /*#faf9eb maybe instead */
   --artemisColor: #97BBB0;
   --hadesColor: #BBAFC5;
+  --dionysusColor: #000;
+  --nemesisColor: #000;
 
   --holyColor: #d9dbbf;
   --lightningColor: #fff30b;
@@ -730,6 +732,18 @@ body {
   --mdc-circular-progress-active-indicator-color: var(--hadesColor) !important;
 }
 
+.dionysusColor {
+  color: var(--dionysusColor);
+  stroke: var(--dionysusColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--dionysusColor) !important;
+}
+
+.nemesisColor {
+  color: var(--nemesisColor);
+  stroke: var(--nemesisColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--nemesisColor) !important;
+}
+
 .unclearedSubzoneColor {
   color: var(--foreground-default);
 }
@@ -996,6 +1010,23 @@ button {
   filter: brightness(50%);
 }
 
+.dionysus-progress {
+  --mdc-linear-progress-active-indicator-color: var(--dionysusColor) !important;
+}
+
+.dionysus-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--dionysusColor) !important;
+  filter: brightness(50%);
+}
+
+.nemesis-progress {
+  --mdc-linear-progress-active-indicator-color: var(--nemesisColor) !important;
+}
+
+.nemesis-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--nemesisColor) !important;
+  filter: brightness(50%);
+}
 
 .amountAvailable {
   font-variant: normal !important;

@@ -2326,7 +2326,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 360;
 
       var tailSwing = new Ability();
-      tailSwing.name = "Tail Swipe";
+      tailSwing.name = "Tail Swing";
       tailSwing.isAvailable = true;
       tailSwing.cooldown = tailSwing.currentCooldown = 18;
       tailSwing = this.randomizeCooldown(tailSwing);
@@ -2563,7 +2563,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementResistance.fire += .2;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 450;
+      enemy.xpGainFromDefeat = 900;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       
       var rush = new Ability();
@@ -2608,12 +2608,12 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Cocytus) {
       enemy.name = "Cocytus";
-      enemy.battleStats = new CharacterStats(29641, 463, 1245, 585, 450, 1200);
+      enemy.battleStats = new CharacterStats(29941, 463, 1305, 585, 450, 1250);
       enemy.battleStats.elementIncrease.water += .2;
       enemy.battleStats.elementResistance.fire += .2;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 450;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 850;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
 
       var acheronFlow = new Ability();
@@ -2629,10 +2629,10 @@ export class EnemyGeneratorService {
       var weave = new Ability();
       weave.name = "Weave";
       weave.isAvailable = true;
-      weave.cooldown = weave.currentCooldown = 18;
+      weave.cooldown = weave.currentCooldown = 13;
       weave = this.randomizeCooldown(weave);
       weave.dealsDirectDamage = true;
-      weave.effectiveness = 1.9;
+      weave.effectiveness = 2.5;
       weave.elementalType = ElementalTypeEnum.Water;
       weave.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 6, .75, false, false));
       enemy.abilityList.push(weave);
@@ -2640,7 +2640,7 @@ export class EnemyGeneratorService {
       var wail = new Ability();
       wail.name = "Wail";
       wail.isAvailable = true;
-      wail.cooldown = wail.currentCooldown = 19;
+      wail.cooldown = wail.currentCooldown = 16;
       wail = this.randomizeCooldown(wail);
       wail.dealsDirectDamage = false;
       wail.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 6, .7, false, false, true));
@@ -2649,11 +2649,11 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Lethe) {
       enemy.name = "Lethe";
-      enemy.battleStats = new CharacterStats(32087, 695, 1475, 425, 575, 1250);      
+      enemy.battleStats = new CharacterStats(32687, 695, 1475, 425, 575, 1250);      
       enemy.battleStats.elementResistance.fire += .2;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 450;
+      enemy.xpGainFromDefeat = 950;
 
       var letheFlow = new Ability();
       letheFlow.name = "Lethe Flow";
@@ -2669,33 +2669,33 @@ export class EnemyGeneratorService {
       var oblivion = new Ability();
       oblivion.name = "Oblivion";
       oblivion.isAvailable = true;
-      oblivion.cooldown = oblivion.currentCooldown = 40;
+      oblivion.cooldown = oblivion.currentCooldown = 30;
       oblivion = this.randomizeCooldown(oblivion);
       oblivion.dealsDirectDamage = true;
-      oblivion.effectiveness = 4.4;
+      oblivion.effectiveness = 4;
       oblivion.isAoe = true;            
       enemy.abilityList.push(oblivion);
 
       var rest = new Ability();
       rest.name = "Rest";
       rest.isAvailable = true;
-      rest.cooldown = rest.currentCooldown = 23;
+      rest.cooldown = rest.currentCooldown = 18;
       rest = this.randomizeCooldown(rest);
       rest.dealsDirectDamage = false;
       rest.heals = true;
-      rest.effectiveness = 1.2;
+      rest.effectiveness = 5;
       rest.targetsAllies = true;
       rest.targetType = TargetEnum.Self;
       enemy.abilityList.push(rest);
     }
     if (type === BestiaryEnum.Phlegethon) {
       enemy.name = "Phlegethon";
-      enemy.battleStats = new CharacterStats(34178, 593, 1525, 500, 600, 1250);      
+      enemy.battleStats = new CharacterStats(35678, 593, 1555, 500, 600, 1250);      
       enemy.battleStats.elementIncrease.fire += .25;
       enemy.battleStats.elementResistance.fire += .5;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 450;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 950;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
 
       var phlegethonFlow = new Ability();
@@ -2713,11 +2713,10 @@ export class EnemyGeneratorService {
       var streamOfFire = new Ability();
       streamOfFire.name = "Stream of Fire";
       streamOfFire.isAvailable = true;
-      streamOfFire.cooldown = streamOfFire.currentCooldown = 21;
+      streamOfFire.cooldown = streamOfFire.currentCooldown = 17;
       streamOfFire = this.randomizeCooldown(streamOfFire);
       streamOfFire.dealsDirectDamage = true;
-      streamOfFire.effectiveness = 1.4;
-      streamOfFire.isAoe = true;
+      streamOfFire.effectiveness = 2.3;
       streamOfFire.elementalType = ElementalTypeEnum.Fire;
       streamOfFire.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2, streamOfFire.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
       enemy.abilityList.push(streamOfFire);
@@ -2725,7 +2724,7 @@ export class EnemyGeneratorService {
       var charredSkin = new Ability();
       charredSkin.name = "Charred Skin";
       charredSkin.isAvailable = true;
-      charredSkin.cooldown = charredSkin.currentCooldown = 24;
+      charredSkin.cooldown = charredSkin.currentCooldown = 12;
       charredSkin = this.randomizeCooldown(charredSkin);
       charredSkin.dealsDirectDamage = false;
       charredSkin.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 8, 100, false, true));
@@ -2733,12 +2732,12 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Styx) {
       enemy.name = "Styx";
-      enemy.battleStats = new CharacterStats(39232, 622, 1675, 600, 750, 1400);
+      enemy.battleStats = new CharacterStats(39932, 614, 1698, 600, 750, 1500);
       enemy.battleStats.elementIncrease.water += .2;
       enemy.battleStats.elementResistance.fire += .2;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 450;
+      enemy.xpGainFromDefeat = 1050;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
 
       var styxFlow = new Ability();
@@ -2758,10 +2757,10 @@ export class EnemyGeneratorService {
       var weave = new Ability();
       weave.name = "Oath: Weave";
       weave.isAvailable = true;
-      weave.cooldown = weave.currentCooldown = 18;
+      weave.cooldown = weave.currentCooldown = 15;
       weave = this.randomizeCooldown(weave);
       weave.dealsDirectDamage = true;
-      weave.effectiveness = 1.9;
+      weave.effectiveness = 3;
       weave.elementalType = ElementalTypeEnum.Water;
       weave.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 6, .75, false, false));
       enemy.abilityList.push(weave);
@@ -2769,10 +2768,10 @@ export class EnemyGeneratorService {
       var defend = new Ability();
       defend.name = "Oath: Defend";
       defend.isAvailable = true;
-      defend.cooldown = defend.currentCooldown = 24;
+      defend.cooldown = defend.currentCooldown = 20;
       defend = this.randomizeCooldown(defend);
       defend.dealsDirectDamage = false;
-      defend.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 7, .75, false, true, false));
+      defend.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 7, .25, false, true, false));
       enemy.abilityList.push(defend);
 
       var oblivion = new Ability();
@@ -2781,18 +2780,17 @@ export class EnemyGeneratorService {
       oblivion.cooldown = oblivion.currentCooldown = 40;
       oblivion = this.randomizeCooldown(oblivion);
       oblivion.dealsDirectDamage = true;
-      oblivion.effectiveness = 4.4;
+      oblivion.effectiveness = 5;
       oblivion.isAoe = true;            
       enemy.abilityList.push(oblivion);
 
       var streamOfFire = new Ability();
       streamOfFire.name = "Oath: Stream of Fire";
       streamOfFire.isAvailable = true;
-      streamOfFire.cooldown = streamOfFire.currentCooldown = 21;
+      streamOfFire.cooldown = streamOfFire.currentCooldown = 16;
       streamOfFire = this.randomizeCooldown(streamOfFire);
       streamOfFire.dealsDirectDamage = true;
-      streamOfFire.effectiveness = 1.4;
-      streamOfFire.isAoe = true;
+      streamOfFire.effectiveness = 2;
       streamOfFire.elementalType = ElementalTypeEnum.Fire;
       streamOfFire.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2, streamOfFire.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
       enemy.abilityList.push(streamOfFire);
@@ -2810,20 +2808,21 @@ export class EnemyGeneratorService {
       var oarThump = new Ability();
       oarThump.name = "Oar Thump";
       oarThump.isAvailable = true;
-      oarThump.cooldown = oarThump.currentCooldown = 21;
+      oarThump.cooldown = oarThump.currentCooldown = 13;
       oarThump = this.randomizeCooldown(oarThump);
       oarThump.dealsDirectDamage = true;
-      oarThump.effectiveness = 1.4;      
+      oarThump.effectiveness = 1.9;      
       enemy.abilityList.push(oarThump);
 
       var clubbingBlows = new Ability();
       clubbingBlows.name = "Clubbing Blows";
       clubbingBlows.isAvailable = true;
-      clubbingBlows.cooldown = clubbingBlows.currentCooldown = 24;
+      clubbingBlows.cooldown = clubbingBlows.currentCooldown = 20;
       clubbingBlows = this.randomizeCooldown(clubbingBlows);
       clubbingBlows.dealsDirectDamage = true;
+      oarThump.effectiveness = 1.6;      
       clubbingBlows.isAoe = true;
-      clubbingBlows.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 1, false, false, true));
+      clubbingBlows.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 5, 1, false, false, true));
       enemy.abilityList.push(clubbingBlows);
 
       var loyalFerryman = new Ability();
@@ -2837,7 +2836,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Megaera) {
       enemy.name = "Megaera";
-      enemy.battleStats = new CharacterStats(34178, 593, 1525, 500, 600, 1250);      
+      enemy.battleStats = new CharacterStats(34178, 393, 1525, 500, 600, 1250);      
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
@@ -2854,16 +2853,16 @@ export class EnemyGeneratorService {
       whipSmack.targetEffect.push(this.globalService.createDamageOverTimeEffect(9, 3, .25, whipSmack.name, dotTypeEnum.BasedOnDamage));
       enemy.abilityList.push(whipSmack);
       
-      var foresight = new Ability();
-      foresight.name = "Foresight";
-      foresight.isAvailable = true;
-      foresight.cooldown = foresight.currentCooldown = 24;
-      foresight = this.randomizeCooldown(foresight);
-      foresight.dealsDirectDamage = false;
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.5, false, true));
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.5, false, true));
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 10, 75, false, true));
-      enemy.abilityList.push(foresight);
+      var fateForetold = new Ability();
+      fateForetold.name = "Fate Foretold";
+      fateForetold.isAvailable = true;
+      fateForetold.cooldown = 25;   
+      fateForetold.currentCooldown = 0;   
+      fateForetold.dealsDirectDamage = false;
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 10, 150, false, true));
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.5, false, true));
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.5, false, true));
+      enemy.abilityList.push(fateForetold);
 
       var loyalArbiter = new Ability();
       loyalArbiter.name = "Loyal Arbiter";
@@ -2876,7 +2875,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Alecto) {
       enemy.name = "Alecto";
-      enemy.battleStats = new CharacterStats(34178, 593, 1525, 500, 600, 1250);      
+      enemy.battleStats = new CharacterStats(34178, 493, 1525, 500, 600, 1250);      
       enemy.battleStats.elementIncrease.lightning += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
@@ -2887,25 +2886,25 @@ export class EnemyGeneratorService {
       var arc = new Ability();
       arc.name = "Arc";
       arc.isAvailable = true;
-      arc.cooldown = arc.currentCooldown = 21;
+      arc.cooldown = arc.currentCooldown = 26;
       arc = this.randomizeCooldown(arc);
       arc.dealsDirectDamage = true;
-      arc.effectiveness = 1.4;
+      arc.effectiveness = 1.9;
       arc.isAoe = true;
       arc.elementalType = ElementalTypeEnum.Lightning;
       arc.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 6, .5, false, false, true));
       enemy.abilityList.push(arc);
 
-      var foresight = new Ability();
-      foresight.name = "Foresight";
-      foresight.isAvailable = true;
-      foresight.cooldown = foresight.currentCooldown = 24;
-      foresight = this.randomizeCooldown(foresight);
-      foresight.dealsDirectDamage = false;
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.5, false, true));
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.5, false, true));
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 10, 75, false, true));
-      enemy.abilityList.push(foresight);
+      var fateForetold = new Ability();
+      fateForetold.name = "Fate Foretold";
+      fateForetold.isAvailable = true;
+      fateForetold.cooldown = 25; 
+      fateForetold.currentCooldown = 5;     
+      fateForetold.dealsDirectDamage = false;
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 10, 150, false, true));
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.5, false, true));
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.5, false, true));
+      enemy.abilityList.push(fateForetold);
       
       var loyalArbiter = new Ability();
       loyalArbiter.name = "Loyal Arbiter";
@@ -2918,7 +2917,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Tisiphone) {
       enemy.name = "Tisiphone";
-      enemy.battleStats = new CharacterStats(34178, 593, 1525, 500, 600, 1250);      
+      enemy.battleStats = new CharacterStats(34178, 393, 1525, 500, 600, 1250);      
       enemy.battleStats.elementIncrease.fire += .25;
       enemy.battleStats.elementResistance.fire += .5;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
@@ -2929,7 +2928,7 @@ export class EnemyGeneratorService {
       var hardBlade = new Ability();
       hardBlade.name = "Hard Blade";
       hardBlade.isAvailable = true;
-      hardBlade.cooldown = hardBlade.currentCooldown = 21;
+      hardBlade.cooldown = hardBlade.currentCooldown = 15;
       hardBlade = this.randomizeCooldown(hardBlade);
       hardBlade.dealsDirectDamage = true;
       hardBlade.effectiveness = 1.4;
@@ -2938,23 +2937,23 @@ export class EnemyGeneratorService {
       var morePunishment = new Ability();
       morePunishment.name = "More Punishment";
       morePunishment.isAvailable = true;
-      morePunishment.cooldown = morePunishment.currentCooldown = 21;
+      morePunishment.cooldown = morePunishment.currentCooldown = 26;
       morePunishment = this.randomizeCooldown(morePunishment);
       morePunishment.dealsDirectDamage = true;
       morePunishment.effectiveness = 1.4;
       morePunishment.isAoe = true;
       enemy.abilityList.push(morePunishment);
 
-      var foresight = new Ability();
-      foresight.name = "Foresight";
-      foresight.isAvailable = true;
-      foresight.cooldown = foresight.currentCooldown = 24;
-      foresight = this.randomizeCooldown(foresight);
-      foresight.dealsDirectDamage = false;
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.5, false, true));
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.5, false, true));
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 10, 75, false, true));
-      enemy.abilityList.push(foresight);
+      var fateForetold = new Ability();
+      fateForetold.name = "Fate Foretold";
+      fateForetold.isAvailable = true;
+      fateForetold.cooldown = 25;      
+      fateForetold.currentCooldown = 15;
+      fateForetold.dealsDirectDamage = false;
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 10, 150, false, true));
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.5, false, true));
+      fateForetold.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.5, false, true));
+      enemy.abilityList.push(fateForetold);
       
       var loyalArbiter = new Ability();
       loyalArbiter.name = "Loyal Arbiter";
@@ -2981,20 +2980,22 @@ export class EnemyGeneratorService {
       var reapersMark = new Ability();
       reapersMark.name = "Reaper's Mark";
       reapersMark.isAvailable = true;
-      reapersMark.cooldown = reapersMark.currentCooldown = 20;
-      reapersMark = this.randomizeCooldown(reapersMark);
+      reapersMark.cooldown = 20;
+      reapersMark.currentCooldown = 0;
       reapersMark.dealsDirectDamage = false;
       reapersMark.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.MaxHpDown, 20, .65, false, false));
-      reapersMark.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, 20, 1, false, false));
+      reapersMark.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 20, .65, false, false));
+      reapersMark.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Focus, 20, 1, false, false, false, "Thanatos"));
       enemy.abilityList.push(reapersMark);
 
       var scytheCombo = new Ability();
       scytheCombo.name = "Scythe Combo";
       scytheCombo.isAvailable = true;
-      scytheCombo.cooldown = scytheCombo.currentCooldown = 21;
+      scytheCombo.cooldown = scytheCombo.currentCooldown = 15;
       scytheCombo = this.randomizeCooldown(scytheCombo);
       scytheCombo.dealsDirectDamage = true;
-      scytheCombo.effectiveness = 1.4;
+      scytheCombo.effectiveness = 1.8;
+      scytheCombo.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       enemy.abilityList.push(scytheCombo);      
 
       var deathWaitsForNoOne = new Ability();
@@ -3003,8 +3004,8 @@ export class EnemyGeneratorService {
       deathWaitsForNoOne.cooldown = deathWaitsForNoOne.currentCooldown = 24;
       deathWaitsForNoOne = this.randomizeCooldown(deathWaitsForNoOne);
       deathWaitsForNoOne.dealsDirectDamage = false;
-      deathWaitsForNoOne.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, 1.5, false, true));
-      deathWaitsForNoOne.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.5, false, true));
+      deathWaitsForNoOne.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.5, false, true));
+      deathWaitsForNoOne.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 15, 1.5, false, true));
       enemy.abilityList.push(deathWaitsForNoOne);
           
       var loyalServant = new Ability();
@@ -3013,94 +3014,116 @@ export class EnemyGeneratorService {
       loyalServant.cooldown = loyalServant.currentCooldown = 45;      
       loyalServant.dealsDirectDamage = false;
       loyalServant.isAoe = true;
-      loyalServant.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllElementalResistanceDown, 300, .8, false, false, true));
+      loyalServant.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllElementalResistanceDown, 300, -.2, false, false, true));
       enemy.abilityList.push(loyalServant);
     }
     if (type === BestiaryEnum.Cerberus) {
       enemy.name = "Cerberus";
       enemy.battleStats = new CharacterStats(34178, 593, 1525, 500, 600, 1250);      
       enemy.battleStats.elementIncrease.fire += .25;
-      enemy.battleStats.elementResistance.fire += .5;
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats.elementResistance.fire += .25;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 450;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
 
-      var phlegethonFlow = new Ability();
-      phlegethonFlow.name = "Phlegethon Flow";
-      phlegethonFlow.isAvailable = true;
-      phlegethonFlow.cooldown = phlegethonFlow.currentCooldown = 30;
-      phlegethonFlow = this.randomizeCooldown(phlegethonFlow);
-      phlegethonFlow.dealsDirectDamage = false;
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.25, false, true));
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, -1, 1.25, false, true));
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, -1, 1.25, false, true));
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, -1, 1.25, false, true));
-      enemy.abilityList.push(phlegethonFlow);
-      
-      var streamOfFire = new Ability();
-      streamOfFire.name = "Stream of Fire";
-      streamOfFire.isAvailable = true;
-      streamOfFire.cooldown = streamOfFire.currentCooldown = 21;
-      streamOfFire = this.randomizeCooldown(streamOfFire);
-      streamOfFire.dealsDirectDamage = true;
-      streamOfFire.effectiveness = 1.4;
-      streamOfFire.isAoe = true;
-      streamOfFire.elementalType = ElementalTypeEnum.Fire;
-      streamOfFire.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2, streamOfFire.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
-      enemy.abilityList.push(streamOfFire);
+      var tailSwipe = new Ability();
+      tailSwipe.name = "Tail Swipe";
+      tailSwipe.isAvailable = true;
+      tailSwipe.cooldown = tailSwipe.currentCooldown = 21;
+      tailSwipe = this.randomizeCooldown(tailSwipe);
+      tailSwipe.dealsDirectDamage = true;
+      tailSwipe.effectiveness = 1.4;
+      tailSwipe.isAoe = true;
+      tailSwipe.elementalType = ElementalTypeEnum.Fire;      
+      enemy.abilityList.push(tailSwipe);
 
-      var charredSkin = new Ability();
-      charredSkin.name = "Charred Skin";
-      charredSkin.isAvailable = true;
-      charredSkin.cooldown = charredSkin.currentCooldown = 24;
-      charredSkin = this.randomizeCooldown(charredSkin);
-      charredSkin.dealsDirectDamage = false;
-      charredSkin.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 8, 100, false, true));
-      enemy.abilityList.push(charredSkin);
+      var bite = new Ability();
+      bite.name = "Tri-Bite";
+      bite.isAvailable = true;
+      bite.cooldown = bite.currentCooldown = 21;
+      bite = this.randomizeCooldown(bite);
+      bite.dealsDirectDamage = true;
+      bite.effectiveness = 1.4;
+      bite.elementalType = ElementalTypeEnum.Fire;      
+      bite.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      bite.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      enemy.abilityList.push(bite);
+
+      var roar = new Ability();
+      roar.name = "Tri-Roar";
+      roar.isAvailable = true;
+      roar.cooldown = roar.currentCooldown = 30;      
+      roar.dealsDirectDamage = false;
+      roar.isAoe = true;
+      roar.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 3, 1, false, false, true));
+      roar.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 15, .2, false, false, true));
+      roar.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 15, .2, false, false, true));
+      enemy.abilityList.push(roar);
+
+      var loyalGuardian = new Ability();
+      loyalGuardian.name = "Loyal Guardian";
+      loyalGuardian.isAvailable = true;
+      loyalGuardian.cooldown = loyalGuardian.currentCooldown = 45;      
+      loyalGuardian.dealsDirectDamage = false;
+      loyalGuardian.isAoe = true;
+      loyalGuardian.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 300, .2, false, false, true));
+      enemy.abilityList.push(loyalGuardian);
     }
-    if (type === BestiaryEnum.Phlegethon) {
-      enemy.name = "Phlegethon";
+    if (type === BestiaryEnum.Hades) {
+      enemy.name = "Hades";
       enemy.battleStats = new CharacterStats(34178, 593, 1525, 500, 600, 1250);      
       enemy.battleStats.elementIncrease.fire += .25;
       enemy.battleStats.elementResistance.fire += .5;
+      enemy.battleStats.elementResistance.lightning += .5;
+      enemy.battleStats.elementResistance.air += .5;
+      enemy.battleStats.elementResistance.water += .5;
+      enemy.battleStats.elementResistance.earth += .5;
+      enemy.battleStats.elementResistance.holy += .5;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 450;
-      enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
 
-      var phlegethonFlow = new Ability();
-      phlegethonFlow.name = "Phlegethon Flow";
-      phlegethonFlow.isAvailable = true;
-      phlegethonFlow.cooldown = phlegethonFlow.currentCooldown = 30;
-      phlegethonFlow = this.randomizeCooldown(phlegethonFlow);
-      phlegethonFlow.dealsDirectDamage = false;
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.25, false, true));
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, -1, 1.25, false, true));
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, -1, 1.25, false, true));
-      phlegethonFlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, -1, 1.25, false, true));
-      enemy.abilityList.push(phlegethonFlow);
+      var lordOfTheUnderworld = new Ability();
+      lordOfTheUnderworld.name = "Lord of the Underworld";
+      lordOfTheUnderworld.isAvailable = true;
+      lordOfTheUnderworld.cooldown = lordOfTheUnderworld.currentCooldown = 20;
+      lordOfTheUnderworld = this.randomizeCooldown(lordOfTheUnderworld);
+      lordOfTheUnderworld.dealsDirectDamage = false;
+      lordOfTheUnderworld.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LordOfTheUnderworld, 20, 1.2, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(lordOfTheUnderworld);
       
-      var streamOfFire = new Ability();
-      streamOfFire.name = "Stream of Fire";
-      streamOfFire.isAvailable = true;
-      streamOfFire.cooldown = streamOfFire.currentCooldown = 21;
-      streamOfFire = this.randomizeCooldown(streamOfFire);
-      streamOfFire.dealsDirectDamage = true;
-      streamOfFire.effectiveness = 1.4;
-      streamOfFire.isAoe = true;
-      streamOfFire.elementalType = ElementalTypeEnum.Fire;
-      streamOfFire.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .2, streamOfFire.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
-      enemy.abilityList.push(streamOfFire);
+      var hellfire = new Ability();
+      hellfire.name = "Hellfire";
+      hellfire.isAvailable = true;
+      hellfire.cooldown = hellfire.currentCooldown = 16;
+      hellfire = this.randomizeCooldown(hellfire);
+      hellfire.dealsDirectDamage = true;
+      hellfire.effectiveness = 1.4;
+      hellfire.isAoe = true;
+      hellfire.elementalType = ElementalTypeEnum.Fire;      
+      enemy.abilityList.push(hellfire);
+      
+      var earthquake = new Ability();      
+      earthquake.name = "Earthquake";
+      earthquake.isAvailable = true;
+      earthquake.cooldown = earthquake.currentCooldown = 22;
+      earthquake = this.randomizeCooldown(earthquake);
+      earthquake.dealsDirectDamage = true;
+      earthquake.effectiveness = 1.4;
+      earthquake.isAoe = true;
+      earthquake.elementalType = ElementalTypeEnum.Earth;      
+      enemy.abilityList.push(earthquake);
 
-      var charredSkin = new Ability();
-      charredSkin.name = "Charred Skin";
-      charredSkin.isAvailable = true;
-      charredSkin.cooldown = charredSkin.currentCooldown = 24;
-      charredSkin = this.randomizeCooldown(charredSkin);
-      charredSkin.dealsDirectDamage = false;
-      charredSkin.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 8, 100, false, true));
-      enemy.abilityList.push(charredSkin);
+      var disaster = new Ability();      
+      disaster.name = "Disaster";
+      disaster.isAvailable = true;
+      disaster.cooldown = disaster.currentCooldown = 32;
+      disaster = this.randomizeCooldown(disaster);
+      disaster.dealsDirectDamage = true;
+      disaster.effectiveness = 1.4;
+      disaster.isAoe = true;      
+      enemy.abilityList.push(disaster);
     }
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise

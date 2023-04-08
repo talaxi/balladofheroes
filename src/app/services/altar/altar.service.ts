@@ -101,7 +101,7 @@ export class AltarService {
 
   pray(altar: AltarInfo, comingFromFollowers: boolean = false, followersActivatingAltar: boolean = false) {
     var effect = this.getRandomEffect(altar);
-    this.setAltarEffect(effect, altar);
+    this.setAltarEffect(effect, altar, comingFromFollowers && !followersActivatingAltar);
     var affinityXpGain = 0;
     var godXpGain = 0;
 
@@ -115,7 +115,7 @@ export class AltarService {
         affinityXpGain = this.utilityService.largeAltarAffinityGain;
         godXpGain = this.utilityService.largeAltarPrayGodXpIncrease;
       }
-      
+
       god.affinityExp += affinityXpGain;
       this.globalService.giveGodExp(god, godXpGain);
 
@@ -154,17 +154,17 @@ export class AltarService {
 
     if (altar === this.globalService.globalVar.altars.altar1) {
       var altarType = this.globalService.globalVar.altars.altar1.type;
-      this.globalService.globalVar.altars.altar1 = undefined;      
+      this.globalService.globalVar.altars.altar1 = undefined;
       this.globalService.globalVar.altars.altar1 = this.getNewAltar(altarType);
     }
     if (altar === this.globalService.globalVar.altars.altar2) {
       var altarType = this.globalService.globalVar.altars.altar2.type;
-      this.globalService.globalVar.altars.altar2 = undefined;      
+      this.globalService.globalVar.altars.altar2 = undefined;
       this.globalService.globalVar.altars.altar2 = this.getNewAltar(altarType);
     }
     if (altar === this.globalService.globalVar.altars.altar3) {
       var altarType = this.globalService.globalVar.altars.altar3.type;
-      this.globalService.globalVar.altars.altar3 = undefined;      
+      this.globalService.globalVar.altars.altar3 = undefined;
       this.globalService.globalVar.altars.altar3 = this.getNewAltar(altarType);
     }
   }
@@ -244,7 +244,7 @@ export class AltarService {
     return possibleEffects[this.utilityService.getRandomInteger(0, possibleEffects.length - 1)];
   }
 
-  setAltarEffect(effectType: AltarEffectsEnum, altar: AltarInfo) {
+  setAltarEffect(effectType: AltarEffectsEnum, altar: AltarInfo, additionalAltarEffect: boolean = false) {
     var altarEffect = new AltarEffect();
     altarEffect.type = effectType;
 
@@ -437,12 +437,21 @@ export class AltarService {
       }
     }
 
-    if (altar === this.globalService.globalVar.altars.altar1)
-      this.globalService.globalVar.altars.activeAltarEffect1 = altarEffect;
-    if (altar === this.globalService.globalVar.altars.altar2)
-      this.globalService.globalVar.altars.activeAltarEffect2 = altarEffect;
-    if (altar === this.globalService.globalVar.altars.altar3)
-      this.globalService.globalVar.altars.activeAltarEffect3 = altarEffect;
+    if (additionalAltarEffect)
+    {
+      if (this.globalService.globalVar.altars.additionalAltarEffects === undefined)
+        this.globalService.globalVar.altars.additionalAltarEffects = [];
+
+      this.globalService.globalVar.altars.additionalAltarEffects.push(altarEffect);
+    }
+    else {
+      if (altar === this.globalService.globalVar.altars.altar1)
+        this.globalService.globalVar.altars.activeAltarEffect1 = altarEffect;
+      if (altar === this.globalService.globalVar.altars.altar2)
+        this.globalService.globalVar.altars.activeAltarEffect2 = altarEffect;
+      if (altar === this.globalService.globalVar.altars.altar3)
+        this.globalService.globalVar.altars.activeAltarEffect3 = altarEffect;
+    }
   }
 
   getSmallCharmOfGod(type: GodEnum) {
@@ -462,8 +471,8 @@ export class AltarService {
       item = ItemsEnum.SmallCharmOfZeus;
     if (type === GodEnum.Poseidon)
       item = ItemsEnum.SmallCharmOfPoseidon;
-      if (type === GodEnum.Hades)
-        item = ItemsEnum.SmallCharmOfHades;
+    if (type === GodEnum.Hades)
+      item = ItemsEnum.SmallCharmOfHades;
 
     return item;
   }
@@ -485,8 +494,8 @@ export class AltarService {
       item = ItemsEnum.LargeCharmOfZeus;
     if (type === GodEnum.Poseidon)
       item = ItemsEnum.LargeCharmOfPoseidon;
-      if (type === GodEnum.Hades)
-        item = ItemsEnum.LargeCharmOfHades;
+    if (type === GodEnum.Hades)
+      item = ItemsEnum.LargeCharmOfHades;
 
     return item;
   }

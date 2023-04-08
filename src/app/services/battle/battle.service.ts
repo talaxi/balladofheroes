@@ -535,8 +535,17 @@ export class BattleService {
     }
 
     var elementalText = "";
-    if (elementalType !== ElementalTypeEnum.None)
+    if (elementalType !== ElementalTypeEnum.None) {
       elementalText = this.getElementalDamageText(elementalType);
+
+      var disaster = this.lookupService.characterHasAbility("Disaster", character);
+      if (disaster !== undefined && (character.battleInfo.elementsUsed === undefined || !character.battleInfo.elementsUsed.some(item => item === elementalType))) {
+        if (character.battleInfo.elementsUsed === undefined)
+          character.battleInfo.elementsUsed = [];
+
+        character.battleInfo.elementsUsed.push(elementalType);
+      }
+    }
 
     if (isPartyAttacking)
       this.altarService.incrementAltarCount(AltarConditionEnum.AutoAttackUse);
@@ -729,10 +738,10 @@ export class BattleService {
 
   checkAbilityCooldown(isPartyUsing: boolean, character: Character, ability: Ability, deltaTime: number, partyMembers: Character[], targets: Character[]) {
     if (ability.currentCooldown <= 0) {
-      ability.currentCooldown = 0;
 
       if (targets !== undefined && targets.length > 0 && (ability.autoMode || ability.manuallyTriggered) &&
         this.avoidAbilityRedundancy(ability, partyMembers)) {
+        ability.currentCooldown = 0;
         var abilityUsed = this.useAbility(isPartyUsing, ability, character, targets, partyMembers, true);
 
         if (abilityUsed)
@@ -740,6 +749,8 @@ export class BattleService {
       }
 
       ability.manuallyTriggered = false;
+
+      this.handlePostAbilityUseEffects(ability, character);
     }
   }
 
@@ -748,6 +759,12 @@ export class BattleService {
 
     if (!ability.manuallyTriggered && (!ability.isActivatable || (!partyNotFullHp && ability.name === "Heal")))
       return false;
+
+    //foresight from the furies
+    if (ability.name === "Fate Foretold" &&
+      partyMembers.some(member => member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns) !== undefined)) {
+      return false;
+    }
 
     return true;
   }
@@ -760,11 +777,21 @@ export class BattleService {
     var elementalText = "";
     var elementalType = ability.elementalType;
 
+    this.handleConditionalAbilityChanges(ability, user, party);
+
     if (target === undefined)
       return false;
 
     if (elementalType === ElementalTypeEnum.None) {
       elementalType = this.checkUserForEnElement(user);
+    }
+
+    var disaster = this.lookupService.characterHasAbility("Disaster", user);
+    if (elementalType !== ElementalTypeEnum.None && disaster !== undefined && (user.battleInfo.elementsUsed === undefined || !user.battleInfo.elementsUsed.some(item => item === elementalType))) {
+      if (user.battleInfo.elementsUsed === undefined)
+        user.battleInfo.elementsUsed = [];
+
+      user.battleInfo.elementsUsed.push(elementalType);
     }
 
     var abilityEffectiveness = this.getAbilityEffectiveness(ability, effectivenessModifier);
@@ -877,7 +904,42 @@ export class BattleService {
       }
     }
 
-    this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt, ability.targetsAllies);
+    if (ability.name === "Revel in Blood") {
+      var hpLoss = this.gainHp(user, -(user.battleStats.currentHp * .1));
+      var DoT = ability.targetEffect.find(dotEffect => dotEffect.type === StatusEffectEnum.DamageOverTime)!.makeCopy();
+      if (DoT !== undefined) {                
+            DoT.dotType = dotTypeEnum.TrueDamage;
+            DoT.effectiveness = hpLoss * (DoT.effectiveness - 1);              
+            
+          if (target !== undefined) {            
+            this.applyStatusEffect(DoT, target, potentialTargets, user);
+          }
+      }
+    }
+
+    var addDoTDamage = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Onslaught);
+    if (addDoTDamage !== undefined && damageDealt > 0) {      
+      //ability.userEffect.filter(item => item.type === StatusEffectEnum.Onslaught).forEach(effect => {
+        var onslaught = this.lookupService.characterHasAbility("Onslaught", user);
+        if (onslaught !== undefined && onslaught.targetEffect.find(dotEffect => dotEffect.type === StatusEffectEnum.DamageOverTime) !== undefined) {          
+          var DoT = onslaught.targetEffect.find(dotEffect => dotEffect.type === StatusEffectEnum.DamageOverTime)!.makeCopy();
+          if (DoT !== undefined) {            
+            DoT.dotType = dotTypeEnum.BasedOnDamage;
+              DoT.effectiveness = damageDealt * DoT.effectiveness;
+            
+          if (target !== undefined) {            
+            this.applyStatusEffect(DoT, target, potentialTargets, user);
+          }
+            //ability.targetEffect.push(DoT);
+          }
+        }
+      //});
+
+      user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
+    }
+
+
+    this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt, ability.makeCopy());
     this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt, ability.targetsAllies);
     this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets, undefined, ability.targetsAllies);
 
@@ -911,7 +973,7 @@ export class BattleService {
     return true;
   }
 
-  handleuserEffects(isPartyUsing: boolean, userEffect: StatusEffect[], user: Character, party: Character[], targets: Character[], damageDealt: number = 0, originalAbilityTargetsAllies: boolean = false) {
+  handleuserEffects(isPartyUsing: boolean, userEffect: StatusEffect[], user: Character, party: Character[], targets: Character[], damageDealt: number = 0, originalAbility?: Ability) {
     if (userEffect.length > 0) {
       userEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = gainedStatusEffect.makeCopy();
@@ -923,7 +985,8 @@ export class BattleService {
             appliedStatusEffect.effectiveness = damageDealt * appliedStatusEffect.effectiveness;
         }
 
-        this.applyStatusEffect(appliedStatusEffect, user, party, user);
+        if (appliedStatusEffect.dotType !== dotTypeEnum.None)
+          this.applyStatusEffect(appliedStatusEffect, user, party, user);
       });
     }
 
@@ -963,6 +1026,14 @@ export class BattleService {
 
           if (instantEffect.type === StatusEffectEnum.InstantAutoAttack) {
             this.handleAutoAttack(isPartyUsing, member, targets, party, instantEffect.effectiveness);
+          }
+
+          if (instantEffect.type === StatusEffectEnum.RepeatAbility && originalAbility !== undefined) {
+            var repeatCount = originalAbility.userEffect.filter(effect => effect.type === StatusEffectEnum.RepeatAbility).length;
+            originalAbility.userEffect = originalAbility.userEffect.filter(item => item.type !== StatusEffectEnum.RepeatAbility);
+            for (var i = 0; i < repeatCount; i++) {
+              this.useAbility(isPartyUsing, originalAbility, user, targets, party, false);
+            }
           }
 
           if (instantEffect.type === StatusEffectEnum.Sap) {
@@ -1035,7 +1106,7 @@ export class BattleService {
           }
         }
 
-        if (target !== undefined) {
+        if (target !== undefined && appliedStatusEffect.dotType !== dotTypeEnum.None) {
           this.applyStatusEffect(appliedStatusEffect, target, potentialTargets, user);
         }
 
@@ -1140,6 +1211,12 @@ export class BattleService {
     }
   }
 
+  handlePostAbilityUseEffects(ability: Ability, user: Character) {
+    if (ability.name === "Disaster" && (user.name === "Hades" || (user.assignedGod1 === GodEnum.Hades || user.assignedGod2 === GodEnum.Hades))) {
+      ability.userEffect = [];
+    }
+  }
+
   getRandomPrimaryStatDownStatusEffect() {
     var options = [];
     options.push(StatusEffectEnum.AgilityDown);
@@ -1164,6 +1241,27 @@ export class BattleService {
     var rng = this.utilityService.getRandomInteger(0, options.length - 1);
 
     return options[rng];
+  }
+
+  handleConditionalAbilityChanges(ability: Ability, user: Character, party: Character[]) {
+    if (ability.name === "Loyal Arbiter" && ability.targetEffect.length > 0) {
+      var effectiveness = .55;
+      var remainingParty = party.filter(member => !member.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead)).length;
+      if (remainingParty === 2)
+        effectiveness = .7;
+      else if (remainingParty === 1)
+        effectiveness = .85;
+
+      ability.targetEffect[0].effectiveness = effectiveness;
+    }
+    if (ability.name === "Disaster" && (user.name === "Hades" || (user.assignedGod1 === GodEnum.Hades || user.assignedGod2 === GodEnum.Hades))) {
+      var elementsUsed = user.battleInfo.elementsUsed === undefined ? 0 : user.battleInfo.elementsUsed.length;
+      user.battleInfo.elementsUsed = [];
+
+      for (var i = 0; i < elementsUsed; i++) {
+        ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      }
+    }
   }
 
   getAbilityEffectiveness(ability: Ability, effectivenessModifier: number) {
@@ -1270,7 +1368,7 @@ export class BattleService {
     var enemySpecificAbilityIncrease = 1;
     if (abilityName === "Dreameater") {
       var dreameaterMultiplierAmount = .2;
-      enemySpecificAbilityIncrease += dreameaterMultiplierAmount * target.battleInfo.statusEffects.filter(item => !item.isPositive).length;      
+      enemySpecificAbilityIncrease += dreameaterMultiplierAmount * target.battleInfo.statusEffects.filter(item => !item.isPositive).length;
     }
 
     return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * enemySpecificAbilityIncrease;
@@ -1370,8 +1468,18 @@ export class BattleService {
       target = user.targeting;
     }
     else {
-      if (targetType === TargetEnum.Random)
+      if (targetType === TargetEnum.Random) {
         target = potentialTargets[this.utilityService.getRandomInteger(0, potentialTargets.length - 1)];
+
+        //override target and target whoever you are focused on. might need to expand this beyond random target type
+        potentialTargets.forEach(item => {
+          var focus = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Focus);
+          if (focus !== undefined) {
+            target = item;
+          }
+        })
+
+      }
       else if (targetType === TargetEnum.LowestHpPercent) {
         potentialTargets = potentialTargets.sort(function (a, b) {
           return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
@@ -1648,19 +1756,25 @@ export class BattleService {
 
   getElementalDamageDecrease(element: ElementalTypeEnum, target: Character) {
     var decrease = 0;
+    var elementalReduction = 0;
+
+    var resistanceDown = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AllElementalResistanceDown)
+    if (resistanceDown !== undefined) {
+      elementalReduction = resistanceDown.effectiveness;
+    }
 
     if (element === ElementalTypeEnum.Holy)
-      decrease = target.battleStats.elementResistance.holy;
+      decrease = target.battleStats.elementResistance.holy + elementalReduction;
     if (element === ElementalTypeEnum.Fire)
-      decrease = target.battleStats.elementResistance.fire;
+      decrease = target.battleStats.elementResistance.fire + elementalReduction;
     if (element === ElementalTypeEnum.Lightning)
-      decrease = target.battleStats.elementResistance.lightning;
+      decrease = target.battleStats.elementResistance.lightning + elementalReduction;
     if (element === ElementalTypeEnum.Air)
-      decrease = target.battleStats.elementResistance.air;
+      decrease = target.battleStats.elementResistance.air + elementalReduction;
     if (element === ElementalTypeEnum.Water)
-      decrease = target.battleStats.elementResistance.water;
+      decrease = target.battleStats.elementResistance.water + elementalReduction;
     if (element === ElementalTypeEnum.Earth)
-      decrease = target.battleStats.elementResistance.earth;
+      decrease = target.battleStats.elementResistance.earth + elementalReduction;
 
     return 1 - decrease;
   }

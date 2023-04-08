@@ -402,6 +402,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.MinorNecklaceSlotAddition) {
       return new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, amount);
     }
+    if (type === ItemsEnum.LamiaHeart) {
+      return new ResourceValue(ItemsEnum.LamiaHeart, amount);
+    }
 
     //charms
     if (type === ItemsEnum.SmallCharmOfDetermination) {

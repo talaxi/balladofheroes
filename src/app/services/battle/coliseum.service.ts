@@ -18,6 +18,7 @@ import { LookupService } from '../lookup.service';
 import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -46,7 +47,7 @@ export class ColiseumService {
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 2500));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 8000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 8500));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
     }
     if (type === ColiseumTournamentEnum.ForgottenKings) {
@@ -54,26 +55,24 @@ export class ColiseumService {
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 20000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
     }
     if (type === ColiseumTournamentEnum.RiverLords) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      //TODO: river lords rewards
-      //tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
-      //tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
-      //tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.ChthonicFavor, 10));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 45000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
     }
     if (type === ColiseumTournamentEnum.HadesTrial) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
       tournament.quickVictoryThreshold = 120;
-      //TODO: hades trial rewards
-      //tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
-      //tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 15000));
-      //tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 65000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.Hades, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
     }
 
     return tournament;
@@ -82,11 +81,11 @@ export class ColiseumService {
   getTournamentName(type: ColiseumTournamentEnum) {
     if (type === ColiseumTournamentEnum.TournamentOfTheDead)
       return "Tournament of the Dead";
-      if (type === ColiseumTournamentEnum.FlamesOfTartarus)
+    if (type === ColiseumTournamentEnum.FlamesOfTartarus)
       return "Flames of Tartarus";
-      if (type === ColiseumTournamentEnum.ForgottenKings)
+    if (type === ColiseumTournamentEnum.ForgottenKings)
       return "Forgotten Kings and Queens";
-      if (type === ColiseumTournamentEnum.RiverLords)
+    if (type === ColiseumTournamentEnum.RiverLords)
       return "River Lords";
     else if (type === ColiseumTournamentEnum.HadesTrial)
       return "Hades' Trial";
@@ -147,9 +146,31 @@ export class ColiseumService {
           else if (reward.item === ItemsEnum.BonusXp) {
             this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), reward.amount);
           }
+          else if (reward.item === ItemsEnum.Hades) {
+            var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+            if (hades !== undefined) {
+              hades.isAvailable = true;
+              hades.abilityList.forEach(ability => {
+                if (hades!.level >= ability.requiredLevel)
+                  ability.isAvailable = true;
+              });
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your strength has impressed Hades. He will now lend his strength to you on your journey.");
+
+              //TODO: remove ares, just for testing purposes
+              var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+              if (ares !== undefined) {
+                ares.isAvailable = true;
+                ares.abilityList.forEach(ability => {
+                  if (ares!.level >= ability.requiredLevel)
+                    ability.isAvailable = true;
+                });
+              }
+              // ^^^
+            }
+          }
           else {
             this.lookupService.gainResource(reward);
-            this.lookupService.addLootToLog(reward.item, reward.amount);            
+            this.lookupService.addLootToLog(reward.item, reward.amount);
           }
 
           if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
@@ -176,25 +197,21 @@ export class ColiseumService {
 
   unlockNextColiseumTournament(type: ColiseumTournamentEnum) {
     var tournamentType: ColiseumDefeatCount | undefined = undefined;
-    
-    if (type === ColiseumTournamentEnum.TournamentOfTheDead)
-    {
-      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.FlamesOfTartarus);       
+
+    if (type === ColiseumTournamentEnum.TournamentOfTheDead) {
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.FlamesOfTartarus);
     }
 
-    if (type === ColiseumTournamentEnum.FlamesOfTartarus)
-    {
-      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.ForgottenKings);      
+    if (type === ColiseumTournamentEnum.FlamesOfTartarus) {
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.ForgottenKings);
     }
 
-    if (type === ColiseumTournamentEnum.ForgottenKings)
-    {
-      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.RiverLords);       
+    if (type === ColiseumTournamentEnum.ForgottenKings) {
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.RiverLords);
     }
 
-    if (type === ColiseumTournamentEnum.RiverLords)
-    {
-      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);       
+    if (type === ColiseumTournamentEnum.RiverLords) {
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);
     }
 
     if (tournamentType !== undefined) {
@@ -258,52 +275,52 @@ export class ColiseumService {
     if (type === ColiseumTournamentEnum.FlamesOfTartarus && round === 3) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Tantalus));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Tantalus));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.FlamesOfTartarus && round === 4) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Ixion));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Ixion));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.FlamesOfTartarus && round === 5) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Sisyphus));
       enemyTeam.isBossFight = true;
-      
+
       battleOptions.push(enemyTeam);
     }
 
     if (type === ColiseumTournamentEnum.ForgottenKings && round === 1) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lycaon));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lycaon));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ForgottenKings && round === 2) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Melampus));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Melampus));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ForgottenKings && round === 3) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Atreus));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Atreus));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ForgottenKings && round === 4) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isDoubleBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Helenus));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Helenus));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cassandra));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ForgottenKings && round === 5) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Minos));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Minos));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Rhadamanthus));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Aeacus));
       battleOptions.push(enemyTeam);
@@ -311,31 +328,63 @@ export class ColiseumService {
     if (type === ColiseumTournamentEnum.RiverLords && round === 1) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Acheron2));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Acheron2));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.RiverLords && round === 2) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cocytus));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cocytus));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.RiverLords && round === 3) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lethe));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lethe));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.RiverLords && round === 4) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Phlegethon));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Phlegethon));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.RiverLords && round === 5) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Styx));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Styx));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HadesTrial && round === 1) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Charon));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HadesTrial && round === 2) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Megaera));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Alecto));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Tisiphone));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HadesTrial && round === 3) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Thanatos));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HadesTrial && round === 4) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Cerberus));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HadesTrial && round === 5) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hades));
       battleOptions.push(enemyTeam);
     }
 
@@ -345,23 +394,20 @@ export class ColiseumService {
         if (duplicateNameList.length > 1) {
           var count = "A";
           duplicateNameList.forEach(duplicateEnemy => {
-            if (duplicateEnemy.abilityList.length > 0)
-            {
-            //go through user/target effects, look for caster, update name
+            if (duplicateEnemy.abilityList.length > 0) {
+              //go through user/target effects, look for caster, update name
               duplicateEnemy.abilityList.forEach(ability => {
-                if (ability.userEffect.length > 0 && ability.userEffect.filter(item => item.caster !== "").length > 0)
-                {
+                if (ability.userEffect.length > 0 && ability.userEffect.filter(item => item.caster !== "").length > 0) {
                   ability.userEffect.filter(item => item.caster !== "").forEach(effect => {
                     if (effect.caster === duplicateEnemy.name)
-                    effect.caster = duplicateEnemy.name + " " + count;
+                      effect.caster = duplicateEnemy.name + " " + count;
                   });
                 }
 
-                if (ability.targetEffect.length > 0 && ability.targetEffect.filter(item => item.caster !== "").length > 0)
-                {
+                if (ability.targetEffect.length > 0 && ability.targetEffect.filter(item => item.caster !== "").length > 0) {
                   ability.targetEffect.filter(item => item.caster !== "").forEach(effect => {
                     if (effect.caster === duplicateEnemy.name)
-                    effect.caster = duplicateEnemy.name + " " + count;
+                      effect.caster = duplicateEnemy.name + " " + count;
                   });
                 }
               })

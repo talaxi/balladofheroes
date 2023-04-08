@@ -54,4 +54,43 @@ export class Ability {
 
         this.isPermanent = false;
     }
+
+    makeCopy() {
+        var copy = new Ability();
+        copy.name = this.name;
+        copy.isAvailable = this.isAvailable;
+        copy.requiredLevel = this.requiredLevel;
+        copy.abilitySequence = this.abilitySequence;
+        copy.currentCooldown = this.currentCooldown;
+        copy.targetType = this.targetType;
+        copy.cooldown = this.cooldown;
+        copy.effectiveness = this.effectiveness;
+        copy.secondaryEffectiveness = this.secondaryEffectiveness;
+        copy.dealsDirectDamage = this.dealsDirectDamage;
+        copy.heals = this.heals;
+        copy.targetsAllies = this.targetsAllies;
+        copy.elementalType = this.elementalType;
+        copy.userEffect = [];
+        this.userEffect.forEach(effect => {
+            copy.userEffect.push(effect.makeCopy());
+        });
+        copy.targetEffect = [];
+        this.targetEffect.forEach(effect => {
+            copy.targetEffect.push(effect.makeCopy());
+        });
+        copy.isAoe = this.isAoe;
+        copy.isPassive = this.isPassive;
+        copy.isActivatable = this.isActivatable;
+        copy.aoeModifier = this.aoeModifier;
+        copy.count = this.count;
+        copy.maxCount = this.maxCount;
+        copy.threshold = this.threshold;
+        copy.autoMode = this.autoMode;
+        copy.manuallyTriggered = this.manuallyTriggered;
+        copy.abilityUpgradeLevel = this.abilityUpgradeLevel;
+        copy.isPermanent = this.isPermanent;
+        copy.damageModifierRange = this.damageModifierRange;
+
+        return copy;
+    }
 }

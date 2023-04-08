@@ -467,6 +467,91 @@ export class GlobalService {
       god.abilityList.push(quicken);
     }
 
+    if (god.type === GodEnum.Hades) {            
+      var hellfire = new Ability();
+      hellfire.name = "Hellfire";
+      hellfire.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      hellfire.isAvailable = false;
+      hellfire.cooldown = hellfire.currentCooldown = 26;
+      hellfire.dealsDirectDamage = true;
+      hellfire.effectiveness = 1.3;
+      hellfire.isAoe = true;
+      hellfire.elementalType = ElementalTypeEnum.Fire;      
+      god.abilityList.push(hellfire);
+      
+      var earthquake = new Ability();      
+      earthquake.name = "Earthquake";
+      earthquake.requiredLevel = this.utilityService.godAbility2Level;
+      earthquake.isAvailable = false;
+      earthquake.cooldown = earthquake.currentCooldown = 41;      
+      earthquake.dealsDirectDamage = true;
+      earthquake.effectiveness = 1.4;
+      earthquake.isAoe = true;
+      earthquake.elementalType = ElementalTypeEnum.Earth;      
+      god.abilityList.push(earthquake);
+
+      var disaster = new Ability();      
+      disaster.name = "Disaster";
+      disaster.requiredLevel = this.utilityService.godAbility3Level;
+      disaster.isAvailable = false;
+      disaster.cooldown = disaster.currentCooldown = 70;      
+      disaster.dealsDirectDamage = true;
+      disaster.effectiveness = 1.4;
+      disaster.isAoe = true;      
+      god.abilityList.push(disaster);
+
+      var lordOfTheUnderworld = new Ability();
+      lordOfTheUnderworld.name = "Lord of the Underworld";    
+      lordOfTheUnderworld.requiredLevel = this.utilityService.godPassiveLevel;  
+      lordOfTheUnderworld.isAvailable = false;
+      lordOfTheUnderworld.isPassive = true;
+      lordOfTheUnderworld.isActivatable = false;
+      lordOfTheUnderworld.dealsDirectDamage = false;
+      lordOfTheUnderworld.userEffect.push(this.createStatusEffect(StatusEffectEnum.LordOfTheUnderworld, 20, 1.2, false, true, false, undefined, undefined, true));      
+      god.abilityList.push(lordOfTheUnderworld);
+    }
+
+    if (god.type === GodEnum.Ares) {
+      var rupture = new Ability();
+      rupture.name = "Rupture";
+      rupture.isAvailable = false;
+      rupture.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      rupture.cooldown = rupture.currentCooldown = 17;
+      rupture.dealsDirectDamage = false;            
+      rupture.targetEffect.push(this.createDamageOverTimeEffect(10, 2.5, .4, rupture.name, dotTypeEnum.BasedOnAttack));
+      god.abilityList.push(rupture);
+
+      var onslaught = new Ability();
+      onslaught.name = "Onslaught";
+      onslaught.requiredLevel = this.utilityService.godAbility2Level;
+      onslaught.isAvailable = false;
+      onslaught.dealsDirectDamage = false;
+      onslaught.cooldown = onslaught.currentCooldown = 32;
+      onslaught.userEffect.push(this.createStatusEffect(StatusEffectEnum.Onslaught, -1, 1, false, true));
+      onslaught.targetEffect.push(this.createDamageOverTimeEffect(8, 4, .25, onslaught.name, dotTypeEnum.None));
+      god.abilityList.push(onslaught);
+
+      var revelInBlood = new Ability();
+      revelInBlood.name = "Revel in Blood";
+      revelInBlood.requiredLevel = this.utilityService.godAbility3Level;
+      revelInBlood.isAvailable = false;
+      revelInBlood.cooldown = revelInBlood.currentCooldown = 44;
+      revelInBlood.dealsDirectDamage = false;
+      revelInBlood.isAoe = true;      
+      revelInBlood.targetEffect.push(this.createDamageOverTimeEffect(15, 5, 2, revelInBlood.name, dotTypeEnum.TrueDamage));
+      god.abilityList.push(revelInBlood);
+
+      var bloodlust = new Ability();
+      bloodlust.name = "Bloodlust";
+      bloodlust.requiredLevel = this.utilityService.godPassiveLevel;
+      bloodlust.isAvailable = false;
+      bloodlust.isPassive = true;
+      bloodlust.isActivatable = false;
+      bloodlust.dealsDirectDamage = false;
+      bloodlust.effectiveness = .1;
+      god.abilityList.push(bloodlust);
+    }
+
     if (god.type === GodEnum.Zeus) {
       /*var divineStrike = new Ability();
       divineStrike.name = "Divine Strike";
@@ -506,48 +591,7 @@ export class GlobalService {
       secondWind.dealsDirectDamage = true;
       secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
       god.abilityList.push(secondWind);*/
-    }
-
-    if (god.type === GodEnum.Ares) {
-      /*var divineStrike = new Ability();
-      divineStrike.name = "Divine Strike";
-      divineStrike.isAvailable = false;
-      divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      divineStrike.cooldown = divineStrike.currentCooldown = 30;
-      divineStrike.dealsDirectDamage = true;
-      divineStrike.effectiveness = 1.6;
-      divineStrike.elementalType = ElementalTypeEnum.Holy;
-      divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
-      god.abilityList.push(divineStrike);
-
-      var aegis = new Ability();
-      aegis.name = "Heavenly Shield";
-      aegis.requiredLevel = this.utilityService.godAbility2Level;
-      aegis.isAvailable = false;
-      aegis.cooldown = aegis.currentCooldown = 6;
-      aegis.userEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenDown, 8, .8, false, true));
-      god.abilityList.push(aegis);
-
-      var blindingLight = new Ability();
-      blindingLight.name = "Blinding Light";
-      blindingLight.requiredLevel = this.utilityService.godAbility3Level;
-      blindingLight.isAvailable = false;
-      blindingLight.cooldown = blindingLight.currentCooldown = 25;
-      blindingLight.dealsDirectDamage = true;
-      blindingLight.effectiveness = .5;
-      blindingLight.elementalType = ElementalTypeEnum.Holy;
-      blindingLight.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false));
-      god.abilityList.push(blindingLight);
-
-      var secondWind = new Ability();
-      secondWind.name = "Second Wind";
-      secondWind.requiredLevel = this.utilityService.godPassiveLevel;
-      secondWind.isAvailable = false;
-      secondWind.isPassive = true;
-      secondWind.dealsDirectDamage = true;
-      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
-      god.abilityList.push(secondWind);*/
-    }
+    }    
 
     if (god.type === GodEnum.Poseidon) {
       /*var divineStrike = new Ability();
@@ -645,7 +689,7 @@ export class GlobalService {
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
       || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.WitheringToxin ||
-      type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.Unsteady)
+      type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown)
       refreshes = true;
 
     return refreshes;
@@ -1239,10 +1283,10 @@ export class GlobalService {
     god.statGainCount += 1;
   }
 
-  checkForNewGodAbilities(god: God) {
+  checkForNewGodAbilities(god: God) {    
     god.abilityList.forEach(ability => {
       if (god.level >= ability.requiredLevel) {
-        if (!ability.isAvailable) {
+        if (!ability.isAvailable) {          
           if (this.globalVar.gameLogSettings.get("godLevelUp")) {
             var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your god's name." : "");
             this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
@@ -1852,6 +1896,10 @@ export class GlobalService {
     if (this.globalVar.altars.activeAltarEffect3 !== undefined &&
       this.globalVar.altars.activeAltarEffect3.type === effect)
       return this.globalVar.altars.activeAltarEffect3;
+
+    if (this.globalVar.altars.additionalAltarEffects !== undefined &&
+      this.globalVar.altars.additionalAltarEffects.some(item => item.type === effect))
+      return this.globalVar.altars.additionalAltarEffects.find(item => item.type === effect);
 
     return undefined;
   }

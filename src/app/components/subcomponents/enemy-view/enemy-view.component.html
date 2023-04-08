@@ -4,7 +4,7 @@
         <span class="targetSpace" *ngIf="isBoss">
         </span>
         <span #enemyNameContainer class="s2Heading name" customToolTip [tooltipDirection]="tooltipDirection"
-            [contentTemplate]="enemyPopover"> 
+            [contentTemplate]="enemyPopover" (overlayRefEmitter)="overlayEmitter($event)"> 
             <span #enemyName>
                 {{character.name}}                 
             </span></span>

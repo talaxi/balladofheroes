@@ -1,4 +1,4 @@
-import { Directive, Input, TemplateRef, ElementRef, OnInit, HostListener, ComponentRef, OnDestroy } from '@angular/core';
+import { Directive, Input, TemplateRef, ElementRef, OnInit, HostListener, ComponentRef, OnDestroy, Output, EventEmitter } from '@angular/core';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { CustomTooltipComponent } from './custom-tooltip.component';
@@ -24,6 +24,7 @@ export class ToolTipRendererDirective {
   @Input() contentTemplate: TemplateRef<any>;
 
   private _overlayRef: OverlayRef;
+  @Output() overlayRefEmitter = new EventEmitter<OverlayRef>(); 
 
   delayTimer: number = 0;
   subscription: any;
@@ -94,7 +95,9 @@ export class ToolTipRendererDirective {
         }]);
     }
     
-    this._overlayRef = this._overlay.create({ positionStrategy });    
+    //TODO: this is the lag culprit
+    this._overlayRef = this._overlay.create({ positionStrategy });  
+    this.overlayRefEmitter.emit(this._overlayRef);  
   }
 
   /**
@@ -178,6 +181,7 @@ export class ToolTipRendererDirective {
 
     if (this._overlayRef) {
       this._overlayRef.detach();
+      //this._overlayRef.dispose();
     }
   }
 }

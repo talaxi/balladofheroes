@@ -198,5 +198,6 @@ export enum ItemsEnum {
   MinorArmorSlotAddition,
   MinorShieldSlotAddition,
   MinorNecklaceSlotAddition,
-  RingOfNightmares
+  RingOfNightmares,
+  Hades
 }

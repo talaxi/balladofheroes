@@ -16,6 +16,7 @@ export class BattleInfo {
     hpRegenTimer: number;
     hpRegenTimerLength: number;
     elementalType: ElementalTypeEnum;
+    elementsUsed: ElementalTypeEnum[]; //specifically used for disaster
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;

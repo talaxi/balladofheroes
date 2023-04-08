@@ -92,7 +92,7 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 600));
     }
     if (item === ItemsEnum.MoltenRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1500));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000));
     }
     if (item === ItemsEnum.SwordOfFlames) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2000));
@@ -173,13 +173,13 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2000));
     }
     if (item === ItemsEnum.SpiritBow) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2000));
     }
     if (item === ItemsEnum.FendingMace) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2000));
     }
     if (item === ItemsEnum.GemmedNecklace) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 3000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500));
     }
 
     return new ShopItem(item, purchasePrice, originalStore);

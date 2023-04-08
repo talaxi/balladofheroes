@@ -147,6 +147,19 @@ export class BackgroundService {
         this.globalService.globalVar.altars.activeAltarEffect3 = undefined;
       }
     }
+
+    if (this.globalService.globalVar.altars.additionalAltarEffects !== undefined && this.globalService.globalVar.altars.additionalAltarEffects.length > 0) {
+      this.globalService.globalVar.altars.additionalAltarEffects.forEach(effect => {
+        effect.duration -= deltaTime;
+        this.handleTickingAltarEffect(effect, deltaTime);
+
+        if (effect.duration <= 0) {
+          this.handleEndOfDurationAltarEffect(effect);          
+        }
+      });
+
+      this.globalService.globalVar.altars.additionalAltarEffects = this.globalService.globalVar.altars.additionalAltarEffects.filter(item => item.duration > 0);
+    }
   }
 
   handleTickingAltarEffect(effect: AltarEffect, deltaTime: number) {
@@ -353,11 +366,20 @@ export class BackgroundService {
         }
         else if (follower.assignedPrayerType === FollowerPrayerTypeEnum.Pray) {
           if (follower.assignedAltarType === AltarEnum.Small) {
-            var chance = this.utilityService.smallAltarPrayChancePerFollower; //default is 1%
+            var chance = this.utilityService.smallAltarPrayChancePerFollower;
             var rng = this.utilityService.getRandomNumber(0, 1);
 
             if (rng <= chance) {
               var altar = this.altarService.getNewAltar(AltarEnum.Small, undefined, false);
+              this.altarService.pray(altar, true);
+            }
+          }
+          if (follower.assignedAltarType === AltarEnum.Large) {
+            var chance = this.utilityService.largeAltarPrayChancePerFollower;
+            var rng = this.utilityService.getRandomNumber(0, 1);
+
+            if (rng <= chance) {
+              var altar = this.altarService.getNewAltar(AltarEnum.Large, undefined, false);
               this.altarService.pray(altar, true);
             }
           }

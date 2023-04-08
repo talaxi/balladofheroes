@@ -20,11 +20,14 @@ export class Altars {
     activeAltarEffect2: AltarEffect | undefined;
     @Type(() => AltarEffect)
     activeAltarEffect3: AltarEffect | undefined;
+    @Type(() => AltarEffect)
+    additionalAltarEffects: AltarEffect[];
 
     constructor() {
         this.isUnlocked = false;
         this.showNewNotification = false;
         this.largeAltarsUnlocked = false;
         this.pyresUnlocked = false;
+        this.additionalAltarEffects = [];
     }
 }

@@ -7,6 +7,7 @@ import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { UtilityService } from './utility.service';
 import { AchievementService } from '../achievements/achievement.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -17,7 +18,7 @@ export class VersionControlService {
     private achievementService: AchievementService) { }
 
   //add to this in descending order
-  gameVersions = [0.32, 0.31, 0.3];
+  gameVersions = [0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -80,6 +81,13 @@ export class VersionControlService {
   }
 
   updatePlayerVersion() {
+    //TODO: remove this from here after testing vvv
+    //var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+    //if (ares !== undefined)
+      //this.globalService.assignGodAbilityInfo(ares);
+
+      //remove this from here after testing ^^^
+
     this.getListAscended().forEach(version => {
       if (this.globalService.globalVar.currentVersion < version) {
         if (version === .31) {
@@ -119,9 +127,16 @@ export class VersionControlService {
               zone.subzones = zone.subzones.filter(item => item.type !== SubZoneEnum.None);              
             });
           });
-
         }
-        /*if (version === .4) {          
+        if (version === .4) { 
+          var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+          if (hades !== undefined)
+            this.globalService.assignGodAbilityInfo(hades);
+
+          var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+          if (ares !== undefined)
+            this.globalService.assignGodAbilityInfo(ares);
+          
           var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
           if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
             var argo = this.balladService.findBallad(BalladEnum.Argo);
@@ -138,7 +153,7 @@ export class VersionControlService {
             if (openSeas !== undefined)
               openSeas.isAvailable = true;
           }
-        }*/
+        }
 
         /*if (version === 1.01) {
           this.globalService.globalVar.notifications = new Notifications();
