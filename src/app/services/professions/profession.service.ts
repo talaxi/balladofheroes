@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlchemyActionsEnum } from 'src/app/models/enums/profession-actions-enum.model';
+import { ProfessionActionsEnum } from 'src/app/models/enums/profession-actions-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -15,6 +15,7 @@ import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { UtilityService } from '../utility/utility.service';
 import { AlchemyService } from './alchemy.service';
+import { JewelcraftingService } from './jewelcrafting.service';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +23,7 @@ import { AlchemyService } from './alchemy.service';
 export class ProfessionService {
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private gameLogService: GameLogService,
-    private utilityService: UtilityService, private alchemyService: AlchemyService) { }
+    private utilityService: UtilityService, private alchemyService: AlchemyService, private jewelcraftingService: JewelcraftingService) { }
 
   handleProfessionTimer(type: ProfessionEnum, deltaTime: number) {    
     var profession = this.globalService.globalVar.professions.find(item => item.type === type);        
@@ -255,6 +256,9 @@ export class ProfessionService {
     if (type === ProfessionEnum.Alchemy) {
       return this.alchemyService.checkForNewRecipes();
     }
+    if (type === ProfessionEnum.Jewelcrafting) {
+      return this.jewelcraftingService.checkForNewRecipes();
+    }
 
     return false;
   }
@@ -262,6 +266,9 @@ export class ProfessionService {
   getLevelUpReward(type: ProfessionEnum) {
     if (type === ProfessionEnum.Alchemy) {
       return this.alchemyService.getLevelUpReward();
+    }
+    if (type === ProfessionEnum.Jewelcrafting) {
+      return this.jewelcraftingService.getLevelUpReward();
     }
 
     return false;
@@ -271,14 +278,19 @@ export class ProfessionService {
     if (type === ProfessionEnum.Alchemy) {
       return this.alchemyService.getRecipe(item);
     }
+    if (type === ProfessionEnum.Jewelcrafting) {
+      return this.jewelcraftingService.getRecipe(item);
+    }
 
     return new Recipe();
   }
 
-  getActionLength(type: ProfessionEnum, actionEnum: AlchemyActionsEnum) {
+  getActionLength(type: ProfessionEnum, actionEnum: ProfessionActionsEnum) {
     if (type === ProfessionEnum.Alchemy)
       return this.alchemyService.getActionLength(actionEnum);
+    if (type === ProfessionEnum.Jewelcrafting)
+      return this.jewelcraftingService.getActionLength(actionEnum);
 
-    return AlchemyActionsEnum.None;
+    return ProfessionActionsEnum.None;
   }
 }
