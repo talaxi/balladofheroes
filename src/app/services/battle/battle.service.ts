@@ -2567,7 +2567,7 @@ export class BattleService {
         return;
         
       //remove any existing toxin
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => this.lookupService.getItemTypeFromItemEnum(item) !== ItemTypeEnum.Toxin);
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !this.isStatusEffectAToxin(item.type));
         
       this.applyStatusEffect(effect.userEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
@@ -2584,7 +2584,7 @@ export class BattleService {
         return;
 
       //remove any existing elixir
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => this.lookupService.getItemTypeFromItemEnum(item) !== ItemTypeEnum.Elixir);
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !this.isStatusEffectAnElixir(item.type));
 
       this.applyStatusEffect(effect.userEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
@@ -3009,6 +3009,21 @@ export class BattleService {
           character.overdriveInfo.damageTaken = 0;
         }
       }
-    }
+    }      
+  }
+
+  isStatusEffectAToxin(effect: StatusEffectEnum) {
+    if (effect === StatusEffectEnum.WitheringToxin || effect === StatusEffectEnum.VenomousToxin || effect === StatusEffectEnum.DebilitatingToxin ||
+      effect === StatusEffectEnum.PoisonousToxin)
+      return true;
+
+    return false;
+  }
+
+  isStatusEffectAnElixir(effect: StatusEffectEnum) {
+    if (effect === StatusEffectEnum.ElixirOfFortitude || effect === StatusEffectEnum.HeroicElixir || effect === StatusEffectEnum.RejuvenatingElixir)
+      return true;
+      
+    return false;
   }
 }
