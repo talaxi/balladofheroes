@@ -79,7 +79,11 @@
                 info.
             </div>
             <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot">
-                <span><span class='statLabel'>Coins:</span> {{character.coinGainFromDefeat}}</span>
+                <span>
+                    <span class='statLabel'>Coins:</span> <span class="statValue"> {{character.coinGainFromDefeat}}</span>                    
+                </span>
+                <br/>
+                <span class='statLabel'>XP:</span> <span class="statValue"> {{character.xpGainFromDefeat}}</span>
                 <br />
                 <span *ngIf="character.loot.length === 0">No loot.</span>
                 <div *ngIf="character.loot.length > 0">

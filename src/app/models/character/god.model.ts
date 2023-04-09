@@ -22,10 +22,10 @@ export class God {
     isAvailable: boolean;
     lastStatGain: CharacterStatEnum;
     statGainCount = 0;
-    permanentStat1GainCount: [number, number][];    
-    permanentStat2GainCount: [number, number][];  
+    permanentStat1GainCount: [number, number][];
+    permanentStat2GainCount: [number, number][];
     affinityLevel: number;
-    affinityExp: number;  
+    affinityExp: number;
     affinityExpToNextLevel: number;
     displayOrder: number;
 
@@ -58,14 +58,18 @@ export class God {
             return new PrimaryStats(.7, 1.07, .9, 1.5, 1.1, .6); //5.87 total
         else if (type === GodEnum.Apollo)
             return new PrimaryStats(1.075, .9, .8, .85, 1.175, 1.45); //6.26 total
-        else if (type === GodEnum.Zeus)
-            return new PrimaryStats(1.35, 1.1, .8, .55, 1.15, .95); //5.9 total
         else if (type === GodEnum.Ares)
-            return new PrimaryStats(.85, 1.075, .7, 1.2, 1.2, .85); //5.875 total
-        else if (type === GodEnum.Poseidon)
-            return new PrimaryStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
+            return new PrimaryStats(1.4, 1.03, .7, .9, 1.25, .85); //6.13 total
         else if (type === GodEnum.Hades)
-            return new PrimaryStats(1, 1.08, 1, 1, 1, 1);
+            return new PrimaryStats(1.075, 1.025, 1.025, .6, 1.3, 1.15); //6.175 total
+        else if (type === GodEnum.Dionysus) //STILL TODO
+            return new PrimaryStats(1.075, 1.025, 1.025, .6, 1.3, 1.15); //6.175 total
+        else if (type === GodEnum.Nemesis) //STILL TODO
+            return new PrimaryStats(1.075, 1.025, 1.025, .6, 1.3, 1.15); //6.175 total
+        else if (type === GodEnum.Zeus) //STILL TODO
+            return new PrimaryStats(.85, 1.1, 1.15, 1.05, 1.05, .7); //5.9 total
+        else if (type === GodEnum.Poseidon) //STILL TODO
+            return new PrimaryStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
 
         return new PrimaryStats(1, 1, 1, 1, 1, 1);
     }

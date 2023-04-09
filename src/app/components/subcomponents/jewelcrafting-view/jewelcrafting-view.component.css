@@ -1,0 +1,152 @@
+.recipeBook {
+    height: 40vh;
+    display: flex;
+    margin: 1rem;
+    background-color: var(--background-quarternary);
+    color: var(--foreground-default);
+    padding: .5rem;
+  }
+
+  .recipeBookBackground {
+    overflow-x: hidden;
+  }
+
+  .column {
+    width: 100%;
+  }
+
+  .progress {
+    margin: 2rem;
+  }
+
+  .mat-progress-bar-element,
+.mat-progress-bar {
+    height: 1rem !important;
+}
+
+.recipeList {
+    overflow-y: auto;
+}
+
+.alchemyColor {
+    color: var(--alchemyColor);
+}
+
+.mainPageSectionHeader {
+    margin-top: .5rem;
+    color: #FFF;
+}
+
+.recipeItem {
+    cursor: pointer;
+}
+
+.recipeItemButton {
+    font-size: 1rem;
+    vertical-align: middle;
+    margin-left: .25rem;
+    margin-top: .5rem;
+    font-variant: small-caps;
+    font-weight: bold;
+}
+
+.recipeItem:hover {
+    background-color: var(--button-hover);
+    /*color: var(--foreground-tertiary) !important;*/
+}
+.active {
+    background-color: var(--button-selected) !important;
+    color: var(--foreground-secondary) !important;
+}
+
+.activeText {
+    color: var(--foreground-secondary) !important;
+}
+
+.centeredBar {
+    width: 75%;
+    margin: .75rem auto;
+}
+
+.flex {
+    display: flex;
+    justify-content: space-around;
+}
+
+.recipeInfo {
+    text-align: center;
+}
+
+.offsetWidth {
+    display: inline-block;
+    width: 10%;
+}
+
+.filterOption {
+    color: var(--inactive-filter);
+    font-size: 1.2rem;
+}
+
+.filterOption.filterActive {
+    color: var(--active-filter);
+}
+
+.vr {
+    display: flex;
+    height: 100%;
+}
+
+.vrHr {
+    margin: 0 1rem;
+    padding: 0;
+    height: auto;
+}
+
+.hide {
+    display: none;
+}
+
+.titleAdjacentHr {
+    width: 100%; 
+   border-bottom: 1px solid var(--foreground-accent); 
+   line-height: 0.1em;
+}
+
+.recipeSection, .recipeSectionToggle {
+    background-color: var(--background-quarternary); 
+}
+
+.recipeSectionTitle {
+    display: grid;
+    height: auto;    
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto;
+    column-gap: .25rem;
+    justify-content: stretch;
+    grid-template-areas:
+        "recipeSectionToggle recipeSection recipeSectionEnder";
+    align-items: center;
+}
+
+.recipeSection {
+    grid-area: recipeSection;
+}
+
+.recipeSectionToggle {
+    grid-area: recipeSectionToggle;
+    width: 1.5rem;
+    padding: 2px 6px;
+}
+
+.recipeSectionEnder {
+    grid-area: recipeSectionEnder;
+    width: 100%;
+    height: 0;
+}
+
+
+@media (max-width: 800px) { 
+    .offsetWidth {
+        width: 20%;
+    }
+}

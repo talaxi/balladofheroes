@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlchemyActionsEnum } from 'src/app/models/enums/alchemy-actions-enum.model';
+import { AlchemyActionsEnum } from 'src/app/models/enums/profession-actions-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';

@@ -1139,7 +1139,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Rhadamanthus) {
       enemy.name = "Rhadamanthus";
-      enemy.battleStats = new CharacterStats(13698, 436, 1292, 415, 415, 1000);
+      enemy.battleStats = new CharacterStats(16698, 436, 1292, 415, 415, 1000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 650;
@@ -1167,7 +1167,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Aeacus) {
       enemy.name = "Aeacus";
-      enemy.battleStats = new CharacterStats(15815, 602, 1489, 483, 395, 1000);
+      enemy.battleStats = new CharacterStats(18815, 602, 1489, 483, 395, 1000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 650;
@@ -1194,7 +1194,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Minos) {
       enemy.name = "Minos";
-      enemy.battleStats = new CharacterStats(22401, 748, 1582, 500, 550, 1200);
+      enemy.battleStats = new CharacterStats(25401, 748, 1582, 500, 550, 1200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 800;
@@ -1248,7 +1248,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Acheron) {
       enemy.name = "Acheron";
-      enemy.battleStats = new CharacterStats(3245, 228, 288, 90, 145, 225);
+      enemy.battleStats = new CharacterStats(3645, 228, 298, 90, 145, 225);
       enemy.battleStats.elementIncrease.water += .2;
       enemy.battleStats.elementResistance.fire += .2;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
@@ -1400,7 +1400,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CentaurScout) {
       enemy.name = "Centaur Scout";
-      enemy.battleStats = new CharacterStats(2504, 131, 302, 140, 150, 300);
+      enemy.battleStats = new CharacterStats(2504, 121, 302, 140, 150, 300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 228;
@@ -1428,7 +1428,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CentaurArcher) {
       enemy.name = "Centaur Archer";
-      enemy.battleStats = new CharacterStats(2610, 224, 322, 140, 180, 300);
+      enemy.battleStats = new CharacterStats(2610, 201, 322, 140, 180, 300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 237;
@@ -1446,7 +1446,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CentaurWarrior) {
       enemy.name = "Centaur Warrior";
-      enemy.battleStats = new CharacterStats(2943, 276, 352, 135, 150, 300);
+      enemy.battleStats = new CharacterStats(2943, 266, 352, 135, 150, 300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 243;
@@ -1456,7 +1456,7 @@ export class EnemyGeneratorService {
       fend.name = "Fend";
       fend.isAvailable = true;
       fend.effectiveness = 1.8;
-      fend.cooldown = fend.currentCooldown = 27;
+      fend.cooldown = fend.currentCooldown = 28;
       fend = this.randomizeCooldown(fend);
       fend.dealsDirectDamage = true;
       fend.elementalType = ElementalTypeEnum.Earth;
@@ -1467,7 +1467,7 @@ export class EnemyGeneratorService {
       expose.isAvailable = true;
       expose.effectiveness = 1.6;
       expose.dealsDirectDamage = true;
-      expose.cooldown = expose.currentCooldown = 18;
+      expose.cooldown = expose.currentCooldown = 22;
       expose = this.randomizeCooldown(expose);
       expose.elementalType = ElementalTypeEnum.Earth;
       expose.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .8, false, false));
@@ -1475,7 +1475,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CentaurMystic) {
       enemy.name = "Centaur Mystic";
-      enemy.battleStats = new CharacterStats(2713, 213, 315, 150, 170, 300);
+      enemy.battleStats = new CharacterStats(2713, 203, 315, 150, 170, 300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 242;
@@ -1504,7 +1504,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.StoneElemental) {
       enemy.name = "Stone Elemental";
-      enemy.battleStats = new CharacterStats(3214, 198, 412, 100, 200, 350);
+      enemy.battleStats = new CharacterStats(3214, 248, 412, 100, 200, 350);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;
       enemy.battleStats.elementIncrease.earth += .25;
@@ -1794,7 +1794,7 @@ export class EnemyGeneratorService {
       emitToxin = this.randomizeCooldown(emitToxin);
       emitToxin.dealsDirectDamage = false;
       emitToxin.isAoe = true;
-      emitToxin.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .5, emitToxin.name, dotTypeEnum.BasedOnAttack));
+      emitToxin.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .5, emitToxin.name, dotTypeEnum.BasedOnAttack, undefined, true));
       enemy.abilityList.push(emitToxin);
 
       var emitSpores = new Ability();
@@ -1982,7 +1982,7 @@ export class EnemyGeneratorService {
       redPoison.cooldown = redPoison.currentCooldown = 18;
       redPoison = this.randomizeCooldown(redPoison);
       redPoison.dealsDirectDamage = false;
-      redPoison.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 2, 40, redPoison.name, dotTypeEnum.TrueDamage));
+      redPoison.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 2, 40, redPoison.name, dotTypeEnum.TrueDamage, undefined, true));
       enemy.abilityList.push(redPoison);
     }
     if (type === BestiaryEnum.YellowSpeckledToad) {
@@ -2008,7 +2008,7 @@ export class EnemyGeneratorService {
       yellowPoison.cooldown = yellowPoison.currentCooldown = 18;
       yellowPoison = this.randomizeCooldown(yellowPoison);
       yellowPoison.dealsDirectDamage = false;
-      yellowPoison.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 6, 120, yellowPoison.name, dotTypeEnum.TrueDamage));
+      yellowPoison.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 6, 120, yellowPoison.name, dotTypeEnum.TrueDamage, undefined, true));
       enemy.abilityList.push(yellowPoison);
     }
     if (type === BestiaryEnum.WanderingIbex) {
@@ -2511,7 +2511,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.ShadeOfHypnos) {
       enemy.name = "Shade of Hypnos";
-      enemy.battleStats = new CharacterStats(42322, 562, 1660, 640, 750, 1250);
+      enemy.battleStats = new CharacterStats(47322, 562, 1695, 680, 750, 1280);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMediumElementalWeakness;
       enemy.coinGainFromDefeat = 4;
@@ -2533,7 +2533,7 @@ export class EnemyGeneratorService {
       shadowSnare.cooldown = shadowSnare.currentCooldown = 24;
       shadowSnare = this.randomizeCooldown(shadowSnare);
       shadowSnare.dealsDirectDamage = false;
-      shadowSnare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 15, .333, false, false));
+      shadowSnare.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 15, .5, false, false));
       shadowSnare.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, shadowSnare.name, dotTypeEnum.BasedOnAttack));
       enemy.abilityList.push(shadowSnare);
       
@@ -2892,7 +2892,7 @@ export class EnemyGeneratorService {
       arc.effectiveness = 1.9;
       arc.isAoe = true;
       arc.elementalType = ElementalTypeEnum.Lightning;
-      arc.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 6, .5, false, false, true));
+      arc.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 14, 0, false, false, true));
       enemy.abilityList.push(arc);
 
       var fateForetold = new Ability();

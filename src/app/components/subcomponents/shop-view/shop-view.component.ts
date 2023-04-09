@@ -34,6 +34,7 @@ export class ShopViewComponent implements OnInit {
   resetNotification = NotificationTypeEnum.Reset;
   professionNotification = NotificationTypeEnum.Profession;
   alchemy: Profession | undefined;
+  jewelcrafting: Profession | undefined;
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -54,6 +55,7 @@ export class ShopViewComponent implements OnInit {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.getShopOptions();
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
@@ -91,7 +93,9 @@ export class ShopViewComponent implements OnInit {
     if (type === ShopTypeEnum.Traveler) {
       text = "Traveler";
     }
-
+    if (type === ShopTypeEnum.Jewelcrafter) {
+      text = "Jewelcrafter";
+    }
 
     return text;
   }
@@ -140,6 +144,11 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.Alchemist) {
       this.alchemyService.handleShopOpen(this.activeSubzoneType);
       this.alchemyService.checkForNewRecipes();
+    }
+
+    if (option.type === ShopTypeEnum.Jewelcrafter) {
+      //this.jewelcraftingService.handleShopOpen(this.activeSubzoneType);
+      //this.jewelcraftingService.checkForNewRecipes();
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler) {

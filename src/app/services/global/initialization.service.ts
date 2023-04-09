@@ -206,7 +206,7 @@ export class InitializationService {
 
     this.globalService.globalVar.ballads.push(boarBallad);
 
-    //this.initializeBalladOfTheArgo();
+    this.initializeBalladOfTheArgo();
   }
 
   initializeSettings() {
@@ -399,6 +399,8 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.VenomousToxin, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.WitheringToxin, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RejuvenatingElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 4));
 

@@ -1922,6 +1922,14 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
     }
+    
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.GoldenSword, SubZoneEnum.AegeanSeaIolcus));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DiamondHammer, SubZoneEnum.AegeanSeaIolcus));
+
+    if (subzoneType === SubZoneEnum.AegeanSeaIolcus) {      
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Jewelcrafter, []));
+    }
 
     return shopOptions;
   }

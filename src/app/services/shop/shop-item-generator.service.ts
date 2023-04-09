@@ -89,10 +89,10 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000));
     }
     if (item === ItemsEnum.MoltenShield) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 600));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 500));
     }
     if (item === ItemsEnum.MoltenRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 800));
     }
     if (item === ItemsEnum.SwordOfFlames) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2000));
@@ -119,27 +119,27 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 5000));
     }
     if (item === ItemsEnum.FracturedRubyRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 25));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedEmeraldRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 25));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedAmethystRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 25));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedTopazRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 25));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedAquamarineRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 25));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedOpalRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 25));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.BedazzledRing) {

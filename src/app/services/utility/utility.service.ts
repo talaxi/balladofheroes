@@ -35,13 +35,15 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 375;
 
-  public godStatGainLevelIncrement = (1 / 15);
+  public godStatGainLevelIncrement = (1 / 18);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
+  public firstJewelcraftingLevelCap = 25;
+  public jewelcraftingLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
   public largeAltarAffinityGain = 5;

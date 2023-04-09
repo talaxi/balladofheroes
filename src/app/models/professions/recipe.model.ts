@@ -1,5 +1,5 @@
 import { Type } from "class-transformer";
-import { AlchemyActionsEnum } from "../enums/alchemy-actions-enum.model";
+import { ProfessionActionsEnum } from "../enums/profession-actions-enum.model";
 import { EquipmentQualityEnum } from "../enums/equipment-quality-enum.model";
 import { ItemTypeEnum } from "../enums/item-type-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
@@ -12,7 +12,7 @@ export class Recipe {
     @Type(() => ResourceValue)
     ingredients: ResourceValue[];
     numberOfSteps: number;
-    steps: AlchemyActionsEnum[];
+    steps: ProfessionActionsEnum[];
     expGain: number;
     quality: EquipmentQualityEnum;
 

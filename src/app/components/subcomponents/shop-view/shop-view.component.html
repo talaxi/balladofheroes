@@ -3,6 +3,8 @@
     class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
   <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText"
     (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}} <app-notification-icon *ngIf="alchemy !== undefined && !alchemy.isUnlocked" [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.Jewelcrafter" class="buttonStyled shopButtonText"
+    (click)="openShop(option, jewelcraftingModal)">{{getOptionText(option.type)}} <app-notification-icon *ngIf="jewelcrafting !== undefined && !jewelcrafting.isUnlocked" [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText"
     (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}} 
     <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true" [notificationColor]="resetNotification"></app-notification-icon>
@@ -58,6 +60,10 @@
 
 <ng-template #alchemyModal>
   <app-alchemy-view></app-alchemy-view>
+</ng-template>
+
+<ng-template #jewelcraftingModal>
+  <app-jewelcrafting-view></app-jewelcrafting-view>
 </ng-template>
 
 <ng-template #coliseumModal>

@@ -1,0 +1,91 @@
+<div class="centeredText mainPageSectionHeader">
+    <span class="s2Heading jewelcraftingColor">Jewelcrafting</span>
+    <br />
+    <span>Level {{getLevel()}}</span>
+    <br />
+    <span *ngIf="!atMaxLevel()">{{getExp() | number : '1.0-0'}} / {{getExpToNextLevel() | number : '1.0-0'}} XP to Level
+        {{getLevel() + 1}}</span>
+    <span *ngIf="atMaxLevel()">max</span>
+</div>
+<hr />
+<div class="centeredText" *ngIf="creatingRecipe()">
+    <span class='offsetWidth' *ngIf="this.getTotalAmountToCreate() > 1"></span><span
+        class="s4Heading">{{getCreatingRecipeName()}}</span><span class="offsetWidth"
+        *ngIf="this.getTotalAmountToCreate() > 1"><i>({{this.getAmountCreated() + 1}} of
+            {{this.getTotalAmountToCreate()}})</i></span>
+    <br />
+    <mat-progress-bar mode="determinate" [value]="getStepProgress()"
+        class="purple-progress centeredBar removeAnimation removeTransition">
+    </mat-progress-bar>
+    <span><i>{{getRecipeStepName()}}.. ({{getTimeRemaining()}} remaining)</i></span>
+</div>
+<div class="centeredText" *ngIf="!creatingRecipe()">
+    <strong>Not Currently Brewing</strong>
+</div>
+<hr />
+<div class="recipeBook">
+    <div class="column recipeList">
+        <span class="centeredText mainPageSectionHeader">recipe book</span>
+        <br />        
+        <div class="recipeBookBackground">
+            <div class="scrollable">                
+                <div [ngClass]="{'hide': recipesAtQualityLevelAmount(qualityType) === 0}"
+                    *ngFor="let qualityType of getQualityTypeList()">
+                    <br />
+                    <div class="recipeSectionTitle">
+                        <button (click)="toggleQualitySection(qualityType)" class="buttonStyled smallButtonStyled recipeSectionToggle">{{hideRecipesByQuality(qualityType) ? "+" : "-"}}</button> <span
+                            class="smallCaps recipeSection" [innerHtml]="getQualityTypeName(qualityType)"></span>
+                            <hr class="recipeSectionEnder"/>
+                    </div>
+                    <div *ngFor="let recipe of getRecipeList(qualityType); let i = index" (click)="selectRecipe(recipe)" class="recipeItem"
+                        [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem,
+                                    'hide': hideRecipesByQuality(qualityType)}">
+                        <button class="buttonAsText clickableText recipeItemButton"
+                            [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}"
+                            [innerHtml]="getCraftedItemName(recipe)"></button>
+                        <hr class="noMargin" *ngIf="i !== getRecipeList(qualityType).length - 1" />
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="spacer">
+        <div class="vr">
+            <hr class="vrHr" />
+        </div>
+    </div>
+    <div class="column recipeInfo">
+        <div *ngIf="selectedRecipe !== undefined">
+            <strong><span class="s4Heading smallCaps" [innerHtml]="getSelectedRecipeName()"></span></strong>
+            <br />
+            <span [innerHtml]="getSelectedRecipeQualityStars()"></span>
+            <br />
+            <span [innerHtml]="getSelectedRecipeDescription()"></span>
+            <hr />
+            <div *ngFor="let ingredient of this.selectedRecipe.ingredients; let i = index">
+                <app-resource-required-view [resource]="ingredient"></app-resource-required-view>
+            </div>
+            <br />
+            <br />
+            <div class="flex">
+                <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 1}"
+                    (click)="changeCreateAmount(1)">1x</button>
+                <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 5}"
+                    (click)="changeCreateAmount(5)">5x</button>
+                <button class="buttonAsText clickableText filterOption"
+                    [ngClass]="{'filterActive': createAmount === 25}" (click)="changeCreateAmount(25)">25x</button>
+                <button class="buttonAsText clickableText filterOption"
+                    [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100)">100x</button>
+                <button class="buttonAsText clickableText filterOption"
+                    [ngClass]="{'filterActive': createAmount !== 1 && createAmount !== 5 && createAmount !== 25 && createAmount !== 100 && createAmount === getTotalItemToCreateAmount()}"
+                    (click)="changeCreateAmount(getTotalItemToCreateAmount())">All</button>
+            </div>
+            <br />
+            <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
+        </div>
+    </div>
+</div>
+
+<ng-template #confirmationBox>
+    <app-confirmation-box></app-confirmation-box>
+</ng-template>

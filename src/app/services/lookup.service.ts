@@ -10,7 +10,7 @@ import { God } from '../models/character/god.model';
 import { OverdriveInfo } from '../models/character/overdrive-info.model';
 import { AchievementTypeEnum } from '../models/enums/achievement-type-enum.copy';
 import { AffinityLevelRewardEnum } from '../models/enums/affinity-level-reward-enum.model';
-import { AlchemyActionsEnum } from '../models/enums/alchemy-actions-enum.model';
+import { ProfessionActionsEnum } from '../models/enums/profession-actions-enum.model';
 import { AltarEffectsEnum } from '../models/enums/altar-effects-enum.model';
 import { BestiaryEnum } from '../models/enums/bestiary-enum.model';
 import { CharacterEnum } from '../models/enums/character-enum.model';
@@ -150,32 +150,32 @@ export class LookupService {
     return description;
   }
 
-  getAlchemyActionName(action: AlchemyActionsEnum) {
+  getAlchemyActionName(action: ProfessionActionsEnum) {
     var name = "";
 
-    if (action === AlchemyActionsEnum.PrepareWaterSmallPot)
+    if (action === ProfessionActionsEnum.PrepareWaterSmallPot)
       name = "Boiling water in a small pot";
-    if (action === AlchemyActionsEnum.StrainMixture)
+    if (action === ProfessionActionsEnum.StrainMixture)
       name = "Straining mixture";
-    if (action === AlchemyActionsEnum.CombineIngredientsPot)
+    if (action === ProfessionActionsEnum.CombineIngredientsPot)
       name = "Combining ingredients in pot";
-    if (action === AlchemyActionsEnum.MeltWax)
+    if (action === ProfessionActionsEnum.MeltWax)
       name = "Melting wax";
-    if (action === AlchemyActionsEnum.MixOil)
+    if (action === ProfessionActionsEnum.MixOil)
       name = "Mixing oil";
-    if (action === AlchemyActionsEnum.CombineIngredientsPotion)
+    if (action === ProfessionActionsEnum.CombineIngredientsPotion)
       name = "Combining ingredients in vial and stoppering";
-    if (action === AlchemyActionsEnum.HeatMixture)
+    if (action === ProfessionActionsEnum.HeatMixture)
       name = "Heating mixture";
-    if (action === AlchemyActionsEnum.CombineIngredients)
+    if (action === ProfessionActionsEnum.CombineIngredients)
       name = "Combining ingredients together";
-    if (action === AlchemyActionsEnum.CrushIngredients)
+    if (action === ProfessionActionsEnum.CrushIngredients)
       name = "Crushing ingredients into a powder";
-    if (action === AlchemyActionsEnum.ExtractEssence)
+    if (action === ProfessionActionsEnum.ExtractEssence)
       name = "Extract essence from ingredients";
-    if (action === AlchemyActionsEnum.Infuse)
+    if (action === ProfessionActionsEnum.Infuse)
       name = "Steep ingredients in liquid and infuse";
-    if (action === AlchemyActionsEnum.StoreIngredients)
+    if (action === ProfessionActionsEnum.StoreIngredients)
       name = "Store ingredients for future use";
 
     return name;
@@ -1669,6 +1669,7 @@ export class LookupService {
     var relatedTargetGainStatusEffectEffectivenessPercent = 0;
     var relatedTargetGainStatusEffectTickFrequency = 0;
     var cooldown = 0;
+    var maxCountTimesEffectivenessPercent = 0;
 
     if (ability !== undefined) {
       effectivenessPercent = Math.round(ability.effectiveness * 100);
@@ -1679,6 +1680,7 @@ export class LookupService {
       thresholdAmountPercent = Math.round((ability.threshold) * 100);
       abilityCount = ability.maxCount;
       cooldown = this.utilityService.roundTo(ability.cooldown, 2);
+      maxCountTimesEffectivenessPercent = ability.maxCount * effectivenessPercent;
 
       var relatedUserGainStatusEffect = ability?.userEffect[0];
 
@@ -1763,7 +1765,7 @@ export class LookupService {
     if (abilityName === "Disaster") 
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Repeat this for every element you attacked with since the last time it was used. " + cooldown + " second cooldown.";    
     if (abilityName === "Lord of the Underworld")
-      abilityDescription = "Give the user Lord of the Underworld, increasing Luck and Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. This effect stacks. " + cooldown + " second cooldown.";    
+      abilityDescription = "Give the user Lord of the Underworld, increasing Luck and Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds when dealing the killing blow on an enemy. This effect stacks up to " + abilityCount + " times.";    
 
     //Ares
     if (abilityName === "Rupture") 
@@ -1773,7 +1775,7 @@ export class LookupService {
   if (abilityName === "Revel in Blood") 
     abilityDescription = "Reduce your own current HP by 10%. Apply a damage over time effect to all targets that deals <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "% of HP Loss</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";    
   if (abilityName === "Bloodlust")
-    abilityDescription = "Increase all damage over time effectiveness by <strong>" + effectivenessPercent + "%</strong> per active damage over time effect amongst all enemies, up to 10.";  //TODO: make the 10 increasable   
+    abilityDescription = "Increase all damage over time effectiveness by <strong>" + effectivenessPercent + "%</strong> per active damage over time effect amongst all enemies, up to <strong>" + ability?.maxCount + "</strong> effects for a total of <strong>" + (maxCountTimesEffectivenessPercent) + "%</strong> increase.";  
 
 
     return abilityDescription;
@@ -2072,7 +2074,7 @@ export class LookupService {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Defense by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Emit Toxin") {
-      abilityDescription = "Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectiveness + "</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Apply a damage over time effect to all targets that deals an additional <strong>" + relatedTargetGainStatusEffectEffectiveness + "</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Emit Spores") {
       abilityDescription = "Reduce all targets' Attack, Defense, and Resistance by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2108,10 +2110,10 @@ export class LookupService {
       abilityDescription = "Reduce all targets' Agility and Resistance by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Red Poison") {
-      abilityDescription = "Apply a damage over time effect that deals <strong>" + effectiveAmount + "</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Apply a damage over time effect to all targets that deals <strong>" + effectiveAmount + "</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Yellow Poison") {
-      abilityDescription = "Apply a damage over time effect that deals <strong>" + effectiveAmount + "</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Apply a damage over time effect to all targets that deals <strong>" + effectiveAmount + "</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Trample") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. " + cooldown + " second cooldown.";
@@ -2279,7 +2281,7 @@ export class LookupService {
       abilityDescription = "Reduce all targets' Agility for <strong>" + (relatedTargetGainStatusEffectDuration) + "</strong> seconds. Agility is reduced by 15% if one enemy remains, 30% if two remain, and 45% if all three remain. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Arc") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage to all targets and apply a <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> Stagger for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds to all targets. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage to all targets and apply Paralyze for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds on all targets. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Hard Blade") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
@@ -2495,6 +2497,11 @@ export class LookupService {
       description = "Increase HP Regen by " + statusEffect.effectiveness + " per 5 seconds.";
     if (statusEffect.type === StatusEffectEnum.ElixirOfFortitude)
       description = "Increase Defense by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+
+    if (statusEffect.type === StatusEffectEnum.LordOfTheUnderworld)
+      description = "Increasing Luck and Attack by <strong>" + Math.round((statusEffect.effectiveness - 1) * 100) + "%</strong>. " + statusEffect.stackCount + " total " + (statusEffect.stackCount === 1 ? "stack" : "stacks") + " worth " + Math.round(((statusEffect.effectiveness - 1) / statusEffect.stackCount) * 100) + "% each.";   
+      if (statusEffect.type === StatusEffectEnum.Onslaught)
+      description = "Your next damaging ability will also apply a damage over time effect onto its targets.";   
 
 
     return description;
@@ -3751,7 +3758,7 @@ export class LookupService {
       boonOfOlympusValue += boonOfOlympus.amount;
 
     if (boonOfOlympusValue > 1)
-      breakdown += "Boon of Olympus: *" + boonOfOlympusValue + "<br/>";
+      breakdown += "Boon of Olympus: *" + this.utilityService.roundTo(boonOfOlympusValue, 3) + "<br/>";
 
     var affinityBoost = 1;
 
@@ -3763,7 +3770,7 @@ export class LookupService {
     affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
 
     if (affinityBoost > 1)
-      breakdown += "Affinity Boost: *" + affinityBoost + "<br/>";
+      breakdown += "Affinity Boost: *" + this.utilityService.roundTo(affinityBoost, 3) + "<br/>";
 
     return breakdown;
   }
