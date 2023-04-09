@@ -125,6 +125,7 @@ export enum BestiaryEnum {
   RamblingHusk,
   SoullessHusk,
   BaskingShark,
+  LongfinMako,
   ClickingCrabs,
   RedSnapper,
   FeralHarpy,

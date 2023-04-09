@@ -57,7 +57,7 @@ export class InitializationService {
     this.initializeBestiaryDefeatCount();
     this.initializeColiseumDefeatCount();
     this.initializeAlchemy();
-    //this.initializeJewelcrafting(); //TODO: don't add stuff until its ready
+    this.initializeJewelcrafting();
   }
 
   initializeBallads() {
@@ -269,6 +269,8 @@ export class InitializationService {
     this.globalService.globalVar.gameLogSettings.set("achievementUnlocked", true);
     this.globalService.globalVar.gameLogSettings.set("alchemyLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("alchemyCreation", true);
+    this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", true);
+    this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", true);
     this.globalService.globalVar.gameLogSettings.set("battleUpdates", true);
     this.globalService.globalVar.gameLogSettings.set("useBattleItem", true);
     this.globalService.globalVar.gameLogSettings.set("followerSearch", true);

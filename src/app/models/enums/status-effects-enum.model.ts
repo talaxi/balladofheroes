@@ -98,5 +98,6 @@ export enum StatusEffectEnum {
     AllElementalResistanceDown,
     RepeatAbility,
     LordOfTheUnderworld,
-    Onslaught
+    Onslaught,
+    Untargetable
   }

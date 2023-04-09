@@ -271,6 +271,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Orpheus", "<span class='commonCharacterColor storyCharacterName'>Orpheus</span>");
     sceneText = sceneText.replaceAll("Asclepius", "<span class='commonCharacterColor storyCharacterName'>Asclepius</span>");
     sceneText = sceneText.replaceAll("Atalanta", "<span class='commonCharacterColor storyCharacterName'>Atalanta</span>");
+    sceneText = sceneText.replaceAll("Enceladus", "<span class='commonCharacterColor storyCharacterName'>Enceladus</span>");
 
     return sceneText;
   }

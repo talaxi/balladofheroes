@@ -16,6 +16,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
+import { JewelcraftingService } from 'src/app/services/professions/jewelcrafting.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -49,7 +50,7 @@ export class ShopViewComponent implements OnInit {
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
     private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
-    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
+    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
@@ -147,8 +148,8 @@ export class ShopViewComponent implements OnInit {
     }
 
     if (option.type === ShopTypeEnum.Jewelcrafter) {
-      //this.jewelcraftingService.handleShopOpen(this.activeSubzoneType);
-      //this.jewelcraftingService.checkForNewRecipes();
+      this.jewelcraftingService.handleShopOpen(this.activeSubzoneType);
+      this.jewelcraftingService.checkForNewRecipes();
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler) {

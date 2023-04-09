@@ -665,9 +665,9 @@ export class BattleService {
   doesAutoAttackMiss(character: Character, target: Character, isPartyAttacking: boolean) {
     var blind = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Blind);
     if (blind !== undefined) {
-      var attackSuccessRate = .5;
+      var attackFailureRate = blind.effectiveness;
       var rng = this.utilityService.getRandomNumber(0, 1);
-      if (rng <= attackSuccessRate) {
+      if (rng <= attackFailureRate) {
         if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks")) ||
           (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyAutoAttacks"))) {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + "'s attack misses!";
@@ -803,7 +803,7 @@ export class BattleService {
 
       if (ability.isAoe) {
         potentialTargets.forEach(potentialTarget => {
-          var damageMultiplier = this.getDamageMultiplier(user, potentialTarget, undefined, false, elementalType, ability.name);
+          var damageMultiplier = this.getDamageMultiplier(user, potentialTarget, undefined, false, elementalType, ability.name, ability.isAoe);
           var isCritical = this.isDamageCritical(user, potentialTarget);
 
           damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, ability, elementalType);
@@ -1072,7 +1072,7 @@ export class BattleService {
           if (instantEffect.type === StatusEffectEnum.Barrier) {
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             if (instantEffect.isAoe) {
-              party.forEach(partyMember => {
+              party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
                 if (partyMember.battleInfo.barrierValue < partyMember.battleStats.maxHp * instantEffect.threshold) {
                   partyMember.battleInfo.barrierValue += barrierAmount;
 
@@ -1086,8 +1086,6 @@ export class BattleService {
               });
             }
             else {
-              //user.battleInfo.barrierValue += barrierAmount; //this is redundant, right?
-
               if (user.battleInfo.barrierValue < user.battleStats.maxHp * instantEffect.threshold) {
                 user.battleInfo.barrierValue += barrierAmount;
 
@@ -1289,27 +1287,40 @@ export class BattleService {
     return effectiveness;
   }
 
-  getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "") {
+  getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false) {
     var overallDamageMultiplier = 1;
 
     if (additionalDamageMultiplier !== undefined)
       overallDamageMultiplier *= additionalDamageMultiplier;
 
+    var altarMultiplier = 1;
     if (isAutoAttack) {
       if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp) !== undefined) {
         var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesAutoAttackUp);
-        overallDamageMultiplier *= relevantAltarEffect!.effectiveness;
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
       }
 
       if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesRareAutoAttackUp) !== undefined) {
         var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HermesRareAutoAttackUp);
-        overallDamageMultiplier *= relevantAltarEffect!.effectiveness;
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
+    }
+
+    if (isAoe) {
+      if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesAoeDamageUp) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesAoeDamageUp);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
+      }
+
+      if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesRareAoeDamageUp) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesRareAoeDamageUp);
+        altarMultiplier *= relevantAltarEffect!.effectiveness;
       }
     }
 
     if (elementalType === ElementalTypeEnum.Holy && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaRareHolyDamageIncrease) !== undefined) {
       var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AthenaRareHolyDamageIncrease);
-      overallDamageMultiplier *= relevantAltarEffect!.effectiveness;
+      altarMultiplier *= relevantAltarEffect!.effectiveness;
     }
 
     //check for basic damage up/down buffs
@@ -1390,7 +1401,7 @@ export class BattleService {
       enemySpecificAbilityIncrease += dreameaterMultiplierAmount * target.battleInfo.statusEffects.filter(item => !item.isPositive).length;
     }
 
-    return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * enemySpecificAbilityIncrease;
+    return overallDamageMultiplier * thousandCutsDamageIncrease * markDamageIncrease * enemySpecificAbilityIncrease * altarMultiplier;
   }
 
   applyStatusEffect(appliedStatusEffect: StatusEffect, target: Character, potentialTargets?: Character[], castingCharacter?: Character) {
@@ -1436,7 +1447,7 @@ export class BattleService {
       potentialTargets.forEach(enemy => {
         var existingApplication = enemy.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
         if (existingApplication !== undefined) {
-          if (appliedStatusEffect.effectStacks && existingApplication.stackCount < appliedStatusEffect.maxCount) {            
+          if (appliedStatusEffect.effectStacks && existingApplication.stackCount < appliedStatusEffect.maxCount) {
             existingApplication.effectiveness += appliedStatusEffect.effectiveness - 1;
             existingApplication.stackCount += 1;
           }
@@ -1455,7 +1466,7 @@ export class BattleService {
     else {
       var existingApplication = target.battleInfo.statusEffects.find(application => application.type === appliedStatusEffect.type);
       if (existingApplication !== undefined) {
-        if (appliedStatusEffect.effectStacks && existingApplication.stackCount < appliedStatusEffect.maxCount) {          
+        if (appliedStatusEffect.effectStacks && existingApplication.stackCount < appliedStatusEffect.maxCount) {
           existingApplication.effectiveness += appliedStatusEffect.effectiveness - 1;
           existingApplication.stackCount += 1;
         }
@@ -1692,28 +1703,32 @@ export class BattleService {
       attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);
       if (attacker.trackedStats.elementalAttacksUsed.getCountOfNonZeroElements() >= this.utilityService.overdriveAttacksNeededToUnlockNature &&
         !attacker.unlockedOverdrives.some(item => item === OverdriveNameEnum.Nature))
-        attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);      
+        attacker.unlockedOverdrives.push(OverdriveNameEnum.Nature);
     }
 
     var bloodlust = this.lookupService.characterHasAbility("Bloodlust", this.globalService.getActivePartyCharacters(true)[0]);
-      if (bloodlust === undefined && this.globalService.getActivePartyCharacters(true).length > 1)
+    if (bloodlust === undefined && this.globalService.getActivePartyCharacters(true).length > 1)
       bloodlust = this.lookupService.characterHasAbility("Bloodlust", this.globalService.getActivePartyCharacters(true)[1]);
 
-      if (isDamageOverTime && bloodlust !== undefined) {
-        var totalDots = 0;
-        console.log("Bloodlust found");
-        this.battle.currentEnemies.enemyList.forEach(enemy => {
-          totalDots += enemy.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.DamageOverTime).length;
-        })
+    if (isDamageOverTime && bloodlust !== undefined) {
+      var totalDots = 0;
+      this.battle.currentEnemies.enemyList.forEach(enemy => {
+        totalDots += enemy.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.DamageOverTime).length;
+      })
 
-        if (totalDots > bloodlust.maxCount)
-          totalDots = bloodlust.maxCount;
+      if (totalDots > bloodlust.maxCount)
+        totalDots = bloodlust.maxCount;
 
-        bloodlustDamageBonus += totalDots * bloodlust.effectiveness;
-        console.log("Bloodlust damage bonus: " + bloodlustDamageBonus);
-      }
+      bloodlustDamageBonus += totalDots * bloodlust.effectiveness;
+    }
 
-    var totalDamageDealt = damage * elementIncrease * elementalDamageDecrease * bloodlustDamageBonus;
+    var altarIncrease = 1;
+    if (isPartyAttacking && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage);
+      altarIncrease *= relevantAltarEffect!.effectiveness;
+    }
+
+    var totalDamageDealt = damage * elementIncrease * elementalDamageDecrease * bloodlustDamageBonus * altarIncrease;
 
     var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
     if (reduceDamage !== undefined && isReducable)
@@ -1797,7 +1812,21 @@ export class BattleService {
     if (element === ElementalTypeEnum.Earth)
       increase = attacker.battleStats.elementIncrease.earth;
 
-    return 1 + increase;
+    var altarIncrease = 0;
+    if (attacker.type !== CharacterEnum.None && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesEarthDamageUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesEarthDamageUp);
+      altarIncrease = relevantAltarEffect!.effectiveness;
+    }
+    if (attacker.type !== CharacterEnum.None && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesFireDamageUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesFireDamageUp);
+      altarIncrease = relevantAltarEffect!.effectiveness;
+    }
+    if (attacker.type !== CharacterEnum.None && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesRareElementalDamageUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.HadesRareElementalDamageUp);
+      altarIncrease = relevantAltarEffect!.effectiveness;
+    }
+
+    return 1 + (increase * altarIncrease);
   }
 
   getElementalDamageDecrease(element: ElementalTypeEnum, target: Character) {
@@ -2565,10 +2594,10 @@ export class BattleService {
       this.battleItemInUse === ItemsEnum.WitheringToxin || this.battleItemInUse === ItemsEnum.VenomousToxin) {
       if (character.battleStats.currentHp <= 0)
         return;
-        
+
       //remove any existing toxin
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !this.isStatusEffectAToxin(item.type));
-        
+
       this.applyStatusEffect(effect.userEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
 
@@ -3009,7 +3038,7 @@ export class BattleService {
           character.overdriveInfo.damageTaken = 0;
         }
       }
-    }      
+    }
   }
 
   isStatusEffectAToxin(effect: StatusEffectEnum) {
@@ -3023,7 +3052,7 @@ export class BattleService {
   isStatusEffectAnElixir(effect: StatusEffectEnum) {
     if (effect === StatusEffectEnum.ElixirOfFortitude || effect === StatusEffectEnum.HeroicElixir || effect === StatusEffectEnum.RejuvenatingElixir)
       return true;
-      
+
     return false;
   }
 }

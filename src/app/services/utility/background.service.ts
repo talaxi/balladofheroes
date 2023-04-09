@@ -23,6 +23,8 @@ import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
 import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from './utility.service';
+import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
+import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -36,6 +38,7 @@ export class BackgroundService {
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);
+    this.professionService.handleProfessionTimer(ProfessionEnum.Jewelcrafting, deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
     this.handleFollowerPrayer(deltaTime);
@@ -165,6 +168,8 @@ export class BackgroundService {
   handleTickingAltarEffect(effect: AltarEffect, deltaTime: number) {
     var party = this.globalService.getActivePartyCharacters(true);
     party = party.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
+    var enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
+    enemies = enemies.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
     effect.tickTimer += deltaTime;
 
     if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
@@ -203,6 +208,12 @@ export class BackgroundService {
         });
       }
 
+      if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage) {
+        enemies.forEach(member => {
+          this.battleService.dealTrueDamage(true, member, effect.effectiveness, undefined, effect.element);
+        });
+      }
+
       effect.tickTimer -= effect.tickFrequency;
     }
   }
@@ -216,6 +227,16 @@ export class BackgroundService {
     if (effect.type === AltarEffectsEnum.AthenaHeal) {
       party.forEach(member => {
         this.battleService.gainHp(member, effect.effectiveness);
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.AresOverdriveGain || effect.type === AltarEffectsEnum.AresRareOverdriveGain) {
+      party.forEach(member => {
+        if (member.level >= this.utilityService.characterOverdriveLevel) {
+          member.overdriveInfo.gaugeAmount += (member.overdriveInfo.gaugeTotal *  (effect.effectiveness - 1)) * this.lookupService.getOverdriveGainMultiplier(target);
+          if (member.overdriveInfo.gaugeAmount > member.overdriveInfo.gaugeTotal)
+            member.overdriveInfo.gaugeAmount = member.overdriveInfo.gaugeTotal;
+        }
       });
     }
 
@@ -293,6 +314,27 @@ export class BackgroundService {
           }
         }
       });
+    }
+
+    if (effect.type === AltarEffectsEnum.AresDamageOverTime) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createDamageOverTimeEffect(12, 3, effect.effectiveness, "Ares Altar", dotTypeEnum.TrueDamage, undefined, true), member);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.AresRareDealHpDamage) {
+      var totalHp = 0;
+      party.forEach(member => {
+        totalHp += member.battleStats.currentHp * (effect.effectiveness-1);
+      });
+
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.dealTrueDamage(true, member, totalHp);
+        });
+      }
     }
   }
 

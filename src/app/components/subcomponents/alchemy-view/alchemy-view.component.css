@@ -149,4 +149,9 @@
     .offsetWidth {
         width: 20%;
     }
+
+    .recipeBook {
+        margin: .5rem;
+        padding: .25rem;
+      }
 }

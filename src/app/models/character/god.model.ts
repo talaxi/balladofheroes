@@ -59,9 +59,9 @@ export class God {
         else if (type === GodEnum.Apollo)
             return new PrimaryStats(1.075, .9, .8, .85, 1.175, 1.45); //6.26 total
         else if (type === GodEnum.Ares)
-            return new PrimaryStats(1.4, 1.03, .7, .9, 1.25, .85); //6.13 total
+            return new PrimaryStats(1.4, 1.0325, .725, .9, 1.15, .8775); //6.085 total
         else if (type === GodEnum.Hades)
-            return new PrimaryStats(1.075, 1.025, 1.025, .6, 1.3, 1.15); //6.175 total
+            return new PrimaryStats(.925, 1.03, 1, .6, 1.25, 1.2); //6.005 total
         else if (type === GodEnum.Dionysus) //STILL TODO
             return new PrimaryStats(1.075, 1.025, 1.025, .6, 1.3, 1.15); //6.175 total
         else if (type === GodEnum.Nemesis) //STILL TODO

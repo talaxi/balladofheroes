@@ -199,5 +199,9 @@ export enum ItemsEnum {
   MinorShieldSlotAddition,
   MinorNecklaceSlotAddition,
   RingOfNightmares,
-  Hades
+  Hades,
+  SmallCharmOfDionysus,
+  LargeCharmOfDionysus,
+  SmallCharmOfNemesis,
+  LargeCharmOfNemesis
 }

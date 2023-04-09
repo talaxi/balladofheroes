@@ -8,6 +8,7 @@ import { GlobalService } from '../global/global.service';
 import { UtilityService } from './utility.service';
 import { AchievementService } from '../achievements/achievement.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { InitializationService } from '../global/initialization.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,7 +16,7 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 export class VersionControlService {
 
   constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService,
-    private achievementService: AchievementService) { }
+    private achievementService: AchievementService, private initializationService: InitializationService) { }
 
   //add to this in descending order
   gameVersions = [0.4, 0.32, 0.31, 0.3];
@@ -129,6 +130,9 @@ export class VersionControlService {
           });
         }
         if (version === .4) { 
+          this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", true);
+          this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", true);
+          
           var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
           if (hades !== undefined)
             this.globalService.assignGodAbilityInfo(hades);
@@ -137,6 +141,8 @@ export class VersionControlService {
           if (ares !== undefined)
             this.globalService.assignGodAbilityInfo(ares);
           
+          this.initializationService.initializeJewelcrafting();
+
           var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
           if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
             var argo = this.balladService.findBallad(BalladEnum.Argo);

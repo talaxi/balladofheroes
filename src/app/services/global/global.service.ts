@@ -327,7 +327,7 @@ export class GlobalService {
       blindingLight.dealsDirectDamage = true;
       blindingLight.effectiveness = .6;
       blindingLight.elementalType = ElementalTypeEnum.Holy;
-      blindingLight.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 5, 1.25, false, false, true));
+      blindingLight.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 5, .25, false, false, true));
       god.abilityList.push(blindingLight);
 
       var secondWind = new Ability();
@@ -508,7 +508,7 @@ export class GlobalService {
       lordOfTheUnderworld.isActivatable = false;
       lordOfTheUnderworld.dealsDirectDamage = false;
       lordOfTheUnderworld.maxCount = 5;
-      lordOfTheUnderworld.userEffect.push(this.createStatusEffect(StatusEffectEnum.LordOfTheUnderworld, 25, 1.02, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
+      lordOfTheUnderworld.userEffect.push(this.createStatusEffect(StatusEffectEnum.LordOfTheUnderworld, 15, 1.02, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
       god.abilityList.push(lordOfTheUnderworld);
     }
 
@@ -517,7 +517,7 @@ export class GlobalService {
       rupture.name = "Rupture";
       rupture.isAvailable = false;
       rupture.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      rupture.cooldown = rupture.currentCooldown = 18;
+      rupture.cooldown = rupture.currentCooldown = 21;
       rupture.dealsDirectDamage = false;
       rupture.targetEffect.push(this.createDamageOverTimeEffect(10, 2.5, .3, rupture.name, dotTypeEnum.BasedOnAttack));
       god.abilityList.push(rupture);
@@ -694,7 +694,11 @@ export class GlobalService {
       || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.WitheringToxin ||
       type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
-      type === StatusEffectEnum.LordOfTheUnderworld || type === StatusEffectEnum.Onslaught)
+      type === StatusEffectEnum.LordOfTheUnderworld || type === StatusEffectEnum.Onslaught || type === StatusEffectEnum.EarthDamageUp || type === StatusEffectEnum.FireDamageUp
+      || type === StatusEffectEnum.AirDamageUp || type === StatusEffectEnum.HolyDamageUp || type === StatusEffectEnum.LightningDamageUp || type === StatusEffectEnum.WaterDamageUp || type === StatusEffectEnum.EarthDamageDown || type === StatusEffectEnum.FireDamageDown
+      || type === StatusEffectEnum.AirDamageDown || type === StatusEffectEnum.HolyDamageDown || type === StatusEffectEnum.LightningDamageDown || type === StatusEffectEnum.WaterDamageDown || type === StatusEffectEnum.EarthDamageTakenUp || type === StatusEffectEnum.FireDamageTakenUp
+      || type === StatusEffectEnum.AirDamageTakenUp || type === StatusEffectEnum.HolyDamageTakenUp || type === StatusEffectEnum.LightningDamageTakenUp || type === StatusEffectEnum.WaterDamageTakenUp || type === StatusEffectEnum.EarthDamageTakenDown || type === StatusEffectEnum.FireDamageTakenDown
+      || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown )
       refreshes = true;
 
     return refreshes;
@@ -1517,8 +1521,9 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= 1;
       //5, 15, 45, 75, 90 increase blind effectiveness
-      else if ((ability.abilityUpgradeLevel === 5 || ability.abilityUpgradeLevel % 15 === 0) && ability.abilityUpgradeLevel <= 100)
+      else if ((ability.abilityUpgradeLevel === 5 || ability.abilityUpgradeLevel % 15 === 0) && ability.abilityUpgradeLevel <= 100) {
         targetGainsEffect.effectiveness += .05;
+      }
       else if ((ability.abilityUpgradeLevel === 35 || ability.abilityUpgradeLevel === 70) && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += 1;
       else
@@ -1610,9 +1615,9 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Hades) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
-        userGainsEffect.duration += 2;
+        userGainsEffect.duration += 1.5;
       else      
-        userGainsEffect.effectiveness += .02;
+        userGainsEffect.effectiveness += .015;
     }
   }
 
@@ -1893,12 +1898,14 @@ export class GlobalService {
     var baseXp = 200;
     var tier1Breakpoint = 500;
 
-    if (level < 15) {
+    if (level < 15) 
       baseXp += level * 10;
-    }
-    else
+    else if (level < 200)
       baseXp = 350;
+    else
+      baseXp = 500;
 
+    //(350 * (1.0155 ^ level)) + (350 * (level - 1))
     var tier1Xp = 0;
     var factor = 1.0155;
     var tier1Level = level > tier1Breakpoint ? tier1Breakpoint : level;
@@ -1976,6 +1983,7 @@ export class GlobalService {
 
     party.forEach(member => {
       member.battleInfo.autoAttackTimer = 0;//this.getAutoAttackTime(member);
+      member.battleInfo.barrierValue = 0;
 
       if (member.abilityList !== undefined && member.abilityList.length > 0)
         member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {

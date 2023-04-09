@@ -22,7 +22,7 @@ export class JewelcraftingService {
     private lookupService: LookupService) { }
 
   handleShopOpen(subzone: SubZoneEnum) {
-    if (subzone === SubZoneEnum.AsphodelPalaceOfHades) {
+    if (subzone === SubZoneEnum.AegeanSeaIolcus) {
       var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);      
       if (jewelcrafting !== undefined && !jewelcrafting.isUnlocked) {
         jewelcrafting.isUnlocked = true;
@@ -35,8 +35,10 @@ export class JewelcraftingService {
   getActionLength(action: ProfessionActionsEnum) {
     var duration = 0;
 
+    if (action === ProfessionActionsEnum.CombiningGems)
+      duration = 1 * 4;  //TODO: make 240
     if (action === ProfessionActionsEnum.Polish)
-      duration = 1 * 45;    
+      duration = 1 * 4;  //TODO: make 60
 
     return duration;
   }  
@@ -48,125 +50,61 @@ export class JewelcraftingService {
     var newRecipeLearned = false;
 
     if (jewelcrafting.level >= 1) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.HealingPoultice)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.HealingPoultice));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedRuby)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedRuby));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.HealingPoultice);
+        this.updateGameLogWithNewRecipe(ItemsEnum.CrackedRuby);
       }
     }
     if (jewelcrafting.level >= 2) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.ExplodingPotion)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.ExplodingPotion));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedAquamarine)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedAquamarine));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.ExplodingPotion);
+        this.updateGameLogWithNewRecipe(ItemsEnum.CrackedAquamarine);
       }
     }
     if (jewelcrafting.level >= 4) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DebilitatingToxin)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DebilitatingToxin));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedOpal)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedOpal));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.DebilitatingToxin);
+        this.updateGameLogWithNewRecipe(ItemsEnum.CrackedOpal);
       }
     }
     if (jewelcrafting.level >= 7) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.HealingSalve)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.HealingSalve));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorWeaponSlotAddition)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorWeaponSlotAddition));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.HealingSalve);
+        this.updateGameLogWithNewRecipe(ItemsEnum.MinorWeaponSlotAddition);
       }
     }
     if (jewelcrafting.level >= 10) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.FirePotion)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.FirePotion));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedTopaz)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedTopaz));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.FirePotion);
+        this.updateGameLogWithNewRecipe(ItemsEnum.CrackedTopaz);
       }
     }
     if (jewelcrafting.level >= 15) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.PoisonousToxin)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.PoisonousToxin));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedAmethyst)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedAmethyst));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.PoisonousToxin);
+        this.updateGameLogWithNewRecipe(ItemsEnum.CrackedAmethyst);
       }
     }
     if (jewelcrafting.level >= 20) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.StranglingGasPotion)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.StranglingGasPotion));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedEmerald)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedEmerald));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.StranglingGasPotion);
+        this.updateGameLogWithNewRecipe(ItemsEnum.CrackedEmerald);
       }
-    }
-    
-    if (jewelcrafting.level >= 22) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.SoulEssence)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.SoulEssence));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.SoulEssence);
-      }
-    }
+    }    
     if (jewelcrafting.level >= 25) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.SatchelOfHerbs)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.SatchelOfHerbs));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorRingSlotAddition)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorRingSlotAddition));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.SatchelOfHerbs);
+        this.updateGameLogWithNewRecipe(ItemsEnum.MinorRingSlotAddition);
       }
-    }
-    if (jewelcrafting.level >= 26) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.UnstablePotion)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.UnstablePotion));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.UnstablePotion);
-      }
-    }
-    if (jewelcrafting.level >= 27) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.ElixirOfFortitude)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.ElixirOfFortitude));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfFortitude);
-      }
-    }
-    if (jewelcrafting.level >= 29) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.WitheringToxin)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.WitheringToxin));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.WitheringToxin);
-      }
-    }
-    if (jewelcrafting.level >= 32) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.RestorativePoultice)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.RestorativePoultice));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.RestorativePoultice);
-      }
-    }
-    if (jewelcrafting.level >= 35) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.BoomingPotion)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.BoomingPotion));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.BoomingPotion);
-      }
-    }
-    if (jewelcrafting.level >= 40) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.VenomousToxin)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.VenomousToxin));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.VenomousToxin);
-      }
-    }
-    if (jewelcrafting.level >= 45) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.RestorativeSalve)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.RestorativeSalve));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.RestorativeSalve);
-      }
-    }
-    if (jewelcrafting.level >= 50) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.BushelOfHerbs)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.BushelOfHerbs));
-        newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.BushelOfHerbs);
-      }
-    }
+    }    
 
     return newRecipeLearned;
   }
@@ -248,17 +186,18 @@ export class JewelcraftingService {
     recipe.createdItemType = this.lookupService.getItemTypeFromItemEnum(item);
     recipe.createdAmount = 1;
 
-    /*if (item === ItemsEnum.HealingPoultice) {
+    if (item === ItemsEnum.CrackedRuby) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Olive , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Fennel , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
 
+      //TODO: rework this
       recipe.numberOfSteps = 2;
-      recipe.steps.push(JewelcraftingActionsEnum.PrepareWaterSmallPot);
-      recipe.steps.push(JewelcraftingActionsEnum.CombineIngredientsPot);
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
 
       recipe.expGain = 5;
-    }*/
+    }
 
     return recipe;
   }   

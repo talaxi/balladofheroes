@@ -12,5 +12,6 @@ export enum ProfessionActionsEnum {
   ExtractEssence,
   Infuse,
   StoreIngredients,
+  CombiningGems,
   Polish
 }

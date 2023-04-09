@@ -178,6 +178,11 @@ export class LookupService {
     if (action === ProfessionActionsEnum.StoreIngredients)
       name = "Store ingredients for future use";
 
+    if (action === ProfessionActionsEnum.CombiningGems)
+      name = "Combining gemstone fragments";
+    if (action === ProfessionActionsEnum.Polish)
+      name = "Polishing stone";
+
     return name;
   }
 
@@ -1715,7 +1720,7 @@ export class LookupService {
     if (abilityName === "Heavenly Shield")
       abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Blinding Light")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets. Blind them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets and apply a <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
     //Artemis
     if (abilityName === "True Shot")
@@ -1735,7 +1740,7 @@ export class LookupService {
     if (abilityName === "Coda")
       abilityDescription = "Increase the party's luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Coda is active, cleanse a random debuff from a party member. " + cooldown + " second cooldown.";
     if (abilityName === "Ostinato")
-      abilityDescription = "Every " + cooldown + " seconds, heal a party member for <strong>" + effectiveAmount + "</strong> HP. Targets the party member with the lowest HP %.";
+      abilityDescription = "Every " + cooldown + " seconds, heal a party member for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP. Targets the party member with the lowest HP %.";
 
     //Hermes
     if (abilityName === "Nimble Strike")
@@ -1779,6 +1784,24 @@ export class LookupService {
 
 
     return abilityDescription;
+  }
+
+  getRandomElement() {
+    var elements: ElementalTypeEnum[] = [];
+    for (const [propertyKey, propertyValue] of Object.entries(ElementalTypeEnum))
+    {
+      if (!Number.isNaN(Number(propertyKey))) {
+        continue;
+      }
+
+      var enumValue = propertyValue as ElementalTypeEnum;
+      if (enumValue !== ElementalTypeEnum.None)
+      elements.push(enumValue);
+    }
+
+    var rng = this.utilityService.getRandomInteger(0, elements.length - 1);
+
+    return elements[rng];
   }
 
   getEnemyAbilityDescription(character: Enemy, ability: Ability) {
@@ -2053,7 +2076,7 @@ export class LookupService {
       abilityDescription = "Heal the lowest HP % party member for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP." + cooldown + " second cooldown.";
     }
     if (ability.name === "Throw Sand") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Stone Toss") {
       abilityDescription = "Deal <strong>" + (effectiveAmount) + "</strong> damage to a target. " + cooldown + " second cooldown.";
@@ -2418,7 +2441,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.ReduceHealing)
       description = "Decrease healing received by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% from all sources.";
     if (statusEffect.type === StatusEffectEnum.Blind)
-      description = "Auto attacks have a 50% chance to miss, dealing no damage and not triggering any associated effects.";
+      description = "Auto attacks have a " + Math.round((statusEffect.effectiveness) * 100) + "% chance to miss, dealing no damage and not triggering any associated effects.";
     if (statusEffect.type === StatusEffectEnum.Fortissimo)
       description = "Apollo is playing at Fortissimo.";
     if (statusEffect.type === StatusEffectEnum.Coda)
@@ -2481,6 +2504,8 @@ export class LookupService {
       description = "All elemental resistances reduced by " + Math.abs(statusEffect.effectiveness * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Focus)
       description = statusEffect.caster + " is focusing all attacks on you.";
+      if (statusEffect.type === StatusEffectEnum.BattleItemDamageUp)
+      description = "Increase damage dealt by battle items by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
       description = "10% chance on auto attack to reduce target's Agility by 10% for 8 seconds.";
@@ -2572,8 +2597,32 @@ export class LookupService {
       description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ApolloRareOstinato)
       description = "When the duration expires, trigger an Ostinato at " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% effectiveness.";
+      if (effect.type === AltarEffectsEnum.AresDamageOverTime)
+      description = "When the duration expires, apply a Damage over Time effect on all enemies, dealing " + this.utilityService.roundTo(((effect.effectiveness)), 2) + " damage every 3 seconds for 12 seconds.";
+      if (effect.type === AltarEffectsEnum.AresMaxHpUp)
+      description = "Increase Max HP of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.AresOverdriveGain)
+      description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
+      if (effect.type === AltarEffectsEnum.AresRareOverdriveGain)
+      description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
+      if (effect.type === AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage)
+      description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%";
+      if (effect.type === AltarEffectsEnum.AresRareDealHpDamage)
+      description = "When the duration expires, deal an amount equal to " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% of the party's total current HP to all enemies.";
+      if (effect.type === AltarEffectsEnum.HadesFireDamageUp)
+      description = "Increase Fire Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.HadesEarthDamageUp)
+      description = "Increase Earth Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.HadesAoeDamageUp)
+      description = "Increase damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.HadesRareAoeDamageUp)
+      description = "Increase damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.HadesRareElementalDamageUp)
+      description = "Increase all Elemental Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage)
+      description = "Deal " + effect.effectiveness + " " + this.getElementName(effect.element) + " damage to all enemies every " + effect.tickFrequency + " seconds.";
 
-    description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
+      description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
     return description;
   }
 
@@ -2947,17 +2996,10 @@ export class LookupService {
     if (maxHp < character.battleStats.currentHp)
       character.battleStats.currentHp = maxHp;
 
-    /*if (this.globalService.globalVar.activeAltarEffects.length > 0) {
-      var relevantAltarEffects = this.globalService.globalVar.activeAltarEffects.filter(effect => effect.type === AltarEffectsEnum.SmallAltarPrayStrength);
-
-      if (relevantAltarEffects.length > 0) {
-        relevantAltarEffects.forEach(effect => {
-          if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength) {
-            maxHp *= effect.effectiveness;
-          }
-        })
+      if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AresMaxHpUp) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AresMaxHpUp);
+        maxHp *= relevantAltarEffect!.effectiveness;
       }
-    }*/
 
     return maxHp;
   }
@@ -3909,6 +3951,25 @@ export class LookupService {
 
   getAutoAttackCooldownReductionDescription() {
     return "Reduces cooldown for auto attack.";
+  }
+
+  getElementName(type?: ElementalTypeEnum, name?: string) {
+    var element = "";
+
+    if (type === ElementalTypeEnum.Holy || name === "Holy")
+      element = "Holy";
+    else if (type === ElementalTypeEnum.Fire || name === "Fire")
+      element = "Fire";
+    else if (type === ElementalTypeEnum.Lightning || name === "Lightning")
+      element = "Lightning";
+    else if (type === ElementalTypeEnum.Water || name === "Water")
+      element = "Water";
+    else if (type === ElementalTypeEnum.Air || name === "Air")
+      element = "Air";
+    else if (type === ElementalTypeEnum.Earth || name === "Earth")
+      element = "Earth";
+
+    return element;
   }
 
   getElementalDamageIncreaseDescription(type?: ElementalTypeEnum, name?: string) {
@@ -5006,7 +5067,8 @@ export class LookupService {
   isSubzoneATown(subzoneEnum: SubZoneEnum) {
     if (subzoneEnum === SubZoneEnum.DodonaDelphi || subzoneEnum === SubZoneEnum.DodonaArta || subzoneEnum === SubZoneEnum.AsphodelPalaceOfHades ||
       subzoneEnum === SubZoneEnum.AsphodelLostHaven || subzoneEnum === SubZoneEnum.ElysiumColiseum || subzoneEnum === SubZoneEnum.PeloposNisosTravelPost
-      || subzoneEnum === SubZoneEnum.CalydonTownMarket || subzoneEnum === SubZoneEnum.CalydonAltarOfAsclepius)
+      || subzoneEnum === SubZoneEnum.CalydonTownMarket || subzoneEnum === SubZoneEnum.CalydonAltarOfAsclepius || subzoneEnum === SubZoneEnum.AegeanSeaIolcus ||
+      subzoneEnum === SubZoneEnum.AegeanSeaSalmydessus || subzoneEnum === SubZoneEnum.BlackSeaMariandyna || subzoneEnum === SubZoneEnum.ColchisCityCenter)
       return true;
 
     return false;
@@ -5160,6 +5222,32 @@ export class LookupService {
       name = "HP Regen Up";
     if (effect === AltarEffectsEnum.ApolloRareOstinato)
       name = "Ostinato After";
+
+      if (effect === AltarEffectsEnum.AresDamageOverTime)
+      name = "Damage Over Time After";
+    if (effect === AltarEffectsEnum.AresMaxHpUp)
+      name = "Max HP Up";
+    if (effect === AltarEffectsEnum.AresOverdriveGain)
+      name = "Increase Overdrive Gauge After";
+    if (effect === AltarEffectsEnum.AresRareOverdriveGain)
+      name = "Large Increase Overdrive Gauge After";
+    if (effect === AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage)
+      name = "Increase Damage Over Time Effectiveness";
+    if (effect === AltarEffectsEnum.AresRareDealHpDamage)
+      name = "Deal HP Damage After";
+
+      if (effect === AltarEffectsEnum.HadesEarthDamageUp)
+      name = "Earth Damage Dealt Up";
+    if (effect === AltarEffectsEnum.HadesFireDamageUp)
+      name = "Fire Damage Dealt Up";
+    if (effect === AltarEffectsEnum.HadesAoeDamageUp)
+      name = "Multiple Target Damage Dealt Up";
+    if (effect === AltarEffectsEnum.HadesRareAoeDamageUp)
+      name = "Large Multiple Target Damage Dealt Up";
+    if (effect === AltarEffectsEnum.HadesRareElementalDamageUp)
+      name = "Elemental Damage Dealt Up";
+    if (effect === AltarEffectsEnum.HadesRareDealElementalDamage)
+      name = "Deal Random Elemental Damage Over Time";
 
     return name;
   }

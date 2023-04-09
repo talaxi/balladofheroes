@@ -119,27 +119,27 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 5000));
     }
     if (item === ItemsEnum.FracturedRubyRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedEmeraldRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedAmethystRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedTopazRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedAquamarineRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.FracturedOpalRing) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
     }
     if (item === ItemsEnum.BedazzledRing) {
