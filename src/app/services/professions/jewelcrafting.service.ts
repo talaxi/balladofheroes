@@ -39,6 +39,12 @@ export class JewelcraftingService {
       duration = 1 * 4;  //TODO: make 240
     if (action === ProfessionActionsEnum.Polish)
       duration = 1 * 4;  //TODO: make 60
+      if (action === ProfessionActionsEnum.HeatingMetal)
+      duration = 1 * 4;  //TODO: make ??
+      if (action === ProfessionActionsEnum.ShapingMetal)
+      duration = 1 * 4;  //TODO: make ??
+      if (action === ProfessionActionsEnum.CoolingMetal)
+      duration = 1 * 4;  //TODO: make ??
 
     return duration;
   }  
@@ -48,6 +54,7 @@ export class JewelcraftingService {
     if (jewelcrafting === undefined)
       return;
     var newRecipeLearned = false;
+    console.log("Check for new recipes at level " + jewelcrafting.level);
 
     if (jewelcrafting.level >= 1) {
       if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedRuby)) {
@@ -191,12 +198,90 @@ export class JewelcraftingService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 5));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
 
-      //TODO: rework this
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 3;
+    }
+    if (item === ItemsEnum.CrackedAquamarine) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 3;
+    }
+    if (item === ItemsEnum.CrackedOpal) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 3;
+    }
+    if (item === ItemsEnum.CrackedTopaz) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombiningGems);
       recipe.steps.push(ProfessionActionsEnum.Polish);
 
       recipe.expGain = 5;
+    }
+    if (item === ItemsEnum.CrackedAmethyst) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 5;
+    }
+    if (item === ItemsEnum.CrackedEmerald) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 5;
+    }
+    if (item === ItemsEnum.MinorWeaponSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.HeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
+
+      recipe.expGain = 10;
+    }
+    if (item === ItemsEnum.MinorRingSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.HeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
+
+      recipe.expGain = 10;
     }
 
     return recipe;

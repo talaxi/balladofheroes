@@ -25,12 +25,12 @@ export class ProfessionService {
   constructor(private globalService: GlobalService, private lookupService: LookupService, private gameLogService: GameLogService,
     private utilityService: UtilityService, private alchemyService: AlchemyService, private jewelcraftingService: JewelcraftingService) { }
 
-  handleProfessionTimer(type: ProfessionEnum, deltaTime: number) {    
-    var profession = this.globalService.globalVar.professions.find(item => item.type === type);        
+  handleProfessionTimer(type: ProfessionEnum, deltaTime: number) {
+    var profession = this.globalService.globalVar.professions.find(item => item.type === type);
     if (profession === undefined || profession.creatingRecipe === undefined || profession.creationStep === 0)
       return;
 
-    profession.creationTimer += deltaTime;    
+    profession.creationTimer += deltaTime;
     if (profession.creationTimer >= profession.creationTimerLength) {
       profession.creationStep += 1;
       profession.creationTimer -= profession.creationTimerLength;
@@ -53,18 +53,24 @@ export class ProfessionService {
     var gainAmount = selectedProfession.creatingRecipe.createdAmount;
     var rng = this.utilityService.getRandomNumber(0, 1);
     if (rng < this.get5xItemChance(type, selectedProfession.creatingRecipe.quality)) {
-      if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
-        var gameLogEntry = "<strong>Bonus: 5X Items Created!</strong>";
+      var gameLogEntry = "<strong>Bonus: 5X Items Created!</strong>";
+      if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      }
+      if (selectedProfession.type === ProfessionEnum.Jewelcrafting && this.globalService.globalVar.gameLogSettings.get("jewelcraftingCreation")) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
       gainAmount *= 5;
     }
     else {
       var rng2 = this.utilityService.getRandomNumber(0, 1);
       if (rng2 < this.get2xItemChance(type, selectedProfession.creatingRecipe.quality)) {
-        if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
-          var gameLogEntry = "<strong>Bonus: 2X Items Created!</strong>";
+        var gameLogEntry = "<strong>Bonus: 2X Items Created!</strong>";
+        if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
           this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        }
+        if (selectedProfession.type === ProfessionEnum.Jewelcrafting && this.globalService.globalVar.gameLogSettings.get("jewelcraftingCreation")) {
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
         }
         gainAmount *= 2;
       }
@@ -85,9 +91,13 @@ export class ProfessionService {
       if (selectedProfession.level === selectedProfession.maxLevel)
         selectedProfession.exp = 0;
 
-      if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
+      if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
         var gameLogEntry = "Your <strong>Alchemy</strong> level increases to <strong>" + selectedProfession.level + "</strong>.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      }
+      if (selectedProfession.type === ProfessionEnum.Jewelcrafting && this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
+        var gameLogEntry = "Your <strong>Jewelcrafting</strong> level increases to <strong>" + selectedProfession.level + "</strong>.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
 
       var newRecipeLearned = this.checkForNewRecipes(type);
@@ -97,9 +107,14 @@ export class ProfessionService {
       }
     }
 
-    if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
+    if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
       var gameLogEntry = "You create <strong>" + gainAmount + " " + this.lookupService.getItemName(selectedProfession.creatingRecipe.createdItem) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+    }
+
+    if (selectedProfession.type === ProfessionEnum.Jewelcrafting && this.globalService.globalVar.gameLogSettings.get("jewelcraftingCreation")) {
+      var gameLogEntry = "You create <strong>" + gainAmount + " " + this.lookupService.getItemName(selectedProfession.creatingRecipe.createdItem) + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
     }
 
     selectedProfession.creationCurrentAmountCreated += 1;
@@ -120,20 +135,26 @@ export class ProfessionService {
           this.spendResourcesOnRecipe(selectedProfession.creatingRecipe);
         }
         else {
-          if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
-            var gameLogEntry = "<strong>Bonus: No Materials Used!</strong>";
+          var gameLogEntry = "<strong>Bonus: No Materials Used!</strong>";
+          if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+          }
+          if (selectedProfession.type === ProfessionEnum.Jewelcrafting && this.globalService.globalVar.gameLogSettings.get("jewelcraftingCreation")) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
           }
         }
       }
       else {
-        if (this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
-          var gameLogEntry = "You no longer have enough resources and stop creating <strong>" + this.lookupService.getItemName(selectedProfession.creatingRecipe.createdItem) + "</strong>.";
+        var gameLogEntry = "You no longer have enough resources and stop creating <strong>" + this.lookupService.getItemName(selectedProfession.creatingRecipe.createdItem) + "</strong>.";
+        if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {          
           this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
-
-          selectedProfession.creationCurrentAmountCreated = 0;
-          selectedProfession.creatingRecipe = undefined;
         }
+        if (selectedProfession.type === ProfessionEnum.Jewelcrafting && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {          
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
+        }
+
+        selectedProfession.creationCurrentAmountCreated = 0;
+        selectedProfession.creatingRecipe = undefined;
       }
     }
   }

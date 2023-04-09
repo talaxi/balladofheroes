@@ -13,5 +13,8 @@ export enum ProfessionActionsEnum {
   Infuse,
   StoreIngredients,
   CombiningGems,
-  Polish
+  Polish,
+  HeatingMetal,
+  ShapingMetal,
+  CoolingMetal
 }

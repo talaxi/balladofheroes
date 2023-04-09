@@ -182,6 +182,12 @@ export class LookupService {
       name = "Combining gemstone fragments";
     if (action === ProfessionActionsEnum.Polish)
       name = "Polishing stone";
+    if (action === ProfessionActionsEnum.HeatingMetal)
+      name = "Heating metal to expand"
+      if (action === ProfessionActionsEnum.ShapingMetal)
+      name = "Shaping metal"
+      if (action === ProfessionActionsEnum.CoolingMetal)
+      name = "Cooling metal for use"
 
     return name;
   }
@@ -2614,9 +2620,9 @@ export class LookupService {
       if (effect.type === AltarEffectsEnum.HadesEarthDamageUp)
       description = "Increase Earth Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
       if (effect.type === AltarEffectsEnum.HadesAoeDamageUp)
-      description = "Increase damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      description = "Increase the damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
       if (effect.type === AltarEffectsEnum.HadesRareAoeDamageUp)
-      description = "Increase damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      description = "Increase the damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
       if (effect.type === AltarEffectsEnum.HadesRareElementalDamageUp)
       description = "Increase all Elemental Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
       if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage)
