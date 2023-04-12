@@ -149,6 +149,13 @@
                     src="assets/svg/alchemyQuickView.svg">
                 <img class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
             </button>
+            <button class="buttonAsText clickableText iconButton" *ngIf="isJewelcraftingAvailable() && displayQuickViewJewelcrafting"
+                (click)="setQuickView(quickViewEnum.Jewelcrafting)" customToolTip [contentTemplate]="jewelcraftingIconPopover"
+                [tooltipDirection]="tooltipDirection">
+                <img *ngIf="quickView === quickViewEnum.Jewelcrafting" class="icon iconEnabled"
+                    src="assets/svg/jewelcrafting.svg">
+                <img class="icon iconDisabled" src="assets/svg/jewelcraftingDisabled.svg">
+            </button>
         </div>
         <div class="overviewQuickView" *ngIf="quickView === quickViewEnum.Overview">
             <div class="quickLinkGrid">
@@ -208,6 +215,9 @@
         <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
             <app-alchemy-overview></app-alchemy-overview>
         </div>
+        <div class="jewelcraftingQuickView centeredText" *ngIf="quickView === quickViewEnum.Jewelcrafting">
+            <app-jewelcrafting-overview></app-jewelcrafting-overview>
+        </div>
     </div>
 </div>
 
@@ -251,5 +261,11 @@
 <ng-template #alchemyIconPopover>
     <div>
         See a brief overview of your Alchemy status.
+    </div>
+</ng-template>
+
+<ng-template #jewelcraftingIconPopover>
+    <div>
+        See a brief overview of your Jewelcrafting status.
     </div>
 </ng-template>

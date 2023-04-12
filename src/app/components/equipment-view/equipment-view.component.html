@@ -14,7 +14,7 @@
                 [innerHtml]="getEquipmentName(equipment)"></span>
             </button>
             <div class='buttonOptions'>
-            <button class="buttonStyled" *ngIf="equipmentPieceHasSlots(equipment)" (click)="openSlotMenu(slotMenuContent)">Slot</button>
+            <button class="buttonStyled" *ngIf="slottingAvailable(equipment)" (click)="openSlotMenu(slotMenuContent)">Slot</button>
             <button class="buttonStyled" (click)="setSellItem(equipment)"><img class="icon"
                 src="assets/svg/resourcesQuickView.svg"></button>
             </div>

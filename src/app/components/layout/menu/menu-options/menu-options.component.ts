@@ -20,7 +20,7 @@ import { KeybindService } from 'src/app/services/utility/keybind.service';
 export class MenuOptionsComponent implements OnInit {
   public menuEnum = MenuEnum;
   public selectedMenu = 0;
-  
+
   public partyMembers: Character[];
   public gods: God[];
   public professions: ProfessionEnum[] = [];
@@ -28,40 +28,40 @@ export class MenuOptionsComponent implements OnInit {
   @Input() isMobile = false;
 
   godsAvailable = false;
-  
+
   @HostListener('window:keyup', ['$event'])
-  keyEvent(event: KeyboardEvent) {    
+  keyEvent(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;
 
-    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuTraverseSubMenuUp"))) {
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuUp"))) {
       this.toggleSubMenuOptions(-1);
     }
-      
-    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuTraverseSubMenuDown"))) {
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
       this.toggleSubMenuOptions(1);
     }
-    
-    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToCharacters"))) {
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToCharacters"))) {
       this.switchView(MenuEnum.Characters);
     }
 
-      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToGods"))) {
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToGods"))) {
       this.switchView(MenuEnum.Gods);
     }
-    
-      if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToResources"))) {
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToResources"))) {
       this.switchView(MenuEnum.Resources);
     }
 
-    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToSettings"))) {
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToSettings"))) {
       this.switchView(MenuEnum.Settings);
     }
 
-    if (this.professionsAvailable && this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToProfessions"))) {
+    if (this.professionsAvailable && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToProfessions"))) {
       this.switchView(MenuEnum.Professions);
     }
 
-    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("menuGoToAchievements"))) {
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToAchievements"))) {
       this.switchView(MenuEnum.Achievements);
     }
   }
@@ -69,7 +69,7 @@ export class MenuOptionsComponent implements OnInit {
   constructor(public menuService: MenuService, private globalService: GlobalService, private keybindService: KeybindService,
     private layoutService: LayoutService, private lookupService: LookupService) { }
 
-  ngOnInit(): void {    
+  ngOnInit(): void {
     this.partyMembers = this.globalService.globalVar.characters.filter(item => item.isAvailable);
     this.selectedMenu = this.menuService.selectedMenuDisplay;
     this.gods = this.globalService.globalVar.gods.sort(function (a, b) {
@@ -82,7 +82,7 @@ export class MenuOptionsComponent implements OnInit {
   switchView(type: MenuEnum) {
     if (this.isMobile) {
       this.layoutService.changeLayout(NavigationEnum.Menu);
-      this.layoutService.mobileMenuOpen = false;      
+      this.layoutService.mobileMenuOpen = false;
     }
 
     this.menuService.selectedMenuDisplay = type;
@@ -91,8 +91,9 @@ export class MenuOptionsComponent implements OnInit {
       this.menuService.setSelectedCharacter(CharacterEnum.Adventurer);
     if (type === MenuEnum.Gods && this.menuService.selectedGod === GodEnum.None)
       this.menuService.setSelectedGod(GodEnum.Athena);
-      if (type === MenuEnum.Professions && this.menuService.selectedProfession === ProfessionEnum.None)
-      this.menuService.setSelectedProfession(ProfessionEnum.Alchemy);
+    if (type === MenuEnum.Professions && this.menuService.selectedProfession === ProfessionEnum.None) {
+      this.menuService.setSelectedProfession(this.professions[0]);
+    }
   }
 
   selectPartyMember(character: Character) {
@@ -107,7 +108,7 @@ export class MenuOptionsComponent implements OnInit {
     this.menuService.setSelectedProfession(profession);
   }
 
-  getProfessions() {    
+  getProfessions() {
     this.globalService.globalVar.professions.forEach(profession => {
       if (profession.isUnlocked)
         this.professions.push(profession.type);
@@ -121,8 +122,7 @@ export class MenuOptionsComponent implements OnInit {
   }
 
   toggleSubMenuOptions(direction: number) {
-    if (this.menuService.selectedMenuDisplay === MenuEnum.Characters)
-    {
+    if (this.menuService.selectedMenuDisplay === MenuEnum.Characters) {
       var currentIndex = this.partyMembers.findIndex(item => item.type === this.menuService.selectedCharacter);
       currentIndex += direction;
 
@@ -130,11 +130,10 @@ export class MenuOptionsComponent implements OnInit {
         currentIndex = this.partyMembers.length - 1;
       if (currentIndex > this.partyMembers.length - 1)
         currentIndex = 0;
-      
-        this.menuService.setSelectedCharacter(this.partyMembers[currentIndex].type);
+
+      this.menuService.setSelectedCharacter(this.partyMembers[currentIndex].type);
     }
-    if (this.menuService.selectedMenuDisplay === MenuEnum.Gods)
-    {
+    if (this.menuService.selectedMenuDisplay === MenuEnum.Gods) {
       var currentIndex = this.gods.findIndex(item => item.type === this.menuService.selectedGod);
       currentIndex += direction;
 
@@ -142,8 +141,19 @@ export class MenuOptionsComponent implements OnInit {
         currentIndex = this.gods.length - 1;
       if (currentIndex > this.gods.length - 1)
         currentIndex = 0;
-      
-        this.menuService.setSelectedGod(this.gods[currentIndex].type);
+
+      this.menuService.setSelectedGod(this.gods[currentIndex].type);
     }
-  }  
+    if (this.menuService.selectedMenuDisplay === MenuEnum.Professions) {
+      var currentIndex = this.professions.findIndex(item => item === this.menuService.selectedProfession);
+      currentIndex += direction;
+
+      if (currentIndex < 0)
+        currentIndex = this.professions.length - 1;
+      if (currentIndex > this.professions.length - 1)
+        currentIndex = 0;
+
+      this.menuService.setSelectedProfession(this.professions[currentIndex]);
+    }
+  }
 }

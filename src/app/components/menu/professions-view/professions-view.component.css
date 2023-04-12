@@ -16,3 +16,29 @@ td {
     display: flex;
     justify-content: space-between;
 }
+
+.professionInfo {    
+    display: grid;
+    width: 100%;    
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "traverseUp baseInfo traverseDown";
+}
+.traverseUp {
+    grid-area: traverseUp;
+}
+
+.traverseDown {
+    grid-area: traverseDown;
+}
+
+.baseInfo {
+    text-align: center;
+    grid-area: baseInfo;
+}
+
+.dropdownIcon {
+    height: 1rem;
+}

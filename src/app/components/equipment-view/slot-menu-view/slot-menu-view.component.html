@@ -11,7 +11,7 @@
                         <div class="flexBetween">
                             <button class="buttonAsText clickableText equipmentItemButton" (click)="selectGem(gem)">
                                 <span class="equipmentItem" customToolTip [isDelayed]="false"
-                                    [contentTemplate]="template" [innerHtml]="getItemName(gem)"></span>
+                                    [contentTemplate]="template" [innerHtml]="getItemNameWithCount(gem)"></span>
                             </button>
                         </div>
                         <hr class="leftAlignedMiniHr" />

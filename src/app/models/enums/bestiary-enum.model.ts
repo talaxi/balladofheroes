@@ -152,5 +152,14 @@ export enum BestiaryEnum {
   Alecto,
   Thanatos,
   Cerberus,
-  Hades
+  Hades,
+  ManicHusk,
+  LumberingHusk,
+  LargeHusk,
+  ShufflingHusk,
+  EarthenHusk,
+  EmptyHusk,
+  Khalkotauroi,
+  MorayEel,
+  SnapperSwarm
 }

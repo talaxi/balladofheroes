@@ -70,7 +70,7 @@ export class ShopViewComponent implements OnInit {
     this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
-      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story && item.type !== ShopTypeEnum.StoryScene24);
   }
 
   getOptionText(type: ShopTypeEnum) {

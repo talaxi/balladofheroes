@@ -69,6 +69,27 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 16 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CalydonWornDownBarn))
       this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 17 && this.balladService.getActiveSubZone().type === SubZoneEnum.AegeanSeaOpenSeas)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 18 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AegeanSeaIslandOfImbros))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 19 && this.balladService.getActiveSubZone().type === SubZoneEnum.AegeanSeaPropontis)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 20 && this.balladService.getActiveSubZone().type === SubZoneEnum.AegeanSeaDesertedPath)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 21 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AegeanSeaSympegadesOverlook))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 22 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.BlackSeaSeaEscape))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 23 && this.balladService.getActiveSubZone().type === SubZoneEnum.ColchisCityCenter)
+      this.showStory = true;
+    //TODO: scene 24 needs to be triggered by a button press like speak to hades
+    else if (this.globalService.globalVar.currentStoryId === 25 && this.balladService.getActiveSubZone().type === SubZoneEnum.ColchisGroveOfAres)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 26 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ColchisReinforcementsFromAeetes))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 27 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ColchisHurriedRetreat2))
+      this.showStory = true;
 
     if (this.showStory)
       this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId);
@@ -226,34 +247,143 @@ export class StoryService {
     else if (storyId === 14) {
       if (pageCount === 1)
         sceneText = "As you make your way from the opening of the Underworld near Lake Lerna towards Calydon, Zosime insists on a detour through Mount Parthenion. The mountain is home to many a wild spirit and the birth place of several heroes' origin stories, Atalanta included. During a lull in your fighting, Zosime begins to tell you of her favorite hero.<br/><br/>" +
-        this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. Can you imagine, a babe alone in a dangerous place like this? And yet, to survive and accomplish all that she did!”");
+          this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. Can you imagine, a babe alone in a dangerous place like this? And yet, to survive and accomplish all that she did!”");
       else if (pageCount === 2)
-      sceneText = this.zosimeText("“Artemis took to her and she became one with the wilds. And in turn, she became Artemis's arrow.”") +
-      " As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " +
-      this.zosimeText("“Artemis has looked after me as well, when no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
+        sceneText = this.zosimeText("“Artemis took to her and she became one with the wilds. And in turn, she became Artemis's arrow.”") +
+          " As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " +
+          this.zosimeText("“Artemis has looked after me as well, when no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”");
     }
     else if (storyId === 15) {
       if (pageCount === 1)
         sceneText = "The commotion and activity of Calydon is a welcome sight after your long journey. Even though you've now traveled all across Greece, seeing so many people in one place still amazes you. Outside of Delphi, this is the largest city you've ever been in. The intricate architecture of the buildings and array of goods for sale in the streets leaves you in awe and feeling a little overwhelmed.<br/><br/>" +
-        "If Zosime also felt this way, she did not show it. It was clear that she was ready to continue on and find the forest where Atalanta shed the blood of the Calydonian Boar for the first time. Somehow, it seems Zosime wasn't shaken at all by your encounter with Enceladus. Was this what it was like to be a hero, to ignore your failings and never stray from the path?";
+          "If Zosime also felt this way, she did not show it. It was clear that she was ready to continue on and find the forest where Atalanta shed the blood of the Calydonian Boar for the first time. Somehow, it seems Zosime wasn't shaken at all by your encounter with Enceladus. Was this what it was like to be a hero, to ignore your failings and never stray from the path?";
       else if (pageCount === 2)
         sceneText = "The famous stories you heard when you were young never included the messy details. You knew that Atalanta was raised in the forest and rose to legendary status by slaying the great boar. But what was life like in the in between?<br/><br/>" +
-        "Growing up alone in the hard wilderness, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was turned away from joining the other heroes on the Argo? How many times did she stumble before putting an arrow through the Calydonian Boar?";
+          "Growing up alone in the hard wilderness, did her belief in herself ever waver? Even after she was known around Greece, did she falter when she was turned away from joining the other heroes on the Argo? How many times did she stumble before putting an arrow through the Calydonian Boar?";
       else if (pageCount === 3)
         sceneText = "Perhaps the truth isn't that the heroes were simply greater than others, but their unyielding spirit allowed them to push forward when others would turn back. On the other hand, Atalanta was never swatted down like an insect by a Giant as far as you knew... You're pretty confident that if Athena had Atalanta instead of you, Enceladus would no longer have a head.<br/><br/>" +
-        "While you are lost in your own head, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
+          "While you are lost in your own head, Zosime tracks down the path to the Calydonian Forest. The two of you step out of the city and into the wilderness once more, ready for whatever you may find.";
     }
     else if (storyId === 16) {
       if (pageCount === 1)
         sceneText = "Like Atalanta before her, Zosime's arrow spells the end for the massive boar. " + this.thalesText("“Another one off your list, Zosime!”") + " You say as you catch your breath, caught up in the thrill of victory. She grins as she eagerly examines the boar. You can tell this moment means a lot to her. <br/><br/>" +
-        "The sound of leaves rustling immediately puts you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
+          "The sound of leaves rustling immediately puts you on guard. You scan the trees nearby in search of the source and find a large stag with golden antlers. You take a few steps towards the animal and it immediately looks up at you, meeting your gaze.";
       else if (pageCount === 2)
-        sceneText = this.zosimeText("That's Artemis's stag!”") + " Zosime says from behind you. She begins a silent prayer as the majestic beast returns to grazing the forest. " + this.thalesText("“The gods are still with us.”") + " You whisper, feeling a great relief. What greater reassurance can you receive than to know that you may not believe in yourself, but the gods do?<br/><br/>" +
-        "The stag's grazing pattern eventually puts it out of sight. You attempt to follow it, but there is no tracking a beast whose very nature is the forest. You return to Zosime, still in prayer.";
+        sceneText = this.zosimeText("“That's Artemis's stag!”") + " Zosime says from behind you. She begins a silent prayer as the majestic beast returns to grazing the forest. " + this.thalesText("“The gods are still with us.”") + " You whisper, feeling a great relief. What greater reassurance can you receive than to know that you may not believe in yourself, but the gods do?<br/><br/>" +
+          "The stag's grazing pattern eventually puts it out of sight. You attempt to follow it, but there is no tracking a beast whose very nature is the forest. You return to Zosime, still in prayer.";
       else if (pageCount === 3)
         sceneText = "Whether you believe in yourself or not, whether you etch your name in the annals of history or not, you've decided it does not matter. You are needed, and you will try.<br/><br/>" +
-        this.thalesText("“I've decided that we should go to Iolcus next. My favorite story as a child was Jason's travels. I loved to hear so many heroes working together. Besides, I've spent my whole life on the coast and I've been away for too long.”") + "<br/><br/>" +
-        this.zosimeText("“What are we waiting for then?”") + " Zosime says cheerily, pleased to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
+          this.thalesText("“I've decided that we should go to Iolcus next. My favorite story as a child was Jason's travels. I loved to hear so many heroes working together. Besides, I've spent my whole life on the coast and I've been away for too long.”") + "<br/><br/>" +
+          this.zosimeText("“What are we waiting for then?”") + " Zosime says cheerily, pleased to see you getting back to yourself. The two of you make your way out of the forest and make for the coastal village of Iolcus, birthplace of Jason.";
+    }
+    else if (storyId === 17) {
+      if (pageCount === 1)
+        sceneText = "Upon arriving in Iolcus, the taste of salt in the air and smell of the sea immediately put you at ease. Your journey has taken you a long way from the safety and familiarity of home, but the sea was a welcome sight. <br/><br/>" +
+          "When Jason arrived at his homeland of Iolcus, he set out on a journey across the seas to regain the Golden Fleece and prove himself the rightful king to his people. He assembled a great band of heroes to help him on his journey including Heracles, Asclepius, and Orpheus. You were not quite so lucky, but after some discussion around town, you were able to secure travel on a vessel headed to Colchis.";
+    }
+    else if (storyId === 18) {
+      if (pageCount === 1)
+        sceneText = this.commonCharacterText("“Should be a straight shot through Hellespoint.”") + " The captain says to the two of you, pointing east. " + this.commonCharacterText("“And from there, it's on to the Black Sea.”") + "<br/><br/>" +
+          this.commonCharacterText("“Heard some wild rumors around these parts.”") + " He continues, eyes on the sea. " + this.commonCharacterText("“Something strange going on with the land. Glad to have you two aboard in case something goes wrong.”") + " He gives you a nod and walks off, keeping a watchful eye over the crew.";
+      else if (pageCount === 2)
+        sceneText = "No matter what may come, you felt ready. At the beginning of your journey, you were filled with a bright-eyed confidence that was not earned. But now, you've overcome odds that most couldn't imagine. Maybe you weren't ready to slay a giant, but you're ready to give it your best shot.";
+    }
+    else if (storyId === 19) {
+      if (pageCount === 1)
+        sceneText = "The captain decides to stop at an island near Propontis for the night. So far, your journey has gone without incident. Before resting for the night, you decide to stretch your legs and check out the island. Somewhere near here, the Argonauts once battled a deadly storm that disoriented them so that they mistook friend for foe and slayed many of those who lived on this isle.<br/><br/>" +
+          "Oddly, the island was so quiet that it was as if no one ever resettled here. You could see evidence of homes and walking paths, but no people. " + this.thalesText("“Where is everyone, do you think?”") + " You ask Zosime.";
+      else if (pageCount === 2)
+        sceneText = this.zosimeText("“In for the night maybe?”") + " She responds. In the darkness, it was hard to tell if people had passed through here or not. <br/><br/>" +
+          "A loud noise jolts both you and Zosime to action. Men were moving down the coastline towards your ship. You move back towards the vessel to head them off. " + this.zosimeText("“Why are they moving like that?”") + " Zosime asks you, hastening her pace.<br/><br/>" +
+          "The men moved with a consistent pace, like a soldier's march. But they were too clumsy to be soldiers. Every so often, one would trip over its own feet or run directly into a rock and fall. They seemed almost possessed, and they were making directly for your only way off of this island. You break into a sprint, keeping up with Zosime to head off this uncanny threat.";
+    }
+    else if (storyId === 20) {
+      if (pageCount === 1)
+        sceneText = "After escaping from the Propontis, the crew rowed all through the night to get as far away as possible. Aside from that and a word of thanks from the captain, no one from the crew spoke any further of what you saw that unsettling night. <br/><br/>" +
+          "The men you faced were like puppets, moving in strange yet consistent fashion and making hardly any noise. Whatever was going on there, you hoped that would be the last you saw of it.";
+      else if (pageCount === 2)
+        sceneText = "Before passing the Sympegades rocks, your crew puts in at Salmydessus. Thankfully, this seems to be a normal village off the coast.<br/><br/>" +
+          "The Sympegades is a known danger to all who try to pass through. Without warning, the rocks will slam together and crush any vessels caught in between. You and Zosime decide to get a closer look on foot before traveling through by water.";
+    }
+    else if (storyId === 21) {
+      if (pageCount === 1)
+        sceneText = "You make your way up the treacherous path to an overlook near the top of the Sympegades. You stay for a while until finally another ship passes through the cliffs. All who pass through these rock walls know the stories. Tense, you watch on to see what happens.<br/><br/>" +
+          "The waves crash lazily into the rocks as the ship passes through the midway point, but nothing happens. You realize perhaps too late that standing near the peak of a moving cliffside is not the best idea, but nonetheless the ship makes it through with no issue.";
+      else if (pageCount === 2)
+        sceneText = this.zosimeText("“So we're being attacked by people who look dead but are alive, and things we expect to be alive seem dead. That's.. unsettling.”") + " Zosime says. You nod in agreement. Something is clearly wrong here. You hope that you have seen the last of these mindless husks, but you have a strong feeling that the closer you get to Colchis, the more you will see.<br/><br/>" +
+          this.thalesText("“Well, at least we know the way is clear. Let's keep moving.”") + " You say.";
+    }
+    else if (storyId === 22) {
+      if (pageCount === 1)
+        sceneText = "The closer you were to Colchis, the more of these inhuman abominations littered the coast. After finally breaking free from the pursuit out of Mariandynia, you take Zosime aside.<br/><br/>" +
+          this.thalesText("“Long ago, when Jason retrieved the Golden Fleece, King Aeëtes of Colchis assigned him three impossible tasks. One was to defeat an army of men risen from the ground. I'm starting to think this is the same magic.”") + " You say, mulling over the situation.";
+      if (pageCount === 2)
+        sceneText = this.zosimeText("“You think someone is doing this intentionally?”") + "<br/><br/>" +
+          this.thalesText("“Maybe. We should be on our guard when we reach Colchis. It feels like whatever is going on here is deeper than just the stories.”");
+    }
+    else if (storyId === 23) {
+      if (pageCount === 1)
+        sceneText = "The captain of your vessel thanks you for your help. Without you, they would never have made it all the way to the edge of the Black Sea. You express your gratitude as well and part ways. If you were Jason, you would head straight for the Golden Fleece. But something was wrong here. <br/><br/>" +
+          "You and Zosime try to ask around town about what is going on, but everyone seems tense. You can't help but notice that, despite being a bustling city off the coast, much of the greenery around the city seemed decaying. Unable to get a straight answer from the townspeople, you try to come up with another plan.";
+      else if (pageCount === 2)
+        sceneText = this.zosimeText("“Let's just go straight to the King. If anyone would know what is going on here, it's him.”") + " Zosime says.<br/><br/> " +
+          "It would seem that is the only option left. " + this.thalesText("“I think that's what Jason would do, so we should too.”");
+    }
+    else if (storyId === 24) {
+      if (pageCount === 1)
+        sceneText = "You approach the grand doors to a palace near the center of Colchis. Two heavily armored guards stand stiffly near the doors. Before you can speak, they open the doors for you to enter. The entryway gives way to a great hall filled with intricate golden columns, majestic artwork, and vaulted ceilings. There was only one other person here, a man with eagle-like features seated in one of two thrones. <br/><br/>" +
+          "You approach the throne and kneel down, showing respect for the king. <br/><br/>" +
+          this.commonCharacterText("“Welcome! I am Aeëtes, the King of Colchis. You look like you've had quite the journey. What brings you to these lands?”") + " The King says, his voice filling the halls.";
+      else if (pageCount === 2)
+        sceneText = "You try not to show your shock on your face. Aeëtes still rules these lands? He was the King in Jason's time, many years ago. You must tread lightly. <br/><br/>" +
+          this.thalesText("“My King, my name is-”") + "<br/><br/>" +
+          this.commonCharacterText("“Do speak up. Humans have <i>such</i> weak voices.”") + "<br/><br/>" +
+          this.thalesText("“My King”, you say louder, “my name is Thales and my companion is Zosime. We-”") + "<br/><br/>" +
+          this.commonCharacterText("“Ah, I do not believe you are from these lands, yes? I am not <i>your</i> King then. The distinction is quite important.” Aeëtes says offhandedly.");
+      else if (pageCount === 3)
+        sceneText = "Noticing your struggles, Zosime attempts to step in. " + this.zosimeText("“King Aeëtes, we have traveled here from Iolcus. We apologize for coming empty handed, but we wanted to warn you of the threats we have seen. Men who attack without minds or desires other than to kill. We have seen this at every stop we have made since the Propontis.”") + "<br/><br/>" +
+          "Aeëtes's gaze moves to Zosime as she speaks, and for a moment you can see the disgust in his eyes. His voice does not betray him though as he continues the conversation. <br/><br/>" +
+          this.commonCharacterText("“I see. Traveled from Iolcus, you say? I've heard tell of a pair traveling the world, following after our most renowned heroes. How remarkable. Tell me, how did you find these men? Have you brought any with you?”");
+      else if (pageCount === 4)
+        sceneText = this.zosimeText("“Brought them with us? No, we barely escaped with our lives thanks be to the gods. We slayed many to make it here.”") + "<br/><br/>" +
+          "His look of disgust returned. " + this.commonCharacterText("“I see. How grateful we must then be to the gods. Tell me, why are you here?”") + "<br/><br/>" +
+          "After regaining yourself, you return to the conversation. " + this.thalesText("“It is as you said, King Aeëtes. We have been following the path of Jason so that we can become the hero he once was. We were just hoping to make it here and perhaps see the Grove of Ares where the Golden Fleece once was, at least that was our goal before we were attacked.”");
+      else if (pageCount === 5)
+        sceneText = this.commonCharacterText("King Aeëtes's eyes lit up. “Of course! Come with me. You are more than welcome to see the Grove.”") + "<br/><br/>" +
+          "He stands and walks straight through the door you entered without sparing a glance at either of you. You look to Zosime, concern on your face. Aeëtes was an incredibly powerful sorcerer, and incredibly intelligent. You would need to keep your guard up. Zosime begins to follow the King before he gets too far ahead of you, and you follow suit.";
+    }
+    else if (storyId === 25) {
+      if (pageCount === 1)
+        sceneText = "You, Zosime, and Aeëtes make your way silently to the edge of the city. Despite how the King may act, his energy was unsettling and kept you on edge. The sooner you could be away from him, the better.<br/><br/>" +
+          "Soon you come upon a beautiful grove known as the Grove of Ares. To your surprise, the Golden Fleece that Jason had once stolen away was hanging at the center of a great oak tree.<br/><br/>" +
+          this.thalesText("“The golden fleece! It has returned?”") + " You say in surprise.";
+      if (pageCount === 2)
+        sceneText = "Aeëtes smiled. " + this.commonCharacterText("“The fleece was mine by right. I simply took back what belonged to me. I have shown you what you wanted to see, yes? I, in turn, have a request. You say you faced many of my people on your way here. I would like to see your power against theirs.”") +
+          "With the wave of his hand, out rose the lifeless husks from the earth. Within moments, you are surrounded. You have no choice but to fight your way out.";
+    }
+    else if (storyId === 26) {
+      if (pageCount === 1)
+        sceneText = "With each enemy you defeat, Aeëtes's thinly veiled rage grows. " + this.commonCharacterText("“Enough.”") + " He says, barely maintaining his calm. His smile returns, although this time the sinister mind behind the smile is hardly concealed. <br/><br/>" +
+          this.commonCharacterText("“I wanted to see your power, you've shown me. I must admit, I underestimated you. Your power over the dead is interesting, even though you are not its source. Regardless, you've now overstayed your welcome.”") + "<br/><br/>" +
+          "Behind Aeëtes, a massive serpent slithers its way through the forest. The Colchis Dragon, known around Greece as the immortal denizen of the Groves of Ares. The serpent stops just short of its master, keeping a watchful eye on you.";
+      if (pageCount === 2)
+        sceneText = this.commonCharacterText("“The people of this city are mine and mine alone. They would throw themselves at you to protect their King. Shall I show you?”") + "<br/><br/>" +
+          "Unbeknownst to you, a small mob of people began arriving during your trials. You look into the eyes of those closest to you and you see nothing behind them. Whatever witchcraft Aeëtes performed on the husks, it seems he has done on the people of this city as well. <br/><br/>" +
+          "If you are to cut Aeëtes down, you would have to fight all of Colchis to make it happen.";
+      if (pageCount === 3)
+        sceneText = "Begrudgingly, you begin to back out of the grove. Zosime follows your lead as the two of you make your way back through the city, the Colchians keeping a healthy distance. <br/><br/>" +
+          "As you make your way back to the docks, it would seem the captain of your vessel has also been made to feel unwelcome. His ship is ready to sail.<br/><br/>" +
+          this.zosimeText("“This place.. is like a nightmare.”") + " Zosime says to you as you board the ship. As soon as you step onto the boat, the Colchian people stop following and merely watch. In the distance, you can see Aeëtes behind them all. " + this.thalesText("“I don't know how, but we will stop this.”") + " You say.";
+    }
+    else if (storyId === 27) {
+      if (pageCount === 1)
+        sceneText = "A black cloud follows you as you make your way back the way you came. A ship from Colchis follows as far as the Sympegades before turning back. Whatever Aeëtes is up to, he does not want you interfering. You make your way to the stern of the boat where Zosime is standing, looking back towards Colchis. <br/><br/>" +
+          this.zosimeText("“That man is a monster. Did we do the right thing?”") + " She says, looking troubled. <br/><br/>" +
+          "You have been wrestling with the same question as well. Aeëtes was said to be immensely powerful, and the fear of failing your mission again no doubt impacted your decision. You close your eyes, trying to imagine how a hero would feel. What would Jason do?";
+      else if (pageCount === 2)
+        sceneText = this.thalesText("“We will return and set things right. I want to be the kind of hero who abolishes the evil in this world, and Ive never seen more evil in my life than in Colchis.") + "<br/><br/>" +
+          this.thalesText("But we'll need to be stronger. We'll need to figure out a way to beat Aeëtes without sacrificing a city.") + "<br/><br/>" +
+          this.thalesText("I've been thinking about this since we started our journey to Iolcus. I think it's time we attempt Heracles' trials again. If I want to be a hero, I have to be able to do what is right without fear of death. People need our help, and the only way we can do that is to keep moving forward.”");
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -338,6 +468,39 @@ export class StoryService {
     if (this.globalService.globalVar.currentStoryId === 16) {
       this.pageCount = 3;
     }
+    if (this.globalService.globalVar.currentStoryId === 17) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 18) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 19) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 20) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 21) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 22) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 23) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 24) {
+      this.pageCount = 5;
+    }
+    if (this.globalService.globalVar.currentStoryId === 25) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 26) {
+      this.pageCount = 3;
+    }
+    if (this.globalService.globalVar.currentStoryId === 27) {
+      this.pageCount = 2;
+    }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
 
@@ -360,7 +523,7 @@ export class StoryService {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack));
 
         if (this.deviceDetectorService.isMobile())
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay));
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay));
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
@@ -395,7 +558,6 @@ export class StoryService {
             this.globalService.globalVar.achievements.push(achievement);
           });
         }
-
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests));
@@ -414,6 +576,17 @@ export class StoryService {
 
       if (this.globalService.globalVar.currentStoryId === 17) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new side quest is available in the Ballad of the Underworld.");
+      }
+
+      if (this.globalService.globalVar.currentStoryId === 25) {
+        var groveOfAres = this.balladService.findSubzone(SubZoneEnum.ColchisGroveOfAres);
+        if (groveOfAres !== undefined) {
+          groveOfAres.isAvailable = true;
+
+          this.achievementService.createDefaultAchievementsForSubzone(groveOfAres.type).forEach(achievement => {
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
       }
     }
 
@@ -464,7 +637,7 @@ export class StoryService {
     if (scene === OptionalSceneEnum.CalydonDenMother) {
       if (pageCount === 1)
         sceneText = this.thalesText("“Here!”") + " You exclaim after catching a glimpse of a trail. You've watched Zosime examining animal tracks in search of the boar and finally found some yourself. " + this.thalesText("“It's this way!”") + " You call out, excitedly following your new found trail.<br/><br/>" +
-        "Zosime follows behind you more cautiously, seeing the tracks for the first time. " + this.zosimeText("“Thales… I don't think these are boar tracks.”") + " She says as she catches up to you. The tracks have led you down a wooded ravine to a small cave. As you peek your head inside expecting to see your prey, you are instead greeted by the angry bear who lives in this cave.";      
+          "Zosime follows behind you more cautiously, seeing the tracks for the first time. " + this.zosimeText("“Thales… I don't think these are boar tracks.”") + " She says as she catches up to you. The tracks have led you down a wooded ravine to a small cave. As you peek your head inside expecting to see your prey, you are instead greeted by the angry bear who lives in this cave.";
     }
     if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene1) {
       if (pageCount === 1)
@@ -485,7 +658,7 @@ export class StoryService {
     if (scene === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
       if (pageCount === 1)
         sceneText = "With a final blow, the shadow dissolves into nothingness. Almost immediately, the area brightens back to normal levels. All of the fighting seems to have barely phased Hypnos, although he did seem to waken.<br/><br/>" +
-          this.commonCharacterText("“I was having quite the nightmare. Thanks for that...”") + " He murmurs, falling back asleep. Your job complete, you make your way back to the shade to deliver the good news.";      
+          this.commonCharacterText("“I was having quite the nightmare. Thanks for that...”") + " He murmurs, falling back asleep. Your job complete, you make your way back to the shade to deliver the good news.";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");

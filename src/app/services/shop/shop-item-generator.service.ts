@@ -181,6 +181,15 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.GemmedNecklace) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500));
     }
+    if (item === ItemsEnum.DiamondHammer) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
+    }
+    if (item === ItemsEnum.EagleEye) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
+    }
+    if (item === ItemsEnum.GoldenSword) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

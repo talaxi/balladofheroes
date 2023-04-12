@@ -130,9 +130,11 @@ export class VersionControlService {
           });
         }
         if (version === .4) { 
+          this.globalService.globalVar.keybinds.set("openJewelcraftingQuickView", "keyJ");
+          this.globalService.globalVar.settings.set("displayQuickViewJewelcrafting", true);
           this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", true);
           this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", true);
-          
+
           var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
           if (hades !== undefined)
             this.globalService.assignGodAbilityInfo(hades);

@@ -11,6 +11,8 @@
   </button>
   <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
     to Hades <app-notification-icon [isButton]="true"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
+      to the King <app-notification-icon [isButton]="true"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText"
     (click)="openShop(option, coliseumModal)">
     {{getOptionText(option.type)}}</button>

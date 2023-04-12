@@ -16,6 +16,7 @@ declare var LZString: any;
 import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
 import { PatreonAccessService } from 'src/app/services/utility/patreon-access.service';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-settings-view',
@@ -35,13 +36,21 @@ export class SettingsViewComponent implements OnInit {
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
     private versionControlService: VersionControlService, private codeCreationService: CodeCreationService,
-    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService) { }
+    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService, private lookupService: LookupService) { }
 
   ngOnInit(): void {
-    if (this.deploymentService.codeCreationMode)
+    if (this.deploymentService.codeCreationMode) {
       console.log(this.globalService.globalVar);
-    //console.log(JSON.stringify(this.globalService.globalVar));
-    
+      console.log(JSON.stringify(this.globalService.globalVar));
+
+      /*console.log(this.lookupService.getAgilityPerAttackForAttackCount(2));
+      console.log(this.lookupService.getAgilityPerAttackForAttackCount(3));
+      console.log(this.lookupService.getAgilityPerAttackForAttackCount(4));
+      console.log(this.lookupService.getAgilityPerAttackForAttackCount(5));
+      console.log(this.lookupService.getAgilityPerAttackForAttackCount(6));
+      console.log(this.lookupService.getAgilityPerAttackForAttackCount(7));*/
+    }
+
     //this.patreonAccessService.getPatronList();
 
     if (this.deploymentService.codeCreationMode)

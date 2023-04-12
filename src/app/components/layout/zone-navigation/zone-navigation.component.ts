@@ -60,6 +60,7 @@ export class ZoneNavigationComponent implements OnInit {
   displayQuickViewItemBelt: boolean;
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
+  displayQuickViewJewelcrafting: boolean;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -81,6 +82,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.displayQuickViewItemBelt = this.globalService.globalVar.settings.get("displayQuickViewItemBelt") ?? false;
     this.displayQuickViewAltars = this.globalService.globalVar.settings.get("displayQuickViewAltars") ?? false;
     this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
+    this.displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting") ?? false;
 
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
@@ -189,52 +191,6 @@ export class ZoneNavigationComponent implements OnInit {
       this.dialog.closeAll();
     }
   }
-
-  /*jumpToLatestGeneralStore() {
-    var latestShop: SubZone = this.balladService.getActiveSubZone();
-    var relatedZone: Zone | undefined = this.balladService.getActiveZone();
-    var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
-
-    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
-      ballad.isSelected = false;
-      if (ballad.zones !== undefined && ballad.zones.length > 0)
-        ballad.zones.filter(item => item.isAvailable).forEach(zone => {
-          zone.isSelected = false;
-          if (zone.subzones !== undefined && zone.subzones.length > 0)
-            zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
-              subzone.isSelected = false;
-              if (subzone.isGeneralStore()) {
-                latestShop = subzone;
-                relatedZone = zone;
-                relatedBallad = ballad;
-              }
-            });
-        });
-    });
-
-    latestShop.isSelected = true;
-    latestShop.notify = false;
-    if (relatedZone !== undefined)
-      relatedZone.isSelected = true;
-    if (relatedBallad !== undefined)
-      relatedBallad.isSelected = true;
-    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
-    this.globalService.resetCooldowns();
-    this.dpsCalculatorService.rollingAverageTimer = 0;
-    this.dpsCalculatorService.partyDamagingActions = [];
-    this.dpsCalculatorService.enemyDamagingActions = [];
-    this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-
-    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-
-    this.globalService.globalVar.settings.set("autoProgress", false);
-    if (this.isMobile)
-    {
-      this.dialog.closeAll();
-    }
-  }*/
 
   jumpToPalaceOfHades() {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades);
@@ -384,6 +340,8 @@ export class ZoneNavigationComponent implements OnInit {
     var name = "";
     if (this.quickView === QuickViewEnum.Alchemy)
       name = "Alchemy ";
+      if (this.quickView === QuickViewEnum.Jewelcrafting)
+      name = "Jewelcrafting ";
     else if (this.quickView === QuickViewEnum.Jump)
       name = "Travel ";
     else if (this.quickView === QuickViewEnum.Resources)
@@ -396,6 +354,10 @@ export class ZoneNavigationComponent implements OnInit {
 
   isAlchemyAvailable() {
     return this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)?.isUnlocked;
+  }
+
+  isJewelcraftingAvailable() {
+    return this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)?.isUnlocked;
   }
 
   areAltarsAvailable() {
@@ -433,6 +395,9 @@ export class ZoneNavigationComponent implements OnInit {
     }
     if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)?.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAlchemyQuickView"))) {
       this.setQuickView(QuickViewEnum.Alchemy);
+    }
+    if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)?.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openJewelcraftingQuickView"))) {
+      this.setQuickView(QuickViewEnum.Jewelcrafting);
     }
     if (this.globalService.globalVar.altars.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAltarsQuickView"))) {
       this.setQuickView(QuickViewEnum.Altars);

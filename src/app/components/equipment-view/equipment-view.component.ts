@@ -8,6 +8,7 @@ import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.mode
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -265,6 +266,11 @@ export class EquipmentViewComponent implements OnInit {
     }
 
     this.setUpAvailableEquipment();
+  }
+
+  slottingAvailable(equipment: ResourceValue) {
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);      
+    return (jewelcrafting !== undefined && jewelcrafting.isUnlocked) || this.equipmentPieceHasSlots(equipment);
   }
 
   //true if item has slots by default or you've added extras to an item that are slots

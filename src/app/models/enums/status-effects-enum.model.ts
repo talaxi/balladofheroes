@@ -99,5 +99,8 @@ export enum StatusEffectEnum {
     RepeatAbility,
     LordOfTheUnderworld,
     Onslaught,
-    Untargetable
+    Untargetable,
+    AoeDamageUp,
+    RandomPrimaryStatDownExcludeHp,
+    BattleItemEffectUp,
   }

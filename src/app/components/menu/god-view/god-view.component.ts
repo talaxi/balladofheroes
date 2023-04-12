@@ -345,6 +345,26 @@ export class GodViewComponent implements OnInit {
     return this.god.statGain.healingDone + this.god.permanentStatGain.healingDone;
   }
 
+  getAoeDamageBonus() {
+    return this.god.statGain.aoeDamage + this.god.permanentStatGain.aoeDamage;
+  }
+
+  getThornsBonus() {
+    return this.god.statGain.thorns + this.god.permanentStatGain.thorns;
+  }
+
+  getAbilityCooldownReductionWithBuffsBonus() {
+    return this.god.statGain.abilityCooldownReductionWithBuffs + this.god.permanentStatGain.abilityCooldownReductionWithBuffs;
+  }
+
+  getAbilityCooldownReductionStartBonus() {
+    return this.god.statGain.abilityCooldownReductionStart + this.god.permanentStatGain.abilityCooldownReductionStart;
+  }
+
+  getTickFrequencyBonus() {
+    return this.god.statGain.tickFrequency + this.god.permanentStatGain.tickFrequency;
+  }
+
   getAbilityCooldownReductionBonus() {
     return this.god.statGain.abilityCooldownReduction + this.god.permanentStatGain.abilityCooldownReduction;
   }

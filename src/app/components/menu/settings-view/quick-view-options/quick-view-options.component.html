@@ -18,13 +18,17 @@
             <mat-checkbox *ngIf="isMobile" [(ngModel)]="displayQuickViewItemBelt" (input)="displayQuickViewItemBeltToggle()">
                 Item Belt
             </mat-checkbox>
-            <br />
+            <br *ngIf="altarsUnlocked" />
             <mat-checkbox *ngIf="altarsUnlocked" [(ngModel)]="displayQuickViewAltars" (input)="displayQuickViewAltarsToggle()">
                 Altars
             </mat-checkbox>
-            <br />
+            <br  *ngIf="alchemyUnlocked" />
             <mat-checkbox *ngIf="alchemyUnlocked" [(ngModel)]="displayQuickViewAlchemy" (input)="displayQuickViewAlchemyToggle()">
                 Alchemy
+            </mat-checkbox>
+            <br *ngIf="jewelcraftingUnlocked" />
+            <mat-checkbox *ngIf="jewelcraftingUnlocked" [(ngModel)]="displayQuickViewJewelcrafting" (input)="displayQuickViewJewelcraftingToggle()">
+                Jewelcrafting
             </mat-checkbox>
         </div>
     </div>

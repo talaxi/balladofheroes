@@ -390,7 +390,7 @@ export class GlobalService {
       staccato.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       staccato.cooldown = staccato.currentCooldown = 35;
       staccato.dealsDirectDamage = false;
-      staccato.userEffect.push(this.createStatusEffect(StatusEffectEnum.Staccato, 10, 1.2, false, true));
+      staccato.userEffect.push(this.createStatusEffect(StatusEffectEnum.Staccato, 10, 1.15, false, true));
       god.abilityList.push(staccato);
 
       var fortissimo = new Ability();
@@ -400,7 +400,7 @@ export class GlobalService {
       fortissimo.cooldown = fortissimo.currentCooldown = 45;
       fortissimo.dealsDirectDamage = false;
       fortissimo.secondaryEffectiveness = 1.01;
-      fortissimo.userEffect.push(this.createStatusEffect(StatusEffectEnum.Fortissimo, 8, 1.2, false, true));
+      fortissimo.userEffect.push(this.createStatusEffect(StatusEffectEnum.Fortissimo, 8, 1.15, false, true));
       god.abilityList.push(fortissimo);
 
       var coda = new Ability();
@@ -491,7 +491,7 @@ export class GlobalService {
       god.abilityList.push(earthquake);
 
       var disaster = new Ability();
-      disaster.name = "Disaster";
+      disaster.name = "Natural Disaster";
       disaster.requiredLevel = this.utilityService.godAbility3Level;
       disaster.isAvailable = false;
       disaster.cooldown = disaster.currentCooldown = 70;
@@ -698,7 +698,8 @@ export class GlobalService {
       || type === StatusEffectEnum.AirDamageUp || type === StatusEffectEnum.HolyDamageUp || type === StatusEffectEnum.LightningDamageUp || type === StatusEffectEnum.WaterDamageUp || type === StatusEffectEnum.EarthDamageDown || type === StatusEffectEnum.FireDamageDown
       || type === StatusEffectEnum.AirDamageDown || type === StatusEffectEnum.HolyDamageDown || type === StatusEffectEnum.LightningDamageDown || type === StatusEffectEnum.WaterDamageDown || type === StatusEffectEnum.EarthDamageTakenUp || type === StatusEffectEnum.FireDamageTakenUp
       || type === StatusEffectEnum.AirDamageTakenUp || type === StatusEffectEnum.HolyDamageTakenUp || type === StatusEffectEnum.LightningDamageTakenUp || type === StatusEffectEnum.WaterDamageTakenUp || type === StatusEffectEnum.EarthDamageTakenDown || type === StatusEffectEnum.FireDamageTakenDown
-      || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown )
+      || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
+      type === StatusEffectEnum.AoeDamageUp)
       refreshes = true;
 
     return refreshes;
@@ -761,6 +762,11 @@ export class GlobalService {
     character.battleStats.armorPenetration = this.equipmentService.getTotalArmorPenetrationGain(character.equipmentSet);
     character.battleStats.healingReceived = this.equipmentService.getTotalHealingReceivedGain(character.equipmentSet);
     character.battleStats.healingDone = this.equipmentService.getTotalHealingDoneGain(character.equipmentSet);
+    character.battleStats.aoeDamage = this.equipmentService.getTotalAoeDamageGain(character.equipmentSet);
+    character.battleStats.thorns = this.equipmentService.getTotalThornsGain(character.equipmentSet);
+    character.battleStats.tickFrequency = this.equipmentService.getTotalTickFrequencyGain(character.equipmentSet);
+    character.battleStats.abilityCooldownReductionStart = (1 - this.equipmentService.getTotalAbilityCooldownReductionStartGain(character.equipmentSet));
+    character.battleStats.abilityCooldownReductionWithBuffs = (1 - this.equipmentService.getTotalAbilityCooldownReductionWithBuffsGain(character.equipmentSet));
     character.battleStats.overdriveGainFromAutoAttacks = this.equipmentService.getTotalOverdriveGainFromAutoAttacksGain(character.equipmentSet);
     character.battleStats.debuffDuration = this.equipmentService.getTotalDebuffDurationGain(character.equipmentSet);
     character.battleStats.overdriveGain = this.equipmentService.getTotalOverdriveGain(character.equipmentSet);
@@ -799,6 +805,11 @@ export class GlobalService {
       character.battleStats.debuffDuration += god1.statGain.debuffDuration + god1.permanentStatGain.debuffDuration;
       character.battleStats.overdriveGainFromAutoAttacks += god1.statGain.overdriveGainFromAutoAttacks + god1.permanentStatGain.overdriveGainFromAutoAttacks;
       character.battleStats.healingDone += god1.statGain.healingDone + god1.permanentStatGain.healingDone;
+      character.battleStats.aoeDamage += god1.statGain.aoeDamage + god1.permanentStatGain.aoeDamage;
+      character.battleStats.tickFrequency += god1.statGain.tickFrequency + god1.permanentStatGain.tickFrequency;
+      character.battleStats.thorns += god1.statGain.thorns + god1.permanentStatGain.thorns;
+      character.battleStats.abilityCooldownReductionStart *= (1 - (god1.statGain.abilityCooldownReductionStart + god1.permanentStatGain.abilityCooldownReductionStart));
+      character.battleStats.abilityCooldownReductionWithBuffs *= (1 - (god1.statGain.abilityCooldownReductionWithBuffs + god1.permanentStatGain.abilityCooldownReductionWithBuffs));
       character.battleStats.elementIncrease.increaseByStatArray(god1.statGain.elementIncrease);
       character.battleStats.elementIncrease.increaseByStatArray(god1.permanentStatGain.elementIncrease);
       character.battleStats.elementResistance.increaseByStatArray(god1.statGain.elementResistance);
@@ -824,6 +835,11 @@ export class GlobalService {
       character.battleStats.debuffDuration += god2.statGain.debuffDuration + god2.permanentStatGain.debuffDuration;
       character.battleStats.overdriveGainFromAutoAttacks += god2.statGain.overdriveGainFromAutoAttacks + god2.permanentStatGain.overdriveGainFromAutoAttacks;
       character.battleStats.healingDone += god2.statGain.healingDone + god2.permanentStatGain.healingDone;
+      character.battleStats.aoeDamage += god2.statGain.aoeDamage + god2.permanentStatGain.aoeDamage;
+      character.battleStats.thorns += god2.statGain.thorns + god2.permanentStatGain.thorns;
+      character.battleStats.tickFrequency += god2.statGain.tickFrequency + god2.permanentStatGain.tickFrequency;
+      character.battleStats.abilityCooldownReductionWithBuffs *= (1 - (god2.statGain.abilityCooldownReductionWithBuffs + god2.permanentStatGain.abilityCooldownReductionWithBuffs));
+      character.battleStats.abilityCooldownReductionStart *= (1 - (god2.statGain.abilityCooldownReductionStart + god2.permanentStatGain.abilityCooldownReductionStart));
       character.battleStats.elementIncrease.increaseByStatArray(god2.statGain.elementIncrease);
       character.battleStats.elementIncrease.increaseByStatArray(god2.permanentStatGain.elementIncrease);
       character.battleStats.elementResistance.increaseByStatArray(god2.statGain.elementResistance);
@@ -841,6 +857,11 @@ export class GlobalService {
     character.battleStats.debuffDuration += this.charmService.getTotalDebuffDurationAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.overdriveGainFromAutoAttacks += this.charmService.getTotalOverdriveGainFromAutoAttacksAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.healingDone += this.charmService.getTotalHealingDoneAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.aoeDamage += this.charmService.getTotalAoeDamageAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.thorns += this.charmService.getTotalThornsAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.tickFrequency += this.charmService.getTotalTickFrequencyAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.abilityCooldownReductionWithBuffs *= (1 - this.charmService.getTotalAbilityCooldownReductionWithBuffsFromCharms(this.globalVar.resources, character));
+    character.battleStats.abilityCooldownReductionStart *= (1 - this.charmService.getTotalAbilityCooldownReductionStartAdditionFromCharms(this.globalVar.resources, character));
 
     character.battleStats.elementIncrease.holy += this.charmService.getTotalHolyDamageIncreaseAdditionFromCharms(this.globalVar.resources);
     character.battleStats.elementIncrease.fire += this.charmService.getTotalFireDamageIncreaseAdditionFromCharms(this.globalVar.resources);
@@ -1416,7 +1437,7 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .025;
+        userGainsEffect.effectiveness += .02;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1474,18 +1495,20 @@ export class GlobalService {
         userGainsSecondEffect.duration += .5;
       }
       else {
-        userGainsEffect.effectiveness += .01;
-        userGainsSecondEffect.effectiveness += .01;
+        userGainsEffect.effectiveness += .0075;
+        userGainsSecondEffect.effectiveness += .0075;
       }
     }
     else if (god.type === GodEnum.Apollo) {
+      if (ability.abilityUpgradeLevel === 33 || ability.abilityUpgradeLevel === 66)
+        ability.secondaryEffectiveness += .02;
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= .5;
       else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .025;
+        userGainsEffect.effectiveness += .02;
     }
     else if (god.type === GodEnum.Zeus) {
 
@@ -1552,7 +1575,7 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .025;
+        userGainsEffect.effectiveness += .02;
     }
     else if (god.type === GodEnum.Zeus) {
 

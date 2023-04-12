@@ -2,7 +2,8 @@
     <div class="characterInfo">
         <div class="god1Info">
             <div *ngIf="isMobile && hasMoreThanOneCharacter()" class="centeredText">
-                <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon" src="assets/svg/uparrow.svg"></button>
+                <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon"
+                        src="assets/svg/uparrow.svg"></button>
             </div>
         </div>
         <div class="baseInfo">
@@ -22,7 +23,8 @@
         </div>
         <div class="god2Info">
             <div *ngIf="isMobile && hasMoreThanOneCharacter()" class="centeredText">
-            <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon" src="assets/svg/dropdown.svg"></button>
+                <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon"
+                        src="assets/svg/dropdown.svg"></button>
             </div>
         </div>
     </div>
@@ -125,6 +127,27 @@
                         [contentTemplate]="healingDonePopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Done Bonus:</strong>
                         {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getTickFrequencyBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Tick Frequency Bonus:</strong>
+                        {{(getTickFrequencyBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getAoeDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="aoeDamagePopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Multiple Target Damage Bonus:</strong>
+                        {{(getAoeDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getThornsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="thornsPopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Thorns:</strong>
+                        {{(getThornsBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="abilityCooldownReductionStartPopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
+                        {{(getAbilityCooldownReductionStartBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                    <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
+                        {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
+
                 </div>
                 <div class="secondaryColumn2">
                     <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
@@ -203,7 +226,8 @@
             (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
         <div class="sectionInfo">
             <div *ngFor="let ability of characterAbilityList">
-                <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{ability.name}}</strong><span class="statValue"> -
+                <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{ability.name}}</strong><span
+                    class="statValue"> -
                     <span
                         [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span></span>
 
@@ -212,8 +236,7 @@
                     <div>
                         <span>Upgrade Level {{getAbilityUpgradeLevel(ability)}}</span>
                         <hr class="miniHr" />
-                        <div class="statBreakdown"
-                            [innerHtml]="this.getAbilityUpgradeBreakdown(ability)">
+                        <div class="statBreakdown" [innerHtml]="this.getAbilityUpgradeBreakdown(ability)">
 
                         </div>
                     </div>
@@ -420,6 +443,61 @@
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getAutoAttackCooldownReductionStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #abilityCooldownReductionWithBuffsPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionWithBuffsBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getAbilityCooldownReductionWithBuffsStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #abilityCooldownReductionStartPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionStartBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getAbilityCooldownReductionStartStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #thornsPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getThornsBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getThornsBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #aoeDamagePopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAoeDamageBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getAoeDamageBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #tickFrequencyPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getTickFrequencyBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getTickFrequencyBonusStatBreakdown(this.character)">
 
         </div>
     </div>

@@ -28,14 +28,20 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.MaxHpDown || effect.type === StatusEffectEnum.MaxHpUp ||
       effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp ||
       effect.type === StatusEffectEnum.DamageDealtDown || effect.type === StatusEffectEnum.DamageDealtUp ||
-      effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp)
+      effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp ||
+      effect.type === StatusEffectEnum.BattleItemEffectUp)
       return true;
 
     return false;
   }
 
   isSplitStatUpDownEffect(effect: StatusEffect) {
-    if (effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown)
+    if (effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown ||
+      effect.type === StatusEffectEnum.AirDamageUp || effect.type === StatusEffectEnum.AirDamageDown ||
+      effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageDown ||
+      effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageDown ||
+      effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown ||
+      effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown)
       return true;
 
     return false;
@@ -66,6 +72,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "TKN";
     if (effect.type === StatusEffectEnum.Dead)
       return "KO";
+    if (effect.type === StatusEffectEnum.BattleItemEffectUp)
+      return "ITM";
 
     return effect.type;
   }
@@ -75,6 +83,16 @@ export class IndividualStatusEffectViewComponent implements OnInit {
 
     if (effect.type === StatusEffectEnum.EarthDamageUp)
       img = "assets/svg/earth.svg";
+      if (effect.type === StatusEffectEnum.AirDamageUp)
+      img = "assets/svg/air.svg";
+      if (effect.type === StatusEffectEnum.HolyDamageUp)
+      img = "assets/svg/holy.svg";
+      if (effect.type === StatusEffectEnum.LightningDamageUp)
+      img = "assets/svg/lightning.svg";
+      if (effect.type === StatusEffectEnum.FireDamageUp)
+      img = "assets/svg/fire.svg";
+      if (effect.type === StatusEffectEnum.WaterDamageUp)
+      img = "assets/svg/water.svg";
 
     return img;
   }
@@ -186,6 +204,18 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.ReduceDirectDamage) {
       src += "reduceDirectDamage.svg";
+    }
+    if (effect.type === StatusEffectEnum.BlessingOfDionysus) {
+      src += "boonOfDionysus.svg";
+    }
+    if (effect.type === StatusEffectEnum.Untargetable) {
+      src += "plunge.svg";
+    }
+    if (effect.type === StatusEffectEnum.LordOfTheUnderworld) {
+      src += "lordOfTheUnderworld.svg";
+    }
+    if (effect.type === StatusEffectEnum.Onslaught) {
+      src += "onslaught.svg";
     }
 
     return src;

@@ -445,6 +445,8 @@ export class ResourceGeneratorService {
 
   getSlotItemValues(item: ItemsEnum) {   
     var baseLesserCrackedStatValue = 10; 
+    var hpModifier = 5;
+    var defensiveModifier = 1.25;
     if (item === ItemsEnum.LesserCrackedOpal) {
       return new CharacterStats(0, baseLesserCrackedStatValue, 0, 0, 0, 0);
     }
@@ -455,13 +457,13 @@ export class ResourceGeneratorService {
       return new CharacterStats(0, 0, 0, baseLesserCrackedStatValue, 0, 0);
     }
     if (item === ItemsEnum.LesserCrackedEmerald) {
-      return new CharacterStats(0, 0, baseLesserCrackedStatValue, 0, 0, 0);
+      return new CharacterStats(0, 0, baseLesserCrackedStatValue * defensiveModifier, 0, 0, 0);
     }
     if (item === ItemsEnum.LesserCrackedAmethyst) {
-      return new CharacterStats(0, 0, 0, 0, 0, baseLesserCrackedStatValue);
+      return new CharacterStats(0, 0, 0, 0, 0, baseLesserCrackedStatValue * defensiveModifier);
     }
     if (item === ItemsEnum.LesserCrackedTopaz) {
-      return new CharacterStats(baseLesserCrackedStatValue * 5, 0, 0, 0, 0, 0);
+      return new CharacterStats(baseLesserCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
     var baseCrackedStatValue = 20;
@@ -475,13 +477,13 @@ export class ResourceGeneratorService {
       return new CharacterStats(0, 0, 0, baseCrackedStatValue, 0, 0);
     }
     if (item === ItemsEnum.CrackedEmerald) {
-      return new CharacterStats(0, 0, baseCrackedStatValue, 0, 0, 0);
+      return new CharacterStats(0, 0, baseCrackedStatValue * defensiveModifier, 0, 0, 0);
     }
     if (item === ItemsEnum.CrackedAmethyst) {
-      return new CharacterStats(0, 0, 0, 0, 0, baseCrackedStatValue);
+      return new CharacterStats(0, 0, 0, 0, 0, baseCrackedStatValue * defensiveModifier);
     }
     if (item === ItemsEnum.CrackedTopaz) {
-      return new CharacterStats(baseCrackedStatValue * 5, 0, 0, 0, 0, 0);
+      return new CharacterStats(baseCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);

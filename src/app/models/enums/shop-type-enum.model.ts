@@ -7,5 +7,6 @@ export enum ShopTypeEnum {
   Story,
   Coliseum,
   Traveler, //teaches other classes
-  Jewelcrafter
+  Jewelcrafter,
+  StoryScene24
 }

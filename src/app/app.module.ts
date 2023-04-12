@@ -101,6 +101,7 @@ import { OverlayNotificationOptionsComponent } from './components/menu/settings-
 import { ProfessionsViewComponent } from './components/menu/professions-view/professions-view.component';
 import { SlotMenuViewComponent } from './components/equipment-view/slot-menu-view/slot-menu-view.component';
 import { JewelcraftingViewComponent } from './components/subcomponents/jewelcrafting-view/jewelcrafting-view.component';
+import { JewelcraftingOverviewComponent } from './components/layout/zone-navigation/jewelcrafting-overview/jewelcrafting-overview.component';
 
 @NgModule({
   declarations: [
@@ -166,7 +167,8 @@ import { JewelcraftingViewComponent } from './components/subcomponents/jewelcraf
     OverlayNotificationOptionsComponent,
     ProfessionsViewComponent,
     SlotMenuViewComponent,
-    JewelcraftingViewComponent,    
+    JewelcraftingViewComponent,
+    JewelcraftingOverviewComponent,    
   ],
   imports: [
     BrowserModule,

@@ -78,10 +78,10 @@ export class JewelcraftingService {
       }
     }
     if (jewelcrafting.level >= 7) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorWeaponSlotAddition)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorWeaponSlotAddition));
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorArmorSlotAddition)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorArmorSlotAddition));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.MinorWeaponSlotAddition);
+        this.updateGameLogWithNewRecipe(ItemsEnum.MinorArmorSlotAddition);
       }
     }
     if (jewelcrafting.level >= 10) {
@@ -106,6 +106,69 @@ export class JewelcraftingService {
       }
     }    
     if (jewelcrafting.level >= 25) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorNecklaceSlotAddition)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorNecklaceSlotAddition));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MinorNecklaceSlotAddition);
+      }
+    }
+    if (jewelcrafting.level >= 26) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullRuby)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullRuby));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.DullRuby);
+      }
+    }
+    if (jewelcrafting.level >= 27) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullAquamarine)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullAquamarine));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.DullAquamarine);
+      }
+    }
+    if (jewelcrafting.level >= 29) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorWeaponSlotAddition)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorWeaponSlotAddition));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MinorWeaponSlotAddition);
+      }
+    }
+    if (jewelcrafting.level >= 32) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullOpal)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullOpal));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.DullOpal);
+      }
+    }
+    if (jewelcrafting.level >= 35) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullTopaz)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullTopaz));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.DullTopaz);
+      }
+    }
+    if (jewelcrafting.level >= 40) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorShieldSlotAddition)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorShieldSlotAddition));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MinorShieldSlotAddition);
+      }
+    }
+    if (jewelcrafting.level >= 45) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullAmethyst)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullAmethyst));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.DullAmethyst);
+      }
+    }
+    if (jewelcrafting.level >= 45) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullEmerald)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullEmerald));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.DullEmerald);
+      }
+    }
+    if (jewelcrafting.level >= 50) {
       if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorRingSlotAddition)) {
         jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorRingSlotAddition));
         newRecipeLearned = true;
@@ -260,7 +323,7 @@ export class JewelcraftingService {
       recipe.expGain = 5;
     }
     if (item === ItemsEnum.MinorWeaponSlotAddition) {
-      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
 
@@ -272,7 +335,7 @@ export class JewelcraftingService {
       recipe.expGain = 10;
     }
     if (item === ItemsEnum.MinorRingSlotAddition) {
-      recipe.quality = EquipmentQualityEnum.Basic;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
 
@@ -282,6 +345,108 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
       recipe.expGain = 10;
+    }
+    if (item === ItemsEnum.MinorArmorSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.HeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
+
+      recipe.expGain = 10;
+    }
+    if (item === ItemsEnum.MinorShieldSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.HeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
+
+      recipe.expGain = 10;
+    }
+    if (item === ItemsEnum.MinorNecklaceSlotAddition) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.HeatingMetal);
+      recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
+      recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
+
+      recipe.expGain = 10;
+    }
+    if (item === ItemsEnum.DullRuby) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 3;
+    }
+    if (item === ItemsEnum.DullAquamarine) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 3;
+    }
+    if (item === ItemsEnum.DullOpal) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 3;
+    }
+    if (item === ItemsEnum.DullTopaz) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 5;
+    }
+    if (item === ItemsEnum.DullAmethyst) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 5;
+    }
+    if (item === ItemsEnum.DullEmerald) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 200));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 5;
     }
 
     return recipe;

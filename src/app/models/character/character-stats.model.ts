@@ -25,6 +25,11 @@ export class CharacterStats {
     debuffDuration: number;
     overdriveGainFromAutoAttacks: number;
     healingDone: number;
+    aoeDamage: number;
+    tickFrequency: number;
+    abilityCooldownReductionWithBuffs: number;
+    thorns: number;
+    abilityCooldownReductionStart: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
@@ -47,6 +52,11 @@ export class CharacterStats {
         this.debuffDuration = 0;
         this.overdriveGainFromAutoAttacks = 0;
         this.healingDone = 0;
+        this.aoeDamage = 0;
+        this.tickFrequency = 0;
+        this.abilityCooldownReductionWithBuffs = 0;
+        this.abilityCooldownReductionStart = 0;
+        this.thorns = 0;
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {

@@ -4,6 +4,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -28,8 +30,13 @@ export class CurrentEquipmentViewComponent implements OnInit {
   }
 
   getEquippedItemResourceByType(type: EquipmentTypeEnum) {
-    var item = this.getEquippedItemByType(type);
+    var item = this.getEquippedItemByType(type);    
     return item?.associatedResource;
+  }
+
+  slottingAvailable(type: EquipmentTypeEnum) {
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);      
+    return (jewelcrafting !== undefined && jewelcrafting.isUnlocked) || this.equipmentPieceHasSlots(type);
   }
 
   equipmentPieceHasSlots(type: EquipmentTypeEnum) {

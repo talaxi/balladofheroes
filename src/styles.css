@@ -64,6 +64,7 @@
 }
 
 .jewelcrafting-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--jewelcraftingColor) !important;
   filter: brightness(50%);
 }
 
@@ -164,7 +165,7 @@
   --extraordinaryEquipmentColor: #F79721;
   --uniqueEquipmentColor: #FF6250;
   --alchemyColor: #CE66E9;
-  --jewelcraftingColor: #C5B45A;
+  --jewelcraftingColor: #ff9d00;
 
   --resourceKeywordColor: #EAAD91;
   --insufficientResourcesKeywordColor: #7a818c;

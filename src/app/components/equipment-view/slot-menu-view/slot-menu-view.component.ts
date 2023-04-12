@@ -7,6 +7,8 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MatDialog } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
+import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 
 @Component({
   selector: 'app-slot-menu-view',
@@ -30,10 +32,15 @@ export class SlotMenuViewComponent {
 
   ngOnInit() {
     this.assignResource();
-    this.availableGems = this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.SlotItem)
+    this.availableGems = this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.SlotItem);
+    this.removeUnavailableGems();
   }
 
   getItemName(gem: ResourceValue) {
+    return "<strong class='" + this.lookupService.getEquipmentQualityClass(this.lookupService.getSlotItemQuality(gem.item)) + "'>" + this.lookupService.getItemName(gem.item) + "</strong>";
+  }
+
+  getItemNameWithCount(gem: ResourceValue) {
     return "<strong class='" + this.lookupService.getEquipmentQualityClass(this.lookupService.getSlotItemQuality(gem.item)) + "'>" + this.lookupService.getItemName(gem.item) + "</strong> x" + gem.amount;
   }
 
@@ -81,10 +88,46 @@ export class SlotMenuViewComponent {
   }
 
   slotsAvailable() {
-    return this.lookupService.getNumberOfOpenSlots(this.resource);
+    if (this.lookupService.isItemAddingASlot(this.selectedItem === undefined ? ItemsEnum.None : this.selectedItem.item))
+      return (this.lookupService.getMaxSlotsPerItem(this.resource) - this.lookupService.getTotalNumberOfSlots(this.resource)) > 0;
+    else
+      return this.lookupService.getNumberOfOpenSlots(this.resource);
   }
 
   closeModal() {
     this.dialogRef.close();
+  }
+
+  removeUnavailableGems() {
+    if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Weapon)
+    {
+    this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
+      item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition);
+    }
+    if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Shield)
+    {
+    this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
+      item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorWeaponSlotAddition);
+    }
+    if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Ring)
+    {
+    this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorWeaponSlotAddition &&
+      item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition);
+    }
+    if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Necklace)
+    {
+    this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
+      item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition);
+    }
+    if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Armor)
+    {
+    this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
+      item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition);
+    }
+
+    if (this.resourceAsEquipment.quality > EquipmentQualityEnum.Rare) {
+      this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
+        item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition && item.item !== ItemsEnum.MinorArmorSlotAddition);
+    }
   }
 }

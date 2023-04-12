@@ -16,9 +16,11 @@ export class QuickViewOptionsComponent {
   displayQuickViewItemBelt: boolean;
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
+  displayQuickViewJewelcrafting: boolean;
 
   altarsUnlocked = false;
   alchemyUnlocked = false;
+  jewelcraftingUnlocked = false;
 
   constructor(private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService) {
 
@@ -29,6 +31,8 @@ export class QuickViewOptionsComponent {
     this.altarsUnlocked = this.globalService.globalVar.altars.isUnlocked;
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.alchemyUnlocked = alchemy !== undefined && alchemy.isUnlocked;
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+    this.jewelcraftingUnlocked = jewelcrafting !== undefined && jewelcrafting.isUnlocked;
 
     var displayQuickViewOverview = this.globalService.globalVar.settings.get("displayQuickViewOverview");    
     if (displayQuickViewOverview === undefined)
@@ -65,6 +69,12 @@ export class QuickViewOptionsComponent {
       this.displayQuickViewAlchemy = false;
     else
       this.displayQuickViewAlchemy = displayQuickViewAlchemy;
+
+      var displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting");
+      if (displayQuickViewJewelcrafting === undefined)
+        this.displayQuickViewJewelcrafting = false;
+      else
+        this.displayQuickViewJewelcrafting = displayQuickViewJewelcrafting;
   }
 
   displayQuickViewOverviewToggle() {
@@ -89,5 +99,9 @@ export class QuickViewOptionsComponent {
   
   displayQuickViewAlchemyToggle() {
     this.globalService.globalVar.settings.set("displayQuickViewAlchemy", this.displayQuickViewAlchemy);
+  }
+
+  displayQuickViewJewelcraftingToggle() {
+    this.globalService.globalVar.settings.set("displayQuickViewJewelcrafting", this.displayQuickViewJewelcrafting);
   }
 }

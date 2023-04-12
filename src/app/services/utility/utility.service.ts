@@ -42,7 +42,7 @@ export class UtilityService {
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
-  public firstJewelcraftingLevelCap = 25;
+  public firstJewelcraftingLevelCap = 50; //TODO: make 25
   public jewelcraftingLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;

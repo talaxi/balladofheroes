@@ -2,22 +2,24 @@
     <div class="godInfo">
         <div class="traverseUp">
             <div *ngIf="isMobile && hasMoreThanOneGod()" class="centeredText">
-                <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon" src="assets/svg/uparrow.svg"></button>
+                <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon"
+                        src="assets/svg/uparrow.svg"></button>
             </div>
         </div>
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getGodColor()">{{god.name}}</span>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection"
-            [contentTemplate]="godXpPopover">Level {{god.level}}</span>
+            <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">Level
+                {{god.level}}</span>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection"
-            [contentTemplate]="godXpPopover">{{god.exp | number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
+            <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">{{god.exp |
+                number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
                 1}}</span>
         </div>
         <div class="traverseDown">
             <div *ngIf="isMobile && hasMoreThanOneGod()" class="centeredText">
-                <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon" src="assets/svg/dropdown.svg"></button>
+                <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon"
+                        src="assets/svg/dropdown.svg"></button>
             </div>
         </div>
     </div>
@@ -53,7 +55,7 @@
                 <span *ngIf="getLuckBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="luckPopover"><strong [ngClass]="getGodColor()" class="statLabel">Luck: </strong>
                     <span class="statValue">{{getLuckBonus() | number : '1.0-0'}}</span>
-                    <br /></span>                
+                    <br /></span>
                 <span *ngIf="getResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                     [contentTemplate]="resistancePopover"><strong [ngClass]="getGodColor()"
                         class="statLabel">Resistance:
@@ -63,7 +65,8 @@
         </div>
     </div>
     <div class="godSecondaryStats">
-        <span class="sectionHeaderText sectionHeading">{{isMobile ? "Secondary Stats" : "Secondary Stat Bonuses"}}</span>
+        <span class="sectionHeaderText sectionHeading">{{isMobile ? "Secondary Stats" : "Secondary Stat
+            Bonuses"}}</span>
         <div class="sectionInfo secondaryStats">
             <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="hpRegenPopover"><strong [ngClass]="getGodColor()" class="statLabel">HP
@@ -102,14 +105,34 @@
                 [contentTemplate]="debuffDurationBonusPopover"><strong [ngClass]="getGodColor()"
                     class="statLabel">Debuff Duration Bonus:</strong>
                 {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                    [contentTemplate]="overdriveGainFromAutoAttacksBonusPopover"><strong [ngClass]="getGodColor()"
-                        class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
-                    {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="healingDoneBonusPopover"><strong [ngClass]="getGodColor()"
-                            class="statLabel">Healing Done Bonus:</strong>
-                        {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="overdriveGainFromAutoAttacksBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
+                {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="healingDoneBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Healing
+                    Done Bonus:</strong>
+                {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getTickFrequencyBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Tick Frequency Bonus:</strong>
+                {{(getTickFrequencyBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getAoeDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="aoeDamagePopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Multiple Target Damage Bonus:</strong>
+                {{(getAoeDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getThornsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="thornsPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Thorns:</strong>
+                {{(getThornsBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
+                {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
+            <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="abilityCooldownReductionStartPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
+                {{(getAbilityCooldownReductionStartBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Holy
                     Damage
@@ -177,7 +200,7 @@
 
     <div class="godUpcoming">
         <span class="sectionHeaderText sectionHeading">Upcoming Level Rewards</span>
-        <div class="sectionInfo" >
+        <div class="sectionInfo">
             <div [innerHtml]="getGodLevelRewards()">
             </div>
         </div>
@@ -319,9 +342,11 @@
 
 <ng-template #overdriveGainFromAutoAttacksBonusPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getOverdriveGainFromAutoAttacksBonusDescription()"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getOverdriveGainFromAutoAttacksBonusDescription()"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodOverdriveGainFromAutoAttacksBonusStatBreakdown(this.god)">
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodOverdriveGainFromAutoAttacksBonusStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -364,6 +389,61 @@
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getGodAutoAttackCooldownReductionStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #abilityCooldownReductionWithBuffsPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionWithBuffsBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodAbilityCooldownReductionWithBuffsBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #abilityCooldownReductionStartPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionStartBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodAbilityCooldownReductionStartBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #thornsPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getThornsBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodThornsBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #aoeDamagePopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAoeDamageBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodAoeDamageBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #tickFrequencyPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getTickFrequencyBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getGodTickFrequencyBonusStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -514,9 +594,8 @@
 </ng-template>
 
 <ng-template #godXpPopover>
-    <div>        
-        <div class="statBreakdown"
-            [innerHtml]="this.lookupService.getGodXpBreakdown(this.god)">
+    <div>
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodXpBreakdown(this.god)">
         </div>
     </div>
 </ng-template>

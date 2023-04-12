@@ -536,7 +536,7 @@ export class BalladService {
     var aigosthenaVictories = 5;
     var defaultVictories = 10;
     var bossVictories = 1;
-    var groveOfAresVictories = 50;
+    var groveOfAresVictories = 25;
 
     if (testing) {
       aigosthenaVictories = 1;

@@ -157,7 +157,7 @@ export class BackgroundService {
         this.handleTickingAltarEffect(effect, deltaTime);
 
         if (effect.duration <= 0) {
-          this.handleEndOfDurationAltarEffect(effect);          
+          this.handleEndOfDurationAltarEffect(effect);
         }
       });
 
@@ -168,8 +168,11 @@ export class BackgroundService {
   handleTickingAltarEffect(effect: AltarEffect, deltaTime: number) {
     var party = this.globalService.getActivePartyCharacters(true);
     party = party.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
-    var enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
-    enemies = enemies.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
+    var enemies: Enemy[] | undefined = undefined;
+    if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined) {
+      enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
+      enemies = enemies.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
+    }
     effect.tickTimer += deltaTime;
 
     if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
@@ -209,9 +212,11 @@ export class BackgroundService {
       }
 
       if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage) {
-        enemies.forEach(member => {
-          this.battleService.dealTrueDamage(true, member, effect.effectiveness, undefined, effect.element);
-        });
+        if (enemies !== undefined) {
+          enemies.forEach(member => {
+            this.battleService.dealTrueDamage(true, member, effect.effectiveness, undefined, effect.element);
+          });
+        }
       }
 
       effect.tickTimer -= effect.tickFrequency;
@@ -221,8 +226,11 @@ export class BackgroundService {
   handleEndOfDurationAltarEffect(effect: AltarEffect) {
     var party = this.globalService.getActivePartyCharacters(true);
     party = party.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
-    var enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
-    enemies = enemies.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
+    var enemies: Enemy[] | undefined = undefined;
+    if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined) {
+      enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
+      enemies = enemies.filter(member => !member.battleInfo.statusEffects.some(effect => effect.type == StatusEffectEnum.Dead));
+    }
 
     if (effect.type === AltarEffectsEnum.AthenaHeal) {
       party.forEach(member => {
@@ -233,7 +241,7 @@ export class BackgroundService {
     if (effect.type === AltarEffectsEnum.AresOverdriveGain || effect.type === AltarEffectsEnum.AresRareOverdriveGain) {
       party.forEach(member => {
         if (member.level >= this.utilityService.characterOverdriveLevel) {
-          member.overdriveInfo.gaugeAmount += (member.overdriveInfo.gaugeTotal *  (effect.effectiveness - 1)) * this.lookupService.getOverdriveGainMultiplier(target);
+          member.overdriveInfo.gaugeAmount += (member.overdriveInfo.gaugeTotal * (effect.effectiveness - 1)) * this.lookupService.getOverdriveGainMultiplier(target);
           if (member.overdriveInfo.gaugeAmount > member.overdriveInfo.gaugeTotal)
             member.overdriveInfo.gaugeAmount = member.overdriveInfo.gaugeTotal;
         }
@@ -310,7 +318,7 @@ export class BackgroundService {
           //this.battleService.handleuserEffects(true, )
           var ostinato = this.lookupService.characterHasAbility("Ostinato", member);
           if (ostinato !== undefined) {
-            this.battleService.useAbility(true, ostinato, member, enemies, party, true, effect.effectiveness - 1);
+            this.battleService.useAbility(true, ostinato, member, enemies === undefined ? [] : enemies, party, true, effect.effectiveness - 1);
           }
         }
       });
@@ -327,7 +335,7 @@ export class BackgroundService {
     if (effect.type === AltarEffectsEnum.AresRareDealHpDamage) {
       var totalHp = 0;
       party.forEach(member => {
-        totalHp += member.battleStats.currentHp * (effect.effectiveness-1);
+        totalHp += member.battleStats.currentHp * (effect.effectiveness - 1);
       });
 
       if (enemies !== undefined) {

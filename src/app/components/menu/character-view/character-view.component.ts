@@ -211,6 +211,26 @@ export class CharacterViewComponent implements OnInit {
     return this.character.battleStats.healingDone;
   }
 
+  getAoeDamageBonus() {
+    return this.character.battleStats.aoeDamage;
+  }
+
+  getThornsBonus() {
+    return this.character.battleStats.thorns;
+  }
+
+  getAbilityCooldownReductionWithBuffsBonus() {
+    return (1 - this.character.battleStats.abilityCooldownReductionWithBuffs);
+  }
+
+  getAbilityCooldownReductionStartBonus() {
+    return (1 - this.character.battleStats.abilityCooldownReductionStart);
+  }
+
+  getTickFrequencyBonus() {
+    return this.character.battleStats.tickFrequency;
+  }
+
   getArmorPenetrationBonus() {
     return this.character.battleStats.armorPenetration;
   }
