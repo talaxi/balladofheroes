@@ -103,4 +103,5 @@ export enum StatusEffectEnum {
     AoeDamageUp,
     RandomPrimaryStatDownExcludeHp,
     BattleItemEffectUp,
+    ClearDebuffs
   }

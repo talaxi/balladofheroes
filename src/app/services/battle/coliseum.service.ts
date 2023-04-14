@@ -154,18 +154,7 @@ export class ColiseumService {
                 if (hades!.level >= ability.requiredLevel)
                   ability.isAvailable = true;
               });
-              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your strength has impressed Hades. He will now lend his strength to you on your journey.");
-
-              //TODO: remove ares, just for testing purposes
-              var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
-              if (ares !== undefined) {
-                ares.isAvailable = true;
-                ares.abilityList.forEach(ability => {
-                  if (ares!.level >= ability.requiredLevel)
-                    ability.isAvailable = true;
-                });
-              }
-              // ^^^
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your strength has impressed Hades, God of the Underworld. Hades will now assist you on your journey.");
             }
           }
           else {

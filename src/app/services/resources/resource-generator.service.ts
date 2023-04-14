@@ -32,6 +32,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.GoldenSword) {
       return new ResourceValue(ItemsEnum.GoldenSword, amount);
     }
+    if (type === ItemsEnum.LiquidSaber) {
+      return new ResourceValue(ItemsEnum.LiquidSaber, amount);
+    }
+    if (type === ItemsEnum.BlackLance) {
+      return new ResourceValue(ItemsEnum.BlackLance, amount);
+    }
 
     //hammers
     if (type === ItemsEnum.IronHammer) {
@@ -92,6 +98,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ShieldOfTheHealer) {
       return new ResourceValue(ItemsEnum.ShieldOfTheHealer, amount);
     }
+    if (type === ItemsEnum.ShieldOfTheSea) {
+      return new ResourceValue(ItemsEnum.ShieldOfTheSea, amount);
+    }
+    if (type === ItemsEnum.SpikedShield) {
+      return new ResourceValue(ItemsEnum.SpikedShield, amount);
+    }
 
     //armor
     if (type === ItemsEnum.LinenArmor) {
@@ -121,6 +133,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.BoarskinArmor) {
       return new ResourceValue(ItemsEnum.BoarskinArmor, amount);
     }
+    if (type === ItemsEnum.FeatheredTunic) {
+      return new ResourceValue(ItemsEnum.FeatheredTunic, amount);
+    }
 
     //necklace
     if (type === ItemsEnum.ForgottenLocket) {
@@ -137,6 +152,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.GemmedNecklace) {
       return new ResourceValue(ItemsEnum.GemmedNecklace, amount);
+    }
+    if (type === ItemsEnum.SharkstoothNecklace) {
+      return new ResourceValue(ItemsEnum.SharkstoothNecklace, amount);
+    }
+    if (type === ItemsEnum.SharkstoothPendant) {
+      return new ResourceValue(ItemsEnum.SharkstoothPendant, amount);
     }
 
     //rings
@@ -163,6 +184,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.BedazzledRing) {
       return new ResourceValue(ItemsEnum.BedazzledRing, amount);
+    }
+    if (type === ItemsEnum.ScalyRing) {
+      return new ResourceValue(ItemsEnum.ScalyRing, amount);
+    }
+    if (type === ItemsEnum.QuadRing) {
+      return new ResourceValue(ItemsEnum.QuadRing, amount);
     }
 
     //equippables
@@ -404,6 +431,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.LamiaHeart) {
       return new ResourceValue(ItemsEnum.LamiaHeart, amount);
+    }
+    if (type === ItemsEnum.SharkTeeth) {
+      return new ResourceValue(ItemsEnum.SharkTeeth, amount);
+    }
+    if (type === ItemsEnum.Seashell) {
+      return new ResourceValue(ItemsEnum.Seashell, amount);
     }
 
     //charms

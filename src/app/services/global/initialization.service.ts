@@ -43,11 +43,11 @@ export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
     private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService, private keybindService: KeybindService,
-    private altarService: AltarService, private versionControlService: VersionControlService, private deviceDetectorService: DeviceDetectorService) { }
+    private altarService: AltarService, private deviceDetectorService: DeviceDetectorService) { }
 
   initializeVariables() {
-    this.globalService.globalVar.startingVersion = this.versionControlService.getCurrentVersion();
-    this.globalService.globalVar.currentVersion = this.versionControlService.getCurrentVersion();
+    this.globalService.globalVar.startingVersion = this.globalService.getCurrentVersion();
+    this.globalService.globalVar.currentVersion = this.globalService.getCurrentVersion();
 
     this.initializeBallads(); //need to initialize the connections and names so you have a place to store kill count
     this.initializeSettings();
@@ -410,6 +410,11 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.WitheringToxin, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RejuvenatingElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RingOfNightmares, 4));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Seashell, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SharkTeeth, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.FishScales, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.EagleFeather, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.FocusPotion, 10000));
 
     this.globalService.globalVar.currentStoryId = 10000;
     this.globalService.globalVar.isDpsUnlocked = true;
@@ -428,7 +433,7 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
-    var allAchievementsComplete = true;
+    var allAchievementsComplete = false;
 
     if (allAchievementsComplete) {
       this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
@@ -583,36 +588,37 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Hades;
-        character1.assignedGod2 = GodEnum.Ares;
-        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.FendingMace);
-        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
-        character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
+        character1.assignedGod1 = GodEnum.Athena;
+        character1.assignedGod2 = GodEnum.Hermes;
+        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GoldenSword);
+        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfTheHealer);
+        character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BearskinArmor);
         character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.RingOfNightmares);
-        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfSpeed);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothNecklace);
       }
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
         character2.assignedGod1 = GodEnum.Artemis;
         character2.assignedGod2 = GodEnum.Apollo;
-        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SwordOfFlames);
-        character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfTheHealer);
-        character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
-        character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.RingOfNightmares);
-        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PendantOfPower);
+        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BlackLance);
+        character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfTheSea);
+        character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.FeatheredTunic);
+        character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.QuadRing);
+        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var characterLevel = 19;
+      var characterLevel = 29;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
 
         this.globalService.calculateCharacterBattleStats(character);
+        character.battleStats.currentHp = character.battleStats.maxHp;
       });
 
-      var godLevel = 399;
+      var godLevel = 349;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -649,7 +655,7 @@ export class InitializationService {
       hades!.exp = 0;
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
-      ares!.isAvailable = true;
+      //ares!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(ares!);
       }

@@ -303,6 +303,9 @@ export class UtilityService {
     if (text === "Small Topaz")
       return "Small Topazes";
 
+    if (text === "Shark Tooth")
+      return "Shark Teeth";
+
     return pluralize(text);
   }
 

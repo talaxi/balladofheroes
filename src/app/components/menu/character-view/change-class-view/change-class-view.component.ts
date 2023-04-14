@@ -4,6 +4,7 @@ import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 
 @Component({
   selector: 'app-change-class-view',
@@ -22,7 +23,8 @@ export class ChangeClassViewComponent implements OnInit {
   swapEquipment: boolean;
   swapGods: Boolean;
 
-  constructor(private lookupService: LookupService, private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService) { }
+  constructor(private lookupService: LookupService, private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService,
+    private menuService: MenuService) { }
 
   ngOnInit(): void {
     var changeClassSwapEquipment = this.globalService.globalVar.settings.get("changeClassSwapEquipment");
@@ -150,6 +152,7 @@ export class ChangeClassViewComponent implements OnInit {
     else if (this.swappingClass === 2)
       this.globalService.globalVar.activePartyMember2 = type;
 
+    this.menuService.setSelectedCharacter(type);
     this.swappingClass = undefined;
     this.currentParty = this.globalService.getActivePartyCharacters(false);
     this.setupDisplayClasses();

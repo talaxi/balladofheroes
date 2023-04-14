@@ -6,5 +6,6 @@ export enum AchievementTypeEnum {
   ThirtySecondClear,
   TenSecondClear,
   FullHPClear,
-  Complete
+  Complete,
+  FiveThousandVictories
 }

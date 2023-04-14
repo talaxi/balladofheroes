@@ -29,7 +29,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp ||
       effect.type === StatusEffectEnum.DamageDealtDown || effect.type === StatusEffectEnum.DamageDealtUp ||
       effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp ||
-      effect.type === StatusEffectEnum.BattleItemEffectUp)
+      effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp)
       return true;
 
     return false;
@@ -66,7 +66,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp)
       return "RES";
     if (effect.type === StatusEffectEnum.DamageDealtUp || effect.type === StatusEffectEnum.DamageDealtDown ||
-      effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown)
+      effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown ||
+      effect.type === StatusEffectEnum.AirDamageUp || effect.type === StatusEffectEnum.AirDamageDown ||
+      effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageDown ||
+      effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageDown ||
+      effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown ||
+      effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown)
       return "DMG";
     if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown)
       return "TKN";
@@ -74,6 +79,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "KO";
     if (effect.type === StatusEffectEnum.BattleItemEffectUp)
       return "ITM";
+      if (effect.type === StatusEffectEnum.AoeDamageUp)
+      return "AOE";
 
     return effect.type;
   }
@@ -184,6 +191,18 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Enearth) {
       src += "enearth.svg";
     }
+    if (effect.type === StatusEffectEnum.Enlightning) {
+      src += "enlightning.svg";
+    }
+    if (effect.type === StatusEffectEnum.Enwater) {
+      src += "enwater.svg";
+    }
+    if (effect.type === StatusEffectEnum.Enair) {
+      src += "enair.svg";
+    }
+    if (effect.type === StatusEffectEnum.Enholy) {
+      src += "enholy.svg";
+    }
     if (effect.type === StatusEffectEnum.Taunt) {
       src += "taunt.svg";
     }
@@ -198,6 +217,18 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Earth) {
       src += "barearth.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Holy) {
+      src += "barholy.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Lightning) {
+      src += "barlightning.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Air) {
+      src += "barair.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Water) {
+      src += "barwater.svg";
     }
     if (effect.type === StatusEffectEnum.ReduceHealing) {
       src += "reduceHealing.svg";

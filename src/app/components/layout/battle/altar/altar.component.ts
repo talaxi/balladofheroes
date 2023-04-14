@@ -160,7 +160,7 @@ export class AltarComponent implements OnInit {
       }
     }
 
-    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your sacrifice and devotion to healing has honored Asclepius as well as his father Apollo, God of Healing and Music. Apollo has decided to assist you on your adventure.");
+    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your sacrifice and devotion to healing has honored Asclepius and impressed his father Apollo, God of Healing and Music. Apollo will now assist you on your adventure.");
   }
 
   gainThreshold2Reward() {

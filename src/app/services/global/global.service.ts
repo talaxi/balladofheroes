@@ -47,6 +47,10 @@ export class GlobalService {
   constructor(private utilityService: UtilityService, private gameLogService: GameLogService, private charmService: CharmService,
     private equipmentService: EquipmentService) { }
 
+  getCurrentVersion() {
+    return .4;
+  }
+
   initializeGlobalVariables() {
     this.globalVar = new GlobalVariables();
     this.globalVar.lastTimeStamp = Date.now();
@@ -936,15 +940,16 @@ export class GlobalService {
 
     //active gods
     this.globalVar.gods.filter(god => god.isAvailable &&
-      activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {
+      activeParty.some(partyMember => (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {
         this.giveGodExp(god, bonusXp);
       });
 
     //inactive gods
     this.globalVar.gods.filter(god => god.isAvailable &&
-      (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-        //todo: should xp be halved for inactive gods?
-        this.giveGodExp(god, bonusXp);
+      (!activeParty.some(partyMember => (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
+        var inactiveGodModifier = .25; //this can be increased maybe with future items
+
+        this.giveGodExp(god, bonusXp * inactiveGodModifier);
       });
 
 
@@ -979,7 +984,9 @@ export class GlobalService {
       this.globalVar.gods.filter(god => god.isAvailable &&
         (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
           //todo: should xp be halved for inactive gods?
-          this.giveGodExp(god, enemy.xpGainFromDefeat);
+          var inactiveGodModifier = .25; //this can be increased maybe with future items
+
+          this.giveGodExp(god, enemy.xpGainFromDefeat * inactiveGodModifier);
         });
 
 
@@ -1212,24 +1219,29 @@ export class GlobalService {
 
   getCharacterXpToNextLevel(level: number) {
     var baseXp = 100;
-
-    if (level < 20) {
-      var factor = 1.333;
-      if (level > 9)
-        factor = 1.52;
+    var factor = 1.333;
+    //if (level < 30) {            
+      if (level > 9) {
+        baseXp = 1000;        
+      }
+      if (level > 49) {
+        baseXp = 100000;
+        factor = 1.165;
+      }
       var additive = level > 4 ? 350 * (level) : 0;
       var exponential = (baseXp * (factor ** (level - 1)));
       var multiplier = baseXp * level;
 
-      return multiplier + exponential + additive;
-    }
-    else {
+      //(100 * level) + (100 * (1.333^(level-1))) + 350*level      
+      return this.utilityService.roundTo(multiplier + exponential + additive, 5);
+    //}
+    /*else {
       //TODO: depends on what kind of XP you're getting at this reset
       var factor = 1.09;
       var additive = 1500;
 
       return this.utilityService.roundTo(baseXp * (factor ** level) + (additive * (level - 1)), 5);
-    }
+    }*/
   }
 
   levelUpGod(god: God) {

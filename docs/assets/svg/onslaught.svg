@@ -27,7 +27,7 @@
      inkscape:cx="393.33896"
      inkscape:cy="510.5257"
      inkscape:document-units="mm"
-     inkscape:current-layer="layer3"
+     inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
      showgrid="false"
      inkscape:window-width="1920"
@@ -51,15 +51,7 @@
   <g
      inkscape:label="Layer 1"
      inkscape:groupmode="layer"
-     id="layer1"
-     sodipodi:insensitive="true">
-    <circle
-       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="path63"
-       cx="150"
-       cy="150"
-       r="150" />
-  </g>
+     id="layer1" />
   <g
      inkscape:groupmode="layer"
      id="layer3"

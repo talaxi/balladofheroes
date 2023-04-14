@@ -41,7 +41,7 @@ export class Character {
         this.type = type === undefined ? CharacterEnum.None : type;
         this.battleInfo = new BattleInfo();
         this.level = 1;
-        this.maxLevel = 20;
+        this.maxLevel = 30;
         this.exp = 0;
         this.expToNextLevel = 100;
         this.assignedGod1 = GodEnum.None;

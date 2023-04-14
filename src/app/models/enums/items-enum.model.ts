@@ -203,5 +203,17 @@ export enum ItemsEnum {
   SmallCharmOfDionysus,
   LargeCharmOfDionysus,
   SmallCharmOfNemesis,
-  LargeCharmOfNemesis
+  LargeCharmOfNemesis,
+  SharkTeeth,
+  Seashell,
+  ScalyRing,
+  SharkstoothNecklace,
+  SharkstoothPendant,
+  FeatheredTunic,
+  ShieldOfTheSea,
+  SpikedShield,
+  BlackLance,
+  LiquidSaber,
+  QuadRing,
+  Ares
 }

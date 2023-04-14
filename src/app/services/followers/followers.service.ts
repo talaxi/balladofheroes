@@ -219,6 +219,42 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 2));
       }
     }
+    if (type === ZoneEnum.AegeanSea) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Lousewort, 3));
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SharkTeeth, 2));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FishScales, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAquamarineFragment, 2));
+      }
+    }
+    if (type === ZoneEnum.BlackSea) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FishScales, 2));
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Seashell, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheBlackSea, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Sorrel, 4));
+      }
+    }
+    if (type === ZoneEnum.Colchis) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SpiritEssence, 3));
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughEmeraldFragment, 2));
+      }
+      if (rewardLevel === 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 5));
+      }
+      if (rewardLevel === 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 2));
+      }
+    }
 
 
     return rewards;

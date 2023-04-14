@@ -1,13 +1,25 @@
-<button (click)="battleService.useBattleItem(slotNumber)" customToolTip #tooltip [contentTemplate]="itemPopover"
-    class="battleItemButton customButtonStyle" [ngClass]="{'targetModeActive': battleItemInUse(slotNumber)}"><img class="itemImage" (contextmenu)="preventRightClick()"
-        [src]="getSelectedItemImage(slotNumber)"><strong class="itemAmount s3Heading">x{{getItemAmount(slotNumber)}}</strong></button>
-<button class="battleItemButton cancelBattleItemButton customButtonStyle" (click)="unselectItemSlot(slotNumber)"><strong>X</strong></button>
+<div class="item" #spinnerDiv>
+<button #spinnerDiv (click)="battleService.useBattleItem(slotNumber); checkForCooldown(slotNumber);" customToolTip #tooltip [contentTemplate]="itemPopover"
+    class="battleItemButton customButtonStyle item" [ngClass]="{'targetModeActive': battleItemInUse(slotNumber)}">
+    <div class="spinnerContainer">
+    <mat-spinner class="spinner itemTimer itemColor" *ngIf="isItemOnCooldown(slotNumber)" mode="determinate" [diameter]="spinnerDiameter"
+                [strokeWidth]="strokeWidth" [value]="getItemCooldownPercent(slotNumber)"></mat-spinner>
+    </div>
+    <img [ngClass]="{'itemOnCooldown': isItemOnCooldown(slotNumber)}" class="itemImage" (contextmenu)="preventRightClick()" [src]="getSelectedItemImage(slotNumber)">
+    <strong [ngClass]="{'itemOnCooldown': isItemOnCooldown(slotNumber)}" class="itemAmount s3Heading">x{{getItemAmount(slotNumber)}}</strong>
+</button>
+</div>
+
+<button class="battleItemButton cancelBattleItemButton customButtonStyle"
+    (click)="unselectItemSlot(slotNumber)">
+    <strong>X</strong>
+</button>
 
 
 <ng-template #itemPopover>
     <div>
         <strong><span [innerHtml]="getItemName()"></span></strong>
         <hr class="miniHr" />
-        <span [innerHtml]="getItemDescription()"></span>        
+        <span [innerHtml]="getItemDescription()"></span>
     </div>
 </ng-template>

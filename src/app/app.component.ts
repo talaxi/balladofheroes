@@ -61,8 +61,8 @@ export class AppComponent {
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
         this.loadStartup();
 
-        if (this.globalService.globalVar.betaSave)
-          this.newGame = true;
+        //if (this.globalService.globalVar.betaSave)
+          //this.newGame = true;
       }
     }
 
@@ -161,6 +161,7 @@ export class AppComponent {
         this.globalService.globalVar.extraSpeedTimeRemaining = this.utilityService.extraSpeedTimeLimit;
     }
 
+    //TODO: why would this cause issues? try testing it again maybe
     //if speed up time remains, use it (only if not doing batches which causes issues)
     if (!this.globalService.globalVar.isCatchingUp) {
       if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2 &&
@@ -175,7 +176,7 @@ export class AppComponent {
         }
       }
     }
-
+    
     var batchTime = this.getBatchRunTime(subzone); //runs the game in batches of 5 seconds max
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {

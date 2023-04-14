@@ -130,11 +130,13 @@
 
   --grayedOut-Text: #797c80;
 
+  
   --adventurerColor: #DB7803;
   --archerColor: #12A901;
   --warriorColor: #0695FB;
   --priestColor: #D063EE;
 
+  --itemColor: #ffffff;
   --athenaColor: #7fbffa;
   --zeusColor: #fff30b;
   --aresColor: #EE665F;
@@ -675,6 +677,12 @@ body {
   color: var(--priestColor);
   stroke: var(--priestColor) !important;
   --mdc-circular-progress-active-indicator-color: var(--priestColor) !important;
+}
+
+.itemColor {
+  color: var(--itemColor);
+  stroke: var(--itemColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--itemColor) !important;
 }
 
 .athenaColor {

@@ -18,6 +18,7 @@ export class VersionControlService {
   constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService,
     private achievementService: AchievementService, private initializationService: InitializationService) { }
 
+  //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
   gameVersions = [0.4, 0.32, 0.31, 0.3];
 
@@ -130,6 +131,11 @@ export class VersionControlService {
           });
         }
         if (version === .4) { 
+          this.globalService.globalVar.characters.forEach(character => {
+            character.maxLevel = 30;
+          });
+
+          this.globalService.globalVar.timers.itemCooldowns = [];
           this.globalService.globalVar.keybinds.set("openJewelcraftingQuickView", "keyJ");
           this.globalService.globalVar.settings.set("displayQuickViewJewelcrafting", true);
           this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", true);

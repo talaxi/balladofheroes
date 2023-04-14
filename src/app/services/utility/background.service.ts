@@ -25,6 +25,7 @@ import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from './utility.service';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
+import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -37,6 +38,7 @@ export class BackgroundService {
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
+    this.handleItemCooldowns(deltaTime);
     this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);
     this.professionService.handleProfessionTimer(ProfessionEnum.Jewelcrafting, deltaTime);
     this.handleAltarEffectDurations(deltaTime);
@@ -45,7 +47,8 @@ export class BackgroundService {
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
 
-    if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined)
+    if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
+      !(this.balladService.isSubzoneTown(this.balladService.getActiveSubZone().type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
       enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {
@@ -55,7 +58,7 @@ export class BackgroundService {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleHpRegen(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
-        this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, undefined, party, enemies, deltaTime);
+        this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
 
         if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
@@ -436,5 +439,16 @@ export class BackgroundService {
         }
       });
     }
+  }
+
+  handleItemCooldowns(deltaTime: number) {
+    if (this.globalService.globalVar.timers.itemCooldowns !== undefined && this.globalService.globalVar.timers.itemCooldowns.length > 0)
+    {
+      this.globalService.globalVar.timers.itemCooldowns.forEach(item => {
+        item[1] -= deltaTime;
+      });
+    }
+
+    this.globalService.globalVar.timers.itemCooldowns = this.globalService.globalVar.timers.itemCooldowns.filter(item => item[1] > 0);
   }
 }

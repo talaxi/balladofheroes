@@ -28,3 +28,41 @@
     font-weight: bold;
     font-size: .95rem;
 }
+
+.itemOnCooldown {
+    opacity: .5;
+}
+
+.itemTimer {
+    width: 80% !important;
+    height: 100% !important;
+    position: absolute;
+    top: 0;
+    left: 10%;
+}
+
+.itemTimer svg {
+    width: 80% !important;
+    height: 80% !important;
+}
+
+.item {
+    position: relative; 
+    width: 100%; 
+    height: 100%; 
+    display: flex; 
+    align-items: center; 
+    justify-content: center;
+}
+
+
+.mat-progress-spinner svg circle {
+    stroke: unset !important;  
+  }
+
+  .spinnerContainer {
+    position: absolute;
+    width: 75%;
+    height: 75%;  
+    z-index: 1000;  
+  }
