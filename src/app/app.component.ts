@@ -60,8 +60,8 @@ export class AppComponent {
         this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
         this.loadStartup();
 
-        if (this.globalService.globalVar.betaSave)
-          this.newGame = true;
+        //if (this.globalService.globalVar.betaSave)
+          //this.newGame = true;
       }
     }
 
