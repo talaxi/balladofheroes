@@ -11,7 +11,7 @@
                         <div class="flexBetween">
                             <button class="buttonAsText clickableText equipmentItemButton" (click)="selectGem(gem)">
                                 <span class="equipmentItem" customToolTip [isDelayed]="false"
-                                    [contentTemplate]="template" [innerHtml]="getItemName(gem)"></span>
+                                    [contentTemplate]="template" [innerHtml]="getItemNameWithCount(gem)"></span>
                             </button>
                         </div>
                         <hr class="leftAlignedMiniHr" />
@@ -30,7 +30,7 @@
         </div>-->
         <div class="itemInfo column">
             <app-equipment-item-view class="selectedResource"
-                [equipment]="resourceAsEquipment" [associatedResource]="resource"></app-equipment-item-view>
+                [equipment]="resourceAsEquipment" [associatedResource]="resource" [isSlotMenu]="true"></app-equipment-item-view>
             <hr *ngIf="selectedItem" class="divider" />
             <div *ngIf="selectedItem" class="result centeredText">
                 <div class="slotItem">
@@ -45,3 +45,7 @@
         </div>
     </div>
 </div>
+
+<ng-template #confirmationBox>
+    <app-confirmation-box [confirmationText]="confirmationText"></app-confirmation-box>
+</ng-template>

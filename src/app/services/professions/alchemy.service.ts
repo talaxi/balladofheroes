@@ -1,5 +1,5 @@
 import { Injectable } from '@angular/core';
-import { AlchemyActionsEnum } from 'src/app/models/enums/alchemy-actions-enum.model';
+import { ProfessionActionsEnum } from 'src/app/models/enums/profession-actions-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -13,6 +13,9 @@ import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { UtilityService } from '../utility/utility.service';
+import { DictionaryService } from '../utility/dictionary.service';
+import { TutorialService } from '../global/tutorial.service';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +23,7 @@ import { UtilityService } from '../utility/utility.service';
 export class AlchemyService {
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private gameLogService: GameLogService,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService, private dictionaryService: DictionaryService, private tutorialService: TutorialService) { }
 
   
 
@@ -31,36 +34,37 @@ export class AlchemyService {
         alchemy.isUnlocked = true;
         alchemy.level = 1;
         alchemy.maxLevel += this.utilityService.firstAlchemyLevelCap;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy));
       }
     }
   }
 
-  getActionLength(action: AlchemyActionsEnum) {
+  getActionLength(action: ProfessionActionsEnum) {
     var duration = 0;
 
-    if (action === AlchemyActionsEnum.PrepareWaterSmallPot)
+    if (action === ProfessionActionsEnum.PrepareWaterSmallPot)
       duration = 1 * 20;
-    if (action === AlchemyActionsEnum.CombineIngredientsPot)
+    if (action === ProfessionActionsEnum.CombineIngredientsPot)
       duration = 1 * 10;
-    if (action === AlchemyActionsEnum.CombineIngredientsPotion)
+    if (action === ProfessionActionsEnum.CombineIngredientsPotion)
       duration = 1 * 15;
-    if (action === AlchemyActionsEnum.HeatMixture)
+    if (action === ProfessionActionsEnum.HeatMixture)
       duration = 1 * 30;
-    if (action === AlchemyActionsEnum.CrushIngredients)
+    if (action === ProfessionActionsEnum.CrushIngredients)
       duration = 1 * 75;
-    if (action === AlchemyActionsEnum.CombineIngredients)
+    if (action === ProfessionActionsEnum.CombineIngredients)
       duration = 1 * 15;
-    if (action === AlchemyActionsEnum.MixOil)
+    if (action === ProfessionActionsEnum.MixOil)
       duration = 1 * 10;
-    if (action === AlchemyActionsEnum.MeltWax)
+    if (action === ProfessionActionsEnum.MeltWax)
       duration = 1 * 20;
-    if (action === AlchemyActionsEnum.StrainMixture)
+    if (action === ProfessionActionsEnum.StrainMixture)
       duration = 1 * 10;
-    if (action === AlchemyActionsEnum.ExtractEssence)
+    if (action === ProfessionActionsEnum.ExtractEssence)
       duration = 1 * 45;
-    if (action === AlchemyActionsEnum.Infuse)
+    if (action === ProfessionActionsEnum.Infuse)
       duration = 1 * 60;
-      if (action === AlchemyActionsEnum.StoreIngredients)
+      if (action === ProfessionActionsEnum.StoreIngredients)
       duration = 1 * 5;
 
     return duration;
@@ -262,7 +266,7 @@ export class AlchemyService {
 
   updateGameLogWithNewRecipe(type: ItemsEnum) {
     if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-      var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.lookupService.getItemName(type) + "</strong>.";
+      var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.dictionaryService.getItemName(type) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
     }
   }
@@ -279,8 +283,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Fennel , 1));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.PrepareWaterSmallPot);
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPot);
+      recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPot);
 
       recipe.expGain = 5;
     }
@@ -290,8 +294,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark , 2));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
 
       recipe.expGain = 8;
     }
@@ -301,7 +305,7 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus , 2));
 
       recipe.numberOfSteps = 1;
-      recipe.steps.push(AlchemyActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
 
       recipe.expGain = 12;
     }
@@ -313,10 +317,10 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Wax , 2));
 
       recipe.numberOfSteps = 4;
-      recipe.steps.push(AlchemyActionsEnum.MixOil);
-      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
-      recipe.steps.push(AlchemyActionsEnum.MeltWax);
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPot);
+      recipe.steps.push(ProfessionActionsEnum.MixOil);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
+      recipe.steps.push(ProfessionActionsEnum.MeltWax);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPot);
 
       recipe.expGain = 12;
     }
@@ -328,8 +332,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire , 2));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
 
       recipe.expGain = 14;
     }
@@ -338,7 +342,7 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus , 3));
 
       recipe.numberOfSteps = 1;
-      recipe.steps.push(AlchemyActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
 
       recipe.expGain = 15;
     }
@@ -348,8 +352,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark , 3));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
 
       recipe.expGain = 15;
     }
@@ -360,8 +364,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Violet , 1));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredients);
-      recipe.steps.push(AlchemyActionsEnum.StoreIngredients);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredients);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
 
       recipe.expGain = 8;
     }
@@ -371,8 +375,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SpiritEssence , 1));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.ExtractEssence);
-      recipe.steps.push(AlchemyActionsEnum.StoreIngredients);
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
 
       recipe.expGain = 8;
     }
@@ -383,9 +387,9 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence , 1));
 
       recipe.numberOfSteps = 3;
-      recipe.steps.push(AlchemyActionsEnum.PrepareWaterSmallPot);
-      recipe.steps.push(AlchemyActionsEnum.ExtractEssence);
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
 
       recipe.expGain = 18;
     }
@@ -395,9 +399,9 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs , 2));
 
       recipe.numberOfSteps = 3;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.Infuse);
-      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.Infuse);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
 
       recipe.expGain = 18;
     }
@@ -408,9 +412,9 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 1));
 
       recipe.numberOfSteps = 3;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);      
-      recipe.steps.push(AlchemyActionsEnum.Infuse);
-      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);      
+      recipe.steps.push(ProfessionActionsEnum.Infuse);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
 
       recipe.expGain = 18;
     }
@@ -421,8 +425,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 2));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
 
       recipe.expGain = 20;
     }
@@ -434,9 +438,9 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 1));
 
       recipe.numberOfSteps = 3;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);      
-      recipe.steps.push(AlchemyActionsEnum.Infuse);
-      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);      
+      recipe.steps.push(ProfessionActionsEnum.Infuse);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
 
       recipe.expGain = 20;
     }
@@ -448,7 +452,7 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 2));
 
       recipe.numberOfSteps = 1;
-      recipe.steps.push(AlchemyActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
 
       recipe.expGain = 23;
     }
@@ -459,8 +463,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs , 2));      
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.PrepareWaterSmallPot);
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPot);
+      recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPot);
 
       recipe.expGain = 25;
     }
@@ -472,8 +476,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort , 2));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.HeatMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
 
       recipe.expGain = 25;
     }
@@ -485,7 +489,7 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort , 3));
 
       recipe.numberOfSteps = 1;
-      recipe.steps.push(AlchemyActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
 
       recipe.expGain = 25;
     }
@@ -497,10 +501,10 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Sorrel , 1));
 
       recipe.numberOfSteps = 4;
-      recipe.steps.push(AlchemyActionsEnum.MixOil);
-      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
-      recipe.steps.push(AlchemyActionsEnum.MeltWax);
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPot);
+      recipe.steps.push(ProfessionActionsEnum.MixOil);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
+      recipe.steps.push(ProfessionActionsEnum.MeltWax);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPot);
 
       recipe.expGain = 28;
     }
@@ -511,8 +515,8 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Sorrel , 1));
 
       recipe.numberOfSteps = 2;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredients);
-      recipe.steps.push(AlchemyActionsEnum.StoreIngredients);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredients);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
 
       recipe.expGain = 8;
     }
@@ -522,9 +526,9 @@ export class AlchemyService {
       recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs , 1));
 
       recipe.numberOfSteps = 3;
-      recipe.steps.push(AlchemyActionsEnum.CombineIngredientsPotion);
-      recipe.steps.push(AlchemyActionsEnum.Infuse);
-      recipe.steps.push(AlchemyActionsEnum.StrainMixture);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.Infuse);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
 
       recipe.expGain = 18;
     }

@@ -16,6 +16,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
+import { JewelcraftingService } from 'src/app/services/professions/jewelcrafting.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -34,6 +35,7 @@ export class ShopViewComponent implements OnInit {
   resetNotification = NotificationTypeEnum.Reset;
   professionNotification = NotificationTypeEnum.Profession;
   alchemy: Profession | undefined;
+  jewelcrafting: Profession | undefined;
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -48,12 +50,13 @@ export class ShopViewComponent implements OnInit {
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
     private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
-    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
+    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.getShopOptions();
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
@@ -68,6 +71,9 @@ export class ShopViewComponent implements OnInit {
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
+
+      if (this.balladService.findSubzone(SubZoneEnum.ColchisGroveOfAres)?.isAvailable)
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryScene24);
   }
 
   getOptionText(type: ShopTypeEnum) {
@@ -91,7 +97,9 @@ export class ShopViewComponent implements OnInit {
     if (type === ShopTypeEnum.Traveler) {
       text = "Traveler";
     }
-
+    if (type === ShopTypeEnum.Jewelcrafter) {
+      text = "Jewelcrafter";
+    }
 
     return text;
   }
@@ -140,6 +148,11 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.Alchemist) {
       this.alchemyService.handleShopOpen(this.activeSubzoneType);
       this.alchemyService.checkForNewRecipes();
+    }
+
+    if (option.type === ShopTypeEnum.Jewelcrafter) {
+      this.jewelcraftingService.handleShopOpen(this.activeSubzoneType);
+      this.jewelcraftingService.checkForNewRecipes();
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler) {
@@ -295,6 +308,10 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.ChthonicFavor && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavor)) {
       scene = OptionalSceneEnum.ChthonicFavor;
+    }
+    if (option.type === ShopTypeEnum.Jewelcrafter && this.balladService.getActiveSubZone().type === SubZoneEnum.AegeanSeaIolcus &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.Jewelcrafting)) {
+      scene = OptionalSceneEnum.Jewelcrafting;
     }
 
     return scene;

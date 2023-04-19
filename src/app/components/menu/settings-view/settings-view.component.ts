@@ -16,6 +16,7 @@ declare var LZString: any;
 import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
 import { PatreonAccessService } from 'src/app/services/utility/patreon-access.service';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-settings-view',
@@ -30,18 +31,30 @@ export class SettingsViewComponent implements OnInit {
   storyStyleEnum = StoryStyleSettingEnum;
   tooltipTheme: boolean;
   quickViewOverlayFlipped: boolean = false;
+  showPartyHpAsPercent: boolean = false;
+  showEnemyHpAsPercent: boolean = false;
   @Input() isMobile = false;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
     private versionControlService: VersionControlService, private codeCreationService: CodeCreationService,
-    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService) { }
+    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService, private lookupService: LookupService) { }
 
   ngOnInit(): void {
-    if (this.deploymentService.codeCreationMode)
+    if (this.deploymentService.codeCreationMode) {
       console.log(this.globalService.globalVar);
-    //console.log(JSON.stringify(this.globalService.globalVar));
-    
+      console.log(JSON.stringify(this.globalService.globalVar));
+
+      /*console.log("1 hit (default): " + this.lookupService.getAgilityPerAttackForAttackCount(0));
+      console.log("2 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(1));
+      console.log("3 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(2));
+      console.log("4 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(3));
+      console.log("5 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(4));
+      console.log("6 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(5));
+      console.log("7 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(6));
+      console.log("8 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(7));*/
+    }
+
     //this.patreonAccessService.getPatronList();
 
     if (this.deploymentService.codeCreationMode)
@@ -60,6 +73,8 @@ export class SettingsViewComponent implements OnInit {
       this.tooltipTheme = tooltipTheme;
 
     this.quickViewOverlayFlipped = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
+    this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
+    this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
   }
 
   public SaveGame() {
@@ -95,7 +110,7 @@ export class SettingsViewComponent implements OnInit {
     let a = document.createElement("a"),
       url = URL.createObjectURL(file);
     a.href = url;
-    a.download = "BalladOfHeroes-v" + "-" + new Date().toLocaleDateString();
+    a.download = "BalladOfHeroes-v" + this.globalService.globalVar.currentVersion.toString().replace(".", "_") + "-" + new Date().toLocaleDateString();
     document.body.appendChild(a);
     a.click();
     setTimeout(function () {
@@ -159,5 +174,11 @@ export class SettingsViewComponent implements OnInit {
 
   quickViewOverlayFlippedToggle() {
     this.globalService.globalVar.settings.set("quickViewOverlayFlipped", this.quickViewOverlayFlipped);
+  }
+  showEnemyHpAsPercentToggle() {
+    this.globalService.globalVar.settings.set("showEnemyHpAsPercent", this.showEnemyHpAsPercent);
+  }
+  showPartyHpAsPercentToggle() {
+    this.globalService.globalVar.settings.set("showPartyHpAsPercent", this.showPartyHpAsPercent);
   }
 }

@@ -43,6 +43,7 @@ export class PartyComponent implements OnInit {
   displayDps = false;
   unlockedBattleItems = false;
   @Input() isMobile = false;
+  showPartyHpAsPercent: boolean = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
@@ -54,6 +55,8 @@ export class PartyComponent implements OnInit {
     private dpsCalculatorService: DpsCalculatorService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {
+    this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
+
     this.party = this.globalService.getActivePartyCharacters(false);   
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
         

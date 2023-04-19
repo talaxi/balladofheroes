@@ -64,6 +64,7 @@
 }
 
 .jewelcrafting-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--jewelcraftingColor) !important;
   filter: brightness(50%);
 }
 
@@ -129,11 +130,13 @@
 
   --grayedOut-Text: #797c80;
 
+
   --adventurerColor: #DB7803;
   --archerColor: #12A901;
   --warriorColor: #0695FB;
   --priestColor: #D063EE;
 
+  --itemColor: #ffffff;
   --athenaColor: #7fbffa;
   --zeusColor: #fff30b;
   --aresColor: #EE665F;
@@ -142,7 +145,9 @@
   --hermesColor: #efefef;
   /*#faf9eb maybe instead */
   --artemisColor: #97BBB0;
-  --hadesColor: #BBAFC5;
+  --hadesColor: #b58bf2;
+  --dionysusColor: #B8E71E;
+  --nemesisColor: #E1BBC4;
 
   --holyColor: #d9dbbf;
   --lightningColor: #fff30b;
@@ -162,7 +167,7 @@
   --extraordinaryEquipmentColor: #F79721;
   --uniqueEquipmentColor: #FF6250;
   --alchemyColor: #CE66E9;
-  --jewelcraftingColor: #C5B45A;
+  --jewelcraftingColor: #ff9d00;
 
   --resourceKeywordColor: #EAAD91;
   --insufficientResourcesKeywordColor: #7a818c;
@@ -467,12 +472,33 @@ h6 {
   border-style: solid;
 }
 
+.spanButtonStyled {
+  background-color: var(--button-background-color);
+  color: var(--foreground-quaternary);
+  font-weight: bold;
+  font-size: .95rem;
+  padding: .1rem .5rem;
+  margin: .1rem .2rem;
+  border: solid 2px black;
+  cursor: pointer;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .smallButtonStyled {
   padding: 0 .3rem !important;
   margin: .1rem .1rem !important;
 }
 
-.buttonStyled:hover {
+.smallMarginLeft {
+  margin-left: .5rem !important;
+}
+
+.buttonStyled:hover,
+.spanButtonStyled:hover {
   background-color: var(--button-hover);
 }
 
@@ -674,6 +700,12 @@ body {
   --mdc-circular-progress-active-indicator-color: var(--priestColor) !important;
 }
 
+.itemColor {
+  color: var(--itemColor);
+  stroke: var(--itemColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--itemColor) !important;
+}
+
 .athenaColor {
   color: var(--athenaColor);
   stroke: var(--athenaColor) !important;
@@ -728,6 +760,18 @@ body {
   color: var(--hadesColor);
   stroke: var(--hadesColor) !important;
   --mdc-circular-progress-active-indicator-color: var(--hadesColor) !important;
+}
+
+.dionysusColor {
+  color: var(--dionysusColor);
+  stroke: var(--dionysusColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--dionysusColor) !important;
+}
+
+.nemesisColor {
+  color: var(--nemesisColor);
+  stroke: var(--nemesisColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--nemesisColor) !important;
 }
 
 .unclearedSubzoneColor {
@@ -996,6 +1040,23 @@ button {
   filter: brightness(50%);
 }
 
+.dionysus-progress {
+  --mdc-linear-progress-active-indicator-color: var(--dionysusColor) !important;
+}
+
+.dionysus-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--dionysusColor) !important;
+  filter: brightness(50%);
+}
+
+.nemesis-progress {
+  --mdc-linear-progress-active-indicator-color: var(--nemesisColor) !important;
+}
+
+.nemesis-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--nemesisColor) !important;
+  filter: brightness(50%);
+}
 
 .amountAvailable {
   font-variant: normal !important;
@@ -1027,13 +1088,17 @@ button:disabled {
   animation: fadingAnimation .5s forwards;
 }
 
+.sceneDiv {
+  margin-bottom: .575rem;
+}
+
 @keyframes fadingAnimation {
   0% {
-      opacity: 100%;
+    opacity: 100%;
   }
-  
+
   100% {
-      opacity: 0%;
+    opacity: 0%;
   }
 }
 

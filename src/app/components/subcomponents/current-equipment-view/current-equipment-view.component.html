@@ -5,7 +5,7 @@
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Weapon)"></span>
     </span>
     <div class="buttonOptions">
-      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Weapon)"
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && slottingAvailable(equipmentTypeEnum.Weapon)"
         (click)="openSlotMenu(weaponSlotMenuContent)">Slot</button>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Weapon)" class="unequipButton buttonStyled"
         (click)="unequipItem(equipmentTypeEnum.Weapon)">X</button>
@@ -16,7 +16,7 @@
       </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Shield)"></span></span>
     <div class="buttonOptions">
-      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Shield)"
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && slottingAvailable(equipmentTypeEnum.Shield)"
         (click)="openSlotMenu(shieldSlotMenuContent)">Slot</button>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Shield)" class="unequipButton buttonStyled"
         (click)="unequipItem(equipmentTypeEnum.Shield)">X</button>
@@ -26,7 +26,7 @@
     <span customToolTip [isDelayed]="false" [contentTemplate]="equippedArmor"><strong class="statLabel">Armor: </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Armor)"></span></span>
     <div class="buttonOptions">
-      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Armor)"
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && slottingAvailable(equipmentTypeEnum.Armor)"
         (click)="openSlotMenu(armorSlotMenuContent)">Slot</button>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Armor)" class="unequipButton buttonStyled"
         (click)="unequipItem(equipmentTypeEnum.Armor)">X</button>
@@ -37,7 +37,7 @@
       </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
     <div class="buttonOptions">
-      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Ring)"
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && slottingAvailable(equipmentTypeEnum.Ring)"
         (click)="openSlotMenu(ringSlotMenuContent)">Slot</button>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Ring)" class="unequipButton buttonStyled"
         (click)="unequipItem(equipmentTypeEnum.Ring)">X</button>
@@ -48,7 +48,7 @@
       </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Necklace)"></span></span>
     <div class="buttonOptions">
-      <button class="buttonStyled" *ngIf="!canChangeEquipment && equipmentPieceHasSlots(equipmentTypeEnum.Necklace)"
+      <button class="buttonStyled" *ngIf="!canChangeEquipment && slottingAvailable(equipmentTypeEnum.Necklace)"
         (click)="openSlotMenu(necklaceSlotMenuContent)">Slot</button>
       <button *ngIf="!canChangeEquipment && !isUnequipped(equipmentTypeEnum.Necklace)"
         class="unequipButton buttonStyled" (click)="unequipItem(equipmentTypeEnum.Necklace)">X</button>

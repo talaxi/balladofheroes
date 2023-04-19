@@ -92,6 +92,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (openAlchemyQuickView !== undefined)
       this.battleKeybinds.push(openAlchemyQuickView);
 
+      var openJewelcraftingQuickView = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openJewelcraftingQuickView");
+    if (openJewelcraftingQuickView !== undefined)
+      this.battleKeybinds.push(openJewelcraftingQuickView);
+
       var openFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openFirstAvailableAltar");
       if (openFirstAvailableAltar !== undefined)
         this.battleKeybinds.push(openFirstAvailableAltar);
@@ -309,6 +313,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Open Resources Quick View";
     if (name === "openAlchemyQuickView")
       updatedName = "Open Alchemy Quick View";
+      if (name === "openJewelcraftingQuickView")
+      updatedName = "Open Jewelcrafting Quick View";
       if (name === "useCharacter1AutoAttack")
       updatedName = "Use Character 1 Auto Attack";
       if (name === "openFirstAvailableAltar")

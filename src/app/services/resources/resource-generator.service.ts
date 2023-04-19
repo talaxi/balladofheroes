@@ -32,6 +32,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.GoldenSword) {
       return new ResourceValue(ItemsEnum.GoldenSword, amount);
     }
+    if (type === ItemsEnum.LiquidSaber) {
+      return new ResourceValue(ItemsEnum.LiquidSaber, amount);
+    }
+    if (type === ItemsEnum.BlackLance) {
+      return new ResourceValue(ItemsEnum.BlackLance, amount);
+    }
 
     //hammers
     if (type === ItemsEnum.IronHammer) {
@@ -92,6 +98,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ShieldOfTheHealer) {
       return new ResourceValue(ItemsEnum.ShieldOfTheHealer, amount);
     }
+    if (type === ItemsEnum.ShieldOfTheSea) {
+      return new ResourceValue(ItemsEnum.ShieldOfTheSea, amount);
+    }
+    if (type === ItemsEnum.SpikedShield) {
+      return new ResourceValue(ItemsEnum.SpikedShield, amount);
+    }
 
     //armor
     if (type === ItemsEnum.LinenArmor) {
@@ -121,6 +133,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.BoarskinArmor) {
       return new ResourceValue(ItemsEnum.BoarskinArmor, amount);
     }
+    if (type === ItemsEnum.FeatheredTunic) {
+      return new ResourceValue(ItemsEnum.FeatheredTunic, amount);
+    }
 
     //necklace
     if (type === ItemsEnum.ForgottenLocket) {
@@ -137,6 +152,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.GemmedNecklace) {
       return new ResourceValue(ItemsEnum.GemmedNecklace, amount);
+    }
+    if (type === ItemsEnum.SharkstoothNecklace) {
+      return new ResourceValue(ItemsEnum.SharkstoothNecklace, amount);
+    }
+    if (type === ItemsEnum.SharkstoothPendant) {
+      return new ResourceValue(ItemsEnum.SharkstoothPendant, amount);
     }
 
     //rings
@@ -163,6 +184,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.BedazzledRing) {
       return new ResourceValue(ItemsEnum.BedazzledRing, amount);
+    }
+    if (type === ItemsEnum.ScalyRing) {
+      return new ResourceValue(ItemsEnum.ScalyRing, amount);
+    }
+    if (type === ItemsEnum.QuadRing) {
+      return new ResourceValue(ItemsEnum.QuadRing, amount);
     }
 
     //equippables
@@ -402,6 +429,15 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.MinorNecklaceSlotAddition) {
       return new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, amount);
     }
+    if (type === ItemsEnum.LamiaHeart) {
+      return new ResourceValue(ItemsEnum.LamiaHeart, amount);
+    }
+    if (type === ItemsEnum.SharkTeeth) {
+      return new ResourceValue(ItemsEnum.SharkTeeth, amount);
+    }
+    if (type === ItemsEnum.Seashell) {
+      return new ResourceValue(ItemsEnum.Seashell, amount);
+    }
 
     //charms
     if (type === ItemsEnum.SmallCharmOfDetermination) {
@@ -442,6 +478,8 @@ export class ResourceGeneratorService {
 
   getSlotItemValues(item: ItemsEnum) {   
     var baseLesserCrackedStatValue = 10; 
+    var hpModifier = 5;
+    var defensiveModifier = 1.5;
     if (item === ItemsEnum.LesserCrackedOpal) {
       return new CharacterStats(0, baseLesserCrackedStatValue, 0, 0, 0, 0);
     }
@@ -452,13 +490,13 @@ export class ResourceGeneratorService {
       return new CharacterStats(0, 0, 0, baseLesserCrackedStatValue, 0, 0);
     }
     if (item === ItemsEnum.LesserCrackedEmerald) {
-      return new CharacterStats(0, 0, baseLesserCrackedStatValue, 0, 0, 0);
+      return new CharacterStats(0, 0, baseLesserCrackedStatValue * defensiveModifier, 0, 0, 0);
     }
     if (item === ItemsEnum.LesserCrackedAmethyst) {
-      return new CharacterStats(0, 0, 0, 0, 0, baseLesserCrackedStatValue);
+      return new CharacterStats(0, 0, 0, 0, 0, baseLesserCrackedStatValue * defensiveModifier);
     }
     if (item === ItemsEnum.LesserCrackedTopaz) {
-      return new CharacterStats(baseLesserCrackedStatValue * 5, 0, 0, 0, 0, 0);
+      return new CharacterStats(baseLesserCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
     var baseCrackedStatValue = 20;
@@ -472,13 +510,13 @@ export class ResourceGeneratorService {
       return new CharacterStats(0, 0, 0, baseCrackedStatValue, 0, 0);
     }
     if (item === ItemsEnum.CrackedEmerald) {
-      return new CharacterStats(0, 0, baseCrackedStatValue, 0, 0, 0);
+      return new CharacterStats(0, 0, baseCrackedStatValue * defensiveModifier, 0, 0, 0);
     }
     if (item === ItemsEnum.CrackedAmethyst) {
-      return new CharacterStats(0, 0, 0, 0, 0, baseCrackedStatValue);
+      return new CharacterStats(0, 0, 0, 0, 0, baseCrackedStatValue * defensiveModifier);
     }
     if (item === ItemsEnum.CrackedTopaz) {
-      return new CharacterStats(baseCrackedStatValue * 5, 0, 0, 0, 0, 0);
+      return new CharacterStats(baseCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);

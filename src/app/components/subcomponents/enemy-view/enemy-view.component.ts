@@ -13,6 +13,8 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-enemy-view',
@@ -28,40 +30,40 @@ export class EnemyViewComponent implements OnInit {
   defeatCount: number;
   subscription: any;
   characterTargeting: boolean = false;
-  bothCharactersTargeting: boolean = false;  
+  bothCharactersTargeting: boolean = false;
   @ViewChild('enemyNameContainer') enemyNameContainer: ElementRef;
   @ViewChild('enemyName') enemyName: ElementRef;
   previousName = "";
+  overlayRef: OverlayRef;
+  showEnemyHpAsPercent: boolean = false;
 
   constructor(public battleService: BattleService, public lookupService: LookupService, public utilityService: UtilityService,
-    public globalService: GlobalService, private gameLoopService: GameLoopService) { }
+    public globalService: GlobalService, private gameLoopService: GameLoopService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {     
+    this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
+
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var defeatCount: EnemyDefeatCount | undefined;
 
-      if (this.character !== undefined)
-      {
+      if (this.character !== undefined) {
         defeatCount = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.character.bestiaryType);
-      
-        if (this.previousName !== this.character.name)
-        {
+
+        if (this.previousName !== this.character.name) {
           this.enemyName.nativeElement.classList.remove('smallText');
           this.enemyName.nativeElement.classList.remove('verySmallText');
         }
-          
-        if (this.enemyName.nativeElement.classList.contains('smallText') && (this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight)
-        {
-          this.enemyName.nativeElement.classList.remove('smallText');
-          this.enemyName.nativeElement.classList.add('verySmallText');      
-        }   
 
-        if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight)
-        {
-          this.enemyName.nativeElement.classList.add('smallText');      
-        }     
-  
-        this.previousName = this.character.name;  
+        if (this.enemyName.nativeElement.classList.contains('smallText') && (this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight) {
+          this.enemyName.nativeElement.classList.remove('smallText');
+          this.enemyName.nativeElement.classList.add('verySmallText');
+        }
+
+        if ((this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight) {
+          this.enemyName.nativeElement.classList.add('smallText');
+        }
+
+        this.previousName = this.character.name;
       }
 
       if (defeatCount !== undefined)
@@ -113,13 +115,12 @@ export class EnemyViewComponent implements OnInit {
   }
 
   characterTargetEnemy(character: Character) {
-    if (character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Dead) !== undefined)  
-      return;    
-    
+    if (character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Dead) !== undefined)
+      return;
+
     if (this.battleService.targetCharacterMode) {
       var targetingCharacter = this.globalService.globalVar.characters.find(item => item.type === this.battleService.characterInTargetMode);
-      if (targetingCharacter !== undefined)
-      {
+      if (targetingCharacter !== undefined) {
         targetingCharacter.targeting = character;
       }
     }
@@ -143,10 +144,10 @@ export class EnemyViewComponent implements OnInit {
     var name = "";
 
     if (this.defeatCount >= this.utilityService.killCountDisplayFullEnemyLoot) {
-      name = loot.amount + "x " + this.lookupService.getItemName(loot.item) + " (" + (loot.chance * 100) + "%)";
+      name = loot.amount + "x " + this.dictionaryService.getItemName(loot.item) + " (" + (loot.chance * 100) + "%)";
     }
     else if (this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot) {
-      name = this.lookupService.getItemName(loot.item);
+      name = this.dictionaryService.getItemName(loot.item);
     }
 
     return name;
@@ -172,9 +173,9 @@ export class EnemyViewComponent implements OnInit {
         src += "adventurerTarget.svg";
       if (character.type === CharacterEnum.Archer)
         src += "archerTarget.svg";
-        if (character.type === CharacterEnum.Warrior)
+      if (character.type === CharacterEnum.Warrior)
         src += "warriorTarget.svg";
-        if (character.type === CharacterEnum.Priest)
+      if (character.type === CharacterEnum.Priest)
         src += "priestTarget.svg";
     }
     return src;
@@ -182,15 +183,15 @@ export class EnemyViewComponent implements OnInit {
 
   getSecondCharacterTargeting() {
     var src = "assets/svg/";
-       
+
     if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Adventurer)
       src += "adventurerTarget.svg";
     if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Archer)
-      src += "archerTarget.svg";  
-      if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Warrior)
+      src += "archerTarget.svg";
+    if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Warrior)
       src += "warriorTarget.svg";
-      if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Priest)
-      src += "priestTarget.svg";  
+    if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Priest)
+      src += "priestTarget.svg";
 
     return src;
   }
@@ -198,71 +199,136 @@ export class EnemyViewComponent implements OnInit {
   getCharacterAttackSpeed() {
     if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyAverageAutoAttackSpeed)
       return "Average";
-      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyQuickAutoAttackSpeed)
+    if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyQuickAutoAttackSpeed)
       return "Quick";
-      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyLongAutoAttackSpeed)
-      return "Long";      
-      if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyVeryLongAutoAttackSpeed)
+    if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyLongAutoAttackSpeed)
+      return "Long";
+    if (this.character.battleInfo.timeToAutoAttack === this.utilityService.enemyVeryLongAutoAttackSpeed)
       return "Very Long";
-      
-      return "";
+
+    return "";
   }
 
   getElementalStrengths() {
     var increases = "";
-    if (this.character.battleStats.elementIncrease.fire > 0)
+    if (this.character.battleStats.elementIncrease.fire > 0) {
+      if (increases !== "")
+        increases += "<br/>";
       increases += "<span class='statLabel'>Fire Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.fire * 100 + "%</span>";
-      if (this.character.battleStats.elementIncrease.holy > 0)
+    }
+    if (this.character.battleStats.elementIncrease.holy > 0) {
+      if (increases !== "")
+        increases += "<br/>";
       increases += "<span class='statLabel'>Holy Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.holy * 100 + "%</span>";
-      if (this.character.battleStats.elementIncrease.water > 0)
+    }
+    if (this.character.battleStats.elementIncrease.water > 0) {
+      if (increases !== "")
+        increases += "<br/>";
       increases += "<span class='statLabel'>Water Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.water * 100 + "%</span>";
-      if (this.character.battleStats.elementIncrease.air > 0)
+    }
+    if (this.character.battleStats.elementIncrease.air > 0) {
+      if (increases !== "")
+        increases += "<br/>";
       increases += "<span class='statLabel'>Air Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.air * 100 + "%</span>";
-      if (this.character.battleStats.elementIncrease.earth > 0)
+    }
+    if (this.character.battleStats.elementIncrease.earth > 0) {
+      if (increases !== "")
+        increases += "<br/>";
       increases += "<span class='statLabel'>Earth Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.earth * 100 + "%</span>";
-      if (this.character.battleStats.elementIncrease.lightning > 0)
+    }
+    if (this.character.battleStats.elementIncrease.lightning > 0) {
+      if (increases !== "")
+        increases += "<br/>";
       increases += "<span class='statLabel'>Lightning Damage Dealt:</span> <span class='statValue'>+" + this.character.battleStats.elementIncrease.lightning * 100 + "%</span>";
+    }
 
     return increases;
   }
 
   getElementalWeaknesses() {
     var decreases = "";
-    if (this.character.battleStats.elementResistance.water > 0)
-    decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.water * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.fire > 0)
-    decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.fire * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.holy > 0)
-    decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.holy * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.air > 0)
-    decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.air * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.earth > 0)
-    decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.earth * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.lightning > 0)
-    decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.lightning * 100 + "%</span>";
+    if (this.character.battleStats.elementResistance.water > 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.water * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.fire > 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.fire * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.holy > 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.holy * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.air > 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.air * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.earth > 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.earth * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.lightning > 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>-" + this.character.battleStats.elementResistance.lightning * 100 + "%</span>";
+    }
 
-    if (this.character.battleStats.elementResistance.water < 0)
-    decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.water) * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.holy < 0)
-    decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.holy) * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.air < 0)
-    decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.air) * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.earth < 0)
-    decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.earth) * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.fire < 0)
-    decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.fire) * 100 + "%</span>";
-    if (this.character.battleStats.elementResistance.lightning < 0)
-    decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.lightning) * 100 + "%</span>";
+    if (this.character.battleStats.elementResistance.water < 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Water Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.water) * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.holy < 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Holy Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.holy) * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.air < 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Air Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.air) * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.earth < 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Earth Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.earth) * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.fire < 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Fire Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.fire) * 100 + "%</span>";
+    }
+    if (this.character.battleStats.elementResistance.lightning < 0) {
+      if (decreases !== "")
+        decreases += "<br/>";
+      decreases += "<span class='statLabel'>Lightning Damage Taken:</span> <span class='statValue'>+" + Math.abs(this.character.battleStats.elementResistance.lightning) * 100 + "%</span>";
+    }
 
     return decreases;
+  }
+
+  overlayEmitter(overlayRef: OverlayRef) {
+    if (this.overlayRef !== undefined) {
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
+
+    this.overlayRef = overlayRef;
   }
 
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
-  }
 
-  /*ngOnChanges(changes: any) {
-    this.showNewEnemyGroupAnimation = changes.showNewEnemyGroupAnimation.currentValue;    
-  }*/
+
+    if (this.overlayRef !== undefined) {
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
+  }
 }

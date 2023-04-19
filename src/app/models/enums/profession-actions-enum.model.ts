@@ -1,4 +1,4 @@
-export enum AlchemyActionsEnum {
+export enum ProfessionActionsEnum {
   None,
   PrepareWaterSmallPot,
   CombineIngredientsPot,
@@ -11,5 +11,10 @@ export enum AlchemyActionsEnum {
   CombineIngredients,
   ExtractEssence,
   Infuse,
-  StoreIngredients
+  StoreIngredients,
+  CombiningGems,
+  Polish,
+  HeatingMetal,
+  ShapingMetal,
+  CoolingMetal
 }

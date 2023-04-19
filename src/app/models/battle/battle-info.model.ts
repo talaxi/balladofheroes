@@ -7,6 +7,7 @@ import { StatusEffect } from "./status-effect.model";
 export class BattleInfo {
     autoAttackTimer: number;
     timeToAutoAttack: number;
+    autoAttackModifier: number;
     autoAttackAutoMode: boolean;
     autoAttackManuallyTriggered: boolean;
     @Type(() => StatusEffect)
@@ -16,6 +17,7 @@ export class BattleInfo {
     hpRegenTimer: number;
     hpRegenTimerLength: number;
     elementalType: ElementalTypeEnum;
+    elementsUsed: ElementalTypeEnum[]; //specifically used for disaster
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;

@@ -6,6 +6,7 @@ import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-resource-item-view',
@@ -18,14 +19,15 @@ export class ResourceItemViewComponent implements OnInit {
   showTooltip = false;
   @Input() canSetTrackingResource: boolean = false;
 
-  constructor(public lookupService: LookupService, public globalService: GlobalService, private utilityService: UtilityService) { }
+  constructor(public lookupService: LookupService, public globalService: GlobalService, private utilityService: UtilityService,
+    private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
   }
 
   
   getPluralizedItemName(type: ItemsEnum) {
-    return this.utilityService.handlePlural(this.lookupService.getItemName(type));
+    return this.utilityService.handlePlural(this.dictionaryService.getItemName(type));
   }
 
   setTrackingResource() {

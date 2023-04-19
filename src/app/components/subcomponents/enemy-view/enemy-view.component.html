@@ -4,7 +4,7 @@
         <span class="targetSpace" *ngIf="isBoss">
         </span>
         <span #enemyNameContainer class="s2Heading name" customToolTip [tooltipDirection]="tooltipDirection"
-            [contentTemplate]="enemyPopover"> 
+            [contentTemplate]="enemyPopover" (overlayRefEmitter)="overlayEmitter($event)"> 
             <span #enemyName>
                 {{character.name}}                 
             </span></span>
@@ -23,8 +23,9 @@
                 [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
         </div>
-        <span class="hpMpText hpAmount"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
+        <span class="hpMpText hpAmount" *ngIf="!showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
             {{getCharacterMaxHp()}}<br /></span>
+            <span class="hpMpText hpAmount textCentered enemyHpPercentMarginRight" *ngIf="showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character) | number : '1.2-2'}}%</span><br /></span>
     </div>
     <div class="fullHeight">
         <app-status-effect-view [character]="character"></app-status-effect-view>
@@ -79,7 +80,11 @@
                 info.
             </div>
             <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot">
-                <span><span class='statLabel'>Coins:</span> {{character.coinGainFromDefeat}}</span>
+                <span>
+                    <span class='statLabel'>Coins:</span> <span class="statValue"> {{character.coinGainFromDefeat}}</span>                    
+                </span>
+                <br/>
+                <span class='statLabel'>XP:</span> <span class="statValue"> {{character.xpGainFromDefeat}}</span>
                 <br />
                 <span *ngIf="character.loot.length === 0">No loot.</span>
                 <div *ngIf="character.loot.length > 0">

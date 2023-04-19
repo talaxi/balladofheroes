@@ -6,6 +6,7 @@ import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-individual-achievement-view',
@@ -17,7 +18,7 @@ export class IndividualAchievementViewComponent implements OnInit {
   tooltipDirection = DirectionEnum.Down;
   rewards: ResourceValue[];
 
-  constructor(private lookupService: LookupService, private achievementService: AchievementService) { }
+  constructor(private lookupService: LookupService, private achievementService: AchievementService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.rewards = this.getAchievementRewards();
@@ -37,7 +38,7 @@ export class IndividualAchievementViewComponent implements OnInit {
     if (resource.item === ItemsEnum.BoonOfOlympus)
       amount = (resource.amount * 100) + "%";
 
-    reward += amount + " " + this.lookupService.getItemName(resource.item);
+    reward += amount + " " + this.dictionaryService.getItemName(resource.item);
 
     return reward;
   }

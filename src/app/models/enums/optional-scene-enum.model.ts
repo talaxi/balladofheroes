@@ -9,4 +9,5 @@ export enum OptionalSceneEnum {
   ChthonicFavorUpgrade2Scene1,
   ChthonicFavorUpgrade2Scene2,
   ChthonicFavorUpgrade2Scene3,
+  Jewelcrafting
 }

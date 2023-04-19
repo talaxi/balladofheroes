@@ -10,6 +10,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class AlchemyViewComponent implements OnInit {
   alchemy: Profession | undefined;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
-    private alchemyService: AlchemyService, private professionService: ProfessionService) { }
+    private alchemyService: AlchemyService, private professionService: ProfessionService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
@@ -60,7 +61,7 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   getCraftedItemName(recipe: Recipe) {
-    return this.lookupService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
+    return this.dictionaryService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
   }
 
   getRecipeList(quality: EquipmentQualityEnum) {
@@ -71,14 +72,14 @@ export class AlchemyViewComponent implements OnInit {
 
   getSelectedRecipeName() {
     if (this.selectedRecipe !== undefined)
-      return this.lookupService.getItemName(this.selectedRecipe.createdItem);
+      return this.dictionaryService.getItemName(this.selectedRecipe.createdItem);
 
     return "";
   }
 
   getCreatingRecipeName() {
     if (this.alchemy !== undefined && this.alchemy.creatingRecipe !== undefined)
-      return this.lookupService.getItemName(this.alchemy.creatingRecipe.createdItem);
+      return this.dictionaryService.getItemName(this.alchemy.creatingRecipe.createdItem);
 
     return "";
   }
@@ -90,7 +91,7 @@ export class AlchemyViewComponent implements OnInit {
       return "";
 
     this.selectedRecipe.ingredients.forEach(resource => {
-      var displayName = this.lookupService.getItemName(resource.item);
+      var displayName = this.dictionaryService.getItemName(resource.item);
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
       var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
@@ -107,7 +108,7 @@ export class AlchemyViewComponent implements OnInit {
   getSelectedRecipeIngredient(resource: ResourceValue) {
     var ingredient = "";
 
-    var displayName = this.lookupService.getItemName(resource.item);
+    var displayName = this.dictionaryService.getItemName(resource.item);
     var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
     var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { MatDialogRef } from '@angular/material/dialog';
 
 @Component({
@@ -7,6 +7,7 @@ import { MatDialogRef } from '@angular/material/dialog';
   styleUrls: ['./confirmation-box.component.css']
 })
 export class ConfirmationBoxComponent {
+  @Input() confirmationText = "";
   constructor(public dialogRef: MatDialogRef<ConfirmationBoxComponent>) {
     
   }

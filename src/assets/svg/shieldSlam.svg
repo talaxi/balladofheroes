@@ -23,9 +23,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="0.375"
-     inkscape:cx="-223.2212"
-     inkscape:cy="893.53205"
+     inkscape:zoom="0.53033009"
+     inkscape:cx="163.35286"
+     inkscape:cy="457.83865"
      inkscape:document-units="mm"
      inkscape:current-layer="layer3"
      inkscape:document-rotation="0"
@@ -37,7 +37,12 @@
      inkscape:window-maximized="1"
      inkscape:snap-global="true"
      showguides="true"
-     inkscape:guide-bbox="true" />
+     inkscape:guide-bbox="true">
+    <sodipodi:guide
+       position="149.67093,114.90694"
+       orientation="1,0"
+       id="guide11890" />
+  </sodipodi:namedview>
   <metadata
      id="metadata58">
     <rdf:RDF>
@@ -46,7 +51,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -69,13 +74,15 @@
      inkscape:label="Layer 2"
      style="display:inline">
     <path
-       style="display:inline;fill:#808080;stroke:#000000;stroke-width:1.05145;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 71.177488,66.374955 H 228.82166 c 0,0 1.11278,158.756965 -78.2657,167.288305 C 71.177488,242.19459 71.177488,66.374955 71.177488,66.374955 Z"
-       id="path5365-5" />
+       style="display:inline;fill:#808080;stroke:#000000;stroke-width:1.13103;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 60.339277,60.88106 H 239.65956 c 0,0 1.67592,170.257 -89.02725,170.17003 C 60.039189,230.96422 60.339277,60.88106 60.339277,60.88106 Z"
+       id="path5365-5"
+       sodipodi:nodetypes="ccsc" />
     <path
-       style="fill:#aa4400;stroke:#000000;stroke-width:0.851921;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       d="M 86.135031,81.823935 H 213.86428 c 0,0 0.90161,128.630865 -63.41383,135.543265 C 86.135031,224.27961 86.135031,81.823935 86.135031,81.823935 Z"
-       id="path5365" />
+       style="fill:#aa4400;stroke:#000000;stroke-width:0.887223;stroke-linecap:butt;stroke-linejoin:miter;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       d="M 79.666361,78.790999 H 220.33271 c 0,0 1.31466,133.411501 -69.83673,133.488481 C 79.085295,212.35676 79.666361,78.790999 79.666361,78.790999 Z"
+       id="path5365"
+       sodipodi:nodetypes="ccsc" />
   </g>
   <g
      inkscape:groupmode="layer"

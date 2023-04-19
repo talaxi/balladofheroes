@@ -92,7 +92,10 @@ export class AltarOverviewComponent implements OnInit {
       'apollo-progress': altarEffect.associatedGod === GodEnum.Apollo,
       'zeus-progress': altarEffect.associatedGod === GodEnum.Zeus,
       'ares-progress': altarEffect.associatedGod === GodEnum.Ares,
-      'poseidon-progress': altarEffect.associatedGod === GodEnum.Poseidon
+      'hades-progress': altarEffect.associatedGod === GodEnum.Hades,
+      'poseidon-progress': altarEffect.associatedGod === GodEnum.Poseidon,
+      'dionysus-progress': altarEffect.associatedGod === GodEnum.Dionysus,
+      'nemesis-progress': altarEffect.associatedGod === GodEnum.Nemesis
     };
   }
 

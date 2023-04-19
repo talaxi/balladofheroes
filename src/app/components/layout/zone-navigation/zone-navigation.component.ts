@@ -22,6 +22,7 @@ import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { AchievementService } from 'src/app/services/achievements/achievement.service';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { ColiseumService } from 'src/app/services/battle/coliseum.service';
 import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -60,6 +61,7 @@ export class ZoneNavigationComponent implements OnInit {
   displayQuickViewItemBelt: boolean;
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
+  displayQuickViewJewelcrafting: boolean;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -70,9 +72,9 @@ export class ZoneNavigationComponent implements OnInit {
     private utilityService: UtilityService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
     private achievementService: AchievementService, public lookupService: LookupService, private layoutService: LayoutService,
     private menuService: MenuService, private dpsCalculatorService: DpsCalculatorService, public dialog: MatDialog,
-    private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
+    private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService, private coliseumService: ColiseumService) { }
 
-  ngOnInit(): void {  
+  ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
 
     this.displayQuickViewOverview = this.globalService.globalVar.settings.get("displayQuickViewOverview") ?? false;
@@ -81,6 +83,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.displayQuickViewItemBelt = this.globalService.globalVar.settings.get("displayQuickViewItemBelt") ?? false;
     this.displayQuickViewAltars = this.globalService.globalVar.settings.get("displayQuickViewAltars") ?? false;
     this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
+    this.displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting") ?? false;
 
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
@@ -133,7 +136,7 @@ export class ZoneNavigationComponent implements OnInit {
       if (this.globalService.globalVar.trackedResources.length > 5)
         this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
     });
-  }  
+  }
 
   getSubzoneName(subzone: SubZone) {
     return this.balladService.getSubZoneName(subzone.type);
@@ -177,85 +180,36 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
     this.globalService.globalVar.settings.set("autoProgress", false);
 
-    if (this.isMobile)
-    {
+    if (this.isMobile) {
       this.dialog.closeAll();
     }
   }
-
-  /*jumpToLatestGeneralStore() {
-    var latestShop: SubZone = this.balladService.getActiveSubZone();
-    var relatedZone: Zone | undefined = this.balladService.getActiveZone();
-    var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
-
-    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
-      ballad.isSelected = false;
-      if (ballad.zones !== undefined && ballad.zones.length > 0)
-        ballad.zones.filter(item => item.isAvailable).forEach(zone => {
-          zone.isSelected = false;
-          if (zone.subzones !== undefined && zone.subzones.length > 0)
-            zone.subzones.filter(item => item.isAvailable).forEach(subzone => {
-              subzone.isSelected = false;
-              if (subzone.isGeneralStore()) {
-                latestShop = subzone;
-                relatedZone = zone;
-                relatedBallad = ballad;
-              }
-            });
-        });
-    });
-
-    latestShop.isSelected = true;
-    latestShop.notify = false;
-    if (relatedZone !== undefined)
-      relatedZone.isSelected = true;
-    if (relatedBallad !== undefined)
-      relatedBallad.isSelected = true;
-    this.globalService.globalVar.playerNavigation.currentSubzone = latestShop;
-    this.globalService.resetCooldowns();
-    this.dpsCalculatorService.rollingAverageTimer = 0;
-    this.dpsCalculatorService.partyDamagingActions = [];
-    this.dpsCalculatorService.enemyDamagingActions = [];
-    this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-
-    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + latestShop.name + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-
-    this.globalService.globalVar.settings.set("autoProgress", false);
-    if (this.isMobile)
-    {
-      this.dialog.closeAll();
-    }
-  }*/
 
   jumpToPalaceOfHades() {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades);
     if (startingPoint !== undefined) {
       this.balladService.setActiveSubZone(startingPoint.type);
       this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
-    
 
-    this.dpsCalculatorService.rollingAverageTimer = 0;
-    this.dpsCalculatorService.partyDamagingActions = [];
-    this.dpsCalculatorService.enemyDamagingActions = [];
-    this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+      this.dpsCalculatorService.rollingAverageTimer = 0;
+      this.dpsCalculatorService.partyDamagingActions = [];
+      this.dpsCalculatorService.enemyDamagingActions = [];
+      this.globalService.globalVar.activeBattle.battleDuration = 0;
+      this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-    var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
-    this.globalService.globalVar.settings.set("autoProgress", false);
+      this.globalService.globalVar.settings.set("autoProgress", false);
     }
-    if (this.isMobile)
-    {
+    if (this.isMobile) {
       this.dialog.closeAll();
     }
   }
@@ -264,30 +218,29 @@ export class ZoneNavigationComponent implements OnInit {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.ElysiumColiseum);
     if (startingPoint !== undefined) {
       this.balladService.setActiveSubZone(startingPoint.type);
-      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;    
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
 
-    this.dpsCalculatorService.rollingAverageTimer = 0;
-    this.dpsCalculatorService.partyDamagingActions = [];
-    this.dpsCalculatorService.enemyDamagingActions = [];
-    this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+      this.dpsCalculatorService.rollingAverageTimer = 0;
+      this.dpsCalculatorService.partyDamagingActions = [];
+      this.dpsCalculatorService.enemyDamagingActions = [];
+      this.globalService.globalVar.activeBattle.battleDuration = 0;
+      this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-    var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
-    this.globalService.globalVar.settings.set("autoProgress", false);
+      this.globalService.globalVar.settings.set("autoProgress", false);
     }
-    if (this.isMobile)
-    {
+    if (this.isMobile) {
       this.dialog.closeAll();
     }
   }
 
   viewFollowers(content: any) {
     if (this.deviceDetectorService.isMobile())
-    this.dialog.open(content, { width: '95%', height: '80%' });
-  else 
-    this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
+      this.dialog.open(content, { width: '95%', height: '80%' });
+    else
+      this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
   }
 
   getBalladClass(ballad: Ballad) {
@@ -335,6 +288,14 @@ export class ZoneNavigationComponent implements OnInit {
     var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0 &&
       this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length > 0;
 
+    if (subzone.type === SubZoneEnum.CalydonAltarOfAsclepius) {
+      return {
+        'completedSubzoneColor': this.globalService.globalVar.sidequestData.altarOfAsclepius.exp >= 4,
+        'unclearedSubzoneColor': this.globalService.globalVar.sidequestData.altarOfAsclepius.exp < 4,
+        'selected': subzone.isSelected
+      }
+    }
+
     return {
       'selected': subzone.isSelected,
       'unclearedSubzoneColor': this.balladService.getVictoriesNeededToProceed(subzone.type) > subzone.victoryCount,
@@ -345,7 +306,7 @@ export class ZoneNavigationComponent implements OnInit {
 
   autoProgressToggle() {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
-  }  
+  }
 
   getSubZoneSubText(subzone: SubZone) {
     var text = "";
@@ -384,6 +345,8 @@ export class ZoneNavigationComponent implements OnInit {
     var name = "";
     if (this.quickView === QuickViewEnum.Alchemy)
       name = "Alchemy ";
+    if (this.quickView === QuickViewEnum.Jewelcrafting)
+      name = "Jewelcrafting ";
     else if (this.quickView === QuickViewEnum.Jump)
       name = "Travel ";
     else if (this.quickView === QuickViewEnum.Resources)
@@ -392,10 +355,14 @@ export class ZoneNavigationComponent implements OnInit {
       name = "Overview ";
 
     return name;
-  }  
+  }
 
   isAlchemyAvailable() {
     return this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)?.isUnlocked;
+  }
+
+  isJewelcraftingAvailable() {
+    return this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)?.isUnlocked;
   }
 
   areAltarsAvailable() {
@@ -433,6 +400,9 @@ export class ZoneNavigationComponent implements OnInit {
     }
     if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)?.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAlchemyQuickView"))) {
       this.setQuickView(QuickViewEnum.Alchemy);
+    }
+    if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)?.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openJewelcraftingQuickView"))) {
+      this.setQuickView(QuickViewEnum.Jewelcrafting);
     }
     if (this.globalService.globalVar.altars.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAltarsQuickView"))) {
       this.setQuickView(QuickViewEnum.Altars);

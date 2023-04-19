@@ -11,6 +11,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { ResourceGeneratorService } from 'src/app/services/resources/resource-generator.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -29,7 +30,7 @@ export class ShoppingItemViewComponent implements OnInit {
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService,
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
@@ -60,7 +61,7 @@ export class ShoppingItemViewComponent implements OnInit {
   setItemPurchasePrice() {
     this.purchaseResourcesRequired = "";
     this.item.purchasePrice.forEach(resource => {
-      var displayName = this.lookupService.getItemName(resource.item);
+      var displayName = this.dictionaryService.getItemName(resource.item);
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
       //var insufficientText = "";
       //if (userResourceAmount < resource.amount)

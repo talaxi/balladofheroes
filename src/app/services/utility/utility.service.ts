@@ -16,6 +16,9 @@ export class UtilityService {
   public quickAutoAttackSpeed = 6;
   public averageAutoAttackSpeed = 8;
   public longAutoAttackSpeed = 10;
+  public weakAutoAttack = .6;
+  public averageAutoAttack = .8;
+  public strongAutoAttack = 1;
 
   public enemyQuickAutoAttackSpeed = 5;
   public enemyAverageAutoAttackSpeed = 10;
@@ -35,13 +38,15 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 375;
 
-  public godStatGainLevelIncrement = (1 / 15);
+  public godStatGainLevelIncrement = (1 / 18);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
+  public firstJewelcraftingLevelCap = 25; 
+  public jewelcraftingLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
   public largeAltarAffinityGain = 5;
@@ -78,6 +83,7 @@ export class UtilityService {
   public largeAltarPrayChancePerFollower = .01;
 
   public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
+  public weeklyMeleeEntryCap = 7;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
@@ -262,6 +268,16 @@ export class UtilityService {
 
       reducedNumber += "K";
     }
+    else if (this.getDigitCount(originalAmount) <= 9) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 6;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "M";
+    }
 
     return reducedNumber;
   }
@@ -300,6 +316,9 @@ export class UtilityService {
 
     if (text === "Small Topaz")
       return "Small Topazes";
+
+    if (text === "Shark Tooth")
+      return "Shark Teeth";
 
     return pluralize(text);
   }

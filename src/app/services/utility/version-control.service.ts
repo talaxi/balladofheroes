@@ -7,6 +7,10 @@ import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { UtilityService } from './utility.service';
 import { AchievementService } from '../achievements/achievement.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { InitializationService } from '../global/initialization.service';
+import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count.model';
+import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -14,10 +18,11 @@ import { AchievementService } from '../achievements/achievement.service';
 export class VersionControlService {
 
   constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService,
-    private achievementService: AchievementService) { }
+    private achievementService: AchievementService, private initializationService: InitializationService) { }
 
+  //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.32, 0.31, 0.3];
+  gameVersions = [0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -48,6 +53,8 @@ export class VersionControlService {
   getVersionChanges(version: number) {
     var changes = "";
 
+    if (version === 0.4)
+      changes = "Ballad of argo launch";
     if (version === 0.32)
       changes = "Bug fixes";
     if (version === 0.31)
@@ -75,6 +82,8 @@ export class VersionControlService {
       date = new Date('2022-04-06 12:00:00');
     if (version === .32)
       date = new Date('2022-04-06 12:00:00');
+    if (version === .32)
+      date = new Date('2022-04-19 12:00:00');
 
     return date.toDateString().replace(/^\S+\s/, '');
   }
@@ -108,7 +117,7 @@ export class VersionControlService {
           }
         }
         if (version === .32) {
-          var priest = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);          
+          var priest = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);
           if (priest !== undefined)
             priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
 
@@ -116,29 +125,101 @@ export class VersionControlService {
           this.globalService.globalVar.ballads.forEach(ballad => {
             ballad.zones = ballad.zones.filter(item => item.type !== ZoneEnum.None);
             ballad.zones.forEach(zone => {
-              zone.subzones = zone.subzones.filter(item => item.type !== SubZoneEnum.None);              
+              zone.subzones = zone.subzones.filter(item => item.type !== SubZoneEnum.None);
             });
           });
-
         }
-        /*if (version === .4) {          
-          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
+        if (version === .4) {
+          this.globalService.globalVar.sidequestData.weeklyMeleeEntries = 1;
+          this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound = 0;
+          this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived = new Date();
+
+          var coliseumDefeatCount = new ColiseumDefeatCount(ColiseumTournamentEnum.WeeklyMelee, 0);
+          this.globalService.globalVar.coliseumDefeatCount.push(coliseumDefeatCount);
+
+          var tournamentCount = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead);
+          if (tournamentCount !== undefined && tournamentCount.count > 0) {
+            var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);
+            if (weeklyMelee !== undefined)
+              weeklyMelee.isAvailable = true;
+          }
+
+          this.globalService.globalVar.characters.forEach(character => {
+            character.maxLevel = 30;
+          });
+
+          var priest = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);
+          if (priest !== undefined) {
+            priest.baseStats.attack += 4;
+            priest.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
+          }
+
+          var adventurer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer);
+          if (adventurer !== undefined) {
+            adventurer.baseStats.attack += 6;
+            adventurer.baseStats.defense += 1;
+            adventurer.battleInfo.autoAttackModifier = this.utilityService.weakAutoAttack;
+          }
+          var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warrior !== undefined) {
+            warrior.baseStats.attack += 2;
+            warrior.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
+          }
+
+          var archer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Archer);
+          if (archer !== undefined) {
+            archer.baseStats.attack += 5;
+            archer.battleInfo.autoAttackModifier = this.utilityService.weakAutoAttack;
+          }
+
+          this.globalService.globalVar.settings.set("showEnemyHpAsPercent", false);
+          this.globalService.globalVar.settings.set("showPartyHpAsPercent", false);
+          this.globalService.globalVar.timers.itemCooldowns = [];
+          this.globalService.globalVar.keybinds.set("openJewelcraftingQuickView", "keyJ");
+          this.globalService.globalVar.settings.set("displayQuickViewJewelcrafting", true);
+          this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", true);
+          this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", true);
+
+          var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+          if (hades !== undefined)
+            this.globalService.assignGodAbilityInfo(hades);
+
+          var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+          if (ares !== undefined)
+            this.globalService.assignGodAbilityInfo(ares);
+
+          this.initializationService.initializeJewelcrafting();
+          this.initializationService.initializeBalladOfTheArgo();
+
+          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);          
           if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
             var argo = this.balladService.findBallad(BalladEnum.Argo);
             var aegeanSea = this.balladService.findZone(ZoneEnum.AegeanSea);
             var iolcus = this.balladService.findSubzone(SubZoneEnum.AegeanSeaIolcus);
             var openSeas = this.balladService.findSubzone(SubZoneEnum.AegeanSeaOpenSeas);
- 
+
             if (argo !== undefined)
+            {
               argo.isAvailable = true;
+              argo.notify = true;
+            }
             if (aegeanSea !== undefined)
+            {
               aegeanSea.isAvailable = true;
+              aegeanSea.notify = true;
+            }
             if (iolcus !== undefined)
+            {
               iolcus.isAvailable = true;
+              iolcus.notify = true;
+            }
             if (openSeas !== undefined)
+            {
               openSeas.isAvailable = true;
+              openSeas.notify = true;
+            }
           }
-        }*/
+        }
 
         /*if (version === 1.01) {
           this.globalService.globalVar.notifications = new Notifications();

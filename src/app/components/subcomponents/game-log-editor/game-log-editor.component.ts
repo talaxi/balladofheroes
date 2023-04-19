@@ -24,6 +24,8 @@ export class GameLogEditorComponent implements OnInit {
   achievementUnlocked = false;
   alchemyLevelUp = false;
   alchemyCreation = false;
+  jewelcraftingLevelUp = false;
+  jewelcraftingCreation = false;
   battleUpdates = false;
   useBattleItem = false;
   followerSearch = false;
@@ -33,12 +35,15 @@ export class GameLogEditorComponent implements OnInit {
   overdrivesAvailable = false;
   followersUnlocked = false;
   alchemyUnlocked = false;
+  jewelcraftingUnlocked = false;
 
   constructor(private globalService: GlobalService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.alchemyUnlocked = alchemy !== undefined && alchemy.isUnlocked;
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+    this.jewelcraftingUnlocked = jewelcrafting !== undefined && jewelcrafting.isUnlocked;
     this.followersUnlocked = this.globalService.globalVar.followerData.availableFollowers > 0;
     this.globalService.globalVar.characters.forEach(character => {
       if (character.unlockedOverdrives.length > 0)
@@ -129,17 +134,17 @@ export class GameLogEditorComponent implements OnInit {
     else
       this.achievementUnlocked = achievementUnlocked;
 
-    var alchemyLevelUp = this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp");
-    if (alchemyLevelUp === undefined)
-      this.alchemyLevelUp = false;
+    var jewelcraftingLevelUp = this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp");
+    if (jewelcraftingLevelUp === undefined)
+      this.jewelcraftingLevelUp = false;
     else
-      this.alchemyLevelUp = alchemyLevelUp;
+      this.jewelcraftingLevelUp = jewelcraftingLevelUp;
 
-    var alchemyCreation = this.globalService.globalVar.gameLogSettings.get("alchemyCreation");
-    if (alchemyCreation === undefined)
-      this.alchemyCreation = false;
+    var jewelcraftingCreation = this.globalService.globalVar.gameLogSettings.get("jewelcraftingCreation");
+    if (jewelcraftingCreation === undefined)
+      this.jewelcraftingCreation = false;
     else
-      this.alchemyCreation = alchemyCreation;
+      this.jewelcraftingCreation = jewelcraftingCreation;
 
     var battleUpdates = this.globalService.globalVar.gameLogSettings.get("battleUpdates");
     if (battleUpdates === undefined)
@@ -228,6 +233,14 @@ export class GameLogEditorComponent implements OnInit {
 
   alchemyCreationToggle() {
     this.globalService.globalVar.gameLogSettings.set("alchemyCreation", this.alchemyCreation);
+  }
+
+  jewelcraftingLevelUpToggle() {
+    this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", this.jewelcraftingLevelUp);
+  }
+
+  jewelcraftingCreationToggle() {
+    this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", this.jewelcraftingCreation);
   }
 
   battleUpdatesToggle() {

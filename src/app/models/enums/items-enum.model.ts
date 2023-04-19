@@ -198,5 +198,22 @@ export enum ItemsEnum {
   MinorArmorSlotAddition,
   MinorShieldSlotAddition,
   MinorNecklaceSlotAddition,
-  RingOfNightmares
+  RingOfNightmares,
+  Hades,
+  SmallCharmOfDionysus,
+  LargeCharmOfDionysus,
+  SmallCharmOfNemesis,
+  LargeCharmOfNemesis,
+  SharkTeeth,
+  Seashell,
+  ScalyRing,
+  SharkstoothNecklace,
+  SharkstoothPendant,
+  FeatheredTunic,
+  ShieldOfTheSea,
+  SpikedShield,
+  BlackLance,
+  LiquidSaber,
+  QuadRing,
+  Ares
 }

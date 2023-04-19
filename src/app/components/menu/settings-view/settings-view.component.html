@@ -31,6 +31,19 @@
             </mat-checkbox>
         </span>
         <br />
+        <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="showPartyHpAsPercent"
+                (input)="showPartyHpAsPercentToggle()">Show Party HP As Percent
+            </mat-checkbox>
+        </span>
+        <br />
+        <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="showEnemyHpAsPercent"
+                (input)="showEnemyHpAsPercentToggle()">Show Enemy HP As Percent
+            </mat-checkbox>
+        </span>
+        <br />
+        <br />
         <div>            
             <div *ngIf="!isMobile" class="updateKeybinds">
                 <button class="buttonStyled" (click)="openKeybinds(keybindContent)">Update Keybinds</button>

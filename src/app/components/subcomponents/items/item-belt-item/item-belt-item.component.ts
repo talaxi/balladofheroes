@@ -1,8 +1,11 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { BattleService } from 'src/app/services/battle/battle.service';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-item-belt-item',
@@ -12,19 +15,76 @@ import { LookupService } from 'src/app/services/lookup.service';
 export class ItemBeltItemComponent implements OnInit {
   @Input() slotNumber: number;
   item: ItemsEnum;
+  @ViewChild('spinnerDiv', { static: false }) spinnerDiv: ElementRef;
+  spinnerDiameter = 10;
+  strokeWidth = 5;
+  spinnerDivSubscription: any;
+  overlayRef: OverlayRef;
 
-  constructor(public lookupService: LookupService, public battleService: BattleService, private globalService: GlobalService) { }
+  constructor(public lookupService: LookupService, public battleService: BattleService, private globalService: GlobalService,
+    private gameLoopService: GameLoopService, private changeDetector: ChangeDetectorRef, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     if (this.globalService.globalVar.itemBelt.length < this.slotNumber)
-    return;
+      return;
 
     this.item = this.globalService.globalVar.itemBelt[this.slotNumber];
+
+    this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      if (this.isItemOnCooldown(this.slotNumber)) {
+        this.changeDetector.detectChanges();
+        if (this.spinnerDiv !== undefined) {
+          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+            this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
+          }
+
+          if (this.spinnerDiv.nativeElement.offsetHeight <= this.spinnerDiameter) {
+            if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+              this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
+            }
+          }
+
+          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+            this.spinnerDivSubscription.unsubscribe();
+          }
+        }
+      }
+      else {
+        this.spinnerDivSubscription.unsubscribe();
+      }
+    });
+  }
+
+  checkForCooldown(slotNumber: number) {
+    this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      if (this.isItemOnCooldown(this.slotNumber)) {
+        this.changeDetector.detectChanges();
+
+        if (this.spinnerDiv !== undefined) {
+          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+            this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
+          }
+
+          if (this.spinnerDiv.nativeElement.offsetHeight <= this.spinnerDiameter) {
+            if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+              this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
+            }
+          }
+
+          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+            this.spinnerDivSubscription.unsubscribe();
+          }
+        }
+      }
+      else {
+        this.spinnerDivSubscription.unsubscribe();
+      }
+    });
   }
 
   battleItemInUse(slotNumber: number) {
     if (this.globalService.globalVar.itemBelt.length < slotNumber)
-    return;
+      return;
 
     var item = this.globalService.globalVar.itemBelt[slotNumber];
     if (item === this.battleService.battleItemInUse && this.battleService.targetbattleItemMode)
@@ -37,7 +97,7 @@ export class ItemBeltItemComponent implements OnInit {
     var amount = 0;
 
     if (this.globalService.globalVar.itemBelt.length < slotNumber)
-    return amount;
+      return amount;
 
     var item = this.globalService.globalVar.itemBelt[slotNumber];
     amount = this.lookupService.getResourceAmount(item);
@@ -47,8 +107,7 @@ export class ItemBeltItemComponent implements OnInit {
 
   getSelectedItemImage(slotNumber: number) {
     var src = "assets/svg/";
-    if (this.globalService.globalVar.itemBelt.length < slotNumber)
-    {
+    if (this.globalService.globalVar.itemBelt.length < slotNumber) {
       src += "emptyItemSlot.svg";
       return;
     }
@@ -61,19 +120,55 @@ export class ItemBeltItemComponent implements OnInit {
   }
 
   unselectItemSlot(slotNumber: number) {
-    this.globalService.globalVar.itemBelt[slotNumber] = ItemsEnum.None;    
+    this.globalService.globalVar.itemBelt[slotNumber] = ItemsEnum.None;
     this.battleService.targetbattleItemMode = false;
   }
-  
+
   getItemName() {
-    return this.lookupService.getItemName(this.item);
+    return this.dictionaryService.getItemName(this.item);
   }
-  
+
   getItemDescription() {
     return this.lookupService.getItemDescription(this.item);
   }
-  
+
   preventRightClick() {
     return false;
+  }
+
+  isItemOnCooldown(slotNumber: number) {
+    var item = this.globalService.globalVar.itemBelt[slotNumber];
+    return this.battleService.isBattleItemOnCooldown(item);
+  }
+
+  getItemCooldownPercent(slotNumber: number) {
+    var item = this.globalService.globalVar.itemBelt[slotNumber];
+    var itemCooldownTimer = this.globalService.globalVar.timers.itemCooldowns.find(itemCooldown => itemCooldown[0] === item);
+    if (itemCooldownTimer !== undefined) {
+      var timeLeft = itemCooldownTimer[1];
+      var originalCooldown = this.lookupService.getBattleItemEffect(item).cooldown;
+      return 100 - ((timeLeft / originalCooldown) * 100);
+    }
+
+    return 0;
+  }
+
+  overlayEmitter(overlayRef: OverlayRef) {    
+    if (this.overlayRef !== undefined) {      
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
+
+    this.overlayRef = overlayRef;
+  }
+  
+  ngOnDestroy() {
+    if (this.spinnerDivSubscription !== undefined)
+      this.spinnerDivSubscription.unsubscribe();
+
+      if (this.overlayRef !== undefined) {    
+        this.overlayRef.detach();
+        this.overlayRef.dispose();
+      }
   }
 }

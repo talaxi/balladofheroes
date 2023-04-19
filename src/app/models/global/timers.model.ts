@@ -1,3 +1,5 @@
+import { ItemsEnum } from "../enums/items-enum.model";
+
 export class Timers {
     scenePageTimer: number;
     chestTimer: number;
@@ -10,6 +12,8 @@ export class Timers {
     townHpGainLength: number;
     followerSearchZoneTimerLength: number;
     followerPrayerTimerLength: number;
+
+    itemCooldowns: [ItemsEnum, number][];
 
     skipStorySpeed = 0;
     fastStorySpeed = 15;
@@ -32,5 +36,7 @@ export class Timers {
 
         this.townHpGainTimer = 0;
         this.townHpGainLength = 2;
+
+        this.itemCooldowns = [];
     }
 }

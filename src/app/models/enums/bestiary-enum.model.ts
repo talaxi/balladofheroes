@@ -125,6 +125,7 @@ export enum BestiaryEnum {
   RamblingHusk,
   SoullessHusk,
   BaskingShark,
+  LongfinMako,
   ClickingCrabs,
   RedSnapper,
   FeralHarpy,
@@ -151,5 +152,14 @@ export enum BestiaryEnum {
   Alecto,
   Thanatos,
   Cerberus,
-  Hades
+  Hades,
+  ManicHusk,
+  LumberingHusk,
+  LargeHusk,
+  ShufflingHusk,
+  EarthenHusk,
+  EmptyHusk,
+  Khalkotauroi,
+  MorayEel,
+  SnapperSwarm
 }

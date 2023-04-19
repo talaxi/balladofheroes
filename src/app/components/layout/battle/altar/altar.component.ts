@@ -16,6 +16,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -30,7 +31,8 @@ export class AltarComponent implements OnInit {
 
   constructor(private globalService: GlobalService, private altarService: AltarService, private lookupService: LookupService,
     private battleService: BattleService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
-    private alchemyService: AlchemyService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
+    private alchemyService: AlchemyService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService,
+    private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {    
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
@@ -60,7 +62,7 @@ export class AltarComponent implements OnInit {
 
   displayAltarText() {
     //var text = "You come across an altar to " + this.lookupService.getGodNameByType(this.altar.god) + " on your journey and take a moment to pray.";
-    var text = "Honor Asclepius by leaving healing items at the altar.";
+    var text = "Honor <span class='commonCharacterColor storyCharacterName'>Asclepius</span> by leaving healing items at the altar.";
     return text;
   }
 
@@ -160,7 +162,7 @@ export class AltarComponent implements OnInit {
       }
     }
 
-    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your sacrifice and devotion to healing has honored Asclepius as well as his father Apollo, God of Healing and Music. Apollo has decided to assist you on your adventure.");
+    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your sacrifice and devotion to healing has honored Asclepius and impressed his father Apollo, God of Healing and Music. Apollo will now assist you on your adventure.");
   }
 
   gainThreshold2Reward() {
@@ -169,7 +171,7 @@ export class AltarComponent implements OnInit {
     if (alchemy !== undefined && !alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.RejuvenatingElixir)) {
       alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.RejuvenatingElixir));
       
-      var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.lookupService.getItemName(ItemsEnum.RejuvenatingElixir) + "</strong>.";
+      var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.dictionaryService.getItemName(ItemsEnum.RejuvenatingElixir) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);      
     }
   }

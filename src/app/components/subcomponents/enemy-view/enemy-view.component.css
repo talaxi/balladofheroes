@@ -14,6 +14,11 @@
     position: relative;
 }*/
 
+.flexSpaceBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
 .characterTargeted:hover {
     border: 2px solid red;
 }
@@ -152,6 +157,10 @@
 
 .statValue {
     vertical-align: middle;
+}
+
+.enemyHpPercentMarginRight {
+    margin-right: 1rem;
 }
 
 @media (max-width: 800px) {

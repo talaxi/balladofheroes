@@ -118,7 +118,7 @@ export class BalladService {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
     if (!this.isSubzoneTown(relatedSubzone.type)) {
       var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(relatedSubzone.type);
@@ -248,7 +248,8 @@ export class BalladService {
         reverseZones.forEach(zone => {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
           reverseSubzones.forEach(subzone => {
-            if (!nextSubzoneFound && !this.isSubzoneTown(subzone.type) && this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
+            if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
+             this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
               this.selectZone(zone);
@@ -309,7 +310,7 @@ export class BalladService {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
     if (this.isSubzoneTown(subzone.type))
     {
@@ -536,7 +537,7 @@ export class BalladService {
     var aigosthenaVictories = 5;
     var defaultVictories = 10;
     var bossVictories = 1;
-    var groveOfAresVictories = 50;
+    var groveOfAresVictories = 25;
 
     if (testing) {
       aigosthenaVictories = 1;

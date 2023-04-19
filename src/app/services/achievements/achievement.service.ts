@@ -18,6 +18,7 @@ import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
 import { ProfessionService } from '../professions/profession.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -49,6 +50,12 @@ export class AchievementService {
 
     if (subzoneType !== SubZoneEnum.CalydonAltarOfAsclepius && this.getAchievementReward(subzoneType, AchievementTypeEnum.TenThousandVictories).length > 0) {
       newAchievements.push(tenThousandVictories);
+    }
+
+    var fiveThousandVictories = new Achievement(AchievementTypeEnum.FiveThousandVictories, subzoneType);
+
+    if (subzoneType !== SubZoneEnum.CalydonAltarOfAsclepius && this.getAchievementReward(subzoneType, AchievementTypeEnum.FiveThousandVictories).length > 0) {
+      newAchievements.push(fiveThousandVictories);
     }
 
     var thirtySecondClear = new Achievement(AchievementTypeEnum.ThirtySecondClear, subzoneType);
@@ -202,9 +209,50 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.Violet, 35));
       else if (subzoneType === SubZoneEnum.CalydonDeadEnd)
         rewards.push(new ResourceValue(ItemsEnum.BearHide, 3));
-    }
 
-    var thousandVictories = new Achievement(AchievementTypeEnum.ThousandVictories, subzoneType);
+      else if (subzoneType === SubZoneEnum.AegeanSeaOpenSeas)
+        rewards.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 5));
+      else if (subzoneType === SubZoneEnum.AegeanSeaIslandOfLemnos)
+        rewards.push(new ResourceValue(ItemsEnum.SharkTeeth, 5));
+      else if (subzoneType === SubZoneEnum.AegeanSeaIslandOfImbros)
+        rewards.push(new ResourceValue(ItemsEnum.Coin, 10000));
+      else if (subzoneType === SubZoneEnum.AegeanSeaHellespointPassage1)
+        rewards.push(new ResourceValue(ItemsEnum.LesserCrackedAquamarine, 2));
+      else if (subzoneType === SubZoneEnum.AegeanSeaPropontis)
+        rewards.push(new ResourceValue(ItemsEnum.SharkTeeth, 5));
+      else if (subzoneType === SubZoneEnum.AegeanSeaHellespointPassage2)
+        rewards.push(new ResourceValue(ItemsEnum.FishScales, 8));
+      else if (subzoneType === SubZoneEnum.AegeanSeaCoastalThrace)
+        rewards.push(new ResourceValue(ItemsEnum.Seashell, 6));
+      else if (subzoneType === SubZoneEnum.AegeanSeaDesertedPath)
+        rewards.push(new ResourceValue(ItemsEnum.ThickLeather, 8));
+      else if (subzoneType === SubZoneEnum.AegeanSeaRockyOverhang)
+        rewards.push(new ResourceValue(ItemsEnum.LesserCrackedAmethyst, 2));
+      else if (subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook)
+        rewards.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 8));
+
+      else if (subzoneType === SubZoneEnum.BlackSeaStillWaters)
+        rewards.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 30));
+      else if (subzoneType === SubZoneEnum.BlackSeaUnderAssault)
+        rewards.push(new ResourceValue(ItemsEnum.Coin, 15000));
+      else if (subzoneType === SubZoneEnum.BlackSeaSeaEscape)
+        rewards.push(new ResourceValue(ItemsEnum.Seashell, 6));
+      else if (subzoneType === SubZoneEnum.BlackSeaStormySkies)
+        rewards.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 30));
+      else if (subzoneType === SubZoneEnum.BlackSeaAreonesosPassing)
+        rewards.push(new ResourceValue(ItemsEnum.Sorrel, 15));
+      else if (subzoneType === SubZoneEnum.BlackSeaWindyGale)
+        rewards.push(new ResourceValue(ItemsEnum.EagleFeather, 10));
+
+      else if (subzoneType === SubZoneEnum.ColchisGroveOfAres)
+        rewards.push(new ResourceValue(ItemsEnum.SpiritEssence, 8));
+      else if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
+        rewards.push(new ResourceValue(ItemsEnum.MetalScraps, 10));
+      else if (subzoneType === SubZoneEnum.ColchisHurriedRetreat1)
+        rewards.push(new ResourceValue(ItemsEnum.Sorrel, 15));
+      else if (subzoneType === SubZoneEnum.ColchisHurriedRetreat2)
+        rewards.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 45));
+    }
 
     if (achievementType === AchievementTypeEnum.ThousandVictories) {
       var aigosthenaBoonBonus = .02;
@@ -215,6 +263,9 @@ export class AchievementService {
       var peloposNisosBoonBonus = .03;
       var calydonBoonBonus = .03;
       var theLetheBoonBonus = .03;
+      var aegeanSeaBoonBonus = .03;
+      var blackSeaBoonBonus = .03;
+      var colchisBoonBonus = .05;
 
       if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aigosthenaBoonBonus));
@@ -232,6 +283,12 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, calydonBoonBonus));
       else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.TheLethe))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, theLetheBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.AegeanSea))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aegeanSeaBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.BlackSea))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, blackSeaBoonBonus));
+      else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Colchis))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, colchisBoonBonus));
     }
 
     if (achievementType === AchievementTypeEnum.TenThousandVictories) {
@@ -353,10 +410,52 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
       else if (subzoneType === SubZoneEnum.CalydonDeadEnd)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
+
+      else if (subzoneType === SubZoneEnum.AegeanSeaOpenSeas)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaIslandOfLemnos)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaIslandOfImbros)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaHellespointPassage1)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaPropontis)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaHellespointPassage2)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaCoastalThrace)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaDesertedPath)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaRockyOverhang)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, 1));
+      else if (subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, 1));
+
+      else if (subzoneType === SubZoneEnum.BlackSeaStillWaters)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, 1));
+      else if (subzoneType === SubZoneEnum.BlackSeaUnderAssault)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, 1));
+      else if (subzoneType === SubZoneEnum.BlackSeaSeaEscape)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, 1));
+      else if (subzoneType === SubZoneEnum.BlackSeaStormySkies)
+        rewards.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 30));
+      else if (subzoneType === SubZoneEnum.BlackSeaAreonesosPassing)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, 1));
+      else if (subzoneType === SubZoneEnum.BlackSeaWindyGale)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirProtection, 1));
+
+      else if (subzoneType === SubZoneEnum.ColchisGroveOfAres)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
+      else if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, 1));
+      else if (subzoneType === SubZoneEnum.ColchisHurriedRetreat1)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
+      else if (subzoneType === SubZoneEnum.ColchisHurriedRetreat2)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
-      var thirtySecondClear = new Achievement(AchievementTypeEnum.ThirtySecondClear, subzoneType);
       if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
       if (subzoneType === SubZoneEnum.DodonaCountryside)
@@ -379,6 +478,12 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, 1));
       if (subzoneType === SubZoneEnum.CalydonTallGrass)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
+      if (subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, 1));
+      if (subzoneType === SubZoneEnum.BlackSeaWindyGale)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, 1));
+      if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
     }
 
     if (achievementType === AchievementTypeEnum.TenSecondClear) {
@@ -406,10 +511,15 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
       if (subzoneType === SubZoneEnum.CalydonTallGrass)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
+      if (subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
+      if (subzoneType === SubZoneEnum.BlackSeaWindyGale)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+      if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, 1));
     }
 
     if (achievementType === AchievementTypeEnum.Complete) {
-      var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
       if (subzoneType === SubZoneEnum.LibyaIsleCenter) {
         rewards.push(new ResourceValue(ItemsEnum.ItemBeltUp, 1));
         rewards.push(new ResourceValue(ItemsEnum.BonusXp, 4000));
@@ -419,6 +529,16 @@ export class AchievementService {
       }
       if (subzoneType === SubZoneEnum.TheLetheHypnosIsland) {
         rewards.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade2, 1));
+      }
+      if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes) {
+        rewards.push(new ResourceValue(ItemsEnum.ItemBeltUp, 1));
+      }
+    }
+
+    
+    if (achievementType === AchievementTypeEnum.FiveThousandVictories) {
+      if (subzoneType === SubZoneEnum.ColchisGroveOfAres) {
+        rewards.push(new ResourceValue(ItemsEnum.Ares, 1));
       }
     }
 
@@ -463,6 +583,28 @@ export class AchievementService {
           this.lookupService.gainResource(bonus.makeCopy());
         });
       }
+      
+      var fiveThousandVictories = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.FiveThousandVictories);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.FiveThousandVictories);
+      if (fiveThousandVictories !== undefined && subzone.victoryCount >= 5000 && !fiveThousandVictories.completed && rewards !== undefined) {
+        completedAchievement.push(fiveThousandVictories);
+        fiveThousandVictories.completed = true;
+        rewards.forEach(bonus => {
+          if (bonus.item === ItemsEnum.Ares) {
+            var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+            if (ares !== undefined) {
+              ares.isAvailable = true;
+              ares.abilityList.forEach(ability => {
+                if (ares!.level >= ability.requiredLevel)
+                  ability.isAvailable = true;
+              });
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your commitment to bloodshed has impressed Ares, God of War. Ares will now assist you on your journey.");
+            }
+          }
+          else
+          this.lookupService.gainResource(bonus.makeCopy());
+        });
+      }
 
       var tenSecondClear = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenSecondClear);
       var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenSecondClear);
@@ -470,7 +612,6 @@ export class AchievementService {
         completedAchievement.push(tenSecondClear);
         tenSecondClear.completed = true;
         rewards.forEach(bonus => {
-
           if (bonus.item === ItemsEnum.PoisonExtractPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PoisonExtractPotion);
           }

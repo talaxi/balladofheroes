@@ -24,5 +24,17 @@ export enum AltarEffectsEnum {
   HermesRareReduceAutoAttackCooldown,
   ApolloRareHpRegenIncrease,
   ApolloRareBuffDurationUp,
-  ApolloRareOstinato
+  ApolloRareOstinato,
+  AresOverdriveGain,
+  AresMaxHpUp,
+  AresDamageOverTime,
+  AresRareOverdriveGain,
+  AresRareIncreaseDamageOverTimeDamage,
+  AresRareDealHpDamage,
+  HadesFireDamageUp,
+  HadesEarthDamageUp,
+  HadesAoeDamageUp,
+  HadesRareAoeDamageUp,
+  HadesRareElementalDamageUp,
+  HadesRareDealElementalDamage
 }

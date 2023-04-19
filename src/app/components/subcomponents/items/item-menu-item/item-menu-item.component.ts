@@ -3,6 +3,8 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { ToolTipRendererDirective } from '../../custom-tooltip/tool-tip-renderer.directive';
+import { OverlayRef } from '@angular/cdk/overlay';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-item-menu-item',
@@ -15,14 +17,15 @@ export class ItemMenuItemComponent implements OnInit {
   @Input() openedSlotNumber: number;
   showTooltip = true;
   @ViewChild(ToolTipRendererDirective) customTooltip: ToolTipRendererDirective;
+  overlayRef: OverlayRef;
 
-  constructor(public lookupService: LookupService, private globalService: GlobalService) { }
+  constructor(public lookupService: LookupService, private globalService: GlobalService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
   }
 
   getItemName() {
-    return this.lookupService.getItemName(this.item);
+    return this.dictionaryService.getItemName(this.item);
   }
   
   getItemDescription() {
@@ -36,5 +39,21 @@ export class ItemMenuItemComponent implements OnInit {
 
   preventRightClick() {
     return false;
+  }
+
+  overlayEmitter(overlayRef: OverlayRef) {    
+    if (this.overlayRef !== undefined) {      
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
+
+    this.overlayRef = overlayRef;
+  }
+  
+  ngOnDestroy() {
+      if (this.overlayRef !== undefined) {         
+        this.overlayRef.detach();
+        this.overlayRef.dispose();
+      }
   }
 }

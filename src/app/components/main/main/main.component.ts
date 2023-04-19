@@ -22,7 +22,7 @@ export class MainComponent implements OnInit {
   isMobile = false;
 
   constructor(private layoutService: LayoutService, private gameLoopService: GameLoopService, public lookupService: LookupService,
-    public storyService: StoryService, private deviceDetectorService: DeviceDetectorService) { }
+    public storyService: StoryService, private deviceDetectorService: DeviceDetectorService, private globalService: GlobalService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -34,6 +34,14 @@ export class MainComponent implements OnInit {
 
   closeMobileMenu() {
     this.layoutService.mobileMenuOpen = false;
+  }
+
+  getLoadingPercent() {
+    var remainingLoad = 0;
+
+    remainingLoad = (1 - (this.globalService.bankedTime / this.globalService.maxBankedTime)) * 100;
+
+    return remainingLoad;
   }
 
   ngOnDestroy() {    

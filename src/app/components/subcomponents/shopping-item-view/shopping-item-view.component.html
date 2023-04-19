@@ -3,7 +3,7 @@
         <div *ngIf="isEquipment()" customToolTip [tooltipDirection]="tooltipDirection" [isDelayed]="false"
             [contentTemplate]="equipmentComparisonTemplate">
             <div [class]="getEquipmentClass()">
-                <span class="s4Heading" [innerHtml]="lookupService.getItemName(item.shopItem)"></span>
+                <span class="s4Heading" [innerHtml]="dictionaryService.getItemName(item.shopItem)"></span>
                 <br />
                 <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
                 <div>
@@ -14,7 +14,7 @@
             <span [innerHtml]="itemDescription"></span>
         </div>
         <div *ngIf="!isEquipment()"> <!--Better way to do this other than copying and pasting?-->
-            <span class="s4Heading" [innerHtml]="lookupService.getItemName(item.shopItem)"></span>
+            <span class="s4Heading" [innerHtml]="dictionaryService.getItemName(item.shopItem)"></span>
             <br />
             <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
             <hr class="miniHr" />
@@ -40,12 +40,12 @@
 
 <ng-template #equipmentComparisonTemplate>
     <div class="compareEquipment" *ngIf="partyMembers !== undefined && partyMembers.length > 0">
-        <span class="item">
-            <div class="textCentered" [ngClass]="getCharacterColorClass(1)">{{getPartyMemberName(1)}}</div>
+        <span class="item item1">
+            <div class="textCentered bold smallCaps" [ngClass]="getCharacterColorClass(1)">{{getPartyMemberName(1)}}</div>
             <app-equipment-item-view [equipment]="getEquippedComparisonItem(1)"></app-equipment-item-view>
         </span>
-        <span class="item comparedEquipmentItem" *ngIf="partyMembers.length > 1">
-            <div class="textCentered" [ngClass]="getCharacterColorClass(2)">{{getPartyMemberName(2)}}</div>
+        <span class="item item2 comparedEquipmentItem" *ngIf="partyMembers.length > 1">
+            <div class="textCentered bold smallCaps" [ngClass]="getCharacterColorClass(2)">{{getPartyMemberName(2)}}</div>
             <app-equipment-item-view [equipment]="getEquippedComparisonItem(2)"></app-equipment-item-view>
         </span>
     </div>

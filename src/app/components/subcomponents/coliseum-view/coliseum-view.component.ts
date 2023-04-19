@@ -9,6 +9,7 @@ import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ColiseumService } from 'src/app/services/battle/coliseum.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -20,13 +21,13 @@ export class ColiseumViewComponent implements OnInit {
   selectedTournament: ColiseumTournament;
 
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
-    private lookupService: LookupService, private utilityService: UtilityService) { }
+    private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.selectedTournament = this.coliseumService.getColiseumInfoFromType(ColiseumTournamentEnum.TournamentOfTheDead);
   }
 
-  getColiseumTournaments() {
+  getStandardColiseumTournaments() {
     var tournaments: ColiseumTournamentEnum[] = [];
     for (const [propertyKey, propertyValue] of Object.entries(ColiseumTournamentEnum)) {
       if (!Number.isNaN(Number(propertyKey))) {
@@ -34,18 +35,30 @@ export class ColiseumViewComponent implements OnInit {
       }
 
       var enumValue = propertyValue as ColiseumTournamentEnum;
-      if (enumValue !== ColiseumTournamentEnum.None && enumValue !== ColiseumTournamentEnum.RiverLords) { //TODO: when river lords is implemented, remove it from this
+      if (enumValue !== ColiseumTournamentEnum.None) {
         if (enumValue === ColiseumTournamentEnum.TournamentOfTheDead)
           tournaments.push(enumValue)
         else {
           var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === enumValue);
-          if (tournamentType !== undefined && tournamentType.isAvailable) {
+          if (tournamentType !== undefined && tournamentType.isAvailable && !this.coliseumService.isTournamentTypeSpecial(tournamentType.type)) {
             tournaments.push(enumValue);
           }
         }
       }
     }
 
+    return tournaments;
+  }
+
+  getSpecialColiseumTournaments() {
+    var tournaments: ColiseumTournamentEnum[] = [];
+    
+    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);
+    //console.log((weeklyMelee !== undefined) + " && " + weeklyMelee?.isAvailable);
+    if (weeklyMelee !== undefined && weeklyMelee.isAvailable) {
+      tournaments.push(weeklyMelee.type);
+    }
+    
     return tournaments;
   }
 
@@ -73,14 +86,14 @@ export class ColiseumViewComponent implements OnInit {
     var reward = "";
 
     this.selectedTournament.completionReward.forEach(item => {
-      var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+      var itemName = (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item)));
       if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }
 
-      reward += item.amount + " " + itemName + "<br/>";
+      reward += item.amount.toLocaleString() + " " + itemName + "<br/>";
     });
 
     return reward;
@@ -98,7 +111,7 @@ export class ColiseumViewComponent implements OnInit {
     var reward = "";
 
     this.selectedTournament.quickCompletionReward.forEach(item => {
-      var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+      var itemName = (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item)));
       if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
@@ -123,7 +136,33 @@ export class ColiseumViewComponent implements OnInit {
     var battle = new Battle();
     battle.activeTournament = this.selectedTournament;
 
+    if (battle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee) {
+      if (!this.canEnterWeeklyMelee())
+        return;
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries -= 1;
+    }
+
     this.globalService.globalVar.activeBattle = battle;
     this.dialog.closeAll();
+  }
+
+  canEnterWeeklyMelee() {
+    return this.globalService.globalVar.sidequestData.weeklyMeleeEntries > 0;
+  }
+
+  isSelectedTournamentWeeklyMelee() {
+    return this.selectedTournament.type === ColiseumTournamentEnum.WeeklyMelee;
+  }
+
+  getWeeklyEntries() {
+    return this.globalService.globalVar.sidequestData.weeklyMeleeEntries;
+  }
+
+  getWeeklyEntryCap() {
+    return this.utilityService.weeklyMeleeEntryCap;
+  }
+
+  getHighestWeeklyMeleeRoundCompleted() {
+    return this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound;
   }
 }

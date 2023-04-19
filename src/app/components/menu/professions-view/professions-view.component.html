@@ -1,9 +1,24 @@
 <div class="container">
     <div class="centeredText">
-        <div class="s2Heading pageHeader" [ngClass]="getProfessionColor()">{{getProfessionName()}}</div>
+        <div class="professionInfo">
+            <div class="traverseUp">
+                <div *ngIf="isMobile && hasMoreThanOneProfession()" class="centeredText">
+                    <button class="buttonStyled" (click)="traverseSubMenu(-1)"><img class="dropdownIcon" src="assets/svg/uparrow.svg"></button>
+                </div>
+            </div>
+        <div class="baseInfo s2Heading pageHeader" [ngClass]="getProfessionColor()">{{getProfessionName()}}</div>
+        <div class="traverseDown">
+            <div *ngIf="isMobile && hasMoreThanOneProfession()" class="centeredText">
+                <button class="buttonStyled" (click)="traverseSubMenu(1)"><img class="dropdownIcon" src="assets/svg/dropdown.svg"></button>
+            </div>
+        </div>
+    </div>
 
         <div *ngIf="selectedProfession === professionEnum.Alchemy">
             <app-alchemy-overview [expandedView]="true"></app-alchemy-overview>
+        </div>
+        <div *ngIf="selectedProfession === professionEnum.Jewelcrafting">
+            <app-jewelcrafting-overview [expandedView]="true"></app-jewelcrafting-overview>
         </div>
     </div>
     <br/>

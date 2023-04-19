@@ -3,6 +3,9 @@ import { Character } from "../character/character.model";
 export class SidequestData {
     isAltarOfAsclepiusUnlocked: boolean;
     altarOfAsclepius: Character;
+    weeklyMeleeEntries: number;
+    lastWeeklyMeleeTicketReceived: Date;
+    highestWeeklyMeleeRound: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -10,5 +13,8 @@ export class SidequestData {
         this.altarOfAsclepius.name = "Asclepius";
         this.altarOfAsclepius.battleStats.maxHp = 24000;
         this.altarOfAsclepius.battleStats.currentHp = 0;
+        this.weeklyMeleeEntries = 1;
+        this.highestWeeklyMeleeRound = 0;
+        this.lastWeeklyMeleeTicketReceived = new Date();
     }
 }

@@ -8,12 +8,14 @@ import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.mode
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -37,7 +39,8 @@ export class EquipmentViewComponent implements OnInit {
   dialogRef: MatDialogRef<any, any>;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
-    private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog, private deviceDetectorService: DeviceDetectorService) { }
+    private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog, private deviceDetectorService: DeviceDetectorService,
+    private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
@@ -151,7 +154,7 @@ export class EquipmentViewComponent implements OnInit {
     if (item === undefined)
       return "Unequipped";
 
-    return this.lookupService.getItemName(item.itemType);
+    return this.dictionaryService.getItemName(item.itemType);
   }
 
   getEquippedComparisonItem() {
@@ -188,7 +191,7 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   getEquipmentName(equipment: ResourceValue) {
-    var name = this.lookupService.getItemName(equipment.item);
+    var name = this.dictionaryService.getItemName(equipment.item);
     var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.item)?.quality);
     var extraNameAddition = this.lookupService.getEquipmentExtraNameAddition(equipment);
 
@@ -196,7 +199,7 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   getEquipmentNameFromEquipment(equipment: Equipment) {
-    var name = this.lookupService.getItemName(equipment.itemType);
+    var name = this.dictionaryService.getItemName(equipment.itemType);
     var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(equipment.itemType)?.quality);
 
     return this.utilityService.getSanitizedHtml("<strong class='" + qualityClass + "'>" + name + "</strong>");
@@ -265,6 +268,11 @@ export class EquipmentViewComponent implements OnInit {
     }
 
     this.setUpAvailableEquipment();
+  }
+
+  slottingAvailable(equipment: ResourceValue) {
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);      
+    return (jewelcrafting !== undefined && jewelcrafting.isUnlocked) || this.equipmentPieceHasSlots(equipment);
   }
 
   //true if item has slots by default or you've added extras to an item that are slots

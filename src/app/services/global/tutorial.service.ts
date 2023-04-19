@@ -92,6 +92,12 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.MobileOverlay) {
       text = "Important information will display in this overlay such as tutorial hints and battle rewards. You can adjust what displays by going to the 'Settings' page after tapping 'Menu' on the top left of the screen.";
     }
+    else if (type === TutorialTypeEnum.Jewelcrafting) {
+      text = "Jewelcrafting allows you to create items that augment your equipment, either through making gems that can slot into items to increase their stats or adding slots to existing equipment.";
+    }
+    else if (type === TutorialTypeEnum.Alchemy) {
+      text = "Alchemy allows you to craft battle items that you can use to aid your party or hinder your foes.";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);

@@ -8,13 +8,14 @@ import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLogService } from '../battle/game-log.service';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { UtilityService } from './utility.service';
+import { DictionaryService } from './dictionary.service';
 
 @Injectable({
   providedIn: 'root'
 })
 export class CodeRedemptionService {
   constructor(private globalService: GlobalService, private lookupService: LookupService, private gameLogService: GameLogService,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
 
   getCodeItems(encryptedVal: string) {
     var key = environment.CODEREDEMPTIONSECRET;
@@ -60,7 +61,7 @@ export class CodeRedemptionService {
         else {
           parsedRewards.rewards.forEach(reward => {
             this.lookupService.gainResource(reward);
-            var itemName = (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item)));
+            var itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
             this.gameLogService.updateGameLog(GameLogEntryEnum.CodeRedemption, "You receive <strong>" + reward.amount + " " + itemName + "</strong> from a redeemed code.");
           });
 

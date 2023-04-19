@@ -82,6 +82,15 @@
                     Alchemy Creation
                 </mat-checkbox>                
             </div>
+            <div *ngIf="jewelcraftingUnlocked">
+                <mat-checkbox class='jewelcraftingText' [(ngModel)]="jewelcraftingLevelUp" (input)="jewelcraftingLevelUpToggle()">
+                    Jewelcrafting Level Up
+                </mat-checkbox>
+                <br />
+                <mat-checkbox class='jewelcraftingText' [(ngModel)]="jewelcraftingCreation" (input)="jewelcraftingCreationToggle()">
+                    Jewelcrafting Creation
+                </mat-checkbox>                
+            </div>
             <div *ngIf="followersUnlocked">
                 <mat-checkbox class='followerText' [(ngModel)]="followerSearch" (input)="followerSearchToggle()">
                     Follower Search

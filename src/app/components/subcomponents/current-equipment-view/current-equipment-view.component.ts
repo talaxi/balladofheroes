@@ -4,8 +4,11 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -22,14 +25,19 @@ export class CurrentEquipmentViewComponent implements OnInit {
   dialogRef: MatDialogRef<any, any>;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, public dialog: MatDialog,
-    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
+    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
   }
 
   getEquippedItemResourceByType(type: EquipmentTypeEnum) {
-    var item = this.getEquippedItemByType(type);
+    var item = this.getEquippedItemByType(type);    
     return item?.associatedResource;
+  }
+
+  slottingAvailable(type: EquipmentTypeEnum) {
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);      
+    return (jewelcrafting !== undefined && jewelcrafting.isUnlocked) || this.equipmentPieceHasSlots(type);
   }
 
   equipmentPieceHasSlots(type: EquipmentTypeEnum) {
@@ -44,7 +52,7 @@ export class CurrentEquipmentViewComponent implements OnInit {
     if (item === undefined)
       return "Unequipped";
 
-    var itemName = this.lookupService.getItemName(item.itemType);
+    var itemName = this.dictionaryService.getItemName(item.itemType);
     var qualityClass = this.lookupService.getEquipmentQualityClass(item.quality);
     var extraNameAddition = this.lookupService.getEquipmentExtraNameAddition(item.associatedResource);
 

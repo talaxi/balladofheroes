@@ -1,6 +1,8 @@
 import { Injectable } from '@angular/core';
 import { EquipmentSet } from 'src/app/models/resources/equipment-set.model';
 import { ResourceGeneratorService } from './resource-generator.service';
+import { Equipment } from 'src/app/models/resources/equipment.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 
 @Injectable({
   providedIn: 'root'
@@ -560,19 +562,282 @@ export class EquipmentService {
   }
 
   getTotalDebuffDurationGain(equipmentSet: EquipmentSet) {
-    return 0;
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.debuffDuration;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.debuffDuration;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.debuffDuration > 0)
+            total += slotItemValues.debuffDuration;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.debuffDuration;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.debuffDuration;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.debuffDuration;
+
+    return total;
   }
 
   getTotalOverdriveGainFromAutoAttacksGain(equipmentSet: EquipmentSet) {
-    return 0;
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.overdriveGain;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.overdriveGain;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.overdriveGain > 0)
+            total += slotItemValues.overdriveGain;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.overdriveGain;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.overdriveGain;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.overdriveGain;
+
+    return total;
   }
 
   getTotalHealingReceivedGain(equipmentSet: EquipmentSet) {
-    return 0;
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.healingReceived;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.healingReceived;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.healingReceived > 0)
+            total += slotItemValues.healingReceived;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.healingReceived;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.healingReceived;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.healingReceived;
+
+    return total;
   }
 
   getTotalHealingDoneGain(equipmentSet: EquipmentSet) {
-    return 0;
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.healingDone;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.healingDone;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.healingDone > 0)
+            total += slotItemValues.healingDone;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.healingDone;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.healingDone;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.healingDone;
+
+    return total;
+  }
+
+  getTotalAbilityCooldownReductionWithBuffsGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.abilityCooldownReductionWithBuffs;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.abilityCooldownReductionWithBuffs;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.abilityCooldownReductionWithBuffs > 0)
+            total += slotItemValues.abilityCooldownReductionWithBuffs;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.abilityCooldownReductionWithBuffs;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.abilityCooldownReductionWithBuffs;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.abilityCooldownReductionWithBuffs;
+
+    return total;
+  }
+
+  getTotalAbilityCooldownReductionStartGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.abilityCooldownReductionStart;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.abilityCooldownReductionStart;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.abilityCooldownReductionStart > 0)
+            total += slotItemValues.abilityCooldownReductionStart;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.abilityCooldownReductionStart;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.abilityCooldownReductionStart;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.abilityCooldownReductionStart;
+
+    return total;
+  }
+
+  getTotalTickFrequencyGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.tickFrequency;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.tickFrequency;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.tickFrequency > 0)
+            total += slotItemValues.tickFrequency;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.tickFrequency;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.tickFrequency;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.tickFrequency;
+
+    return total;
+  }
+
+  getTotalAoeDamageGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.aoeDamage;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.aoeDamage;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.aoeDamage > 0)
+            total += slotItemValues.aoeDamage;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.aoeDamage;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.aoeDamage;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.aoeDamage;
+
+    return total;
+  }
+
+  getTotalThornsGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.thorns;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.thorns;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.thorns;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.thorns;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.thorns;
+
+    return total;
   }
 
   getTotalAbilityCooldownReductionGain(equipmentSet: EquipmentSet) {

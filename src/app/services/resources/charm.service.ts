@@ -466,4 +466,134 @@ export class CharmService {
   getLargeCharmOfApolloValue() {
     return .075;
   }
+
+  getTotalTickFrequencyAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfAresValue();
+    var largeCharmValue = this.getLargeCharmOfAresValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfAres);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfAres);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Ares || character.assignedGod2 === GodEnum.Ares))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Ares || character.assignedGod2 === GodEnum.Ares))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfAresValue() {
+    return .02;
+  }
+
+  getLargeCharmOfAresValue() {
+    return .05;
+  }
+
+  getTotalAoeDamageAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfHadesValue();
+    var largeCharmValue = this.getLargeCharmOfHadesValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHades);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHades);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Hades || character.assignedGod2 === GodEnum.Hades))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Hades || character.assignedGod2 === GodEnum.Hades))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfHadesValue() {
+    return .02;
+  }
+
+  getLargeCharmOfHadesValue() {
+    return .05;
+  }
+
+  getTotalAbilityCooldownReductionWithBuffsFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfDionysusValue();
+    var largeCharmValue = this.getLargeCharmOfDionysusValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfDionysus);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfDionysus);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Dionysus))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Dionysus || character.assignedGod2 === GodEnum.Dionysus))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfDionysusValue() {
+    return .005;
+  }
+
+  getLargeCharmOfDionysusValue() {
+    return .015;
+  }
+
+  getTotalAbilityCooldownReductionStartAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfPoseidonValue();
+    var largeCharmValue = this.getLargeCharmOfPoseidonValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfPoseidon);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfPoseidon);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Poseidon || character.assignedGod2 === GodEnum.Poseidon))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Poseidon || character.assignedGod2 === GodEnum.Poseidon))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfPoseidonValue() {
+    return .02;
+  }
+
+  getLargeCharmOfPoseidonValue() {
+    return .06;
+  }
+
+  getTotalThornsAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfNemesisValue();
+    var largeCharmValue = this.getLargeCharmOfNemesisValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfNemesis);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfNemesis);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfNemesisValue() {
+    return .01;
+  }
+
+  getLargeCharmOfNemesisValue() {
+    return .03;
+  }  
 }
