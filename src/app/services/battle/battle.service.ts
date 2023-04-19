@@ -518,7 +518,7 @@ export class BattleService {
       return false;
 
     if (this.doesAutoAttackMiss(character, target, isPartyAttacking)) {
-      return false;
+      return true;
     }
 
     var totalAutoAttackCount = this.lookupService.getTotalAutoAttackCount(character, isPartyAttacking);
