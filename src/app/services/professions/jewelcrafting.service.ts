@@ -36,15 +36,15 @@ export class JewelcraftingService {
     var duration = 0;
 
     if (action === ProfessionActionsEnum.CombiningGems)
-      duration = 1 * 4;  //TODO: make 240
+      duration = 1 * 120;  
     if (action === ProfessionActionsEnum.Polish)
-      duration = 1 * 4;  //TODO: make 60
+      duration = 1 * 60;  
       if (action === ProfessionActionsEnum.HeatingMetal)
-      duration = 1 * 4;  //TODO: make ??
+      duration = 1 * 120;  
       if (action === ProfessionActionsEnum.ShapingMetal)
-      duration = 1 * 4;  //TODO: make ??
+      duration = 1 * 120;  
       if (action === ProfessionActionsEnum.CoolingMetal)
-      duration = 1 * 4;  //TODO: make ??
+      duration = 1 * 60;
 
     return duration;
   }  
@@ -54,7 +54,6 @@ export class JewelcraftingService {
     if (jewelcrafting === undefined)
       return;
     var newRecipeLearned = false;
-    console.log("Check for new recipes at level " + jewelcrafting.level);
 
     if (jewelcrafting.level >= 1) {
       if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedRuby)) {
@@ -265,7 +264,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CombiningGems);
       recipe.steps.push(ProfessionActionsEnum.Polish);
 
-      recipe.expGain = 3;
+      recipe.expGain = 4;
     }
     if (item === ItemsEnum.CrackedAquamarine) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -276,7 +275,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CombiningGems);
       recipe.steps.push(ProfessionActionsEnum.Polish);
 
-      recipe.expGain = 3;
+      recipe.expGain = 4;
     }
     if (item === ItemsEnum.CrackedOpal) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -287,7 +286,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CombiningGems);
       recipe.steps.push(ProfessionActionsEnum.Polish);
 
-      recipe.expGain = 3;
+      recipe.expGain = 4;
     }
     if (item === ItemsEnum.CrackedTopaz) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -298,7 +297,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CombiningGems);
       recipe.steps.push(ProfessionActionsEnum.Polish);
 
-      recipe.expGain = 5;
+      recipe.expGain = 6;
     }
     if (item === ItemsEnum.CrackedAmethyst) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -309,7 +308,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CombiningGems);
       recipe.steps.push(ProfessionActionsEnum.Polish);
 
-      recipe.expGain = 5;
+      recipe.expGain = 6;
     }
     if (item === ItemsEnum.CrackedEmerald) {
       recipe.quality = EquipmentQualityEnum.Basic;
@@ -320,7 +319,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.CombiningGems);
       recipe.steps.push(ProfessionActionsEnum.Polish);
 
-      recipe.expGain = 5;
+      recipe.expGain = 6;
     }
     if (item === ItemsEnum.MinorWeaponSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -332,7 +331,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 10;
+      recipe.expGain = 8;
     }
     if (item === ItemsEnum.MinorRingSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -344,7 +343,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 10;
+      recipe.expGain = 8;
     }
     if (item === ItemsEnum.MinorArmorSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;

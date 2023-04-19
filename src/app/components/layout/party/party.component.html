@@ -22,8 +22,13 @@
                                     class="barrier-progress characterBar hpBar highBar">
                                 </mat-progress-bar>
                             </div>
-                            <span class="hpMpText hpAmount"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span> /
-                                {{getMaxHp(character)}}</span>
+                            <span class="hpMpText hpAmount" *ngIf="!showPartyHpAsPercent">
+                                <span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span> /
+                                {{getMaxHp(character)}}
+                            </span>
+                            <span class="hpMpText hpAmount" *ngIf="showPartyHpAsPercent">
+                                <span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character)  | number : '1.2-2'}}%</span>
+                            </span>                            
                         </div>
                         <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex"
                             (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">

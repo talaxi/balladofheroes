@@ -37,7 +37,6 @@ export class AppComponent {
   newGame = true;
   saveTime = 0;
   saveFrequency = 5; //in seconds
-  bankedTime = 0;
   catchupDialog: MatDialogRef<unknown, any> | undefined = undefined;
   @ViewChild('confirmationBox') confirmationBox: any;
 
@@ -160,46 +159,45 @@ export class AppComponent {
       if (this.globalService.globalVar.extraSpeedTimeRemaining > this.utilityService.extraSpeedTimeLimit)
         this.globalService.globalVar.extraSpeedTimeRemaining = this.utilityService.extraSpeedTimeLimit;
     }
+    var doubleSpeedActive = false;
 
-    //TODO: why would this cause issues? try testing it again maybe
-    //if speed up time remains, use it (only if not doing batches which causes issues)
-    if (!this.globalService.globalVar.isCatchingUp) {
-      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && deltaTime < this.utilityService.activeTimeLimit / 2 &&
-        this.globalService.globalVar.extraSpeedEnabled) {
+    //if (!this.globalService.globalVar.isCatchingUp) {
+      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && //deltaTime < this.utilityService.activeTimeLimit / 2 &&
+        this.globalService.globalVar.extraSpeedEnabled) {          
         if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
           deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
-          this.globalService.globalVar.extraSpeedTimeRemaining = 0;
+          this.globalService.globalVar.extraSpeedTimeRemaining = 0;          
         }
         else {
           this.globalService.globalVar.extraSpeedTimeRemaining -= deltaTime;
           deltaTime *= 2;
+          doubleSpeedActive = true;
         }
       }
-    }
+    //}
     
-    var batchTime = this.getBatchRunTime(subzone); //runs the game in batches of 5 seconds max
+    var batchTime = this.getBatchRunTime(subzone); //runs the game in batches of 5 seconds max    
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {
       this.lookupService.isUIHidden = true;
       this.globalService.globalVar.isCatchingUp = true;
       this.gameLogService.disableOverlayBuffer = true;
-      this.bankedTime += deltaTime - batchTime;
+      this.globalService.bankedTime += deltaTime - batchTime;
       deltaTime = batchTime;
 
-      //if (this.bankedTime > 60 && this.catchupDialog === undefined)
-      //this.catchupDialog = this.openCatchUpModal(loadingContent);
+      if (this.globalService.bankedTime > this.globalService.maxBankedTime)
+      this.globalService.maxBankedTime = this.globalService.bankedTime;
     }
 
-    if (deltaTime < batchTime && this.bankedTime > 0) {
-      if (this.bankedTime + deltaTime <= batchTime) //amount of time banked is less than a batch so use it all
+    if (deltaTime < batchTime && this.globalService.bankedTime > 0) {
+      if (this.globalService.bankedTime + deltaTime <= batchTime) //amount of time banked is less than a batch so use it all
       {
-        deltaTime += this.bankedTime;
-        this.bankedTime = 0;
+        deltaTime += this.globalService.bankedTime;
+        this.globalService.bankedTime = 0;
+        this.globalService.maxBankedTime = 0;
         this.lookupService.isUIHidden = false;
         this.globalService.globalVar.isCatchingUp = false;
         this.gameLogService.disableOverlayBuffer = false;
-        //TODO: need to figure out some solution to this        
-        //this.utilityService.removeExcessOverlayDivs();
 
         if (this.catchupDialog !== undefined) {
           this.catchupDialog.close();
@@ -209,11 +207,11 @@ export class AppComponent {
       else //use partial amount of banked time
       {
         var useAmount = batchTime - deltaTime;
-        this.bankedTime -= useAmount;
+        this.globalService.bankedTime -= useAmount;
         deltaTime += useAmount;
 
-        if (this.bankedTime <= 0)
-          this.bankedTime = 0;
+        if (this.globalService.bankedTime <= 0)
+          this.globalService.bankedTime = 0;
       }
     }
 

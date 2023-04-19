@@ -60,7 +60,7 @@ export class AltarComponent implements OnInit {
 
   displayAltarText() {
     //var text = "You come across an altar to " + this.lookupService.getGodNameByType(this.altar.god) + " on your journey and take a moment to pray.";
-    var text = "Honor Asclepius by leaving healing items at the altar.";
+    var text = "Honor <span class='commonCharacterColor storyCharacterName'>Asclepius</span> by leaving healing items at the altar.";
     return text;
   }
 

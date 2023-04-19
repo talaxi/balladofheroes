@@ -44,10 +44,28 @@
 }*/
 
 .compareEquipment {
-    display: flex;
-    justify-content: space-evenly;
+    /*display: flex;
+    justify-content: space-evenly;*/
+
+    display: grid;
+    height: 100%;  
+    width: 100%;  
+    grid-template-columns: 50% 50%;
+    /*grid-gap: .5rem;*/
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "item1 item2";
+  }
+
+  .item1 {
+    grid-area: item1;
   }
   
+  .item2 {
+    grid-area: item2;
+  }
+
   .comparedEquipmentItem {
     border-left: 1px solid gray;
   }

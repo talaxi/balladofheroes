@@ -34,11 +34,15 @@ export class EnemyViewComponent implements OnInit {
   @ViewChild('enemyName') enemyName: ElementRef;
   previousName = "";
   overlayRef: OverlayRef;
+  showEnemyHpAsPercent: boolean = false;
 
   constructor(public battleService: BattleService, public lookupService: LookupService, public utilityService: UtilityService,
     public globalService: GlobalService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
+    console.log("New enemy view");
+    this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
+
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var defeatCount: EnemyDefeatCount | undefined;
 
@@ -320,6 +324,9 @@ export class EnemyViewComponent implements OnInit {
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
+
+    console.log("Disposing");
+    console.log(this.overlayRef);
 
       if (this.overlayRef !== undefined) {        
         this.overlayRef.detach();

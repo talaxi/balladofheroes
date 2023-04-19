@@ -1,5 +1,5 @@
 <div class="item" #spinnerDiv>
-<button #spinnerDiv (click)="battleService.useBattleItem(slotNumber); checkForCooldown(slotNumber);" customToolTip #tooltip [contentTemplate]="itemPopover"
+<button #spinnerDiv (click)="battleService.useBattleItem(slotNumber); checkForCooldown(slotNumber);" customToolTip #tooltip [contentTemplate]="itemPopover" (overlayRefEmitter)="overlayEmitter($event)"
     class="battleItemButton customButtonStyle item" [ngClass]="{'targetModeActive': battleItemInUse(slotNumber)}">
     <div class="spinnerContainer">
     <mat-spinner class="spinner itemTimer itemColor" *ngIf="isItemOnCooldown(slotNumber)" mode="determinate" [diameter]="spinnerDiameter"

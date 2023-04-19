@@ -1,4 +1,4 @@
-<div *ngIf="isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover">
+<div *ngIf="isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover" (overlayRefEmitter)="overlayEmitter($event)">
     <div *ngIf="isSplitStatUpDownEffect(statusEffect)"
         class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
         <div class="halfImage">
@@ -20,7 +20,7 @@
         <div *ngIf="!hasImage(statusEffect)" class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
     </div>
 </div>
-<div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover">
+<div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover" (overlayRefEmitter)="overlayEmitter($event)">
     <div *ngIf="isSplitStatUpDownEffect(statusEffect)"
         class="statUpDownGrid negativeStatUpDownGrid negativeStatusEffect">
         <div class="halfImage">

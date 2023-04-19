@@ -479,7 +479,7 @@ export class ResourceGeneratorService {
   getSlotItemValues(item: ItemsEnum) {   
     var baseLesserCrackedStatValue = 10; 
     var hpModifier = 5;
-    var defensiveModifier = 1.25;
+    var defensiveModifier = 1.5;
     if (item === ItemsEnum.LesserCrackedOpal) {
       return new CharacterStats(0, baseLesserCrackedStatValue, 0, 0, 0, 0);
     }

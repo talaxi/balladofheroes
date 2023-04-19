@@ -64,3 +64,61 @@
 .rewardAlreadyObtained {
     text-decoration: line-through;
 }
+
+.tournamentGrid {
+    display: grid;
+    height:100%;
+    grid-template-columns: auto;
+    grid-template-rows: 70% 1fr;
+    row-gap: 1rem;
+    justify-content: stretch;
+    grid-template-areas:
+        "standardTournaments"
+        "specialTournaments";
+}
+
+.standardTournaments {
+    grid-area: standardTournaments;
+    overflow: auto;
+}
+
+.specialTournaments {
+    grid-area: specialTournaments;
+    overflow: auto;
+}
+
+.listList, .listBackground {
+    height: 100%;
+}
+
+.tournamentSectionTitle {
+    display: grid;
+    height: auto;    
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto;
+    column-gap: .25rem;
+    justify-content: stretch;
+    grid-template-areas:
+        "recipeSectionToggle recipeSection recipeSectionEnder";
+    align-items: center;
+
+    color: #fff;
+    font-weight: bold;
+
+}
+
+.tournamentSection {
+    grid-area: recipeSection;
+}
+
+.tournamentSectionToggle {
+    grid-area: recipeSectionToggle;
+    width: 1.5rem;
+    padding: 2px 6px;
+}
+
+.tournamentSectionEnder {
+    grid-area: recipeSectionEnder;
+    width: 99%;
+    height: 0;
+}

@@ -181,6 +181,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.GemmedNecklace) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500));
     }
+    if (item === ItemsEnum.RingOfNightmares) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
+    }
     if (item === ItemsEnum.DiamondHammer) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
     }
@@ -192,41 +195,41 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.ScalyRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.FishScales, 10));
-      purchasePrice.push(new ResourceValue(ItemsEnum.Seashell, 8));
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 5000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Seashell, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 6000));
     }
     if (item === ItemsEnum.SharkstoothNecklace) {
       purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 8));      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 5000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 6000));
     }
     if (item === ItemsEnum.SharkstoothPendant) {
       purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 8));      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 5000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 6000));
     }
     if (item === ItemsEnum.FeatheredTunic) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 5));
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 7));
       purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 12));
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 7500));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 10000));
     }
     if (item === ItemsEnum.ShieldOfTheSea) {
       purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 4));
-      purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 10));
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 7500));
+      purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 8000));
     }
     if (item === ItemsEnum.SpikedShield) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.FishScales, 8));
+      purchasePrice.push(new ResourceValue(ItemsEnum.FishScales, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 6));
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 7500));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 8000));
     }
     if (item === ItemsEnum.BlackLance) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 14));
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 8));
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
     if (item === ItemsEnum.LiquidSaber) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 6));
-      purchasePrice.push(new ResourceValue(ItemsEnum.FishScales, 15));
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.FishScales, 18));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
     if (item === ItemsEnum.QuadRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));

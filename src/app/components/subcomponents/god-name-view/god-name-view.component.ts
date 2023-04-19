@@ -31,12 +31,14 @@ export class GodNameViewComponent implements OnInit {
   animation2Timer = 0;
   animationTimerCap = 3;
   levelUpAnimationText = "Lv Up!";
+  removeBarTransition = true;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
     private gameLoopService: GameLoopService, private layoutService: LayoutService, private menuService: MenuService,
     private battleService: BattleService) { }
 
   ngOnInit(): void {
+    this.removeBarTransition = true;
     this.previousGod1Level = this.getCharacterGodLevel(this.character, 1);
     this.previousGod2Level = this.getCharacterGodLevel(this.character, 2);
 
@@ -70,6 +72,10 @@ export class GodNameViewComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.removeBarTransition = false;
   }
 
   getCharacterGodName(character: Character, whichGod: number) {

@@ -267,8 +267,8 @@ export class ProfessionService {
   }
 
   getExpToNextLevel(level: number) {
-    var baseAmount = 2; //should be 20
-    var multiplier = 1; //should be 25
+    var baseAmount = 20;
+    var multiplier = 25;
 
     return baseAmount + (multiplier * (level - 1));
   }

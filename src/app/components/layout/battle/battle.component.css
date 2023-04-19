@@ -288,6 +288,11 @@
     display: none;
 }
 
+.storyOverflow {
+    max-height: 100%;
+    overflow: auto;
+}
+
 @media (max-width: 800px) {
     .gridContainer {
         position: relative;

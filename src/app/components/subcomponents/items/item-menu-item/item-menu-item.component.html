@@ -1,4 +1,4 @@
-<button [ngClass]="{'oneItem': totalItemAmount === 1, 'twoItems': totalItemAmount === 2}" mat-menu-item customToolTip #tooltip [contentTemplate]="itemPopover">
+<button [ngClass]="{'oneItem': totalItemAmount === 1, 'twoItems': totalItemAmount === 2}" mat-menu-item customToolTip #tooltip [contentTemplate]="itemPopover" (overlayRefEmitter)="overlayEmitter($event)">
     <img draggable="false" (contextmenu)="preventRightClick()" class="itemImage" [src]="lookupService.getItemImage(item)"
         (click)="selectItemFromMenu(item)">
 </button>

@@ -26,6 +26,7 @@ import { UtilityService } from './utility.service';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -39,6 +40,7 @@ export class BackgroundService {
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.handleItemCooldowns(deltaTime);
+    this.checkForDailyOccurrences(deltaTime);
     this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);
     this.professionService.handleProfessionTimer(ProfessionEnum.Jewelcrafting, deltaTime);
     this.handleAltarEffectDurations(deltaTime);
@@ -46,9 +48,11 @@ export class BackgroundService {
     this.handleFollowerPrayer(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
+    var activeSubzone = this.balladService.getActiveSubZone();
 
     if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
-      !(this.balladService.isSubzoneTown(this.balladService.getActiveSubZone().type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
+      activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
+       this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
       enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {
@@ -450,5 +454,21 @@ export class BackgroundService {
     }
 
     this.globalService.globalVar.timers.itemCooldowns = this.globalService.globalVar.timers.itemCooldowns.filter(item => item[1] > 0);
+  }
+
+  checkForDailyOccurrences(deltaTime: number) {
+    var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
+    var lastTicketDate = this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived;
+    var dayOfLastTicket = new Date(lastTicketDate.getFullYear(), lastTicketDate.getMonth(), lastTicketDate.getDate());
+    dayOfLastTicket.setHours(0, 0, 0);
+    var todaysDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
+    todaysDate.setHours(0, 0, 0);
+
+    var diffDays = Math.floor(Math.abs((todaysDate.valueOf() - dayOfLastTicket.valueOf()) / oneDay));
+    this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays;
+    if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > this.utilityService.weeklyMeleeEntryCap)
+    this.globalService.globalVar.sidequestData.weeklyMeleeEntries = this.utilityService.weeklyMeleeEntryCap;
+
+    this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived = new Date();
   }
 }

@@ -1,3 +1,4 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, Component, ElementRef, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
@@ -36,6 +37,7 @@ export class AltarViewComponent implements OnInit {
   animation1Timer = 0;
   animationTimerCap = 3;
   animationSubscription: any;
+  overlayRef: OverlayRef;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     public globalService: GlobalService, private changeDetectorRef: ChangeDetectorRef, private altarService: AltarService,
@@ -238,6 +240,15 @@ export class AltarViewComponent implements OnInit {
     return false;
   }
 
+  overlayEmitter(overlayRef: OverlayRef) {
+    if (this.overlayRef !== undefined) {
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
+
+    this.overlayRef = overlayRef;
+  }
+
   ngOnDestroy() {
     if (this.spinnerDivSubscription !== undefined)
       this.spinnerDivSubscription.unsubscribe();
@@ -247,5 +258,11 @@ export class AltarViewComponent implements OnInit {
 
     if (this.animationSubscription !== undefined)
       this.animationSubscription.unsubscribe();
+
+    if (this.overlayRef !== undefined) {
+      console.log("Destroy status effect overlay");
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
   }
 }

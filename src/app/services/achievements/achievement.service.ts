@@ -584,10 +584,9 @@ export class AchievementService {
         });
       }
       
-      //TODO CHANGE VICTORY COUNT CHECK TO 5000
       var fiveThousandVictories = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.FiveThousandVictories);
       var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.FiveThousandVictories);
-      if (fiveThousandVictories !== undefined && subzone.victoryCount >= 1 && !fiveThousandVictories.completed && rewards !== undefined) {
+      if (fiveThousandVictories !== undefined && subzone.victoryCount >= 5000 && !fiveThousandVictories.completed && rewards !== undefined) {
         completedAchievement.push(fiveThousandVictories);
         fiveThousandVictories.completed = true;
         rewards.forEach(bonus => {
@@ -599,7 +598,7 @@ export class AchievementService {
                 if (ares!.level >= ability.requiredLevel)
                   ability.isAvailable = true;
               });
-              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your commitment to bloodshed has impressed Ares, God of War. Ares assist you on your journey.");
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your commitment to bloodshed has impressed Ares, God of War. Ares will now assist you on your journey.");
             }
           }
           else

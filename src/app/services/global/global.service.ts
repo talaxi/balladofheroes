@@ -37,11 +37,15 @@ import { EquipmentService } from '../resources/equipment.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
 import { TutorialService } from './tutorial.service';
+import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class GlobalService {
+  maxBankedTime = 0;
+  bankedTime = 0;
   globalVar = new GlobalVariables();
 
   constructor(private utilityService: UtilityService, private gameLogService: GameLogService, private charmService: CharmService,
@@ -73,9 +77,10 @@ export class GlobalService {
     adventurer.name = "Adventurer";
     adventurer.type = CharacterEnum.Adventurer;
     adventurer.isAvailable = true;
-    adventurer.baseStats = new CharacterStats(190, 10, 9, 0, 5, 8);
+    adventurer.baseStats = new CharacterStats(190, 16, 10, 0, 5, 8);
     adventurer.battleStats = adventurer.baseStats.makeCopy();
     adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
+    adventurer.battleInfo.autoAttackModifier = this.utilityService.weakAutoAttack;
     this.assignAbilityInfo(adventurer);
     this.calculateCharacterBattleStats(adventurer);
 
@@ -85,9 +90,10 @@ export class GlobalService {
     archer.name = "Archer";
     archer.type = CharacterEnum.Archer;
     archer.isAvailable = false;
-    archer.baseStats = new CharacterStats(200, 10, 6, 5, 13, 6);
+    archer.baseStats = new CharacterStats(200, 15, 6, 5, 13, 6);
     archer.battleStats = archer.baseStats.makeCopy();
     archer.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+    archer.battleInfo.autoAttackModifier = this.utilityService.weakAutoAttack;
     this.calculateCharacterBattleStats(archer);
     this.assignAbilityInfo(archer);
 
@@ -97,9 +103,10 @@ export class GlobalService {
     warrior.name = "Warrior";
     warrior.type = CharacterEnum.Warrior;
     warrior.isAvailable = false;
-    warrior.baseStats = new CharacterStats(225, 12, 12, 8, 8, 12);
+    warrior.baseStats = new CharacterStats(225, 17, 12, 8, 8, 12);
     warrior.battleStats = warrior.baseStats.makeCopy();
     warrior.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+    warrior.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
     this.calculateCharacterBattleStats(warrior);
     this.assignAbilityInfo(warrior);
 
@@ -109,9 +116,10 @@ export class GlobalService {
     priest.name = "Priest";
     priest.type = CharacterEnum.Priest;
     priest.isAvailable = false;
-    priest.baseStats = new CharacterStats(175, 13, 9, 6, 7, 10);
+    priest.baseStats = new CharacterStats(175, 17, 9, 6, 7, 10);
     priest.battleStats = priest.baseStats.makeCopy();
     priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
+    priest.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
     this.calculateCharacterBattleStats(priest);
     this.assignAbilityInfo(priest);
 
@@ -309,7 +317,7 @@ export class GlobalService {
       divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       divineStrike.cooldown = divineStrike.currentCooldown = 33;
       divineStrike.dealsDirectDamage = true;
-      divineStrike.effectiveness = 1.65;
+      divineStrike.effectiveness = 1.8;
       divineStrike.elementalType = ElementalTypeEnum.Holy;
       divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .05, true, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Divine Strike"));
       god.abilityList.push(divineStrike);
@@ -982,8 +990,7 @@ export class GlobalService {
 
       //inactive gods
       this.globalVar.gods.filter(god => god.isAvailable &&
-        (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-          //todo: should xp be halved for inactive gods?
+        (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {          
           var inactiveGodModifier = .25; //this can be increased maybe with future items
 
           this.giveGodExp(god, enemy.xpGainFromDefeat * inactiveGodModifier);
@@ -1221,19 +1228,19 @@ export class GlobalService {
     var baseXp = 100;
     var factor = 1.333;
     //if (level < 30) {            
-      if (level > 9) {
-        baseXp = 1000;        
-      }
-      if (level > 49) {
-        baseXp = 100000;
-        factor = 1.165;
-      }
-      var additive = level > 4 ? 350 * (level) : 0;
-      var exponential = (baseXp * (factor ** (level - 1)));
-      var multiplier = baseXp * level;
+    if (level > 9) {
+      baseXp = 1000;
+    }
+    if (level > 49) {
+      baseXp = 100000;
+      factor = 1.165;
+    }
+    var additive = level > 4 ? 350 * (level) : 0;
+    var exponential = (baseXp * (factor ** (level - 1)));
+    var multiplier = baseXp * level;
 
-      //(100 * level) + (100 * (1.333^(level-1))) + 350*level      
-      return this.utilityService.roundTo(multiplier + exponential + additive, 5);
+    //(100 * level) + (100 * (1.333^(level-1))) + 350*level      
+    return this.utilityService.roundTo(multiplier + exponential + additive, 5);
     //}
     /*else {
       //TODO: depends on what kind of XP you're getting at this reset
@@ -1416,9 +1423,9 @@ export class GlobalService {
     var targetGainsEffect = ability.targetEffect[0];
 
     if (god.type === GodEnum.Athena) {
-      //every 5 upgrades, increase heal amount    
-      if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 40)
-        userGainsEffect.effectiveness += .05;
+      //every 10 upgrades, increase heal amount    
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.effectiveness += .02;
       else
         ability.effectiveness += .15;
     }
@@ -1429,7 +1436,7 @@ export class GlobalService {
       else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
         //alternate increasing wounding arrow effect and duration every 5 levels until level 100
         if (ability.abilityUpgradeLevel % 15 === 0)
-          targetGainsEffect.effectiveness += .05;
+          targetGainsEffect.effectiveness -= .05;
         else
           targetGainsEffect.duration += 1;
       }
@@ -1466,7 +1473,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= .5;
       else
-        ability.effectiveness += .05;
+        ability.effectiveness += .06;
     }
   }
 
@@ -1497,7 +1504,7 @@ export class GlobalService {
       else if (ability.abilityUpgradeLevel % 10 === 5 && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += 1;
       else
-        ability.effectiveness += .1;
+        ability.effectiveness += .075;
     }
     else if (god.type === GodEnum.Hermes) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1539,7 +1546,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= .5;
       else
-        ability.effectiveness += .05;
+        ability.effectiveness += .075;
     }
   }
 
@@ -1562,7 +1569,7 @@ export class GlobalService {
       else if ((ability.abilityUpgradeLevel === 35 || ability.abilityUpgradeLevel === 70) && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += 1;
       else
-        ability.effectiveness += .15;
+        ability.effectiveness += .05;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1644,14 +1651,14 @@ export class GlobalService {
       //increase max count to 10
       if (ability.abilityUpgradeLevel % 20 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.maxCount += 1;
-      else  
-      if (ability.abilityUpgradeLevel <= 100)
-        ability.effectiveness += .005;
+      else
+        if (ability.abilityUpgradeLevel <= 100)
+          ability.effectiveness += .005;
     }
     else if (god.type === GodEnum.Hades) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         userGainsEffect.duration += 1.5;
-      else      
+      else
         userGainsEffect.effectiveness += .015;
     }
   }
@@ -1933,7 +1940,7 @@ export class GlobalService {
     var baseXp = 200;
     var tier1Breakpoint = 500;
 
-    if (level < 15) 
+    if (level < 15)
       baseXp += level * 10;
     else if (level < 200)
       baseXp = 350;
@@ -2172,10 +2179,52 @@ export class GlobalService {
     return modifiedResource;
   }
 
+  removeExtraFromBaseResource(resourceToChange: ResourceValue, extraToRemove: ItemsEnum) {
+    //check if item exists, remove 1 from the existing amount of the resource
+    //create a second instance of the resource with the extra included, initialize extras array
+    //you will want to differentiate them in name
+    var modifiedResource: ResourceValue = new ResourceValue(resourceToChange.item, 1);
+    var existingResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && this.extraItemsAreEqual(item.extras, resourceToChange.extras));
+
+    if (existingResourcePool !== undefined && existingResourcePool.amount > 0) {
+      existingResourcePool.amount -= 1;
+      //console.log("Existing Resource Pool now has " + existingResourcePool.amount);
+      this.globalVar.resources = this.globalVar.resources.filter(item => item.amount > 0);
+
+      var extraToRemoveList: ItemsEnum[] = resourceToChange.makeCopy().extras;
+      if (extraToRemoveList !== undefined) {
+        var firstInstance = extraToRemoveList.lastIndexOf(extraToRemove);
+        extraToRemoveList.splice(firstInstance, 1);
+
+        var existingModifiedResourcePool = this.globalVar.resources.find(item => item.item === resourceToChange.item && this.extraItemsAreEqual(item.extras, extraToRemoveList));
+
+        if (existingModifiedResourcePool) //if a resource already exists that perfectly matches what you are trying to do, just add to that
+        {
+          //console.log("New Resource Pool already exists with amount " + existingModifiedResourcePool.amount);
+          existingModifiedResourcePool.amount += 1;
+          modifiedResource = new ResourceValue(existingModifiedResourcePool.item, 1);
+          modifiedResource.extras = extraToRemoveList;
+          //console.log("New Resource Pool new amount is " + existingModifiedResourcePool.amount);
+        }
+        else //else create a brand new resource
+        {
+          //console.log("Create brand new resource");
+          var newResource = new ResourceValue(resourceToChange.item, 1);
+          newResource.extras = [];
+          newResource.extras = extraToRemoveList;
+          modifiedResource = newResource;
+          this.globalVar.resources.push(modifiedResource);
+        }       
+      }
+    }
+
+    return modifiedResource;
+  }
+
   extraItemsAreEqual(existingExtras?: ItemsEnum[], comparedExtras?: ItemsEnum[]) {
     var areEqual = true;
 
-    if (existingExtras === undefined && comparedExtras === undefined) {
+    if ((existingExtras === undefined || existingExtras.length === 0) && (comparedExtras === undefined || comparedExtras.length === 0)) {
       return areEqual;
     }
 

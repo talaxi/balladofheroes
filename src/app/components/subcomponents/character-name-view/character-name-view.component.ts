@@ -35,6 +35,7 @@ export class CharacterNameViewComponent implements OnInit {
   characterName: string;
   targetKeybind: string = "";
   isMobile: boolean = false;
+  removeBarTransition: boolean = true;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
     private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService,
@@ -42,6 +43,7 @@ export class CharacterNameViewComponent implements OnInit {
     private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.removeBarTransition = true;
     this.isMobile = this.deviceDetectorService.isMobile();
 
     if (this.character.type === this.globalService.globalVar.activePartyMember1)
@@ -79,6 +81,10 @@ export class CharacterNameViewComponent implements OnInit {
         }
       }
     });
+  }
+
+  ngAfterViewInit() {
+    this.removeBarTransition = false;
   }
 
   isButtonActive() {

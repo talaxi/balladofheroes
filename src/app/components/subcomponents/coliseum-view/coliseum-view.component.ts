@@ -26,7 +26,7 @@ export class ColiseumViewComponent implements OnInit {
     this.selectedTournament = this.coliseumService.getColiseumInfoFromType(ColiseumTournamentEnum.TournamentOfTheDead);
   }
 
-  getColiseumTournaments() {
+  getStandardColiseumTournaments() {
     var tournaments: ColiseumTournamentEnum[] = [];
     for (const [propertyKey, propertyValue] of Object.entries(ColiseumTournamentEnum)) {
       if (!Number.isNaN(Number(propertyKey))) {
@@ -39,13 +39,25 @@ export class ColiseumViewComponent implements OnInit {
           tournaments.push(enumValue)
         else {
           var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === enumValue);
-          if (tournamentType !== undefined && tournamentType.isAvailable) {
+          if (tournamentType !== undefined && tournamentType.isAvailable && !this.coliseumService.isTournamentTypeSpecial(tournamentType.type)) {
             tournaments.push(enumValue);
           }
         }
       }
     }
 
+    return tournaments;
+  }
+
+  getSpecialColiseumTournaments() {
+    var tournaments: ColiseumTournamentEnum[] = [];
+    
+    var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);
+    //console.log((weeklyMelee !== undefined) + " && " + weeklyMelee?.isAvailable);
+    if (weeklyMelee !== undefined && weeklyMelee.isAvailable) {
+      tournaments.push(weeklyMelee.type);
+    }
+    
     return tournaments;
   }
 
@@ -80,7 +92,7 @@ export class ColiseumViewComponent implements OnInit {
         itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
       }
 
-      reward += item.amount + " " + itemName + "<br/>";
+      reward += item.amount.toLocaleString() + " " + itemName + "<br/>";
     });
 
     return reward;
@@ -123,7 +135,29 @@ export class ColiseumViewComponent implements OnInit {
     var battle = new Battle();
     battle.activeTournament = this.selectedTournament;
 
+    if (battle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee) {
+      if (!this.canEnterWeeklyMelee())
+        return;
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries -= 1;
+    }
+
     this.globalService.globalVar.activeBattle = battle;
     this.dialog.closeAll();
+  }
+
+  canEnterWeeklyMelee() {
+    return this.globalService.globalVar.sidequestData.weeklyMeleeEntries > 0;
+  }
+
+  isSelectedTournamentWeeklyMelee() {
+    return this.selectedTournament.type === ColiseumTournamentEnum.WeeklyMelee;
+  }
+
+  getWeeklyEntries() {
+    return this.globalService.globalVar.sidequestData.weeklyMeleeEntries;
+  }
+
+  getWeeklyEntryCap() {
+    return this.utilityService.weeklyMeleeEntryCap;
   }
 }

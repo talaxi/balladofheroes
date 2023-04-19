@@ -23,8 +23,9 @@
                 [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
         </div>
-        <span class="hpMpText hpAmount"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
+        <span class="hpMpText hpAmount" *ngIf="!showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
             {{getCharacterMaxHp()}}<br /></span>
+            <span class="hpMpText hpAmount textCentered enemyHpPercentMarginRight" *ngIf="showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character) | number : '1.2-2'}}%</span><br /></span>
     </div>
     <div class="fullHeight">
         <app-status-effect-view [character]="character"></app-status-effect-view>

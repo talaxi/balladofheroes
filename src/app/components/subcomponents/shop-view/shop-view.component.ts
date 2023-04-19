@@ -70,7 +70,10 @@ export class ShopViewComponent implements OnInit {
     this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
-      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story && item.type !== ShopTypeEnum.StoryScene24);
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
+
+      if (this.balladService.findSubzone(SubZoneEnum.ColchisGroveOfAres)?.isAvailable)
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryScene24);
   }
 
   getOptionText(type: ShopTypeEnum) {
@@ -305,6 +308,10 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.ChthonicFavor && this.balladService.getActiveSubZone().type === SubZoneEnum.AsphodelPalaceOfHades &&
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavor)) {
       scene = OptionalSceneEnum.ChthonicFavor;
+    }
+    if (option.type === ShopTypeEnum.Jewelcrafter && this.balladService.getActiveSubZone().type === SubZoneEnum.AegeanSeaIolcus &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.Jewelcrafting)) {
+      scene = OptionalSceneEnum.Jewelcrafting;
     }
 
     return scene;

@@ -396,7 +396,7 @@ export class AltarService {
       altarEffect.duration = altarEffect.totalDuration = 60;
       altarEffect.effectiveness = .98;
       altarEffect.stacks = false;
-      altarEffect.effectOnExpiration = true;
+      //altarEffect.effectOnExpiration = true;
     }
     if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.ApolloRareHpRegenIncrease) {
       altarEffect.duration = altarEffect.totalDuration = 60;

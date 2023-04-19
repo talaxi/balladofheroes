@@ -7,6 +7,7 @@ import { StatusEffect } from "./status-effect.model";
 export class BattleInfo {
     autoAttackTimer: number;
     timeToAutoAttack: number;
+    autoAttackModifier: number;
     autoAttackAutoMode: boolean;
     autoAttackManuallyTriggered: boolean;
     @Type(() => StatusEffect)

@@ -1,4 +1,4 @@
-<div customToolTip [contentTemplate]="smallAltarPopover" [tooltipDirection]="tooltipDirection" class="altarView">
+<div customToolTip [contentTemplate]="smallAltarPopover" [tooltipDirection]="tooltipDirection" (overlayRefEmitter)="overlayEmitter($event)" class="altarView">
     <button (click)="viewAltar()"  class="container buttonAsText"
         [disabled]="!isAltarReady()">
         <div class="centeredBox">

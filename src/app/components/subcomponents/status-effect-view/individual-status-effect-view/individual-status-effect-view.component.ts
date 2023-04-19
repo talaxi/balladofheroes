@@ -1,3 +1,4 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import { Component, Input, OnInit } from '@angular/core';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
@@ -13,6 +14,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class IndividualStatusEffectViewComponent implements OnInit {
   @Input() isPositiveEffect: boolean;
   @Input() statusEffect: StatusEffect;
+  overlayRef: OverlayRef;
 
   constructor(private lookupService: LookupService, private utilityService: UtilityService) { }
 
@@ -41,7 +43,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageDown ||
       effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageDown ||
       effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown ||
-      effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown)
+      effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown ||
+      effect.type === StatusEffectEnum.AllElementalResistanceDown)
       return true;
 
     return false;
@@ -73,7 +76,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown ||
       effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown)
       return "DMG";
-    if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown)
+    if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown ||
+      effect.type === StatusEffectEnum.AllElementalResistanceDown)
       return "TKN";
     if (effect.type === StatusEffectEnum.Dead)
       return "KO";
@@ -100,6 +104,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       img = "assets/svg/fire.svg";
       if (effect.type === StatusEffectEnum.WaterDamageUp)
       img = "assets/svg/water.svg";
+      if (effect.type === StatusEffectEnum.AllElementalResistanceDown)
+      img = "assets/svg/elementalResistanceDown.svg";
 
     return img;
   }
@@ -248,6 +254,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Onslaught) {
       src += "onslaught.svg";
     }
+    if (effect.type === StatusEffectEnum.Focus) {
+      src += "focus.svg";
+    }
 
     return src;
   }
@@ -271,5 +280,22 @@ export class IndividualStatusEffectViewComponent implements OnInit {
 
   preventRightClick() {
     return false;
+  }
+
+  overlayEmitter(overlayRef: OverlayRef) {    
+    if (this.overlayRef !== undefined) {      
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
+
+    this.overlayRef = overlayRef;
+  }
+
+  ngOnDestroy() {   
+      if (this.overlayRef !== undefined) { 
+        console.log("Destroy status effect overlay");       
+        this.overlayRef.detach();
+        this.overlayRef.dispose();
+      }
   }
 }

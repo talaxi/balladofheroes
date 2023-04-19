@@ -1,3 +1,4 @@
+import { OverlayRef } from '@angular/cdk/overlay';
 import { ChangeDetectorRef, Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { BattleService } from 'src/app/services/battle/battle.service';
@@ -17,7 +18,7 @@ export class ItemBeltItemComponent implements OnInit {
   spinnerDiameter = 10;
   strokeWidth = 5;
   spinnerDivSubscription: any;
-
+  overlayRef: OverlayRef;
 
   constructor(public lookupService: LookupService, public battleService: BattleService, private globalService: GlobalService,
     private gameLoopService: GameLoopService, private changeDetector: ChangeDetectorRef) { }
@@ -34,13 +35,11 @@ export class ItemBeltItemComponent implements OnInit {
         if (this.spinnerDiv !== undefined) {
           if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
             this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
-            console.log("Init first diameter: " + this.spinnerDiameter);
           }
 
           if (this.spinnerDiv.nativeElement.offsetHeight <= this.spinnerDiameter) {
             if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
               this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
-              console.log("Init second diameter: " + this.spinnerDiameter);
             }
           }
 
@@ -63,13 +62,11 @@ export class ItemBeltItemComponent implements OnInit {
         if (this.spinnerDiv !== undefined) {
           if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
             this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
-            console.log("Check first diameter: " + this.spinnerDiameter);
           }
 
           if (this.spinnerDiv.nativeElement.offsetHeight <= this.spinnerDiameter) {
             if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
               this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
-              console.log("Check second diameter: " + this.spinnerDiameter);
             }
           }
 
@@ -155,8 +152,23 @@ export class ItemBeltItemComponent implements OnInit {
     return 0;
   }
 
+  overlayEmitter(overlayRef: OverlayRef) {    
+    if (this.overlayRef !== undefined) {      
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
+
+    this.overlayRef = overlayRef;
+  }
+  
   ngOnDestroy() {
     if (this.spinnerDivSubscription !== undefined)
       this.spinnerDivSubscription.unsubscribe();
+
+      if (this.overlayRef !== undefined) { 
+        console.log("Destroy status effect overlay");       
+        this.overlayRef.detach();
+        this.overlayRef.dispose();
+      }
   }
 }

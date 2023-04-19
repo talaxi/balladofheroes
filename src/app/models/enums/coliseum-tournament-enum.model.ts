@@ -4,5 +4,6 @@ export enum ColiseumTournamentEnum {
   FlamesOfTartarus,
   ForgottenKings,
   RiverLords,
-  HadesTrial
+  HadesTrial,
+  WeeklyMelee
 }

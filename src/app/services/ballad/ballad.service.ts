@@ -17,6 +17,7 @@ import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
+import { ColiseumService } from '../battle/coliseum.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +26,7 @@ export class BalladService {
 
   constructor(private globalService: GlobalService, private gameLogService: GameLogService, private dpsCalculatorService: DpsCalculatorService,
     private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog, private coliseumService: ColiseumService) { }
 
   getBalladName(type?: BalladEnum) {
     var name = "";
@@ -118,7 +119,7 @@ export class BalladService {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.coliseumService.ResetTournamentInfoAfterChangingSubzone();
 
     if (!this.isSubzoneTown(relatedSubzone.type)) {
       var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(relatedSubzone.type);
@@ -248,7 +249,8 @@ export class BalladService {
         reverseZones.forEach(zone => {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
           reverseSubzones.forEach(subzone => {
-            if (!nextSubzoneFound && !this.isSubzoneTown(subzone.type) && this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
+            if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
+             this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
               this.selectZone(zone);
@@ -309,7 +311,7 @@ export class BalladService {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.coliseumService.ResetTournamentInfoAfterChangingSubzone();
 
     if (this.isSubzoneTown(subzone.type))
     {

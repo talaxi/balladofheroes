@@ -1455,11 +1455,6 @@ export class SubZoneGeneratorService {
       battleOptions.push(enemyTeam5);
     }
     if (type === SubZoneEnum.AegeanSeaPropontis) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Falcon));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Falcon));
-      battleOptions.push(enemyTeam);
-
       var enemyTeam2: EnemyTeam = new EnemyTeam();
       enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RamblingHusk));
       enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RamblingHusk));
@@ -2378,7 +2373,6 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.BlackSeaWindyGale) {
       subZoneEnums.push(SubZoneEnum.ColchisCityCenter);
-      subZoneEnums.push(SubZoneEnum.ColchisGroveOfAres);
     }
     if (type === SubZoneEnum.ColchisGroveOfAres) {
       subZoneEnums.push(SubZoneEnum.ColchisReinforcementsFromAeetes);
@@ -2532,8 +2526,9 @@ export class SubZoneGeneratorService {
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LiquidSaber, SubZoneEnum.ColchisCityCenter));
 
     if (subzoneType === SubZoneEnum.ColchisCityCenter) {
-      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
+      shopOptions.push(new ShopOption(ShopTypeEnum.StoryScene24, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
     }
     return shopOptions;
   }

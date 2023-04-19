@@ -2,8 +2,8 @@
     <div class="header">
         <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumFight(), 'headerFlex': !doingColiseumFight() }">
             <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
-                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} of
-                {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</div>            
+                round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} <span *ngIf="globalService.globalVar.activeBattle.activeTournament.maxRounds !== -1">of
+                {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</span></div>            
                 <button *ngIf="isMobile" class="buttonStyled zoneDropdown"
                 (click)="openZoneNavigation(zoneNavigationContent)">
                 <img class="dropdownIcon" src="assets/svg/dropdown.svg">
@@ -65,7 +65,7 @@
             </div>
         </div>
         <div *ngIf="isAtStoryScene()" class="storyGrid">
-            <div class="text" [ngClass]="{'storyTextAnimation': showStoryAnimation }"
+            <div class="text storyOverflow" [ngClass]="{'storyTextAnimation': showStoryAnimation }"
                 [innerHtml]="this.displayStorySegment()"></div>
             <div class="skipButton">
                 <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next

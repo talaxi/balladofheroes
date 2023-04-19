@@ -130,7 +130,7 @@
 
   --grayedOut-Text: #797c80;
 
-  
+
   --adventurerColor: #DB7803;
   --archerColor: #12A901;
   --warriorColor: #0695FB;
@@ -145,7 +145,7 @@
   --hermesColor: #efefef;
   /*#faf9eb maybe instead */
   --artemisColor: #97BBB0;
-  --hadesColor: #b58bf2; 
+  --hadesColor: #b58bf2;
   --dionysusColor: #B8E71E;
   --nemesisColor: #E1BBC4;
 
@@ -472,12 +472,33 @@ h6 {
   border-style: solid;
 }
 
+.spanButtonStyled {
+  background-color: var(--button-background-color);
+  color: var(--foreground-quaternary);
+  font-weight: bold;
+  font-size: .95rem;
+  padding: .1rem .5rem;
+  margin: .1rem .2rem;
+  border: solid 2px black;
+  cursor: pointer;
+  -moz-user-select: -moz-none;
+  -khtml-user-select: none;
+  -webkit-user-select: none;
+  -ms-user-select: none;
+  user-select: none;
+}
+
 .smallButtonStyled {
   padding: 0 .3rem !important;
   margin: .1rem .1rem !important;
 }
 
-.buttonStyled:hover {
+.smallMarginLeft {
+  margin-left: .5rem !important;
+}
+
+.buttonStyled:hover,
+.spanButtonStyled:hover {
   background-color: var(--button-hover);
 }
 
@@ -1067,13 +1088,17 @@ button:disabled {
   animation: fadingAnimation .5s forwards;
 }
 
+.sceneDiv {
+  margin-bottom: .575rem;
+}
+
 @keyframes fadingAnimation {
   0% {
-      opacity: 100%;
+    opacity: 100%;
   }
-  
+
   100% {
-      opacity: 0%;
+    opacity: 0%;
   }
 }
 

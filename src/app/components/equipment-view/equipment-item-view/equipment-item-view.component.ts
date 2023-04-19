@@ -15,6 +15,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class EquipmentItemViewComponent implements OnInit {
   @Input() equipment: Equipment | undefined;
   @Input() associatedResource: ResourceValue | undefined;
+  @Input() isSlotMenu: boolean = false;
   equipmentStats = "";
   equipmentEffects = "";
   subscription: any;
@@ -22,11 +23,11 @@ export class EquipmentItemViewComponent implements OnInit {
   constructor(public lookupService: LookupService, private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
-    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource);
+    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);
     this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource);
+      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);
       this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
     });
   }

@@ -159,6 +159,10 @@
     vertical-align: middle;
 }
 
+.enemyHpPercentMarginRight {
+    margin-right: 1rem;
+}
+
 @media (max-width: 800px) {
     .characterBar {
         width: 64%;
