@@ -41,10 +41,15 @@
         <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Progression</span></div>
         <br />
         <div *ngFor="let progression of progressionResources;">
-            <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
+            <span customToolTip [contentTemplate]="progressionContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
                 <strong>{{dictionaryService.getItemName(progression.item)}}:</strong> {{(isItemPercentage(progression.item) ? progression.amount * 100 : progression.amount)  | number : '1.0-3'}}{{(isItemPercentage(progression.item) ? "%" : "")}} 
                 <hr class="marginHr" />
             </span>
+            <ng-template #progressionContent>
+                <div class="popoverClass">
+                    <span [innerHTML]="this.getProgressionDescription(progression)"></span>
+                </div>
+            </ng-template>
         </div>
     </div>
     <div class="charms">

@@ -48,6 +48,11 @@ export class ResourceViewComponent implements OnInit {
     }
   }
 
+  getProgressionDescription(progression: ResourceValue) {
+    var description = this.lookupService.getItemDescription(progression.item);
+    return description;
+  }
+
   getCharmDescription(charm: ResourceValue) {
     var description = this.lookupService.getItemDescription(charm.item);
     return description;

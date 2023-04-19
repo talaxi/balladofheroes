@@ -407,6 +407,8 @@ export class LookupService {
       name = "Increase Chthonic Power gain by " + (this.getChthonicFavorMultiplier(true)).toFixed(0) + "%.";
     else if (type === ItemsEnum.ChthonicPower)
       name = "Spend on permanent stat boosts.";
+      else if (type === ItemsEnum.PoisonExtractPotionRecipe)
+      name = "Recipe for Alchemy item <b>Poison Extract Potion</b>.";
 
     //equipment
     else if (this.getEquipmentPieceByItemType(type) !== undefined) {
