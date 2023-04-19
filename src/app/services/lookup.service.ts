@@ -2326,13 +2326,13 @@ export class LookupService {
       description = "Increase healing or damage dealt by battle items by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%. (Does not increase effectiveness of items that grant effects)";
 
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
-      description = "10% chance on auto attack to reduce target's Agility by 10% for 8 seconds.";
+      description = "10% chance on auto attack to reduce target's Agility by 20% for 14 seconds.";
     if (statusEffect.type === StatusEffectEnum.PoisonousToxin)
-      description = "10% chance on auto attack to deal 22 additional damage.";
+      description = "10% chance on auto attack to deal 65 additional damage.";
     if (statusEffect.type === StatusEffectEnum.WitheringToxin)
-      description = "10% chance on auto attack to reduce target's Attack by 10% for 12 seconds.";
+      description = "10% chance on auto attack to reduce target's Attack by 20% for 16 seconds.";
     if (statusEffect.type === StatusEffectEnum.VenomousToxin)
-      description = "10% chance on auto attack to deal 165 additional damage.";
+      description = "10% chance on auto attack to deal 432 additional damage.";
 
     if (statusEffect.type === StatusEffectEnum.HeroicElixir)
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";

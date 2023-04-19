@@ -51,7 +51,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .4;
+    return .41;
   }
 
   initializeGlobalVariables() {

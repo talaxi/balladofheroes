@@ -22,7 +22,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -191,60 +191,42 @@ export class VersionControlService {
           this.initializationService.initializeJewelcrafting();
           this.initializationService.initializeBalladOfTheArgo();
 
-          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);          
+          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
           if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
             var argo = this.balladService.findBallad(BalladEnum.Argo);
             var aegeanSea = this.balladService.findZone(ZoneEnum.AegeanSea);
             var iolcus = this.balladService.findSubzone(SubZoneEnum.AegeanSeaIolcus);
             var openSeas = this.balladService.findSubzone(SubZoneEnum.AegeanSeaOpenSeas);
 
-            if (argo !== undefined)
-            {
+            if (argo !== undefined) {
               argo.isAvailable = true;
               argo.notify = true;
             }
-            if (aegeanSea !== undefined)
-            {
+            if (aegeanSea !== undefined) {
               aegeanSea.isAvailable = true;
               aegeanSea.notify = true;
             }
-            if (iolcus !== undefined)
-            {
+            if (iolcus !== undefined) {
               iolcus.isAvailable = true;
               iolcus.notify = true;
             }
-            if (openSeas !== undefined)
-            {
+            if (openSeas !== undefined) {
               openSeas.isAvailable = true;
               openSeas.notify = true;
             }
           }
         }
-
-        /*if (version === 1.01) {
-          this.globalService.globalVar.notifications = new Notifications();
-          var breedLevelStatModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedLevelStatModifier");
-          if (breedLevelStatModifier !== undefined)
-            breedLevelStatModifier.value = .05;
- 
-          var breedGaugeMaxIncreaseModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedGaugeMaxIncreaseModifier");
-          if (breedGaugeMaxIncreaseModifier !== undefined)
-            breedGaugeMaxIncreaseModifier.value = 10;
- 
-          var breedingGroundsSpecializationModifier = this.globalService.globalVar.modifiers.find(item => item.text === "breedingGroundsSpecializationModifier");
-          if (breedingGroundsSpecializationModifier !== undefined)
-            breedingGroundsSpecializationModifier.value = .10;
- 
-          this.globalService.globalVar.animals.forEach(animal => {
-            animal.breedLevel = Math.round(animal.breedLevel / 2);
-            animal.breedGaugeXp = animal.breedGaugeXp * 2;
-          });
- 
-          var primaryDeck = this.globalService.globalVar.animalDecks.find(item => item.isPrimaryDeck);
-          if (primaryDeck !== null && primaryDeck !== undefined) {
-            primaryDeck.isEventDeck = true;
+        if (version === .41) {
+          var openSeas = this.balladService.findSubzone(SubZoneEnum.AegeanSeaOpenSeas);
+          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
+          
+          if (openSeas !== undefined && openSeas.isAvailable && wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0 &&
+            this.globalService.globalVar.achievements.filter(item => item.subzone === SubZoneEnum.AegeanSeaOpenSeas).length === 0) {
+            this.achievementService.createDefaultAchievementsForSubzone(openSeas.type).forEach(achievement => {
+              this.globalService.globalVar.achievements.push(achievement);
+            });
           }
-        } */
+        }        
 
         this.globalService.globalVar.currentVersion = version;
       }

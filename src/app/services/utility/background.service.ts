@@ -460,7 +460,11 @@ export class BackgroundService {
 
   checkForDailyOccurrences(deltaTime: number) {
     var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
-    var lastTicketDate = this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived;
+    var lastTicketDate = new Date(this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived);
+    if (lastTicketDate === undefined)
+    lastTicketDate = new Date();
+
+    console.log(lastTicketDate);
     var dayOfLastTicket = new Date(lastTicketDate.getFullYear(), lastTicketDate.getMonth(), lastTicketDate.getDate());
     dayOfLastTicket.setHours(0, 0, 0);
     var todaysDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
