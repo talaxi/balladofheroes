@@ -27,6 +27,7 @@ import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.mod
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { DictionaryService } from './dictionary.service';
 
 @Injectable({
   providedIn: 'root'
@@ -35,7 +36,8 @@ export class BackgroundService {
 
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
     private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
-    private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService) { }
+    private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService, 
+    private dictionaryService: DictionaryService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
@@ -373,7 +375,7 @@ export class BackgroundService {
           if (rng <= chance) {
             var foundReward = new ResourceValue(reward.item, rewardAmount);
             if (this.globalService.globalVar.gameLogSettings.get("followerSearch")) {
-              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.lookupService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".");
+              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.dictionaryService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".");
             }
             this.lookupService.addLootToLog(foundReward.item, foundReward.amount);
             this.lookupService.gainResource(foundReward);

@@ -5,6 +5,7 @@ import { BattleService } from 'src/app/services/battle/battle.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-item-belt-item',
@@ -21,7 +22,7 @@ export class ItemBeltItemComponent implements OnInit {
   overlayRef: OverlayRef;
 
   constructor(public lookupService: LookupService, public battleService: BattleService, private globalService: GlobalService,
-    private gameLoopService: GameLoopService, private changeDetector: ChangeDetectorRef) { }
+    private gameLoopService: GameLoopService, private changeDetector: ChangeDetectorRef, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     if (this.globalService.globalVar.itemBelt.length < this.slotNumber)
@@ -124,7 +125,7 @@ export class ItemBeltItemComponent implements OnInit {
   }
 
   getItemName() {
-    return this.lookupService.getItemName(this.item);
+    return this.dictionaryService.getItemName(this.item);
   }
 
   getItemDescription() {
@@ -165,8 +166,7 @@ export class ItemBeltItemComponent implements OnInit {
     if (this.spinnerDivSubscription !== undefined)
       this.spinnerDivSubscription.unsubscribe();
 
-      if (this.overlayRef !== undefined) { 
-        console.log("Destroy status effect overlay");       
+      if (this.overlayRef !== undefined) {    
         this.overlayRef.detach();
         this.overlayRef.dispose();
       }

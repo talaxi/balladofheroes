@@ -260,7 +260,6 @@ export class AltarViewComponent implements OnInit {
       this.animationSubscription.unsubscribe();
 
     if (this.overlayRef !== undefined) {
-      console.log("Destroy status effect overlay");
       this.overlayRef.detach();
       this.overlayRef.dispose();
     }

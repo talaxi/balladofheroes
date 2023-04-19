@@ -15,5 +15,7 @@ export enum TutorialTypeEnum {
   SideQuests,
   Followers,
   ObscurredNotification,
-  MobileOverlay
+  MobileOverlay,
+  Jewelcrafting,
+  Alchemy
 }

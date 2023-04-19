@@ -151,11 +151,7 @@ export class ToolTipRendererDirective {
         }]);
     }
     
-    console.log("Element Ref: ");    
-    console.log(this._elementRef.nativeElement);
-    this._overlayRef = this._overlay.create({ positionStrategy });    
-    //console.log(this._overlayRef);
-    //console.log(screen.width + " vs " + this._overlayRef.overlayElement.clientLeft + " + " + this._overlayRef.overlayElement.clientWidth);    
+    this._overlayRef = this._overlay.create({ positionStrategy });        
     this.overlayRefEmitter.emit(this._overlayRef);  
   }
 

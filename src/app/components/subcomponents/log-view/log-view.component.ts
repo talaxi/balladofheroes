@@ -6,6 +6,7 @@ import { TutorialService } from 'src/app/services/global/tutorial.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { formatDate } from '@angular/common';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-log-view',
@@ -20,7 +21,7 @@ export class LogViewComponent implements OnInit {
   lootData: LogData[];
 
   constructor(private globalService: GlobalService, private tutorialService: TutorialService, private lookupService: LookupService,
-    private storyService: StoryService) { }
+    private storyService: StoryService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.currentLogView = this.globalService.globalVar.settings.get("activeLog");
@@ -75,7 +76,7 @@ export class LogViewComponent implements OnInit {
   }
 
   getLootData(logData: LogData) {
-    return "You received " + logData.amount + " " + this.lookupService.getItemName(logData.relevantEnumValue) + ".";
+    return "You received " + logData.amount + " " + this.dictionaryService.getItemName(logData.relevantEnumValue) + ".";
   }
 
   formatDate(milliseconds: number) {

@@ -49,6 +49,7 @@ import { UtilityService } from '../utility/utility.service';
 import { ColiseumService } from './coliseum.service';
 import { DpsCalculatorService } from './dps-calculator.service';
 import { GameLogService } from './game-log.service';
+import { DictionaryService } from '../utility/dictionary.service';
 
 @Injectable({
   providedIn: 'root'
@@ -68,7 +69,7 @@ export class BattleService {
     private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService,
     private menuService: MenuService, public dialog: MatDialog, private tutorialService: TutorialService,
     private dpsCalculatorService: DpsCalculatorService, private coliseumService: ColiseumService, private altarService: AltarService,
-    private professionService: ProfessionService) { }
+    private professionService: ProfessionService, private dictionaryService: DictionaryService) { }
 
   handleBattle(deltaTime: number, loadingContent: any) {
     deltaTime = this.utilityService.roundTo(deltaTime, this.utilityService.genericRoundTo);
@@ -142,7 +143,7 @@ export class BattleService {
 
           if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {            
             this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + (this.battle.activeTournament.maxRounds !== -1 ? " of " + this.battle.activeTournament.maxRounds : "") + ".");
-            this.coliseumService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
+            this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
             this.battle.activeTournament = new ColiseumTournament();
           }
         }
@@ -384,7 +385,7 @@ export class BattleService {
           this.lookupService.gainResource(reward);
           this.lookupService.addLootToLog(reward.item, reward.amount);
           if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
-            var itemName = (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item)));
+            var itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
             if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Equipment) {
               var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item)?.quality);
               itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
@@ -2134,7 +2135,7 @@ export class BattleService {
 
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You have been defeated in the Coliseum. You finished in round " + this.battle.activeTournament.currentRound + (this.battle.activeTournament.maxRounds !== -1 ? " of " + this.battle.activeTournament.maxRounds : "") + ".");
-      this.coliseumService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
+      this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
       this.battle.activeTournament = new ColiseumTournament();
     }
     else if (underworld !== undefined && underworld.isAvailable) {
@@ -2247,7 +2248,7 @@ export class BattleService {
 
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.WeeklyMelee) { //don't get xp/coins/items until you finish the melee
       if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList) + " XP</strong>.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList).toLocaleString() + " XP</strong>.");
       }
       this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies);
       this.updateEnemyDefeatCount(this.battle.currentEnemies);
@@ -2257,7 +2258,7 @@ export class BattleService {
       if (loot !== undefined && loot.length > 0) {
         loot.forEach(item => {
           if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + item.amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>.");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + item.amount + " " + (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item))) + "</strong>.");
           }
           this.lookupService.addLootToLog(item.item, item.amount);
           if (item.item === ItemsEnum.FocusPotionRecipe) {
@@ -2347,7 +2348,7 @@ export class BattleService {
     if (coin > 0) {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, coin));
       if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain <strong>" + Math.round(coin) + " " + (Math.round(coin) === 1 ? this.lookupService.getItemName(ItemsEnum.Coin) : this.utilityService.handlePlural(this.lookupService.getItemName(ItemsEnum.Coin))) + "</strong>.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain <strong>" + Math.round(coin) + " " + (Math.round(coin) === 1 ? this.dictionaryService.getItemName(ItemsEnum.Coin) : this.utilityService.handlePlural(this.dictionaryService.getItemName(ItemsEnum.Coin))) + "</strong>.");
       }
     }
   }
@@ -2361,7 +2362,7 @@ export class BattleService {
           var amount = item.amount.toString();
           if (item.item === ItemsEnum.BoonOfOlympus)
             amount = item.amount * 100 + "%";
-          achievementBonus += "<strong>" + amount + " " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>, ";
+          achievementBonus += "<strong>" + amount + " " + (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item))) + "</strong>, ";
         });
 
         achievementBonus = achievementBonus.substring(0, achievementBonus.length - 2);
@@ -2517,7 +2518,7 @@ export class BattleService {
       this.isBattleItemOnCooldown(this.battleItemInUse))
       return;
 
-    var itemName = this.lookupService.getItemName(this.battleItemInUse);
+    var itemName = this.dictionaryService.getItemName(this.battleItemInUse);
 
     var effect = this.lookupService.getBattleItemEffect(this.battleItemInUse);
     var damageMultiplier = 1;

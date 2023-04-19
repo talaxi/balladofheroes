@@ -9,6 +9,7 @@ import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ColiseumService } from 'src/app/services/battle/coliseum.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class ColiseumViewComponent implements OnInit {
   selectedTournament: ColiseumTournament;
 
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
-    private lookupService: LookupService, private utilityService: UtilityService) { }
+    private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.selectedTournament = this.coliseumService.getColiseumInfoFromType(ColiseumTournamentEnum.TournamentOfTheDead);
@@ -85,7 +86,7 @@ export class ColiseumViewComponent implements OnInit {
     var reward = "";
 
     this.selectedTournament.completionReward.forEach(item => {
-      var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+      var itemName = (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item)));
       if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
@@ -110,7 +111,7 @@ export class ColiseumViewComponent implements OnInit {
     var reward = "";
 
     this.selectedTournament.quickCompletionReward.forEach(item => {
-      var itemName = (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item)));
+      var itemName = (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item)));
       if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
 
@@ -159,5 +160,9 @@ export class ColiseumViewComponent implements OnInit {
 
   getWeeklyEntryCap() {
     return this.utilityService.weeklyMeleeEntryCap;
+  }
+
+  getHighestWeeklyMeleeRoundCompleted() {
+    return this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound;
   }
 }

@@ -34,11 +34,10 @@ import { BalladService } from '../ballad/ballad.service';
 import { GameLogService } from '../battle/game-log.service';
 import { CharmService } from '../resources/charm.service';
 import { EquipmentService } from '../resources/equipment.service';
-import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
-import { TutorialService } from './tutorial.service';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
+import { DictionaryService } from '../utility/dictionary.service';
 
 @Injectable({
   providedIn: 'root'
@@ -49,7 +48,7 @@ export class GlobalService {
   globalVar = new GlobalVariables();
 
   constructor(private utilityService: UtilityService, private gameLogService: GameLogService, private charmService: CharmService,
-    private equipmentService: EquipmentService) { }
+    private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
     return .4;
@@ -940,9 +939,8 @@ export class GlobalService {
   giveCharactersBonusExp(party: Character[], bonusXp: number) {
     var activeParty = this.getActivePartyCharacters(true);
 
-    activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel
-      && !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
-        //needs to have some sort of modification factor on beating enemies at a certain lvl compared to you
+    //bonus XP has no restrictions on being dead
+    activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {        
         partyMember.exp += bonusXp;
       });
 
@@ -1240,15 +1238,7 @@ export class GlobalService {
     var multiplier = baseXp * level;
 
     //(100 * level) + (100 * (1.333^(level-1))) + 350*level      
-    return this.utilityService.roundTo(multiplier + exponential + additive, 5);
-    //}
-    /*else {
-      //TODO: depends on what kind of XP you're getting at this reset
-      var factor = 1.09;
-      var additive = 1500;
-
-      return this.utilityService.roundTo(baseXp * (factor ** level) + (additive * (level - 1)), 5);
-    }*/
+    return this.utilityService.roundTo(multiplier + exponential + additive, 5);    
   }
 
   levelUpGod(god: God) {
@@ -2241,5 +2231,79 @@ export class GlobalService {
     }
 
     return areEqual;
+  }
+
+  //these two functions have to be here to prevent circular dependencies
+  ResetTournamentInfoAfterChangingSubzone() {    
+    if (this.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee) {
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You leave the Coliseum. You finished in round " + this.globalVar.activeBattle.activeTournament.currentRound + (this.globalVar.activeBattle.activeTournament.maxRounds !== -1 ? " of " + this.globalVar.activeBattle.activeTournament.maxRounds : "") + ".");
+      this.handleColiseumLoss(this.globalVar.activeBattle.activeTournament.type, this.globalVar.activeBattle.activeTournament.currentRound);
+    }
+    
+    this.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+  }
+
+  handleColiseumLoss(type: ColiseumTournamentEnum, losingRound: number) {
+    this.resetCooldowns();
+
+    if (type === ColiseumTournamentEnum.WeeklyMelee) {
+      if ((losingRound-1) > this.globalVar.sidequestData.highestWeeklyMeleeRound)
+        this.globalVar.sidequestData.highestWeeklyMeleeRound = (losingRound-1);
+
+      var bonusXpBase = 3250;
+      var growthFactor = 1.33;
+
+      var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound-1)*5) * bonusXpBase));
+
+      var bonusCoinBase = 95;
+      var growthFactor = 1.14;
+
+      var bonusCoins = Math.round((bonusCoinBase * (growthFactor ** (losingRound - 1))) + (((losingRound-1)*5) * bonusCoinBase));   
+
+      if (this.globalVar.gameLogSettings.get("battleRewards")) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + bonusXp.toLocaleString() + " XP</strong>.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + bonusCoins.toLocaleString() + " Coins</strong>.");
+      }
+
+       //every 10 rounds, chance of items
+       if (losingRound > 10) { 
+        var rng = this.utilityService.getRandomInteger(30, 70);
+        var randomGem = this.getRandomGem();
+
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(randomGem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(randomGem))) + "</strong>.");         
+        this.gainResource(new ResourceValue(randomGem, rng));
+      }
+
+      
+      this.giveCharactersBonusExp(this.getActivePartyCharacters(true), bonusXp);
+      this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins)); 
+    }
+  }
+
+  gainResource(item: ResourceValue) {
+    if (item === undefined)
+      return;
+
+    var existingResource = this.globalVar.resources.find(resource => item.item === resource.item);
+    if (existingResource === undefined) {
+      this.globalVar.resources.push(item);
+    }
+    else {
+      existingResource.amount += item.amount;
+    }
+  }
+
+  getRandomGem() {
+    var items:ItemsEnum[] = [];
+    items.push(ItemsEnum.RoughTopazFragment);
+    items.push(ItemsEnum.RoughRubyFragment);
+    items.push(ItemsEnum.RoughOpalFragment);
+    items.push(ItemsEnum.RoughAmethystFragment);
+    items.push(ItemsEnum.RoughEmeraldFragment);
+    items.push(ItemsEnum.RoughAquamarineFragment);
+    
+    var rng = this.utilityService.getRandomInteger(0, items.length - 1);
+
+    return items[rng];
   }
 }

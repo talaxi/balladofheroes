@@ -3,7 +3,7 @@
         <div *ngIf="isEquipment()" customToolTip [tooltipDirection]="tooltipDirection" [isDelayed]="false"
             [contentTemplate]="equipmentComparisonTemplate">
             <div [class]="getEquipmentClass()">
-                <span class="s4Heading" [innerHtml]="lookupService.getItemName(item.shopItem)"></span>
+                <span class="s4Heading" [innerHtml]="dictionaryService.getItemName(item.shopItem)"></span>
                 <br />
                 <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
                 <div>
@@ -14,7 +14,7 @@
             <span [innerHtml]="itemDescription"></span>
         </div>
         <div *ngIf="!isEquipment()"> <!--Better way to do this other than copying and pasting?-->
-            <span class="s4Heading" [innerHtml]="lookupService.getItemName(item.shopItem)"></span>
+            <span class="s4Heading" [innerHtml]="dictionaryService.getItemName(item.shopItem)"></span>
             <br />
             <span>{{lookupService.getItemTypeName(item.shopItem)}}</span>
             <hr class="miniHr" />

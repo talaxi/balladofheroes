@@ -257,6 +257,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Focus) {
       src += "focus.svg";
     }
+    if (effect.type === StatusEffectEnum.DispenserOfDues) {
+      src += "dispenserOfDues.svg";
+    }
 
     return src;
   }
@@ -292,8 +295,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   }
 
   ngOnDestroy() {   
-      if (this.overlayRef !== undefined) { 
-        console.log("Destroy status effect overlay");       
+      if (this.overlayRef !== undefined) {       
         this.overlayRef.detach();
         this.overlayRef.dispose();
       }

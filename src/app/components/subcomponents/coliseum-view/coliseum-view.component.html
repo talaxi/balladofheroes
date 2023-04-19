@@ -69,10 +69,14 @@
             </div>
         </div>
         <div *ngIf="isSelectedTournamentWeeklyMelee()">
-            <span><strong>Entries Remaining:</strong> {{getWeeklyEntries()}} / {{getWeeklyEntryCap()}}</span>
+            <span><strong>Entries Remaining:</strong> {{getWeeklyEntries()}} / {{getWeeklyEntryCap()}}</span><br *ngIf="getHighestWeeklyMeleeRoundCompleted() > 0" />
+            <span *ngIf="getHighestWeeklyMeleeRoundCompleted() > 0"><strong>Highest Round Completed:</strong> {{getHighestWeeklyMeleeRoundCompleted()}}</span><br/>
             <hr />
             <div>
-                <span>Gain increasing XP and Coin rewards the further you progress!<br/> <i><b>This is still a work in progress!</b></i></span>
+                <span>Gain increasing XP and Coin rewards the further you progress!
+                <br/>
+                <br/>                
+                <i><b>This is still a work in progress!</b></i></span>
                 <br />
                 <br />
                 <button [disabled]="!canEnterWeeklyMelee()" (click)="startTournament()">Start Tournament</button>

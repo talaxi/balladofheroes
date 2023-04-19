@@ -5,6 +5,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-resource-view',
@@ -18,7 +19,7 @@ export class ResourceViewComponent implements OnInit {
   charmResources: ResourceValue[] = [];
   tooltipDirection = DirectionEnum.Down;
 
-  constructor(public lookupService: LookupService, private globalService: GlobalService) { }
+  constructor(public lookupService: LookupService, private globalService: GlobalService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.resources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Resource || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.HealingItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.BattleItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.CraftingMaterial)).sort();

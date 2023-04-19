@@ -11,6 +11,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-follower-search-view',
@@ -23,7 +24,7 @@ export class FollowerSearchViewComponent {
 
   constructor(private globalService: GlobalService, private followerService: FollowersService, private lookupService: LookupService,
     private utilityService: UtilityService, private balladService: BalladService, private achievementService: AchievementService, 
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -84,7 +85,7 @@ export class FollowerSearchViewComponent {
     for (var i = 0; i < rewards.length; i++) {
       var reward = rewards[i];
 
-      rewardDescription += reward.amount + " " + (reward.amount > 1 ? this.utilityService.handlePlural(this.lookupService.getItemName(reward.item)) : this.lookupService.getItemName(reward.item));
+      rewardDescription += reward.amount + " " + (reward.amount > 1 ? this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)) : this.dictionaryService.getItemName(reward.item));
 
       if (i < rewards.length - 1)
         rewardDescription += ", ";

@@ -16,6 +16,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { StoryService } from 'src/app/services/story/story.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -47,7 +48,7 @@ export class BattleComponent implements OnInit {
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
     private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
@@ -181,7 +182,7 @@ export class BattleComponent implements OnInit {
 
     if (this.globalService.globalVar.activeBattle.chestRewards !== undefined && this.globalService.globalVar.activeBattle.chestRewards.length > 0) {
       this.globalService.globalVar.activeBattle.chestRewards.forEach(item => {
-        chestRewards += + item.amount + "<strong class='" + this.lookupService.getItemTextClass(item) + "'>  " + (item.amount === 1 ? this.lookupService.getItemName(item.item) : this.utilityService.handlePlural(this.lookupService.getItemName(item.item))) + "</strong>, ";
+        chestRewards += + item.amount + "<strong class='" + this.lookupService.getItemTextClass(item) + "'>  " + (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item))) + "</strong>, ";
       });
 
       chestRewards = chestRewards.substring(0, chestRewards.length - 2);

@@ -12,6 +12,9 @@ import { UtilityService } from '../utility/utility.service';
 import { GlobalService } from '../global/global.service';
 import { GameLogService } from '../battle/game-log.service';
 import { LookupService } from '../lookup.service';
+import { DictionaryService } from '../utility/dictionary.service';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
+import { TutorialService } from '../global/tutorial.service';
 
 @Injectable({
   providedIn: 'root'
@@ -19,7 +22,7 @@ import { LookupService } from '../lookup.service';
 export class JewelcraftingService {
 
   constructor(private globalService: GlobalService, private utilityService: UtilityService, private gameLogService: GameLogService,
-    private lookupService: LookupService) { }
+    private lookupService: LookupService, private dictionaryService: DictionaryService, private tutorialService: TutorialService) { }
 
   handleShopOpen(subzone: SubZoneEnum) {
     if (subzone === SubZoneEnum.AegeanSeaIolcus) {
@@ -28,6 +31,7 @@ export class JewelcraftingService {
         jewelcrafting.isUnlocked = true;
         jewelcrafting.level = 1;
         jewelcrafting.maxLevel += this.utilityService.firstJewelcraftingLevelCap;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Jewelcrafting));
       }
     }
   }
@@ -244,7 +248,7 @@ export class JewelcraftingService {
 
   updateGameLogWithNewRecipe(type: ItemsEnum) {
     if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-      var gameLogEntry = "You learn how to make the Jewelcrafting recipe: <strong>" + this.lookupService.getItemName(type) + "</strong>.";
+      var gameLogEntry = "You learn how to make the Jewelcrafting recipe: <strong>" + this.dictionaryService.getItemName(type) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
     }
   }

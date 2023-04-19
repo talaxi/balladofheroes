@@ -53,6 +53,8 @@ export class VersionControlService {
   getVersionChanges(version: number) {
     var changes = "";
 
+    if (version === 0.4)
+      changes = "Ballad of argo launch";
     if (version === 0.32)
       changes = "Bug fixes";
     if (version === 0.31)
@@ -80,6 +82,8 @@ export class VersionControlService {
       date = new Date('2022-04-06 12:00:00');
     if (version === .32)
       date = new Date('2022-04-06 12:00:00');
+    if (version === .32)
+      date = new Date('2022-04-19 12:00:00');
 
     return date.toDateString().replace(/^\S+\s/, '');
   }
@@ -127,10 +131,9 @@ export class VersionControlService {
         }
         if (version === .4) {
           this.globalService.globalVar.sidequestData.weeklyMeleeEntries = 1;
+          this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound = 0;
           this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived = new Date();
-          //TODO: remove below line
-          this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived.setDate(new Date().getDate() - 1);
-          //^^^
+
           var coliseumDefeatCount = new ColiseumDefeatCount(ColiseumTournamentEnum.WeeklyMelee, 0);
           this.globalService.globalVar.coliseumDefeatCount.push(coliseumDefeatCount);
 
@@ -186,8 +189,9 @@ export class VersionControlService {
             this.globalService.assignGodAbilityInfo(ares);
 
           this.initializationService.initializeJewelcrafting();
+          this.initializationService.initializeBalladOfTheArgo();
 
-          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
+          var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);          
           if (wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0) {
             var argo = this.balladService.findBallad(BalladEnum.Argo);
             var aegeanSea = this.balladService.findZone(ZoneEnum.AegeanSea);
@@ -195,13 +199,25 @@ export class VersionControlService {
             var openSeas = this.balladService.findSubzone(SubZoneEnum.AegeanSeaOpenSeas);
 
             if (argo !== undefined)
+            {
               argo.isAvailable = true;
+              argo.notify = true;
+            }
             if (aegeanSea !== undefined)
+            {
               aegeanSea.isAvailable = true;
+              aegeanSea.notify = true;
+            }
             if (iolcus !== undefined)
+            {
               iolcus.isAvailable = true;
+              iolcus.notify = true;
+            }
             if (openSeas !== undefined)
+            {
               openSeas.isAvailable = true;
+              openSeas.notify = true;
+            }
           }
         }
 

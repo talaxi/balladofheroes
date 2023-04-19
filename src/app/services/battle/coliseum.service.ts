@@ -24,6 +24,7 @@ import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { PrimaryStats } from 'src/app/models/character/primary-stats.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
+import { DictionaryService } from '../utility/dictionary.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +35,7 @@ export class ColiseumService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService) { }
+    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService) { }
 
   getColiseumInfoFromType(type: ColiseumTournamentEnum) {
     var tournament = new ColiseumTournament();
@@ -101,7 +102,7 @@ export class ColiseumService {
     else if (type === ColiseumTournamentEnum.HadesTrial)
       return "Hades' Trial";
     else if (type === ColiseumTournamentEnum.WeeklyMelee)
-      return "Weekly Melee";
+      return "Eternal Melee";
     return "";
   }
 
@@ -127,37 +128,6 @@ export class ColiseumService {
     }
 
     return totalHp / info.tournamentTimerLength;
-  }
-
-  ResetTournamentInfoAfterChangingSubzone() {    
-    if (this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee) {
-      this.handleColiseumLoss(this.globalService.globalVar.activeBattle.activeTournament.type, this.globalService.globalVar.activeBattle.activeTournament.currentRound);
-    }
-    
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
-  }
-
-  handleColiseumLoss(type: ColiseumTournamentEnum, losingRound: number) {
-    this.globalService.resetCooldowns();
-
-    if (type === ColiseumTournamentEnum.WeeklyMelee) {
-      var bonusXpBase = 2500;
-      var growthFactor = 1.08;
-
-      var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + ((losingRound*2) * bonusXpBase));
-
-      var bonusCoinBase = 50;
-      var growthFactor = 1.08;
-
-      var bonusCoins = Math.round((bonusCoinBase * (growthFactor ** (losingRound - 1))) + ((losingRound*2) * bonusCoinBase));
-
-      this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), bonusXp);
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins));
-      if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + bonusXp + " XP</strong>.");
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + bonusCoins + " Coins</strong>.");
-      }
-    }
   }
 
   handleColiseumVictory(type: ColiseumTournamentEnum) {
@@ -206,7 +176,7 @@ export class ColiseumService {
           }
 
           if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item))) + "</strong>.");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item))) + "</strong>.");
           }
         });
       }
@@ -218,7 +188,7 @@ export class ColiseumService {
           this.lookupService.gainResource(reward);
           this.lookupService.addLootToLog(reward.item, reward.amount);
           if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.lookupService.getItemName(reward.item) : this.utilityService.handlePlural(this.lookupService.getItemName(reward.item))) + "</strong>.");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item))) + "</strong>.");
           }
         });
       }
@@ -476,9 +446,9 @@ export class ColiseumService {
     if (round % 5 === 0)
       isBoss = true;
 
-    var expectedCharacterStats = new PrimaryStats(2500, 200, 300, 225, 225, 275);
-    var defensiveGrowthFactor = 1.3;
-    var offensiveGrowthFactor = 1.15;
+    var expectedCharacterStats = new PrimaryStats(2500, 210, 300, 225, 225, 275);
+    var defensiveGrowthFactor = 1.32;
+    var offensiveGrowthFactor = 1.21;
 
     expectedCharacterStats.maxHp *= defensiveGrowthFactor ** ((round % 5) + 1);
     expectedCharacterStats.defense *= defensiveGrowthFactor ** ((round % 5) + 1);
@@ -488,7 +458,7 @@ export class ColiseumService {
     expectedCharacterStats.luck *= offensiveGrowthFactor ** ((round % 5) + 1);
 
     if (round > 5 && round <= 10) {
-      var expectedCharacterStats = new PrimaryStats(8000, 350, 800, 400, 600, 850);
+      var expectedCharacterStats = new PrimaryStats(8000, 380, 800, 450, 650, 850);
 
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** ((round % 5) + 1);
       expectedCharacterStats.defense *= defensiveGrowthFactor ** ((round % 5) + 1);
@@ -499,17 +469,17 @@ export class ColiseumService {
     }
     else if (round > 10) {
       //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
-      var expectedCharacterStats = new PrimaryStats(1250, 250, 800, 275, 400, 600);
+      var expectedCharacterStats = new PrimaryStats(1000, 225, 750, 275, 400, 600);
  
       var offsetRound = round - 10;
       defensiveGrowthFactor = 1.18;
       offensiveGrowthFactor = 1.07;
-      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 115);
-      expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 9);
-      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 8);      
-      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 4);
-      expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 6);
-      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 7);
+      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 80);
+      expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 7);
+      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 6);      
+      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2);
+      expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
+      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
     }
 
     //to account for multiple enemies
@@ -595,9 +565,7 @@ export class ColiseumService {
       enemy.battleStats.luck = Math.round(enemy.battleStats.luck * (expectedStats.luck / totalLuck));
       enemy.battleStats.resistance = Math.round(enemy.battleStats.resistance * (expectedStats.resistance / totalResistance));
 
-      enemy.battleStats.currentHp = enemy.battleStats.maxHp;
-      console.log("Normalized " + enemy.name);
-      console.log(enemy.battleStats);
+      enemy.battleStats.currentHp = enemy.battleStats.maxHp;      
     });
   }
 

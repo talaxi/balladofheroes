@@ -7,6 +7,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { JewelcraftingService } from 'src/app/services/professions/jewelcrafting.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class JewelcraftingOverviewComponent {
   
   constructor(private deviceDetectorService: DeviceDetectorService, private lookupService: LookupService,
     private globalService: GlobalService, private jewelcraftingService: JewelcraftingService, public dialog: MatDialog,
-    private utilityService: UtilityService, private professionService: ProfessionService) {
+    private utilityService: UtilityService, private professionService: ProfessionService, private dictionaryService: DictionaryService) {
   
   }
   
@@ -37,7 +38,7 @@ export class JewelcraftingOverviewComponent {
   
     getCreatingRecipeName() {
       if (this.jewelcrafting !== undefined && this.jewelcrafting.creatingRecipe !== undefined)
-        return this.lookupService.getItemName(this.jewelcrafting.creatingRecipe.createdItem);
+        return this.dictionaryService.getItemName(this.jewelcrafting.creatingRecipe.createdItem);
   
       return "";
     }

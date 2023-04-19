@@ -10,6 +10,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { JewelcraftingService } from 'src/app/services/professions/jewelcrafting.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -24,7 +25,7 @@ export class JewelcraftingViewComponent {
   jewelcrafting: Profession | undefined;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
-    private jewelcraftingService: JewelcraftingService, private professionService: ProfessionService) { }
+    private jewelcraftingService: JewelcraftingService, private professionService: ProfessionService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
@@ -60,7 +61,7 @@ export class JewelcraftingViewComponent {
   }
 
   getCraftedItemName(recipe: Recipe) {
-    return this.lookupService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
+    return this.dictionaryService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
   }
 
   getRecipeList(quality: EquipmentQualityEnum) {
@@ -71,14 +72,14 @@ export class JewelcraftingViewComponent {
 
   getSelectedRecipeName() {
     if (this.selectedRecipe !== undefined)
-      return this.lookupService.getItemName(this.selectedRecipe.createdItem);
+      return this.dictionaryService.getItemName(this.selectedRecipe.createdItem);
 
     return "";
   }
 
   getCreatingRecipeName() {
     if (this.jewelcrafting !== undefined && this.jewelcrafting.creatingRecipe !== undefined)
-      return this.lookupService.getItemName(this.jewelcrafting.creatingRecipe.createdItem);
+      return this.dictionaryService.getItemName(this.jewelcrafting.creatingRecipe.createdItem);
 
     return "";
   }
@@ -90,7 +91,7 @@ export class JewelcraftingViewComponent {
       return "";
 
     this.selectedRecipe.ingredients.forEach(resource => {
-      var displayName = this.lookupService.getItemName(resource.item);
+      var displayName = this.dictionaryService.getItemName(resource.item);
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
       var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
@@ -107,7 +108,7 @@ export class JewelcraftingViewComponent {
   getSelectedRecipeIngredient(resource: ResourceValue) {
     var ingredient = "";
 
-    var displayName = this.lookupService.getItemName(resource.item);
+    var displayName = this.dictionaryService.getItemName(resource.item);
     var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
     var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 

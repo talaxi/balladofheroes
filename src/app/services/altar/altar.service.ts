@@ -354,7 +354,7 @@ export class AltarService {
     }
     if (altar.type === AltarEnum.Large && effectType === AltarEffectsEnum.AthenaRareHealOverTime) {
       altarEffect.duration = altarEffect.totalDuration = 60;
-      altarEffect.effectiveness = 20;
+      altarEffect.effectiveness = 60;
       altarEffect.tickFrequency = (60 / 10);
       altarEffect.stacks = false;
       altarEffect.isEffectMultiplier = false;

@@ -5,6 +5,7 @@ import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -20,7 +21,7 @@ export class EquipmentItemViewComponent implements OnInit {
   equipmentEffects = "";
   subscription: any;
 
-  constructor(public lookupService: LookupService, private gameLoopService: GameLoopService) { }
+  constructor(public lookupService: LookupService, private gameLoopService: GameLoopService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);

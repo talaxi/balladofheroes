@@ -7,6 +7,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -20,7 +21,7 @@ alchemy: Profession | undefined;
 
 constructor(private deviceDetectorService: DeviceDetectorService, private lookupService: LookupService,
   private globalService: GlobalService, private alchemyService: AlchemyService, public dialog: MatDialog,
-  private utilityService: UtilityService, private professionService: ProfessionService) {
+  private utilityService: UtilityService, private professionService: ProfessionService, private dictionaryService: DictionaryService) {
 
 }
 
@@ -37,7 +38,7 @@ openAlchemy(content: any) {
 
   getCreatingRecipeName() {
     if (this.alchemy !== undefined && this.alchemy.creatingRecipe !== undefined)
-      return this.lookupService.getItemName(this.alchemy.creatingRecipe.createdItem);
+      return this.dictionaryService.getItemName(this.alchemy.creatingRecipe.createdItem);
 
     return "";
   }

@@ -180,7 +180,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.coliseumService.ResetTournamentInfoAfterChangingSubzone();
+    this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -202,7 +202,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.partyDamagingActions = [];
       this.dpsCalculatorService.enemyDamagingActions = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
-      this.coliseumService.ResetTournamentInfoAfterChangingSubzone();
+      this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
       var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -224,7 +224,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.partyDamagingActions = [];
       this.dpsCalculatorService.enemyDamagingActions = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
-      this.coliseumService.ResetTournamentInfoAfterChangingSubzone();
+      this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
       var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);

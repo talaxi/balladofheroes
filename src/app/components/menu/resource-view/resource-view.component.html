@@ -7,7 +7,7 @@
         <br />
         <div *ngFor="let equipment of equipmentItems;">
             <span customToolTip [contentTemplate]="equipmentContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
-                <strong>{{lookupService.getItemName(equipment.item)}}:</strong> {{equipment.amount}}
+                <strong>{{dictionaryService.getItemName(equipment.item)}}:</strong> {{equipment.amount}}
                 <hr class="marginHr" />
             </span>
 
@@ -27,7 +27,7 @@
         <div *ngFor="let resource of resources;">
             <div class="resourceDiv">
                 <button class="screenMarginLeft buttonAsText clickableText trackingButton">
-                    <!--{{lookupService.getItemName(resource.item)}} x{{resource.amount}}-->
+                    <!--{{dictionaryService.getItemName(resource.item)}} x{{resource.amount}}-->
                     <app-resource-item-view [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
                 </button>
                 <button *ngIf="isResourceTracked(resource)" (click)="setTrackingResource(resource)" class="screenMarginRight buttonStyled smallCaps">tracking</button>
@@ -42,7 +42,7 @@
         <br />
         <div *ngFor="let progression of progressionResources;">
             <span triggers="mouseenter:mouseleave" popoverClass="popoverClass" class="screenMarginLeft">
-                <strong>{{lookupService.getItemName(progression.item)}}:</strong> {{(isItemPercentage(progression.item) ? progression.amount * 100 : progression.amount)  | number : '1.0-3'}}{{(isItemPercentage(progression.item) ? "%" : "")}} 
+                <strong>{{dictionaryService.getItemName(progression.item)}}:</strong> {{(isItemPercentage(progression.item) ? progression.amount * 100 : progression.amount)  | number : '1.0-3'}}{{(isItemPercentage(progression.item) ? "%" : "")}} 
                 <hr class="marginHr" />
             </span>
         </div>
@@ -52,7 +52,7 @@
         <br />
         <div *ngFor="let charm of charmResources;">
             <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
-                <strong>{{lookupService.getItemName(charm.item)}}:</strong> {{charm.amount}}
+                <strong>{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
                 <hr class="marginHr" />
             </span>
             <ng-template #charmContent>

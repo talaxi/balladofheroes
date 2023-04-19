@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-resource-required-view',
@@ -16,10 +17,10 @@ export class ResourceRequiredViewComponent implements OnInit {
   showTooltip: boolean = false;
   subscription: any;
 
-  constructor(public lookupService: LookupService, private gameLoopService: GameLoopService) { }
+  constructor(public lookupService: LookupService, private gameLoopService: GameLoopService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
-    this.displayName = this.lookupService.getItemName(this.resource.item);
+    this.displayName = this.dictionaryService.getItemName(this.resource.item);
     var userResourceAmount = this.lookupService.getResourceAmount(this.resource.item);
     this.insufficientText = userResourceAmount;
 

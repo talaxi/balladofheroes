@@ -10,6 +10,7 @@ import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-slot-menu-view',
@@ -32,7 +33,7 @@ export class SlotMenuViewComponent {
   currentSlottedItemCount: number;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, public dialog: MatDialog,
-    private gameLoopService: GameLoopService) {
+    private gameLoopService: GameLoopService, private dictionaryService: DictionaryService) {
 
   }
 
@@ -79,11 +80,11 @@ export class SlotMenuViewComponent {
   }
 
   getItemName(gem: ResourceValue) {
-    return "<strong class='" + this.lookupService.getEquipmentQualityClass(this.lookupService.getSlotItemQuality(gem.item)) + "'>" + this.lookupService.getItemName(gem.item) + "</strong>";
+    return "<strong class='" + this.lookupService.getEquipmentQualityClass(this.lookupService.getSlotItemQuality(gem.item)) + "'>" + this.dictionaryService.getItemName(gem.item) + "</strong>";
   }
 
   getItemNameWithCount(gem: ResourceValue) {
-    return "<strong class='" + this.lookupService.getEquipmentQualityClass(this.lookupService.getSlotItemQuality(gem.item)) + "'>" + this.lookupService.getItemName(gem.item) + "</strong> x" + gem.amount;
+    return "<strong class='" + this.lookupService.getEquipmentQualityClass(this.lookupService.getSlotItemQuality(gem.item)) + "'>" + this.dictionaryService.getItemName(gem.item) + "</strong> x" + gem.amount;
   }
 
   hoverGem(gem: ResourceValue) {

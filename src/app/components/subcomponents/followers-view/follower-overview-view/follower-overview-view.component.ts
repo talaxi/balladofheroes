@@ -11,6 +11,7 @@ import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { FollowersService } from 'src/app/services/followers/followers.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -22,7 +23,8 @@ export class FollowerOverviewViewComponent {
   isMobile = false;
 
   constructor(private globalService: GlobalService, private followerService: FollowersService, private balladService: BalladService,
-    private utilityService: UtilityService, private lookupService: LookupService, private deviceDetectorService: DeviceDetectorService) { }
+    private utilityService: UtilityService, private lookupService: LookupService, private deviceDetectorService: DeviceDetectorService,
+    private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();    
@@ -70,7 +72,7 @@ export class FollowerOverviewViewComponent {
     for (var i = 0; i < rewards.length; i++) {
       var reward = rewards[i];
 
-      rewardDescription += (count * reward.amount) + " " + ((count * reward.amount) > 1 ? this.utilityService.handlePlural(this.lookupService.getItemName(reward.item)) : this.lookupService.getItemName(reward.item));
+      rewardDescription += (count * reward.amount) + " " + ((count * reward.amount) > 1 ? this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)) : this.dictionaryService.getItemName(reward.item));
 
       if (i === rewards.length - 2)
         rewardDescription += " and ";

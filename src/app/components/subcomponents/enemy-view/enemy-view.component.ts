@@ -14,6 +14,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { OverlayRef } from '@angular/cdk/overlay';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
 @Component({
   selector: 'app-enemy-view',
@@ -37,10 +38,9 @@ export class EnemyViewComponent implements OnInit {
   showEnemyHpAsPercent: boolean = false;
 
   constructor(public battleService: BattleService, public lookupService: LookupService, public utilityService: UtilityService,
-    public globalService: GlobalService, private gameLoopService: GameLoopService) { }
+    public globalService: GlobalService, private gameLoopService: GameLoopService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
-    console.log("New enemy view");
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
@@ -144,10 +144,10 @@ export class EnemyViewComponent implements OnInit {
     var name = "";
 
     if (this.defeatCount >= this.utilityService.killCountDisplayFullEnemyLoot) {
-      name = loot.amount + "x " + this.lookupService.getItemName(loot.item) + " (" + (loot.chance * 100) + "%)";
+      name = loot.amount + "x " + this.dictionaryService.getItemName(loot.item) + " (" + (loot.chance * 100) + "%)";
     }
     else if (this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot) {
-      name = this.lookupService.getItemName(loot.item);
+      name = this.dictionaryService.getItemName(loot.item);
     }
 
     return name;
@@ -312,8 +312,8 @@ export class EnemyViewComponent implements OnInit {
     return decreases;
   }
 
-  overlayEmitter(overlayRef: OverlayRef) {    
-    if (this.overlayRef !== undefined) {      
+  overlayEmitter(overlayRef: OverlayRef) {
+    if (this.overlayRef !== undefined) {
       this.overlayRef.detach();
       this.overlayRef.dispose();
     }
@@ -325,16 +325,10 @@ export class EnemyViewComponent implements OnInit {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
 
-    console.log("Disposing");
-    console.log(this.overlayRef);
 
-      if (this.overlayRef !== undefined) {        
-        this.overlayRef.detach();
-        this.overlayRef.dispose();
-      }
+    if (this.overlayRef !== undefined) {
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
   }
-
-  /*ngOnChanges(changes: any) {
-    this.showNewEnemyGroupAnimation = changes.showNewEnemyGroupAnimation.currentValue;    
-  }*/
 }

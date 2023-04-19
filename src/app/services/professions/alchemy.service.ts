@@ -13,6 +13,9 @@ import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { UtilityService } from '../utility/utility.service';
+import { DictionaryService } from '../utility/dictionary.service';
+import { TutorialService } from '../global/tutorial.service';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,7 +23,7 @@ import { UtilityService } from '../utility/utility.service';
 export class AlchemyService {
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private gameLogService: GameLogService,
-    private utilityService: UtilityService) { }
+    private utilityService: UtilityService, private dictionaryService: DictionaryService, private tutorialService: TutorialService) { }
 
   
 
@@ -31,6 +34,7 @@ export class AlchemyService {
         alchemy.isUnlocked = true;
         alchemy.level = 1;
         alchemy.maxLevel += this.utilityService.firstAlchemyLevelCap;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy));
       }
     }
   }
@@ -262,7 +266,7 @@ export class AlchemyService {
 
   updateGameLogWithNewRecipe(type: ItemsEnum) {
     if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-      var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.lookupService.getItemName(type) + "</strong>.";
+      var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.dictionaryService.getItemName(type) + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
     }
   }

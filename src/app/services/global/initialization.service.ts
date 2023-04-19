@@ -420,7 +420,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.EagleFeather, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FocusPotion, 10000));
 
-    this.globalService.globalVar.currentStoryId = 25;
+    this.globalService.globalVar.currentStoryId = 25000;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
@@ -450,7 +450,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.type !== BalladEnum.Argo) {
+      //if (ballad.type !== BalladEnum.Argo) {
         ballad.isAvailable = true;
         ballad.notify = true;
         ballad.zones.forEach(zone => {
@@ -475,7 +475,7 @@ export class InitializationService {
           })
           //}
         });
-      }
+      //}
     });
 
     //set up ballad for original testing          
@@ -601,7 +601,7 @@ export class InitializationService {
         this.lookupService.gainResource(resource);
 
       this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-      //this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
+      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
       this.globalService.globalVar.itemBeltSize = 1;
       //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 50;
@@ -632,7 +632,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 124;
+      var godLevel = 649;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -662,14 +662,14 @@ export class InitializationService {
       artemis!.exp = 0;
 
       var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
-      //hades!.isAvailable = true;
+      hades!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(hades!);
       }
       hades!.exp = 0;
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
-      //ares!.isAvailable = true;
+      ares!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(ares!);
       }
