@@ -50,6 +50,7 @@ import { ColiseumService } from './coliseum.service';
 import { DpsCalculatorService } from './dps-calculator.service';
 import { GameLogService } from './game-log.service';
 import { DictionaryService } from '../utility/dictionary.service';
+import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 
 @Injectable({
   providedIn: 'root'
@@ -2395,6 +2396,8 @@ export class BattleService {
       var matchingEnemy = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === enemy.bestiaryType);
       if (matchingEnemy !== undefined)
         matchingEnemy.count += 1;
+      else
+        this.globalService.globalVar.enemyDefeatCount.push(new EnemyDefeatCount(enemy.bestiaryType, 1));
     });
   }
 
