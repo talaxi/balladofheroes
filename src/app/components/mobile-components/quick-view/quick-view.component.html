@@ -35,6 +35,12 @@
                 src="assets/svg/alchemyQuickView.svg">
             <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/alchemyDisabled.svg">
         </button>
+        <button class="buttonAsText clickableText iconButton" *ngIf="isJewelcraftingAvailable() && displayQuickViewJewelcrafting"
+            (click)="openQuickView(quickViewEnum.Jewelcrafting)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Jewelcrafting" class="icon iconEnabled"
+                src="assets/svg/jewelcrafting.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/jewelcraftingDisabled.svg">
+        </button>
     </div>
     <div class="overlay" [ngClass]="{'flipOverlay': overlayShouldFlip}" *ngIf="quickView !== quickViewEnum.None">
         <div class="overviewQuickView centeredText" *ngIf="quickView === quickViewEnum.Overview">
@@ -45,6 +51,9 @@
         </div>
         <div class="alchemyQuickView centeredText" *ngIf="quickView === quickViewEnum.Alchemy">
             <app-alchemy-overview></app-alchemy-overview>
+        </div>
+        <div class="jewelcraftingQuickView centeredText" *ngIf="quickView === quickViewEnum.Jewelcrafting">
+            <app-jewelcrafting-overview></app-jewelcrafting-overview>
         </div>
         <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
             <app-altar-overview></app-altar-overview>

@@ -32,6 +32,7 @@ export class QuickViewComponent {
   displayQuickViewItemBelt: boolean;
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
+  displayQuickViewJewelcrafting: boolean;
 
   constructor(private balladService: BalladService, public globalService: GlobalService, private gameLoopService: GameLoopService,
     private battleService: BattleService, private lookupService: LookupService) {
@@ -45,6 +46,8 @@ export class QuickViewComponent {
     this.displayQuickViewItemBelt = this.globalService.globalVar.settings.get("displayQuickViewItemBelt") ?? false;
     this.displayQuickViewAltars = this.globalService.globalVar.settings.get("displayQuickViewAltars") ?? false;
     this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
+    this.displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting") ?? false;
+
     this.trackedResourcesColumn1 = this.globalService.globalVar.trackedResources.slice(0, 5);
     if (this.globalService.globalVar.trackedResources.length > 5)
       this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
@@ -80,6 +83,15 @@ export class QuickViewComponent {
   isAlchemyAvailable() {
     var isAvailable = false;
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    if (alchemy === undefined)
+      return isAvailable;
+
+    return alchemy.isUnlocked;
+  }
+
+  isJewelcraftingAvailable() {
+    var isAvailable = false;
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
     if (alchemy === undefined)
       return isAvailable;
 

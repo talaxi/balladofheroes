@@ -464,7 +464,6 @@ export class BackgroundService {
     if (lastTicketDate === undefined)
     lastTicketDate = new Date();
 
-    console.log(lastTicketDate);
     var dayOfLastTicket = new Date(lastTicketDate.getFullYear(), lastTicketDate.getMonth(), lastTicketDate.getDate());
     dayOfLastTicket.setHours(0, 0, 0);
     var todaysDate = new Date(new Date().getFullYear(), new Date().getMonth(), new Date().getDate());
