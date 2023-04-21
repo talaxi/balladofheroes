@@ -51,7 +51,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .41;
+    return .42;
   }
 
   initializeGlobalVariables() {
@@ -2019,7 +2019,7 @@ export class GlobalService {
 
       if (member.abilityList !== undefined && member.abilityList.length > 0)
         member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-          ability.currentCooldown = ability.cooldown;
+          ability.currentCooldown = this.getAbilityCooldown(ability, member);
         });
 
       if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
@@ -2027,7 +2027,7 @@ export class GlobalService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown = ability.cooldown;
+              ability.currentCooldown = this.getAbilityCooldown(ability, member);
             });
         }
       }
@@ -2037,7 +2037,7 @@ export class GlobalService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown = ability.cooldown;
+              ability.currentCooldown = this.getAbilityCooldown(ability, member);
             });
         }
       }
@@ -2305,5 +2305,15 @@ export class GlobalService {
     var rng = this.utilityService.getRandomInteger(0, items.length - 1);
 
     return items[rng];
+  }
+
+  
+  //TODO: needs to check if the with buffs or start conditions are actually met
+  getAbilityCooldown(ability: Ability, character: Character) {
+    return this.utilityService.roundTo(ability.cooldown * (character.battleStats.abilityCooldownReduction * character.battleStats.abilityCooldownReductionWithBuffs * character.battleStats.abilityCooldownReductionStart), this.utilityService.genericRoundTo);
+  }
+
+  getAutoAttackCooldown(character: Character) {
+    return this.getAutoAttackTime(character);
   }
 }

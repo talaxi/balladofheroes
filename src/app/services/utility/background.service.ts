@@ -250,7 +250,7 @@ export class BackgroundService {
     if (effect.type === AltarEffectsEnum.AresOverdriveGain || effect.type === AltarEffectsEnum.AresRareOverdriveGain) {
       party.forEach(member => {
         if (member.level >= this.utilityService.characterOverdriveLevel) {
-          member.overdriveInfo.gaugeAmount += (member.overdriveInfo.gaugeTotal * (effect.effectiveness - 1)) * this.lookupService.getOverdriveGainMultiplier(target);
+          member.overdriveInfo.gaugeAmount += (member.overdriveInfo.gaugeTotal * (effect.effectiveness - 1)) * this.lookupService.getOverdriveGainMultiplier(member);
           if (member.overdriveInfo.gaugeAmount > member.overdriveInfo.gaugeTotal)
             member.overdriveInfo.gaugeAmount = member.overdriveInfo.gaugeTotal;
         }

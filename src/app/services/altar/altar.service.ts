@@ -59,7 +59,7 @@ export class AltarService {
       if (altar.type === AltarEnum.Small)
         maxCount = 20;
       if (altar.type === AltarEnum.Large)
-        maxCount = 40;
+        maxCount = 50;
     }
     if (altar.condition === AltarConditionEnum.AbilityUse) {
       if (altar.type === AltarEnum.Small)
@@ -100,7 +100,10 @@ export class AltarService {
   }
 
   pray(altar: AltarInfo, comingFromFollowers: boolean = false, followersActivatingAltar: boolean = false) {
-    var effect = this.getRandomEffect(altar);
+    var effect = this.getRandomEffect(altar, followersActivatingAltar);
+    if (effect === AltarEffectsEnum.None)
+      return;
+
     this.setAltarEffect(effect, altar, comingFromFollowers && !followersActivatingAltar);
     var affinityXpGain = 0;
     var godXpGain = 0;
@@ -183,7 +186,7 @@ export class AltarService {
     return altar;
   }
 
-  getRandomEffect(altar: AltarInfo) {
+  getRandomEffect(altar: AltarInfo, comingFromFollowers: boolean = false) {
     var possibleEffects: AltarEffectsEnum[] = [];
 
     //possibleEffects.push(AltarEffectsEnum.AttackUp); //this should be for Zeus, not everyone
@@ -266,6 +269,18 @@ export class AltarService {
           possibleEffects.push(AltarEffectsEnum.HadesRareDealElementalDamage);
       }
     }
+
+    possibleEffects = possibleEffects.filter(item => item !== this.globalService.globalVar.altars.activeAltarEffect1?.type &&
+      item !== this.globalService.globalVar.altars.activeAltarEffect2?.type && item !== this.globalService.globalVar.altars.activeAltarEffect3?.type);
+
+    if (comingFromFollowers && this.globalService.globalVar.altars.additionalAltarEffects.length > 0) {
+      this.globalService.globalVar.altars.additionalAltarEffects.forEach(effect => {
+        possibleEffects = possibleEffects.filter(item => item !== effect.type);
+      });
+    }
+
+    if (possibleEffects.length === 0)
+      return AltarEffectsEnum.None;
 
     return possibleEffects[this.utilityService.getRandomInteger(0, possibleEffects.length - 1)];
   }
@@ -526,6 +541,8 @@ export class AltarService {
             altarEffect.effectiveness *= faith.effectiveness;
         }
       }
+
+      altarEffect.effectiveness = this.utilityService.roundTo(altarEffect.effectiveness, 5);
     }
 
     if (additionalAltarEffect)

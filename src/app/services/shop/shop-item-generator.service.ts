@@ -76,6 +76,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.ForgottenLocket) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 800));
     }
+    if (item === ItemsEnum.Aegis) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 600));
+    }
     if (item === ItemsEnum.SteelSword) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 750));
     }

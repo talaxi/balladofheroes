@@ -419,8 +419,9 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FishScales, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.EagleFeather, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FocusPotion, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BoomingPotion, 10000));    
 
-    this.globalService.globalVar.currentStoryId = 25000;
+    this.globalService.globalVar.currentStoryId = 7;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
@@ -440,7 +441,7 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
-    var allAchievementsComplete = false;
+    var allAchievementsComplete = true;
 
     if (allAchievementsComplete) {
       this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
@@ -450,7 +451,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      //if (ballad.type !== BalladEnum.Argo) {
+      if (ballad.type !== BalladEnum.Underworld) {
         ballad.isAvailable = true;
         ballad.notify = true;
         ballad.zones.forEach(zone => {
@@ -475,7 +476,7 @@ export class InitializationService {
           })
           //}
         });
-      //}
+      }
     });
 
     //set up ballad for original testing          
@@ -568,6 +569,7 @@ export class InitializationService {
       this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.luckBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 5;
+      this.globalService.globalVar.altars.largeAltarsUnlocked = true;
 
       var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FendingMace, 1);
       if (resource !== undefined)
@@ -632,13 +634,14 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 649;
+      var godLevel = 14;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(athena!);
       }
       athena!.exp = 0;
+      athena!.affinityLevel = 10;
 
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       hermes!.isAvailable = true;
@@ -646,6 +649,7 @@ export class InitializationService {
         this.globalService.levelUpGod(hermes!);
       }
       hermes!.exp = 0;
+      hermes!.affinityLevel = 10;
 
       var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
       apollo!.isAvailable = true;
@@ -653,6 +657,7 @@ export class InitializationService {
         this.globalService.levelUpGod(apollo!);
       }
       apollo!.exp = 0;
+      apollo!.affinityLevel = 10;
 
       var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
       artemis!.isAvailable = true;
@@ -660,6 +665,7 @@ export class InitializationService {
         this.globalService.levelUpGod(artemis!);
       }
       artemis!.exp = 0;
+      artemis!.affinityLevel = 10;
 
       var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
       hades!.isAvailable = true;
@@ -667,6 +673,7 @@ export class InitializationService {
         this.globalService.levelUpGod(hades!);
       }
       hades!.exp = 0;
+      hades!.affinityLevel = 10;
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
       ares!.isAvailable = true;
@@ -674,7 +681,7 @@ export class InitializationService {
         this.globalService.levelUpGod(ares!);
       }
       ares!.exp = 0;
-
+      ares!.affinityLevel = 10;
       
       var characterLevel = 29;
       this.globalService.globalVar.characters.forEach(character => {

@@ -23,5 +23,6 @@ export enum GameLogEntryEnum {
   CodeRedemption,
   Jewelcrafting,
   SideQuest,
-  ColiseumUpdate
+  ColiseumUpdate,
+  Warning
 }

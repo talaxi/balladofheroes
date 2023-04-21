@@ -1,13 +1,13 @@
 <div class="statusEffectView">
     <div class="positiveStatusEffectContainer">
         <div *ngFor="let statusEffect of getPositiveStatusEffects(); let i = index" class="positiveStatusEffectList">
-            <app-individual-status-effect-view class="maxWidthHeight" [statusEffect]="statusEffect" [isPositiveEffect]="true"></app-individual-status-effect-view>
+            <app-individual-status-effect-view class="maxWidthHeight" [displayedEffects]="getPositiveStatusEffects()" [character]="character" [statusEffect]="statusEffect" [isPositiveEffect]="true"></app-individual-status-effect-view>
     
         </div>
     </div>
     <div class="negativeStatusEffectContainer">
         <div *ngFor="let statusEffect of getNegativeStatusEffects(); let i = index" class="negativeStatusEffectList">
-            <app-individual-status-effect-view class="maxWidthHeight" [statusEffect]="statusEffect" [isPositiveEffect]="false"></app-individual-status-effect-view>
+            <app-individual-status-effect-view class="maxWidthHeight" [displayedEffects]="getNegativeStatusEffects()" [character]="character" [statusEffect]="statusEffect" [isPositiveEffect]="false"></app-individual-status-effect-view>
         </div>
     </div>
 </div>

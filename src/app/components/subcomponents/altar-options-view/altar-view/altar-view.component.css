@@ -11,7 +11,7 @@
 }
 
 .centeredBox {
-    /*width: 80%;*/
+    margin-bottom: 20%;
     height: 80%;
     aspect-ratio: 1 / 1;
     display: flex;
@@ -64,8 +64,8 @@
 .grid {
     display: grid;
     height: 100%;
-    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;   
-    grid-template-rows: 100%; 
+    grid-template-columns: 1fr 1fr 1fr 1fr 1fr 1fr;
+    grid-template-rows: 100%;
     justify-content: stretch;
     grid-template-areas:
         "altar1 altar2 altar3 altar4 altar5 buffs";
@@ -80,14 +80,14 @@
 }
 
 .buffs {
-    grid-area: buffs;        
-    border: 2px solid var(--positive-status-effect);      
-    width: 50%;    
+    grid-area: buffs;
+    border: 2px solid var(--positive-status-effect);
+    width: 50%;
     margin: auto;
     aspect-ratio: 1/1;
 }
 
-.buffImage {    
+.buffImage {
     height: 100%;
     max-width: 50%;
     aspect-ratio: 1/1;
@@ -97,13 +97,13 @@
 
 
 
-.levelUpAnimationText { 
-    font-size: .9rem;  
-    margin-left: .5rem; 
+.levelUpAnimationText {
+    font-size: .9rem;
+    margin-left: .5rem;
     position: absolute;
     text-align: center;
     font-weight: bold;
-    color: var(--positive-status-effect);    
+    color: var(--positive-status-effect);
     display: none;
     top: 0;
     left: -1.25rem;
@@ -118,14 +118,21 @@
     z-index: 5;
 }
 
-@keyframes levelUpAnimation {    
-    25% {        
-        transform: scale(1.1);   
-        opacity: 1;     
+@keyframes levelUpAnimation {
+    25% {
+        transform: scale(1.1);
+        opacity: 1;
     }
 
     100% {
-        transform: translate(0, -30px) scale(.5);        
+        transform: translate(0, -30px) scale(.5);
         opacity: 0;
+    }
+}
+
+
+@media (max-width: 800px) {
+    .centeredBox {
+        margin-bottom: 0;
     }
 }

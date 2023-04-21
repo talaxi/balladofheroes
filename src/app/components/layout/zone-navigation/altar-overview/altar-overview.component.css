@@ -11,9 +11,13 @@
     row-gap: 4%; 
     justify-content: stretch;
     grid-template-areas:
-        "altarSpinner1 altarBar1 altarBoon1"
-        "altarSpinner2 altarBar2 altarBoon2"
-        "altarSpinner3 altarBar3 altarBoon3";
+        "altarSpinner1 altarBar1 allAltarEffects"
+        "altarSpinner2 altarBar2 allAltarEffects"
+        "altarSpinner3 altarBar3 allAltarEffects";
+}
+
+.allAltarEffects {
+    grid-area: allAltarEffects;
 }
 
 .altarSpinner1 {
@@ -75,6 +79,15 @@
 .buffImage {    
     width: 2.5rem;
     aspect-ratio: 1/1;
+}
+
+.altarEffects {
+    border: 2px solid var(--positive-status-effect);
+    height: 90%;
+    display: flex;
+    justify-content: center;
+    width: 65%;
+    margin: auto;
 }
 
 @media (max-width: 800px) {

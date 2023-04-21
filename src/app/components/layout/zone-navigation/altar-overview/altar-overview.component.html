@@ -6,14 +6,14 @@
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect1)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect1)">
         </mat-progress-bar>
-        <br *ngIf='isMobile'/>
-        <span *ngIf='isMobile' class="smallCaps bold">{{getAltarName(altarEffect1)}}</span>
+        <br />
+        <span class="smallCaps bold">{{getAltarName(altarEffect1)}}</span>
     </div>
-    <div *ngIf="altarEffect1 !== undefined" class="altarBoon1">
+    <!--<div *ngIf="altarEffect1 !== undefined" class="altarBoon1">
         <div class="buffs" customToolTip [contentTemplate]="altarEffect1Popover" [tooltipDirection]="buffTooltipDirection">
             <img class="buffImage" src="assets/svg/statUpSE.svg" />
         </div>
-    </div>
+    </div>-->
     
     <div *ngIf="altar2 !== undefined" class="altarSpinner2">
         <app-altar-view [altar]="altar2"></app-altar-view>
@@ -22,14 +22,14 @@
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect2)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect2)">
         </mat-progress-bar>
-        <br *ngIf='isMobile'/>
-        <span *ngIf='isMobile' class="smallCaps bold">{{getAltarName(altarEffect2)}}</span>
+        <br/>
+        <span class="smallCaps bold">{{getAltarName(altarEffect2)}}</span>
     </div>
-    <div *ngIf="altarEffect2 !== undefined" class="altarBoon2">
+    <!--<div *ngIf="altarEffect2 !== undefined" class="altarBoon2">
         <div class="buffs" customToolTip [contentTemplate]="altarEffect2Popover" [tooltipDirection]="buffTooltipDirection">
             <img class="buffImage" src="assets/svg/statUpSE.svg" />
         </div>
-    </div>
+    </div>-->
     
     <div *ngIf="altar3 !== undefined" class="altarSpinner3">
         <app-altar-view [altar]="altar3"></app-altar-view>
@@ -38,34 +38,46 @@
         <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect3)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect3)">
         </mat-progress-bar>
-        <br *ngIf='isMobile'/>
-        <span *ngIf='isMobile' class="smallCaps bold">{{getAltarName(altarEffect3)}}</span>
+        <br />
+        <span class="smallCaps bold">{{getAltarName(altarEffect3)}}</span>
     </div>
-    <div *ngIf="altarEffect3 !== undefined" class="altarBoon3">
+    <!--<div *ngIf="altarEffect3 !== undefined" class="altarBoon3">
         <div class="buffs" customToolTip [contentTemplate]="altarEffect3Popover" [tooltipDirection]="buffTooltipDirection">
             <img class="buffImage" src="assets/svg/statUpSE.svg" />
+        </div>
+    </div>-->
+    <div *ngIf="altarEffectsActive" class="allAltarEffects">
+        <div class="altarEffects" customToolTip [contentTemplate]="allAltarEffectsPopover" [tooltipDirection]="buffTooltipDirection">
+            <img (contextmenu)="preventRightClick()" class="buffImage" src="assets/svg/statUpSE.svg" />
         </div>
     </div>
 </div>
 
 
 <ng-template #altarEffect1Popover>
-    <strong>Active Boon Effects</strong>
+    <strong>Active Boon Effect</strong>
     <hr/>    
     <div [innerHtml]="getAltarEffect(1)"> 
     </div>   
 </ng-template>
 
 <ng-template #altarEffect2Popover>
-    <strong>Active Boon Effects</strong>
+    <strong>Active Boon Effect</strong>
     <hr/>    
     <div [innerHtml]="getAltarEffect(2)"> 
     </div>   
 </ng-template>
 
 <ng-template #altarEffect3Popover>
-    <strong>Active Boon Effects</strong>
+    <strong>Active Boon Effect</strong>
     <hr/>    
     <div [innerHtml]="getAltarEffect(3)"> 
+    </div>   
+</ng-template>
+
+<ng-template #allAltarEffectsPopover>
+    <strong>All Active Boon Effects</strong>
+    <hr/>    
+    <div [innerHtml]="getAllAltarEffects()"> 
     </div>   
 </ng-template>

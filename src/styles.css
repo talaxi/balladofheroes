@@ -1092,6 +1092,10 @@ button:disabled {
   margin-bottom: .575rem;
 }
 
+.smallStoryText {
+  font-size: 1rem;
+}
+
 @keyframes fadingAnimation {
   0% {
     opacity: 100%;

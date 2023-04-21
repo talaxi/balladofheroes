@@ -1,4 +1,5 @@
-<div *ngIf="isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover" (overlayRefEmitter)="overlayEmitter($event)">
+<div *ngIf="isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover"
+    (overlayRefEmitter)="overlayEmitter($event)">
     <div *ngIf="isSplitStatUpDownEffect(statusEffect)"
         class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
         <div class="halfImage">
@@ -13,14 +14,20 @@
         <img class="image halfImage" (contextmenu)="preventRightClick()" [src]="getStatUpImage(statusEffect)">
         <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
     </div>
-    <div *ngIf="!isStatUpDownEffect(statusEffect) && !isSplitStatUpDownEffect(statusEffect)"
+    <div *ngIf="isNumericalEffect(statusEffect)" class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
+        <img class="image halfImage" (contextmenu)="preventRightClick()" [src]="getNumericalImage(statusEffect)">
+        <div class="textDiv">{{getNumericalText(statusEffect)}}</div>
+    </div>
+    <div *ngIf="!isStatUpDownEffect(statusEffect) && !isSplitStatUpDownEffect(statusEffect) && !isNumericalEffect(statusEffect)"
         class="flex positiveStatusEffect">
-        <div *ngIf="hasImage(statusEffect)"><img class="image" (contextmenu)="preventRightClick()" [src]="this.getStatusEffectImage(statusEffect)">
+        <div *ngIf="hasImage(statusEffect)">
+            <img class="image" (contextmenu)="preventRightClick()" [src]="this.getStatusEffectImage(statusEffect)">
         </div>
-        <div *ngIf="!hasImage(statusEffect)" class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
+        <div *ngIf="!hasImage(statusEffect)" class="textDiv onlyText">{{getStatusEffectText(statusEffect)}}</div>
     </div>
 </div>
-<div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover" (overlayRefEmitter)="overlayEmitter($event)">
+<div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover"
+    (overlayRefEmitter)="overlayEmitter($event)">
     <div *ngIf="isSplitStatUpDownEffect(statusEffect)"
         class="statUpDownGrid negativeStatUpDownGrid negativeStatusEffect">
         <div class="halfImage">
@@ -35,22 +42,31 @@
         <img class="image halfImage" (contextmenu)="preventRightClick()" [src]="getStatDownImage(statusEffect)">
         <div class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
     </div>
-    <div *ngIf="!isStatUpDownEffect(statusEffect) && !isSplitStatUpDownEffect(statusEffect)"
+    <div *ngIf="isNumericalEffect(statusEffect)" class="statUpDownGrid positiveStatUpDownGrid negativeStatusEffect">
+        <!--positive looks better-->
+        <img class="image halfImage" (contextmenu)="preventRightClick()" [src]="getNumericalImage(statusEffect)">
+        <div class="textDiv">{{getNumericalText(statusEffect)}}</div>
+    </div>
+    <div *ngIf="!isStatUpDownEffect(statusEffect) && !isSplitStatUpDownEffect(statusEffect) && !isNumericalEffect(statusEffect)"
         class="flex negativeStatusEffect">
-        <div *ngIf="hasImage(statusEffect)"><img (contextmenu)="preventRightClick()" class="image" [src]="this.getStatusEffectImage(statusEffect)">
+        <div *ngIf="hasImage(statusEffect)">
+            <img (contextmenu)="preventRightClick()" class="image" [src]="this.getStatusEffectImage(statusEffect)">
+            <strong class="effectCount s3Heading" *ngIf="getEffectCount() > 1">x{{getEffectCount()}}</strong>
         </div>
-        <div *ngIf="!hasImage(statusEffect)" class="textDiv">{{getStatusEffectText(statusEffect)}}</div>
+        <div *ngIf="!hasImage(statusEffect)" class="textDiv onlyText">{{getStatusEffectText(statusEffect)}}</div>
     </div>
 </div>
 
 <ng-template #statusEffectPopover>
     <div>
         <span [innerHtml]="getStatusEffectDescription()"></span>
-        <br />
-        <br />
-        <span>
-            <span *ngIf="statusEffect.duration >= 0">Remaining Duration: {{getStatusEffectDuration()}}</span>
-            <span *ngIf="statusEffect.duration < 0">Resolves Upon Effect Condition</span>
-        </span>
+        <!--<div>
+            <br />
+            <br />
+            <span>
+                <span *ngIf="statusEffect.duration >= 0">Remaining Duration: {{getStatusEffectDuration()}}</span>
+                <span *ngIf="statusEffect.duration < 0">Resolves Upon Effect Condition</span>
+            </span>
+        </div>-->
     </div>
 </ng-template>

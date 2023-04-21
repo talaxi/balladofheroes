@@ -104,5 +104,6 @@ export enum StatusEffectEnum {
     RandomPrimaryStatDownExcludeHp,
     BattleItemEffectUp,
     ClearDebuffs,
-    DispenserOfDues
+    DispenserOfDues,
+    StatusEffectDisplayCatchAll
   }

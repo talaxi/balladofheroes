@@ -1348,7 +1348,7 @@ export class LookupService {
       secondaryEffectiveAmountPercent = Math.round((secondaryEffectiveAmount - 1) * 100);
       thresholdAmountPercent = Math.round((ability.threshold) * 100);
       abilityCount = ability.maxCount;
-      cooldown = this.utilityService.roundTo(this.getAbilityCooldown(ability, character), 2);
+      cooldown = this.utilityService.roundTo(this.globalService.getAbilityCooldown(ability, character), 2);
       maxCountTimesEffectivenessPercent = ability.maxCount * effectivenessPercent;
 
       var relatedUserGainStatusEffect = ability?.userEffect[0];
@@ -3010,15 +3010,6 @@ export class LookupService {
     }
 
     return defense;
-  }
-
-  //TODO: needs to check if the with buffs or start conditions are actually met
-  getAbilityCooldown(ability: Ability, character: Character) {
-    return this.utilityService.roundTo(ability.cooldown * (character.battleStats.abilityCooldownReduction * character.battleStats.abilityCooldownReductionWithBuffs * character.battleStats.abilityCooldownReductionStart), this.utilityService.genericRoundTo);
-  }
-
-  getAutoAttackCooldown(character: Character) {
-    return this.globalService.getAutoAttackTime(character);//character.battleInfo.timeToAutoAttack - character.battleStats.autoAttackCooldownReduction;
   }
 
   getAdjustedCriticalMultiplier(character: Character, forPartyMember: boolean = true) {

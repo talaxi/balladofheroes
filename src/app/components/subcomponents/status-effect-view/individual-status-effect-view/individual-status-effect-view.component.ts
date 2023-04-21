@@ -1,6 +1,7 @@
 import { OverlayRef } from '@angular/cdk/overlay';
 import { Component, Input, OnInit } from '@angular/core';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
+import { Character } from 'src/app/models/character/character.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -14,6 +15,8 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class IndividualStatusEffectViewComponent implements OnInit {
   @Input() isPositiveEffect: boolean;
   @Input() statusEffect: StatusEffect;
+  @Input() character: Character;
+  @Input() displayedEffects: StatusEffect[]
   overlayRef: OverlayRef;
 
   constructor(private lookupService: LookupService, private utilityService: UtilityService) { }
@@ -50,9 +53,37 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     return false;
   }
 
+  isNumericalEffect(effect: StatusEffect) {
+    if (effect.type === StatusEffectEnum.DamageOverTime && this.getEffectCount() > 1)
+      return true;
+
+    return false;
+  }
+
   hasImage(effect: StatusEffect) {
     var imageSrc = this.getStatusEffectImage(effect);
+
     return imageSrc.charAt(imageSrc.length - 1) !== "/";
+  }
+
+  getNumericalImage(effect: StatusEffect) {
+    var src = "assets/svg/";
+
+    if (effect.type === StatusEffectEnum.DamageOverTime) {
+      src += "fullBloodDoT.svg";
+    }
+
+    return src;
+  }
+
+  getNumericalText(effect: StatusEffect) {
+    var text = "";
+
+    if (effect.type === StatusEffectEnum.DamageOverTime) {
+      text += "X" + this.getEffectCount();
+    }
+
+    return text;
   }
 
   getStatusEffectText(effect: StatusEffect) {
@@ -83,8 +114,30 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "KO";
     if (effect.type === StatusEffectEnum.BattleItemEffectUp)
       return "ITM";
-      if (effect.type === StatusEffectEnum.AoeDamageUp)
+    if (effect.type === StatusEffectEnum.AoeDamageUp)
       return "AOE";
+    if (effect.type === StatusEffectEnum.StatusEffectDisplayCatchAll) {
+      var hiddenEffectCount = 0;
+
+      if (this.character !== undefined) {
+        if (this.isPositiveEffect) {
+          this.character.battleInfo.statusEffects.filter(item => item.isPositive && !this.isEffectInvisible(item)).forEach(item => {
+            if (!this.displayedEffects.some(displayedEffect => displayedEffect.type === item.type)) {
+              hiddenEffectCount += 1;
+            }
+          });
+        }
+        if (!this.isPositiveEffect) {
+          this.character.battleInfo.statusEffects.filter(item => !item.isPositive && !this.isEffectInvisible(item)).forEach(item => {
+            if (!this.displayedEffects.some(displayedEffect => displayedEffect.type === item.type)) {
+              hiddenEffectCount += 1;
+            }
+          });
+        }
+      }
+
+      return "+" + hiddenEffectCount;
+    }
 
     return effect.type;
   }
@@ -94,17 +147,17 @@ export class IndividualStatusEffectViewComponent implements OnInit {
 
     if (effect.type === StatusEffectEnum.EarthDamageUp)
       img = "assets/svg/earth.svg";
-      if (effect.type === StatusEffectEnum.AirDamageUp)
+    if (effect.type === StatusEffectEnum.AirDamageUp)
       img = "assets/svg/air.svg";
-      if (effect.type === StatusEffectEnum.HolyDamageUp)
+    if (effect.type === StatusEffectEnum.HolyDamageUp)
       img = "assets/svg/holy.svg";
-      if (effect.type === StatusEffectEnum.LightningDamageUp)
+    if (effect.type === StatusEffectEnum.LightningDamageUp)
       img = "assets/svg/lightning.svg";
-      if (effect.type === StatusEffectEnum.FireDamageUp)
+    if (effect.type === StatusEffectEnum.FireDamageUp)
       img = "assets/svg/fire.svg";
-      if (effect.type === StatusEffectEnum.WaterDamageUp)
+    if (effect.type === StatusEffectEnum.WaterDamageUp)
       img = "assets/svg/water.svg";
-      if (effect.type === StatusEffectEnum.AllElementalResistanceDown)
+    if (effect.type === StatusEffectEnum.AllElementalResistanceDown)
       img = "assets/svg/elementalResistanceDown.svg";
 
     return img;
@@ -265,28 +318,78 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   }
 
   getStatusEffectDescription() {
-    var description = this.lookupService.getStatusEffectDescription(this.statusEffect);
+    var description = "";
+    if (this.getEffectCount() > 1 && this.statusEffect.type === StatusEffectEnum.DamageOverTime) {    
+      this.character.battleInfo.statusEffects.filter(item => item.type === this.statusEffect.type).forEach((effect, index, array) => {
+        description += this.lookupService.getStatusEffectDescription(effect) + "<br/><br/>";
+        description += this.getStatusEffectDuration(effect);
+        if (!Object.is(array.length - 1, index))
+          description += "<hr/>";
+      });
+    }
+    else if (this.statusEffect.type === StatusEffectEnum.StatusEffectDisplayCatchAll) {
+      if (this.character !== undefined) {
+        if (this.isPositiveEffect) {
+          this.character.battleInfo.statusEffects.filter(item => item.isPositive && !this.isEffectInvisible(item)).forEach((item, index, array) => {
+            if (!this.displayedEffects.some(displayedEffect => displayedEffect.type === item.type)) {
+              description += this.lookupService.getStatusEffectDescription(item) + "<br/><br/>";
+              description += this.getStatusEffectDuration(item);
+              if (!Object.is(array.length - 1, index))
+              description += "<hr/>";
+            }
+          });
+        }
+        if (!this.isPositiveEffect) {
+          this.character.battleInfo.statusEffects.filter(item => !item.isPositive && !this.isEffectInvisible(item)).forEach((item, index, array) => {
+            if (!this.displayedEffects.some(displayedEffect => displayedEffect.type === item.type)) {
+              description += this.lookupService.getStatusEffectDescription(item) + "<br/><br/>";
+              description += this.getStatusEffectDuration(item);
+              if (!Object.is(array.length - 1, index))
+              description += "<hr/>";
+            }
+          });
+        }
+      }
+
+    }
+    else {
+      description = this.lookupService.getStatusEffectDescription(this.statusEffect) + "<br/><br/>" + this.getStatusEffectDuration();;
+    }
 
     return description;
   }
 
-  getStatusEffectDuration() {
-    var duration = Math.round(this.statusEffect.duration);
+  getStatusEffectDuration(effect?: StatusEffect) {
+    if (effect === undefined)
+      effect = this.statusEffect;
+
+    if (effect.duration < 0)
+      return "Resolves Upon Effect Condition";
+
+    var duration = Math.round(effect.duration);
     var durationString = "";
     if (duration < 60)
       durationString = duration + " seconds";
     else
       durationString = Math.ceil(duration / 60) + " minutes";
 
-    return durationString;
+    return "Remaining Duration: " + durationString;
+  }
+
+  getEffectCount() {
+    if (this.statusEffect.type === StatusEffectEnum.DamageOverTime) {
+      return this.character.battleInfo.statusEffects.filter(item => item.type === this.statusEffect.type).length;
+    }
+
+    return 1;
   }
 
   preventRightClick() {
     return false;
   }
 
-  overlayEmitter(overlayRef: OverlayRef) {    
-    if (this.overlayRef !== undefined) {      
+  overlayEmitter(overlayRef: OverlayRef) {
+    if (this.overlayRef !== undefined) {
       this.overlayRef.detach();
       this.overlayRef.dispose();
     }
@@ -294,10 +397,17 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     this.overlayRef = overlayRef;
   }
 
-  ngOnDestroy() {   
-      if (this.overlayRef !== undefined) {       
-        this.overlayRef.detach();
-        this.overlayRef.dispose();
-      }
+  isEffectInvisible(effect: StatusEffect) {
+    if (effect.type === StatusEffectEnum.Dead)
+      return true;
+
+    return false;
+  }
+
+  ngOnDestroy() {
+    if (this.overlayRef !== undefined) {
+      this.overlayRef.detach();
+      this.overlayRef.dispose();
+    }
   }
 }

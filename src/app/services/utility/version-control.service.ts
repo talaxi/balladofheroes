@@ -22,7 +22,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -219,7 +219,7 @@ export class VersionControlService {
         if (version === .41) {
           var openSeas = this.balladService.findSubzone(SubZoneEnum.AegeanSeaOpenSeas);
           var wornDownBarn = this.balladService.findSubzone(SubZoneEnum.CalydonWornDownBarn);
-          
+
           if (openSeas !== undefined && openSeas.isAvailable && wornDownBarn !== undefined && wornDownBarn.isAvailable && wornDownBarn.victoryCount > 0 &&
             this.globalService.globalVar.achievements.filter(item => item.subzone === SubZoneEnum.AegeanSeaOpenSeas).length === 0) {
             this.achievementService.createDefaultAchievementsForSubzone(openSeas.type).forEach(achievement => {

@@ -51,8 +51,19 @@
     width: 100%;
 }
 
+.onlyText {
+    font-size: 1vw;
+    vertical-align: center;
+}
+
 .splitImage {
     width: 49%;
+}
+
+.effectCount {
+    position: absolute;
+    bottom: 0;
+    right: .1rem;
 }
 
 @media (max-width: 800px) {

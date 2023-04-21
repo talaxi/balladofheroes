@@ -25,6 +25,7 @@ export class AltarOverviewComponent implements OnInit {
   buffTooltipDirection = DirectionEnum.Left;
   subscription: any;
   isMobile: boolean = false;
+  altarEffectsActive: boolean = false;
   
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {    
@@ -43,6 +44,8 @@ export class AltarOverviewComponent implements OnInit {
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.updateAltars();
+
+      this.altarEffectsActive = this.getAllAltarEffects() !== "";      
     });
   }
 
@@ -112,6 +115,25 @@ export class AltarOverviewComponent implements OnInit {
     return description;
   }
 
+  getAllAltarEffects() {
+    var description = "";
+
+    if (this.altarEffect1 !== undefined)
+      description += this.lookupService.getAltarEffectDescription(this.altarEffect1);
+    if (this.altarEffect2 !== undefined)
+      description += this.lookupService.getAltarEffectDescription(this.altarEffect2);
+    if (this.altarEffect3 !== undefined)
+      description += this.lookupService.getAltarEffectDescription(this.altarEffect3);
+
+    if (this.globalService.globalVar.altars.additionalAltarEffects.length > 0) {
+      this.globalService.globalVar.altars.additionalAltarEffects.forEach(effect => {
+        description += this.lookupService.getAltarEffectDescription(effect);
+      });
+    }
+
+    return description;
+  }
+
   setupKeybinds(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;
 
@@ -133,6 +155,10 @@ export class AltarOverviewComponent implements OnInit {
 
   getAltarName(altarEffect: AltarEffect) {
     return this.lookupService.getBoonName(altarEffect.type);
+  }
+
+  preventRightClick() {
+    return false;
   }
 
   ngOnDestroy() {

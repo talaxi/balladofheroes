@@ -758,7 +758,7 @@ export class BattleService {
         var abilityUsed = this.useAbility(isPartyUsing, ability, character, targets, partyMembers, true);
 
         if (abilityUsed)
-          ability.currentCooldown = this.lookupService.getAbilityCooldown(ability, character);
+          ability.currentCooldown = this.globalService.getAbilityCooldown(ability, character);
       }
 
       ability.manuallyTriggered = false;

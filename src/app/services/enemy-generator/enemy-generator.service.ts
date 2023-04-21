@@ -411,16 +411,15 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.EnceladusOne) {
       enemy.name = "Enceladus";
-      enemy.battleStats = new CharacterStats(250000, 415, 683, 60, 600, 1000);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.battleStats = new CharacterStats(250000, 615, 10000, 60, 2000, 10000);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 1000;
 
       var smash = new Ability();
       smash.name = "Smash";
       smash.isAvailable = true;
-      smash.cooldown = smash.currentCooldown = 15;
-      smash = this.randomizeCooldown(smash);
+      smash.cooldown = smash.currentCooldown = 15;      
       smash.dealsDirectDamage = true;
       smash.effectiveness = 2.3;
       smash.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .8, smash.name));
@@ -429,12 +428,23 @@ export class EnemyGeneratorService {
       var wallop = new Ability();
       wallop.name = "Wallop";
       wallop.isAvailable = true;
-      wallop.cooldown = wallop.currentCooldown = 15;
-      wallop = this.randomizeCooldown(wallop);
+      wallop.cooldown = wallop.currentCooldown = 15;      
       wallop.dealsDirectDamage = true;
       wallop.effectiveness = 1.5;
       wallop.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .4, false, false));
       enemy.abilityList.push(wallop);
+
+      var nap = new Ability();
+      nap.name = "Nap";
+      nap.isAvailable = true;
+      nap.cooldown = nap.currentCooldown = 40;
+      nap = this.randomizeCooldown(nap);
+      nap.dealsDirectDamage = false;
+      nap.heals = true;
+      nap.effectiveness = 50;
+      nap.targetsAllies = true;
+      nap.targetType = TargetEnum.Self;
+      enemy.abilityList.push(nap);
     }
     if (type === BestiaryEnum.LostSoul) {
       //somewhat easy to rebound from resetting gods
@@ -3350,7 +3360,7 @@ export class EnemyGeneratorService {
       roost.name = "Roost";
       roost.isAvailable = true;
       roost.cooldown = roost.currentCooldown = 23;
-      spiritOfTheForest = this.randomizeCooldown(roost);
+      roost = this.randomizeCooldown(roost);
       roost.dealsDirectDamage = false;
       roost.heals = true;
       roost.effectiveness = 1.8;

@@ -179,10 +179,11 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>Shortly after finishing up with Medusa, you next journey to Nemea back near Athens. With the strength you possess, nothing short of Heracles's labors could stop you.  </div>" +
           "<div>Heracles was tasked with twelve impossible tasks, forced to battle terrifying beasts and recover mystifying objects. First up was the lion terrorizing the countryside of Nemea.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>As you work your way around the roads of Nemea, you find a towering figure blocking the path. " +
-          "<div>A Giant?! You hadn't expected to encounter one so early on your journey, but here was one in your way. It seems like he was waiting for you.</div>" +
-          this.commonCharacterText("“Little heroes! I've been looking for ya. Come on over, don't be shy!”") + " it bellows as it makes its way towards you. <br/> <br/>" +
-          "<div>This is what <span class='athenaColor bold'>Athena</span> trusted you to handle. Time to make her proud.</div>";
+        sceneText = "<div class='sceneDiv'>As you work your way around the roads of Nemea, you find a towering figure blocking the path. </div>" +
+          "<div class='sceneDiv'>A Giant?! You hadn't expected to encounter one so early on your journey, but here was one in your way. It seems like he was waiting for you.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“Little heroes! I've been looking for ya. Come on over, don't be shy!”") + " it bellows as it makes its way towards you.</div>" +
+          "<div class='sceneDiv'>This is what <span class='athenaColor bold'>Athena</span> trusted you to handle. Time to make her proud.</div>" +
+          "<div class='smallStoryText'><b><i>You will temporarily lose access to previous Ballads after completing the following battle, turn back now if you have unfinished business.</i></b></div>";
     }
     else if (storyId === 8) {
       if (pageCount === 1)
@@ -190,7 +191,7 @@ export class StoryService {
           "<div class='sceneDiv'>Darkness is all you see as you float down. </div>" +
           "<div>Down. Down to the Underworld.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'><span class='hermesColor bold'>“Guess you <i>were</i> a little too green. Don't be disappointed, not everyone can be the ultimate champion of the gods can they?”</span> You hear from a familiar voice. " +
+        sceneText = "<div class='sceneDiv'><span class='hermesColor bold'>“Guess you <i>were</i> a little too green. Don't be disappointed, not everyone can be the ultimate champion of the gods can they?”</span> You hear from a familiar voice.</div>" +
           "<div><span class='hermesColor bold'>“Get up, let's get you situated here. Time to go see Hades.”</span></div>";
     }
     else if (storyId === 9) {
@@ -219,7 +220,7 @@ export class StoryService {
           "<div>" + this.commonCharacterText("“Hello, child.”") + "</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>You look to your side as an old man approaches you. " + this.thalesText("“Sorry, have we met?”") + " You reply.</div>" +
-          "<div class='sceneDiv'>" + this.commonCharacterText("“Perhaps not in the flesh, but I have been with you since your journey began. I hear that we slayed the lady Medusa. Tell me, haven't you wondered how? She was already dead, slain by the Founder of Mycenae. How can that be?”") +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“Perhaps not in the flesh, but I have been with you since your journey began. I hear that we slayed the lady Medusa. Tell me, haven't you wondered how? She was already dead, slain by the Founder of Mycenae. How can that be?”") + "</div>" +
           "<div>You had wondered how all of this was possible, ever since you were taken from Aigosthena to Delphi in an instant. " + this.thalesText("“I just assumed Athena used magic..”") + "</div>";
       else if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>The old man chuckled. " + this.commonCharacterText("“A simple answer, but not wrong. I am Khronos, keeper of time. Yes, Athena approached me and together we devised a spell that would allow someone to slip in and out of the past to see those who are no longer living.") + "</div>" +
@@ -239,7 +240,7 @@ export class StoryService {
           "<div class='sceneDiv'>" + this.zosimeText("“Any ideas on where to go next?”") + " Zosime asks you, snapping you out of your thoughts.</div>" +
           "<div>" + this.thalesText("“Before we fell, I felt invincible. As if there was nothing any hero had done that we couldn't do. But now, honestly, I don't know.”") + " You say to Zosime, uncertain.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Considering we were just given a second chance… I can't miss this opportunity!”") +
+        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Considering we were just given a second chance… I can't miss this opportunity!”") + "</div>" + 
           "<div>You nod your head, just happy to have someone else make the decision. " + this.thalesText("“Lead the way.”") + "</div>";
     }
     else if (storyId === 14) {
@@ -247,8 +248,8 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>As you make your way from the opening of the Underworld near Lake Lerna towards Calydon, Zosime insists on a detour through Mount Parthenion. The mountain is home to many a wild spirit and the birth place of several heroes' origin stories, Atalanta included. During a lull in your fighting, Zosime begins to tell you of her favorite hero.</div>" +
           "<div>" + this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. Can you imagine, a babe alone in a dangerous place like this? And yet, to survive and accomplish all that she did!”") + "</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Artemis took to her and she became one with the wilds. And in turn, she became Artemis's arrow.”") +
-          "<div class='sceneDiv'>As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " +
+        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Artemis took to her and she became one with the wilds. And in turn, she became Artemis's arrow.”") + "</div>" +
+          "<div class='sceneDiv'>As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " + "</div>" + 
           "<div>" + this.zosimeText("“Artemis has looked after me as well, when no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”") +"</div>";
     }
     else if (storyId === 15) {
@@ -543,6 +544,9 @@ export class StoryService {
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
+      }
+      if (this.globalService.globalVar.currentStoryId === 8) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle, turn back now if you have unfinished business.</i></b>");
       }
       if (this.globalService.globalVar.currentStoryId === 9) {
         this.showFirstTimeUnderworldStory = false;
