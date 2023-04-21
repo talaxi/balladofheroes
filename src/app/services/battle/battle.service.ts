@@ -142,7 +142,7 @@ export class BattleService {
         if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
           this.battle.activeTournament.tournamentTimer += deltaTime;
 
-          if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {            
+          if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + (this.battle.activeTournament.maxRounds !== -1 ? " of " + this.battle.activeTournament.maxRounds : "") + ".");
             this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
             this.battle.activeTournament = new ColiseumTournament();
@@ -800,7 +800,8 @@ export class BattleService {
     }
 
     var disaster = this.lookupService.characterHasAbility("Natural Disaster", user);
-    if (elementalType !== ElementalTypeEnum.None && disaster !== undefined && (user.battleInfo.elementsUsed === undefined || !user.battleInfo.elementsUsed.some(item => item === elementalType))) {
+    if (elementalType !== ElementalTypeEnum.None && disaster !== undefined && (user.battleInfo.elementsUsed === undefined || !user.battleInfo.elementsUsed.some(item => item === elementalType)) &&
+        ability.name !== "Natural Disaster") { //avoid an infinite loop by not including itself
       if (user.battleInfo.elementsUsed === undefined)
         user.battleInfo.elementsUsed = [];
 
@@ -941,11 +942,41 @@ export class BattleService {
       }
     }
 
+
     if (onslaughtUsed)
       user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
 
-    this.handleuserEffects(isPartyUsing, ability.userEffect, user, party, potentialTargets, damageDealt, ability.makeCopy());
-    this.handletargetEffects(isPartyUsing, ability.targetEffect, user, target, potentialTargets, party, damageDealt, ability.targetsAllies);
+    //get copies instead of actually effects
+    var userEffects: StatusEffect[] = [];
+    var targetEffects: StatusEffect[] = [];
+    if (ability.userEffect.length > 0) {
+      ability.userEffect.forEach(effect => {
+        userEffects.push(effect.makeCopy());
+      });
+    }
+
+    if (ability.targetEffect.length > 0) {
+      ability.targetEffect.forEach(effect => {
+        targetEffects.push(effect.makeCopy());
+      });
+    }
+
+    if (ability.name === "Revelry") {      
+      var effect = userEffects.find(item => item.type === StatusEffectEnum.Barrier);
+      if (effect !== undefined) {
+        effect.effectiveness *= ability.secondaryEffectiveness;  
+      }
+    }
+
+    if (ability.name === "Thyrsus") {      
+      var effect = targetEffects.find(item => item.type === StatusEffectEnum.Thyrsus);
+      if (effect !== undefined) {
+        effect.effectiveness *= ability.secondaryEffectiveness;  
+      }
+    }
+
+    this.handleuserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, ability.makeCopy());
+    this.handletargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, ability.targetsAllies);
     this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets, undefined, ability.targetsAllies);
 
     if (isPartyUsing)
@@ -1318,7 +1349,7 @@ export class BattleService {
       ability.targetEffect[0].effectiveness = effectiveness;
     }
     if (ability.name === "Natural Disaster" && (user.name === "Hades" || (user.assignedGod1 === GodEnum.Hades || user.assignedGod2 === GodEnum.Hades))) {
-      var elementsUsed = user.battleInfo.elementsUsed === undefined ? 0 : user.battleInfo.elementsUsed.length;
+      var elementsUsed = user.battleInfo.elementsUsed === undefined ? 0 : user.battleInfo.elementsUsed.length;      
       user.battleInfo.elementsUsed = [];
 
       for (var i = 0; i < elementsUsed; i++) {
@@ -2090,7 +2121,7 @@ export class BattleService {
   }
 
   handlePartyDefeat(party: Character[]) {
-    this.globalService.globalVar.settings.set("autoProgress", false);    
+    this.globalService.globalVar.settings.set("autoProgress", false);
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.zones !== undefined && ballad.zones.length > 0)
