@@ -298,7 +298,7 @@ export class LookupService {
 
     return ItemTypeEnum.None;
   }
-  
+
 
   enableChthonicFavoredGod() {
     this.globalService.globalVar.chthonicPowers.preferredGod = this.getPreferredGod();
@@ -407,7 +407,7 @@ export class LookupService {
       name = "Increase Chthonic Power gain by " + (this.getChthonicFavorMultiplier(true)).toFixed(0) + "%.";
     else if (type === ItemsEnum.ChthonicPower)
       name = "Spend on permanent stat boosts.";
-      else if (type === ItemsEnum.PoisonExtractPotionRecipe)
+    else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Recipe for Alchemy item <b>Poison Extract Potion</b>.";
 
     //equipment
@@ -439,11 +439,11 @@ export class LookupService {
       name = "Gain an extra item belt slot.";
     else if (type === ItemsEnum.ChthonicFavorUpgrade1)
       name = "At different intervals, random gods will give 25% more <strong>Chthonic Power</strong>";
-      else if (type === ItemsEnum.ChthonicFavorUpgrade2)
+    else if (type === ItemsEnum.ChthonicFavorUpgrade2)
       name = "Gain access to <strong>Chthonic Favor</strong>, a new resource that increases the amount of Chthonic Power you gain";
-      else if (type === ItemsEnum.Hades)
+    else if (type === ItemsEnum.Hades)
       name = "Gain <span class='hadesColor smallCaps'>Hades</span> as an equippable god";
-      else if (type === ItemsEnum.Ares)
+    else if (type === ItemsEnum.Ares)
       name = "Gain <span class='aresColor smallCaps'>Ares</span> as an equippable god";
 
     return name;
@@ -648,8 +648,8 @@ export class LookupService {
       }
     }
 
-    if (matchingEnemies.length > 0) {      
-      matchingEnemies.forEach(enemy => {        
+    if (matchingEnemies.length > 0) {
+      matchingEnemies.forEach(enemy => {
         for (const [propertyKey, propertyValue] of Object.entries(SubZoneEnum)) {
           if (!Number.isNaN(Number(propertyKey))) {
             continue;
@@ -657,8 +657,8 @@ export class LookupService {
 
           var enumValue = propertyValue as SubZoneEnum;
 
-          var options = this.subzoneGeneratorService.generateBattleOptions(enumValue, false);          
-          if (options.some(option => option.enemyList.some(list => list.name === enemy.name))) {            
+          var options = this.subzoneGeneratorService.generateBattleOptions(enumValue, false);
+          if (options.some(option => option.enemyList.some(list => list.name === enemy.name))) {
             matchingSubzones.push(enumValue);
           }
         }
@@ -2034,13 +2034,13 @@ export class LookupService {
     }
     if (ability.name === "Shout") {
       abilityDescription = "Reduce all targets' Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds and increase the party's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Wild Swing") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Wild Combo") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Roost") {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
@@ -2085,7 +2085,7 @@ export class LookupService {
     }
     if (ability.name === "Mindless Attacks") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
-    }        
+    }
     if (ability.name === "From Above") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Air damage to a target. " + cooldown + " second cooldown.";
     }
@@ -2112,13 +2112,13 @@ export class LookupService {
     }
     if (ability.name === "Sharpen Talons") {
       abilityDescription = "Increase the user's Attack and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Wind Tunnel") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Air damage to a target. Reduce target's auto attack cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Rushdown") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Lumbering Swipe") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
@@ -2136,7 +2136,7 @@ export class LookupService {
     }
     if (ability.name === "Flame Breath") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> Fire damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Flaming Stomp") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to all targets. " + cooldown + " second cooldown.";
     }
@@ -2148,13 +2148,13 @@ export class LookupService {
     }
     if (ability.name === "Khalkotauroi Fury") {
       abilityDescription = "After the first Khalkotauroi dies, apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> Fire damage after <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds.";
-    }    
+    }
     if (ability.name === "Nip") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Electric Shock") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage to a target and apply Paralyze for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Swarm Attack") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Water damage to a target three times. " + cooldown + " second cooldown.";
     }
@@ -2472,7 +2472,7 @@ export class LookupService {
     return name;
   }
 
-  getResourceAmount(type: ItemsEnum, extras?: ItemsEnum[]) {    
+  getResourceAmount(type: ItemsEnum, extras?: ItemsEnum[]) {
     var resource = this.globalService.globalVar.resources.find(item => item.item === type && this.globalService.extraItemsAreEqual(item.extras, extras));
     if (resource === undefined)
       return 0;
@@ -2483,7 +2483,7 @@ export class LookupService {
     return resource.amount;
   }
 
-  useResource(type: ItemsEnum, amount: number, extras?: ItemsEnum[]) {    
+  useResource(type: ItemsEnum, amount: number, extras?: ItemsEnum[]) {
     var resource = this.globalService.globalVar.resources.find(item => item.item === type && this.globalService.extraItemsAreEqual(item.extras, extras));
     if (resource === undefined)
       return;
@@ -2701,7 +2701,7 @@ export class LookupService {
       }
     }
 
-    attackRemainder = remainingAgility / (agilityPerAdditionalAttack - this.getAgilityPerAttackForAttackCount(attackCount-1));    
+    attackRemainder = remainingAgility / (agilityPerAdditionalAttack - this.getAgilityPerAttackForAttackCount(attackCount - 1));
 
     return attackCount + attackRemainder;
   }
@@ -3155,7 +3155,7 @@ export class LookupService {
           if (this.isItemAddingASlot(filledSlot))
             totalSlotCount += 1;
           else {
-            equipmentStats += "<b>Slot: </b> <strong class='basicEquipment'>" + this.getItemDescription(filledSlot) + "</strong>" + (canRemoveExtra ? "<span class='spanButtonStyled smallButtonStyled smallMarginLeft removeExtra " + filledSlot.toString() + "'>X</span>" : "" ) + "<br/>";
+            equipmentStats += "<b>Slot: </b> <strong class='basicEquipment'>" + this.getItemDescription(filledSlot) + "</strong>" + (canRemoveExtra ? "<span class='spanButtonStyled smallButtonStyled smallMarginLeft removeExtra " + filledSlot.toString() + "'>X</span>" : "") + "<br/>";
             filledSlotCount += 1;
           }
         });
@@ -3474,7 +3474,7 @@ export class LookupService {
       description = "Reach 500 victories";
     if (type === AchievementTypeEnum.TenThousandVictories)
       description = "Reach 2,500 victories";
-      if (type === AchievementTypeEnum.FiveThousandVictories)
+    if (type === AchievementTypeEnum.FiveThousandVictories)
       description = "Reach 5,000 victories";
     if (type === AchievementTypeEnum.FullHPClear)
       description = "Clear without losing HP";
@@ -5550,5 +5550,16 @@ export class LookupService {
       return 7;
 
     return 0;
-  }   
+  }
+
+  makeResourceCopy(existingResource: ResourceValue) {
+    var copy = new ResourceValue(existingResource.item, existingResource.amount);
+    if (existingResource.extras !== undefined && existingResource.extras.length > 0) {
+      copy.extras = [];
+      existingResource.extras.forEach(extra => {
+        copy.extras.push(extra);
+      });
+    }
+    return copy;
+  }
 }

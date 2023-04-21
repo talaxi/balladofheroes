@@ -560,7 +560,7 @@ export class AchievementService {
         completedAchievement.push(hundredVictories);
         hundredVictories.completed = true;
         rewards.forEach(bonus => {
-          this.lookupService.gainResource(bonus.makeCopy());
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -570,7 +570,7 @@ export class AchievementService {
         completedAchievement.push(thousandVictories);
         thousandVictories.completed = true;
         rewards.forEach(bonus => {
-          this.lookupService.gainResource(bonus.makeCopy());
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -580,7 +580,7 @@ export class AchievementService {
         completedAchievement.push(tenThousandVictories);
         tenThousandVictories.completed = true;
         rewards.forEach(bonus => {
-          this.lookupService.gainResource(bonus.makeCopy());
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
       
@@ -602,7 +602,7 @@ export class AchievementService {
             }
           }
           else
-          this.lookupService.gainResource(bonus.makeCopy());
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -616,7 +616,7 @@ export class AchievementService {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PoisonExtractPotion);
           }
           else
-            this.lookupService.gainResource(bonus.makeCopy());
+            this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -626,7 +626,7 @@ export class AchievementService {
         completedAchievement.push(thirtySecondClear);
         thirtySecondClear.completed = true;
         rewards.forEach(bonus => {
-          this.lookupService.gainResource(bonus.makeCopy());
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -649,7 +649,7 @@ export class AchievementService {
             this.lookupService.enableChthonicFavor();
           }
           else
-            this.lookupService.gainResource(bonus.makeCopy());
+            this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
     }

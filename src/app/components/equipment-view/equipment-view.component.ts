@@ -60,7 +60,7 @@ export class EquipmentViewComponent implements OnInit {
     this.availableEquipment = [];
     this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment).forEach(equip => {
       if (equip !== undefined)
-        this.availableEquipment.push(equip.makeCopy());
+        this.availableEquipment.push(this.lookupService.makeResourceCopy(equip));
     });
 
     this.globalService.globalVar.characters.forEach(character => {
