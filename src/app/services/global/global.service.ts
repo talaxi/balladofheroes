@@ -313,7 +313,7 @@ export class GlobalService {
 
     var nemesis = new God(GodEnum.Nemesis);
     nemesis.name = "Nemesis";
-    hades.displayOrder = 7;
+    nemesis.displayOrder = 7;
     this.assignGodAbilityInfo(nemesis);
     this.globalVar.gods.push(nemesis);
   }
@@ -584,7 +584,8 @@ export class GlobalService {
       revelry.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       revelry.dealsDirectDamage = false;
       revelry.targetsAllies = true;
-      revelry.effectiveness = 1.02;
+      revelry.effectiveness = .8;
+      revelry.secondaryEffectiveness = 1.25;
       revelry.threshold = .25;
       revelry.cooldown = revelry.currentCooldown = 29;
       revelry.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.2, true, true, false, "", .25));
