@@ -110,20 +110,26 @@ export class ChthonicResetMenuViewComponent implements OnInit {
 
     if (isAbility2Permanent) {
       var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level);
-      if (newAbility !== undefined)
+      if (newAbility !== undefined) {
         newAbility.isAvailable = true;
+        newAbility.isPermanent = true;
+      }
     }
 
     if (isAbility3Permanent) {
       var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level);
-      if (newAbility !== undefined)
+      if (newAbility !== undefined) {
         newAbility.isAvailable = true;
+        newAbility.isPermanent = true;
+      }
     }
 
     if (isPassivePermanent) {
       var newAbility = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
-      if (newAbility !== undefined)
+      if (newAbility !== undefined) {
         newAbility.isAvailable = true;
+        newAbility.isPermanent = true;
+      }
     }
 
     god.abilityList.forEach(ability => {

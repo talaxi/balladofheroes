@@ -407,7 +407,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedEmerald, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedAquamarine, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorWeaponSlotAddition, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorRingSlotAddition, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MetalScraps, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VenomousToxin, 10));
@@ -451,7 +451,7 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      if (ballad.type !== BalladEnum.Underworld) {
+      //if (ballad.type !== BalladEnum.Underworld) {
         ballad.isAvailable = true;
         ballad.notify = true;
         ballad.zones.forEach(zone => {
@@ -476,7 +476,7 @@ export class InitializationService {
           })
           //}
         });
-      }
+      //}
     });
 
     //set up ballad for original testing          
@@ -634,7 +634,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 14;
+      var godLevel = 440;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
