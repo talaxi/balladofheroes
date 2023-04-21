@@ -614,8 +614,8 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Athena;
-        character1.assignedGod2 = GodEnum.Hermes;
+        character1.assignedGod1 = GodEnum.Nemesis;
+        character1.assignedGod2 = GodEnum.Dionysus;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GoldenSword);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfTheHealer);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BearskinArmor);
@@ -682,6 +682,22 @@ export class InitializationService {
       }
       ares!.exp = 0;
       ares!.affinityLevel = 10;
+
+      var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+      dionysus!.isAvailable = true;
+      for (var i = 0; i < godLevel; i++) {
+        this.globalService.levelUpGod(dionysus!);
+      }
+      dionysus!.exp = 0;
+      dionysus!.affinityLevel = 10;
+
+      var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+      nemesis!.isAvailable = true;
+      for (var i = 0; i < godLevel; i++) {
+        this.globalService.levelUpGod(nemesis!);
+      }
+      nemesis!.exp = 0;
+      nemesis!.affinityLevel = 10;
       
       var characterLevel = 29;
       this.globalService.globalVar.characters.forEach(character => {

@@ -768,6 +768,15 @@ body {
   --mdc-circular-progress-active-indicator-color: var(--dionysusColor) !important;
 }
 
+.dionysusProgressBarColor {
+  --mdc-linear-progress-active-indicator-color: var(--dionysusColor) !important;
+}
+
+.dionysusProgressBarColor .mdc-linear-progress__buffer-bar {
+  background-color: var(--dionysusColor) !important;
+  filter: brightness(50%);
+}
+
 .nemesisColor {
   color: var(--nemesisColor);
   stroke: var(--nemesisColor) !important;

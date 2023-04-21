@@ -1446,6 +1446,26 @@ export class LookupService {
     if (abilityName === "Bloodlust")
       abilityDescription = "Increase all damage over time effectiveness by <strong>" + effectivenessPercent + "%</strong> per active damage over time effect amongst all enemies, up to <strong>" + ability?.maxCount + "</strong> effects for a total of <strong>" + (maxCountTimesEffectivenessPercent) + "%</strong> increase.";
 
+    //Dionysus
+    if (abilityName === "Revelry")
+      abilityDescription = "Grant a random party member a <strong>" + (effectivenessPercent) + "% of Attack</strong> HP Shield, up to <strong>" + thresholdAmountPercent + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "</strong>% per active buff you have. " + cooldown + " second cooldown.";
+    if (abilityName === "Thyrsus")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the the effectiveness of the debuff by " + secondaryEffectiveAmountPercent + " per active debuff the target has. " + cooldown + " second cooldown.";
+    if (abilityName === "Insanity")
+      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "Have a Drink")
+      abilityDescription = "Every " + cooldown + " seconds, give yourself a random stat <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
+
+    //Nemesis
+    if (abilityName === "Retribution")
+      abilityDescription = "The next <strong>" + (abilityCount === 1 ? " time " : abilityCount + " times ") + "</strong> you are attacked, reduce the damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage back to the target. " + cooldown + " second cooldown.";
+    if (abilityName === "Messenger of the Fates")
+      abilityDescription = "Create a link between you and one target forcing you both to only target each other. Attacks against you from this target increase <strong>Dues</strong> gain by an additional <strong>" + (effectivenessPercent - 100) + "%</strong>. Lasts " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "No Escape")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target twice. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
+    if (abilityName === "Dispenser of Dues")
+      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0.";
+
 
     return abilityDescription;
   }
@@ -5550,5 +5570,17 @@ export class LookupService {
       return 7;
 
     return 0;
-  }   
+  }
+  
+  makeResourceCopy(existingResource: ResourceValue) 
+    {
+        var copy = new ResourceValue(existingResource.item, existingResource.amount);        
+        if (existingResource.extras !== undefined && existingResource.extras.length > 0) {
+            copy.extras = [];
+            existingResource.extras.forEach(extra => {
+                copy.extras.push(extra);
+            });
+        }
+        return copy;
+    }
 }

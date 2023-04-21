@@ -101,7 +101,7 @@ export class SlotMenuViewComponent {
 
   slotItem() {
     if (this.selectedItem !== undefined) {
-      this.resource = this.globalService.addExtraToBaseResource(this.resource.makeCopy(), this.selectedItem.item).makeCopy();
+      this.resource = this.lookupService.makeResourceCopy(this.globalService.addExtraToBaseResource(this.lookupService.makeResourceCopy(this.resource), this.selectedItem.item));
       this.itemSlottedEmitter.emit(true);
 
       if (this.isResourceEquipped) {
@@ -124,7 +124,7 @@ export class SlotMenuViewComponent {
 
   unslotItem(itemToUnslot: ItemsEnum) {
     if (itemToUnslot !== undefined) {
-      this.resource = this.globalService.removeExtraFromBaseResource(this.resource.makeCopy(), itemToUnslot).makeCopy();
+      this.resource = this.lookupService.makeResourceCopy(this.globalService.removeExtraFromBaseResource(this.lookupService.makeResourceCopy(this.resource), itemToUnslot));
       this.itemSlottedEmitter.emit(true);
 
       if (this.isResourceEquipped) {

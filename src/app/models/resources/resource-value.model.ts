@@ -1,4 +1,3 @@
-import { ItemTypeEnum } from "../enums/item-type-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
 
 export class ResourceValue {    

@@ -283,7 +283,7 @@ export class GlobalService {
 
     var zeus = new God(GodEnum.Zeus);
     zeus.name = "Zeus";
-    zeus.displayOrder = 7;
+    zeus.displayOrder = 9;
     this.assignGodAbilityInfo(zeus);
     this.globalVar.gods.push(zeus);
 
@@ -295,7 +295,7 @@ export class GlobalService {
 
     var poseidon = new God(GodEnum.Poseidon);
     poseidon.name = "Poseidon";
-    poseidon.displayOrder = 8;
+    poseidon.displayOrder = 10;
     this.assignGodAbilityInfo(poseidon);
     this.globalVar.gods.push(poseidon);
 
@@ -304,6 +304,18 @@ export class GlobalService {
     hades.displayOrder = 6;
     this.assignGodAbilityInfo(hades);
     this.globalVar.gods.push(hades);
+
+    var dionysus = new God(GodEnum.Dionysus);
+    dionysus.name = "Dionysus";
+    dionysus.displayOrder = 8;
+    this.assignGodAbilityInfo(dionysus);
+    this.globalVar.gods.push(dionysus);
+
+    var nemesis = new God(GodEnum.Nemesis);
+    nemesis.name = "Nemesis";
+    hades.displayOrder = 7;
+    this.assignGodAbilityInfo(nemesis);
+    this.globalVar.gods.push(nemesis);
   }
 
   assignGodAbilityInfo(god: God) {
@@ -563,6 +575,100 @@ export class GlobalService {
       bloodlust.maxCount = 5;
       bloodlust.effectiveness = .01;
       god.abilityList.push(bloodlust);
+    }
+
+    if (god.type === GodEnum.Dionysus) {
+      var revelry = new Ability();
+      revelry.name = "Revelry";
+      revelry.isAvailable = false;
+      revelry.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      revelry.dealsDirectDamage = false;
+      revelry.targetsAllies = true;
+      revelry.effectiveness = 1.02;
+      revelry.threshold = .25;
+      revelry.cooldown = revelry.currentCooldown = 29;
+      revelry.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.2, true, true, false, "", .25));
+      god.abilityList.push(revelry);
+
+      var thyrsus = new Ability();
+      thyrsus.name = "Thyrsus";
+      thyrsus.requiredLevel = this.utilityService.godAbility2Level;
+      thyrsus.isAvailable = false;
+      thyrsus.cooldown = thyrsus.currentCooldown = 38;
+      thyrsus.effectiveness = 2;
+      thyrsus.dealsDirectDamage = true;
+      thyrsus.secondaryEffectiveness = 1.25;
+      thyrsus.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Thyrsus, 6, 1.005, false, false));
+      god.abilityList.push(thyrsus);
+
+      var insanity = new Ability();
+      insanity.name = "Insanity";
+      insanity.requiredLevel = this.utilityService.godAbility3Level;
+      insanity.isAvailable = false;
+      insanity.cooldown = insanity.currentCooldown = 45;
+      insanity.dealsDirectDamage = false;
+      insanity.effectiveness = 1.1;
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 10, .95, true, false));
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 10, .95, true, false));
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 10, .95, true, false));
+      god.abilityList.push(insanity);
+
+      var haveADrink = new Ability();
+      haveADrink.name = "Have a Drink";
+      haveADrink.requiredLevel = this.utilityService.godPassiveLevel;
+      haveADrink.isAvailable = false;
+      haveADrink.isPassive = true;
+      haveADrink.isActivatable = true;
+      haveADrink.dealsDirectDamage = false;
+      haveADrink.userEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatUp, 15, 1.25, true, true));
+      haveADrink.cooldown = haveADrink.currentCooldown = 40;
+      god.abilityList.push(haveADrink);
+    }
+
+    if (god.type === GodEnum.Nemesis) {
+      var retribution = new Ability();
+      retribution.name = "Retribution";
+      retribution.isAvailable = false;
+      retribution.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      retribution.cooldown = retribution.currentCooldown = 22;
+      retribution.dealsDirectDamage = false;      
+      retribution.effectiveness = 2.1;
+      retribution.maxCount = 1;
+      retribution.userEffect.push(this.createStatusEffect(StatusEffectEnum.Retribution, -1, .95, true, true));
+      god.abilityList.push(retribution);
+
+      var messengerOfTheFates = new Ability();
+      messengerOfTheFates.name = "Messenger of the Fates";
+      messengerOfTheFates.requiredLevel = this.utilityService.godAbility2Level;
+      messengerOfTheFates.isAvailable = false;
+      messengerOfTheFates.dealsDirectDamage = false;    
+      messengerOfTheFates.effectiveness = 1.01;
+      messengerOfTheFates.cooldown = messengerOfTheFates.currentCooldown = 36;
+      messengerOfTheFates.userEffect.push(this.createStatusEffect(StatusEffectEnum.MessengerOfTheFates, 15, 1, false, true));
+      messengerOfTheFates.targetEffect.push(this.createStatusEffect(StatusEffectEnum.MessengerOfTheFates, 15, 1, false, false));
+      god.abilityList.push(messengerOfTheFates);
+
+      var noEscape = new Ability();
+      noEscape.name = "No Escape";
+      noEscape.requiredLevel = this.utilityService.godAbility3Level;
+      noEscape.isAvailable = false;
+      noEscape.cooldown = noEscape.currentCooldown = 58;
+      noEscape.dealsDirectDamage = false;
+      noEscape.effectiveness = 1.6;
+      noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.KeepDues, -1, 1, true, true));
+      god.abilityList.push(noEscape);
+
+      var dispenserOfDues = new Ability();
+      dispenserOfDues.name = "Dispenser of Dues";
+      dispenserOfDues.requiredLevel = this.utilityService.godPassiveLevel;
+      dispenserOfDues.isAvailable = false;
+      dispenserOfDues.isPassive = true;
+      dispenserOfDues.isActivatable = false;
+      dispenserOfDues.dealsDirectDamage = false;
+      dispenserOfDues.effectiveness = .05;
+      noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.DispenserOfDues, -1, 0, true, true));
+      god.abilityList.push(dispenserOfDues);
     }
 
     if (god.type === GodEnum.Zeus) {
