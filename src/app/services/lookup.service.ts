@@ -2555,7 +2555,7 @@ export class LookupService {
     if (item === undefined)
       return;
 
-    var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item);
+    var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item && this.globalService.extraItemsAreEqual(item.extras, resource.extras));
     if (existingResource === undefined) {
       this.globalService.globalVar.resources.push(item);
     }
