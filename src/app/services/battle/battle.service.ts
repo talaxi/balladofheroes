@@ -800,7 +800,8 @@ export class BattleService {
     }
 
     var disaster = this.lookupService.characterHasAbility("Natural Disaster", user);
-    if (elementalType !== ElementalTypeEnum.None && disaster !== undefined && (user.battleInfo.elementsUsed === undefined || !user.battleInfo.elementsUsed.some(item => item === elementalType))) {
+    if (elementalType !== ElementalTypeEnum.None && disaster !== undefined && (user.battleInfo.elementsUsed === undefined || !user.battleInfo.elementsUsed.some(item => item === elementalType)) &&
+    ability.name !== "Natural Disaster") { //avoid an infinite loop by not including itself)
       if (user.battleInfo.elementsUsed === undefined)
         user.battleInfo.elementsUsed = [];
 
