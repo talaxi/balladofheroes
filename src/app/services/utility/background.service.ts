@@ -36,7 +36,7 @@ export class BackgroundService {
 
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
     private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
-    private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService, 
+    private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService,
     private dictionaryService: DictionaryService) { }
 
   //global -- this occurs even when at a scene or in a town
@@ -54,7 +54,7 @@ export class BackgroundService {
 
     if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
       activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
-       this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
+        this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
       enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {
@@ -65,6 +65,7 @@ export class BackgroundService {
         this.battleService.handleHpRegen(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
+        this.checkGodStatuses(partyMember);
 
         if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
@@ -448,8 +449,7 @@ export class BackgroundService {
   }
 
   handleItemCooldowns(deltaTime: number) {
-    if (this.globalService.globalVar.timers.itemCooldowns !== undefined && this.globalService.globalVar.timers.itemCooldowns.length > 0)
-    {
+    if (this.globalService.globalVar.timers.itemCooldowns !== undefined && this.globalService.globalVar.timers.itemCooldowns.length > 0) {
       this.globalService.globalVar.timers.itemCooldowns.forEach(item => {
         item[1] -= deltaTime;
       });
@@ -462,7 +462,7 @@ export class BackgroundService {
     var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     var lastTicketDate = new Date(this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived);
     if (lastTicketDate === undefined)
-    lastTicketDate = new Date();
+      lastTicketDate = new Date();
 
     var dayOfLastTicket = new Date(lastTicketDate.getFullYear(), lastTicketDate.getMonth(), lastTicketDate.getDate());
     dayOfLastTicket.setHours(0, 0, 0);
@@ -472,8 +472,24 @@ export class BackgroundService {
     var diffDays = Math.floor(Math.abs((todaysDate.valueOf() - dayOfLastTicket.valueOf()) / oneDay));
     this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays;
     if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > this.utilityService.weeklyMeleeEntryCap)
-    this.globalService.globalVar.sidequestData.weeklyMeleeEntries = this.utilityService.weeklyMeleeEntryCap;
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries = this.utilityService.weeklyMeleeEntryCap;
 
     this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived = new Date();
+  }
+
+  checkGodStatuses(character: Character) {
+    if ((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis) &&
+      !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", character);
+      if (dispenserOfDues !== undefined) {
+        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
+        console.log("Applying DoD");
+      }
+    }
+    else if ((character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) &&
+      character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+      console.log("Removing DoD");
+    }
   }
 }

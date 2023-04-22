@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -117,18 +117,18 @@
      id="layer2"
      inkscape:label="Layer 3">
     <ellipse
-       style="fill:#000000;stroke:#ffffff;stroke-width:1.52454;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#000000;stroke:none;stroke-width:1.11271;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path867"
-       cx="62.700516"
+       cx="69.579689"
        cy="150.20052"
-       rx="36.938248"
-       ry="36.938244" />
+       rx="26.96018"
+       ry="26.960178" />
     <ellipse
-       style="fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:1.52454;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="fill:#ffffff;fill-opacity:1;stroke:none;stroke-width:1.11272;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path867-3"
-       cx="237.70052"
+       cx="230.82144"
        cy="150.20052"
-       rx="36.938248"
-       ry="36.938244" />
+       rx="26.960182"
+       ry="26.960178" />
   </g>
 </svg>

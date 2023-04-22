@@ -108,6 +108,8 @@ export enum StatusEffectEnum {
     StatusEffectDisplayCatchAll,
     Thyrsus,
     Retribution,
-    MessengerOfTheFates,
-    KeepDues
+    ChainsOfFate,
+    KeepDues,
+    SelfBarrier,
+    InstantCounter
   }

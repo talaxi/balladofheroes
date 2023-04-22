@@ -588,7 +588,7 @@ export class GlobalService {
       revelry.secondaryEffectiveness = 1.25;
       revelry.threshold = .25;
       revelry.cooldown = revelry.currentCooldown = 29;
-      revelry.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, 1.2, true, true, false, "", .25));
+      revelry.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .8, true, true, false, "", .25));
       god.abilityList.push(revelry);
 
       var thyrsus = new Ability();
@@ -607,11 +607,10 @@ export class GlobalService {
       insanity.requiredLevel = this.utilityService.godAbility3Level;
       insanity.isAvailable = false;
       insanity.cooldown = insanity.currentCooldown = 45;
-      insanity.dealsDirectDamage = false;
-      insanity.effectiveness = 1.1;
-      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 10, .95, true, false));
-      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 10, .95, true, false));
-      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDown, 10, .95, true, false));
+      insanity.dealsDirectDamage = false;      
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .95, true, false));
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .95, true, false));
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .95, true, false));
       god.abilityList.push(insanity);
 
       var haveADrink = new Ability();
@@ -635,26 +634,26 @@ export class GlobalService {
       retribution.dealsDirectDamage = false;      
       retribution.effectiveness = 2.1;
       retribution.maxCount = 1;
-      retribution.userEffect.push(this.createStatusEffect(StatusEffectEnum.Retribution, -1, .95, true, true));
+      retribution.userEffect.push(this.createStatusEffect(StatusEffectEnum.Retribution, 20, .95, false, true));
       god.abilityList.push(retribution);
 
-      var messengerOfTheFates = new Ability();
-      messengerOfTheFates.name = "Messenger of the Fates";
-      messengerOfTheFates.requiredLevel = this.utilityService.godAbility2Level;
-      messengerOfTheFates.isAvailable = false;
-      messengerOfTheFates.dealsDirectDamage = false;    
-      messengerOfTheFates.effectiveness = 1.01;
-      messengerOfTheFates.cooldown = messengerOfTheFates.currentCooldown = 36;
-      messengerOfTheFates.userEffect.push(this.createStatusEffect(StatusEffectEnum.MessengerOfTheFates, 15, 1, false, true));
-      messengerOfTheFates.targetEffect.push(this.createStatusEffect(StatusEffectEnum.MessengerOfTheFates, 15, 1, false, false));
-      god.abilityList.push(messengerOfTheFates);
+      var chainsOfFate = new Ability();
+      chainsOfFate.name = "Chains of Fate";
+      chainsOfFate.requiredLevel = this.utilityService.godAbility2Level;
+      chainsOfFate.isAvailable = false;
+      chainsOfFate.dealsDirectDamage = false;    
+      chainsOfFate.effectiveness = 1.01;
+      chainsOfFate.cooldown = chainsOfFate.currentCooldown = 36; 
+      chainsOfFate.userEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, true));
+      chainsOfFate.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, false));
+      god.abilityList.push(chainsOfFate);
 
       var noEscape = new Ability();
       noEscape.name = "No Escape";
       noEscape.requiredLevel = this.utilityService.godAbility3Level;
       noEscape.isAvailable = false;
       noEscape.cooldown = noEscape.currentCooldown = 58;
-      noEscape.dealsDirectDamage = false;
+      noEscape.dealsDirectDamage = true;
       noEscape.effectiveness = 1.6;
       noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.KeepDues, -1, 1, true, true));
@@ -668,7 +667,7 @@ export class GlobalService {
       dispenserOfDues.isActivatable = false;
       dispenserOfDues.dealsDirectDamage = false;
       dispenserOfDues.effectiveness = .05;
-      noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.DispenserOfDues, -1, 0, true, true));
+      dispenserOfDues.userEffect.push(this.createStatusEffect(StatusEffectEnum.DispenserOfDues, -1, 0, false, true));
       god.abilityList.push(dispenserOfDues);
     }
 
@@ -817,7 +816,7 @@ export class GlobalService {
       || type === StatusEffectEnum.AirDamageDown || type === StatusEffectEnum.HolyDamageDown || type === StatusEffectEnum.LightningDamageDown || type === StatusEffectEnum.WaterDamageDown || type === StatusEffectEnum.EarthDamageTakenUp || type === StatusEffectEnum.FireDamageTakenUp
       || type === StatusEffectEnum.AirDamageTakenUp || type === StatusEffectEnum.HolyDamageTakenUp || type === StatusEffectEnum.LightningDamageTakenUp || type === StatusEffectEnum.WaterDamageTakenUp || type === StatusEffectEnum.EarthDamageTakenDown || type === StatusEffectEnum.FireDamageTakenDown
       || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
-      type === StatusEffectEnum.AoeDamageUp)
+      type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution)
       refreshes = true;
 
     return refreshes;
@@ -2126,7 +2125,7 @@ export class GlobalService {
 
       if (member.abilityList !== undefined && member.abilityList.length > 0)
         member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-          ability.currentCooldown = this.getAbilityCooldown(ability, member);
+          ability.currentCooldown = this.getAbilityCooldown(ability, member, true);
         });
 
       if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
@@ -2134,7 +2133,7 @@ export class GlobalService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown = this.getAbilityCooldown(ability, member);
+              ability.currentCooldown = this.getAbilityCooldown(ability, member, true);
             });
         }
       }
@@ -2144,7 +2143,7 @@ export class GlobalService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown = this.getAbilityCooldown(ability, member);
+              ability.currentCooldown = this.getAbilityCooldown(ability, member, true);
             });
         }
       }
@@ -2413,11 +2412,19 @@ export class GlobalService {
 
     return items[rng];
   }
-
   
-  //TODO: needs to check if the with buffs or start conditions are actually met
-  getAbilityCooldown(ability: Ability, character: Character) {
-    return this.utilityService.roundTo(ability.cooldown * (character.battleStats.abilityCooldownReduction * character.battleStats.abilityCooldownReductionWithBuffs * character.battleStats.abilityCooldownReductionStart), this.utilityService.genericRoundTo);
+  getAbilityCooldown(ability: Ability, character: Character, starting: boolean = false) {
+    var cooldownReductionWithBuffs = 1;
+    if (character.battleInfo.statusEffects.filter(item => item.isPositive).length > 0) {
+      cooldownReductionWithBuffs = character.battleStats.abilityCooldownReductionWithBuffs;
+    }
+
+    var cooldownReductionStart = 1;
+    if (starting) {
+      cooldownReductionStart = character.battleStats.abilityCooldownReductionStart;
+    }
+
+    return this.utilityService.roundTo(ability.cooldown * (character.battleStats.abilityCooldownReduction * cooldownReductionWithBuffs * cooldownReductionStart), this.utilityService.genericRoundTo);
   }
 
   getAutoAttackCooldown(character: Character) {

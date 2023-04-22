@@ -265,9 +265,10 @@ export class LookupService {
       type === ItemsEnum.Olive || type === ItemsEnum.SoulSpark || type === ItemsEnum.VialOfTheLethe || type === ItemsEnum.EssenceOfFire ||
       type === ItemsEnum.Narcissus || type === ItemsEnum.ThickLeather || type === ItemsEnum.RoughRubyFragment || type === ItemsEnum.RoughEmeraldFragment || type === ItemsEnum.RoughTopazFragment ||
       type === ItemsEnum.RoughOpalFragment || type === ItemsEnum.RoughAmethystFragment || type === ItemsEnum.RoughAquamarineFragment || type === ItemsEnum.Goldroot || type === ItemsEnum.Lousewort ||
-      type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence ||
+      type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence || type === ItemsEnum.VialOfLakeLerna ||
       type === ItemsEnum.SatchelOfHerbs || type === ItemsEnum.BushelOfHerbs || type === ItemsEnum.SoulEssence || type === ItemsEnum.FishScales ||
-      type === ItemsEnum.MetalScraps || type === ItemsEnum.SharkTeeth || type === ItemsEnum.Seashell || type === ItemsEnum.Wax) {
+      type === ItemsEnum.MetalScraps || type === ItemsEnum.SharkTeeth || type === ItemsEnum.Seashell || type === ItemsEnum.Wax || type === ItemsEnum.BoarHide ||
+      type === ItemsEnum.BearHide) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -1371,7 +1372,7 @@ export class LookupService {
         if (relatedTargetGainStatusEffectEffectiveness < 1)
           relatedTargetGainStatusEffectEffectivenessPercent = Math.round((relatedTargetGainStatusEffectEffectiveness) * 100);
         else
-          relatedTargetGainStatusEffectEffectivenessPercent = Math.round((relatedTargetGainStatusEffectEffectiveness - 1) * 100);
+          relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedTargetGainStatusEffectEffectiveness - 1) * 100, this.utilityService.genericRoundTo);
         relatedTargetGainStatusEffectTickFrequency = relatedTargetGainStatusEffect.tickFrequency;
       }
     }
@@ -1452,14 +1453,14 @@ export class LookupService {
     if (abilityName === "Thyrsus")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
-      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Have a Drink")
       abilityDescription = "Every " + cooldown + " seconds, give yourself a random stat <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
 
     //Nemesis
     if (abilityName === "Retribution")
       abilityDescription = "The next <strong>" + (abilityCount === 1 ? " time " : abilityCount + " times ") + "</strong> you are attacked, reduce the damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage back to the target. " + cooldown + " second cooldown.";
-    if (abilityName === "Messenger of the Fates")
+    if (abilityName === "Chains of Fate")
       abilityDescription = "Create a link between you and one target forcing you both to only target each other. Attacks against you from this target increase <strong>Dues</strong> gain by an additional <strong>" + (effectivenessPercent - 100) + "%</strong>. Lasts " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "No Escape")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target twice. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
@@ -2294,6 +2295,8 @@ export class LookupService {
       description = "Your next auto attack will also heal you for " + statusEffect.effectiveness + " HP.";
     if (statusEffect.type === StatusEffectEnum.Mark)
       description = "Damage against this target is increased by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
+    if (statusEffect.type === StatusEffectEnum.Thyrsus)
+      description = "Damage against this target is increased by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.Stun)
       description = "Auto attack and ability cooldowns are not charging.";
     if (statusEffect.type === StatusEffectEnum.Paralyze)
@@ -2367,6 +2370,9 @@ export class LookupService {
       description = "Increasing Luck and Attack by <strong>" + Math.round((statusEffect.effectiveness - 1) * 100) + "%</strong>. " + statusEffect.stackCount + " total " + (statusEffect.stackCount === 1 ? "stack" : "stacks") + " worth " + Math.round(((statusEffect.effectiveness - 1) / statusEffect.stackCount) * 100) + "% each.";
     if (statusEffect.type === StatusEffectEnum.Onslaught)
       description = "Your next damaging ability will also apply a damage over time effect onto its targets.";
+    if (statusEffect.type === StatusEffectEnum.DispenserOfDues)
+      description = "Increase your next damaging ability by " + statusEffect.effectiveness + ".";
+
 
     return description;
   }
@@ -3475,6 +3481,21 @@ export class LookupService {
     }
     else if (abilityName === "Revel in Blood") {
       src += "revelInBlood.svg";
+    }
+    else if (abilityName === "Revelry") {
+      src += "revelry.svg";
+    }
+    else if (abilityName === "Thyrsus") {
+      src += "thyrsus.svg";
+    }
+    else if (abilityName === "Retribution") {
+      src += "retribution.svg";
+    }
+    else if (abilityName === "Insanity") {
+      src += "insanity.svg";
+    }
+    else if (abilityName === "Chains of Fate") {
+      src += "chainsOfFate.svg";
     }
     else if (abilityName === "No Escape") {
       src += "noEscape.svg";
@@ -5581,5 +5602,11 @@ export class LookupService {
       });
     }
     return copy;
+  }
+
+  getRandomPartyMember(party: Character[]) {
+    var partyLength = party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).length;
+    var rng = this.utilityService.getRandomInteger(0, partyLength - 1);    
+    return party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead))[rng];
   }
 }

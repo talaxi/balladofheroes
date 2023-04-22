@@ -1050,7 +1050,7 @@ export class EnemyGeneratorService {
       drink.cooldown = drink.currentCooldown = 9;
       drink = this.randomizeCooldown(drink);
       drink.dealsDirectDamage = false;
-      drink.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, 2.5, true, true, false, enemy.name, 1));
+      drink.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, 2.5, true, true, false, enemy.name, 1));
       enemy.abilityList.push(drink);
     }
     if (type === BestiaryEnum.Atreus) {
@@ -1093,7 +1093,7 @@ export class EnemyGeneratorService {
       foresight.name = "Foresight";
       foresight.isAvailable = true;
       foresight.dealsDirectDamage = false;
-      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .8, true, true, false, enemy.name, 1));
+      foresight.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, .8, true, true, false, enemy.name, 1));
       enemy.abilityList.push(foresight);
 
       var straightArrow = new Ability();
