@@ -65,8 +65,7 @@
         </div>
     </div>
     <div class="godSecondaryStats">
-        <span class="sectionHeaderText sectionHeading">{{isMobile ? "Secondary Stats" : "Secondary Stat
-            Bonuses"}}</span>
+        <span class="sectionHeaderText sectionHeading">{{isMobile ? "Secondary Stats" : "Secondary Stat Bonuses"}}</span>
         <div class="sectionInfo secondaryStats">
             <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="hpRegenPopover"><strong [ngClass]="getGodColor()" class="statLabel">HP
@@ -114,24 +113,24 @@
                     Done Bonus:</strong>
                 {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getTickFrequencyBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getGodColor()"
-                    class="statLabel">Tick Frequency Bonus:</strong>
+                [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getGodColor()" class="statLabel">Tick
+                    Frequency Bonus:</strong>
                 {{(getTickFrequencyBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getAoeDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="aoeDamagePopover"><strong [ngClass]="getGodColor()"
-                    class="statLabel">Multiple Target Damage Bonus:</strong>
+                [contentTemplate]="aoeDamagePopover"><strong [ngClass]="getGodColor()" class="statLabel">Multiple Target
+                    Damage Bonus:</strong>
                 {{(getAoeDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getThornsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="thornsPopover"><strong [ngClass]="getGodColor()"
-                    class="statLabel">Thorns:</strong>
+                [contentTemplate]="thornsPopover"><strong [ngClass]="getGodColor()" class="statLabel">Thorns:</strong>
                 {{(getThornsBonus() * 100) | number : '1.0-2'}}%<br /></span>
-            <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+            <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip
+                [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getGodColor()"
                     class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
                 {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
-            <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                [contentTemplate]="abilityCooldownReductionStartPopover"><strong [ngClass]="getGodColor()"
-                    class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
+            <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip
+                [tooltipDirection]="tooltipDirection" [contentTemplate]="abilityCooldownReductionStartPopover"><strong
+                    [ngClass]="getGodColor()" class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
                 {{(getAbilityCooldownReductionStartBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="holyDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Holy
@@ -210,14 +209,26 @@
         <span class="sectionHeaderText sectionHeading">Abilities</span>
         <div class="sectionInfo">
             <div *ngFor="let ability of abilityList">
-                <strong class="statLabel" [ngClass]="getGodColor()">{{ability.name}}</strong> - <span class="statValue"
+                <strong class="statLabel" [ngClass]="getGodColor()" customToolTip [isLargeTooltip]="true"
+                [tooltipDirection]="affinityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong> - <span class="statValue"
                     [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
+                <ng-template #abilityPopover>
+                    <div>
+                        Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
+                        <hr/>
+                        <span *ngIf="getAbilityEffectivenessIncrease(ability) !== 0"><span>Effectiveness Increase: </span> <span
+                    class="statValue" [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></span>
+                    </div>
+                </ng-template>
+
             </div>
         </div>
         <br /><br />
         <span class="sectionHeaderText sectionHeading">Affinity</span>
         <div class="sectionInfo">
-            <span class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel}}</span>
+            <span class="statLabel" [ngClass]="getGodColor()" customToolTip [isLargeTooltip]="true"
+                [tooltipDirection]="affinityTooltipDirection" [contentTemplate]="affinityPopover">Affinity Level
+                {{god.affinityLevel}}</span>
             <br />
             <span>{{god.affinityExp | number : '1.0-0'}} / {{god.affinityExpToNextLevel | number : '1.0-0'}} XP to <span
                     class="statLabel" [ngClass]="getGodColor()">Affinity Level {{god.affinityLevel +
@@ -396,7 +407,8 @@
 
 <ng-template #abilityCooldownReductionWithBuffsPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionWithBuffsBonusDescription()"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getAbilityCooldownReductionWithBuffsBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getGodAbilityCooldownReductionWithBuffsBonusStatBreakdown(this.god)">
@@ -407,7 +419,8 @@
 
 <ng-template #abilityCooldownReductionStartPopover>
     <div>
-        <span class="description" [innerHtml]="this.lookupService.getAbilityCooldownReductionStartBonusDescription()"></span>
+        <span class="description"
+            [innerHtml]="this.lookupService.getAbilityCooldownReductionStartBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getGodAbilityCooldownReductionStartBonusStatBreakdown(this.god)">
@@ -420,8 +433,7 @@
     <div>
         <span class="description" [innerHtml]="this.lookupService.getThornsBonusDescription()"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"
-            [innerHtml]="this.lookupService.getGodThornsBonusStatBreakdown(this.god)">
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodThornsBonusStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -431,8 +443,7 @@
     <div>
         <span class="description" [innerHtml]="this.lookupService.getAoeDamageBonusDescription()"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"
-            [innerHtml]="this.lookupService.getGodAoeDamageBonusStatBreakdown(this.god)">
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodAoeDamageBonusStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -442,8 +453,7 @@
     <div>
         <span class="description" [innerHtml]="this.lookupService.getTickFrequencyBonusDescription()"></span>
         <hr class="miniHr" />
-        <div class="statBreakdown"
-            [innerHtml]="this.lookupService.getGodTickFrequencyBonusStatBreakdown(this.god)">
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodTickFrequencyBonusStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -596,6 +606,44 @@
 <ng-template #godXpPopover>
     <div>
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodXpBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #affinityPopover>
+    <div>
+        <div *ngIf="god.affinityLevel === 0">
+            Raise {{god.name}}'s affinity level by praying at altars.
+        </div>
+        <div *ngIf="god.affinityLevel > 0">
+            <span class='bold smallCaps'>affinity bonuses</span>
+            <br *ngIf="getBoonDurationIncrease() !== '0%'" />
+            <span *ngIf="getBoonDurationIncrease() !== '0%'"><span>Base Boon Duration Increase: </span> <span
+                    class="statValue" [innerHtml]="getBoonDurationIncrease()"></span></span>
+            <br *ngIf="getBoonEffectivenessIncrease() !== '0%'" />
+            <span *ngIf="getBoonEffectivenessIncrease() !== '0%'"><span>Base Boon Effectiveness Increase: </span> <span
+                    class="statValue" [innerHtml]="getBoonEffectivenessIncrease()"></span></span>
+            <br *ngIf="getAffinityGodXpIncrease() !== '0%'" />
+            <span *ngIf="getAffinityGodXpIncrease() !== '0%'"><span>God XP Increase: </span> <span class="statValue"
+                    [innerHtml]="getAffinityGodXpIncrease()"></span></span>
+            <br *ngIf="getAffinitySmallCharmCount() !== 0" />
+            <span *ngIf="getAffinitySmallCharmCount() !== 0"><span>Small Charms: </span> <span class="statValue"
+                    [innerHtml]="getAffinitySmallCharmCount()"></span></span>
+            <br *ngIf="getAffinityLargeCharmCount() !== 0" />
+            <span *ngIf="getAffinityLargeCharmCount() !== 0"><span>Large Charms: </span> <span class="statValue"
+                    [innerHtml]="getAffinityLargeCharmCount()"></span></span>
+        </div>
+        <hr />
+        <div *ngIf="areAltarsAvailable">
+            <span class='bold smallCaps'>small altar effects</span>
+            <br />
+            <div [innerHtml]="getSmallAltarEffectDescriptions()"></div>
+        </div>
+        <br *ngIf="areLargeAltarsAvailable" />
+        <div *ngIf="areLargeAltarsAvailable">
+            <span class='bold smallCaps'>large altar effects</span>
+            <br />
+            <div [innerHtml]="getLargeAltarEffectDescriptions()"></div>
         </div>
     </div>
 </ng-template>

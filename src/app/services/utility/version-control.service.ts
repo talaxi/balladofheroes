@@ -82,7 +82,7 @@ export class VersionControlService {
       date = new Date('2022-04-06 12:00:00');
     if (version === .32)
       date = new Date('2022-04-06 12:00:00');
-    if (version === .32)
+    if (version === .4)
       date = new Date('2022-04-19 12:00:00');
 
     return date.toDateString().replace(/^\S+\s/, '');

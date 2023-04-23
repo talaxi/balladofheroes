@@ -4,11 +4,13 @@ import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
+import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GodLevelIncreaseEnum } from 'src/app/models/enums/god-level-increase-enum.model';
+import { AltarService } from 'src/app/services/altar/altar.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -28,13 +30,19 @@ export class GodViewComponent implements OnInit {
   abilityList: Ability[] = [];
   tooltipDirection = DirectionEnum.Down;
   leftTooltipDirection = DirectionEnum.Left;
+  affinityTooltipDirection = DirectionEnum.UpRight;
   isMobile = false;
+  areAltarsAvailable: boolean = false;
+  areLargeAltarsAvailable: boolean = false;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
-    private menuService: MenuService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService) { }
+    private menuService: MenuService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService,
+    private altarService: AltarService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
+    this.areAltarsAvailable = this.globalService.globalVar.altars.isUnlocked;
+    this.areLargeAltarsAvailable = this.globalService.globalVar.altars.largeAltarsUnlocked;
 
     var selectedGod = this.globalService.globalVar.gods.find(item => item.type === this.menuService.selectedGod);
     if (selectedGod !== undefined) {
@@ -444,6 +452,73 @@ export class GodViewComponent implements OnInit {
 
       this.menuService.setSelectedGod(gods[currentIndex].type);
   }
+
+  getBoonDurationIncrease() {
+    var durationIncreaseCount = this.lookupService.getGodAffinityBoonDurationIncreaseCount(this.god);
+
+      return Math.round(durationIncreaseCount * this.utilityService.affinityRewardPrayerDuration * 100) + "%";      
+  }
+
+  getBoonEffectivenessIncrease() {
+    var durationIncreaseCount = this.lookupService.getGodAffinityBoonEffectivenessIncreaseCount(this.god);
+
+    return Math.round(durationIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness * 100) + "%";  
+  }
+
+  getAffinityGodXpIncrease() {
+    var increaseCount = this.lookupService.getGodAffinityXpIncreaseCount(this.god);
+
+    return Math.round(increaseCount * this.utilityService.affinityRewardGodXpBonus * 100) + "%";  
+  }
+
+  getAffinitySmallCharmCount() {
+    return this.lookupService.getGodAffinitySmallCharmCount(this.god);
+  }
+
+  getAffinityLargeCharmCount() {
+    return this.lookupService.getGodAffinityLargeCharmCount(this.god);
+  }
+
+  getSmallAltarEffectDescriptions() {
+   var text = "";
+   
+    var possibleEffects = this.altarService.getPossibleEffects(this.god.type, AltarEnum.Small, true);
+
+    possibleEffects.forEach(effect => {
+      var baseAltarEffect = this.altarService.getBaseAltarEffect(AltarEnum.Small, effect);
+      text += "<span class='statLabel " + this.god.name.toLowerCase() + "Color'>" + this.lookupService.getBoonName(effect) + "</span> - <span class='statValue'>" + this.lookupService.getBaseAltarEffectDescription(baseAltarEffect) +"</span><br/>";
+    });    
+
+   return text;
+  }
+
+  getLargeAltarEffectDescriptions() {
+    var text = "";
+    
+     var possibleEffects = this.altarService.getPossibleEffects(this.god.type, AltarEnum.Large, true);
+ 
+     possibleEffects.forEach(effect => {
+       var baseAltarEffect = this.altarService.getBaseAltarEffect(AltarEnum.Large, effect);
+       text +=  "<span class='statLabel " + this.god.name.toLowerCase() + "Color'>" + this.lookupService.getBoonName(effect) + "</span> - <span class='statValue'>" + this.lookupService.getBaseAltarEffectDescription(baseAltarEffect) +"</span><br/>";
+     });    
+ 
+    return text;
+   }
+
+   getAbilityUpgradeLevel(ability: Ability) {
+    return ability.abilityUpgradeLevel;
+   }
+
+   getAbilityEffectivenessIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);    
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined)
+      return ability.effectiveness - baseAbility.effectiveness;
+
+    return 0;
+   }
   
   ngOnDestroy() {
     if (this.subscription !== undefined)

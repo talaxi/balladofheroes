@@ -427,9 +427,19 @@ export class BattleService {
     if (character.battleInfo.statusEffects.length === 0)
       return;
 
+      var fastDebuffSpeed = 1;
+      if (isPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.DionysusRareFastDebuffs) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.DionysusRareFastDebuffs);
+        fastDebuffSpeed = relevantAltarEffect!.effectiveness;
+      }
+
     character.battleInfo.statusEffects.forEach(effect => {
       var previousDuration = effect.duration;
-      effect.duration -= deltaTime;
+
+      if (!effect.isPositive)
+        effect.duration -= deltaTime * fastDebuffSpeed;
+      else
+        effect.duration -= deltaTime;
 
       //a second has passed
       if (Math.ceil(previousDuration) > Math.ceil(effect.duration)) {
@@ -576,7 +586,9 @@ export class BattleService {
     this.handletargetEffects(isPartyAttacking, [], character, target, targets, party, damageDealt);
 
     var thorns = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
-    if (thorns !== undefined || target.battleStats.thorns > 0) {
+    if (thorns !== undefined || target.battleStats.thorns > 0 || 
+      (!isPartyAttacking && (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisThorns) !== undefined ||
+    this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareThorns) !== undefined))) {
       var thornsPercentDamage = damageDealt * target.battleStats.thorns;
       var thornsEffectiveness = 0;
       if (thorns !== undefined) {
@@ -584,11 +596,21 @@ export class BattleService {
           thornsEffectiveness += thornEffect.effectiveness;
         });
       }
+
+      var altarThornsDamage = 0;
+      if (!isPartyAttacking && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisThorns) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisThorns);
+        altarThornsDamage += damageDealt * (relevantAltarEffect!.effectiveness - 1);
+      }
+      if (!isPartyAttacking && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareThorns) !== undefined) {
+        var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareThorns);
+        altarThornsDamage += damageDealt * (relevantAltarEffect!.effectiveness - 1);
+      }
       
-      this.dealTrueDamage(!isPartyAttacking, character, thornsEffectiveness + thornsPercentDamage, undefined, undefined, false);
+      var thornsDamageDealt = Math.round(this.dealTrueDamage(!isPartyAttacking, character, thornsEffectiveness + thornsPercentDamage + altarThornsDamage, undefined, undefined, false));
       if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
         (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
-        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes <strong>" + Math.round(thornsEffectiveness + thornsPercentDamage) + "</strong> damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Thorns effect.";
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes <strong>" + thornsDamageDealt + "</strong> damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Thorns effect.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
       }
     }
@@ -1137,7 +1159,6 @@ export class BattleService {
           }
 
           if (instantEffect.type === StatusEffectEnum.Barrier) {
-            console.log("Barrier strength is " + instantEffect.effectiveness + " * " + this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             if (instantEffect.isAoe) {
               party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
@@ -1161,8 +1182,7 @@ export class BattleService {
             else {
               //random target
               var barrierTarget = this.lookupService.getRandomPartyMember(party);
-
-              console.log("Barrier Amount: " + barrierAmount + " Threshold: " + (barrierTarget.battleStats.maxHp * instantEffect.threshold));
+              
               if (barrierTarget.battleInfo.barrierValue < barrierTarget.battleStats.maxHp * instantEffect.threshold) {
                 barrierTarget.battleInfo.barrierValue += barrierAmount;
 
@@ -1850,7 +1870,6 @@ export class BattleService {
         //ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness, true, true, true, attacker.name));
         this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness, true, true, true, attacker.name), target, undefined, attacker);
         retributionEffect.count -= 1;
-        console.log("New count is " + retributionEffect.count);
 
         if (retributionEffect.count <= 0)
           target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Retribution);

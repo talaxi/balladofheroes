@@ -172,7 +172,8 @@ export class SettingsViewComponent implements OnInit {
 
   enterRedemptionCode() {
     this.confirmationText = this.codeRedemptionService.redeemCode(this.enteredRedemptionCode);
-    this.dialog.open(this.confirmationBox, { width: '40%', height: 'auto' });
+    if (this.confirmationText !== "")
+      this.dialog.open(this.confirmationBox, { width: '40%', height: 'auto' });
   }
 
   quickViewOverlayFlippedToggle() {

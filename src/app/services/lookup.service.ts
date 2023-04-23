@@ -1366,9 +1366,9 @@ export class LookupService {
         relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold;
         relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
         if (relatedUserGainStatusEffectEffectiveness < 1)
-          relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness) * 100);
+          relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2);
         else
-          relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness - 1) * 100);
+          relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness - 1) * 100, 2);
         relatedUserGainStatusEffectTickFrequency = relatedUserGainStatusEffect.tickFrequency;
       }
 
@@ -2375,11 +2375,13 @@ export class LookupService {
       description = "Increase Defense by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.LordOfTheUnderworld)
-      description = "Increasing Luck and Attack by <strong>" + Math.round((statusEffect.effectiveness - 1) * 100) + "%</strong>. " + statusEffect.stackCount + " total " + (statusEffect.stackCount === 1 ? "stack" : "stacks") + " worth " + Math.round(((statusEffect.effectiveness - 1) / statusEffect.stackCount) * 100) + "% each.";
+      description = "Increasing Luck and Attack by <strong>" + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%</strong>. " + statusEffect.stackCount + " total " + (statusEffect.stackCount === 1 ? "stack" : "stacks") + " worth " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) / statusEffect.stackCount) * 100, 2) + "% each.";
     if (statusEffect.type === StatusEffectEnum.Onslaught)
       description = "Your next damaging ability will also apply a damage over time effect onto its targets.";
     if (statusEffect.type === StatusEffectEnum.DispenserOfDues)
       description = "Increase your next damaging ability by " + statusEffect.effectiveness + ".";
+    if (statusEffect.type === StatusEffectEnum.Retribution)
+      description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
 
 
     return description;
@@ -2390,10 +2392,18 @@ export class LookupService {
 
     var duration = Math.round(effect.duration);
     var durationString = "";
-    if (duration < 60)
-      durationString = duration + " seconds";
-    else
-      durationString = Math.ceil(duration / 60) + " minutes";
+    if (duration < 60) {
+      if (duration === 1)
+        durationString = duration + " second";
+      else
+        durationString = duration + " seconds";
+    }
+    else {
+      if (Math.ceil(duration / 60) === 1)
+        durationString = Math.ceil(duration / 60) + " minute";
+      else
+        durationString = Math.ceil(duration / 60) + " minutes";
+    }
 
     /*if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
       description = "Increase all Primary Stats by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
@@ -2485,7 +2495,7 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs)
       description = "When the duration expires, reduce all primary stats of a target by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.DionysusRareFastDebuffs)
-      description = "Reduce the duration of any debuffs inflicted on party members by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+      description = "Reduce the duration of any debuffs inflicted on party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisLuckDebuff)
       description = "When the duration expires, reduce all enemies' Luck by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisThorns)
@@ -2500,6 +2510,132 @@ export class LookupService {
       description = "Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
 
     description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
+    return description;
+  }
+
+  getBaseAltarEffectDescription(effect: AltarEffect) {
+    var description = "";
+
+    var duration = Math.round(effect.duration);
+    var durationString = "";
+    if (duration < 60) {
+      if (duration === 1)
+        durationString = duration + " second";
+      else
+        durationString = duration + " seconds";
+    }
+    else {
+      if (Math.ceil(duration / 60) === 1)
+        durationString = Math.ceil(duration / 60) + " minute";
+      else
+        durationString = Math.ceil(duration / 60) + " minutes";
+    }
+
+    /*if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
+      description = "Increase all Primary Stats by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
+    if (effect.type === AltarEffectsEnum.SmallAltarPrayFortune)
+      description = "Increase Coin gain from battle by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
+*/
+    if (effect.type === AltarEffectsEnum.AttackUp)
+      description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.AthenaDefenseUp)
+      description = "Increase Defense of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.AthenaHeal)
+      description = "When the duration expires, heal all party members for " + effect.effectiveness + " HP.";
+    if (effect.type === AltarEffectsEnum.AthenaHealOverTime)
+      description = "Heal all party members for " + effect.effectiveness + " HP every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.ArtemisLuckUp)
+      description = "Increase Luck of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisCriticalDamageUp)
+      description = "Increase Critical Damage Multiplier of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisDefenseDebuff)
+      description = "When the duration expires, reduce all enemies' Defense by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesAgilityUp)
+      description = "Increase Agility of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesAutoAttackUp)
+      description = "Increase Auto Attack Damage of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesAbilityCooldown)
+      description = "When the duration expires, reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloBuffDurationUp)
+      description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloResistanceUp)
+      description = "Increase Resistance of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloHeal)
+      description = "Heal the party member with the lowest HP % for " + effect.effectiveness + " HP.";
+    if (effect.type === AltarEffectsEnum.AthenaRareHealOverTime)
+      description = "Heal all party members for " + effect.effectiveness + " HP every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.AthenaRareBlind)
+      description = "When the duration expires, apply a " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% Blind debuff to all enemies.";
+    if (effect.type === AltarEffectsEnum.AthenaRareHolyDamageIncrease)
+      description = "Only available when Athena is in your party. Increase Holy Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisRareAttackDebuff)
+      description = "When the duration expires, reduce all enemies' Attack by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisRareCriticalDamageUp)
+      description = "Increase Critical Damage Multiplier of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisRareDebuffDurationUp)
+      description = "Only available when Artemis is in your party. Increase the duration of any debuffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesRareAutoAttackUp)
+      description = "Increase Auto Attack Damage of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime)
+      description = "Reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.HermesRareReduceAutoAttackCooldown)
+      description = "Only available when Hermes is in your party. While this is active, reduce all party members' auto attack cooldown by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloRareHpRegenIncrease)
+      description = "Increase HP Regen of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloRareBuffDurationUp)
+      description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloRareOstinato)
+      description = "Only available when Apollo is in your party. When the duration expires, trigger an Ostinato at " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% effectiveness.";
+    if (effect.type === AltarEffectsEnum.AresDamageOverTime)
+      description = "When the duration expires, apply a Damage over Time effect on all enemies, dealing " + this.utilityService.roundTo(((effect.effectiveness)), 2) + " damage every 3 seconds for 12 seconds.";
+    if (effect.type === AltarEffectsEnum.AresMaxHpUp)
+      description = "Increase Max HP of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.AresOverdriveGain)
+      description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
+    if (effect.type === AltarEffectsEnum.AresRareOverdriveGain)
+      description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
+    if (effect.type === AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage)
+      description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%";
+    if (effect.type === AltarEffectsEnum.AresRareDealHpDamage)
+      description = "Only available when Ares is in your party. When the duration expires, deal an amount equal to " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% of the party's total current HP to all enemies.";
+    if (effect.type === AltarEffectsEnum.HadesFireDamageUp)
+      description = "Increase Fire Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesEarthDamageUp)
+      description = "Increase Earth Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesAoeDamageUp)
+      description = "Increase the damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesRareAoeDamageUp)
+      description = "Increase the damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesRareElementalDamageUp)
+      description = "Only available when Hades is in your party. Increase all Elemental Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage)
+      description = "Deal " + effect.effectiveness + " damage of a random element to all enemies every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomDebuff)
+      description = "When the duration expires, reduce a random stat by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% for all enemies.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomBuff)
+      description = "When the duration expires, increase a random stat by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% for all party members.";
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier)
+      description = "When the duration expires, give a random party member a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier)
+      description = "When the duration expires, give all party members a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs)
+      description = "Only available when Dionysus is in your party. When the duration expires, reduce all primary stats of a target by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFastDebuffs)
+      description = "Reduce the duration of any debuffs inflicted on party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisLuckDebuff)
+      description = "When the duration expires, reduce all enemies' Luck by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisDealDamage)
+      description = "Deal " + effect.effectiveness + " damage to an enemy every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.NemesisRareThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
+      description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
+      description = "Only available when Nemesis is in your party. Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+
+    description += " Effect lasts for " + durationString + ".";
     return description;
   }
 
@@ -3104,7 +3240,13 @@ export class LookupService {
   getArmorPenetrationMultiplier(character: Character) {
     var defaultMultiplier = 1;
 
-    return defaultMultiplier - character.battleStats.armorPenetration;
+    var altarMultiplier = 1;
+    if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareArmorPenetrationUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareArmorPenetrationUp);
+      altarMultiplier *= relevantAltarEffect!.effectiveness;
+    }
+
+    return defaultMultiplier - (character.battleStats.armorPenetration * altarMultiplier);
   }
 
   getChthonicFavorMultiplier(asPercent: boolean = false) {
@@ -3745,9 +3887,7 @@ export class LookupService {
     var affinityBoost = 1;
 
     //repeats every 4 levels, duration increase is at level X3
-    var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
-    if (god.affinityLevel % 4 >= 3)
-      affinityIncreaseCount += 1;
+    var affinityIncreaseCount = this.getGodAffinityXpIncreaseCount(god);
 
     affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
 
@@ -5424,7 +5564,7 @@ export class LookupService {
     if (effect === AltarEffectsEnum.HadesRareDealElementalDamage)
       name = "Deal Random Elemental Damage Over Time";
 
-      if (effect === AltarEffectsEnum.DionysusRandomBuff)
+    if (effect === AltarEffectsEnum.DionysusRandomBuff)
       name = "Random Buff After";
     if (effect === AltarEffectsEnum.DionysusRandomDebuff)
       name = "Random Debuff After";
@@ -5437,7 +5577,7 @@ export class LookupService {
     if (effect === AltarEffectsEnum.DionysusRareFullDebuffs)
       name = "All Stat Debuffs After";
 
-      if (effect === AltarEffectsEnum.NemesisLuckDebuff)
+    if (effect === AltarEffectsEnum.NemesisLuckDebuff)
       name = "Luck Debuff After";
     if (effect === AltarEffectsEnum.NemesisDealDamage)
       name = "Deal Damage Over Time";
@@ -5670,5 +5810,43 @@ export class LookupService {
     var partyLength = party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).length;
     var rng = this.utilityService.getRandomInteger(0, partyLength - 1);
     return party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead))[rng];
+  }
+
+  getGodAffinityBoonDurationIncreaseCount(god: God) {
+    var durationIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 1)
+      durationIncreaseCount += 1;
+
+    return durationIncreaseCount;
+  }
+
+  getGodAffinityBoonEffectivenessIncreaseCount(god: God) {
+    var effectivenessIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 2)
+      effectivenessIncreaseCount += 1;
+
+    return effectivenessIncreaseCount;
+  }
+
+  getGodAffinityXpIncreaseCount(god: God) {
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 3)
+      affinityIncreaseCount += 1;
+
+    return affinityIncreaseCount;
+  }
+
+  getGodAffinitySmallCharmCount(god: God) {
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 8);
+    if (god.affinityLevel % 8 >= 4)
+      affinityIncreaseCount += 1;
+
+    return affinityIncreaseCount;
+  }
+
+  getGodAffinityLargeCharmCount(god: God) {
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 8);
+
+    return affinityIncreaseCount;
   }
 }

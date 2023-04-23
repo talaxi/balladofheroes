@@ -788,11 +788,11 @@ body {
 }
 
 .clearedSubzoneColor {
-  color: var(--clearedSubzoneColor);
+  color: var(--clearedSubzoneColor) !important;
 }
 
 .completedSubzoneColor {
-  color: var(--completedSubzoneColor);
+  color: var(--completedSubzoneColor) !important;
 }
 
 .basicEquipment {

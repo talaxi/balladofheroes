@@ -618,8 +618,8 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Ares;
-        character1.assignedGod2 = GodEnum.Hermes;
+        character1.assignedGod1 = GodEnum.Dionysus;
+        character1.assignedGod2 = GodEnum.Nemesis;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GoldenSword);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfTheHealer);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BearskinArmor);
@@ -638,14 +638,14 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 1000;
+      var godLevel = 1500;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(athena!);
       }
       athena!.exp = 0;
-      athena!.affinityLevel = 10;
+      athena!.affinityLevel = 0;
 
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       hermes!.isAvailable = true;
@@ -653,7 +653,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
         this.globalService.levelUpGod(hermes!);
       }
       hermes!.exp = 0;
-      hermes!.affinityLevel = 10;
+      hermes!.affinityLevel = 5;
 
       var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
       apollo!.isAvailable = true;
@@ -661,7 +661,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
         this.globalService.levelUpGod(apollo!);
       }
       apollo!.exp = 0;
-      apollo!.affinityLevel = 10;
+      apollo!.affinityLevel = 7;
 
       var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
       artemis!.isAvailable = true;
@@ -669,7 +669,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
         this.globalService.levelUpGod(artemis!);
       }
       artemis!.exp = 0;
-      artemis!.affinityLevel = 10;
+      artemis!.affinityLevel = 4;
 
       var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
       hades!.isAvailable = true;
@@ -677,7 +677,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
         this.globalService.levelUpGod(hades!);
       }
       hades!.exp = 0;
-      hades!.affinityLevel = 10;
+      hades!.affinityLevel = 8;
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
       ares!.isAvailable = true;
@@ -688,20 +688,20 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
       ares!.affinityLevel = 10;
 
       var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
-      //dionysus!.isAvailable = true;
+      dionysus!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(dionysus!);
       }
       dionysus!.exp = 0;
-      dionysus!.affinityLevel = 10;
+      dionysus!.affinityLevel = 15;
 
       var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
-      //nemesis!.isAvailable = true;
+      nemesis!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(nemesis!);
       }
       nemesis!.exp = 0;
-      nemesis!.affinityLevel = 10;
+      nemesis!.affinityLevel = 40;
       
       var characterLevel = 29;
       this.globalService.globalVar.characters.forEach(character => {
