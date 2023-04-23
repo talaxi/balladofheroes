@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { plainToInstance } from 'class-transformer';
 import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
@@ -34,6 +34,8 @@ export class SettingsViewComponent implements OnInit {
   showPartyHpAsPercent: boolean = false;
   showEnemyHpAsPercent: boolean = false;
   @Input() isMobile = false;
+  confirmationText = "";
+  @ViewChild('confirmationBox') confirmationBox: any;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
@@ -169,7 +171,8 @@ export class SettingsViewComponent implements OnInit {
   }
 
   enterRedemptionCode() {
-    this.codeRedemptionService.redeemCode(this.enteredRedemptionCode);
+    this.confirmationText = this.codeRedemptionService.redeemCode(this.enteredRedemptionCode);
+    this.dialog.open(this.confirmationBox, { width: '40%', height: 'auto' });
   }
 
   quickViewOverlayFlippedToggle() {

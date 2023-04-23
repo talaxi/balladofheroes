@@ -584,33 +584,30 @@ export class GlobalService {
       revelry.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       revelry.dealsDirectDamage = false;
       revelry.targetsAllies = true;
-      revelry.effectiveness = .8;
-      revelry.secondaryEffectiveness = 1.25;
-      revelry.threshold = .25;
-      revelry.cooldown = revelry.currentCooldown = 29;
-      revelry.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .8, true, true, false, "", .25));
+      revelry.secondaryEffectiveness = 1.025;
+      revelry.cooldown = revelry.currentCooldown = 31;
+      revelry.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .65, true, true, false, "", .25));
       god.abilityList.push(revelry);
 
       var thyrsus = new Ability();
       thyrsus.name = "Thyrsus";
       thyrsus.requiredLevel = this.utilityService.godAbility2Level;
       thyrsus.isAvailable = false;
-      thyrsus.cooldown = thyrsus.currentCooldown = 38;
-      thyrsus.effectiveness = 2;
+      thyrsus.cooldown = thyrsus.currentCooldown = 45;
+      thyrsus.effectiveness = 2.1;
       thyrsus.dealsDirectDamage = true;
-      thyrsus.secondaryEffectiveness = 1.25;
-      thyrsus.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Thyrsus, 6, 1.005, false, false));
+      thyrsus.secondaryEffectiveness = 1.1;
+      thyrsus.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Thyrsus, 6, 1.02, false, false));
       god.abilityList.push(thyrsus);
 
       var insanity = new Ability();
       insanity.name = "Insanity";
       insanity.requiredLevel = this.utilityService.godAbility3Level;
       insanity.isAvailable = false;
-      insanity.cooldown = insanity.currentCooldown = 45;
-      insanity.dealsDirectDamage = false;      
-      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .95, true, false));
-      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .95, true, false));
-      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .95, true, false));
+      insanity.cooldown = insanity.currentCooldown = 42;
+      insanity.dealsDirectDamage = false;
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .92, true, false));
+      insanity.targetEffect.push(this.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 10, .92, true, false));
       god.abilityList.push(insanity);
 
       var haveADrink = new Ability();
@@ -631,7 +628,7 @@ export class GlobalService {
       retribution.isAvailable = false;
       retribution.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       retribution.cooldown = retribution.currentCooldown = 22;
-      retribution.dealsDirectDamage = false;      
+      retribution.dealsDirectDamage = false;
       retribution.effectiveness = 2.1;
       retribution.maxCount = 1;
       retribution.userEffect.push(this.createStatusEffect(StatusEffectEnum.Retribution, 20, .95, false, true));
@@ -641,9 +638,9 @@ export class GlobalService {
       chainsOfFate.name = "Chains of Fate";
       chainsOfFate.requiredLevel = this.utilityService.godAbility2Level;
       chainsOfFate.isAvailable = false;
-      chainsOfFate.dealsDirectDamage = false;    
+      chainsOfFate.dealsDirectDamage = false;
       chainsOfFate.effectiveness = 1.01;
-      chainsOfFate.cooldown = chainsOfFate.currentCooldown = 36; 
+      chainsOfFate.cooldown = chainsOfFate.currentCooldown = 36;
       chainsOfFate.userEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, true));
       chainsOfFate.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, false));
       god.abilityList.push(chainsOfFate);
@@ -654,7 +651,7 @@ export class GlobalService {
       noEscape.isAvailable = false;
       noEscape.cooldown = noEscape.currentCooldown = 58;
       noEscape.dealsDirectDamage = true;
-      noEscape.effectiveness = 1.6;
+      noEscape.effectiveness = 1.65;
       noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       noEscape.userEffect.push(this.createStatusEffect(StatusEffectEnum.KeepDues, -1, 1, true, true));
       god.abilityList.push(noEscape);
@@ -1046,9 +1043,9 @@ export class GlobalService {
     var activeParty = this.getActivePartyCharacters(true);
 
     //bonus XP has no restrictions on being dead
-    activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {        
-        partyMember.exp += bonusXp;
-      });
+    activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {
+      partyMember.exp += bonusXp;
+    });
 
     //active gods
     this.globalVar.gods.filter(god => god.isAvailable &&
@@ -1094,7 +1091,7 @@ export class GlobalService {
 
       //inactive gods
       this.globalVar.gods.filter(god => god.isAvailable &&
-        (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {          
+        (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
           var inactiveGodModifier = .25; //this can be increased maybe with future items
 
           this.giveGodExp(god, enemy.xpGainFromDefeat * inactiveGodModifier);
@@ -1344,7 +1341,7 @@ export class GlobalService {
     var multiplier = baseXp * level;
 
     //(100 * level) + (100 * (1.333^(level-1))) + 350*level      
-    return this.utilityService.roundTo(multiplier + exponential + additive, 5);    
+    return this.utilityService.roundTo(multiplier + exponential + additive, 5);
   }
 
   levelUpGod(god: God) {
@@ -1571,6 +1568,26 @@ export class GlobalService {
       else
         ability.effectiveness += .06;
     }
+    else if (god.type === GodEnum.Nemesis) {
+      //every 33 upgrades until level 100, add extra hit
+      if (ability.abilityUpgradeLevel % 33 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.maxCount += 1;
+      else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100) {
+        userGainsEffect.effectiveness -= .05;
+      }
+      else
+        ability.effectiveness += .20;
+    }
+    else if (god.type === GodEnum.Dionysus) {
+      //every 33 upgrades until level 100, add extra hit
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.threshold += .05;
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
+        ability.secondaryEffectiveness += .0075;
+      }
+      else
+        userGainsEffect.effectiveness += .025;
+    }
   }
 
   upgradeGodAbility2(god: God) {
@@ -1644,6 +1661,26 @@ export class GlobalService {
       else
         ability.effectiveness += .075;
     }
+    else if (god.type === GodEnum.Nemesis) {
+      //every 10 upgrades until level 100, reduce cooldown
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;
+      else
+        ability.effectiveness += .03;
+    }
+    else if (god.type === GodEnum.Dionysus) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        targetGainsEffect.effectiveness += .008;
+      else if (ability.abilityUpgradeLevel % 11 === 0 && ability.abilityUpgradeLevel <= 100) {
+        ability.secondaryEffectiveness += .1;
+      }
+      else {
+        if (ability.abilityUpgradeLevel % 12 === 1 && ability.abilityUpgradeLevel <= 100)
+          targetGainsEffect.duration += .5;
+
+        ability.effectiveness += .15;
+      }
+    }
   }
 
   upgradeGodAbility3(god: God) {
@@ -1710,6 +1747,27 @@ export class GlobalService {
       else
         ability.effectiveness += .025;
     }
+    else if (god.type === GodEnum.Nemesis) {
+      if (ability.abilityUpgradeLevel === 50 || ability.abilityUpgradeLevel === 100)
+        ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .8;
+      else
+        ability.effectiveness += .075;
+    }
+    else if (god.type === GodEnum.Dionysus) {
+      if (ability.abilityUpgradeLevel % 12 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.targetEffect.push(targetGainsEffect.makeCopy());
+      else {
+        if (ability.abilityUpgradeLevel % 2 === 0 || (ability.abilityUpgradeLevel === 13 || ability.abilityUpgradeLevel === 37 ||
+          ability.abilityUpgradeLevel === 61 || ability.abilityUpgradeLevel === 85)) {
+          ability.targetEffect.forEach(effect => { effect.effectiveness -= .005 });
+        }
+        else {
+          ability.targetEffect.forEach(effect => { effect.duration += .25 });
+        }
+      }
+    }
   }
 
   upgradeGodPassive(god: God) {
@@ -1756,6 +1814,18 @@ export class GlobalService {
         userGainsEffect.duration += 1.5;
       else
         userGainsEffect.effectiveness += .015;
+    }
+    else if (god.type === GodEnum.Nemesis) {
+      if (ability.abilityUpgradeLevel <= 100)
+        ability.effectiveness += .025;
+    }
+    else if (god.type === GodEnum.Dionysus) {
+      if (ability.abilityUpgradeLevel === 45)
+        ability.userEffect.push(userGainsEffect.makeCopy());
+      else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.userEffect.forEach(effect => { effect.duration += 1 });
+      else
+        ability.userEffect.forEach(effect => { effect.effectiveness += .0075 });
     }
   }
 
@@ -1814,9 +1884,15 @@ export class GlobalService {
       else if (god.type === GodEnum.Hades) {
         stats.elementIncrease.fire += godLevel / 25000; //should lead to +60% fire damage
       }
+      else if (god.type === GodEnum.Dionysus) {
+        stats.abilityCooldownReduction += godLevel / 100000; //should lead to +15% ability CD reduction
+      }
+      else if (god.type === GodEnum.Nemesis) {
+        stats.armorPenetration += godLevel / 75000; //should lead to +20% armor penetration
+      }
     }
     else if (godLevel % 50 === 0) {
-      if (god.type === GodEnum.Athena) {
+      if (god.type === GodEnum.Athena || god.type === GodEnum.Dionysus) {
         stats.defense += Math.round(godLevel / (3 + (1 / 3)));
       }
       else if (god.type === GodEnum.Artemis || god.type === GodEnum.Hades) {
@@ -1825,7 +1901,7 @@ export class GlobalService {
       else if (god.type === GodEnum.Hermes) {
         stats.agility += Math.round(godLevel / (3 + (1 / 3)));
       }
-      else if (god.type === GodEnum.Apollo) {
+      else if (god.type === GodEnum.Apollo || god.type === GodEnum.Nemesis) {
         stats.resistance += Math.round(godLevel / (3 + (1 / 3)));
       }
       else if (god.type === GodEnum.Ares) {
@@ -2213,8 +2289,19 @@ export class GlobalService {
   }
 
   setAsSubscriber(date: Date) {
+    //TODO: maybe need some last sort of check here
+
     this.globalVar.isSubscriber = true;
     this.globalVar.subscribedDate = date;
+
+    var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+    var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+
+    //TODO: once currency is implemented, check if they are already obtained and give currency instead
+    if (dionysus !== undefined)
+      dionysus.isAvailable = true;
+    if (nemesis !== undefined)
+      nemesis.isAvailable = true;
   }
 
   isGodEquipped(type: GodEnum) {
@@ -2310,7 +2397,7 @@ export class GlobalService {
           newResource.extras = extraToRemoveList;
           modifiedResource = newResource;
           this.globalVar.resources.push(modifiedResource);
-        }       
+        }
       }
     }
 
@@ -2340,12 +2427,12 @@ export class GlobalService {
   }
 
   //these two functions have to be here to prevent circular dependencies
-  ResetTournamentInfoAfterChangingSubzone() {    
+  ResetTournamentInfoAfterChangingSubzone() {
     if (this.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You leave the Coliseum. You finished in round " + this.globalVar.activeBattle.activeTournament.currentRound + (this.globalVar.activeBattle.activeTournament.maxRounds !== -1 ? " of " + this.globalVar.activeBattle.activeTournament.maxRounds : "") + ".");
       this.handleColiseumLoss(this.globalVar.activeBattle.activeTournament.type, this.globalVar.activeBattle.activeTournament.currentRound);
     }
-    
+
     this.globalVar.activeBattle.activeTournament = new ColiseumTournament();
   }
 
@@ -2353,36 +2440,36 @@ export class GlobalService {
     this.resetCooldowns();
 
     if (type === ColiseumTournamentEnum.WeeklyMelee) {
-      if ((losingRound-1) > this.globalVar.sidequestData.highestWeeklyMeleeRound)
-        this.globalVar.sidequestData.highestWeeklyMeleeRound = (losingRound-1);
+      if ((losingRound - 1) > this.globalVar.sidequestData.highestWeeklyMeleeRound)
+        this.globalVar.sidequestData.highestWeeklyMeleeRound = (losingRound - 1);
 
       var bonusXpBase = 3250;
       var growthFactor = 1.33;
 
-      var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound-1)*5) * bonusXpBase));
+      var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusXpBase));
 
       var bonusCoinBase = 95;
       var growthFactor = 1.14;
 
-      var bonusCoins = Math.round((bonusCoinBase * (growthFactor ** (losingRound - 1))) + (((losingRound-1)*5) * bonusCoinBase));   
+      var bonusCoins = Math.round((bonusCoinBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusCoinBase));
 
       if (this.globalVar.gameLogSettings.get("battleRewards")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + bonusXp.toLocaleString() + " XP</strong>.");
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + bonusCoins.toLocaleString() + " Coins</strong>.");
       }
 
-       //every 10 rounds, chance of items
-       if (losingRound > 10) { 
+      //every 10 rounds, chance of items
+      if (losingRound > 10) {
         var rng = this.utilityService.getRandomInteger(30, 70);
         var randomGem = this.getRandomGem();
 
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(randomGem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(randomGem))) + "</strong>.");         
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(randomGem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(randomGem))) + "</strong>.");
         this.gainResource(new ResourceValue(randomGem, rng));
       }
 
-      
+
       this.giveCharactersBonusExp(this.getActivePartyCharacters(true), bonusXp);
-      this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins)); 
+      this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins));
     }
   }
 
@@ -2400,19 +2487,19 @@ export class GlobalService {
   }
 
   getRandomGem() {
-    var items:ItemsEnum[] = [];
+    var items: ItemsEnum[] = [];
     items.push(ItemsEnum.RoughTopazFragment);
     items.push(ItemsEnum.RoughRubyFragment);
     items.push(ItemsEnum.RoughOpalFragment);
     items.push(ItemsEnum.RoughAmethystFragment);
     items.push(ItemsEnum.RoughEmeraldFragment);
     items.push(ItemsEnum.RoughAquamarineFragment);
-    
+
     var rng = this.utilityService.getRandomInteger(0, items.length - 1);
 
     return items[rng];
   }
-  
+
   getAbilityCooldown(ability: Ability, character: Character, starting: boolean = false) {
     var cooldownReductionWithBuffs = 1;
     if (character.battleInfo.statusEffects.filter(item => item.isPositive).length > 0) {

@@ -14,6 +14,8 @@ export class DictionaryService {
     //resources
     if (type === ItemsEnum.Coin)
       name = "Coin";
+    if (type === ItemsEnum.EternalMeleeTicket)
+      name = "Eternal Melee Ticket";
 
     //progression
     if (type === ItemsEnum.ChthonicFavor)

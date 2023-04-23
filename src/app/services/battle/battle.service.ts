@@ -584,10 +584,11 @@ export class BattleService {
           thornsEffectiveness += thornEffect.effectiveness;
         });
       }
+      
       this.dealTrueDamage(!isPartyAttacking, character, thornsEffectiveness + thornsPercentDamage, undefined, undefined, false);
       if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
         (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
-        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes <strong>" + (thornsEffectiveness + thornsPercentDamage) + "</strong> damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Thorns effect.";
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " takes <strong>" + Math.round(thornsEffectiveness + thornsPercentDamage) + "</strong> damage from <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>'s Thorns effect.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
       }
     }
@@ -1061,7 +1062,7 @@ export class BattleService {
         }
 
         if (appliedStatusEffect.dotType !== dotTypeEnum.None)
-          this.applyStatusEffect(appliedStatusEffect, user, party, user);
+          this.applyStatusEffect(appliedStatusEffect, user, party, user, originalAbility);
       });
     }
 
@@ -1136,6 +1137,7 @@ export class BattleService {
           }
 
           if (instantEffect.type === StatusEffectEnum.Barrier) {
+            console.log("Barrier strength is " + instantEffect.effectiveness + " * " + this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             if (instantEffect.isAoe) {
               party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
@@ -1160,6 +1162,7 @@ export class BattleService {
               //random target
               var barrierTarget = this.lookupService.getRandomPartyMember(party);
 
+              console.log("Barrier Amount: " + barrierAmount + " Threshold: " + (barrierTarget.battleStats.maxHp * instantEffect.threshold));
               if (barrierTarget.battleInfo.barrierValue < barrierTarget.battleStats.maxHp * instantEffect.threshold) {
                 barrierTarget.battleInfo.barrierValue += barrierAmount;
 
@@ -1217,7 +1220,7 @@ export class BattleService {
         }
 
         if (target !== undefined && appliedStatusEffect.dotType !== dotTypeEnum.None) {
-          this.applyStatusEffect(appliedStatusEffect, target, potentialTargets, user);
+          this.applyStatusEffect(appliedStatusEffect, target, potentialTargets, user, originalAbility);
         }
 
         var mark = user.abilityList.find(item => item.name === "Mark" && item.isAvailable);
@@ -1628,9 +1631,9 @@ export class BattleService {
         return;
       }
     }
-
-    if (appliedStatusEffect.type === StatusEffectEnum.Retribution && originalAbility !== undefined) {
-      appliedStatusEffect.count = originalAbility.count;
+    
+    if (appliedStatusEffect.type === StatusEffectEnum.Retribution && originalAbility !== undefined) {    
+      appliedStatusEffect.count = originalAbility.maxCount;
     }
 
     if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
@@ -1691,33 +1694,33 @@ export class BattleService {
     if (user.targeting !== undefined && targetType !== TargetEnum.ForcedRandom && potentialTargets.some(item => item === user.targeting)) {
       target = user.targeting;
 
+      var chainsOfFateAttacker = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
       potentialTargets.forEach(item => {
-        var chainsOfFate = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
+        var chainsOfFateEnemy = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);        
         var focus = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Focus);
 
         //messenger takes priority
-        if (chainsOfFate !== undefined)
+        if (chainsOfFateEnemy !== undefined && chainsOfFateAttacker !== undefined)
           target = item;
-        else if (focus !== undefined) {
-          target = item;
-        }
+        else if (focus !== undefined) 
+          target = item;        
       });
     }
     else {
       if (targetType === TargetEnum.Random || targetType === TargetEnum.ForcedRandom) {
         target = potentialTargets[this.utilityService.getRandomInteger(0, potentialTargets.length - 1)];
 
+        var chainsOfFateAttacker = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
         //override target and target whoever you are focused on. might need to expand this beyond random target type
         potentialTargets.forEach(item => {
-          var chainsOfFate = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
+          var chainsOfFateEnemy = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
           var focus = item.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Focus);
 
           //messenger takes priority
-          if (chainsOfFate !== undefined)
+          if (chainsOfFateEnemy !== undefined && chainsOfFateAttacker !== undefined)
             target = item;
-          else if (focus !== undefined) {
-            target = item;
-          }
+          else if (focus !== undefined)
+            target = item;          
         });
       }
       else if (targetType === TargetEnum.LowestHpPercent) {
@@ -1847,6 +1850,7 @@ export class BattleService {
         //ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness, true, true, true, attacker.name));
         this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness, true, true, true, attacker.name), target, undefined, attacker);
         retributionEffect.count -= 1;
+        console.log("New count is " + retributionEffect.count);
 
         if (retributionEffect.count <= 0)
           target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Retribution);
@@ -1856,10 +1860,8 @@ export class BattleService {
     var dispenserOfDuesEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined) {
       var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", target);
-      if (dispenserOfDues !== undefined) {
-        console.log("Add to dues: " + Math.round(totalDamageDealt * dispenserOfDues.effectiveness));
-        dispenserOfDuesEffect.effectiveness += Math.round(totalDamageDealt * dispenserOfDues.effectiveness);
-        console.log("Dues total: " + dispenserOfDuesEffect.effectiveness);
+      if (dispenserOfDues !== undefined) {        
+        dispenserOfDuesEffect.effectiveness += Math.round(totalDamageDealt * dispenserOfDues.effectiveness);        
       }
     }
 

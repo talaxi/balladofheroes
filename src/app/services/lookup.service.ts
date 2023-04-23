@@ -132,7 +132,7 @@ export class LookupService {
     var description = "";
 
     if (type === GodEnum.Athena)
-      description = "Athena, Goddess of Wisdom and Warfare, focuses on combat and self-reliance. Her abilities and upgrades give the user the ability to heal themselves based on damage dealt and reduce incoming damage to themselves.";
+      description = "Athena, Goddess of Wisdom and Warfare, focuses on combat and self-reliance. Her abilities and upgrades allow the user to heal themselves based on damage dealt and reduce incoming damage to themselves.";
     if (type === GodEnum.Artemis)
       description = "Artemis, Goddess of the Hunt, focuses on critical hits and debilitating enemies. Her abilities and upgrades can weaken enemies through status effects and increase damage dealt from critical attacks.";
     if (type === GodEnum.Hermes)
@@ -147,6 +147,10 @@ export class LookupService {
       description = "";
     if (type === GodEnum.Hades)
       description = "Hades, God of the Underworld, focuses on dealing damage to all enemies. All of his abilities attack the entire enemy party and he has access to Fire and Earth elemental damage.";
+    if (type === GodEnum.Nemesis)
+      description = "Nemesis, Goddess of Divine Retribution, focuses on taking damage and countering enemies. Her abilities allow her to deal increased damage after being attacked and attack enemies multiple times.";
+    if (type === GodEnum.Dionysus)
+      description = "Dionysus, God of Wine and Revelry, focuses on protecting party members and weakening enemies. His abilities allow him to give barriers to allies and put numerous debuffs on enemies.";
 
     return description;
   }
@@ -275,7 +279,7 @@ export class LookupService {
     if (this.isItemACharm(type))
       return ItemTypeEnum.Charm;
 
-    if (type === ItemsEnum.Coin)
+    if (type === ItemsEnum.Coin || type === ItemsEnum.EternalMeleeTicket)
       return ItemTypeEnum.Resource;
 
 
@@ -605,6 +609,8 @@ export class LookupService {
     var description = "";
     if (item === ItemsEnum.Coin)
       description = "Use to trade with merchants.";
+    else if (item === ItemsEnum.EternalMeleeTicket)
+      description = "One extra entry to the <strong>Eternal Melee</strong> coliseum battle.";
     else {
       description = "Used for crafting.";
       if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs)
@@ -1334,6 +1340,7 @@ export class LookupService {
     var relatedUserGainStatusEffectEffectiveness = 0;
     var relatedUserGainStatusEffectEffectivenessPercent = 0;
     var relatedUserGainStatusEffectTickFrequency = 0;
+    var relatedUserGainStatusEffectThreshold = 0;
     var relatedTargetGainStatusEffectDuration = 0;
     var relatedTargetGainStatusEffectEffectiveness = 0;
     var relatedTargetGainStatusEffectEffectivenessPercent = 0;
@@ -1356,6 +1363,7 @@ export class LookupService {
 
       if (relatedUserGainStatusEffect !== undefined) {
         relatedUserGainStatusEffectDuration = Math.round(relatedUserGainStatusEffect.duration);
+        relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold;
         relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
         if (relatedUserGainStatusEffectEffectiveness < 1)
           relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness) * 100);
@@ -1449,13 +1457,13 @@ export class LookupService {
 
     //Dionysus
     if (abilityName === "Revelry")
-      abilityDescription = "Grant a random party member a <strong>" + (effectivenessPercent) + "% of Attack</strong> HP Shield, up to <strong>" + thresholdAmountPercent + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. " + cooldown + " second cooldown.";
+      abilityDescription = "Grant a random party member a <strong>" + (Math.round(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + Math.round(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. " + cooldown + " second cooldown.";
     if (abilityName === "Thyrsus")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
       abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Have a Drink")
-      abilityDescription = "Every " + cooldown + " seconds, give yourself a random stat <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
+      abilityDescription = "Every " + cooldown + " seconds, give yourself " + (ability?.userEffect.length === 1 ? "a" : ability?.userEffect.length) + " random <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff" + (ability?.userEffect.length === 1 ? "" : "s") + " for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
 
     //Nemesis
     if (abilityName === "Retribution")
@@ -1463,7 +1471,7 @@ export class LookupService {
     if (abilityName === "Chains of Fate")
       abilityDescription = "Create a link between you and one target forcing you both to only target each other. Attacks against you from this target increase <strong>Dues</strong> gain by an additional <strong>" + (effectivenessPercent - 100) + "%</strong>. Lasts " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "No Escape")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target twice. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
     if (abilityName === "Dispenser of Dues")
       abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0.";
 
@@ -2466,6 +2474,30 @@ export class LookupService {
       description = "Increase all Elemental Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage)
       description = "Deal " + effect.effectiveness + " " + this.getElementName(effect.element) + " damage to all enemies every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomDebuff)
+      description = "When the duration expires, reduce a random stat by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% for all enemies.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomBuff)
+      description = "When the duration expires, increase a random stat by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% for all party members.";
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier)
+      description = "When the duration expires, give a random party member a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier)
+      description = "When the duration expires, give all party members a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs)
+      description = "When the duration expires, reduce all primary stats of a target by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFastDebuffs)
+      description = "Reduce the duration of any debuffs inflicted on party members by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisLuckDebuff)
+      description = "When the duration expires, reduce all enemies' Luck by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisDealDamage)
+      description = "Deal " + effect.effectiveness + " damage to an enemy every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.NemesisRareThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
+      description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
+      description = "Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
 
     description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
     return description;
@@ -2580,6 +2612,10 @@ export class LookupService {
   gainResource(item: ResourceValue) {
     if (item === undefined)
       return;
+
+    if (item.item === ItemsEnum.EternalMeleeTicket) {
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries += item.amount;
+    }
 
     var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item && this.globalService.extraItemsAreEqual(item.extras, resource.extras));
     if (existingResource === undefined) {
@@ -5388,6 +5424,32 @@ export class LookupService {
     if (effect === AltarEffectsEnum.HadesRareDealElementalDamage)
       name = "Deal Random Elemental Damage Over Time";
 
+      if (effect === AltarEffectsEnum.DionysusRandomBuff)
+      name = "Random Buff After";
+    if (effect === AltarEffectsEnum.DionysusRandomDebuff)
+      name = "Random Debuff After";
+    if (effect === AltarEffectsEnum.DionysusSingleBarrier)
+      name = "Single Barrier After";
+    if (effect === AltarEffectsEnum.DionysusRareMultiBarrier)
+      name = "All Barrier After";
+    if (effect === AltarEffectsEnum.DionysusRareFastDebuffs)
+      name = "Debuff Duration Reduction";
+    if (effect === AltarEffectsEnum.DionysusRareFullDebuffs)
+      name = "All Stat Debuffs After";
+
+      if (effect === AltarEffectsEnum.NemesisLuckDebuff)
+      name = "Luck Debuff After";
+    if (effect === AltarEffectsEnum.NemesisDealDamage)
+      name = "Deal Damage Over Time";
+    if (effect === AltarEffectsEnum.NemesisThorns)
+      name = "Thorns Damage";
+    if (effect === AltarEffectsEnum.NemesisRareThorns)
+      name = "Large Thorns Damage";
+    if (effect === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
+      name = "Armor Penetration Up";
+    if (effect === AltarEffectsEnum.NemesisRareDuesUp)
+      name = "Dues Up After";
+
     return name;
   }
 
@@ -5606,7 +5668,7 @@ export class LookupService {
 
   getRandomPartyMember(party: Character[]) {
     var partyLength = party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).length;
-    var rng = this.utilityService.getRandomInteger(0, partyLength - 1);    
+    var rng = this.utilityService.getRandomInteger(0, partyLength - 1);
     return party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead))[rng];
   }
 }

@@ -134,6 +134,19 @@ export class GameLogEditorComponent implements OnInit {
     else
       this.achievementUnlocked = achievementUnlocked;
 
+      var alchemyLevelUp = this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp");
+      if (alchemyLevelUp === undefined)
+        this.alchemyLevelUp = false;
+      else
+        this.alchemyLevelUp = alchemyLevelUp;
+  
+      var alchemyCreation = this.globalService.globalVar.gameLogSettings.get("alchemyCreation");
+      if (alchemyCreation === undefined)
+        this.alchemyCreation = false;
+      else
+        this.alchemyCreation = alchemyCreation;
+  
+
     var jewelcraftingLevelUp = this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp");
     if (jewelcraftingLevelUp === undefined)
       this.jewelcraftingLevelUp = false;

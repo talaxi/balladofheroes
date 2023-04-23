@@ -618,8 +618,8 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Nemesis;
-        character1.assignedGod2 = GodEnum.Dionysus;
+        character1.assignedGod1 = GodEnum.Ares;
+        character1.assignedGod2 = GodEnum.Hermes;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GoldenSword);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfTheHealer);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BearskinArmor);
@@ -638,7 +638,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 440;
+      var godLevel = 1000;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -688,7 +688,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
       ares!.affinityLevel = 10;
 
       var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
-      dionysus!.isAvailable = true;
+      //dionysus!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(dionysus!);
       }
@@ -696,7 +696,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
       dionysus!.affinityLevel = 10;
 
       var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
-      nemesis!.isAvailable = true;
+      //nemesis!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(nemesis!);
       }

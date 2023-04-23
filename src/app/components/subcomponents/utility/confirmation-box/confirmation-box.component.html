@@ -6,6 +6,6 @@
 </div>
 <br/>
 <div class="spreadButtons">
-    <button class="buttonStyled" (click)="cancel()">Cancel</button>
+    <button *ngIf="cancelOptionAvailable" class="buttonStyled" (click)="cancel()">Cancel</button>
     <button class="buttonStyled" (click)="continue()">Continue</button>
 </div>

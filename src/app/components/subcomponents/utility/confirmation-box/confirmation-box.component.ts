@@ -8,6 +8,7 @@ import { MatDialogRef } from '@angular/material/dialog';
 })
 export class ConfirmationBoxComponent {
   @Input() confirmationText = "";
+  @Input() cancelOptionAvailable = true;
   constructor(public dialogRef: MatDialogRef<ConfirmationBoxComponent>) {
     
   }

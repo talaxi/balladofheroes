@@ -470,10 +470,12 @@ export class BackgroundService {
     todaysDate.setHours(0, 0, 0);
 
     var diffDays = Math.floor(Math.abs((todaysDate.valueOf() - dayOfLastTicket.valueOf()) / oneDay));
-    this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays;
-    if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > this.utilityService.weeklyMeleeEntryCap)
-      this.globalService.globalVar.sidequestData.weeklyMeleeEntries = this.utilityService.weeklyMeleeEntryCap;
-
+    if (diffDays > 0)
+    {
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays;
+      if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > this.utilityService.weeklyMeleeEntryCap)
+        this.globalService.globalVar.sidequestData.weeklyMeleeEntries = this.utilityService.weeklyMeleeEntryCap;
+    }
     this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived = new Date();
   }
 
@@ -482,14 +484,12 @@ export class BackgroundService {
       !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
       var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", character);
       if (dispenserOfDues !== undefined) {
-        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
-        console.log("Applying DoD");
+        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);        
       }
     }
     else if ((character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) &&
       character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
-      console.log("Removing DoD");
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);      
     }
   }
 }

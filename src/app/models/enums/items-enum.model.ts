@@ -215,5 +215,7 @@ export enum ItemsEnum {
   BlackLance,
   LiquidSaber,
   QuadRing,
-  Ares
+  Ares,
+  EternalMeleeTicket,
+  Subscriber
 }

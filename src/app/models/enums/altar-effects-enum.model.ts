@@ -36,5 +36,17 @@ export enum AltarEffectsEnum {
   HadesAoeDamageUp,
   HadesRareAoeDamageUp,
   HadesRareElementalDamageUp,
-  HadesRareDealElementalDamage
+  HadesRareDealElementalDamage,
+  DionysusRandomBuff,
+  DionysusRandomDebuff,
+  DionysusSingleBarrier,
+  DionysusRareFastDebuffs,
+  DionysusRareMultiBarrier,
+  DionysusRareFullDebuffs,
+  NemesisThorns,
+  NemesisLuckDebuff,
+  NemesisDealDamage,
+  NemesisRareThorns,
+  NemesisRareArmorPenetrationUp,
+  NemesisRareDuesUp
 }
