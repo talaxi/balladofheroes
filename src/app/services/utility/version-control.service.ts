@@ -22,7 +22,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -226,7 +226,57 @@ export class VersionControlService {
               this.globalService.globalVar.achievements.push(achievement);
             });
           }
-        }        
+        }
+        if (version === .45) {
+          var adventurer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer);
+          if (adventurer !== undefined) {
+            var ability2 = adventurer.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);
+
+            if (ability2 !== undefined && adventurer.level >= 18) {
+              ability2.effectiveness -= .025;
+              ability2.userEffect[0].effectiveness += .025;
+            }
+            if (ability2 !== undefined && adventurer.level >= 28) {
+              ability2.effectiveness -= .025;
+              ability2.userEffect[0].effectiveness += .025;
+            }
+          }
+
+          var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warrior !== undefined) {
+            var ability2 = warrior.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.effectiveness += .1;
+              ability2.secondaryEffectiveness += .15;
+            }
+          }
+
+          this.globalService.globalVar.characters.forEach(character => {
+            var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (ability1 !== undefined) {
+              if (character.level >= 12)
+                ability1.abilityUpgradeLevel += 1;
+              if (character.level >= 22)
+                ability1.abilityUpgradeLevel += 1;
+            }
+
+            var abilityPassive = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (abilityPassive !== undefined) {
+              if (character.level >= 14)
+                abilityPassive.abilityUpgradeLevel += 1;
+              if (character.level >= 24)
+                abilityPassive.abilityUpgradeLevel += 1;
+            }
+
+            var ability2 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);
+            if (ability2 !== undefined) {
+              if (character.level >= 18)
+                ability2.abilityUpgradeLevel += 1;
+              if (character.level >= 28)
+                ability2.abilityUpgradeLevel += 1;
+            }
+          });
+        }
 
         this.globalService.globalVar.currentVersion = version;
       }

@@ -226,21 +226,36 @@
             (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
         <div class="sectionInfo">
             <div *ngFor="let ability of characterAbilityList">
-                <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{ability.name}}</strong><span
+                <strong class="statLabel" [ngClass]="getAbilityColor(false)" customToolTip [isLargeTooltip]="true"
+                [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span
                     class="statValue"> -
                     <span
                         [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span></span>
 
-                <!--removed for now because it seems pointless-->
-                <ng-template #abilityDescriptionPopover>
-                    <div>
-                        <span>Upgrade Level {{getAbilityUpgradeLevel(ability)}}</span>
-                        <hr class="miniHr" />
-                        <div class="statBreakdown" [innerHtml]="this.getAbilityUpgradeBreakdown(ability)">
-
-                        </div>
-                    </div>
-                </ng-template>
+                        <ng-template #abilityPopover>
+                            <div>
+                                Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
+                                <hr/>
+                                <div *ngIf="getAbilityEffectivenessIncrease(ability) !== 0 && getAbilityEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Effectiveness Increase: </span> <span
+                            class="statValue" [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>
+                            <div *ngIf="getSecondaryAbilityEffectivenessIncrease(ability) !== 0 && getSecondaryAbilityEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getSecondaryAbilityEffectivenessIncrease(ability)"></span></div>
+                            <div *ngIf="getAbilityEffectCountIncrease(ability) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                class="statValue" [innerHtml]="getAbilityEffectCountIncrease(ability)"></span></div>
+                                <div *ngIf="getAbilityEffectMaxCountIncrease(ability) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                    class="statValue" [innerHtml]="getAbilityEffectMaxCountIncrease(ability)"></span></div>
+                            <div *ngIf="getAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getAbilityUserEffectEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
+                            class="statValue" [innerHtml]="getAbilityUserEffectEffectivenessIncrease(ability)"></span></div>
+                            <div *ngIf="getAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
+                            class="statValue" [innerHtml]="getAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
+                            <div *ngIf="getAbilityTargetEffectEffectivenessIncrease(ability) !== 0 && getAbilityTargetEffectEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getAbilityTargetEffectEffectivenessIncrease(ability)"></span></div>
+                                <div *ngIf="getAbilityTargetEffectDurationIncrease(ability) !== 0"><span class="statLabel">Targeted Effect Duration Increase: </span> <span
+                                class="statValue" [innerHtml]="getAbilityTargetEffectDurationIncrease(ability)"></span> seconds</div>
+                                <div *ngIf="getAbilityCooldownReduction(ability) !== 0"><span class="statLabel">Cooldown Reduction: </span> <span
+                                    class="statValue" [innerHtml]="getAbilityCooldownReduction(ability)"></span> seconds</div>
+                            </div>
+                        </ng-template>
 
             </div>
             <div *ngIf="overdriveAvailable">

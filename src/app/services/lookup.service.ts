@@ -1349,12 +1349,12 @@ export class LookupService {
     var maxCountTimesEffectivenessPercent = 0;
 
     if (ability !== undefined) {
-      effectivenessPercent = Math.round(ability.effectiveness * 100);
-      effectiveAmount = Math.round(this.getAbilityEffectiveAmount(character, ability));
-      effectiveAmountPercent = Math.round((ability.effectiveness - 1) * 100);
+      effectivenessPercent = this.utilityService.genericRound(ability.effectiveness * 100);
+      effectiveAmount = this.utilityService.genericRound(this.getAbilityEffectiveAmount(character, ability));
+      effectiveAmountPercent = this.utilityService.genericRound((ability.effectiveness - 1) * 100);
       secondaryEffectiveAmount = ability.secondaryEffectiveness;
-      secondaryEffectiveAmountPercent = Math.round((secondaryEffectiveAmount - 1) * 100);
-      thresholdAmountPercent = Math.round((ability.threshold) * 100);
+      secondaryEffectiveAmountPercent = this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100);
+      thresholdAmountPercent = this.utilityService.genericRound((ability.threshold) * 100);
       abilityCount = ability.maxCount;
       cooldown = this.utilityService.roundTo(this.globalService.getAbilityCooldown(ability, character), 2);
       maxCountTimesEffectivenessPercent = ability.maxCount * effectivenessPercent;
@@ -1362,7 +1362,7 @@ export class LookupService {
       var relatedUserGainStatusEffect = ability?.userEffect[0];
 
       if (relatedUserGainStatusEffect !== undefined) {
-        relatedUserGainStatusEffectDuration = Math.round(relatedUserGainStatusEffect.duration);
+        relatedUserGainStatusEffectDuration = this.utilityService.genericRound(relatedUserGainStatusEffect.duration);
         relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold;
         relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
         if (relatedUserGainStatusEffectEffectiveness < 1)
@@ -1375,10 +1375,10 @@ export class LookupService {
       var relatedTargetGainStatusEffect = ability?.targetEffect[0];
 
       if (relatedTargetGainStatusEffect !== undefined) {
-        relatedTargetGainStatusEffectDuration = Math.round(relatedTargetGainStatusEffect.duration);
+        relatedTargetGainStatusEffectDuration = this.utilityService.genericRound(relatedTargetGainStatusEffect.duration);
         relatedTargetGainStatusEffectEffectiveness = relatedTargetGainStatusEffect.effectiveness;
         if (relatedTargetGainStatusEffectEffectiveness < 1)
-          relatedTargetGainStatusEffectEffectivenessPercent = Math.round((relatedTargetGainStatusEffectEffectiveness) * 100);
+          relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100);
         else
           relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedTargetGainStatusEffectEffectiveness - 1) * 100, this.utilityService.genericRoundTo);
         relatedTargetGainStatusEffectTickFrequency = relatedTargetGainStatusEffect.tickFrequency;
@@ -1447,9 +1447,9 @@ export class LookupService {
 
     //Ares
     if (abilityName === "Rupture")
-      abilityDescription = "Apply a damage over time effect to a target that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Apply a damage over time effect to a target that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Onslaught")
-      abilityDescription = "After your next ability, apply a damage over time effect to the targets that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "After your next ability, apply a damage over time effect to the targets that deals an additional <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Revel in Blood")
       abilityDescription = "Reduce your own current HP by 10%. Apply a damage over time effect to all targets that deals <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "% of HP Loss</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Bloodlust")
@@ -1457,7 +1457,7 @@ export class LookupService {
 
     //Dionysus
     if (abilityName === "Revelry")
-      abilityDescription = "Grant a random party member a <strong>" + (Math.round(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + Math.round(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. " + cooldown + " second cooldown.";
+      abilityDescription = "Grant a random party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + Math.round(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. " + cooldown + " second cooldown.";
     if (abilityName === "Thyrsus")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
@@ -2312,7 +2312,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.RecentlyDefeated)
       description = "You have recently been defeated and are still nursing your wounds. Your primary stats are reduced by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.ThousandCuts)
-      description = "Deal increased damage after every attack.";
+      description = "Deal increased damage after every attack. Current damage increase: " + this.utilityService.genericRound(((statusEffect.effectiveness - 1) * statusEffect.count) * 100);
     if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking " + Math.round(statusEffect.effectiveness) + " damage every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
     if (statusEffect.type === StatusEffectEnum.Thorns)

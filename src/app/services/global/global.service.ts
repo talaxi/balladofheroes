@@ -51,7 +51,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .42;
+    return .45;
   }
 
   initializeGlobalVariables() {
@@ -212,8 +212,8 @@ export class GlobalService {
       shieldSlam.name = "Shield Slam";
       shieldSlam.requiredLevel = this.utilityService.characterAbility2Level;
       shieldSlam.isAvailable = false;
-      shieldSlam.effectiveness = 1.4;
-      shieldSlam.secondaryEffectiveness = .25;
+      shieldSlam.effectiveness = 1.5;
+      shieldSlam.secondaryEffectiveness = .4;
       shieldSlam.dealsDirectDamage = true;
       shieldSlam.cooldown = shieldSlam.currentCooldown = 43;
       character.abilityList.push(shieldSlam);
@@ -1218,6 +1218,7 @@ export class GlobalService {
     if (ability1 === undefined)
       return;
 
+      ability1.abilityUpgradeLevel += 1;
     if (character.type === CharacterEnum.Adventurer) {
       ability1.effectiveness += .5;
     }
@@ -1241,6 +1242,8 @@ export class GlobalService {
     var ability = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
     if (ability === undefined)
       return;
+      
+      ability.abilityUpgradeLevel += 1;
 
     var targetGainsEffect = ability.targetEffect[0];
 
@@ -1268,8 +1271,9 @@ export class GlobalService {
     if (ability1 === undefined)
       return;
 
+    ability1.abilityUpgradeLevel += 1;
     if (character.type === CharacterEnum.Adventurer) {
-      ability1.effectiveness += .025;
+      ability1.userEffect[0].effectiveness += .025;
     }
     if (character.type === CharacterEnum.Archer) {
       ability1.effectiveness += .4;
@@ -1707,7 +1711,7 @@ export class GlobalService {
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= 1;
-      else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.effectiveness += .01;
       else
         ability.effectiveness += .35;
@@ -1953,6 +1957,48 @@ export class GlobalService {
     god.permanentStatGain.overdriveGain += upgradedStats.overdriveGain;
 
     god.permanentStatGain = this.roundCharacterStats(god.permanentStatGain);
+
+    var statGainText = "";
+    if (upgradedStats.maxHp > 0)
+      statGainText += Math.round(upgradedStats.maxHp) + " Max HP, ";
+    if (upgradedStats.attack > 0)
+      statGainText += Math.round(upgradedStats.attack) + " Attack, ";
+    if (upgradedStats.agility > 0)
+      statGainText += Math.round(upgradedStats.agility) + " Agility, ";
+    if (upgradedStats.luck > 0)
+      statGainText += Math.round(upgradedStats.luck) + " Luck, ";
+    if (upgradedStats.defense > 0)
+      statGainText += Math.round(upgradedStats.defense) + " Defense, ";
+    if (upgradedStats.resistance > 0)
+      statGainText += Math.round(upgradedStats.resistance) + " Resistance, ";
+
+      if (upgradedStats.hpRegen > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.hpRegen) + " HP Regen per 5 sec, ";
+      if (upgradedStats.criticalMultiplier > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.criticalMultiplier * 100) + "% Critical Multiplier, ";
+      if (upgradedStats.autoAttackCooldownReduction > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction, ";
+      if (upgradedStats.healingDone > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.healingDone * 100) + "% Healing Done, ";
+      if (upgradedStats.elementIncrease.holy > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.holy * 100) + "% Holy Damage Increase, ";
+      if (upgradedStats.elementIncrease.fire > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
+      if (upgradedStats.overdriveGain > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
+      if (upgradedStats.armorPenetration > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
+      if (upgradedStats.abilityCooldownReduction > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";      
+
+    if (statGainText !== "")
+      statGainText = statGainText.substring(0, statGainText.length - 2);
+
+    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+      var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong>.";      
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    }
+
   }
 
   //set this up entirely so you can tell what is going on. when leveling up, consult this before calling any function

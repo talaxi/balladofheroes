@@ -638,7 +638,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 1500;
+      var godLevel = 1498;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

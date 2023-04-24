@@ -19,6 +19,10 @@ export class ResourceViewComponent implements OnInit {
   charmResources: ResourceValue[] = [];
   tooltipDirection = DirectionEnum.Down;
 
+  equipmentTabActive: boolean;
+  resourcesTabActive: boolean;
+  progressionTabActive: boolean;  
+
   constructor(public lookupService: LookupService, private globalService: GlobalService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {

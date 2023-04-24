@@ -24,6 +24,7 @@ export class CharacterViewComponent implements OnInit {
   characterAbilityList: Ability[] = [];
   public noGod = GodEnum.None;
   tooltipDirection = DirectionEnum.Down;
+  abilityTooltipDirection = DirectionEnum.UpRight;
   otherClassesAvailable = false;
   overdriveAvailable = false;
   changeGodsAvailable = false;
@@ -283,14 +284,6 @@ export class CharacterViewComponent implements OnInit {
     return this.character.battleStats.elementResistance.earth;
   }
 
-  getAbilityUpgradeLevel(ability: Ability) {
-    return ability.abilityUpgradeLevel;
-  }
-
-  getAbilityUpgradeBreakdown(ability: Ability) {
-    return "Placeholder";
-  }
-
   hasMoreThanOneCharacter() {
     return this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 1;
   }
@@ -306,6 +299,112 @@ export class CharacterViewComponent implements OnInit {
       currentIndex = 0;
 
     this.menuService.setSelectedCharacter(partyMembers[currentIndex].type);
+  }
+
+
+  getAbilityUpgradeLevel(ability: Ability) {
+    return ability.abilityUpgradeLevel;
+  }
+
+  getAbilityEffectivenessIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {      
+        return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness) * 100) + "%";
+    }
+
+    return 0;
+  }
+
+  getSecondaryAbilityEffectivenessIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+      return this.utilityService.genericRound((ability.secondaryEffectiveness - baseAbility.secondaryEffectiveness) * 100) + "%";
+    }
+
+    return 0;
+  }
+
+  getAbilityEffectCountIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    return 0;
+  }
+
+  getAbilityEffectMaxCountIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+      return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));
+    }
+
+    return 0;
+  }
+
+  getAbilityUserEffectEffectivenessIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {
+      return Math.abs(this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness) * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getAbilityUserEffectDurationIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
+      return this.utilityService.roundTo((ability.userEffect[0].duration - baseAbility.userEffect[0].duration), 2);
+
+    return 0;
+  }
+
+  getAbilityTargetEffectEffectivenessIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0) {
+      return Math.abs(this.utilityService.genericRound((ability.targetEffect[0].effectiveness - baseAbility.targetEffect[0].effectiveness) * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getAbilityTargetEffectDurationIncrease(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0)
+      return this.utilityService.roundTo((ability.targetEffect[0].duration - baseAbility.targetEffect[0].duration), 2);
+
+    return 0;
+  }
+
+  getAbilityCooldownReduction(ability: Ability) {
+    var baseCharacter = new Character(this.character.type);
+    this.globalService.assignAbilityInfo(baseCharacter);
+    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined)
+      return this.utilityService.genericRound(Math.abs(ability.cooldown - baseAbility.cooldown));
+
+    return 0;
   }
 
   ngOnDestroy() {

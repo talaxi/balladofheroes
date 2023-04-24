@@ -10,6 +10,7 @@ import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.mode
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GodLevelIncreaseEnum } from 'src/app/models/enums/god-level-increase-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { AltarService } from 'src/app/services/altar/altar.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -106,23 +107,23 @@ export class GodViewComponent implements OnInit {
         if (i === totalLevelDisplay - 1) {
           //set next level to the next biggest thing
           if (nextLevel < this.utilityService.godAbility2Level)
-            nextLevel = this.utilityService.godAbility2Level;          
+            nextLevel = this.utilityService.godAbility2Level;
           else if (nextLevel < 50) //permanent stat 1
             nextLevel = 50;
           else if (nextLevel < this.utilityService.godAbility3Level)
             nextLevel = this.utilityService.godAbility3Level;
           else if (nextLevel < 100) //permanent stat 2
             nextLevel = 100;
-            else if (nextLevel < this.utilityService.permanentPassiveGodLevel)
+          else if (nextLevel < this.utilityService.permanentPassiveGodLevel)
             nextLevel = this.utilityService.permanentPassiveGodLevel;
-            else if (nextLevel < 150) //permanent stat 3
+          else if (nextLevel < 150) //permanent stat 3
             nextLevel = 150;
           else if (nextLevel < this.utilityService.permanentGodAbility2Level)
-            nextLevel = this.utilityService.permanentGodAbility2Level;          
+            nextLevel = this.utilityService.permanentGodAbility2Level;
           else if (nextLevel < 200) //permanent stat 4
             nextLevel = 200;
           else if (nextLevel > (this.utilityService.permanentGodAbility3Level - 26) && nextLevel < this.utilityService.permanentGodAbility3Level)
-            nextLevel = this.utilityService.permanentGodAbility3Level;   
+            nextLevel = this.utilityService.permanentGodAbility3Level;
           else if (nextLevel <= 500) //end of permanent stats
             nextLevel = Math.ceil(nextLevel / 25) * 25;
           else
@@ -137,7 +138,7 @@ export class GodViewComponent implements OnInit {
       var nextLevelType = this.globalService.getGodLevelIncreaseTypeByLevel(this.god, nextLevel);
       if (nextLevel - previousLevel > 1)
         rewards += "...<br/>";
-      
+
       rewards += "<strong class='smallCaps " + this.globalService.getGodColorClassText(this.god.type) + "'>level " + nextLevel + " </strong>- ";
 
       if (nextLevelType === GodLevelIncreaseEnum.Stats) {
@@ -174,7 +175,7 @@ export class GodViewComponent implements OnInit {
           rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " (Ability 3)</span>";
         }
       }
-      if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {        
+      if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {
         if (nextLevel === this.utilityService.permanentPassiveGodLevel) {
           rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " After Level Reset";
         }
@@ -214,23 +215,23 @@ export class GodViewComponent implements OnInit {
         if (increaseValues.hpRegen > 0)
           rewards += this.utilityService.roundTo(increaseValues.hpRegen, 2) + " HP Regen per 5 sec Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.criticalMultiplier > 0)
-          rewards += this.utilityService.roundTo(increaseValues.criticalMultiplier  * 100, 2) + "% Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.criticalMultiplier * 100, 2) + "% Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.abilityCooldownReduction > 0)
           rewards += this.utilityService.roundTo(increaseValues.abilityCooldownReduction * 100, 3) + "% Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.autoAttackCooldownReduction > 0)
           rewards += this.utilityService.roundTo(increaseValues.autoAttackCooldownReduction * 100, 3) + "% Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-          if (increaseValues.armorPenetration > 0)
-          rewards += this.utilityService.roundTo(increaseValues.armorPenetration  * 100, 2) + "% Armor Penetration Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-          if (increaseValues.overdriveGain > 0)
-          rewards += this.utilityService.roundTo(increaseValues.overdriveGain  * 100, 2) + "% Overdrive Gain Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-          if (increaseValues.healingReceived > 0)
-          rewards += this.utilityService.roundTo(increaseValues.healingReceived  * 100, 2) + "% Healing Received Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-          if (increaseValues.debuffDuration > 0)
-          rewards += this.utilityService.roundTo(increaseValues.debuffDuration  * 100, 2) + "% Debuff Duration Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-          if (increaseValues.overdriveGainFromAutoAttacks > 0)
-          rewards += this.utilityService.roundTo(increaseValues.overdriveGainFromAutoAttacks  * 100, 2) + "% Overdrive Gain From Auto Attacks Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-          if (increaseValues.healingDone > 0)
-          rewards += this.utilityService.roundTo(increaseValues.healingDone  * 100, 2) + "% Healing Done Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.armorPenetration > 0)
+          rewards += this.utilityService.roundTo(increaseValues.armorPenetration * 100, 2) + "% Armor Penetration Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.overdriveGain > 0)
+          rewards += this.utilityService.roundTo(increaseValues.overdriveGain * 100, 2) + "% Overdrive Gain Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.healingReceived > 0)
+          rewards += this.utilityService.roundTo(increaseValues.healingReceived * 100, 2) + "% Healing Received Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.debuffDuration > 0)
+          rewards += this.utilityService.roundTo(increaseValues.debuffDuration * 100, 2) + "% Debuff Duration Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.overdriveGainFromAutoAttacks > 0)
+          rewards += this.utilityService.roundTo(increaseValues.overdriveGainFromAutoAttacks * 100, 2) + "% Overdrive Gain From Auto Attacks Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (increaseValues.healingDone > 0)
+          rewards += this.utilityService.roundTo(increaseValues.healingDone * 100, 2) + "% Healing Done Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.elementIncrease.holy > 0)
           rewards += (increaseValues.elementIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
@@ -285,16 +286,16 @@ export class GodViewComponent implements OnInit {
 
     if (reward === AffinityLevelRewardEnum.PrayerDuration)
       return "Increase Base Prayer Duration by " + this.utilityService.affinityRewardPrayerDuration * 100 + "%";
-      if (reward === AffinityLevelRewardEnum.PrayerEffectiveness)
+    if (reward === AffinityLevelRewardEnum.PrayerEffectiveness)
       return "Increase Base Prayer Effectiveness by " + this.utilityService.affinityRewardPrayerEffectiveness * 100 + "%";
-      if (reward === AffinityLevelRewardEnum.GodXp)
+    if (reward === AffinityLevelRewardEnum.GodXp)
       return "Increase God's EXP Gain by " + this.utilityService.affinityRewardGodXpBonus * 100 + "%";
-      if (reward === AffinityLevelRewardEnum.SmallCharm)
+    if (reward === AffinityLevelRewardEnum.SmallCharm)
       return "Small Charm of " + this.god.name;
-      if (reward === AffinityLevelRewardEnum.LargeCharm)
+    if (reward === AffinityLevelRewardEnum.LargeCharm)
       return "Large Charm of " + this.god.name;
 
-      return "";
+    return "";
   }
 
   getMaxHpBonus() {
@@ -377,7 +378,7 @@ export class GodViewComponent implements OnInit {
     return this.god.statGain.abilityCooldownReduction + this.god.permanentStatGain.abilityCooldownReduction;
   }
 
-  getAutoAttackCooldownBonus() {    
+  getAutoAttackCooldownBonus() {
     return this.god.statGain.autoAttackCooldownReduction + this.god.permanentStatGain.autoAttackCooldownReduction;
   }
 
@@ -388,7 +389,7 @@ export class GodViewComponent implements OnInit {
   getFireDamageBonus() {
     return this.god.statGain.elementIncrease.fire + this.god.permanentStatGain.elementIncrease.fire;
   }
-  
+
   getLightningDamageBonus() {
     return this.god.statGain.elementIncrease.lightning + this.god.permanentStatGain.elementIncrease.lightning;
   }
@@ -433,7 +434,7 @@ export class GodViewComponent implements OnInit {
     return this.lookupService.getGodMaxHpStatBreakdown(this.god);
   }
 
-  hasMoreThanOneGod() {    
+  hasMoreThanOneGod() {
     return this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 1;
   }
 
@@ -450,25 +451,25 @@ export class GodViewComponent implements OnInit {
     if (currentIndex > gods.length - 1)
       currentIndex = 0;
 
-      this.menuService.setSelectedGod(gods[currentIndex].type);
+    this.menuService.setSelectedGod(gods[currentIndex].type);
   }
 
   getBoonDurationIncrease() {
     var durationIncreaseCount = this.lookupService.getGodAffinityBoonDurationIncreaseCount(this.god);
 
-      return Math.round(durationIncreaseCount * this.utilityService.affinityRewardPrayerDuration * 100) + "%";      
+    return Math.round(durationIncreaseCount * this.utilityService.affinityRewardPrayerDuration * 100) + "%";
   }
 
   getBoonEffectivenessIncrease() {
     var durationIncreaseCount = this.lookupService.getGodAffinityBoonEffectivenessIncreaseCount(this.god);
 
-    return Math.round(durationIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness * 100) + "%";  
+    return Math.round(durationIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness * 100) + "%";
   }
 
   getAffinityGodXpIncrease() {
     var increaseCount = this.lookupService.getGodAffinityXpIncreaseCount(this.god);
 
-    return Math.round(increaseCount * this.utilityService.affinityRewardGodXpBonus * 100) + "%";  
+    return Math.round(increaseCount * this.utilityService.affinityRewardGodXpBonus * 100) + "%";
   }
 
   getAffinitySmallCharmCount() {
@@ -480,46 +481,151 @@ export class GodViewComponent implements OnInit {
   }
 
   getSmallAltarEffectDescriptions() {
-   var text = "";
-   
+    var text = "";
+
     var possibleEffects = this.altarService.getPossibleEffects(this.god.type, AltarEnum.Small, true);
 
     possibleEffects.forEach(effect => {
       var baseAltarEffect = this.altarService.getBaseAltarEffect(AltarEnum.Small, effect);
-      text += "<span class='statLabel " + this.god.name.toLowerCase() + "Color'>" + this.lookupService.getBoonName(effect) + "</span> - <span class='statValue'>" + this.lookupService.getBaseAltarEffectDescription(baseAltarEffect) +"</span><br/>";
-    });    
+      text += "<span class='statLabel " + this.god.name.toLowerCase() + "Color'>" + this.lookupService.getBoonName(effect) + "</span> - <span class='statValue'>" + this.lookupService.getBaseAltarEffectDescription(baseAltarEffect) + "</span><br/>";
+    });
 
-   return text;
+    return text;
   }
 
   getLargeAltarEffectDescriptions() {
     var text = "";
-    
-     var possibleEffects = this.altarService.getPossibleEffects(this.god.type, AltarEnum.Large, true);
- 
-     possibleEffects.forEach(effect => {
-       var baseAltarEffect = this.altarService.getBaseAltarEffect(AltarEnum.Large, effect);
-       text +=  "<span class='statLabel " + this.god.name.toLowerCase() + "Color'>" + this.lookupService.getBoonName(effect) + "</span> - <span class='statValue'>" + this.lookupService.getBaseAltarEffectDescription(baseAltarEffect) +"</span><br/>";
-     });    
- 
+
+    var possibleEffects = this.altarService.getPossibleEffects(this.god.type, AltarEnum.Large, true);
+
+    possibleEffects.forEach(effect => {
+      var baseAltarEffect = this.altarService.getBaseAltarEffect(AltarEnum.Large, effect);
+      text += "<span class='statLabel " + this.god.name.toLowerCase() + "Color'>" + this.lookupService.getBoonName(effect) + "</span> - <span class='statValue'>" + this.lookupService.getBaseAltarEffectDescription(baseAltarEffect) + "</span><br/>";
+    });
+
     return text;
-   }
+  }
 
-   getAbilityUpgradeLevel(ability: Ability) {
+  getAbilityUpgradeLevel(ability: Ability) {
     return ability.abilityUpgradeLevel;
-   }
+  }
 
-   getAbilityEffectivenessIncrease(ability: Ability) {
-    var baseGod = new God(this.god.type);    
+  getAbilityEffectivenessIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+      if (baseAbility.name === "Quicken")
+        return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness));
+      else
+        return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness) * 100) + "%";
+    }
+
+    return 0;
+  }
+
+  getSecondaryAbilityEffectivenessIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+        return this.utilityService.genericRound((ability.secondaryEffectiveness - baseAbility.secondaryEffectiveness) * 100) + "%";
+    }
+
+    return 0;
+  }
+
+  getAbilityEffectCountIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+      if (baseAbility.name === "Special Delivery")
+        return this.utilityService.genericRound((ability.userEffect.length - baseAbility.userEffect.length));
+        if (baseAbility.name === "No Escape")
+        return this.utilityService.genericRound((ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length - baseAbility.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length));              
+        if (baseAbility.name === "Insanity")
+        return this.utilityService.genericRound((ability.targetEffect.length - baseAbility.targetEffect.length));              
+    }
+
+    return 0;
+  }
+
+  getAbilityEffectMaxCountIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+        return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));              
+    }
+
+    return 0;
+  }
+
+  getAbilityUserEffectEffectivenessIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {
+      if (baseAbility.name === "Second Wind")
+        return this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness));
+      else
+        return Math.abs(this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness) * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getAbilityUserEffectDurationIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
+      return this.utilityService.roundTo((ability.userEffect[0].duration - baseAbility.userEffect[0].duration), 2);
+
+    return 0;
+  }
+
+  getAbilityTargetEffectEffectivenessIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0) {
+      return Math.abs(this.utilityService.genericRound((ability.targetEffect[0].effectiveness - baseAbility.targetEffect[0].effectiveness) * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getAbilityTargetEffectDurationIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0)
+      return this.utilityService.roundTo((ability.targetEffect[0].duration - baseAbility.targetEffect[0].duration), 2);
+
+    return 0;
+  }
+
+  getAbilityCooldownReduction(ability: Ability) {
+    var baseGod = new God(this.god.type);
     this.globalService.assignGodAbilityInfo(baseGod);
     var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
     if (baseAbility !== undefined)
-      return ability.effectiveness - baseAbility.effectiveness;
+      return this.utilityService.genericRound(Math.abs(ability.cooldown - baseAbility.cooldown));
 
     return 0;
-   }
-  
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
