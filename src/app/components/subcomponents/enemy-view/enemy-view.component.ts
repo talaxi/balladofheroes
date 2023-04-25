@@ -52,6 +52,12 @@ export class EnemyViewComponent implements OnInit {
         if (this.previousName !== this.character.name) {
           this.enemyName.nativeElement.classList.remove('smallText');
           this.enemyName.nativeElement.classList.remove('verySmallText');
+          this.enemyName.nativeElement.classList.remove('extremelySmallText');
+        }
+
+        if (this.enemyName.nativeElement.classList.contains('verySmallText') && (this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight) {
+          this.enemyName.nativeElement.classList.remove('verySmallText');
+          this.enemyName.nativeElement.classList.add('extremelySmallText');
         }
 
         if (this.enemyName.nativeElement.classList.contains('smallText') && (this.enemyNameContainer.nativeElement.offsetHeight * 1.4) < this.enemyName.nativeElement.offsetHeight) {

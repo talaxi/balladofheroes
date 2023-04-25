@@ -419,7 +419,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FishScales, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.EagleFeather, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FocusPotion, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BoomingPotion, 10000));    
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BoomingPotion, 10000));
 
     this.globalService.globalVar.currentStoryId = 7;
     this.globalService.globalVar.isDpsUnlocked = true;
@@ -452,30 +452,30 @@ export class InitializationService {
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       //if (ballad.type !== BalladEnum.Underworld) {
-        ballad.isAvailable = true;
-        ballad.notify = true;
-        ballad.zones.forEach(zone => {
-          //if (zone.type !== ZoneEnum.TheLethe) {
-          zone.isAvailable = true;
-          zone.notify = true;
-          zone.subzones.forEach(subzone => {
-            subzone.isAvailable = true;
-            subzone.notify = true;
-            //subzone.victoryCount = 100;
-            if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
-              this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
-                this.globalService.globalVar.achievements.push(achievement);
-                if (allAchievementsComplete) {
-                  achievement.completed = true;
-                  this.achievementService.getAchievementReward(achievement.subzone, achievement.type).forEach(bonus => {
-                    this.lookupService.gainResource(bonus.makeCopy());
-                  });
-                }
-              });
-            }
-          })
-          //}
-        });
+      ballad.isAvailable = true;
+      ballad.notify = true;
+      ballad.zones.forEach(zone => {
+        //if (zone.type !== ZoneEnum.TheLethe) {
+        zone.isAvailable = true;
+        zone.notify = true;
+        zone.subzones.forEach(subzone => {
+          subzone.isAvailable = true;
+          subzone.notify = true;
+          //subzone.victoryCount = 100;
+          if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
+            this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
+              this.globalService.globalVar.achievements.push(achievement);
+              if (allAchievementsComplete) {
+                achievement.completed = true;
+                this.achievementService.getAchievementReward(achievement.subzone, achievement.type).forEach(bonus => {
+                  this.lookupService.gainResource(bonus.makeCopy());
+                });
+              }
+            });
+          }
+        })
+        //}
+      });
       //}
     });
 
@@ -562,17 +562,17 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAres,  allCharmCount));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres,  allCharmCount));
 */
-this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, 5));
-this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, 5));
-this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus,  5));
-this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus,  5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));
 
-      this.globalService.globalVar.chthonicPowers.attackBoostLevel = 5;
+      /*this.globalService.globalVar.chthonicPowers.attackBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.luckBoostLevel = 5;
-      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 5;
+      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 5;*/
       this.globalService.globalVar.altars.largeAltarsUnlocked = true;
 
       var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FendingMace, 1);
@@ -618,8 +618,8 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Dionysus;
-        character1.assignedGod2 = GodEnum.Nemesis;
+        character1.assignedGod1 = GodEnum.Hades;
+        character1.assignedGod2 = GodEnum.Athena;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GoldenSword);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ShieldOfTheHealer);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BearskinArmor);
@@ -702,7 +702,7 @@ this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus
       }
       nemesis!.exp = 0;
       nemesis!.affinityLevel = 40;
-      
+
       var characterLevel = 29;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {

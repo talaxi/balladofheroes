@@ -1,9 +1,12 @@
-.resources {
+/*.resources {
     white-space: pre;
-}
+}*/
 
 .resourcesView {
     height:100%;
+    margin-top: -.4rem;
+    margin-left: -.4rem;
+    margin-right: -.4rem;
     
     background-color: var(--background-default);
     border-color: var(--background-header);
@@ -29,18 +32,26 @@
       grid-area: resources;
       border-right: 1px solid rgba(0,0,0,.1);      
       background-color: var(--background-default);
+      
+      display: flex;
+      justify-content: space-around;
     }
 
     .progression {
       grid-area: progression;
       border-right: 1px solid rgba(0,0,0,.1);
       background-color: var(--background-default);
+      display: flex;
+      justify-content: space-around;
     }  
   
     .equipment {
       grid-area: equipment;
       background-color: var(--background-default);
       border-right: 1px solid rgba(0,0,0,.1);
+
+      display: flex;
+      justify-content: space-around;
     }
 
     .screenMarginRight {
@@ -104,20 +115,42 @@
     
     .tabItem {
       border-right: 1px solid rgba(255, 255, 255, .25);
+      padding: 0.5rem 0;
     }
     
-    table tr td:nth-child(2n) {
+    table tr td:nth-child(3n) {
       border-right: none;
     }
     
     table {
         table-layout: fixed;
         width: 100%;
-        height: 100%;
+        /*height: 100%;*/
         text-align: center;
     }
+
+    .column1, .column2 {
+      width: 50%;
+      display: inline-block;
+    }
+
+    .equipmentSection, .slotItemSection, .craftingMaterialsSection {
+      width: 48%;
+    }
+
+    .resourcesSection, .battleItemsSection {
+      width: 24%;
+    }
+
+    .smallCharmsSection, .largeCharmsSection {
+      width: 48%;
+    }
     
-    td {
+    .noLineHeight {
+      line-height:0;
+    }
+
+    /*td {
         width: 25%;
         border: 1px solid rgba(0,0,0,.1);
         padding: 1rem;
@@ -138,7 +171,7 @@
     
       table tr td:nth-child(4n-3) { 
         border-left: none;
-      }
+      }*/
     
       
     @media (max-width: 800px) {

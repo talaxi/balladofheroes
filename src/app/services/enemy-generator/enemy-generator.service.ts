@@ -449,7 +449,7 @@ export class EnemyGeneratorService {
     if (type === BestiaryEnum.LostSoul) {
       //somewhat easy to rebound from resetting gods
       enemy.name = "Lost Soul";
-      enemy.battleStats = new CharacterStats(263, 36, 58, 37, 30, 85);
+      enemy.battleStats = new CharacterStats(247, 30, 53, 37, 30, 85);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 96;
@@ -457,7 +457,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Wretched) {
       enemy.name = "Wretched";
-      enemy.battleStats = new CharacterStats(238, 47, 70, 53, 40, 85);
+      enemy.battleStats = new CharacterStats(228, 44, 62, 53, 40, 85);
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
@@ -476,7 +476,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Revenant) {
       enemy.name = "Revenant";
-      enemy.battleStats = new CharacterStats(350, 65, 110, 75, 35, 85);
+      enemy.battleStats = new CharacterStats(320, 52, 102, 75, 35, 85);
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
@@ -487,7 +487,7 @@ export class EnemyGeneratorService {
       var soulRip = new Ability();
       soulRip.name = "Soul Rip";
       soulRip.isAvailable = true;
-      soulRip.cooldown = soulRip.currentCooldown = 13;
+      soulRip.cooldown = soulRip.currentCooldown = 16;
       soulRip = this.randomizeCooldown(soulRip);
       soulRip.dealsDirectDamage = true;
       soulRip.effectiveness = 1;
@@ -496,7 +496,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.IncoherentBanshee) {
       enemy.name = "Incoherent Banshee";
-      enemy.battleStats = new CharacterStats(507, 68, 92, 40, 45, 75);
+      enemy.battleStats = new CharacterStats(467, 63, 82, 40, 45, 75);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 108;
@@ -514,7 +514,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.EngorgedShade) {
       enemy.name = "Engorged Shade";
-      enemy.battleStats = new CharacterStats(554, 80, 123, 75, 50, 75);
+      enemy.battleStats = new CharacterStats(534, 80, 112, 75, 50, 75);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 110;
@@ -523,7 +523,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CacklingSpectre) {
       enemy.name = "Cackling Spectre";
-      enemy.battleStats = new CharacterStats(583, 48, 89, 55, 50, 75);
+      enemy.battleStats = new CharacterStats(543, 42, 86, 55, 50, 75);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 108;
@@ -551,7 +551,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Butcher) {
       enemy.name = "Butcher";
-      enemy.battleStats = new CharacterStats(628, 90, 113, 65, 40, 140);
+      enemy.battleStats = new CharacterStats(628, 78, 106, 65, 40, 140);
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
@@ -572,7 +572,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.WheelOfFire) {
       enemy.name = "Wheel of Fire";
-      enemy.battleStats = new CharacterStats(525, 81, 118, 65, 80, 150);
+      enemy.battleStats = new CharacterStats(525, 76, 118, 65, 80, 150);
       enemy.battleStats.elementResistance.water = this.utilityService.enemyMediumElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;

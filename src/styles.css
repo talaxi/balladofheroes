@@ -239,6 +239,7 @@
 
   --e2-size: 1.175rem;
   --e3-size: 1.025rem;
+  --e4-size: 0.75rem;
 
   --s1-size: 3rem;
   --s1-weight: 600;
@@ -309,6 +310,14 @@ body {
 
 * {
   font-family: "Candara", sans-serif !important;
+}
+
+@media (max-width: 1150px) and (min-width:  801px) {
+
+  html,
+  body {
+    font-size: 1.45vmin;
+  }
 }
 
 @media (max-width: 800px) {

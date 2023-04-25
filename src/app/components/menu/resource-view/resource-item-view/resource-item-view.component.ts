@@ -18,6 +18,7 @@ export class ResourceItemViewComponent implements OnInit {
   tooltipDirection = DirectionEnum.Up;
   showTooltip = false;
   @Input() canSetTrackingResource: boolean = false;
+  @Input() displayItemQualityColor: boolean = false;
 
   constructor(public lookupService: LookupService, public globalService: GlobalService, private utilityService: UtilityService,
     private dictionaryService: DictionaryService) { }
@@ -42,5 +43,14 @@ export class ResourceItemViewComponent implements OnInit {
     {
       this.globalService.globalVar.trackedResources.push(this.resource);
     }
+  }
+
+  getEquipmentClass() {    
+    if (this.resource === undefined)
+      return "";
+
+    var qualityClass = "bold " + this.lookupService.getEquipmentQualityClass(this.lookupService.getSlotItemQuality(this.resource));
+
+    return qualityClass;    
   }
 }

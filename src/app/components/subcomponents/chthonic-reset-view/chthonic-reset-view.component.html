@@ -4,7 +4,9 @@
             <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': isDisplayingResetView }">Reset</button>
         </td>
         <td class="clickableText tabItem" [ngClass]="{'active': !isDisplayingResetView }" (click)="toggleView()">
-            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': !isDisplayingResetView }">Reward</button>
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': !isDisplayingResetView }">Reward</button>            
+            <app-notification-icon *ngIf="showNotificationIcon">
+            </app-notification-icon>
         </td>
     </tr>
 </table>

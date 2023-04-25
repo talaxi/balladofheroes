@@ -11,6 +11,8 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { InitializationService } from '../global/initialization.service';
 import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { God } from 'src/app/models/character/god.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -251,7 +253,26 @@ export class VersionControlService {
             }
           }
 
+          var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+          if (hades !== undefined) {
+            var passive = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              var hadesCopy = new God(GodEnum.Hades);
+              this.globalService.assignGodAbilityInfo(hadesCopy);
+              for (var i = 0; i < hades.level; i++) {
+                this.globalService.levelUpGod(hadesCopy);
+              }
+
+              var passiveCopy = hadesCopy.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+              if (passiveCopy !== undefined)
+              passive.userEffect[0].duration = passiveCopy.userEffect[0].duration; 
+            }
+          }
+
           this.globalService.globalVar.characters.forEach(character => {
+            if (character.battleInfo !== undefined && character.battleInfo.statusEffects !== undefined && character.battleInfo.statusEffects.length > 0)
+              character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
+
             var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
             if (ability1 !== undefined) {
               if (character.level >= 12)

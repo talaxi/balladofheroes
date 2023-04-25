@@ -1684,8 +1684,7 @@ export class BattleService {
           existingApplication.stackCount += 1;
         }
 
-
-        else if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {
+        if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {
           if (originalAbility !== undefined && originalAbility.name === "Insanity") {
             existingApplication.duration += appliedStatusEffect.duration;
           }
@@ -1945,7 +1944,7 @@ export class BattleService {
       var lordOfTheUnderworld = this.lookupService.characterHasAbility("Lord of the Underworld", attacker);
 
       if (lordOfTheUnderworld !== undefined) {
-        this.applyStatusEffect(lordOfTheUnderworld.userEffect[0], attacker);
+        this.applyStatusEffect(lordOfTheUnderworld.userEffect[0].makeCopy(), attacker);
       }
     }
 
