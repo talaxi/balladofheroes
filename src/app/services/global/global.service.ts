@@ -1352,7 +1352,7 @@ export class GlobalService {
     god.level += 1;
     god.exp -= god.expToNextLevel;
 
-    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+    if (god.name !== undefined && this.globalVar.gameLogSettings.get("godLevelUp")) {
       var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " attains level <strong>" + god.level + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
@@ -1786,7 +1786,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         userGainsEffect.effectiveness *= 2;
       else if (ability.abilityUpgradeLevel <= 100)
-        userGainsEffect.effectiveness += 3;
+        userGainsEffect.effectiveness += ability.abilityUpgradeLevel + 2;
     }
     else if (god.type === GodEnum.Artemis) {
       if (ability.abilityUpgradeLevel <= 100)

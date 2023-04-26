@@ -20,17 +20,16 @@
     </tr>
   </table>
   <hr class="noMargin" />
-  <!--<div class="filters">
-        <span>Show:</span>
-        <button class="buttonAsText clickableText m2Heading"
-          [ngClass]="{'filterActive': !(filterEquipment || filterBattleItems) }" (click)="resetFilters()">All</button>
-        <button class="buttonAsText clickableText m2Heading" [ngClass]="{'filterActive': filterEquipment }"
-          (click)="changeFilter('Equipment')">Equipment</button>
-        <button class="buttonAsText clickableText m2Heading" [ngClass]="{'filterActive': filterBattleItems }"
-          (click)="changeFilter('Battle Items')">Battle Items</button>
+  <div class="filters">
+        <span>Sort by:</span>
+        <mat-radio-group class="sortOptions" [(ngModel)]="sortType" aria-label="Select a sorting option">
+          <mat-radio-button *ngIf="resourceTabActive === resourceViewEnum.Equipment" [value]="1">Quality</mat-radio-button>
+          <mat-radio-button [value]="2">Name</mat-radio-button>
+          <mat-radio-button [value]="3">Item ID</mat-radio-button>
+        </mat-radio-group>
         <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>
       </div>
-      <hr class="noMargin" />-->
+      <hr class="noMargin" />
 
   <div *ngIf="resourceTabActive === resourceViewEnum.Equipment" class="equipment">
     <div class="equipmentSection twoColumns">
@@ -100,6 +99,25 @@
         </div>
       </div>
     </div>
+    
+    <div class="battleItemsSection oneColumn">
+      <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Battle Items</span></div>
+      <br />
+      <div *ngFor="let resource of battleItems; let i = index">
+        <div>
+          <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
+          class="screenMarginLeft">
+          <strong [class]="getResourceClass(resource)">{{dictionaryService.getItemName(resource.item)}}:</strong> {{(isItemPercentage(resource.item) ? resource.amount * 100 : resource.amount)  | number : '1.0-3'}}{{(isItemPercentage(resource.item) ? "%" : "")}} 
+          <hr />
+        </span>
+        <ng-template #charmContent>
+          <div class="popoverClass">
+            <span [innerHTML]="lookupService.getItemDescription(resource.item)"></span>
+          </div>
+        </ng-template>
+        </div>
+      </div>
+    </div>
 
     <div class="craftingMaterialsSection twoColumns">
       <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Crafting Materials</span></div>
@@ -119,24 +137,6 @@
         </div>
       </div>
     </div>
-    </div>
-
-    <div class="battleItemsSection oneColumn">
-      <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Battle Items</span></div>
-      <br />
-      <div *ngFor="let resource of battleItems; let i = index">
-        <div>
-          <button class="screenMarginLeft buttonAsText clickableText trackingButton">
-            <!--{{dictionaryService.getItemName(resource.item)}} x{{resource.amount}}-->
-            <app-resource-item-view [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
-          </button>
-          <button *ngIf="isResourceTracked(resource)" (click)="setTrackingResource(resource)"
-            class="screenMarginRight buttonStyled smallCaps">tracking</button>
-          <span>
-            <hr />
-          </span>
-        </div>
-      </div>
     </div>
   </div>
 

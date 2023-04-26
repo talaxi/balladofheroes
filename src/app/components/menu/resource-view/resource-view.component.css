@@ -33,6 +33,7 @@
       border-right: 1px solid rgba(0,0,0,.1);      
       background-color: var(--background-default);
       
+      margin-top: .5rem;
       display: flex;
       justify-content: space-around;
     }
@@ -43,6 +44,7 @@
       background-color: var(--background-default);
       display: flex;
       justify-content: space-around;
+      margin-top: .5rem;
     }  
   
     .equipment {
@@ -52,6 +54,7 @@
 
       display: flex;
       justify-content: space-around;
+      margin-top: .5rem;
     }
 
     .screenMarginRight {
@@ -84,11 +87,19 @@
     }
 
     .filters {
+      padding-top: .25rem;
+      padding-bottom: .25rem;
       display: flex;
-      justify-content: space-evenly;
+      justify-content: space-around;
       background-color: var(--background-quarternary);
     }
     
+    .sortOptions {
+      width: 70%;
+      display:flex;
+      justify-content: space-around;      
+    }
+
     .tabItem:hover:not(.active) {
       background-color: var(--button-hover);
       /*color: var(--foreground-tertiary) !important;*/
@@ -175,7 +186,7 @@
     
       
     @media (max-width: 800px) {
-      .gridContainer {
+      /*.gridContainer {
         height: 100%;
         display: grid;
         grid-template-columns: 1fr;
@@ -186,7 +197,7 @@
           "progression" 
           "specialty" 
           "equipment";
-      }
+      }*/
 
       table {
         height: unset;

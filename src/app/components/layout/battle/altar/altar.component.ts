@@ -28,6 +28,7 @@ export class AltarComponent implements OnInit {
   altar: AltarInfo;
   buttonOptions: AltarPrayOptionsEnum[] = [];
   subscription: any;
+  thresholdNotMetTooltipText = "Use healing items on the altar to receive a reward.";
 
   constructor(private globalService: GlobalService, private altarService: AltarService, private lookupService: LookupService,
     private battleService: BattleService, private gameLoopService: GameLoopService, private gameLogService: GameLogService,
@@ -58,6 +59,10 @@ export class AltarComponent implements OnInit {
       this.gainThreshold4Reward();
       this.globalService.globalVar.sidequestData.altarOfAsclepius.exp = 4;
     }
+  }
+
+  thresholdMet(threshold: number) {
+    return this.globalService.globalVar.sidequestData.altarOfAsclepius.exp >= threshold;
   }
 
   displayAltarText() {

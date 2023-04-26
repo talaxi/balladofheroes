@@ -1,0 +1,61 @@
+.bestiaryView {
+    height:100%;
+    background-color: var(--background-default);
+    border-color: var(--background-header);
+    color: var(--foreground-default);
+}
+
+.balladView {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20% 80%;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas: 
+      "options info";
+}
+
+.options {
+    grid-area: options;
+}
+
+.info {
+    grid-area: info;
+}
+
+.defaultBallad, .defaultZone, .defaultSubzone {
+    color: var(--foreground-default);
+}
+
+.selectedBallad {
+    color: var(--foreground-secondary) !important;
+}
+
+.enemyList, .enemyEncounterList, .itemList {
+    width: 100%;
+    text-align: left;
+}
+
+.enemy, .encounter, .item { 
+    width: 25%;
+    display: inline-block;
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+
+.zoneSpacer {
+    margin-left: .5rem;
+}
+
+.subzoneSpacer {
+    margin-left: 1rem;
+}
+
+.eachBallad {
+    margin-bottom: .5rem;
+}
+
+.subheader {
+    text-align: center;
+}

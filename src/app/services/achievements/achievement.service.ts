@@ -522,7 +522,7 @@ export class AchievementService {
     if (achievementType === AchievementTypeEnum.Complete) {
       if (subzoneType === SubZoneEnum.LibyaIsleCenter) {
         rewards.push(new ResourceValue(ItemsEnum.ItemBeltUp, 1));
-        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 4000));
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 5000));
       }
       if (subzoneType === SubZoneEnum.ElysiumWavesOfOceanus) {
         rewards.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade1, 1));

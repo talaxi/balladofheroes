@@ -1114,6 +1114,10 @@ button:disabled {
   font-size: 1rem;
 }
 
+.mat-radio-checked .mat-radio-inner-circle {
+  background-color: var(--foreground-accent);
+}
+
 @keyframes fadingAnimation {
   0% {
     opacity: 100%;

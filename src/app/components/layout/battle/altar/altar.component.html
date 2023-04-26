@@ -4,17 +4,41 @@
     </div>
     <div class="text" [innerHtml]="this.displayAltarText()"></div>
     <div class="options hpBarGrid">
-        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold1()"
+        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold1()" customToolTip [contentTemplate]="threshold1Template"
             class="apollo-progress characterBar hpBar altarHighBar threshold1">
         </mat-progress-bar>
-        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold2()"
+        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold2()" customToolTip [contentTemplate]="threshold2Template"
             class="apollo-progress characterBar hpBar altarHighBar threshold2">
         </mat-progress-bar>
-        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold3()"
+        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold3()" customToolTip [contentTemplate]="threshold3Template"
             class="apollo-progress characterBar hpBar altarHighBar threshold3">
         </mat-progress-bar>
-        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold4()"
+        <mat-progress-bar mode="determinate" [value]="getAsclepiusHpThreshold4()" customToolTip [contentTemplate]="threshold4Template"
             class="apollo-progress characterBar hpBar altarHighBar threshold4">
         </mat-progress-bar>
     </div>
 </div>
+
+<ng-template #threshold1Template>
+    <span *ngIf="thresholdMet(1)">Your sacrifice and devotion to healing has honored Asclepius and impressed his father Apollo, God of Healing and Music. Apollo will now assist you on your adventure.</span>
+    <span *ngIf="!thresholdMet(1)" [innerHtml]="thresholdNotMetTooltipText"></span>    
+</ng-template>
+
+
+<ng-template #threshold2Template>
+    <span *ngIf="thresholdMet(2)">You learn how to make the Alchemy recipe: <strong>Rejuvenating Elixir</strong>.</span>
+    <span *ngIf="!thresholdMet(2)" [innerHtml]="thresholdNotMetTooltipText"></span>    
+</ng-template>
+
+
+<ng-template #threshold3Template>
+    <span *ngIf="thresholdMet(3)"> you can now pray to <strong>Large Altars</strong>.</span>
+    <span *ngIf="!thresholdMet(3)" [innerHtml]="thresholdNotMetTooltipText"></span>    
+</ng-template>
+
+
+<ng-template #threshold4Template>
+    <span *ngIf="thresholdMet(4)">Your max Alchemy level has increased by 25.</span>
+    <span *ngIf="!thresholdMet(4)" [innerHtml]="thresholdNotMetTooltipText"></span>    
+</ng-template>
+

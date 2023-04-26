@@ -588,7 +588,7 @@ export class EnemyGeneratorService {
       rollThrough = this.randomizeCooldown(rollThrough);
       rollThrough.dealsDirectDamage = true;
       rollThrough.isAoe = true;
-      rollThrough.effectiveness = 1.35;
+      rollThrough.effectiveness = 1.25;
       rollThrough.elementalType = ElementalTypeEnum.Fire;
       enemy.abilityList.push(rollThrough);
     }
@@ -738,7 +738,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.FallenHero) {
       enemy.name = "Fallen Hero";
-      enemy.battleStats = new CharacterStats(802, 83, 134, 40, 50, 150);
+      enemy.battleStats = new CharacterStats(802, 83, 125, 40, 50, 150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 133;
@@ -941,7 +941,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Pollux) {
       enemy.name = "Pollux";
-      enemy.battleStats = new CharacterStats(1517, 178, 173, 78, 104, 150);
+      enemy.battleStats = new CharacterStats(1517, 174, 173, 78, 104, 150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250;
@@ -952,7 +952,7 @@ export class EnemyGeneratorService {
       divinity.cooldown = divinity.currentCooldown = 12;
       divinity = this.randomizeCooldown(divinity);
       divinity.dealsDirectDamage = false;
-      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .6, true, true, true, enemy.name, .5));
+      divinity.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .5, true, true, true, enemy.name, .5));
       enemy.abilityList.push(divinity);
 
       var firePower = new Ability();

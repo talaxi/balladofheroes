@@ -46,6 +46,10 @@
     <div class="clickableText navItem" (click)="switchView(menuEnum.Achievements)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Achievements }" (click)="switchView(menuEnum.Achievements)">Achievements</button>
     </div>
+    <hr class='transparentHr'/>
+    <div class="clickableText navItem" (click)="switchView(menuEnum.Bestiary)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Bestiary }">
+      <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Bestiary }" (click)="switchView(menuEnum.Bestiary)">Bestiary</button>
+    </div>
     <hr class='transparentHr'/>    
     <div class="clickableText navItem" (click)="switchView(menuEnum.Settings)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }" (click)="switchView(menuEnum.Settings)">Settings</button>

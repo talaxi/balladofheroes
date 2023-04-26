@@ -60,6 +60,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (menuGoToSettings !== undefined)
       this.menuKeybinds.push(menuGoToSettings);
 
+      var menuGoToBestiary = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToBestiary");
+      if (menuGoToBestiary !== undefined)
+        this.menuKeybinds.push(menuGoToBestiary);
+
     var menuTraverseSubMenuUp = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuTraverseSubMenuUp");
     if (menuTraverseSubMenuUp !== undefined)
       this.menuKeybinds.push(menuTraverseSubMenuUp);

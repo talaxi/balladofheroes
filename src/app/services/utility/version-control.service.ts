@@ -230,6 +230,8 @@ export class VersionControlService {
           }
         }
         if (version === .45) {
+          this.globalService.globalVar.keybinds.set("menuGoToBestiary", "keyB");
+
           var adventurer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer);
           if (adventurer !== undefined) {
             var ability2 = adventurer.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);

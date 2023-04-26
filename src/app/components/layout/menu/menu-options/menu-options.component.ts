@@ -64,6 +64,10 @@ export class MenuOptionsComponent implements OnInit {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToAchievements"))) {
       this.switchView(MenuEnum.Achievements);
     }
+
+     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToBestiary"))) {
+      this.switchView(MenuEnum.Bestiary);
+    }
   }
 
   constructor(public menuService: MenuService, private globalService: GlobalService, private keybindService: KeybindService,
