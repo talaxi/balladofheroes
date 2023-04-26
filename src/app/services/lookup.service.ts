@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AltarEffect } from '../models/altar/altar-effect.model';
 import { StatusEffect } from '../models/battle/status-effect.model';
@@ -30,7 +29,6 @@ import { SubZoneEnum } from '../models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from '../models/enums/tutorial-type-enum.model';
 import { WeaponTypeEnum } from '../models/enums/weapon-type-enum.model';
 import { ZoneEnum } from '../models/enums/zone-enum.model';
-import { IndividualFollower } from '../models/followers/individual-follower.model';
 import { Achievement } from '../models/global/achievement.model';
 import { Equipment } from '../models/resources/equipment.model';
 import { ResourceValue } from '../models/resources/resource-value.model';
@@ -40,7 +38,6 @@ import { Ballad } from '../models/zone/ballad.model';
 import { SubZone } from '../models/zone/sub-zone.model';
 import { BalladService } from './ballad/ballad.service';
 import { EnemyGeneratorService } from './enemy-generator/enemy-generator.service';
-import { FollowersService } from './followers/followers.service';
 import { GlobalService } from './global/global.service';
 import { CharmService } from './resources/charm.service';
 import { ShopItemGeneratorService } from './shop/shop-item-generator.service';
@@ -48,9 +45,10 @@ import { SubZoneGeneratorService } from './sub-zone-generator/sub-zone-generator
 import { UtilityService } from './utility/utility.service';
 import { NotificationTypeEnum } from "../models/enums/notification-type-enum.model";
 import { ResourceGeneratorService } from './resources/resource-generator.service';
-import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { EquipmentService } from './resources/equipment.service';
 import { DictionaryService } from './utility/dictionary.service';
+import { ShopTypeEnum } from '../models/enums/shop-type-enum.model';
+import { BalladEnum } from '../models/enums/ballad-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -5848,5 +5846,52 @@ export class LookupService {
     var affinityIncreaseCount = Math.floor(god.affinityLevel / 8);
 
     return affinityIncreaseCount;
+  }
+
+  getShopOptionText(type: ShopTypeEnum) {
+    var text = "";
+
+    if (type === ShopTypeEnum.General) {
+      text = "General";
+    }
+    if (type === ShopTypeEnum.Crafter) {
+      text = "Crafter";
+    }
+    if (type === ShopTypeEnum.Alchemist) {
+      text = "Alchemist";
+    }
+    if (type === ShopTypeEnum.ChthonicFavor) {
+      text = "Chthonic Favor";
+    }
+    if (type === ShopTypeEnum.Coliseum) {
+      text = "Coliseum";
+    }
+    if (type === ShopTypeEnum.Traveler) {
+      text = "Traveler";
+    }
+    if (type === ShopTypeEnum.Jewelcrafter) {
+      text = "Jewelcrafter";
+    }
+
+    return text;
+  }
+
+  getBalladDescription(type: BalladEnum) {
+    var description = "";
+
+    if (type === BalladEnum.Champion)
+      description = "Where your journey to become a hero begins. After many attempts, Thales finally pushes past his limits and has a meeting with divinity.";
+    else if (type === BalladEnum.Gorgon)
+      description = "Following in the footsteps of the hero Perseus, you travel Greece to do battle with the monster Medusa. Along the way, you gain an ally with a similar goal.";
+    else if (type === BalladEnum.Underworld)
+      description = "Your overconfidence led to some missteps and you now find yourself in the Underworld. Many heroes have had their dealings in Hades' realm and you are no exception. Your journey continues to Elysium and, if you can obtain Hades's blessing, back to the surface.";
+    else if (type === BalladEnum.Boar)
+      description = "At Zosime's request, you take a detour to Calydon to follow through Atalanta's story. You visit her birthplace and then traverse the forest where she finally put a stop to the monstrous boar rampaging the countryside.";
+    else if (type === BalladEnum.Argo)
+      description = "Thales and Zosime begin to pick up their rhythm again and now take to the seas to follow in the footsteps of Jason and the Argonauts. As they travel east to Colchis, they soon realize that all is not quite like the stories.";
+    else if (type === BalladEnum.Labors)
+      description = "You finally feel ready to take on the trials of Heracles, the greatest of all mortals. Each step is a difficult one, but you gain strength along the way.";
+
+    return description;
   }
 }

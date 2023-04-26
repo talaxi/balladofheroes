@@ -18,6 +18,11 @@
     </tr>
 </table>
 <hr class="noMargin" />
+  <div class="textCentered filters">
+        <span>Toggle sort direction: </span>
+        <button class="buttonStyled" (click)="toggleSort()">&#8645;</button>
+      </div>
+      <hr class="noMargin" />
 <div class="logInfo">
     <table *ngIf="currentLogView === logViewEnum.Story" class="dataTable">
         <tr class="dataRow">

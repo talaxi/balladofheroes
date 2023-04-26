@@ -35,6 +35,9 @@ export class HeaderComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if (this.menuService.keybindModalOpen)
+      return;
+      
     var keybinds = this.globalService.globalVar.keybinds;    
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openMenu"))) {      
@@ -107,6 +110,8 @@ export class HeaderComponent implements OnInit {
   }
 
   openLog(content: any) {
+    this.dialog.closeAll();
+
     if (this.isMobile)
     this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
   else 

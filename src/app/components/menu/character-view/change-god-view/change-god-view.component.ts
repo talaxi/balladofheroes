@@ -131,7 +131,7 @@ export class ChangeGodViewComponent implements OnInit {
 
     if (this.isCurrentlyAssigned(type))
     {
-      party.forEach(member => {
+      this.globalService.globalVar.characters.filter(character => character.isAvailable).forEach(member => {
         if (member.assignedGod1 === type)
         {
           if (swappingUndefinedGod) {
@@ -172,7 +172,7 @@ export class ChangeGodViewComponent implements OnInit {
 
   isCurrentlyAssigned(type: GodEnum) {
     var isAssigned = false;
-    var party = this.globalService.getActivePartyCharacters(true);
+    var party = this.globalService.globalVar.characters.filter(character => character.isAvailable);
 
     party.forEach(member => {
       if (member.assignedGod1 === type || member.assignedGod2 === type)
@@ -183,7 +183,7 @@ export class ChangeGodViewComponent implements OnInit {
   }
 
   GetCurrentlyAssignedCharacter(type: GodEnum) {
-    var party = this.globalService.getActivePartyCharacters(true);
+    var party = this.globalService.globalVar.characters.filter(character => character.isAvailable);
     var assignedCharacter = new Character();
 
     party.forEach(member => {

@@ -2459,15 +2459,16 @@ export class BattleService {
       this.getCoinRewards(this.battle.currentEnemies);
       if (loot !== undefined && loot.length > 0) {
         loot.forEach(item => {
+          var itemCopy = this.lookupService.makeResourceCopy(item);
           if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + item.amount + " " + (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item))) + "</strong>.");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCopy.amount + " " + (itemCopy.amount === 1 ? this.dictionaryService.getItemName(itemCopy.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(itemCopy.item))) + "</strong>.");
           }
-          this.lookupService.addLootToLog(item.item, item.amount);
-          if (item.item === ItemsEnum.FocusPotionRecipe) {
+          this.lookupService.addLootToLog(itemCopy.item, itemCopy.amount);
+          if (itemCopy.item === ItemsEnum.FocusPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.FocusPotion);
           }
           else {
-            this.addLootToResources(item);
+            this.addLootToResources(itemCopy);
           }
         });
       }
@@ -2583,7 +2584,7 @@ export class BattleService {
     if (item === undefined)
       return;
 
-    var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item);
+    var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item && this.globalService.extraItemsAreEqual(item.extras, resource.extras));
     if (existingResource === undefined) {
       this.globalService.globalVar.resources.push(item);
     }

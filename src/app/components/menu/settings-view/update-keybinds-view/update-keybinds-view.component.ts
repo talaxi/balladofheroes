@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Settings } from 'src/app/models/utility/settings.model';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 
 @Component({
@@ -31,10 +32,11 @@ export class UpdateKeybindsViewComponent implements OnInit {
     this.keybindToUpdate = undefined;
   }
 
-  constructor(private globalService: GlobalService, private keybindService: KeybindService) { }
+  constructor(private globalService: GlobalService, private keybindService: KeybindService, private menuService: MenuService) { }
 
   ngOnInit(): void {
     this.keybinds = this.globalService.globalVar.keybinds;
+    this.menuService.keybindModalOpen = true;
 
     var menuGoToCharacters = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToCharacters");
     if (menuGoToCharacters !== undefined)
@@ -425,5 +427,9 @@ export class UpdateKeybindsViewComponent implements OnInit {
     binding = this.keybindService.getBindingString(button);
 
     return binding;
+  }
+
+  ngOnDestroy() {
+    this.menuService.keybindModalOpen = false;
   }
 }

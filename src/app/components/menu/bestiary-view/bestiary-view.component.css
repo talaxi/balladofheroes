@@ -8,11 +8,11 @@
 .balladView {
     height: 100%;
     display: grid;
-    grid-template-columns: 20% 80%;
+    grid-template-columns: 20% auto 1fr;
     grid-template-rows: auto;
     justify-content: stretch;
     grid-template-areas: 
-      "options info";
+      "options vr info";
 }
 
 .options {
@@ -43,6 +43,20 @@
     margin-bottom: 1rem;
 }
 
+.vr {
+    display: flex;
+    height: 100%;
+}
+
+.spacer {
+    grid-area: vr;
+}
+
+.vrHr {
+    margin: 0 1rem;
+    padding: 0;
+    height: auto;
+}
 
 .zoneSpacer {
     margin-left: .5rem;

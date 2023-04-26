@@ -15,6 +15,7 @@ export class MenuService {
   selectedCharacter: CharacterEnum;
   selectedGod: GodEnum;
   selectedProfession: ProfessionEnum;
+  keybindModalOpen: boolean = false;
 
   partyMember1: BehaviorSubject<CharacterEnum>;
   partyMember2: BehaviorSubject<CharacterEnum>;

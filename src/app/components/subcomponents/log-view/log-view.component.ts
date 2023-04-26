@@ -19,6 +19,7 @@ export class LogViewComponent implements OnInit {
   tutorialData: LogData[];
   storyData: LogData[];
   lootData: LogData[];
+  ascendedSortDirection: boolean = true;
 
   constructor(private globalService: GlobalService, private tutorialService: TutorialService, private lookupService: LookupService,
     private storyService: StoryService, private dictionaryService: DictionaryService) { }
@@ -28,14 +29,22 @@ export class LogViewComponent implements OnInit {
     if (this.currentLogView === undefined)
       this.currentLogView = LogViewEnum.Story;
 
+    var ascending = 1;
+    var descending = -1;
+
+    if (!this.ascendedSortDirection) {
+      ascending = -1;
+      descending = 1;
+    }
+
     this.tutorialData = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Tutorials).sort(function (a, b) {
-      return a.dateReceived > b.dateReceived ? -1 : a.dateReceived < b.dateReceived ? 1 : 0;
+      return a.dateReceived > b.dateReceived ? descending : a.dateReceived < b.dateReceived ? ascending : 0;
     });
     this.storyData = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Story).sort(function (a, b) {
-      return a.relevantEnumValue > b.relevantEnumValue ? -1 : a.relevantEnumValue < b.relevantEnumValue ? 1 : 0;
+      return a.relevantEnumValue > b.relevantEnumValue ? descending : a.relevantEnumValue < b.relevantEnumValue ? ascending : 0;
     });
     this.lootData = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Loot).sort(function (a, b) {
-      return a.dateReceived > b.dateReceived ? -1 : a.dateReceived < b.dateReceived ? 1 : 0;
+      return a.dateReceived > b.dateReceived ? descending : a.dateReceived < b.dateReceived ? ascending : 0;
     });
   }
 
@@ -81,5 +90,27 @@ export class LogViewComponent implements OnInit {
 
   formatDate(milliseconds: number) {
     return formatDate(new Date(milliseconds), 'MMM d, y H:mm:ss', 'en');
+  }
+  
+  toggleSort() {
+    this.ascendedSortDirection = !this.ascendedSortDirection;
+
+    var ascending = 1;
+    var descending = -1;
+
+    if (!this.ascendedSortDirection) {
+      ascending = -1;
+      descending = 1;
+    }
+
+    this.tutorialData = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Tutorials).sort(function (a, b) {
+      return a.dateReceived > b.dateReceived ? descending : a.dateReceived < b.dateReceived ? ascending : 0;
+    });
+    this.storyData = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Story).sort(function (a, b) {
+      return a.relevantEnumValue > b.relevantEnumValue ? descending : a.relevantEnumValue < b.relevantEnumValue ? ascending : 0;
+    });
+    this.lootData = this.globalService.globalVar.logData.filter(item => item.type === LogViewEnum.Loot).sort(function (a, b) {
+      return a.dateReceived > b.dateReceived ? descending : a.dateReceived < b.dateReceived ? ascending : 0;
+    });
   }
 }
