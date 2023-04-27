@@ -157,6 +157,10 @@ export class DictionaryService {
       name = "Sharkstooth Necklace";
     else if (type === ItemsEnum.SharkstoothPendant)
       name = "Sharkstooth Pendant";
+      else if (type === ItemsEnum.DarkMoonPendant)
+      name = "Dark Moon Pendant";
+      else if (type === ItemsEnum.BlazingSunPendant)
+      name = "Blazing Sun Pendant";
 
     //armor
     else if (type === ItemsEnum.LinenArmor)

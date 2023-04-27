@@ -29,7 +29,7 @@ export class CharacterStats {
     tickFrequency: number;
     abilityCooldownReductionWithBuffs: number;
     thorns: number;
-    abilityCooldownReductionStart: number;
+    abilityCooldownReductionStart: number;    
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;

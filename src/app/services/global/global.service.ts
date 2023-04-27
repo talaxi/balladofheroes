@@ -194,8 +194,8 @@ export class GlobalService {
       battleCry.name = "Battle Cry";
       battleCry.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       battleCry.isAvailable = false;
-      battleCry.cooldown = battleCry.currentCooldown = 40;
-      battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 15, 0, false, false, true, character.name));
+      battleCry.cooldown = battleCry.currentCooldown = 16;
+      battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 10, 0, false, false, false, character.name));
       character.abilityList.push(battleCry);
 
       var lastStand = new Ability();
@@ -580,7 +580,7 @@ export class GlobalService {
     if (god.type === GodEnum.Dionysus) {
       var revelry = new Ability();
       revelry.name = "Revelry";
-      revelry.isAvailable = false;
+      revelry.isAvailable = true;
       revelry.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       revelry.dealsDirectDamage = false;
       revelry.targetsAllies = true;
@@ -625,7 +625,7 @@ export class GlobalService {
     if (god.type === GodEnum.Nemesis) {
       var retribution = new Ability();
       retribution.name = "Retribution";
-      retribution.isAvailable = false;
+      retribution.isAvailable = true;
       retribution.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       retribution.cooldown = retribution.currentCooldown = 22;
       retribution.dealsDirectDamage = false;
@@ -1218,7 +1218,7 @@ export class GlobalService {
     if (ability1 === undefined)
       return;
 
-      ability1.abilityUpgradeLevel += 1;
+    ability1.abilityUpgradeLevel += 1;
     if (character.type === CharacterEnum.Adventurer) {
       ability1.effectiveness += .5;
     }
@@ -1229,7 +1229,7 @@ export class GlobalService {
       ability1.effectiveness += .1;
     }
     if (character.type === CharacterEnum.Warrior) {
-      ability1.cooldown -= 2;
+      ability1.cooldown -= .5;
     }
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
@@ -1242,8 +1242,8 @@ export class GlobalService {
     var ability = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
     if (ability === undefined)
       return;
-      
-      ability.abilityUpgradeLevel += 1;
+
+    ability.abilityUpgradeLevel += 1;
 
     var targetGainsEffect = ability.targetEffect[0];
 
@@ -1972,30 +1972,30 @@ export class GlobalService {
     if (upgradedStats.resistance > 0)
       statGainText += Math.round(upgradedStats.resistance) + " Resistance, ";
 
-      if (upgradedStats.hpRegen > 0)
+    if (upgradedStats.hpRegen > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.hpRegen) + " HP Regen per 5 sec, ";
-      if (upgradedStats.criticalMultiplier > 0)
+    if (upgradedStats.criticalMultiplier > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.criticalMultiplier * 100) + "% Critical Multiplier, ";
-      if (upgradedStats.autoAttackCooldownReduction > 0)
+    if (upgradedStats.autoAttackCooldownReduction > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction, ";
-      if (upgradedStats.healingDone > 0)
+    if (upgradedStats.healingDone > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.healingDone * 100) + "% Healing Done, ";
-      if (upgradedStats.elementIncrease.holy > 0)
+    if (upgradedStats.elementIncrease.holy > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.holy * 100) + "% Holy Damage Increase, ";
-      if (upgradedStats.elementIncrease.fire > 0)
+    if (upgradedStats.elementIncrease.fire > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
-      if (upgradedStats.overdriveGain > 0)
+    if (upgradedStats.overdriveGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
-      if (upgradedStats.armorPenetration > 0)
+    if (upgradedStats.armorPenetration > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
-      if (upgradedStats.abilityCooldownReduction > 0)
-      statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";      
+    if (upgradedStats.abilityCooldownReduction > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";
 
     if (statGainText !== "")
       statGainText = statGainText.substring(0, statGainText.length - 2);
 
     if (this.globalVar.gameLogSettings.get("godLevelUp")) {
-      var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong>.";      
+      var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
 
@@ -2331,23 +2331,33 @@ export class GlobalService {
     if (this.globalVar.followerData.numberOfFollowersGainedFromAchievements === 0)
       return 1;
     else
-      return 20;
+      return 12;
   }
 
   setAsSubscriber(date: Date) {
-    //TODO: maybe need some last sort of check here
+    if (!this.globalVar.isSubscriber) {
+      this.globalVar.isSubscriber = true;
+      this.globalVar.subscribedDate = date;
 
-    this.globalVar.isSubscriber = true;
-    this.globalVar.subscribedDate = date;
+      var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+      var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
 
-    var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
-    var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+      //TODO: once currency is implemented, check if they are already obtained and give currency instead
+      if (dionysus !== undefined)
+        dionysus.isAvailable = true;
+      if (nemesis !== undefined)
+        nemesis.isAvailable = true;
 
-    //TODO: once currency is implemented, check if they are already obtained and give currency instead
-    if (dionysus !== undefined)
-      dionysus.isAvailable = true;
-    if (nemesis !== undefined)
-      nemesis.isAvailable = true;
+      this.globalVar.resources.push(new ResourceValue(ItemsEnum.BlazingSunPendant, 1));
+      this.globalVar.resources.push(new ResourceValue(ItemsEnum.DarkMoonPendant, 1));
+
+      var coinBonus = 100000;
+      var coins = this.globalVar.resources.find(item => item.item === ItemsEnum.Coin);
+      if (coins !== undefined)
+        coins.amount += coinBonus;
+      else
+        this.globalVar.resources.push(new ResourceValue(ItemsEnum.Coin, coinBonus));
+    }
   }
 
   isGodEquipped(type: GodEnum) {

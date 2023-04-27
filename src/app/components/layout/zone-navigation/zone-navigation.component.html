@@ -204,7 +204,7 @@
                 </div>
                 <div *ngIf="trackedResourcesColumn2.length > 0" class="quickJump">
                     <div *ngFor="let resource of trackedResourcesColumn2" class="resource">
-                        <app-resource-item-view [resource]="resource"></app-resource-item-view>
+                        <app-resource-item-view [resource]="resource" [flipToolTip]="true"></app-resource-item-view>
                     </div>
                 </div>
             </div>

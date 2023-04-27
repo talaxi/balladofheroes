@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
 import * as pluralize from 'pluralize';
@@ -19,6 +19,8 @@ export class ResourceItemViewComponent implements OnInit {
   showTooltip = false;
   @Input() canSetTrackingResource: boolean = false;
   @Input() displayItemQualityColor: boolean = false;
+  @Input() flipToolTip: boolean = false;
+  @ViewChild('spanElement') spanElementRef: ElementRef;
 
   constructor(public lookupService: LookupService, public globalService: GlobalService, private utilityService: UtilityService,
     private dictionaryService: DictionaryService) { }

@@ -300,6 +300,13 @@ export class ResourceViewComponent implements OnInit {
     };
   }
 
+  shouldFlipMaterial(index: number, totalColumns: number) {
+    if ((index + 1) % totalColumns === 0)
+      return true;
+
+    return false;
+  }
+
   getResourceClass(resource: ResourceValue) {
     if (resource.item === ItemsEnum.ChthonicFavor)
       return "chthonicFavorKeyword";

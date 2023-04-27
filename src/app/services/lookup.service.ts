@@ -218,7 +218,11 @@ export class LookupService {
       type === ItemsEnum.SmallCharmOfAthena || type === ItemsEnum.LargeCharmOfAthena ||
       type === ItemsEnum.SmallCharmOfArtemis || type === ItemsEnum.LargeCharmOfArtemis ||
       type === ItemsEnum.SmallCharmOfHermes || type === ItemsEnum.LargeCharmOfHermes ||
-      type === ItemsEnum.SmallCharmOfApollo || type === ItemsEnum.LargeCharmOfApollo)
+      type === ItemsEnum.SmallCharmOfApollo || type === ItemsEnum.LargeCharmOfApollo ||
+      type === ItemsEnum.SmallCharmOfHades || type === ItemsEnum.LargeCharmOfHades ||
+      type === ItemsEnum.SmallCharmOfAres || type === ItemsEnum.LargeCharmOfAres ||
+      type === ItemsEnum.SmallCharmOfNemesis || type === ItemsEnum.LargeCharmOfNemesis ||
+      type === ItemsEnum.SmallCharmOfDionysus || type === ItemsEnum.LargeCharmOfDionysus)
       isACharm = true;
 
     return isACharm;
@@ -565,6 +569,26 @@ export class LookupService {
     if (type === ItemsEnum.LargeCharmOfApollo)
       description = "Increase Healing Done by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfApolloValue() * 100) + "%</span> for the character equipped with Apollo.";
 
+      if (type === ItemsEnum.SmallCharmOfHades)
+      description = "Increase Multiple Target Damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfHadesValue() * 100) + "%</span> for the character equipped with Hades.";
+    if (type === ItemsEnum.LargeCharmOfHades)
+      description = "Increase Multiple Target Damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfHadesValue() * 100) + "%</span> for the character equipped with Hades.";
+
+      if (type === ItemsEnum.SmallCharmOfAres)
+      description = "Reduce Damage over Time Tick Frequency by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfAresValue() * 100) + "%</span> for the character equipped with Ares.";
+    if (type === ItemsEnum.LargeCharmOfAres)
+      description = "Reduce Damage over Time Tick Frequency by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfAresValue() * 100) + "%</span> for the character equipped with Ares.";
+
+      if (type === ItemsEnum.SmallCharmOfDionysus)
+      description = "Reduce Ability Cooldown while buffs are active by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfDionysusValue() * 100) + "%</span> for the character equipped with Dionysus.";
+    if (type === ItemsEnum.LargeCharmOfDionysus)
+      description = "Reduce Ability Cooldown while buffs are active by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfDionysusValue() * 100) + "%</span> for the character equipped with Dionysus.";
+
+      if (type === ItemsEnum.SmallCharmOfNemesis)
+      description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
+    if (type === ItemsEnum.LargeCharmOfNemesis)
+      description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
+
     return description;
   }
 
@@ -586,17 +610,29 @@ export class LookupService {
     if (slotItemValues.resistance > 0)
       description = "+<b>" + slotItemValues.resistance + " Resistance</b>";
 
-    var slotStarDisclaimer = "An item can only have as many slots as it has stars.";
+    var slotStarDisclaimer = "An item can only have as many slots total as it has stars.";
     if (item === ItemsEnum.MinorWeaponSlotAddition)
-      description = "Add a slot to a Weapon of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Weapon, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorRingSlotAddition)
-      description = "Add a slot to a Ring of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Ring, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorArmorSlotAddition)
-      description = "Add a slot to a Armor of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to an Armor, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorShieldSlotAddition)
-      description = "Add a slot to a Shield of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Shield, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorNecklaceSlotAddition)
-      description = "Add a slot to a Necklace of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Necklace, up to 3 slots total. " + slotStarDisclaimer;
+
+    if (item === ItemsEnum.WeaponSlotAddition)
+      description = "Add a slot to a Weapon, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.RingSlotAddition)
+      description = "Add a slot to a Ring, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.ArmorSlotAddition)
+      description = "Add a slot to an Armor, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.ShieldSlotAddition)
+      description = "Add a slot to a Shield, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.NecklaceSlotAddition)
+      description = "Add a slot to a Necklace, up to 5 slots total. " + slotStarDisclaimer;
+
 
     return description;
   }
@@ -689,7 +725,10 @@ export class LookupService {
 
     locations = "";
     matchingSubzones = matchingSubzones.filter((el, i, a) => i === a.indexOf(el));
-    matchingSubzones.forEach(subzone => {
+    //matchingSubzones.forEach(subzone => {
+      var locationTotal = 4;
+      for (var i = 0; i < locationTotal; i++) {
+        var subzone = matchingSubzones[i];
       var matchedSubzone = this.balladService.findSubzone(subzone);
       var name = this.balladService.getSubZoneName(subzone);
 
@@ -704,9 +743,10 @@ export class LookupService {
           locations += "<div class='subzoneClickableItem " + subzone.toString() + "'>" + name + "</div>";
         }
       }
+    }
 
-    });
-
+    if (matchingSubzones.length > locationTotal)
+      locations += "and " + (matchingSubzones.length - locationTotal) + " other locations.";
     return this.utilityService.getSanitizedHtml(locations);
     //<div>???</div><div>???</div>";
   }
@@ -1006,6 +1046,24 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(0, 70, 0, 0, 80, 0);
       equipmentPiece.stats.abilityCooldownReduction = .05;
       equipmentPiece.stats.armorPenetration = .05;
+    }
+    if (type === ItemsEnum.BlazingSunPendant) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.autoAttackCooldownReduction += .1;
+      equipmentPiece.stats.abilityCooldownReduction += .1;
+      equipmentPiece.stats.overdriveGain += .2;
+      equipmentPiece.stats.criticalMultiplier += .25;
+      equipmentPiece.stats.tickFrequency += .05;
+    }
+    if (type === ItemsEnum.DarkMoonPendant) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.hpRegen += 30;
+      equipmentPiece.stats.healingDone += .15;
+      equipmentPiece.stats.healingReceived += .15;
+      equipmentPiece.stats.abilityCooldownReduction += .1;
+      equipmentPiece.stats.thorns += .05;
     }
 
     //ring
@@ -1307,7 +1365,7 @@ export class LookupService {
 
     //Warrior
     if (abilityName === "Battle Cry")
-      abilityDescription = "Draw all targets' focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. " + cooldown + " second cooldown.";
+      abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. " + cooldown + " second cooldown.";
     if (abilityName === "Last Stand")
       abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
     if (abilityName === "Shield Slam")

@@ -119,6 +119,7 @@ export class SlotMenuViewComponent {
 
       this.selectedItem = undefined;
       this.assignResource();
+      this.removeUnavailableGems();
     }
   }
 
@@ -141,6 +142,7 @@ export class SlotMenuViewComponent {
       }
 
       this.assignResource();
+      this.removeUnavailableGems();
     }
   }
 
@@ -183,9 +185,14 @@ export class SlotMenuViewComponent {
         item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition);
     }
 
-    if (this.resourceAsEquipment.quality > EquipmentQualityEnum.Rare) {
+    if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 3) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
         item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition && item.item !== ItemsEnum.MinorArmorSlotAddition);
+    }
+
+    if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 5) {
+      this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
+        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition);
     }
   }
 

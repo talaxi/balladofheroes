@@ -542,9 +542,13 @@ export class BackgroundService {
 
     var diffDays = Math.floor(Math.abs((todaysDate.valueOf() - dayOfLastTicket.valueOf()) / oneDay));
     if (diffDays > 0) {
-      this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays;
-      if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > this.utilityService.weeklyMeleeEntryCap)
-        this.globalService.globalVar.sidequestData.weeklyMeleeEntries = this.utilityService.weeklyMeleeEntryCap;
+      var ticketMultiplier = 1;
+      if (this.globalService.globalVar.isSubscriber)
+        ticketMultiplier = 2;
+
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays * ticketMultiplier;
+      if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier))
+        this.globalService.globalVar.sidequestData.weeklyMeleeEntries = (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier);
     }
     this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived = new Date();
   }

@@ -1,8 +1,8 @@
 
 <div class="resourceContainer" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
-    <span (click)="setTrackingResource()">
+    <span #spanElement class="spanElement" (click)="setTrackingResource()">
         <span class="bold">{{getPluralizedItemName(resource)}}:</span> {{lookupService.getResourceAmount(resource) | number}}
     </span>
-    <app-custom-tooltip class="absolute" *ngIf="showTooltip" [isSticky]="true" [text]="lookupService.getResourceDescription(resource)"></app-custom-tooltip>
+    <app-custom-tooltip class="absolute" [ngClass]="{'flipToolTip': flipToolTip}" *ngIf="showTooltip" [isFlippedLeft]="flipToolTip" [elementRef]="spanElementRef" [isSticky]="true" [text]="lookupService.getResourceDescription(resource)"></app-custom-tooltip>
 </div>
-            
+        

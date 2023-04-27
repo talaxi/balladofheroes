@@ -408,7 +408,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedEmerald, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedAquamarine, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorWeaponSlotAddition, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 10));    
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MetalScraps, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VenomousToxin, 10));
@@ -566,7 +566,11 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, 5));
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));      
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAres, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, 5));      
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, 5));
 
       this.globalService.globalVar.chthonicPowers.attackBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 5;
@@ -639,7 +643,7 @@ export class InitializationService {
         //character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 2409;
+      var godLevel = 240;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

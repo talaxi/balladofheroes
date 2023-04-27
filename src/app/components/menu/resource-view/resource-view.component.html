@@ -127,7 +127,7 @@
         <div>
           <button class="screenMarginLeft buttonAsText clickableText trackingButton">
             <!--{{dictionaryService.getItemName(resource.item)}} x{{resource.amount}}-->
-            <app-resource-item-view [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
+            <app-resource-item-view [flipToolTip]="shouldFlipMaterial(i, 2)" [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
           </button>
           <button *ngIf="isResourceTracked(resource)" (click)="setTrackingResource(resource)"
             class="screenMarginRight buttonStyled smallCaps">tracking</button>

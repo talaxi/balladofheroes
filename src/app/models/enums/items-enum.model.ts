@@ -217,5 +217,12 @@ export enum ItemsEnum {
   QuadRing,
   Ares,
   EternalMeleeTicket,
-  Subscriber
+  Subscriber,
+  WeaponSlotAddition,
+  RingSlotAddition,
+  ArmorSlotAddition,
+  ShieldSlotAddition,
+  NecklaceSlotAddition,
+  BlazingSunPendant,
+  DarkMoonPendant
 }

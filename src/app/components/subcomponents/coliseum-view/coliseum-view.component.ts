@@ -212,7 +212,11 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   getWeeklyEntryCap() {
-    return this.utilityService.weeklyMeleeEntryCap;
+    var ticketMultiplier = 1;
+      if (this.globalService.globalVar.isSubscriber)
+        ticketMultiplier = 2;
+
+    return this.utilityService.weeklyMeleeEntryCap * ticketMultiplier;
   }
 
   getHighestWeeklyMeleeRoundCompleted() {

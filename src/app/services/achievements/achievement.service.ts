@@ -12,11 +12,9 @@ import { Achievement } from 'src/app/models/global/achievement.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Zone } from 'src/app/models/zone/zone.model';
 import { GameLogService } from '../battle/game-log.service';
-import { FollowersService } from '../followers/followers.service';
 import { GlobalService } from '../global/global.service';
 import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
-import { AlchemyService } from '../professions/alchemy.service';
 import { ProfessionService } from '../professions/profession.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
@@ -439,7 +437,7 @@ export class AchievementService {
       else if (subzoneType === SubZoneEnum.BlackSeaSeaEscape)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, 1));
       else if (subzoneType === SubZoneEnum.BlackSeaStormySkies)
-        rewards.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 30));
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, 1));
       else if (subzoneType === SubZoneEnum.BlackSeaAreonesosPassing)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, 1));
       else if (subzoneType === SubZoneEnum.BlackSeaWindyGale)
