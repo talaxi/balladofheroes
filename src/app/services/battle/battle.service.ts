@@ -1756,7 +1756,7 @@ export class BattleService {
     }
 
     var taunted = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Taunt);
-    if (taunted !== undefined && targetType !== TargetEnum.ForcedRandom) {
+    if (taunted !== undefined && targetType !== TargetEnum.ForcedRandom && targetType !== TargetEnum.LowestHpPercent) {
       var tauntCaster = targets.find(caster => caster.name === taunted!.caster);
       if (tauntCaster !== undefined && !tauntCaster.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)) {
         target = tauntCaster;
@@ -1765,7 +1765,7 @@ export class BattleService {
 
     //messenger takes priority
     var chainsOfFate = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
-    if (chainsOfFate !== undefined && targetType !== TargetEnum.ForcedRandom) {
+    if (chainsOfFate !== undefined && targetType !== TargetEnum.ForcedRandom && targetType !== TargetEnum.LowestHpPercent) {
       var caster = targets.find(caster => caster.name === chainsOfFate!.caster);
       if (caster !== undefined && !caster.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)) {
         target = caster;
