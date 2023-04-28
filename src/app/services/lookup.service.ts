@@ -2411,6 +2411,8 @@ export class LookupService {
       description = "All elemental resistances reduced by " + Math.abs(statusEffect.effectiveness * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Focus)
       description = statusEffect.caster + " is focusing all attacks on you.";
+    if (statusEffect.type === StatusEffectEnum.Taunt)
+      description = "All of your attacks must target " + statusEffect.caster + ".";
     if (statusEffect.type === StatusEffectEnum.BattleItemDamageUp)
       description = "Increase damage dealt by battle items by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%."
     if (statusEffect.type === StatusEffectEnum.BattleItemEffectUp)
@@ -2440,6 +2442,8 @@ export class LookupService {
       description = "Increase your next damaging ability by " + statusEffect.effectiveness + ".";
     if (statusEffect.type === StatusEffectEnum.Retribution)
       description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
+      if (statusEffect.type === StatusEffectEnum.ChainsOfFate)
+      description = "All of your attacks must target the enemy with Chains of Fate, and all of their attacks will target you.";
 
 
     return description;
