@@ -727,6 +727,24 @@ export class LookupService {
 
     locations = "";
     matchingSubzones = matchingSubzones.filter((el, i, a) => i === a.indexOf(el));
+    /*var availableSubzones: SubZoneEnum[] = [];
+    */
+
+    matchingSubzones.sort((a,b) => {
+      var aSubzone = this.balladService.findSubzone(a);
+      var bSubzone = this.balladService.findSubzone(b);
+
+      if (aSubzone === undefined || bSubzone === undefined)
+        return 0;
+
+      if (aSubzone.isAvailable && !bSubzone.isAvailable)
+        return -1;
+        if (!aSubzone.isAvailable && bSubzone.isAvailable)
+        return 1;
+        else
+        return 0;
+    })
+
     //matchingSubzones.forEach(subzone => {
       var locationTotal = 4;
       for (var i = 0; i < locationTotal; i++) {
@@ -747,8 +765,20 @@ export class LookupService {
       }
     }
 
-    if (matchingSubzones.length > locationTotal)
-      locations += "and " + (matchingSubzones.length - locationTotal) + " other locations.";
+    var matchingSubzoneAvailableTotal = 0;
+
+    matchingSubzones.forEach(subzone => {
+      var matchedSubzone = this.balladService.findSubzone(subzone);
+      if (matchedSubzone !== undefined) {
+      var matchedBallad = this.balladService.findBalladOfSubzone(matchedSubzone.type);
+      if (matchedSubzone !== undefined && matchedSubzone.isAvailable && matchedBallad?.isAvailable) {
+        matchingSubzoneAvailableTotal += 1;
+      }
+      }
+    });
+
+    if (matchingSubzoneAvailableTotal > locationTotal)
+      locations += "and " + (matchingSubzoneAvailableTotal - locationTotal) + " other locations.";
     return this.utilityService.getSanitizedHtml(locations);
     //<div>???</div><div>???</div>";
   }
