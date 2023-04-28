@@ -3,6 +3,8 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { BattleService } from 'src/app/services/battle/battle.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 
@@ -19,7 +21,8 @@ export class ChangeGodViewComponent implements OnInit {
   godRows: God[][];
   godCells: God[];
 
-  constructor(private lookupService: LookupService, private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService) { }
+  constructor(private lookupService: LookupService, private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService,
+    private battleService: BattleService) { }
 
   ngOnInit(): void {
     this.allGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
@@ -128,11 +131,12 @@ export class ChangeGodViewComponent implements OnInit {
 
     if (this.isCurrentlyAssigned(type))
     {
-      party.forEach(member => {
+      this.globalService.globalVar.characters.filter(character => character.isAvailable).forEach(member => {
         if (member.assignedGod1 === type)
         {
-          if (swappingUndefinedGod)
-            member.assignedGod1 = GodEnum.None;
+          if (swappingUndefinedGod) {
+            member.assignedGod1 = GodEnum.None;            
+          }
           else
             member.assignedGod1 = swappedGod;
         }
@@ -161,13 +165,14 @@ export class ChangeGodViewComponent implements OnInit {
         member.assignedGod2 = GodEnum.None;
       }
 
+      this.setGodStatuses(member);
       this.globalService.calculateCharacterBattleStats(member);
     });
   }
 
   isCurrentlyAssigned(type: GodEnum) {
     var isAssigned = false;
-    var party = this.globalService.getActivePartyCharacters(true);
+    var party = this.globalService.globalVar.characters.filter(character => character.isAvailable);
 
     party.forEach(member => {
       if (member.assignedGod1 === type || member.assignedGod2 === type)
@@ -178,7 +183,7 @@ export class ChangeGodViewComponent implements OnInit {
   }
 
   GetCurrentlyAssignedCharacter(type: GodEnum) {
-    var party = this.globalService.getActivePartyCharacters(true);
+    var party = this.globalService.globalVar.characters.filter(character => character.isAvailable);
     var assignedCharacter = new Character();
 
     party.forEach(member => {
@@ -187,5 +192,19 @@ export class ChangeGodViewComponent implements OnInit {
     });
 
     return "<span class='" + this.globalService.getCharacterColorClassText(assignedCharacter.type) + "'>" + assignedCharacter.name + "</span>";
+  }
+
+  setGodStatuses(character: Character) {
+    if ((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis) && 
+    !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", character);
+      if (dispenserOfDues !== undefined) {
+        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
+      }
+    }
+    else if ((character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+    }
   }
 }

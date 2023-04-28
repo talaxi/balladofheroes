@@ -1,9 +1,13 @@
-.resources {
+/*.resources {
     white-space: pre;
-}
+}*/
 
 .resourcesView {
     height:100%;
+    margin-top: -.4rem;
+    margin-left: -.4rem;
+    margin-right: -.4rem;
+    overflow: hidden;
     
     background-color: var(--background-default);
     border-color: var(--background-header);
@@ -29,18 +33,29 @@
       grid-area: resources;
       border-right: 1px solid rgba(0,0,0,.1);      
       background-color: var(--background-default);
+      
+      margin-top: .5rem;
+      display: flex;
+      justify-content: space-around;
     }
 
     .progression {
       grid-area: progression;
       border-right: 1px solid rgba(0,0,0,.1);
       background-color: var(--background-default);
+      display: flex;
+      justify-content: space-around;
+      margin-top: .5rem;
     }  
   
     .equipment {
       grid-area: equipment;
       background-color: var(--background-default);
       border-right: 1px solid rgba(0,0,0,.1);
+
+      display: flex;
+      justify-content: space-around;
+      margin-top: .5rem;
     }
 
     .screenMarginRight {
@@ -72,8 +87,107 @@
       justify-content: space-between;
     }
 
+    .filters {
+      padding-top: .25rem;
+      padding-bottom: .25rem;
+      display: flex;
+      justify-content: space-around;
+      background-color: var(--background-quarternary);
+    }
+    
+    .sortOptions {
+      width: 70%;
+      display:flex;
+      justify-content: space-around;      
+    }
+
+    .tabItem:hover:not(.active) {
+      background-color: var(--button-hover);
+      /*color: var(--foreground-tertiary) !important;*/
+    }
+    
+    .filterActive {
+      color: var(--foreground-secondary) !important;
+      font-weight: bold;
+    }
+    
+    .active {
+      background-color: var(--button-selected) !important;
+      color: var(--foreground-secondary) !important;
+    }
+    
+    .mat-dialog-container {
+      padding: 0px;
+    }
+    
+    .noMargin {
+      margin: 0px;
+      padding: 0px;
+    }
+    
+    .tabItem {
+      border-right: 1px solid rgba(255, 255, 255, .25);
+      padding: 0.5rem 0;
+    }
+    
+    table tr td:nth-child(3n) {
+      border-right: none;
+    }
+    
+    table {
+        table-layout: fixed;
+        width: 100%;
+        /*height: 100%;*/
+        text-align: center;
+    }
+
+    .column1, .column2 {
+      width: 50%;
+      display: inline-block;
+    }
+
+    .equipmentSection, .slotItemSection, .craftingMaterialsSection {
+      width: 48%;
+    }
+
+    .resourcesSection, .battleItemsSection {
+      width: 24%;
+    }
+
+    .smallCharmsSection, .largeCharmsSection {
+      width: 48%;
+    }
+    
+    .noLineHeight {
+      line-height:0;
+    }
+
+    /*td {
+        width: 25%;
+        border: 1px solid rgba(0,0,0,.1);
+        padding: 1rem;
+        vertical-align: top;
+      }
+      
+      table tr td:last-child, table tr td:nth-last-child(2), table tr td:nth-last-child(3), table tr td:nth-last-child(4) {
+        border-bottom: none;
+      }
+    
+      table tr:nth-child(1) td:nth-child(-n+4) {
+        border-top: none;
+      }
+      
+      table tr td:nth-child(4n) { 
+        border-right: none;
+      }
+    
+      table tr td:nth-child(4n-3) { 
+        border-left: none;
+      }*/
+    
+      
     @media (max-width: 800px) {
-      .gridContainer {
+      /*.gridContainer {
         height: 100%;
         display: grid;
         grid-template-columns: 1fr;
@@ -84,5 +198,9 @@
           "progression" 
           "specialty" 
           "equipment";
-      }
+      }*/
+
+      table {
+        height: unset;
+       }
     }

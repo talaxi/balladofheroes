@@ -37,10 +37,10 @@ export class BalladService {
     if (type === BalladEnum.Labors)
       name = "Ballad of the Labors";
     if (type === BalladEnum.Underworld)
-      name = "Ballad of the Underworld";      
+      name = "Ballad of the Underworld";
     if (type === BalladEnum.Boar)
       name = "Ballad of the Boar";
-      if (type === BalladEnum.Argo)
+    if (type === BalladEnum.Argo)
       name = "Ballad of the Argo";
 
     return name;
@@ -109,7 +109,7 @@ export class BalladService {
       relatedBallad.notify = false;
     }
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
-    this.globalService.resetCooldowns(); 
+    this.globalService.resetCooldowns();
 
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.getSubZoneName(relatedSubzone.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -249,7 +249,7 @@ export class BalladService {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
           reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
-             this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
+              this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
               this.selectZone(zone);
@@ -312,8 +312,7 @@ export class BalladService {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-    if (this.isSubzoneTown(subzone.type))
-    {
+    if (this.isSubzoneTown(subzone.type)) {
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
 
@@ -323,15 +322,14 @@ export class BalladService {
       this.globalService.globalVar.activeBattle.currentEnemies = randomEnemyTeam;
     }
 
-    if (this.deviceDetectorService.isMobile())
-    {
+    if (this.deviceDetectorService.isMobile()) {
       this.dialog.closeAll();
     }
   }
 
-  isSubZoneToBeContinued(subzone: SubZone) {    
+  isSubZoneToBeContinued(subzone: SubZone) {
     //if (subzone.type === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
-      //return true;
+    //return true;
 
     return false;
   }
@@ -480,57 +478,57 @@ export class BalladService {
       name = "Hypnos' Island";
     if (type === SubZoneEnum.AegeanSeaIolcus)
       name = "Iolcus";
-      if (type === SubZoneEnum.AegeanSeaOpenSeas)
+    if (type === SubZoneEnum.AegeanSeaOpenSeas)
       name = "Open Seas";
-      if (type === SubZoneEnum.AegeanSeaIslandOfLemnos)
+    if (type === SubZoneEnum.AegeanSeaIslandOfLemnos)
       name = "Island of Lemnos";
-      if (type === SubZoneEnum.AegeanSeaIslandOfImbros)
+    if (type === SubZoneEnum.AegeanSeaIslandOfImbros)
       name = "Island of Imbros";
-      if (type === SubZoneEnum.AegeanSeaHellespointPassage1)
+    if (type === SubZoneEnum.AegeanSeaHellespointPassage1)
       name = "Hellespoint Passage 1";
-      if (type === SubZoneEnum.AegeanSeaPropontis)
+    if (type === SubZoneEnum.AegeanSeaPropontis)
       name = "Propontis";
-      if (type === SubZoneEnum.AegeanSeaHellespointPassage2)
+    if (type === SubZoneEnum.AegeanSeaHellespointPassage2)
       name = "Hellespoint Passage 2";
-      if (type === SubZoneEnum.AegeanSeaCoastalThrace)
+    if (type === SubZoneEnum.AegeanSeaCoastalThrace)
       name = "Coastal Thrace";
-      if (type === SubZoneEnum.AegeanSeaSalmydessus)
+    if (type === SubZoneEnum.AegeanSeaSalmydessus)
       name = "Salmydessus";
-      if (type === SubZoneEnum.AegeanSeaDesertedPath)
+    if (type === SubZoneEnum.AegeanSeaDesertedPath)
       name = "Deserted Path";
-      if (type === SubZoneEnum.AegeanSeaRockyOverhang)
+    if (type === SubZoneEnum.AegeanSeaRockyOverhang)
       name = "Rocky Overhang";
-      if (type === SubZoneEnum.AegeanSeaSympegadesOverlook)
+    if (type === SubZoneEnum.AegeanSeaSympegadesOverlook)
       name = "Sympegades Overlook";
-      if (type === SubZoneEnum.BlackSeaStillWaters)
+    if (type === SubZoneEnum.BlackSeaStillWaters)
       name = "Still Waters";
-      if (type === SubZoneEnum.BlackSeaMariandyna)
+    if (type === SubZoneEnum.BlackSeaMariandyna)
       name = "Mariandyna";
-      if (type === SubZoneEnum.BlackSeaUnderAssault)
+    if (type === SubZoneEnum.BlackSeaUnderAssault)
       name = "Under Assault";
-      if (type === SubZoneEnum.BlackSeaSeaEscape)
+    if (type === SubZoneEnum.BlackSeaSeaEscape)
       name = "Sea Escape";
-      if (type === SubZoneEnum.BlackSeaStormySkies)
+    if (type === SubZoneEnum.BlackSeaStormySkies)
       name = "Stormy Skies";
-      if (type === SubZoneEnum.BlackSeaAreonesosPassing)
+    if (type === SubZoneEnum.BlackSeaAreonesosPassing)
       name = "Areonesos Passing";
-      if (type === SubZoneEnum.BlackSeaWindyGale)
+    if (type === SubZoneEnum.BlackSeaWindyGale)
       name = "Windy Gale";
-      if (type === SubZoneEnum.ColchisCityCenter)
+    if (type === SubZoneEnum.ColchisCityCenter)
       name = "City Center";
-      if (type === SubZoneEnum.ColchisGroveOfAres)
+    if (type === SubZoneEnum.ColchisGroveOfAres)
       name = "Grove of Ares";
-      if (type === SubZoneEnum.ColchisReinforcementsFromAeetes)
+    if (type === SubZoneEnum.ColchisReinforcementsFromAeetes)
       name = "Aeëtes' Reinforcements";
-      if (type === SubZoneEnum.ColchisHurriedRetreat1)
+    if (type === SubZoneEnum.ColchisHurriedRetreat1)
       name = "Hurried Retreat 1";
-      if (type === SubZoneEnum.ColchisHurriedRetreat2)
+    if (type === SubZoneEnum.ColchisHurriedRetreat2)
       name = "Hurried Retreat 2";
 
     return name;
   }
 
-  getVictoriesNeededToProceed(type: SubZoneEnum) {    
+  getVictoriesNeededToProceed(type: SubZoneEnum) {
     var victories = 1;
     var testing = false;
 
@@ -622,29 +620,29 @@ export class BalladService {
     if (type === SubZoneEnum.TheLetheHypnosIsland)
       victories = bossVictories;
 
-      if (type === SubZoneEnum.AegeanSeaOpenSeas || type === SubZoneEnum.AegeanSeaIslandOfLemnos || type === SubZoneEnum.AegeanSeaIslandOfImbros
-        || type === SubZoneEnum.AegeanSeaHellespointPassage1 || type === SubZoneEnum.AegeanSeaPropontis || type === SubZoneEnum.AegeanSeaHellespointPassage2
-        || type === SubZoneEnum.AegeanSeaCoastalThrace || type === SubZoneEnum.AegeanSeaDesertedPath || type === SubZoneEnum.AegeanSeaRockyOverhang)
-        victories = defaultVictories;
-  
-      if (type === SubZoneEnum.AegeanSeaSympegadesOverlook)
-        victories = bossVictories;
+    if (type === SubZoneEnum.AegeanSeaOpenSeas || type === SubZoneEnum.AegeanSeaIslandOfLemnos || type === SubZoneEnum.AegeanSeaIslandOfImbros
+      || type === SubZoneEnum.AegeanSeaHellespointPassage1 || type === SubZoneEnum.AegeanSeaPropontis || type === SubZoneEnum.AegeanSeaHellespointPassage2
+      || type === SubZoneEnum.AegeanSeaCoastalThrace || type === SubZoneEnum.AegeanSeaDesertedPath || type === SubZoneEnum.AegeanSeaRockyOverhang)
+      victories = defaultVictories;
 
-        if (type === SubZoneEnum.BlackSeaStillWaters || type === SubZoneEnum.BlackSeaStormySkies || type === SubZoneEnum.BlackSeaUnderAssault
-          || type === SubZoneEnum.BlackSeaAreonesosPassing || type === SubZoneEnum.BlackSeaSeaEscape)
-          victories = defaultVictories;
-    
-        if (type === SubZoneEnum.BlackSeaWindyGale)
-          victories = bossVictories;
+    if (type === SubZoneEnum.AegeanSeaSympegadesOverlook)
+      victories = bossVictories;
 
-          if (type === SubZoneEnum.ColchisHurriedRetreat1 || type === SubZoneEnum.ColchisHurriedRetreat2)
-            victories = defaultVictories;
-      
-          if (type === SubZoneEnum.ColchisReinforcementsFromAeetes)
-            victories = bossVictories;
-            
-          if (type === SubZoneEnum.ColchisGroveOfAres)
-          victories = groveOfAresVictories;
+    if (type === SubZoneEnum.BlackSeaStillWaters || type === SubZoneEnum.BlackSeaStormySkies || type === SubZoneEnum.BlackSeaUnderAssault
+      || type === SubZoneEnum.BlackSeaAreonesosPassing || type === SubZoneEnum.BlackSeaSeaEscape)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.BlackSeaWindyGale)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.ColchisHurriedRetreat1 || type === SubZoneEnum.ColchisHurriedRetreat2)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.ColchisReinforcementsFromAeetes)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.ColchisGroveOfAres)
+      victories = groveOfAresVictories;
 
     return victories;
   }
@@ -683,5 +681,31 @@ export class BalladService {
     }
 
     return false;
+  }
+
+  isBalladFullyAvailable(type: BalladEnum) {
+    var isFullyAvailable = true;
+    var ballad = this.findBallad(type);
+    if (ballad === undefined)
+      return false;
+
+    ballad.zones.forEach(zone => {
+      if (!zone.isAvailable || zone.subzones.some(subzone => !subzone.isAvailable))
+        isFullyAvailable = false;
+    })
+
+    return isFullyAvailable;
+  }
+
+  isZoneFullyAvailable(type: ZoneEnum) {
+    var isFullyAvailable = true;
+    var zone = this.findZone(type);
+    if (zone === undefined)
+      return false;
+
+    if (zone.subzones.some(subzone => !subzone.isAvailable))
+      isFullyAvailable = false;
+
+    return isFullyAvailable;
   }
 }

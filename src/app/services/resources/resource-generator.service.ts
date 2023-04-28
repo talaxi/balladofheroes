@@ -159,6 +159,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.SharkstoothPendant) {
       return new ResourceValue(ItemsEnum.SharkstoothPendant, amount);
     }
+    if (type === ItemsEnum.BlazingSunPendant) {
+      return new ResourceValue(ItemsEnum.BlazingSunPendant, amount);
+    }
+    if (type === ItemsEnum.DarkMoonPendant) {
+      return new ResourceValue(ItemsEnum.DarkMoonPendant, amount);
+    }
 
     //rings
     if (type === ItemsEnum.MoltenRing) {
@@ -471,6 +477,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.Coin) {
       return new ResourceValue(ItemsEnum.Coin, amount);
+    }
+    if (type === ItemsEnum.EternalMeleeTicket) {
+      return new ResourceValue(ItemsEnum.EternalMeleeTicket, amount);
+    }
+    if (type === ItemsEnum.Subscriber) {
+      return new ResourceValue(ItemsEnum.Subscriber, amount);
     }
 
     return new ResourceValue(ItemsEnum.None, 0);

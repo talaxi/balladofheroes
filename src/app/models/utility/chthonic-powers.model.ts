@@ -9,7 +9,7 @@ export class ChthonicPowers {
     resistanceBoostLevel: number;
     isChthonicFavorUnlocked: boolean;
     isChthonicResetUnlocked: boolean;
-    preferredGod: GodEnum;
+    preferredGod: GodEnum;    
 
     constructor() {
         this.isChthonicResetUnlocked = false;

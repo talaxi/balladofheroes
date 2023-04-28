@@ -89,6 +89,10 @@
     font-size: var(--e3-size) !important;
 }
 
+.extremelySmallText {
+    font-size: var(--e4-size) !important;
+}
+
 .targetIcon {
     width: var(--s4-size);
     vertical-align: middle;

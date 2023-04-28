@@ -14,9 +14,9 @@
                         </div>
                         <div *ngFor="let tournament of getStandardColiseumTournaments(); let i = index"
                             (click)="chooseColiseumTournament(tournament)" class="listItem"
-                            [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}">
+                            [ngClass]='getColiseumNameColor(tournament)'>
                             <button class="buttonAsText clickableText listItemButton"
-                                [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}"
+                            [ngClass]='getColiseumNameColor(tournament)'
                                 [innerHtml]="getTournamentName(tournament)"></button>
                             <hr class="noMargin" />
                         </div>
@@ -60,7 +60,7 @@
                 </div>
                 <br />
                 <div [ngClass]="{'rewardAlreadyObtained': quickCompletionRewardAlreadyObtained()}">
-                    <strong>Quick Completion Reward: </strong> <br /> <span
+                    <strong>90 Second Completion Reward: </strong> <br /> <span
                         [innerHtml]='getQuickCompletionRewards()'></span>
                 </div>
                 <br />

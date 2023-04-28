@@ -1,70 +1,219 @@
-<div class="resourcesView gridContainer">
+<div class="resourcesView">
+  <table>
+    <tr>
+      <td class="clickableText tabItem" [ngClass]="{'active': resourceTabActive === resourceViewEnum.Equipment }"
+        (click)="toggleDisplayView(resourceViewEnum.Equipment)">
+        <button class="buttonAsText clickableText m1Heading"
+          [ngClass]="{'active': resourceTabActive === resourceViewEnum.Equipment }">Equipment</button>
+      </td>
+      <td class="clickableText tabItem" [ngClass]="{'active': resourceTabActive === resourceViewEnum.Resources }"
+        (click)="toggleDisplayView(resourceViewEnum.Resources)">
+        <button class="buttonAsText clickableText m1Heading"
+          [ngClass]="{'active': resourceTabActive === resourceViewEnum.Resources }">Resources & Crafting
+          Materials</button>
+      </td>
+      <td class="clickableText tabItem" [ngClass]="{'active': resourceTabActive === resourceViewEnum.Progression }"
+        (click)="toggleDisplayView(resourceViewEnum.Progression)">
+        <button class="buttonAsText clickableText m1Heading"
+          [ngClass]="{'active': resourceTabActive === resourceViewEnum.Progression }">Progression</button>
+      </td>
+    </tr>
+  </table>
+  <hr class="noMargin" />
+  <div class="filters">
+        <span>Sort by:</span>
+        <mat-radio-group class="sortOptions" [(ngModel)]="sortType" aria-label="Select a sorting option">
+          <mat-radio-button *ngIf="resourceTabActive === resourceViewEnum.Equipment" [value]="1">Quality</mat-radio-button>
+          <mat-radio-button [value]="2">Name</mat-radio-button>
+          <mat-radio-button [value]="3">Item ID</mat-radio-button>
+        </mat-radio-group>
+        <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>
+      </div>
+      <hr class="noMargin" />
 
-    <div class="equipment">
-        <div class="s4Heading centered">
-            <span class="sectionHeaderText sectionHeading">Equipment</span>
-        </div>
-        <br />
-        <div *ngFor="let equipment of equipmentItems;">
-            <span customToolTip [contentTemplate]="equipmentContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
-                <strong>{{dictionaryService.getItemName(equipment.item)}}:</strong> {{equipment.amount}}
-                <hr class="marginHr" />
-            </span>
+  <div *ngIf="resourceTabActive === resourceViewEnum.Equipment" class="equipment">
+    <div class="equipmentSection twoColumns">
+      <div class="s4Heading centered">
+        <span class="sectionHeaderText sectionHeading">Equipment</span>
+      </div>
+      <br />
+      <div *ngFor="let equipment of equipmentItems; let i = index" [ngClass]="get2ColumnClass(i, 2)">
+        <div>
+          <span customToolTip [contentTemplate]="equipmentContent" [tooltipDirection]="tooltipDirection"
+            class="screenMarginLeft">
+            <strong
+              [ngClass]="getEquipmentClass(equipment.item)">{{dictionaryService.getItemName(equipment.item)}}:</strong>
+            {{equipment.amount}}
+            <hr class="" />
+          </span>
 
-            <ng-template #equipmentContent>
-                <div class="compareEquipment">
-                  <span class="item">
-                    <app-equipment-item-view [equipment]="lookupService.getEquipmentPieceByItemType(equipment.item)"></app-equipment-item-view>
-                  </span>                  
-                </div>
-              </ng-template>
-        </div>
-    </div>
-    <div class="resources">
-        <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Resources & Crafting
-                Materials</span></div>
-        <br />
-        <div *ngFor="let resource of resources;">
-            <div class="resourceDiv">
-                <button class="screenMarginLeft buttonAsText clickableText trackingButton">
-                    <!--{{dictionaryService.getItemName(resource.item)}} x{{resource.amount}}-->
-                    <app-resource-item-view [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
-                </button>
-                <button *ngIf="isResourceTracked(resource)" (click)="setTrackingResource(resource)" class="screenMarginRight buttonStyled smallCaps">tracking</button>
+          <ng-template #equipmentContent>
+            <div class="compareEquipment">
+              <span class="item">
+                <app-equipment-item-view
+                  [equipment]="lookupService.getEquipmentPieceByItemType(equipment.item)"></app-equipment-item-view>
+              </span>
             </div>
-            <span>
-                <hr class="marginHr" />
-            </span>
+          </ng-template>
         </div>
+      </div>
     </div>
-    <div class="progression">
-        <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Progression</span></div>
-        <br />
-        <div *ngFor="let progression of progressionResources;">
-            <span customToolTip [contentTemplate]="progressionContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
-                <strong>{{dictionaryService.getItemName(progression.item)}}:</strong> {{(isItemPercentage(progression.item) ? progression.amount * 100 : progression.amount)  | number : '1.0-3'}}{{(isItemPercentage(progression.item) ? "%" : "")}} 
-                <hr class="marginHr" />
-            </span>
-            <ng-template #progressionContent>
-                <div class="popoverClass">
-                    <span [innerHTML]="this.getProgressionDescription(progression)"></span>
-                </div>
-            </ng-template>
+    <div *ngIf="slotItemsAreAvailable" class="slotItemSection twoColumns">
+      <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Slot Items</span></div>
+      <br />
+      <div *ngFor="let resource of slotItems; let i = index" [ngClass]="get2ColumnClass(i, 2)">
+        <div>
+          <span customToolTip [contentTemplate]="equipmentContent" [tooltipDirection]="tooltipDirection"
+            class="screenMarginLeft">
+            <strong
+              [ngClass]="lookupService.getEquipmentQualityClass(lookupService.getSlotItemQuality(resource.item))">{{dictionaryService.getItemName(resource.item)}}:</strong>
+            {{resource.amount}}
+            <hr class="" />
+          </span>
+
+          <ng-template #equipmentContent>
+            <span class="item" [innerHtml]="lookupService.getItemDescription(resource.item)"></span>
+          </ng-template>
         </div>
+      </div>
     </div>
-    <div class="charms">
-        <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Charms</span></div>
-        <br />
-        <div *ngFor="let charm of charmResources;">
-            <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection" class="screenMarginLeft">
-                <strong>{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
-                <hr class="marginHr" />
-            </span>
-            <ng-template #charmContent>
-                <div class="popoverClass">
-                    <span [innerHTML]="this.getCharmDescription(charm)"></span>
-                </div>
-            </ng-template>
+  </div>
+
+
+  <div *ngIf="resourceTabActive === resourceViewEnum.Resources" class="resources">
+    <div class="resourcesSection oneColumn">
+      <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Resources</span></div>
+      <br />
+      <div *ngFor="let resource of resources; let i = index">
+        <div>
+          <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
+          class="screenMarginLeft">
+          <strong [class]="getResourceClass(resource)">{{dictionaryService.getItemName(resource.item)}}:</strong> {{(isItemPercentage(resource.item) ? resource.amount * 100 : resource.amount)  | number : '1.0-3'}}{{(isItemPercentage(resource.item) ? "%" : "")}} 
+          <hr />
+        </span>
+        <ng-template #charmContent>
+          <div class="popoverClass">
+            <span [innerHTML]="lookupService.getItemDescription(resource.item)"></span>
+          </div>
+        </ng-template>
         </div>
+      </div>
     </div>
+    
+    <div class="battleItemsSection oneColumn">
+      <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Battle Items</span></div>
+      <br />
+      <div *ngFor="let resource of battleItems; let i = index">
+        <div>
+          <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
+          class="screenMarginLeft">
+          <strong [class]="getResourceClass(resource)">{{dictionaryService.getItemName(resource.item)}}:</strong> {{(isItemPercentage(resource.item) ? resource.amount * 100 : resource.amount)  | number : '1.0-3'}}{{(isItemPercentage(resource.item) ? "%" : "")}} 
+          <hr />
+        </span>
+        <ng-template #charmContent>
+          <div class="popoverClass">
+            <span [innerHTML]="lookupService.getItemDescription(resource.item)"></span>
+          </div>
+        </ng-template>
+        </div>
+      </div>
+    </div>
+
+    <div class="craftingMaterialsSection twoColumns">
+      <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Crafting Materials</span></div>
+      <br />
+      <div class="noLineHeight">
+      <div *ngFor="let resource of craftingMaterials; let i = index" [ngClass]="get2ColumnClass(i, 2)">
+        <div>
+          <button class="screenMarginLeft buttonAsText clickableText trackingButton">
+            <!--{{dictionaryService.getItemName(resource.item)}} x{{resource.amount}}-->
+            <app-resource-item-view [flipToolTip]="shouldFlipMaterial(i, 2)" [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
+          </button>
+          <button *ngIf="isResourceTracked(resource)" (click)="setTrackingResource(resource)"
+            class="screenMarginRight buttonStyled smallCaps">tracking</button>
+          <span>
+            <hr />
+          </span>
+        </div>
+      </div>
+    </div>
+    </div>
+  </div>
+
+  <div *ngIf="resourceTabActive === resourceViewEnum.Progression" class="progression">
+    <div class="smallCharmsSection oneColumn">
+      <div class="s4Heading centered">
+        <span class="sectionHeaderText sectionHeading">Small Charms</span>
+      </div>
+      <br />
+      <div *ngFor="let charm of smallCharmResources; let i = index">
+        <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
+          class="screenMarginLeft">
+          <strong [ngClass]="lookupService.getEquipmentQualityClass(quality.Basic)">{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
+          <hr />
+        </span>
+        <ng-template #charmContent>
+          <div class="popoverClass">
+            <span [innerHTML]="this.getCharmDescription(charm)"></span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+    <div class="largeCharmsSection oneColumn">
+      <div class="s4Heading centered">
+        <span class="sectionHeaderText sectionHeading">Large Charms</span>
+      </div>
+      <br />
+      <div *ngFor="let charm of largeCharmResources; let i = index">
+        <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
+          class="screenMarginLeft">
+          <strong [ngClass]="lookupService.getEquipmentQualityClass(quality.Rare)">{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
+          <hr />
+        </span>
+        <ng-template #charmContent>
+          <div class="popoverClass">
+            <span [innerHTML]="this.getCharmDescription(charm)"></span>
+          </div>
+        </ng-template>
+      </div>
+    </div>
+  </div>
+
+
+  <!--<div class="progression">
+    <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Progression</span></div>
+    <br />
+    <div *ngFor="let progression of progressionResources;">
+      <span customToolTip [contentTemplate]="progressionContent" [tooltipDirection]="tooltipDirection"
+        class="screenMarginLeft">
+        <strong>{{dictionaryService.getItemName(progression.item)}}:</strong> {{(isItemPercentage(progression.item) ?
+        progression.amount * 100 : progression.amount) | number : '1.0-3'}}{{(isItemPercentage(progression.item) ? "%" :
+        "")}}
+        <hr class="marginHr" />
+      </span>
+      <ng-template #progressionContent>
+        <div class="popoverClass">
+          <span [innerHTML]="this.getProgressionDescription(progression)"></span>
+        </div>
+      </ng-template>
+    </div>
+  </div>
+
+
+  <div class="charms">
+    <div class="s4Heading centered"><span class="sectionHeaderText sectionHeading">Charms</span></div>
+    <br />
+    <div *ngFor="let charm of charmResources;">
+      <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
+        class="screenMarginLeft">
+        <strong>{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
+        <hr class="marginHr" />
+      </span>
+      <ng-template #charmContent>
+        <div class="popoverClass">
+          <span [innerHTML]="this.getCharmDescription(charm)"></span>
+        </div>
+      </ng-template>
+    </div>
+  </div>-->
 </div>

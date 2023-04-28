@@ -185,17 +185,17 @@
 }
 
 .mobileVersion {
-  display: none;
+  display: grid;
 }
 
 @media (max-width: 800px) {
-  .mobileVersion {
+  /*.mobileVersion {
     display: grid;
-  }
+  }*/
 
-  .webVersion {
+  /*.webVersion {
     display: none;
-  }
+  }*/
   
   .quickLinks {
     grid-area: quickLinks;

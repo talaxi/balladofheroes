@@ -183,7 +183,7 @@ export class StoryService {
           "<div class='sceneDiv'>A Giant?! You hadn't expected to encounter one so early on your journey, but here was one in your way. It seems like he was waiting for you.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“Little heroes! I've been looking for ya. Come on over, don't be shy!”") + " it bellows as it makes its way towards you.</div>" +
           "<div class='sceneDiv'>This is what <span class='athenaColor bold'>Athena</span> trusted you to handle. Time to make her proud.</div>" +
-          "<div class='smallStoryText'><b><i>You will temporarily lose access to previous Ballads after completing the following battle, turn back now if you have unfinished business.</i></b></div>";
+          "<div class='smallStoryText'><b><i>You will temporarily lose access to previous Ballads after completing the following battle.</i></b></div>";
     }
     else if (storyId === 8) {
       if (pageCount === 1)
@@ -546,7 +546,7 @@ export class StoryService {
           this.lookupService.gainResource(resource);
       }
       if (this.globalService.globalVar.currentStoryId === 8) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle, turn back now if you have unfinished business.</i></b>");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle.</i></b>");
       }
       if (this.globalService.globalVar.currentStoryId === 9) {
         this.showFirstTimeUnderworldStory = false;

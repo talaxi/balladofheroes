@@ -26,3 +26,18 @@
 .cssTooltip:hover {
     z-index: 100 !important;
 }
+
+.shiftUp {
+    transform: translateY(-50%);
+    overflow: hidden;
+}
+
+.shiftLeft {
+    transform: translateX(-50%);
+    overflow: hidden;
+}
+
+.shiftUpLeft {
+    transform: translateY(-50%) translateX(-50%);
+    overflow: hidden;
+}

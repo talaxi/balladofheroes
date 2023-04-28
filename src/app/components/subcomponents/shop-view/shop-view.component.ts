@@ -76,32 +76,8 @@ export class ShopViewComponent implements OnInit {
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryScene24);
   }
 
-  getOptionText(type: ShopTypeEnum) {
-    var text = "";
-
-    if (type === ShopTypeEnum.General) {
-      text = "General";
-    }
-    if (type === ShopTypeEnum.Crafter) {
-      text = "Crafter";
-    }
-    if (type === ShopTypeEnum.Alchemist) {
-      text = "Alchemist";
-    }
-    if (type === ShopTypeEnum.ChthonicFavor) {
-      text = "Chthonic Favor";
-    }
-    if (type === ShopTypeEnum.Coliseum) {
-      text = "Coliseum";
-    }
-    if (type === ShopTypeEnum.Traveler) {
-      text = "Traveler";
-    }
-    if (type === ShopTypeEnum.Jewelcrafter) {
-      text = "Jewelcrafter";
-    }
-
-    return text;
+  getOptionText(type: ShopTypeEnum) {    
+    return this.lookupService.getShopOptionText(type);
   }
 
   progressStory() {

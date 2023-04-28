@@ -237,6 +237,10 @@ export class UtilityService {
     return Math.round((value + Number.EPSILON) * (10 ** degree)) / (10 ** degree);
   }
 
+  genericRound(value: number) {
+    return this.roundTo(value, this.genericRoundTo);
+  }
+
   //level 0 = 1
   //level 1 = 2
   //level 2 = 3

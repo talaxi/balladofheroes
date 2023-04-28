@@ -1,9 +1,21 @@
 .absolute {
     position: absolute;
     width: 100%;
+    min-width: 20vw;
 }
 
 .resourceContainer {
     position: relative;
     width: 100%;
+    min-width: 10vw;
+}
+
+.spanElement {
+    min-width: 10vw;
+    display: inline-block;
+}
+
+.flipToolTip {
+    transform: translateX(-100%);
+    z-index: 100;
 }

@@ -313,6 +313,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.DispenserOfDues) {
       src += "dispenserOfDues.svg";
     }
+    if (effect.type === StatusEffectEnum.ChainsOfFate) {
+      src += "chainsOfFate.svg";
+    }
+    if (effect.type === StatusEffectEnum.Retribution) {
+      src += "retribution.svg";
+    }
+    if (effect.type === StatusEffectEnum.Thyrsus) {
+      src += "thyrsus.svg";
+    }
 
     return src;
   }
@@ -398,7 +407,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   }
 
   isEffectInvisible(effect: StatusEffect) {
-    if (effect.type === StatusEffectEnum.Dead)
+    if (effect.type === StatusEffectEnum.Dead || effect.type === StatusEffectEnum.InstantCounter)
       return true;
 
     return false;

@@ -215,5 +215,14 @@ export enum ItemsEnum {
   BlackLance,
   LiquidSaber,
   QuadRing,
-  Ares
+  Ares,
+  EternalMeleeTicket,
+  Subscriber,
+  WeaponSlotAddition,
+  RingSlotAddition,
+  ArmorSlotAddition,
+  ShieldSlotAddition,
+  NecklaceSlotAddition,
+  BlazingSunPendant,
+  DarkMoonPendant
 }

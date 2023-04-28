@@ -136,3 +136,7 @@
         Pause story scenes when they come up. To advance, press the continue button.
     </div>
 </ng-template>
+
+<ng-template #confirmationBox>
+    <app-confirmation-box [cancelOptionAvailable]="false" [confirmationText]="confirmationText"></app-confirmation-box>
+</ng-template>

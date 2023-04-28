@@ -2,6 +2,13 @@
     background-color: var(--button-hover);
     /*color: var(--foreground-tertiary) !important;*/
   }
+
+  .filters {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    background-color: var(--background-quarternary);
+  }
+  
   
   .filterActive {
     color: var(--foreground-secondary) !important;

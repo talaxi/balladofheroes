@@ -105,5 +105,11 @@ export enum StatusEffectEnum {
     BattleItemEffectUp,
     ClearDebuffs,
     DispenserOfDues,
-    StatusEffectDisplayCatchAll
+    StatusEffectDisplayCatchAll,
+    Thyrsus,
+    Retribution,
+    ChainsOfFate,
+    KeepDues,
+    SelfBarrier,
+    InstantCounter
   }

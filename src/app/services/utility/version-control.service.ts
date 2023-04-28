@@ -11,6 +11,11 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { InitializationService } from '../global/initialization.service';
 import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { God } from 'src/app/models/character/god.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 
 @Injectable({
   providedIn: 'root'
@@ -22,7 +27,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -82,7 +87,7 @@ export class VersionControlService {
       date = new Date('2022-04-06 12:00:00');
     if (version === .32)
       date = new Date('2022-04-06 12:00:00');
-    if (version === .32)
+    if (version === .4)
       date = new Date('2022-04-19 12:00:00');
 
     return date.toDateString().replace(/^\S+\s/, '');
@@ -226,7 +231,145 @@ export class VersionControlService {
               this.globalService.globalVar.achievements.push(achievement);
             });
           }
-        }        
+        }
+        if (version === .45) {
+          this.globalService.globalVar.keybinds.set("menuGoToBestiary", "keyB");
+
+          this.globalService.globalVar.ballads.forEach(ballad => {
+            ballad.zones.forEach(zone => {
+              zone.subzones.forEach(subzone => {
+                if (subzone.type === SubZoneEnum.BlackSeaStormySkies && subzone.victoryCount >= 2500)
+                {
+                  var charm = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.SmallCharmOfHaste);
+                  if (charm !== undefined)
+                    charm.amount += 1;
+                  else
+                    this.globalService.globalVar.resources.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, 1));
+                }
+              });
+            });
+          });
+          
+
+          var dionysus = new God(GodEnum.Dionysus);
+          dionysus.name = "Dionysus";
+          dionysus.displayOrder = 8;
+          this.globalService.assignGodAbilityInfo(dionysus);
+          this.globalService.globalVar.gods.push(dionysus);
+
+          var nemesis = new God(GodEnum.Nemesis);
+          nemesis.name = "Nemesis";
+          nemesis.displayOrder = 7;
+          this.globalService.assignGodAbilityInfo(nemesis);
+          this.globalService.globalVar.gods.push(nemesis);
+
+          var adventurer = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Adventurer);
+          if (adventurer !== undefined) {
+            var ability2 = adventurer.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);
+
+            if (ability2 !== undefined && adventurer.level >= 18) {
+              ability2.effectiveness -= .025;
+              ability2.userEffect[0].effectiveness += .025;
+            }
+            if (ability2 !== undefined && adventurer.level >= 28) {
+              ability2.effectiveness -= .025;
+              ability2.userEffect[0].effectiveness += .025;
+            }
+          }
+
+          var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warrior !== undefined) {
+            var ability1 = warrior.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.cooldown = 16;
+              ability1.targetEffect = [];
+              ability1.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Taunt, 10, 0, false, false, false, warrior.name));
+
+              if (warrior.level >= 12) {
+                ability1.cooldown -= .5;
+              }
+
+              if (warrior.level >= 22) {
+                ability1.cooldown -= .5;
+              }
+
+              ability1.currentCooldown = ability1.cooldown;
+            }
+
+            var ability2 = warrior.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.effectiveness += .1;
+              ability2.secondaryEffectiveness += .15;
+            }
+          }
+
+          var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+          if (hades !== undefined) {
+            var passive = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              var hadesCopy = new God(GodEnum.Hades);
+              this.globalService.assignGodAbilityInfo(hadesCopy);
+              for (var i = 0; i < hades.level; i++) {
+                this.globalService.levelUpGod(hadesCopy);
+              }
+
+              var passiveCopy = hadesCopy.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+              if (passiveCopy !== undefined)
+                passive.userEffect[0].duration = passiveCopy.userEffect[0].duration;
+            }
+          }
+
+          this.globalService.globalVar.characters.forEach(character => {
+            if (character.battleInfo !== undefined && character.battleInfo.statusEffects !== undefined && character.battleInfo.statusEffects.length > 0)
+              character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
+
+            var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (ability1 !== undefined) {
+              if (character.level >= 12)
+                ability1.abilityUpgradeLevel += 1;
+              if (character.level >= 22)
+                ability1.abilityUpgradeLevel += 1;
+            }
+
+            var abilityPassive = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (abilityPassive !== undefined) {
+              if (character.level >= 14)
+                abilityPassive.abilityUpgradeLevel += 1;
+              if (character.level >= 24)
+                abilityPassive.abilityUpgradeLevel += 1;
+            }
+
+            var ability2 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);
+            if (ability2 !== undefined) {
+              if (character.level >= 18)
+                ability2.abilityUpgradeLevel += 1;
+              if (character.level >= 28)
+                ability2.abilityUpgradeLevel += 1;
+            }
+          });
+
+          var achievementsCompleted = this.globalService.globalVar.totalAchievementsCompleted;
+          var achievementFollowers = 0;
+          if (achievementsCompleted > 0)
+          {
+            achievementsCompleted -= 1;
+            achievementFollowers += 1;
+
+            
+            while (achievementsCompleted > 12) {
+              achievementFollowers += 1;
+              achievementsCompleted -= 12;
+            }
+
+            this.globalService.globalVar.followerData.achievementCompletionCounter = achievementsCompleted;
+
+            for (var i = this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements; i < achievementFollowers; i++) {
+              this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements += 1;
+              this.globalService.globalVar.followerData.availableFollowers += 1;
+              this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
+            }
+          }            
+        }
 
         this.globalService.globalVar.currentVersion = version;
       }

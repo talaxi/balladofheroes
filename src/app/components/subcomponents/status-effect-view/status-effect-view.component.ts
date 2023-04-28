@@ -84,7 +84,7 @@ export class StatusEffectViewComponent implements OnInit {
   }
 
   isEffectInvisible(effect: StatusEffect) {
-    if (effect.type === StatusEffectEnum.Dead)
+    if (effect.type === StatusEffectEnum.Dead || effect.type === StatusEffectEnum.InstantCounter)
       return true;
 
     return false;

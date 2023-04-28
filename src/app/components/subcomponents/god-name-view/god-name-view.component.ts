@@ -210,6 +210,18 @@ export class GodNameViewComponent implements OnInit {
     }
   }
 
+  godHasActivatablePassive(whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    if (matchTo === GodEnum.Apollo || matchTo === GodEnum.Dionysus) {
+      return true;
+    }
+
+    return false;
+  }
+
   getGodSpecificProgressBar(whichGod: number) {
     var matchTo = this.character.assignedGod1;
     if (whichGod === 2)
@@ -224,6 +236,13 @@ export class GodNameViewComponent implements OnInit {
       if (ostinato !== undefined)
       {
         return 100 - ((ostinato.currentCooldown / this.globalService.getAbilityCooldown(ostinato, this.character)) * 100);
+      }
+    }
+    if (god.type === GodEnum.Dionysus) {
+      var haveADrink = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (haveADrink !== undefined)
+      {
+        return 100 - ((haveADrink.currentCooldown / this.globalService.getAbilityCooldown(haveADrink, this.character)) * 100);
       }
     }
 
@@ -246,6 +265,12 @@ export class GodNameViewComponent implements OnInit {
         ostinato.autoMode = !ostinato.autoMode;
       }
     }
+    if (god.type === GodEnum.Dionysus) {
+      var ability = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (ability !== undefined) {
+        ability.autoMode = !ability.autoMode;
+      }
+    }
     return false;
   }
 
@@ -263,6 +288,12 @@ export class GodNameViewComponent implements OnInit {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
       if (ostinato !== undefined) {
         ostinato.manuallyTriggered = true;
+      }
+    }
+    if (god.type === GodEnum.Dionysus) {
+      var ability = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (ability !== undefined) {
+        ability.manuallyTriggered = true;
       }
     }
   }
@@ -283,6 +314,12 @@ export class GodNameViewComponent implements OnInit {
         return ostinato.autoMode;
       }
     }
+    if (god.type === GodEnum.Dionysus) {
+      var ability = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (ability !== undefined) {
+        return ability.autoMode;
+      }
+    }
     return false;
   }
 
@@ -301,6 +338,12 @@ export class GodNameViewComponent implements OnInit {
       var ostinato = this.lookupService.characterHasAbility("Ostinato", this.character);
       if (ostinato !== undefined) {
         return god.level >= ostinato.requiredLevel;
+      }
+    }
+    if (god.type === GodEnum.Dionysus) {
+      var ability = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (ability !== undefined) {
+        return god.level >= ability.requiredLevel;
       }
     }
 

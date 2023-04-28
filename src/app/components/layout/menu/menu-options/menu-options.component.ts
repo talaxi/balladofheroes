@@ -31,6 +31,9 @@ export class MenuOptionsComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
+    if (this.menuService.keybindModalOpen)
+      return;
+
     var keybinds = this.globalService.globalVar.keybinds;
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuUp"))) {
@@ -63,6 +66,10 @@ export class MenuOptionsComponent implements OnInit {
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToAchievements"))) {
       this.switchView(MenuEnum.Achievements);
+    }
+
+     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuGoToBestiary"))) {
+      this.switchView(MenuEnum.Bestiary);
     }
   }
 

@@ -24,7 +24,9 @@ export class ColiseumViewComponent implements OnInit {
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
-    this.selectedTournament = this.coliseumService.getColiseumInfoFromType(ColiseumTournamentEnum.TournamentOfTheDead);
+    var standardTournaments = this.getStandardColiseumTournaments();
+    if (standardTournaments.length > 0)
+      this.selectedTournament = this.coliseumService.getColiseumInfoFromType(standardTournaments[0]);
   }
 
   getStandardColiseumTournaments() {
@@ -47,18 +49,28 @@ export class ColiseumViewComponent implements OnInit {
       }
     }
 
+    tournaments.sort((a, b) => this.sortColiseumList(a, b));
+
     return tournaments;
+  }
+
+  sortColiseumList(a: ColiseumTournamentEnum, b: ColiseumTournamentEnum) {
+    var aLevel = this.getColiseumCompletionLevel(a);
+    var bLevel = this.getColiseumCompletionLevel(b);
+    return aLevel < bLevel ? -1 : aLevel > bLevel ? 1 : 0;
   }
 
   getSpecialColiseumTournaments() {
     var tournaments: ColiseumTournamentEnum[] = [];
-    
+
     var weeklyMelee = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.WeeklyMelee);
     //console.log((weeklyMelee !== undefined) + " && " + weeklyMelee?.isAvailable);
     if (weeklyMelee !== undefined && weeklyMelee.isAvailable) {
       tournaments.push(weeklyMelee.type);
     }
-    
+
+    tournaments.sort((a, b) => this.sortColiseumList(a, b));
+
     return tournaments;
   }
 
@@ -99,8 +111,11 @@ export class ColiseumViewComponent implements OnInit {
     return reward;
   }
 
-  firstTimeRewardAlreadyObtained() {
-    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);
+  firstTimeRewardAlreadyObtained(type?: ColiseumTournamentEnum) {
+    if (type === undefined)
+      type = this.selectedTournament.type;
+
+    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === type);
     if (tournamentType?.count !== undefined && tournamentType?.count >= 1)
       return true;
 
@@ -124,12 +139,50 @@ export class ColiseumViewComponent implements OnInit {
     return reward;
   }
 
-  quickCompletionRewardAlreadyObtained() {
-    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === this.selectedTournament.type);
+  quickCompletionRewardAlreadyObtained(type?: ColiseumTournamentEnum) {
+    if (type === undefined)
+      type = this.selectedTournament.type;
+
+    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === type);
     if (tournamentType?.quickVictoryCompleted)
       return true;
 
     return false;
+  }
+
+  //1 is not started, 2 is cleared, 3 is completed
+  getColiseumCompletionLevel(type: ColiseumTournamentEnum) {
+    var level = 1;
+
+    if (this.firstTimeRewardAlreadyObtained(type))
+      level = 2;
+
+    if (this.quickCompletionRewardAlreadyObtained(type))
+      level = 3;
+
+    return level;
+  }
+
+  getColiseumNameColor(type: ColiseumTournamentEnum) {    
+    if (this.firstTimeRewardAlreadyObtained(type) && !this.quickCompletionRewardAlreadyObtained(type)) {              
+        if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
+          return { 'activeBackground clearedSubzoneColor': true };
+        else
+          return { 'clearedSubzoneColor': true };      
+    }
+    else if (this.firstTimeRewardAlreadyObtained(type) && this.quickCompletionRewardAlreadyObtained(type)) {      
+      if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
+        return { 'activeBackground completedSubzoneColor': true };
+      else
+        return { 'completedSubzoneColor': true };
+    }
+    else
+    {
+      if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
+          return { 'active': true };
+    }
+
+    return {};
   }
 
   startTournament() {
@@ -159,7 +212,11 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   getWeeklyEntryCap() {
-    return this.utilityService.weeklyMeleeEntryCap;
+    var ticketMultiplier = 1;
+      if (this.globalService.globalVar.isSubscriber)
+        ticketMultiplier = 2;
+
+    return this.utilityService.weeklyMeleeEntryCap * ticketMultiplier;
   }
 
   getHighestWeeklyMeleeRoundCompleted() {

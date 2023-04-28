@@ -102,6 +102,8 @@ import { ProfessionsViewComponent } from './components/menu/professions-view/pro
 import { SlotMenuViewComponent } from './components/equipment-view/slot-menu-view/slot-menu-view.component';
 import { JewelcraftingViewComponent } from './components/subcomponents/jewelcrafting-view/jewelcrafting-view.component';
 import { JewelcraftingOverviewComponent } from './components/layout/zone-navigation/jewelcrafting-overview/jewelcrafting-overview.component';
+import { BestiaryViewComponent } from './components/menu/bestiary-view/bestiary-view.component';
+import { EnemyDescriptionViewComponent } from './components/subcomponents/enemy-view/enemy-description-view/enemy-description-view.component';
 
 @NgModule({
   declarations: [
@@ -168,7 +170,9 @@ import { JewelcraftingOverviewComponent } from './components/layout/zone-navigat
     ProfessionsViewComponent,
     SlotMenuViewComponent,
     JewelcraftingViewComponent,
-    JewelcraftingOverviewComponent,    
+    JewelcraftingOverviewComponent,
+    BestiaryViewComponent,
+    EnemyDescriptionViewComponent,    
   ],
   imports: [
     BrowserModule,

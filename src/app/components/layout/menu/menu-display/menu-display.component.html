@@ -4,5 +4,6 @@
     <app-resource-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Resources"></app-resource-view>
     <app-achievements-view [isMobile]="isMobile" *ngIf="menuService.selectedMenuDisplay === menuEnum.Achievements"></app-achievements-view>
     <app-professions-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Professions"></app-professions-view>
+    <app-bestiary-view *ngIf="menuService.selectedMenuDisplay === menuEnum.Bestiary"></app-bestiary-view>
     <app-settings-view [isMobile]="isMobile" *ngIf="menuService.selectedMenuDisplay === menuEnum.Settings"></app-settings-view>
 </div>

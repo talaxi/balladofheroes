@@ -57,6 +57,10 @@
     color: var(--foreground-secondary) !important;
 }
 
+.activeBackground {
+    background-color: var(--button-selected) !important;    
+}
+
 .activeText {
     color: var(--foreground-secondary) !important;
 }

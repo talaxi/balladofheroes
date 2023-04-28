@@ -70,6 +70,7 @@
 
 .quickLink {
     grid-area: quickLink;    
+    overflow: hidden;
 }
 
 .altars {

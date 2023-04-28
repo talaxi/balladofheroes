@@ -67,7 +67,7 @@ export class AbilityViewComponent implements OnInit {
       return 0;
 
     var progress = 100 - ((this.ability.currentCooldown / this.globalService.getAbilityCooldown(this.ability, this.character)) * 100);
-
+    
     if (progress < 0)
       progress = 0;
 

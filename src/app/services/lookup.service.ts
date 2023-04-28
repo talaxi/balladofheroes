@@ -1,4 +1,3 @@
-import { formatDate } from '@angular/common';
 import { Injectable } from '@angular/core';
 import { AltarEffect } from '../models/altar/altar-effect.model';
 import { StatusEffect } from '../models/battle/status-effect.model';
@@ -30,7 +29,6 @@ import { SubZoneEnum } from '../models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from '../models/enums/tutorial-type-enum.model';
 import { WeaponTypeEnum } from '../models/enums/weapon-type-enum.model';
 import { ZoneEnum } from '../models/enums/zone-enum.model';
-import { IndividualFollower } from '../models/followers/individual-follower.model';
 import { Achievement } from '../models/global/achievement.model';
 import { Equipment } from '../models/resources/equipment.model';
 import { ResourceValue } from '../models/resources/resource-value.model';
@@ -40,7 +38,6 @@ import { Ballad } from '../models/zone/ballad.model';
 import { SubZone } from '../models/zone/sub-zone.model';
 import { BalladService } from './ballad/ballad.service';
 import { EnemyGeneratorService } from './enemy-generator/enemy-generator.service';
-import { FollowersService } from './followers/followers.service';
 import { GlobalService } from './global/global.service';
 import { CharmService } from './resources/charm.service';
 import { ShopItemGeneratorService } from './shop/shop-item-generator.service';
@@ -48,9 +45,10 @@ import { SubZoneGeneratorService } from './sub-zone-generator/sub-zone-generator
 import { UtilityService } from './utility/utility.service';
 import { NotificationTypeEnum } from "../models/enums/notification-type-enum.model";
 import { ResourceGeneratorService } from './resources/resource-generator.service';
-import { CdkVirtualForOf } from '@angular/cdk/scrolling';
 import { EquipmentService } from './resources/equipment.service';
 import { DictionaryService } from './utility/dictionary.service';
+import { ShopTypeEnum } from '../models/enums/shop-type-enum.model';
+import { BalladEnum } from '../models/enums/ballad-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -132,7 +130,7 @@ export class LookupService {
     var description = "";
 
     if (type === GodEnum.Athena)
-      description = "Athena, Goddess of Wisdom and Warfare, focuses on combat and self-reliance. Her abilities and upgrades give the user the ability to heal themselves based on damage dealt and reduce incoming damage to themselves.";
+      description = "Athena, Goddess of Wisdom and Warfare, focuses on combat and self-reliance. Her abilities and upgrades allow the user to heal themselves based on damage dealt and reduce incoming damage to themselves.";
     if (type === GodEnum.Artemis)
       description = "Artemis, Goddess of the Hunt, focuses on critical hits and debilitating enemies. Her abilities and upgrades can weaken enemies through status effects and increase damage dealt from critical attacks.";
     if (type === GodEnum.Hermes)
@@ -147,6 +145,10 @@ export class LookupService {
       description = "";
     if (type === GodEnum.Hades)
       description = "Hades, God of the Underworld, focuses on dealing damage to all enemies. All of his abilities attack the entire enemy party and he has access to Fire and Earth elemental damage.";
+    if (type === GodEnum.Nemesis)
+      description = "Nemesis, Goddess of Divine Retribution, focuses on taking damage and countering enemies. Her abilities allow her to deal increased damage after being attacked and attack enemies multiple times.";
+    if (type === GodEnum.Dionysus)
+      description = "Dionysus, God of Wine and Revelry, focuses on protecting party members and weakening enemies. His abilities allow him to give barriers to allies and put numerous debuffs on enemies.";
 
     return description;
   }
@@ -216,7 +218,11 @@ export class LookupService {
       type === ItemsEnum.SmallCharmOfAthena || type === ItemsEnum.LargeCharmOfAthena ||
       type === ItemsEnum.SmallCharmOfArtemis || type === ItemsEnum.LargeCharmOfArtemis ||
       type === ItemsEnum.SmallCharmOfHermes || type === ItemsEnum.LargeCharmOfHermes ||
-      type === ItemsEnum.SmallCharmOfApollo || type === ItemsEnum.LargeCharmOfApollo)
+      type === ItemsEnum.SmallCharmOfApollo || type === ItemsEnum.LargeCharmOfApollo ||
+      type === ItemsEnum.SmallCharmOfHades || type === ItemsEnum.LargeCharmOfHades ||
+      type === ItemsEnum.SmallCharmOfAres || type === ItemsEnum.LargeCharmOfAres ||
+      type === ItemsEnum.SmallCharmOfNemesis || type === ItemsEnum.LargeCharmOfNemesis ||
+      type === ItemsEnum.SmallCharmOfDionysus || type === ItemsEnum.LargeCharmOfDionysus)
       isACharm = true;
 
     return isACharm;
@@ -265,16 +271,17 @@ export class LookupService {
       type === ItemsEnum.Olive || type === ItemsEnum.SoulSpark || type === ItemsEnum.VialOfTheLethe || type === ItemsEnum.EssenceOfFire ||
       type === ItemsEnum.Narcissus || type === ItemsEnum.ThickLeather || type === ItemsEnum.RoughRubyFragment || type === ItemsEnum.RoughEmeraldFragment || type === ItemsEnum.RoughTopazFragment ||
       type === ItemsEnum.RoughOpalFragment || type === ItemsEnum.RoughAmethystFragment || type === ItemsEnum.RoughAquamarineFragment || type === ItemsEnum.Goldroot || type === ItemsEnum.Lousewort ||
-      type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence ||
+      type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence || type === ItemsEnum.VialOfLakeLerna ||
       type === ItemsEnum.SatchelOfHerbs || type === ItemsEnum.BushelOfHerbs || type === ItemsEnum.SoulEssence || type === ItemsEnum.FishScales ||
-      type === ItemsEnum.MetalScraps || type === ItemsEnum.SharkTeeth || type === ItemsEnum.Seashell || type === ItemsEnum.Wax) {
+      type === ItemsEnum.MetalScraps || type === ItemsEnum.SharkTeeth || type === ItemsEnum.Seashell || type === ItemsEnum.Wax || type === ItemsEnum.BoarHide ||
+      type === ItemsEnum.BearHide) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
     if (this.isItemACharm(type))
       return ItemTypeEnum.Charm;
 
-    if (type === ItemsEnum.Coin)
+    if (type === ItemsEnum.Coin || type === ItemsEnum.EternalMeleeTicket)
       return ItemTypeEnum.Resource;
 
 
@@ -409,6 +416,8 @@ export class LookupService {
       name = "Spend on permanent stat boosts.";
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Recipe for Alchemy item <b>Poison Extract Potion</b>.";
+      else if (type === ItemsEnum.FocusPotionRecipe)
+        name = "Recipe for Alchemy item <b>Focus Potion</b>.";
 
     //equipment
     else if (this.getEquipmentPieceByItemType(type) !== undefined) {
@@ -562,6 +571,26 @@ export class LookupService {
     if (type === ItemsEnum.LargeCharmOfApollo)
       description = "Increase Healing Done by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfApolloValue() * 100) + "%</span> for the character equipped with Apollo.";
 
+      if (type === ItemsEnum.SmallCharmOfHades)
+      description = "Increase Multiple Target Damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfHadesValue() * 100) + "%</span> for the character equipped with Hades.";
+    if (type === ItemsEnum.LargeCharmOfHades)
+      description = "Increase Multiple Target Damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfHadesValue() * 100) + "%</span> for the character equipped with Hades.";
+
+      if (type === ItemsEnum.SmallCharmOfAres)
+      description = "Reduce Damage over Time Tick Frequency by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfAresValue() * 100) + "%</span> for the character equipped with Ares.";
+    if (type === ItemsEnum.LargeCharmOfAres)
+      description = "Reduce Damage over Time Tick Frequency by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfAresValue() * 100) + "%</span> for the character equipped with Ares.";
+
+      if (type === ItemsEnum.SmallCharmOfDionysus)
+      description = "Reduce Ability Cooldown while buffs are active by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfDionysusValue() * 100) + "%</span> for the character equipped with Dionysus.";
+    if (type === ItemsEnum.LargeCharmOfDionysus)
+      description = "Reduce Ability Cooldown while buffs are active by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfDionysusValue() * 100) + "%</span> for the character equipped with Dionysus.";
+
+      if (type === ItemsEnum.SmallCharmOfNemesis)
+      description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
+    if (type === ItemsEnum.LargeCharmOfNemesis)
+      description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
+
     return description;
   }
 
@@ -583,17 +612,29 @@ export class LookupService {
     if (slotItemValues.resistance > 0)
       description = "+<b>" + slotItemValues.resistance + " Resistance</b>";
 
-    var slotStarDisclaimer = "An item can only have as many slots as it has stars.";
+    var slotStarDisclaimer = "An item can only have as many slots total as it has stars.";
     if (item === ItemsEnum.MinorWeaponSlotAddition)
-      description = "Add a slot to a Weapon of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Weapon, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorRingSlotAddition)
-      description = "Add a slot to a Ring of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Ring, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorArmorSlotAddition)
-      description = "Add a slot to a Armor of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to an Armor, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorShieldSlotAddition)
-      description = "Add a slot to a Shield of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Shield, up to 3 slots total. " + slotStarDisclaimer;
     if (item === ItemsEnum.MinorNecklaceSlotAddition)
-      description = "Add a slot to a Necklace of 3 Star Quality or lower. " + slotStarDisclaimer;
+      description = "Add a slot to a Necklace, up to 3 slots total. " + slotStarDisclaimer;
+
+    if (item === ItemsEnum.WeaponSlotAddition)
+      description = "Add a slot to a Weapon, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.RingSlotAddition)
+      description = "Add a slot to a Ring, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.ArmorSlotAddition)
+      description = "Add a slot to an Armor, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.ShieldSlotAddition)
+      description = "Add a slot to a Shield, up to 5 slots total. " + slotStarDisclaimer;
+    if (item === ItemsEnum.NecklaceSlotAddition)
+      description = "Add a slot to a Necklace, up to 5 slots total. " + slotStarDisclaimer;
+
 
     return description;
   }
@@ -604,6 +645,8 @@ export class LookupService {
     var description = "";
     if (item === ItemsEnum.Coin)
       description = "Use to trade with merchants.";
+    else if (item === ItemsEnum.EternalMeleeTicket)
+      description = "One extra entry to the <strong>Eternal Melee</strong> coliseum battle.";
     else {
       description = "Used for crafting.";
       if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs)
@@ -684,7 +727,10 @@ export class LookupService {
 
     locations = "";
     matchingSubzones = matchingSubzones.filter((el, i, a) => i === a.indexOf(el));
-    matchingSubzones.forEach(subzone => {
+    //matchingSubzones.forEach(subzone => {
+      var locationTotal = 4;
+      for (var i = 0; i < locationTotal; i++) {
+        var subzone = matchingSubzones[i];
       var matchedSubzone = this.balladService.findSubzone(subzone);
       var name = this.balladService.getSubZoneName(subzone);
 
@@ -699,9 +745,10 @@ export class LookupService {
           locations += "<div class='subzoneClickableItem " + subzone.toString() + "'>" + name + "</div>";
         }
       }
+    }
 
-    });
-
+    if (matchingSubzones.length > locationTotal)
+      locations += "and " + (matchingSubzones.length - locationTotal) + " other locations.";
     return this.utilityService.getSanitizedHtml(locations);
     //<div>???</div><div>???</div>";
   }
@@ -1001,6 +1048,24 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(0, 70, 0, 0, 80, 0);
       equipmentPiece.stats.abilityCooldownReduction = .05;
       equipmentPiece.stats.armorPenetration = .05;
+    }
+    if (type === ItemsEnum.BlazingSunPendant) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.autoAttackCooldownReduction += .1;
+      equipmentPiece.stats.abilityCooldownReduction += .1;
+      equipmentPiece.stats.overdriveGain += .2;
+      equipmentPiece.stats.criticalMultiplier += .25;
+      equipmentPiece.stats.tickFrequency += .05;
+    }
+    if (type === ItemsEnum.DarkMoonPendant) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.hpRegen += 30;
+      equipmentPiece.stats.healingDone += .15;
+      equipmentPiece.stats.healingReceived += .15;
+      equipmentPiece.stats.abilityCooldownReduction += .1;
+      equipmentPiece.stats.thorns += .15;
     }
 
     //ring
@@ -1302,7 +1367,7 @@ export class LookupService {
 
     //Warrior
     if (abilityName === "Battle Cry")
-      abilityDescription = "Draw all targets' focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. " + cooldown + " second cooldown.";
+      abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. " + cooldown + " second cooldown.";
     if (abilityName === "Last Stand")
       abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
     if (abilityName === "Shield Slam")
@@ -1333,6 +1398,7 @@ export class LookupService {
     var relatedUserGainStatusEffectEffectiveness = 0;
     var relatedUserGainStatusEffectEffectivenessPercent = 0;
     var relatedUserGainStatusEffectTickFrequency = 0;
+    var relatedUserGainStatusEffectThreshold = 0;
     var relatedTargetGainStatusEffectDuration = 0;
     var relatedTargetGainStatusEffectEffectiveness = 0;
     var relatedTargetGainStatusEffectEffectivenessPercent = 0;
@@ -1341,12 +1407,12 @@ export class LookupService {
     var maxCountTimesEffectivenessPercent = 0;
 
     if (ability !== undefined) {
-      effectivenessPercent = Math.round(ability.effectiveness * 100);
-      effectiveAmount = Math.round(this.getAbilityEffectiveAmount(character, ability));
-      effectiveAmountPercent = Math.round((ability.effectiveness - 1) * 100);
+      effectivenessPercent = this.utilityService.genericRound(ability.effectiveness * 100);
+      effectiveAmount = this.utilityService.genericRound(this.getAbilityEffectiveAmount(character, ability));
+      effectiveAmountPercent = this.utilityService.genericRound((ability.effectiveness - 1) * 100);
       secondaryEffectiveAmount = ability.secondaryEffectiveness;
-      secondaryEffectiveAmountPercent = Math.round((secondaryEffectiveAmount - 1) * 100);
-      thresholdAmountPercent = Math.round((ability.threshold) * 100);
+      secondaryEffectiveAmountPercent = this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100);
+      thresholdAmountPercent = this.utilityService.genericRound((ability.threshold) * 100);
       abilityCount = ability.maxCount;
       cooldown = this.utilityService.roundTo(this.globalService.getAbilityCooldown(ability, character), 2);
       maxCountTimesEffectivenessPercent = ability.maxCount * effectivenessPercent;
@@ -1354,24 +1420,25 @@ export class LookupService {
       var relatedUserGainStatusEffect = ability?.userEffect[0];
 
       if (relatedUserGainStatusEffect !== undefined) {
-        relatedUserGainStatusEffectDuration = Math.round(relatedUserGainStatusEffect.duration);
+        relatedUserGainStatusEffectDuration = this.utilityService.genericRound(relatedUserGainStatusEffect.duration);
+        relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold;
         relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
         if (relatedUserGainStatusEffectEffectiveness < 1)
-          relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness) * 100);
+          relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2);
         else
-          relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness - 1) * 100);
+          relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness - 1) * 100, 2);
         relatedUserGainStatusEffectTickFrequency = relatedUserGainStatusEffect.tickFrequency;
       }
 
       var relatedTargetGainStatusEffect = ability?.targetEffect[0];
 
       if (relatedTargetGainStatusEffect !== undefined) {
-        relatedTargetGainStatusEffectDuration = Math.round(relatedTargetGainStatusEffect.duration);
+        relatedTargetGainStatusEffectDuration = this.utilityService.genericRound(relatedTargetGainStatusEffect.duration);
         relatedTargetGainStatusEffectEffectiveness = relatedTargetGainStatusEffect.effectiveness;
         if (relatedTargetGainStatusEffectEffectiveness < 1)
-          relatedTargetGainStatusEffectEffectivenessPercent = Math.round((relatedTargetGainStatusEffectEffectiveness) * 100);
+          relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100);
         else
-          relatedTargetGainStatusEffectEffectivenessPercent = Math.round((relatedTargetGainStatusEffectEffectiveness - 1) * 100);
+          relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedTargetGainStatusEffectEffectiveness - 1) * 100, this.utilityService.genericRoundTo);
         relatedTargetGainStatusEffectTickFrequency = relatedTargetGainStatusEffect.tickFrequency;
       }
     }
@@ -1438,13 +1505,33 @@ export class LookupService {
 
     //Ares
     if (abilityName === "Rupture")
-      abilityDescription = "Apply a damage over time effect to a target that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Apply a damage over time effect to a target that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Onslaught")
-      abilityDescription = "After your next ability, apply a damage over time effect to the targets that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "After your next ability, apply a damage over time effect to the targets that deals an additional <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Revel in Blood")
       abilityDescription = "Reduce your own current HP by 10%. Apply a damage over time effect to all targets that deals <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "% of HP Loss</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Bloodlust")
       abilityDescription = "Increase all damage over time effectiveness by <strong>" + effectivenessPercent + "%</strong> per active damage over time effect amongst all enemies, up to <strong>" + ability?.maxCount + "</strong> effects for a total of <strong>" + (maxCountTimesEffectivenessPercent) + "%</strong> increase.";
+
+    //Dionysus
+    if (abilityName === "Revelry")
+      abilityDescription = "Grant a random party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + Math.round(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. " + cooldown + " second cooldown.";
+    if (abilityName === "Thyrsus")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has. " + cooldown + " second cooldown.";
+    if (abilityName === "Insanity")
+      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "Have a Drink")
+      abilityDescription = "Every " + cooldown + " seconds, give yourself " + (ability?.userEffect.length === 1 ? "a" : ability?.userEffect.length) + " random <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff" + (ability?.userEffect.length === 1 ? "" : "s") + " for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
+
+    //Nemesis
+    if (abilityName === "Retribution")
+      abilityDescription = "The next <strong>" + (abilityCount === 1 ? " time " : abilityCount + " times ") + "</strong> you are attacked, reduce the damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage back to the target. " + cooldown + " second cooldown.";
+    if (abilityName === "Chains of Fate")
+      abilityDescription = "Create a link between you and one target forcing you both to only target each other. Attacks against you from this target increase <strong>Dues</strong> gain by an additional <strong>" + (effectivenessPercent - 100) + "%</strong>. Lasts " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "No Escape")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
+    if (abilityName === "Dispenser of Dues")
+      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0.";
 
 
     return abilityDescription;
@@ -2274,6 +2361,8 @@ export class LookupService {
       description = "Your next auto attack will also heal you for " + statusEffect.effectiveness + " HP.";
     if (statusEffect.type === StatusEffectEnum.Mark)
       description = "Damage against this target is increased by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
+    if (statusEffect.type === StatusEffectEnum.Thyrsus)
+      description = "Damage against this target is increased by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.Stun)
       description = "Auto attack and ability cooldowns are not charging.";
     if (statusEffect.type === StatusEffectEnum.Paralyze)
@@ -2281,7 +2370,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.RecentlyDefeated)
       description = "You have recently been defeated and are still nursing your wounds. Your primary stats are reduced by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.ThousandCuts)
-      description = "Deal increased damage after every attack.";
+      description = "Deal increased damage after every attack. Current damage increase: " + this.utilityService.genericRound(((statusEffect.effectiveness - 1) * statusEffect.count) * 100);
     if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking " + Math.round(statusEffect.effectiveness) + " damage every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
     if (statusEffect.type === StatusEffectEnum.Thorns)
@@ -2344,9 +2433,14 @@ export class LookupService {
       description = "Increase Defense by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.LordOfTheUnderworld)
-      description = "Increasing Luck and Attack by <strong>" + Math.round((statusEffect.effectiveness - 1) * 100) + "%</strong>. " + statusEffect.stackCount + " total " + (statusEffect.stackCount === 1 ? "stack" : "stacks") + " worth " + Math.round(((statusEffect.effectiveness - 1) / statusEffect.stackCount) * 100) + "% each.";
+      description = "Increasing Luck and Attack by <strong>" + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%</strong>. " + statusEffect.stackCount + " total " + (statusEffect.stackCount === 1 ? "stack" : "stacks") + " worth " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) / statusEffect.stackCount) * 100, 2) + "% each.";
     if (statusEffect.type === StatusEffectEnum.Onslaught)
       description = "Your next damaging ability will also apply a damage over time effect onto its targets.";
+    if (statusEffect.type === StatusEffectEnum.DispenserOfDues)
+      description = "Increase your next damaging ability by " + statusEffect.effectiveness + ".";
+    if (statusEffect.type === StatusEffectEnum.Retribution)
+      description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
+
 
     return description;
   }
@@ -2356,10 +2450,18 @@ export class LookupService {
 
     var duration = Math.round(effect.duration);
     var durationString = "";
-    if (duration < 60)
-      durationString = duration + " seconds";
-    else
-      durationString = Math.ceil(duration / 60) + " minutes";
+    if (duration < 60) {
+      if (duration === 1)
+        durationString = duration + " second";
+      else
+        durationString = duration + " seconds";
+    }
+    else {
+      if (Math.ceil(duration / 60) === 1)
+        durationString = Math.ceil(duration / 60) + " minute";
+      else
+        durationString = Math.ceil(duration / 60) + " minutes";
+    }
 
     /*if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
       description = "Increase all Primary Stats by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
@@ -2440,8 +2542,158 @@ export class LookupService {
       description = "Increase all Elemental Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage)
       description = "Deal " + effect.effectiveness + " " + this.getElementName(effect.element) + " damage to all enemies every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomDebuff)
+      description = "When the duration expires, reduce a random stat by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% for all enemies.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomBuff)
+      description = "When the duration expires, increase a random stat by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% for all party members.";
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier)
+      description = "When the duration expires, give a random party member a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier)
+      description = "When the duration expires, give all party members a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs)
+      description = "When the duration expires, reduce all primary stats of a target by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFastDebuffs)
+      description = "Reduce the duration of any debuffs inflicted on party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisLuckDebuff)
+      description = "When the duration expires, reduce all enemies' Luck by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisDealDamage)
+      description = "Deal " + effect.effectiveness + " damage to an enemy every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.NemesisRareThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
+      description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
+      description = "Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
 
     description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
+    return description;
+  }
+
+  getBaseAltarEffectDescription(effect: AltarEffect) {
+    var description = "";
+
+    var duration = Math.round(effect.duration);
+    var durationString = "";
+    if (duration < 60) {
+      if (duration === 1)
+        durationString = duration + " second";
+      else
+        durationString = duration + " seconds";
+    }
+    else {
+      if (Math.ceil(duration / 60) === 1)
+        durationString = Math.ceil(duration / 60) + " minute";
+      else
+        durationString = Math.ceil(duration / 60) + " minutes";
+    }
+
+    /*if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
+      description = "Increase all Primary Stats by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
+    if (effect.type === AltarEffectsEnum.SmallAltarPrayFortune)
+      description = "Increase Coin gain from battle by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
+*/
+    if (effect.type === AltarEffectsEnum.AttackUp)
+      description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.AthenaDefenseUp)
+      description = "Increase Defense of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.AthenaHeal)
+      description = "When the duration expires, heal all party members for " + effect.effectiveness + " HP.";
+    if (effect.type === AltarEffectsEnum.AthenaHealOverTime)
+      description = "Heal all party members for " + effect.effectiveness + " HP every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.ArtemisLuckUp)
+      description = "Increase Luck of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisCriticalDamageUp)
+      description = "Increase Critical Damage Multiplier of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisDefenseDebuff)
+      description = "When the duration expires, reduce all enemies' Defense by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesAgilityUp)
+      description = "Increase Agility of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesAutoAttackUp)
+      description = "Increase Auto Attack Damage of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesAbilityCooldown)
+      description = "When the duration expires, reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloBuffDurationUp)
+      description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloResistanceUp)
+      description = "Increase Resistance of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloHeal)
+      description = "Heal the party member with the lowest HP % for " + effect.effectiveness + " HP.";
+    if (effect.type === AltarEffectsEnum.AthenaRareHealOverTime)
+      description = "Heal all party members for " + effect.effectiveness + " HP every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.AthenaRareBlind)
+      description = "When the duration expires, apply a " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% Blind debuff to all enemies.";
+    if (effect.type === AltarEffectsEnum.AthenaRareHolyDamageIncrease)
+      description = "Only available when Athena is in your party. Increase Holy Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisRareAttackDebuff)
+      description = "When the duration expires, reduce all enemies' Attack by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisRareCriticalDamageUp)
+      description = "Increase Critical Damage Multiplier of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ArtemisRareDebuffDurationUp)
+      description = "Only available when Artemis is in your party. Increase the duration of any debuffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesRareAutoAttackUp)
+      description = "Increase Auto Attack Damage of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HermesRareReduceAbilityCooldownOverTime)
+      description = "Reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.HermesRareReduceAutoAttackCooldown)
+      description = "Only available when Hermes is in your party. While this is active, reduce all party members' auto attack cooldown by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloRareHpRegenIncrease)
+      description = "Increase HP Regen of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloRareBuffDurationUp)
+      description = "Increase the duration of any buffs applied while this is active by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ApolloRareOstinato)
+      description = "Only available when Apollo is in your party. When the duration expires, trigger an Ostinato at " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% effectiveness.";
+    if (effect.type === AltarEffectsEnum.AresDamageOverTime)
+      description = "When the duration expires, apply a Damage over Time effect on all enemies, dealing " + this.utilityService.roundTo(((effect.effectiveness)), 2) + " damage every 3 seconds for 12 seconds.";
+    if (effect.type === AltarEffectsEnum.AresMaxHpUp)
+      description = "Increase Max HP of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.AresOverdriveGain)
+      description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
+    if (effect.type === AltarEffectsEnum.AresRareOverdriveGain)
+      description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
+    if (effect.type === AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage)
+      description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%";
+    if (effect.type === AltarEffectsEnum.AresRareDealHpDamage)
+      description = "Only available when Ares is in your party. When the duration expires, deal an amount equal to " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% of the party's total current HP to all enemies.";
+    if (effect.type === AltarEffectsEnum.HadesFireDamageUp)
+      description = "Increase Fire Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesEarthDamageUp)
+      description = "Increase Earth Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesAoeDamageUp)
+      description = "Increase the damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesRareAoeDamageUp)
+      description = "Increase the damage of any attack that hits multiple enemies by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesRareElementalDamageUp)
+      description = "Only available when Hades is in your party. Increase all Elemental Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.HadesRareDealElementalDamage)
+      description = "Deal " + effect.effectiveness + " damage of a random element to all enemies every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomDebuff)
+      description = "When the duration expires, reduce a random stat by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% for all enemies.";
+    if (effect.type === AltarEffectsEnum.DionysusRandomBuff)
+      description = "When the duration expires, increase a random stat by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% for all party members.";
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier)
+      description = "When the duration expires, give a random party member a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier)
+      description = "When the duration expires, give all party members a barrier for " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of their HP.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs)
+      description = "Only available when Dionysus is in your party. When the duration expires, reduce all primary stats of a target by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.DionysusRareFastDebuffs)
+      description = "Reduce the duration of any debuffs inflicted on party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisLuckDebuff)
+      description = "When the duration expires, reduce all enemies' Luck by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisDealDamage)
+      description = "Deal " + effect.effectiveness + " damage to an enemy every " + effect.tickFrequency + " seconds.";
+    if (effect.type === AltarEffectsEnum.NemesisRareThorns)
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+    if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
+      description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
+      description = "Only available when Nemesis is in your party. Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+
+    description += " Effect lasts for " + durationString + ".";
     return description;
   }
 
@@ -2555,12 +2807,17 @@ export class LookupService {
     if (item === undefined)
       return;
 
+    if (item.item === ItemsEnum.EternalMeleeTicket) {
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries += item.amount;
+    }
+    else {
     var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item && this.globalService.extraItemsAreEqual(item.extras, resource.extras));
     if (existingResource === undefined) {
       this.globalService.globalVar.resources.push(item);
     }
     else {
       existingResource.amount += item.amount;
+    }
     }
   }
 
@@ -3042,7 +3299,13 @@ export class LookupService {
   getArmorPenetrationMultiplier(character: Character) {
     var defaultMultiplier = 1;
 
-    return defaultMultiplier - character.battleStats.armorPenetration;
+    var altarMultiplier = 1;
+    if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareArmorPenetrationUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareArmorPenetrationUp);
+      altarMultiplier *= relevantAltarEffect!.effectiveness;
+    }
+
+    return defaultMultiplier - (character.battleStats.armorPenetration * altarMultiplier);
   }
 
   getChthonicFavorMultiplier(asPercent: boolean = false) {
@@ -3114,7 +3377,7 @@ export class LookupService {
     if (equipment.stats.abilityCooldownReductionWithBuffs > 0)
       equipmentStats += "+" + (equipment.stats.abilityCooldownReductionWithBuffs * 100) + "% Ability Cooldown Reduction With Buffs<br />";
     if (equipment.stats.thorns > 0)
-      equipmentStats += "+" + (equipment.stats.thorns * 100) + "% Damage Reflected Back<br />";
+      equipmentStats += "+" + (equipment.stats.thorns * 100) + "% Auto Attack Damage Reflected Back<br />";
     if (equipment.stats.elementIncrease.holy > 0)
       equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% Holy Damage Bonus<br />";
     if (equipment.stats.elementIncrease.fire > 0)
@@ -3202,7 +3465,7 @@ export class LookupService {
         if (effect.type === StatusEffectEnum.InstantTrueDamage) {
           if (equipment.itemType === ItemsEnum.SwordOfFlames)
             equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
-          if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
+          else if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
             equipmentEffects += "Deal " + Math.round(effect.effectiveness * 100) + "% of Attack Water damage to all targets as true damage every " + effect.triggersEvery + " seconds. <br/>";
           else
             equipmentEffects += "Deal an additional " + effect.effectiveness + " damage.<br/>";
@@ -3456,6 +3719,21 @@ export class LookupService {
     else if (abilityName === "Revel in Blood") {
       src += "revelInBlood.svg";
     }
+    else if (abilityName === "Revelry") {
+      src += "revelry.svg";
+    }
+    else if (abilityName === "Thyrsus") {
+      src += "thyrsus.svg";
+    }
+    else if (abilityName === "Retribution") {
+      src += "retribution.svg";
+    }
+    else if (abilityName === "Insanity") {
+      src += "insanity.svg";
+    }
+    else if (abilityName === "Chains of Fate") {
+      src += "chainsOfFate.svg";
+    }
     else if (abilityName === "No Escape") {
       src += "noEscape.svg";
     }
@@ -3668,9 +3946,7 @@ export class LookupService {
     var affinityBoost = 1;
 
     //repeats every 4 levels, duration increase is at level X3
-    var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
-    if (god.affinityLevel % 4 >= 3)
-      affinityIncreaseCount += 1;
+    var affinityIncreaseCount = this.getGodAffinityXpIncreaseCount(god);
 
     affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
 
@@ -5347,6 +5623,32 @@ export class LookupService {
     if (effect === AltarEffectsEnum.HadesRareDealElementalDamage)
       name = "Deal Random Elemental Damage Over Time";
 
+    if (effect === AltarEffectsEnum.DionysusRandomBuff)
+      name = "Random Buff After";
+    if (effect === AltarEffectsEnum.DionysusRandomDebuff)
+      name = "Random Debuff After";
+    if (effect === AltarEffectsEnum.DionysusSingleBarrier)
+      name = "Single Barrier After";
+    if (effect === AltarEffectsEnum.DionysusRareMultiBarrier)
+      name = "All Barrier After";
+    if (effect === AltarEffectsEnum.DionysusRareFastDebuffs)
+      name = "Debuff Duration Reduction";
+    if (effect === AltarEffectsEnum.DionysusRareFullDebuffs)
+      name = "All Stat Debuffs After";
+
+    if (effect === AltarEffectsEnum.NemesisLuckDebuff)
+      name = "Luck Debuff After";
+    if (effect === AltarEffectsEnum.NemesisDealDamage)
+      name = "Deal Damage Over Time";
+    if (effect === AltarEffectsEnum.NemesisThorns)
+      name = "Thorns Damage";
+    if (effect === AltarEffectsEnum.NemesisRareThorns)
+      name = "Large Thorns Damage";
+    if (effect === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
+      name = "Armor Penetration Up";
+    if (effect === AltarEffectsEnum.NemesisRareDuesUp)
+      name = "Dues Up After";
+
     return name;
   }
 
@@ -5561,5 +5863,96 @@ export class LookupService {
       });
     }
     return copy;
+  }
+
+  getRandomPartyMember(party: Character[]) {
+    var partyLength = party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).length;
+    var rng = this.utilityService.getRandomInteger(0, partyLength - 1);
+    return party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead))[rng];
+  }
+
+  getGodAffinityBoonDurationIncreaseCount(god: God) {
+    var durationIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 1)
+      durationIncreaseCount += 1;
+
+    return durationIncreaseCount;
+  }
+
+  getGodAffinityBoonEffectivenessIncreaseCount(god: God) {
+    var effectivenessIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 2)
+      effectivenessIncreaseCount += 1;
+
+    return effectivenessIncreaseCount;
+  }
+
+  getGodAffinityXpIncreaseCount(god: God) {
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 4);
+    if (god.affinityLevel % 4 >= 3)
+      affinityIncreaseCount += 1;
+
+    return affinityIncreaseCount;
+  }
+
+  getGodAffinitySmallCharmCount(god: God) {
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 8);
+    if (god.affinityLevel % 8 >= 4)
+      affinityIncreaseCount += 1;
+
+    return affinityIncreaseCount;
+  }
+
+  getGodAffinityLargeCharmCount(god: God) {
+    var affinityIncreaseCount = Math.floor(god.affinityLevel / 8);
+
+    return affinityIncreaseCount;
+  }
+
+  getShopOptionText(type: ShopTypeEnum) {
+    var text = "";
+
+    if (type === ShopTypeEnum.General) {
+      text = "General";
+    }
+    if (type === ShopTypeEnum.Crafter) {
+      text = "Crafter";
+    }
+    if (type === ShopTypeEnum.Alchemist) {
+      text = "Alchemist";
+    }
+    if (type === ShopTypeEnum.ChthonicFavor) {
+      text = "Chthonic Favor";
+    }
+    if (type === ShopTypeEnum.Coliseum) {
+      text = "Coliseum";
+    }
+    if (type === ShopTypeEnum.Traveler) {
+      text = "Traveler";
+    }
+    if (type === ShopTypeEnum.Jewelcrafter) {
+      text = "Jewelcrafter";
+    }
+
+    return text;
+  }
+
+  getBalladDescription(type: BalladEnum) {
+    var description = "";
+
+    if (type === BalladEnum.Champion)
+      description = "Where your journey to become a hero begins. After many attempts, Thales finally pushes past his limits and has a meeting with divinity.";
+    else if (type === BalladEnum.Gorgon)
+      description = "Following in the footsteps of the hero Perseus, you travel Greece to do battle with the monster Medusa. Along the way, you gain an ally with a similar goal.";
+    else if (type === BalladEnum.Underworld)
+      description = "Your overconfidence led to some missteps and you now find yourself in the Underworld. Many heroes have had their dealings in Hades' realm and you are no exception. Your journey continues to Elysium and, if you can obtain Hades's blessing, back to the surface.";
+    else if (type === BalladEnum.Boar)
+      description = "At Zosime's request, you take a detour to Calydon to follow through Atalanta's story. You visit her birthplace and then traverse the forest where she finally put a stop to the monstrous boar rampaging the countryside.";
+    else if (type === BalladEnum.Argo)
+      description = "Thales and Zosime begin to pick up their rhythm again and now take to the seas to follow in the footsteps of Jason and the Argonauts. As they travel east to Colchis, they soon realize that all is not quite like the stories.";
+    else if (type === BalladEnum.Labors)
+      description = "You finally feel ready to take on the trials of Heracles, the greatest of all mortals. Each step is a difficult one, but you gain strength along the way.";
+
+    return description;
   }
 }

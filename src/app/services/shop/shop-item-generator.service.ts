@@ -258,6 +258,12 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.LesserCrackedAquamarine) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 8000));
     }
+    if (item === ItemsEnum.DarkMoonPendant) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.BlazingSunPendant) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

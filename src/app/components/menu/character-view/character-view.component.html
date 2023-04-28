@@ -226,21 +226,36 @@
             (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
         <div class="sectionInfo">
             <div *ngFor="let ability of characterAbilityList">
-                <strong class="statLabel" [ngClass]="getAbilityColor(false)">{{ability.name}}</strong><span
+                <strong class="statLabel" [ngClass]="getAbilityColor(false)" customToolTip [isLargeTooltip]="true"
+                [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span
                     class="statValue"> -
                     <span
                         [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span></span>
 
-                <!--removed for now because it seems pointless-->
-                <ng-template #abilityDescriptionPopover>
-                    <div>
-                        <span>Upgrade Level {{getAbilityUpgradeLevel(ability)}}</span>
-                        <hr class="miniHr" />
-                        <div class="statBreakdown" [innerHtml]="this.getAbilityUpgradeBreakdown(ability)">
-
-                        </div>
-                    </div>
-                </ng-template>
+                        <ng-template #abilityPopover>
+                            <div>
+                                Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
+                                <hr/>
+                                <div *ngIf="getAbilityEffectivenessIncrease(ability) !== 0 && getAbilityEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Effectiveness Increase: </span> <span
+                            class="statValue" [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>
+                            <div *ngIf="getSecondaryAbilityEffectivenessIncrease(ability) !== 0 && getSecondaryAbilityEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getSecondaryAbilityEffectivenessIncrease(ability)"></span></div>
+                            <div *ngIf="getAbilityEffectCountIncrease(ability) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                class="statValue" [innerHtml]="getAbilityEffectCountIncrease(ability)"></span></div>
+                                <div *ngIf="getAbilityEffectMaxCountIncrease(ability) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                    class="statValue" [innerHtml]="getAbilityEffectMaxCountIncrease(ability)"></span></div>
+                            <div *ngIf="getAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getAbilityUserEffectEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
+                            class="statValue" [innerHtml]="getAbilityUserEffectEffectivenessIncrease(ability)"></span></div>
+                            <div *ngIf="getAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
+                            class="statValue" [innerHtml]="getAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
+                            <div *ngIf="getAbilityTargetEffectEffectivenessIncrease(ability) !== 0 && getAbilityTargetEffectEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getAbilityTargetEffectEffectivenessIncrease(ability)"></span></div>
+                                <div *ngIf="getAbilityTargetEffectDurationIncrease(ability) !== 0"><span class="statLabel">Targeted Effect Duration Increase: </span> <span
+                                class="statValue" [innerHtml]="getAbilityTargetEffectDurationIncrease(ability)"></span> seconds</div>
+                                <div *ngIf="getAbilityCooldownReduction(ability) !== 0"><span class="statLabel">Cooldown Reduction: </span> <span
+                                    class="statValue" [innerHtml]="getAbilityCooldownReduction(ability)"></span> seconds</div>
+                            </div>
+                        </ng-template>
 
             </div>
             <div *ngIf="overdriveAvailable">
@@ -257,14 +272,66 @@
                 (click)="openChangeGodMenu(changeGodView)">Change Gods</button>
             <div class="sectionInfo">
                 <div *ngFor="let ability of god1AbilityList">
-                    <strong class="statLabel" [ngClass]="getAbilityColor(true, 1)">{{ability.name}}</strong><span
+                    <strong class="statLabel" [ngClass]="getAbilityColor(true, 1)" customToolTip [isLargeTooltip]="true"
+                    [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span
                         class="statValue"> - <span
                             [innerHtml]="getGodAbilityDescription(ability.name, character, 1, ability)"></span></span>
+
+                            <ng-template #abilityPopover>
+                                <div>
+                                    Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
+                                    <hr/>
+                                    <div *ngIf="getGodAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getGodAbilityEffectivenessIncrease(ability, 1)"></span></div>
+                                <div *ngIf="getGodSecondaryAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodSecondaryAbilityEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodSecondaryAbilityEffectivenessIncrease(ability, 1)"></span></div>
+                                <div *ngIf="getGodAbilityEffectCountIncrease(ability, 1) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityEffectCountIncrease(ability, 1)"></span></div>
+                                    <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 1) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                        class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 1)"></span></div>
+                                <div *ngIf="getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getGodAbilityUserEffectEffectivenessIncrease(ability, 1)"></span></div>
+                                <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 1) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
+                                class="statValue" [innerHtml]="getGodAbilityUserEffectDurationIncrease(ability, 1)"></span> seconds</div>
+                                <div *ngIf="getGodAbilityTargetEffectEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityTargetEffectEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityTargetEffectEffectivenessIncrease(ability, 1)"></span></div>
+                                    <div *ngIf="getGodAbilityTargetEffectDurationIncrease(ability, 1) !== 0"><span class="statLabel">Targeted Effect Duration Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityTargetEffectDurationIncrease(ability, 1)"></span> seconds</div>
+                                    <div *ngIf="getGodAbilityCooldownReduction(ability, 1) !== 0"><span class="statLabel">Cooldown Reduction: </span> <span
+                                        class="statValue" [innerHtml]="getGodAbilityCooldownReduction(ability, 1)"></span> seconds</div>
+                                </div>
+                            </ng-template>
                 </div>
                 <div *ngFor="let ability of god2AbilityList">
-                    <strong class="statLabel" [ngClass]="getAbilityColor(true, 2)">{{ability.name}}</strong><span
+                    <strong class="statLabel" [ngClass]="getAbilityColor(true, 2)" customToolTip [isLargeTooltip]="true"
+                    [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span
                         class="statValue"> - <span
                             [innerHtml]="getGodAbilityDescription(ability.name, character, 2, ability)"></span></span>
+
+                            <ng-template #abilityPopover>
+                                <div>
+                                    Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
+                                    <hr/>
+                                    <div *ngIf="getGodAbilityEffectivenessIncrease(ability, 2) !== 0 && getGodAbilityEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getGodAbilityEffectivenessIncrease(ability, 2)"></span></div>
+                                <div *ngIf="getGodSecondaryAbilityEffectivenessIncrease(ability, 2) !== 0 && getGodSecondaryAbilityEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodSecondaryAbilityEffectivenessIncrease(ability, 2)"></span></div>
+                                <div *ngIf="getGodAbilityEffectCountIncrease(ability, 2) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityEffectCountIncrease(ability, 2)"></span></div>
+                                    <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 2) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
+                                        class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 2)"></span></div>
+                                <div *ngIf="getGodAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
+                                class="statValue" [innerHtml]="getGodAbilityUserEffectEffectivenessIncrease(ability, 2)"></span></div>
+                                <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 2) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
+                                class="statValue" [innerHtml]="getGodAbilityUserEffectDurationIncrease(ability, 2)"></span> seconds</div>
+                                <div *ngIf="getGodAbilityTargetEffectEffectivenessIncrease(ability, 2) !== 0 && getGodAbilityTargetEffectEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityTargetEffectEffectivenessIncrease(ability, 2)"></span></div>
+                                    <div *ngIf="getGodAbilityTargetEffectDurationIncrease(ability, 2) !== 0"><span class="statLabel">Targeted Effect Duration Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityTargetEffectDurationIncrease(ability, 2)"></span> seconds</div>
+                                    <div *ngIf="getGodAbilityCooldownReduction(ability, 2) !== 0"><span class="statLabel">Cooldown Reduction: </span> <span
+                                        class="statValue" [innerHtml]="getGodAbilityCooldownReduction(ability, 2)"></span> seconds</div>
+                                </div>
+                            </ng-template>
                 </div>
             </div>
         </div>

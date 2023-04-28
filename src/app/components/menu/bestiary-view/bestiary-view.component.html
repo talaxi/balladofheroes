@@ -1,0 +1,208 @@
+<div class="bestiaryView">
+    <div class="balladView">
+        <div class="options">
+            <span>Select a location from the list below.</span>
+            <br />
+            <br />
+            <div class="balladList">
+                <div class="eachBallad" *ngFor="let ballad of availableBallads">
+                    <div *ngIf="!isBalladSelected(ballad)">
+                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                            [ngClass]="getBalladClass(ballad)"
+                            (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad)}}
+                        </button>
+                    </div>
+                    <div *ngIf="isBalladSelected(ballad)" [ngClass]="{'flexBetween': !isMobile}">
+                        <button
+                            class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected defaultBallad"><strong
+                                [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad)}}</strong></button>
+                        <div class="zoneList">
+                            <div *ngFor="let zone of availableZones">
+                                <div *ngIf="!isZoneSelected(zone)">
+                                    <span class="zoneSpacer">&#8618;</span><button
+                                        class="buttonAsTextKeepColor z2Heading clickableText defaultZone"
+                                        [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)">{{getZoneName(zone)}}
+                                    </button>
+                                </div>
+                                <div *ngIf="isZoneSelected(zone)">
+                                    <span class="zoneSpacer">&#8618;</span><button
+                                        class="buttonAsTextKeepColor z2Heading clickableText selected defaultZone"><strong
+                                            [ngClass]="getZoneClass(zone)">{{getZoneName(zone)}}</strong></button>
+                                    <div *ngFor="let subzone of availableSubzones">
+                                        <div *ngIf="!isSubzoneSelected(subzone)">
+                                            <span class="subzoneSpacer">&#8618;</span><span><button
+                                                    class="buttonAsTextKeepColor z3Heading clickableText defaultSubzone"
+                                                    [ngClass]="getSubzoneClass(subzone)"
+                                                    (click)="selectSubzone(subzone)">{{getSubzoneName(subzone)}}
+                                                </button>
+                                            </span>
+                                        </div>
+                                        <div *ngIf="isSubzoneSelected(subzone)">
+                                            <strong><button
+                                                    class="buttonAsTextKeepColor z3Heading clickableText selected defaultSubzone"><span
+                                                        class="subzoneSpacer">&#8618;</span><strong><span
+                                                            [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
+                                                        </span></strong></button></strong>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+
+        <div class="spacer">
+            <div class="vr">
+                <hr class="vrHr" />
+            </div>
+        </div>
+
+        <div *ngIf="selectedBallad !== undefined && selectedZone === undefined && selectedSubzone === undefined"
+            class="info textCentered">
+            <span class="s2Heading pageHeader">{{balladService.getBalladName(selectedBallad.type)}}</span>
+            <br />
+            <span class="smallCaps bold">ballad</span>
+            <br />
+            <br />
+            <span [innerHtml]="getSelectedBalladDescription()"></span>
+            <hr />
+            <span>Total Unique Enemies Defeated: {{balladEnemiesDefeated()}} / {{balladEnemyCount()}} </span>
+            <br />
+            <span>Total Achievements Completed: {{balladAchievementsCompleted()}} / {{balladTotalAchievements() === -1 ? nameHiddenText : balladTotalAchievements()}}</span>
+        </div>
+        <div *ngIf="selectedZone !== undefined && selectedSubzone === undefined" class="info textCentered">
+            <span class="s2Heading pageHeader">{{getZoneName(selectedZone.type)}}</span>
+            <br />
+            <span class="smallCaps bold">zone</span>
+            <br />
+            <br />
+            <span>Total Unique Enemies Defeated: {{zoneEnemiesDefeated()}} / {{zoneEnemyCount()}} </span>
+            <br />
+            <span>Total Achievements Completed: {{zoneAchievementsCompleted()}} / {{zoneTotalAchievements() === -1 ? nameHiddenText : zoneTotalAchievements()}}</span>
+        </div>
+        <div *ngIf="selectedSubzone !== undefined && isAltarOfAsclepius()" class="info textCentered">
+            <span class="s2Heading pageHeader">{{balladService.getSubZoneName(selectedSubzone.type)}}</span>
+            <br />
+            <span class="smallCaps bold">special</span>
+            <br />
+            <br />
+            <div>
+                <span>Show your devotion to the gods by using healing items on the Altar of Asclepius. Your devotion
+                    will be rewarded.</span>
+            </div>
+        </div>
+        <div *ngIf="selectedSubzone !== undefined && isTown()" class="info textCentered">
+            <span class="s2Heading pageHeader">{{balladService.getSubZoneName(selectedSubzone.type)}}</span>
+            <br />
+            <span class="smallCaps bold">town</span>
+            <br />
+            <br />
+            <div class="shop" *ngFor="let shopOption of shopOptions; let i = index">
+                <span class="sectionHeaderText sectionHeading">{{getOptionText(shopOption.type)}}</span>
+                <br />
+                <div class="item" *ngFor="let item of getShopOptionItems(shopOption); let j = index">
+                    <span *ngIf="!itemIsMaterial(item.shopItem)" [ngClass]="getItemClass(item.shopItem)" customToolTip
+                        [tooltipDirection]="tooltipDirection" [contentTemplate]="itemDescriptionContent"
+                        [innerHtml]="getItemName(item.shopItem, true)"></span>
+                    <app-resource-item-view *ngIf="itemIsMaterial(item.shopItem)" [resource]="item.shopItem"
+                        [canSetTrackingResource]="false"></app-resource-item-view>
+                    <ng-template #itemDescriptionContent>
+                        <div *ngIf="getItemName(item.shopItem, true) !== nameHiddenText" class="popoverClass">
+                            <span *ngIf="!itemIsMaterial(item.shopItem) && !itemIsEquipment(item.shopItem)"
+                                [innerHTML]="lookupService.getItemDescription(item.shopItem)"></span>
+                            <app-equipment-item-view *ngIf="itemIsEquipment(item.shopItem)"
+                                [equipment]="lookupService.getEquipmentPieceByItemType(item.shopItem)"></app-equipment-item-view>
+                        </div>
+                        <span *ngIf="getItemName(item.shopItem, true) === nameHiddenText">{{nameHiddenText}}</span>
+                    </ng-template>
+                </div>
+                <br />
+            </div>
+        </div>
+        <div *ngIf="selectedSubzone !== undefined && !isTown() && !isAltarOfAsclepius()" class="info textCentered">
+            <span class="s2Heading pageHeader">{{balladService.getSubZoneName(selectedSubzone.type)}}</span>
+            <br />
+            <span class="smallCaps bold">subzone</span>
+            <br />
+            <br />
+            <span class="sectionHeaderText sectionHeading">enemies</span>
+            <br />
+            <span>{{getEnemiesDefeated()}} / {{enemyList.length}} enemies defeated</span>
+            <br />
+            <br />
+            <div class="enemyList">
+                <div class="enemy" *ngFor="let enemy of enemyList; let i = index">
+                    <span [innerHtml]="getEnemyName(enemy)" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="enemyPopover"></span>
+                    <ng-template #enemyPopover>
+                        <app-enemy-description-view *ngIf="getEnemyName(enemy) !== nameHiddenText"
+                            [character]="enemy"></app-enemy-description-view>
+                        <span *ngIf="getEnemyName(enemy) === nameHiddenText">{{nameHiddenText}}</span>
+                    </ng-template>
+                </div>
+            </div>
+            <hr />
+            <span class="sectionHeaderText sectionHeading">encounters</span>
+            <br />
+            <span>Each encounter has a {{getSubzoneEncounterChance()}}% chance to occur.</span>
+            <br />
+            <br />
+            <div class="enemyEncounterList">
+                <div class="encounter" *ngFor="let encounter of enemyEncounters; let i = index">
+                    <strong>Encounter {{i + 1}}</strong>
+                    <br />
+                    <span [innerHtml]="getEnemyEncounter(encounter)"></span>
+                </div>
+            </div>
+            <hr />
+            <span class="sectionHeaderText sectionHeading">items</span>
+            <br />
+            <span>Total Items Available: {{totalItemsAvailable()}}</span>
+            <br />
+            <br />
+            <div class="itemList">
+                <div *ngIf="availableItems.length > 0" class="smallCaps bold subheader">loot</div>
+                <div class="item" *ngFor="let item of availableItems; let i = index">
+                    <span *ngIf="!itemIsMaterial(item.item)" [ngClass]="getItemClass(item.item)" customToolTip
+                        [tooltipDirection]="itemTooltipDirection" [contentTemplate]="itemDescriptionContent"
+                        [innerHtml]="getItemName(item.item)"></span>
+                    <app-resource-item-view *ngIf="itemIsMaterial(item.item)" [resource]="item.item"
+                        [canSetTrackingResource]="false"></app-resource-item-view>
+                    <ng-template #itemDescriptionContent>
+                        <div *ngIf="getItemName(item.item) !== nameHiddenText" class="popoverClass">
+                            <span *ngIf="!itemIsMaterial(item.item) && !itemIsEquipment(item.item)"
+                                [innerHTML]="lookupService.getItemDescription(item.item)"></span>
+                            <app-equipment-item-view *ngIf="itemIsEquipment(item.item)"
+                                [equipment]="lookupService.getEquipmentPieceByItemType(item.item)"></app-equipment-item-view>
+                        </div>
+                        <span *ngIf="getItemName(item.item) === nameHiddenText">{{nameHiddenText}}</span>
+                    </ng-template>
+                </div>
+                <br />
+                <div *ngIf="availableTreasure.length > 0" class="smallCaps bold subheader">treasure</div>
+                <div class="item" *ngFor="let item of availableTreasure; let i = index">
+                    <span *ngIf="!itemIsMaterial(item.item)" [ngClass]="getItemClass(item.item)" customToolTip
+                        [tooltipDirection]="itemTooltipDirection" [contentTemplate]="itemDescriptionContent"
+                        [innerHtml]="getItemName(item.item)"></span><span *ngIf="!itemIsMaterial(item.item)">
+                        ({{getTreasureChestChance()}})</span>
+                    <div *ngIf="itemIsMaterial(item.item)">
+                        <app-resource-item-view [resource]="item.item"
+                            [canSetTrackingResource]="false"></app-resource-item-view> <span>
+                            ({{getTreasureChestChance()}})</span>
+                    </div>
+                    <ng-template #itemDescriptionContent>
+                        <div *ngIf="getItemName(item.item) !== nameHiddenText" class="popoverClass">
+                            <span *ngIf="!itemIsMaterial(item.item) && !itemIsEquipment(item.item)"
+                                [innerHTML]="lookupService.getItemDescription(item.item)"></span>
+                            <app-equipment-item-view *ngIf="itemIsEquipment(item.item)"
+                                [equipment]="lookupService.getEquipmentPieceByItemType(item.item)"></app-equipment-item-view>
+                        </div>
+                        <span *ngIf="getItemName(item.item) === nameHiddenText">{{nameHiddenText}}</span>
+                    </ng-template>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

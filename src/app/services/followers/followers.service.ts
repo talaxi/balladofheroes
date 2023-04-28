@@ -295,8 +295,8 @@ export class FollowersService {
   }
 
   getPriceForNextFollower() {
-    var repeaterTotal = Math.floor(this.globalService.globalVar.followerData.numberOfFollowersPurchased / 3);
-    var repeaterOrder = this.globalService.globalVar.followerData.numberOfFollowersPurchased % 3;
+    var repeaterTotal = Math.floor(this.globalService.globalVar.followerData.numberOfFollowersPurchased / 4);
+    var repeaterOrder = this.globalService.globalVar.followerData.numberOfFollowersPurchased % 4;
 
     if (repeaterOrder === 0)
       return 10 * Math.pow(10, 2 + repeaterTotal);
@@ -304,6 +304,8 @@ export class FollowersService {
       return 25 * Math.pow(10, 2 + repeaterTotal);
     if (repeaterOrder === 2)
       return 50 * Math.pow(10, 2 + repeaterTotal);
+    if (repeaterOrder === 3)
+      return 75 * Math.pow(10, 2 + repeaterTotal);
 
     return 0;
   }

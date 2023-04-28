@@ -36,7 +36,7 @@ export class BackgroundService {
 
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
     private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
-    private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService, 
+    private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService,
     private dictionaryService: DictionaryService) { }
 
   //global -- this occurs even when at a scene or in a town
@@ -54,7 +54,7 @@ export class BackgroundService {
 
     if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
       activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
-       this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
+        this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
       enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {
@@ -65,6 +65,7 @@ export class BackgroundService {
         this.battleService.handleHpRegen(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
+        this.checkGodStatuses(partyMember);
 
         if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
@@ -228,6 +229,13 @@ export class BackgroundService {
         }
       }
 
+      if (effect.type === AltarEffectsEnum.NemesisDealDamage) {
+        if (enemies !== undefined) {
+          var target = this.lookupService.getRandomPartyMember(enemies);
+          this.battleService.dealTrueDamage(true, target, effect.effectiveness);
+        }
+      }
+
       effect.tickTimer -= effect.tickFrequency;
     }
   }
@@ -353,10 +361,74 @@ export class BackgroundService {
         });
       }
     }
+
+    if (effect.type === AltarEffectsEnum.DionysusRandomDebuff) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          ;
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(this.battleService.getRandomPrimaryStatDownStatusEffect(true), 10, effect.effectiveness, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.DionysusRandomBuff) {
+      party.forEach(member => {
+        this.battleService.applyStatusEffect(this.globalService.createStatusEffect(this.battleService.getRandomPrimaryStatUpStatusEffect(), 10, effect.effectiveness, false, true), member, enemies);
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier) {
+      var barrierTarget = this.lookupService.getRandomPartyMember(party);
+      var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(barrierTarget, true));
+      barrierTarget.battleInfo.barrierValue += barrierAmount;
+    }
+
+    if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier) {
+      party.forEach(member => {
+        var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(member, true));
+        member.battleInfo.barrierValue += barrierAmount;
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 15, effect.effectiveness, false, false), member, enemies);
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 15, effect.effectiveness, false, false), member, enemies);
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.LuckDown, 15, effect.effectiveness, false, false), member, enemies);
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 15, effect.effectiveness, false, false), member, enemies);
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceDown, 15, effect.effectiveness, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.NemesisLuckDebuff) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.LuckDown, 10, effect.effectiveness, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.NemesisRareDuesUp) {
+      party.forEach(member => {
+        var dues = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
+        if (dues !== undefined)
+        {          
+          dues.effectiveness *= effect.effectiveness;
+        }
+      });
+    }
   }
 
   handleFollowerSearch(deltaTime: number) {
     var hour = 1 * 60 * 60; //average per hour
+
+    if (this.globalService.globalVar.timers.followerSearchZoneTimer < 0)
+    {
+      this.globalService.globalVar.timers.followerSearchZoneTimer = 0;
+    }
+
     var checkTime = this.globalService.globalVar.timers.followerSearchZoneTimerLength;
     this.globalService.globalVar.timers.followerSearchZoneTimer += deltaTime;
 
@@ -386,13 +458,13 @@ export class BackgroundService {
   }
 
   handleFollowerPrayer(deltaTime: number) {
-    if (this.globalService.globalVar.timers.followerPrayerTimer === undefined) {
+    if (this.globalService.globalVar.timers.followerPrayerTimer === undefined || this.globalService.globalVar.timers.followerPrayerTimer < 0) {
       this.globalService.globalVar.timers.followerPrayerTimer = 0;
       this.globalService.globalVar.timers.followerPrayerTimerLength = 60;
     }
 
-    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;
-    if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {
+    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;    
+    if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {      
       this.globalService.globalVar.timers.followerPrayerTimer -= this.globalService.globalVar.timers.followerPrayerTimerLength;
       this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.Praying).forEach(follower => {
         if (follower.assignedPrayerType === FollowerPrayerTypeEnum.Activate) {
@@ -448,8 +520,7 @@ export class BackgroundService {
   }
 
   handleItemCooldowns(deltaTime: number) {
-    if (this.globalService.globalVar.timers.itemCooldowns !== undefined && this.globalService.globalVar.timers.itemCooldowns.length > 0)
-    {
+    if (this.globalService.globalVar.timers.itemCooldowns !== undefined && this.globalService.globalVar.timers.itemCooldowns.length > 0) {
       this.globalService.globalVar.timers.itemCooldowns.forEach(item => {
         item[1] -= deltaTime;
       });
@@ -462,7 +533,7 @@ export class BackgroundService {
     var oneDay = 24 * 60 * 60 * 1000; // hours*minutes*seconds*milliseconds
     var lastTicketDate = new Date(this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived);
     if (lastTicketDate === undefined)
-    lastTicketDate = new Date();
+      lastTicketDate = new Date();
 
     var dayOfLastTicket = new Date(lastTicketDate.getFullYear(), lastTicketDate.getMonth(), lastTicketDate.getDate());
     dayOfLastTicket.setHours(0, 0, 0);
@@ -470,10 +541,29 @@ export class BackgroundService {
     todaysDate.setHours(0, 0, 0);
 
     var diffDays = Math.floor(Math.abs((todaysDate.valueOf() - dayOfLastTicket.valueOf()) / oneDay));
-    this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays;
-    if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > this.utilityService.weeklyMeleeEntryCap)
-    this.globalService.globalVar.sidequestData.weeklyMeleeEntries = this.utilityService.weeklyMeleeEntryCap;
+    if (diffDays > 0) {
+      var ticketMultiplier = 1;
+      if (this.globalService.globalVar.isSubscriber)
+        ticketMultiplier = 2;
 
+      this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays * ticketMultiplier;
+      if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier))
+        this.globalService.globalVar.sidequestData.weeklyMeleeEntries = (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier);
+    }
     this.globalService.globalVar.sidequestData.lastWeeklyMeleeTicketReceived = new Date();
+  }
+
+  checkGodStatuses(character: Character) {
+    if ((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis) &&
+      !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", character);
+      if (dispenserOfDues !== undefined) {
+        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
+      }
+    }
+    else if ((character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) &&
+      character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+    }
   }
 }
