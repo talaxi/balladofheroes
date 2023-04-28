@@ -28,16 +28,16 @@
 }
 
 .shiftUp {
-    transform: translateY(-65%);
+    transform: translateY(-50%);
     overflow: hidden;
 }
 
 .shiftLeft {
-    transform: translateX(-65%);
+    transform: translateX(-50%);
     overflow: hidden;
 }
 
 .shiftUpLeft {
-    transform: translateY(-65%) translateX(-65%);
+    transform: translateY(-50%) translateX(-50%);
     overflow: hidden;
 }

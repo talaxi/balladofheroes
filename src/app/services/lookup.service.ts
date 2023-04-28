@@ -3462,7 +3462,7 @@ export class LookupService {
         if (effect.type === StatusEffectEnum.InstantTrueDamage) {
           if (equipment.itemType === ItemsEnum.SwordOfFlames)
             equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
-          if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
+          else if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
             equipmentEffects += "Deal " + Math.round(effect.effectiveness * 100) + "% of Attack Water damage to all targets as true damage every " + effect.triggersEvery + " seconds. <br/>";
           else
             equipmentEffects += "Deal an additional " + effect.effectiveness + " damage.<br/>";
