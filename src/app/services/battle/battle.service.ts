@@ -1701,7 +1701,7 @@ export class BattleService {
     }
   }
 
-  getTarget(user: Character, targets: Character[], targetType: TargetEnum = TargetEnum.Random) {
+  getTarget(user: Character, targets: Character[], targetType: TargetEnum = TargetEnum.Random) {    
     var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead || item.type === StatusEffectEnum.Untargetable));
     if (potentialTargets.length === 0)
       return undefined;
@@ -1711,7 +1711,7 @@ export class BattleService {
     //console.log("Get Target");
     //console.log(potentialTargets);
 
-    if (user.targeting !== undefined && targetType !== TargetEnum.ForcedRandom && potentialTargets.some(item => item === user.targeting)) {
+    if (user.targeting !== undefined && targetType !== TargetEnum.LowestHpPercent && targetType !== TargetEnum.ForcedRandom && potentialTargets.some(item => item === user.targeting)) {
       target = user.targeting;
 
       var chainsOfFateAttacker = user.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ChainsOfFate);
