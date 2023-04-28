@@ -407,8 +407,11 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedEmerald, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedAquamarine, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorWeaponSlotAddition, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 10));    
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorWeaponSlotAddition, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorArmorSlotAddition, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorRingSlotAddition, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorShieldSlotAddition, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MetalScraps, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HeroicElixir, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VenomousToxin, 10));

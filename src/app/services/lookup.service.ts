@@ -2810,13 +2810,14 @@ export class LookupService {
     if (item.item === ItemsEnum.EternalMeleeTicket) {
       this.globalService.globalVar.sidequestData.weeklyMeleeEntries += item.amount;
     }
-
+    else {
     var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item && this.globalService.extraItemsAreEqual(item.extras, resource.extras));
     if (existingResource === undefined) {
       this.globalService.globalVar.resources.push(item);
     }
     else {
       existingResource.amount += item.amount;
+    }
     }
   }
 
