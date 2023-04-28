@@ -106,11 +106,11 @@ export class UpdateKeybindsViewComponent implements OnInit {
       if (openFirstAvailableAltar !== undefined)
         this.battleKeybinds.push(openFirstAvailableAltar);
 
-        var secondFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "secondFirstAvailableAltar");
+        var secondFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openSecondAvailableAltar");
       if (secondFirstAvailableAltar !== undefined)
         this.battleKeybinds.push(secondFirstAvailableAltar);
 
-        var thirdFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "thirdFirstAvailableAltar");
+        var thirdFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openThirdAvailableAltar");
       if (thirdFirstAvailableAltar !== undefined)
         this.battleKeybinds.push(thirdFirstAvailableAltar);
   
@@ -303,6 +303,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
     updatedName = "Open Professions Page";
     if (name === "menuGoToSettings")
       updatedName = "Open Settings Page";
+      if (name === "menuGoToBestiary")
+      updatedName = "Open Bestiary Page";
     if (name === "menuTraverseSubMenuUp")
       updatedName = "Traverse Down Submenu";
     if (name === "menuTraverseSubMenuDown")
@@ -324,11 +326,11 @@ export class UpdateKeybindsViewComponent implements OnInit {
       if (name === "useCharacter1AutoAttack")
       updatedName = "Use Character 1 Auto Attack";
       if (name === "openFirstAvailableAltar")
-      updatedName = "Pray At First Available Altar"; 
+      updatedName = "Pray At First Altar"; 
       if (name === "openSecondAvailableAltar")
-      updatedName = "Pray At Second Available Altar"; 
+      updatedName = "Pray At Second Altar"; 
       if (name === "openThirdAvailableAltar")
-      updatedName = "Pray At Third Available Altar";      
+      updatedName = "Pray At Third Altar";      
     if (name === "toggleCharacter1TargetMode")
       updatedName = "Toggle Character 1 Target Mode";
       if (name === "toggleCharacter2TargetMode")
