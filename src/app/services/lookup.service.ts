@@ -416,6 +416,8 @@ export class LookupService {
       name = "Spend on permanent stat boosts.";
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Recipe for Alchemy item <b>Poison Extract Potion</b>.";
+      else if (type === ItemsEnum.FocusPotionRecipe)
+        name = "Recipe for Alchemy item <b>Focus Potion</b>.";
 
     //equipment
     else if (this.getEquipmentPieceByItemType(type) !== undefined) {
