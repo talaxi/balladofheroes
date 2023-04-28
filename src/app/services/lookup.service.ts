@@ -1065,7 +1065,7 @@ export class LookupService {
       equipmentPiece.stats.healingDone += .15;
       equipmentPiece.stats.healingReceived += .15;
       equipmentPiece.stats.abilityCooldownReduction += .1;
-      equipmentPiece.stats.thorns += .05;
+      equipmentPiece.stats.thorns += .15;
     }
 
     //ring
@@ -3376,7 +3376,7 @@ export class LookupService {
     if (equipment.stats.abilityCooldownReductionWithBuffs > 0)
       equipmentStats += "+" + (equipment.stats.abilityCooldownReductionWithBuffs * 100) + "% Ability Cooldown Reduction With Buffs<br />";
     if (equipment.stats.thorns > 0)
-      equipmentStats += "+" + (equipment.stats.thorns * 100) + "% Damage Reflected Back<br />";
+      equipmentStats += "+" + (equipment.stats.thorns * 100) + "% Auto Attack Damage Reflected Back<br />";
     if (equipment.stats.elementIncrease.holy > 0)
       equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% Holy Damage Bonus<br />";
     if (equipment.stats.elementIncrease.fire > 0)

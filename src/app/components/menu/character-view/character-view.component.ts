@@ -2,9 +2,11 @@ import { Component, Input, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
+import { God } from 'src/app/models/character/god.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -406,6 +408,160 @@ export class CharacterViewComponent implements OnInit {
 
     return 0;
   }
+
+  
+  getGodAbilityEffectivenessIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+      if (baseAbility.name === "Quicken")
+        return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness));
+      else
+        return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness) * 100) + "%";
+    }
+
+    return 0;
+  }
+
+  getGodSecondaryAbilityEffectivenessIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+        return this.utilityService.genericRound((ability.secondaryEffectiveness - baseAbility.secondaryEffectiveness) * 100) + "%";
+    }
+
+    return 0;
+  }
+
+  getGodAbilityEffectCountIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+      if (baseAbility.name === "Special Delivery")
+        return this.utilityService.genericRound((ability.userEffect.length - baseAbility.userEffect.length));
+        if (baseAbility.name === "No Escape")
+        return this.utilityService.genericRound((ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length - baseAbility.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length));              
+        if (baseAbility.name === "Insanity")
+        return this.utilityService.genericRound((ability.targetEffect.length - baseAbility.targetEffect.length));              
+    }
+
+    return 0;
+  }
+
+  getGodAbilityEffectMaxCountIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {
+        return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));              
+    }
+
+    return 0;
+  }
+
+  getGodAbilityUserEffectEffectivenessIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {
+      if (baseAbility.name === "Second Wind")
+        return this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness));
+      else
+        return Math.abs(this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness) * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getGodAbilityUserEffectDurationIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
+      return this.utilityService.roundTo((ability.userEffect[0].duration - baseAbility.userEffect[0].duration), 2);
+
+    return 0;
+  }
+
+  getGodAbilityTargetEffectEffectivenessIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0) {
+      return Math.abs(this.utilityService.genericRound((ability.targetEffect[0].effectiveness - baseAbility.targetEffect[0].effectiveness) * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getGodAbilityTargetEffectDurationIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0)
+      return this.utilityService.roundTo((ability.targetEffect[0].duration - baseAbility.targetEffect[0].duration), 2);
+
+    return 0;
+  }
+
+  getGodAbilityCooldownReduction(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined)
+      return this.utilityService.genericRound(Math.abs(ability.cooldown - baseAbility.cooldown));
+
+    return 0;
+  }
+
 
   ngOnDestroy() {
     if (this.subscription !== undefined)
