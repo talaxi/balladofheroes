@@ -138,14 +138,6 @@ export class ZoneNavigationComponent implements OnInit {
     });
   }
 
-  getSubzoneName(subzone: SubZone) {
-    return this.balladService.getSubZoneName(subzone.type);
-  }
-
-  getSubzoneNotificationType(subzone: SubZone) {
-    return this.balladService.shouldSubzoneShowSideQuestNotification(subzone.type);
-  }
-
   jumpToLatestShop() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();
     var relatedZone: Zone | undefined = this.balladService.getActiveZone();
@@ -243,90 +235,8 @@ export class ZoneNavigationComponent implements OnInit {
       this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
   }
 
-  getBalladClass(ballad: Ballad) {
-    var allSubZonesCleared = true;
-    var allSubZonesCompleted = true;
-
-    ballad.zones.forEach(zone => {
-      zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
-        if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
-          allSubZonesCleared = false;
-        if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
-          this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
-          allSubZonesCompleted = false;
-      });
-    });
-
-    return {
-      'selected': ballad.isSelected,
-      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,
-      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,
-      'completedSubzoneColor': allSubZonesCompleted
-    };
-  }
-
-  getZoneClass(zone: Zone) {
-    var allSubZonesCleared = true;
-    var allSubZonesCompleted = true;
-    zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
-      if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
-        allSubZonesCleared = false;
-      if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
-        this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length === 0)
-        allSubZonesCompleted = false;
-    });
-
-    return {
-      'selected': zone.isSelected,
-      'unclearedSubzoneColor': !allSubZonesCleared && !allSubZonesCompleted,
-      'clearedSubzoneColor': allSubZonesCleared && !allSubZonesCompleted,
-      'completedSubzoneColor': allSubZonesCompleted
-    };
-  }
-
-  getSubzoneClass(subzone: SubZone) {
-    var achievementsCompleted = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) === 0 &&
-      this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length > 0;
-
-    if (subzone.type === SubZoneEnum.CalydonAltarOfAsclepius) {
-      return {
-        'completedSubzoneColor': this.globalService.globalVar.sidequestData.altarOfAsclepius.exp >= 4,
-        'unclearedSubzoneColor': this.globalService.globalVar.sidequestData.altarOfAsclepius.exp < 4,
-        'selected': subzone.isSelected
-      }
-    }
-
-    return {
-      'selected': subzone.isSelected,
-      'unclearedSubzoneColor': this.balladService.getVictoriesNeededToProceed(subzone.type) > subzone.victoryCount,
-      'clearedSubzoneColor': this.balladService.getVictoriesNeededToProceed(subzone.type) <= subzone.victoryCount && !achievementsCompleted,
-      'completedSubzoneColor': achievementsCompleted
-    };
-  }
-
   autoProgressToggle() {
     this.globalService.globalVar.settings.set("autoProgress", this.autoProgress);
-  }
-
-  getSubZoneSubText(subzone: SubZone) {
-    var text = "";
-
-    if (this.balladService.isSubZoneToBeContinued(subzone))
-      return text;
-
-    if (this.balladService.isSubzoneTown(subzone.type))
-      text = "(Town)";
-    else if (this.balladService.isSubzoneSideQuest(subzone.type)) {
-      text = "(Special)";
-    }
-    else {
-      text = "(" + subzone.victoryCount.toString();
-      if (this.balladService.getVictoriesNeededToProceed(subzone.type) > subzone.victoryCount)
-        text += "/" + this.balladService.getVictoriesNeededToProceed(subzone.type);
-      text += subzone.victoryCount === 1 && this.balladService.getVictoriesNeededToProceed(subzone.type) <= subzone.victoryCount ? " win)" : " wins)";
-    }
-
-    return text;
   }
 
   goToResourceView() {
@@ -410,13 +320,6 @@ export class ZoneNavigationComponent implements OnInit {
     }
 
     this.globalService.globalVar.settings.set("activeOverview", this.quickView);
-  }
-
-  getSubzoneNotificationStyle(subzone: SubZone) {
-    if (this.lookupService.subzoneHasObscurredPath(subzone.type))
-      return "?";
-
-    return "!";
   }
 
   ngOnDestroy() {

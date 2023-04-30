@@ -14,97 +14,13 @@
         <div class="zoneGrid">
             <div class="balladList">
                 <div class="eachBallad" *ngFor="let ballad of availableBallads">
-                    <div *ngIf="!ballad.isSelected">
-                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading"
-                            [ngClass]="getBalladClass(ballad)"
-                            (click)="balladService.selectBallad(ballad)">{{balladService.getBalladName(ballad.type)}}
-                            <app-notification-icon *ngIf="ballad.notify"></app-notification-icon>
-                        </button>
-                    </div>
-                    <div *ngIf="ballad.isSelected" [ngClass]="{'flexBetween': !isMobile}">
-                        <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected"><strong
-                                [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad.type)}}</strong></button>
-                        <span *ngIf="!isMobile" class="selectedArrow textRightAligned">
-                            <strong class="selected">&#8594;</strong>
-                        </span>
-                        <!--TODO: Should this all be its own component? vvv-->
-                        <div *ngIf="isMobile" class="zoneList mobileList">
-                            <div *ngFor="let zone of availableZones">
-                                <div *ngIf="!zone.isSelected">
-                                    <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
-                                        [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)">{{zone.zoneName}}
-                                        <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
-                                    </button>
-                                </div>
-                                <div *ngIf="zone.isSelected">
-                                    <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText selected"><strong
-                                            [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></button>
-                                    <div *ngFor="let subzone of availableSubZones">
-                                        <div *ngIf="!subzone.isSelected">
-                                            <span class="subzoneSpacer">&#8618;</span><span><button
-                                                    class="buttonAsTextKeepColor z3Heading clickableText"
-                                                    [ngClass]="getSubzoneClass(subzone)"
-                                                    (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone)
-                                                    ? "To Be Continued!" :
-                                                    getSubzoneName(subzone)}}
-                                                    {{getSubZoneSubText(subzone)}}
-                                                    <app-notification-icon *ngIf="subzone.notify"
-                                                        [notificationColor]="getSubzoneNotificationType(subzone)"
-                                                        [notificationStyle]="getSubzoneNotificationStyle(subzone)">
-                                                    </app-notification-icon>
-                                                </button>
-                                            </span>
-                                        </div>
-                                        <div *ngIf="subzone.isSelected">
-                                            <strong><button
-                                                    class="buttonAsTextKeepColor z3Heading clickableText selected"><span
-                                                        class="subzoneSpacer">&#8618;</span><strong><span
-                                                            [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
-                                                            {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
-                        <!--TODO: Should this all be its own component? ^^^-->
-                    </div>
+                    <app-ballad-navigation [ballad]="ballad" /> 
                     <hr class="transparentHr" *ngIf="isMobile" />
                 </div>
             </div>
             <div *ngIf="!isMobile" class="zoneList">
                 <div *ngFor="let zone of availableZones">
-                    <div *ngIf="!zone.isSelected">
-                        <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
-                            (click)="balladService.selectZone(zone)">{{zone.zoneName}}
-                            <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
-                        </button>
-                    </div>
-                    <div *ngIf="zone.isSelected">
-                        <button class="buttonAsTextKeepColor z2Heading clickableText selected"><strong
-                                [ngClass]="getZoneClass(zone)">{{zone.zoneName}}</strong></button>
-                        <div *ngFor="let subzone of availableSubZones">
-                            <div *ngIf="!subzone.isSelected">
-                                <span class="subzoneSpacer">&#8618;</span><span><button
-                                        class="buttonAsTextKeepColor z3Heading clickableText"
-                                        [ngClass]="getSubzoneClass(subzone)"
-                                        (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
-                                        getSubzoneName(subzone)}}
-                                        {{getSubZoneSubText(subzone)}}
-                                        <app-notification-icon *ngIf="subzone.notify"
-                                            [notificationColor]="getSubzoneNotificationType(subzone)"
-                                            [notificationStyle]="getSubzoneNotificationStyle(subzone)">
-                                        </app-notification-icon>
-                                    </button>
-                                </span>
-                            </div>
-                            <div *ngIf="subzone.isSelected">
-                                <strong><button class="buttonAsTextKeepColor z3Heading clickableText selected"><span
-                                            class="subzoneSpacer">&#8618;</span><strong><span
-                                                [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
-                                                {{getSubZoneSubText(subzone)}}</span></strong></button></strong>
-                            </div>
-                        </div>
-                    </div>
+                    <app-zone-area-navigation [zone]="zone" /> 
                 </div>
             </div>
         </div>
