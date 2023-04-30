@@ -1,0 +1,16 @@
+<div *ngIf="!zone.isSelected">
+    <span class="zoneSpacer">&#8618;</span>
+    <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass()" (click)="onZoneSelect()">
+        {{ zone.zoneName }}
+        <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
+    </button>
+</div>
+<div *ngIf="zone.isSelected">
+    <span class="zoneSpacer">&#8618;</span>
+    <button class="buttonAsTextKeepColor z2Heading clickableText selected">
+        <strong [ngClass]="getZoneClass()">{{ zone.zoneName }}</strong>
+    </button>
+    <div *ngFor="let subzone of availableSubZones">
+        <app-sub-zone-navigation [zone]="zone" [subzone]="subzone" />
+    </div>
+</div>

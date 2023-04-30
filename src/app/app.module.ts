@@ -104,6 +104,9 @@ import { JewelcraftingViewComponent } from './components/subcomponents/jewelcraf
 import { JewelcraftingOverviewComponent } from './components/layout/zone-navigation/jewelcrafting-overview/jewelcrafting-overview.component';
 import { BestiaryViewComponent } from './components/menu/bestiary-view/bestiary-view.component';
 import { EnemyDescriptionViewComponent } from './components/subcomponents/enemy-view/enemy-description-view/enemy-description-view.component';
+import { BalladNavigationComponent } from './components/layout/zone-navigation/subcomponents/ballad-navigation/ballad-navigation.component';
+import { SubZoneNavigationComponent } from './components/layout/zone-navigation/subcomponents/sub-zone-navigation/sub-zone-navigation.component';
+import { ZoneAreaNavigationComponent } from './components/layout/zone-navigation/subcomponents/zone-area-navigation/zone-area-navigation.component';
 
 @NgModule({
   declarations: [
@@ -172,7 +175,10 @@ import { EnemyDescriptionViewComponent } from './components/subcomponents/enemy-
     JewelcraftingViewComponent,
     JewelcraftingOverviewComponent,
     BestiaryViewComponent,
-    EnemyDescriptionViewComponent,    
+    EnemyDescriptionViewComponent,
+    BalladNavigationComponent,
+    SubZoneNavigationComponent,
+    ZoneAreaNavigationComponent,
   ],
   imports: [
     BrowserModule,

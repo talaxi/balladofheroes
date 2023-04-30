@@ -1,0 +1,25 @@
+<div *ngIf="!subzone.isSelected">
+    <span class="subzoneSpacer">&#8618;</span>
+    <span>
+        <button class="buttonAsTextKeepColor z3Heading clickableText" [ngClass]="getSubzoneClass()"
+            (click)="onSubzoneSelect()">
+            {{ isSubzoneToBeContinued() ? "To Be Continued!" : getSubzoneName() }}
+            {{ getSubZoneSubText() }}
+            <app-notification-icon *ngIf="subzone.notify" [notificationColor]="getSubzoneNotificationType()"
+                [notificationStyle]="getSubzoneNotificationStyle()">
+            </app-notification-icon>
+        </button>
+    </span>
+</div>
+<div *ngIf="subzone.isSelected">
+    <strong>
+        <button class="buttonAsTextKeepColor z3Heading clickableText selected">
+            <span class="subzoneSpacer">&#8618;</span>
+            <strong>
+                <span [ngClass]="getSubzoneClass()">{{ getSubzoneName() }}
+                    {{ getSubZoneSubText() }}
+                </span>
+            </strong>
+        </button>
+    </strong>
+</div>

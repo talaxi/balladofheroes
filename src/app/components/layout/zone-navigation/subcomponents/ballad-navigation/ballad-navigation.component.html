@@ -1,0 +1,20 @@
+<div *ngIf="!ballad.isSelected">
+    <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading" [ngClass]="getBalladClass()"
+        (click)="onBalladSelect()">
+        {{ getBalladName() }}
+        <app-notification-icon *ngIf="ballad.notify"></app-notification-icon>
+    </button>
+</div>
+<div *ngIf="ballad.isSelected" [ngClass]="{ flexBetween: !isMobile }">
+    <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected">
+        <strong [ngClass]="getBalladClass()">{{ getBalladName() }}</strong>
+    </button>
+    <span *ngIf="!isMobile" class="selectedArrow textRightAligned">
+        <strong class="selected">&#8594;</strong>
+    </span>
+    <div *ngIf="isMobile" class="zoneList mobileList">
+        <div *ngFor="let zone of availableZones">
+            <app-sub-zone-navigation [zone]="zone" />
+        </div>
+    </div>
+</div>
