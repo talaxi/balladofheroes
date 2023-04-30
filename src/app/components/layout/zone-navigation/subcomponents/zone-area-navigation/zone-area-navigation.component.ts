@@ -17,7 +17,9 @@ export class ZoneAreaNavigationComponent implements OnInit {
   constructor(private globalService: GlobalService, private balladService: BalladService, private achievementService: AchievementService) { }
 
   ngOnInit(): void {
-    this.availableSubZones = this.zone?.subzones ?? [];
+    if (this.zone) {
+      this.availableSubZones = this.zone.subzones.filter(subzone => subzone.isAvailable);
+    }
   }
 
   /** Called when zone text button is selected */
