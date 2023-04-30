@@ -2429,7 +2429,7 @@ export class BattleService {
     this.applyStatusEffect(recentlyDefeatedDebuff, party[0], party);
   }
 
-  moveToNextBattle() {
+  moveToNextBattle() {    
     this.showNewEnemyGroup = true;
     if (this.globalService.globalVar.gameLogSettings.get("battleUpdates")) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleUpdate, "The enemy party has been defeated.");
@@ -2453,6 +2453,11 @@ export class BattleService {
       if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList).toLocaleString() + " XP</strong>.");
       }
+      
+      this.battle.currentEnemies.enemyList.forEach(enemy => {      
+        this.dpsCalculatorService.addXpGain(enemy.xpGainFromDefeat);
+      });
+
       this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), this.battle.currentEnemies);
       this.updateEnemyDefeatCount(this.battle.currentEnemies);
 

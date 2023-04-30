@@ -2102,6 +2102,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.CalydonWornDownBarn) {
       balladEnums.push(BalladEnum.Argo);
     }
+    if (type === SubZoneEnum.ColchisHurriedRetreat2) {
+      balladEnums.push(BalladEnum.Labors);
+    }
 
     return balladEnums;
   }
@@ -2136,6 +2139,27 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.BlackSeaWindyGale) {
       zoneEnums.push(ZoneEnum.Colchis);
+    }
+    if (type === SubZoneEnum.ColchisHurriedRetreat2) {
+      zoneEnums.push(ZoneEnum.Nemea);
+    }
+    if (type === SubZoneEnum.NemeaLairOfTheLion) {
+      zoneEnums.push(ZoneEnum.Lerna);
+    }
+    if (type === SubZoneEnum.LernaSpringOfAmymone) {
+      zoneEnums.push(ZoneEnum.Stymphalia);
+    }
+    if (type === SubZoneEnum.StymphaliaLakeStymphalia) {
+      zoneEnums.push(ZoneEnum.Erymanthus);
+    }
+    if (type === SubZoneEnum.ErymanthusSnowCappedPeaks) {
+      zoneEnums.push(ZoneEnum.CoastOfCrete);
+    }
+    if (type === SubZoneEnum.CoastOfCreteAppleOrchards) {
+      zoneEnums.push(ZoneEnum.GardenOfTheHesperides);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides) {
+      zoneEnums.push(ZoneEnum.Erytheia);
     }
 
     return zoneEnums;
@@ -2379,6 +2403,124 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.ColchisHurriedRetreat1) {
       subZoneEnums.push(SubZoneEnum.ColchisHurriedRetreat2);
+    }
+    if (type === SubZoneEnum.ColchisHurriedRetreat1) {
+      subZoneEnums.push(SubZoneEnum.ColchisHurriedRetreat2);
+    }
+    if (type === SubZoneEnum.ColchisHurriedRetreat2) {
+      subZoneEnums.push(SubZoneEnum.NemeaCleonea);
+      subZoneEnums.push(SubZoneEnum.NemeaCountryRoadsTwo);
+    }
+    if (type === SubZoneEnum.NemeaCountryRoadsTwo) {
+      subZoneEnums.push(SubZoneEnum.NemeaRollingHills);
+    }
+    if (type === SubZoneEnum.NemeaRollingHills) {
+      subZoneEnums.push(SubZoneEnum.NemeaFlatlands);
+    }
+    if (type === SubZoneEnum.NemeaFlatlands) {
+      subZoneEnums.push(SubZoneEnum.NemeaLairOfTheLion);
+    }
+    if (type === SubZoneEnum.NemeaLairOfTheLion) {
+      subZoneEnums.push(SubZoneEnum.LernaAroundTheInachus);
+    }
+    if (type === SubZoneEnum.LernaAroundTheInachus) {
+      subZoneEnums.push(SubZoneEnum.LernaThickMarsh);
+    }
+    if (type === SubZoneEnum.LernaThickMarsh) {
+      subZoneEnums.push(SubZoneEnum.LernaSwampySurroundings);
+    }
+    if (type === SubZoneEnum.LernaSwampySurroundings) {
+      subZoneEnums.push(SubZoneEnum.LernaDarkenedThicket);
+    }
+    if (type === SubZoneEnum.LernaDarkenedThicket) {
+      subZoneEnums.push(SubZoneEnum.LernaSpringOfAmymone);
+    }
+    if (type === SubZoneEnum.LernaSpringOfAmymone) {
+      subZoneEnums.push(SubZoneEnum.StymphaliaTiryns);
+      subZoneEnums.push(SubZoneEnum.StymphaliaArcadianWilderness);
+    }
+    if (type === SubZoneEnum.StymphaliaArcadianWilderness) {
+      subZoneEnums.push(SubZoneEnum.StymphaliaAbandonedVillage);
+    }
+    if (type === SubZoneEnum.StymphaliaAbandonedVillage) {
+      subZoneEnums.push(SubZoneEnum.StymphaliaSourceOfTheLadon);
+    }
+    if (type === SubZoneEnum.StymphaliaSourceOfTheLadon) {
+      subZoneEnums.push(SubZoneEnum.StymphaliaLakeStymphalia);
+    }
+    if (type === SubZoneEnum.StymphaliaLakeStymphalia) {
+      subZoneEnums.push(SubZoneEnum.ErymanthusLadonRiverbeds);
+    }
+    if (type === SubZoneEnum.ErymanthusLadonRiverbeds) {
+      subZoneEnums.push(SubZoneEnum.ErymanthusGreatMassif);
+    }
+    if (type === SubZoneEnum.ErymanthusGreatMassif) {
+      subZoneEnums.push(SubZoneEnum.ErymanthusCragInlet);
+    }
+    if (type === SubZoneEnum.ErymanthusCragInlet) {
+      subZoneEnums.push(SubZoneEnum.ErymanthusMountainClimb);
+    }
+    if (type === SubZoneEnum.ErymanthusMountainClimb) {
+      subZoneEnums.push(SubZoneEnum.ErymanthusSnowCappedPeaks);
+    }
+    if (type === SubZoneEnum.ErymanthusSnowCappedPeaks) {
+      subZoneEnums.push(SubZoneEnum.CoastOfCreteDownThePineios);
+    }
+    if (type === SubZoneEnum.CoastOfCreteDownThePineios) {
+      subZoneEnums.push(SubZoneEnum.CoastOfCreteElis);
+      subZoneEnums.push(SubZoneEnum.CoastOfCreteSoutheasternIonianSeas);
+    }
+    if (type === SubZoneEnum.CoastOfCreteSoutheasternIonianSeas) {
+      subZoneEnums.push(SubZoneEnum.CoastOfCreteCretanSeas);
+    }
+    if (type === SubZoneEnum.CoastOfCreteCretanSeas) {
+      subZoneEnums.push(SubZoneEnum.CoastOfCreteCretanCoast);
+    }
+    if (type === SubZoneEnum.CoastOfCreteCretanCoast) {
+      subZoneEnums.push(SubZoneEnum.CoastOfCreteVillageGardens);
+    }
+    if (type === SubZoneEnum.CoastOfCreteVillageGardens) {
+      subZoneEnums.push(SubZoneEnum.CoastOfCreteAppleOrchards);
+    }
+    if (type === SubZoneEnum.CoastOfCreteAppleOrchards) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesDesertSands);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesDesertSands) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesSaharanDunes);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesSaharanDunes) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesHiddenOasis);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesHiddenOasis) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesMoroccanCoast);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesMoroccanCoast) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesFertileFields);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesFertileFields) {
+      subZoneEnums.push(SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides) {
+      subZoneEnums.push(SubZoneEnum.ErytheiaLushValley);
+    }
+    if (type === SubZoneEnum.ErytheiaLushValley) {
+      subZoneEnums.push(SubZoneEnum.ErytheiaWesternOceanWaters);
+    }
+    if (type === SubZoneEnum.ErytheiaWesternOceanWaters) {
+      subZoneEnums.push(SubZoneEnum.ErytheiaCadiz);
+      subZoneEnums.push(SubZoneEnum.ErytheiaPillarsOfHeracles);
+    }
+    if (type === SubZoneEnum.ErytheiaPillarsOfHeracles) {
+      subZoneEnums.push(SubZoneEnum.ErytheiaIslandOfErytheia);
+    }
+    if (type === SubZoneEnum.ErytheiaIslandOfErytheia) {
+      subZoneEnums.push(SubZoneEnum.ErytheiaGeryonsFarm);
     }
 
     return subZoneEnums;

@@ -179,6 +179,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
@@ -201,6 +202,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.rollingAverageTimer = 0;
       this.dpsCalculatorService.partyDamagingActions = [];
       this.dpsCalculatorService.enemyDamagingActions = [];
+      this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
@@ -223,6 +225,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.rollingAverageTimer = 0;
       this.dpsCalculatorService.partyDamagingActions = [];
       this.dpsCalculatorService.enemyDamagingActions = [];
+      this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
 

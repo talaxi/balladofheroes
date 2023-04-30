@@ -111,5 +111,6 @@ export enum StatusEffectEnum {
     ChainsOfFate,
     KeepDues,
     SelfBarrier,
-    InstantCounter
+    InstantCounter,
+    Invulnerable
   }

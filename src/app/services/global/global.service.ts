@@ -2016,8 +2016,10 @@ export class GlobalService {
       level === this.utilityService.permanentGodAbility2Level || level === this.utilityService.permanentGodAbility3Level) {
       increaseType = GodLevelIncreaseEnum.PermanentAbility;
     }
-    else if ((level === 50 || level === 100 || level === 150 || level === 200 ||
-      (level > 200 && level <= 500 && level % 50 === 0))) {
+    //TODO: just make this %50 up to whatever level you have permanent stats (will be 1500 for now)
+    //else if ((level === 50 || level === 100 || level === 150 || level === 200 ||
+      //(level > 200 && level <= 500 && level % 50 === 0))) {
+    else if (level % 50 === 0 && level <= 2000) {
       if (this.isGodPermanentStatStillObtainable(god, level))
         increaseType = GodLevelIncreaseEnum.PermanentStats;
       else

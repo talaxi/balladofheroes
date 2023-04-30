@@ -25,6 +25,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
 import { SubZoneEnum } from './models/enums/sub-zone-enum.model';
+import { DpsCalculatorService } from './services/battle/dps-calculator.service';
 
 @Component({
   selector: 'app-root',
@@ -45,7 +46,7 @@ export class AppComponent {
     private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
     private utilityService: UtilityService, private lookupService: LookupService, private storyService: StoryService,
     private versionControlService: VersionControlService, private gameLogService: GameLogService, private activatedRoute: ActivatedRoute,
-    private router: Router) {
+    private router: Router, private dpsCalculatorService: DpsCalculatorService) {
 
   }
 
@@ -125,8 +126,10 @@ export class AppComponent {
     if (this.globalService.globalVar.isGamePaused)
       deltaTime = 0;
 
+    var originalDeltaTime = deltaTime;
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
     var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
+    this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
@@ -136,7 +139,7 @@ export class AppComponent {
     else
       this.globalService.globalVar.timers.townHpGainTimer = 0;
 
-    this.battleService.handleBattle(deltaTime, this.loading);
+    this.battleService.handleBattle(deltaTime, this.loading);    
   }
 
   loadStartup() {

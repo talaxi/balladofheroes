@@ -4546,6 +4546,498 @@ export class EnemyGeneratorService {
       toughScales.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, 12, 120, false, true));
       enemy.abilityList.push(toughScales);
     }
+    if (type === BestiaryEnum.LargeScorpion) {
+      enemy.name = "Large Scorpion";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;
+            
+      var stinger = new Ability();
+      stinger.name = "Stinger";
+      stinger.isAvailable = true;
+      stinger.effectiveness = 4.9;
+      stinger.cooldown = stinger.currentCooldown = 18;
+      stinger = this.randomizeCooldown(stinger);
+      stinger.dealsDirectDamage = true;
+      stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .4, stinger.name, dotTypeEnum.BasedOnAttack));
+      enemy.abilityList.push(stinger);
+
+      var slowingToxin = new Ability();
+      slowingToxin.name = "Slowing Toxin";
+      slowingToxin.isAvailable = true;
+      slowingToxin.cooldown = slowingToxin.currentCooldown = 14;
+      slowingToxin = this.randomizeCooldown(slowingToxin);
+      slowingToxin.dealsDirectDamage = false;
+      slowingToxin.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 12, .5, false, false));      
+      enemy.abilityList.push(slowingToxin);
+    }
+    if (type === BestiaryEnum.Raider) {
+      enemy.name = "Raider";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Mugger) {
+      enemy.name = "Mugger";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.FrenziedBees) {
+      enemy.name = "Frenzied Bees";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.CacklingHyena) {
+      enemy.name = "Cackling Hyena";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.BloodthirstyHyena) {
+      enemy.name = "Bloodthirsty Hyena";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Lioness) {
+      enemy.name = "Lioness";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.NemeanLion) {
+      enemy.name = "Nemean Lion";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 200, false, true, false));
+
+      //Leader of the Pride -- Reduces auto attack cooldown
+
+      //Golden Coat -- starts out invulernable to damage but every auto attack it receives reduces its damage reduction by 1%
+    }
+    if (type === BestiaryEnum.WhipSnake) {
+      enemy.name = "Whip Snake";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.FumingPeafowl) {
+      enemy.name = "Fuming Peafowl";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.RiverNymph) {
+      enemy.name = "River Nymph";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.UntamedBoar) {
+      enemy.name = "Untamed Boar";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.VenomousViper) {
+      enemy.name = "Venomous Viper";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.GiantCrab) {
+      enemy.name = "Giant Crab";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.LerneanHydra) {
+      enemy.name = "Lernean Hydra";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400; 
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Invulnerable, -1, 1, false, true, false));           
+      
+      //chance to gain a DoT when attacked
+
+      //30 seconds after a head is killed, the hydra will sprout two new heads
+      var sproutHead = new Ability();
+      sproutHead.name = "Sprout Head";
+      sproutHead.isAvailable = true;
+      sproutHead.cooldown = sproutHead.currentCooldown = 30;      
+      sproutHead.dealsDirectDamage = false;      
+      enemy.abilityList.push(sproutHead);
+      //Should be a boss fight with 2 adds -- the three heads. the main one is immune to damage until the other 2 are dealt with
+      //if you don't kill it fast enough the heads return to full HP
+    }
+        if (type === BestiaryEnum.HydraHead) {
+      enemy.name = "Hydra Head";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+
+      var spitVenom = new Ability();
+      spitVenom.name = "Spit Venom";
+      spitVenom.isAvailable = true;
+      spitVenom.cooldown = spitVenom.currentCooldown = 17;
+      spitVenom = this.randomizeCooldown(spitVenom);
+      spitVenom.dealsDirectDamage = true;
+      spitVenom.effectiveness = 1.2;
+      spitVenom.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .2, spitVenom.name, dotTypeEnum.BasedOnAttack));
+      enemy.abilityList.push(spitVenom);
+      //Should be a boss fight with 2 adds -- the three heads. the main one is immune to damage until the other 2 are dealt with
+      //if you don't kill it fast enough the heads return to full HP
+    }
+    if (type === BestiaryEnum.ScavengingCoyote) {
+      enemy.name = "Scavenging Coyote";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.WanderingRam) {
+      enemy.name = "Wandering Ram";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.AggressiveCoyote) {
+      enemy.name = "Aggressive Coyote";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Kingfisher) {
+      enemy.name = "Kingfisher";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.DesperateLooter) {
+      enemy.name = "Desperate Looter";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.CrazedVulture) {
+      enemy.name = "Crazed Vulture";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.StymphalianBird) {
+      enemy.name = "Stymphalian Bird";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;   
+      
+      //razor feathers is a 3 hit ability. strong enemies but weak defenses
+    }
+    if (type === BestiaryEnum.PiranhaSwarm) {
+      enemy.name = "Piranha Swarm";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.HungryBoar) {
+      enemy.name = "Hungry Boar";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.WadingBear) {
+      enemy.name = "Wading Bear";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.MarredShark) {
+      enemy.name = "Marred Shark";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.FeistySnapper) {
+      enemy.name = "Feisty Snapper";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.BlueMako) {
+      enemy.name = "Blue Mako";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.BlackStingray) {
+      enemy.name = "Black Stingray";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.ClickingCrabPair) {
+      enemy.name = "Clicking Crab Pair";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400; 
+      
+      var clickClick = new Ability();
+      clickClick.name = "Click Click x2";
+      clickClick.isAvailable = true;
+      clickClick.cooldown = clickClick.currentCooldown = 10;
+      clickClick = this.randomizeCooldown(clickClick);
+      clickClick.dealsDirectDamage = false;
+      clickClick.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, -1, 1.2, false, true, undefined, undefined, undefined, true));
+      clickClick.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, -1, 1.2, false, true, undefined, undefined, undefined, true));
+      enemy.abilityList.push(clickClick);
+
+      var snipSnip = new Ability();
+      snipSnip.name = "Snip Snip x2";
+      snipSnip.isAvailable = true;
+      snipSnip.cooldown = snipSnip.currentCooldown = 17;
+      snipSnip = this.randomizeCooldown(snipSnip);
+      snipSnip.dealsDirectDamage = true;
+      snipSnip.effectiveness = 3.9;
+      snipSnip.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      snipSnip.targetEffect.push(this.globalService.createDamageOverTimeEffect(9, 3, .2, snipSnip.name, dotTypeEnum.BasedOnDamage));
+      enemy.abilityList.push(snipSnip);
+    }
+    if (type === BestiaryEnum.DerelictCityGuard) {
+      enemy.name = "Derelict City Guard";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.SneakyFox) {
+      enemy.name = "Sneaky Fox";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.AppleThief) {
+      enemy.name = "Apple Thief";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.CretanBull) {
+      enemy.name = "Cretan Bull";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Crocodile) {
+      enemy.name = "Crocodile";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.RabidMongrel) {
+      enemy.name = "Rabid Mongrel";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.CamouflagedSnake) {
+      enemy.name = "Camouflaged Snake";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.SandBoa) {
+      enemy.name = "Sand Boa";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.StripedHyena) {
+      enemy.name = "Striped Hyena";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.EgyptianCobra) {
+      enemy.name = "Egyptian Cobra";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.ThirstyLion) {
+      enemy.name = "Thirsty Lion";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Rhinoceros) {
+      enemy.name = "Rhinoceros";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.DesertLocustSwarm) {
+      enemy.name = "Desert Locust Swarm";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.LargeClawedCrab) {
+      enemy.name = "Large-Clawed Crab";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.SkulkingJackal) {
+      enemy.name = "Skulking Jackal";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.LargeGardenSnake) {
+      enemy.name = "Large Garden Snake";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.BeeSwarm) {
+      enemy.name = "Bee Swarm";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.AppleThievingBear) {
+      enemy.name = "Apple Thieving Bear";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Ladon) {
+      enemy.name = "Ladon";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.AfricanWolf) {
+      enemy.name = "African Wolf";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.SpottedViper) {
+      enemy.name = "Spotted Viper";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.SoaringFalcon) {
+      enemy.name = "Soaring Falcon";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.SingingSiren) {
+      enemy.name = "Singing Siren";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.AlluringSiren) {
+      enemy.name = "Alluring Siren";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.RigidCrocodile) {
+      enemy.name = "Rigid Crocodile";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.MonsterDentex) {
+      enemy.name = "Monster Dentex";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Eurytion) {
+      enemy.name = "Eurytion";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Orthrus) {
+      enemy.name = "Orthrus";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
+    if (type === BestiaryEnum.Geryon) {
+      enemy.name = "Geryon";
+      enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 3;
+      enemy.xpGainFromDefeat = 400;            
+    }
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

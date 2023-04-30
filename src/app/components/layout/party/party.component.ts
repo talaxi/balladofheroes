@@ -351,6 +351,14 @@ export class PartyComponent implements OnInit {
     return this.utilityService.bigNumberReducer(Math.round(dps));
   }
 
+  getXps() {
+    var xps = 0;
+
+    xps = this.dpsCalculatorService.calculateXps();
+
+    return this.utilityService.bigNumberReducer(Math.round(xps));
+  }
+
   setupKeybinds(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;    
 

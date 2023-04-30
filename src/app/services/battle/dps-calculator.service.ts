@@ -10,7 +10,9 @@ export class DpsCalculatorService {
   subscription: any;
   partyDamagingActions: [number, number][] = [];
   enemyDamagingActions: [number, number][] = [];
+  xpGain: [number, number][] = [];
   rollingAverageTimer: number = 0;
+  bonusTime: number = 0;
 
   constructor(private gameLoopService: GameLoopService, private utilityService: UtilityService, private globalService: GlobalService) {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
@@ -20,6 +22,11 @@ export class DpsCalculatorService {
           deltaTime *= 2;
 
         this.rollingAverageTimer += deltaTime;
+
+        if (this.bonusTime > 0) {
+          this.rollingAverageTimer += this.bonusTime;
+          this.bonusTime = 0;
+        }
       }
     });
    }
@@ -30,6 +37,10 @@ export class DpsCalculatorService {
 
   addEnemyDamageAction(damageDealt: number) {
     this.enemyDamagingActions.push([damageDealt, this.rollingAverageTimer]);    
+  }
+
+  addXpGain(xp: number) {
+    this.xpGain.push([xp, this.rollingAverageTimer]);    
   }
 
   calculatePartyDps() {
@@ -72,6 +83,28 @@ export class DpsCalculatorService {
       dps = sum / rollingAverageTime;
 
     return dps;
+  }
+
+  calculateXps() {
+    var xps = 0;
+    console.log(this.xpGain);
+    if (this.xpGain === undefined || this.xpGain.length === 0)
+      return xps;
+
+    var rollingAverageTime = 120; //only factor in the latest 120 seconds
+
+    var latestTime = this.xpGain[this.xpGain.length - 1][1];
+
+    this.xpGain = this.xpGain.filter(item => item[1] >= latestTime - rollingAverageTime);
+    
+    var sum = this.xpGain.reduce((accumulator, currentValue) => accumulator + currentValue[0], 0);
+
+    if (latestTime < rollingAverageTime)    
+      xps = sum / latestTime;    
+    else
+      xps = sum / rollingAverageTime;
+
+    return xps;
   }
 
   ngOnDestroy() {
