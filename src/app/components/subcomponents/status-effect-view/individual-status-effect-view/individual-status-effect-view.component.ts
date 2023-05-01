@@ -34,7 +34,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp ||
       effect.type === StatusEffectEnum.DamageDealtDown || effect.type === StatusEffectEnum.DamageDealtUp ||
       effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp ||
-      effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp)
+      effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp ||
+      effect.type === StatusEffectEnum.DamageOverTimeDamageUp)
       return true;
 
     return false;
@@ -116,6 +117,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "ITM";
     if (effect.type === StatusEffectEnum.AoeDamageUp)
       return "AOE";
+      if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp)
+      return "DOT";
     if (effect.type === StatusEffectEnum.StatusEffectDisplayCatchAll) {
       var hiddenEffectCount = 0;
 

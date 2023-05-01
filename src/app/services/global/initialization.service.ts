@@ -207,6 +207,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(boarBallad);
 
     this.initializeBalladOfTheArgo();
+    this.initializeBalladOfLabors();
   }
 
   initializeSettings() {
@@ -569,9 +570,9 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, 5));
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));      
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAres, 5));
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, 5));      
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, 5));
 
@@ -646,7 +647,7 @@ export class InitializationService {
         //character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 548;
+      var godLevel = 598;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -820,5 +821,93 @@ export class InitializationService {
     argoBallad.zones.push(colchis);
 
     this.globalService.globalVar.ballads.push(argoBallad);
+  }
+
+  initializeBalladOfLabors() {
+    var laborsBallad = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors);
+    if (laborsBallad !== undefined) {
+      var nemea = laborsBallad.zones.find(item => item.type === ZoneEnum.Nemea);
+      if (nemea !== undefined) {
+        nemea.subzones = [];
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCountryRoadsOne));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCleonea));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCountryRoadsTwo));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaRollingHills));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaFlatlands));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaLairOfTheLion));
+      }
+
+      var lerna = new Zone();
+      lerna.type = ZoneEnum.Lerna;
+      lerna.zoneName = "Lerna";
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaAroundTheInachus));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaThickMarsh));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaSwampySurroundings));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaDarkenedThicket));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaSpringOfAmymone));
+      lerna.notificationType = lerna.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(lerna);
+      
+      var stymphalia = new Zone();
+      stymphalia.type = ZoneEnum.Stymphalia;
+      stymphalia.zoneName = "Stymphalia";
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaTiryns));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaArcadianWilderness));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaAbandonedVillage));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaSourceOfTheLadon));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaLakeStymphalia));
+      stymphalia.notificationType = stymphalia.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(stymphalia);
+
+      var erymanthus = new Zone();
+      erymanthus.type = ZoneEnum.Erymanthus;
+      erymanthus.zoneName = "Erymanthus";
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusLadonRiverbeds));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusGreatMassif));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusCragInlet));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusMountainClimb));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusSnowCappedPeaks));
+      erymanthus.notificationType = erymanthus.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(erymanthus);
+      
+      var coastOfCrete = new Zone();
+      coastOfCrete.type = ZoneEnum.CoastOfCrete;
+      coastOfCrete.zoneName = "Coast of Crete";
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteDownThePineios));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteElis));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteSoutheasternIonianSeas));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteCretanSeas));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteCretanCoast));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteVillageGardens));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteAppleOrchards));
+      coastOfCrete.notificationType = coastOfCrete.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(coastOfCrete);
+            
+      var gardenOfTheHesperides = new Zone();
+      gardenOfTheHesperides.type = ZoneEnum.GardenOfTheHesperides;
+      gardenOfTheHesperides.zoneName = "Garden of the Hesperides";
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesDesertSands));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesSaharanDunes));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesHiddenOasis));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesMoroccanCoast));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesFertileFields));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides));
+      gardenOfTheHesperides.notificationType = gardenOfTheHesperides.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(gardenOfTheHesperides);
+       
+      var erytheia = new Zone();
+      erytheia.type = ZoneEnum.Erytheia;
+      erytheia.zoneName = "Erytheia";
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaLushValley));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaWesternOceanWaters));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaPillarsOfHeracles));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaCadiz));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaIslandOfErytheia));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaGeryonsFarm));      
+      erytheia.notificationType = erytheia.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(erytheia);
+    }
   }
 }

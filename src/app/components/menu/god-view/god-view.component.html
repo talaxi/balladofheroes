@@ -67,6 +67,30 @@
     <div class="godSecondaryStats">
         <span class="sectionHeaderText sectionHeading">{{isMobile ? "Secondary Stats" : "Secondary Stat Bonuses"}}</span>
         <div class="sectionInfo secondaryStats">
+            <span *ngIf="getPartyMaxHpBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="partyMaxHpPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Max HP Bonus:
+                </strong> <span class="statValue">{{getPartyMaxHpBonus() | number :
+                    '1.0-0'}}</span><br /></span>
+            <span *ngIf="getPartyAttackBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="partyAttackPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Attack Bonus:
+                </strong> <span class="statValue">{{getPartyAttackBonus() | number :
+                    '1.0-0'}}</span><br /></span>
+            <span *ngIf="getPartyAgilityBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="partyAgilityPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Agility Bonus:
+                </strong> <span class="statValue">{{getPartyAgilityBonus() | number :
+                    '1.0-0'}}</span><br /></span>
+            <span *ngIf="getPartyDefenseBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="partyDefensePopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Defense Bonus:
+                </strong> <span class="statValue">{{getPartyDefenseBonus() | number :
+                    '1.0-0'}}</span><br /></span>
+            <span *ngIf="getPartyLuckBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="partyLuckPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Luck Bonus:
+                </strong> <span class="statValue">{{getPartyLuckBonus() | number :
+                    '1.0-0'}}</span><br /></span>
+            <span *ngIf="getPartyResistanceBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="partyResistancePopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Resistance Bonus:
+                </strong> <span class="statValue">{{getPartyResistanceBonus() | number :
+                    '1.0-0'}}</span><br /></span>
             <span *ngIf="getHpRegenBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="hpRegenPopover"><strong [ngClass]="getGodColor()" class="statLabel">HP
                     Regen:</strong>
@@ -194,6 +218,10 @@
                     class="statLabel">Earth
                     Resistance Bonus:</strong>
                 {{(getEarthResistanceBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                <span *ngIf="getPartyXpGainBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="partyXpGainPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party XP Gain Bonus:
+                    </strong> <span class="statValue">{{getPartyXpGainBonus() * 100 | number :
+                        '1.0-2'}}%</span><br/></span>
         </div>
     </div>
 
@@ -210,30 +238,47 @@
         <div class="sectionInfo">
             <div *ngFor="let ability of abilityList">
                 <strong class="statLabel" [ngClass]="getGodColor()" customToolTip [isLargeTooltip]="true"
-                [tooltipDirection]="affinityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong> - <span class="statValue"
+                    [tooltipDirection]="affinityTooltipDirection"
+                    [contentTemplate]="abilityPopover">{{ability.name}}</strong> - <span class="statValue"
                     [innerHtml]="getGodAbilityDescription(ability.name, ability)"></span>
                 <ng-template #abilityPopover>
                     <div>
                         Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
-                        <hr/>
-                        <div *ngIf="getAbilityEffectivenessIncrease(ability) !== 0 && getAbilityEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Effectiveness Increase: </span> <span
-                    class="statValue" [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>
-                    <div *ngIf="getSecondaryAbilityEffectivenessIncrease(ability) !== 0 && getSecondaryAbilityEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
-                        class="statValue" [innerHtml]="getSecondaryAbilityEffectivenessIncrease(ability)"></span></div>
-                    <div *ngIf="getAbilityEffectCountIncrease(ability) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
-                        class="statValue" [innerHtml]="getAbilityEffectCountIncrease(ability)"></span></div>
-                        <div *ngIf="getAbilityEffectMaxCountIncrease(ability) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
-                            class="statValue" [innerHtml]="getAbilityEffectMaxCountIncrease(ability)"></span></div>
-                    <div *ngIf="getAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getAbilityUserEffectEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
-                    class="statValue" [innerHtml]="getAbilityUserEffectEffectivenessIncrease(ability)"></span></div>
-                    <div *ngIf="getAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
-                    class="statValue" [innerHtml]="getAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
-                    <div *ngIf="getAbilityTargetEffectEffectivenessIncrease(ability) !== 0 && getAbilityTargetEffectEffectivenessIncrease(ability) !== '0%'"><span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
-                        class="statValue" [innerHtml]="getAbilityTargetEffectEffectivenessIncrease(ability)"></span></div>
-                        <div *ngIf="getAbilityTargetEffectDurationIncrease(ability) !== 0"><span class="statLabel">Targeted Effect Duration Increase: </span> <span
-                        class="statValue" [innerHtml]="getAbilityTargetEffectDurationIncrease(ability)"></span> seconds</div>
-                        <div *ngIf="getAbilityCooldownReduction(ability) !== 0"><span class="statLabel">Cooldown Reduction: </span> <span
-                            class="statValue" [innerHtml]="getAbilityCooldownReduction(ability)"></span> seconds</div>
+                        <hr />
+                        <div
+                            *ngIf="getAbilityEffectivenessIncrease(ability) !== 0 && getAbilityEffectivenessIncrease(ability) !== '0%'">
+                            <span class="statLabel">Effectiveness Increase: </span> <span class="statValue"
+                                [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>
+                        <div
+                            *ngIf="getSecondaryAbilityEffectivenessIncrease(ability) !== 0 && getSecondaryAbilityEffectivenessIncrease(ability) !== '0%'">
+                            <span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
+                                class="statValue"
+                                [innerHtml]="getSecondaryAbilityEffectivenessIncrease(ability)"></span></div>
+                        <div *ngIf="getAbilityEffectCountIncrease(ability) !== 0"><span class="statLabel">Effect Count
+                                Increase: </span> <span class="statValue"
+                                [innerHtml]="getAbilityEffectCountIncrease(ability)"></span></div>
+                        <div *ngIf="getAbilityEffectMaxCountIncrease(ability) !== 0"><span class="statLabel">Effect
+                                Count Increase: </span> <span class="statValue"
+                                [innerHtml]="getAbilityEffectMaxCountIncrease(ability)"></span></div>
+                        <div
+                            *ngIf="getAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getAbilityUserEffectEffectivenessIncrease(ability) !== '0%'">
+                            <span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
+                                class="statValue"
+                                [innerHtml]="getAbilityUserEffectEffectivenessIncrease(ability)"></span></div>
+                        <div *ngIf="getAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Gained
+                                Effect Duration Increase: </span> <span class="statValue"
+                                [innerHtml]="getAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
+                        <div
+                            *ngIf="getAbilityTargetEffectEffectivenessIncrease(ability) !== 0 && getAbilityTargetEffectEffectivenessIncrease(ability) !== '0%'">
+                            <span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
+                                class="statValue"
+                                [innerHtml]="getAbilityTargetEffectEffectivenessIncrease(ability)"></span></div>
+                        <div *ngIf="getAbilityTargetEffectDurationIncrease(ability) !== 0"><span
+                                class="statLabel">Targeted Effect Duration Increase: </span> <span class="statValue"
+                                [innerHtml]="getAbilityTargetEffectDurationIncrease(ability)"></span> seconds</div>
+                        <div *ngIf="getAbilityCooldownReduction(ability) !== 0"><span class="statLabel">Cooldown
+                                Reduction: </span> <span class="statValue"
+                                [innerHtml]="getAbilityCooldownReduction(ability)"></span> seconds</div>
                     </div>
                 </ng-template>
 
@@ -313,6 +358,69 @@
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodResistanceStatBreakdown(this.god)">
 
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyXpGainPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyXpGainDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyXpGainStatBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyAttackPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyAttackDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyAttackStatBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyDefensePopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyDefenseDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyDefenseStatBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyAgilityPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyAgilityDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyAgilityStatBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyMaxHpPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyMaxHpDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyMaxHpStatBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyResistancePopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyResistanceDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyResistanceStatBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyLuckPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyLuckDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyLuckStatBreakdown(this.god)">
         </div>
     </div>
 </ng-template>

@@ -112,5 +112,9 @@ export enum StatusEffectEnum {
     KeepDues,
     SelfBarrier,
     InstantCounter,
-    Invulnerable
+    Invulnerable,
+    AutoAttackInvulnerable,
+    AutoAttackSpeedUp,
+    DamageOverTimeDamageUp,
+    ExtraTrueDamage
   }

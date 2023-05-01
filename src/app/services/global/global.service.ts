@@ -51,7 +51,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .45;
+    return .5;
   }
 
   initializeGlobalVariables() {
@@ -960,6 +960,15 @@ export class GlobalService {
       character.battleStats.elementResistance.increaseByStatArray(god2.permanentStatGain.elementResistance);
     }
 
+    this.globalVar.gods.forEach(god => {
+      character.battleStats.maxHp += god.partyPermanentStatGain.maxHp;
+      character.battleStats.attack += god.partyPermanentStatGain.attack;
+      character.battleStats.defense += god.partyPermanentStatGain.defense;
+      character.battleStats.agility += god.partyPermanentStatGain.agility;
+      character.battleStats.luck += god.partyPermanentStatGain.luck;
+      character.battleStats.resistance += god.partyPermanentStatGain.resistance;
+    });
+
     //charms
     character.battleStats.hpRegen += this.charmService.getTotalHpRegenAdditionFromCharms(this.globalVar.resources);
     character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);
@@ -1044,7 +1053,7 @@ export class GlobalService {
 
     //bonus XP has no restrictions on being dead
     activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {
-      partyMember.exp += bonusXp;
+      this.giveCharacterExp(partyMember, bonusXp);      
     });
 
     //active gods
@@ -1126,8 +1135,24 @@ export class GlobalService {
 
     affinityBoost = 1 + (affinityIncreaseCount * this.utilityService.affinityRewardGodXpBonus);
 
-    bonus *= BoonOfOlympusValue * affinityBoost;
+    var godLevelBonus = 1;
+
+    this.globalVar.gods.forEach(god => {
+      godLevelBonus += god.partyPermanentStatGain.xpGain;
+    });
+
+    bonus *= BoonOfOlympusValue * affinityBoost * godLevelBonus;
     return bonus;
+  }
+
+  giveCharacterExp(partyMember: Character, xpAmount: number) {  
+    var godLevelBonus = 1;
+
+    this.globalVar.gods.forEach(god => {
+      godLevelBonus += god.partyPermanentStatGain.xpGain;
+    });
+    
+    partyMember.exp += xpAmount * godLevelBonus;   
   }
 
   giveGodExp(god: God, xpAmount: number) {
@@ -1139,6 +1164,7 @@ export class GlobalService {
       this.levelUpGod(god);
     }
   }
+
 
   levelUpPartyMember(character: Character) {
     character.level += 1;
@@ -1834,15 +1860,29 @@ export class GlobalService {
   }
 
   getGodPermanentStatObtainCount(god: God, godLevel: number) {
-    if (godLevel % 100 === 0) {
+    if (godLevel % 100 === 0 && godLevel <= 500) {
       var matchingCount = god.permanentStat2GainCount.find(item => item[0] === godLevel);
       if (matchingCount === undefined)
         return [0, 0];
       else
         return matchingCount;
     }
-    else if (godLevel % 50 === 0) {
+    else if (godLevel % 50 === 0 && godLevel <= 500) {
       var matchingCount = god.permanentStat1GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 100 === 0 && godLevel <= 1000) {
+      var matchingCount = god.permanentStat4GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 50 === 0 && godLevel <= 1000) {
+      var matchingCount = god.permanentStat3GainCount.find(item => item[0] === godLevel);
       if (matchingCount === undefined)
         return [0, 0];
       else
@@ -1869,47 +1909,83 @@ export class GlobalService {
   getNewGodPermanentStats(god: God, godLevel: number) {
     var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
 
-    if (godLevel % 100 === 0) {
-      if (god.type === GodEnum.Athena) {
-        stats.elementIncrease.holy += godLevel / 25000; //should lead to +60% holy damage
+    if (godLevel <= 500) {
+      if (godLevel % 100 === 0) {
+        if (god.type === GodEnum.Athena) {
+          stats.elementIncrease.holy += godLevel / 25000; //should lead to +60% holy damage
+        }
+        else if (god.type === GodEnum.Artemis) {
+          stats.criticalMultiplier += godLevel / 20000; //should lead to +75% crit damage increase
+        }
+        else if (god.type === GodEnum.Hermes) {
+          stats.autoAttackCooldownReduction += godLevel / 100000; //should lead to +15% auto attack CD reduction
+        }
+        else if (god.type === GodEnum.Apollo) {
+          stats.hpRegen += godLevel / 250; //should lead to 60 hp per 5 sec
+        }
+        else if (god.type === GodEnum.Ares) {
+          stats.overdriveGain += godLevel / 60000; //should lead to +25% overdrive gain
+        }
+        else if (god.type === GodEnum.Hades) {
+          stats.elementIncrease.fire += godLevel / 25000; //should lead to +60% fire damage
+        }
+        else if (god.type === GodEnum.Dionysus) {
+          stats.abilityCooldownReduction += godLevel / 100000; //should lead to +15% ability CD reduction
+        }
+        else if (god.type === GodEnum.Nemesis) {
+          stats.armorPenetration += godLevel / 75000; //should lead to +20% armor penetration
+        }
       }
-      else if (god.type === GodEnum.Artemis) {
-        stats.criticalMultiplier += godLevel / 20000; //should lead to +75% crit damage increase
-      }
-      else if (god.type === GodEnum.Hermes) {
-        stats.autoAttackCooldownReduction += godLevel / 100000; //should lead to +15% auto attack CD reduction
-      }
-      else if (god.type === GodEnum.Apollo) {
-        stats.hpRegen += godLevel / 250; //should lead to 60 hp per 5 sec
-      }
-      else if (god.type === GodEnum.Ares) {
-        stats.overdriveGain += godLevel / 60000; //should lead to +25% overdrive gain
-      }
-      else if (god.type === GodEnum.Hades) {
-        stats.elementIncrease.fire += godLevel / 25000; //should lead to +60% fire damage
-      }
-      else if (god.type === GodEnum.Dionysus) {
-        stats.abilityCooldownReduction += godLevel / 100000; //should lead to +15% ability CD reduction
-      }
-      else if (god.type === GodEnum.Nemesis) {
-        stats.armorPenetration += godLevel / 75000; //should lead to +20% armor penetration
+      else if (godLevel % 50 === 0) {
+        if (god.type === GodEnum.Athena || god.type === GodEnum.Dionysus) {
+          stats.defense += Math.round(godLevel / (3 + (1 / 3)));
+        }
+        else if (god.type === GodEnum.Artemis || god.type === GodEnum.Hades) {
+          stats.luck += Math.round(godLevel / (3 + (1 / 3)));
+        }
+        else if (god.type === GodEnum.Hermes) {
+          stats.agility += Math.round(godLevel / (3 + (1 / 3)));
+        }
+        else if (god.type === GodEnum.Apollo || god.type === GodEnum.Nemesis) {
+          stats.resistance += Math.round(godLevel / (3 + (1 / 3)));
+        }
+        else if (god.type === GodEnum.Ares) {
+          stats.maxHp += Math.round((godLevel / (3 + (1 / 3))) * 5);
+        }
       }
     }
-    else if (godLevel % 50 === 0) {
-      if (god.type === GodEnum.Athena || god.type === GodEnum.Dionysus) {
-        stats.defense += Math.round(godLevel / (3 + (1 / 3)));
+    else if (godLevel > 501 && godLevel <= 1000) {
+      if (godLevel === 600) { //should lead to +50% party xp gain        
+        stats.xpGain += .006;
       }
-      else if (god.type === GodEnum.Artemis || god.type === GodEnum.Hades) {
-        stats.luck += Math.round(godLevel / (3 + (1 / 3)));
+      else if (godLevel === 700) {
+        stats.xpGain += .008;
       }
-      else if (god.type === GodEnum.Hermes) {
-        stats.agility += Math.round(godLevel / (3 + (1 / 3)));
+      else if (godLevel === 800) {
+        stats.xpGain += .01;
       }
-      else if (god.type === GodEnum.Apollo || god.type === GodEnum.Nemesis) {
-        stats.resistance += Math.round(godLevel / (3 + (1 / 3)));
+      else if (godLevel === 900) {
+        stats.xpGain += .012;
       }
-      else if (god.type === GodEnum.Ares) {
-        stats.maxHp += Math.round((godLevel / (3 + (1 / 3))) * 5);
+      else if (godLevel === 1000) {
+        stats.xpGain += .014;
+      }
+      else if (godLevel % 50 === 0) {
+        if (god.type === GodEnum.Athena || god.type === GodEnum.Dionysus) {
+          stats.defense += godLevel - 450;
+        }
+        else if (god.type === GodEnum.Artemis || god.type === GodEnum.Hades) {
+          stats.luck += godLevel - 450;
+        }
+        else if (god.type === GodEnum.Hermes) {
+          stats.agility += godLevel - 450;
+        }
+        else if (god.type === GodEnum.Apollo || god.type === GodEnum.Nemesis) {
+          stats.resistance += godLevel - 450;
+        }
+        else if (god.type === GodEnum.Ares) {
+          stats.maxHp += (godLevel - 450) * 5;
+        }
       }
     }
 
@@ -1919,44 +1995,78 @@ export class GlobalService {
   checkForNewGodPermanentStats(god: God) {
     var upgradedStats = this.getNewGodPermanentStats(god, god.level);
 
-    if (god.level % 100 === 0) {
-      var matchingCount = god.permanentStat2GainCount.find(item => item[0] === god.level);
-      if (matchingCount === undefined)
-        god.permanentStat2GainCount.push([god.level, 1]);
-      else
-        matchingCount[1] += 1;
+    if (god.level <= 500) {
+      if (god.level % 100 === 0) {
+        var matchingCount = god.permanentStat2GainCount.find(item => item[0] === god.level);
+        if (matchingCount === undefined)
+          god.permanentStat2GainCount.push([god.level, 1]);
+        else
+          matchingCount[1] += 1;
 
-      if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain2ObtainCap)
-        return;
+        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain2ObtainCap)
+          return;
+      }
+      else if (god.level % 50 === 0) {
+        var matchingCount = god.permanentStat1GainCount.find(item => item[0] === god.level);
+        if (matchingCount === undefined)
+          god.permanentStat1GainCount.push([god.level, 1]);
+        else
+          matchingCount[1] += 1;
+
+        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain1ObtainCap)
+          return;
+      }
+
+      god.permanentStatGain.attack += upgradedStats.attack;
+      god.permanentStatGain.defense += upgradedStats.defense;
+      god.permanentStatGain.maxHp += upgradedStats.maxHp;
+      god.permanentStatGain.agility += upgradedStats.agility;
+      god.permanentStatGain.luck += upgradedStats.luck;
+      god.permanentStatGain.resistance += upgradedStats.resistance;
+
+      god.permanentStatGain.hpRegen += upgradedStats.hpRegen;
+      god.permanentStatGain.elementIncrease.increaseByStatArray(upgradedStats.elementIncrease);
+      god.permanentStatGain.elementResistance.increaseByStatArray(upgradedStats.elementResistance);
+      god.permanentStatGain.criticalMultiplier += upgradedStats.criticalMultiplier;
+      god.permanentStatGain.abilityCooldownReduction += upgradedStats.abilityCooldownReduction;
+      god.permanentStatGain.autoAttackCooldownReduction += upgradedStats.autoAttackCooldownReduction;
+      god.permanentStatGain.armorPenetration += upgradedStats.armorPenetration;
+      god.permanentStatGain.overdriveGain += upgradedStats.overdriveGain;
+
+      god.permanentStatGain = this.roundCharacterStats(god.permanentStatGain);
     }
-    else if (god.level % 50 === 0) {
-      var matchingCount = god.permanentStat1GainCount.find(item => item[0] === god.level);
-      if (matchingCount === undefined)
-        god.permanentStat1GainCount.push([god.level, 1]);
-      else
-        matchingCount[1] += 1;
+    else if (god.level <= 1000) {
+      if (god.level % 100 === 0) {
+        var matchingCount = god.permanentStat4GainCount.find(item => item[0] === god.level);
+        if (matchingCount === undefined)
+          god.permanentStat4GainCount.push([god.level, 1]);
+        else
+          matchingCount[1] += 1;
 
-      if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain1ObtainCap)
-        return;
+        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain4ObtainCap)
+          return;
+      }
+      else if (god.level % 50 === 0) {
+        var matchingCount = god.permanentStat3GainCount.find(item => item[0] === god.level);
+        if (matchingCount === undefined)
+          god.permanentStat3GainCount.push([god.level, 1]);
+        else
+          matchingCount[1] += 1;
+
+        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain3ObtainCap)
+          return;
+      }
+
+      god.partyPermanentStatGain.attack += upgradedStats.attack;
+      god.partyPermanentStatGain.defense += upgradedStats.defense;
+      god.partyPermanentStatGain.maxHp += upgradedStats.maxHp;
+      god.partyPermanentStatGain.agility += upgradedStats.agility;
+      god.partyPermanentStatGain.luck += upgradedStats.luck;
+      god.partyPermanentStatGain.resistance += upgradedStats.resistance;
+      god.partyPermanentStatGain.xpGain += upgradedStats.xpGain;
+
+      god.permanentStatGain = this.roundCharacterStats(god.permanentStatGain);
     }
-
-    god.permanentStatGain.attack += upgradedStats.attack;
-    god.permanentStatGain.defense += upgradedStats.defense;
-    god.permanentStatGain.maxHp += upgradedStats.maxHp;
-    god.permanentStatGain.agility += upgradedStats.agility;
-    god.permanentStatGain.luck += upgradedStats.luck;
-    god.permanentStatGain.resistance += upgradedStats.resistance;
-
-    god.permanentStatGain.hpRegen += upgradedStats.hpRegen;
-    god.permanentStatGain.elementIncrease.increaseByStatArray(upgradedStats.elementIncrease);
-    god.permanentStatGain.elementResistance.increaseByStatArray(upgradedStats.elementResistance);
-    god.permanentStatGain.criticalMultiplier += upgradedStats.criticalMultiplier;
-    god.permanentStatGain.abilityCooldownReduction += upgradedStats.abilityCooldownReduction;
-    god.permanentStatGain.autoAttackCooldownReduction += upgradedStats.autoAttackCooldownReduction;
-    god.permanentStatGain.armorPenetration += upgradedStats.armorPenetration;
-    god.permanentStatGain.overdriveGain += upgradedStats.overdriveGain;
-
-    god.permanentStatGain = this.roundCharacterStats(god.permanentStatGain);
 
     var statGainText = "";
     if (upgradedStats.maxHp > 0)
@@ -1990,15 +2100,24 @@ export class GlobalService {
       statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
     if (upgradedStats.abilityCooldownReduction > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";
+    if (upgradedStats.xpGain > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.xpGain * 100) + "% XP Gain, ";
 
     if (statGainText !== "")
       statGainText = statGainText.substring(0, statGainText.length - 2);
 
-    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
-      var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    if (god.level <= 500) {
+      if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong>.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+      }
     }
-
+    else if (god.level <= 1000) {
+      if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong> for the entire party.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+      }
+    }
   }
 
   //set this up entirely so you can tell what is going on. when leveling up, consult this before calling any function
@@ -2018,7 +2137,7 @@ export class GlobalService {
     }
     //TODO: just make this %50 up to whatever level you have permanent stats (will be 1500 for now)
     //else if ((level === 50 || level === 100 || level === 150 || level === 200 ||
-      //(level > 200 && level <= 500 && level % 50 === 0))) {
+    //(level > 200 && level <= 500 && level % 50 === 0))) {
     else if (level % 50 === 0 && level <= 2000) {
       if (this.isGodPermanentStatStillObtainable(god, level))
         increaseType = GodLevelIncreaseEnum.PermanentStats;

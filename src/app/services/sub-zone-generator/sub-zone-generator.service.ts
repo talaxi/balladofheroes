@@ -1873,6 +1873,58 @@ export class SubZoneGeneratorService {
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.YellowfootedFalcon));
       battleOptions.push(enemyTeam6);
     }
+    if (type === SubZoneEnum.NemeaLairOfTheLion) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.NemeanLion));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.LernaSpringOfAmymone) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LerneanHydra));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HydraHead));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HydraHead));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.StymphaliaLakeStymphalia) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StymphalianBird));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StymphalianBird));               
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.ErymanthusSnowCappedPeaks) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ErymanthianBoar));            
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.CoastOfCreteAppleOrchards) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CretanBull));            
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Ladon));            
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.ErytheiaIslandOfErytheia) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Eurytion));            
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Orthrus));            
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.ErytheiaGeryonsFarm) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Geryon));            
+      battleOptions.push(enemyTeam);
+    }
 
     if (differentiateIndividuals) {
       battleOptions.forEach(enemyTeam => {

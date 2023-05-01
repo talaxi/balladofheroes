@@ -16,6 +16,7 @@ import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
+import { CharacterStats } from 'src/app/models/character/character-stats.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.5, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -369,6 +370,13 @@ export class VersionControlService {
               this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
             }
           }            
+        }
+        if (version === .5) {
+          this.globalService.globalVar.gods.forEach(god => {
+            god.partyPermanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+            god.permanentStat3GainCount = [];
+            god.permanentStat4GainCount = [];
+          });
         }
 
         this.globalService.globalVar.currentVersion = version;

@@ -39,8 +39,8 @@ export class DpsCalculatorService {
     this.enemyDamagingActions.push([damageDealt, this.rollingAverageTimer]);    
   }
 
-  addXpGain(xp: number) {
-    this.xpGain.push([xp, this.rollingAverageTimer]);    
+  addXpGain(xp: number) {    
+    this.xpGain.push([xp, this.rollingAverageTimer]);        
   }
 
   calculatePartyDps() {
@@ -87,7 +87,7 @@ export class DpsCalculatorService {
 
   calculateXps() {
     var xps = 0;
-    console.log(this.xpGain);
+    //console.log(this.xpGain);
     if (this.xpGain === undefined || this.xpGain.length === 0)
       return xps;
 

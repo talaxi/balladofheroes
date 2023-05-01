@@ -128,8 +128,9 @@ export class AppComponent {
 
     var originalDeltaTime = deltaTime;
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
-    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
-    this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
+    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;    
+    if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone))
+      this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);

@@ -526,6 +526,8 @@ export class BalladService {
       name = "Hurried Retreat 1";
     if (type === SubZoneEnum.ColchisHurriedRetreat2)
       name = "Hurried Retreat 2";
+      if (type === SubZoneEnum.NemeaCleonea)
+      name = "Cleonea";
     if (type === SubZoneEnum.NemeaCountryRoadsTwo)
       name = "Country Roads";
     if (type === SubZoneEnum.NemeaRollingHills)

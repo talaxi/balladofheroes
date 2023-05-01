@@ -124,8 +124,8 @@ export class GodViewComponent implements OnInit {
             nextLevel = 200;
           else if (nextLevel > (this.utilityService.permanentGodAbility3Level - 26) && nextLevel < this.utilityService.permanentGodAbility3Level)
             nextLevel = this.utilityService.permanentGodAbility3Level;
-          else if (nextLevel <= 500) //end of permanent stats
-            nextLevel = Math.ceil(nextLevel / 25) * 25;
+          else if (nextLevel <= 2000) //end of permanent stats
+            nextLevel = Math.ceil(nextLevel / 50) * 50;
           else
             nextLevel = Math.ceil(nextLevel / 5) * 5;  //for now, just go back to showing upgrades
         }
@@ -195,69 +195,84 @@ export class GodViewComponent implements OnInit {
         var increaseValues = this.globalService.getNewGodPermanentStats(this.god, nextLevel);
         var obtainTuple = this.globalService.getGodPermanentStatObtainCount(this.god, nextLevel);
         var obtainAmount = obtainTuple[1];
-        var obtainCap = nextLevel % 100 === 0 ? this.utilityService.godPermanentStatGain2ObtainCap : this.utilityService.godPermanentStatGain1ObtainCap;
+        var obtainCap = 10;
+        if (nextLevel % 100 === 0 && nextLevel <= 500)
+          obtainCap = this.utilityService.godPermanentStatGain2ObtainCap;
+        else if (nextLevel % 50 === 0 && nextLevel <= 500)
+        obtainCap = this.utilityService.godPermanentStatGain1ObtainCap;
+        else if (nextLevel % 50 === 0 && nextLevel <= 1000)
+        obtainCap = this.utilityService.godPermanentStatGain4ObtainCap;
+        else if (nextLevel % 50 === 0 && nextLevel <= 1000)
+        obtainCap = this.utilityService.godPermanentStatGain3ObtainCap;
+                
         var remainingAmount = (obtainCap - obtainAmount);
+
+        var permanentText = "Permanently";
+        if (nextLevel > 500 && nextLevel <= 1000)
+          permanentText = "Permanently For Entire Party";
 
         rewards += "+";
         if (increaseValues.maxHp > 0)
-          rewards += Math.round(increaseValues.maxHp) + " Max HP Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.maxHp) + " Max HP " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.attack > 0)
-          rewards += Math.round(increaseValues.attack) + " Attack Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.attack) + " Attack " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.agility > 0)
-          rewards += Math.round(increaseValues.agility) + " Agility Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.agility) + " Agility " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.luck > 0)
-          rewards += Math.round(increaseValues.luck) + " Luck Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.luck) + " Luck " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.defense > 0)
-          rewards += Math.round(increaseValues.defense) + " Defense Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.round(increaseValues.defense) + " Defense " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.resistance > 0)
-          rewards += Math.round(increaseValues.resistance) + " Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-
+          rewards += Math.round(increaseValues.resistance) + " Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          
+        if (increaseValues.xpGain > 0)
+          rewards += (increaseValues.xpGain * 100) + "% XP Gain " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.hpRegen > 0)
-          rewards += this.utilityService.roundTo(increaseValues.hpRegen, 2) + " HP Regen per 5 sec Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.hpRegen, 2) + " HP Regen per 5 sec " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.criticalMultiplier > 0)
-          rewards += this.utilityService.roundTo(increaseValues.criticalMultiplier * 100, 2) + "% Critical Multiplier Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.criticalMultiplier * 100, 2) + "% Critical Multiplier " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.abilityCooldownReduction > 0)
-          rewards += this.utilityService.roundTo(increaseValues.abilityCooldownReduction * 100, 3) + "% Ability Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.abilityCooldownReduction * 100, 3) + "% Ability Cooldown Reduction " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.autoAttackCooldownReduction > 0)
-          rewards += this.utilityService.roundTo(increaseValues.autoAttackCooldownReduction * 100, 3) + "% Auto Attack Cooldown Reduction Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.autoAttackCooldownReduction * 100, 3) + "% Auto Attack Cooldown Reduction " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.armorPenetration > 0)
-          rewards += this.utilityService.roundTo(increaseValues.armorPenetration * 100, 2) + "% Armor Penetration Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.armorPenetration * 100, 2) + "% Armor Penetration " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.overdriveGain > 0)
-          rewards += this.utilityService.roundTo(increaseValues.overdriveGain * 100, 2) + "% Overdrive Gain Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.overdriveGain * 100, 2) + "% Overdrive Gain " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.healingReceived > 0)
-          rewards += this.utilityService.roundTo(increaseValues.healingReceived * 100, 2) + "% Healing Received Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.healingReceived * 100, 2) + "% Healing Received Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.debuffDuration > 0)
-          rewards += this.utilityService.roundTo(increaseValues.debuffDuration * 100, 2) + "% Debuff Duration Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.debuffDuration * 100, 2) + "% Debuff Duration Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.overdriveGainFromAutoAttacks > 0)
-          rewards += this.utilityService.roundTo(increaseValues.overdriveGainFromAutoAttacks * 100, 2) + "% Overdrive Gain From Auto Attacks Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.overdriveGainFromAutoAttacks * 100, 2) + "% Overdrive Gain From Auto Attacks Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.healingDone > 0)
-          rewards += this.utilityService.roundTo(increaseValues.healingDone * 100, 2) + "% Healing Done Bonus Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.roundTo(increaseValues.healingDone * 100, 2) + "% Healing Done Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.elementIncrease.holy > 0)
-          rewards += (increaseValues.elementIncrease.holy * 100) + "% Holy Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementIncrease.holy * 100) + "% Holy Damage Increase " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementIncrease.fire > 0)
-          rewards += (increaseValues.elementIncrease.fire * 100) + "% Fire Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementIncrease.fire * 100) + "% Fire Damage Increase " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementIncrease.lightning > 0)
-          rewards += (increaseValues.elementIncrease.lightning * 100) + "% Lightning Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementIncrease.lightning * 100) + "% Lightning Damage Increase " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementIncrease.water > 0)
-          rewards += (increaseValues.elementIncrease.water * 100) + "% Water Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementIncrease.water * 100) + "% Water Damage Increase " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementIncrease.earth > 0)
-          rewards += (increaseValues.elementIncrease.earth * 100) + "% Earth Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementIncrease.earth * 100) + "% Earth Damage Increase " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementIncrease.air > 0)
-          rewards += (increaseValues.elementIncrease.air * 100) + "% Air Damage Increase Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementIncrease.air * 100) + "% Air Damage Increase " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.elementResistance.holy > 0)
-          rewards += (increaseValues.elementResistance.holy * 100) + "% Holy Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementResistance.holy * 100) + "% Holy Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementResistance.fire > 0)
-          rewards += (increaseValues.elementResistance.fire * 100) + "% Fire Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementResistance.fire * 100) + "% Fire Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementResistance.lightning > 0)
-          rewards += (increaseValues.elementResistance.lightning * 100) + "% Lightning Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementResistance.lightning * 100) + "% Lightning Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementResistance.water > 0)
-          rewards += (increaseValues.elementResistance.water * 100) + "% Water Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementResistance.water * 100) + "% Water Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementResistance.earth > 0)
-          rewards += (increaseValues.elementResistance.earth * 100) + "% Earth Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementResistance.earth * 100) + "% Earth Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementResistance.air > 0)
-          rewards += (increaseValues.elementResistance.air * 100) + "% Air Damage Resistance Permanently <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseValues.elementResistance.air * 100) + "% Air Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (rewards !== "")
           rewards = rewards.substring(0, rewards.length - 2);
@@ -428,6 +443,34 @@ export class GodViewComponent implements OnInit {
 
   getEarthResistanceBonus() {
     return this.god.statGain.elementResistance.earth + this.god.permanentStatGain.elementResistance.earth;
+  }
+
+  getPartyXpGainBonus() {
+    return this.god.partyPermanentStatGain.xpGain;
+  }
+
+  getPartyMaxHpBonus() {
+    return this.god.partyPermanentStatGain.maxHp;
+  }
+
+  getPartyAttackBonus() {
+    return this.god.partyPermanentStatGain.attack;
+  }
+
+  getPartyDefenseBonus() {
+    return this.god.partyPermanentStatGain.defense;
+  }
+
+  getPartyLuckBonus() {
+    return this.god.partyPermanentStatGain.luck;
+  }
+
+  getPartyResistanceBonus() {
+    return this.god.partyPermanentStatGain.resistance;
+  }
+
+  getPartyAgilityBonus() {
+    return this.god.partyPermanentStatGain.agility;
   }
 
   getMaxHpStatBreakdown() {

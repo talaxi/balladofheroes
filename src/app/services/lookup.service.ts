@@ -3987,7 +3987,44 @@ export class LookupService {
     if (affinityBoost > 1)
       breakdown += "Affinity Boost: *" + this.utilityService.roundTo(affinityBoost, 3) + "<br/>";
 
+    var godLevelBonus = 1;
+
+    this.globalService.globalVar.gods.forEach(god => {
+      godLevelBonus += god.partyPermanentStatGain.xpGain;
+    });
+
+    if (godLevelBonus > 1)
+      breakdown += "Permanent God Level Boost: *" + this.utilityService.roundTo(godLevelBonus, 3) + "<br/>";
+
     return breakdown;
+  }
+
+  getPartyXpGainDescription() {
+    return "Increase the XP Gain for all characters and gods regardless of who is active.";
+  }
+
+  getPartyMaxHpDescription() {
+    return "Max HP Bonus that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyAttackDescription() {
+    return "Attack Bonus that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyDefenseDescription() {
+    return "Defense Bonus that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyAgilityDescription() {
+    return "Agility Bonus that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyLuckDescription() {
+    return "Luck Bonus that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyResistanceDescription() {
+    return "Resistance Bonus that is applied to all characters regardless of what god they have equipped.";
   }
 
   getMaxHpDescription() {
@@ -4201,6 +4238,69 @@ export class LookupService {
       element = "Earth";
 
     return "Reduce " + element + " damage taken.";
+  }
+
+  getGodPartyMaxHpStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatGain.maxHp > 0)      
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.maxHp) + "<br />";
+
+    return breakdown;
+  }
+  
+  getGodPartyAttackStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatGain.attack > 0)      
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.attack) + "<br />";
+
+    return breakdown;
+  }
+  
+  getGodPartyDefenseStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatGain.defense > 0)      
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.defense) + "<br />";
+
+    return breakdown;
+  }
+  
+  getGodPartyAgilityStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatGain.agility > 0)      
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.agility) + "<br />";
+
+    return breakdown;
+  }
+  
+  getGodPartyLuckStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatGain.luck > 0)      
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.luck) + "<br />";
+
+    return breakdown;
+  }
+  
+  getGodPartyResistanceStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatGain.resistance > 0)      
+      breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.resistance) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodPartyXpGainStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatGain.xpGain > 0)      
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.genericRound(god.partyPermanentStatGain.xpGain* 100) + "%<br />";
+
+    return breakdown;
   }
 
   getGodMaxHpStatBreakdown(god: God) {
@@ -4539,6 +4639,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
+    
+    var godPartyBonus = 0;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyBonus += god.partyPermanentStatGain.maxHp;
+    });
+
+    if (godPartyBonus > 0)
+      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
 
     var equipmentMaxHpGain = this.equipmentService.getTotalMaxHpGain(character.equipmentSet);
     if (equipmentMaxHpGain > 0)
@@ -4569,6 +4677,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
+  
+    var godPartyBonus = 0;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyBonus += god.partyPermanentStatGain.attack;
+    });
+
+    if (godPartyBonus > 0)
+      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
 
     var equipmentAttackGain = this.equipmentService.getTotalAttackGain(character.equipmentSet);
     if (equipmentAttackGain > 0)
@@ -4599,6 +4715,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
+    
+    var godPartyBonus = 0;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyBonus += god.partyPermanentStatGain.defense;
+    });
+
+    if (godPartyBonus > 0)
+      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
 
     var equipmentDefenseGain = this.equipmentService.getTotalDefenseGain(character.equipmentSet);
     if (equipmentDefenseGain > 0)
@@ -4630,6 +4754,14 @@ export class LookupService {
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
 
+    var godPartyBonus = 0;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyBonus += god.partyPermanentStatGain.agility;
+    });
+
+    if (godPartyBonus > 0)
+      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
+
     var equipmentAgilityGain = this.equipmentService.getTotalAgilityGain(character.equipmentSet);
     if (equipmentAgilityGain > 0)
       breakdown += "Equipment: +" + equipmentAgilityGain + "<br />";
@@ -4659,6 +4791,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
+    
+    var godPartyBonus = 0;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyBonus += god.partyPermanentStatGain.luck;
+    });
+
+    if (godPartyBonus > 0)
+      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
 
     var equipmentLuckGain = this.equipmentService.getTotalLuckGain(character.equipmentSet);
     if (equipmentLuckGain > 0)
@@ -4689,6 +4829,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
+
+    var godPartyBonus = 0;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyBonus += god.partyPermanentStatGain.resistance;
+    });
+
+    if (godPartyBonus > 0)
+      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
 
     var equipmentResistanceGain = this.equipmentService.getTotalResistanceGain(character.equipmentSet);
     if (equipmentResistanceGain > 0)
