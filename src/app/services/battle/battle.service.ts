@@ -643,7 +643,7 @@ export class BattleService {
       barrage.count += 1;
 
       if (barrage.count >= barrage.maxCount) {
-        var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead || item.type === StatusEffectEnum.Invulnerability || item.type === StatusEffectEnum.AutoAttackInvulnerability));
+        var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead || item.type === StatusEffectEnum.Invulnerable || item.type === StatusEffectEnum.AutoAttackInvulnerable));
         var additionalTargets = potentialTargets.filter(item => item !== target);
         if (additionalTargets.length > 0) {
           additionalTargets.forEach(additionalTarget => {
