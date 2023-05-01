@@ -495,7 +495,7 @@ export class BattleService {
       deltaTime *= autoAttackSpeedUp.effectiveness;
     }
 
-    if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
+    if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun || effect.type === StatusEffectEnum.Immobilize))
       character.battleInfo.autoAttackTimer += deltaTime;
   }
 
@@ -588,14 +588,13 @@ export class BattleService {
     else if (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyAutoAttacks")) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.EnemyAutoAttacks, gameLogEntry);
     }
-    
+
     var targetEffects = [];
     //code specific to Stymphalian Birds
     if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ExtraTrueDamage)) {
       var extraTrueDamage = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ExtraTrueDamage);
 
       if (extraTrueDamage !== undefined) {
-        console.log("True damage for auto attack: " + extraTrueDamage.effectiveness);
         extraTrueDamage.effectiveness += 20;
         targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, extraTrueDamage.effectiveness, true, false, false));
       }
@@ -637,7 +636,7 @@ export class BattleService {
         this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
       }
     }
- 
+
     var barrage = this.lookupService.characterHasAbility("Barrage", character);
     if (barrage !== undefined) {
       barrage.count += 1;
@@ -789,7 +788,7 @@ export class BattleService {
     if (!ability.isActivatable)
       return;
 
-    
+
     if (ability.name === "Sprout Head") {
       var deadCount = 0;
       this.battle.currentEnemies.enemyList.filter(enemy => enemy.bestiaryType === BestiaryEnum.HydraHead).forEach(enemy => {
@@ -802,12 +801,21 @@ export class BattleService {
       }
     }
 
+    if (ability.name === "Strangle") {
+      var strangleAlreadyApplied = false;
+      if (this.globalService.getActivePartyCharacters(true).some(character => character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Immobilize)))
+        strangleAlreadyApplied = true;
+
+      if (strangleAlreadyApplied)
+        return;
+    }
+
     var unsteady = character.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Unsteady);
     if (unsteady !== undefined) {
       deltaTime *= 1 - unsteady.effectiveness;
     }
 
-    if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun))
+    if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun || effect.type === StatusEffectEnum.Immobilize))
       ability.currentCooldown -= deltaTime;
   }
 
@@ -847,7 +855,7 @@ export class BattleService {
   //isPartyUsing = is the character using the ability a party member or enemy
   useAbility(isPartyUsing: boolean, ability: Ability, user: Character, targets: Character[], party: Character[], isGodAbility: boolean, effectivenessModifier: number = 1) {
     var abilityCopy = ability.makeCopy();
-    var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+    var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead || item.type === StatusEffectEnum.Invulnerable));
     var target = this.getTarget(user, abilityCopy.targetsAllies ? party : targets, abilityCopy.targetType !== undefined ? abilityCopy.targetType : TargetEnum.Random);
     var damageDealt = 0;
     var elementalText = "";
@@ -859,13 +867,12 @@ export class BattleService {
       return false;
 
     var invulnerability = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Invulnerable);
-    if (invulnerability !== undefined)
-    {
+    if (invulnerability !== undefined) {
       if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
-            (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>, but it has no effect due to their invulnerability!";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
-          }
+        (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>, but it has no effect due to their invulnerability!";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+      }
       return true;
     }
 
@@ -997,6 +1004,10 @@ export class BattleService {
             enemy.battleStats.currentHp = enemy.battleStats.maxHp;
           }
         });
+
+        var mainHead = this.battle.currentEnemies.enemyList.find(item => item.bestiaryType === BestiaryEnum.LerneanHydra);
+        if (mainHead !== undefined && !mainHead.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Invulnerable))
+          mainHead.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Invulnerable, -1, 1, false, true, false));
       }
       else if (((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
         (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) &&
@@ -1069,11 +1080,10 @@ export class BattleService {
 
 
     //code specific to Stymphalian Birds
-    if (user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ExtraTrueDamage)) {
+    if (user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ExtraTrueDamage) && abilityCopy.dealsDirectDamage) {
       var extraTrueDamage = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ExtraTrueDamage);
 
       if (extraTrueDamage !== undefined) {
-        console.log("True damage: " + extraTrueDamage.effectiveness);
         extraTrueDamage.effectiveness += 20;
         targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, extraTrueDamage.effectiveness, true, false, false));
       }
@@ -1949,6 +1959,26 @@ export class BattleService {
       var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", target);
       if (dispenserOfDues !== undefined) {
         dispenserOfDuesEffect.effectiveness += Math.round(totalDamageDealt * dispenserOfDues.effectiveness);
+
+        //todo: is this what I want to do here?
+        if (dispenserOfDuesEffect.effectiveness > target.battleStats.maxHp * 10)
+          dispenserOfDuesEffect.effectiveness = target.battleStats.maxHp * 10;
+      }
+    }
+
+    var immobilizeEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.CastingImmobilize);
+    if (immobilizeEffect !== undefined) {
+      immobilizeEffect.count += totalDamageDealt;
+
+      if (immobilizeEffect.count > immobilizeEffect.maxCount) {
+        target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.CastingImmobilize);
+        if (isPartyAttacking) {
+          this.globalService.getActivePartyCharacters(true).forEach(character => {
+            character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
+            character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
+          });
+        }
+        immobilizeEffect.count = 0;
       }
     }
 
@@ -2014,6 +2044,18 @@ export class BattleService {
 
       if (lordOfTheUnderworld !== undefined) {
         this.applyStatusEffect(lordOfTheUnderworld.userEffect[0].makeCopy(), attacker);
+      }
+    }
+
+    if (target.name === "Geryon") {
+      var damageTakenEffect = target.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.DamageTakenDown);
+      if (damageTakenEffect !== undefined) {
+        if (target.battleStats.currentHp <= target.battleStats.maxHp * .25) {
+          damageTakenEffect.effectiveness = .25;
+        }
+        else if (target.battleStats.currentHp <= target.battleStats.maxHp * .5) {
+          damageTakenEffect.effectiveness = .5;
+        }
       }
     }
 
@@ -2304,6 +2346,16 @@ export class BattleService {
           var teammate = this.battle.currentEnemies.enemyList.find(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
           if (teammate !== undefined) {
             this.applyStatusEffect(dyingWish.userEffect[0], teammate, undefined);
+          }
+        }
+
+        if (character.name.includes("Hydra Head")) //this is assumed to be Lernean Hydra
+        {
+          var teammate = this.battle.currentEnemies.enemyList.find(item => item.bestiaryType === BestiaryEnum.HydraHead && !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+          if (teammate === undefined) {
+            var mainHead = this.battle.currentEnemies.enemyList.find(item => item.bestiaryType === BestiaryEnum.LerneanHydra);
+            if (mainHead !== undefined)
+              mainHead.battleInfo.statusEffects = mainHead.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Invulnerable);
           }
         }
 

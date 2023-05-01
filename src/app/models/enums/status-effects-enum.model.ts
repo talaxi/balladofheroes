@@ -116,5 +116,8 @@ export enum StatusEffectEnum {
     AutoAttackInvulnerable,
     AutoAttackSpeedUp,
     DamageOverTimeDamageUp,
-    ExtraTrueDamage
+    ExtraTrueDamage,
+    AbilitySpeedUp,
+    Immobilize,
+    CastingImmobilize
   }

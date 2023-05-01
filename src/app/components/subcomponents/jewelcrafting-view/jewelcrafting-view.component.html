@@ -61,6 +61,7 @@
             <span [innerHtml]="getSelectedRecipeQualityStars()"></span>
             <br />
             <span [innerHtml]="getSelectedRecipeDescription()"></span>
+            <span class="bold smallCaps jewelcraftingColor">+{{getXpIncrease()}} jewelcrafting XP</span>
             <hr />
             <div *ngFor="let ingredient of this.selectedRecipe.ingredients; let i = index">
                 <app-resource-required-view [resource]="ingredient"></app-resource-required-view>

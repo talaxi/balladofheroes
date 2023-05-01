@@ -333,7 +333,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     var description = "";
     if (this.getEffectCount() > 1 && this.statusEffect.type === StatusEffectEnum.DamageOverTime) {    
       this.character.battleInfo.statusEffects.filter(item => item.type === this.statusEffect.type).forEach((effect, index, array) => {
-        description += this.lookupService.getStatusEffectDescription(effect) + "<br/><br/>";
+        description += this.lookupService.getStatusEffectDescription(effect, this.character) + "<br/><br/>";
         description += this.getStatusEffectDuration(effect);
         if (!Object.is(array.length - 1, index))
           description += "<hr/>";
@@ -344,7 +344,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
         if (this.isPositiveEffect) {
           this.character.battleInfo.statusEffects.filter(item => item.isPositive && !this.isEffectInvisible(item)).forEach((item, index, array) => {
             if (!this.displayedEffects.some(displayedEffect => displayedEffect.type === item.type)) {
-              description += this.lookupService.getStatusEffectDescription(item) + "<br/><br/>";
+              description += this.lookupService.getStatusEffectDescription(item, this.character) + "<br/><br/>";
               description += this.getStatusEffectDuration(item);
               if (!Object.is(array.length - 1, index))
               description += "<hr/>";
@@ -354,7 +354,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
         if (!this.isPositiveEffect) {
           this.character.battleInfo.statusEffects.filter(item => !item.isPositive && !this.isEffectInvisible(item)).forEach((item, index, array) => {
             if (!this.displayedEffects.some(displayedEffect => displayedEffect.type === item.type)) {
-              description += this.lookupService.getStatusEffectDescription(item) + "<br/><br/>";
+              description += this.lookupService.getStatusEffectDescription(item, this.character) + "<br/><br/>";
               description += this.getStatusEffectDuration(item);
               if (!Object.is(array.length - 1, index))
               description += "<hr/>";
@@ -365,7 +365,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
 
     }
     else {
-      description = this.lookupService.getStatusEffectDescription(this.statusEffect) + "<br/><br/>" + this.getStatusEffectDuration();;
+      description = this.lookupService.getStatusEffectDescription(this.statusEffect, this.character) + "<br/><br/>" + this.getStatusEffectDuration();;
     }
 
     return description;

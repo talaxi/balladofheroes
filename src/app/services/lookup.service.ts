@@ -1561,7 +1561,7 @@ export class LookupService {
     if (abilityName === "No Escape")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
     if (abilityName === "Dispenser of Dues")
-      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0.";
+      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0. <strong>Dues</strong> cannot exceed 10x your Max HP.";
 
 
     return abilityDescription;
@@ -2279,7 +2279,7 @@ export class LookupService {
     return abilityDescription;
   }
 
-  getStatusEffectDescription(statusEffect: StatusEffect) {
+  getStatusEffectDescription(statusEffect: StatusEffect, character?: Character) {
     var description = "";
 
     if (statusEffect.type === StatusEffectEnum.AgilityUp)
@@ -2370,6 +2370,8 @@ export class LookupService {
 
     if (statusEffect.type === StatusEffectEnum.AoeDamageUp)
       description = "Increase multi target damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.DamageOverTimeDamageUp)
+      description = "Increase damage over time damage by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.ReduceHealing)
       description = "Decrease healing received by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% from all sources.";
@@ -2469,7 +2471,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Onslaught)
       description = "Your next damaging ability will also apply a damage over time effect onto its targets.";
     if (statusEffect.type === StatusEffectEnum.DispenserOfDues)
-      description = "Increase your next damaging ability by " + statusEffect.effectiveness + ".";
+      description = "Increase your next damaging ability by " + Math.round(statusEffect.effectiveness).toLocaleString() + ". Amount cannot exceed 10x your Max HP " + (character === undefined ? "." : "(" + Math.round(character.battleStats.maxHp * 10).toLocaleString() + ").");
     if (statusEffect.type === StatusEffectEnum.Retribution)
       description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
       if (statusEffect.type === StatusEffectEnum.ChainsOfFate)

@@ -252,6 +252,10 @@ export class JewelcraftingViewComponent {
     });
   }
 
+  getXpIncrease() {
+    return this.selectedRecipe.expGain;
+  }
+
   getQualityTypeName(quality: EquipmentQualityEnum) {
     var name = this.lookupService.getQualityTypeName(quality);
 

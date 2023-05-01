@@ -61,6 +61,8 @@
             <span [innerHtml]="getSelectedRecipeQualityStars()"></span>
             <br />
             <span [innerHtml]="getSelectedRecipeDescription()"></span>
+            <br/>
+            <span class="bold smallCaps alchemycolor">+{{getXpIncrease()}} alchemy XP</span>
             <hr />
             <div *ngFor="let ingredient of this.selectedRecipe.ingredients; let i = index">
                 <app-resource-required-view [resource]="ingredient"></app-resource-required-view>
