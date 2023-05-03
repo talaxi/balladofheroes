@@ -36,6 +36,8 @@ export class ShopViewComponent implements OnInit {
   professionNotification = NotificationTypeEnum.Profession;
   alchemy: Profession | undefined;
   jewelcrafting: Profession | undefined;
+  traderLevelUpText = "Level up text";
+  traderLevelUpKillsRemainingText = "Kills needed: 0/10";
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -85,6 +87,10 @@ export class ShopViewComponent implements OnInit {
     this.battleService.checkScene();
   }
 
+  showTraderSidequestNotification() {
+    return this.globalService.globalVar.sidequestData.traderHuntLevel === 0;
+  }
+
   openShop(option: ShopOption, content: any) {
     var optionalSceneToDisplay = this.optionalSceneToDisplay(option);
     if (optionalSceneToDisplay !== OptionalSceneEnum.None) {
@@ -129,6 +135,27 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.Jewelcrafter) {
       this.jewelcraftingService.handleShopOpen(this.activeSubzoneType);
       this.jewelcraftingService.checkForNewRecipes();
+    }
+
+    if (option.type === ShopTypeEnum.Trader) {
+      if (this.globalService.globalVar.sidequestData.traderHuntLevel === 0)
+      {
+        //trigger sidequest text
+        this.globalService.globalVar.sidequestData.traderHuntLevel = 1;
+      }      
+
+      this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
+      var defeatCount = 0;
+
+      while (defeatCount >= this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel())
+      {        
+        this.globalService.globalVar.sidequestData.traderHuntLevel += 1;
+        this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
+        defeatCount = 0;
+        var defeatStats = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.globalService.globalVar.sidequestData.traderBestiaryType);
+        if (defeatStats !== undefined)
+          defeatCount = defeatStats.count;
+      }
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler) {

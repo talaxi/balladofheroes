@@ -1,4 +1,5 @@
 import { Character } from "../character/character.model";
+import { BestiaryEnum } from "../enums/bestiary-enum.model";
 
 export class SidequestData {
     isAltarOfAsclepiusUnlocked: boolean;
@@ -6,6 +7,8 @@ export class SidequestData {
     weeklyMeleeEntries: number;
     lastWeeklyMeleeTicketReceived: Date;
     highestWeeklyMeleeRound: number;
+    traderHuntLevel: number;
+    traderBestiaryType: BestiaryEnum;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -16,5 +19,6 @@ export class SidequestData {
         this.weeklyMeleeEntries = 1;
         this.highestWeeklyMeleeRound = 0;
         this.lastWeeklyMeleeTicketReceived = new Date();
+        this.traderHuntLevel = 0;
     }
 }

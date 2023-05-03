@@ -219,7 +219,7 @@ export enum BestiaryEnum {
   SkulkingJackal,
   LargeGardenSnake,
   BeeSwarm,
-  AppleThievingBear,
+  GoldenAppleThief,
   Ladon,
   AfricanWolf,
   SpottedViper,
@@ -230,5 +230,6 @@ export enum BestiaryEnum {
   MonsterDentex,
   Eurytion,
   Orthrus,
-  Geryon
+  Geryon,
+  None,
 }

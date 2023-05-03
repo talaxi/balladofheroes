@@ -28,7 +28,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.5, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -382,6 +382,8 @@ export class VersionControlService {
             god.permanentAbility3GainCount = [];
             god.permanentAbilityUpgrades = [];
           });
+
+          this.globalService.globalVar.sidequestData.traderHuntLevel = 0;
 
           if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion)!.displayOrder = 1;

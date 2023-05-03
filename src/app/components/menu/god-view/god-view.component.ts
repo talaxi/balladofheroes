@@ -235,7 +235,7 @@ export class GodViewComponent implements OnInit {
           rewards += Math.round(increaseValues.resistance) + " Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         if (increaseValues.xpGain > 0)
-          rewards += (increaseValues.xpGain * 100) + "% XP Gain " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += this.utilityService.genericRound(increaseValues.xpGain * 100) + "% XP Gain " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.hpRegen > 0)
           rewards += this.utilityService.roundTo(increaseValues.hpRegen, 2) + " HP Regen per 5 sec " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.criticalMultiplier > 0)
@@ -283,7 +283,6 @@ export class GodViewComponent implements OnInit {
         if (increaseValues.elementResistance.air > 0)
           rewards += (increaseValues.elementResistance.air * 100) + "% Air Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
-        console.log(increaseAbilities);
         var ability = this.god.abilityList.find(item => item.requiredLevel === increaseAbilities.requiredLevel);
         var userGainsEffect = increaseAbilities.userEffect[0];
         var targetGainsEffect = increaseAbilities.targetEffect[0];
@@ -297,7 +296,7 @@ export class GodViewComponent implements OnInit {
         if (userGainsEffect !== undefined && userGainsEffect.effectiveness > 0)
         {
           if (ability?.name === "Second Wind")
-          rewards += (increaseAbilities.effectiveness) + " HP Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (userGainsEffect.effectiveness) + " HP Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           else 
           rewards += (userGainsEffect.effectiveness * 100) + "% Buff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         }

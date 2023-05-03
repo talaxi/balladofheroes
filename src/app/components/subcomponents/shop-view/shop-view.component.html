@@ -1,6 +1,9 @@
 <div class="shopOption" *ngFor="let option of shopOptions; let i = index">
   <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter || option.type === shopTypeEnum.Traveler"
     class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
+    <button *ngIf="option.type === shopTypeEnum.Trader"
+    class="buttonStyled shopButtonText" (click)="openShop(option, traderModal)">{{getOptionText(option.type)}}
+    <app-notification-icon *ngIf="showTraderSidequestNotification()" [isButton]="true" [notificationColor]="resetNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText"
     (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}} <app-notification-icon *ngIf="alchemy !== undefined && !alchemy.isUnlocked" [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
     <button *ngIf="option.type === shopTypeEnum.Jewelcrafter" class="buttonStyled shopButtonText"
@@ -46,6 +49,24 @@
       (click)="changeFilter('Battle Items')">Battle Items</button>
     <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>
   </div>
+  <hr class="noMargin" />
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+</ng-template>
+
+<ng-template #traderModal>
+  <div class="centeredText">
+    "<span [innerHtml]="traderLevelUpText"></span>"
+    <br/>
+    <br/>
+    <strong><i><span [innerHtml]="traderLevelUpKillsRemainingText"></span></i></strong>
+    <hr/>
+</div>
   <hr class="noMargin" />
   <table>
     <tr *ngFor="let cells of shopItemRows;">

@@ -1802,9 +1802,12 @@ export class BattleService {
             existingApplication.stackCount += 1;
           }
 
-          if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {
+          if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {            
             if (appliedStatusEffect.duration > existingApplication.duration)
               existingApplication.duration = appliedStatusEffect.duration;
+          }
+          else if (this.globalService.doesStatusEffectDurationStack(appliedStatusEffect.type)) {                  
+              existingApplication.duration += appliedStatusEffect.duration;
           }
           else
             enemy.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
@@ -1821,12 +1824,15 @@ export class BattleService {
           existingApplication.stackCount += 1;
         }
 
-        if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {
+        if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {          
           if (originalAbility !== undefined && originalAbility.name === "Insanity") {
             existingApplication.duration += appliedStatusEffect.duration;
           }
           else if (appliedStatusEffect.duration > existingApplication.duration)
             existingApplication.duration = appliedStatusEffect.duration;
+        }
+        else if (this.globalService.doesStatusEffectDurationStack(appliedStatusEffect.type)) {                  
+          existingApplication.duration += appliedStatusEffect.duration;
         }
         else
           target.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
@@ -3099,8 +3105,10 @@ export class BattleService {
       if (character.battleStats.currentHp <= 0)
         return;
 
-      //remove any existing toxin
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !this.isStatusEffectAToxin(item.type));
+        var matchingStatusEffect = this.getMatchingStatusEffectFromItem(this.battleItemInUse);
+
+      //remove any other existing toxin
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type === matchingStatusEffect || !this.isStatusEffectAToxin(item.type));
 
       this.applyStatusEffect(effect.userEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
@@ -3116,8 +3124,10 @@ export class BattleService {
       if (character.battleStats.currentHp <= 0)
         return;
 
-      //remove any existing elixir
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !this.isStatusEffectAnElixir(item.type));
+        var matchingStatusEffect = this.getMatchingStatusEffectFromItem(this.battleItemInUse);
+
+      //remove any other existing elixir
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type === matchingStatusEffect || !this.isStatusEffectAnElixir(item.type));
 
       this.applyStatusEffect(effect.userEffect[0], character);
       this.lookupService.useResource(this.battleItemInUse, 1);
@@ -3135,6 +3145,32 @@ export class BattleService {
     if (this.lookupService.getResourceAmount(this.battleItemInUse) === 0) {
       this.targetbattleItemMode = false;
     }
+  }
+
+  getMatchingStatusEffectFromItem(type: ItemsEnum ) {
+    if (type === ItemsEnum.WitheringToxin) {
+      return StatusEffectEnum.WitheringToxin;
+    }
+    if (type === ItemsEnum.DebilitatingToxin) {
+      return StatusEffectEnum.DebilitatingToxin;
+    }
+    if (type === ItemsEnum.VenomousToxin) {
+      return StatusEffectEnum.VenomousToxin;
+    }
+    if (type === ItemsEnum.PoisonousToxin) {
+      return StatusEffectEnum.PoisonousToxin;
+    }
+    if (type === ItemsEnum.ElixirOfFortitude) {
+      return StatusEffectEnum.ElixirOfFortitude;
+    }
+    if (type === ItemsEnum.RejuvenatingElixir) {
+      return StatusEffectEnum.RejuvenatingElixir;
+    }
+    if (type === ItemsEnum.HeroicElixir) {
+      return StatusEffectEnum.HeroicElixir;
+    }
+
+    return StatusEffectEnum.None;
   }
 
   handleChest(deltaTime: number) {

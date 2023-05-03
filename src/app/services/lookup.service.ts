@@ -1917,10 +1917,10 @@ export class LookupService {
       abilityDescription = "Increase the user's Attack and Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Sloppy Shot") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Full Burst") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Immobilize") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -1956,7 +1956,7 @@ export class LookupService {
       abilityDescription = "Avoid all auto attacks for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
     }
     if (ability.name === "Scratch") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their ability cooldown speed by " + relatedTargetGainStatusEffectEffectivenessPercent + "% for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Hamstring") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their Agility by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2175,10 +2175,10 @@ export class LookupService {
       abilityDescription = "Reduce all targets' Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds and increase the party's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Wild Swing") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Wild Combo") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Roost") {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2187,7 +2187,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and Stun the target for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Half Hearted Attack") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Feeding Frenzy") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Water damage to a target two times. " + cooldown + " second cooldown.";
@@ -2217,13 +2217,13 @@ export class LookupService {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Arm Swing") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Aggressive Swipe") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Mindless Attacks") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "From Above") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Air damage to a target. " + cooldown + " second cooldown.";
@@ -2259,7 +2259,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Lumbering Swipe") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Hunker Down") {
       abilityDescription = "Reduce the user's Damage Taken and increase the user's Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2296,6 +2296,156 @@ export class LookupService {
     }
     if (ability.name === "Swarm Attack") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Water damage to a target three times. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Stinger") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Final Sting") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Instantly die. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Slowing Toxin") {
+      abilityDescription = "Reduce target's Agility by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Clean Cut") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Steal Weapon") {
+      abilityDescription = "Increase the user's Attack reduce the target's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Steal Shield") {
+      abilityDescription = "Increase the user's Defense reduce the target's Defense by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Cackle") {
+      abilityDescription = "Reduce all enemies' Luck and Resistance by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Thirst for Blood") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> true damage to a target and heal back the amount of damage dealt.";
+    }
+    if (ability.name === "Hemorrhage") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their Healing Received by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Leader of the Pride") {
+      abilityDescription = "Increase the user's Auto Attack Speed by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Crush") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Colorful Plumage") {
+      abilityDescription = "Increase the user's Attack and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Spirit of the River") {
+      abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Agility and Defense by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Giant Claw") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Large Claw") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Spit Venom") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    } 
+    if (ability.name === "Powerful Toxin") {
+      abilityDescription = "Increase the user's Damage Over Time Damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Sprout Head") {
+      abilityDescription = "Once a Hydra Head has been defeated, start a 30 second countdown. Once the countdown is complete, revive any dead Hydra Heads.";
+    }
+    if (ability.name === "Batter") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. This effect stacks. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Steal Shoes") {
+      abilityDescription = "Increase the user's Agility reduce the target's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Steal Jewelry") {
+      abilityDescription = "Increase the user's Luck reduce the target's Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Razor Feather Combo") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Nurse Wounds") {
+      abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Concoction") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target with a random element. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Powerful Brew") {
+      abilityDescription = "Give yourself a random positive stat boost of <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Target Acquired") {
+      abilityDescription = "Apply a Focus effect and reduce a target's Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Healing Spirits") {
+      abilityDescription = "Heal the lowest HP % party member for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP." + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Cleansing Spirits") {
+      abilityDescription = "Remove all debuffs from the party." + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Charge") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Lead by Example") {
+      abilityDescription = "Increase the party's Attack and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Click Click x2") {
+      abilityDescription = "Increase the user's Attack and Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Snip Snip x2") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target twice. For both attacks, apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Nap") {
+      abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Lazy Attack") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Refreshing Bite") {
+      abilityDescription = "Increase the user's Agility and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Stampede") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets twice. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Poseidon's Boon") {
+      abilityDescription = "Reduce the user's ability cooldowns by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }       
+    if (ability.name === "Intimidate") {
+      abilityDescription = "Reduce a target's Defense and Resistance by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Snap") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Swarm") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Multi-Stinger") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target twice. For both attacks, apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Shed Skin") {
+      abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and clear all debuffs from the user. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Strangle") {
+      abilityDescription = "Indefinitely stun a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds. This can be removed by dealing " + ability.maxCount + " damage to the user. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Siren Song") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Protection") {
+      abilityDescription = "Give each party member a Barrier of <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "% of Attack</strong> HP. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Dog Whistle") {
+      abilityDescription = "Increase the party's Attack and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
+    }    
+    if (ability.name === "Two-Headed Bite") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target two times. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Two-Headed Crunch") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target two times and reduce the targets' Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "3x Stab") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Throw Boulder") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. Reduce target's auto attack cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
 
     return abilityDescription;
@@ -2424,7 +2574,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.RecentlyDefeated)
       description = "You have recently been defeated and are still nursing your wounds. Your primary stats are reduced by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.ThousandCuts)
-      description = "Deal increased damage after every attack. Current damage increase: " + this.utilityService.genericRound(((statusEffect.effectiveness - 1) * statusEffect.count) * 100);
+      description = "Deal increased damage after every attack. Current damage increase: " + this.utilityService.genericRound(((statusEffect.effectiveness) * statusEffect.count) * 100) + "%";
     if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking " + Math.round(statusEffect.effectiveness) + " damage every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
     if (statusEffect.type === StatusEffectEnum.Thorns)
@@ -6139,8 +6289,27 @@ export class LookupService {
     if (type === ShopTypeEnum.Jewelcrafter) {
       text = "Jewelcrafter";
     }
+    if (type === ShopTypeEnum.Trader) {
+      text = "Trader";
+    }
 
     return text;
+  }
+
+  getBestiaryHuntTypeForCurrentTraderLevel() {
+    var level = this.globalService.globalVar.sidequestData.traderHuntLevel;
+    if (level === 1)
+      return BestiaryEnum.BloodthirstyHyena;
+
+    return BestiaryEnum.None;
+  }
+
+  getBestiaryHuntKillCountForCurrentTraderLevel() {
+    var level = this.globalService.globalVar.sidequestData.traderHuntLevel;
+    if (level === 1)
+      return 10;
+
+    return 50;
   }
 
   getBalladDescription(type: BalladEnum) {

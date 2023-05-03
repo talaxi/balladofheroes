@@ -804,16 +804,27 @@ export class GlobalService {
       type === StatusEffectEnum.DefenseDown || type === StatusEffectEnum.DefenseUp || type === StatusEffectEnum.ResistanceDown || type === StatusEffectEnum.ResistanceUp ||
       type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp ||
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
-      type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp || type === StatusEffectEnum.DebilitatingToxin
-      || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.ThousandCuts ||
-      type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.WitheringToxin ||
-      type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
+      type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp 
+       || type === StatusEffectEnum.ThousandCuts ||
+       type === StatusEffectEnum.ReduceHealing || 
+       type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
       type === StatusEffectEnum.LordOfTheUnderworld || type === StatusEffectEnum.Onslaught || type === StatusEffectEnum.EarthDamageUp || type === StatusEffectEnum.FireDamageUp
       || type === StatusEffectEnum.AirDamageUp || type === StatusEffectEnum.HolyDamageUp || type === StatusEffectEnum.LightningDamageUp || type === StatusEffectEnum.WaterDamageUp || type === StatusEffectEnum.EarthDamageDown || type === StatusEffectEnum.FireDamageDown
       || type === StatusEffectEnum.AirDamageDown || type === StatusEffectEnum.HolyDamageDown || type === StatusEffectEnum.LightningDamageDown || type === StatusEffectEnum.WaterDamageDown || type === StatusEffectEnum.EarthDamageTakenUp || type === StatusEffectEnum.FireDamageTakenUp
       || type === StatusEffectEnum.AirDamageTakenUp || type === StatusEffectEnum.HolyDamageTakenUp || type === StatusEffectEnum.LightningDamageTakenUp || type === StatusEffectEnum.WaterDamageTakenUp || type === StatusEffectEnum.EarthDamageTakenDown || type === StatusEffectEnum.FireDamageTakenDown
       || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp)
+      refreshes = true;
+
+    return refreshes;
+  }
+
+  doesStatusEffectDurationStack(type: StatusEffectEnum) {
+    var refreshes = false;
+
+    if (type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.DebilitatingToxin ||
+      type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.WitheringToxin ||
+      type === StatusEffectEnum.ElixirOfFortitude)
       refreshes = true;
 
     return refreshes;
@@ -1883,6 +1894,34 @@ export class GlobalService {
     }
     else if (godLevel % 50 === 0 && godLevel <= 1000) {
       var matchingCount = god.permanentStat3GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 200 === 50 && godLevel <= 2000) {
+      var matchingCount = god.permanentAbility1GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 200 === 100 && godLevel <= 2000) {
+      var matchingCount = god.permanentPassiveGainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 200 === 150 && godLevel <= 2000) {
+      var matchingCount = god.permanentAbility2GainCount.find(item => item[0] === godLevel);
+      if (matchingCount === undefined)
+        return [0, 0];
+      else
+        return matchingCount;
+    }
+    else if (godLevel % 200 === 0 && godLevel <= 2000) {
+      var matchingCount = god.permanentAbility3GainCount.find(item => item[0] === godLevel);
       if (matchingCount === undefined)
         return [0, 0];
       else
