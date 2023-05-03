@@ -16,6 +16,7 @@ import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
+import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -369,6 +370,25 @@ export class VersionControlService {
               this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
             }
           }            
+        }
+        if (version === .46) {          
+          var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+
+          if (apollo !== undefined) {
+            var ostinato = apollo.abilityList.find(item => item.name === "Ostinato");
+            if (ostinato !== undefined)
+            {
+              ostinato.targetType = TargetEnum.LowestHpPercent;
+            }
+          }
+
+          var priest = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);
+
+          if (priest !== undefined) {
+            var heal = priest.abilityList.find(item => item.name === "Heal");
+            if (heal !== undefined)
+              heal.targetType = TargetEnum.LowestHpPercent;
+          }
         }
 
         this.globalService.globalVar.currentVersion = version;
