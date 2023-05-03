@@ -35,6 +35,7 @@ import { KeybindService } from '../utility/keybind.service';
 import { VersionControlService } from '../utility/version-control.service';
 import { GlobalService } from './global.service';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
+import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -258,6 +259,11 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.settings.set("quickViewOverlayFlipped", false);
+
+    this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
+    this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", false);
+    this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
+    this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);    
   }
 
   initializeGameLogSettings() {

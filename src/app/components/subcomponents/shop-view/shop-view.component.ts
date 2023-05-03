@@ -69,7 +69,7 @@ export class ShopViewComponent implements OnInit {
   }
 
   getShopOptions() {
-    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType);
+    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData.traderHuntLevel);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
@@ -138,6 +138,7 @@ export class ShopViewComponent implements OnInit {
     }
 
     if (option.type === ShopTypeEnum.Trader) {
+      this.isDisplayingNewItems = false;
       if (this.globalService.globalVar.sidequestData.traderHuntLevel === 0)
       {
         //trigger sidequest text
@@ -158,7 +159,8 @@ export class ShopViewComponent implements OnInit {
       }
     }
 
-    if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler) {
+    if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler || 
+      option.type === ShopTypeEnum.Trader) {
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));
       this.newItems = option.availableItems.sort((a, b) => this.sortFunction(a, b)).filter(item => item.originalStore === this.activeSubzoneType);
 

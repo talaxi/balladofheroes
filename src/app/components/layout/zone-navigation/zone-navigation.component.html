@@ -2,10 +2,12 @@
     <div class="header">
         <div class="balladHeader header">
             <span class="s4Heading balladTitle mainPageSectionHeader">Ballads</span>
-            <span>
+            <span class='flexBalladHeader'>
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
+                <button (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton"><img
+                    class="autoProgressIcon" src="assets/svg/gear.svg"></button>
             </span>
         </div>
         <hr />
@@ -268,4 +270,8 @@
     <div>
         See a brief overview of your Jewelcrafting status.
     </div>
+</ng-template>
+
+<ng-template #autoProgressModal>
+    <app-auto-progress-options></app-auto-progress-options>
 </ng-template>

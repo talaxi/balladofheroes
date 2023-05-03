@@ -19,6 +19,22 @@
     font-variant: small-caps;
 }
 
+.flexBalladHeader {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.autoProgressButton {
+    aspect-ratio: 1/1;
+    padding: 0;    
+}
+
+.autoProgressIcon {
+    height: 1.1rem;
+    vertical-align: middle;
+}
+
 .zoneList {
     overflow-y: auto;
 }

@@ -5798,7 +5798,9 @@ export class LookupService {
     if (subzoneEnum === SubZoneEnum.DodonaDelphi || subzoneEnum === SubZoneEnum.DodonaArta || subzoneEnum === SubZoneEnum.AsphodelPalaceOfHades ||
       subzoneEnum === SubZoneEnum.AsphodelLostHaven || subzoneEnum === SubZoneEnum.ElysiumColiseum || subzoneEnum === SubZoneEnum.PeloposNisosTravelPost
       || subzoneEnum === SubZoneEnum.CalydonTownMarket || subzoneEnum === SubZoneEnum.CalydonAltarOfAsclepius || subzoneEnum === SubZoneEnum.AegeanSeaIolcus ||
-      subzoneEnum === SubZoneEnum.AegeanSeaSalmydessus || subzoneEnum === SubZoneEnum.BlackSeaMariandyna || subzoneEnum === SubZoneEnum.ColchisCityCenter)
+      subzoneEnum === SubZoneEnum.AegeanSeaSalmydessus || subzoneEnum === SubZoneEnum.BlackSeaMariandyna || subzoneEnum === SubZoneEnum.ColchisCityCenter
+      || subzoneEnum === SubZoneEnum.NemeaCleonea || subzoneEnum === SubZoneEnum.StymphaliaTiryns || subzoneEnum === SubZoneEnum.CoastOfCreteElis ||
+      subzoneEnum === SubZoneEnum.ErytheiaCadiz)
       return true;
 
     return false;

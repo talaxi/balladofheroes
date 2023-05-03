@@ -132,7 +132,7 @@ export class ZoneNavigationComponent implements OnInit {
       var currentSubzone = this.availableSubZones?.find(item => item.isSelected);
 
       if (this.autoProgress && currentSubzone !== undefined &&
-        (this.balladService.getVictoriesNeededToProceed(currentSubzone.type) - currentSubzone.victoryCount <= 0 || this.balladService.isSubzoneTown(currentSubzone.type))) {
+        (this.balladService.autoProgressShouldChangeSubZone(currentSubzone) || this.balladService.isSubzoneTown(currentSubzone.type))) {
         this.balladService.selectNextSubzone();
       }
 
@@ -424,6 +424,10 @@ export class ZoneNavigationComponent implements OnInit {
       return "?";
 
     return "!";
+  }
+  
+  openAutoProgressOptions(content: any) {
+    var dialog = this.dialog.open(content, { width: '50%', maxHeight: '50%' });
   }
 
   ngOnDestroy() {

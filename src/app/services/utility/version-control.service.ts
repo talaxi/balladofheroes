@@ -17,6 +17,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
+import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -383,6 +384,11 @@ export class VersionControlService {
             god.permanentAbilityUpgrades = [];
           });
 
+          this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
+          this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", false);
+          this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
+          this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);
+          
           this.globalService.globalVar.sidequestData.traderHuntLevel = 0;
 
           if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion) !== undefined)

@@ -17,6 +17,8 @@ import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
+import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
+import { AchievementService } from '../achievements/achievement.service';
 
 @Injectable({
   providedIn: 'root'
@@ -242,15 +244,15 @@ export class BalladService {
 
   selectNextSubzone() {
     var nextSubzoneFound = false;
-    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).slice().reverse();
+    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);//.slice().reverse();
     reverseOrderBallads.forEach(ballad => {
       if (!nextSubzoneFound) {
-        var reverseZones = ballad.zones.filter(item => item.isAvailable).slice().reverse();
+        var reverseZones = ballad.zones.filter(item => item.isAvailable);//.slice().reverse();
         reverseZones.forEach(zone => {
-          var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
+          var reverseSubzones = zone.subzones.filter(item => item.isAvailable);//.slice().reverse();
           reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
-              this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
+              !this.autoProgressShouldChangeSubZone(subzone)) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
               this.selectZone(zone);
@@ -260,6 +262,27 @@ export class BalladService {
         })
       }
     });
+  }
+
+  autoProgressShouldChangeSubZone(subzone: SubZone) {
+    var shouldChange = false;
+    var autoProgressType = this.globalService.globalVar.settings.get("autoProgressType") ?? CompletionStatusEnum.Cleared;
+    var includeAllAchievements = this.globalService.globalVar.settings.get("autoProgressIncludeAllAchievements") ?? false;
+
+    if (autoProgressType === CompletionStatusEnum.Complete)
+    {
+      shouldChange = this.globalService.getVictoriesNeededForAllAchievements(subzone.type) - subzone.victoryCount <= 0;
+
+      if (includeAllAchievements) {
+        shouldChange = this.globalService.getUncompletedAchievementCountBySubZone(subzone.type) === 0;
+      }
+    }
+    else
+    {
+      shouldChange = this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount <= 0;
+    }
+    
+    return shouldChange;
   }
 
   selectBallad(ballad: Ballad) {
@@ -582,6 +605,8 @@ export class BalladService {
       name = "Apple Orchards";
       if (type === SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas)
       name = "Southern Cretan Seas";
+      if (type === SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts)
+      name = "Libyan Outskirts";
       if (type === SubZoneEnum.GardenOfTheHesperidesDesertSands)
       name = "Desert Sands";
       if (type === SubZoneEnum.GardenOfTheHesperidesSaharanDunes)

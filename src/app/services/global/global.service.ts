@@ -38,6 +38,7 @@ import { UtilityService } from '../utility/utility.service';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { DictionaryService } from '../utility/dictionary.service';
+import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 
 @Injectable({
   providedIn: 'root'
@@ -3017,5 +3018,26 @@ export class GlobalService {
 
   getAutoAttackCooldown(character: Character) {
     return this.getAutoAttackTime(character);
+  }
+
+  getVictoriesNeededForAllAchievements(type: SubZoneEnum) {
+    var victoryCount = 0;
+    var relevantAchievements = this.globalVar.achievements.filter(item => item.subzone === type);
+    if (relevantAchievements.some(item => item.type === AchievementTypeEnum.HundredVictories))
+      victoryCount = 100;
+      if (relevantAchievements.some(item => item.type === AchievementTypeEnum.ThousandVictories))
+      victoryCount = 500;
+      if (relevantAchievements.some(item => item.type === AchievementTypeEnum.TenThousandVictories))
+      victoryCount = 2500;
+      if (relevantAchievements.some(item => item.type === AchievementTypeEnum.FiveThousandVictories))
+      victoryCount = 5000;
+
+    return victoryCount;
+  }
+  
+  getUncompletedAchievementCountBySubZone(subzoneType: SubZoneEnum) {
+    var subzoneRelatedAchievements = this.globalVar.achievements.filter(item => item.subzone === subzoneType);
+
+    return subzoneRelatedAchievements.filter(item => !item.completed).length;
   }
 }

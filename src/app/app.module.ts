@@ -104,6 +104,7 @@ import { JewelcraftingViewComponent } from './components/subcomponents/jewelcraf
 import { JewelcraftingOverviewComponent } from './components/layout/zone-navigation/jewelcrafting-overview/jewelcrafting-overview.component';
 import { BestiaryViewComponent } from './components/menu/bestiary-view/bestiary-view.component';
 import { EnemyDescriptionViewComponent } from './components/subcomponents/enemy-view/enemy-description-view/enemy-description-view.component';
+import { AutoProgressOptionsComponent } from './components/layout/zone-navigation/auto-progress-options/auto-progress-options.component';
 
 @NgModule({
   declarations: [
@@ -172,7 +173,8 @@ import { EnemyDescriptionViewComponent } from './components/subcomponents/enemy-
     JewelcraftingViewComponent,
     JewelcraftingOverviewComponent,
     BestiaryViewComponent,
-    EnemyDescriptionViewComponent,    
+    EnemyDescriptionViewComponent,
+    AutoProgressOptionsComponent,    
   ],
   imports: [
     BrowserModule,

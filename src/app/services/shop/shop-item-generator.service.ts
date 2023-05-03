@@ -264,6 +264,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.BlazingSunPendant) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
+    if (item === ItemsEnum.Leather) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, 5));
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

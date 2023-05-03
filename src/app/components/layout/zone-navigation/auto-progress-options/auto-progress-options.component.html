@@ -1,0 +1,26 @@
+<div class="container">
+    <div class="header">Auto Progress Options</div>
+    <hr />
+    <div class="options">
+        <div class='column1'>
+            <mat-radio-group (change)="autoProgressTypeToggle()" class="sortOptions" [(ngModel)]="autoProgressType" aria-label="Select an auto progress type">
+                <mat-radio-button [value]="completionStatusEnum.Cleared">Auto Progress to <span class="smallCaps bold clearedSubzoneColor">clear</span></mat-radio-button>
+                <br/>
+                <mat-radio-button [value]="completionStatusEnum.Complete">Auto Progress to <span class="smallCaps bold completedSubzoneColor">complete</span></mat-radio-button>                
+              </mat-radio-group>
+        </div>
+        <div class="column2">            
+            <mat-checkbox [(ngModel)]="includeSideQuests" (input)="includeSideQuestsToggle()">
+                Include Side Quest Content
+            </mat-checkbox>            
+            <br/>
+            <mat-checkbox [(ngModel)]="pauseStory" (input)="pauseStoryToggle()">
+                Pause On Story Scenes
+            </mat-checkbox>
+            <br/>
+            <mat-checkbox [(ngModel)]="includeAllAchievements" (input)="includeAllAchievementsToggle()">
+                Only Include Victory Count Achievements
+            </mat-checkbox>            
+        </div>
+    </div>
+</div>

@@ -509,7 +509,10 @@ export class StoryService {
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
 
-    if (this.globalService.globalVar.timers.scenePageLength !== this.globalService.globalVar.timers.pauseStorySpeed)
+    var isAutoProgressOn = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+    var isPauseAutoProgressOn = this.globalService.globalVar.settings.get("autoProgressPauseStory") ?? false;
+    if (this.globalService.globalVar.timers.scenePageLength !== this.globalService.globalVar.timers.pauseStorySpeed &&
+      !(isAutoProgressOn && isPauseAutoProgressOn))
       this.globalService.globalVar.timers.scenePageTimer += deltaTime;
     if (this.globalService.globalVar.timers.scenePageTimer >= this.globalService.globalVar.timers.scenePageLength) {
       this.globalService.globalVar.timers.scenePageTimer = 0;

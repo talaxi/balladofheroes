@@ -2578,7 +2578,7 @@ export class SubZoneGeneratorService {
     return subZoneEnums;
   }
 
-  getShopOptions(subzoneType: SubZoneEnum) {
+  getShopOptions(subzoneType: SubZoneEnum, traderLevel?: number) {
     var shopOptions: ShopOption[] = [];
     var availableOptionsGeneral: ShopItem[] = [];
     var availableOptionsCrafter: ShopItem[] = [];
@@ -2721,6 +2721,23 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));
     }
+
+    if (subzoneType === SubZoneEnum.NemeaCleonea) {
+      if (traderLevel !== undefined)
+        shopOptions.push(new ShopOption(ShopTypeEnum.Trader, this.getAvailableTraderOptions(traderLevel)));
+    }
+
+    return shopOptions;
+  }
+
+  getAvailableTraderOptions(level: number) {
+    var shopOptions: ShopItem[] = [];
+
+    if (level === 1)
+    {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Leather, SubZoneEnum.NemeaCleonea)); 
+    }
+
     return shopOptions;
   }
 }
