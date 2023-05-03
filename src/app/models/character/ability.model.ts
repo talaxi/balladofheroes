@@ -34,11 +34,11 @@ export class Ability {
     isPermanent: boolean;
     damageModifierRange: number; 
 
-    constructor() {
-        this.effectiveness = 1;
+    constructor(setToZero: boolean = false) {
+        this.effectiveness = setToZero ? 0 : 1;
         this.abilityUpgradeLevel = 0;
-        this.secondaryEffectiveness = 1;
-        this.cooldown = 15;
+        this.secondaryEffectiveness = setToZero ? 0 : 1;
+        this.cooldown = setToZero ? 0 : 15;
         this.count = 0;
         this.maxCount = 0;
         this.abilitySequence = 1;

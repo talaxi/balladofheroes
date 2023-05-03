@@ -246,6 +246,10 @@
                         Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
                         <hr />
                         <div
+                            *ngIf="getPermanentAbilityEffectivenessIncrease(ability) !== 0 && getPermanentAbilityEffectivenessIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Effectiveness Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityEffectivenessIncrease(ability)"></span></div>
+                        <div
                             *ngIf="getAbilityEffectivenessIncrease(ability) !== 0 && getAbilityEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Effectiveness Increase: </span> <span class="statValue"
                                 [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>
@@ -260,6 +264,14 @@
                         <div *ngIf="getAbilityEffectMaxCountIncrease(ability) !== 0"><span class="statLabel">Effect
                                 Count Increase: </span> <span class="statValue"
                                 [innerHtml]="getAbilityEffectMaxCountIncrease(ability)"></span></div>
+                                <div
+                            *ngIf="getPermanentAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getPermanentAbilityUserEffectEffectivenessIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
+                                class="statValue"
+                                [innerHtml]="getPermanentAbilityUserEffectEffectivenessIncrease(ability)"></span></div>
+                        <div *ngIf="getPermanentAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Permanent Gained
+                                Effect Duration Increase: </span> <span class="statValue"
+                                [innerHtml]="getPermanentAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
                         <div
                             *ngIf="getAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getAbilityUserEffectEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
@@ -268,7 +280,15 @@
                         <div *ngIf="getAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Gained
                                 Effect Duration Increase: </span> <span class="statValue"
                                 [innerHtml]="getAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
-                        <div
+                                <div
+                                *ngIf="getPermanentAbilityTargetEffectEffectivenessIncrease(ability) !== 0 && getPermanentAbilityTargetEffectEffectivenessIncrease(ability) !== '0%'">
+                                <span class="statLabel">Permanent Targeted Effect Effectiveness Increase: </span> <span
+                                    class="statValue"
+                                    [innerHtml]="getPermanentAbilityTargetEffectEffectivenessIncrease(ability)"></span></div>
+                            <div *ngIf="getPermanentAbilityTargetEffectDurationIncrease(ability) !== 0"><span
+                                    class="statLabel">Permanent Targeted Effect Duration Increase: </span> <span class="statValue"
+                                    [innerHtml]="getPermanentAbilityTargetEffectDurationIncrease(ability)"></span> seconds</div>
+                                <div
                             *ngIf="getAbilityTargetEffectEffectivenessIncrease(ability) !== 0 && getAbilityTargetEffectEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
                                 class="statValue"

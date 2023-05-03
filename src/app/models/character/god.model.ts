@@ -19,6 +19,8 @@ export class God {
     partyPermanentStatGain: CharacterStats;
     @Type(() => Ability)
     abilityList: Ability[];
+    @Type(() => Ability)
+    permanentAbilityUpgrades: Ability[];
     exp: number;
     expToNextLevel: number;
     isAvailable: boolean;
@@ -28,6 +30,10 @@ export class God {
     permanentStat2GainCount: [number, number][]; //permanent god secondary stat
     permanentStat3GainCount: [number, number][]; //permanent party primary stat
     permanentStat4GainCount: [number, number][]; //permanent party xp boost
+    permanentAbility1GainCount: [number, number][];
+    permanentPassiveGainCount: [number, number][];
+    permanentAbility2GainCount: [number, number][];
+    permanentAbility3GainCount: [number, number][];
     affinityLevel: number;
     affinityExp: number;
     affinityExpToNextLevel: number;
@@ -49,6 +55,11 @@ export class God {
         this.permanentStat2GainCount = [];
         this.permanentStat3GainCount = [];
         this.permanentStat4GainCount = [];
+        this.permanentAbility1GainCount = [];
+        this.permanentPassiveGainCount = [];
+        this.permanentAbility2GainCount = [];
+        this.permanentAbility3GainCount = [];
+        this.permanentAbilityUpgrades = [];
 
         this.affinityLevel = 0;
         this.affinityExp = 0;

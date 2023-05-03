@@ -85,7 +85,7 @@ export class GodViewComponent implements OnInit {
 
     if (character !== undefined)
       defaultCharacter = character;
-    return this.lookupService.getGodAbilityDescription(abilityName, defaultCharacter, ability);
+    return this.lookupService.getGodAbilityDescription(abilityName, defaultCharacter, ability, this.god);
   }
 
   getGodColor() {
@@ -193,18 +193,27 @@ export class GodViewComponent implements OnInit {
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentStats) {
         var increaseValues = this.globalService.getNewGodPermanentStats(this.god, nextLevel);
+        var increaseAbilities = this.globalService.getNewGodPermanentAbilityUpgrades(this.god, nextLevel);
         var obtainTuple = this.globalService.getGodPermanentStatObtainCount(this.god, nextLevel);
         var obtainAmount = obtainTuple[1];
         var obtainCap = 10;
         if (nextLevel % 100 === 0 && nextLevel <= 500)
           obtainCap = this.utilityService.godPermanentStatGain2ObtainCap;
         else if (nextLevel % 50 === 0 && nextLevel <= 500)
-        obtainCap = this.utilityService.godPermanentStatGain1ObtainCap;
+          obtainCap = this.utilityService.godPermanentStatGain1ObtainCap;
+        else if (nextLevel % 100 === 0 && nextLevel <= 1000)
+          obtainCap = this.utilityService.godPermanentStatGain4ObtainCap;
         else if (nextLevel % 50 === 0 && nextLevel <= 1000)
-        obtainCap = this.utilityService.godPermanentStatGain4ObtainCap;
-        else if (nextLevel % 50 === 0 && nextLevel <= 1000)
-        obtainCap = this.utilityService.godPermanentStatGain3ObtainCap;
-                
+          obtainCap = this.utilityService.godPermanentStatGain3ObtainCap;
+        else if (nextLevel % 200 === 50 && nextLevel <= 2000)
+          obtainCap = this.utilityService.godPermanentAbility1ObtainCap;
+        else if (nextLevel % 200 === 100 && nextLevel <= 2000)
+          obtainCap = this.utilityService.godPermanentPassiveObtainCap;
+        else if (nextLevel % 200 === 150 && nextLevel <= 2000)
+          obtainCap = this.utilityService.godPermanentAbility2ObtainCap;
+        else if (nextLevel % 200 === 0 && nextLevel <= 2000)
+          obtainCap = this.utilityService.godPermanentAbility3ObtainCap;
+
         var remainingAmount = (obtainCap - obtainAmount);
 
         var permanentText = "Permanently";
@@ -224,7 +233,7 @@ export class GodViewComponent implements OnInit {
           rewards += Math.round(increaseValues.defense) + " Defense " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.resistance > 0)
           rewards += Math.round(increaseValues.resistance) + " Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-          
+
         if (increaseValues.xpGain > 0)
           rewards += (increaseValues.xpGain * 100) + "% XP Gain " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.hpRegen > 0)
@@ -273,6 +282,32 @@ export class GodViewComponent implements OnInit {
           rewards += (increaseValues.elementResistance.earth * 100) + "% Earth Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.elementResistance.air > 0)
           rewards += (increaseValues.elementResistance.air * 100) + "% Air Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+
+        console.log(increaseAbilities);
+        var ability = this.god.abilityList.find(item => item.requiredLevel === increaseAbilities.requiredLevel);
+        var userGainsEffect = increaseAbilities.userEffect[0];
+        var targetGainsEffect = increaseAbilities.targetEffect[0];
+        if (increaseAbilities.effectiveness > 0)
+        {
+          if (ability?.name === "Quicken")
+          rewards += (increaseAbilities.effectiveness) + " Sec Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          else
+          rewards += (increaseAbilities.effectiveness * 100) + "% Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        }
+        if (userGainsEffect !== undefined && userGainsEffect.effectiveness > 0)
+        {
+          if (ability?.name === "Second Wind")
+          rewards += (increaseAbilities.effectiveness) + " HP Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          else 
+          rewards += (userGainsEffect.effectiveness * 100) + "% Buff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        }
+        if (userGainsEffect !== undefined && userGainsEffect.duration > 0)
+          rewards += (userGainsEffect.duration) + " Sec Duration Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (targetGainsEffect !== undefined && targetGainsEffect.effectiveness > 0)
+          rewards += (targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (targetGainsEffect !== undefined && targetGainsEffect.duration > 0)
+          rewards += (targetGainsEffect.duration) + " Sec Duration Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+
 
         if (rewards !== "")
           rewards = rewards.substring(0, rewards.length - 2);
@@ -553,6 +588,23 @@ export class GodViewComponent implements OnInit {
     return ability.abilityUpgradeLevel;
   }
 
+
+  getPermanentAbilityEffectivenessIncrease(ability: Ability) {
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.effectiveness;
+
+    if (ability !== undefined) {
+      if (ability.name === "Quicken")
+        return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
+      else
+        return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
+    }
+
+    return 0;
+  }
+
   getAbilityEffectivenessIncrease(ability: Ability) {
     var baseGod = new God(this.god.type);
     this.globalService.assignGodAbilityInfo(baseGod);
@@ -574,7 +626,7 @@ export class GodViewComponent implements OnInit {
     var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
     if (baseAbility !== undefined) {
-        return this.utilityService.genericRound((ability.secondaryEffectiveness - baseAbility.secondaryEffectiveness) * 100) + "%";
+      return this.utilityService.genericRound((ability.secondaryEffectiveness - baseAbility.secondaryEffectiveness) * 100) + "%";
     }
 
     return 0;
@@ -588,10 +640,10 @@ export class GodViewComponent implements OnInit {
     if (baseAbility !== undefined) {
       if (baseAbility.name === "Special Delivery")
         return this.utilityService.genericRound((ability.userEffect.length - baseAbility.userEffect.length));
-        if (baseAbility.name === "No Escape")
-        return this.utilityService.genericRound((ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length - baseAbility.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length));              
-        if (baseAbility.name === "Insanity")
-        return this.utilityService.genericRound((ability.targetEffect.length - baseAbility.targetEffect.length));              
+      if (baseAbility.name === "No Escape")
+        return this.utilityService.genericRound((ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length - baseAbility.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length));
+      if (baseAbility.name === "Insanity")
+        return this.utilityService.genericRound((ability.targetEffect.length - baseAbility.targetEffect.length));
     }
 
     return 0;
@@ -603,7 +655,7 @@ export class GodViewComponent implements OnInit {
     var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
     if (baseAbility !== undefined) {
-        return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));              
+      return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));
     }
 
     return 0;
@@ -631,6 +683,75 @@ export class GodViewComponent implements OnInit {
 
     if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
       return this.utilityService.roundTo((ability.userEffect[0].duration - baseAbility.userEffect[0].duration), 2);
+
+    return 0;
+  }
+
+  getPermanentAbilityUserEffectEffectivenessIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].effectiveness;
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {
+      if (baseAbility.name === "Second Wind")
+        return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
+      else
+        return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getPermanentAbilityUserEffectDurationIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].duration;
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
+      return this.utilityService.roundTo(permanentAbilityUpgradeAmount, 2);
+
+    return 0;
+  }
+
+  getPermanentAbilityTargetEffectEffectivenessIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.targetEffect !== undefined && permanentAbilityUpgrade.targetEffect.length > 0)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.targetEffect[0].effectiveness;
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0) {
+      return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getPermanentAbilityTargetEffectDurationIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.targetEffect !== undefined && permanentAbilityUpgrade.targetEffect.length > 0)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.targetEffect[0].duration;
+
+    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0)
+      return this.utilityService.roundTo(permanentAbilityUpgradeAmount, 2);
 
     return 0;
   }

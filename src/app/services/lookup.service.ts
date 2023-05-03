@@ -1415,7 +1415,7 @@ export class LookupService {
     return this.utilityService.getSanitizedHtml(abilityDescription);
   }
 
-  getGodAbilityDescription(abilityName: string, character: Character, ability?: Ability) {
+  getGodAbilityDescription(abilityName: string, character: Character, ability?: Ability, god?: God) {
     var abilityDescription = "";
     var effectivenessPercent = 0;
     var effectiveAmount = 0;
@@ -1437,9 +1437,31 @@ export class LookupService {
     var maxCountTimesEffectivenessPercent = 0;
 
     if (ability !== undefined) {
-      effectivenessPercent = this.utilityService.genericRound(ability.effectiveness * 100);
+      var permanentEffectivenessIncrease = 0;
+      var permanentUserEffectEffectivenessIncrease = 0;
+      var permanentUserEffectDurationIncrease = 0;
+      var permanentTargetEffectEffectivenessIncrease = 0;
+      var permanentTargetEffectDurationIncrease = 0;
+
+      if (god !== undefined) {
+        var permanentAbility = god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+        if (permanentAbility !== undefined) {
+          permanentEffectivenessIncrease = permanentAbility.effectiveness;
+
+          if (permanentAbility.userEffect !== undefined && permanentAbility.userEffect.length > 0) {
+            permanentUserEffectEffectivenessIncrease = permanentAbility.userEffect[0].effectiveness;
+            permanentUserEffectDurationIncrease = permanentAbility.userEffect[0].duration;
+          }
+          if (permanentAbility.targetEffect !== undefined && permanentAbility.targetEffect.length > 0) {
+            permanentTargetEffectEffectivenessIncrease = permanentAbility.targetEffect[0].effectiveness;
+            permanentTargetEffectDurationIncrease = permanentAbility.targetEffect[0].duration;
+          }
+        }
+      }
+
+      effectivenessPercent = this.utilityService.genericRound((ability.effectiveness + permanentEffectivenessIncrease) * 100);
       effectiveAmount = this.utilityService.genericRound(this.getAbilityEffectiveAmount(character, ability));
-      effectiveAmountPercent = this.utilityService.genericRound((ability.effectiveness - 1) * 100);
+      effectiveAmountPercent = this.utilityService.genericRound(((ability.effectiveness + permanentEffectivenessIncrease) - 1) * 100);
       secondaryEffectiveAmount = ability.secondaryEffectiveness;
       secondaryEffectiveAmountPercent = this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100);
       thresholdAmountPercent = this.utilityService.genericRound((ability.threshold) * 100);
@@ -1450,9 +1472,9 @@ export class LookupService {
       var relatedUserGainStatusEffect = ability?.userEffect[0];
 
       if (relatedUserGainStatusEffect !== undefined) {
-        relatedUserGainStatusEffectDuration = this.utilityService.genericRound(relatedUserGainStatusEffect.duration);
+        relatedUserGainStatusEffectDuration = this.utilityService.genericRound(relatedUserGainStatusEffect.duration + permanentUserEffectDurationIncrease);
         relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold;
-        relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
+        relatedUserGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedUserGainStatusEffect.effectiveness + permanentUserEffectEffectivenessIncrease);
         if (relatedUserGainStatusEffectEffectiveness < 1)
           relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2);
         else
@@ -1463,8 +1485,8 @@ export class LookupService {
       var relatedTargetGainStatusEffect = ability?.targetEffect[0];
 
       if (relatedTargetGainStatusEffect !== undefined) {
-        relatedTargetGainStatusEffectDuration = this.utilityService.genericRound(relatedTargetGainStatusEffect.duration);
-        relatedTargetGainStatusEffectEffectiveness = relatedTargetGainStatusEffect.effectiveness;
+        relatedTargetGainStatusEffectDuration = this.utilityService.genericRound(relatedTargetGainStatusEffect.duration + permanentTargetEffectDurationIncrease);
+        relatedTargetGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedTargetGainStatusEffect.effectiveness + permanentTargetEffectEffectivenessIncrease);
         if (relatedTargetGainStatusEffectEffectiveness < 1)
           relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100);
         else

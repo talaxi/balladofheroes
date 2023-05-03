@@ -44,6 +44,10 @@ export class UtilityService {
   public godPermanentStatGain2ObtainCap = 10;
   public godPermanentStatGain3ObtainCap = 10;
   public godPermanentStatGain4ObtainCap = 10;
+  public godPermanentAbility1ObtainCap = 10;
+  public godPermanentPassiveObtainCap = 10;
+  public godPermanentAbility2ObtainCap = 10;
+  public godPermanentAbility3ObtainCap = 10;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;

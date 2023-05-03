@@ -376,7 +376,30 @@ export class VersionControlService {
             god.partyPermanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
             god.permanentStat3GainCount = [];
             god.permanentStat4GainCount = [];
+            god.permanentAbility1GainCount = [];
+            god.permanentPassiveGainCount = [];
+            god.permanentAbility2GainCount = [];
+            god.permanentAbility3GainCount = [];
+            god.permanentAbilityUpgrades = [];
           });
+
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion)!.displayOrder = 1;
+
+            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Gorgon) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Gorgon)!.displayOrder = 2;
+
+            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld)!.displayOrder = 3;
+
+            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Boar) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Boar)!.displayOrder = 4;
+
+            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Argo) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Argo)!.displayOrder = 5;
+
+            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors)!.displayOrder = 6;
         }
 
         this.globalService.globalVar.currentVersion = version;

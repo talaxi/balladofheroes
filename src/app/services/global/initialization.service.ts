@@ -62,6 +62,7 @@ export class InitializationService {
 
   initializeBallads() {
     var championBallad = new Ballad(BalladEnum.Champion);
+    championBallad.displayOrder = 1;
     championBallad.isSelected = true;
     championBallad.isAvailable = true;
 
@@ -92,6 +93,7 @@ export class InitializationService {
     });
 
     var gorgonBallad = new Ballad(BalladEnum.Gorgon);
+    gorgonBallad.displayOrder = 2;
     var dodona = new Zone();
     dodona.zoneName = "Road to Dodona";
     dodona.type = ZoneEnum.Dodona;
@@ -122,6 +124,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(gorgonBallad);
 
     var laborsBallad = new Ballad(BalladEnum.Labors);
+    laborsBallad.displayOrder = 6;
     var nemea = new Zone();
     nemea.zoneName = "Nemea";
     nemea.type = ZoneEnum.Nemea;
@@ -133,6 +136,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(laborsBallad);
 
     var underworldBallad = new Ballad(BalladEnum.Underworld);
+    underworldBallad.displayOrder = 3;
     var asphodel = new Zone();
     asphodel.type = ZoneEnum.Asphodel;
     asphodel.zoneName = "Asphodel";
@@ -166,6 +170,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(underworldBallad);
 
     var boarBallad = new Ballad(BalladEnum.Boar);
+    boarBallad.displayOrder = 4;
     var peloposNisos = new Zone();
     peloposNisos.type = ZoneEnum.PeloposNisos;
     peloposNisos.zoneName = "Pelopos Nisos";
@@ -647,7 +652,7 @@ export class InitializationService {
         //character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 598;
+      var godLevel = 1248;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -777,6 +782,7 @@ export class InitializationService {
 
   initializeBalladOfTheArgo() {
     var argoBallad = new Ballad(BalladEnum.Argo);
+    argoBallad.displayOrder = 5;
     var aegean = new Zone();
     aegean.type = ZoneEnum.AegeanSea;
     aegean.zoneName = "Aegean Sea";

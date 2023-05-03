@@ -52,6 +52,7 @@ import { GameLogService } from './game-log.service';
 import { DictionaryService } from '../utility/dictionary.service';
 import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { God } from 'src/app/models/character/god.model';
 
 @Injectable({
   providedIn: 'root'
@@ -890,7 +891,7 @@ export class BattleService {
       user.battleInfo.elementsUsed.push(elementalType);
     }
 
-    var abilityEffectiveness = this.getAbilityEffectiveness(abilityCopy, effectivenessModifier);
+    var abilityEffectiveness = this.getAbilityEffectiveness(abilityCopy, effectivenessModifier, user, isGodAbility);
     var onslaughtUsed = false;
 
     if (abilityCopy.dealsDirectDamage) {
@@ -1542,8 +1543,53 @@ export class BattleService {
     }
   }
 
-  getAbilityEffectiveness(ability: Ability, effectivenessModifier: number) {
-    var effectiveness = ability.effectiveness * effectivenessModifier;
+  getGodPermanentAbilityUpgrades(baseAbility?: Ability, user?: Character) {
+    if (baseAbility === undefined || user === undefined)
+      return undefined;
+
+    var abilityFound = false;
+    var permanentUpgrades: Ability | undefined = undefined;
+    var godWithAbility: God | undefined = undefined;
+    if (user.assignedGod1 !== undefined && user.assignedGod1 !== GodEnum.None) {
+      var god = this.globalService.globalVar.gods.find(item => item.type === user.assignedGod1);
+      if (god !== undefined) {
+        if (god.abilityList !== undefined && god.abilityList.length > 0) {
+          abilityFound = god.abilityList.some(item => item.name === baseAbility.name);
+          if (abilityFound)
+            godWithAbility = god;
+        }
+      }
+    }
+
+    if (!abilityFound) {
+      if (user.assignedGod2 !== undefined && user.assignedGod2 !== GodEnum.None) {
+        var god = this.globalService.globalVar.gods.find(item => item.type === user.assignedGod2);
+        if (god !== undefined) {
+          if (god.abilityList !== undefined && god.abilityList.length > 0) {
+            abilityFound = god.abilityList.some(item => item.name === baseAbility.name);
+            if (abilityFound)
+              godWithAbility = god;
+          }
+        }
+      }
+    }
+
+    if (abilityFound && godWithAbility !== undefined)
+      var permanentUpgrades = godWithAbility.permanentAbilityUpgrades.find(item => item.requiredLevel === baseAbility.requiredLevel);
+
+    return permanentUpgrades;
+  }
+
+  getAbilityEffectiveness(ability: Ability, effectivenessModifier: number, user: Character, isGodAbility: boolean = false) {
+    var permanentEffectivenessIncrease = 0;
+
+    if (isGodAbility) {
+      var permanentAbilityUpgrades = this.getGodPermanentAbilityUpgrades(ability, user);
+      if (permanentAbilityUpgrades !== undefined)
+        permanentEffectivenessIncrease = permanentAbilityUpgrades.effectiveness;
+    }
+
+    var effectiveness = (ability.effectiveness + permanentEffectivenessIncrease) * effectivenessModifier;
 
     return effectiveness;
   }
@@ -1689,6 +1735,18 @@ export class BattleService {
   }
 
   applyStatusEffect(appliedStatusEffect: StatusEffect, target: Character, potentialTargets?: Character[], castingCharacter?: Character, originalAbility?: Ability) {
+    var permanentAbilityUpgrades = this.getGodPermanentAbilityUpgrades(originalAbility, castingCharacter);
+    if (originalAbility !== undefined && permanentAbilityUpgrades !== undefined) {
+      if (permanentAbilityUpgrades.userEffect !== undefined && permanentAbilityUpgrades.userEffect.length > 0) {
+        appliedStatusEffect.effectiveness += permanentAbilityUpgrades.userEffect[0].effectiveness;
+        appliedStatusEffect.duration += permanentAbilityUpgrades.userEffect[0].duration;
+      }
+      if (permanentAbilityUpgrades.targetEffect !== undefined && permanentAbilityUpgrades.targetEffect.length > 0) {
+        appliedStatusEffect.effectiveness += permanentAbilityUpgrades.targetEffect[0].effectiveness;
+        appliedStatusEffect.duration += permanentAbilityUpgrades.targetEffect[0].duration;
+      }
+    }
+
     if (appliedStatusEffect.isPositive &&
       this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp) !== undefined) {
       var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ApolloBuffDurationUp);
@@ -2094,7 +2152,7 @@ export class BattleService {
       statusEffectDamageBonus = effect.effectiveness;
     }
 
-    if (isDamageOverTime && bloodlust !== undefined) {
+    if (isDamageOverTime && bloodlust !== undefined && this.battle !== undefined && this.battle.currentEnemies !== undefined) {
       var totalDots = 0;
       this.battle.currentEnemies.enemyList.forEach(enemy => {
         totalDots += enemy.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.DamageOverTime).length;

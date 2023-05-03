@@ -93,7 +93,13 @@ export class AbilityViewComponent implements OnInit {
       description = this.lookupService.getCharacterAbilityDescription(this.ability.name, this.character, this.ability);
 
     if (description === "")
-      description = this.lookupService.getGodAbilityDescription(this.ability.name, this.character, this.ability);
+    {
+      var god: God | undefined = undefined;
+      if (this.god !== undefined)
+        god = this.globalService.globalVar.gods.find(item => item.type === this.god);
+
+      description = this.lookupService.getGodAbilityDescription(this.ability.name, this.character, this.ability, god);
+    }
 
     return this.utilityService.getSanitizedHtml(description);
   }
