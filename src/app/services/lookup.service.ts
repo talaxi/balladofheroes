@@ -320,7 +320,7 @@ export class LookupService {
     this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), amount);
   }
 
-  getItemDescription(type: ItemsEnum, associatedResource?: ResourceValue, canRemoveExtra: boolean = false): string {
+  getItemDescription(type: ItemsEnum, associatedResource?: ResourceValue, canRemoveExtra: boolean = false, excludeResourceLocationDescription: boolean = false): string {
     var name = "";
     var effect = this.getBattleItemEffect(type);
 
@@ -405,7 +405,7 @@ export class LookupService {
 
     //resources    
     else if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Resource || this.getItemTypeFromItemEnum(type) === ItemTypeEnum.CraftingMaterial)
-      name = this.getResourceDescription(type);
+      name = this.getResourceDescription(type, excludeResourceLocationDescription);
 
     //progression
     else if (type === ItemsEnum.BoonOfOlympus)
@@ -416,8 +416,8 @@ export class LookupService {
       name = "Spend on permanent stat boosts.";
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Recipe for Alchemy item <b>Poison Extract Potion</b>.";
-      else if (type === ItemsEnum.FocusPotionRecipe)
-        name = "Recipe for Alchemy item <b>Focus Potion</b>.";
+    else if (type === ItemsEnum.FocusPotionRecipe)
+      name = "Recipe for Alchemy item <b>Focus Potion</b>.";
 
     //equipment
     else if (this.getEquipmentPieceByItemType(type) !== undefined) {
@@ -571,22 +571,22 @@ export class LookupService {
     if (type === ItemsEnum.LargeCharmOfApollo)
       description = "Increase Healing Done by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfApolloValue() * 100) + "%</span> for the character equipped with Apollo.";
 
-      if (type === ItemsEnum.SmallCharmOfHades)
+    if (type === ItemsEnum.SmallCharmOfHades)
       description = "Increase Multiple Target Damage by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfHadesValue() * 100) + "%</span> for the character equipped with Hades.";
     if (type === ItemsEnum.LargeCharmOfHades)
       description = "Increase Multiple Target Damage by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfHadesValue() * 100) + "%</span> for the character equipped with Hades.";
 
-      if (type === ItemsEnum.SmallCharmOfAres)
+    if (type === ItemsEnum.SmallCharmOfAres)
       description = "Reduce Damage over Time Tick Frequency by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfAresValue() * 100) + "%</span> for the character equipped with Ares.";
     if (type === ItemsEnum.LargeCharmOfAres)
       description = "Reduce Damage over Time Tick Frequency by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfAresValue() * 100) + "%</span> for the character equipped with Ares.";
 
-      if (type === ItemsEnum.SmallCharmOfDionysus)
+    if (type === ItemsEnum.SmallCharmOfDionysus)
       description = "Reduce Ability Cooldown while buffs are active by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfDionysusValue() * 100) + "%</span> for the character equipped with Dionysus.";
     if (type === ItemsEnum.LargeCharmOfDionysus)
       description = "Reduce Ability Cooldown while buffs are active by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfDionysusValue() * 100) + "%</span> for the character equipped with Dionysus.";
 
-      if (type === ItemsEnum.SmallCharmOfNemesis)
+    if (type === ItemsEnum.SmallCharmOfNemesis)
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
     if (type === ItemsEnum.LargeCharmOfNemesis)
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
@@ -639,7 +639,7 @@ export class LookupService {
     return description;
   }
 
-  getResourceDescription(item: ItemsEnum) {
+  getResourceDescription(item: ItemsEnum, excludeResourceLocations: boolean = false) {
     var itemNotYetImplementedText = "You are sure there is a purpose for this, but you are not quite sure yet what that is.<br/> It will likely make more sense in the future. (Not implemented yet)";
 
     var description = "";
@@ -660,8 +660,10 @@ export class LookupService {
         item === ItemsEnum.DullOpal || item === ItemsEnum.DullTopaz || item === ItemsEnum.DullAmethyst)
         return itemNotYetImplementedText;*/
 
-      var locations = this.getResourceItemLocations(item);
-      description += "<hr/>Can be found at:<br/>" + locations;
+      if (!excludeResourceLocations) {
+        var locations = this.getResourceItemLocations(item);
+        description += "<hr/>Can be found at:<br/>" + locations;
+      }
     }
     return description;
   }
@@ -730,7 +732,7 @@ export class LookupService {
     /*var availableSubzones: SubZoneEnum[] = [];
     */
 
-    matchingSubzones.sort((a,b) => {
+    matchingSubzones.sort((a, b) => {
       var aSubzone = this.balladService.findSubzone(a);
       var bSubzone = this.balladService.findSubzone(b);
 
@@ -739,16 +741,16 @@ export class LookupService {
 
       if (aSubzone.isAvailable && !bSubzone.isAvailable)
         return -1;
-        if (!aSubzone.isAvailable && bSubzone.isAvailable)
+      if (!aSubzone.isAvailable && bSubzone.isAvailable)
         return 1;
-        else
+      else
         return 0;
     })
 
     //matchingSubzones.forEach(subzone => {
-      var locationTotal = 4;
-      for (var i = 0; i < locationTotal; i++) {
-        var subzone = matchingSubzones[i];
+    var locationTotal = 4;
+    for (var i = 0; i < locationTotal; i++) {
+      var subzone = matchingSubzones[i];
       var matchedSubzone = this.balladService.findSubzone(subzone);
       var name = this.balladService.getSubZoneName(subzone);
 
@@ -770,10 +772,10 @@ export class LookupService {
     matchingSubzones.forEach(subzone => {
       var matchedSubzone = this.balladService.findSubzone(subzone);
       if (matchedSubzone !== undefined) {
-      var matchedBallad = this.balladService.findBalladOfSubzone(matchedSubzone.type);
-      if (matchedSubzone !== undefined && matchedSubzone.isAvailable && matchedBallad?.isAvailable) {
-        matchingSubzoneAvailableTotal += 1;
-      }
+        var matchedBallad = this.balladService.findBalladOfSubzone(matchedSubzone.type);
+        if (matchedSubzone !== undefined && matchedSubzone.isAvailable && matchedBallad?.isAvailable) {
+          matchingSubzoneAvailableTotal += 1;
+        }
       }
     });
 
@@ -1917,10 +1919,10 @@ export class LookupService {
       abilityDescription = "Increase the user's Attack and Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Sloppy Shot") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Full Burst") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Immobilize") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2175,10 +2177,10 @@ export class LookupService {
       abilityDescription = "Reduce all targets' Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds and increase the party's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Wild Swing") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Wild Combo") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Roost") {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2187,7 +2189,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and Stun the target for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Half Hearted Attack") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Feeding Frenzy") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Water damage to a target two times. " + cooldown + " second cooldown.";
@@ -2217,13 +2219,13 @@ export class LookupService {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Arm Swing") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Aggressive Swipe") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Mindless Attacks") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "From Above") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Air damage to a target. " + cooldown + " second cooldown.";
@@ -2259,7 +2261,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Lumbering Swipe") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Hunker Down") {
       abilityDescription = "Reduce the user's Damage Taken and increase the user's Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2299,13 +2301,13 @@ export class LookupService {
     }
     if (ability.name === "Stinger") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Final Sting") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Instantly die. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Slowing Toxin") {
       abilityDescription = "Reduce target's Agility by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Clean Cut") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. " + cooldown + " second cooldown.";
     }
@@ -2317,7 +2319,7 @@ export class LookupService {
     }
     if (ability.name === "Cackle") {
       abilityDescription = "Reduce all enemies' Luck and Resistance by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Thirst for Blood") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> true damage to a target and heal back the amount of damage dealt.";
     }
@@ -2335,16 +2337,16 @@ export class LookupService {
     }
     if (ability.name === "Spirit of the River") {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Agility and Defense by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Giant Claw") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Large Claw") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Spit Venom") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    } 
+    }
     if (ability.name === "Powerful Toxin") {
       abilityDescription = "Increase the user's Damage Over Time Damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
     }
@@ -2362,31 +2364,31 @@ export class LookupService {
     }
     if (ability.name === "Razor Feather Combo") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Nurse Wounds") {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and increase the user's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Concoction") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target with a random element. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Powerful Brew") {
       abilityDescription = "Give yourself a random positive stat boost of <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Target Acquired") {
       abilityDescription = "Apply a Focus effect and reduce a target's Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Healing Spirits") {
       abilityDescription = "Heal the lowest HP % party member for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP." + cooldown + " second cooldown.";
     }
     if (ability.name === "Cleansing Spirits") {
       abilityDescription = "Remove all debuffs from the party." + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Charge") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Damage is randomly modified by " + (damageModifierRange * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Lead by Example") {
       abilityDescription = "Increase the party's Attack and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Click Click x2") {
       abilityDescription = "Increase the user's Attack and Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
     }
@@ -2395,55 +2397,55 @@ export class LookupService {
     }
     if (ability.name === "Nap") {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Lazy Attack") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1-damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
-    }    
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+    }
     if (ability.name === "Refreshing Bite") {
       abilityDescription = "Increase the user's Agility and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }        
+    }
     if (ability.name === "Stampede") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets twice. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Poseidon's Boon") {
       abilityDescription = "Reduce the user's ability cooldowns by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }       
+    }
     if (ability.name === "Intimidate") {
       abilityDescription = "Reduce a target's Defense and Resistance by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }        
+    }
     if (ability.name === "Snap") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Swarm") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Multi-Stinger") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target twice. For both attacks, apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Shed Skin") {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and clear all debuffs from the user. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Strangle") {
       abilityDescription = "Indefinitely stun a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds. This can be removed by dealing " + ability.maxCount + " damage to the user. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Siren Song") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Protection") {
       abilityDescription = "Give each party member a Barrier of <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "% of Attack</strong> HP. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Dog Whistle") {
       abilityDescription = "Increase the party's Attack and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
-    }    
+    }
     if (ability.name === "Two-Headed Bite") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target two times. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Two-Headed Crunch") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target two times and reduce the targets' Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "3x Stab") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Throw Boulder") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. Reduce target's auto attack cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
@@ -2542,7 +2544,7 @@ export class LookupService {
 
     if (statusEffect.type === StatusEffectEnum.AoeDamageUp)
       description = "Increase multi target damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.DamageOverTimeDamageUp)
+    if (statusEffect.type === StatusEffectEnum.DamageOverTimeDamageUp)
       description = "Increase damage over time damage by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.ReduceHealing)
@@ -2646,7 +2648,7 @@ export class LookupService {
       description = "Increase your next damaging ability by " + Math.round(statusEffect.effectiveness).toLocaleString() + ". Amount cannot exceed 10x your Max HP " + (character === undefined ? "." : "(" + Math.round(character.battleStats.maxHp * 10).toLocaleString() + ").");
     if (statusEffect.type === StatusEffectEnum.Retribution)
       description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
-      if (statusEffect.type === StatusEffectEnum.ChainsOfFate)
+    if (statusEffect.type === StatusEffectEnum.ChainsOfFate)
       description = "All of your attacks must target the enemy with Chains of Fate, and all of their attacks will target you.";
 
 
@@ -3019,13 +3021,13 @@ export class LookupService {
       this.globalService.globalVar.sidequestData.weeklyMeleeEntries += item.amount;
     }
     else {
-    var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item && this.globalService.extraItemsAreEqual(item.extras, resource.extras));
-    if (existingResource === undefined) {
-      this.globalService.globalVar.resources.push(item);
-    }
-    else {
-      existingResource.amount += item.amount;
-    }
+      var existingResource = this.globalService.globalVar.resources.find(resource => item.item === resource.item && this.globalService.extraItemsAreEqual(item.extras, resource.extras));
+      if (existingResource === undefined) {
+        this.globalService.globalVar.resources.push(item);
+      }
+      else {
+        existingResource.amount += item.amount;
+      }
     }
   }
 
@@ -4417,52 +4419,52 @@ export class LookupService {
   getGodPartyMaxHpStatBreakdown(god: God) {
     var breakdown = "";
 
-    if (god.partyPermanentStatGain.maxHp > 0)      
+    if (god.partyPermanentStatGain.maxHp > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.maxHp) + "<br />";
 
     return breakdown;
   }
-  
+
   getGodPartyAttackStatBreakdown(god: God) {
     var breakdown = "";
 
-    if (god.partyPermanentStatGain.attack > 0)      
+    if (god.partyPermanentStatGain.attack > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.attack) + "<br />";
 
     return breakdown;
   }
-  
+
   getGodPartyDefenseStatBreakdown(god: God) {
     var breakdown = "";
 
-    if (god.partyPermanentStatGain.defense > 0)      
+    if (god.partyPermanentStatGain.defense > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.defense) + "<br />";
 
     return breakdown;
   }
-  
+
   getGodPartyAgilityStatBreakdown(god: God) {
     var breakdown = "";
 
-    if (god.partyPermanentStatGain.agility > 0)      
+    if (god.partyPermanentStatGain.agility > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.agility) + "<br />";
 
     return breakdown;
   }
-  
+
   getGodPartyLuckStatBreakdown(god: God) {
     var breakdown = "";
 
-    if (god.partyPermanentStatGain.luck > 0)      
+    if (god.partyPermanentStatGain.luck > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.luck) + "<br />";
 
     return breakdown;
   }
-  
+
   getGodPartyResistanceStatBreakdown(god: God) {
     var breakdown = "";
 
-    if (god.partyPermanentStatGain.resistance > 0)      
+    if (god.partyPermanentStatGain.resistance > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.resistance) + "<br />";
 
     return breakdown;
@@ -4471,8 +4473,8 @@ export class LookupService {
   getGodPartyXpGainStatBreakdown(god: God) {
     var breakdown = "";
 
-    if (god.partyPermanentStatGain.xpGain > 0)      
-      breakdown += "Permanent Stat Gain: +" + this.utilityService.genericRound(god.partyPermanentStatGain.xpGain* 100) + "%<br />";
+    if (god.partyPermanentStatGain.xpGain > 0)
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.genericRound(god.partyPermanentStatGain.xpGain * 100) + "%<br />";
 
     return breakdown;
   }
@@ -4813,14 +4815,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
-    
+
     var godPartyBonus = 0;
     this.globalService.globalVar.gods.forEach(god => {
       godPartyBonus += god.partyPermanentStatGain.maxHp;
     });
 
     if (godPartyBonus > 0)
-      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
+      breakdown += "God Party Bonus: +" + Math.round(godPartyBonus) + "<br />";
 
     var equipmentMaxHpGain = this.equipmentService.getTotalMaxHpGain(character.equipmentSet);
     if (equipmentMaxHpGain > 0)
@@ -4851,14 +4853,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
-  
+
     var godPartyBonus = 0;
     this.globalService.globalVar.gods.forEach(god => {
       godPartyBonus += god.partyPermanentStatGain.attack;
     });
 
     if (godPartyBonus > 0)
-      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
+      breakdown += "God Party Bonus: +" + Math.round(godPartyBonus) + "<br />";
 
     var equipmentAttackGain = this.equipmentService.getTotalAttackGain(character.equipmentSet);
     if (equipmentAttackGain > 0)
@@ -4889,14 +4891,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
-    
+
     var godPartyBonus = 0;
     this.globalService.globalVar.gods.forEach(god => {
       godPartyBonus += god.partyPermanentStatGain.defense;
     });
 
     if (godPartyBonus > 0)
-      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
+      breakdown += "God Party Bonus: +" + Math.round(godPartyBonus) + "<br />";
 
     var equipmentDefenseGain = this.equipmentService.getTotalDefenseGain(character.equipmentSet);
     if (equipmentDefenseGain > 0)
@@ -4934,7 +4936,7 @@ export class LookupService {
     });
 
     if (godPartyBonus > 0)
-      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
+      breakdown += "God Party Bonus: +" + Math.round(godPartyBonus) + "<br />";
 
     var equipmentAgilityGain = this.equipmentService.getTotalAgilityGain(character.equipmentSet);
     if (equipmentAgilityGain > 0)
@@ -4965,14 +4967,14 @@ export class LookupService {
       if (godStatGain > 0)
         breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
     }
-    
+
     var godPartyBonus = 0;
     this.globalService.globalVar.gods.forEach(god => {
       godPartyBonus += god.partyPermanentStatGain.luck;
     });
 
     if (godPartyBonus > 0)
-      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
+      breakdown += "God Party Bonus: +" + Math.round(godPartyBonus) + "<br />";
 
     var equipmentLuckGain = this.equipmentService.getTotalLuckGain(character.equipmentSet);
     if (equipmentLuckGain > 0)
@@ -5010,7 +5012,7 @@ export class LookupService {
     });
 
     if (godPartyBonus > 0)
-      breakdown += "God Party Bonus: +" +  Math.round(godPartyBonus) + "<br />";
+      breakdown += "God Party Bonus: +" + Math.round(godPartyBonus) + "<br />";
 
     var equipmentResistanceGain = this.equipmentService.getTotalResistanceGain(character.equipmentSet);
     if (equipmentResistanceGain > 0)
@@ -6302,6 +6304,8 @@ export class LookupService {
     var level = this.globalService.globalVar.sidequestData.traderHuntLevel;
     if (level === 1)
       return BestiaryEnum.BloodthirstyHyena;
+    if (level === 2)
+      return BestiaryEnum.ScavengingCoyote;      
 
     return BestiaryEnum.None;
   }
@@ -6328,7 +6332,7 @@ export class LookupService {
     else if (type === BalladEnum.Argo)
       description = "Thales and Zosime begin to pick up their rhythm again and now take to the seas to follow in the footsteps of Jason and the Argonauts. As they travel east to Colchis, they soon realize that all is not quite like the stories.";
     else if (type === BalladEnum.Labors)
-      description = "You finally feel ready to take on the trials of Heracles, the greatest of all mortals. Each step is a difficult one, but you gain strength along the way.";
+      description = "You finally feel ready to take on the trials of Heracles, the greatest of all mortals. Each step is a difficult one, but you gain new strength along the way.";
 
     return description;
   }

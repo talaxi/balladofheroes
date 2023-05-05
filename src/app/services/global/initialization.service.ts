@@ -261,7 +261,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("quickViewOverlayFlipped", false);
 
     this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
-    this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", false);
+    this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
     this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
     this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);    
   }
@@ -658,7 +658,7 @@ export class InitializationService {
         //character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 1248;
+      var godLevel = 548;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -873,7 +873,7 @@ export class InitializationService {
 
       var erymanthus = new Zone();
       erymanthus.type = ZoneEnum.Erymanthus;
-      erymanthus.zoneName = "Erymanthus";
+      erymanthus.zoneName = "Mount Erymanthos";
       erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusLadonRiverbeds));
       erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusGreatMassif));
       erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusCragInlet));

@@ -243,6 +243,8 @@ export class BalladService {
   }
 
   selectNextSubzone() {
+    var includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
+
     var nextSubzoneFound = false;
     var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);//.slice().reverse();
     reverseOrderBallads.forEach(ballad => {
@@ -252,7 +254,7 @@ export class BalladService {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable);//.slice().reverse();
           reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
-              !this.autoProgressShouldChangeSubZone(subzone)) {
+              !this.autoProgressShouldChangeSubZone(subzone) && (includeSideQuests || (!includeSideQuests && this.shouldSubzoneShowSideQuestNotification(subzone.type) !== NotificationTypeEnum.SideQuest))) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
               this.selectZone(zone);
@@ -282,6 +284,7 @@ export class BalladService {
       shouldChange = this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount <= 0;
     }
     
+    console.log("Should change? " + shouldChange);
     return shouldChange;
   }
 
@@ -526,7 +529,7 @@ export class BalladService {
     if (type === SubZoneEnum.AegeanSeaSympegadesOverlook)
       name = "Sympegades Overlook";
     if (type === SubZoneEnum.BlackSeaStillWaters)
-      name = "Still Waters";
+      name = "Calm Waters";
     if (type === SubZoneEnum.BlackSeaMariandyna)
       name = "Mariandyna";
     if (type === SubZoneEnum.BlackSeaUnderAssault)

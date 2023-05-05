@@ -27,6 +27,7 @@ export class ShoppingItemViewComponent implements OnInit {
   subscription: any;  
   tooltipDirection = DirectionEnum.Right;
   outOfStock: boolean = false;
+  @Input() excludeItemDescriptionLocationText = false;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService,
@@ -34,7 +35,7 @@ export class ShoppingItemViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
-    this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
+    this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem, undefined, false, this.excludeItemDescriptionLocationText);
     this.setItemPurchasePrice();
     this.outOfStock = this.isItemOutOfStock();
 
@@ -90,9 +91,8 @@ export class ShoppingItemViewComponent implements OnInit {
       var resource = this.resourceGeneratorService.getResourceFromItemType(this.item.shopItem, 1);
 
       if (resource !== undefined) {
-        if (resource.item === ItemsEnum.SparringMatch) {
-          //TODO: make this 5000
-          this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), 50000000);
+        if (resource.item === ItemsEnum.SparringMatch) {          
+          this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), 5000);
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass) {
           this.unlockClass(resource.item);

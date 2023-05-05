@@ -2733,7 +2733,7 @@ export class SubZoneGeneratorService {
   getAvailableTraderOptions(level: number) {
     var shopOptions: ShopItem[] = [];
 
-    if (level === 1)
+    if (level >= 1)
     {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Leather, SubZoneEnum.NemeaCleonea)); 
     }

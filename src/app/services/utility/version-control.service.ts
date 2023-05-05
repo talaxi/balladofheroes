@@ -385,7 +385,7 @@ export class VersionControlService {
           });
 
           this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
-          this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", false);
+          this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
           this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
           this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);
           

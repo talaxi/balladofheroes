@@ -20,7 +20,7 @@ export class AutoProgressOptionsComponent {
 
   ngOnInit() {
     this.autoProgressType = this.globalService.globalVar.settings.get("autoProgressType") ?? CompletionStatusEnum.Cleared;
-    this.includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? false;
+    this.includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
     this.pauseStory = this.globalService.globalVar.settings.get("autoProgressPauseStory") ?? false;
     this.includeAllAchievements = !this.globalService.globalVar.settings.get("autoProgressIncludeAllAchievements") ?? true;    
   }

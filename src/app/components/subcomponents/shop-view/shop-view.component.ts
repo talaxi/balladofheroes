@@ -12,6 +12,7 @@ import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
+import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -36,8 +37,8 @@ export class ShopViewComponent implements OnInit {
   professionNotification = NotificationTypeEnum.Profession;
   alchemy: Profession | undefined;
   jewelcrafting: Profession | undefined;
-  traderLevelUpText = "Level up text";
-  traderLevelUpKillsRemainingText = "Kills needed: 0/10";
+  traderLevelUpText = "";
+  traderLevelUpKillsRemainingText = "";
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -52,7 +53,8 @@ export class ShopViewComponent implements OnInit {
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
     private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
-    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService) { }
+    private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService,
+    private enemyGeneratorService: EnemyGeneratorService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
@@ -137,19 +139,14 @@ export class ShopViewComponent implements OnInit {
       this.jewelcraftingService.checkForNewRecipes();
     }
 
-    if (option.type === ShopTypeEnum.Trader) {
+    if (option.type === ShopTypeEnum.Trader) {     
       this.isDisplayingNewItems = false;
-      if (this.globalService.globalVar.sidequestData.traderHuntLevel === 0)
-      {
-        //trigger sidequest text
-        this.globalService.globalVar.sidequestData.traderHuntLevel = 1;
-      }      
 
       this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
       var defeatCount = 0;
 
       while (defeatCount >= this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel())
-      {        
+      {                
         this.globalService.globalVar.sidequestData.traderHuntLevel += 1;
         this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
         defeatCount = 0;
@@ -157,18 +154,31 @@ export class ShopViewComponent implements OnInit {
         if (defeatStats !== undefined)
           defeatCount = defeatStats.count;
       }
+
+      this.setTraderLevelUpText();
+      this.traderLevelUpKillsRemainingText = this.enemyGeneratorService.generateEnemy(this.globalService.globalVar.sidequestData.traderBestiaryType).name + " Kills: " + defeatCount + " / " + this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel();
+      option.availableItems = this.subzoneGeneratorService.getAvailableTraderOptions(this.globalService.globalVar.sidequestData.traderHuntLevel);
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler || 
-      option.type === ShopTypeEnum.Trader) {
+      option.type === ShopTypeEnum.Trader) {        
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));
       this.newItems = option.availableItems.sort((a, b) => this.sortFunction(a, b)).filter(item => item.originalStore === this.activeSubzoneType);
 
       if (this.isDisplayingNewItems)
         this.shopItems = this.newItems;
+      else
+        this.shopItems = this.allItems;
 
       this.setupDisplayShopItems();
     }
+  }
+
+  setTraderLevelUpText() {    
+    if (this.globalService.globalVar.sidequestData.traderHuntLevel === 1)
+      this.traderLevelUpText = "“If you could help me get back my materials, I sure would appreciate it!” <i>Trader Level  " + this.globalService.globalVar.sidequestData.traderHuntLevel + "</i>";
+    else
+      this.traderLevelUpText = "“It looks like there is some more stuff out there, if you can find it I'd be happy to trade it with you!” <i>Trader Level  " + this.globalService.globalVar.sidequestData.traderHuntLevel + "</i>";
   }
 
   sortFunction(a: ShopItem, b: ShopItem) {
@@ -224,7 +234,7 @@ export class ShopViewComponent implements OnInit {
     this.shopItems = this.shopItems.filter(item => this.balladService.findSubzone(item.originalStore)?.isAvailable);
 
     var filteredItems = this.filterItems(this.shopItems);
-
+    
     var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
 
     for (var i = 1; i <= filteredItems.length; i++) {
@@ -317,6 +327,10 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.Jewelcrafter && this.balladService.getActiveSubZone().type === SubZoneEnum.AegeanSeaIolcus &&
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.Jewelcrafting)) {
       scene = OptionalSceneEnum.Jewelcrafting;
+    }
+    if (option.type === ShopTypeEnum.Trader && this.balladService.getActiveSubZone().type === SubZoneEnum.NemeaCleonea &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.TraderIntro)) {
+      scene = OptionalSceneEnum.TraderIntro;
     }
 
     return scene;
