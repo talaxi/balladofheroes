@@ -76,6 +76,22 @@ export class DictionaryService {
       name = "Rejuvenating Elixir";
     else if (type === ItemsEnum.ElixirOfFortitude)
       name = "Elixir of Fortitude";
+      else if (type === ItemsEnum.ElixirOfSpeed)
+      name = "Elixir of Speed";
+      else if (type === ItemsEnum.PiercingPotion)
+      name = "Piercing Potion";
+      else if (type === ItemsEnum.HoneyPoultice)
+      name = "Honey Poultice";
+      else if (type === ItemsEnum.HoneySalve)
+      name = "Honey Salve";
+      else if (type === ItemsEnum.FlamingToxin)
+      name = "Flaming Toxin";
+      else if (type === ItemsEnum.SlowingPotion)
+      name = "Slowing Potion";
+      else if (type === ItemsEnum.PotentConcoction)
+      name = "Potent Concoction";
+      else if (type === ItemsEnum.ParalyzingToxin)
+      name = "Paralyzing Toxin";            
 
     //equipment
     //swords
@@ -95,6 +111,8 @@ export class DictionaryService {
       name = "Liquid Saber";
     else if (type === ItemsEnum.BlackLance)
       name = "Black Lance";
+      else if (type === ItemsEnum.JaggedSword)
+      name = "Jagged Sword";
 
     //hammers
     else if (type === ItemsEnum.IronHammer)
@@ -109,6 +127,8 @@ export class DictionaryService {
       name = "Fending Mace";
     else if (type === ItemsEnum.DiamondHammer)
       name = "Diamond Hammer";
+      else if (type === ItemsEnum.RadiatingHammer)
+      name = "Radiating Hammer";
 
     //bows
     else if (type === ItemsEnum.ShortBow)
@@ -125,6 +145,8 @@ export class DictionaryService {
       name = "Elysian Oak Bow";
     else if (type === ItemsEnum.SpiritBow)
       name = "Spirit Bow";
+      else if (type === ItemsEnum.BirchBow)
+      name = "Birch Bow";            
 
     //shields
     else if (type === ItemsEnum.IronShield)
@@ -141,6 +163,12 @@ export class DictionaryService {
       name = "Shield of the Sea";
     else if (type === ItemsEnum.SpikedShield)
       name = "Spiked Shield";
+      else if (type === ItemsEnum.SpiritShield)
+      name = "Spirit Shield";
+      else if (type === ItemsEnum.LightShield)
+      name = "Light Shield";
+      else if (type === ItemsEnum.BloodyShield)
+      name = "Bloody Shield";
 
     //necklaces
     else if (type === ItemsEnum.ForgottenLocket)
@@ -161,6 +189,10 @@ export class DictionaryService {
       name = "Dark Moon Pendant";
       else if (type === ItemsEnum.BlazingSunPendant)
       name = "Blazing Sun Pendant";
+      else if (type === ItemsEnum.BronzeBeakNecklace)
+      name = "Bronze Beak Necklace";
+      else if (type === ItemsEnum.BloodyNecklace)
+      name = "Bloody Necklace";            
 
     //armor
     else if (type === ItemsEnum.LinenArmor)
@@ -183,6 +215,14 @@ export class DictionaryService {
       name = "Bearskin Armor";
     else if (type === ItemsEnum.FeatheredTunic)
       name = "Feathered Tunic";
+      else if (type === ItemsEnum.FurArmor)
+      name = "Fur Armor";
+      else if (type === ItemsEnum.HideArmor)
+      name = "Hide Armor";
+      else if (type === ItemsEnum.ScaleArmor)
+      name = "Scale Armor";
+      else if (type === ItemsEnum.HesperidianArmor)
+      name = "Hesperidian Armor";
 
     //rings
     else if (type === ItemsEnum.MoltenRing)
@@ -207,6 +247,12 @@ export class DictionaryService {
       name = "Scaly Ring";
     else if (type === ItemsEnum.QuadRing)
       name = "Quad Ring";
+      else if (type === ItemsEnum.RingOfCurses)
+      name = "Ring of Curses";
+      else if (type === ItemsEnum.SafeRing)
+      name = "Safe Ring";
+      else if (type === ItemsEnum.SirensongRing)
+      name = "Sirensong Ring";
 
     //crafting materials
     else if (type === ItemsEnum.LightLeather)
@@ -333,6 +379,40 @@ export class DictionaryService {
       name = "Shark Tooth";
     else if (type === ItemsEnum.Seashell)
       name = "Seashell";
+      else if (type === ItemsEnum.CoarseFur)
+      name = "Coarse Fur";
+      else if (type === ItemsEnum.SerpentScale)
+      name = "Serpent Scale";
+      else if (type === ItemsEnum.Honey)
+      name = "Honey";
+      else if (type === ItemsEnum.AnimalHide)
+      name = "Animal Hide";
+      else if (type === ItemsEnum.EssenceOfWater)
+      name = "Essence of Water";
+      else if (type === ItemsEnum.Tusk)
+      name = "Tusk";
+      else if (type === ItemsEnum.SharpFeather)
+      name = "Sharp Feather";
+      else if (type === ItemsEnum.BronzeBeak)
+      name = "Bronze Beak";
+      else if (type === ItemsEnum.GoldenApple)
+      name = "Golden Apple";
+      else if (type === ItemsEnum.MagicTreeBark)
+      name = "Magic Tree Bark";
+      else if (type === ItemsEnum.CanineFang)
+      name = "Canine Fang";
+      else if (type === ItemsEnum.PristineCrabClaw)
+      name = "Pristine Crab Claw";
+      else if (type === ItemsEnum.VialOfTheCretanSea)
+      name = "Vial of the Cretan Sea";
+      else if (type === ItemsEnum.SmallAnimalBones)
+      name = "Small Animal Bone";
+      else if (type === ItemsEnum.BirchBark)
+      name = "Birch Bark";
+      else if (type === ItemsEnum.RadiatingGemstone)
+      name = "Radiating Gemstone";
+      else if (type === ItemsEnum.WhiteHorn)
+      name = "White Horn";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -341,6 +421,8 @@ export class DictionaryService {
       name = "Heroic Elixir Recipe";
     else if (type === ItemsEnum.FocusPotionRecipe)
       name = "Focus Potion Recipe";
+    else if (type === ItemsEnum.PotentConcoctionRecipe)
+      name = "Potent Concoction Recipe";
 
     //charms
     else if (type === ItemsEnum.SmallCharmOfDetermination)

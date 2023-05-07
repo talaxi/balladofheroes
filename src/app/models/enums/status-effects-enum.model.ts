@@ -119,5 +119,8 @@ export enum StatusEffectEnum {
     ExtraTrueDamage,
     AbilitySpeedUp,
     Immobilize,
-    CastingImmobilize
+    CastingImmobilize,
+    InstantHpPercentDamage,
+    ArmorPenetrationUp,
+    ArmorPenetrationDown
   }

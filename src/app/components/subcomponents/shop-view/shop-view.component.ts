@@ -140,6 +140,10 @@ export class ShopViewComponent implements OnInit {
 
       this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
       var defeatCount = 0;
+      var defeatStats = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.globalService.globalVar.sidequestData.traderBestiaryType);
+      if (defeatStats !== undefined) {        
+        defeatCount = defeatStats.count;
+      }
 
       while (defeatCount >= this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel())
       {                
@@ -147,13 +151,8 @@ export class ShopViewComponent implements OnInit {
         this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
         defeatCount = 0;
         var defeatStats = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.globalService.globalVar.sidequestData.traderBestiaryType);
-        if (defeatStats !== undefined) {
-          console.log("Enemy found")
+        if (defeatStats !== undefined) {          
           defeatCount = defeatStats.count;
-        }
-        else
-        {
-          console.log("Enemy not found");
         }
       }
 

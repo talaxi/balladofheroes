@@ -197,6 +197,51 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.QuadRing) {
       return new ResourceValue(ItemsEnum.QuadRing, amount);
     }
+    if (type === ItemsEnum.RingOfCurses) {
+      return new ResourceValue(ItemsEnum.RingOfCurses, amount);
+    }
+    if (type === ItemsEnum.SirensongRing) {
+      return new ResourceValue(ItemsEnum.SirensongRing, amount);
+    }
+    if (type === ItemsEnum.BloodyShield) {
+      return new ResourceValue(ItemsEnum.BloodyShield, amount);
+    }
+    if (type === ItemsEnum.SpiritShield) {
+      return new ResourceValue(ItemsEnum.SpiritShield, amount);
+    }
+    if (type === ItemsEnum.JaggedSword) {
+      return new ResourceValue(ItemsEnum.JaggedSword, amount);
+    }
+    if (type === ItemsEnum.BirchBow) {
+      return new ResourceValue(ItemsEnum.BirchBow, amount);
+    }
+    if (type === ItemsEnum.RadiatingHammer) {
+      return new ResourceValue(ItemsEnum.RadiatingHammer, amount);
+    }
+    if (type === ItemsEnum.LightShield) {
+      return new ResourceValue(ItemsEnum.LightShield, amount);
+    }
+    if (type === ItemsEnum.FurArmor) {
+      return new ResourceValue(ItemsEnum.FurArmor, amount);
+    }
+    if (type === ItemsEnum.ScaleArmor) {
+      return new ResourceValue(ItemsEnum.ScaleArmor, amount);
+    }
+    if (type === ItemsEnum.HideArmor) {
+      return new ResourceValue(ItemsEnum.HideArmor, amount);
+    }
+    if (type === ItemsEnum.HesperidianArmor) {
+      return new ResourceValue(ItemsEnum.HesperidianArmor, amount);
+    }
+    if (type === ItemsEnum.SafeRing) {
+      return new ResourceValue(ItemsEnum.SafeRing, amount);
+    }
+    if (type === ItemsEnum.BronzeBeakNecklace) {
+      return new ResourceValue(ItemsEnum.BronzeBeakNecklace, amount);
+    }
+    if (type === ItemsEnum.BloodyNecklace) {
+      return new ResourceValue(ItemsEnum.BloodyNecklace, amount);
+    }    
 
     //equippables
     if (type === ItemsEnum.HealingHerb) {
@@ -268,6 +313,27 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.RestorativeSalve) {
       return new ResourceValue(ItemsEnum.RestorativeSalve, amount);
     }
+    if (type === ItemsEnum.PiercingPotion) {
+      return new ResourceValue(ItemsEnum.PiercingPotion, amount);
+    }
+    if (type === ItemsEnum.ElixirOfSpeed) {
+      return new ResourceValue(ItemsEnum.ElixirOfSpeed, amount);
+    }
+    if (type === ItemsEnum.HoneyPoultice) {
+      return new ResourceValue(ItemsEnum.HoneyPoultice, amount);
+    }
+    if (type === ItemsEnum.HoneySalve) {
+      return new ResourceValue(ItemsEnum.HoneySalve, amount);
+    }
+    if (type === ItemsEnum.FlamingToxin) {
+      return new ResourceValue(ItemsEnum.FlamingToxin, amount);
+    }
+    if (type === ItemsEnum.SlowingPotion) {
+      return new ResourceValue(ItemsEnum.SlowingPotion, amount);
+    }
+    if (type === ItemsEnum.PotentConcoction) {
+      return new ResourceValue(ItemsEnum.PotentConcoction, amount);
+    }    
 
     //materials
     if (type === ItemsEnum.LightLeather) {
@@ -446,6 +512,54 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.ToxicIchor) {
       return new ResourceValue(ItemsEnum.ToxicIchor, amount);
+    }
+    if (type === ItemsEnum.CoarseFur) {
+      return new ResourceValue(ItemsEnum.CoarseFur, amount);
+    }
+    if (type === ItemsEnum.SerpentScale) {
+      return new ResourceValue(ItemsEnum.SerpentScale, amount);
+    }
+    if (type === ItemsEnum.Honey) {
+      return new ResourceValue(ItemsEnum.Honey, amount);
+    }
+    if (type === ItemsEnum.AnimalHide) {
+      return new ResourceValue(ItemsEnum.AnimalHide, amount);
+    }
+    if (type === ItemsEnum.EssenceOfWater) {
+      return new ResourceValue(ItemsEnum.EssenceOfWater, amount);
+    }
+    if (type === ItemsEnum.Tusk) {
+      return new ResourceValue(ItemsEnum.Tusk, amount);
+    }
+    if (type === ItemsEnum.SharpFeather) {
+      return new ResourceValue(ItemsEnum.SharpFeather, amount);
+    }
+    if (type === ItemsEnum.MagicTreeBark) {
+      return new ResourceValue(ItemsEnum.MagicTreeBark, amount);
+    }
+    if (type === ItemsEnum.BronzeBeak) {
+      return new ResourceValue(ItemsEnum.BronzeBeak, amount);
+    }
+    if (type === ItemsEnum.SmallAnimalBones) {
+      return new ResourceValue(ItemsEnum.SmallAnimalBones, amount);
+    }
+    if (type === ItemsEnum.VialOfTheCretanSea) {
+      return new ResourceValue(ItemsEnum.VialOfTheCretanSea, amount);
+    }
+    if (type === ItemsEnum.CanineFang) {
+      return new ResourceValue(ItemsEnum.CanineFang, amount);
+    }
+    if (type === ItemsEnum.PristineCrabClaw) {
+      return new ResourceValue(ItemsEnum.PristineCrabClaw, amount);
+    }
+    if (type === ItemsEnum.BirchBark) {
+      return new ResourceValue(ItemsEnum.BirchBark, amount);
+    }
+    if (type === ItemsEnum.RadiatingGemstone) {
+      return new ResourceValue(ItemsEnum.RadiatingGemstone, amount);
+    }
+    if (type === ItemsEnum.WhiteHorn) {
+      return new ResourceValue(ItemsEnum.WhiteHorn, amount);
     }
 
     //charms

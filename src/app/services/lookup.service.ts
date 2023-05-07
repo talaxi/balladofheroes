@@ -162,18 +162,24 @@ export class LookupService {
       name = "Straining mixture";
     if (action === ProfessionActionsEnum.CombineIngredientsPot)
       name = "Combining ingredients in pot";
+      if (action === ProfessionActionsEnum.RareCombineIngredientsPot)
+      name = "Combining rare ingredients in pot";
     if (action === ProfessionActionsEnum.MeltWax)
       name = "Melting wax";
     if (action === ProfessionActionsEnum.MixOil)
       name = "Mixing oil";
     if (action === ProfessionActionsEnum.CombineIngredientsPotion)
       name = "Combining ingredients in vial and stoppering";
+      if (action === ProfessionActionsEnum.RareCombineIngredientsPotion)
+      name = "Combining rare ingredients in vial and stoppering";
     if (action === ProfessionActionsEnum.HeatMixture)
       name = "Heating mixture";
     if (action === ProfessionActionsEnum.CombineIngredients)
       name = "Combining ingredients together";
     if (action === ProfessionActionsEnum.CrushIngredients)
       name = "Crushing ingredients into a powder";
+      if (action === ProfessionActionsEnum.CrushIngredients)
+      name = "Crushing rare ingredients into a powder";
     if (action === ProfessionActionsEnum.ExtractEssence)
       name = "Extract essence from ingredients";
     if (action === ProfessionActionsEnum.Infuse)
@@ -247,24 +253,26 @@ export class LookupService {
   getItemTypeFromItemEnum(type: ItemsEnum) {
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.HealingSalve ||
       type === ItemsEnum.RestorativeHerb || type === ItemsEnum.FocusPotion || type === ItemsEnum.RestorativePoultice ||
-      type === ItemsEnum.RestorativeSalve) {
+      type === ItemsEnum.RestorativeSalve || type === ItemsEnum.HoneyPoultice || type === ItemsEnum.HoneySalve) {
       return ItemTypeEnum.HealingItem;
     }
 
     if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.PoisonFang || type === ItemsEnum.ExplodingPotion
       || type === ItemsEnum.FirePotion || type === ItemsEnum.StranglingGasPotion || type === ItemsEnum.PoisonExtractPotion ||
-      type === ItemsEnum.HeftyStone || type === ItemsEnum.UnstablePotion || type === ItemsEnum.BoomingPotion) {
+      type === ItemsEnum.HeftyStone || type === ItemsEnum.UnstablePotion || type === ItemsEnum.BoomingPotion || type === ItemsEnum.SlowingPotion ||
+      type === ItemsEnum.PiercingPotion || type === ItemsEnum.PotentConcoction) {
       return ItemTypeEnum.BattleItem;
     }
 
     if (type === ItemsEnum.PoisonousToxin || type === ItemsEnum.DebilitatingToxin || type === ItemsEnum.WitheringToxin ||
-      type === ItemsEnum.VenomousToxin) {
+      type === ItemsEnum.VenomousToxin || type === ItemsEnum.ParalyzingToxin || type === ItemsEnum.FlamingToxin) {
       return ItemTypeEnum.Toxin;
     }
 
-    if (type === ItemsEnum.HeroicElixir || type === ItemsEnum.RejuvenatingElixir || type === ItemsEnum.ElixirOfFortitude) {
+    if (type === ItemsEnum.HeroicElixir || type === ItemsEnum.RejuvenatingElixir || type === ItemsEnum.ElixirOfFortitude ||
+      type === ItemsEnum.ElixirOfSpeed) {
       return ItemTypeEnum.Elixir;
-    }
+    }    
 
     if (type === ItemsEnum.EagleFeather || type === ItemsEnum.LamiaHeart || type === ItemsEnum.Leather || type === ItemsEnum.LightLeather ||
       type === ItemsEnum.PetrifiedBark || type === ItemsEnum.SmallFeather || type === ItemsEnum.Asphodelus || type === ItemsEnum.Fennel ||
@@ -274,7 +282,11 @@ export class LookupService {
       type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence || type === ItemsEnum.VialOfLakeLerna ||
       type === ItemsEnum.SatchelOfHerbs || type === ItemsEnum.BushelOfHerbs || type === ItemsEnum.SoulEssence || type === ItemsEnum.FishScales ||
       type === ItemsEnum.MetalScraps || type === ItemsEnum.SharkTeeth || type === ItemsEnum.Seashell || type === ItemsEnum.Wax || type === ItemsEnum.BoarHide ||
-      type === ItemsEnum.BearHide || type === ItemsEnum.ToxicIchor) {
+      type === ItemsEnum.BearHide || type === ItemsEnum.ToxicIchor || type === ItemsEnum.CoarseFur || type === ItemsEnum.SerpentScale ||
+      type === ItemsEnum.Honey || type === ItemsEnum.AnimalHide || type === ItemsEnum.EssenceOfWater || type === ItemsEnum.Tusk ||
+      type === ItemsEnum.SharpFeather || type === ItemsEnum.BronzeBeak || type === ItemsEnum.MagicTreeBark || type === ItemsEnum.CanineFang ||
+      type === ItemsEnum.SmallAnimalBones || type === ItemsEnum.VialOfTheCretanSea || type === ItemsEnum.PristineCrabClaw || type === ItemsEnum.BirchBark ||
+      type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -283,7 +295,6 @@ export class LookupService {
 
     if (type === ItemsEnum.Coin || type === ItemsEnum.EternalMeleeTicket)
       return ItemTypeEnum.Resource;
-
 
     if (type === ItemsEnum.CrackedRuby || type === ItemsEnum.CrackedTopaz || type === ItemsEnum.CrackedOpal ||
       type === ItemsEnum.CrackedAmethyst || type === ItemsEnum.CrackedEmerald || type === ItemsEnum.CrackedAquamarine ||
@@ -300,7 +311,7 @@ export class LookupService {
     }
 
     if (type === ItemsEnum.BoonOfOlympus || type === ItemsEnum.ChthonicFavor || type === ItemsEnum.ChthonicPower || type === ItemsEnum.UnderworldAccess ||
-      type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2)
+      type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2 || type === ItemsEnum.GoldenApple)
       return ItemTypeEnum.Progression;
 
     return ItemTypeEnum.None;
@@ -418,6 +429,8 @@ export class LookupService {
       name = "Recipe for Alchemy item <b>Poison Extract Potion</b>.";
     else if (type === ItemsEnum.FocusPotionRecipe)
       name = "Recipe for Alchemy item <b>Focus Potion</b>.";
+      else if (type === ItemsEnum.PotentConcoctionRecipe)
+      name = "Recipe for Alchemy item <b>Potent Concoction</b>.";
 
     //equipment
     else if (this.getEquipmentPieceByItemType(type) !== undefined) {
@@ -874,7 +887,7 @@ export class LookupService {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Spear);
       equipmentPiece.stats = new CharacterStats(0, 125, 0, 0, 145, 40);
       equipmentPiece.stats.criticalMultiplier = .15;
-      equipmentPiece.stats.aoeDamage = .1;
+      equipmentPiece.stats.aoeDamage = .15;
       equipmentPiece.slotCount = 2;
     }
     if (type === ItemsEnum.LiquidSaber) {
@@ -885,6 +898,15 @@ export class LookupService {
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enwater, -1, 1, false, true, false, type.toString()));
       equipmentPiece.slotCount = 2;
     }
+    if (type === ItemsEnum.JaggedSword) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 120, 150, 0, 0, 0);
+      equipmentPiece.stats.autoAttackCooldownReduction = .05;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentPiece.equipmentEffect.chance = .2;
+      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 12, .75, false, false));
+      equipmentPiece.slotCount = 2;
+    }  
 
     //hammers
     if (type === ItemsEnum.IronHammer) {
@@ -916,6 +938,16 @@ export class LookupService {
       equipmentPiece.stats.armorPenetration = .05;
       equipmentPiece.slotCount = 1;
     }
+    if (type === ItemsEnum.RadiatingHammer) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 225, 0, 0, 0, 0);
+      equipmentPiece.stats.armorPenetration = .075;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.aoeDamage = .15;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentPiece.equipmentEffect.chance = .25;      
+      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", undefined, undefined, undefined, undefined, false));
+    }    
 
     //bows
     if (type === ItemsEnum.ShortBow) {
@@ -950,6 +982,15 @@ export class LookupService {
       equipmentPiece.stats.criticalMultiplier = .15;
       equipmentPiece.slotCount = 1;
     }
+    if (type === ItemsEnum.BirchBow) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Bow);
+      equipmentPiece.stats = new CharacterStats(0, 135, 0, 0, 150, 0);
+      equipmentPiece.stats.criticalMultiplier = .15;
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enair, -1, 1, false, true, false, type.toString()));
+    }        
 
     //shields
     if (type === ItemsEnum.IronShield) {
@@ -992,6 +1033,25 @@ export class LookupService {
       equipmentPiece.stats.hpRegen += 12;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 400, false, true, false, type.toString()));
+    }
+    if (type === ItemsEnum.BloodyShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 175, 0, 0, 175);
+      equipmentPiece.stats.hpRegen += 15;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.stats.aoeDamage = .1;
+    }
+    if (type === ItemsEnum.SpiritShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 250, 0, 0, 225);      
+      equipmentPiece.stats.healingDone = .1;
+      equipmentPiece.stats.abilityCooldownReduction = .075;
+    }
+    if (type === ItemsEnum.LightShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(450, 0, 150, 0, 0, 215);
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.stats.elementIncrease.air = .15;      
     }
 
     //armor
@@ -1043,6 +1103,40 @@ export class LookupService {
       equipmentPiece.stats.elementResistance.air = .1;
       equipmentPiece.slotCount = 2;
     }
+    if (type === ItemsEnum.FurArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(500, 0, 180, 135, 0, 0);
+      equipmentPiece.stats.autoAttackCooldownReduction = .025;
+      equipmentPiece.slotCount = 1;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentPiece.equipmentEffect.chance = .2;
+      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ArmorPenetrationUp, 8, 1.2, false, true));
+    }
+    if (type === ItemsEnum.ScaleArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(800, 0, 180, 0, 0, 135);      
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 350, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 75, false, true, false));
+    }
+    if (type === ItemsEnum.HideArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(850, 0, 275, 0, 0, 0);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats.aoeDamage = .15;
+      equipmentPiece.stats.abilityCooldownReduction = .025;
+    }
+    if (type === ItemsEnum.HesperidianArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(1200, 0, 175, 0, 0, 0);
+      equipmentPiece.stats.elementResistance.air = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.abilityCooldownReduction = .025;
+      equipmentPiece.stats.hpRegen = 14;
+      equipmentPiece.stats.healingDone = .05;
+    }        
 
     //necklace
     if (type === ItemsEnum.ForgottenLocket) {
@@ -1098,6 +1192,19 @@ export class LookupService {
       equipmentPiece.stats.healingReceived += .15;
       equipmentPiece.stats.abilityCooldownReduction += .1;
       equipmentPiece.stats.thorns += .15;
+    }
+    if (type === ItemsEnum.BronzeBeakNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 90, 0, 0, 90, 0);
+      equipmentPiece.stats.elementIncrease.air += .15;
+      equipmentPiece.stats.overdriveGain += .15;
+      equipmentPiece.slotCount = 3;
+    }
+    if (type === ItemsEnum.BloodyNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 60, 0, 60, 0, 60);
+      equipmentPiece.stats.armorPenetration += .075;
+      equipmentPiece.stats.aoeDamage += .075;
     }
 
     //ring
@@ -1174,7 +1281,26 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(444, 44, 44, 44, 44, 44);
       equipmentPiece.slotCount = 4;
     }
-
+    if (type === ItemsEnum.RingOfCurses) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 40, 0, 50, 50, 0);
+      equipmentPiece.stats.debuffDuration += .1;
+      equipmentPiece.slotCount = 1;
+    }
+    if (type === ItemsEnum.SirensongRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 75, 75, 35);
+      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentPiece.equipmentEffect.chance = .2;
+      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, -1, 1, false, true));
+    }
+    if (type === ItemsEnum.SafeRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 175, 0, 0, 175);
+      equipmentPiece.stats.abilityCooldownReduction = .1;
+      equipmentPiece.slotCount = 2;
+    }
+    
     return equipmentPiece;
   }
 

@@ -3432,6 +3432,32 @@ export class SubZoneGeneratorService {
       if (traderLevel !== undefined)
         shopOptions.push(new ShopOption(ShopTypeEnum.Trader, this.getAvailableTraderOptions(traderLevel)));
     }
+    
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FurArmor, SubZoneEnum.StymphaliaTiryns));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ScaleArmor, SubZoneEnum.StymphaliaTiryns));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HideArmor, SubZoneEnum.StymphaliaTiryns));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HesperidianArmor, SubZoneEnum.StymphaliaTiryns));
+
+    if (subzoneType === SubZoneEnum.StymphaliaTiryns) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));  
+    }
+    
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.JaggedSword, SubZoneEnum.CoastOfCreteElis));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BirchBow, SubZoneEnum.CoastOfCreteElis));
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RadiatingHammer, SubZoneEnum.CoastOfCreteElis));
+
+    if (subzoneType === SubZoneEnum.CoastOfCreteElis) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));      
+    }
+
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SpiritShield, SubZoneEnum.ErytheiaCadiz));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LightShield, SubZoneEnum.ErytheiaCadiz));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BloodyNecklace, SubZoneEnum.ErytheiaCadiz));
+    availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SafeRing, SubZoneEnum.ErytheiaCadiz));
+    
+    if (subzoneType === SubZoneEnum.ErytheiaCadiz) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));         
+    }
 
     return shopOptions;
   }

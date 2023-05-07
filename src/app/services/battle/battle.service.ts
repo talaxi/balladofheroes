@@ -2677,6 +2677,9 @@ export class BattleService {
           if (itemCopy.item === ItemsEnum.FocusPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.FocusPotion);
           }
+          if (itemCopy.item === ItemsEnum.PotentConcoctionRecipe) {
+            this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PotentConcoction);
+          }
           else {
             this.addLootToResources(itemCopy);
           }
