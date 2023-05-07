@@ -265,7 +265,32 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
     if (item === ItemsEnum.Leather) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, 5));
+      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, 8));
+    }    
+    if (item === ItemsEnum.ThickLeather) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, 5));
+    }
+    if (item === ItemsEnum.BoarHide) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 5));
+    }
+    if (item === ItemsEnum.BearHide) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 5));
+    }    
+    if (item === ItemsEnum.Honey) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Olive, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Fennel, 10));
+    }
+    if (item === ItemsEnum.VialOfLakeLerna) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 10));      
+    }
+    if (item === ItemsEnum.VialOfTheBlackSea) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 8));      
+    }
+    if (item === ItemsEnum.EssenceOfWater) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfFire, 8));      
+    }
+    if (item === ItemsEnum.ToxicIchor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SpiritEssence, 12));      
     }
 
     return new ShopItem(item, purchasePrice, originalStore);

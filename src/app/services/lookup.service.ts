@@ -274,7 +274,7 @@ export class LookupService {
       type === ItemsEnum.Violet || type === ItemsEnum.VialOfTheBlackSea || type === ItemsEnum.Sorrel || type === ItemsEnum.SpiritEssence || type === ItemsEnum.VialOfLakeLerna ||
       type === ItemsEnum.SatchelOfHerbs || type === ItemsEnum.BushelOfHerbs || type === ItemsEnum.SoulEssence || type === ItemsEnum.FishScales ||
       type === ItemsEnum.MetalScraps || type === ItemsEnum.SharkTeeth || type === ItemsEnum.Seashell || type === ItemsEnum.Wax || type === ItemsEnum.BoarHide ||
-      type === ItemsEnum.BearHide) {
+      type === ItemsEnum.BearHide || type === ItemsEnum.ToxicIchor) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -1621,6 +1621,7 @@ export class LookupService {
     var relatedUserGainStatusEffectDuration = 0;
     var relatedUserGainStatusEffectEffectiveness = 0;
     var relatedUserGainStatusEffectEffectivenessPercent = 0;
+    var relatedUserGainStatusEffectMaxCount = 0;
     var relatedTargetGainStatusEffectDuration = 0;
     var relatedTargetGainStatusEffectEffectiveness = 0;
     var relatedTargetGainStatusEffectEffectivenessPercent = 0;
@@ -1655,6 +1656,7 @@ export class LookupService {
           relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness) * 100);
         else
           relatedUserGainStatusEffectEffectivenessPercent = Math.round((relatedUserGainStatusEffectEffectiveness - 1) * 100);
+        relatedUserGainStatusEffectMaxCount = relatedUserGainStatusEffect.maxCount;
       }
 
       var secondaryRelatedUserGainStatusEffect = ability?.userEffect[1];
@@ -2426,7 +2428,7 @@ export class LookupService {
       abilityDescription = "Heal self for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP and clear all debuffs from the user. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Strangle") {
-      abilityDescription = "Indefinitely stun a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds. This can be removed by dealing " + ability.maxCount + " damage to the user. " + cooldown + " second cooldown.";
+      abilityDescription = "Indefinitely stun a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds. This can be removed by dealing " + relatedUserGainStatusEffectMaxCount + " damage to the user. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Siren Song") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2582,9 +2584,13 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Thorns)
       description = "Dealing damage back to auto attackers.";
     if (statusEffect.type === StatusEffectEnum.Stagger)
-      description = "Decrease auto attack cooldown speed by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
+      description = "Increase auto attack cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Unsteady)
-      description = "Decrease ability cooldown speed by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
+      description = "Increase ability cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.AutoAttackSpeedUp)
+      description = "Reduce auto attack cooldown by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.AbilitySpeedUp)
+      description = "Reduce ability cooldown by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Enfire)
       description = "All auto attacks and non-elemental abilities have the Fire element.";
     if (statusEffect.type === StatusEffectEnum.Enholy)
@@ -2623,7 +2629,18 @@ export class LookupService {
       description = "Increase damage dealt by battle items by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%."
     if (statusEffect.type === StatusEffectEnum.BattleItemEffectUp)
       description = "Increase healing or damage dealt by battle items by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%. (Does not increase effectiveness of items that grant effects)";
+    if (statusEffect.type === StatusEffectEnum.ExtraTrueDamage)
+      description = "Deal increasing true damage instantly after every attack. Last True Damage Dealt: " + this.utilityService.genericRound(statusEffect.effectiveness);
+      if (statusEffect.type === StatusEffectEnum.Invulnerable)
+      description = "Immune to all damage.";
+      if (statusEffect.type === StatusEffectEnum.AutoAttackInvulnerable)
+      description = "Immune to all auto attack damage.";
+      if (statusEffect.type === StatusEffectEnum.Immobilize)
+      description = "Auto attack and ability cooldowns are not charging until immobilize is cancelled by enemy.";
+      if (statusEffect.type === StatusEffectEnum.CastingImmobilize)
+      description = "Immobilizing target until " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage is dealt. Damage remaining: " + this.utilityService.bigNumberReducer(statusEffect.maxCount - statusEffect.count);
 
+      
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
       description = "10% chance on auto attack to reduce target's Agility by 20% for 14 seconds.";
     if (statusEffect.type === StatusEffectEnum.PoisonousToxin)

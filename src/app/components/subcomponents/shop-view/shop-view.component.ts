@@ -112,7 +112,7 @@ export class ShopViewComponent implements OnInit {
 
     var dialogRef: any;
 
-    if (option.type === ShopTypeEnum.Coliseum) {
+    if (option.type === ShopTypeEnum.Coliseum || option.type === ShopTypeEnum.Trader) {
       if (this.deviceDetectorService.isMobile())
         this.dialog.open(content, { width: '95%', height: '80%' });
       else
@@ -123,10 +123,6 @@ export class ShopViewComponent implements OnInit {
         dialogRef = this.dialog.open(content, { width: '95%', height: '80%', id: "dialogNoPadding" });
       else
         dialogRef = this.dialog.open(content, { width: '75%', maxHeight: '75%', id: 'dialogNoPadding' });
-    }
-
-    if (dialogRef !== undefined) {
-
     }
 
     if (option.type === ShopTypeEnum.Alchemist) {
@@ -151,8 +147,14 @@ export class ShopViewComponent implements OnInit {
         this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
         defeatCount = 0;
         var defeatStats = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.globalService.globalVar.sidequestData.traderBestiaryType);
-        if (defeatStats !== undefined)
+        if (defeatStats !== undefined) {
+          console.log("Enemy found")
           defeatCount = defeatStats.count;
+        }
+        else
+        {
+          console.log("Enemy not found");
+        }
       }
 
       this.setTraderLevelUpText();
@@ -174,11 +176,15 @@ export class ShopViewComponent implements OnInit {
     }
   }
 
+  getTraderLevel() {
+    return this.globalService.globalVar.sidequestData.traderHuntLevel;
+  }
+
   setTraderLevelUpText() {    
     if (this.globalService.globalVar.sidequestData.traderHuntLevel === 1)
-      this.traderLevelUpText = "“If you could help me get back my materials, I sure would appreciate it!” <i>Trader Level  " + this.globalService.globalVar.sidequestData.traderHuntLevel + "</i>";
+      this.traderLevelUpText = "“If you could help me get back the rest of my materials, I sure would appreciate it!”";
     else
-      this.traderLevelUpText = "“It looks like there is some more stuff out there, if you can find it I'd be happy to trade it with you!” <i>Trader Level  " + this.globalService.globalVar.sidequestData.traderHuntLevel + "</i>";
+      this.traderLevelUpText = "“If you can continue to clear the way to more materials, I'd be happy to trade it with you!”";
   }
 
   sortFunction(a: ShopItem, b: ShopItem) {

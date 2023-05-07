@@ -606,7 +606,7 @@ export class BattleService {
     this.applyToxin(character, target, party, targets);
 
     this.handleuserEffects(isPartyAttacking, [], character, party, targets, damageDealt);
-    this.handletargetEffects(isPartyAttacking, targetEffects, character, target, targets, party, damageDealt);
+    this.handletargetEffects(isPartyAttacking, [], character, target, targets, party, damageDealt);
 
     var thorns = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
     if (thorns !== undefined || target.battleStats.thorns > 0 ||
@@ -797,7 +797,6 @@ export class BattleService {
           deadCount += 1;
       });
       if (deadCount === 0) {
-        console.log("Not reducing ability cooldown for " + ability.name);
         return;
       }
     }
@@ -945,7 +944,7 @@ export class BattleService {
         var fortissimo = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Fortissimo);
         var coda = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Coda);
         if (staccato !== undefined) {
-          party.forEach(member => {
+          party.filter(character => !character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun || effect.type === StatusEffectEnum.Immobilize)).forEach(member => {
             var instantAttack = this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, -1, 1, true, true);
             this.applyStatusEffect(instantAttack, member, party, user);
           });
@@ -1429,7 +1428,7 @@ export class BattleService {
             });
           }
 
-          potentialTargets.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantTrueDamage && item.caster !== instantEffect.caster); });
+          potentialTargets.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.InstantTrueDamage && item.caster === instantEffect.caster)); });
         }
 
         if (instantEffect.type === StatusEffectEnum.DebuffDurationIncrease) {
@@ -1802,12 +1801,18 @@ export class BattleService {
             existingApplication.stackCount += 1;
           }
 
-          if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {            
-            if (appliedStatusEffect.duration > existingApplication.duration)
+          if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {
+            if (appliedStatusEffect.effectiveness === existingApplication.effectiveness) {
+              if (appliedStatusEffect.duration > existingApplication.duration)
+                existingApplication.duration = appliedStatusEffect.duration;
+            }
+            else if (appliedStatusEffect.effectiveness > existingApplication.effectiveness) {
               existingApplication.duration = appliedStatusEffect.duration;
+              existingApplication.effectiveness = appliedStatusEffect.effectiveness;
+            }
           }
-          else if (this.globalService.doesStatusEffectDurationStack(appliedStatusEffect.type)) {                  
-              existingApplication.duration += appliedStatusEffect.duration;
+          else if (this.globalService.doesStatusEffectDurationStack(appliedStatusEffect.type)) {
+            existingApplication.duration += appliedStatusEffect.duration;
           }
           else
             enemy.battleInfo.statusEffects.push(appliedStatusEffect.makeCopy());
@@ -1824,14 +1829,22 @@ export class BattleService {
           existingApplication.stackCount += 1;
         }
 
-        if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {          
+        if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {
           if (originalAbility !== undefined && originalAbility.name === "Insanity") {
             existingApplication.duration += appliedStatusEffect.duration;
           }
-          else if (appliedStatusEffect.duration > existingApplication.duration)
-            existingApplication.duration = appliedStatusEffect.duration;
+          else {
+            if (appliedStatusEffect.effectiveness === existingApplication.effectiveness) {
+              if (appliedStatusEffect.duration > existingApplication.duration)
+                existingApplication.duration = appliedStatusEffect.duration;
+            }
+            else if (appliedStatusEffect.effectiveness > existingApplication.effectiveness) {
+              existingApplication.duration = appliedStatusEffect.duration;
+              existingApplication.effectiveness = appliedStatusEffect.effectiveness;
+            }
+          }
         }
-        else if (this.globalService.doesStatusEffectDurationStack(appliedStatusEffect.type)) {                  
+        else if (this.globalService.doesStatusEffectDurationStack(appliedStatusEffect.type)) {
           existingApplication.duration += appliedStatusEffect.duration;
         }
         else
@@ -3105,7 +3118,7 @@ export class BattleService {
       if (character.battleStats.currentHp <= 0)
         return;
 
-        var matchingStatusEffect = this.getMatchingStatusEffectFromItem(this.battleItemInUse);
+      var matchingStatusEffect = this.getMatchingStatusEffectFromItem(this.battleItemInUse);
 
       //remove any other existing toxin
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type === matchingStatusEffect || !this.isStatusEffectAToxin(item.type));
@@ -3124,7 +3137,7 @@ export class BattleService {
       if (character.battleStats.currentHp <= 0)
         return;
 
-        var matchingStatusEffect = this.getMatchingStatusEffectFromItem(this.battleItemInUse);
+      var matchingStatusEffect = this.getMatchingStatusEffectFromItem(this.battleItemInUse);
 
       //remove any other existing elixir
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type === matchingStatusEffect || !this.isStatusEffectAnElixir(item.type));
@@ -3147,7 +3160,7 @@ export class BattleService {
     }
   }
 
-  getMatchingStatusEffectFromItem(type: ItemsEnum ) {
+  getMatchingStatusEffectFromItem(type: ItemsEnum) {
     if (type === ItemsEnum.WitheringToxin) {
       return StatusEffectEnum.WitheringToxin;
     }

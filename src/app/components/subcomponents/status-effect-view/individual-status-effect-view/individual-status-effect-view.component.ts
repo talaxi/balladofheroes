@@ -271,6 +271,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Stagger) {
       src += "stagger.svg";
     }
+    if (effect.type === StatusEffectEnum.AutoAttackSpeedUp) {
+      src += "attackSpeedUp.svg";
+    }
+    if (effect.type === StatusEffectEnum.AutoAttackInvulnerable) {
+      src += "autoAttackInvulnerability.svg";
+    }
+    if (effect.type === StatusEffectEnum.Invulnerable) {
+      src += "invulnerability.svg";
+    }
     if (effect.type === StatusEffectEnum.Unsteady) {
       src += "unbalanced.svg";
     }

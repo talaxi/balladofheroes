@@ -421,16 +421,13 @@ export class StoryService {
       "<div>The seventh trial of Heracles was to capture the Cretan Bull, perhaps most famous for being the father of the Minotaur. The Cretan Bull itself wreaked havoc throughout Greece, starting in Crete. Like Heracles before you, you intend to put an end to its destruction.</div>";      
     }
     else if (storyId === 33) {
-      //TODO
-    }
-    else if (storyId === 34) {
       if (pageCount === 1)
       sceneText = "<div class='sceneDiv'>After defeating the serpent Ladon, you spend some time circling the famed garden. You are surprised to see so many people around. You approach an exasperated woman within the grove.</div>" +
       "<div class='sceneDiv'>" + this.commonCharacterText("“Thieves! The lot of you!”") + " She shouts at the people picking golden apples from the orchards.</div>" +
       "<div class='sceneDiv'>" + this.commonCharacterText("“You!”") + " She points towards you and Zosime. " + this.commonCharacterText("“If you can stop these thieves and bring me back their apples, I'll let you keep some for yourselves!”") + "</div>" +
       "<div><i><b>Golden Apples</b> may now drop from certain enemies in the Fertile Fields</i></div>";      
     }
-    else if (storyId === 35) {
+    else if (storyId === 34) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>With the demise of Geryon, your journey to the West is complete. You've completed more than half of Heracles's trials now, and the remainder of your journey lays back on the eastern side of Greece. </div>" +
           "<div>You journey back the way you came, reaching Cádiz and securing boat travel back to your homeland. On the first night of your return trip, you are greeted by a familiar face.</div>";
@@ -572,6 +569,12 @@ export class StoryService {
     }
     if (this.globalService.globalVar.currentStoryId === 32) {
       this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 33) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 34) {
+      this.pageCount = 2;
     }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
@@ -750,7 +753,7 @@ export class StoryService {
     if (scene === OptionalSceneEnum.TraderIntro) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>On your return trip to Nemea, you stop at the small village of Cleonea to prepare for Heracles's first trial. Even though it is the first, no trial will be easy and you do not want to rush in overconfident. As you enter the village, you notice a large wagon stopped just before the entrance and a man frantically collecting goods scattered across the fields.</div>" +
-          "<div class='sceneDiv'>" + this.commonCharacterText("“The best guards of the Pelops Nisos, huh? I hope the crows take you!”") + " You hear him muttering as you and Zosime approach him.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“The best guards of the Pelopos Nisos, huh? I hope the crows take the lot of you!”") + " You hear him muttering as you and Zosime approach him.</div>" +
           "<div>" + this.zosimeText("“Need some help?”") + " Zosime asks as she helps the man lift a particularly heavy box full of various types of leather.</div>";
       if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“What I need is my money back! …But yes, some help would be nice, thank you.”") + " The man says as he struggles to put the box into place.</div>" +

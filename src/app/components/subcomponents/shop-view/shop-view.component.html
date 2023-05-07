@@ -69,12 +69,14 @@
 
 <ng-template #traderModal>
   <div class="centeredText">
+    <span class="bold smallCaps">trader level {{getTraderLevel()}}</span>
+    <br/>
     <span [innerHtml]="traderLevelUpText"></span>
     <br />
     <br />
-    <strong><i><span [innerHtml]="traderLevelUpKillsRemainingText"></span></i></strong>
-    <br/>
+    <strong><i><span [innerHtml]="traderLevelUpKillsRemainingText"></span></i></strong>    
   </div>
+  <br/>
   <hr class="noMargin" />
   <table>
     <tr *ngFor="let cells of shopItemRows;">

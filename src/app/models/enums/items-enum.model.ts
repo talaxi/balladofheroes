@@ -224,5 +224,18 @@ export enum ItemsEnum {
   ShieldSlotAddition,
   NecklaceSlotAddition,
   BlazingSunPendant,
-  DarkMoonPendant
+  DarkMoonPendant,
+  CoarseFur,
+  SerpentScale,
+  Honey,
+  AnimalHide,
+  EssenceOfWater,
+  Tusk,
+  RingOfCurses,
+  SharpFeather,
+  BronzeBeak,
+  GoldenApple,
+  MagicTreeBark,
+  SirensongRing,
+  BloodyShield
 }

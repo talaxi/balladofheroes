@@ -444,6 +444,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.Seashell) {
       return new ResourceValue(ItemsEnum.Seashell, amount);
     }
+    if (type === ItemsEnum.ToxicIchor) {
+      return new ResourceValue(ItemsEnum.ToxicIchor, amount);
+    }
 
     //charms
     if (type === ItemsEnum.SmallCharmOfDetermination) {
