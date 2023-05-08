@@ -620,4 +620,88 @@ export class CharmService {
   getSmallBlackKantharosValue() {
     return 15;
   }
+
+  getTotalMaxHpAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCrackedKantharosValue();
+    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCrackedKantharos);
+    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+
+    return amount;
+  }
+
+  getTotalAttackAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallBlackKantharosValue();
+    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallBlackKantharos);
+    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+
+    return amount;
+  }
+
+  getTotalLuckAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallOrnateKantharosValue();
+    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallOrnateKantharos);
+    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+
+    return amount;
+  }
+
+  getTotalAgilityAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallBuccheroKantharosValue();
+    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallBuccheroKantharos);
+    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+
+    return amount;
+  }
+
+  getTotalDefenseAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallGildedKantharosValue();
+    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallGildedKantharos);
+    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+
+    return amount;
+  }
+
+  getTotalResistanceAdditionFromCharms(resources: ResourceValue[]) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallSilverKantharosValue();
+    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallSilverKantharos);
+    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0)
+      amount += smallCharmValue * smallCharm.amount;
+
+    return amount;
+  }
 }

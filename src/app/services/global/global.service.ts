@@ -983,6 +983,13 @@ export class GlobalService {
     });
 
     //charms
+    character.battleStats.maxHp += this.charmService.getTotalMaxHpAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.attack += this.charmService.getTotalAttackAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.defense += this.charmService.getTotalDefenseAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.agility += this.charmService.getTotalAgilityAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.luck += this.charmService.getTotalLuckAdditionFromCharms(this.globalVar.resources);
+    character.battleStats.resistance += this.charmService.getTotalResistanceAdditionFromCharms(this.globalVar.resources);
+
     character.battleStats.hpRegen += this.charmService.getTotalHpRegenAdditionFromCharms(this.globalVar.resources);
     character.battleStats.criticalMultiplier += this.charmService.getTotalCriticalMultiplierAdditionFromCharms(this.globalVar.resources);
     character.battleStats.armorPenetration += this.charmService.getTotalArmorPenetrationAdditionFromCharms(this.globalVar.resources);

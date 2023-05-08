@@ -609,15 +609,15 @@ export class LookupService {
 
     if (type === ItemsEnum.SmallOrnateKantharos)
       description = "Increase parties' Luck by <span class='charmDescriptor'>" + (this.charmService.getSmallOrnateKantharosValue()) + "</span>.";
-      if (type === ItemsEnum.SmallSilverKantharos)
+    if (type === ItemsEnum.SmallSilverKantharos)
       description = "Increase parties' Resistance by <span class='charmDescriptor'>" + (this.charmService.getSmallSilverKantharosValue()) + "</span>.";
-      if (type === ItemsEnum.SmallBuccheroKantharos)
+    if (type === ItemsEnum.SmallBuccheroKantharos)
       description = "Increase parties' Agility by <span class='charmDescriptor'>" + (this.charmService.getSmallBuccheroKantharosValue()) + "</span>.";
-      if (type === ItemsEnum.SmallGildedKantharos)
+    if (type === ItemsEnum.SmallGildedKantharos)
       description = "Increase parties' Defense by <span class='charmDescriptor'>" + (this.charmService.getSmallGildedKantharosValue()) + "</span>.";
-      if (type === ItemsEnum.SmallCrackedKantharos)
+    if (type === ItemsEnum.SmallCrackedKantharos)
       description = "Increase parties' Max HP by <span class='charmDescriptor'>" + (this.charmService.getSmallCrackedKantharosValue()) + "</span>.";
-      if (type === ItemsEnum.SmallBlackKantharos)
+    if (type === ItemsEnum.SmallBlackKantharos)
       description = "Increase parties' Attack by <span class='charmDescriptor'>" + (this.charmService.getSmallBlackKantharosValue()) + "</span>.";
 
     return description;
@@ -1048,7 +1048,7 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(0, 0, 180, 0, 0, 130);
       equipmentPiece.stats.hpRegen += 12;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 400, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 650, false, true, false, type.toString()));
     }
     if (type === ItemsEnum.BloodyShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
@@ -1133,7 +1133,7 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(800, 0, 180, 0, 0, 135);
       equipmentPiece.slotCount = 2;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 350, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 500, false, true, false, type.toString()));
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 75, false, true, false));
     }
     if (type === ItemsEnum.HideArmor) {
@@ -1290,7 +1290,7 @@ export class LookupService {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
       equipmentPiece.stats = new CharacterStats(0, 0, 75, 0, 0, 85);
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 300, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 450, false, true, false, type.toString()));
     }
     if (type === ItemsEnum.QuadRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
@@ -3674,7 +3674,21 @@ export class LookupService {
       altarMultiplier *= relevantAltarEffect!.effectiveness;
     }
 
-    return defaultMultiplier - (character.battleStats.armorPenetration * altarMultiplier);
+    var statusMultiplier = 1;
+    if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
+      var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.ArmorPenetrationUp ||
+        effect.type === StatusEffectEnum.ArmorPenetrationDown);
+
+      if (relevantStatusEffects.length > 0) {
+        relevantStatusEffects.forEach(effect => {
+          if (effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown) {
+            statusMultiplier *= effect.effectiveness;
+          }
+        });
+      }
+    }
+
+    return defaultMultiplier - (character.battleStats.armorPenetration * altarMultiplier * statusMultiplier);
   }
 
   getChthonicFavorMultiplier(asPercent: boolean = false) {
@@ -3804,28 +3818,31 @@ export class LookupService {
   }
 
   getEquipmentEffects(equipment: Equipment | undefined) {
-    var equipmentEffects = "<b><span class='basicEquipment'>"; //using basic equipment color for equipment effect
+    var equipmentEffects = ""; //using basic equipment color for equipment effect
 
     if (equipment === undefined)
       return equipmentEffects;
 
-    if (equipment.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-      equipmentEffects += "Always Active: ";
-    if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAutoAttack)
-      equipmentEffects += "On Auto Attack: ";
-    if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAbilityUse)
-      equipmentEffects += "On Ability Use: ";
-    if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnHit)
-      equipmentEffects += "On Hit: ";
-    if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
-      equipmentEffects += "Triggers Over Time: ";
-    if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
-      equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
-
-    equipmentEffects += "</span></b>";
-
     if (equipment.equipmentEffect.targetEffect !== undefined && equipment.equipmentEffect.targetEffect.length > 0) {
       equipment.equipmentEffect.targetEffect.forEach(effect => {
+        equipmentEffects += "<b><span class='positiveStatusEffectColor'>";
+        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+        equipmentEffects += "Always Active: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAutoAttack)
+        equipmentEffects += "On Auto Attack: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAbilityUse)
+        equipmentEffects += "On Ability Use: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnHit)
+        equipmentEffects += "On Hit: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
+        equipmentEffects += "Triggers Over Time: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
+        equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
+        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
+        equipmentEffects += "Chance on Ability Use (" + (equipment.equipmentEffect.chance * 100) + "%): ";
+  
+      equipmentEffects += "</span></b>";
+
         if (effect.type === StatusEffectEnum.DamageOverTime) {
           if (equipment.itemType === ItemsEnum.Venomstrike)
             equipmentEffects += "Poison your target, dealing " + effect.effectiveness + " damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds.<br/>";
@@ -3840,6 +3857,11 @@ export class LookupService {
             equipmentEffects += "Deal an additional " + effect.effectiveness + " damage.<br/>";
         }
 
+        if (effect.type === StatusEffectEnum.InstantHpPercentDamage) {
+          if (equipment.itemType === ItemsEnum.RadiatingHammer)
+            equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's HP.<br/>";          
+        }
+
         if (effect.type === StatusEffectEnum.RandomPrimaryStatDown) {
           equipmentEffects += "Inflict a <strong>" + Math.round((1 - effect.effectiveness) * 100) + "%</strong> random primary stat reduction on a target for <strong>" + effect.duration + "</strong> seconds.";
         }
@@ -3851,6 +3873,24 @@ export class LookupService {
 
     if (equipment.equipmentEffect.userEffect !== undefined && equipment.equipmentEffect.userEffect.length > 0) {
       equipment.equipmentEffect.userEffect.forEach(effect => {
+        equipmentEffects += "<b><span class='positiveStatusEffectColor'>";
+        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+        equipmentEffects += "Always Active: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAutoAttack)
+        equipmentEffects += "On Auto Attack: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAbilityUse)
+        equipmentEffects += "On Ability Use: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnHit)
+        equipmentEffects += "On Hit: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
+        equipmentEffects += "Triggers Over Time: ";
+      if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
+        equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
+        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
+        equipmentEffects += "Chance on Ability Use (" + (equipment.equipmentEffect.chance * 100) + "%): ";
+  
+      equipmentEffects += "</span></b>";
+
         if (effect.type === StatusEffectEnum.Thorns) {
           equipmentEffects += "Deal " + effect.effectiveness + " damage to those who auto attack you. <br/>";
         }
@@ -3863,6 +3903,13 @@ export class LookupService {
 
         if (effect.type === StatusEffectEnum.AgilityUp)
           equipmentEffects += "Increase Agility by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+        if (effect.type === StatusEffectEnum.ArmorPenetrationUp)
+          equipmentEffects += "Increase Armor Penetration by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.InstantAutoAttack)
+          equipmentEffects += "Immediately trigger another auto attack.<br/>";
+
 
         if (effect.type === StatusEffectEnum.ReduceDirectDamage)
           equipmentEffects += "Reduce damage from every direct attack by " + effect.effectiveness + ".<br/>";
@@ -4987,6 +5034,11 @@ export class LookupService {
     if (equipmentMaxHpGain > 0)
       breakdown += "Equipment: +" + equipmentMaxHpGain + "<br />";
 
+    var charmGain = this.charmService.getTotalMaxHpAdditionFromCharms(this.globalService.globalVar.resources);
+    if (charmGain > 0) {
+      breakdown += "Kantharos Total: +" + this.utilityService.genericRound(charmGain) + "<br />";
+    }
+
     if (this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent(), 2) + "<br />";
 
@@ -5024,6 +5076,11 @@ export class LookupService {
     var equipmentAttackGain = this.equipmentService.getTotalAttackGain(character.equipmentSet);
     if (equipmentAttackGain > 0)
       breakdown += "Equipment: +" + equipmentAttackGain + "<br />";
+
+      var charmGain = this.charmService.getTotalAttackAdditionFromCharms(this.globalService.globalVar.resources);
+      if (charmGain > 0) {
+        breakdown += "Kantharos Total: +" + this.utilityService.genericRound(charmGain) + "<br />";
+      }
 
     if (this.globalService.globalVar.chthonicPowers.getAttackBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getAttackBoostPercent(), 2) + "<br />";
@@ -5063,6 +5120,11 @@ export class LookupService {
     if (equipmentDefenseGain > 0)
       breakdown += "Equipment: +" + equipmentDefenseGain + "<br />";
 
+      var charmGain = this.charmService.getTotalDefenseAdditionFromCharms(this.globalService.globalVar.resources);
+      if (charmGain > 0) {
+        breakdown += "Kantharos Total: +" + this.utilityService.genericRound(charmGain) + "<br />";
+      }
+
     if (this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent(), 2) + "<br />";
 
@@ -5100,6 +5162,12 @@ export class LookupService {
     var equipmentAgilityGain = this.equipmentService.getTotalAgilityGain(character.equipmentSet);
     if (equipmentAgilityGain > 0)
       breakdown += "Equipment: +" + equipmentAgilityGain + "<br />";
+
+
+      var charmGain = this.charmService.getTotalAgilityAdditionFromCharms(this.globalService.globalVar.resources);
+      if (charmGain > 0) {
+        breakdown += "Kantharos Total: +" + this.utilityService.genericRound(charmGain) + "<br />";
+      }
 
     if (this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent(), 2) + "<br />";
@@ -5139,6 +5207,12 @@ export class LookupService {
     if (equipmentLuckGain > 0)
       breakdown += "Equipment: +" + equipmentLuckGain + "<br />";
 
+
+      var charmGain = this.charmService.getTotalLuckAdditionFromCharms(this.globalService.globalVar.resources);
+      if (charmGain > 0) {
+        breakdown += "Kantharos Total: +" + this.utilityService.genericRound(charmGain) + "<br />";
+      }
+
     if (this.globalService.globalVar.chthonicPowers.getLuckBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getLuckBoostPercent(), 2) + "<br />";
 
@@ -5176,6 +5250,12 @@ export class LookupService {
     var equipmentResistanceGain = this.equipmentService.getTotalResistanceGain(character.equipmentSet);
     if (equipmentResistanceGain > 0)
       breakdown += "Equipment: +" + equipmentResistanceGain + "<br />";
+
+
+      var charmGain = this.charmService.getTotalResistanceAdditionFromCharms(this.globalService.globalVar.resources);
+      if (charmGain > 0) {
+        breakdown += "Kantharos Total: +" + this.utilityService.genericRound(charmGain) + "<br />";
+      }
 
     if (this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent(), 2) + "<br />";

@@ -279,7 +279,7 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SerpentScale, 2));
       }
       else if (rewardLevel === 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CoarseFur, 4));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CoarseFur, 3));
       }
     }
     if (type === ZoneEnum.Stymphalia) {

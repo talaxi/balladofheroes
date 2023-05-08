@@ -29,7 +29,7 @@ export class AchievementService {
   createDefaultAchievementsForSubzone(subzoneType: SubZoneEnum) {
     var newAchievements: Achievement[] = [];
 
-    if (this.lookupService.isSubzoneATown(subzoneType))
+    if (this.lookupService.isSubzoneATown(subzoneType) || subzoneType === SubZoneEnum.NemeaCountryRoadsOne)
       return newAchievements;
 
     var hundredVictories = new Achievement(AchievementTypeEnum.HundredVictories, subzoneType);
@@ -857,9 +857,11 @@ export class AchievementService {
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade1) {
             this.lookupService.enableChthonicFavoredGod();
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1));
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade2) {
             this.lookupService.enableChthonicFavor();
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade2));
           }
           else
             this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));

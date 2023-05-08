@@ -26,6 +26,7 @@ export class ResourceViewComponent implements OnInit {
   progressionResources: ResourceValue[] = [];
   smallCharmResources: ResourceValue[] = [];
   largeCharmResources: ResourceValue[] = [];
+  kantharosResources: ResourceValue[] = [];
   tooltipDirection = DirectionEnum.Down;
   slotItemsAreAvailable: boolean = false;
   subscription: any;
@@ -58,7 +59,7 @@ export class ResourceViewComponent implements OnInit {
     this.equipmentItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment).sort((a, b) => this.sortEquipment(a, b));
     this.slotItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.SlotItem).sort((a, b) => this.sortSlotItems(a, b));
     this.smallCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("small")).sort((a, b) => this.sortCharms(a, b));
-    this.largeCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("large")).sort((a, b) => this.sortCharms(a, b));
+    this.largeCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("large")).sort((a, b) => this.sortCharms(a, b));    
   }
 
   sortEquipment(a: ResourceValue, b: ResourceValue) {

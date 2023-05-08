@@ -1092,6 +1092,7 @@ export class BattleService {
     this.handleuserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy);
     this.handletargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, abilityCopy.targetsAllies, abilityCopy);
     this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets, undefined, abilityCopy.targetsAllies);
+    this.checkForEquipmentEffect(EffectTriggerEnum.ChanceOnAbilityUse, user, target, party, targets, undefined, abilityCopy.targetsAllies);    
 
     if (isPartyUsing)
       this.altarService.incrementAltarCount(AltarConditionEnum.AbilityUse);
@@ -1437,6 +1438,70 @@ export class BattleService {
               effect.duration *= instantEffect.effectiveness;
             });
           }
+        }
+
+        if (instantEffect.type === StatusEffectEnum.InstantHpPercentDamage) {
+          var resetTarget: Character | undefined = target;
+          if (abilityTargetedAllies && !instantEffect.targetsAllies) {
+            resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
+          }
+
+          var allTargets: Character[] = [];
+          if (instantEffect.isAoe) {
+            allTargets = potentialTargets;
+          }
+          else {
+            if (resetTarget !== undefined)
+              allTargets.push(resetTarget);
+          }
+
+          if (allTargets !== undefined && allTargets.length > 0) {
+            allTargets.forEach(newTarget => {
+              var totalHits = target.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.InstantHpPercentDamage && item.caster === instantEffect.caster).length;
+
+              var percent = instantEffect.effectiveness * 100;
+              var effectiveness = newTarget.battleStats.maxHp * instantEffect.effectiveness;
+
+              var trueDamageDealt = this.dealTrueDamage(isPartyUsing, newTarget, effectiveness, user, instantEffect.element, true);
+
+              if (totalHits === 1) {
+                var elementalText = "";
+                if (instantEffect.element !== ElementalTypeEnum.None)
+                  elementalText = this.getElementalDamageText(instantEffect.element);
+                var gameLogEntry = "<strong>" + newTarget.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + elementalText + " damage";
+                if (instantEffect.caster === "")
+                  gameLogEntry += ".";
+                else
+                  gameLogEntry += " from " + instantEffect.caster + "'s effect.";
+
+                if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
+                  this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+                }
+              }
+              else {
+                totalTrueDamageDealt += trueDamageDealt;
+                totalTrueDamageHitCount += 1;
+
+                if (totalTrueDamageHitCount === totalHits) {
+                  var elementalText = "";
+                  if (instantEffect.element !== ElementalTypeEnum.None)
+                    elementalText = this.getElementalDamageText(instantEffect.element);
+
+                  var castEffect = instantEffect.caster + "'s effect";
+                  if (castEffect === "'s effect")
+                    castEffect = "a damaging effect";
+
+                  var gameLogEntry = "<strong>" + newTarget.name + "</strong>" + " takes " + totalHits + " hits from " + castEffect + " for a total of " + this.utilityService.bigNumberReducer(Math.round(totalTrueDamageDealt)) + elementalText + " damage.";
+
+                  if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
+                    this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+                  }
+                }
+              }
+            });
+          }
+
+          potentialTargets.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.InstantHpPercentDamage && item.caster === instantEffect.caster)); });
         }
 
         if (instantEffect.type === StatusEffectEnum.InstantAutoAttack) {
@@ -3256,6 +3321,13 @@ export class BattleService {
               userGainsEffects.push(effect.makeCopy());
           }
         }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
+              userGainsEffects.push(effect.makeCopy());
+          }
+        }
         else if (trigger === EffectTriggerEnum.TriggersEvery) {
           //this could be problematic if there are multiple triggers every effects
           user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount += deltaTime;
@@ -3273,6 +3345,13 @@ export class BattleService {
 
       user.equipmentSet.weapon.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
+              targetGainsEffects.push(effect.makeCopy());
+          }
+        }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           for (var i = 0; i < totalAttempts; i++) {
             rng = this.utilityService.getRandomNumber(0, 1);
             if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
@@ -3302,6 +3381,11 @@ export class BattleService {
           if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
+            userGainsEffects.push(effect.makeCopy());
+        }
         else if (trigger === EffectTriggerEnum.TriggersEvery) {
           //this could be problematic if there are multiple triggers every effects
           user.equipmentSet.shield!.equipmentEffect.triggersEveryCount += deltaTime;
@@ -3317,6 +3401,11 @@ export class BattleService {
 
       user.equipmentSet.shield.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
+            targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
@@ -3342,6 +3431,11 @@ export class BattleService {
           if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
+            userGainsEffects.push(effect.makeCopy());
+        }
         else if (trigger === EffectTriggerEnum.TriggersEvery) {
           //this could be problematic if there are multiple triggers every effects
           user.equipmentSet.armor!.equipmentEffect.triggersEveryCount += deltaTime;
@@ -3357,6 +3451,11 @@ export class BattleService {
 
       user.equipmentSet.armor?.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
+            targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
@@ -3382,6 +3481,11 @@ export class BattleService {
           if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
+            userGainsEffects.push(effect.makeCopy());
+        }
         else if (trigger === EffectTriggerEnum.TriggersEvery) {
           //this could be problematic if there are multiple triggers every effects
           user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
@@ -3397,6 +3501,11 @@ export class BattleService {
 
       user.equipmentSet.ring?.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
+            targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());
@@ -3422,6 +3531,11 @@ export class BattleService {
           if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
             userGainsEffects.push(effect.makeCopy());
         }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
+            userGainsEffects.push(effect.makeCopy());
+        }
         else if (trigger === EffectTriggerEnum.TriggersEvery) {
           //this could be problematic if there are multiple triggers every effects
           user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount += deltaTime;
@@ -3437,6 +3551,11 @@ export class BattleService {
 
       user.equipmentSet.necklace?.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+          rng = this.utilityService.getRandomNumber(0, 1);
+          if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
+            targetGainsEffects.push(effect.makeCopy());
+        }
+        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
           if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
             targetGainsEffects.push(effect.makeCopy());

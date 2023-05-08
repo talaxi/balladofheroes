@@ -98,6 +98,12 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Alchemy) {
       text = "Alchemy allows you to craft battle items that you can use to aid your party or hinder your foes.";
     }
+    else if (type === TutorialTypeEnum.ChthonicFavorUpgrade1) {
+      text = "Every 8 hours, a random god will be selected to provide 25% more Chthonic Power when resetting your gods in the Underworld.";
+    }
+    else if (type === TutorialTypeEnum.ChthonicFavorUpgrade2) {
+      text = "You now gain Chthonic Favor in addition to gaining Chthonic Power when resetting your gods in the Underworld. Chthonic Favor directly multiplies the amount of Chthonic Power you gain.";
+    }
 
     if (addToLog)
       this.lookupService.addTutorialToLog(type);
