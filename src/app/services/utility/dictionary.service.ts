@@ -537,6 +537,18 @@ export class DictionaryService {
       name = "Small Charm of Nemesis";
     else if (type === ItemsEnum.LargeCharmOfNemesis)
       name = "Large Charm of Nemesis";
+      else if (type === ItemsEnum.SmallOrnateKantharos)
+        name = "Small Ornate Kantharos";
+        else if (type === ItemsEnum.SmallGildedKantharos)
+        name = "Small Gilded Kantharos";
+        else if (type === ItemsEnum.SmallBlackKantharos)
+        name = "Small Black Kantharos";
+        else if (type === ItemsEnum.SmallSilverKantharos)
+        name = "Small Silver Kantharos";
+        else if (type === ItemsEnum.SmallBuccheroKantharos)
+        name = "Small Bucchero Kantharos";
+        else if (type === ItemsEnum.SmallCrackedKantharos)
+        name = "Small Cracked Kantharos";
 
     //other
     else if (type === ItemsEnum.SparringMatch)

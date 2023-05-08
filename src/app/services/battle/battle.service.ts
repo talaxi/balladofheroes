@@ -2654,7 +2654,7 @@ export class BattleService {
     }
 
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.WeeklyMelee) { //don't get xp/coins/items until you finish the melee
-      if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
+      if (this.globalService.globalVar.gameLogSettings.get("battleXpRewards")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + this.lookupService.getTotalXpGainFromEnemyTeam(this.battle.currentEnemies.enemyList).toLocaleString() + " XP</strong>.");
       }
 
@@ -2670,14 +2670,15 @@ export class BattleService {
       if (loot !== undefined && loot.length > 0) {
         loot.forEach(item => {
           var itemCopy = this.lookupService.makeResourceCopy(item);
-          if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
+          if (this.globalService.globalVar.gameLogSettings.get("battleItemsRewards")) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCopy.amount + " " + (itemCopy.amount === 1 ? this.dictionaryService.getItemName(itemCopy.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(itemCopy.item))) + "</strong>.");
-          }
+          }          
+
           this.lookupService.addLootToLog(itemCopy.item, itemCopy.amount);
           if (itemCopy.item === ItemsEnum.FocusPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.FocusPotion);
           }
-          if (itemCopy.item === ItemsEnum.PotentConcoctionRecipe) {
+          else if (itemCopy.item === ItemsEnum.PotentConcoctionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PotentConcoction);
           }
           else {
@@ -2763,7 +2764,7 @@ export class BattleService {
 
     if (coin > 0) {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, coin));
-      if (this.globalService.globalVar.gameLogSettings.get("battleRewards")) {
+      if (this.globalService.globalVar.gameLogSettings.get("battleCoinsRewards")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain <strong>" + Math.round(coin) + " " + (Math.round(coin) === 1 ? this.dictionaryService.getItemName(ItemsEnum.Coin) : this.utilityService.handlePlural(this.dictionaryService.getItemName(ItemsEnum.Coin))) + "</strong>.");
       }
     }

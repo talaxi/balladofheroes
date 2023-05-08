@@ -36,7 +36,7 @@ export class FollowersService {
     var clearedZones: Zone[] = [];
 
     this.globalService.globalVar.ballads.forEach(ballad => {
-      ballad.zones.forEach(zone => {        
+      ballad.zones.forEach(zone => {
         if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
           clearedZones.push(zone);
         }
@@ -81,7 +81,7 @@ export class FollowersService {
   canIncrementZoneSearch(type: ZoneEnum) {
     var unassignedFollower = this.globalService.globalVar.followerData.followers.find(follower => follower.assignedTo === FollowerActionEnum.None);
     var assignedFollowers = this.globalService.globalVar.followerData.followers
-    .filter(follower => follower.assignedTo === FollowerActionEnum.SearchingZone && follower.assignedZone === type);
+      .filter(follower => follower.assignedTo === FollowerActionEnum.SearchingZone && follower.assignedZone === type);
 
     return unassignedFollower !== undefined && assignedFollowers.length < this.getMaxFollowersAssignedToZone(type);
   }
@@ -255,7 +255,103 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 2));
       }
     }
+    if (type === ZoneEnum.Nemea) {
+      if (rewardLevel === 1) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 2));
+      }
+      else if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 5));
+      }
+      if (rewardLevel === 2 || rewardLevel === 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CoarseFur, 2));
+      }
+      else if (rewardLevel === 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CoarseFur, 4));
+      }
+    }
+    if (type === ZoneEnum.Lerna) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 2));
 
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfWater, 3));
+      }
+      if (rewardLevel === 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SerpentScale, 2));
+      }
+      else if (rewardLevel === 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CoarseFur, 4));
+      }
+    }
+    if (type === ZoneEnum.Stymphalia) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SmallAnimalBones, 2));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SharpFeather, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.WhiteHorn, 2));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.BronzeBeak, 1));
+      }
+    }
+    if (type === ZoneEnum.Erymanthus) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.BearHide, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalScraps, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.BirchBark, 2));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Tusk, 2));
+      }
+    }
+    if (type === ZoneEnum.CoastOfCrete) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheCretanSea, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.PristineCrabClaw, 2));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RadiatingGemstone, 1));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.AnimalHide, 2));
+      }
+    }
+    if (type === ZoneEnum.GardenOfTheHesperides) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CanineFang, 2));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicTreeBark, 2));
+      }
+    }
+    if (type === ZoneEnum.Erytheia) {
+
+      if (rewardLevel === 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SharpFeather, 5));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CanineFang, 5));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 5));
+      }
+      else {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SharpFeather, 3));
+
+        if (rewardLevel >= 2) {
+          rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CanineFang, 3));
+        }
+        if (rewardLevel >= 3) {
+          rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 2));
+        }
+      }
+    }
 
     return rewards;
   }

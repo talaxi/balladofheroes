@@ -596,4 +596,28 @@ export class CharmService {
   getLargeCharmOfNemesisValue() {
     return .03;
   }  
+
+  getSmallOrnateKantharosValue() {
+    return 15;
+  }
+
+  getSmallSilverKantharosValue() {
+    return 15;
+  }
+
+  getSmallBuccheroKantharosValue() {
+    return 15;
+  }
+
+  getSmallGildedKantharosValue() {
+    return 15;
+  }
+
+  getSmallCrackedKantharosValue() {
+    return 75;
+  }
+
+  getSmallBlackKantharosValue() {
+    return 15;
+  }
 }

@@ -265,5 +265,11 @@ export enum ItemsEnum {
   HesperidianArmor,
   SafeRing,
   BronzeBeakNecklace,
-  BloodyNecklace
+  BloodyNecklace,
+  SmallOrnateKantharos,
+  SmallSilverKantharos,
+  SmallBuccheroKantharos,
+  SmallGildedKantharos,
+  SmallCrackedKantharos,
+  SmallBlackKantharos
 }

@@ -162,7 +162,7 @@ export class LookupService {
       name = "Straining mixture";
     if (action === ProfessionActionsEnum.CombineIngredientsPot)
       name = "Combining ingredients in pot";
-      if (action === ProfessionActionsEnum.RareCombineIngredientsPot)
+    if (action === ProfessionActionsEnum.RareCombineIngredientsPot)
       name = "Combining rare ingredients in pot";
     if (action === ProfessionActionsEnum.MeltWax)
       name = "Melting wax";
@@ -170,7 +170,7 @@ export class LookupService {
       name = "Mixing oil";
     if (action === ProfessionActionsEnum.CombineIngredientsPotion)
       name = "Combining ingredients in vial and stoppering";
-      if (action === ProfessionActionsEnum.RareCombineIngredientsPotion)
+    if (action === ProfessionActionsEnum.RareCombineIngredientsPotion)
       name = "Combining rare ingredients in vial and stoppering";
     if (action === ProfessionActionsEnum.HeatMixture)
       name = "Heating mixture";
@@ -178,7 +178,7 @@ export class LookupService {
       name = "Combining ingredients together";
     if (action === ProfessionActionsEnum.CrushIngredients)
       name = "Crushing ingredients into a powder";
-      if (action === ProfessionActionsEnum.CrushIngredients)
+    if (action === ProfessionActionsEnum.CrushIngredients)
       name = "Crushing rare ingredients into a powder";
     if (action === ProfessionActionsEnum.ExtractEssence)
       name = "Extract essence from ingredients";
@@ -228,7 +228,10 @@ export class LookupService {
       type === ItemsEnum.SmallCharmOfHades || type === ItemsEnum.LargeCharmOfHades ||
       type === ItemsEnum.SmallCharmOfAres || type === ItemsEnum.LargeCharmOfAres ||
       type === ItemsEnum.SmallCharmOfNemesis || type === ItemsEnum.LargeCharmOfNemesis ||
-      type === ItemsEnum.SmallCharmOfDionysus || type === ItemsEnum.LargeCharmOfDionysus)
+      type === ItemsEnum.SmallCharmOfDionysus || type === ItemsEnum.LargeCharmOfDionysus ||
+      type === ItemsEnum.SmallSilverKantharos || type === ItemsEnum.SmallGildedKantharos ||
+      type === ItemsEnum.SmallOrnateKantharos || type === ItemsEnum.SmallCrackedKantharos ||
+      type === ItemsEnum.SmallBuccheroKantharos || type === ItemsEnum.SmallBlackKantharos)
       isACharm = true;
 
     return isACharm;
@@ -272,7 +275,7 @@ export class LookupService {
     if (type === ItemsEnum.HeroicElixir || type === ItemsEnum.RejuvenatingElixir || type === ItemsEnum.ElixirOfFortitude ||
       type === ItemsEnum.ElixirOfSpeed) {
       return ItemTypeEnum.Elixir;
-    }    
+    }
 
     if (type === ItemsEnum.EagleFeather || type === ItemsEnum.LamiaHeart || type === ItemsEnum.Leather || type === ItemsEnum.LightLeather ||
       type === ItemsEnum.PetrifiedBark || type === ItemsEnum.SmallFeather || type === ItemsEnum.Asphodelus || type === ItemsEnum.Fennel ||
@@ -429,7 +432,7 @@ export class LookupService {
       name = "Recipe for Alchemy item <b>Poison Extract Potion</b>.";
     else if (type === ItemsEnum.FocusPotionRecipe)
       name = "Recipe for Alchemy item <b>Focus Potion</b>.";
-      else if (type === ItemsEnum.PotentConcoctionRecipe)
+    else if (type === ItemsEnum.PotentConcoctionRecipe)
       name = "Recipe for Alchemy item <b>Potent Concoction</b>.";
 
     //equipment
@@ -603,6 +606,19 @@ export class LookupService {
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
     if (type === ItemsEnum.LargeCharmOfNemesis)
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
+
+    if (type === ItemsEnum.SmallOrnateKantharos)
+      description = "Increase parties' Luck by <span class='charmDescriptor'>" + (this.charmService.getSmallOrnateKantharosValue()) + "</span>.";
+      if (type === ItemsEnum.SmallSilverKantharos)
+      description = "Increase parties' Resistance by <span class='charmDescriptor'>" + (this.charmService.getSmallSilverKantharosValue()) + "</span>.";
+      if (type === ItemsEnum.SmallBuccheroKantharos)
+      description = "Increase parties' Agility by <span class='charmDescriptor'>" + (this.charmService.getSmallBuccheroKantharosValue()) + "</span>.";
+      if (type === ItemsEnum.SmallGildedKantharos)
+      description = "Increase parties' Defense by <span class='charmDescriptor'>" + (this.charmService.getSmallGildedKantharosValue()) + "</span>.";
+      if (type === ItemsEnum.SmallCrackedKantharos)
+      description = "Increase parties' Max HP by <span class='charmDescriptor'>" + (this.charmService.getSmallCrackedKantharosValue()) + "</span>.";
+      if (type === ItemsEnum.SmallBlackKantharos)
+      description = "Increase parties' Attack by <span class='charmDescriptor'>" + (this.charmService.getSmallBlackKantharosValue()) + "</span>.";
 
     return description;
   }
@@ -906,7 +922,7 @@ export class LookupService {
       equipmentPiece.equipmentEffect.chance = .2;
       equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 12, .75, false, false));
       equipmentPiece.slotCount = 2;
-    }  
+    }
 
     //hammers
     if (type === ItemsEnum.IronHammer) {
@@ -945,9 +961,9 @@ export class LookupService {
       equipmentPiece.stats.abilityCooldownReduction = .05;
       equipmentPiece.stats.aoeDamage = .15;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
-      equipmentPiece.equipmentEffect.chance = .25;      
+      equipmentPiece.equipmentEffect.chance = .25;
       equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", undefined, undefined, undefined, undefined, false));
-    }    
+    }
 
     //bows
     if (type === ItemsEnum.ShortBow) {
@@ -990,7 +1006,7 @@ export class LookupService {
       equipmentPiece.slotCount = 2;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enair, -1, 1, false, true, false, type.toString()));
-    }        
+    }
 
     //shields
     if (type === ItemsEnum.IronShield) {
@@ -1043,7 +1059,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.SpiritShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 250, 0, 0, 225);      
+      equipmentPiece.stats = new CharacterStats(0, 0, 250, 0, 0, 225);
       equipmentPiece.stats.healingDone = .1;
       equipmentPiece.stats.abilityCooldownReduction = .075;
     }
@@ -1051,7 +1067,7 @@ export class LookupService {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
       equipmentPiece.stats = new CharacterStats(450, 0, 150, 0, 0, 215);
       equipmentPiece.stats.overdriveGain = .1;
-      equipmentPiece.stats.elementIncrease.air = .15;      
+      equipmentPiece.stats.elementIncrease.air = .15;
     }
 
     //armor
@@ -1114,7 +1130,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.ScaleArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(800, 0, 180, 0, 0, 135);      
+      equipmentPiece.stats = new CharacterStats(800, 0, 180, 0, 0, 135);
       equipmentPiece.slotCount = 2;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
       equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 350, false, true, false, type.toString()));
@@ -1136,7 +1152,7 @@ export class LookupService {
       equipmentPiece.stats.abilityCooldownReduction = .025;
       equipmentPiece.stats.hpRegen = 14;
       equipmentPiece.stats.healingDone = .05;
-    }        
+    }
 
     //necklace
     if (type === ItemsEnum.ForgottenLocket) {
@@ -1300,7 +1316,7 @@ export class LookupService {
       equipmentPiece.stats.abilityCooldownReduction = .1;
       equipmentPiece.slotCount = 2;
     }
-    
+
     return equipmentPiece;
   }
 
@@ -2713,7 +2729,7 @@ export class LookupService {
       description = "Increase auto attack cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Unsteady)
       description = "Increase ability cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.AutoAttackSpeedUp)
+    if (statusEffect.type === StatusEffectEnum.AutoAttackSpeedUp)
       description = "Reduce auto attack cooldown by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.AbilitySpeedUp)
       description = "Reduce ability cooldown by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -2757,16 +2773,16 @@ export class LookupService {
       description = "Increase healing or damage dealt by battle items by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%. (Does not increase effectiveness of items that grant effects)";
     if (statusEffect.type === StatusEffectEnum.ExtraTrueDamage)
       description = "Deal increasing true damage instantly after every attack. Last True Damage Dealt: " + this.utilityService.genericRound(statusEffect.effectiveness);
-      if (statusEffect.type === StatusEffectEnum.Invulnerable)
+    if (statusEffect.type === StatusEffectEnum.Invulnerable)
       description = "Immune to all damage.";
-      if (statusEffect.type === StatusEffectEnum.AutoAttackInvulnerable)
+    if (statusEffect.type === StatusEffectEnum.AutoAttackInvulnerable)
       description = "Immune to all auto attack damage.";
-      if (statusEffect.type === StatusEffectEnum.Immobilize)
+    if (statusEffect.type === StatusEffectEnum.Immobilize)
       description = "Auto attack and ability cooldowns are not charging until immobilize is cancelled by enemy.";
-      if (statusEffect.type === StatusEffectEnum.CastingImmobilize)
+    if (statusEffect.type === StatusEffectEnum.CastingImmobilize)
       description = "Immobilizing target until " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage is dealt. Damage remaining: " + this.utilityService.bigNumberReducer(statusEffect.maxCount - statusEffect.count);
 
-      
+
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
       description = "10% chance on auto attack to reduce target's Agility by 20% for 14 seconds.";
     if (statusEffect.type === StatusEffectEnum.PoisonousToxin)
@@ -6448,7 +6464,7 @@ export class LookupService {
     if (level === 1)
       return BestiaryEnum.BloodthirstyHyena;
     if (level === 2)
-      return BestiaryEnum.ScavengingCoyote;      
+      return BestiaryEnum.ScavengingCoyote;
 
     return BestiaryEnum.None;
   }

@@ -321,8 +321,14 @@ export class UtilityService {
     if (text === "Vial of the Black Sea")
       return "Vials of the Black Sea";
 
+      if (text === "Vial of the Cretan Sea")
+      return "Vials of the Cretan Sea";
+
     if (text === "Essence of Fire")
       return "Essences of Fire";
+
+      if (text === "Essence of Water")
+      return "Essences of Water";
 
     if (text === "Small Topaz")
       return "Small Topazes";

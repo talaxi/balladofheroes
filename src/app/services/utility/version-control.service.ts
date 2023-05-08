@@ -240,8 +240,7 @@ export class VersionControlService {
           this.globalService.globalVar.ballads.forEach(ballad => {
             ballad.zones.forEach(zone => {
               zone.subzones.forEach(subzone => {
-                if (subzone.type === SubZoneEnum.BlackSeaStormySkies && subzone.victoryCount >= 2500)
-                {
+                if (subzone.type === SubZoneEnum.BlackSeaStormySkies && subzone.victoryCount >= 2500) {
                   var charm = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.SmallCharmOfHaste);
                   if (charm !== undefined)
                     charm.amount += 1;
@@ -251,7 +250,7 @@ export class VersionControlService {
               });
             });
           });
-          
+
 
           var dionysus = new God(GodEnum.Dionysus);
           dionysus.name = "Dionysus";
@@ -352,12 +351,11 @@ export class VersionControlService {
 
           var achievementsCompleted = this.globalService.globalVar.totalAchievementsCompleted;
           var achievementFollowers = 0;
-          if (achievementsCompleted > 0)
-          {
+          if (achievementsCompleted > 0) {
             achievementsCompleted -= 1;
             achievementFollowers += 1;
 
-            
+
             while (achievementsCompleted > 12) {
               achievementFollowers += 1;
               achievementsCompleted -= 12;
@@ -370,7 +368,7 @@ export class VersionControlService {
               this.globalService.globalVar.followerData.availableFollowers += 1;
               this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
             }
-          }            
+          }
         }
         if (version === .5) {
           this.globalService.globalVar.gods.forEach(god => {
@@ -388,25 +386,32 @@ export class VersionControlService {
           this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
           this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
           this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);
-          
+
+          this.globalService.globalVar.gameLogSettings.set("battleXpRewards", true);
+          this.globalService.globalVar.gameLogSettings.set("battleCoinsRewards", true);
+          this.globalService.globalVar.gameLogSettings.set("battleItemsRewards", true);
+          this.globalService.globalVar.gameLogSettings.set("godAffinityLevelUp", true);
+          this.globalService.globalVar.gameLogSettings.set("alchemyQueueEmpty", false);
+          this.globalService.globalVar.gameLogSettings.set("jewelcraftingQueueEmpty", false);
+
           this.globalService.globalVar.sidequestData.traderHuntLevel = 0;
 
           if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion)!.displayOrder = 1;
 
-            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Gorgon) !== undefined)
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Gorgon) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Gorgon)!.displayOrder = 2;
 
-            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld) !== undefined)
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld)!.displayOrder = 3;
 
-            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Boar) !== undefined)
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Boar) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Boar)!.displayOrder = 4;
 
-            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Argo) !== undefined)
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Argo) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Argo)!.displayOrder = 5;
 
-            if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors) !== undefined)
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors)!.displayOrder = 6;
         }
 

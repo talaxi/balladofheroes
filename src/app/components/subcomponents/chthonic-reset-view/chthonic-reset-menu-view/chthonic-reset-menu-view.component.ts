@@ -97,9 +97,11 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     return this.utilityService.roundTo((((god.level - 1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
   }
 
-  getChthonicFavor(god: God) {
-    //gives a linear small amount
-    return this.utilityService.roundTo((god.level - 1) / 20, 2);
+  getChthonicFavor(god: God) {    
+    //500 * (log(.004 * x + 1))
+    var factorAmount = (500 * Math.log10(.00325 * (Math.ceil(god.level * .75) - 1) + 1));
+
+    return this.utilityService.roundTo((1.02**(factorAmount))-1, 2);
   }
 
   resetGod(god: God) {

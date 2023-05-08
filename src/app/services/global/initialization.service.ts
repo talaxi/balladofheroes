@@ -273,19 +273,25 @@ export class InitializationService {
     this.globalService.globalVar.gameLogSettings.set("enemyAutoAttacks", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
-    this.globalService.globalVar.gameLogSettings.set("prayToAltar", true);
+    this.globalService.globalVar.gameLogSettings.set("prayToAltar", true);    
+    this.globalService.globalVar.gameLogSettings.set("godAffinityLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("partyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("enemyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("partyEquipmentEffect", true);
     this.globalService.globalVar.gameLogSettings.set("battleRewards", true);
+    this.globalService.globalVar.gameLogSettings.set("battleXpRewards", true);
+    this.globalService.globalVar.gameLogSettings.set("battleCoinsRewards", true);
+    this.globalService.globalVar.gameLogSettings.set("battleItemsRewards", true);
     this.globalService.globalVar.gameLogSettings.set("partyLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("foundTreasureChest", true);
     this.globalService.globalVar.gameLogSettings.set("achievementUnlocked", true);
     this.globalService.globalVar.gameLogSettings.set("alchemyLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("alchemyCreation", true);
+    this.globalService.globalVar.gameLogSettings.set("alchemyQueueEmpty", false);
     this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", true);
+    this.globalService.globalVar.gameLogSettings.set("jewelcraftingQueueEmpty", false);
     this.globalService.globalVar.gameLogSettings.set("battleUpdates", true);
     this.globalService.globalVar.gameLogSettings.set("useBattleItem", true);
     this.globalService.globalVar.gameLogSettings.set("followerSearch", true);
@@ -457,7 +463,7 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
-    var allAchievementsComplete = false;
+    var allAchievementsComplete = true;
 
     if (allAchievementsComplete) {
       this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
@@ -477,7 +483,7 @@ export class InitializationService {
         zone.subzones.forEach(subzone => {
           subzone.isAvailable = true;
           subzone.notify = true;
-          //subzone.victoryCount = 100;
+          subzone.victoryCount = 100;
           if (subzone.type !== SubZoneEnum.AigosthenaUpperCoast) {
             this.achievementService.createDefaultAchievementsForSubzone(subzone.type).forEach(achievement => {
               this.globalService.globalVar.achievements.push(achievement);
@@ -661,7 +667,7 @@ export class InitializationService {
       var godLevel = 548;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 0; i++) {
         this.globalService.levelUpGod(athena!);
       }
       athena!.exp = 0;
@@ -669,7 +675,7 @@ export class InitializationService {
 
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       hermes!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 25; i++) {
         this.globalService.levelUpGod(hermes!);
       }
       hermes!.exp = 0;
@@ -677,7 +683,7 @@ export class InitializationService {
 
       var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
       apollo!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 5; i++) {
         this.globalService.levelUpGod(apollo!);
       }
       apollo!.exp = 0;
@@ -685,7 +691,7 @@ export class InitializationService {
 
       var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
       artemis!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 1; i++) {
         this.globalService.levelUpGod(artemis!);
       }
       artemis!.exp = 0;
@@ -693,7 +699,7 @@ export class InitializationService {
 
       var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
       hades!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 150; i++) {
         this.globalService.levelUpGod(hades!);
       }
       hades!.exp = 0;
@@ -701,7 +707,7 @@ export class InitializationService {
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
       ares!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 100; i++) {
         this.globalService.levelUpGod(ares!);
       }
       ares!.exp = 0;
@@ -709,7 +715,7 @@ export class InitializationService {
 
       var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
       dionysus!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 350; i++) {
         this.globalService.levelUpGod(dionysus!);
       }
       dionysus!.exp = 0;
@@ -717,7 +723,7 @@ export class InitializationService {
 
       var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
       nemesis!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
+      for (var i = 0; i < 750; i++) {
         this.globalService.levelUpGod(nemesis!);
       }
       nemesis!.exp = 0;

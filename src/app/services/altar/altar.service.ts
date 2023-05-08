@@ -127,6 +127,11 @@ export class AltarService {
         god.affinityLevel += 1;
         god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
 
+        if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
+          var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+        }
+
         if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
           this.lookupService.gainResource(new ResourceValue(this.getSmallCharmOfGod(god.type), 1));
         }

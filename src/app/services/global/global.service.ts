@@ -1078,7 +1078,7 @@ export class GlobalService {
     //inactive gods
     this.globalVar.gods.filter(god => god.isAvailable &&
       (!activeParty.some(partyMember => (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-        var inactiveGodModifier = .25; //this can be increased maybe with future items
+        var inactiveGodModifier = 1; //no need to reduce bonus XP for inactive gods
 
         this.giveGodExp(god, bonusXp * inactiveGodModifier);
       });
