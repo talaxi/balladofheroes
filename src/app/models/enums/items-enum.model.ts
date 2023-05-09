@@ -271,5 +271,6 @@ export enum ItemsEnum {
   SmallBuccheroKantharos,
   SmallGildedKantharos,
   SmallCrackedKantharos,
-  SmallBlackKantharos
+  SmallBlackKantharos,
+  PotentEssence
 }

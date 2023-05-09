@@ -289,7 +289,7 @@ export class LookupService {
       type === ItemsEnum.Honey || type === ItemsEnum.AnimalHide || type === ItemsEnum.EssenceOfWater || type === ItemsEnum.Tusk ||
       type === ItemsEnum.SharpFeather || type === ItemsEnum.BronzeBeak || type === ItemsEnum.MagicTreeBark || type === ItemsEnum.CanineFang ||
       type === ItemsEnum.SmallAnimalBones || type === ItemsEnum.VialOfTheCretanSea || type === ItemsEnum.PristineCrabClaw || type === ItemsEnum.BirchBark ||
-      type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn) {
+      type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn || type === ItemsEnum.PotentEssence) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
@@ -391,15 +391,15 @@ export class LookupService {
 
     //battle items
     else if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.ExplodingPotion || type === ItemsEnum.HeftyStone)
-      name = "Deal " + effect.trueDamageAmount + " damage to a target.";
+    name = "Deal " + effect.trueDamageAmount + " damage to a target.";
     else if (type === ItemsEnum.UnstablePotion)
-      name = "Deal " + effect.trueDamageAmount + " damage to all targets.";
+      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP to each enemy, up to " + effect.maxThreshold + " damage.";
     else if (type === ItemsEnum.PiercingPotion)
       name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP, up to " + effect.maxThreshold + " damage.";
     else if (type === ItemsEnum.FirePotion)
       name = "Deal " + effect.trueDamageAmount + " Fire damage to a target.";
       else if (type === ItemsEnum.PotentConcoction)
-      name = "Deal " + effect.trueDamageAmount + " damage to a target of a random element.";
+      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP, up to " + effect.maxThreshold + " damage. A random element is used for the damage.";
     else if (type === ItemsEnum.PoisonFang || type === ItemsEnum.StranglingGasPotion)
       name = "Poison an enemy, dealing " + relatedTargetGainStatusEffectEffectiveness + " damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
     else if (type === ItemsEnum.PoisonExtractPotion)
@@ -690,7 +690,7 @@ export class LookupService {
       description = "One extra entry to the <strong>Eternal Melee</strong> coliseum battle.";
     else {
       description = "Used for crafting.";
-      if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs)
+      if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs || item === ItemsEnum.PotentEssence)
         return description;
 
       /*if (item === ItemsEnum.CrackedRuby || item === ItemsEnum.CrackedEmerald || item === ItemsEnum.CrackedAquamarine ||
@@ -3284,17 +3284,18 @@ export class LookupService {
     if (item === ItemsEnum.UnstablePotion) {
       itemEffect.dealsDamage = true;
       itemEffect.isAoe = true;
-      itemEffect.trueDamageAmount = 125;
+      itemEffect.trueDamagePercent = .02;
+      itemEffect.maxThreshold = 350;
     }
     if (item === ItemsEnum.PiercingPotion) {
       itemEffect.dealsDamage = true;
       itemEffect.trueDamagePercent = .04;
-      itemEffect.maxThreshold = 3500;
+      itemEffect.maxThreshold = 2750;
     }
     if (item === ItemsEnum.PotentConcoction) {
       itemEffect.dealsDamage = true;
       itemEffect.trueDamagePercent = .04;
-      itemEffect.maxThreshold = 2750;
+      itemEffect.maxThreshold = 2000;
     }
     if (item === ItemsEnum.BoomingPotion) {
       itemEffect.dealsDamage = false;

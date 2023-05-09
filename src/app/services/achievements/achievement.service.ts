@@ -63,7 +63,11 @@ export class AchievementService {
       subzoneType === SubZoneEnum.LibyaIsleCenter || subzoneType === SubZoneEnum.AsphodelLetheTributary ||
       subzoneType === SubZoneEnum.ElysiumWavesOfOceanus || subzoneType === SubZoneEnum.TheLetheHypnosIsland ||
       subzoneType === SubZoneEnum.PeloposNisosPatrasBorder || subzoneType === SubZoneEnum.CalydonWornDownBarn ||
-      subzoneType === SubZoneEnum.CalydonTallGrass)
+      subzoneType === SubZoneEnum.CalydonTallGrass || subzoneType === SubZoneEnum.NemeaLairOfTheLion ||
+      subzoneType === SubZoneEnum.LernaSpringOfAmymone || subzoneType === SubZoneEnum.StymphaliaLakeStymphalia ||
+      subzoneType === SubZoneEnum.ErymanthusSnowCappedPeaks || subzoneType === SubZoneEnum.CoastOfCreteAppleOrchards ||
+      subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides || subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia ||
+      subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
       newAchievements.push(thirtySecondClear);
 
     var tenSecondClear = new Achievement(AchievementTypeEnum.TenSecondClear, subzoneType);
@@ -73,13 +77,17 @@ export class AchievementService {
       subzoneType === SubZoneEnum.LibyaIsleCenter || subzoneType === SubZoneEnum.AsphodelLetheTributary ||
       subzoneType === SubZoneEnum.ElysiumWavesOfOceanus || subzoneType === SubZoneEnum.TheLetheHypnosIsland ||
       subzoneType === SubZoneEnum.PeloposNisosPatrasBorder || subzoneType === SubZoneEnum.CalydonWornDownBarn ||
-      subzoneType === SubZoneEnum.CalydonTallGrass)
+      subzoneType === SubZoneEnum.CalydonTallGrass || subzoneType === SubZoneEnum.NemeaLairOfTheLion ||
+      subzoneType === SubZoneEnum.LernaSpringOfAmymone || subzoneType === SubZoneEnum.StymphaliaLakeStymphalia ||
+      subzoneType === SubZoneEnum.ErymanthusSnowCappedPeaks || subzoneType === SubZoneEnum.CoastOfCreteAppleOrchards ||
+      subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides || subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia ||
+      subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
 
     if (subzoneType === SubZoneEnum.LibyaIsleCenter || subzoneType === SubZoneEnum.ElysiumWavesOfOceanus ||
-      subzoneType === SubZoneEnum.TheLetheHypnosIsland)
+      subzoneType === SubZoneEnum.TheLetheHypnosIsland || subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
       newAchievements.push(completeClear);
 
     return newAchievements;
@@ -743,7 +751,7 @@ export class AchievementService {
       if (subzoneType === SubZoneEnum.TheLetheHypnosIsland) {
         rewards.push(new ResourceValue(ItemsEnum.ChthonicFavorUpgrade2, 1));
       }
-      if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes) {
+      if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm) {
         rewards.push(new ResourceValue(ItemsEnum.ItemBeltUp, 1));
       }
     }

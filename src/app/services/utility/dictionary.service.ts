@@ -291,6 +291,8 @@ export class DictionaryService {
       name = "Satchel of Herbs";
     else if (type === ItemsEnum.SoulEssence)
       name = "Soul Essence";
+      else if (type === ItemsEnum.PotentEssence)
+      name = "Potent Essence";
     else if (type === ItemsEnum.BushelOfHerbs)
       name = "Bushel of Herbs";
     else if (type === ItemsEnum.BrokenNecklace)

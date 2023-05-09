@@ -36,6 +36,7 @@ import { VersionControlService } from '../utility/version-control.service';
 import { GlobalService } from './global.service';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
+import { JewelcraftingService } from '../professions/jewelcrafting.service';
 
 @Injectable({
   providedIn: 'root'
@@ -44,7 +45,7 @@ export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
     private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService, private keybindService: KeybindService,
-    private altarService: AltarService, private deviceDetectorService: DeviceDetectorService) { }
+    private altarService: AltarService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService) { }
 
   initializeVariables() {
     this.globalService.globalVar.startingVersion = this.globalService.getCurrentVersion();
@@ -446,14 +447,15 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RadiatingGemstone, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.WhiteHorn, 100));
     
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ParalyzingToxin, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.FlamingToxin, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SlowingPotion, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PiercingPotion, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneySalve, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneyPoultice, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfSpeed, 10));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PotentConcoction, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ParalyzingToxin, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.FlamingToxin, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SlowingPotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PiercingPotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneySalve, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneyPoultice, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfSpeed, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PotentConcoction, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.UnstablePotion, 100));
 
     this.globalService.globalVar.currentStoryId = 7;
     this.globalService.globalVar.isDpsUnlocked = true;
@@ -648,11 +650,13 @@ export class InitializationService {
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Priest;
       this.globalService.globalVar.itemBeltSize = 1;
-      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 50;
-      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.isUnlocked = true;
+      this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 75;
+      this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.isUnlocked = true;
       //if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting) !== undefined)
-      //  this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
-      //this.alchemyService.checkForNewRecipes();
+      this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.level = 50;
+        this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
+      this.alchemyService.checkForNewRecipes();
+      this.jewelcraftingService.checkForNewRecipes();
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {

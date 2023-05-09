@@ -3140,7 +3140,7 @@ export class BattleService {
             elementalText = this.getElementalDamageText(elementalType);
                 
           if (effect.trueDamagePercent > 0)
-          effect.trueDamageAmount = effect.trueDamagePercent * character.battleStats.maxHp;
+          effect.trueDamageAmount = effect.trueDamagePercent * member.battleStats.maxHp;
 
           if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
             effect.trueDamageAmount = effect.maxThreshold;
@@ -3773,7 +3773,7 @@ export class BattleService {
 
   isStatusEffectAToxin(effect: StatusEffectEnum) {
     if (effect === StatusEffectEnum.WitheringToxin || effect === StatusEffectEnum.VenomousToxin || effect === StatusEffectEnum.DebilitatingToxin ||
-      effect === StatusEffectEnum.PoisonousToxin)
+      effect === StatusEffectEnum.PoisonousToxin || effect === StatusEffectEnum.FlamingToxin || effect === StatusEffectEnum.ParalyzingToxin)
       return true;
 
     return false;

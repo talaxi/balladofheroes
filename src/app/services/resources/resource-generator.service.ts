@@ -369,6 +369,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.SoulEssence) {
       return new ResourceValue(ItemsEnum.SoulEssence, amount);
     }
+    if (type === ItemsEnum.PotentEssence) {
+      return new ResourceValue(ItemsEnum.PotentEssence, amount);
+    }
     if (type === ItemsEnum.BushelOfHerbs) {
       return new ResourceValue(ItemsEnum.BushelOfHerbs, amount);
     }
@@ -646,6 +649,26 @@ export class ResourceGeneratorService {
     }
     if (item === ItemsEnum.CrackedTopaz) {
       return new CharacterStats(baseCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var baseDullStatValue = 40;
+    if (item === ItemsEnum.DullOpal) {
+      return new CharacterStats(0, baseDullStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.DullRuby) {
+      return new CharacterStats(0, 0, 0, 0, baseDullStatValue, 0);
+    }
+    if (item === ItemsEnum.DullAquamarine) {
+      return new CharacterStats(0, 0, 0, baseDullStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.DullEmerald) {
+      return new CharacterStats(0, 0, baseDullStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.DullAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, baseDullStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.DullTopaz) {
+      return new CharacterStats(baseDullStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);

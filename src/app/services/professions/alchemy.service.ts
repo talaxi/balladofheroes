@@ -223,6 +223,13 @@ export class AlchemyService {
         this.updateGameLogWithNewRecipe(ItemsEnum.HoneyPoultice);
       }
     }
+    if (alchemy.level >= 55) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PotentEssence)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PotentEssence));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.PotentEssence);
+      }
+    }
     if (alchemy.level >= 57) {
       if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.FlamingToxin)) {
         alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.FlamingToxin));
@@ -590,7 +597,7 @@ export class AlchemyService {
     }
     //lvl 51
     if (item === ItemsEnum.ElixirOfSpeed) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 1));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 1));
 
@@ -603,8 +610,8 @@ export class AlchemyService {
     }
     //lvl 52
     if (item === ItemsEnum.PiercingPotion) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 3));      
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PotentEssence, 2));      
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SmallAnimalBones, 2));
 
       recipe.numberOfSteps = 3;
@@ -616,7 +623,7 @@ export class AlchemyService {
     }
     //lvl 54
     if (item === ItemsEnum.HoneyPoultice) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Honey, 2));      
 
@@ -626,9 +633,22 @@ export class AlchemyService {
 
       recipe.expGain = 34;
     }
+    //lvl 55
+    if (item === ItemsEnum.PotentEssence) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire, 1));      
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfWater, 1));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 34;
+    }
     //lvl 57
     if (item === ItemsEnum.FlamingToxin) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire, 4));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.ToxicIchor, 1));
@@ -640,7 +660,7 @@ export class AlchemyService {
     }
     //lvl 65
     if (item === ItemsEnum.SlowingPotion) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.CanineFang, 2));
@@ -654,7 +674,7 @@ export class AlchemyService {
     }
     //lvl 70
     if (item === ItemsEnum.HoneySalve) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.PristineCrabClaw, 1));
@@ -669,7 +689,7 @@ export class AlchemyService {
     }
     //lvl 75
     if (item === ItemsEnum.ParalyzingToxin) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.quality = EquipmentQualityEnum.Rare;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.ToxicIchor, 4));
@@ -680,9 +700,9 @@ export class AlchemyService {
       recipe.expGain = 40;
     }
     if (item === ItemsEnum.PotentConcoction) {
-      recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfWater, 2));      
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire, 2));
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PotentEssence, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfWater, 2));            
       recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 2));
 
       recipe.numberOfSteps = 3;

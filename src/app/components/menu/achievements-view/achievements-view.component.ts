@@ -42,7 +42,9 @@ export class AchievementsViewComponent implements OnInit {
       this.cellsPerRow = 2;
 
     this.ballads.push(BalladEnum.None);
-    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
+    this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+    }).forEach(ballad => {
       this.ballads.push(ballad.type);
     });
 

@@ -6,6 +6,7 @@ import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.mode
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -153,7 +154,11 @@ export class ChthonicResetMenuViewComponent implements OnInit {
         ability.isAvailable = true;
     });
 
-    this.globalService.getActivePartyCharacters(true).forEach(member => {
+    this.globalService.getActivePartyCharacters(true).forEach(member => {      
+    if (god.type === GodEnum.Hades) {
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
+    }
+
       this.globalService.calculateCharacterBattleStats(member, false);
     });
   }

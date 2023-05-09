@@ -226,13 +226,9 @@ export class AppComponent {
   getBatchRunTime(subzone: SubZone, totalDeltaTime: number) {
     var batchRunTime = 5;
 
-    if (totalDeltaTime < 5 * 60) //if less than 5 or 10 min, you can be more accurate
+    if (totalDeltaTime < 15 * 60) //if less than 30 min, you can be more accurate
     {
-      batchRunTime = 1;
-    }
-    else if (totalDeltaTime < 10 * 60) //if less than 5 or 10 min, you can be more accurate
-    {
-      batchRunTime = 2;
+      batchRunTime = 2.5;
     }
 
     if (this.balladService.isSubzoneTown(subzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
