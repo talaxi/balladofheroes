@@ -147,7 +147,7 @@ export class BattleService {
           if (this.battle.activeTournament.tournamentTimer >= this.battle.activeTournament.tournamentTimerLength) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + (this.battle.activeTournament.maxRounds !== -1 ? " of " + this.battle.activeTournament.maxRounds : "") + ".");
             this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
-            this.battle.activeTournament = new ColiseumTournament();
+            this.battle.activeTournament = this.globalService.setNewTournament(true);
           }
         }
       }
@@ -560,6 +560,11 @@ export class BattleService {
 
     if (elementalType === ElementalTypeEnum.None) {
       elementalType = this.checkUserForEnElement(character);
+    }
+
+    var flamingToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
+    if (flamingToxin !== undefined) {
+        elementalType = ElementalTypeEnum.Fire;
     }
 
     var elementalText = "";
@@ -2608,7 +2613,7 @@ export class BattleService {
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You have been defeated in the Coliseum. You finished in round " + this.battle.activeTournament.currentRound + (this.battle.activeTournament.maxRounds !== -1 ? " of " + this.battle.activeTournament.maxRounds : "") + ".");
       this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
-      this.battle.activeTournament = new ColiseumTournament();
+      this.battle.activeTournament = this.globalService.setNewTournament(this.battle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee);
     }
     else if (underworld !== undefined && underworld.isAvailable) {
       //send you to the underworld
@@ -3021,7 +3026,8 @@ export class BattleService {
     });
 
     if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice
-      || this.battleItemInUse === ItemsEnum.RestorativeHerb || this.battleItemInUse === ItemsEnum.RestorativePoultice) {
+      || this.battleItemInUse === ItemsEnum.RestorativeHerb || this.battleItemInUse === ItemsEnum.RestorativePoultice
+      || this.battleItemInUse === ItemsEnum.HoneyPoultice) {
       if (character.battleStats.currentHp === this.lookupService.getAdjustedMaxHp(character))
         return;
 
@@ -3058,7 +3064,8 @@ export class BattleService {
       }
     }
 
-    if (this.battleItemInUse === ItemsEnum.HealingSalve || this.battleItemInUse === ItemsEnum.RestorativeSalve) {
+    if (this.battleItemInUse === ItemsEnum.HealingSalve || this.battleItemInUse === ItemsEnum.RestorativeSalve || 
+      this.battleItemInUse === ItemsEnum.HoneySalve) {
       var itemUsed = false;
 
       if (character.name === "Asclepius") {
@@ -3090,17 +3097,26 @@ export class BattleService {
     }
 
     if (this.battleItemInUse === ItemsEnum.ThrowingStone || this.battleItemInUse === ItemsEnum.ExplodingPotion ||
-      this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone) {
+      this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone || 
+      this.battleItemInUse === ItemsEnum.PotentConcoction || this.battleItemInUse === ItemsEnum.PiercingPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
 
       var elementalType = ElementalTypeEnum.None;
       if (this.battleItemInUse === ItemsEnum.FirePotion)
         elementalType = ElementalTypeEnum.Fire;
+      else if (this.battleItemInUse === ItemsEnum.PotentConcoction)
+        elementalType = this.lookupService.getRandomElement();
 
       var elementalText = "";
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
+
+      if (effect.trueDamagePercent > 0)
+        effect.trueDamageAmount = effect.trueDamagePercent * character.battleStats.maxHp;
+
+      if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
+        effect.trueDamageAmount = effect.maxThreshold;
 
       var damage = this.dealTrueDamage(true, character, effect.trueDamageAmount * damageMultiplier, undefined, elementalType, true);
       this.lookupService.useResource(this.battleItemInUse, 1);
@@ -3122,6 +3138,12 @@ export class BattleService {
           var elementalText = "";
           if (elementalType !== ElementalTypeEnum.None)
             elementalText = this.getElementalDamageText(elementalType);
+                
+          if (effect.trueDamagePercent > 0)
+          effect.trueDamageAmount = effect.trueDamagePercent * character.battleStats.maxHp;
+
+          if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
+            effect.trueDamageAmount = effect.maxThreshold;
 
           var damage = this.dealTrueDamage(true, member, effect.trueDamageAmount * damageMultiplier, undefined, elementalType, true);
 
@@ -3163,7 +3185,7 @@ export class BattleService {
       this.lookupService.useResource(this.battleItemInUse, 1);
     }
     if (this.battleItemInUse === ItemsEnum.PoisonFang || this.battleItemInUse === ItemsEnum.StranglingGasPotion ||
-      this.battleItemInUse === ItemsEnum.BoomingPotion) {
+      this.battleItemInUse === ItemsEnum.BoomingPotion || this.battleItemInUse === ItemsEnum.SlowingPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -3176,6 +3198,8 @@ export class BattleService {
         var gameLogEntry = "";
         if (this.battleItemInUse === ItemsEnum.BoomingPotion)
           gameLogEntry = "<strong>" + character.name + "</strong>" + "'s Resistance is reduced by " + itemName + ".";
+        else if (this.battleItemInUse === ItemsEnum.SlowingPotion)
+          gameLogEntry = "<strong>" + character.name + "</strong>" + "'s Agility is reduced by " + itemName + ".";
         else
           gameLogEntry = "<strong>" + character.name + "</strong>" + " is poisoned by " + itemName + ".";
         this.gameLogService.updateGameLog(GameLogEntryEnum.UseBattleItem, gameLogEntry);
@@ -3183,7 +3207,8 @@ export class BattleService {
     }
 
     if (this.battleItemInUse === ItemsEnum.PoisonousToxin || this.battleItemInUse === ItemsEnum.DebilitatingToxin ||
-      this.battleItemInUse === ItemsEnum.WitheringToxin || this.battleItemInUse === ItemsEnum.VenomousToxin) {
+      this.battleItemInUse === ItemsEnum.WitheringToxin || this.battleItemInUse === ItemsEnum.VenomousToxin ||
+      this.battleItemInUse === ItemsEnum.FlamingToxin || this.battleItemInUse === ItemsEnum.ParalyzingToxin) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -3202,7 +3227,7 @@ export class BattleService {
     }
 
     if (this.battleItemInUse === ItemsEnum.HeroicElixir || this.battleItemInUse === ItemsEnum.RejuvenatingElixir ||
-      this.battleItemInUse === ItemsEnum.ElixirOfFortitude) {
+      this.battleItemInUse === ItemsEnum.ElixirOfFortitude || this.battleItemInUse === ItemsEnum.ElixirOfSpeed) {
       if (character.battleStats.currentHp <= 0)
         return;
 
@@ -3242,6 +3267,12 @@ export class BattleService {
     if (type === ItemsEnum.PoisonousToxin) {
       return StatusEffectEnum.PoisonousToxin;
     }
+    if (type === ItemsEnum.FlamingToxin) {
+      return StatusEffectEnum.FlamingToxin;
+    }
+    if (type === ItemsEnum.ParalyzingToxin) {
+      return StatusEffectEnum.ParalyzingToxin;
+    }
     if (type === ItemsEnum.ElixirOfFortitude) {
       return StatusEffectEnum.ElixirOfFortitude;
     }
@@ -3250,6 +3281,9 @@ export class BattleService {
     }
     if (type === ItemsEnum.HeroicElixir) {
       return StatusEffectEnum.HeroicElixir;
+    }
+    if (type === ItemsEnum.ElixirOfSpeed) {
+      return StatusEffectEnum.ElixirOfSpeed;
     }
 
     return StatusEffectEnum.None;
@@ -3644,6 +3678,14 @@ export class BattleService {
       }
     }
 
+    var paralyzingToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ParalyzingToxin);
+    if (paralyzingToxin !== undefined) {
+      var rng = this.utilityService.getRandomNumber(0, 1);
+      if (rng <= paralyzingToxin.effectiveness) {
+        this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 20, 0, false, false), target, undefined, user);
+      }
+    }
+
     var venomousToxin = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.VenomousToxin);
     if (venomousToxin !== undefined) {
       var rng = this.utilityService.getRandomNumber(0, 1);
@@ -3738,7 +3780,8 @@ export class BattleService {
   }
 
   isStatusEffectAnElixir(effect: StatusEffectEnum) {
-    if (effect === StatusEffectEnum.ElixirOfFortitude || effect === StatusEffectEnum.HeroicElixir || effect === StatusEffectEnum.RejuvenatingElixir)
+    if (effect === StatusEffectEnum.ElixirOfFortitude || effect === StatusEffectEnum.HeroicElixir || effect === StatusEffectEnum.RejuvenatingElixir ||
+      effect === StatusEffectEnum.ElixirOfSpeed)
       return true;
 
     return false;

@@ -241,6 +241,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.ElixirOfFortitude) {
       src += "elixirOfFortitude.svg";
     }
+    if (effect.type === StatusEffectEnum.ElixirOfSpeed) {
+      src += "elixirOfSpeed.svg";
+    }
     if (effect.type === StatusEffectEnum.Thorns) {
       src += "thorns.svg";
     }
@@ -333,6 +336,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.Thyrsus) {
       src += "thyrsus.svg";
+    }
+    if (effect.type === StatusEffectEnum.FlamingToxin) {
+      src += "flamingToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.ParalyzingToxin) {
+      src += "paralyzingToxin.svg";
     }
 
     return src;

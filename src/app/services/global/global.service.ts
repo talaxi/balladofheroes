@@ -806,8 +806,8 @@ export class GlobalService {
       type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp ||
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp 
-       || type === StatusEffectEnum.ThousandCuts ||
-       type === StatusEffectEnum.ReduceHealing || 
+       || type === StatusEffectEnum.ThousandCuts || type === StatusEffectEnum.Paralyze ||
+       type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.Stagger || 
        type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
       type === StatusEffectEnum.LordOfTheUnderworld || type === StatusEffectEnum.Onslaught || type === StatusEffectEnum.EarthDamageUp || type === StatusEffectEnum.FireDamageUp
       || type === StatusEffectEnum.AirDamageUp || type === StatusEffectEnum.HolyDamageUp || type === StatusEffectEnum.LightningDamageUp || type === StatusEffectEnum.WaterDamageUp || type === StatusEffectEnum.EarthDamageDown || type === StatusEffectEnum.FireDamageDown
@@ -826,7 +826,8 @@ export class GlobalService {
 
     if (type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.WitheringToxin ||
-      type === StatusEffectEnum.ElixirOfFortitude)
+      type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed || type === StatusEffectEnum.FlamingToxin ||
+      type === StatusEffectEnum.ParalyzingToxin)
       refreshes = true;
 
     return refreshes;
@@ -836,7 +837,8 @@ export class GlobalService {
     var persistsDeath = false;
 
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
-      type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.Dead)
+      type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
+      type === StatusEffectEnum.Dead)
       persistsDeath = true;
 
     return persistsDeath;
@@ -2943,7 +2945,7 @@ export class GlobalService {
       this.handleColiseumLoss(this.globalVar.activeBattle.activeTournament.type, this.globalVar.activeBattle.activeTournament.currentRound);
     }
 
-    this.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.globalVar.activeBattle.activeTournament = this.setNewTournament(false);
   }
 
   handleColiseumLoss(type: ColiseumTournamentEnum, losingRound: number) {
@@ -2981,6 +2983,36 @@ export class GlobalService {
       this.giveCharactersBonusExp(this.getActivePartyCharacters(true), bonusXp);
       this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins));
     }
+  }
+
+  setNewTournament(canRepeat: boolean = false) {    
+    var repeatColiseumFight = this.globalVar.settings.get("repeatColiseumFight") ?? false;
+
+    if (!repeatColiseumFight || !canRepeat)
+      return new ColiseumTournament();
+
+    var type = this.dictionaryService.getColiseumInfoFromType(this.globalVar.activeBattle.activeTournament.type);
+
+    return this.startColiseumTournament(type);
+  }
+
+  startColiseumTournament(tournament: ColiseumTournament) {
+    var battle = new Battle();
+    battle.activeTournament = tournament;
+
+    if (battle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee) {
+      if (!this.canEnterWeeklyMelee())
+        return new ColiseumTournament();
+      this.globalVar.sidequestData.weeklyMeleeEntries -= 1;
+    }
+
+    this.globalVar.activeBattle = battle;
+
+    return battle.activeTournament;
+  }
+  
+  canEnterWeeklyMelee() {
+    return this.globalVar.sidequestData.weeklyMeleeEntries > 0;
   }
 
   gainResource(item: ResourceValue) {

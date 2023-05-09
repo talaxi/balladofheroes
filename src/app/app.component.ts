@@ -129,7 +129,7 @@ export class AppComponent {
     var originalDeltaTime = deltaTime;
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
     var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;    
-    if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone))
+    if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
       this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
@@ -181,7 +181,7 @@ export class AppComponent {
     if (this.globalService.globalVar.extraSpeedTimeRemaining > this.utilityService.extraSpeedTimeLimit)
     this.globalService.globalVar.extraSpeedTimeRemaining = this.utilityService.extraSpeedTimeLimit;
     
-    var batchTime = this.getBatchRunTime(subzone); //runs the game in batches of 5 seconds max    
+    var batchTime = this.getBatchRunTime(subzone, deltaTime); //runs the game in batches of 5 seconds max    
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {
       this.lookupService.isUIHidden = true;
@@ -223,8 +223,17 @@ export class AppComponent {
     return deltaTime;
   }
 
-  getBatchRunTime(subzone: SubZone) {
+  getBatchRunTime(subzone: SubZone, totalDeltaTime: number) {
     var batchRunTime = 5;
+
+    if (totalDeltaTime < 5 * 60) //if less than 5 or 10 min, you can be more accurate
+    {
+      batchRunTime = 1;
+    }
+    else if (totalDeltaTime < 10 * 60) //if less than 5 or 10 min, you can be more accurate
+    {
+      batchRunTime = 2;
+    }
 
     if (this.balladService.isSubzoneTown(subzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
       batchRunTime = 30;

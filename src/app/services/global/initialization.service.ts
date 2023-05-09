@@ -445,6 +445,15 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SerpentScale, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RadiatingGemstone, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.WhiteHorn, 100));
+    
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ParalyzingToxin, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.FlamingToxin, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SlowingPotion, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PiercingPotion, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneySalve, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneyPoultice, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfSpeed, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PotentConcoction, 10));
 
     this.globalService.globalVar.currentStoryId = 7;
     this.globalService.globalVar.isDpsUnlocked = true;

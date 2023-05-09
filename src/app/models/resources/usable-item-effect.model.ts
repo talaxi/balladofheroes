@@ -6,6 +6,8 @@ import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 export class UsableItemEffect {
     dealsDamage: boolean;
     trueDamageAmount: number;   
+    trueDamagePercent: number;   
+    maxThreshold: number;
     healAmount: number; 
     isAoe: boolean;
     trigger: EffectTriggerEnum;
@@ -25,5 +27,7 @@ export class UsableItemEffect {
         this.triggersEveryCount = 0;
         this.cooldown = 0;
         this.elementalProperty = ElementalTypeEnum.None;
+        this.trueDamagePercent = 0;
+        this.maxThreshold = 0;
     }
 }

@@ -1,9 +1,13 @@
 import { Injectable } from '@angular/core';
 import { ItemsEnum } from '../../models/enums/items-enum.model';
+import { ColiseumTournamentEnum } from '../../models/enums/coliseum-tournament-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 
 @Injectable({
   providedIn: 'root'
 })
+//THE RULE HERE IS CANNOT REFERENCE ANY OTHER SERVICE
 export class DictionaryService {
 
   constructor() { }
@@ -445,8 +449,7 @@ export class DictionaryService {
       name = "Small Charm of Haste";
     else if (type === ItemsEnum.LargeCharmOfHaste)
       name = "Large Charm of Haste";
-    else if (type === ItemsEnum.SmallCharmOfHolyDestruction)
-      name = "Small Charm of Holy Destruction";
+      
     else if (type === ItemsEnum.LargeCharmOfHolyDestruction)
       name = "Large Charm of Holy Destruction";
     else if (type === ItemsEnum.SmallCharmOfFireDestruction)
@@ -571,5 +574,74 @@ export class DictionaryService {
       name = "Ares";
 
     return name;
+  }
+
+  getColiseumInfoFromType(type: ColiseumTournamentEnum) {
+    var tournament = new ColiseumTournament();
+    tournament.type = type;
+    tournament.currentRound = 1;
+    tournament.tournamentTimer = 0;
+
+    if (type === ColiseumTournamentEnum.TournamentOfTheDead) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
+    }
+    if (type === ColiseumTournamentEnum.FlamesOfTartarus) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 2500));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 10000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
+    }
+    if (type === ColiseumTournamentEnum.ForgottenKings) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 25000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+    }
+    if (type === ColiseumTournamentEnum.RiverLords) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 8000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 65000));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
+    }
+    if (type === ColiseumTournamentEnum.HadesTrial) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 120;
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 90000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.Hades, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
+    }
+    if (type === ColiseumTournamentEnum.WeeklyMelee) {
+      tournament.maxRounds = -1;
+      tournament.tournamentTimerLength = 300;
+    }
+
+    return tournament;
+  }
+
+  getTournamentName(type: ColiseumTournamentEnum) {
+    if (type === ColiseumTournamentEnum.TournamentOfTheDead)
+      return "Tournament of the Dead";
+    if (type === ColiseumTournamentEnum.FlamesOfTartarus)
+      return "Flames of Tartarus";
+    if (type === ColiseumTournamentEnum.ForgottenKings)
+      return "Forgotten Kings and Queens";
+    if (type === ColiseumTournamentEnum.RiverLords)
+      return "River Lords";
+    else if (type === ColiseumTournamentEnum.HadesTrial)
+      return "Hades' Trial";
+    else if (type === ColiseumTournamentEnum.WeeklyMelee)
+      return "Eternal Melee";
+    return "";
   }
 }

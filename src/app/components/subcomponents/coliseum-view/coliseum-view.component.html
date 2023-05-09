@@ -66,6 +66,12 @@
                 <br />
                 <br />
                 <button (click)="startTournament()">Start Tournament</button>
+                <br/>
+                <div *ngIf="firstTimeRewardAlreadyObtained()" class='flexAround'>
+                <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">
+                    Repeat Coliseum Fight Indefinitely
+                </mat-checkbox>          
+            </div>
             </div>
         </div>
         <div *ngIf="isSelectedTournamentWeeklyMelee()">
@@ -80,6 +86,12 @@
                 <br />
                 <br />
                 <button [disabled]="!canEnterWeeklyMelee()" (click)="startTournament()">Start Tournament</button>
+                <br/>
+                <div class='flexAround'>
+                    <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">
+                        Repeat Coliseum Fight Until Out Of Tickets
+                    </mat-checkbox>          
+                </div>
             </div>
         </div>
     </div>

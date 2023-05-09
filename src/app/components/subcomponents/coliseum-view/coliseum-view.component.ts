@@ -19,6 +19,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class ColiseumViewComponent implements OnInit {
   selectedTournament: ColiseumTournament;
+  repeatColiseumFight: boolean = false;
 
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
@@ -26,7 +27,7 @@ export class ColiseumViewComponent implements OnInit {
   ngOnInit(): void {
     var standardTournaments = this.getStandardColiseumTournaments();
     if (standardTournaments.length > 0)
-      this.selectedTournament = this.coliseumService.getColiseumInfoFromType(standardTournaments[0]);
+      this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(standardTournaments[0]);
   }
 
   getStandardColiseumTournaments() {
@@ -75,15 +76,15 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   chooseColiseumTournament(tournament: ColiseumTournamentEnum) {
-    this.selectedTournament = this.coliseumService.getColiseumInfoFromType(tournament);
+    this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(tournament);
   }
 
   getTournamentName(type?: ColiseumTournamentEnum) {
     if (type === undefined) {
-      return this.coliseumService.getTournamentName(this.selectedTournament.type);
+      return this.dictionaryService.getTournamentName(this.selectedTournament.type);
     }
     else
-      return this.coliseumService.getTournamentName(type);
+      return this.dictionaryService.getTournamentName(type);
   }
 
   getTournamentDescription() {
@@ -186,16 +187,7 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   startTournament() {
-    var battle = new Battle();
-    battle.activeTournament = this.selectedTournament;
-
-    if (battle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee) {
-      if (!this.canEnterWeeklyMelee())
-        return;
-      this.globalService.globalVar.sidequestData.weeklyMeleeEntries -= 1;
-    }
-
-    this.globalService.globalVar.activeBattle = battle;
+    this.globalService.startColiseumTournament(this.selectedTournament);
     this.dialog.closeAll();
   }
 
@@ -221,5 +213,9 @@ export class ColiseumViewComponent implements OnInit {
 
   getHighestWeeklyMeleeRoundCompleted() {
     return this.globalService.globalVar.sidequestData.highestWeeklyMeleeRound;
+  }
+
+  repeatColiseumFightToggle() {
+    this.globalService.globalVar.settings.set("repeatColiseumFight", this.repeatColiseumFight);
   }
 }

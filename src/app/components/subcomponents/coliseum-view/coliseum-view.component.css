@@ -23,6 +23,11 @@
     height: auto;
 }
 
+.flexAround {
+    display: flex;
+    justify-content: space-around;
+}
+
 .column {
     width: 100%;
 }

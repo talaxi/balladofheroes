@@ -122,5 +122,8 @@ export enum StatusEffectEnum {
     CastingImmobilize,
     InstantHpPercentDamage,
     ArmorPenetrationUp,
-    ArmorPenetrationDown
+    ArmorPenetrationDown,
+    FlamingToxin,
+    ParalyzingToxin,
+    ElixirOfSpeed
   }

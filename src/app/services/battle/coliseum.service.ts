@@ -35,79 +35,10 @@ export class ColiseumService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService) { }
-
-  getColiseumInfoFromType(type: ColiseumTournamentEnum) {
-    var tournament = new ColiseumTournament();
-    tournament.type = type;
-    tournament.currentRound = 1;
-    tournament.tournamentTimer = 0;
-
-    if (type === ColiseumTournamentEnum.TournamentOfTheDead) {
-      tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, 1));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
-    }
-    if (type === ColiseumTournamentEnum.FlamesOfTartarus) {
-      tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 2500));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 10000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
-    }
-    if (type === ColiseumTournamentEnum.ForgottenKings) {
-      tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 25000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
-    }
-    if (type === ColiseumTournamentEnum.RiverLords) {
-      tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 8000));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 65000));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
-    }
-    if (type === ColiseumTournamentEnum.HadesTrial) {
-      tournament.maxRounds = 5;
-      tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 90000));
-      tournament.completionReward.push(new ResourceValue(ItemsEnum.Hades, 1));
-      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
-    }
-    if (type === ColiseumTournamentEnum.WeeklyMelee) {
-      tournament.maxRounds = -1;
-      tournament.tournamentTimerLength = 300;
-    }
-
-    return tournament;
-  }
-
-  getTournamentName(type: ColiseumTournamentEnum) {
-    if (type === ColiseumTournamentEnum.TournamentOfTheDead)
-      return "Tournament of the Dead";
-    if (type === ColiseumTournamentEnum.FlamesOfTartarus)
-      return "Flames of Tartarus";
-    if (type === ColiseumTournamentEnum.ForgottenKings)
-      return "Forgotten Kings and Queens";
-    if (type === ColiseumTournamentEnum.RiverLords)
-      return "River Lords";
-    else if (type === ColiseumTournamentEnum.HadesTrial)
-      return "Hades' Trial";
-    else if (type === ColiseumTournamentEnum.WeeklyMelee)
-      return "Eternal Melee";
-    return "";
-  }
+    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService) { }  
 
   getTournamentDescription(type: ColiseumTournamentEnum) {
-    var info = this.getColiseumInfoFromType(type);
+    var info = this.dictionaryService.getColiseumInfoFromType(type);
 
     if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Complete as many rounds as you can in " + info.tournamentTimerLength + " seconds. Each round is progressively more difficult. Gain one entry per day.";
@@ -116,7 +47,7 @@ export class ColiseumService {
   }
 
   getRequiredDps(type: ColiseumTournamentEnum) {
-    var info = this.getColiseumInfoFromType(type);
+    var info = this.dictionaryService.getColiseumInfoFromType(type);
     var totalHp = 0;
 
     for (var i = 1; i <= info.maxRounds; i++) {
@@ -137,7 +68,7 @@ export class ColiseumService {
     if (tournamentType !== undefined) {
       tournamentType.count += 1;
 
-      var tournamentInfo = this.getColiseumInfoFromType(type);
+      var tournamentInfo = this.dictionaryService.getColiseumInfoFromType(type);
 
       if (tournamentType.count === 1) {
         this.unlockNextColiseumTournament(type);
@@ -194,7 +125,7 @@ export class ColiseumService {
       }
     }
     //then reset
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.globalService.globalVar.activeBattle.activeTournament = this.globalService.setNewTournament(true);
   }
 
   unlockNextColiseumTournament(type: ColiseumTournamentEnum) {
