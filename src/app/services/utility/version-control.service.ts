@@ -393,6 +393,14 @@ export class VersionControlService {
             }
           }
 
+          var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+          if (dionysusGod !== undefined) {
+            var ability2 = dionysusGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.targetEffect[0].effectiveness += .01;
+            }
+          }
+
           this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
           this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
           this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
@@ -409,7 +417,9 @@ export class VersionControlService {
           this.globalService.globalVar.keybinds.set("toggleAllCharactersTargetMode", this.keybindService.altKeyBind + "keyT");
 
           this.globalService.globalVar.sidequestData.traderHuntLevel = 0;
-          this.globalService.globalVar.sidequestData.goldenApplesObtained = 0;
+          this.globalService.globalVar.sidequestData.goldenApplesObtained = 0;          
+          this.globalService.globalVar.sidequestData.augeanStablesLevel = 0;
+          this.globalService.globalVar.sidequestData.maxAugeanStablesLevel = 3;
 
           this.globalService.globalVar.optionalScenesViewed.forEach(optionalStory => {
             this.lookupService.addSideStoryToLog(optionalStory, undefined);

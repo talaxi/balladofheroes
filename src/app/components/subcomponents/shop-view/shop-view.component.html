@@ -24,6 +24,10 @@
   <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText"
     (click)="progressStory()">Speak
     to the King <app-notification-icon [isButton]="true"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.AugeanStables" class="buttonStyled shopButtonText"
+    (click)="openShop(option, undefined)">{{getOptionText(option.type)}} <app-notification-icon
+      *ngIf="!augeanStablesCompleted()" [isButton]="true"
+      [notificationColor]="sideQuestNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText"
     (click)="openShop(option, coliseumModal)">
     {{getOptionText(option.type)}}</button>

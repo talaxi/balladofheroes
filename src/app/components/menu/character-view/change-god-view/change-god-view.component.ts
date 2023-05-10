@@ -202,14 +202,25 @@ export class ChangeGodViewComponent implements OnInit {
         this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
       }
     }
-    else if ((character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) && 
-    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+    else if (character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) {
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues))
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Retribution))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Retribution);
+
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ChainsOfFate))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ChainsOfFate);
     }
 
     if ((character.assignedGod1 !== GodEnum.Ares && character.assignedGod2 !== GodEnum.Ares) && 
     character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Onslaught)) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
+    }
+
+    if ((character.assignedGod1 !== GodEnum.Hades && character.assignedGod2 !== GodEnum.Hades) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.LordOfTheUnderworld)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
     }
 
     if (character.assignedGod1 !== GodEnum.Apollo && character.assignedGod2 !== GodEnum.Apollo) {      

@@ -66,7 +66,7 @@
         <br/>
         <br />
         <div class="importExportDiv">
-            <textarea id="importExport" name="importExport" rows="10" [(ngModel)]="importExportValue"></textarea>
+            <textarea (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport" name="importExport" rows="10" [(ngModel)]="importExportValue"></textarea>
             <div class="importExportButtons">
                 <button class="buttonStyled" (click)="LoadGame()">
                     Import
@@ -96,7 +96,7 @@
             <br />
             <div class="codeRedemption">
                 <label for="codeRedemptionText">Code: </label>
-                <input id="codeRedemptionText" type="text" class="spaced codeRedemptionInput"
+                <input (focus)="inTextbox()" (blur)="outOfTextbox()" id="codeRedemptionText" type="text" class="spaced codeRedemptionInput"
                     [(ngModel)]="enteredRedemptionCode">
                 <button class="screenMarginLeft buttonStyled" (click)="enterRedemptionCode()">
                     Enter

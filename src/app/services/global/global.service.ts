@@ -532,7 +532,7 @@ export class GlobalService {
       lordOfTheUnderworld.isActivatable = false;
       lordOfTheUnderworld.dealsDirectDamage = false;
       lordOfTheUnderworld.maxCount = 3;
-      lordOfTheUnderworld.userEffect.push(this.createStatusEffect(StatusEffectEnum.LordOfTheUnderworld, 15, 1.02, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
+      lordOfTheUnderworld.userEffect.push(this.createStatusEffect(StatusEffectEnum.LordOfTheUnderworld, 15, 1.02, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 3));
       god.abilityList.push(lordOfTheUnderworld);
     }
 
@@ -598,7 +598,7 @@ export class GlobalService {
       thyrsus.effectiveness = 2.1;
       thyrsus.dealsDirectDamage = true;
       thyrsus.secondaryEffectiveness = 1.1;
-      thyrsus.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Thyrsus, 6, 1.02, false, false));
+      thyrsus.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Thyrsus, 6, 1.03, false, false));
       god.abilityList.push(thyrsus);
 
       var insanity = new Ability();
@@ -2153,7 +2153,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Dionysus) {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
           var targetGainsEffect = ability.targetEffect[0];
-          targetGainsEffect.effectiveness = .02;
+          targetGainsEffect.effectiveness = .005;
         }
         else if (god.type === GodEnum.Nemesis) {
           ability.effectiveness += .1;

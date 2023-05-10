@@ -361,7 +361,6 @@ export class PartyComponent implements OnInit {
 
   setupKeybinds(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;    
-    console.log(event.code + " " + event.altKey + " " + event.shiftKey);
 
     if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("toggleAllCharactersTargetMode"))) {
       this.battleService.targetCharacterMode = !this.battleService.targetCharacterMode;

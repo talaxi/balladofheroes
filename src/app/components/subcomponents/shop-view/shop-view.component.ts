@@ -35,6 +35,7 @@ export class ShopViewComponent implements OnInit {
   openShopSubscription: any;
   resetNotification = NotificationTypeEnum.Reset;
   professionNotification = NotificationTypeEnum.Profession;
+  sideQuestNotification = NotificationTypeEnum.SideQuest;
   alchemy: Profession | undefined;
   jewelcrafting: Profession | undefined;
   traderLevelUpText = "";
@@ -68,6 +69,10 @@ export class ShopViewComponent implements OnInit {
         this.getShopOptions();
       }
     });
+  }
+
+  augeanStablesCompleted() {
+    return this.globalService.globalVar.sidequestData.augeanStablesLevel >= this.globalService.globalVar.sidequestData.maxAugeanStablesLevel; 
   }
 
   getShopOptions() {

@@ -30,11 +30,14 @@ export class ItemBeltItemComponent implements OnInit {
 
     this.item = this.globalService.globalVar.itemBelt[this.slotNumber];
 
-    this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+    /*this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.isItemOnCooldown(this.slotNumber)) {
+        console.log("Checking for diameter");
         this.changeDetector.detectChanges();
         if (this.spinnerDiv !== undefined) {
+          console.log("Spinner found");
           if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+            console.log("setting diameter to " + this.spinnerDiv.nativeElement.offsetHeight);
             this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
           }
 
@@ -45,6 +48,7 @@ export class ItemBeltItemComponent implements OnInit {
           }
 
           if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+            console.log("Unsub");
             this.spinnerDivSubscription.unsubscribe();
           }
         }
@@ -52,16 +56,19 @@ export class ItemBeltItemComponent implements OnInit {
       else {
         this.spinnerDivSubscription.unsubscribe();
       }
-    });
+    });*/
   }
 
-  checkForCooldown(slotNumber: number) {
-    this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      if (this.isItemOnCooldown(this.slotNumber)) {
+  checkForCooldown(slotNumber: number) {    
+    if (this.spinnerDivSubscription !== undefined)
+      this.spinnerDivSubscription.unsubscribe();
+
+    this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
+      if (this.isItemOnCooldown(this.slotNumber)) {        
         this.changeDetector.detectChanges();
 
-        if (this.spinnerDiv !== undefined) {
-          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
+        if (this.spinnerDiv !== undefined) {          
+          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {            
             this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
           }
 
@@ -75,9 +82,6 @@ export class ItemBeltItemComponent implements OnInit {
             this.spinnerDivSubscription.unsubscribe();
           }
         }
-      }
-      else {
-        this.spinnerDivSubscription.unsubscribe();
       }
     });
   }
@@ -138,6 +142,7 @@ export class ItemBeltItemComponent implements OnInit {
 
   isItemOnCooldown(slotNumber: number) {
     var item = this.globalService.globalVar.itemBelt[slotNumber];
+    //console.log("On CD? " + this.battleService.isBattleItemOnCooldown(item) + " Width: " + this.strokeWidth + " Diameter: " + this.spinnerDiameter);
     return this.battleService.isBattleItemOnCooldown(item);
   }
 
@@ -147,6 +152,7 @@ export class ItemBeltItemComponent implements OnInit {
     if (itemCooldownTimer !== undefined) {
       var timeLeft = itemCooldownTimer[1];
       var originalCooldown = this.lookupService.getBattleItemEffect(item).cooldown;
+      
       return 100 - ((timeLeft / originalCooldown) * 100);
     }
 

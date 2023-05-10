@@ -10,6 +10,8 @@ export class SidequestData {
     traderHuntLevel: number;
     traderBestiaryType: BestiaryEnum;
     goldenApplesObtained: number;
+    augeanStablesLevel: number;
+    maxAugeanStablesLevel: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -22,5 +24,7 @@ export class SidequestData {
         this.lastWeeklyMeleeTicketReceived = new Date();
         this.traderHuntLevel = 0;
         this.goldenApplesObtained = 0;
+        this.augeanStablesLevel = 0;
+        this.maxAugeanStablesLevel = 3;
     }
 }

@@ -17,6 +17,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
 import { PatreonAccessService } from 'src/app/services/utility/patreon-access.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 
 @Component({
   selector: 'app-settings-view',
@@ -40,7 +41,8 @@ export class SettingsViewComponent implements OnInit {
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
     private versionControlService: VersionControlService, private codeCreationService: CodeCreationService,
-    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService, private lookupService: LookupService) { }
+    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService, private lookupService: LookupService,
+    private menuService: MenuService) { }
 
   ngOnInit(): void {
     if (this.deploymentService.codeCreationMode) {
@@ -144,6 +146,14 @@ export class SettingsViewComponent implements OnInit {
     }
   }
 
+  inTextbox() {
+    this.menuService.inTextbox = true;
+  }
+
+  outOfTextbox() {
+    this.menuService.inTextbox = false;
+  }
+
   setStoryStyle() {
     if (this.storyStyle === StoryStyleSettingEnum.Fast)
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.fastStorySpeed;
@@ -184,5 +194,9 @@ export class SettingsViewComponent implements OnInit {
   }
   showPartyHpAsPercentToggle() {
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", this.showPartyHpAsPercent);
+  }
+
+  ngOnDestroy() {    
+    this.menuService.inTextbox = false;
   }
 }
