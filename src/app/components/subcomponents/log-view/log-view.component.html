@@ -18,52 +18,57 @@
     </tr>
 </table>
 <hr class="noMargin" />
-  <div class="textCentered filters">
+<div class="flexAround filters">
+    <mat-checkbox *ngIf="currentLogView === logViewEnum.Story" class="selfCenterAlign" [(ngModel)]="includeSideQuests" (input)="includeSideQuestsToggle()">
+        Include Side Quest Story
+    </mat-checkbox>
+    <div>
         <span>Toggle sort direction: </span>
         <button class="buttonStyled" (click)="toggleSort()">&#8645;</button>
-      </div>
-      <hr class="noMargin" />
+    </div>
+</div>
+<hr class="noMargin" />
 <div class="logInfo">
     <table *ngIf="currentLogView === logViewEnum.Story" class="dataTable">
         <tr class="dataRow">
-        <td class="dataDisplay">
-            <span class="dataDate">Date Received</span>
-            <span class="dataInfo">Info</span>
-        </td>
-    </tr>
+            <td class="dataDisplay">
+                <span class="dataDate">Received</span>
+                <span class="dataInfo">Info</span>
+            </td>
+        </tr>
         <tr class="dataRow" *ngFor="let item of storyData">
             <td class="dataDisplay">
-                <span class="dataDate">{{formatDate(item.dateReceived)}}</span>
+                <span class="dataDate">{{formatDate(item.dateReceived)}}<br/>{{getBalladName(item.loc)}}<br/>{{getSubZoneName(item.loc)}}</span>
                 <span class="dataInfo" [innerHtml]="getStoryData(item)"></span>
-            </td>                 
+            </td>
         </tr>
     </table>
     <table *ngIf="currentLogView === logViewEnum.Tutorials" class="dataTable">
         <tr class="dataRow">
-        <td class="dataDisplay">
-            <span class="dataDate">Date Received</span>
-            <span class="dataInfo">Info</span>
-        </td>
-    </tr>
+            <td class="dataDisplay">
+                <span class="dataDate">Received</span>
+                <span class="dataInfo">Info</span>
+            </td>
+        </tr>
         <tr class="dataRow" *ngFor="let item of tutorialData">
             <td class="dataDisplay">
-                <span class="dataDate">{{formatDate(item.dateReceived)}}</span>
+                <span class="dataDate">{{formatDate(item.dateReceived)}}<br/>{{getBalladName(item.loc)}}<br/>{{getSubZoneName(item.loc)}}</span>
                 <span class="dataInfo" [innerHtml]="getTutorialData(item)"></span>
-            </td>                 
+            </td>
         </tr>
     </table>
     <table *ngIf="currentLogView === logViewEnum.Loot" class="dataTable">
         <tr class="dataRow">
-        <td class="dataDisplay">
-            <span class="dataDate">Date Received</span>
-            <span class="dataInfo">Info</span>
-        </td>
-    </tr>
+            <td class="dataDisplay">
+                <span class="dataDate">Received</span>
+                <span class="dataInfo">Info</span>
+            </td>
+        </tr>
         <tr class="dataRow" *ngFor="let item of lootData">
             <td class="dataDisplay">
-                <span class="dataDate">{{formatDate(item.dateReceived)}}</span>
+                <span class="dataDate">{{formatDate(item.dateReceived)}}<br/>{{getBalladName(item.loc)}}<br/>{{getSubZoneName(item.loc)}}</span>
                 <span class="dataInfo" [innerHtml]="getLootData(item)"></span>
-            </td>                 
+            </td>
         </tr>
     </table>
 </div>

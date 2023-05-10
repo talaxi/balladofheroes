@@ -40,7 +40,7 @@
 }
 
 .selected {
-    color: var(--foreground-secondary) !important;
+  color: var(--foreground-secondary) !important;
 }
 
 .navigationGrid {

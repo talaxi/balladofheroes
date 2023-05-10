@@ -224,7 +224,7 @@ export class BattleService {
       this.globalService.globalVar.altars.isUnlocked = true;
       this.globalService.globalVar.altars.altar1 = this.altarService.getTutorialAltar();
       this.globalService.globalVar.altars.showNewNotification = true;
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Altars));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Altars,  undefined, undefined, true, subzone.type));
     }
 
     if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
@@ -281,7 +281,7 @@ export class BattleService {
     }
 
     if (subzone.type === SubZoneEnum.CalydonForestPassage && subzone.victoryCount === 10) {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ObscurredNotification));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ObscurredNotification,  undefined, undefined, true, subzone.type));
     }
   }
 
@@ -362,7 +362,7 @@ export class BattleService {
         !this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded) {
         treasureChestChance = 1;
         this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded = true;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Equipment));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Equipment,  undefined, undefined, true, subzone.type));
       }
 
       //auto gain healing herbs in aigosthena lower coast
@@ -386,7 +386,7 @@ export class BattleService {
         this.globalService.globalVar.activeBattle.chestRewards = this.subzoneGeneratorService.getTreasureChestRewards(subzone.type);
         this.globalService.globalVar.activeBattle.chestRewards.forEach(reward => {
           this.lookupService.gainResource(reward);
-          this.lookupService.addLootToLog(reward.item, reward.amount);
+          this.lookupService.addLootToLog(reward.item, reward.amount, subzone.type);
           if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
             var itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
             if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Equipment) {
@@ -399,7 +399,7 @@ export class BattleService {
         });
 
         if (showBattleItemTutorial)
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.BattleItems));
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.BattleItems,  undefined, undefined, true, subzone.type));
       }
     }
   }
@@ -858,7 +858,7 @@ export class BattleService {
   }
 
   //isPartyUsing = is the character using the ability a party member or enemy
-  useAbility(isPartyUsing: boolean, ability: Ability, user: Character, targets: Character[], party: Character[], isGodAbility: boolean, effectivenessModifier: number = 1) {
+  useAbility(isPartyUsing: boolean, ability: Ability, user: Character, targets: Character[], party: Character[], isGodAbility: boolean, effectivenessModifier: number = 1, abilityWillRepeat: boolean = false) {
     var abilityCopy = ability.makeCopy();
     var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead || item.type === StatusEffectEnum.Invulnerable));
     var target = this.getTarget(user, abilityCopy.targetsAllies ? party : targets, abilityCopy.targetType !== undefined ? abilityCopy.targetType : TargetEnum.Random);
@@ -913,7 +913,7 @@ export class BattleService {
             var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(potentialTarget.type) + "'>" + potentialTarget.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
-          onslaughtUsed = this.checkForOnslaught(damageDealt, user, potentialTarget, potentialTargets, abilityCopy);
+          onslaughtUsed = this.checkForOnslaught(damageDealt, user, potentialTarget, potentialTargets, abilityCopy, abilityWillRepeat);
         });
       }
       else {
@@ -925,7 +925,7 @@ export class BattleService {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
           this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
         }
-        onslaughtUsed = this.checkForOnslaught(damageDealt, user, target, potentialTargets, abilityCopy);
+        onslaughtUsed = this.checkForOnslaught(damageDealt, user, target, potentialTargets, abilityCopy, abilityWillRepeat);
       }
     }
     else if (abilityCopy.heals) {
@@ -1129,7 +1129,7 @@ export class BattleService {
     return true;
   }
 
-  checkForOnslaught(damageDealt: number, user: Character, target: Character, potentialTargets: Character[], ability: Ability) {
+  checkForOnslaught(damageDealt: number, user: Character, target: Character, potentialTargets: Character[], ability: Ability, willAbilityRepeat: boolean = false) {    
     var addDoTDamage = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Onslaught);
     if (addDoTDamage !== undefined && damageDealt > 0) {
       var onslaught = this.lookupService.characterHasAbility("Onslaught", user);
@@ -1141,13 +1141,16 @@ export class BattleService {
           DoT.isAoe = false;
 
           if (target !== undefined) {
-            this.applyStatusEffect(DoT, target, potentialTargets, user);
+            this.applyStatusEffect(DoT, target, potentialTargets, user);            
 
             if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) {
               var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + "'s " + ability.name + " also applies a damage over time effect from Onslaught.";
               this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
             }
-            return true;
+
+            var willAbilityRepeat = ability.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || willAbilityRepeat;            
+
+            return !willAbilityRepeat;
           }
         }
       }
@@ -1221,7 +1224,7 @@ export class BattleService {
             var repeatCount = originalAbility.userEffect.filter(effect => effect.type === StatusEffectEnum.RepeatAbility).length;
             originalAbility.userEffect = originalAbility.userEffect.filter(item => item.type !== StatusEffectEnum.RepeatAbility);
             for (var i = 0; i < repeatCount; i++) {
-              this.useAbility(isPartyUsing, originalAbility, user, targets, party, false);
+              this.useAbility(isPartyUsing, originalAbility, user, targets, party, false, undefined, i < repeatCount - 1);
             }
           }
 
@@ -1872,7 +1875,7 @@ export class BattleService {
           }
 
           if (this.globalService.doesStatusEffectRefresh(appliedStatusEffect.type)) {
-            if (appliedStatusEffect.effectiveness === existingApplication.effectiveness) {
+            if (existingApplication.stackCount > 1 || appliedStatusEffect.effectiveness === existingApplication.effectiveness) {
               if (appliedStatusEffect.duration > existingApplication.duration)
                 existingApplication.duration = appliedStatusEffect.duration;
             }
@@ -1904,7 +1907,7 @@ export class BattleService {
             existingApplication.duration += appliedStatusEffect.duration;
           }
           else {
-            if (appliedStatusEffect.effectiveness === existingApplication.effectiveness) {
+            if (existingApplication.stackCount > 1 || appliedStatusEffect.effectiveness === existingApplication.effectiveness) {
               if (appliedStatusEffect.duration > existingApplication.duration)
                 existingApplication.duration = appliedStatusEffect.duration;
             }
@@ -2744,12 +2747,26 @@ export class BattleService {
             this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCopy.amount + " " + (itemCopy.amount === 1 ? this.dictionaryService.getItemName(itemCopy.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(itemCopy.item))) + "</strong>.");
           }          
 
-          this.lookupService.addLootToLog(itemCopy.item, itemCopy.amount);
+          this.lookupService.addLootToLog(itemCopy.item, itemCopy.amount, subZone.type);
           if (itemCopy.item === ItemsEnum.FocusPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.FocusPotion);
           }
           else if (itemCopy.item === ItemsEnum.PotentConcoctionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PotentConcoction);
+          }
+          else if (itemCopy.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained <= 25) {            
+            this.globalService.globalVar.sidequestData.goldenApplesObtained += item.amount;
+            var difference = 0;
+            if (this.globalService.globalVar.sidequestData.goldenApplesObtained > 25)
+            {
+              difference = this.globalService.globalVar.sidequestData.goldenApplesObtained - 25;
+              this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
+            }
+            var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+            if (alchemy !== undefined) {                          
+              alchemy.maxLevel += item.amount - difference;
+              this.addLootToResources(new ResourceValue(item.item, item.amount - difference));
+            }
           }
           else {
             this.addLootToResources(itemCopy);
@@ -2783,6 +2800,9 @@ export class BattleService {
     defeatedEnemies.enemyList.forEach(enemy => {
       if (enemy.loot !== undefined && enemy.loot.length > 0) {
         enemy.loot.forEach(loot => {
+          if (loot.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained > 25)
+            return;
+
           var rng = this.utilityService.getRandomNumber(0, 1);
 
           if (rng <= loot.chance) {
@@ -2925,10 +2945,10 @@ export class BattleService {
           });
 
           if (unlockedSubZone.type === SubZoneEnum.AigosthenaBay) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.NewSubzone));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.NewSubzone,  undefined, undefined, true, subZone));
           }
           if (unlockedSubZone.type === SubZoneEnum.AigosthenaLowerCoast) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView,  undefined, undefined, true, subZone));
           }
         }
       });

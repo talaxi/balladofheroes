@@ -18,6 +18,8 @@ import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
+import { LookupService } from '../lookup.service';
+import { KeybindService } from './keybind.service';
 
 @Injectable({
   providedIn: 'root'
@@ -25,7 +27,8 @@ import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enu
 export class VersionControlService {
 
   constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService,
-    private achievementService: AchievementService, private initializationService: InitializationService) { }
+    private achievementService: AchievementService, private initializationService: InitializationService, private lookupService: LookupService,
+    private keybindService: KeybindService) { }
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
@@ -382,6 +385,14 @@ export class VersionControlService {
             god.permanentAbilityUpgrades = [];
           });
 
+          var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+          if (hades !== undefined) {
+            var passive = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              passive.maxCount = 3;
+            }
+          }
+
           this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
           this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
           this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
@@ -393,8 +404,16 @@ export class VersionControlService {
           this.globalService.globalVar.gameLogSettings.set("godAffinityLevelUp", true);
           this.globalService.globalVar.gameLogSettings.set("alchemyQueueEmpty", false);
           this.globalService.globalVar.gameLogSettings.set("jewelcraftingQueueEmpty", false);
+          this.globalService.globalVar.gameLogSettings.set("moveLocations", true);
+
+          this.globalService.globalVar.keybinds.set("toggleAllCharactersTargetMode", this.keybindService.altKeyBind + "keyT");
 
           this.globalService.globalVar.sidequestData.traderHuntLevel = 0;
+          this.globalService.globalVar.sidequestData.goldenApplesObtained = 0;
+
+          this.globalService.globalVar.optionalScenesViewed.forEach(optionalStory => {
+            this.lookupService.addSideStoryToLog(optionalStory, undefined);
+          });
 
           if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion)!.displayOrder = 1;

@@ -22,6 +22,7 @@ export class GameLogEditorComponent implements OnInit {
   battleCoinsRewards = false;
   battleItemsRewards = false;
   foundTreasureChest = false;
+  moveLocations = false;
   partyLevelUp = false;
   godLevelUp = false;
   godAffinityLevelUp = false;
@@ -133,6 +134,12 @@ export class GameLogEditorComponent implements OnInit {
       this.foundTreasureChest = false;
     else
       this.foundTreasureChest = foundTreasureChest;
+
+      var moveLocations = this.globalService.globalVar.gameLogSettings.get("moveLocations");
+      if (moveLocations === undefined)
+        this.moveLocations = false;
+      else
+        this.moveLocations = moveLocations;
 
     var partyLevelUp = this.globalService.globalVar.gameLogSettings.get("partyLevelUp");
     if (partyLevelUp === undefined)
@@ -335,5 +342,9 @@ export class GameLogEditorComponent implements OnInit {
 
   followerPrayerToggle() {
     this.globalService.globalVar.gameLogSettings.set("followerPrayer", this.followerPrayer);
+  }
+
+  moveLocationsToggle() {
+    this.globalService.globalVar.gameLogSettings.set("moveLocations", this.moveLocations);
   }
 }

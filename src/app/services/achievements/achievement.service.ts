@@ -865,11 +865,11 @@ export class AchievementService {
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade1) {
             this.lookupService.enableChthonicFavoredGod();
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, true, subzoneType));
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade2) {
             this.lookupService.enableChthonicFavor();
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade2));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade2,  undefined, undefined, true, subzoneType));
           }
           else
             this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
@@ -883,8 +883,8 @@ export class AchievementService {
     this.globalService.globalVar.totalAchievementsCompleted += count;
 
     if (previousAchievementCount === 0 && this.globalService.globalVar.totalAchievementsCompleted > 0) {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements));
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Followers));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements,  undefined, undefined, true, subzoneType));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Followers,  undefined, undefined, true, subzoneType));
     }
 
     if (this.globalService.globalVar.followerData.achievementCompletionCounter >= this.globalService.getAchievementsForNextFollower()) {

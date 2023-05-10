@@ -39,6 +39,12 @@
     border: 2px solid var(--priestColor);
 }
 
+.characterTargetedAll:hover {    
+    border: 2px solid;
+    border-image:  linear-gradient(to right, var(--adventurerColor) 25%, var(--archerColor) 25%, var(--archerColor) 50%,
+    var(--warriorColor) 50%, var(--warriorColor) 75%, var(--priestColor) 75%) 5;
+}
+
 .characterBar {
     width: 71%;
     margin-right: .5rem;
@@ -192,7 +198,8 @@
     .characterTargetedAdventurer:hover,
     .characterTargetedArcher:hover,
     .characterTargetedWarrior:hover,
-    .characterTargetedPriest:hover {
+    .characterTargetedPriest:hover,
+    .characterTargetedAll:hover {
         border: 2px solid var(--background-default);
     }
 }

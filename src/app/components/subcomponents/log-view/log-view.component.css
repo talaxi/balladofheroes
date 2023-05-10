@@ -8,7 +8,15 @@
     padding-bottom: .25rem;
     background-color: var(--background-quarternary);
   }
-  
+
+  .flexAround {
+    display: flex;
+    justify-content: space-around;
+  }
+
+  .selfCenterAlign {
+    align-self: center;
+  }
   
   .filterActive {
     color: var(--foreground-secondary) !important;

@@ -4,6 +4,7 @@ import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { LookupService } from '../lookup.service';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class TutorialService {
 
   constructor(private lookupService: LookupService, private deviceDetectorService: DeviceDetectorService) { }
 
-  getTutorialText(type: TutorialTypeEnum, newAbility?: Ability, character?: Character, addToLog: boolean = true) {    
+  getTutorialText(type: TutorialTypeEnum, newAbility?: Ability, character?: Character, addToLog: boolean = true, subzoneEnum?: SubZoneEnum) {    
     var text = "";
 
     if (type === TutorialTypeEnum.CharacterPassiveAbility) {
@@ -106,7 +107,7 @@ export class TutorialService {
     }
 
     if (addToLog)
-      this.lookupService.addTutorialToLog(type);
+      this.lookupService.addTutorialToLog(type, subzoneEnum);
 
     return text;
   }

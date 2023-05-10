@@ -206,5 +206,21 @@ export class ChangeGodViewComponent implements OnInit {
     character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
     }
+
+    if ((character.assignedGod1 !== GodEnum.Ares && character.assignedGod2 !== GodEnum.Ares) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Onslaught)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
+    }
+
+    if (character.assignedGod1 !== GodEnum.Apollo && character.assignedGod2 !== GodEnum.Apollo) {      
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Staccato))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Staccato);
+
+        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Fortissimo))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Fortissimo);
+
+        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Coda))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Coda);
+    }
   }
 }

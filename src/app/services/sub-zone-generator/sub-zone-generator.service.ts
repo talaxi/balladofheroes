@@ -350,12 +350,6 @@ export class SubZoneGeneratorService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnceladusOne));
       battleOptions.push(enemyTeam);
     }
-    if (type === SubZoneEnum.NemeaCountryRoadsTwo) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lion));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Lion));
-      battleOptions.push(enemyTeam);
-    }
     if (type === SubZoneEnum.AsphodelTheDepths) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LostSoul));
@@ -1964,7 +1958,7 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.LernaThickMarsh) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WhipSnake));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.UntamedBoar));
       battleOptions.push(enemyTeam);
 
       var enemyTeam2: EnemyTeam = new EnemyTeam();
@@ -1978,8 +1972,8 @@ export class SubZoneGeneratorService {
       battleOptions.push(enemyTeam3);
 
       var enemyTeam4: EnemyTeam = new EnemyTeam();
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));
-      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WildBoar));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.UntamedBoar));
+      enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.UntamedBoar));
       battleOptions.push(enemyTeam4);
     }
     if (type === SubZoneEnum.LernaSwampySurroundings) {
@@ -2542,7 +2536,7 @@ export class SubZoneGeneratorService {
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GoldenAppleThief));
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BeeSwarm));
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BeeSwarm));
-      battleOptions.push(enemyTeam6);
+      battleOptions.push(enemyTeam6);      
     }
     if (type === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides) {
       var enemyTeam: EnemyTeam = new EnemyTeam();

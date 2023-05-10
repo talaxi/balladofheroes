@@ -531,7 +531,7 @@ export class GlobalService {
       lordOfTheUnderworld.isPassive = true;
       lordOfTheUnderworld.isActivatable = false;
       lordOfTheUnderworld.dealsDirectDamage = false;
-      lordOfTheUnderworld.maxCount = 5;
+      lordOfTheUnderworld.maxCount = 3;
       lordOfTheUnderworld.userEffect.push(this.createStatusEffect(StatusEffectEnum.LordOfTheUnderworld, 15, 1.02, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 5));
       god.abilityList.push(lordOfTheUnderworld);
     }

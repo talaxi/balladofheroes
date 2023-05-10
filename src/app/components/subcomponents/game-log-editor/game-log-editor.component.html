@@ -76,6 +76,10 @@
                 Found Treasure Chest
             </mat-checkbox>            
             <br />
+            <mat-checkbox class='changeLocationText' [(ngModel)]="moveLocations" (input)="moveLocationsToggle()">
+                Change Locations
+            </mat-checkbox>            
+            <br />
             <mat-checkbox class='battleUpdateText' [(ngModel)]="achievementUnlocked"
                 (input)="achievementUnlockedToggle()">
                 Achievement Unlocked

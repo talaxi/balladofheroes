@@ -11,6 +11,7 @@ import { BalladService } from '../ballad/ballad.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
+import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -41,6 +42,22 @@ export class FollowersService {
           clearedZones.push(zone);
         }
       });
+    });
+
+    return clearedZones;
+  }
+
+  getClearedZonesForBallad(type: BalladEnum) {
+    var clearedZones: Zone[] = [];
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      if (ballad.type === type) {
+        ballad.zones.forEach(zone => {
+          if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
+            clearedZones.push(zone);
+          }
+        });
+      }
     });
 
     return clearedZones;
@@ -90,6 +107,20 @@ export class FollowersService {
     var unassignedFollower = this.globalService.globalVar.followerData.followers.find(follower => follower.assignedTo === FollowerActionEnum.None);
 
     return unassignedFollower !== undefined;
+  }
+
+  getFollowerCountForBallad(type: BalladEnum) {
+    var ballad = this.balladService.findBallad(type);
+    var followerCount = 0;
+
+    if (ballad === undefined)
+      return followerCount;
+
+    ballad.zones.forEach(zone => {
+      followerCount += this.getFollowersAssignedToZone(zone.type);
+    })
+
+    return followerCount;
   }
 
   getFollowersAssignedToZone(type: ZoneEnum) {

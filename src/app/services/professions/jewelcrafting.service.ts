@@ -31,7 +31,7 @@ export class JewelcraftingService {
         jewelcrafting.isUnlocked = true;
         jewelcrafting.level = 1;
         jewelcrafting.maxLevel += this.utilityService.firstJewelcraftingLevelCap;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Jewelcrafting));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Jewelcrafting,  undefined, undefined, true, subzone));
       }
     }
   }

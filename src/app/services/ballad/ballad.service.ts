@@ -113,8 +113,10 @@ export class BalladService {
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
     this.globalService.resetCooldowns();
 
+    if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.getSubZoneName(relatedSubzone.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+    }
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
@@ -169,6 +171,21 @@ export class BalladService {
     });
 
     return returnBallad;
+  }
+
+  findZoneOfSubzone(type: SubZoneEnum) {
+    var returnZone: Zone | undefined;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.zones.forEach(zone => {
+        zone.subzones.forEach(subzone => {
+          if (subzone.type === type)
+            returnZone = zone;
+        })
+      })
+    });
+
+    return returnZone;
   }
 
   findSubzone(type: SubZoneEnum) {
@@ -331,8 +348,10 @@ export class BalladService {
     this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
     this.globalService.resetCooldowns();
 
+    if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + this.getSubZoneName(subzone.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+    }
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];

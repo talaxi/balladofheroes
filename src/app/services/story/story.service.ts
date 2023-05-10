@@ -91,7 +91,7 @@ export class StoryService {
       this.showStory = true;
 
     if (this.showStory)
-      this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId);
+      this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, this.balladService.getActiveSubZone().type);
   }
 
   thalesText(text: string) {
@@ -594,23 +594,24 @@ export class StoryService {
       this.currentPage = 1;
       this.showStory = false;
       this.globalService.globalVar.isBattlePaused = false;
+      var subzone = this.balladService.getActiveSubZone();
 
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
         this.globalService.globalVar.isBattlePaused = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack,  undefined, undefined, true, subzone.type));
 
         if (this.deviceDetectorService.isMobile())
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay));
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay,  undefined, undefined, true, subzone.type));
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
         this.balladService.setActiveSubZone(SubZoneEnum.DodonaDelphi);
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town));
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory,  undefined, undefined, true, SubZoneEnum.DodonaDelphi));
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting,  undefined, undefined, true, subzone.type));
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis)?.quality);
         var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
@@ -625,7 +626,7 @@ export class StoryService {
         this.showFirstTimeUnderworldStory = false;
         this.triggerFirstTimeUnderworldScene = false;
         this.endFirstTimeUnderworldScene = true;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications,  undefined, undefined, true, subzone.type));
         setTimeout(() => {
           this.endFirstTimeUnderworldScene = false;
         }, 5000);
@@ -641,7 +642,7 @@ export class StoryService {
         }
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests,  undefined, undefined, true, subzone.type));
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
           championBallad.isAvailable = true;
@@ -830,8 +831,7 @@ export class StoryService {
 
     if (this.currentPage > this.pageCount) {
       this.globalService.globalVar.isBattlePaused = false;
-      if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
-        //this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting));
+      if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {        
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 15 Olives and Fennel.");
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 15);
         if (resource !== undefined)
@@ -851,7 +851,8 @@ export class StoryService {
       }
 
       this.currentPage = 1;
-      this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);
+      this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);      
+      this.lookupService.addSideStoryToLog(this.showOptionalStory, this.balladService.getActiveSubZone().type);
       this.showOptionalStory = OptionalSceneEnum.None;
       this.returnedFromOptionalScene = true;
     }

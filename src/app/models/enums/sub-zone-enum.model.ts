@@ -131,5 +131,6 @@ export enum SubZoneEnum {
   ErytheiaPillarsOfHeracles,
   ErytheiaCadiz,
   ErytheiaIslandOfErytheia,
-  ErytheiaGeryonsFarm
+  ErytheiaGeryonsFarm,
+  Follower
 }

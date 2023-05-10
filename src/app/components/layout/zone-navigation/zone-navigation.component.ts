@@ -189,9 +189,11 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
+    if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-
+    }
+    
     this.globalService.globalVar.settings.set("autoProgress", false);
 
     if (this.isMobile) {
@@ -212,8 +214,8 @@ export class ZoneNavigationComponent implements OnInit {
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-      var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      //var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
+      //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
@@ -235,8 +237,8 @@ export class ZoneNavigationComponent implements OnInit {
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-      var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      //var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
+      //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
       this.globalService.globalVar.settings.set("autoProgress", false);
     }

@@ -103,7 +103,7 @@ export class ColiseumService {
           }
           else {
             this.lookupService.gainResource(reward);
-            this.lookupService.addLootToLog(reward.item, reward.amount);
+            this.lookupService.addLootToLog(reward.item, reward.amount, SubZoneEnum.ElysiumColiseum);
           }
 
           if (this.globalService.globalVar.gameLogSettings.get("battleItemsRewards")) {
@@ -117,7 +117,7 @@ export class ColiseumService {
 
         tournamentInfo.quickCompletionReward.forEach(reward => {
           this.lookupService.gainResource(reward);
-          this.lookupService.addLootToLog(reward.item, reward.amount);
+          this.lookupService.addLootToLog(reward.item, reward.amount, SubZoneEnum.ElysiumColiseum);
           if (this.globalService.globalVar.gameLogSettings.get("battleItemsRewards")) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item))) + "</strong>.");
           }

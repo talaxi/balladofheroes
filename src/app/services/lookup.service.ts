@@ -381,10 +381,10 @@ export class LookupService {
 
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.RestorativeHerb ||
       type === ItemsEnum.RestorativePoultice || type === ItemsEnum.HoneyPoultice)
-      name = "Heal a party member for " + effect.healAmount + " HP.";
+      name = "Heal a party member for " + effect.healAmount.toLocaleString() + " HP.";
 
     else if (type === ItemsEnum.HealingSalve || type === ItemsEnum.RestorativeSalve || type === ItemsEnum.HoneySalve)
-      name = "Heal both party members for " + effect.healAmount + " HP.";
+      name = "Heal both party members for " + effect.healAmount.toLocaleString() + " HP.";
 
     else if (type === ItemsEnum.FocusPotion)
       name = "Fill " + relatedUserGainStatusEffectEffectivenessPercent + "% of a party member's Overdrive gauge. " + effect.cooldown + " second cooldown.";
@@ -393,9 +393,9 @@ export class LookupService {
     else if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.ExplodingPotion || type === ItemsEnum.HeftyStone)
     name = "Deal " + effect.trueDamageAmount + " damage to a target.";
     else if (type === ItemsEnum.UnstablePotion)
-      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP to each enemy, up to " + effect.maxThreshold + " damage.";
+      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP to each enemy, up to " + effect.maxThreshold.toLocaleString() + " damage.";
     else if (type === ItemsEnum.PiercingPotion)
-      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP, up to " + effect.maxThreshold + " damage.";
+      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP, up to " + effect.maxThreshold.toLocaleString() + " damage.";
     else if (type === ItemsEnum.FirePotion)
       name = "Deal " + effect.trueDamageAmount + " Fire damage to a target.";
       else if (type === ItemsEnum.PotentConcoction)
@@ -482,6 +482,8 @@ export class LookupService {
       name = "Gain <span class='hadesColor smallCaps'>Hades</span> as an equippable god";
     else if (type === ItemsEnum.Ares)
       name = "Gain <span class='aresColor smallCaps'>Ares</span> as an equippable god";
+      else if (type === ItemsEnum.GoldenApple)
+      name = "Increase max Alchemy level by 1. Can only obtain 25 Golden Apples.";
 
     return name;
   }
@@ -3290,12 +3292,12 @@ export class LookupService {
     if (item === ItemsEnum.PiercingPotion) {
       itemEffect.dealsDamage = true;
       itemEffect.trueDamagePercent = .04;
-      itemEffect.maxThreshold = 2750;
+      itemEffect.maxThreshold = 3250;
     }
     if (item === ItemsEnum.PotentConcoction) {
       itemEffect.dealsDamage = true;
       itemEffect.trueDamagePercent = .04;
-      itemEffect.maxThreshold = 2000;
+      itemEffect.maxThreshold = 2600;
     }
     if (item === ItemsEnum.BoomingPotion) {
       itemEffect.dealsDamage = false;
@@ -4264,31 +4266,47 @@ export class LookupService {
     return description;
   }
 
-  addTutorialToLog(type: TutorialTypeEnum) {
+  addTutorialToLog(type: TutorialTypeEnum, subzoneEnum?: SubZoneEnum) {
     var logItem = new LogData();
     logItem.type = LogViewEnum.Tutorials;
     logItem.relevantEnumValue = type;
     logItem.dateReceived = new Date().getTime(); //formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
+    if (subzoneEnum !== undefined)
+      logItem.loc = subzoneEnum;
 
     this.globalService.globalVar.logData.push(logItem);
   }
 
-  addStoryToLog(type: TutorialTypeEnum) {
+  addStoryToLog(type: number, subzoneEnum: SubZoneEnum) {
     var logItem = new LogData();
     logItem.type = LogViewEnum.Story;
     logItem.relevantEnumValue = type;
     logItem.dateReceived = new Date().getTime();//formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
+    logItem.loc = subzoneEnum;
 
     if (!this.globalService.globalVar.logData.some(item => item.relevantEnumValue === type && item.type === LogViewEnum.Story))
       this.globalService.globalVar.logData.push(logItem);
   }
 
-  addLootToLog(type: ItemsEnum, amount: number) {
+  addSideStoryToLog(type: number, subzoneEnum?: SubZoneEnum) {
+    var logItem = new LogData();
+    logItem.type = LogViewEnum.SideStory;
+    logItem.relevantEnumValue = type;
+    logItem.dateReceived = new Date().getTime();
+    if (subzoneEnum !== undefined)
+      logItem.loc = subzoneEnum;
+
+    if (!this.globalService.globalVar.logData.some(item => item.relevantEnumValue === type && item.type === LogViewEnum.SideStory))
+      this.globalService.globalVar.logData.push(logItem);
+  }
+
+  addLootToLog(type: ItemsEnum, amount: number, subzoneEnum: SubZoneEnum) {
     var logItem = new LogData();
     logItem.type = LogViewEnum.Loot;
     logItem.relevantEnumValue = type;
     logItem.amount = amount;
     logItem.dateReceived = new Date().getTime();//formatDate(new Date(), 'MMM d, y H:mm:ss', 'en');;
+    logItem.loc = subzoneEnum;
 
     this.globalService.globalVar.logData.push(logItem);
 

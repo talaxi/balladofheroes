@@ -1692,7 +1692,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(6138, 286, 498, 185, 250, 400);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
-      enemy.xpGainFromDefeat = 450;
+      enemy.xpGainFromDefeat = 375;
       enemy.loot.push(new LootItem(ItemsEnum.RoughEmeraldFragment, ItemTypeEnum.CraftingMaterial, 1, .05));
 
       var dustUp = new Ability();
@@ -2227,7 +2227,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(12840, 572, 1182, 581, 425, 850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 675;
+      enemy.xpGainFromDefeat = 535;
       enemy.loot.push(new LootItem(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 1, .25));
       enemy.loot.push(new LootItem(ItemsEnum.RestorativeHerb, ItemTypeEnum.HealingItem, 1, .1));
       enemy.loot.push(new LootItem(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 2, .33));
@@ -2265,10 +2265,10 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CalydonianBoar) {
       enemy.name = "Calydonian Boar";
-      enemy.battleStats = new CharacterStats(19634, 608, 1293, 440, 550, 950);
+      enemy.battleStats = new CharacterStats(19974, 608, 1393, 440, 550, 1250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 775;
+      enemy.xpGainFromDefeat = 685;
       enemy.loot.push(new LootItem(ItemsEnum.BoarHide, ItemTypeEnum.CraftingMaterial, 1, .25));
       enemy.loot.push(new LootItem(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 2, .15));
       enemy.loot.push(new LootItem(ItemsEnum.Violet, ItemTypeEnum.CraftingMaterial, 1, .3));
@@ -2526,7 +2526,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMediumElementalWeakness;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 1000;            
+      enemy.xpGainFromDefeat = 1050;            
       enemy.loot.push(new LootItem(ItemsEnum.RingOfNightmares, ItemTypeEnum.Equipment, 1, .02));   
 
       var shadowBlast = new Ability();
@@ -3137,7 +3137,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(28630, 450, 1400, 550, 600, 1100);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 498;
+      enemy.xpGainFromDefeat = 538;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;      
       enemy.loot.push(new LootItem(ItemsEnum.RoughAquamarineFragment, ItemTypeEnum.CraftingMaterial, 1, .035));
 
@@ -3165,7 +3165,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(27213, 375, 1350, 700, 720, 1100);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 499;
+      enemy.xpGainFromDefeat = 549;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.LesserCrackedAquamarine, ItemTypeEnum.Resource, 1, .02));            
 
@@ -3194,7 +3194,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 509;
+      enemy.xpGainFromDefeat = 563;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.RoughAquamarineFragment, ItemTypeEnum.CraftingMaterial, 1, .05));
 
@@ -3224,7 +3224,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(30143, 461, 1430, 460, 575, 1150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 499;
+      enemy.xpGainFromDefeat = 549;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.Goldroot, ItemTypeEnum.CraftingMaterial, 1, .05));
 
@@ -3244,7 +3244,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(29542, 392, 1421, 645, 915, 1200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 505;
+      enemy.xpGainFromDefeat = 552;
       enemy.loot.push(new LootItem(ItemsEnum.LesserCrackedRuby, ItemTypeEnum.Resource, 1, .02));            
          
       var trickster = new Ability();
@@ -3273,7 +3273,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(34563, 475, 1515, 500, 850, 1250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 504;
+      enemy.xpGainFromDefeat = 554;
       enemy.loot.push(new LootItem(ItemsEnum.Lousewort, ItemTypeEnum.CraftingMaterial, 2, .08));
                   
       var throwTorch = new Ability();
@@ -3302,7 +3302,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(33898, 475, 1460, 525, 1050, 1200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 504;
+      enemy.xpGainFromDefeat = 554;
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, -1, .2, false, false));
             
       var wildSwing = new Ability();
@@ -3331,7 +3331,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(28542, 404, 1365, 680, 850, 1250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 506;
+      enemy.xpGainFromDefeat = 556;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.Sorrel, ItemTypeEnum.CraftingMaterial, 1, .02));
             
@@ -3376,7 +3376,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(36215, 500, 1580, 630, 1200, 1500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 515;
+      enemy.xpGainFromDefeat = 565;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -3399,7 +3399,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(37013, 585, 1545, 575, 1450, 1500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 518;
+      enemy.xpGainFromDefeat = 568;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -3432,7 +3432,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(45234, 593, 1885, 525, 1375, 1750);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 518;
+      enemy.xpGainFromDefeat = 574;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.SharkTeeth, ItemTypeEnum.CraftingMaterial, 2, .05));
 
@@ -3472,7 +3472,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(36872, 430, 1700, 820, 850, 1650);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 512;
+      enemy.xpGainFromDefeat = 562;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.LesserCrackedAquamarine, ItemTypeEnum.Resource, 1, .03));       
       enemy.loot.push(new LootItem(ItemsEnum.SharkTeeth, ItemTypeEnum.Resource, 1, .01)); 
@@ -3502,7 +3502,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(39785, 493, 1780, 695, 1050, 1650);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 516;
+      enemy.xpGainFromDefeat = 566;
       enemy.loot.push(new LootItem(ItemsEnum.Seashell, ItemTypeEnum.Resource, 1, .03)); 
 
       var clickClick = new Ability();
@@ -3530,7 +3530,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(37268, 462, 1775, 850, 1150, 1650);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 520;
+      enemy.xpGainFromDefeat = 573;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.FishScales, ItemTypeEnum.CraftingMaterial, 1, .06));
 
@@ -3558,7 +3558,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(39758, 525, 2000, 785, 1450, 2000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 513;
+      enemy.xpGainFromDefeat = 565;
       enemy.loot.push(new LootItem(ItemsEnum.LesserCrackedAmethyst, ItemTypeEnum.Resource, 1, .03));            
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
 
@@ -3589,7 +3589,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.loot.push(new LootItem(ItemsEnum.RoughAmethystFragment, ItemTypeEnum.Resource, 1, .04));            
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 511;
+      enemy.xpGainFromDefeat = 562;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
 
       var ravage = new Ability();
@@ -3619,7 +3619,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(41585, 658, 2050, 765, 1500, 2150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;      
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 519;
+      enemy.xpGainFromDefeat = 569;
       enemy.loot.push(new LootItem(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 2, .125));
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
 
@@ -3649,7 +3649,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(78934, 820, 2825, 950, 1750, 2250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyVeryLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 1275;
+      enemy.xpGainFromDefeat = 1475;
       enemy.loot.push(new LootItem(ItemsEnum.RoughAmethystFragment, ItemTypeEnum.CraftingMaterial, 2, .04));
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
 
@@ -3690,7 +3690,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(48125, 550, 2265, 775, 1650, 2250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 525;
+      enemy.xpGainFromDefeat = 575;
       enemy.loot.push(new LootItem(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 2, .125));
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
 
@@ -3728,7 +3728,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(53674, 695, 2575, 815, 1600, 2300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 533;
+      enemy.xpGainFromDefeat = 583;
       enemy.loot.push(new LootItem(ItemsEnum.Seashell, ItemTypeEnum.CraftingMaterial, 1, .06));
 
       var shellCover = new Ability();
@@ -3756,7 +3756,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(47693, 562, 2225, 875, 1750, 2250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 535;
+      enemy.xpGainFromDefeat = 588;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.Sorrel, ItemTypeEnum.CraftingMaterial, 1, .03));
 
@@ -3788,7 +3788,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(49234, 493, 2350, 900, 1680, 2250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 539;
+      enemy.xpGainFromDefeat = 589;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -3832,7 +3832,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(49712, 566, 2425, 850, 1600, 2300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 539;
+      enemy.xpGainFromDefeat = 589;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -3876,7 +3876,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(48512, 572, 2393, 850, 1650, 2450);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 545;
+      enemy.xpGainFromDefeat = 595;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.VialOfTheBlackSea, ItemTypeEnum.CraftingMaterial, 1, .03));
 
@@ -3914,7 +3914,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(49312, 570, 2630, 875, 1750, 2450);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 547;
+      enemy.xpGainFromDefeat = 597;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.VialOfTheBlackSea, ItemTypeEnum.CraftingMaterial, 1, .03));
 
@@ -3943,7 +3943,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(51225, 503, 2760, 1000, 1650, 2450);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 542;
+      enemy.xpGainFromDefeat = 592;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 2, .125));
             
@@ -3974,7 +3974,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(52034, 579, 2680, 940, 1625, 2500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 545;
+      enemy.xpGainFromDefeat = 595;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .03));
             
@@ -4019,7 +4019,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(53075, 615, 2875, 890, 1725, 2500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 550;
+      enemy.xpGainFromDefeat = 600;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .03));
             
@@ -4050,7 +4050,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(60000, 663, 3250, 950, 1750, 3250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 650;
+      enemy.xpGainFromDefeat = 725;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.RoughOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
@@ -4094,7 +4094,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(60000, 572, 3250, 1000, 1750, 3250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 650;
+      enemy.xpGainFromDefeat = 725;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.RoughOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
@@ -4137,7 +4137,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(60000, 482, 3250, 1125, 1600, 3250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 650;
+      enemy.xpGainFromDefeat = 725;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.RoughOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
@@ -4177,7 +4177,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(60000, 568, 3250, 1025, 1850, 3250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 650;
+      enemy.xpGainFromDefeat = 725;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.RoughOpalFragment, ItemTypeEnum.CraftingMaterial, 1, .03));
@@ -4218,7 +4218,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(54284, 501, 3000, 1250, 1550, 3000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 575;
+      enemy.xpGainFromDefeat = 625;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -4253,7 +4253,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(58302, 660, 3207, 1075, 1850, 3000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 575;
+      enemy.xpGainFromDefeat = 625;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -4287,7 +4287,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(57256, 660, 3322, 1025, 1925, 2900);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 575;
+      enemy.xpGainFromDefeat = 625;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -4320,7 +4320,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(54201, 501, 3070, 1200, 1500, 2900);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 575;
+      enemy.xpGainFromDefeat = 625;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -4352,7 +4352,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(57032, 569, 3200, 1100, 1675, 3000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 575;
+      enemy.xpGainFromDefeat = 625;
       enemy.battleStats.elementIncrease.earth += .25;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
@@ -4389,7 +4389,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(56418, 564, 3185, 1100, 1675, 3000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 575;
+      enemy.xpGainFromDefeat = 625;
       enemy.battleStats.elementResistance.fire += .25;
       enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleStats.elementResistance.air += .25;
@@ -4425,7 +4425,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementIncrease.fire += .5;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 1500;
+      enemy.xpGainFromDefeat = 1600;
       enemy.loot.push(new LootItem(ItemsEnum.MetalScraps, ItemTypeEnum.CraftingMaterial, 1, .05));
       enemy.loot.push(new LootItem(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 2, .15));      
   
@@ -4483,7 +4483,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(58850, 591, 2750, 1133, 1700, 2500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 555;
+      enemy.xpGainFromDefeat = 605;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 2, .125));
 
@@ -4511,7 +4511,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(59570, 574, 2732, 1350, 1800, 2500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 557;
+      enemy.xpGainFromDefeat = 607;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.ThickLeather, ItemTypeEnum.CraftingMaterial, 2, .125));
       
@@ -4551,7 +4551,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(62302, 874, 2850, 1800, 2350, 3000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 586;
+      enemy.xpGainFromDefeat = 646;
       enemy.loot.push(new LootItem(ItemsEnum.ToxicIchor, ItemTypeEnum.CraftingMaterial, 1, .04));
             
       var stinger = new Ability();
@@ -4578,7 +4578,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(64284, 858, 2975, 1670, 2400, 2850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 588; 
+      enemy.xpGainFromDefeat = 648; 
       enemy.loot.push(new LootItem(ItemsEnum.QuadRing, ItemTypeEnum.Equipment, 1, .01));            
       
       var cleanCut = new Ability();
@@ -4596,7 +4596,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(60802, 623, 2623, 2000, 2600, 2750);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 585;
+      enemy.xpGainFromDefeat = 645;
       enemy.loot.push(new LootItem(ItemsEnum.Coin, ItemTypeEnum.Resource, 30, .125));
       
       var stealWeapon = new Ability();
@@ -4624,7 +4624,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(61763, 639, 2850, 2000, 2900, 2650);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 580;     
+      enemy.xpGainFromDefeat = 633;     
       enemy.loot.push(new LootItem(ItemsEnum.Honey, ItemTypeEnum.CraftingMaterial, 1, .05));
                   
       var stinger = new Ability();
@@ -4651,7 +4651,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(67418, 896, 3125, 1950, 2600, 3000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 597;  
+      enemy.xpGainFromDefeat = 657;  
       enemy.loot.push(new LootItem(ItemsEnum.AnimalHide, ItemTypeEnum.CraftingMaterial, 1, .02));
             
       var crunch = new Ability();
@@ -4679,7 +4679,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(66391, 1078, 3235, 1850, 2550, 3250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 597;  
+      enemy.xpGainFromDefeat = 657;  
       enemy.loot.push(new LootItem(ItemsEnum.AnimalHide, ItemTypeEnum.CraftingMaterial, 1, .02));
       
       var crunch = new Ability();
@@ -4706,7 +4706,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(69103, 906, 3125, 2450, 2650, 3250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 602;     
+      enemy.xpGainFromDefeat = 662;     
       enemy.loot.push(new LootItem(ItemsEnum.CoarseFur, ItemTypeEnum.CraftingMaterial, 1, .05));
       
       var scratch = new Ability();
@@ -4734,7 +4734,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(202150, 1080, 7250, 4250, 3900, 5800);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 12;
-      enemy.xpGainFromDefeat = 3250;            
+      enemy.xpGainFromDefeat = 3400;            
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackInvulnerable, -1, 1, false, true, false));
       enemy.loot.push(new LootItem(ItemsEnum.CoarseFur, ItemTypeEnum.CraftingMaterial, 2, .08));
 
@@ -4772,7 +4772,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(70803, 925, 3100, 1950, 2750, 3500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 620;  
+      enemy.xpGainFromDefeat = 680;  
       enemy.loot.push(new LootItem(ItemsEnum.ToxicIchor, ItemTypeEnum.CraftingMaterial, 1, .05));
       
       var crush = new Ability();
@@ -4799,7 +4799,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(71465, 1103, 3250, 1875, 2650, 3850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 623;      
+      enemy.xpGainFromDefeat = 683;      
       enemy.loot.push(new LootItem(ItemsEnum.RoughTopazFragment, ItemTypeEnum.CraftingMaterial, 1, .05));      
       
       var peck = new Ability();
@@ -4825,7 +4825,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(71994, 922, 3160, 2150, 2950, 3450);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 628;  
+      enemy.xpGainFromDefeat = 688;  
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.EssenceOfWater, ItemTypeEnum.CraftingMaterial, 1, .04));
       
@@ -4860,7 +4860,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(72892, 942, 3480, 2050, 2775, 3950);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 632;  
+      enemy.xpGainFromDefeat = 692;  
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 500, false, true, false));
       enemy.loot.push(new LootItem(ItemsEnum.Tusk, ItemTypeEnum.CraftingMaterial, 1, .035));
 
@@ -4879,7 +4879,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(71953, 658, 3125, 2750, 2520, 3650);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 638;   
+      enemy.xpGainFromDefeat = 698;   
       enemy.loot.push(new LootItem(ItemsEnum.SerpentScale, ItemTypeEnum.CraftingMaterial, 1, .04));
       
       var venomousBite = new Ability();
@@ -4910,7 +4910,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(73619, 1174, 4125, 1950, 3225, 3850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 642;        
+      enemy.xpGainFromDefeat = 702;        
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 500, false, true, false)); 
       enemy.loot.push(new LootItem(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 2, .15));
       enemy.loot.push(new LootItem(ItemsEnum.PristineCrabClaw, ItemTypeEnum.CraftingMaterial, 1, .02));
@@ -4928,7 +4928,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(126948, 1095, 7450, 2400, 3350, 6850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 8;
-      enemy.xpGainFromDefeat = 1750; 
+      enemy.xpGainFromDefeat = 1950; 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Invulnerable, -1, 1, false, true, false));           
       enemy.loot.push(new LootItem(ItemsEnum.SerpentScale, ItemTypeEnum.CraftingMaterial, 1, .075));
       enemy.loot.push(new LootItem(ItemsEnum.VialOfLakeLerna, ItemTypeEnum.CraftingMaterial, 2, .1));
@@ -4972,7 +4972,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(87504, 1095, 7450, 2400, 3350, 6850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 1250;     
+      enemy.xpGainFromDefeat = 1350;     
       enemy.loot.push(new LootItem(ItemsEnum.SerpentScale, ItemTypeEnum.CraftingMaterial, 1, .025));       
 
       var bite = new Ability();
@@ -4999,7 +4999,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(76320, 958, 3650, 2550, 2650, 4000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 655;   
+      enemy.xpGainFromDefeat = 718;   
       enemy.loot.push(new LootItem(ItemsEnum.SmallAnimalBones, ItemTypeEnum.CraftingMaterial, 1, .04));    
       enemy.loot.push(new LootItem(ItemsEnum.CoarseFur, ItemTypeEnum.CraftingMaterial, 1, .02));    
       
@@ -5028,7 +5028,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(77201, 743, 3600, 2430, 2780, 4000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 663; 
+      enemy.xpGainFromDefeat = 722; 
       enemy.loot.push(new LootItem(ItemsEnum.WhiteHorn, ItemTypeEnum.CraftingMaterial, 1, .08));          
       
       var batter = new Ability();
@@ -5046,7 +5046,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(74953, 754, 3750, 2800, 2750, 3500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 660;    
+      enemy.xpGainFromDefeat = 720;    
       enemy.loot.push(new LootItem(ItemsEnum.SmallAnimalBones, ItemTypeEnum.CraftingMaterial, 1, .02));    
       enemy.loot.push(new LootItem(ItemsEnum.CoarseFur, ItemTypeEnum.CraftingMaterial, 1, .04));    
       
@@ -5075,7 +5075,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(77135, 967, 3825, 2700, 2750, 3850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 662;         
+      enemy.xpGainFromDefeat = 724;         
       enemy.loot.push(new LootItem(ItemsEnum.SharpFeather, ItemTypeEnum.CraftingMaterial, 2, .035));
        
       var dive = new Ability();
@@ -5119,7 +5119,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(78944, 1230, 4160, 2485, 3350, 4250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 8;
-      enemy.xpGainFromDefeat = 668;        
+      enemy.xpGainFromDefeat = 729;        
       enemy.loot.push(new LootItem(ItemsEnum.RingOfCurses, ItemTypeEnum.Equipment, 1, .015));
       
       var stealShoes = new Ability();
@@ -5147,7 +5147,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(78430, 982, 4000, 2800, 2850, 4200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 667;    
+      enemy.xpGainFromDefeat = 738;    
       enemy.loot.push(new LootItem(ItemsEnum.SharpFeather, ItemTypeEnum.CraftingMaterial, 1, .05));
       
       var peck = new Ability();
@@ -5164,7 +5164,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(143750, 1020, 6075, 2250, 3250, 6250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 8;
-      enemy.xpGainFromDefeat = 2300;   
+      enemy.xpGainFromDefeat = 2350;   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ExtraTrueDamage, -1, 0, false, true, false));      
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.battleStats.elementIncrease.air += .35;
@@ -5211,7 +5211,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(86034, 745, 4325, 3150, 2850, 4200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 688;    
+      enemy.xpGainFromDefeat = 748;    
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
       enemy.loot.push(new LootItem(ItemsEnum.FishScales, ItemTypeEnum.CraftingMaterial, 2, .125));
             
@@ -5243,7 +5243,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(87290, 1030, 4650, 2950, 2600, 4800);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 698;     
+      enemy.xpGainFromDefeat = 758;     
       enemy.loot.push(new LootItem(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 2, .1));       
 
       var claw = new Ability();
@@ -5271,7 +5271,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(88637, 1000, 5240, 3100, 2500, 5000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 703;
+      enemy.xpGainFromDefeat = 763;
       enemy.loot.push(new LootItem(ItemsEnum.MetalScraps, ItemTypeEnum.CraftingMaterial, 2, .04));
             
       var soundTheAlarm = new Ability();
@@ -5299,7 +5299,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(87103, 775, 5150, 3600, 2900, 5150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 707; 
+      enemy.xpGainFromDefeat = 767; 
       enemy.loot.push(new LootItem(ItemsEnum.MagicTreeBark, ItemTypeEnum.CraftingMaterial, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.PotentConcoctionRecipe, ItemTypeEnum.Resource, 1, .01));
       
@@ -5327,7 +5327,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(90394, 1310, 5400, 2950, 2975, 5500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 706;        
+      enemy.xpGainFromDefeat = 766;        
       enemy.loot.push(new LootItem(ItemsEnum.BirchBark, ItemTypeEnum.CraftingMaterial, 1, .08));
       
       var targetAcquired = new Ability();
@@ -5355,7 +5355,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(92506, 1032, 5500, 2950, 2950, 5500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 702; 
+      enemy.xpGainFromDefeat = 762; 
       enemy.loot.push(new LootItem(ItemsEnum.BirchBark, ItemTypeEnum.CraftingMaterial, 1, .03));
       enemy.loot.push(new LootItem(ItemsEnum.SpiritShield, ItemTypeEnum.Equipment, 1, .01));
             
@@ -5385,7 +5385,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(98656, 1070, 5960, 2625, 2550, 5800);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 711;    
+      enemy.xpGainFromDefeat = 771;    
       enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;    
       enemy.loot.push(new LootItem(ItemsEnum.MetalScraps, ItemTypeEnum.CraftingMaterial, 1, .075));
       
@@ -5418,7 +5418,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(95504, 1342, 5675, 2800, 3200, 5300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 713;
+      enemy.xpGainFromDefeat = 773;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Earth; 
       enemy.loot.push(new LootItem(ItemsEnum.RadiatingGemstone, ItemTypeEnum.CraftingMaterial, 1, .04));
       
@@ -5447,7 +5447,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(248079, 1588, 8960, 3900, 4450, 6950);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
-      enemy.xpGainFromDefeat = 4750;   
+      enemy.xpGainFromDefeat = 4600;   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 2000, false, true, false));
       enemy.loot.push(new LootItem(ItemsEnum.Tusk, ItemTypeEnum.CraftingMaterial, 2, .075));
       enemy.loot.push(new LootItem(ItemsEnum.AnimalHide, ItemTypeEnum.CraftingMaterial, 1, .025));
@@ -5486,7 +5486,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(98890, 1045, 6200, 3000, 2800, 6000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 716;            
+      enemy.xpGainFromDefeat = 776;            
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 750, false, true, false));
       enemy.loot.push(new LootItem(ItemsEnum.Tusk, ItemTypeEnum.CraftingMaterial, 1, .05));
 
@@ -5505,7 +5505,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(100932, 1080, 6075, 3050, 2950, 5800);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 722;       
+      enemy.xpGainFromDefeat = 778;       
       enemy.loot.push(new LootItem(ItemsEnum.BearHide, ItemTypeEnum.CraftingMaterial, 1, .15));   
       
       var claw = new Ability();
@@ -5532,7 +5532,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(106650, 1396, 6560, 3450, 3150, 6000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 728;      
+      enemy.xpGainFromDefeat = 798;      
       enemy.loot.push(new LootItem(ItemsEnum.SharkTeeth, ItemTypeEnum.CraftingMaterial, 1, .09));        
       
       var apexPredator = new Ability();
@@ -5571,7 +5571,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(102932, 910, 6200, 3750, 3200, 5750);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 725;     
+      enemy.xpGainFromDefeat = 795;     
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;      
       enemy.loot.push(new LootItem(ItemsEnum.FishScales, ItemTypeEnum.CraftingMaterial, 1, .08));  
       
@@ -5599,7 +5599,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(104032, 925, 6250, 3550, 3335, 6250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 727;       
+      enemy.xpGainFromDefeat = 797;       
       enemy.loot.push(new LootItem(ItemsEnum.VialOfTheCretanSea, ItemTypeEnum.CraftingMaterial, 1, .06));   
 
       var zigzag = new Ability();
@@ -5627,7 +5627,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(101088, 1105, 6235, 3375, 3550, 5750);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 730;        
+      enemy.xpGainFromDefeat = 800;        
       enemy.loot.push(new LootItem(ItemsEnum.Seashell, ItemTypeEnum.CraftingMaterial, 2, .04));    
             
       var stinger = new Ability();
@@ -5655,7 +5655,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(108773, 1090, 6105, 3420, 3350, 6400);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 732; 
+      enemy.xpGainFromDefeat = 802; 
       enemy.loot.push(new LootItem(ItemsEnum.PristineCrabClaw, ItemTypeEnum.CraftingMaterial, 2, .03));
       
       var clickClick = new Ability();
@@ -5684,7 +5684,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(107604, 1375, 6800, 3050, 3200, 6500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 736; 
+      enemy.xpGainFromDefeat = 806; 
       enemy.loot.push(new LootItem(ItemsEnum.RadiatingGemstone, ItemTypeEnum.CraftingMaterial, 1, .06));
       
       var nap = new Ability();
@@ -5723,7 +5723,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(105555, 1111, 6222, 3333, 3333, 6222);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 735;         
+      enemy.xpGainFromDefeat = 807;         
       enemy.loot.push(new LootItem(ItemsEnum.RoughEmeraldFragment, ItemTypeEnum.CraftingMaterial, 2, .04));   
                
       var trickster = new Ability();
@@ -5752,7 +5752,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(110398, 1110, 6375, 3250, 3150, 6500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 7;
-      enemy.xpGainFromDefeat = 738;  
+      enemy.xpGainFromDefeat = 808;  
       enemy.loot.push(new LootItem(ItemsEnum.Coin, ItemTypeEnum.Resource, 50, .125));   
       
       var wildSwing = new Ability();
@@ -5780,7 +5780,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(282042, 1365, 10050, 3950, 6875, 9800);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 12;
-      enemy.xpGainFromDefeat = 5450;  
+      enemy.xpGainFromDefeat = 5050;  
       enemy.loot.push(new LootItem(ItemsEnum.AnimalHide, ItemTypeEnum.CraftingMaterial, 1, .125));
             
       var slam = new Ability();
@@ -5827,7 +5827,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(117903, 1135, 6600, 3425, 3450, 6900);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 758;      
+      enemy.xpGainFromDefeat = 828;      
       enemy.loot.push(new LootItem(ItemsEnum.VialOfTheCretanSea, ItemTypeEnum.CraftingMaterial, 1, .06));   
       
       var clamp = new Ability();
@@ -5854,7 +5854,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(116225, 1130, 6950, 3475, 3250, 6500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 760;        
+      enemy.xpGainFromDefeat = 830;        
       enemy.loot.push(new LootItem(ItemsEnum.CanineFang, ItemTypeEnum.CraftingMaterial, 1, .06));    
       
       var crunch = new Ability();
@@ -5882,7 +5882,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(119203, 945, 6545, 3850, 3850, 6725);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 757;
+      enemy.xpGainFromDefeat = 837;
       enemy.loot.push(new LootItem(ItemsEnum.ToxicIchor, ItemTypeEnum.CraftingMaterial, 1, .075));
       
       var crush = new Ability();
@@ -5922,7 +5922,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(118645, 925, 6745, 3950, 3750, 6925);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 757;  
+      enemy.xpGainFromDefeat = 837;  
       enemy.loot.push(new LootItem(ItemsEnum.SerpentScale, ItemTypeEnum.CraftingMaterial, 1, .05)); 
       
       var crush = new Ability();
@@ -5962,7 +5962,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(122780, 1150, 7010, 3650, 3800, 7250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 768;  
+      enemy.xpGainFromDefeat = 838;  
       enemy.loot.push(new LootItem(ItemsEnum.CanineFang, ItemTypeEnum.CraftingMaterial, 1, .04));       
       
       var crunch = new Ability();
@@ -5990,7 +5990,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(123859, 1395, 6980, 3765, 4475, 7250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 764; 
+      enemy.xpGainFromDefeat = 834; 
       enemy.loot.push(new LootItem(ItemsEnum.ToxicIchor, ItemTypeEnum.CraftingMaterial, 1, .075));
       
       var crush = new Ability();
@@ -6030,7 +6030,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(126093, 1175, 7380, 4150, 4320, 7015);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 770;
+      enemy.xpGainFromDefeat = 840;
       enemy.loot.push(new LootItem(ItemsEnum.CoarseFur, ItemTypeEnum.CraftingMaterial, 1, .12));
       
       var scratch = new Ability();
@@ -6058,7 +6058,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(132881, 1428, 7865, 3800, 3980, 8250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 773;       
+      enemy.xpGainFromDefeat = 843;       
       enemy.loot.push(new LootItem(ItemsEnum.WhiteHorn, ItemTypeEnum.CraftingMaterial, 2, .04)); 
       
       var stampede = new Ability();
@@ -6088,7 +6088,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(121953, 1025, 7100, 4650, 4025, 7050);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 775;  
+      enemy.xpGainFromDefeat = 845;  
       enemy.loot.push(new LootItem(ItemsEnum.RoughAmethystFragment, ItemTypeEnum.CraftingMaterial, 1, .06));
       
       var swarm = new Ability();
@@ -6107,7 +6107,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(127810, 1406, 7775, 3995, 4200, 8250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 774;    
+      enemy.xpGainFromDefeat = 844;    
       enemy.loot.push(new LootItem(ItemsEnum.PristineCrabClaw, ItemTypeEnum.CraftingMaterial, 1, .075));
       
       var giantClaw = new Ability();
@@ -6133,7 +6133,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(127384, 1160, 7450, 4250, 4225, 7150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 777; 
+      enemy.xpGainFromDefeat = 847; 
       enemy.loot.push(new LootItem(ItemsEnum.MagicTreeBark, ItemTypeEnum.CraftingMaterial, 1, .0333));
       enemy.loot.push(new LootItem(ItemsEnum.CanineFang, ItemTypeEnum.CraftingMaterial, 1, .02));       
       
@@ -6162,7 +6162,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(131831, 1200, 7500, 4350, 4500, 7250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 775;
+      enemy.xpGainFromDefeat = 845;
       enemy.loot.push(new LootItem(ItemsEnum.SerpentScale, ItemTypeEnum.CraftingMaterial, 2, .04));
       
       var crush = new Ability();
@@ -6202,7 +6202,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(124993, 985, 7375, 4470, 5550, 7250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 764;  
+      enemy.xpGainFromDefeat = 824;  
       enemy.loot.push(new LootItem(ItemsEnum.Honey, ItemTypeEnum.CraftingMaterial, 2, .08));     
       
       var stinger = new Ability();
@@ -6230,8 +6230,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(141048, 1385, 9425, 4280, 5675, 8850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
-      enemy.xpGainFromDefeat = 950;     
-      enemy.loot.push(new LootItem(ItemsEnum.GoldenApple, ItemTypeEnum.Progression, 1, .02));       
+      enemy.xpGainFromDefeat = 1000;     
+      enemy.loot.push(new LootItem(ItemsEnum.GoldenApple, ItemTypeEnum.Progression, 1, .01));
       
       var wildSwing = new Ability();
       wildSwing.name = "Wild Swing";
@@ -6267,7 +6267,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(297899, 1230, 10850, 5850, 5850, 10800);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 14;
-      enemy.xpGainFromDefeat = 6350;    
+      enemy.xpGainFromDefeat = 5450;    
       enemy.loot.push(new LootItem(ItemsEnum.MagicTreeBark, ItemTypeEnum.CraftingMaterial, 2, .075));  
       
       var crush = new Ability();
@@ -6308,7 +6308,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(137048, 1235, 7750, 4350, 5150, 7250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 786;   
+      enemy.xpGainFromDefeat = 856;   
       enemy.loot.push(new LootItem(ItemsEnum.CanineFang, ItemTypeEnum.CraftingMaterial, 2, .05));       
 
       var crunch = new Ability();
@@ -6336,7 +6336,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(135659, 1025, 7690, 4935, 5250, 7550);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
-      enemy.xpGainFromDefeat = 795;  
+      enemy.xpGainFromDefeat = 865;  
       enemy.loot.push(new LootItem(ItemsEnum.ToxicIchor, ItemTypeEnum.CraftingMaterial, 2, .08));
 
       var crush = new Ability();
@@ -6376,7 +6376,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(139488, 1255, 7920, 4650, 5550, 7000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 800;    
+      enemy.xpGainFromDefeat = 870;    
       enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
       enemy.loot.push(new LootItem(ItemsEnum.SharpFeather, ItemTypeEnum.CraftingMaterial, 1, .075));
 
@@ -6421,7 +6421,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(141048, 1255, 8000, 4460, 5950, 7750);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 813;  
+      enemy.xpGainFromDefeat = 883;  
       enemy.loot.push(new LootItem(ItemsEnum.SirensongRing, ItemTypeEnum.Equipment, 1, .01));
 
       var sirenSong = new Ability();
@@ -6450,7 +6450,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(136948, 1015, 7750, 4935, 5500, 7250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 813; 
+      enemy.xpGainFromDefeat = 883; 
       enemy.loot.push(new LootItem(ItemsEnum.SirensongRing, ItemTypeEnum.Equipment, 1, .01));
       
       var sirenSong = new Ability();
@@ -6479,7 +6479,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(144489, 1260, 8025, 4450, 5875, 8250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 808; 
+      enemy.xpGainFromDefeat = 888; 
       enemy.loot.push(new LootItem(ItemsEnum.RoughAquamarineFragment, ItemTypeEnum.CraftingMaterial, 2, .0333));   
       
       var clamp = new Ability();
@@ -6506,7 +6506,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(142093, 1278, 8100, 4965, 5200, 8250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 815;  
+      enemy.xpGainFromDefeat = 885;  
       enemy.loot.push(new LootItem(ItemsEnum.FishScales, ItemTypeEnum.CraftingMaterial, 2, .05));  
       
       var splash = new Ability();
@@ -6533,7 +6533,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(153891, 1465, 11250, 6850, 6750, 11500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
-      enemy.xpGainFromDefeat = 3000;     
+      enemy.xpGainFromDefeat = 2500;     
       enemy.loot.push(new LootItem(ItemsEnum.MagicTreeBark, ItemTypeEnum.CraftingMaterial, 1, .05));         
       
       var protection = new Ability();
@@ -6560,7 +6560,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(179312, 1265, 10320, 7950, 5450, 11500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
-      enemy.xpGainFromDefeat = 3500;  
+      enemy.xpGainFromDefeat = 3250;  
       enemy.loot.push(new LootItem(ItemsEnum.CanineFang, ItemTypeEnum.CraftingMaterial, 1, .075));       
             
       var twoHeadedBite = new Ability();
@@ -6589,7 +6589,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(341904, 1785, 11245, 6650, 7850, 12500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
-      enemy.xpGainFromDefeat = 7500;            
+      enemy.xpGainFromDefeat = 6500;            
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .75, false, true, false));
       enemy.loot.push(new LootItem(ItemsEnum.BloodyShield, ItemTypeEnum.Equipment, 1, .035));
       enemy.loot.push(new LootItem(ItemsEnum.MetalScraps, ItemTypeEnum.CraftingMaterial, 1, .05));

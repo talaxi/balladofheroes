@@ -1,7 +1,31 @@
 
 
 .scrollable {
-    overflow-y: auto;
+    overflow-y: auto; 
+    display: grid;
+    height: auto;    
+    grid-template-columns: 25% 1fr 68%;
+    grid-template-rows: auto;
+    column-gap: .5rem;    
+    grid-template-areas:
+        "balladList arrow zoneList";    
+}
+
+
+.balladList {
+    grid-area: balladList;
+}
+
+.zoneList {
+    grid-area: zoneList;
+}
+
+.arrow {
+    grid-area: arrow;
+}
+
+.selected {
+    color: var(--foreground-secondary) !important;
 }
 
 .zoneName {

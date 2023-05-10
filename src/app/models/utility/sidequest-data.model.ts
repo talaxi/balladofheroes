@@ -9,6 +9,7 @@ export class SidequestData {
     highestWeeklyMeleeRound: number;
     traderHuntLevel: number;
     traderBestiaryType: BestiaryEnum;
+    goldenApplesObtained: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -20,5 +21,6 @@ export class SidequestData {
         this.highestWeeklyMeleeRound = 0;
         this.lastWeeklyMeleeTicketReceived = new Date();
         this.traderHuntLevel = 0;
+        this.goldenApplesObtained = 0;
     }
 }

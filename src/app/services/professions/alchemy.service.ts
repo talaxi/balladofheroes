@@ -34,7 +34,7 @@ export class AlchemyService {
         alchemy.isUnlocked = true;
         alchemy.level = 1;
         alchemy.maxLevel += this.utilityService.firstAlchemyLevelCap;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy,  undefined, undefined, true, subzone));
       }
     }
   }
@@ -208,12 +208,12 @@ export class AlchemyService {
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfSpeed);
       }
-    }
+    }    
     if (alchemy.level >= 52) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PiercingPotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PiercingPotion));
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PotentEssence)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PotentEssence));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.PiercingPotion);
+        this.updateGameLogWithNewRecipe(ItemsEnum.PotentEssence);
       }
     }
     if (alchemy.level >= 54) {
@@ -222,12 +222,12 @@ export class AlchemyService {
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.HoneyPoultice);
       }
-    }
+    }    
     if (alchemy.level >= 55) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PotentEssence)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PotentEssence));
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PiercingPotion)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PiercingPotion));
         newRecipeLearned = true;
-        this.updateGameLogWithNewRecipe(ItemsEnum.PotentEssence);
+        this.updateGameLogWithNewRecipe(ItemsEnum.PiercingPotion);
       }
     }
     if (alchemy.level >= 57) {
@@ -619,7 +619,7 @@ export class AlchemyService {
       recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPotion);
       recipe.steps.push(ProfessionActionsEnum.HeatMixture);
 
-      recipe.expGain = 32;
+      recipe.expGain = 34;
     }
     //lvl 54
     if (item === ItemsEnum.HoneyPoultice) {
@@ -644,7 +644,7 @@ export class AlchemyService {
       recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
       recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
 
-      recipe.expGain = 34;
+      recipe.expGain = 32;
     }
     //lvl 57
     if (item === ItemsEnum.FlamingToxin) {

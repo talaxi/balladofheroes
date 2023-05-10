@@ -114,6 +114,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
       if (thirdFirstAvailableAltar !== undefined)
         this.battleKeybinds.push(thirdFirstAvailableAltar);
   
+        var toggleAllCharactersTargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleAllCharactersTargetMode");
+        if (toggleAllCharactersTargetMode !== undefined)
+          this.battleKeybinds.push(toggleAllCharactersTargetMode);
+
       var toggleCharacter1TargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter1TargetMode");
       if (toggleCharacter1TargetMode !== undefined)
         this.battleKeybinds.push(toggleCharacter1TargetMode);
@@ -331,6 +335,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Pray At Second Altar"; 
       if (name === "openThirdAvailableAltar")
       updatedName = "Pray At Third Altar";      
+      if (name === "toggleAllCharactersTargetMode")
+      updatedName = "Toggle All Characters Target Mode";
     if (name === "toggleCharacter1TargetMode")
       updatedName = "Toggle Character 1 Target Mode";
       if (name === "toggleCharacter2TargetMode")

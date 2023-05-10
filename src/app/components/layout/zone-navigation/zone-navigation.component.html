@@ -6,7 +6,7 @@
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
-                <button (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton"><img
+                <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton"><img
                     class="autoProgressIcon" src="assets/svg/gear.svg"></button>
             </span>
         </div>

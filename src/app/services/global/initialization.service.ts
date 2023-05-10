@@ -297,6 +297,7 @@ export class InitializationService {
     this.globalService.globalVar.gameLogSettings.set("useBattleItem", true);
     this.globalService.globalVar.gameLogSettings.set("followerSearch", true);
     this.globalService.globalVar.gameLogSettings.set("followerPrayer", true);
+    this.globalService.globalVar.gameLogSettings.set("moveLocations", true);
   }
 
   initializeQuickView() {
@@ -323,6 +324,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("openJewelcraftingQuickView", "keyJ");
     this.globalService.globalVar.keybinds.set("openAltarsQuickView", "keyA");
 
+    this.globalService.globalVar.keybinds.set("toggleAllCharactersTargetMode", this.keybindService.altKeyBind + "keyT");
     this.globalService.globalVar.keybinds.set("openFirstAvailableAltar", "keyZ");
     this.globalService.globalVar.keybinds.set("openSecondAvailableAltar", "keyX");
     this.globalService.globalVar.keybinds.set("openThirdAvailableAltar", "keyC");
@@ -427,7 +429,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedEmerald, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedAquamarine, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorWeaponSlotAddition, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorArmorSlotAddition, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorRingSlotAddition, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorShieldSlotAddition, 100));
@@ -650,18 +652,18 @@ export class InitializationService {
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Priest;
       this.globalService.globalVar.itemBeltSize = 1;
-      this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 75;
-      this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.isUnlocked = true;
+      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 75;
+      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.isUnlocked = true;
       //if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting) !== undefined)
-      this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.level = 50;
-        this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
-      this.alchemyService.checkForNewRecipes();
-      this.jewelcraftingService.checkForNewRecipes();
+      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.level = 50;
+        //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
+      //this.alchemyService.checkForNewRecipes();
+      //this.jewelcraftingService.checkForNewRecipes();
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
         character1.assignedGod1 = GodEnum.Hades;
-        character1.assignedGod2 = GodEnum.Athena;
+        character1.assignedGod2 = GodEnum.Hermes;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BlackLance);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
@@ -680,7 +682,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 548;
+      var godLevel = 1098;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

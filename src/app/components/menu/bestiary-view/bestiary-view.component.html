@@ -153,7 +153,11 @@
                 <div class="encounter" *ngFor="let encounter of enemyEncounters; let i = index">
                     <strong>Encounter {{i + 1}}</strong>
                     <br />
-                    <span [innerHtml]="getEnemyEncounter(encounter)"></span>
+                    <span [innerHtml]="getEnemyEncounter(encounter)" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="enemyEncounterPopover"></span>
+                    <ng-template #enemyEncounterPopover>
+                        <span>Hover enemy name in the "Enemies" section above to view details.</span>
+                    </ng-template>
                 </div>
             </div>
             <hr />

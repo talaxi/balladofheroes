@@ -449,7 +449,7 @@ export class BackgroundService {
             if (this.globalService.globalVar.gameLogSettings.get("followerSearch")) {
               this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.dictionaryService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".");
             }
-            this.lookupService.addLootToLog(foundReward.item, foundReward.amount);
+            this.lookupService.addLootToLog(foundReward.item, foundReward.amount, SubZoneEnum.Follower);
             this.lookupService.gainResource(foundReward);
           }
         });
