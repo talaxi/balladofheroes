@@ -6636,6 +6636,9 @@ export class LookupService {
     if (type === ShopTypeEnum.Trader) {
       text = "Trader";
     }
+    if (type === ShopTypeEnum.AugeanStables) {
+      text = "Augean Stables";
+    }
 
     return text;
   }

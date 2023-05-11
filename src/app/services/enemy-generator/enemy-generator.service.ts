@@ -411,7 +411,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.EnceladusOne) {
       enemy.name = "Enceladus";
-      enemy.battleStats = new CharacterStats(250000, 615, 10000, 60, 2000, 10000);
+      enemy.battleStats = new CharacterStats(250000, 10000, 10000, 60, 2000, 10000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 1000;
@@ -419,18 +419,18 @@ export class EnemyGeneratorService {
       var smash = new Ability();
       smash.name = "Smash";
       smash.isAvailable = true;
-      smash.cooldown = smash.currentCooldown = 15;      
+      smash.cooldown = smash.currentCooldown = 6;      
       smash.dealsDirectDamage = true;
-      smash.effectiveness = 2.3;
+      smash.effectiveness = 10.3;
       smash.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .8, smash.name));
       enemy.abilityList.push(smash);
 
       var wallop = new Ability();
       wallop.name = "Wallop";
       wallop.isAvailable = true;
-      wallop.cooldown = wallop.currentCooldown = 15;      
+      wallop.cooldown = wallop.currentCooldown = 7;      
       wallop.dealsDirectDamage = true;
-      wallop.effectiveness = 1.5;
+      wallop.effectiveness = 10.5;
       wallop.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .4, false, false));
       enemy.abilityList.push(wallop);
 

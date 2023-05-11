@@ -3441,7 +3441,8 @@ export class SubZoneGeneratorService {
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RadiatingHammer, SubZoneEnum.CoastOfCreteElis));
 
     if (subzoneType === SubZoneEnum.CoastOfCreteElis) {
-      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));      
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));  
+      shopOptions.push(new ShopOption(ShopTypeEnum.AugeanStables, []));      
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SpiritShield, SubZoneEnum.ErytheiaCadiz));

@@ -10,5 +10,6 @@ export enum OptionalSceneEnum {
   ChthonicFavorUpgrade2Scene2,
   ChthonicFavorUpgrade2Scene3,
   Jewelcrafting,
-  TraderIntro
+  TraderIntro,
+  AugeanStables
 }

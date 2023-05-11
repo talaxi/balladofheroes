@@ -342,6 +342,10 @@ export class ShopViewComponent implements OnInit {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.TraderIntro)) {
       scene = OptionalSceneEnum.TraderIntro;
     }
+    if (option.type === ShopTypeEnum.AugeanStables && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables)) {
+      scene = OptionalSceneEnum.AugeanStables;
+    }
 
     return scene;
   }
