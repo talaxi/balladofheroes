@@ -19,6 +19,7 @@ import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.servic
 import { TutorialService } from '../global/tutorial.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { ShopItemGeneratorService } from '../shop/shop-item-generator.service';
+import { SidequestData } from 'src/app/models/utility/sidequest-data.model';
 
 @Injectable({
   providedIn: 'root'
@@ -3278,11 +3279,12 @@ export class SubZoneGeneratorService {
     return subZoneEnums;
   }
 
-  getShopOptions(subzoneType: SubZoneEnum, traderLevel?: number) {
+  getShopOptions(subzoneType: SubZoneEnum, sidequestData: SidequestData) {
     var shopOptions: ShopOption[] = [];
     var availableOptionsGeneral: ShopItem[] = [];
     var availableOptionsCrafter: ShopItem[] = [];
     var availableOptionsTraveler: ShopItem[] = [];
+    var availableOptionsAugeanStables: ShopItem[] = [];
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LinenArmor, SubZoneEnum.DodonaDelphi));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.IronArmor, SubZoneEnum.DodonaDelphi));
@@ -3423,8 +3425,8 @@ export class SubZoneGeneratorService {
     }
 
     if (subzoneType === SubZoneEnum.NemeaCleonea) {
-      if (traderLevel !== undefined)
-        shopOptions.push(new ShopOption(ShopTypeEnum.Trader, this.getAvailableTraderOptions(traderLevel)));
+      if (sidequestData.traderHuntLevel !== undefined)
+        shopOptions.push(new ShopOption(ShopTypeEnum.Trader, this.getAvailableTraderOptions(sidequestData.traderHuntLevel)));        
     }
     
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.FurArmor, SubZoneEnum.StymphaliaTiryns));
@@ -3433,16 +3435,24 @@ export class SubZoneGeneratorService {
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HesperidianArmor, SubZoneEnum.StymphaliaTiryns));
 
     if (subzoneType === SubZoneEnum.StymphaliaTiryns) {
-      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));  
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));        
     }
     
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.JaggedSword, SubZoneEnum.CoastOfCreteElis));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BirchBow, SubZoneEnum.CoastOfCreteElis));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RadiatingHammer, SubZoneEnum.CoastOfCreteElis));
 
+    if (sidequestData.augeanStablesLevel === 0)
+      availableOptionsAugeanStables.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AugeanStables1, SubZoneEnum.CoastOfCreteElis));
+    if (sidequestData.augeanStablesLevel === 1)
+      availableOptionsAugeanStables.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AugeanStables2, SubZoneEnum.CoastOfCreteElis));
+    if (sidequestData.augeanStablesLevel === 2)
+      availableOptionsAugeanStables.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AugeanStables3, SubZoneEnum.CoastOfCreteElis));
+
     if (subzoneType === SubZoneEnum.CoastOfCreteElis) {
-      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));  
-      shopOptions.push(new ShopOption(ShopTypeEnum.AugeanStables, []));      
+      shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));     
+      if (availableOptionsAugeanStables.length > 0)   
+        shopOptions.push(new ShopOption(ShopTypeEnum.AugeanStables, availableOptionsAugeanStables));  
     }
 
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SpiritShield, SubZoneEnum.ErytheiaCadiz));

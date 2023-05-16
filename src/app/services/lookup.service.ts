@@ -247,11 +247,17 @@ export class LookupService {
       return EquipmentQualityEnum.Basic;
 
     if (type === ItemsEnum.DullRuby || type === ItemsEnum.DullTopaz || type === ItemsEnum.DullOpal || type === ItemsEnum.DullAmethyst ||
-      type === ItemsEnum.DullEmerald || type === ItemsEnum.DullAquamarine || type === ItemsEnum.MinorWeaponSlotAddition ||
-      type === ItemsEnum.MinorRingSlotAddition || type === ItemsEnum.MinorShieldSlotAddition || type === ItemsEnum.MinorArmorSlotAddition ||
-      type === ItemsEnum.MinorNecklaceSlotAddition || type === ItemsEnum.PerfectDullRuby || type === ItemsEnum.PerfectDullTopaz || type === ItemsEnum.PerfectDullOpal || type === ItemsEnum.PerfectDullAmethyst ||
-      type === ItemsEnum.PerfectDullEmerald || type === ItemsEnum.PerfectDullAquamarine)
+      type === ItemsEnum.DullEmerald || type === ItemsEnum.DullAquamarine || type === ItemsEnum.PerfectDullRuby || type === ItemsEnum.PerfectDullTopaz || type === ItemsEnum.PerfectDullOpal || type === ItemsEnum.PerfectDullAmethyst ||
+      type === ItemsEnum.PerfectDullEmerald || type === ItemsEnum.PerfectDullAquamarine || type === ItemsEnum.RadiatingAirStone ||
+      type === ItemsEnum.RadiatingEarthStone || type === ItemsEnum.RadiatingLightningStone || type === ItemsEnum.RadiatingFireStone ||
+      type === ItemsEnum.RadiatingHolyStone || type === ItemsEnum.RadiatingWaterStone || type === ItemsEnum.PerfectRadiatingWaterStone ||
+      type === ItemsEnum.PerfectRadiatingEarthStone || type === ItemsEnum.PerfectRadiatingLightningStone || type === ItemsEnum.PerfectRadiatingFireStone ||
+      type === ItemsEnum.PerfectRadiatingHolyStone || type === ItemsEnum.PerfectRadiatingAirStone)
       return EquipmentQualityEnum.Uncommon;
+
+      if (type === ItemsEnum.MinorWeaponSlotAddition || type === ItemsEnum.MinorRingSlotAddition || type === ItemsEnum.MinorShieldSlotAddition || 
+        type === ItemsEnum.MinorArmorSlotAddition || type === ItemsEnum.MinorNecklaceSlotAddition)
+        return EquipmentQualityEnum.Rare;
 
     return EquipmentQualityEnum.Basic;
   }
@@ -312,7 +318,11 @@ export class LookupService {
       type === ItemsEnum.MinorNecklaceSlotAddition || type === ItemsEnum.PerfectCrackedRuby || type === ItemsEnum.PerfectCrackedTopaz || type === ItemsEnum.PerfectCrackedOpal ||
       type === ItemsEnum.PerfectCrackedAmethyst || type === ItemsEnum.PerfectCrackedEmerald || type === ItemsEnum.PerfectCrackedAquamarine ||
       type === ItemsEnum.PerfectDullRuby || type === ItemsEnum.PerfectDullTopaz || type === ItemsEnum.PerfectDullOpal || type === ItemsEnum.PerfectDullAmethyst ||
-      type === ItemsEnum.PerfectDullEmerald || type === ItemsEnum.PerfectDullAquamarine)
+      type === ItemsEnum.PerfectDullEmerald || type === ItemsEnum.PerfectDullAquamarine || type === ItemsEnum.RadiatingHolyStone ||
+      type === ItemsEnum.RadiatingFireStone || type === ItemsEnum.RadiatingEarthStone || type === ItemsEnum.RadiatingLightningStone ||
+      type === ItemsEnum.RadiatingAirStone || type === ItemsEnum.RadiatingWaterStone || type === ItemsEnum.PerfectRadiatingHolyStone ||
+      type === ItemsEnum.PerfectRadiatingFireStone || type === ItemsEnum.PerfectRadiatingEarthStone || type === ItemsEnum.PerfectRadiatingLightningStone ||
+      type === ItemsEnum.PerfectRadiatingAirStone || type === ItemsEnum.PerfectRadiatingWaterStone)
       return ItemTypeEnum.SlotItem;
 
     if (this.getEquipmentPieceByItemType(type) !== undefined) {
@@ -660,6 +670,19 @@ export class LookupService {
       description = "+<b>" + slotItemValues.luck + " Luck</b>";
     if (slotItemValues.resistance > 0)
       description = "+<b>" + slotItemValues.resistance + " Resistance</b>";
+
+      if (slotItemValues.elementIncrease.holy > 0)
+      description = "+<b>" + (slotItemValues.elementIncrease.holy * 100) + "% Holy Damage Increase</b>";
+      if (slotItemValues.elementIncrease.fire > 0)
+      description = "+<b>" + (slotItemValues.elementIncrease.fire * 100) + "% Fire Damage Increase</b>";
+      if (slotItemValues.elementIncrease.lightning > 0)
+      description = "+<b>" + (slotItemValues.elementIncrease.lightning * 100) + "% Lightning Damage Increase</b>";
+      if (slotItemValues.elementIncrease.air > 0)
+      description = "+<b>" + (slotItemValues.elementIncrease.air * 100) + "% Air Damage Increase</b>";
+      if (slotItemValues.elementIncrease.earth > 0)
+      description = "+<b>" + (slotItemValues.elementIncrease.earth * 100) + "% Earth Damage Increase</b>";
+      if (slotItemValues.elementIncrease.water > 0)
+      description = "+<b>" + (slotItemValues.elementIncrease.water * 100) + "% Water Damage Increase</b>";
 
     var slotStarDisclaimer = "An item can only have as many slots total as it has stars.";
     if (item === ItemsEnum.MinorWeaponSlotAddition)
@@ -1416,6 +1439,14 @@ export class LookupService {
       name = "Protection";
     if (type === OverdriveNameEnum.Nature)
       name = "Nature";
+      if (type === OverdriveNameEnum.Reprisal)
+      name = "Reprisal";
+      if (type === OverdriveNameEnum.Preservation)
+      name = "Preservation";
+      if (type === OverdriveNameEnum.Harmony)
+      name = "Harmony";
+      if (type === OverdriveNameEnum.Bullseye)
+      name = "Bullseye";
 
 
     return name;
@@ -1436,6 +1467,18 @@ export class LookupService {
     if (type === OverdriveNameEnum.Nature) {
       description = "For 20 seconds, all non elemental attacks take on the element of the last elemental attack you used while this effect is active.";
     }
+    if (type === OverdriveNameEnum.Reprisal) {
+      description = "For 20 seconds, all auto attacks against you have " + (this.utilityService.reprisalAmount * 100) + "% of their damage reflected back to the attacker.";
+    }
+    if (type === OverdriveNameEnum.Preservation) {
+      description = "For 20 seconds, all healing and barrier effects are 50% more effective.";
+    }
+    if (type === OverdriveNameEnum.Harmony) {
+      description = "For 20 seconds, the target of any of your healing or barrier effects has their damage increased by 10% for 15 seconds. This effect stacks up to 10 times.";
+    }
+    if (type === OverdriveNameEnum.Bullseye) {
+      description = "After 20 seconds, apply a Damage over Time effect on all targets for 50% of the critical damage you dealt to that target while this effect was active.";
+    }
 
     return description;
   }
@@ -1452,6 +1495,18 @@ export class LookupService {
     if (type === OverdriveNameEnum.Nature) {
       description = "Deal " + this.utilityService.overdriveAttacksNeededToUnlockNature.toLocaleString() + " elemental damage. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
     }
+    if (type === OverdriveNameEnum.Reprisal) {
+      description = "Take " + this.utilityService.overdriveHitsNeededToUnlockReprisal.toLocaleString() + " damaging attacks. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+    }
+    if (type === OverdriveNameEnum.Preservation) {
+      description = "Heal or give a character a barrier worth " + this.utilityService.overdriveHealingNeededToUnlockPreservation.toLocaleString() + " total HP. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+    }
+    if (type === OverdriveNameEnum.Harmony) {
+      description = "Heal or give a character a barrier " + this.utilityService.overdriveHealsNeededToUnlockHarmony.toLocaleString() + " times. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+    }
+    if (type === OverdriveNameEnum.Bullseye) {
+      description = "Deal " + this.utilityService.overdriveCriticalsNeededToUnlockBullseye.toLocaleString() + " critical hits. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+    }
 
     return description;
   }
@@ -1466,7 +1521,7 @@ export class LookupService {
     overdriveInfo.selectedOverdrive = type;
 
     if (type === OverdriveNameEnum.Fervor) {
-      overdriveInfo.gaugeTotal = 120;
+      overdriveInfo.gaugeTotal = 125;
       overdriveInfo.activeLength = 20;
     }
     if (type === OverdriveNameEnum.Smash) {
@@ -1474,11 +1529,28 @@ export class LookupService {
       overdriveInfo.activeLength = 20;
     }
     if (type === OverdriveNameEnum.Nature) {
-      overdriveInfo.gaugeTotal = 150;
+      overdriveInfo.gaugeTotal = 125;
       overdriveInfo.activeLength = 20;
     }
     if (type === OverdriveNameEnum.Protection) {
       overdriveInfo.gaugeTotal = 150;
+      overdriveInfo.activeLength = 20;
+    }
+    //TODO: fix all these
+    if (type === OverdriveNameEnum.Reprisal) {
+      overdriveInfo.gaugeTotal = 12;//5;
+      overdriveInfo.activeLength = 20;
+    }
+    if (type === OverdriveNameEnum.Preservation) {
+      overdriveInfo.gaugeTotal = 13;//5;
+      overdriveInfo.activeLength = 20;
+    }
+    if (type === OverdriveNameEnum.Harmony) {
+      overdriveInfo.gaugeTotal = 15;//0;
+      overdriveInfo.activeLength = 20;
+    }
+    if (type === OverdriveNameEnum.Bullseye) {
+      overdriveInfo.gaugeTotal = 15;//0;
       overdriveInfo.activeLength = 20;
     }
 

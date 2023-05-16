@@ -25,7 +25,7 @@ export class GameLoopService {
 
     var fpsInterval = 1000 / fps;
     //console.log(dateNow - this.globalService.globalVar.lastTimeStamp + " vs " + fpsInterval);
-    if (dateNow - this.globalService.globalVar.lastTimeStamp > fpsInterval)
+    if (fps === this.utilityService.highFps || dateNow - this.globalService.globalVar.lastTimeStamp > fpsInterval)
       shouldEmit = true;    
 
     if (shouldEmit) {

@@ -241,7 +241,7 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.BloodyNecklace) {
       return new ResourceValue(ItemsEnum.BloodyNecklace, amount);
-    }    
+    }
 
     //equippables
     if (type === ItemsEnum.HealingHerb) {
@@ -333,7 +333,7 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PotentConcoction) {
       return new ResourceValue(ItemsEnum.PotentConcoction, amount);
-    }    
+    }
 
     //materials
     if (type === ItemsEnum.LightLeather) {
@@ -564,6 +564,30 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.WhiteHorn) {
       return new ResourceValue(ItemsEnum.WhiteHorn, amount);
     }
+    if (type === ItemsEnum.RadiatingAirStone)
+      return new ResourceValue(ItemsEnum.RadiatingAirStone, amount);
+    if (type === ItemsEnum.RadiatingEarthStone)
+      return new ResourceValue(ItemsEnum.RadiatingEarthStone, amount);
+    if (type === ItemsEnum.RadiatingLightningStone)
+      return new ResourceValue(ItemsEnum.RadiatingLightningStone, amount);
+    if (type === ItemsEnum.RadiatingHolyStone)
+      return new ResourceValue(ItemsEnum.RadiatingHolyStone, amount);
+    if (type === ItemsEnum.RadiatingFireStone)
+      return new ResourceValue(ItemsEnum.RadiatingFireStone, amount);
+    if (type === ItemsEnum.RadiatingWaterStone)
+      return new ResourceValue(ItemsEnum.RadiatingWaterStone, amount);
+      if (type === ItemsEnum.PerfectRadiatingAirStone)
+      return new ResourceValue(ItemsEnum.PerfectRadiatingAirStone, amount);
+    if (type === ItemsEnum.PerfectRadiatingEarthStone)
+      return new ResourceValue(ItemsEnum.PerfectRadiatingEarthStone, amount);
+    if (type === ItemsEnum.PerfectRadiatingLightningStone)
+      return new ResourceValue(ItemsEnum.PerfectRadiatingLightningStone, amount);
+    if (type === ItemsEnum.PerfectRadiatingHolyStone)
+      return new ResourceValue(ItemsEnum.PerfectRadiatingHolyStone, amount);
+    if (type === ItemsEnum.PerfectRadiatingFireStone)
+      return new ResourceValue(ItemsEnum.PerfectRadiatingFireStone, amount);
+    if (type === ItemsEnum.PerfectRadiatingWaterStone)
+      return new ResourceValue(ItemsEnum.PerfectRadiatingWaterStone, amount);
 
     //charms
     if (type === ItemsEnum.SmallCharmOfDetermination) {
@@ -640,12 +664,21 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.Subscriber) {
       return new ResourceValue(ItemsEnum.Subscriber, amount);
     }
+    if (type === ItemsEnum.AugeanStables1) {
+      return new ResourceValue(ItemsEnum.AugeanStables1, amount);
+    }
+    if (type === ItemsEnum.AugeanStables2) {
+      return new ResourceValue(ItemsEnum.AugeanStables2, amount);
+    }
+    if (type === ItemsEnum.AugeanStables3) {
+      return new ResourceValue(ItemsEnum.AugeanStables3, amount);
+    }
 
     return new ResourceValue(ItemsEnum.None, 0);
   }
 
-  getSlotItemValues(item: ItemsEnum) {   
-    var baseLesserCrackedStatValue = 10; 
+  getSlotItemValues(item: ItemsEnum) {
+    var baseLesserCrackedStatValue = 10;
     var hpModifier = 5;
     var defensiveModifier = 1.5;
     if (item === ItemsEnum.LesserCrackedOpal) {
@@ -745,6 +778,70 @@ export class ResourceGeneratorService {
     }
     if (item === ItemsEnum.PerfectDullTopaz) {
       return new CharacterStats(basePerfectDullStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var baseRadiatingStoneValue = .05;
+    if (item === ItemsEnum.RadiatingHolyStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.holy = baseRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.RadiatingFireStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.fire = baseRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.RadiatingLightningStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.lightning = baseRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.RadiatingAirStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.air = baseRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.RadiatingEarthStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.earth = baseRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.RadiatingWaterStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.water = baseRadiatingStoneValue;
+      return stats;
+    }
+
+    var basePerfectRadiatingStoneValue = .075;
+    if (item === ItemsEnum.PerfectRadiatingHolyStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.holy = basePerfectRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.PerfectRadiatingFireStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.fire = basePerfectRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.PerfectRadiatingLightningStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.lightning = basePerfectRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.PerfectRadiatingAirStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.air = basePerfectRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.PerfectRadiatingEarthStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.earth = basePerfectRadiatingStoneValue;
+      return stats;
+    }
+    if (item === ItemsEnum.PerfectRadiatingWaterStone) {
+      var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+      stats.elementIncrease.water = basePerfectRadiatingStoneValue;
+      return stats;
     }
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);

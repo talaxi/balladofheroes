@@ -429,6 +429,8 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughTopazFragment, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughOpalFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.CoarseFur, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.AnimalHide, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
@@ -655,7 +657,7 @@ export class InitializationService {
         this.lookupService.gainResource(resource);
 
       this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
+      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });     // character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye);
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Priest;
       this.globalService.globalVar.itemBeltSize = 1;
       //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 75;

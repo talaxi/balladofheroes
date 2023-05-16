@@ -437,7 +437,7 @@ export class EnemyGeneratorService {
       var wallop = new Ability();
       wallop.name = "Wallop";
       wallop.isAvailable = true;
-      wallop.cooldown = wallop.currentCooldown = 7.8;      
+      wallop.cooldown = wallop.currentCooldown = 9;      
       wallop.dealsDirectDamage = true;
       wallop.effectiveness = 10.5;
       wallop.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .4, false, false));

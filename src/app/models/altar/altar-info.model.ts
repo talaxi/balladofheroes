@@ -7,7 +7,7 @@ export class AltarInfo {
     god: GodEnum;
     condition: AltarConditionEnum;
     conditionCount: number;
-    conditionMax: number; //max value that needs to be reached for the condition to be met
+    conditionMax: number; //max value that needs to be reached for the condition to be met    
 
     constructor() {
         this.type = AltarEnum.None;

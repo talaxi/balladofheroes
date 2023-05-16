@@ -443,6 +443,30 @@ export class DictionaryService {
       name = "Perfect Dull Aquamarine";
     else if (type === ItemsEnum.PerfectDullEmerald)
       name = "Perfect Dull Emerald";
+      else if (type === ItemsEnum.PerfectRadiatingAirStone)
+      name = "Perfect Radiating Air Stone";
+      else if (type === ItemsEnum.PerfectRadiatingEarthStone)
+      name = "Perfect Radiating Earth Stone";
+      else if (type === ItemsEnum.PerfectRadiatingFireStone)
+      name = "Perfect Radiating Fire Stone";
+      else if (type === ItemsEnum.PerfectRadiatingHolyStone)
+      name = "Perfect Radiating Holy Stone";
+      else if (type === ItemsEnum.PerfectRadiatingLightningStone)
+      name = "Perfect Radiating Lightning Stone";
+      else if (type === ItemsEnum.PerfectRadiatingWaterStone)
+      name = "Perfect Radiating Water Stone";
+      else if (type === ItemsEnum.RadiatingAirStone)
+      name = "Radiating Air Stone";
+      else if (type === ItemsEnum.RadiatingEarthStone)
+      name = "Radiating Earth Stone";
+      else if (type === ItemsEnum.RadiatingFireStone)
+      name = "Radiating Fire Stone";
+      else if (type === ItemsEnum.RadiatingHolyStone)
+      name = "Radiating Holy Stone";
+      else if (type === ItemsEnum.RadiatingLightningStone)
+      name = "Radiating Lightning Stone";
+      else if (type === ItemsEnum.RadiatingWaterStone)
+      name = "Radiating Water Stone";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -598,6 +622,12 @@ export class DictionaryService {
       name = "Hades";
     else if (type === ItemsEnum.Ares)
       name = "Ares";
+      else if (type === ItemsEnum.AugeanStables1)
+      name = "Repair Augean Stables Door";
+      else if (type === ItemsEnum.AugeanStables2)
+      name = "Repair Augean Stables Roof";
+      else if (type === ItemsEnum.AugeanStables3)
+      name = "Repair Augean Stable Walls";
 
     return name;
   }

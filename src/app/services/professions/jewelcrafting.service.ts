@@ -26,32 +26,32 @@ export class JewelcraftingService {
 
   handleShopOpen(subzone: SubZoneEnum) {
     if (subzone === SubZoneEnum.AegeanSeaIolcus) {
-      var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);      
+      var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
       if (jewelcrafting !== undefined && !jewelcrafting.isUnlocked) {
         jewelcrafting.isUnlocked = true;
         jewelcrafting.level = 1;
         jewelcrafting.maxLevel += this.utilityService.firstJewelcraftingLevelCap;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Jewelcrafting,  undefined, undefined, true, subzone));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Jewelcrafting, undefined, undefined, true, subzone));
       }
     }
   }
 
   getActionLength(action: ProfessionActionsEnum) {
-    var duration = 0;
+    var duration = 0;    
 
     if (action === ProfessionActionsEnum.CombiningGems)
-      duration = 1 * 120;  
+      duration = 2 * 60;
     if (action === ProfessionActionsEnum.Polish)
-      duration = 1 * 60;  
-      if (action === ProfessionActionsEnum.HeatingMetal)
-      duration = 1 * 120;  
-      if (action === ProfessionActionsEnum.ShapingMetal)
-      duration = 1 * 120;  
-      if (action === ProfessionActionsEnum.CoolingMetal)
+      duration = 1 * 60;
+    if (action === ProfessionActionsEnum.HeatingMetal)
+      duration = 2 * 60;
+    if (action === ProfessionActionsEnum.ShapingMetal)
+      duration = 2 * 60;
+    if (action === ProfessionActionsEnum.CoolingMetal)
       duration = 1 * 60;
 
     return duration;
-  }  
+  }
 
   checkForNewRecipes() {
     var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
@@ -107,7 +107,7 @@ export class JewelcraftingService {
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.CrackedEmerald);
       }
-    }    
+    }
     if (jewelcrafting.level >= 25) {
       if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorNecklaceSlotAddition)) {
         jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorNecklaceSlotAddition));
@@ -157,7 +157,7 @@ export class JewelcraftingService {
         this.updateGameLogWithNewRecipe(ItemsEnum.MinorShieldSlotAddition);
       }
     }
-    if (jewelcrafting.level >= 45) {
+    if (jewelcrafting.level >= 42) {
       if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullAmethyst)) {
         jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullAmethyst));
         newRecipeLearned = true;
@@ -171,13 +171,20 @@ export class JewelcraftingService {
         this.updateGameLogWithNewRecipe(ItemsEnum.DullEmerald);
       }
     }
+    if (jewelcrafting.level >= 48) {
+      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.RadiatingLightningStone)) {
+        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.RadiatingLightningStone));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.RadiatingLightningStone);
+      }
+    }
     if (jewelcrafting.level >= 50) {
       if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorRingSlotAddition)) {
         jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorRingSlotAddition));
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.MinorRingSlotAddition);
       }
-    }    
+    }
 
     return newRecipeLearned;
   }
@@ -195,11 +202,10 @@ export class JewelcraftingService {
 
     var qualityName = "";
 
-    if (jewelcrafting.level <= 25)
-     {
+    if (jewelcrafting.level <= 25) {
       upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);
       qualityName = "Basic";
-     }
+    }
     else if (jewelcrafting.level <= 50) {
       upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
       qualityName = "Uncommon";
@@ -242,10 +248,10 @@ export class JewelcraftingService {
     }
 
     if (jewelcrafting.level % 25 === 18 || jewelcrafting.level % 25 === 0) {
-      upgrades.chanceToHalfDuration += additionalChanceToHalfDuration;      
+      upgrades.chanceToHalfDuration += additionalChanceToHalfDuration;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToHalfDuration * 100) + "%</strong> chance to reduce crafting time by half when making a " + qualityName + " quality Jewelcrafting recipe.";        
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToHalfDuration * 100) + "%</strong> chance to reduce crafting time by half when making a " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
@@ -341,7 +347,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 10;
+      recipe.expGain = 20;
     }
     if (item === ItemsEnum.MinorRingSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -353,7 +359,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 10;
+      recipe.expGain = 20;
     }
     if (item === ItemsEnum.MinorArmorSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -365,7 +371,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 15;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.MinorShieldSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -377,7 +383,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 15;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.MinorNecklaceSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -389,7 +395,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 15;
+      recipe.expGain = 25;
     }
     if (item === ItemsEnum.DullRuby) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
@@ -457,61 +463,92 @@ export class JewelcraftingService {
 
       recipe.expGain = 16;
     }
+    if (item === ItemsEnum.RadiatingLightningStone) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 10));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RadiatingGemstone, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 800));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 18;
+    }
+    if (item === ItemsEnum.RadiatingHolyStone) {
+      recipe.quality = EquipmentQualityEnum.Uncommon;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 10));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.RadiatingGemstone, 5));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 800));
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.CombiningGems);
+      recipe.steps.push(ProfessionActionsEnum.Polish);
+
+      recipe.expGain = 18;
+    }
 
     return recipe;
-  } 
-  
+  }
+
   getUpgradedItem(item: ItemsEnum) {
     var upgradedItem = item;
 
-    if (item === ItemsEnum.CrackedRuby)
-    {
+    if (item === ItemsEnum.CrackedRuby) {
       upgradedItem = ItemsEnum.PerfectCrackedRuby;
     }
-    if (item === ItemsEnum.CrackedEmerald)
-    {
+    if (item === ItemsEnum.CrackedEmerald) {
       upgradedItem = ItemsEnum.PerfectCrackedEmerald;
     }
-    if (item === ItemsEnum.CrackedAmethyst)
-    {
+    if (item === ItemsEnum.CrackedAmethyst) {
       upgradedItem = ItemsEnum.PerfectCrackedAmethyst;
     }
-    if (item === ItemsEnum.CrackedTopaz)
-    {
+    if (item === ItemsEnum.CrackedTopaz) {
       upgradedItem = ItemsEnum.PerfectCrackedTopaz;
     }
-    if (item === ItemsEnum.CrackedOpal)
-    {
+    if (item === ItemsEnum.CrackedOpal) {
       upgradedItem = ItemsEnum.PerfectCrackedOpal;
     }
-    if (item === ItemsEnum.CrackedAquamarine)
-    {
+    if (item === ItemsEnum.CrackedAquamarine) {
       upgradedItem = ItemsEnum.PerfectCrackedAquamarine;
     }
 
-    if (item === ItemsEnum.DullRuby)
-    {
+    if (item === ItemsEnum.DullRuby) {
       upgradedItem = ItemsEnum.PerfectDullRuby;
     }
-    if (item === ItemsEnum.DullEmerald)
-    {
+    if (item === ItemsEnum.DullEmerald) {
       upgradedItem = ItemsEnum.PerfectDullEmerald;
     }
-    if (item === ItemsEnum.DullAmethyst)
-    {
+    if (item === ItemsEnum.DullAmethyst) {
       upgradedItem = ItemsEnum.PerfectDullAmethyst;
     }
-    if (item === ItemsEnum.DullTopaz)
-    {
+    if (item === ItemsEnum.DullTopaz) {
       upgradedItem = ItemsEnum.PerfectDullTopaz;
     }
-    if (item === ItemsEnum.DullOpal)
-    {
+    if (item === ItemsEnum.DullOpal) {
       upgradedItem = ItemsEnum.PerfectDullOpal;
     }
-    if (item === ItemsEnum.DullAquamarine)
-    {
+    if (item === ItemsEnum.DullAquamarine) {
       upgradedItem = ItemsEnum.PerfectDullAquamarine;
+    }
+
+    if (item === ItemsEnum.RadiatingHolyStone) {
+      upgradedItem = ItemsEnum.PerfectRadiatingHolyStone;
+    }
+    if (item === ItemsEnum.RadiatingLightningStone) {
+      upgradedItem = ItemsEnum.PerfectRadiatingLightningStone;
+    }
+    if (item === ItemsEnum.RadiatingFireStone) {
+      upgradedItem = ItemsEnum.PerfectRadiatingFireStone;
+    }
+    if (item === ItemsEnum.RadiatingAirStone) {
+      upgradedItem = ItemsEnum.PerfectRadiatingAirStone;
+    }
+    if (item === ItemsEnum.RadiatingEarthStone) {
+      upgradedItem = ItemsEnum.PerfectRadiatingEarthStone;
+    }
+    if (item === ItemsEnum.RadiatingEarthStone) {
+      upgradedItem = ItemsEnum.PerfectRadiatingEarthStone;
     }
 
     return upgradedItem;

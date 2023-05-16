@@ -224,6 +224,7 @@ export class AppComponent {
         this.globalService.maxBankedTime = 0;
         this.lookupService.isUIHidden = false;
         this.globalService.globalVar.isCatchingUp = false;
+        console.log("Caught up");
         this.gameLogService.disableOverlayBuffer = false;
 
         if (this.catchupDialog !== undefined) {

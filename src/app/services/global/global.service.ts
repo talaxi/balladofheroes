@@ -1194,7 +1194,7 @@ export class GlobalService {
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
       var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attains level <strong>" + character.level + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);      
     }
 
     this.getCharacterLevelStatIncrease(character);

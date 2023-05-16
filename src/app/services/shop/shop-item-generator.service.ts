@@ -339,6 +339,17 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.SafeRing) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
+    if (item === ItemsEnum.AugeanStables1) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
+    }
+    if (item === ItemsEnum.AugeanStables2) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 50));
+      purchasePrice.push(new ResourceValue(ItemsEnum.CoarseFur, 10));
+    }
+    if (item === ItemsEnum.AugeanStables3) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 100));
+      purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 25));    
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

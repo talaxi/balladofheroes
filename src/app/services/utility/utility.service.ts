@@ -83,6 +83,14 @@ export class UtilityService {
 
   public overdriveDamageNeededToUnlockProtection = 100000;
   public overdriveAttacksNeededToUnlockNature = 250000;
+  public overdriveHitsNeededToUnlockReprisal = 10000;
+  public overdriveHealingNeededToUnlockPreservation = 100000;
+  public overdriveHealsNeededToUnlockHarmony = 10000;
+  public overdriveCriticalsNeededToUnlockBullseye = 7500;
+  
+  public reprisalAmount = 2.5;
+  public preservationAmount = .5;
+  public bullseyeAmount = .5;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;

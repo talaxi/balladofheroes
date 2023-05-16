@@ -14,7 +14,7 @@
 .balladTitle {
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: 1.5rem;
+    margin-right: .65rem;
     width: 42%; /* matches .zoneGrid below */
     font-variant: small-caps;
 }

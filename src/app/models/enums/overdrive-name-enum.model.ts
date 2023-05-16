@@ -3,5 +3,9 @@ export enum OverdriveNameEnum {
   Smash,
   Fervor,
   Protection,
-  Nature
+  Nature,
+  Reprisal,
+  Preservation,
+  Harmony,
+  Bullseye
 }

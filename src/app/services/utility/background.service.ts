@@ -43,7 +43,7 @@ export class BackgroundService {
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.handleItemCooldowns(deltaTime);
     this.checkForDailyOccurrences(deltaTime);
-    this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);
+    this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);    
     this.professionService.handleProfessionTimer(ProfessionEnum.Jewelcrafting, deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);

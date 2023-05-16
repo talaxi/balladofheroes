@@ -343,6 +343,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.ParalyzingToxin) {
       src += "paralyzingToxin.svg";
     }
+    if (effect.type === StatusEffectEnum.PreventEscape) {
+      src += "preventEscape.svg";
+    }
 
     return src;
   }

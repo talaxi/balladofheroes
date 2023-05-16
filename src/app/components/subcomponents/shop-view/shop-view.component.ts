@@ -76,7 +76,7 @@ export class ShopViewComponent implements OnInit {
   }
 
   getShopOptions() {
-    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData.traderHuntLevel);
+    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
@@ -123,6 +123,12 @@ export class ShopViewComponent implements OnInit {
       else
         this.dialog.open(content, { width: '75%', maxHeight: '75%' });
     }
+    else if (option.type === ShopTypeEnum.AugeanStables) {
+      if (this.deviceDetectorService.isMobile())
+        dialogRef = this.dialog.open(content, { width: '95%', minHeight: '60vh', height: '60%', id: "dialogNoPadding" });
+      else
+        dialogRef = this.dialog.open(content, { width: '75%', minHeight: '55vh', maxHeight: '55%', id: 'dialogNoPadding' });
+    }
     else {
       if (this.deviceDetectorService.isMobile())
         dialogRef = this.dialog.open(content, { width: '95%', height: '80%', id: "dialogNoPadding" });
@@ -138,6 +144,10 @@ export class ShopViewComponent implements OnInit {
     if (option.type === ShopTypeEnum.Jewelcrafter) {
       this.jewelcraftingService.handleShopOpen(this.activeSubzoneType);
       this.jewelcraftingService.checkForNewRecipes();
+    }
+    
+    if (option.type === ShopTypeEnum.AugeanStables) {     
+      this.isDisplayingNewItems = false;
     }
 
     if (option.type === ShopTypeEnum.Trader) {     
@@ -167,7 +177,7 @@ export class ShopViewComponent implements OnInit {
     }
 
     if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler || 
-      option.type === ShopTypeEnum.Trader) {        
+      option.type === ShopTypeEnum.Trader || option.type === ShopTypeEnum.AugeanStables) {        
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));
       this.newItems = option.availableItems.sort((a, b) => this.sortFunction(a, b)).filter(item => item.originalStore === this.activeSubzoneType);
 
@@ -342,9 +352,32 @@ export class ShopViewComponent implements OnInit {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.TraderIntro)) {
       scene = OptionalSceneEnum.TraderIntro;
     }
-    if (option.type === ShopTypeEnum.AugeanStables && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
-      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables)) {
-      scene = OptionalSceneEnum.AugeanStables;
+    if (option.type === ShopTypeEnum.AugeanStables && this.globalService.globalVar.sidequestData.augeanStablesLevel === 0 && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables1)) {
+      scene = OptionalSceneEnum.AugeanStables1;
+    }
+    if (option.type === ShopTypeEnum.AugeanStables && this.globalService.globalVar.sidequestData.augeanStablesLevel === 0 &&
+      this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables2)) {
+      scene = OptionalSceneEnum.AugeanStables2;
+    }
+    if (option.type === ShopTypeEnum.AugeanStables && this.globalService.globalVar.sidequestData.augeanStablesLevel === 1 && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables3)) {
+      scene = OptionalSceneEnum.AugeanStables3;
+    }
+    if (option.type === ShopTypeEnum.AugeanStables && this.globalService.globalVar.sidequestData.augeanStablesLevel === 1 &&
+      this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables4)) {
+      scene = OptionalSceneEnum.AugeanStables4;
+    }
+    if (option.type === ShopTypeEnum.AugeanStables && this.globalService.globalVar.sidequestData.augeanStablesLevel === 2 && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables5)) {
+      scene = OptionalSceneEnum.AugeanStables5;
+    }
+    if (option.type === ShopTypeEnum.AugeanStables && this.globalService.globalVar.sidequestData.augeanStablesLevel === 2 &&
+      this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteElis &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables6)) {
+      scene = OptionalSceneEnum.AugeanStables6;
     }
 
     return scene;

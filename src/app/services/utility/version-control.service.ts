@@ -386,6 +386,13 @@ export class VersionControlService {
             god.permanentAbilityUpgrades = [];
           });
 
+          this.globalService.globalVar.characters.forEach(character => {
+            character.trackedStats.healingDone = 0;
+            character.trackedStats.damagingHitsTaken = 0;
+            character.trackedStats.healsMade = 0;
+            character.trackedStats.criticalsDealt = 0;  
+          });
+          
           var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
           if (hades !== undefined) {
             var passive = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
@@ -399,6 +406,31 @@ export class VersionControlService {
             var ability2 = dionysusGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
             if (ability2 !== undefined) {
               ability2.targetEffect[0].effectiveness += .01;
+            }
+          }
+
+          var hurriedRetreat2 = this.balladService.findSubzone(SubZoneEnum.ColchisHurriedRetreat2);
+          if (hurriedRetreat2 !== undefined && hurriedRetreat2.isAvailable && hurriedRetreat2.victoryCount > 0) {
+            var labors = this.balladService.findBallad(BalladEnum.Labors);
+            var nemea = this.balladService.findZone(ZoneEnum.Nemea);
+            var cleonea = this.balladService.findSubzone(SubZoneEnum.NemeaCleonea);
+            var countryRoads = this.balladService.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo);
+
+            if (labors !== undefined) {
+              labors.isAvailable = true;
+              labors.notify = true;
+            }
+            if (nemea !== undefined) {
+              nemea.isAvailable = true;
+              nemea.notify = true;
+            }
+            if (cleonea !== undefined) {
+              cleonea.isAvailable = true;
+              cleonea.notify = true;
+            }
+            if (countryRoads !== undefined) {
+              countryRoads.isAvailable = true;
+              countryRoads.notify = true;
             }
           }
 
@@ -426,8 +458,14 @@ export class VersionControlService {
           this.globalService.globalVar.sidequestData.augeanStablesLevel = 0;
           this.globalService.globalVar.sidequestData.maxAugeanStablesLevel = 3;
 
+          var alchemy = this.globalService.globalVar.professions.find(type => type.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined && alchemy.upgrades.length > 0) {
+            alchemy.isDurationHalved = false;
+          }
+
           var jewelcrafting = this.globalService.globalVar.professions.find(type => type.type === ProfessionEnum.Jewelcrafting);
           if (jewelcrafting !== undefined && jewelcrafting.upgrades.length > 0) {
+            jewelcrafting.isDurationHalved = false;
             jewelcrafting.upgrades.forEach(upgrades => {
               if (upgrades.chanceTo2xItem > 0) {
                 upgrades.chanceForUpgrade = upgrades.chanceTo2xItem / 2;

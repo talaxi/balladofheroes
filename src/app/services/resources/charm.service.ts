@@ -590,11 +590,11 @@ export class CharmService {
   }
 
   getSmallCharmOfNemesisValue() {
-    return .01;
+    return .025;
   }
 
   getLargeCharmOfNemesisValue() {
-    return .03;
+    return .075;
   }  
 
   getSmallOrnateKantharosValue() {

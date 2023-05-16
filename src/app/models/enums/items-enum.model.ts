@@ -284,5 +284,20 @@ export enum ItemsEnum {
   PerfectDullAquamarine,
   PerfectDullTopaz,
   PerfectDullAmethyst,
-  PerfectDullEmerald
+  PerfectDullEmerald,
+  AugeanStables1,
+  AugeanStables2,
+  AugeanStables3,
+  RadiatingHolyStone,
+  RadiatingLightningStone,
+  RadiatingFireStone,
+  RadiatingWaterStone,
+  RadiatingAirStone,
+  RadiatingEarthStone,
+  PerfectRadiatingHolyStone,
+  PerfectRadiatingLightningStone,
+  PerfectRadiatingFireStone,
+  PerfectRadiatingWaterStone,
+  PerfectRadiatingAirStone,
+  PerfectRadiatingEarthStone
 }

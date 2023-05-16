@@ -224,7 +224,7 @@ export class BattleService {
       this.globalService.globalVar.altars.isUnlocked = true;
       this.globalService.globalVar.altars.altar1 = this.altarService.getTutorialAltar();
       this.globalService.globalVar.altars.showNewNotification = true;
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Altars,  undefined, undefined, true, subzone.type));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Altars, undefined, undefined, true, subzone.type));
     }
 
     if (subzone.type === SubZoneEnum.DodonaCountryside && subzone.victoryCount >= 1) {
@@ -281,7 +281,7 @@ export class BattleService {
     }
 
     if (subzone.type === SubZoneEnum.CalydonForestPassage && subzone.victoryCount === 10) {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ObscurredNotification,  undefined, undefined, true, subzone.type));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ObscurredNotification, undefined, undefined, true, subzone.type));
     }
   }
 
@@ -362,7 +362,7 @@ export class BattleService {
         !this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded) {
         treasureChestChance = 1;
         this.globalService.globalVar.freeTreasureChests.aigosthenaBayAwarded = true;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Equipment,  undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Equipment, undefined, undefined, true, subzone.type));
       }
 
       //auto gain healing herbs in aigosthena lower coast
@@ -399,7 +399,7 @@ export class BattleService {
         });
 
         if (showBattleItemTutorial)
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.BattleItems,  undefined, undefined, true, subzone.type));
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.BattleItems, undefined, undefined, true, subzone.type));
       }
     }
   }
@@ -564,7 +564,7 @@ export class BattleService {
 
     var flamingToxin = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FlamingToxin);
     if (flamingToxin !== undefined) {
-        elementalType = ElementalTypeEnum.Fire;
+      elementalType = ElementalTypeEnum.Fire;
     }
 
     var elementalText = "";
@@ -613,11 +613,18 @@ export class BattleService {
     this.handleuserEffects(isPartyAttacking, [], character, party, targets, damageDealt);
     this.handletargetEffects(isPartyAttacking, [], character, target, targets, party, damageDealt);
 
+    var reprisalThorns = 0;
+    if (target.overdriveInfo.isActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Reprisal) {      
+      reprisalThorns = this.utilityService.reprisalAmount;
+    }
+
     var thorns = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
-    if (thorns !== undefined || target.battleStats.thorns > 0 ||
+    if (thorns !== undefined || target.battleStats.thorns > 0 || reprisalThorns > 0 ||
       (!isPartyAttacking && (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisThorns) !== undefined ||
         this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareThorns) !== undefined))) {
       var thornsPercentDamage = damageDealt * target.battleStats.thorns;
+      thornsPercentDamage += damageDealt * reprisalThorns;
+      
       var thornsEffectiveness = 0;
       if (thorns !== undefined) {
         target.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.Thorns).forEach(thornEffect => {
@@ -865,6 +872,8 @@ export class BattleService {
     var damageDealt = 0;
     var elementalText = "";
     var elementalType = abilityCopy.elementalType;
+    var userEffects: StatusEffect[] = [];
+    var targetEffects: StatusEffect[] = [];
 
     this.handleConditionalAbilityChanges(abilityCopy, user, party);
 
@@ -930,6 +939,14 @@ export class BattleService {
     }
     else if (abilityCopy.heals) {
       var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + user.battleStats.healingDone);
+
+      if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
+        healAmount *= 1.5;
+
+      if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Harmony) {
+        targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10));
+      }
+
       var adjustedCriticalMultiplier = 1;
       var isCritical = this.isHealCritical(user);
       if (isCritical)
@@ -1010,9 +1027,18 @@ export class BattleService {
           }
         });
 
+        if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + ", healing any destroyed head back to full HP and regaining its immunity.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
+        }
+
         var mainHead = this.battle.currentEnemies.enemyList.find(item => item.bestiaryType === BestiaryEnum.LerneanHydra);
         if (mainHead !== undefined && !mainHead.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Invulnerable))
           mainHead.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Invulnerable, -1, 1, false, true, false));
+      }
+      else if (abilityCopy.name === "Ground" && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) { //Enceladus ability
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + ", preventing you from escaping the battle.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
       }
       else if (((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
         (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) &&
@@ -1047,8 +1073,6 @@ export class BattleService {
       user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
 
     //get copies instead of actually effects
-    var userEffects: StatusEffect[] = [];
-    var targetEffects: StatusEffect[] = [];
     if (abilityCopy.userEffect.length > 0) {
       abilityCopy.userEffect.forEach(effect => {
         userEffects.push(effect.makeCopy());
@@ -1059,6 +1083,29 @@ export class BattleService {
       abilityCopy.targetEffect.forEach(effect => {
         targetEffects.push(effect.makeCopy());
       });
+    }
+
+
+    if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation) {
+      var userBarrier = userEffects.find(item => item.type === StatusEffectEnum.Barrier);
+      var targetBarrier = targetEffects.find(item => item.type === StatusEffectEnum.Barrier);
+
+      if (userBarrier !== undefined)
+        userBarrier.effectiveness *= 1.5;
+
+      if (targetBarrier !== undefined)
+        targetBarrier.effectiveness *= 1.5;
+    }
+
+    if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Harmony) {
+      var userBarrier = userEffects.find(item => item.type === StatusEffectEnum.Barrier);
+      var targetBarrier = targetEffects.find(item => item.type === StatusEffectEnum.Barrier);
+
+      if (userBarrier !== undefined)
+        userEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10));
+
+      if (targetBarrier !== undefined)
+        targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10));
     }
 
     if (abilityCopy.name === "Revelry") {
@@ -1097,7 +1144,7 @@ export class BattleService {
     this.handleuserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy);
     this.handletargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, abilityCopy.targetsAllies, abilityCopy);
     this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets, undefined, abilityCopy.targetsAllies);
-    this.checkForEquipmentEffect(EffectTriggerEnum.ChanceOnAbilityUse, user, target, party, targets, undefined, abilityCopy.targetsAllies);    
+    this.checkForEquipmentEffect(EffectTriggerEnum.ChanceOnAbilityUse, user, target, party, targets, undefined, abilityCopy.targetsAllies);
 
     if (isPartyUsing)
       this.altarService.incrementAltarCount(AltarConditionEnum.AbilityUse);
@@ -1129,7 +1176,7 @@ export class BattleService {
     return true;
   }
 
-  checkForOnslaught(damageDealt: number, user: Character, target: Character, potentialTargets: Character[], ability: Ability, willAbilityRepeat: boolean = false) {    
+  checkForOnslaught(damageDealt: number, user: Character, target: Character, potentialTargets: Character[], ability: Ability, willAbilityRepeat: boolean = false) {
     var addDoTDamage = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Onslaught);
     if (addDoTDamage !== undefined && damageDealt > 0) {
       var onslaught = this.lookupService.characterHasAbility("Onslaught", user);
@@ -1141,14 +1188,14 @@ export class BattleService {
           DoT.isAoe = false;
 
           if (target !== undefined) {
-            this.applyStatusEffect(DoT, target, potentialTargets, user);            
+            this.applyStatusEffect(DoT, target, potentialTargets, user);
 
             if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) {
               var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + "'s " + ability.name + " also applies a damage over time effect from Onslaught.";
               this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
             }
 
-            var willAbilityRepeat = ability.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || willAbilityRepeat;            
+            var willAbilityRepeat = ability.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || willAbilityRepeat;
 
             return !willAbilityRepeat;
           }
@@ -1248,6 +1295,7 @@ export class BattleService {
 
           if (instantEffect.type === StatusEffectEnum.Barrier) {
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
+
             if (instantEffect.isAoe) {
               party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
                 if (partyMember.battleInfo.barrierValue < partyMember.battleStats.maxHp * instantEffect.threshold) {
@@ -2132,6 +2180,28 @@ export class BattleService {
       }
     }
 
+
+    target.trackedStats.damagingHitsTaken += 1;
+    if (target.trackedStats.damagingHitsTaken >= this.utilityService.overdriveHitsNeededToUnlockReprisal &&
+      !target.unlockedOverdrives.some(item => item === OverdriveNameEnum.Reprisal))
+      target.unlockedOverdrives.push(OverdriveNameEnum.Reprisal);
+
+    if (isCritical) {      
+      attacker.trackedStats.criticalsDealt += 1;
+
+      if (attacker.overdriveInfo.isActive && attacker.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Bullseye) {        
+        if (target.overdriveInfo.criticalDamageTaken.some(item => item[0] === attacker.type)) {          
+          target.overdriveInfo.criticalDamageTaken.find(item => item[0] === attacker.type)![1] += totalDamageDealt * .5;
+        }
+        else {          
+          target.overdriveInfo.criticalDamageTaken.push([attacker.type, totalDamageDealt * .5]);
+        }
+      }
+    }
+    if (attacker.trackedStats.criticalsDealt >= this.utilityService.overdriveCriticalsNeededToUnlockBullseye &&
+      !attacker.unlockedOverdrives.some(item => item === OverdriveNameEnum.Bullseye))
+      attacker.unlockedOverdrives.push(OverdriveNameEnum.Bullseye);
+
     if (target.trackedStats.damageTaken >= this.utilityService.overdriveDamageNeededToUnlockProtection &&
       !target.unlockedOverdrives.some(item => item === OverdriveNameEnum.Protection))
       target.unlockedOverdrives.push(OverdriveNameEnum.Protection);
@@ -2568,7 +2638,7 @@ export class BattleService {
     return areCharactersDefeated;
   }
 
-  handlePartyDefeat(party: Character[]) {    
+  handlePartyDefeat(party: Character[]) {
     if (this.globalService.globalVar.settings.get("autoProgressRemoveOnDeath"))
       this.globalService.globalVar.settings.set("autoProgress", false);
 
@@ -2746,7 +2816,7 @@ export class BattleService {
           var itemCopy = this.lookupService.makeResourceCopy(item);
           if (this.globalService.globalVar.gameLogSettings.get("battleItemsRewards")) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + itemCopy.amount + " " + (itemCopy.amount === 1 ? this.dictionaryService.getItemName(itemCopy.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(itemCopy.item))) + "</strong>.");
-          }          
+          }
 
           this.lookupService.addLootToLog(itemCopy.item, itemCopy.amount, subZone.type);
           if (itemCopy.item === ItemsEnum.FocusPotionRecipe) {
@@ -2755,16 +2825,15 @@ export class BattleService {
           else if (itemCopy.item === ItemsEnum.PotentConcoctionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.PotentConcoction);
           }
-          else if (itemCopy.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained <= 25) {            
+          else if (itemCopy.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained <= 25) {
             this.globalService.globalVar.sidequestData.goldenApplesObtained += item.amount;
             var difference = 0;
-            if (this.globalService.globalVar.sidequestData.goldenApplesObtained > 25)
-            {
+            if (this.globalService.globalVar.sidequestData.goldenApplesObtained > 25) {
               difference = this.globalService.globalVar.sidequestData.goldenApplesObtained - 25;
               this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
             }
             var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
-            if (alchemy !== undefined) {                          
+            if (alchemy !== undefined) {
               alchemy.maxLevel += item.amount - difference;
               this.addLootToResources(new ResourceValue(item.item, item.amount - difference));
             }
@@ -2946,10 +3015,10 @@ export class BattleService {
           });
 
           if (unlockedSubZone.type === SubZoneEnum.AigosthenaBay) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.NewSubzone,  undefined, undefined, true, subZone));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.NewSubzone, undefined, undefined, true, subZone));
           }
           if (unlockedSubZone.type === SubZoneEnum.AigosthenaLowerCoast) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView,  undefined, undefined, true, subZone));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.QuickView, undefined, undefined, true, subZone));
           }
         }
       });
@@ -3085,7 +3154,7 @@ export class BattleService {
       }
     }
 
-    if (this.battleItemInUse === ItemsEnum.HealingSalve || this.battleItemInUse === ItemsEnum.RestorativeSalve || 
+    if (this.battleItemInUse === ItemsEnum.HealingSalve || this.battleItemInUse === ItemsEnum.RestorativeSalve ||
       this.battleItemInUse === ItemsEnum.HoneySalve) {
       var itemUsed = false;
 
@@ -3118,7 +3187,7 @@ export class BattleService {
     }
 
     if (this.battleItemInUse === ItemsEnum.ThrowingStone || this.battleItemInUse === ItemsEnum.ExplodingPotion ||
-      this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone || 
+      this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone ||
       this.battleItemInUse === ItemsEnum.PotentConcoction || this.battleItemInUse === ItemsEnum.PiercingPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
@@ -3159,9 +3228,9 @@ export class BattleService {
           var elementalText = "";
           if (elementalType !== ElementalTypeEnum.None)
             elementalText = this.getElementalDamageText(elementalType);
-                
+
           if (effect.trueDamagePercent > 0)
-          effect.trueDamageAmount = effect.trueDamagePercent * member.battleStats.maxHp;
+            effect.trueDamageAmount = effect.trueDamagePercent * member.battleStats.maxHp;
 
           if (effect.maxThreshold > 0 && effect.trueDamageAmount > effect.maxThreshold)
             effect.trueDamageAmount = effect.maxThreshold;
@@ -3787,6 +3856,18 @@ export class BattleService {
         if (character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Protection) {
           this.gainHp(character, character.overdriveInfo.damageTaken / 2);
           character.overdriveInfo.damageTaken = 0;
+        }
+
+        if (character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Bullseye) {
+          this.battle.currentEnemies.enemyList.forEach(enemy => {
+            var bullseyeDamage = enemy.overdriveInfo.criticalDamageTaken.find(item => item[0] === character.type);
+            if (bullseyeDamage !== undefined) {
+              console.log("Apply bullseye to " + enemy.name);
+              this.applyStatusEffect(this.globalService.createDamageOverTimeEffect(5, 5, bullseyeDamage[1], "Bullseye", dotTypeEnum.TrueDamage), enemy);
+              enemy.overdriveInfo.criticalDamageTaken = enemy.overdriveInfo.criticalDamageTaken.filter(item => item[0] !== character.type);
+              //this.handletargetEffects(true, [], character, enemy, this.battle.currentEnemies.enemyList, [], 0);
+            }
+          });
         }
       }
     }

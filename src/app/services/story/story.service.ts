@@ -16,6 +16,9 @@ import { TutorialService } from '../global/tutorial.service';
 import { LookupService } from '../lookup.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { UtilityService } from '../utility/utility.service';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { DictionaryService } from '../utility/dictionary.service';
+import { ProfessionService } from '../professions/profession.service';
 
 @Injectable({
   providedIn: 'root'
@@ -34,7 +37,7 @@ export class StoryService {
   constructor(private globalService: GlobalService, private lookupService: LookupService, private balladService: BalladService,
     private utilityService: UtilityService, private tutorialService: TutorialService, private gameLogService: GameLogService,
     private resourceGeneratorService: ResourceGeneratorService, private achievementService: AchievementService,
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService, private dictionaryService: DictionaryService, private professionService: ProfessionService) { }
 
   checkForNewStoryScene() {
     if (this.globalService.globalVar.currentStoryId === 0)
@@ -764,6 +767,41 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>The man lets out a big sigh as he starts to walk towards the next box.</div>" +
         "<div>" + this.commonCharacterText("“You two look like you can handle yourselves. Do you think you could bring back my goods? If you can help me, I'd be more than happy to trade with you!”") + "</div>";
     }
+    if (scene === OptionalSceneEnum.AugeanStables1) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>While traveling through Elis, you decide to stop at the Augean Stables, location of Heracles's fifth trial. The demigod was tasked with cleaning the stables, home to divine immortal livestock. In Heracles's time, the stables had not been cleaned in 30 years. As you approach, you are thankful to see that the area has been kept clean since then.</div>" +
+        "<div>As you reach the stables, you notice two things. One, the animals here are some of the most beautiful you have ever seen. Each animal has an aura about them that looked truly divine and pristine. The second thing you notice was that the stables themselves were the opposite, looking almost as if they could collapse at any moment.</div>";      
+      if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>A man stood nearby, inspecting the stables. You hear him muttering to himself as you walk his direction.</div>" +
+        "<div class='sceneDiv'>" + this.commonCharacterText("“...could only get the door to latch, then...”") + " He says, puzzled by his current predicament.</div>" +
+        "<div class='sceneDiv'>" + this.thalesText("“Hi there.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
+        "<div>The thinking man ponders his situation for a further moment, then turns to you. " + this.commonCharacterText("“The livestock here have been taken care of since the time of King Phyleus. Money has flowed in to take care of the animals, but the stables themselves have fallen by the wayside… I'm trying to make do with what I have. If you have any resources I could use, you would have my thanks.”") + "</div>";
+    }
+    if (scene === OptionalSceneEnum.AugeanStables2) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix the door and keep the livestock separated.”") + "</div>";              
+    }
+    if (scene === OptionalSceneEnum.AugeanStables3) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You approach the stables once more, finding the man once again pondering its state. " + this.commonCharacterText("“...could cover this section, but there's just not enough for the whole barn...”") + "</div>" +
+        "<div class='sceneDiv'>" + this.thalesText("“Hi again.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
+        "<div>" + this.commonCharacterText("“Now that you mention it...”") + "</div>";
+    }
+    if (scene === OptionalSceneEnum.AugeanStables4) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix the roof and keep the rain off the livestock.”") + "</div>";              
+    }
+    if (scene === OptionalSceneEnum.AugeanStables5) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You approach the stables once more, finding the man once again pondering its state. " + this.commonCharacterText("“...could just secure these two walls, then...”") + "</div>" +
+        "<div class='sceneDiv'>" + this.thalesText("“Hi again.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
+        "<div>" + this.commonCharacterText("“Now that you mention it...”") + "</div>";
+    }
+    if (scene === OptionalSceneEnum.AugeanStables6) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix up the walls and keep the livestock out of the elements.") + "</div>" + 
+        "<div>" + this.commonCharacterText("“I think that will just about do it. You know, while I was working I stumbled upon this weird rock. I'm not quite sure what to do with it, but maybe you can make use of it?”") + "</div>";              
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -815,9 +853,27 @@ export class StoryService {
     }
     if (this.showOptionalStory === OptionalSceneEnum.Jewelcrafting) {
       this.pageCount = 2;
-    }
+    } 
     if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {
       this.pageCount = 3;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.AugeanStables1) {
+      this.pageCount = 2;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.AugeanStables2) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.AugeanStables3) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.AugeanStables4) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.AugeanStables5) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.AugeanStables6) {
+      this.pageCount = 1;
     }
 
     this.sceneText = this.getOptionalStoryText(this.showOptionalStory, this.currentPage);
@@ -849,6 +905,27 @@ export class StoryService {
       if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {
         this.globalService.globalVar.sidequestData.traderHuntLevel = 1;        
       }
+      if (this.showOptionalStory === OptionalSceneEnum.AugeanStables2) {
+        this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
+      }      
+      if (this.showOptionalStory === OptionalSceneEnum.AugeanStables4) {
+        this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
+      }      
+      if (this.showOptionalStory === OptionalSceneEnum.AugeanStables6) {
+        this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 5.");
+        
+        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RadiatingHolyStone, 1);
+        if (resource !== undefined) {
+          console.log("Gaining gem " + resource.item);
+          this.lookupService.gainResource(resource);
+        }
+
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.");        
+        this.professionService.learnRecipe(ProfessionEnum.Jewelcrafting, ItemsEnum.RadiatingHolyStone);        
+      }      
 
       this.currentPage = 1;
       this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);      

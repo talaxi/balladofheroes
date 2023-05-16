@@ -662,6 +662,7 @@ export class AltarService {
       this.globalService.globalVar.altars.additionalAltarEffects.push(altarEffect);
     }
     else {
+      //TODO: if existing altar effect is end of duration effect, move it to additional altar effects and set duration to 0
       if (altar === this.globalService.globalVar.altars.altar1)
         this.globalService.globalVar.altars.activeAltarEffect1 = altarEffect;
       if (altar === this.globalService.globalVar.altars.altar2)

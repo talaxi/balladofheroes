@@ -19,5 +19,6 @@ export enum TutorialTypeEnum {
   Jewelcrafting,
   Alchemy,
   ChthonicFavorUpgrade1,
-  ChthonicFavorUpgrade2
+  ChthonicFavorUpgrade2,
+  Overdrive
 }

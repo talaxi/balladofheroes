@@ -11,6 +11,7 @@ export class SidequestData {
     traderBestiaryType: BestiaryEnum;
     goldenApplesObtained: number;
     augeanStablesLevel: number;
+    displayAugeanStablesPayScene: boolean;
     maxAugeanStablesLevel: number;
 
     constructor() {       
@@ -25,6 +26,7 @@ export class SidequestData {
         this.traderHuntLevel = 0;
         this.goldenApplesObtained = 0;
         this.augeanStablesLevel = 0;
+        this.displayAugeanStablesPayScene = false;
         this.maxAugeanStablesLevel = 3;
     }
 }

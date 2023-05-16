@@ -231,7 +231,7 @@ export class ProfessionService {
       selectedProfession.isDurationHalved = true;
     }
 
-    if (recipe.steps.length > 0) {
+    if (recipe.steps.length > 0) {      
       selectedProfession.creationTimerLength = this.getActionLength(type, recipe.steps[0]) * this.getDurationReduction(type, selectedProfession.creatingRecipe.quality);
 
       if (selectedProfession.isDurationHalved)
