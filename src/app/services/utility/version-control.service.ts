@@ -20,6 +20,7 @@ import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 import { LookupService } from '../lookup.service';
 import { KeybindService } from './keybind.service';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -405,6 +406,10 @@ export class VersionControlService {
           this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
           this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
           this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);
+          this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", true);   
+          this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
+          this.globalService.globalVar.settings.set("loadingAccuracy", this.utilityService.averageLoadingAccuracy);
+          this.globalService.globalVar.settings.set("loadingTime", this.utilityService.averageActiveTimeLimit);
 
           this.globalService.globalVar.gameLogSettings.set("battleXpRewards", true);
           this.globalService.globalVar.gameLogSettings.set("battleCoinsRewards", true);
@@ -420,6 +425,21 @@ export class VersionControlService {
           this.globalService.globalVar.sidequestData.goldenApplesObtained = 0;          
           this.globalService.globalVar.sidequestData.augeanStablesLevel = 0;
           this.globalService.globalVar.sidequestData.maxAugeanStablesLevel = 3;
+
+          var jewelcrafting = this.globalService.globalVar.professions.find(type => type.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined && jewelcrafting.upgrades.length > 0) {
+            jewelcrafting.upgrades.forEach(upgrades => {
+              if (upgrades.chanceTo2xItem > 0) {
+                upgrades.chanceForUpgrade = upgrades.chanceTo2xItem / 2;
+                upgrades.chanceTo2xItem = 0;
+              }
+
+              if (upgrades.chanceTo5xItem > 0) {
+                upgrades.chanceToHalfDuration = upgrades.chanceTo5xItem * 2;
+                upgrades.chanceTo5xItem = 0;
+              }
+            });
+          }
 
           this.globalService.globalVar.optionalScenesViewed.forEach(optionalStory => {
             this.lookupService.addSideStoryToLog(optionalStory, undefined);

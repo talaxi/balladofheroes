@@ -272,5 +272,17 @@ export enum ItemsEnum {
   SmallGildedKantharos,
   SmallCrackedKantharos,
   SmallBlackKantharos,
-  PotentEssence
+  PotentEssence,
+  PerfectCrackedRuby,
+  PerfectCrackedOpal,
+  PerfectCrackedAquamarine,
+  PerfectCrackedTopaz,
+  PerfectCrackedAmethyst,
+  PerfectCrackedEmerald,
+  PerfectDullRuby,
+  PerfectDullOpal,
+  PerfectDullAquamarine,
+  PerfectDullTopaz,
+  PerfectDullAmethyst,
+  PerfectDullEmerald
 }

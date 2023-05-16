@@ -13,6 +13,7 @@ export class AutoProgressOptionsComponent {
   pauseStory: boolean;
   completionStatusEnum = CompletionStatusEnum;
   includeAllAchievements: boolean;
+  removeAutoProgressOnDeath: boolean;
 
   constructor(private globalService: GlobalService) {
 
@@ -22,7 +23,8 @@ export class AutoProgressOptionsComponent {
     this.autoProgressType = this.globalService.globalVar.settings.get("autoProgressType") ?? CompletionStatusEnum.Cleared;
     this.includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
     this.pauseStory = this.globalService.globalVar.settings.get("autoProgressPauseStory") ?? false;
-    this.includeAllAchievements = !this.globalService.globalVar.settings.get("autoProgressIncludeAllAchievements") ?? true;    
+    this.includeAllAchievements = !this.globalService.globalVar.settings.get("autoProgressIncludeAllAchievements") ?? true;   
+    this.removeAutoProgressOnDeath = this.globalService.globalVar.settings.get("autoProgressRemoveOnDeath") ?? true;    
   }
 
   autoProgressTypeToggle() {
@@ -39,5 +41,9 @@ export class AutoProgressOptionsComponent {
 
   includeAllAchievementsToggle() {
     this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", !this.includeAllAchievements);
+  }
+
+  removeAutoProgressOnDeathToggle() {
+    this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", this.removeAutoProgressOnDeath);
   }
 }

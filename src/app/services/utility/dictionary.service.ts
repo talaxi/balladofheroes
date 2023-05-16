@@ -419,6 +419,30 @@ export class DictionaryService {
       name = "Radiating Gemstone";
       else if (type === ItemsEnum.WhiteHorn)
       name = "White Horn";
+      else if (type === ItemsEnum.PerfectCrackedRuby)
+      name = "Perfect Cracked Ruby";
+    else if (type === ItemsEnum.PerfectCrackedAmethyst)
+      name = "Perfect Cracked Amethyst";
+    else if (type === ItemsEnum.PerfectCrackedTopaz)
+      name = "Perfect Cracked Topaz";
+    else if (type === ItemsEnum.PerfectCrackedOpal)
+      name = "Perfect Cracked Opal";
+    else if (type === ItemsEnum.PerfectCrackedAquamarine)
+      name = "Perfect Cracked Aquamarine";
+    else if (type === ItemsEnum.PerfectCrackedEmerald)
+      name = "Perfect Cracked Emerald";
+      else if (type === ItemsEnum.PerfectDullRuby)
+      name = "Perfect Dull Ruby";
+    else if (type === ItemsEnum.PerfectDullAmethyst)
+      name = "Perfect Dull Amethyst";
+    else if (type === ItemsEnum.PerfectDullTopaz)
+      name = "Perfect Dull Topaz";
+    else if (type === ItemsEnum.PerfectDullOpal)
+      name = "Perfect Dull Opal";
+    else if (type === ItemsEnum.PerfectDullAquamarine)
+      name = "Perfect Dull Aquamarine";
+    else if (type === ItemsEnum.PerfectDullEmerald)
+      name = "Perfect Dull Emerald";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)

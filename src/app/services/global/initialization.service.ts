@@ -37,6 +37,7 @@ import { GlobalService } from './global.service';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
+import { UtilityService } from '../utility/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -45,7 +46,8 @@ export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
     private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService, private keybindService: KeybindService,
-    private altarService: AltarService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService) { }
+    private altarService: AltarService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService,
+    private utilityService: UtilityService) { }
 
   initializeVariables() {
     this.globalService.globalVar.startingVersion = this.globalService.getCurrentVersion();
@@ -230,6 +232,9 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
     this.globalService.globalVar.settings.set("showEnemyHpAsPercent", false);
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", false);
+    this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
+    this.globalService.globalVar.settings.set("loadingAccuracy", this.utilityService.averageLoadingAccuracy);
+    this.globalService.globalVar.settings.set("loadingTime", this.utilityService.lowActiveTimeLimit);
 
     this.globalService.globalVar.settings.set("displayQuickViewOverview", true);
     if (this.deviceDetectorService.isMobile())
@@ -265,6 +270,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
     this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
     this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);    
+    this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", true);    
   }
 
   initializeGameLogSettings() {

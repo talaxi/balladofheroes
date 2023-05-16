@@ -10,6 +10,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-professions-view',
@@ -27,7 +28,8 @@ export class ProfessionsViewComponent {
   isMobile: boolean = false;
 
   constructor(private lookupService: LookupService, private menuService: MenuService, private globalService: GlobalService,
-    private gameLoopService: GameLoopService, private professionService: ProfessionService, private deviceDetectorService: DeviceDetectorService) {
+    private gameLoopService: GameLoopService, private professionService: ProfessionService, private deviceDetectorService: DeviceDetectorService,
+    private utilityService: UtilityService) {
 
   }
 
@@ -100,6 +102,12 @@ export class ProfessionsViewComponent {
     }
     if (upgrade.durationReduction > 0) {
       description += "<span class='smallCaps " + professionText + " bold'>crafting duration reduction:</span> " + Math.round(upgrade.durationReduction * 100) + "%<br/>";
+    }
+    if (upgrade.chanceToHalfDuration > 0) {
+      description += "<span class='smallCaps " + professionText + " bold'>chance to craft 2x as fast:</span> " + Math.round(upgrade.chanceToHalfDuration * 100) + "%<br/>";
+    }
+    if (upgrade.chanceForUpgrade > 0) {
+      description += "<span class='smallCaps " + professionText + " bold'>gem upgrade chance:</span> " + this.utilityService.genericRound(upgrade.chanceForUpgrade * 100) + "%<br/>";
     }
 
     if (description === "")

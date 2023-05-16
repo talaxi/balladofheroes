@@ -20,7 +20,11 @@
             <br/>
             <mat-checkbox customToolTip [contentTemplate]="onlyIncludeVictoryCountPopover" [(ngModel)]="includeAllAchievements" (input)="includeAllAchievementsToggle()">
                 Only Include Victory Count Achievements
-            </mat-checkbox>            
+            </mat-checkbox>    
+            <br/>
+            <mat-checkbox customToolTip [contentTemplate]="removeAutoProgressOnDeathPopover" [(ngModel)]="removeAutoProgressOnDeath" (input)="removeAutoProgressOnDeathToggle()">
+                Remove Auto Progress On Death
+            </mat-checkbox>          
         </div>
     </div>
 </div>
@@ -47,5 +51,11 @@
 <ng-template #onlyIncludeVictoryCountPopover>
     <div>
         When clearing to Complete, check this to only consider achievements related to victory count. Unchecking this will include repeating subzones until all achievements, such as 10 second clear time for bosses, are completed.
+    </div>
+</ng-template>
+
+<ng-template #removeAutoProgressOnDeathPopover>
+    <div>
+        When you die, turn auto progress off so that you heal in town.
     </div>
 </ng-template>

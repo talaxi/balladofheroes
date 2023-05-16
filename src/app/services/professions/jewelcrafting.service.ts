@@ -188,16 +188,22 @@ export class JewelcraftingService {
       return;
 
     var upgrades: ProfessionUpgrades | undefined = undefined;
-    var additionalChanceTo2x = .05;
-    var additionalChanceTo5x = .025;
+    var additionalChanceToUpgrade = .025;
+    var additionalChanceToHalfDuration = .05;
     var additionalChanceToRetainMaterials = .05;
     var additionalDurationReduction = .04;
 
-    if (jewelcrafting.level <= 25)
-      upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);
-    else if (jewelcrafting.level <= 50)
-      upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+    var qualityName = "";
 
+    if (jewelcrafting.level <= 25)
+     {
+      upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);
+      qualityName = "Basic";
+     }
+    else if (jewelcrafting.level <= 50) {
+      upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+      qualityName = "Uncommon";
+    }
 
     if (upgrades === undefined)
       return;
@@ -205,10 +211,10 @@ export class JewelcraftingService {
     if (jewelcrafting.level % 25 === 3 || jewelcrafting.level % 25 === 6 ||
       jewelcrafting.level % 25 === 11 || jewelcrafting.level % 25 === 14 ||
       jewelcrafting.level % 25 === 16 || jewelcrafting.level % 25 === 23) {
-      upgrades.chanceTo2xItem += additionalChanceTo2x;
+      upgrades.chanceForUpgrade += additionalChanceToUpgrade;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making a Basic quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToUpgrade * 100) + "%</strong> chance to to gain an upgraded gem when making a " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
@@ -219,7 +225,7 @@ export class JewelcraftingService {
       upgrades.durationReduction += additionalDurationReduction;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "The time it takes to create a Basic quality Jewelcrafting Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
+        var gameLogEntry = "The time it takes to create a " + qualityName + " quality Jewelcrafting Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
@@ -230,16 +236,16 @@ export class JewelcraftingService {
       upgrades.chanceToRetainMaterials += additionalChanceToRetainMaterials;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a Basic quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
 
     if (jewelcrafting.level % 25 === 18 || jewelcrafting.level % 25 === 0) {
-      upgrades.chanceTo5xItem += additionalChanceTo5x;
+      upgrades.chanceToHalfDuration += additionalChanceToHalfDuration;      
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making a Basic quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToHalfDuration * 100) + "%</strong> chance to reduce crafting time by half when making a " + qualityName + " quality Jewelcrafting recipe.";        
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
@@ -453,5 +459,61 @@ export class JewelcraftingService {
     }
 
     return recipe;
-  }   
+  } 
+  
+  getUpgradedItem(item: ItemsEnum) {
+    var upgradedItem = item;
+
+    if (item === ItemsEnum.CrackedRuby)
+    {
+      upgradedItem = ItemsEnum.PerfectCrackedRuby;
+    }
+    if (item === ItemsEnum.CrackedEmerald)
+    {
+      upgradedItem = ItemsEnum.PerfectCrackedEmerald;
+    }
+    if (item === ItemsEnum.CrackedAmethyst)
+    {
+      upgradedItem = ItemsEnum.PerfectCrackedAmethyst;
+    }
+    if (item === ItemsEnum.CrackedTopaz)
+    {
+      upgradedItem = ItemsEnum.PerfectCrackedTopaz;
+    }
+    if (item === ItemsEnum.CrackedOpal)
+    {
+      upgradedItem = ItemsEnum.PerfectCrackedOpal;
+    }
+    if (item === ItemsEnum.CrackedAquamarine)
+    {
+      upgradedItem = ItemsEnum.PerfectCrackedAquamarine;
+    }
+
+    if (item === ItemsEnum.DullRuby)
+    {
+      upgradedItem = ItemsEnum.PerfectDullRuby;
+    }
+    if (item === ItemsEnum.DullEmerald)
+    {
+      upgradedItem = ItemsEnum.PerfectDullEmerald;
+    }
+    if (item === ItemsEnum.DullAmethyst)
+    {
+      upgradedItem = ItemsEnum.PerfectDullAmethyst;
+    }
+    if (item === ItemsEnum.DullTopaz)
+    {
+      upgradedItem = ItemsEnum.PerfectDullTopaz;
+    }
+    if (item === ItemsEnum.DullOpal)
+    {
+      upgradedItem = ItemsEnum.PerfectDullOpal;
+    }
+    if (item === ItemsEnum.DullAquamarine)
+    {
+      upgradedItem = ItemsEnum.PerfectDullAquamarine;
+    }
+
+    return upgradedItem;
+  }
 }

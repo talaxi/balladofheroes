@@ -2111,8 +2111,8 @@ export class BattleService {
         dispenserOfDuesEffect.effectiveness += Math.round(totalDamageDealt * dispenserOfDues.effectiveness);
 
         //todo: is this what I want to do here?
-        if (dispenserOfDuesEffect.effectiveness > target.battleStats.maxHp * 10)
-          dispenserOfDuesEffect.effectiveness = target.battleStats.maxHp * 10;
+        if (dispenserOfDuesEffect.effectiveness > target.battleStats.maxHp * 3)
+          dispenserOfDuesEffect.effectiveness = target.battleStats.maxHp * 3;
       }
     }
 
@@ -2568,8 +2568,9 @@ export class BattleService {
     return areCharactersDefeated;
   }
 
-  handlePartyDefeat(party: Character[]) {
-    this.globalService.globalVar.settings.set("autoProgress", false);
+  handlePartyDefeat(party: Character[]) {    
+    if (this.globalService.globalVar.settings.get("autoProgressRemoveOnDeath"))
+      this.globalService.globalVar.settings.set("autoProgress", false);
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.zones !== undefined && ballad.zones.length > 0)

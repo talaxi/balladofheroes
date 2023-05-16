@@ -416,6 +416,15 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 1000;
 
+      var ground = new Ability();
+      ground.name = "Ground";
+      ground.isAvailable = true;
+      ground.cooldown = ground.currentCooldown = 4;      
+      ground.dealsDirectDamage = false;      
+      ground.isAoe = true;
+      ground.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PreventEscape, -1, 1, false, false, true));
+      enemy.abilityList.push(ground);
+
       var smash = new Ability();
       smash.name = "Smash";
       smash.isAvailable = true;
@@ -428,11 +437,20 @@ export class EnemyGeneratorService {
       var wallop = new Ability();
       wallop.name = "Wallop";
       wallop.isAvailable = true;
-      wallop.cooldown = wallop.currentCooldown = 7;      
+      wallop.cooldown = wallop.currentCooldown = 7.8;      
       wallop.dealsDirectDamage = true;
       wallop.effectiveness = 10.5;
       wallop.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .4, false, false));
       enemy.abilityList.push(wallop);
+      
+      var quitPlayingAround = new Ability();
+      quitPlayingAround.name = "Quit Playing Around";
+      quitPlayingAround.isAvailable = true;
+      quitPlayingAround.cooldown = quitPlayingAround.currentCooldown = 60;      
+      quitPlayingAround.dealsDirectDamage = true;
+      quitPlayingAround.effectiveness = 1000;
+      quitPlayingAround.isAoe = true;      
+      enemy.abilityList.push(quitPlayingAround);
 
       var nap = new Ability();
       nap.name = "Nap";

@@ -60,6 +60,37 @@
                     Options</button>
             </div>
         </div>
+        <div>
+            <span class="s4Heading smallCaps bold">Advanced Settings</span>
+            <div>
+                <span class="smallCaps bold">Frames Per Second</span>
+                <br />
+                <mat-button-toggle-group [(ngModel)]="fps" aria-label="Fps" (change)="setFps()">                    
+                    <mat-button-toggle customToolTip [contentTemplate]="lowFpsPopover" [value]="utilityService.lowFps">Low</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="averageFpsPopover" [value]="utilityService.averageFps">Average</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="highFpsPopover" [value]="utilityService.highFps">High</mat-button-toggle>                    
+                </mat-button-toggle-group>
+            </div>            
+            <div>
+                <span class="smallCaps bold">Offline Loading Time</span>
+                <br />
+                <mat-button-toggle-group [(ngModel)]="loadingTime" aria-label="Offline Loading Time" (change)="setLoadingTime()">                    
+                    <mat-button-toggle customToolTip [contentTemplate]="lowLoadingTimePopover" [value]="utilityService.lowActiveTimeLimit">Low</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="averageLoadingTimePopover" [value]="utilityService.averageActiveTimeLimit">Average</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="highLoadingTimePopover" [value]="utilityService.highActiveTimeLimit">High</mat-button-toggle>    
+                    <mat-button-toggle customToolTip [contentTemplate]="veryHighLoadingTimePopover" [value]="utilityService.veryHighActiveTimeLimit">Very High</mat-button-toggle>                  
+                </mat-button-toggle-group>
+            </div>
+            <div>
+                <span class="smallCaps bold">Loading Accuracy</span>
+                <br />
+                <mat-button-toggle-group [(ngModel)]="loadingAccuracy" aria-label="Loading Accuracy" (change)="setLoadingAccuracy()">                    
+                    <mat-button-toggle customToolTip [contentTemplate]="lowLoadingAccuracyPopover" [value]="utilityService.lowLoadingAccuracy">Low</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="averageLoadingAccuracyPopover" [value]="utilityService.averageLoadingAccuracy">Average</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="highLoadingAccuracyPopover" [value]="utilityService.highLoadingAccuracy">High</mat-button-toggle>                    
+                </mat-button-toggle-group>
+            </div>
+        </div>
     </div>
     <div class="saveLoad">
         <span class="s4Heading smallCaps bold">Save/Load</span>
@@ -134,6 +165,66 @@
 <ng-template #storyStylePausePopover>
     <div>
         Pause story scenes when they come up. To advance, press the continue button.
+    </div>
+</ng-template>
+
+<ng-template #lowFpsPopover>
+    <div>
+        Run the game at 15 FPS.
+    </div>
+</ng-template>
+
+<ng-template #averageFpsPopover>
+    <div>
+        Run the game at 30 FPS.
+    </div>
+</ng-template>
+
+<ng-template #highFpsPopover>
+    <div>
+        Run the game at 60 FPS.
+    </div>
+</ng-template>
+
+<ng-template #lowLoadingTimePopover>
+    <div>
+        Automate the game for up to 30 minutes of away time before starting to bank double speed time.
+    </div>
+</ng-template>
+
+<ng-template #averageLoadingTimePopover>
+    <div>
+        Automate the game for up to 60 minutes of away time before starting to bank double speed time.
+    </div>
+</ng-template>
+
+<ng-template #highLoadingTimePopover>
+    <div>
+        Automate the game for up to 120 minutes of away time before starting to bank double speed time.
+    </div>
+</ng-template>
+
+<ng-template #veryHighLoadingTimePopover>
+    <div>
+        Automate the game for up to 240 minutes of away time before starting to bank double speed time.
+    </div>
+</ng-template>
+
+<ng-template #lowLoadingAccuracyPopover>
+    <div>
+        Run the game in 10 second batches during offline time. This will reduce loading speed but also reduce accuracy.
+    </div>
+</ng-template>
+
+<ng-template #averageLoadingAccuracyPopover>
+    <div>
+        Run the game in 5 second batches during offline time.
+    </div>
+</ng-template>
+
+<ng-template #highLoadingAccuracyPopover>
+    <div>
+        Run the game in 2 second batches during offline time. This will increase loading speed but also increase accuracy.
     </div>
 </ng-template>
 

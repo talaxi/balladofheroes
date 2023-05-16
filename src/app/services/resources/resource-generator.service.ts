@@ -584,6 +584,42 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.LargeCharmOfVulnerability) {
       return new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, amount);
     }
+    if (type === ItemsEnum.PerfectCrackedRuby) {
+      return new ResourceValue(ItemsEnum.PerfectCrackedRuby, amount);
+    }
+    if (type === ItemsEnum.PerfectCrackedEmerald) {
+      return new ResourceValue(ItemsEnum.PerfectCrackedEmerald, amount);
+    }
+    if (type === ItemsEnum.PerfectCrackedAquamarine) {
+      return new ResourceValue(ItemsEnum.PerfectCrackedAquamarine, amount);
+    }
+    if (type === ItemsEnum.PerfectCrackedTopaz) {
+      return new ResourceValue(ItemsEnum.PerfectCrackedTopaz, amount);
+    }
+    if (type === ItemsEnum.PerfectCrackedOpal) {
+      return new ResourceValue(ItemsEnum.PerfectCrackedOpal, amount);
+    }
+    if (type === ItemsEnum.PerfectCrackedAmethyst) {
+      return new ResourceValue(ItemsEnum.PerfectCrackedAmethyst, amount);
+    }
+    if (type === ItemsEnum.PerfectDullRuby) {
+      return new ResourceValue(ItemsEnum.PerfectDullRuby, amount);
+    }
+    if (type === ItemsEnum.PerfectDullEmerald) {
+      return new ResourceValue(ItemsEnum.PerfectDullEmerald, amount);
+    }
+    if (type === ItemsEnum.PerfectDullAquamarine) {
+      return new ResourceValue(ItemsEnum.PerfectDullAquamarine, amount);
+    }
+    if (type === ItemsEnum.PerfectDullTopaz) {
+      return new ResourceValue(ItemsEnum.PerfectDullTopaz, amount);
+    }
+    if (type === ItemsEnum.PerfectDullOpal) {
+      return new ResourceValue(ItemsEnum.PerfectDullOpal, amount);
+    }
+    if (type === ItemsEnum.PerfectDullAmethyst) {
+      return new ResourceValue(ItemsEnum.PerfectDullAmethyst, amount);
+    }
 
     //other
     if (type === ItemsEnum.SparringMatch) {
@@ -651,6 +687,26 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
+    var basePerfectCrackedStatValue = 25;
+    if (item === ItemsEnum.PerfectCrackedOpal) {
+      return new CharacterStats(0, basePerfectCrackedStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectCrackedRuby) {
+      return new CharacterStats(0, 0, 0, 0, basePerfectCrackedStatValue, 0);
+    }
+    if (item === ItemsEnum.PerfectCrackedAquamarine) {
+      return new CharacterStats(0, 0, 0, basePerfectCrackedStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectCrackedEmerald) {
+      return new CharacterStats(0, 0, basePerfectCrackedStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectCrackedAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, basePerfectCrackedStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.PerfectCrackedTopaz) {
+      return new CharacterStats(basePerfectCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
     var baseDullStatValue = 40;
     if (item === ItemsEnum.DullOpal) {
       return new CharacterStats(0, baseDullStatValue, 0, 0, 0, 0);
@@ -669,6 +725,26 @@ export class ResourceGeneratorService {
     }
     if (item === ItemsEnum.DullTopaz) {
       return new CharacterStats(baseDullStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var basePerfectDullStatValue = 50;
+    if (item === ItemsEnum.PerfectDullOpal) {
+      return new CharacterStats(0, basePerfectDullStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectDullRuby) {
+      return new CharacterStats(0, 0, 0, 0, basePerfectDullStatValue, 0);
+    }
+    if (item === ItemsEnum.PerfectDullAquamarine) {
+      return new CharacterStats(0, 0, 0, basePerfectDullStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectDullEmerald) {
+      return new CharacterStats(0, 0, basePerfectDullStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectDullAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, basePerfectDullStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.PerfectDullTopaz) {
+      return new CharacterStats(basePerfectDullStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);

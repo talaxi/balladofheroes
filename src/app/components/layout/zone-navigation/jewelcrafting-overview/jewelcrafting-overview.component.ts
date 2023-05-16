@@ -54,7 +54,11 @@ export class JewelcraftingOverviewComponent {
       var passedTime = 0;
   
       for (var i = 0; i < this.jewelcrafting.creatingRecipe.steps.length; i++) {
-        var actionLength = this.jewelcraftingService.getActionLength(this.jewelcrafting.creatingRecipe.steps[i]) * this.professionService.getDurationReduction(this.jewelcrafting.type, this.jewelcrafting.creatingRecipe.quality);
+        var durationHalved = 1;
+        if (this.jewelcrafting.isDurationHalved)
+          durationHalved = .5;
+
+        var actionLength = this.jewelcraftingService.getActionLength(this.jewelcrafting.creatingRecipe.steps[i]) * durationHalved * this.professionService.getDurationReduction(this.jewelcrafting.type, this.jewelcrafting.creatingRecipe.quality);
         totalLength += actionLength;
   
         if (this.jewelcrafting.creationStep > i + 1) {
@@ -80,8 +84,11 @@ export class JewelcraftingOverviewComponent {
       var timeRemaining = this.jewelcrafting.creationTimerLength - this.jewelcrafting.creationTimer;
   
       for (var i = this.jewelcrafting.creationStep + 1; i <= this.jewelcrafting.creatingRecipe.numberOfSteps; i++) {
-        var step = this.jewelcrafting.creatingRecipe.steps[i - 1];
-        timeRemaining += this.jewelcraftingService.getActionLength(step) * this.professionService.getDurationReduction(this.jewelcrafting.type, this.jewelcrafting.creatingRecipe.quality);
+        var step = this.jewelcrafting.creatingRecipe.steps[i - 1];        
+        var durationHalved = 1;
+        if (this.jewelcrafting.isDurationHalved)
+          durationHalved = .5;
+        timeRemaining += this.jewelcraftingService.getActionLength(step) * durationHalved * this.professionService.getDurationReduction(this.jewelcrafting.type, this.jewelcrafting.creatingRecipe.quality);
       }
   
       if (timeRemaining > 60 * 60)

@@ -815,7 +815,7 @@ export class GlobalService {
       || type === StatusEffectEnum.AirDamageTakenUp || type === StatusEffectEnum.HolyDamageTakenUp || type === StatusEffectEnum.LightningDamageTakenUp || type === StatusEffectEnum.WaterDamageTakenUp || type === StatusEffectEnum.EarthDamageTakenDown || type === StatusEffectEnum.FireDamageTakenDown
       || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp ||
-      type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp)
+      type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape)
       refreshes = true;
 
     return refreshes;

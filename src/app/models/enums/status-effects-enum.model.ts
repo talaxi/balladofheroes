@@ -125,5 +125,6 @@ export enum StatusEffectEnum {
     ArmorPenetrationDown,
     FlamingToxin,
     ParalyzingToxin,
-    ElixirOfSpeed
+    ElixirOfSpeed,
+    PreventEscape
   }

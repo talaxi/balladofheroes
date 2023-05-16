@@ -14,6 +14,7 @@ import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.mo
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 
 @Component({
   selector: 'app-main-overview',
@@ -141,6 +142,10 @@ export class MainOverviewComponent {
 
     this.globalService.globalVar.settings.set("autoProgress", false);
   }*/
+
+  isSubZoneChangingDisabled() {
+    return this.globalService.getActivePartyCharacters(true).some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.PreventEscape));
+  }
 
   jumpToPalaceOfHades() {
     var startingPoint = this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades);

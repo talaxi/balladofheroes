@@ -11,6 +11,7 @@ import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { FollowerData } from 'src/app/models/followers/follower-data.model';
@@ -199,6 +200,10 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.isMobile) {
       this.dialog.closeAll();
     }
+  }
+  
+  isSubZoneChangingDisabled() {
+    return this.globalService.getActivePartyCharacters(true).some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.PreventEscape));
   }
 
   jumpToPalaceOfHades() {

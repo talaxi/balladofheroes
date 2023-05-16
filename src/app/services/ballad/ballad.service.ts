@@ -359,7 +359,7 @@ export class BalladService {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-    if (this.isSubzoneTown(subzone.type)) {
+    if (this.isSubzoneTown(subzone.type)) {      
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
 

@@ -10,8 +10,21 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
 })
 export class UtilityService {
   //glossary
-  public activeTimeLimit = 1 * 30 * 60;
-  public extraSpeedTimeLimit = 8 * 60 * 60;
+  public lowActiveTimeLimit = 1 * 30 * 60;
+  public averageActiveTimeLimit = 1 * 60 * 60;
+  public highActiveTimeLimit = 2 * 60 * 60;
+  public veryHighActiveTimeLimit = 4 * 60 * 60;
+
+  public extraSpeedTimeLimit = 12 * 60 * 60;
+  public patronExtraSpeedTimeLimit = 24 * 60 * 60;
+
+  public lowFps = 16;
+  public averageFps = 32;
+  public highFps = 64;
+
+  public lowLoadingAccuracy = 10;
+  public averageLoadingAccuracy = 5;
+  public highLoadingAccuracy = 2;
 
   public quickAutoAttackSpeed = 6;
   public averageAutoAttackSpeed = 8;

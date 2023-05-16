@@ -34,7 +34,7 @@
                             <div *ngFor="let zone of availableZones">
                                 <div *ngIf="!zone.isSelected">
                                     <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
-                                        [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)">{{zone.zoneName}}
+                                        [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)" [disabled]="isSubZoneChangingDisabled()">{{zone.zoneName}}
                                         <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                                     </button>
                                 </div>
@@ -88,7 +88,7 @@
                             <div *ngIf="!subzone.isSelected">
                                 <span class="subzoneSpacer">&#8618;</span><span><button
                                         class="buttonAsTextKeepColor z3Heading clickableText"
-                                        [ngClass]="getSubzoneClass(subzone)"
+                                        [ngClass]="getSubzoneClass(subzone)" [disabled]="isSubZoneChangingDisabled()"
                                         (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
                                         getSubzoneName(subzone)}}
                                         {{getSubZoneSubText(subzone)}}
@@ -164,13 +164,13 @@
                 <div *ngIf="townsAvailable" class="quickJump centeredText">
                     <span>Jump to..</span>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
+                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"  [disabled]="isSubZoneChangingDisabled()"
                         (click)="jumpToLatestShop()">Latest Town</button>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()"
+                    <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()" [disabled]="isSubZoneChangingDisabled()"
                         (click)="jumpToPalaceOfHades()">Palace of Hades</button>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()"
+                    <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()" [disabled]="isSubZoneChangingDisabled()"
                         (click)="jumpToColiseum()">Coliseum</button>
                 </div>
                 <div class="peekResources centeredText">

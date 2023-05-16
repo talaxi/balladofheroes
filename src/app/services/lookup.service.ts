@@ -241,13 +241,16 @@ export class LookupService {
     if (type === ItemsEnum.CrackedRuby || type === ItemsEnum.CrackedTopaz || type === ItemsEnum.CrackedOpal ||
       type === ItemsEnum.CrackedAmethyst || type === ItemsEnum.CrackedEmerald || type === ItemsEnum.CrackedAquamarine ||
       type === ItemsEnum.LesserCrackedRuby || type === ItemsEnum.LesserCrackedTopaz || type === ItemsEnum.LesserCrackedOpal ||
-      type === ItemsEnum.LesserCrackedAmethyst || type === ItemsEnum.LesserCrackedEmerald || type === ItemsEnum.LesserCrackedAquamarine)
+      type === ItemsEnum.LesserCrackedAmethyst || type === ItemsEnum.LesserCrackedEmerald || type === ItemsEnum.LesserCrackedAquamarine ||
+      type === ItemsEnum.PerfectCrackedRuby || type === ItemsEnum.PerfectCrackedTopaz || type === ItemsEnum.PerfectCrackedOpal ||
+      type === ItemsEnum.PerfectCrackedAmethyst || type === ItemsEnum.PerfectCrackedEmerald || type === ItemsEnum.PerfectCrackedAquamarine)
       return EquipmentQualityEnum.Basic;
 
     if (type === ItemsEnum.DullRuby || type === ItemsEnum.DullTopaz || type === ItemsEnum.DullOpal || type === ItemsEnum.DullAmethyst ||
       type === ItemsEnum.DullEmerald || type === ItemsEnum.DullAquamarine || type === ItemsEnum.MinorWeaponSlotAddition ||
       type === ItemsEnum.MinorRingSlotAddition || type === ItemsEnum.MinorShieldSlotAddition || type === ItemsEnum.MinorArmorSlotAddition ||
-      type === ItemsEnum.MinorNecklaceSlotAddition)
+      type === ItemsEnum.MinorNecklaceSlotAddition || type === ItemsEnum.PerfectDullRuby || type === ItemsEnum.PerfectDullTopaz || type === ItemsEnum.PerfectDullOpal || type === ItemsEnum.PerfectDullAmethyst ||
+      type === ItemsEnum.PerfectDullEmerald || type === ItemsEnum.PerfectDullAquamarine)
       return EquipmentQualityEnum.Uncommon;
 
     return EquipmentQualityEnum.Basic;
@@ -306,7 +309,10 @@ export class LookupService {
       type === ItemsEnum.DullRuby || type === ItemsEnum.DullTopaz || type === ItemsEnum.DullOpal || type === ItemsEnum.DullAmethyst ||
       type === ItemsEnum.DullEmerald || type === ItemsEnum.DullAquamarine || type === ItemsEnum.MinorWeaponSlotAddition ||
       type === ItemsEnum.MinorRingSlotAddition || type === ItemsEnum.MinorShieldSlotAddition || type === ItemsEnum.MinorArmorSlotAddition ||
-      type === ItemsEnum.MinorNecklaceSlotAddition)
+      type === ItemsEnum.MinorNecklaceSlotAddition || type === ItemsEnum.PerfectCrackedRuby || type === ItemsEnum.PerfectCrackedTopaz || type === ItemsEnum.PerfectCrackedOpal ||
+      type === ItemsEnum.PerfectCrackedAmethyst || type === ItemsEnum.PerfectCrackedEmerald || type === ItemsEnum.PerfectCrackedAquamarine ||
+      type === ItemsEnum.PerfectDullRuby || type === ItemsEnum.PerfectDullTopaz || type === ItemsEnum.PerfectDullOpal || type === ItemsEnum.PerfectDullAmethyst ||
+      type === ItemsEnum.PerfectDullEmerald || type === ItemsEnum.PerfectDullAquamarine)
       return ItemTypeEnum.SlotItem;
 
     if (this.getEquipmentPieceByItemType(type) !== undefined) {
@@ -1741,7 +1747,7 @@ export class LookupService {
     if (abilityName === "No Escape")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
     if (abilityName === "Dispenser of Dues")
-      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0. <strong>Dues</strong> cannot exceed 10x your Max HP.";
+      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0. <strong>Dues</strong> cannot exceed 3x your Max HP.";
 
 
     return abilityDescription;
@@ -2795,7 +2801,8 @@ export class LookupService {
       description = "Auto attack and ability cooldowns are not charging until immobilize is cancelled by enemy.";
     if (statusEffect.type === StatusEffectEnum.CastingImmobilize)
       description = "Immobilizing target until " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage is dealt. Damage remaining: " + this.utilityService.bigNumberReducer(statusEffect.maxCount - statusEffect.count);
-
+    if (statusEffect.type === StatusEffectEnum.PreventEscape)
+      description = "You cannot escape from battle.";
 
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
       description = "10% chance on auto attack to reduce target's Agility by 20% for 14 seconds.";
@@ -2824,7 +2831,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Onslaught)
       description = "Your next damaging ability will also apply a damage over time effect onto its targets.";
     if (statusEffect.type === StatusEffectEnum.DispenserOfDues)
-      description = "Increase your next damaging ability by " + Math.round(statusEffect.effectiveness).toLocaleString() + ". Amount cannot exceed 10x your Max HP " + (character === undefined ? "." : "(" + Math.round(character.battleStats.maxHp * 10).toLocaleString() + ").");
+      description = "Increase your next damaging ability by " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + ". Amount cannot exceed 3x your Max HP " + (character === undefined ? "." : "(" + this.utilityService.bigNumberReducer(character.battleStats.maxHp * 3) + ").");
     if (statusEffect.type === StatusEffectEnum.Retribution)
       description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
     if (statusEffect.type === StatusEffectEnum.ChainsOfFate)
@@ -6351,7 +6358,6 @@ export class LookupService {
 
     return name;
   }
-
 
   getQualityTypeName(quality: EquipmentQualityEnum, includeClass: boolean = false) {
     var name = "";
