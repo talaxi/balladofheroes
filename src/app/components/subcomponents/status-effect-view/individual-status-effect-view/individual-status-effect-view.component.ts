@@ -346,6 +346,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.PreventEscape) {
       src += "preventEscape.svg";
     }
+    if (effect.type === StatusEffectEnum.ExtraTrueDamage) {
+      src += "extraTrueDamage.svg";
+    }
+    if (effect.type === StatusEffectEnum.Immobilize || effect.type === StatusEffectEnum.CastingImmobilize) {
+      src += "strangle.svg";
+    }
 
     return src;
   }

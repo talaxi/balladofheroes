@@ -574,7 +574,7 @@ export class GlobalService {
       bloodlust.isActivatable = false;
       bloodlust.dealsDirectDamage = false;
       bloodlust.maxCount = 5;
-      bloodlust.effectiveness = .01;
+      bloodlust.effectiveness = .025;
       god.abilityList.push(bloodlust);
     }
 
@@ -1727,7 +1727,7 @@ export class GlobalService {
         ability.secondaryEffectiveness += .1;
       }
       else {
-        if (ability.abilityUpgradeLevel % 12 === 1 && ability.abilityUpgradeLevel <= 100)
+        if (ability.abilityUpgradeLevel % 10 === 3 && ability.abilityUpgradeLevel <= 100)
           targetGainsEffect.duration += .5;
 
         ability.effectiveness += .15;
@@ -1751,7 +1751,7 @@ export class GlobalService {
       else if ((ability.abilityUpgradeLevel === 5 || ability.abilityUpgradeLevel % 15 === 0) && ability.abilityUpgradeLevel <= 100) {
         targetGainsEffect.effectiveness += .05;
       }
-      else if ((ability.abilityUpgradeLevel === 35 || ability.abilityUpgradeLevel === 70) && ability.abilityUpgradeLevel <= 100)
+      else if ((ability.abilityUpgradeLevel === 17 || ability.abilityUpgradeLevel === 35 || ability.abilityUpgradeLevel === 53 || ability.abilityUpgradeLevel === 71 || ability.abilityUpgradeLevel === 89) && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += 1;
       else
         ability.effectiveness += .05;
@@ -1803,7 +1803,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel === 50 || ability.abilityUpgradeLevel === 100)
         ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
-        ability.cooldown -= .8;
+        ability.cooldown -= 1;
       else
         ability.effectiveness += .075;
     }
@@ -1865,19 +1865,21 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         userGainsEffect.duration += 1.5;
       else
-        userGainsEffect.effectiveness += .015;
+        userGainsEffect.effectiveness += .01;
     }
     else if (god.type === GodEnum.Nemesis) {
       if (ability.abilityUpgradeLevel <= 100)
         ability.effectiveness += .025;
     }
     else if (god.type === GodEnum.Dionysus) {
-      if (ability.abilityUpgradeLevel === 45)
+      if (ability.abilityUpgradeLevel === 44)
         ability.userEffect.push(userGainsEffect.makeCopy());
+      else if (ability.abilityUpgradeLevel === 88)
+        ability.cooldown -= 4;
       else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.userEffect.forEach(effect => { effect.duration += 1 });
       else
-        ability.userEffect.forEach(effect => { effect.effectiveness += .0075 });
+        ability.userEffect.forEach(effect => { effect.effectiveness += .00625 });
     }
   }
 
@@ -2005,36 +2007,36 @@ export class GlobalService {
       }
     }
     else if (godLevel > 501 && godLevel <= 1000) {
-      if (godLevel === 600) { //should lead to +50% party xp gain        
-        stats.xpGain += .006;
+      if (godLevel === 600) { //should lead to +25% party xp gain        
+        stats.xpGain += .003;
       }
       else if (godLevel === 700) {
-        stats.xpGain += .008;
+        stats.xpGain += .004;
       }
       else if (godLevel === 800) {
-        stats.xpGain += .01;
+        stats.xpGain += .005;
       }
       else if (godLevel === 900) {
-        stats.xpGain += .012;
+        stats.xpGain += .006;
       }
       else if (godLevel === 1000) {
-        stats.xpGain += .014;
+        stats.xpGain += .007;
       }
       else if (godLevel % 50 === 0) {
         if (god.type === GodEnum.Athena || god.type === GodEnum.Dionysus) {
-          stats.defense += godLevel - 450;
+          stats.defense += (godLevel - 450) / 4;
         }
         else if (god.type === GodEnum.Artemis || god.type === GodEnum.Hades) {
-          stats.luck += godLevel - 450;
+          stats.luck += (godLevel - 450) / 4;
         }
         else if (god.type === GodEnum.Hermes) {
-          stats.agility += godLevel - 450;
+          stats.agility += (godLevel - 450) / 4;
         }
         else if (god.type === GodEnum.Apollo || god.type === GodEnum.Nemesis) {
-          stats.resistance += godLevel - 450;
+          stats.resistance += (godLevel - 450) / 4;
         }
         else if (god.type === GodEnum.Ares) {
-          stats.maxHp += (godLevel - 450) * 5;
+          stats.maxHp += (godLevel - 450) * 1.25;
         }
       }
     }
@@ -2190,7 +2192,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Dionysus) {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
           var targetGainsEffect = ability.targetEffect[0];
-          targetGainsEffect.effectiveness = .02;
+          targetGainsEffect.effectiveness = -.02;
         }
         else if (god.type === GodEnum.Nemesis) {
           ability.effectiveness += .3;
@@ -2480,7 +2482,12 @@ export class GlobalService {
         increaseType = GodLevelIncreaseEnum.Stats;
     }
     else if (level % 5 === 0) {
-      increaseType = GodLevelIncreaseEnum.AbilityUpgrade;
+      var ability = this.getWhichAbilityUpgrade(god, level);
+
+      if (ability !== undefined && ability?.upgradeLevel <= 100)
+        increaseType = GodLevelIncreaseEnum.AbilityUpgrade;
+      else
+        increaseType = GodLevelIncreaseEnum.Stats;
     }
 
     return increaseType;
@@ -2548,7 +2555,7 @@ export class GlobalService {
       var repeaterLevel = (godLevel - repeaterLevelStart) % 35;
       var repeaterCount = Math.ceil((godLevel - repeaterLevelStart) / 35);
       var permanentStatSlotCount = 0;//ability upgrades are ignored and permanent stats are gained instead
-      var maxPermanentStatLevel = 500; //permanent stats are no longer a thing at 500 but may change in the future
+      var maxPermanentStatLevel = 2000; //permanent stats are no longer a thing at 500 but may change in the future
       var repeaterCheck1 = 0;
       var repeaterCheck2 = 0;
 
@@ -2970,23 +2977,73 @@ export class GlobalService {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + bonusCoins.toLocaleString() + " Coins</strong>.");
       }
 
-      //every 10 rounds, chance of items
-      if (losingRound > 10) {
-        var rng = this.utilityService.getRandomInteger(30, 70);
-        var randomGem = this.getRandomGem();
-
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(randomGem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(randomGem))) + "</strong>.");
-        this.gainResource(new ResourceValue(randomGem, rng));
-      }
-
+      //every 5 rounds, chance of items
+      this.handleEternalMeleeBossRewards(losingRound);      
 
       this.giveCharactersBonusExp(this.getActivePartyCharacters(true), bonusXp);
       this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins));
     }
   }
 
+  handleEternalMeleeBossRewards(round: number) {
+    if (round > 5) {
+      var rng = this.utilityService.getRandomInteger(10, 50);
+      var gainedItem = this.getRandomBasicMaterial();
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    if (round > 10) {
+      var rng = this.utilityService.getRandomInteger(30, 70);
+      var gainedItem = this.getRandomGem();
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+    
+    if (round > 15) {
+      var rng = this.utilityService.getRandomInteger(25, 100);
+      var gainedItem = ItemsEnum.MetalScraps;
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    if (round > 20) {
+      var rng = this.utilityService.getRandomInteger(60, 100);
+      var gainedItem = this.getRandomGem();
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+    
+    if (round > 25) {
+      var rng = this.utilityService.getRandomInteger(60, 100);
+      var gainedItem = this.getRandomUncommonMaterial();
+
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
+      this.gainResource(new ResourceValue(gainedItem, rng));
+    }
+
+    var remainingRounds = round - 25;
+
+    while (remainingRounds > 5) {
+      if (round > 20) {
+        var rng = 100;
+        var gainedItem = this.getRandomGem();
+  
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
+        this.gainResource(new ResourceValue(gainedItem, rng));
+      }
+
+      remainingRounds -= 5;
+    }
+  }
+
   setNewTournament(canRepeat: boolean = false) {    
     var repeatColiseumFight = this.globalVar.settings.get("repeatColiseumFight") ?? false;
+
+    console.log("Repeat coliseum? " + repeatColiseumFight);
 
     if (!repeatColiseumFight || !canRepeat)
       return new ColiseumTournament();
@@ -3028,6 +3085,20 @@ export class GlobalService {
     }
   }
 
+  getRandomBasicMaterial() {
+    var items: ItemsEnum[] = [];
+    items.push(ItemsEnum.Olive);
+    items.push(ItemsEnum.Fennel);
+    items.push(ItemsEnum.SoulSpark);
+    items.push(ItemsEnum.Asphodelus);
+    items.push(ItemsEnum.EssenceOfFire);
+    items.push(ItemsEnum.PoisonFang);
+
+    var rng = this.utilityService.getRandomInteger(0, items.length - 1);
+
+    return items[rng];
+  }
+
   getRandomGem() {
     var items: ItemsEnum[] = [];
     items.push(ItemsEnum.RoughTopazFragment);
@@ -3036,6 +3107,20 @@ export class GlobalService {
     items.push(ItemsEnum.RoughAmethystFragment);
     items.push(ItemsEnum.RoughEmeraldFragment);
     items.push(ItemsEnum.RoughAquamarineFragment);
+
+    var rng = this.utilityService.getRandomInteger(0, items.length - 1);
+
+    return items[rng];
+  }
+
+  getRandomUncommonMaterial() {
+    var items: ItemsEnum[] = [];
+    items.push(ItemsEnum.EssenceOfWater);
+    items.push(ItemsEnum.ThickLeather);
+    items.push(ItemsEnum.Lousewort);
+    items.push(ItemsEnum.Sorrel);
+    items.push(ItemsEnum.SharkTeeth);
+    items.push(ItemsEnum.Seashell);
 
     var rng = this.utilityService.getRandomInteger(0, items.length - 1);
 

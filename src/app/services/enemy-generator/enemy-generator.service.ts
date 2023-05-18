@@ -188,7 +188,7 @@ export class EnemyGeneratorService {
       //chance to drop leather
 
       var enrage = new Ability();
-      enrage.name = "Enrage";
+      enrage.name = "Fury";
       enrage.isAvailable = true;
       enrage.cooldown = enrage.currentCooldown = (this.utilityService.enemyLongAutoAttackSpeed - 1);
       enrage.dealsDirectDamage = false;
@@ -3734,7 +3734,7 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(claw);  
       
       var enrage = new Ability();
-      enrage.name = "Enrage";
+      enrage.name = "Fury";
       enrage.isAvailable = true;
       enrage.cooldown = enrage.currentCooldown = (enemy.battleInfo.timeToAutoAttack - 1);
       enrage.dealsDirectDamage = false;

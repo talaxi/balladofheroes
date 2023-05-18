@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -7,6 +7,7 @@ import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.mode
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 import { Profession } from 'src/app/models/professions/profession.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
@@ -40,6 +41,7 @@ export class ShopViewComponent implements OnInit {
   jewelcrafting: Profession | undefined;
   traderLevelUpText = "";
   traderLevelUpKillsRemainingText = "";
+  @ViewChild('coliseumModal') coliseumModal: any;
 
   isDisplayingNewItems: boolean = true;
   shopItems: ShopItem[];
@@ -55,13 +57,13 @@ export class ShopViewComponent implements OnInit {
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
     private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
     private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService,
-    private enemyGeneratorService: EnemyGeneratorService) { }
+    private enemyGeneratorService: EnemyGeneratorService, private layoutService: LayoutService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.getShopOptions();
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
-    this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+    this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);    
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
@@ -69,6 +71,13 @@ export class ShopViewComponent implements OnInit {
         this.getShopOptions();
       }
     });
+  }
+
+  ngAfterViewInit() {
+    if (this.layoutService.jumpedToColiseum && this.shopOptions.some(item => item.type === ShopTypeEnum.Coliseum)) {
+      this.openShop(this.shopOptions.find(item => item.type === ShopTypeEnum.Coliseum)!, this.coliseumModal);
+      this.layoutService.jumpedToColiseum = false;
+    }
   }
 
   augeanStablesCompleted() {
@@ -119,9 +128,9 @@ export class ShopViewComponent implements OnInit {
 
     if (option.type === ShopTypeEnum.Coliseum || option.type === ShopTypeEnum.Trader) {
       if (this.deviceDetectorService.isMobile())
-        this.dialog.open(content, { width: '95%', height: '80%' });
+        this.dialog.open(content, { width: '95%', height: '85%' });
       else
-        this.dialog.open(content, { width: '75%', maxHeight: '75%' });
+        this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85%' });
     }
     else if (option.type === ShopTypeEnum.AugeanStables) {
       if (this.deviceDetectorService.isMobile())
@@ -384,6 +393,8 @@ export class ShopViewComponent implements OnInit {
   }
 
   ngOnDestroy() {
+    this.layoutService.jumpedToColiseum = false;
+
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
   }

@@ -244,7 +244,7 @@ export class ZoneNavigationComponent implements OnInit {
 
       //var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
       //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-
+      this.layoutService.jumpedToColiseum = true;
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
     if (this.isMobile) {

@@ -35,7 +35,7 @@ export class ColiseumService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService) { }  
+    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService) { }
 
   getTournamentDescription(type: ColiseumTournamentEnum) {
     var info = this.dictionaryService.getColiseumInfoFromType(type);
@@ -368,64 +368,73 @@ export class ColiseumService {
 
   generateWeeklyMeleeOptions(round: number) {
     var enemyCount = 3;
-    if (round % 5 < 4)
-      enemyCount = this.utilityService.getRandomInteger(2, 3);
-    else
+    if (round % 5 === 4)
       enemyCount = 4;
+    else if (round % 5 === 3)
+      enemyCount = 3;
+    else    
+      enemyCount = this.utilityService.getRandomInteger(2, 3);  
 
     var isBoss = false;
     if (round % 5 === 0)
       isBoss = true;
 
-    var expectedCharacterStats = new PrimaryStats(2500, 210, 300, 225, 225, 275);
-    var defensiveGrowthFactor = 1.32;
-    var offensiveGrowthFactor = 1.21;
+    var expectedCharacterStats = new PrimaryStats(3000, 145, 300, 200, 215, 250);
+    var defensiveGrowthFactor = 1.24;
+    var offensiveGrowthFactor = 1.11;
 
-    expectedCharacterStats.maxHp *= defensiveGrowthFactor ** ((round % 5) + 1);
-    expectedCharacterStats.defense *= defensiveGrowthFactor ** ((round % 5) + 1);
-    expectedCharacterStats.resistance *= defensiveGrowthFactor ** ((round % 5) + 1);
-    expectedCharacterStats.attack *= offensiveGrowthFactor ** ((round % 5) + 1);
-    expectedCharacterStats.agility *= offensiveGrowthFactor ** ((round % 5) + 1);
-    expectedCharacterStats.luck *= offensiveGrowthFactor ** ((round % 5) + 1);
+    expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (((round - 1) % 5) + 1);
+    expectedCharacterStats.defense *= defensiveGrowthFactor ** (((round - 1) % 5) + 1);
+    expectedCharacterStats.resistance *= defensiveGrowthFactor ** (((round - 1) % 5) + 1);
+    expectedCharacterStats.attack *= offensiveGrowthFactor ** (((round - 1) % 5) + 1);
+    expectedCharacterStats.agility *= offensiveGrowthFactor ** (((round - 1) % 5) + 1);
+    expectedCharacterStats.luck *= offensiveGrowthFactor ** (((round - 1) % 5) + 1);
 
     if (round > 5 && round <= 10) {
-      var expectedCharacterStats = new PrimaryStats(8000, 380, 800, 450, 650, 850);
+      defensiveGrowthFactor = 1.14;
+      offensiveGrowthFactor = 1.10;
+      var expectedCharacterStats = new PrimaryStats(27000, 800, 2400, 1000, 900, 1500);
 
-      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** ((round % 5) + 1);
-      expectedCharacterStats.defense *= defensiveGrowthFactor ** ((round % 5) + 1);
-      expectedCharacterStats.resistance *= defensiveGrowthFactor ** ((round % 5) + 1);
-      expectedCharacterStats.attack *= offensiveGrowthFactor ** ((round % 5) + 1);
-      expectedCharacterStats.agility *= offensiveGrowthFactor ** ((round % 5) + 1);
-      expectedCharacterStats.luck *= offensiveGrowthFactor ** ((round % 5) + 1);
+      if (round === 10)
+      expectedCharacterStats = new PrimaryStats(13500, 185, 575, 365, 450, 600);
+
+      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (((round - 1) % 5));
+      expectedCharacterStats.defense *= defensiveGrowthFactor ** (((round - 1) % 5));
+      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (((round - 1) % 5));
+      expectedCharacterStats.attack *= offensiveGrowthFactor ** (((round - 1) % 5));
+      expectedCharacterStats.agility *= offensiveGrowthFactor ** (((round - 1) % 5));
+      expectedCharacterStats.luck *= offensiveGrowthFactor ** (((round - 1) % 5));
     }
     else if (round > 10) {
       //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
-      var expectedCharacterStats = new PrimaryStats(1000, 225, 750, 275, 400, 600);
- 
-      var offsetRound = round - 10;
-      defensiveGrowthFactor = 1.18;
-      offensiveGrowthFactor = 1.07;
-      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 80);
-      expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 7);
-      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 6);      
-      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2);
-      expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
-      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
+      var expectedCharacterStats = new PrimaryStats(2965, 220, 795, 650, 665, 750);
+
+      var offsetRound = round - 9;
+      defensiveGrowthFactor = 1.21;
+      offensiveGrowthFactor = 1.14;
+      expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
+      expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
+      expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);
+      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2.25);
+      expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
+      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
     }
 
     //to account for multiple enemies
-    var multipleEnemyModifier = enemyCount;
-    if (isBoss)
-    {
-      multipleEnemyModifier = 5;
-    }    
+    var multipleEnemyModifier = 1;//enemyCount;
+    if (isBoss) {
+      if (round === 5 || round === 10)
+        multipleEnemyModifier = 3;
+      else
+        multipleEnemyModifier = 1.25;
+    }
 
-    expectedCharacterStats.maxHp *= multipleEnemyModifier; 
-    expectedCharacterStats.attack *= multipleEnemyModifier; 
-    expectedCharacterStats.defense *= multipleEnemyModifier; 
-    expectedCharacterStats.agility *= multipleEnemyModifier; 
-    expectedCharacterStats.luck *= multipleEnemyModifier; 
-    expectedCharacterStats.resistance *= multipleEnemyModifier; 
+    expectedCharacterStats.maxHp *= multipleEnemyModifier;
+    expectedCharacterStats.attack *= multipleEnemyModifier;
+    expectedCharacterStats.defense *= multipleEnemyModifier;
+    expectedCharacterStats.agility *= multipleEnemyModifier;
+    expectedCharacterStats.luck *= multipleEnemyModifier;
+    expectedCharacterStats.resistance *= multipleEnemyModifier;
 
     //console.log("Searching for: ");
     //console.log("Is Boss: " + isBoss);
@@ -439,9 +448,22 @@ export class ColiseumService {
 
       var enumValue = propertyValue as SubZoneEnum;
 
-      if (round <= 10 && (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Champion &&
-        this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Gorgon && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Underworld)) {
+      if (!this.findSubzone(enumValue)?.isAvailable) {        
         continue;
+      }
+
+      if (round <= 10) {
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Champion &&
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Gorgon && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Underworld) {          
+          continue;
+        }
+      }
+      //eventually add round limiter here when you have more stuff
+      else {
+        if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar &&
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors)) {        
+          continue;
+        }
       }
 
       var battleOptions = this.subZoneGeneratorService.generateBattleOptions(enumValue);
@@ -485,18 +507,18 @@ export class ColiseumService {
       totalDefense += enemy.battleStats.defense;
       totalAgility += enemy.battleStats.agility;
       totalLuck += enemy.battleStats.luck;
-      totalResistance += enemy.battleStats.resistance;      
+      totalResistance += enemy.battleStats.resistance;
     });
 
-    enemyTeam.enemyList.forEach(enemy => {      
+    enemyTeam.enemyList.forEach(enemy => {
       enemy.battleStats.maxHp = Math.round(enemy.battleStats.maxHp * (expectedStats.maxHp / totalHp));
-      enemy.battleStats.attack = Math.round(enemy.battleStats.attack * (expectedStats.attack / totalAttack));      
+      enemy.battleStats.attack = Math.round(enemy.battleStats.attack * (expectedStats.attack / totalAttack));
       enemy.battleStats.defense = Math.round(enemy.battleStats.defense * (expectedStats.defense / totalDefense));
       enemy.battleStats.agility = Math.round(enemy.battleStats.agility * (expectedStats.agility / totalAgility));
       enemy.battleStats.luck = Math.round(enemy.battleStats.luck * (expectedStats.luck / totalLuck));
       enemy.battleStats.resistance = Math.round(enemy.battleStats.resistance * (expectedStats.resistance / totalResistance));
 
-      enemy.battleStats.currentHp = enemy.battleStats.maxHp;      
+      enemy.battleStats.currentHp = enemy.battleStats.maxHp;
     });
   }
 

@@ -661,15 +661,49 @@ export class AltarService {
 
       this.globalService.globalVar.altars.additionalAltarEffects.push(altarEffect);
     }
-    else {
-      //TODO: if existing altar effect is end of duration effect, move it to additional altar effects and set duration to 0
-      if (altar === this.globalService.globalVar.altars.altar1)
+    else {      
+      if (altar === this.globalService.globalVar.altars.altar1) {
+        if (this.globalService.globalVar.altars.activeAltarEffect1 !== undefined && 
+          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect1))
+          {
+            this.globalService.globalVar.altars.activeAltarEffect1.duration = 0;
+            this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect1);
+          }
         this.globalService.globalVar.altars.activeAltarEffect1 = altarEffect;
-      if (altar === this.globalService.globalVar.altars.altar2)
+      }
+      if (altar === this.globalService.globalVar.altars.altar2) {
+        if (this.globalService.globalVar.altars.activeAltarEffect2 !== undefined && 
+          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect2))
+          {
+            this.globalService.globalVar.altars.activeAltarEffect2.duration = 0;
+            this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect2);
+          }
+
         this.globalService.globalVar.altars.activeAltarEffect2 = altarEffect;
-      if (altar === this.globalService.globalVar.altars.altar3)
+      }
+      if (altar === this.globalService.globalVar.altars.altar3) {
+        if (this.globalService.globalVar.altars.activeAltarEffect3 !== undefined && 
+          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect3))
+          {
+            this.globalService.globalVar.altars.activeAltarEffect3.duration = 0;
+            this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect3);
+          }
+
         this.globalService.globalVar.altars.activeAltarEffect3 = altarEffect;
+      }
     }
+  }
+
+  isEndOfDurationEffect(effect: AltarEffect) {
+    if (effect.type === AltarEffectsEnum.AthenaHeal || effect.type === AltarEffectsEnum.AresOverdriveGain || effect.type === AltarEffectsEnum.AresRareOverdriveGain ||
+      effect.type === AltarEffectsEnum.ArtemisDefenseDebuff || effect.type === AltarEffectsEnum.ApolloHeal || effect.type === AltarEffectsEnum.HermesAbilityCooldown ||
+      effect.type === AltarEffectsEnum.AthenaRareBlind || effect.type === AltarEffectsEnum.ArtemisRareAttackDebuff || effect.type === AltarEffectsEnum.ApolloRareOstinato ||
+      effect.type === AltarEffectsEnum.DionysusRandomDebuff || effect.type === AltarEffectsEnum.AresRareDealHpDamage || effect.type === AltarEffectsEnum.AresDamageOverTime ||
+      effect.type === AltarEffectsEnum.DionysusSingleBarrier || effect.type === AltarEffectsEnum.DionysusRareMultiBarrier || effect.type === AltarEffectsEnum.DionysusRareFullDebuffs ||
+      effect.type === AltarEffectsEnum.NemesisLuckDebuff || effect.type === AltarEffectsEnum.NemesisRareDuesUp)    
+      return true;
+
+    return false;
   }
 
   getSmallCharmOfGod(type: GodEnum) {

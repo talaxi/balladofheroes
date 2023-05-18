@@ -409,12 +409,14 @@ export class VersionControlService {
             }
           }
 
+          this.initializationService.initializeBalladOfLabors();
           var hurriedRetreat2 = this.balladService.findSubzone(SubZoneEnum.ColchisHurriedRetreat2);
           if (hurriedRetreat2 !== undefined && hurriedRetreat2.isAvailable && hurriedRetreat2.victoryCount > 0) {
             var labors = this.balladService.findBallad(BalladEnum.Labors);
             var nemea = this.balladService.findZone(ZoneEnum.Nemea);
             var cleonea = this.balladService.findSubzone(SubZoneEnum.NemeaCleonea);
             var countryRoads = this.balladService.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo);
+            var oldCountryRoads = this.balladService.findSubzone(SubZoneEnum.NemeaCountryRoadsOne);
 
             if (labors !== undefined) {
               labors.isAvailable = true;
@@ -431,6 +433,9 @@ export class VersionControlService {
             if (countryRoads !== undefined) {
               countryRoads.isAvailable = true;
               countryRoads.notify = true;
+            }
+            if (oldCountryRoads !== undefined) {
+              oldCountryRoads.isAvailable = false;              
             }
           }
 

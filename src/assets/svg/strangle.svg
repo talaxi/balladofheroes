@@ -25,7 +25,7 @@
      inkscape:pageshadow="2"
      inkscape:zoom="0.74999999"
      inkscape:cx="396.46151"
-     inkscape:cy="513.71418"
+     inkscape:cy="1084.915"
      inkscape:document-units="mm"
      inkscape:current-layer="layer1"
      inkscape:document-rotation="0"
@@ -44,7 +44,7 @@
         <dc:format>image/svg+xml</dc:format>
         <dc:type
            rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
-        <dc:title></dc:title>
+        <dc:title />
       </cc:Work>
     </rdf:RDF>
   </metadata>
@@ -58,56 +58,56 @@
      inkscape:label="Layer 2"
      style="display:inline">
     <ellipse
-       style="opacity:1;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="opacity:1;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637"
        cx="150.80954"
        cy="178.97792"
        rx="109.16719"
        ry="30.320312" />
     <ellipse
-       style="display:inline;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637-2"
        cx="150.59647"
        cy="170.37724"
        rx="109.16719"
        ry="30.320312" />
     <ellipse
-       style="display:inline;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637-4"
        cx="150.34694"
        cy="162.57156"
        rx="109.16719"
        ry="30.320312" />
     <ellipse
-       style="display:inline;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637-2-3"
        cx="150.13383"
        cy="153.97089"
        rx="109.16719"
        ry="30.320312" />
     <ellipse
-       style="display:inline;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637-1"
        cx="149.86615"
        cy="145.85059"
        rx="109.16719"
        ry="30.320312" />
     <ellipse
-       style="display:inline;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637-2-5"
        cx="149.65305"
        cy="137.24991"
        rx="109.16719"
        ry="30.320312" />
     <ellipse
-       style="display:inline;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637-4-6"
        cx="149.40352"
        cy="129.44423"
        rx="109.16719"
        ry="30.320312" />
     <ellipse
-       style="display:inline;fill:none;fill-opacity:1;stroke:#55494f;stroke-width:5.04651;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       style="display:inline;fill:none;fill-opacity:1;stroke:#20b78a;stroke-width:5.5;stroke-linecap:square;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
        id="path10637-2-3-6"
        cx="149.19044"
        cy="120.84357"

@@ -1,9 +1,9 @@
 <div class="settingsGrid">
     <div class="settings">
         <span class="s4Heading smallCaps bold">Settings</span>
-        <br/>
-        <br/>
-        <div>
+        <br />
+        <br />
+        <div class="twoColumn">
             <span class="smallCaps bold">story speed</span>
             <br />
             <mat-button-toggle-group [(ngModel)]="storyStyle" aria-label="Story Style" (change)="setStoryStyle()">
@@ -15,13 +15,12 @@
                 <mat-button-toggle [value]="storyStyleEnum.Skip">Skip</mat-button-toggle>
             </mat-button-toggle-group>
         </div>
-        <br/>
-        <div>
+        <div class="twoColumn">
             <span class="smallCaps bold">tooltip color theme</span>
             <br />
             <mat-button-toggle-group [(ngModel)]="tooltipTheme" aria-label="Tooltip Theme" (change)="setTooltipTheme()">
                 <mat-button-toggle [value]="true">Dark</mat-button-toggle>
-                <mat-button-toggle [value]="false">Light</mat-button-toggle>                
+                <mat-button-toggle [value]="false">Light</mat-button-toggle>
             </mat-button-toggle-group>
         </div>
         <br *ngIf="isMobile" />
@@ -44,60 +43,78 @@
         </span>
         <br />
         <br />
-        <div>            
-            <div *ngIf="!isMobile" class="updateKeybinds">
+        <div>
+            <div *ngIf="!isMobile" class="updateKeybinds twoColumn">
                 <button class="buttonStyled" (click)="openKeybinds(keybindContent)">Update Keybinds</button>
-            </div>
-            <div *ngIf="isMobile" class="updateKeybinds">
-                <button class="buttonStyled" (click)="openKeybinds(overlayNotificationsContent)">Update Overlay
-                    Notifications</button>
-            </div>
-            <div *ngIf="isMobile" class="updateKeybinds">
-                <button class="buttonStyled" (click)="openKeybinds(gameLogContent)">Update Game Log</button>
-            </div>
-            <div class="updateKeybinds">
+            </div>            
+            <div class="updateKeybinds twoColumn">
                 <button class="buttonStyled" (click)="openKeybinds(quickViewOptionsContent)">Update Quick View
                     Options</button>
             </div>
+            <div *ngIf="isMobile" class="updateKeybinds twoColumn">
+                <button class="buttonStyled" (click)="openKeybinds(overlayNotificationsContent)">Update Overlay
+                    Notifications</button>
+            </div>
+            <div *ngIf="isMobile" class="updateKeybinds twoColumn">
+                <button class="buttonStyled" (click)="openKeybinds(gameLogContent)">Update Game Log</button>
+            </div>
         </div>
+        <br/>
         <div>
             <span class="s4Heading smallCaps bold">Advanced Settings</span>
+            <br/>
+            <div>
+                <div class="twoColumn">
+                    <span class="smallCaps bold">Offline Loading Time</span>
+                    <br />
+                    <mat-button-toggle-group [(ngModel)]="loadingTime" aria-label="Offline Loading Time"
+                        (change)="setLoadingTime()">
+                        <mat-button-toggle customToolTip [contentTemplate]="lowLoadingTimePopover"
+                            [value]="utilityService.lowActiveTimeLimit">Low</mat-button-toggle>
+                        <mat-button-toggle customToolTip [contentTemplate]="averageLoadingTimePopover"
+                            [value]="utilityService.averageActiveTimeLimit">Average</mat-button-toggle>
+                        <mat-button-toggle customToolTip [contentTemplate]="highLoadingTimePopover"
+                            [value]="utilityService.highActiveTimeLimit">High</mat-button-toggle>
+                        <mat-button-toggle customToolTip [contentTemplate]="veryHighLoadingTimePopover"
+                            [value]="utilityService.veryHighActiveTimeLimit">Very High</mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+                <div class="twoColumn">
+                    <span class="smallCaps bold">Loading Accuracy</span>
+                    <br />
+                    <mat-button-toggle-group [(ngModel)]="loadingAccuracy" aria-label="Loading Accuracy"
+                        (change)="setLoadingAccuracy()">
+                        <mat-button-toggle customToolTip [contentTemplate]="lowLoadingAccuracyPopover"
+                            [value]="utilityService.lowLoadingAccuracy">Low</mat-button-toggle>
+                        <mat-button-toggle customToolTip [contentTemplate]="averageLoadingAccuracyPopover"
+                            [value]="utilityService.averageLoadingAccuracy">Average</mat-button-toggle>
+                        <mat-button-toggle customToolTip [contentTemplate]="highLoadingAccuracyPopover"
+                            [value]="utilityService.highLoadingAccuracy">High</mat-button-toggle>
+                    </mat-button-toggle-group>
+                </div>
+            </div>
+            <br/>
             <div>
                 <span class="smallCaps bold">Frames Per Second</span>
                 <br />
-                <mat-button-toggle-group [(ngModel)]="fps" aria-label="Fps" (change)="setFps()">                    
-                    <mat-button-toggle customToolTip [contentTemplate]="lowFpsPopover" [value]="utilityService.lowFps">Low</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="averageFpsPopover" [value]="utilityService.averageFps">Average</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="highFpsPopover" [value]="utilityService.highFps">High</mat-button-toggle>                    
-                </mat-button-toggle-group>
-            </div>            
-            <div>
-                <span class="smallCaps bold">Offline Loading Time</span>
-                <br />
-                <mat-button-toggle-group [(ngModel)]="loadingTime" aria-label="Offline Loading Time" (change)="setLoadingTime()">                    
-                    <mat-button-toggle customToolTip [contentTemplate]="lowLoadingTimePopover" [value]="utilityService.lowActiveTimeLimit">Low</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="averageLoadingTimePopover" [value]="utilityService.averageActiveTimeLimit">Average</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="highLoadingTimePopover" [value]="utilityService.highActiveTimeLimit">High</mat-button-toggle>    
-                    <mat-button-toggle customToolTip [contentTemplate]="veryHighLoadingTimePopover" [value]="utilityService.veryHighActiveTimeLimit">Very High</mat-button-toggle>                  
-                </mat-button-toggle-group>
-            </div>
-            <div>
-                <span class="smallCaps bold">Loading Accuracy</span>
-                <br />
-                <mat-button-toggle-group [(ngModel)]="loadingAccuracy" aria-label="Loading Accuracy" (change)="setLoadingAccuracy()">                    
-                    <mat-button-toggle customToolTip [contentTemplate]="lowLoadingAccuracyPopover" [value]="utilityService.lowLoadingAccuracy">Low</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="averageLoadingAccuracyPopover" [value]="utilityService.averageLoadingAccuracy">Average</mat-button-toggle>
-                    <mat-button-toggle customToolTip [contentTemplate]="highLoadingAccuracyPopover" [value]="utilityService.highLoadingAccuracy">High</mat-button-toggle>                    
+                <mat-button-toggle-group [(ngModel)]="fps" aria-label="Fps" (change)="setFps()">
+                    <mat-button-toggle customToolTip [contentTemplate]="lowFpsPopover"
+                        [value]="utilityService.lowFps">Low</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="averageFpsPopover"
+                        [value]="utilityService.averageFps">Average</mat-button-toggle>
+                    <mat-button-toggle customToolTip [contentTemplate]="highFpsPopover"
+                        [value]="utilityService.highFps">High</mat-button-toggle>
                 </mat-button-toggle-group>
             </div>
         </div>
     </div>
     <div class="saveLoad">
         <span class="s4Heading smallCaps bold">Save/Load</span>
-        <br/>
+        <br />
         <br />
         <div class="importExportDiv">
-            <textarea (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport" name="importExport" rows="10" [(ngModel)]="importExportValue"></textarea>
+            <textarea (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport" name="importExport" rows="10"
+                [(ngModel)]="importExportValue"></textarea>
             <div class="importExportButtons">
                 <button class="buttonStyled" (click)="LoadGame()">
                     Import
@@ -127,8 +144,8 @@
             <br />
             <div class="codeRedemption">
                 <label for="codeRedemptionText">Code: </label>
-                <input (focus)="inTextbox()" (blur)="outOfTextbox()" id="codeRedemptionText" type="text" class="spaced codeRedemptionInput"
-                    [(ngModel)]="enteredRedemptionCode">
+                <input (focus)="inTextbox()" (blur)="outOfTextbox()" id="codeRedemptionText" type="text"
+                    class="spaced codeRedemptionInput" [(ngModel)]="enteredRedemptionCode">
                 <button class="screenMarginLeft buttonStyled" (click)="enterRedemptionCode()">
                     Enter
                 </button>
@@ -224,7 +241,8 @@
 
 <ng-template #highLoadingAccuracyPopover>
     <div>
-        Run the game in 2 second batches during offline time. This will increase loading speed but also increase accuracy.
+        Run the game in 2 second batches during offline time. This will increase loading speed but also increase
+        accuracy.
     </div>
 </ng-template>
 

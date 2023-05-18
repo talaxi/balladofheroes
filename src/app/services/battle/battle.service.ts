@@ -2711,6 +2711,9 @@ export class BattleService {
           zone.isSelected = false;
           zone.subzones.forEach(subzone => {
             subzone.isSelected = false;
+
+            if (subzone.type === SubZoneEnum.NemeaCountryRoadsOne)
+              subzone.isAvailable = false;
           })
         })
       });

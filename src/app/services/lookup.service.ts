@@ -1496,16 +1496,16 @@ export class LookupService {
       description = "Deal " + this.utilityService.overdriveAttacksNeededToUnlockNature.toLocaleString() + " elemental damage. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
     }
     if (type === OverdriveNameEnum.Reprisal) {
-      description = "Take " + this.utilityService.overdriveHitsNeededToUnlockReprisal.toLocaleString() + " damaging attacks. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+      description = "Take " + this.utilityService.overdriveHitsNeededToUnlockReprisal.toLocaleString() + " damaging attacks. <i>(" + character.trackedStats.damagingHitsTaken.toLocaleString() + ")</i>";
     }
     if (type === OverdriveNameEnum.Preservation) {
-      description = "Heal or give a character a barrier worth " + this.utilityService.overdriveHealingNeededToUnlockPreservation.toLocaleString() + " total HP. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+      description = "Heal or give a character a barrier worth " + this.utilityService.overdriveHealingNeededToUnlockPreservation.toLocaleString() + " total HP. <i>(" + character.trackedStats.healingDone.toLocaleString() + ")</i>";
     }
     if (type === OverdriveNameEnum.Harmony) {
-      description = "Heal or give a character a barrier " + this.utilityService.overdriveHealsNeededToUnlockHarmony.toLocaleString() + " times. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+      description = "Heal or give a character a barrier " + this.utilityService.overdriveHealsNeededToUnlockHarmony.toLocaleString() + " times. <i>(" + character.trackedStats.healsMade.toLocaleString() + ")</i>";
     }
     if (type === OverdriveNameEnum.Bullseye) {
-      description = "Deal " + this.utilityService.overdriveCriticalsNeededToUnlockBullseye.toLocaleString() + " critical hits. <i>(" + character.trackedStats.elementalDamageDealt.toLocaleString() + ")</i>";
+      description = "Deal " + this.utilityService.overdriveCriticalsNeededToUnlockBullseye.toLocaleString() + " critical hits. <i>(" + character.trackedStats.criticalsDealt.toLocaleString() + ")</i>";
     }
 
     return description;
@@ -1522,36 +1522,60 @@ export class LookupService {
 
     if (type === OverdriveNameEnum.Fervor) {
       overdriveInfo.gaugeTotal = 125;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.activeLength = 20;        
+      overdriveInfo.gainPerAutoAttack = .75;
+      overdriveInfo.gainPerBeingAttacked = .25;
+      overdriveInfo.gainPerAbility = 1.5;
     }
     if (type === OverdriveNameEnum.Smash) {
       overdriveInfo.gaugeTotal = 80;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.activeLength = 20;      
+      overdriveInfo.gainPerAutoAttack = .5;
+      overdriveInfo.gainPerBeingAttacked = .5;
+      overdriveInfo.gainPerAbility = 1.5;
     }
     if (type === OverdriveNameEnum.Nature) {
       overdriveInfo.gaugeTotal = 125;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.activeLength = 20;        
+      overdriveInfo.gainPerAutoAttack = .75;
+      overdriveInfo.gainPerBeingAttacked = .75;
+      overdriveInfo.gainPerAbility = .75;
     }
     if (type === OverdriveNameEnum.Protection) {
       overdriveInfo.gaugeTotal = 150;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.activeLength = 20;   
+        
+      overdriveInfo.gainPerAutoAttack = 0;
+      overdriveInfo.gainPerBeingAttacked = 2;
+      overdriveInfo.gainPerAbility = .75;   
     }
-    //TODO: fix all these
     if (type === OverdriveNameEnum.Reprisal) {
-      overdriveInfo.gaugeTotal = 12;//5;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.gaugeTotal = 125;
+      overdriveInfo.activeLength = 20;        
+      overdriveInfo.gainPerAutoAttack = 1;
+      overdriveInfo.gainPerBeingAttacked = 1;
+      overdriveInfo.gainPerAbility = .25;
     }
     if (type === OverdriveNameEnum.Preservation) {
-      overdriveInfo.gaugeTotal = 13;//5;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.gaugeTotal = 135;
+      overdriveInfo.activeLength = 20;        
+      overdriveInfo.gainPerAutoAttack = 0;
+      overdriveInfo.gainPerBeingAttacked = .75;
+      overdriveInfo.gainPerAbility = 2;
     }
     if (type === OverdriveNameEnum.Harmony) {
-      overdriveInfo.gaugeTotal = 15;//0;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.gaugeTotal = 150;
+      overdriveInfo.activeLength = 20;        
+      overdriveInfo.gainPerAutoAttack = .5;
+      overdriveInfo.gainPerBeingAttacked = 1;
+      overdriveInfo.gainPerAbility = 1;
     }
     if (type === OverdriveNameEnum.Bullseye) {
-      overdriveInfo.gaugeTotal = 15;//0;
-      overdriveInfo.activeLength = 20;
+      overdriveInfo.gaugeTotal = 150;
+      overdriveInfo.activeLength = 20;        
+      overdriveInfo.gainPerAutoAttack = 1;
+      overdriveInfo.gainPerBeingAttacked = 0;
+      overdriveInfo.gainPerAbility = 1.5;
     }
 
     return overdriveInfo;
@@ -1938,7 +1962,7 @@ export class LookupService {
     if (ability.name === "Claw") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
-    if (ability.name === "Enrage") {
+    if (ability.name === "Fury") {
       abilityDescription = "Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
     }
     if (ability.name === "Ravage") {
@@ -1993,10 +2017,10 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to all targets. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Enfire") {
-      abilityDescription = "All attacks are now Fire elemental for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds." + cooldown + " second cooldown.";
+      abilityDescription = "All attacks are now Fire elemental for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Slam") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target." + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Trample") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -6739,7 +6763,7 @@ export class LookupService {
     return 50;
   }
 
-  getBalladDescription(type: BalladEnum) {
+  getBalladDescription(type?: BalladEnum) {
     var description = "";
 
     if (type === BalladEnum.Champion)

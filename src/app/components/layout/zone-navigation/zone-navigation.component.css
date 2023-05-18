@@ -121,7 +121,7 @@
     display: grid;
     height: 100%;    
     grid-template-columns: 42% 1fr;
-    gap: 1.5rem;
+    gap: 0.65rem;
     grid-template-rows: auto;
     justify-content: stretch;
     grid-template-areas:

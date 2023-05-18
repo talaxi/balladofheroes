@@ -6,6 +6,9 @@ import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { GlobalService } from '../global/global.service';
+import { Ballad } from 'src/app/models/zone/ballad.model';
+import { Zone } from 'src/app/models/zone/zone.model';
+import { SubZone } from 'src/app/models/zone/sub-zone.model';
 
 @Injectable({
   providedIn: 'root'
@@ -20,6 +23,10 @@ export class MenuService {
 
   partyMember1: BehaviorSubject<CharacterEnum>;
   partyMember2: BehaviorSubject<CharacterEnum>;
+
+  selectedBestiaryBallad: Ballad | undefined;
+  selectedBestiaryZone: Zone | undefined;
+  selectedBestiarySubzone: SubZone | undefined;
 
   constructor(private globalService: GlobalService) { 
     this.selectedMenuDisplay = MenuEnum.Characters;
@@ -64,5 +71,11 @@ export class MenuService {
 
   getNewPartyMember2(): Observable<CharacterEnum> {
     return this.partyMember2.asObservable();
+  }
+
+  setBestiaryPresets(ballad: Ballad | undefined, zone: Zone | undefined, subzone: SubZone | undefined) {
+    this.selectedBestiaryBallad = ballad;
+    this.selectedBestiaryZone = zone;
+    this.selectedBestiarySubzone = subzone;
   }
 }

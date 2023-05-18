@@ -5,8 +5,11 @@ import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { AnimationStateEnum } from 'src/app/models/enums/animation-state-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
@@ -15,6 +18,7 @@ import { DeploymentService } from 'src/app/services/deployment/deployment.servic
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -48,7 +52,8 @@ export class BattleComponent implements OnInit {
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
     private lookupService: LookupService, private balladService: BalladService, private deploymentService: DeploymentService,
-    public dialog: MatDialog, private dictionaryService: DictionaryService) { }
+    public dialog: MatDialog, private dictionaryService: DictionaryService, private layoutService: LayoutService,
+    private menuService: MenuService) { }
 
   ngOnInit(): void {
     if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
@@ -427,6 +432,12 @@ export class BattleComponent implements OnInit {
 
   goToNextSubzone() {
     this.balladService.selectNextSubzone();
+  }
+
+  jumpToBestiary() {
+    this.layoutService.changeLayout(NavigationEnum.Menu);
+    this.menuService.selectedMenuDisplay = MenuEnum.Bestiary; 
+    this.menuService.setBestiaryPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());     
   }
 
   ngOnDestroy() {

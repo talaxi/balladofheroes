@@ -61,7 +61,7 @@
 
         <div *ngIf="selectedBallad !== undefined && selectedZone === undefined && selectedSubzone === undefined"
             class="info textCentered">
-            <span class="s2Heading pageHeader">{{balladService.getBalladName(selectedBallad.type)}}</span>
+            <span class="s2Heading pageHeader">{{balladService.getBalladName(selectedBallad?.type)}}</span>
             <br />
             <span class="smallCaps bold">ballad</span>
             <br />

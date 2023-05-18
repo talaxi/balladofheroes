@@ -15,6 +15,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 
 @Component({
   selector: 'app-main-overview',
@@ -27,7 +28,7 @@ export class MainOverviewComponent {
   
   constructor(public globalService: GlobalService, public lookupService: LookupService, private balladService: BalladService,
     private dpsCalculatorService: DpsCalculatorService, private gameLogService: GameLogService, public dialog: MatDialog,
-    private deviceDetectorService: DeviceDetectorService) {
+    private deviceDetectorService: DeviceDetectorService, private layoutService: LayoutService) {
 
   }
   
@@ -186,6 +187,7 @@ export class MainOverviewComponent {
     /*var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 */
+    this.layoutService.jumpedToColiseum = true;
     this.globalService.globalVar.settings.set("autoProgress", false);
     }
   }
