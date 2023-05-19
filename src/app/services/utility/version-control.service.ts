@@ -34,7 +34,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -542,6 +542,17 @@ export class VersionControlService {
             var heal = priest.abilityList.find(item => item.name === "Heal");
             if (heal !== undefined)
               heal.targetType = TargetEnum.LowestHpPercent;
+          }
+        }
+        if (version === .51) {
+          var countryRoadsOne = this.balladService.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo);
+          var hurriedRetreatTwo = this.balladService.findSubzone(SubZoneEnum.ColchisHurriedRetreat2);
+
+          if (countryRoadsOne !== undefined && countryRoadsOne.isAvailable && hurriedRetreatTwo !== undefined && hurriedRetreatTwo.isAvailable && hurriedRetreatTwo.victoryCount > 0 &&
+            this.globalService.globalVar.achievements.filter(item => item.subzone === SubZoneEnum.NemeaCountryRoadsTwo).length === 0) {
+            this.achievementService.createDefaultAchievementsForSubzone(countryRoadsOne.type).forEach(achievement => {
+              this.globalService.globalVar.achievements.push(achievement);
+            });
           }
         }
 
