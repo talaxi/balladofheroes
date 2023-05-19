@@ -35,7 +35,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.DamageDealtDown || effect.type === StatusEffectEnum.DamageDealtUp ||
       effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp ||
       effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp ||
-      effect.type === StatusEffectEnum.DamageOverTimeDamageUp)
+      effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp ||
+      effect.type === StatusEffectEnum.AllPrimaryStatsUp)
       return true;
 
     return false;
@@ -48,7 +49,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageDown ||
       effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown ||
       effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown ||
-      effect.type === StatusEffectEnum.AllElementalResistanceDown)
+      effect.type === StatusEffectEnum.AllElementalResistanceDown || effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
       return true;
 
     return false;
@@ -100,6 +101,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "LCK";
     if (effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp)
       return "RES";
+    if (effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || effect.type === StatusEffectEnum.AllPrimaryStatsUp)
+      return "ALL";
     if (effect.type === StatusEffectEnum.DamageDealtUp || effect.type === StatusEffectEnum.DamageDealtDown ||
       effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown ||
       effect.type === StatusEffectEnum.AirDamageUp || effect.type === StatusEffectEnum.AirDamageDown ||
@@ -117,7 +120,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "ITM";
     if (effect.type === StatusEffectEnum.AoeDamageUp)
       return "AOE";
-      if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp)
+      if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
       return "DOT";
     if (effect.type === StatusEffectEnum.StatusEffectDisplayCatchAll) {
       var hiddenEffectCount = 0;
@@ -162,6 +165,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       img = "assets/svg/water.svg";
     if (effect.type === StatusEffectEnum.AllElementalResistanceDown)
       img = "assets/svg/elementalResistanceDown.svg";
+    if (effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
+      img = "assets/svg/shieldSlam.svg";
 
     return img;
   }
@@ -285,6 +290,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.Unsteady) {
       src += "unbalanced.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbilitySpeedUp) {
+      src += "abilitySpeedUp.svg";
     }
     if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Fire) {
       src += "barfire.svg";

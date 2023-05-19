@@ -301,7 +301,6 @@ export class BalladService {
       shouldChange = this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount <= 0;
     }
     
-    console.log("Should change? " + shouldChange);
     return shouldChange;
   }
 

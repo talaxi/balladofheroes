@@ -20,11 +20,13 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class ColiseumViewComponent implements OnInit {
   selectedTournament: ColiseumTournament;
   repeatColiseumFight: boolean = false;
+  rewardsText = "";
 
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
+    this.rewardsText = this.setRewardsText();
     this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false
     var standardTournaments = this.getStandardColiseumTournaments();
     if (standardTournaments.length > 0)
@@ -218,5 +220,24 @@ export class ColiseumViewComponent implements OnInit {
 
   repeatColiseumFightToggle() {
     this.globalService.globalVar.settings.set("repeatColiseumFight", this.repeatColiseumFight);
+  }
+
+  setRewardsText() {
+    var rewardsText = "";
+
+    rewardsText = "Enemies will not give XP, Coins, or Items like normal. Instead, you will gain XP and Coins based on how many rounds you complete. The further you progress, the more you will gain. In addition, you will gain an item reward after each boss fight. <br/><br/>" +
+    "Completing Round 5: +10-50 Basic Crafting Materials<br/>" +
+    "Completing Round 10: +30-70 Rough Gem Fragments<br/>" +
+    "Completing Round 15: +25-100 Metal Scraps<br/>" +
+    "Completing Round 20: +60-100 Rough Gem Fragments<br/>" +
+    "Completing Round 25: +30-70 Uncommon Crafting Materials<br/>" +
+    "Every successive boss fight: +100 Rough Gem Fragments<br/><br/>" +
+    "<b><i>Rewards will continue to be adjusted as future content is added to the game</i></b>"
+
+    return rewardsText;
+  }
+
+  openModal(content: any) {    
+    return this.dialog.open(content, { width: '40%', height: 'auto' });      
   }
 }

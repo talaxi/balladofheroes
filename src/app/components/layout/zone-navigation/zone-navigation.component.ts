@@ -264,7 +264,7 @@ export class ZoneNavigationComponent implements OnInit {
     var allSubZonesCompleted = true;
 
     ballad.zones.forEach(zone => {
-      zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
+      zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
           allSubZonesCleared = false;
         if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
@@ -284,7 +284,7 @@ export class ZoneNavigationComponent implements OnInit {
   getZoneClass(zone: Zone) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
-    zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
+    zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
       if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
         allSubZonesCleared = false;
       if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||

@@ -92,6 +92,22 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 27 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ColchisHurriedRetreat2))
       this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 28 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.NemeaCountryRoadsTwo))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 29 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.NemeaLairOfTheLion))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 30 && this.balladService.getActiveSubZone().type === SubZoneEnum.StymphaliaArcadianWilderness)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 31 && this.balladService.getActiveSubZone().type === SubZoneEnum.ErymanthusSnowCappedPeaks)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 32 && this.balladService.getActiveSubZone().type === SubZoneEnum.CoastOfCreteCretanCoast)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 33 && this.balladService.getActiveSubZone().type === SubZoneEnum.GardenOfTheHesperidesHiddenOasis)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 34 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 35 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ErytheiaGeryonsFarm))
+      this.showStory = true;
 
     if (this.showStory)
       this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, this.balladService.getActiveSubZone().type);
@@ -243,7 +259,7 @@ export class StoryService {
           "<div class='sceneDiv'>" + this.zosimeText("“Any ideas on where to go next?”") + " Zosime asks you, snapping you out of your thoughts.</div>" +
           "<div>" + this.thalesText("“Before we fell, I felt invincible. As if there was nothing any hero had done that we couldn't do. But now, honestly, I don't know.”") + " You say to Zosime, uncertain.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Considering we were just given a second chance… I can't miss this opportunity!”") + "</div>" + 
+        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Great, then I'll decide. Let's go to Calydon. I've idolized Atalanta for as long as I can remember. Once as a child, I spent hours in the forest looking for bears hoping they would take me in. I never thought I'd ever have the chance to walk in her footsteps like this. Considering we were just given a second chance… I can't miss this opportunity!”") + "</div>" +
           "<div>You nod your head, just happy to have someone else make the decision. " + this.thalesText("“Lead the way.”") + "</div>";
     }
     else if (storyId === 14) {
@@ -252,8 +268,8 @@ export class StoryService {
           "<div>" + this.zosimeText("“Somewhere in all this wilderness is where Atalanta was abandoned at birth. Can you imagine, a babe alone in a dangerous place like this? And yet, to survive and accomplish all that she did!”") + "</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Artemis took to her and she became one with the wilds. And in turn, she became Artemis's arrow.”") + "</div>" +
-          "<div class='sceneDiv'>As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " + "</div>" + 
-          "<div>" + this.zosimeText("“Artemis has looked after me as well, when no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”") +"</div>";
+          "<div class='sceneDiv'>As Zosime recounts the events of the story, she kneels down to feel the earth below her feet. These grounds are obviously sacred to her. The sounds of approaching centaurs bring Zosime back to her feet. " + "</div>" +
+          "<div>" + this.zosimeText("“Artemis has looked after me as well, when no one else would. Without her, I would never have made it this far. No matter how many times I fall, I won't fail her.”") + "</div>";
     }
     else if (storyId === 15) {
       if (pageCount === 1)
@@ -321,7 +337,7 @@ export class StoryService {
           "<div>" + this.thalesText("“When Jason retrieved the Golden Fleece, the King of Colchis assigned him three impossible tasks. One was to defeat an army of men risen from the ground. I'm starting to think this could be the same magic.”") + " You say, mulling over the situation.</div>";
       if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.zosimeText("“You think someone is doing this intentionally?”") + "</div>" +
-          "<div>" + this.thalesText("“Maybe. We should be on our guard when we reach Colchis. It feels like whatever is going on here is deeper than just the stories.”") +"</div>";
+          "<div>" + this.thalesText("“Maybe. We should be on our guard when we reach Colchis. It feels like whatever is going on here is deeper than just the stories.”") + "</div>";
     }
     else if (storyId === 23) {
       if (pageCount === 1)
@@ -329,7 +345,7 @@ export class StoryService {
           "<div>You and Zosime try to ask the townsfolk about what you've seen, but no one cares to answer. You can't help but notice that, despite being a bustling city off the coast, much of the greenery around the city seems decaying. Unable to get a straight answer from the townspeople, you try to come up with another plan.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.zosimeText("“Let's just go straight to the King. If anyone would know what is going on here, it's him.”") + " Zosime says.</div> " +
-          "<div>It would seem that is the only option left. " + this.thalesText("“I think that's what Jason would do, so we should too.”") +"</div>";
+          "<div>It would seem that is the only option left. " + this.thalesText("“I think that's what Jason would do, so we should too.”") + "</div>";
     }
     else if (storyId === 24) {
       if (pageCount === 1)
@@ -362,10 +378,10 @@ export class StoryService {
       if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>Aeëtes smiled, but his voice turned icy. " + this.commonCharacterText("“It should be no surprise, the fleece was and is mine by right. I simply took back what belonged to me.") + "</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("How noble, the two of you emulating such great heroes. Tell me, what footsteps of mighty Jason's do you wish to follow? His heroic endeavors include coming to my homeland, stealing my treasures, and seeing to my son's death. Which of these great deeds are you hoping to accomplish?”") + "</div>"
-          "<div>The more he speaks, the angrier he grows. Before you can formulate a response, he continues.</div>";
-        if (pageCount === 3)
+      "<div>The more he speaks, the angrier he grows. Before you can formulate a response, he continues.</div>";
+      if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“I have shown you what you wanted to see. I, in turn, have a request. You say you faced many of my people on your way here. I would like to see your power against theirs.”") + "</div>" +
-        "<div>Aeëtes whispers a command, and immediately the lifeless husks rise from the earth. Within moments, you are surrounded. You have no choice but to fight your way out.</div>";
+          "<div>Aeëtes whispers a command, and immediately the lifeless husks rise from the earth. Within moments, you are surrounded. You have no choice but to fight your way out.</div>";
     }
     else if (storyId === 26) {
       if (pageCount === 1)
@@ -389,17 +405,17 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.thalesText("“We will return and set things right. I want to be the kind of hero who abolishes the evil in this world, and Ive never seen more evil in my life than in Colchis.") + "</div>" +
           "<div class='sceneDiv'>" + this.thalesText("But we'll need to be stronger. We'll need to figure out a way to beat Aeëtes without sacrificing a city.") + "</div>" +
-          "<div>" + this.thalesText("I've been thinking about this since we started our journey to Iolcus. I think it's time we attempt Heracles' trials again. If I want to be a hero, I have to be able to do what is right without fearing death. People need our help, and the only way we can do that is to keep moving forward.”") +"</div>";
+          "<div>" + this.thalesText("I've been thinking about this since we started our journey to Iolcus. I think it's time we attempt Heracles' trials again. If I want to be a hero, I have to be able to do what is right without fearing death. People need our help, and the only way we can do that is to keep moving forward.”") + "</div>";
     }
     else if (storyId === 28) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>As you make your way through the roads surrounding Nemea, you can't help but feel immense gratitude. Your encounter with Enceladus feels like a lifetime ago, and if not for Zosime and the gods, you would not be here right now.</div>" +
           "<div class='sceneDiv'>" + this.zosimeText("“No sign of any giants.”") + " Zosime says, returning from her scouting mission. " + this.zosimeText("We should be clear.”") + "</div>" +
           "<div class='sceneDiv'>" + this.thalesText("“Great, hopefully we can avoid getting our heads knocked off this time!”") + " You respond cheerfully.</div>" +
-          "<div>" + this.zosimeText("“You seem happy.”") + " Zosime says with a smirk.";
+          "<div>" + this.zosimeText("“Seems like you're in better spirits.”") + " Zosime responds.";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.thalesText("“I am. Thank you Zosime. If it wasn't for you, I would be spending the rest of my days in Asphodel full of regret. I couldn't have made it out of there without you.”") + " You say.</div>" +
-          "<div class='sceneDiv'>She smiles. " + this.thalesText("“I wouldn't be here without you either. We've been asked to do the impossible, I think it's okay to doubt yourself a little… as long as you get back up. I couldn't do this alone. I'm glad I have you here with me.”") + "</div>" +
+          "<div class='sceneDiv'>She smiles. " + this.zosimeText("“We've been asked to do the impossible, I think it's okay to doubt yourself a little… as long as you get back up. I couldn't do this alone either. I'm glad I have you here with me.”") + "</div>" +
           "<div>You return her smile, and the two of you continue on to the heart of Nemea.</div>";
     }
     else if (storyId === 29) {
@@ -409,35 +425,45 @@ export class StoryService {
     else if (storyId === 30) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>After resupplying in Tiryns, you consider which path to take next. " + this.thalesText("“I know it's not how Heracles did it, but I think we should head to Stymphalia next. It's a lot closer, and there's no penalty for going out of order, right?”") + " You say. </div>" +
-        "<div>" + this.zosimeText("“Makes sense to me.”") + " Zosime responds with a shrug as the two of you head in the direction of Heracles's sixth trial, the Stymphalian Birds. The birds, with beaks made of bronze and feathers as sharp as razors, were a constant nuisance over the countryside of Arcadia. Heracles required Athena’s assistance to bring the birds down, and you hope that the power Athena has already gifted to you will be enough to do the same.</div>";        
+          "<div>" + this.zosimeText("“Makes sense to me.”") + " Zosime responds with a shrug as the two of you head in the direction of Heracles's sixth trial, the Stymphalian Birds. The birds, with beaks made of bronze and feathers as sharp as razors, were a constant nuisance over the countryside of Arcadia. Heracles required Athena’s assistance to bring the birds down, and you hope that the power Athena has already gifted to you will be enough to do the same.</div>";
     }
     else if (storyId === 31) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>Every frigid step you take up Mount Erymanthos has you once again wishing for the sea. The chill of the winter months was bad enough off of the coast of Aigosthena, but here you cannot seem to stay warm no matter how many layers you wear.</div>" +
-        "<div class='sceneDiv'>" + this.zosimeText("“We already fought this boar once, doesn't that count?”") + " Zosime laments, shivering under her own layers. The boar who once destroyed much of the Calydonian countryside was first captured and spared by Heracles on the top of Mount Erymanthos.</div>" +
-        "<div class='sceneDiv'>" + this.thalesText("“Surely we're almost there now. Let's look just a little longer, or I might freeze to death out here.”") + " You reply.</div>" +
-        "<div>The minutes come and go without any luck. Just as you decide to turn around and try again another day, you see the boar charging in your direction. You seem to have finally found its territory, and it was not happy to see you.</div>";        
+        sceneText = "<div class='sceneDiv'>Every step you take up the frigid Mount Erymanthos has you once again wishing for the sea. The chill of the winter months was bad enough off of the coast of Aigosthena, but here you cannot seem to stay warm no matter how many layers you wear.</div>" +
+          "<div>" + this.zosimeText("“We already fought this boar once, doesn't that count?”") + " Zosime laments, shivering under her own layers. The boar who once destroyed much of the Calydonian countryside was first captured and spared by Heracles on the top of Mount Erymanthos.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>" + this.thalesText("“Surely we're almost there now. Let's look just a little longer, or I might freeze to death out here.”") + " You reply.</div>" +
+        "<div>The minutes come and go without any luck. Just as you decide to turn around and try again another day, you see the boar charging in your direction. You seem to have finally found its territory, and it was not happy to see you.</div>";
     }
     else if (storyId === 32) {
       if (pageCount === 1)
-      sceneText = "<div class='sceneDiv'>Even the wintery chill of the sea breeze was a welcome reprieve from climbing mountains. Your journey has once again brought you to the seas, this time en route to the island of Crete. The largest island in Greece, Crete was no stranger to monsters and heroes.</div>" +
-      "<div>The seventh trial of Heracles was to capture the Cretan Bull, perhaps most famous for being the father of the Minotaur. The Cretan Bull itself wreaked havoc throughout Greece, starting in Crete. Like Heracles before you, you intend to put an end to its destruction.</div>";      
+        sceneText = "<div class='sceneDiv'>Even the wintery chill of the sea breeze was a welcome reprieve from climbing mountains. Your journey has once again brought you to the seas, this time en route to the island of Crete. The largest island in Greece, Crete was no stranger to monsters and heroes.</div>" +
+          "<div>The seventh trial of Heracles was to capture the Cretan Bull, perhaps most famous for being the father of the Minotaur. The Cretan Bull itself wreaked havoc throughout Greece, starting in Crete. Like Heracles before you, you intend to put an end to its destruction.</div>";
     }
     else if (storyId === 33) {
       if (pageCount === 1)
-      sceneText = "<div class='sceneDiv'>After defeating the serpent Ladon, you spend some time circling the famed garden. You are surprised to see so many people around. You approach an exasperated woman within the grove.</div>" +
-      "<div class='sceneDiv'>" + this.commonCharacterText("“Thieves! The lot of you!”") + " She shouts at the people picking golden apples from the orchards.</div>" +
-      "<div class='sceneDiv'>" + this.commonCharacterText("“You!”") + " She points towards you and Zosime. " + this.commonCharacterText("“If you can stop these thieves and bring me back their apples, I'll let you keep some for yourselves!”") + "</div>" +
-      "<div><i><b>Golden Apples</b> may now drop from certain enemies in the Fertile Fields</i></div>";      
+        sceneText = "<div class='sceneDiv'>The seasons change while you make your way to your next target. The snow gives way to sun as you travel towards two of the remaining labors far to the west on foreign soil. You must travel beyond Greece and past the desert of northern Libya. As the days of walking through the endless sand pass, you decide that the wind and snow weren't all that bad.</div>" +
+          "<div>You hardly believe your eyes when you happen upon a hidden oasis in the middle of the desert. The deep green of the foliage and blue of the water is a welcome sight on your monotonous journey. You and Zosime quickly make your way to the water, taking a much needed break.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>" + this.thalesText("“First we'll make our way to the Garden of the Hesperides and see if we can get a golden apple. After that, we'll make way to the island of Erytheia and look for the cattle on Geryon’s farm. We can loop back from the north and finish up the few labors left on our way back home.”") + " You say, mentally recalling the maps of Heracles's travels you studied before leaving Greece.</div>" +
+        "<div>" + this.zosimeText("“I'm glad you've got all of the stories memorized.”") + " Zosime replies while filling several canteens with water from the oasis. " + this.zosimeText("“Lead the way and I'm right beside you.”") + "</div>";
     }
     else if (storyId === 34) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>After defeating the serpent Ladon, you spend some time circling the famed garden. You are surprised to see so many people around. You approach an exasperated woman within the grove.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“Thieves! The lot of you!”") + " She shouts at the people picking golden apples from the orchards.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“You!”") + " She points towards you and Zosime. " + this.commonCharacterText("“If you can stop these thieves and bring me back their apples, I'll let you keep some for yourselves!”") + "</div>" +
+          "<div><i><b>Golden Apples</b> have a chance to drop from certain enemies in the Fertile Fields, increasing your alchemy level.</i></div>";
+    }
+    else if (storyId === 35) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>With the demise of Geryon, your journey to the West is complete. You've completed more than half of Heracles's trials now, and the remainder of your journey lays back on the eastern side of Greece. </div>" +
           "<div>You journey back the way you came, reaching Cádiz and securing boat travel back to your homeland. On the first night of your return trip, you are greeted by a familiar face.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.hermesText("“Hey again! You've accomplished quite a lot since the last time we spoke! You sure can go a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
-          "<div class='sceneDiv'>" + this.hermesText("“You've impressed quite a few of us on Olympus. Father is ready to speak to you now. I think it's almost time for our big battle!”") + " Zeus, father of Hermes, Athena, and many others, was seeking your presence. You felt equal parts excitement and anxiety. </div>" +
-          "<div>" + this.hermesText("“Hopefully this time, the Titans and the Giants will get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.hermesText("“You've accomplished quite a lot since the last time we spoke! You sure can go a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
+          "<div>" + this.hermesText("“You've impressed quite a few of us on Olympus. Even father is ready to speak to you now.”") + " Zeus, father of Hermes, Athena, and many others, was seeking your presence. You felt equal parts excitement and anxiety. </div>";
+      else if (pageCount === 3)        
+          sceneText = "<div class='sceneDiv'>" + this.hermesText("“I think the Giants and the Titans are ready to make their move. Hopefully this time, they'll get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
           "<div>You quickly make your way to tell the news to Zosime. It seems a change of plans was in order and that Heracles's trials would have to wait a little longer. Your destination was now Mount Olympus.</div>";
     }
 
@@ -568,16 +594,19 @@ export class StoryService {
       this.pageCount = 1;
     }
     if (this.globalService.globalVar.currentStoryId === 31) {
-      this.pageCount = 1;
+      this.pageCount = 2;
     }
     if (this.globalService.globalVar.currentStoryId === 32) {
       this.pageCount = 1;
     }
     if (this.globalService.globalVar.currentStoryId === 33) {
-      this.pageCount = 1;
+      this.pageCount = 2;
     }
     if (this.globalService.globalVar.currentStoryId === 34) {
-      this.pageCount = 2;
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 35) {
+      this.pageCount = 3;
     }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
@@ -602,19 +631,19 @@ export class StoryService {
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
         this.globalService.globalVar.isBattlePaused = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack,  undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type));
 
         if (this.deviceDetectorService.isMobile())
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay,  undefined, undefined, true, subzone.type));
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type));
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
         this.balladService.setActiveSubZone(SubZoneEnum.DodonaDelphi);
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory,  undefined, undefined, true, SubZoneEnum.DodonaDelphi));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting,  undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting, undefined, undefined, true, subzone.type));
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis)?.quality);
         var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
@@ -629,7 +658,7 @@ export class StoryService {
         this.showFirstTimeUnderworldStory = false;
         this.triggerFirstTimeUnderworldScene = false;
         this.endFirstTimeUnderworldScene = true;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications,  undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications, undefined, undefined, true, subzone.type));
         setTimeout(() => {
           this.endFirstTimeUnderworldScene = false;
         }, 5000);
@@ -645,7 +674,7 @@ export class StoryService {
         }
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests,  undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests, undefined, undefined, true, subzone.type));
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
           championBallad.isAvailable = true;
@@ -749,10 +778,10 @@ export class StoryService {
     if (scene === OptionalSceneEnum.Jewelcrafting) {
       if (pageCount === 1)
         sceneText = "You walk around the marketplace while soaking in the breeze coming off of the sea. Being near the sea gives you a level of peace that had been missing in your travels. It was not so long ago that all you knew was Aigosthena.<br/><br/>" +
-        "The sound of metal on metal breaks your focus and draws your attention. Following the sound, you come upon an outdoor stall in front of a smaller work area.";
+          "The sound of metal on metal breaks your focus and draws your attention. Following the sound, you come upon an outdoor stall in front of a smaller work area.";
       if (pageCount === 2)
         sceneText = "Moving to the stall, you see people working with delicate jewelry. Intricately designed pieces were being shaped and set with sparkling gemstones. <br/><br/>" +
-        "A woman behind the stall notices your curiosity. " + this.commonCharacterText("“Beautiful, isn't it? You look like the type with a discerning eye and delicate touch. If you're interested, bring the materials and we'll show you how to do this yourself. For a small fee, of course.”");
+          "A woman behind the stall notices your curiosity. " + this.commonCharacterText("“Beautiful, isn't it? You look like the type with a discerning eye and delicate touch. If you're interested, bring the materials and we'll show you how to do this yourself. For a small fee, of course.”");
     }
     if (scene === OptionalSceneEnum.TraderIntro) {
       if (pageCount === 1)
@@ -763,44 +792,44 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“What I need is my money back! …But yes, some help would be nice, thank you.”") + " The man says as he struggles to put the box into place.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“My lifelong dream has been to travel Greece and trade amongst the people. To become the greatest merchant there ever was!") + "</div>" +
           "<div>" + this.commonCharacterText("But I'm not the fighting type, you see? I finally saved up enough money to hire some help and away we finally were! We barely made it a day before they turned tail and ran from a pack of hyenas, with my money! This is just what I was able to escape with, but my goods are scattered out there, no doubt being sullied by those beasts!”") + "</div>";
-        if (pageCount === 3)
+      if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>The man lets out a big sigh as he starts to walk towards the next box.</div>" +
-        "<div>" + this.commonCharacterText("“You two look like you can handle yourselves. Do you think you could bring back my goods? If you can help me, I'd be more than happy to trade with you!”") + "</div>";
+          "<div>" + this.commonCharacterText("“You two look like you can handle yourselves. Do you think you could bring back my goods? If you can help me, I'd be more than happy to trade with you!”") + "</div>";
     }
     if (scene === OptionalSceneEnum.AugeanStables1) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>While traveling through Elis, you decide to stop at the Augean Stables, location of Heracles's fifth trial. The demigod was tasked with cleaning the stables, home to divine immortal livestock. In Heracles's time, the stables had not been cleaned in 30 years. As you approach, you are thankful to see that the area has been kept clean since then.</div>" +
-        "<div>As you reach the stables, you notice two things. One, the animals here are some of the most beautiful you have ever seen. Each animal has an aura about them that looked truly divine and pristine. The second thing you notice was that the stables themselves were the opposite, looking almost as if they could collapse at any moment.</div>";      
+          "<div>As you reach the stables, you notice two things. One, the animals here are some of the most beautiful you have ever seen. Each animal has an aura about them that looked truly divine and pristine. The second thing you notice was that the stables themselves were the opposite, looking almost as if they could collapse at any moment.</div>";
       if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>A man stood nearby, inspecting the stables. You hear him muttering to himself as you walk his direction.</div>" +
-        "<div class='sceneDiv'>" + this.commonCharacterText("“...could only get the door to latch, then...”") + " He says, puzzled by his current predicament.</div>" +
-        "<div class='sceneDiv'>" + this.thalesText("“Hi there.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
-        "<div>The thinking man ponders his situation for a further moment, then turns to you. " + this.commonCharacterText("“The livestock here have been taken care of since the time of King Phyleus. Money has flowed in to take care of the animals, but the stables themselves have fallen by the wayside… I'm trying to make do with what I have. If you have any resources I could use, you would have my thanks.”") + "</div>";
+          "<div class='sceneDiv'>" + this.commonCharacterText("“...could only get the door to latch, then...”") + " He says, puzzled by his current predicament.</div>" +
+          "<div class='sceneDiv'>" + this.thalesText("“Hi there.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
+          "<div>The thinking man ponders his situation for a further moment, then turns to you. " + this.commonCharacterText("“The livestock here have been taken care of since the time of King Phyleus. Money has flowed in to take care of the animals, but the stables themselves have fallen by the wayside… I'm trying to make do with what I have. If you have any resources I could use, you would have my thanks.”") + "</div>";
     }
     if (scene === OptionalSceneEnum.AugeanStables2) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix the door and keep the livestock separated.”") + "</div>";              
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix the door and keep the livestock separated.”") + "</div>";
     }
     if (scene === OptionalSceneEnum.AugeanStables3) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You approach the stables once more, finding the man once again pondering its state. " + this.commonCharacterText("“...could cover this section, but there's just not enough for the whole barn...”") + "</div>" +
-        "<div class='sceneDiv'>" + this.thalesText("“Hi again.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
-        "<div>" + this.commonCharacterText("“Now that you mention it...”") + "</div>";
+          "<div class='sceneDiv'>" + this.thalesText("“Hi again.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
+          "<div>" + this.commonCharacterText("“Now that you mention it...”") + "</div>";
     }
     if (scene === OptionalSceneEnum.AugeanStables4) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix the roof and keep the rain off the livestock.”") + "</div>";              
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix the roof and keep the rain off the livestock.”") + "</div>";
     }
     if (scene === OptionalSceneEnum.AugeanStables5) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You approach the stables once more, finding the man once again pondering its state. " + this.commonCharacterText("“...could just secure these two walls, then...”") + "</div>" +
-        "<div class='sceneDiv'>" + this.thalesText("“Hi again.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
-        "<div>" + this.commonCharacterText("“Now that you mention it...”") + "</div>";
+          "<div class='sceneDiv'>" + this.thalesText("“Hi again.”") + " You say. " + this.thalesText("“Anything we can help with?”") + "</div>" +
+          "<div>" + this.commonCharacterText("“Now that you mention it...”") + "</div>";
     }
     if (scene === OptionalSceneEnum.AugeanStables6) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix up the walls and keep the livestock out of the elements.") + "</div>" + 
-        "<div>" + this.commonCharacterText("“I think that will just about do it. You know, while I was working I stumbled upon this weird rock. I'm not quite sure what to do with it, but maybe you can make use of it?”") + "</div>";              
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix up the walls and keep the livestock out of the elements.") + "</div>" +
+          "<div>" + this.commonCharacterText("“I think that will just about do it. You know, while I was working I stumbled upon this weird rock. I'm not quite sure what to do with it, but maybe you can make use of it?”") + "</div>";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -853,7 +882,7 @@ export class StoryService {
     }
     if (this.showOptionalStory === OptionalSceneEnum.Jewelcrafting) {
       this.pageCount = 2;
-    } 
+    }
     if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {
       this.pageCount = 3;
     }
@@ -887,7 +916,7 @@ export class StoryService {
 
     if (this.currentPage > this.pageCount) {
       this.globalService.globalVar.isBattlePaused = false;
-      if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {        
+      if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 15 Olives and Fennel.");
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 15);
         if (resource !== undefined)
@@ -903,32 +932,31 @@ export class StoryService {
         this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked = true;
       }
       if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {
-        this.globalService.globalVar.sidequestData.traderHuntLevel = 1;        
+        this.globalService.globalVar.sidequestData.traderHuntLevel = 1;
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables2) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
-      }      
+      }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables4) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
-      }      
+      }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables6) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 5.");
-        
+
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RadiatingHolyStone, 1);
         if (resource !== undefined) {
-          console.log("Gaining gem " + resource.item);
           this.lookupService.gainResource(resource);
         }
 
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.");        
-        this.professionService.learnRecipe(ProfessionEnum.Jewelcrafting, ItemsEnum.RadiatingHolyStone);        
-      }      
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.");
+        this.professionService.learnRecipe(ProfessionEnum.Jewelcrafting, ItemsEnum.RadiatingHolyStone);
+      }
 
       this.currentPage = 1;
-      this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);      
+      this.globalService.globalVar.optionalScenesViewed.push(this.showOptionalStory);
       this.lookupService.addSideStoryToLog(this.showOptionalStory, this.balladService.getActiveSubZone().type);
       this.showOptionalStory = OptionalSceneEnum.None;
       this.returnedFromOptionalScene = true;

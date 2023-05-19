@@ -496,7 +496,7 @@ export class GlobalService {
       hellfire.name = "Hellfire";
       hellfire.requiredLevel = this.utilityService.defaultGodAbilityLevel;
       hellfire.isAvailable = false;
-      hellfire.cooldown = hellfire.currentCooldown = 26;
+      hellfire.cooldown = hellfire.currentCooldown = 32;
       hellfire.dealsDirectDamage = true;
       hellfire.effectiveness = 1.3;
       hellfire.isAoe = true;
@@ -507,9 +507,9 @@ export class GlobalService {
       earthquake.name = "Earthquake";
       earthquake.requiredLevel = this.utilityService.godAbility2Level;
       earthquake.isAvailable = false;
-      earthquake.cooldown = earthquake.currentCooldown = 41;
+      earthquake.cooldown = earthquake.currentCooldown = 46;
       earthquake.dealsDirectDamage = true;
-      earthquake.effectiveness = 1.75;
+      earthquake.effectiveness = 1.7;
       earthquake.isAoe = true;
       earthquake.elementalType = ElementalTypeEnum.Earth;
       god.abilityList.push(earthquake);
@@ -583,6 +583,7 @@ export class GlobalService {
       revelry.name = "Revelry";
       revelry.isAvailable = true;
       revelry.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      revelry.targetType = TargetEnum.LowestHpPercent;
       revelry.dealsDirectDamage = false;
       revelry.targetsAllies = true;
       revelry.secondaryEffectiveness = 1.025;
@@ -815,7 +816,8 @@ export class GlobalService {
       || type === StatusEffectEnum.AirDamageTakenUp || type === StatusEffectEnum.HolyDamageTakenUp || type === StatusEffectEnum.LightningDamageTakenUp || type === StatusEffectEnum.WaterDamageTakenUp || type === StatusEffectEnum.EarthDamageTakenDown || type === StatusEffectEnum.FireDamageTakenDown
       || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp ||
-      type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape)
+      type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape
+      || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp)
       refreshes = true;
 
     return refreshes;
@@ -2472,9 +2474,7 @@ export class GlobalService {
       level === this.utilityService.permanentGodAbility2Level || level === this.utilityService.permanentGodAbility3Level) {
       increaseType = GodLevelIncreaseEnum.PermanentAbility;
     }
-    //TODO: just make this %50 up to whatever level you have permanent stats (will be 1500 for now)
-    //else if ((level === 50 || level === 100 || level === 150 || level === 200 ||
-    //(level > 200 && level <= 500 && level % 50 === 0))) {
+    //TODO: just make this %50 up to whatever level you have permanent stats (will be 2000 for now)    
     else if (level % 50 === 0 && level <= 2000) {
       if (this.isGodPermanentStatStillObtainable(god, level))
         increaseType = GodLevelIncreaseEnum.PermanentStats;
@@ -2702,11 +2702,14 @@ export class GlobalService {
   }
 
   resetCooldowns() {
-    var party = this.getActivePartyCharacters(true);
+    var party = this.globalVar.characters.filter(item => item.isAvailable);
 
     party.forEach(member => {
       member.battleInfo.autoAttackTimer = 0;//this.getAutoAttackTime(member);
       member.battleInfo.barrierValue = 0;
+
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
 
       if (member.abilityList !== undefined && member.abilityList.length > 0)
         member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
@@ -3018,7 +3021,7 @@ export class GlobalService {
     }
     
     if (round > 25) {
-      var rng = this.utilityService.getRandomInteger(60, 100);
+      var rng = this.utilityService.getRandomInteger(30, 70);
       var gainedItem = this.getRandomUncommonMaterial();
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
@@ -3042,8 +3045,6 @@ export class GlobalService {
 
   setNewTournament(canRepeat: boolean = false) {    
     var repeatColiseumFight = this.globalVar.settings.get("repeatColiseumFight") ?? false;
-
-    console.log("Repeat coliseum? " + repeatColiseumFight);
 
     if (!repeatColiseumFight || !canRepeat)
       return new ColiseumTournament();

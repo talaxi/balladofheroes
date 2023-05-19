@@ -2533,8 +2533,7 @@ export class SubZoneGeneratorService {
       battleOptions.push(enemyTeam5);
 
       var enemyTeam6: EnemyTeam = new EnemyTeam();
-      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GoldenAppleThief));
-      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GoldenAppleThief));
+      enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LargeGardenSnake));
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BeeSwarm));
       enemyTeam6.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BeeSwarm));
       battleOptions.push(enemyTeam6);      
@@ -2973,13 +2972,7 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.LibyaIsleCenter) {
       subZoneEnums.push(SubZoneEnum.NemeaCountryRoadsOne);
-    }
-    if (type === SubZoneEnum.NemeaCountryRoadsTwo) {
-      subZoneEnums.push(SubZoneEnum.NemeaRollingHills);
-    }
-    if (type === SubZoneEnum.NemeaRollingHills) {
-      subZoneEnums.push(SubZoneEnum.NemeaLairOfTheLion);
-    }
+    }   
     if (type === SubZoneEnum.AsphodelTheDepths) {
       subZoneEnums.push(SubZoneEnum.AsphodelForgottenHalls);
     }
@@ -3487,8 +3480,7 @@ export class SubZoneGeneratorService {
     {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.EssenceOfWater, SubZoneEnum.NemeaCleonea)); 
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ToxicIchor, SubZoneEnum.NemeaCleonea)); 
-      //new vial
-
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.VialOfTheCretanSea, SubZoneEnum.NemeaCleonea));
     }
 
     return shopOptions;

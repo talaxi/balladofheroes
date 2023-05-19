@@ -29,9 +29,6 @@ export class EnemyDescriptionViewComponent {
         var defeatCount = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.character.bestiaryType);
         if (defeatCount !== undefined)
           this.defeatCount = defeatCount.count;
-
-          //TODO: remove this line 
-        this.defeatCount = 100;
       }
     });
   }

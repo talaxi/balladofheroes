@@ -21,6 +21,7 @@ import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enu
 import { LookupService } from '../lookup.service';
 import { KeybindService } from './keybind.service';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -398,11 +399,29 @@ export class VersionControlService {
             var passive = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
             if (passive !== undefined) {
               passive.maxCount = 3;
+              passive.userEffect[0].maxCount = 3;
+              passive.userEffect[0].effectiveness = 1.02 + ((passive.userEffect[0].effectiveness - 1.02) * (2/3)); 
+            }
+
+            var ability1 = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.cooldown += 6;
+            }
+
+            var ability2 = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.cooldown += 5;
+              ability2.effectiveness -= 0.05;
             }
           }
 
           var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
           if (dionysusGod !== undefined) {
+            var ability1 = dionysusGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.targetType = TargetEnum.LowestHpPercent;
+            }
+
             var ability2 = dionysusGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
             if (ability2 !== undefined) {
               ability2.targetEffect[0].effectiveness += .01;

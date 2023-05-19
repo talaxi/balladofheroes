@@ -126,5 +126,8 @@ export enum StatusEffectEnum {
     FlamingToxin,
     ParalyzingToxin,
     ElixirOfSpeed,
-    PreventEscape
+    PreventEscape,
+    AllPrimaryStatsUp,
+    AllPrimaryStatsExcludeHpUp,
+    DamageOverTimeTakenDown
   }

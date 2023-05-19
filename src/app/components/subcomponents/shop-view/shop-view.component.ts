@@ -130,7 +130,7 @@ export class ShopViewComponent implements OnInit {
       if (this.deviceDetectorService.isMobile())
         this.dialog.open(content, { width: '95%', height: '85%' });
       else
-        this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85%' });
+        this.dialog.open(content, { width: '75%', maxHeight: '85%' });
     }
     else if (option.type === ShopTypeEnum.AugeanStables) {
       if (this.deviceDetectorService.isMobile())
@@ -207,7 +207,7 @@ export class ShopViewComponent implements OnInit {
     if (this.globalService.globalVar.sidequestData.traderHuntLevel === 1)
       this.traderLevelUpText = "“If you could help me get back the rest of my materials, I sure would appreciate it!”";
     else
-      this.traderLevelUpText = "“If you can continue to clear the way to more materials, I'd be happy to trade it with you!”";
+      this.traderLevelUpText = "“If you can continue to clear the way to more materials, I'd be happy to trade for them with you!”";
   }
 
   sortFunction(a: ShopItem, b: ShopItem) {

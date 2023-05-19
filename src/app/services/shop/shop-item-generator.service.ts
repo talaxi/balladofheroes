@@ -286,6 +286,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.VialOfTheBlackSea) {
       purchasePrice.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 8));      
     }
+    if (item === ItemsEnum.VialOfTheCretanSea) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 8));      
+    }
     if (item === ItemsEnum.EssenceOfWater) {
       purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfFire, 8));      
     }
