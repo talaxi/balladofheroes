@@ -6,6 +6,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { StoryService } from 'src/app/services/story/story.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-main',
@@ -22,7 +23,8 @@ export class MainComponent implements OnInit {
   isMobile = false;
 
   constructor(private layoutService: LayoutService, private gameLoopService: GameLoopService, public lookupService: LookupService,
-    public storyService: StoryService, private deviceDetectorService: DeviceDetectorService, private globalService: GlobalService) { }
+    public storyService: StoryService, private deviceDetectorService: DeviceDetectorService, private globalService: GlobalService,
+    private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -42,6 +44,10 @@ export class MainComponent implements OnInit {
     remainingLoad = (1 - (this.globalService.bankedTime / this.globalService.maxBankedTime)) * 100;
 
     return remainingLoad;
+  }
+
+  getActiveTimeAmount() {
+    return (this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.averageActiveTimeLimit) / 60;
   }
 
   ngOnDestroy() {    

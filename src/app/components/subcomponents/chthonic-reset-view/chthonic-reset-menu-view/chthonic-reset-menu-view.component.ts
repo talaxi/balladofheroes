@@ -6,6 +6,7 @@ import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.mode
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -97,9 +98,11 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     return this.utilityService.roundTo((((god.level - 1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
   }
 
-  getChthonicFavor(god: God) {
-    //gives a linear small amount
-    return this.utilityService.roundTo((god.level - 1) / 20, 2);
+  getChthonicFavor(god: God) {    
+    //500 * (log(.004 * x + 1))
+    var factorAmount = (500 * Math.log10(.00325 * (Math.ceil(god.level * .75) - 1) + 1));
+
+    return this.utilityService.roundTo((1.02**(factorAmount))-1, 2);
   }
 
   resetGod(god: God) {
@@ -151,7 +154,11 @@ export class ChthonicResetMenuViewComponent implements OnInit {
         ability.isAvailable = true;
     });
 
-    this.globalService.getActivePartyCharacters(true).forEach(member => {
+    this.globalService.getActivePartyCharacters(true).forEach(member => {      
+    if (god.type === GodEnum.Hades) {
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
+    }
+
       this.globalService.calculateCharacterBattleStats(member, false);
     });
   }

@@ -258,6 +258,10 @@ export class AlchemyViewComponent implements OnInit {
     return "<span class='" + name.toLowerCase() + "Equipment bold'>" + name.toLowerCase() + " recipes</span>";
   }
 
+  getXpIncrease() {
+    return this.selectedRecipe.expGain;
+  }
+
   recipesAtQualityLevelAmount(quality: EquipmentQualityEnum) {
     return this.alchemy?.availableRecipes.filter(item => item.quality === quality).length;
   }

@@ -27,7 +27,7 @@
             Out of Stock
         </div>
         <div *ngIf="!outOfStock">
-            <div *ngFor="let resource of item.purchasePrice">
+            <div *ngFor="let resource of item.purchasePrice" [ngClass]="{'shopItemWidth': totalItemsInShop === 1 }">
                 <app-resource-required-view [resource]="resource" [isSmall]="true"></app-resource-required-view>
             </div>
             <br />

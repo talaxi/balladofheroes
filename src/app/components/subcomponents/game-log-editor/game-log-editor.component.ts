@@ -18,14 +18,21 @@ export class GameLogEditorComponent implements OnInit {
   partyStatusEffect = false;
   enemyStatusEffect = false;
   battleRewards = false;
+  battleXpRewards = false;
+  battleCoinsRewards = false;
+  battleItemsRewards = false;
   foundTreasureChest = false;
+  moveLocations = false;
   partyLevelUp = false;
   godLevelUp = false;
+  godAffinityLevelUp = false;
   achievementUnlocked = false;
   alchemyLevelUp = false;
   alchemyCreation = false;
+  alchemyQueueEmpty = false;
   jewelcraftingLevelUp = false;
   jewelcraftingCreation = false;
+  jewelcraftingQueueEmpty = false;
   battleUpdates = false;
   useBattleItem = false;
   followerSearch = false;
@@ -103,12 +110,36 @@ export class GameLogEditorComponent implements OnInit {
       this.battleRewards = false;
     else
       this.battleRewards = battleRewards;
+      
+    var battleXpRewards = this.globalService.globalVar.gameLogSettings.get("battleXpRewards");
+    if (battleXpRewards === undefined)
+      this.battleXpRewards = false;
+    else
+      this.battleXpRewards = battleXpRewards;
+      
+    var battleCoinsRewards = this.globalService.globalVar.gameLogSettings.get("battleCoinsRewards");
+    if (battleCoinsRewards === undefined)
+      this.battleCoinsRewards = false;
+    else
+      this.battleCoinsRewards = battleCoinsRewards;
+      
+    var battleItemsRewards = this.globalService.globalVar.gameLogSettings.get("battleItemsRewards");
+    if (battleItemsRewards === undefined)
+      this.battleItemsRewards = false;
+    else
+      this.battleItemsRewards = battleItemsRewards;
 
     var foundTreasureChest = this.globalService.globalVar.gameLogSettings.get("foundTreasureChest");
     if (foundTreasureChest === undefined)
       this.foundTreasureChest = false;
     else
       this.foundTreasureChest = foundTreasureChest;
+
+      var moveLocations = this.globalService.globalVar.gameLogSettings.get("moveLocations");
+      if (moveLocations === undefined)
+        this.moveLocations = false;
+      else
+        this.moveLocations = moveLocations;
 
     var partyLevelUp = this.globalService.globalVar.gameLogSettings.get("partyLevelUp");
     if (partyLevelUp === undefined)
@@ -121,6 +152,12 @@ export class GameLogEditorComponent implements OnInit {
       this.godLevelUp = false;
     else
       this.godLevelUp = godLevelUp;
+
+      var godAffinityLevelUp = this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp");
+      if (godAffinityLevelUp === undefined)
+        this.godAffinityLevelUp = false;
+      else
+        this.godAffinityLevelUp = godAffinityLevelUp;  
 
     var prayToAltar = this.globalService.globalVar.gameLogSettings.get("prayToAltar");
     if (prayToAltar === undefined)
@@ -146,6 +183,11 @@ export class GameLogEditorComponent implements OnInit {
       else
         this.alchemyCreation = alchemyCreation;
   
+        var alchemyQueueEmpty = this.globalService.globalVar.gameLogSettings.get("alchemyQueueEmpty");
+        if (alchemyQueueEmpty === undefined)
+          this.alchemyQueueEmpty = false;
+        else
+          this.alchemyQueueEmpty = alchemyQueueEmpty;
 
     var jewelcraftingLevelUp = this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp");
     if (jewelcraftingLevelUp === undefined)
@@ -158,6 +200,12 @@ export class GameLogEditorComponent implements OnInit {
       this.jewelcraftingCreation = false;
     else
       this.jewelcraftingCreation = jewelcraftingCreation;
+
+      var jewelcraftingQueueEmpty = this.globalService.globalVar.gameLogSettings.get("jewelcraftingQueueEmpty");
+      if (jewelcraftingQueueEmpty === undefined)
+        this.jewelcraftingQueueEmpty = false;
+      else
+        this.jewelcraftingQueueEmpty = jewelcraftingQueueEmpty;
 
     var battleUpdates = this.globalService.globalVar.gameLogSettings.get("battleUpdates");
     if (battleUpdates === undefined)
@@ -216,6 +264,18 @@ export class GameLogEditorComponent implements OnInit {
     this.globalService.globalVar.gameLogSettings.set("battleRewards", this.battleRewards);
   }
 
+  battleXpRewardsToggle() {
+    this.globalService.globalVar.gameLogSettings.set("battleXpRewards", this.battleXpRewards);
+  }
+
+  battleCoinsRewardsToggle() {
+    this.globalService.globalVar.gameLogSettings.set("battleCoinsRewards", this.battleCoinsRewards);
+  }
+
+  battleItemsRewardsToggle() {
+    this.globalService.globalVar.gameLogSettings.set("battleItemsRewards", this.battleItemsRewards);
+  }
+
   foundTreasureChestToggle() {
     this.globalService.globalVar.gameLogSettings.set("foundTreasureChest", this.foundTreasureChest);
   }
@@ -230,6 +290,10 @@ export class GameLogEditorComponent implements OnInit {
 
   godLevelUpToggle() {
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", this.godLevelUp);
+  }
+  
+  godAffinityLevelUpToggle() {
+    this.globalService.globalVar.gameLogSettings.set("godAffinityLevelUp", this.godAffinityLevelUp);
   }
 
   prayToAltarToggle() {
@@ -248,12 +312,20 @@ export class GameLogEditorComponent implements OnInit {
     this.globalService.globalVar.gameLogSettings.set("alchemyCreation", this.alchemyCreation);
   }
 
+  alchemyQueueEmptyToggle() {
+    this.globalService.globalVar.gameLogSettings.set("alchemyQueueEmpty", this.alchemyQueueEmpty);
+  }
+
   jewelcraftingLevelUpToggle() {
     this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", this.jewelcraftingLevelUp);
   }
 
   jewelcraftingCreationToggle() {
     this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", this.jewelcraftingCreation);
+  }
+
+  jewelcraftingQueueEmptyToggle() {
+    this.globalService.globalVar.gameLogSettings.set("jewelcraftingQueueEmpty", this.jewelcraftingQueueEmpty);
   }
 
   battleUpdatesToggle() {
@@ -270,5 +342,9 @@ export class GameLogEditorComponent implements OnInit {
 
   followerPrayerToggle() {
     this.globalService.globalVar.gameLogSettings.set("followerPrayer", this.followerPrayer);
+  }
+
+  moveLocationsToggle() {
+    this.globalService.globalVar.gameLogSettings.set("moveLocations", this.moveLocations);
   }
 }

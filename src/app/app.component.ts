@@ -25,6 +25,7 @@ import { ActivatedRoute, Router } from '@angular/router';
 import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
 import { SubZoneEnum } from './models/enums/sub-zone-enum.model';
+import { DpsCalculatorService } from './services/battle/dps-calculator.service';
 
 @Component({
   selector: 'app-root',
@@ -45,7 +46,7 @@ export class AppComponent {
     private balladService: BalladService, private backgroundService: BackgroundService, public dialog: MatDialog,
     private utilityService: UtilityService, private lookupService: LookupService, private storyService: StoryService,
     private versionControlService: VersionControlService, private gameLogService: GameLogService, private activatedRoute: ActivatedRoute,
-    private router: Router) {
+    private router: Router, private dpsCalculatorService: DpsCalculatorService) {
 
   }
 
@@ -109,7 +110,7 @@ export class AppComponent {
       if (this.globalService.globalVar.performanceMode) {
         var performanceNow = performance.now();
         var diff = performanceNow - lastPerformanceNow;
-        console.log('Full Game Loop: ' + diff + " ms");
+        console.log('Full Game Loop: ' + diff + " ms, FPS is: " + (1000 / diff));
 
         lastPerformanceNow = performanceNow;
       }
@@ -125,8 +126,27 @@ export class AppComponent {
     if (this.globalService.globalVar.isGamePaused)
       deltaTime = 0;
 
-    deltaTime = this.handleShortTermCatchUpTime(deltaTime, this.loading, activeSubzone);
-    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
+    var maxRunCount = 1;
+    var runCount = 1;
+
+    if (this.globalService.globalVar.isCatchingUp)
+      maxRunCount = 5;
+
+    while (runCount <= maxRunCount) {
+      if (runCount > 1)
+        deltaTime = 0;
+      
+      this.updateGameState(deltaTime, activeSubzone);
+      runCount += 1;
+    }
+  }
+
+  updateGameState(deltaTime: number, activeSubzone: SubZone) {
+    var originalDeltaTime = deltaTime;
+    deltaTime = this.handleShortTermCatchUpTime(deltaTime, activeSubzone);
+    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;    
+    if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
+      this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
@@ -136,7 +156,7 @@ export class AppComponent {
     else
       this.globalService.globalVar.timers.townHpGainTimer = 0;
 
-    this.battleService.handleBattle(deltaTime, this.loading);
+    this.battleService.handleBattle(deltaTime, this.loading);  
   }
 
   loadStartup() {
@@ -151,10 +171,12 @@ export class AppComponent {
     this.globalService.globalVar.isBattlePaused = false;
   }
 
-  handleShortTermCatchUpTime(deltaTime: number, loadingContent: any, subzone: SubZone) {
-    if (deltaTime > this.utilityService.activeTimeLimit) {
-      this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - this.utilityService.activeTimeLimit;
-      deltaTime = this.utilityService.activeTimeLimit;
+  handleShortTermCatchUpTime(deltaTime: number, subzone: SubZone) {
+    var activeTimeLimit = this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.lowActiveTimeLimit; 
+
+    if (deltaTime > activeTimeLimit) {
+      this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - activeTimeLimit;
+      deltaTime = activeTimeLimit;
     }
     var doubleSpeedActive = false;
 
@@ -174,10 +196,14 @@ export class AppComponent {
     //}
 
     //cap extra speed after you deduct the catch up speed amount
-    if (this.globalService.globalVar.extraSpeedTimeRemaining > this.utilityService.extraSpeedTimeLimit)
-    this.globalService.globalVar.extraSpeedTimeRemaining = this.utilityService.extraSpeedTimeLimit;
+    var timeLimit = this.utilityService.extraSpeedTimeLimit;
+    if (this.globalService.globalVar.isSubscriber)
+      timeLimit = this.utilityService.patronExtraSpeedTimeLimit;
+
+    if (this.globalService.globalVar.extraSpeedTimeRemaining > timeLimit)
+    this.globalService.globalVar.extraSpeedTimeRemaining = timeLimit;
     
-    var batchTime = this.getBatchRunTime(subzone); //runs the game in batches of 5 seconds max    
+    var batchTime = this.getBatchRunTime(subzone, deltaTime); //runs the game in batches of 5 seconds max    
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {
       this.lookupService.isUIHidden = true;
@@ -197,7 +223,7 @@ export class AppComponent {
         this.globalService.bankedTime = 0;
         this.globalService.maxBankedTime = 0;
         this.lookupService.isUIHidden = false;
-        this.globalService.globalVar.isCatchingUp = false;
+        this.globalService.globalVar.isCatchingUp = false;        
         this.gameLogService.disableOverlayBuffer = false;
 
         if (this.catchupDialog !== undefined) {
@@ -219,8 +245,14 @@ export class AppComponent {
     return deltaTime;
   }
 
-  getBatchRunTime(subzone: SubZone) {
-    var batchRunTime = 5;
+  getBatchRunTime(subzone: SubZone, totalDeltaTime: number) {
+    var batchRunTime = this.globalService.globalVar.settings.get("loadingAccuracy") ?? this.utilityService.averageLoadingAccuracy;    
+
+    /*if (totalDeltaTime < 15 * 60) //if less than 30 min, you can be more accurate
+    {
+      console.log("More accurate");
+      batchRunTime = 2.5;
+    }*/
 
     if (this.balladService.isSubzoneTown(subzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
       batchRunTime = 30;

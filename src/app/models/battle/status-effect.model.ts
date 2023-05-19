@@ -31,6 +31,7 @@ export class StatusEffect {
 
     constructor(type: StatusEffectEnum) {
         this.type = type;
+        this.effectiveness = 0;
         this.tickTimer = 0;
         this.tickFrequency = 0;
         this.duration = 0;

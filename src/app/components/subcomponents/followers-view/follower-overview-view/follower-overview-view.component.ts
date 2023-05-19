@@ -118,7 +118,7 @@ export class FollowerOverviewViewComponent {
         }
         if (item[1] === AltarEnum.Large) {
           overviewText += item[2] + (item[2] === 1 ? " follower is " : " followers are ") + " attempting to activate Large Altars that your party " +
-            "has fulfilled the conditions for, each providing a " + Math.round(this.utilityService.smallAltarActivationChancePerFollower * 100) + "% chance to activate any Large Altar among your three available altars every minute.<br/>";
+            "has fulfilled the conditions for, each providing a " + Math.round(this.utilityService.largeAltarActivationChancePerFollower * 100) + "% chance to activate any Large Altar among your three available altars every minute.<br/>";
         }
       }
 

@@ -15,15 +15,25 @@ export class God {
     statGain: CharacterStats;
     @Type(() => CharacterStats)
     permanentStatGain: CharacterStats;
+    @Type(() => CharacterStats)
+    partyPermanentStatGain: CharacterStats;
     @Type(() => Ability)
     abilityList: Ability[];
+    @Type(() => Ability)
+    permanentAbilityUpgrades: Ability[];
     exp: number;
     expToNextLevel: number;
     isAvailable: boolean;
     lastStatGain: CharacterStatEnum;
     statGainCount = 0;
-    permanentStat1GainCount: [number, number][];
-    permanentStat2GainCount: [number, number][];
+    permanentStat1GainCount: [number, number][]; //permanent god primary stat
+    permanentStat2GainCount: [number, number][]; //permanent god secondary stat
+    permanentStat3GainCount: [number, number][]; //permanent party primary stat
+    permanentStat4GainCount: [number, number][]; //permanent party xp boost
+    permanentAbility1GainCount: [number, number][];
+    permanentPassiveGainCount: [number, number][];
+    permanentAbility2GainCount: [number, number][];
+    permanentAbility3GainCount: [number, number][];
     affinityLevel: number;
     affinityExp: number;
     affinityExpToNextLevel: number;
@@ -35,6 +45,7 @@ export class God {
         this.gainModifiers = this.getGainModifier(type);
         this.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
         this.permanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        this.partyPermanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
         this.abilityList = [];
         this.exp = 0;
         this.expToNextLevel = 200;
@@ -42,6 +53,13 @@ export class God {
         this.lastStatGain = CharacterStatEnum.Resistance;
         this.permanentStat1GainCount = [];
         this.permanentStat2GainCount = [];
+        this.permanentStat3GainCount = [];
+        this.permanentStat4GainCount = [];
+        this.permanentAbility1GainCount = [];
+        this.permanentPassiveGainCount = [];
+        this.permanentAbility2GainCount = [];
+        this.permanentAbility3GainCount = [];
+        this.permanentAbilityUpgrades = [];
 
         this.affinityLevel = 0;
         this.affinityExp = 0;

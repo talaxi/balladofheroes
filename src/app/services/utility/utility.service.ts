@@ -10,8 +10,21 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
 })
 export class UtilityService {
   //glossary
-  public activeTimeLimit = 1 * 30 * 60;
-  public extraSpeedTimeLimit = 8 * 60 * 60;
+  public lowActiveTimeLimit = 1 * 30 * 60;
+  public averageActiveTimeLimit = 1 * 60 * 60;
+  public highActiveTimeLimit = 2 * 60 * 60;
+  public veryHighActiveTimeLimit = 4 * 60 * 60;
+
+  public extraSpeedTimeLimit = 12 * 60 * 60;
+  public patronExtraSpeedTimeLimit = 24 * 60 * 60;
+
+  public lowFps = 16;
+  public averageFps = 32;
+  public highFps = 64;
+
+  public lowLoadingAccuracy = 10;
+  public averageLoadingAccuracy = 5;
+  public highLoadingAccuracy = 2;
 
   public quickAutoAttackSpeed = 6;
   public averageAutoAttackSpeed = 8;
@@ -42,6 +55,12 @@ export class UtilityService {
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
+  public godPermanentStatGain3ObtainCap = 10;
+  public godPermanentStatGain4ObtainCap = 10;
+  public godPermanentAbility1ObtainCap = 10;
+  public godPermanentPassiveObtainCap = 10;
+  public godPermanentAbility2ObtainCap = 10;
+  public godPermanentAbility3ObtainCap = 10;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
@@ -64,6 +83,15 @@ export class UtilityService {
 
   public overdriveDamageNeededToUnlockProtection = 100000;
   public overdriveAttacksNeededToUnlockNature = 250000;
+  public overdriveHitsNeededToUnlockReprisal = 25000;
+  public overdriveHealingNeededToUnlockPreservation = 100000;
+  public overdriveHealsNeededToUnlockHarmony = 25000;
+  public overdriveCriticalsNeededToUnlockBullseye = 15000;
+  
+  public reprisalAmount = 1;
+  public reprisalBonus = 2;
+  public preservationAmount = .5;
+  public bullseyeAmount = .5;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
@@ -315,8 +343,14 @@ export class UtilityService {
     if (text === "Vial of the Black Sea")
       return "Vials of the Black Sea";
 
+      if (text === "Vial of the Cretan Sea")
+      return "Vials of the Cretan Sea";
+
     if (text === "Essence of Fire")
       return "Essences of Fire";
+
+      if (text === "Essence of Water")
+      return "Essences of Water";
 
     if (text === "Small Topaz")
       return "Small Topazes";

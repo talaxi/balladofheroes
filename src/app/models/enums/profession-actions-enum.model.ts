@@ -16,5 +16,8 @@ export enum ProfessionActionsEnum {
   Polish,
   HeatingMetal,
   ShapingMetal,
-  CoolingMetal
+  CoolingMetal,  
+  RareCombineIngredientsPot,
+  RareCombineIngredientsPotion,
+  RareCrushIngredients,  
 }

@@ -29,7 +29,10 @@
             <div
                 *ngIf="lookupService.isOverdriveDiscovered(this.selectedOverdriveInfo.selectedOverdrive, this.character)">
                 <div>
-                    Total Overdrive Points Required: {{selectedOverdriveInfo.gaugeTotal}}
+                    <b>Total Overdrive Points Required:</b> {{selectedOverdriveInfo.gaugeTotal}} <br/>
+                    <b>Overdrive Point Gain From Auto Attacks:</b> {{selectedOverdriveInfo.gainPerAutoAttack}} <br/>
+                    <b>Overdrive Point Gain From Ability Use:</b> {{selectedOverdriveInfo.gainPerAbility}} <br/>
+                    <b>Overdrive Point Gain From Being Attacked:</b> {{selectedOverdriveInfo.gainPerBeingAttacked}} <br/>
                 </div>
                 <br />
                 <br />

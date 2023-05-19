@@ -18,6 +18,11 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { TutorialService } from 'src/app/services/global/tutorial.service';
+import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
+import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
 
 @Component({
   selector: 'app-party',
@@ -52,7 +57,8 @@ export class PartyComponent implements OnInit {
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, public battleService: BattleService,
     private gameLoopService: GameLoopService, private menuService: MenuService, private utilityService: UtilityService,
-    private dpsCalculatorService: DpsCalculatorService, private keybindService: KeybindService) { }
+    private dpsCalculatorService: DpsCalculatorService, private keybindService: KeybindService, private tutorialService: TutorialService,
+    private balladService: BalladService, private gameLogService: GameLogService) { }
 
   ngOnInit(): void {
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
@@ -107,7 +113,11 @@ export class PartyComponent implements OnInit {
     } 
   }
 
-  isOverdriveAvailable(character: Character) {
+  isOverdriveAvailable(character: Character) {    
+    if (character.level >= this.utilityService.characterOverdriveLevel && 
+      !this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Overdrive))
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Overdrive, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
+
     return character.level >= this.utilityService.characterOverdriveLevel;
   }
 
@@ -351,8 +361,24 @@ export class PartyComponent implements OnInit {
     return this.utilityService.bigNumberReducer(Math.round(dps));
   }
 
+  getXps() {
+    var xps = 0;
+
+    xps = this.dpsCalculatorService.calculateXps();
+
+    return this.utilityService.bigNumberReducer(Math.round(xps));
+  }
+
   setupKeybinds(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;    
+
+    if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("toggleAllCharactersTargetMode"))) {
+      this.battleService.targetCharacterMode = !this.battleService.targetCharacterMode;
+      if (this.battleService.targetCharacterMode)
+        this.battleService.characterInTargetMode = CharacterEnum.All;
+      else
+        this.battleService.characterInTargetMode = CharacterEnum.None;
+    }
 
     //character 1
     if (this.keybindService.doesKeyMatchKeybind(event,keybinds.get("toggleCharacter1TargetMode"))) {

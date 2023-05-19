@@ -264,6 +264,95 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.BlazingSunPendant) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
+    if (item === ItemsEnum.Leather) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, 8));
+    }    
+    if (item === ItemsEnum.ThickLeather) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Leather, 5));
+    }
+    if (item === ItemsEnum.BoarHide) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 5));
+    }
+    if (item === ItemsEnum.BearHide) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 5));
+    }    
+    if (item === ItemsEnum.Honey) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Olive, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Fennel, 10));
+    }
+    if (item === ItemsEnum.VialOfLakeLerna) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 10));      
+    }
+    if (item === ItemsEnum.VialOfTheBlackSea) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 8));      
+    }
+    if (item === ItemsEnum.VialOfTheCretanSea) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 8));      
+    }
+    if (item === ItemsEnum.EssenceOfWater) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfFire, 8));      
+    }
+    if (item === ItemsEnum.ToxicIchor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SpiritEssence, 12));      
+    }
+    if (item === ItemsEnum.JaggedSword) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Tusk, 8));
+      purchasePrice.push(new ResourceValue(ItemsEnum.CanineFang, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
+    }
+    if (item === ItemsEnum.BirchBow) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.CoarseFur, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.BirchBark, 6));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
+    }
+    if (item === ItemsEnum.RadiatingHammer) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RadiatingGemstone, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.WhiteHorn, 10));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
+    }
+    if (item === ItemsEnum.SpiritShield) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
+    }
+    if (item === ItemsEnum.LightShield) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
+    }
+    if (item === ItemsEnum.FurArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.CoarseFur, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
+    }
+    if (item === ItemsEnum.ScaleArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.SerpentScale, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
+    }
+    if (item === ItemsEnum.HideArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
+    }
+    if (item === ItemsEnum.HesperidianArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.MagicTreeBark, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
+    }
+    if (item === ItemsEnum.BronzeBeakNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.BronzeBeak, 2));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
+    }
+    if (item === ItemsEnum.BloodyNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.SafeRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
+    }
+    if (item === ItemsEnum.AugeanStables1) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
+    }
+    if (item === ItemsEnum.AugeanStables2) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 50));
+      purchasePrice.push(new ResourceValue(ItemsEnum.CoarseFur, 10));
+    }
+    if (item === ItemsEnum.AugeanStables3) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 100));
+      purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 25));    
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

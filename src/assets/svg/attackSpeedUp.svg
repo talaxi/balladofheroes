@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="UTF-8" standalone="no"?>
+<svg
+   xmlns:dc="http://purl.org/dc/elements/1.1/"
+   xmlns:cc="http://creativecommons.org/ns#"
+   xmlns:rdf="http://www.w3.org/1999/02/22-rdf-syntax-ns#"
+   xmlns:svg="http://www.w3.org/2000/svg"
+   xmlns="http://www.w3.org/2000/svg"
+   xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
+   xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
+   width="300mm"
+   height="300mm"
+   viewBox="0 0 300 300"
+   version="1.1"
+   id="svg61"
+   inkscape:version="1.0.2 (e86c870879, 2021-01-15)"
+   sodipodi:docname="attackSpeedUp.svg">
+  <defs
+     id="defs55" />
+  <sodipodi:namedview
+     id="base"
+     pagecolor="#ffffff"
+     bordercolor="#666666"
+     borderopacity="1.0"
+     inkscape:pageopacity="0.0"
+     inkscape:pageshadow="2"
+     inkscape:zoom="0.74999999"
+     inkscape:cx="396.46151"
+     inkscape:cy="577.71418"
+     inkscape:document-units="mm"
+     inkscape:current-layer="layer3"
+     inkscape:document-rotation="0"
+     showgrid="false"
+     inkscape:window-width="1920"
+     inkscape:window-height="1002"
+     inkscape:window-x="-8"
+     inkscape:window-y="-8"
+     inkscape:window-maximized="1"
+     inkscape:snap-global="true" />
+  <metadata
+     id="metadata58">
+    <rdf:RDF>
+      <cc:Work
+         rdf:about="">
+        <dc:format>image/svg+xml</dc:format>
+        <dc:type
+           rdf:resource="http://purl.org/dc/dcmitype/StillImage" />
+        <dc:title></dc:title>
+      </cc:Work>
+    </rdf:RDF>
+  </metadata>
+  <g
+     inkscape:label="Layer 1"
+     inkscape:groupmode="layer"
+     id="layer1"
+     sodipodi:insensitive="true"
+     style="display:none">
+    <circle
+       style="opacity:1;fill:#ffffff;fill-opacity:1;stroke:#000000;stroke-width:0.265;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
+       id="path63"
+       cx="150"
+       cy="150"
+       r="150" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer3"
+     inkscape:label="Layer 2"
+     style="display:inline">
+    <path
+       style="fill:#a0d92c;stroke-width:12;stroke-miterlimit:4;stroke-dasharray:none;stroke:#0fde77;stroke-opacity:1;fill-opacity:1"
+       d="m 141.49448,248.33056 c -9.24587,-0.90773 -19.62336,-3.34808 -27.36624,-6.43737 -33.648811,-13.42613 -56.717775,-42.84625 -61.906177,-78.95033 -0.9128,-6.34912 -0.9128,-19.47533 0,-25.82447 C 54.714569,119.77434 60.96446,104.54428 71.281818,90.672927 75.577231,84.897726 84.860026,75.61798 90.616428,71.344413 104.4429,61.079724 118.54965,55.173276 135.71302,52.462647 c 7.80385,-1.232874 20.87993,-1.239649 28.44973,-0.01677 17.60267,2.845263 32.99666,9.449436 46.66683,20.020652 3.9833,3.08032 12.97041,11.946004 15.91574,15.701019 10.45149,13.324012 17.24787,28.157452 20.13261,43.940102 2.1128,11.55954 2.1128,24.28643 0,35.84597 -2.88474,15.78281 -9.68112,30.61625 -20.13261,43.94026 -2.94533,3.75485 -11.93244,12.6207 -15.91574,15.70102 -13.71708,10.60746 -29.65045,17.4206 -46.76064,19.99525 -5.70018,0.8586 -17.45007,1.24303 -22.57446,0.74007 z m 18.6147,-10.99596 c 19.01521,-2.22424 36.53575,-10.42608 50.36832,-23.57854 27.97505,-26.5996 35.39498,-68.2614 18.27836,-102.63048 -15.0319,-30.18355 -45.26035,-48.975222 -78.78165,-48.975222 -29.94544,0 -57.452924,14.961636 -73.939394,40.216402 -4.167384,6.38369 -8.361526,15.66326 -10.652332,23.56839 -4.407694,15.21058 -4.407694,32.98055 0,48.19097 8.243317,28.44585 29.735627,50.62673 57.803656,59.65533 11.50044,3.69948 24.76281,4.97571 36.92304,3.55315 z M 147.689,154.75171 c -0.72651,-0.37088 -1.67996,-1.16343 -2.11993,-1.76193 -0.79088,-1.07707 -0.79935,-1.39884 -0.90603,-34.3042 -0.10164,-29.639946 -0.0339,-33.390727 0.50805,-34.838845 1.55972,-4.118442 7.47819,-4.331993 9.41082,-0.340396 0.77224,1.596978 0.78748,2.200884 0.78748,31.377481 v 29.74986 l 22.8373,8.4e-4 c 25.45817,8.5e-4 24.55925,-0.0847 26.395,2.65813 1.70605,2.55382 0.6808,6.00265 -2.21628,7.45856 -1.23796,0.62151 -3.35738,0.67401 -27.35845,0.67401 -24.0087,0 -26.11931,-0.0508 -27.33898,-0.67401 z"
+       id="path855" />
+  </g>
+  <g
+     inkscape:groupmode="layer"
+     id="layer2"
+     inkscape:label="Layer 3" />
+</svg>

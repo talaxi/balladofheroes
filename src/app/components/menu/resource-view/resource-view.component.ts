@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -26,9 +27,11 @@ export class ResourceViewComponent implements OnInit {
   progressionResources: ResourceValue[] = [];
   smallCharmResources: ResourceValue[] = [];
   largeCharmResources: ResourceValue[] = [];
+  kantharosResources: ResourceValue[] = [];
   tooltipDirection = DirectionEnum.Down;
   slotItemsAreAvailable: boolean = false;
   subscription: any;
+  isMobile: boolean = false;
 
   resourceTabActive: ResourceViewEnum;
   resourceViewEnum = ResourceViewEnum;
@@ -39,12 +42,13 @@ export class ResourceViewComponent implements OnInit {
   ascendingSort: boolean = true;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, public dictionaryService: DictionaryService,
-    private gameLoopService: GameLoopService) { }
+    private gameLoopService: GameLoopService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.resourceTabActive = ResourceViewEnum.Equipment;
     this.setupResources();
     this.slotItemsAreAvailable = this.slotItems.length > 0 || (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting) !== undefined && this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked);
+    this.isMobile = this.deviceDetectorService.isMobile();
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.setupResources();
@@ -58,7 +62,7 @@ export class ResourceViewComponent implements OnInit {
     this.equipmentItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment).sort((a, b) => this.sortEquipment(a, b));
     this.slotItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.SlotItem).sort((a, b) => this.sortSlotItems(a, b));
     this.smallCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("small")).sort((a, b) => this.sortCharms(a, b));
-    this.largeCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("large")).sort((a, b) => this.sortCharms(a, b));
+    this.largeCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("large")).sort((a, b) => this.sortCharms(a, b));    
   }
 
   sortEquipment(a: ResourceValue, b: ResourceValue) {

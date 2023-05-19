@@ -1,18 +1,33 @@
 <div class="shopOption" *ngFor="let option of shopOptions; let i = index">
-  <button *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter || option.type === shopTypeEnum.Traveler"
+  <button
+    *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter || option.type === shopTypeEnum.Traveler"
     class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
+  <button *ngIf="option.type === shopTypeEnum.Trader" class="buttonStyled shopButtonText"
+    (click)="openShop(option, traderModal)">{{getOptionText(option.type)}}
+    <app-notification-icon *ngIf="showTraderSidequestNotification()" [isButton]="true"
+      [notificationColor]="resetNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText"
-    (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}} <app-notification-icon *ngIf="alchemy !== undefined && !alchemy.isUnlocked" [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
-    <button *ngIf="option.type === shopTypeEnum.Jewelcrafter" class="buttonStyled shopButtonText"
-    (click)="openShop(option, jewelcraftingModal)">{{getOptionText(option.type)}} <app-notification-icon *ngIf="jewelcrafting !== undefined && !jewelcrafting.isUnlocked" [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
+    (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}} <app-notification-icon
+      *ngIf="alchemy !== undefined && !alchemy.isUnlocked" [isButton]="true"
+      [notificationColor]="professionNotification"></app-notification-icon></button>
+  <button *ngIf="option.type === shopTypeEnum.Jewelcrafter" class="buttonStyled shopButtonText"
+    (click)="openShop(option, jewelcraftingModal)">{{getOptionText(option.type)}} <app-notification-icon
+      *ngIf="jewelcrafting !== undefined && !jewelcrafting.isUnlocked" [isButton]="true"
+      [notificationColor]="professionNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText"
-    (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}} 
-    <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true" [notificationColor]="resetNotification"></app-notification-icon>
+    (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}}
+    <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true"
+      [notificationColor]="resetNotification"></app-notification-icon>
   </button>
   <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
     to Hades <app-notification-icon [isButton]="true"></app-notification-icon></button>
-    <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
-      to the King <app-notification-icon [isButton]="true"></app-notification-icon></button>
+  <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText"
+    (click)="progressStory()">Speak
+    to the King <app-notification-icon [isButton]="true"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.AugeanStables" class="buttonStyled shopButtonText"
+    (click)="openShop(option, augeanStablesModal)">{{getOptionText(option.type)}} <app-notification-icon
+      *ngIf="!augeanStablesCompleted()" [isButton]="true"
+      [notificationColor]="sideQuestNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText"
     (click)="openShop(option, coliseumModal)">
     {{getOptionText(option.type)}}</button>
@@ -50,7 +65,37 @@
   <table>
     <tr *ngFor="let cells of shopItemRows;">
       <td class="item" *ngFor="let c of cells;">
-        <app-shopping-item-view [item]="c"></app-shopping-item-view>
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+</ng-template>
+
+<ng-template #traderModal>
+  <div class="centeredText">
+    <span class="bold smallCaps">trader level {{getTraderLevel()}}</span>
+    <br/>
+    <span [innerHtml]="traderLevelUpText"></span>
+    <br />
+    <br />
+    <strong><i><span [innerHtml]="traderLevelUpKillsRemainingText"></span></i></strong>    
+  </div>
+  <br/>
+  <hr class="noMargin" />
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c" [excludeItemDescriptionLocationText]="true" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+</ng-template>
+
+<ng-template #augeanStablesModal>  
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
       </td>
     </tr>
   </table>

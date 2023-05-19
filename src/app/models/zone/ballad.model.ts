@@ -10,11 +10,13 @@ export class Ballad {
     notify: boolean;
     @Type(() => Zone)
     zones: Zone[];
+    displayOrder: number;
 
     constructor(type?: BalladEnum) {
         this.zones = [];
         this.type = BalladEnum.None;
         this.name = "None";
+        this.displayOrder = 0;
 
         if (type !== undefined)
             this.type = type;

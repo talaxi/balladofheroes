@@ -1,3 +1,4 @@
+import { CharacterEnum } from "../enums/character-enum.model";
 import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { OverdriveNameEnum } from "../enums/overdrive-name-enum.model";
 
@@ -15,6 +16,7 @@ export class OverdriveInfo {
     isActive: boolean;
     lastUsedElement: ElementalTypeEnum; //used specifically for Nature overdrive
     damageTaken: number; //used specifically for Protection overdrive
+    criticalDamageTaken: [CharacterEnum, number][]; //used specifically for Bullseye overdrive
 
     constructor() {
         this.gainPerAutoAttack = .5;
@@ -30,5 +32,6 @@ export class OverdriveInfo {
         this.isActive = false;
         this.lastUsedElement = ElementalTypeEnum.None;
         this.damageTaken = 0;
+        this.criticalDamageTaken = [];
     }
 }

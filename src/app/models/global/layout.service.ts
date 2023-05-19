@@ -7,6 +7,7 @@ import { NavigationEnum } from '../enums/navigation-enum.model';
 export class LayoutService {
   navigation: NavigationEnum = NavigationEnum.Default;
   mobileMenuOpen = false;
+  jumpedToColiseum = false;
 
   constructor() { }
   

@@ -2,7 +2,7 @@
     <span *ngIf="!isMobile" class="buttonSpaced"></span>
     <span class="s2Heading smallCaps followerText">Assigned Followers: {{getAssignedFollowers()}} /
         {{getTotalFollowers()}}</span>
-        <br *ngIf="isMobile"/>
+    <br *ngIf="isMobile" />
     <span class="buttonSpaced"><button class="buttonStyled" (click)="unassignAll()">Unassign All</button></span>
     <br />
     <br />
@@ -13,26 +13,41 @@
 <hr />
 <br />
 <div class="scrollable">
-    <div *ngFor="let zone of getClearedZones()">
-        <span class="headerSpacing"><span class="s4Heading smallCaps zoneName">{{zone.zoneName}} </span>
-            <span *ngIf='!isMobile' class="smallCaps">
-                (Lv {{getRewardLevel(zone.type)}} - Ach {{getZoneAchievementPercent(zone.type) * 100 | number : '1.0-1'
-                }}% Complete)
-            </span>
-            <span *ngIf='isMobile' class="smallCaps">
-                (Lv {{getRewardLevel(zone.type)}})
-            </span>
-        </span>
-        <span class="s4Heading followerCount">
-            <button class='buttonStyled' [disabled]="!canDecrement(zone.type)"
-                (click)="decrementZoneFollowers(zone.type)">-</button>
-            {{getFollowersAssignedToZone(zone.type)}} / {{getMaxFollowersAssignedToZone(zone.type)}}
-            <button class='buttonStyled' [disabled]="!canIncrement(zone.type)"
-                (click)="incrementZoneFollowers(zone.type)">+</button>
-        </span>
-        <br />
-        <span [innerHtml]="getZoneSearchRewards(zone.type)"></span>
-        <br />
-        <br />
+    <div class="balladList">
+        <span class="s4Heading smallCaps zoneName">Ballads</span>
+        <div *ngFor="let ballad of balladList">
+            <button class="buttonAsText z1Heading"  [ngClass]="{'selected': selectedBallad === ballad }" [innerHtml]="getBalladName(ballad)"
+                (click)="showZonesForBallad(ballad)"></button>
+        </div>
+    </div>
+    <div class="arrow">
+        &#8594;
+    </div>
+    <div>
+        <div *ngIf="getClearedZonesForBallad().length > 0" class="zoneList">
+            <div *ngFor="let zone of getClearedZonesForBallad()">
+                <span class="headerSpacing"><span class="s4Heading smallCaps zoneName">{{zone.zoneName}} </span>
+                    <span *ngIf='!isMobile' class="smallCaps">
+                        (Lv {{getRewardLevel(zone.type)}} - Ach {{getZoneAchievementPercent(zone.type) * 100 | number :
+                        '1.0-1'
+                        }}% Complete)
+                    </span>
+                    <span *ngIf='isMobile' class="smallCaps">
+                        (Lv {{getRewardLevel(zone.type)}})
+                    </span>
+                </span>
+                <span class="s4Heading followerCount">
+                    <button class='buttonStyled' [disabled]="!canDecrement(zone.type)"
+                        (click)="decrementZoneFollowers(zone.type)">-</button>
+                    {{getFollowersAssignedToZone(zone.type)}} / {{getMaxFollowersAssignedToZone(zone.type)}}
+                    <button class='buttonStyled' [disabled]="!canIncrement(zone.type)"
+                        (click)="incrementZoneFollowers(zone.type)">+</button>
+                </span>
+                <br />
+                <span [innerHtml]="getZoneSearchRewards(zone.type)"></span>
+                <br />
+                <br />
+            </div>
+        </div>
     </div>
 </div>

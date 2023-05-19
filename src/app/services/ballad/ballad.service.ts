@@ -17,6 +17,8 @@ import { GameLogService } from '../battle/game-log.service';
 import { GlobalService } from '../global/global.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
+import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
+import { AchievementService } from '../achievements/achievement.service';
 
 @Injectable({
   providedIn: 'root'
@@ -111,12 +113,15 @@ export class BalladService {
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
     this.globalService.resetCooldowns();
 
+    if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.getSubZoneName(relatedSubzone.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+    }
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
@@ -166,6 +171,21 @@ export class BalladService {
     });
 
     return returnBallad;
+  }
+
+  findZoneOfSubzone(type: SubZoneEnum) {
+    var returnZone: Zone | undefined;
+
+    this.globalService.globalVar.ballads.forEach(ballad => {
+      ballad.zones.forEach(zone => {
+        zone.subzones.forEach(subzone => {
+          if (subzone.type === type)
+            returnZone = zone;
+        })
+      })
+    });
+
+    return returnZone;
   }
 
   findSubzone(type: SubZoneEnum) {
@@ -240,16 +260,18 @@ export class BalladService {
   }
 
   selectNextSubzone() {
+    var includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
+
     var nextSubzoneFound = false;
-    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).slice().reverse();
+    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);//.slice().reverse();
     reverseOrderBallads.forEach(ballad => {
       if (!nextSubzoneFound) {
-        var reverseZones = ballad.zones.filter(item => item.isAvailable).slice().reverse();
+        var reverseZones = ballad.zones.filter(item => item.isAvailable);//.slice().reverse();
         reverseZones.forEach(zone => {
-          var reverseSubzones = zone.subzones.filter(item => item.isAvailable).slice().reverse();
+          var reverseSubzones = zone.subzones.filter(item => item.isAvailable);//.slice().reverse();
           reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
-              this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount > 0) {
+              !this.autoProgressShouldChangeSubZone(subzone) && (includeSideQuests || (!includeSideQuests && this.shouldSubzoneShowSideQuestNotification(subzone.type) !== NotificationTypeEnum.SideQuest))) {
               nextSubzoneFound = true;
               this.selectBallad(ballad)
               this.selectZone(zone);
@@ -259,6 +281,27 @@ export class BalladService {
         })
       }
     });
+  }
+
+  autoProgressShouldChangeSubZone(subzone: SubZone) {
+    var shouldChange = false;
+    var autoProgressType = this.globalService.globalVar.settings.get("autoProgressType") ?? CompletionStatusEnum.Cleared;
+    var includeAllAchievements = this.globalService.globalVar.settings.get("autoProgressIncludeAllAchievements") ?? false;
+
+    if (autoProgressType === CompletionStatusEnum.Complete)
+    {
+      shouldChange = this.globalService.getVictoriesNeededForAllAchievements(subzone.type) - subzone.victoryCount <= 0;
+
+      if (includeAllAchievements) {
+        shouldChange = this.globalService.getUncompletedAchievementCountBySubZone(subzone.type) === 0;
+      }
+    }
+    else
+    {
+      shouldChange = this.getVictoriesNeededToProceed(subzone.type) - subzone.victoryCount <= 0;
+    }
+    
+    return shouldChange;
   }
 
   selectBallad(ballad: Ballad) {
@@ -304,15 +347,18 @@ export class BalladService {
     this.globalService.globalVar.playerNavigation.currentSubzone = subzone;
     this.globalService.resetCooldowns();
 
+    if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + this.getSubZoneName(subzone.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+    }
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-    if (this.isSubzoneTown(subzone.type)) {
+    if (this.isSubzoneTown(subzone.type)) {      
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
 
@@ -501,7 +547,7 @@ export class BalladService {
     if (type === SubZoneEnum.AegeanSeaSympegadesOverlook)
       name = "Sympegades Overlook";
     if (type === SubZoneEnum.BlackSeaStillWaters)
-      name = "Still Waters";
+      name = "Calm Waters";
     if (type === SubZoneEnum.BlackSeaMariandyna)
       name = "Mariandyna";
     if (type === SubZoneEnum.BlackSeaUnderAssault)
@@ -524,6 +570,88 @@ export class BalladService {
       name = "Hurried Retreat 1";
     if (type === SubZoneEnum.ColchisHurriedRetreat2)
       name = "Hurried Retreat 2";
+      if (type === SubZoneEnum.NemeaCleonea)
+      name = "Cleonea";
+    if (type === SubZoneEnum.NemeaCountryRoadsTwo)
+      name = "Country Roads";
+    if (type === SubZoneEnum.NemeaRollingHills)
+      name = "Rolling Hills";
+    if (type === SubZoneEnum.NemeaFlatlands)
+      name = "Flatlands";
+    if (type === SubZoneEnum.NemeaLairOfTheLion)
+      name = "Lair of the Lion";
+    if (type === SubZoneEnum.LernaAroundTheInachus)
+      name = "Around the Inachus";
+      if (type === SubZoneEnum.LernaThickMarsh)
+      name = "Thick Marsh";
+      if (type === SubZoneEnum.LernaSwampySurroundings)
+      name = "Swampy Surroundings";
+      if (type === SubZoneEnum.LernaDarkenedThicket)
+      name = "Darkened Thicket";
+      if (type === SubZoneEnum.LernaSpringOfAmymone)
+      name = "Spring of Amymone";
+      if (type === SubZoneEnum.StymphaliaTiryns)
+      name = "Tiryns";
+      if (type === SubZoneEnum.StymphaliaArcadianWilderness)
+      name = "Arcadian Wilderness";
+      if (type === SubZoneEnum.StymphaliaAbandonedVillage)
+      name = "Abandoned Village";
+      if (type === SubZoneEnum.StymphaliaSourceOfTheLadon)
+      name = "Source of the Ladon";
+      if (type === SubZoneEnum.StymphaliaLakeStymphalia)
+      name = "Lake Stymphalia";
+      if (type === SubZoneEnum.ErymanthusLadonRiverbeds)
+      name = "Ladon Riverbeds";
+      if (type === SubZoneEnum.ErymanthusGreatMassif)
+      name = "Great Massif";
+      if (type === SubZoneEnum.ErymanthusCragInlet)
+      name = "Crag Inlet";
+      if (type === SubZoneEnum.ErymanthusMountainClimb)
+      name = "Mountain Climb";
+      if (type === SubZoneEnum.ErymanthusSnowCappedPeaks)
+      name = "Snow-capped Peaks";
+      if (type === SubZoneEnum.CoastOfCreteDownThePineios)
+      name = "Down the Pineios";
+      if (type === SubZoneEnum.CoastOfCreteElis)
+      name = "Elis";
+      if (type === SubZoneEnum.CoastOfCreteSoutheasternIonianSeas)
+      name = "Southeastern Ionian Seas";
+      if (type === SubZoneEnum.CoastOfCreteCretanSeas)
+      name = "Cretan Seas";
+      if (type === SubZoneEnum.CoastOfCreteCretanCoast)
+      name = "Cretan Coast";
+      if (type === SubZoneEnum.CoastOfCreteVillageGardens)
+      name = "Village Gardens";
+      if (type === SubZoneEnum.CoastOfCreteAppleOrchards)
+      name = "Apple Orchards";
+      if (type === SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas)
+      name = "Southern Cretan Seas";
+      if (type === SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts)
+      name = "Libyan Outskirts";
+      if (type === SubZoneEnum.GardenOfTheHesperidesDesertSands)
+      name = "Desert Sands";
+      if (type === SubZoneEnum.GardenOfTheHesperidesSaharanDunes)
+      name = "Saharan Dunes";
+      if (type === SubZoneEnum.GardenOfTheHesperidesHiddenOasis)
+      name = "Hidden Oasis";
+      if (type === SubZoneEnum.GardenOfTheHesperidesMoroccanCoast)
+      name = "Moroccan Coast";
+      if (type === SubZoneEnum.GardenOfTheHesperidesFertileFields)
+      name = "Fertile Fields";
+      if (type === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides)
+      name = "Garden of the Hesperides";
+      if (type === SubZoneEnum.ErytheiaLushValley)
+      name = "Lush Valley";
+      if (type === SubZoneEnum.ErytheiaWesternOceanWaters)
+      name = "Western Ocean Waters";
+      if (type === SubZoneEnum.ErytheiaPillarsOfHeracles)
+      name = "Pillars of Heracles";
+      if (type === SubZoneEnum.ErytheiaCadiz)
+      name = "Cádiz";
+      if (type === SubZoneEnum.ErytheiaIslandOfErytheia)
+      name = "Island of Erytheia";
+      if (type === SubZoneEnum.ErytheiaGeryonsFarm)
+      name = "Geryon's Farm";
 
     return name;
   }
@@ -644,6 +772,53 @@ export class BalladService {
     if (type === SubZoneEnum.ColchisGroveOfAres)
       victories = groveOfAresVictories;
 
+    if (type === SubZoneEnum.NemeaCountryRoadsTwo || type === SubZoneEnum.NemeaFlatlands || type === SubZoneEnum.NemeaRollingHills)
+      victories = defaultVictories;
+      
+    if (type === SubZoneEnum.NemeaLairOfTheLion)
+    victories = bossVictories;
+
+    if (type === SubZoneEnum.LernaAroundTheInachus || type === SubZoneEnum.LernaThickMarsh || type === SubZoneEnum.LernaSwampySurroundings ||
+      type === SubZoneEnum.LernaDarkenedThicket)
+      victories = defaultVictories;
+      
+    if (type === SubZoneEnum.LernaSpringOfAmymone)
+    victories = bossVictories;
+
+    if (type === SubZoneEnum.StymphaliaArcadianWilderness || type === SubZoneEnum.StymphaliaAbandonedVillage || type === SubZoneEnum.StymphaliaSourceOfTheLadon)
+      victories = defaultVictories;
+      
+      if (type === SubZoneEnum.StymphaliaLakeStymphalia)
+      victories = bossVictories;
+
+      if (type === SubZoneEnum.ErymanthusLadonRiverbeds || type === SubZoneEnum.ErymanthusGreatMassif || type === SubZoneEnum.ErymanthusCragInlet ||
+        type === SubZoneEnum.ErymanthusMountainClimb)
+      victories = defaultVictories;
+
+      if (type === SubZoneEnum.ErymanthusSnowCappedPeaks)
+      victories = bossVictories;
+
+      if (type === SubZoneEnum.CoastOfCreteDownThePineios || type === SubZoneEnum.CoastOfCreteSoutheasternIonianSeas || type === SubZoneEnum.CoastOfCreteCretanCoast ||
+        type === SubZoneEnum.CoastOfCreteCretanSeas || type === SubZoneEnum.CoastOfCreteVillageGardens)
+      victories = defaultVictories;
+
+      if (type === SubZoneEnum.CoastOfCreteAppleOrchards)
+      victories = bossVictories;
+
+      if (type === SubZoneEnum.GardenOfTheHesperidesDesertSands || type === SubZoneEnum.GardenOfTheHesperidesFertileFields || type === SubZoneEnum.GardenOfTheHesperidesHiddenOasis ||
+        type === SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts || type === SubZoneEnum.GardenOfTheHesperidesMoroccanCoast || type === SubZoneEnum.GardenOfTheHesperidesSaharanDunes
+        || type === SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas)
+      victories = defaultVictories;
+
+      if (type === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides)
+      victories = bossVictories;
+
+      if (type === SubZoneEnum.ErytheiaLushValley || type === SubZoneEnum.ErytheiaPillarsOfHeracles || type === SubZoneEnum.ErytheiaWesternOceanWaters)
+      victories = defaultVictories;
+
+      if (type === SubZoneEnum.ErytheiaIslandOfErytheia || type === SubZoneEnum.ErytheiaGeryonsFarm)
+      victories = bossVictories;
+
     return victories;
   }
 
@@ -651,7 +826,8 @@ export class BalladService {
     if (type === SubZoneEnum.DodonaDelphi || type === SubZoneEnum.DodonaArta || type === SubZoneEnum.AsphodelPalaceOfHades ||
       type === SubZoneEnum.AsphodelLostHaven || type === SubZoneEnum.ElysiumColiseum || type === SubZoneEnum.PeloposNisosTravelPost ||
       type === SubZoneEnum.CalydonTownMarket || type === SubZoneEnum.AegeanSeaIolcus || type === SubZoneEnum.AegeanSeaSalmydessus ||
-      type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter) {
+      type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
+      type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz) {
       return true;
     }
 

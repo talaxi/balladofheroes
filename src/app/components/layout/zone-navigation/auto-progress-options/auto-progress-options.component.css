@@ -1,0 +1,8 @@
+.options {
+    display: flex;
+    justify-content: space-evenly;
+}
+
+.smallCaps {
+    font-size: 1.2rem;
+}

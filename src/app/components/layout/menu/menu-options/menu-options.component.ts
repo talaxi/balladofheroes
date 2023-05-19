@@ -31,7 +31,7 @@ export class MenuOptionsComponent implements OnInit {
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
-    if (this.menuService.keybindModalOpen)
+    if (this.menuService.keybindModalOpen || this.menuService.inTextbox)
       return;
 
     var keybinds = this.globalService.globalVar.keybinds;

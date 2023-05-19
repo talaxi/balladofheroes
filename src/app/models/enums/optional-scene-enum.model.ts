@@ -9,5 +9,12 @@ export enum OptionalSceneEnum {
   ChthonicFavorUpgrade2Scene1,
   ChthonicFavorUpgrade2Scene2,
   ChthonicFavorUpgrade2Scene3,
-  Jewelcrafting
+  Jewelcrafting,
+  TraderIntro,
+  AugeanStables1,
+  AugeanStables2,
+  AugeanStables3,
+  AugeanStables4,
+  AugeanStables5,
+  AugeanStables6
 }

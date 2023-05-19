@@ -1,5 +1,5 @@
 import { OverlayRef } from '@angular/cdk/overlay';
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
@@ -20,6 +20,7 @@ import { AchievementService } from 'src/app/services/achievements/achievement.se
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -34,9 +35,9 @@ export class BestiaryViewComponent {
   availableBallads: BalladEnum[] = [];
   availableZones: ZoneEnum[] = [];
   availableSubzones: SubZoneEnum[] = [];
-  selectedBallad: Ballad;
-  selectedZone: Zone | undefined;
-  selectedSubzone: SubZone | undefined;
+  @Input() selectedBallad: Ballad | undefined;
+  @Input() selectedZone: Zone | undefined;
+  @Input() selectedSubzone: SubZone | undefined;
   isMobile: boolean = false;
   enemyList: Enemy[] = [];
   enemyEncounters: EnemyTeam[] = [];
@@ -50,11 +51,23 @@ export class BestiaryViewComponent {
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private deviceDetectorService: DeviceDetectorService,
     private subzoneGeneratorService: SubZoneGeneratorService, private utilityService: UtilityService, public lookupService: LookupService,
-    private dictionaryService: DictionaryService, private achievementService: AchievementService) {
+    private dictionaryService: DictionaryService, private achievementService: AchievementService, private menuService: MenuService) {
 
   }
 
   ngOnInit() {
+    var presetBallad = this.selectedBallad?.type;
+    var presetZone = this.selectedZone?.type;
+    var presetSubzone = this.selectedSubzone?.type;
+
+    if (presetBallad !== undefined)
+      this.selectBallad(presetBallad);
+      if (presetZone !== undefined)
+      this.selectZone(presetZone);
+      if (presetSubzone !== undefined)
+      this.selectSubzone(presetSubzone);
+    
+    this.menuService.setBestiaryPresets(undefined, undefined, undefined);     
     this.isMobile = this.deviceDetectorService.isMobile();
     this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(item => {
       this.availableBallads.push(item.type);
@@ -90,7 +103,7 @@ export class BestiaryViewComponent {
   }
 
   getShopOptions(type: SubZoneEnum) {
-    this.shopOptions = this.subzoneGeneratorService.getShopOptions(type);
+    this.shopOptions = this.subzoneGeneratorService.getShopOptions(type, this.globalService.globalVar.sidequestData);
     this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story && item.type !== ShopTypeEnum.StoryScene24);
   }
 
@@ -133,7 +146,7 @@ export class BestiaryViewComponent {
   }
 
   getSelectedBalladDescription() {
-    return this.lookupService.getBalladDescription(this.selectedBallad.type);
+    return this.lookupService.getBalladDescription(this.selectedBallad?.type);
   }
 
   isBalladSelected(type: BalladEnum) {

@@ -39,8 +39,14 @@
     border: 2px solid var(--priestColor);
 }
 
+.characterTargetedAll:hover {    
+    border: 2px solid;
+    border-image:  linear-gradient(to right, var(--adventurerColor) 25%, var(--archerColor) 25%, var(--archerColor) 50%,
+    var(--warriorColor) 50%, var(--warriorColor) 75%, var(--priestColor) 75%) 5;
+}
+
 .characterBar {
-    width: 71%;
+    width: 70.75%;
     margin-right: .5rem;
     display: inline-block;
     height: 1rem;
@@ -101,7 +107,7 @@
 .enemy {
     margin-top: .7rem;
     display: grid;
-    grid-template-columns: 71% 1fr;
+    grid-template-columns: 70.75% 1fr;
     justify-content: stretch;
     grid-template-areas:
         "hpBar hpAmount";
@@ -192,7 +198,8 @@
     .characterTargetedAdventurer:hover,
     .characterTargetedArcher:hover,
     .characterTargetedWarrior:hover,
-    .characterTargetedPriest:hover {
+    .characterTargetedPriest:hover,
+    .characterTargetedAll:hover {
         border: 2px solid var(--background-default);
     }
 }

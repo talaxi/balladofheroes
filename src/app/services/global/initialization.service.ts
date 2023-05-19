@@ -35,6 +35,9 @@ import { KeybindService } from '../utility/keybind.service';
 import { VersionControlService } from '../utility/version-control.service';
 import { GlobalService } from './global.service';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
+import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
+import { JewelcraftingService } from '../professions/jewelcrafting.service';
+import { UtilityService } from '../utility/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -43,7 +46,8 @@ export class InitializationService {
 
   constructor(private globalService: GlobalService, private achievementService: AchievementService, private lookupService: LookupService,
     private resourceGeneratorService: ResourceGeneratorService, private alchemyService: AlchemyService, private keybindService: KeybindService,
-    private altarService: AltarService, private deviceDetectorService: DeviceDetectorService) { }
+    private altarService: AltarService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService,
+    private utilityService: UtilityService) { }
 
   initializeVariables() {
     this.globalService.globalVar.startingVersion = this.globalService.getCurrentVersion();
@@ -62,6 +66,7 @@ export class InitializationService {
 
   initializeBallads() {
     var championBallad = new Ballad(BalladEnum.Champion);
+    championBallad.displayOrder = 1;
     championBallad.isSelected = true;
     championBallad.isAvailable = true;
 
@@ -92,6 +97,7 @@ export class InitializationService {
     });
 
     var gorgonBallad = new Ballad(BalladEnum.Gorgon);
+    gorgonBallad.displayOrder = 2;
     var dodona = new Zone();
     dodona.zoneName = "Road to Dodona";
     dodona.type = ZoneEnum.Dodona;
@@ -122,6 +128,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(gorgonBallad);
 
     var laborsBallad = new Ballad(BalladEnum.Labors);
+    laborsBallad.displayOrder = 6;
     var nemea = new Zone();
     nemea.zoneName = "Nemea";
     nemea.type = ZoneEnum.Nemea;
@@ -133,6 +140,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(laborsBallad);
 
     var underworldBallad = new Ballad(BalladEnum.Underworld);
+    underworldBallad.displayOrder = 3;
     var asphodel = new Zone();
     asphodel.type = ZoneEnum.Asphodel;
     asphodel.zoneName = "Asphodel";
@@ -166,6 +174,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(underworldBallad);
 
     var boarBallad = new Ballad(BalladEnum.Boar);
+    boarBallad.displayOrder = 4;
     var peloposNisos = new Zone();
     peloposNisos.type = ZoneEnum.PeloposNisos;
     peloposNisos.zoneName = "Pelopos Nisos";
@@ -207,6 +216,7 @@ export class InitializationService {
     this.globalService.globalVar.ballads.push(boarBallad);
 
     this.initializeBalladOfTheArgo();
+    this.initializeBalladOfLabors();
   }
 
   initializeSettings() {
@@ -222,6 +232,9 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
     this.globalService.globalVar.settings.set("showEnemyHpAsPercent", false);
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", false);
+    this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
+    this.globalService.globalVar.settings.set("loadingAccuracy", this.utilityService.averageLoadingAccuracy);
+    this.globalService.globalVar.settings.set("loadingTime", this.utilityService.lowActiveTimeLimit);
 
     this.globalService.globalVar.settings.set("displayQuickViewOverview", true);
     if (this.deviceDetectorService.isMobile())
@@ -252,6 +265,12 @@ export class InitializationService {
     }
 
     this.globalService.globalVar.settings.set("quickViewOverlayFlipped", false);
+
+    this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
+    this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
+    this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
+    this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);    
+    this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", true);    
   }
 
   initializeGameLogSettings() {
@@ -261,23 +280,30 @@ export class InitializationService {
     this.globalService.globalVar.gameLogSettings.set("enemyAutoAttacks", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
     this.globalService.globalVar.gameLogSettings.set("enemyAbilityUse", true);
-    this.globalService.globalVar.gameLogSettings.set("prayToAltar", true);
+    this.globalService.globalVar.gameLogSettings.set("prayToAltar", true);    
+    this.globalService.globalVar.gameLogSettings.set("godAffinityLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("partyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("enemyStatusEffect", true);
     this.globalService.globalVar.gameLogSettings.set("partyEquipmentEffect", true);
     this.globalService.globalVar.gameLogSettings.set("battleRewards", true);
+    this.globalService.globalVar.gameLogSettings.set("battleXpRewards", true);
+    this.globalService.globalVar.gameLogSettings.set("battleCoinsRewards", true);
+    this.globalService.globalVar.gameLogSettings.set("battleItemsRewards", true);
     this.globalService.globalVar.gameLogSettings.set("partyLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("godLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("foundTreasureChest", true);
     this.globalService.globalVar.gameLogSettings.set("achievementUnlocked", true);
     this.globalService.globalVar.gameLogSettings.set("alchemyLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("alchemyCreation", true);
+    this.globalService.globalVar.gameLogSettings.set("alchemyQueueEmpty", false);
     this.globalService.globalVar.gameLogSettings.set("jewelcraftingLevelUp", true);
     this.globalService.globalVar.gameLogSettings.set("jewelcraftingCreation", true);
+    this.globalService.globalVar.gameLogSettings.set("jewelcraftingQueueEmpty", false);
     this.globalService.globalVar.gameLogSettings.set("battleUpdates", true);
     this.globalService.globalVar.gameLogSettings.set("useBattleItem", true);
     this.globalService.globalVar.gameLogSettings.set("followerSearch", true);
     this.globalService.globalVar.gameLogSettings.set("followerPrayer", true);
+    this.globalService.globalVar.gameLogSettings.set("moveLocations", true);
   }
 
   initializeQuickView() {
@@ -304,6 +330,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("openJewelcraftingQuickView", "keyJ");
     this.globalService.globalVar.keybinds.set("openAltarsQuickView", "keyA");
 
+    this.globalService.globalVar.keybinds.set("toggleAllCharactersTargetMode", this.keybindService.altKeyBind + "keyT");
     this.globalService.globalVar.keybinds.set("openFirstAvailableAltar", "keyZ");
     this.globalService.globalVar.keybinds.set("openSecondAvailableAltar", "keyX");
     this.globalService.globalVar.keybinds.set("openThirdAvailableAltar", "keyC");
@@ -402,13 +429,15 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughTopazFragment, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RoughOpalFragment, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.CoarseFur, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.AnimalHide, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedEmerald, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedAquamarine, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorWeaponSlotAddition, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorArmorSlotAddition, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorRingSlotAddition, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.MinorShieldSlotAddition, 100));
@@ -424,8 +453,21 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.EagleFeather, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FocusPotion, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BoomingPotion, 10000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SerpentScale, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RadiatingGemstone, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.WhiteHorn, 100));
+    
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ParalyzingToxin, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.FlamingToxin, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.SlowingPotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PiercingPotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneySalve, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HoneyPoultice, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfSpeed, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PotentConcoction, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.UnstablePotion, 100));
 
-    this.globalService.globalVar.currentStoryId = 7;
+    this.globalService.globalVar.currentStoryId = 31;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
@@ -569,9 +611,9 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, 5));
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));      
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAres, 5));
-      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, 5));      
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, 5));
 
@@ -615,45 +657,47 @@ export class InitializationService {
         this.lookupService.gainResource(resource);
 
       this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; });    //character.unlockedOverdrives.push(OverdriveNameEnum.Fervor); character.unlockedOverdrives.push(OverdriveNameEnum.Nature);
-      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
+      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye); });     // 
+      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Priest;
       this.globalService.globalVar.itemBeltSize = 1;
-      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 50;
+      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 75;
       //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.isUnlocked = true;
       //if (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting) !== undefined)
-      //  this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
+      //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.level = 50;
+        //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked = true;
       //this.alchemyService.checkForNewRecipes();
+      //this.jewelcraftingService.checkForNewRecipes();
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
         character1.assignedGod1 = GodEnum.Hades;
-        character1.assignedGod2 = GodEnum.Athena;
-        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SwordOfFlames);
+        character1.assignedGod2 = GodEnum.Hermes;
+        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BlackLance);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
-        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenRing);
-        //character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothNecklace);
+        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.QuadRing);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothNecklace);
       }
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
         character2.assignedGod1 = GodEnum.Artemis;
         character2.assignedGod2 = GodEnum.Apollo;
-        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SteelHammer);
+        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.LiquidSaber);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
         character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
         character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenRing);
-        //character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
+        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 240;
+      var godLevel = 1874;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(athena!);
       }
       athena!.exp = 0;
-      athena!.affinityLevel = 0;
+      athena!.affinityLevel = 15;
 
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       hermes!.isAvailable = true;
@@ -661,7 +705,7 @@ export class InitializationService {
         this.globalService.levelUpGod(hermes!);
       }
       hermes!.exp = 0;
-      hermes!.affinityLevel = 5;
+      hermes!.affinityLevel = 15;
 
       var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
       apollo!.isAvailable = true;
@@ -669,7 +713,7 @@ export class InitializationService {
         this.globalService.levelUpGod(apollo!);
       }
       apollo!.exp = 0;
-      apollo!.affinityLevel = 7;
+      apollo!.affinityLevel = 15;
 
       var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
       artemis!.isAvailable = true;
@@ -677,7 +721,7 @@ export class InitializationService {
         this.globalService.levelUpGod(artemis!);
       }
       artemis!.exp = 0;
-      artemis!.affinityLevel = 4;
+      artemis!.affinityLevel = 15;
 
       var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
       hades!.isAvailable = true;
@@ -685,7 +729,7 @@ export class InitializationService {
         this.globalService.levelUpGod(hades!);
       }
       hades!.exp = 0;
-      hades!.affinityLevel = 8;
+      hades!.affinityLevel = 15;
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
       ares!.isAvailable = true;
@@ -693,7 +737,7 @@ export class InitializationService {
         this.globalService.levelUpGod(ares!);
       }
       ares!.exp = 0;
-      ares!.affinityLevel = 10;
+      ares!.affinityLevel = 15;
 
       var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
       dionysus!.isAvailable = true;
@@ -709,9 +753,9 @@ export class InitializationService {
         this.globalService.levelUpGod(nemesis!);
       }
       nemesis!.exp = 0;
-      nemesis!.affinityLevel = 40;
+      nemesis!.affinityLevel = 15;
 
-      var characterLevel = 14;
+      var characterLevel = 29;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
@@ -776,6 +820,7 @@ export class InitializationService {
 
   initializeBalladOfTheArgo() {
     var argoBallad = new Ballad(BalladEnum.Argo);
+    argoBallad.displayOrder = 5;
     var aegean = new Zone();
     aegean.type = ZoneEnum.AegeanSea;
     aegean.zoneName = "Aegean Sea";
@@ -820,5 +865,93 @@ export class InitializationService {
     argoBallad.zones.push(colchis);
 
     this.globalService.globalVar.ballads.push(argoBallad);
+  }
+
+  initializeBalladOfLabors() {
+    var laborsBallad = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors);
+    if (laborsBallad !== undefined) {
+      var nemea = laborsBallad.zones.find(item => item.type === ZoneEnum.Nemea);
+      if (nemea !== undefined) {
+        nemea.subzones = [];
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCountryRoadsOne));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCleonea));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaCountryRoadsTwo));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaRollingHills));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaFlatlands));
+        nemea.subzones.push(new SubZone(SubZoneEnum.NemeaLairOfTheLion));
+      }
+
+      var lerna = new Zone();
+      lerna.type = ZoneEnum.Lerna;
+      lerna.zoneName = "Lerna";
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaAroundTheInachus));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaThickMarsh));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaSwampySurroundings));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaDarkenedThicket));
+      lerna.subzones.push(new SubZone(SubZoneEnum.LernaSpringOfAmymone));
+      lerna.notificationType = lerna.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(lerna);
+      
+      var stymphalia = new Zone();
+      stymphalia.type = ZoneEnum.Stymphalia;
+      stymphalia.zoneName = "Stymphalia";
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaTiryns));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaArcadianWilderness));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaAbandonedVillage));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaSourceOfTheLadon));
+      stymphalia.subzones.push(new SubZone(SubZoneEnum.StymphaliaLakeStymphalia));
+      stymphalia.notificationType = stymphalia.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(stymphalia);
+
+      var erymanthus = new Zone();
+      erymanthus.type = ZoneEnum.Erymanthus;
+      erymanthus.zoneName = "Mount Erymanthos";
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusLadonRiverbeds));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusGreatMassif));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusCragInlet));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusMountainClimb));
+      erymanthus.subzones.push(new SubZone(SubZoneEnum.ErymanthusSnowCappedPeaks));
+      erymanthus.notificationType = erymanthus.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(erymanthus);
+      
+      var coastOfCrete = new Zone();
+      coastOfCrete.type = ZoneEnum.CoastOfCrete;
+      coastOfCrete.zoneName = "Coast of Crete";
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteDownThePineios));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteElis));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteSoutheasternIonianSeas));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteCretanSeas));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteCretanCoast));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteVillageGardens));
+      coastOfCrete.subzones.push(new SubZone(SubZoneEnum.CoastOfCreteAppleOrchards));
+      coastOfCrete.notificationType = coastOfCrete.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(coastOfCrete);
+            
+      var gardenOfTheHesperides = new Zone();
+      gardenOfTheHesperides.type = ZoneEnum.GardenOfTheHesperides;
+      gardenOfTheHesperides.zoneName = "Garden of the Hesperides";
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesDesertSands));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesSaharanDunes));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesHiddenOasis));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesMoroccanCoast));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesFertileFields));
+      gardenOfTheHesperides.subzones.push(new SubZone(SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides));
+      gardenOfTheHesperides.notificationType = gardenOfTheHesperides.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(gardenOfTheHesperides);
+       
+      var erytheia = new Zone();
+      erytheia.type = ZoneEnum.Erytheia;
+      erytheia.zoneName = "Erytheia";
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaLushValley));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaWesternOceanWaters));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaPillarsOfHeracles));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaCadiz));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaIslandOfErytheia));
+      erytheia.subzones.push(new SubZone(SubZoneEnum.ErytheiaGeryonsFarm));      
+      erytheia.notificationType = erytheia.shouldShowSideQuestNotification();
+      laborsBallad.zones.push(erytheia);
+    }
   }
 }

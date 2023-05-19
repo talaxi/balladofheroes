@@ -25,16 +25,16 @@ export class AlchemyService {
   constructor(private globalService: GlobalService, private lookupService: LookupService, private gameLogService: GameLogService,
     private utilityService: UtilityService, private dictionaryService: DictionaryService, private tutorialService: TutorialService) { }
 
-  
+
 
   handleShopOpen(subzone: SubZoneEnum) {
     if (subzone === SubZoneEnum.AsphodelPalaceOfHades) {
-      var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);      
+      var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
       if (alchemy !== undefined && !alchemy.isUnlocked) {
         alchemy.isUnlocked = true;
         alchemy.level = 1;
         alchemy.maxLevel += this.utilityService.firstAlchemyLevelCap;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy,  undefined, undefined, true, subzone));
       }
     }
   }
@@ -46,12 +46,18 @@ export class AlchemyService {
       duration = 1 * 20;
     if (action === ProfessionActionsEnum.CombineIngredientsPot)
       duration = 1 * 10;
+      if (action === ProfessionActionsEnum.RareCombineIngredientsPot)
+      duration = 1 * 60;
     if (action === ProfessionActionsEnum.CombineIngredientsPotion)
       duration = 1 * 15;
+      if (action === ProfessionActionsEnum.RareCombineIngredientsPotion)
+      duration = 1 * 45;
     if (action === ProfessionActionsEnum.HeatMixture)
       duration = 1 * 30;
     if (action === ProfessionActionsEnum.CrushIngredients)
       duration = 1 * 75;
+      if (action === ProfessionActionsEnum.RareCrushIngredients)
+      duration = 1 * 115;
     if (action === ProfessionActionsEnum.CombineIngredients)
       duration = 1 * 15;
     if (action === ProfessionActionsEnum.MixOil)
@@ -64,11 +70,11 @@ export class AlchemyService {
       duration = 1 * 45;
     if (action === ProfessionActionsEnum.Infuse)
       duration = 1 * 60;
-      if (action === ProfessionActionsEnum.StoreIngredients)
+    if (action === ProfessionActionsEnum.StoreIngredients)
       duration = 1 * 5;
 
     return duration;
-  }  
+  }
 
   checkForNewRecipes() {
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
@@ -125,7 +131,7 @@ export class AlchemyService {
         this.updateGameLogWithNewRecipe(ItemsEnum.StranglingGasPotion);
       }
     }
-    
+
     if (alchemy.level >= 22) {
       if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.SoulEssence)) {
         alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.SoulEssence));
@@ -196,6 +202,62 @@ export class AlchemyService {
         this.updateGameLogWithNewRecipe(ItemsEnum.BushelOfHerbs);
       }
     }
+    if (alchemy.level >= 51) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.ElixirOfSpeed)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.ElixirOfSpeed));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfSpeed);
+      }
+    }    
+    if (alchemy.level >= 52) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PotentEssence)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PotentEssence));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.PotentEssence);
+      }
+    }
+    if (alchemy.level >= 54) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HoneyPoultice)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HoneyPoultice));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.HoneyPoultice);
+      }
+    }    
+    if (alchemy.level >= 55) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PiercingPotion)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PiercingPotion));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.PiercingPotion);
+      }
+    }
+    if (alchemy.level >= 57) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.FlamingToxin)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.FlamingToxin));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.FlamingToxin);
+      }
+    }
+    if (alchemy.level >= 65) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.SlowingPotion)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.SlowingPotion));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.SlowingPotion);
+      }
+    }
+    if (alchemy.level >= 70) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HoneySalve)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HoneySalve));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.HoneySalve);
+      }
+    }
+    if (alchemy.level >= 75) {
+      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.ParalyzingToxin)) {
+        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.ParalyzingToxin));
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ParalyzingToxin);
+      }
+    }
 
     return newRecipeLearned;
   }
@@ -211,11 +273,21 @@ export class AlchemyService {
     var additionalChanceToRetainMaterials = .05;
     var additionalDurationReduction = .04;
 
-    if (alchemy.level <= 25)
-      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);
-    else if (alchemy.level <= 50)
-      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+    var qualityName = "";
 
+    if (alchemy.level <= 25)
+    {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);
+      qualityName = "Basic";
+    }
+    else if (alchemy.level <= 50) {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+      qualityName = "Uncommon";
+    }
+    else if (alchemy.level <= 75) {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Rare);
+      qualityName = "Rare";
+    }
 
     if (upgrades === undefined)
       return;
@@ -226,7 +298,7 @@ export class AlchemyService {
       upgrades.chanceTo2xItem += additionalChanceTo2x;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making a Basic quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making a " + qualityName + " quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
@@ -237,7 +309,7 @@ export class AlchemyService {
       upgrades.durationReduction += additionalDurationReduction;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "The time it takes to create a Basic quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
+        var gameLogEntry = "The time it takes to create a " + qualityName + " quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
@@ -248,7 +320,7 @@ export class AlchemyService {
       upgrades.chanceToRetainMaterials += additionalChanceToRetainMaterials;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a Basic quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a " + qualityName + " quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
@@ -257,7 +329,7 @@ export class AlchemyService {
       upgrades.chanceTo5xItem += additionalChanceTo5x;
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making a Basic quality Alchemy recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making a " + qualityName + " quality Alchemy recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
     }
@@ -279,8 +351,8 @@ export class AlchemyService {
 
     if (item === ItemsEnum.HealingPoultice) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Olive , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Fennel , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Olive, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Fennel, 1));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
@@ -290,8 +362,8 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.ExplodingPotion) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, 2));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
@@ -302,7 +374,7 @@ export class AlchemyService {
 
     if (item === ItemsEnum.DebilitatingToxin) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus, 2));
 
       recipe.numberOfSteps = 1;
       recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
@@ -312,9 +384,9 @@ export class AlchemyService {
 
     if (item === ItemsEnum.HealingSalve) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Olive , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Olive, 2));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.HealingHerb, 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Wax , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Wax, 2));
 
       recipe.numberOfSteps = 4;
       recipe.steps.push(ProfessionActionsEnum.MixOil);
@@ -327,9 +399,9 @@ export class AlchemyService {
 
     if (item === ItemsEnum.FirePotion) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire, 2));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
@@ -339,7 +411,7 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.PoisonousToxin) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus , 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus, 3));
 
       recipe.numberOfSteps = 1;
       recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
@@ -348,8 +420,8 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.StranglingGasPotion) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark , 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, 3));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
@@ -359,9 +431,9 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.SatchelOfHerbs) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Fennel , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Violet , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Fennel, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Asphodelus, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Violet, 1));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredients);
@@ -371,8 +443,8 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.SoulEssence) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark , 3));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SpiritEssence , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulSpark, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SpiritEssence, 1));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
@@ -382,9 +454,9 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.PoisonExtractPotion) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.PoisonFang , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PoisonFang, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 1));
 
       recipe.numberOfSteps = 3;
       recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
@@ -395,8 +467,8 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.HeroicElixir) {
       recipe.quality = EquipmentQualityEnum.Basic;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe , 2));      
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs, 2));
 
       recipe.numberOfSteps = 3;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
@@ -407,12 +479,12 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.RejuvenatingElixir) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Violet , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Violet, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, 1));
 
       recipe.numberOfSteps = 3;
-      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);      
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
       recipe.steps.push(ProfessionActionsEnum.Infuse);
       recipe.steps.push(ProfessionActionsEnum.StrainMixture);
 
@@ -421,8 +493,8 @@ export class AlchemyService {
     //lvl 26
     if (item === ItemsEnum.UnstablePotion) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 1));      
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, 2));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
@@ -433,12 +505,12 @@ export class AlchemyService {
     //lvl 27
     if (item === ItemsEnum.ElixirOfFortitude) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, 1));
 
       recipe.numberOfSteps = 3;
-      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);      
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
       recipe.steps.push(ProfessionActionsEnum.Infuse);
       recipe.steps.push(ProfessionActionsEnum.StrainMixture);
 
@@ -447,9 +519,9 @@ export class AlchemyService {
     //lvl 29
     if (item === ItemsEnum.WitheringToxin) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, 2));
 
       recipe.numberOfSteps = 1;
       recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
@@ -459,8 +531,8 @@ export class AlchemyService {
     //lvl 32
     if (item === ItemsEnum.RestorativePoultice) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs , 2));      
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs, 2));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
@@ -471,9 +543,9 @@ export class AlchemyService {
     //lvl 35
     if (item === ItemsEnum.BoomingPotion) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort , 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort, 2));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
@@ -484,9 +556,9 @@ export class AlchemyService {
     //lvl 40
     if (item === ItemsEnum.VenomousToxin) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort , 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort, 3));
 
       recipe.numberOfSteps = 1;
       recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
@@ -496,9 +568,9 @@ export class AlchemyService {
     //lvl 45
     if (item === ItemsEnum.RestorativeSalve) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs , 1));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Sorrel , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SatchelOfHerbs, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Sorrel, 1));
 
       recipe.numberOfSteps = 4;
       recipe.steps.push(ProfessionActionsEnum.MixOil);
@@ -510,9 +582,9 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.BushelOfHerbs) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot , 3));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.Sorrel , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Goldroot, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Lousewort, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Sorrel, 2));
 
       recipe.numberOfSteps = 2;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredients);
@@ -522,8 +594,8 @@ export class AlchemyService {
     }
     if (item === ItemsEnum.FocusPotion) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna , 2));
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs , 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 1));
 
       recipe.numberOfSteps = 3;
       recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPotion);
@@ -532,7 +604,124 @@ export class AlchemyService {
 
       recipe.expGain = 18;
     }
+    //lvl 51
+    if (item === ItemsEnum.ElixirOfSpeed) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 1));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.Infuse);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
+
+      recipe.expGain = 32;
+    }
+    //lvl 52
+    if (item === ItemsEnum.PiercingPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PotentEssence, 2));      
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SmallAnimalBones, 2));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
+
+      recipe.expGain = 34;
+    }
+    //lvl 54
+    if (item === ItemsEnum.HoneyPoultice) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.Honey, 2));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.PrepareWaterSmallPot);
+      recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPot);
+
+      recipe.expGain = 34;
+    }
+    //lvl 55
+    if (item === ItemsEnum.PotentEssence) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire, 1));      
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfWater, 1));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 32;
+    }
+    //lvl 57
+    if (item === ItemsEnum.FlamingToxin) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire, 4));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.ToxicIchor, 1));
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+
+      recipe.expGain = 34;
+    }
+    //lvl 65
+    if (item === ItemsEnum.SlowingPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.CanineFang, 2));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
+
+      recipe.expGain = 37;
+    }
+    //lvl 70
+    if (item === ItemsEnum.HoneySalve) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PristineCrabClaw, 1));
+
+      recipe.numberOfSteps = 4;
+      recipe.steps.push(ProfessionActionsEnum.MixOil);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
+      recipe.steps.push(ProfessionActionsEnum.MeltWax);
+      recipe.steps.push(ProfessionActionsEnum.CombineIngredientsPot);
+
+      recipe.expGain = 37;
+    }
+    //lvl 75
+    if (item === ItemsEnum.ParalyzingToxin) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.SoulEssence, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.ToxicIchor, 4));
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+
+      recipe.expGain = 40;
+    }
+    if (item === ItemsEnum.PotentConcoction) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PotentEssence, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfWater, 2));            
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 2));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
+
+      recipe.expGain = 40;
+    }
 
     return recipe;
-  }  
+  }
 }

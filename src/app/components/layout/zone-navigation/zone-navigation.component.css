@@ -14,9 +14,25 @@
 .balladTitle {
     margin-top: auto;
     margin-bottom: auto;
-    margin-right: 1.5rem;
+    margin-right: .65rem;
     width: 42%; /* matches .zoneGrid below */
     font-variant: small-caps;
+}
+
+.flexBalladHeader {
+    display: flex;
+    justify-content: space-evenly;
+    width: 100%;
+}
+
+.autoProgressButton {
+    aspect-ratio: 1/1;
+    padding: 0;    
+}
+
+.autoProgressIcon {
+    height: 1.1rem;
+    vertical-align: middle;
 }
 
 .zoneList {
@@ -24,7 +40,7 @@
 }
 
 .selected {
-    color: var(--foreground-secondary) !important;
+  color: var(--foreground-secondary) !important;
 }
 
 .navigationGrid {
@@ -105,7 +121,7 @@
     display: grid;
     height: 100%;    
     grid-template-columns: 42% 1fr;
-    gap: 1.5rem;
+    gap: 0.65rem;
     grid-template-rows: auto;
     justify-content: stretch;
     grid-template-areas:

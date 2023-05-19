@@ -6,6 +6,8 @@ export class ProfessionUpgrades {
     chanceTo2xItem: number;
     chanceToRetainMaterials: number;
     chanceTo5xItem: number;
+    chanceForUpgrade: number;
+    chanceToHalfDuration: number;
 
     constructor(type: EquipmentQualityEnum) {
         this.quality = type;
@@ -13,5 +15,7 @@ export class ProfessionUpgrades {
         this.chanceTo2xItem = 0;
         this.chanceTo5xItem = 0;
         this.chanceToRetainMaterials = 0;
+        this.chanceForUpgrade = 0;
+        this.chanceToHalfDuration = 0;
     }
 }

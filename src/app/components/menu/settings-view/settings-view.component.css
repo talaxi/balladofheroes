@@ -25,9 +25,14 @@
     width: 100%;
 }
 
-.importExportButtons {
+.importExportButtons, .flexBetween {
     display: flex;
     justify-content: space-between;
+}
+
+.twoColumn {
+    width: 50%;
+    display:inline-block;
 }
 
 @media (max-width: 800px) {

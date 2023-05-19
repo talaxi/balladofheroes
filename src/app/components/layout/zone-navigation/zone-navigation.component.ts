@@ -11,6 +11,7 @@ import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { FollowerData } from 'src/app/models/followers/follower-data.model';
@@ -95,7 +96,9 @@ export class ZoneNavigationComponent implements OnInit {
     if (activeOverview !== undefined)
       this.quickView = activeOverview;
 
-    this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
+    this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+    });
     var selectedBallad = this.balladService.getActiveBallad();
     if (selectedBallad !== undefined)
       this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);
@@ -117,7 +120,9 @@ export class ZoneNavigationComponent implements OnInit {
       if (this.balladService.findSubzone(SubZoneEnum.AigosthenaLowerCoast)?.isAvailable)
         this.quickLinksUnlocked = true;
 
-      this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable);
+      this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+        return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+      });
       var selectedBallad = this.balladService.getActiveBallad();
       if (selectedBallad !== undefined)
         this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);
@@ -128,7 +133,7 @@ export class ZoneNavigationComponent implements OnInit {
       var currentSubzone = this.availableSubZones?.find(item => item.isSelected);
 
       if (this.autoProgress && currentSubzone !== undefined &&
-        (this.balladService.getVictoriesNeededToProceed(currentSubzone.type) - currentSubzone.victoryCount <= 0 || this.balladService.isSubzoneTown(currentSubzone.type))) {
+        (this.balladService.autoProgressShouldChangeSubZone(currentSubzone) || this.balladService.isSubzoneTown(currentSubzone.type))) {
         this.balladService.selectNextSubzone();
       }
 
@@ -151,7 +156,9 @@ export class ZoneNavigationComponent implements OnInit {
     var relatedZone: Zone | undefined = this.balladService.getActiveZone();
     var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
 
-    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(ballad => {
+    this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+    }).forEach(ballad => {
       ballad.isSelected = false;
       if (ballad.zones !== undefined && ballad.zones.length > 0)
         ballad.zones.filter(item => item.isAvailable).forEach(zone => {
@@ -179,17 +186,24 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
     this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
+    if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
     this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-
+    }
+    
     this.globalService.globalVar.settings.set("autoProgress", false);
 
     if (this.isMobile) {
       this.dialog.closeAll();
     }
+  }
+  
+  isSubZoneChangingDisabled() {
+    return this.globalService.getActivePartyCharacters(true).some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.PreventEscape));
   }
 
   jumpToPalaceOfHades() {
@@ -201,11 +215,12 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.rollingAverageTimer = 0;
       this.dpsCalculatorService.partyDamagingActions = [];
       this.dpsCalculatorService.enemyDamagingActions = [];
+      this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-      var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      //var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
+      //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
 
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
@@ -223,12 +238,13 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.rollingAverageTimer = 0;
       this.dpsCalculatorService.partyDamagingActions = [];
       this.dpsCalculatorService.enemyDamagingActions = [];
+      this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
 
-      var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
-
+      //var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
+      //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      this.layoutService.jumpedToColiseum = true;
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
     if (this.isMobile) {
@@ -248,7 +264,7 @@ export class ZoneNavigationComponent implements OnInit {
     var allSubZonesCompleted = true;
 
     ballad.zones.forEach(zone => {
-      zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
+      zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
           allSubZonesCleared = false;
         if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
@@ -268,7 +284,7 @@ export class ZoneNavigationComponent implements OnInit {
   getZoneClass(zone: Zone) {
     var allSubZonesCleared = true;
     var allSubZonesCompleted = true;
-    zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type)).forEach(subzone => {
+    zone.subzones.filter(item => !this.balladService.isSubzoneTown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
       if (subzone.victoryCount < this.balladService.getVictoriesNeededToProceed(subzone.type))
         allSubZonesCleared = false;
       if (this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements) > 0 ||
@@ -417,6 +433,10 @@ export class ZoneNavigationComponent implements OnInit {
       return "?";
 
     return "!";
+  }
+  
+  openAutoProgressOptions(content: any) {
+    var dialog = this.dialog.open(content, { width: '50%', maxHeight: '50%' });
   }
 
   ngOnDestroy() {

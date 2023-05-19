@@ -17,6 +17,7 @@ import { loadStripe } from '@stripe/stripe-js';
 import { Stripe } from 'stripe';
 import { PatreonAccessService } from 'src/app/services/utility/patreon-access.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 
 @Component({
   selector: 'app-settings-view',
@@ -28,6 +29,9 @@ export class SettingsViewComponent implements OnInit {
   file: any;
   enteredRedemptionCode: string;
   storyStyle: StoryStyleSettingEnum;
+  fps: number;
+  loadingAccuracy: number;
+  loadingTime: number;
   storyStyleEnum = StoryStyleSettingEnum;
   tooltipTheme: boolean;
   quickViewOverlayFlipped: boolean = false;
@@ -38,9 +42,10 @@ export class SettingsViewComponent implements OnInit {
   @ViewChild('confirmationBox') confirmationBox: any;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
-    private utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
+    public utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
     private versionControlService: VersionControlService, private codeCreationService: CodeCreationService,
-    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService, private lookupService: LookupService) { }
+    private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService, private lookupService: LookupService,
+    private menuService: MenuService) { }
 
   ngOnInit(): void {
     if (this.deploymentService.codeCreationMode) {
@@ -62,6 +67,10 @@ export class SettingsViewComponent implements OnInit {
     if (this.deploymentService.codeCreationMode)
       console.log(this.codeCreationService.createCode());
 
+    this.getSettings();
+  }
+
+  getSettings() {
     var storyStyle = this.globalService.globalVar.settings.get("storyStyle");
     if (storyStyle === undefined)
       this.storyStyle = StoryStyleSettingEnum.Medium;
@@ -74,6 +83,9 @@ export class SettingsViewComponent implements OnInit {
     else
       this.tooltipTheme = tooltipTheme;
 
+    this.fps = this.globalService.globalVar.settings.get("fps") ?? this.utilityService.averageFps;
+    this.loadingAccuracy = this.globalService.globalVar.settings.get("loadingAccuracy") ?? this.utilityService.averageLoadingAccuracy;
+    this.loadingTime = this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.lowActiveTimeLimit;
     this.quickViewOverlayFlipped = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
@@ -100,6 +112,8 @@ export class SettingsViewComponent implements OnInit {
         this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
         this.storyService.showStory = false;
         this.globalService.globalVar.isBattlePaused = false;
+
+        this.getSettings();
       }
     }
   }
@@ -138,10 +152,20 @@ export class SettingsViewComponent implements OnInit {
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
           //console.log(this.globalService.globalVar);
+
+          this.getSettings();
         }
       }
       fileReader.readAsText(this.file);
     }
+  }
+
+  inTextbox() {
+    this.menuService.inTextbox = true;
+  }
+
+  outOfTextbox() {
+    this.menuService.inTextbox = false;
   }
 
   setStoryStyle() {
@@ -157,6 +181,18 @@ export class SettingsViewComponent implements OnInit {
       this.globalService.globalVar.timers.scenePageLength = this.globalService.globalVar.timers.pauseStorySpeed;
 
     this.globalService.globalVar.settings.set("storyStyle", this.storyStyle);
+  }
+
+  setFps() {    
+    this.globalService.globalVar.settings.set("fps", this.fps);
+  }
+
+  setLoadingAccuracy() {    
+    this.globalService.globalVar.settings.set("loadingAccuracy", this.loadingAccuracy);
+  }
+
+  setLoadingTime() {    
+    this.globalService.globalVar.settings.set("loadingTime", this.loadingTime);
   }
 
   setTooltipTheme() {
@@ -184,5 +220,9 @@ export class SettingsViewComponent implements OnInit {
   }
   showPartyHpAsPercentToggle() {
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", this.showPartyHpAsPercent);
+  }
+
+  ngOnDestroy() {    
+    this.menuService.inTextbox = false;
   }
 }

@@ -11,5 +11,11 @@ export enum ZoneEnum {
   TheLethe,
   AegeanSea,
   BlackSea,
-  Colchis
+  Colchis,
+  Lerna,
+  Stymphalia,
+  Erymanthus,
+  CoastOfCrete,
+  GardenOfTheHesperides,
+  Erytheia
 }

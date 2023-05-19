@@ -6,6 +6,7 @@ import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -13,6 +14,10 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { ResourceGeneratorService } from 'src/app/services/resources/resource-generator.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
+import { StoryService } from 'src/app/services/story/story.service';
+import { BattleService } from 'src/app/services/battle/battle.service';
 
 @Component({
   selector: 'app-shopping-item-view',
@@ -24,22 +29,25 @@ export class ShoppingItemViewComponent implements OnInit {
   itemDescription = "";
   purchaseResourcesRequired: string = "";
   partyMembers: Character[];
-  subscription: any;  
+  subscription: any;
   tooltipDirection = DirectionEnum.Right;
   outOfStock: boolean = false;
+  @Input() excludeItemDescriptionLocationText = false;
+  @Input() totalItemsInShop = 0;
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService,
-    private deviceDetectorService: DeviceDetectorService, public dictionaryService: DictionaryService) { }
+    private deviceDetectorService: DeviceDetectorService, public dictionaryService: DictionaryService, public dialog: MatDialog,
+    private storyService: StoryService, private battleService: BattleService) { }
 
   ngOnInit(): void {
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
-    this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem);
+    this.itemDescription = this.lookupService.getItemDescription(this.item.shopItem, undefined, false, this.excludeItemDescriptionLocationText);
     this.setItemPurchasePrice();
     this.outOfStock = this.isItemOutOfStock();
 
-    if (this.deviceDetectorService.isMobile())    
-      this.tooltipDirection = DirectionEnum.Down;    
+    if (this.deviceDetectorService.isMobile())
+      this.tooltipDirection = DirectionEnum.Down;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.setItemPurchasePrice();
@@ -53,6 +61,12 @@ export class ShoppingItemViewComponent implements OnInit {
     if (this.item.shopItem === ItemsEnum.WarriorClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior)?.isAvailable)
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.PriestClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest)?.isAvailable)
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.AugeanStables1 && this.globalService.globalVar.sidequestData.augeanStablesLevel >= 1)
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.AugeanStables2 && this.globalService.globalVar.sidequestData.augeanStablesLevel >= 2)
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.AugeanStables3 && this.globalService.globalVar.sidequestData.augeanStablesLevel >= 3)
       outOfStock = true;
 
     return outOfStock;
@@ -87,14 +101,41 @@ export class ShoppingItemViewComponent implements OnInit {
   buyItem() {
     if (this.canBuyItem()) {
       this.spendResourcesOnItem();
-
       var resource = this.resourceGeneratorService.getResourceFromItemType(this.item.shopItem, 1);
+
       if (resource !== undefined) {
         if (resource.item === ItemsEnum.SparringMatch) {
           this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), 5000);
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass) {
           this.unlockClass(resource.item);
+        }
+        else if (resource.item === ItemsEnum.AugeanStables1 || resource.item === ItemsEnum.AugeanStables2) {
+          var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined) {
+            jewelcrafting.maxLevel += 10;
+            this.globalService.globalVar.sidequestData.augeanStablesLevel += 1;
+            this.dialog.closeAll();
+
+            if (resource.item === ItemsEnum.AugeanStables1) {
+              this.storyService.displayOptionalScene(OptionalSceneEnum.AugeanStables2);
+              this.battleService.checkScene();
+            }
+            else {
+              this.storyService.displayOptionalScene(OptionalSceneEnum.AugeanStables4);
+              this.battleService.checkScene();
+            }
+          }
+        }
+        else if (resource.item === ItemsEnum.AugeanStables3) {
+          var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined) {
+            jewelcrafting.maxLevel += 5;
+            this.globalService.globalVar.sidequestData.augeanStablesLevel += 1;
+            this.dialog.closeAll();
+            this.storyService.displayOptionalScene(OptionalSceneEnum.AugeanStables6);
+            this.battleService.checkScene();            
+          }
         }
         else
           this.lookupService.gainResource(resource);

@@ -281,6 +281,10 @@
                                 <div>
                                     Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
                                     <hr/>
+                                    <div
+                                    *ngIf="getGodPermanentAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityEffectivenessIncrease(ability, 1) !== '0%'">
+                                    <span class="statLabel">Permanent Effectiveness Increase: </span> <span class="statValue"
+                                        [innerHtml]="getGodPermanentAbilityEffectivenessIncrease(ability, 1)"></span></div>
                                     <div *ngIf="getGodAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Effectiveness Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityEffectivenessIncrease(ability, 1)"></span></div>
                                 <div *ngIf="getGodSecondaryAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodSecondaryAbilityEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
@@ -289,10 +293,26 @@
                                     class="statValue" [innerHtml]="getGodAbilityEffectCountIncrease(ability, 1)"></span></div>
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 1) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                         class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 1)"></span></div>
-                                <div *ngIf="getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
+                                        <div
+                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%'">
+                                        <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
+                                            class="statValue"
+                                            [innerHtml]="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1)"></span></div>
+                                    <div *ngIf="getGodPermanentAbilityUserEffectDurationIncrease(ability,1) !== 0"><span class="statLabel">Permanent Gained
+                                            Effect Duration Increase: </span> <span class="statValue"
+                                            [innerHtml]="getGodPermanentAbilityUserEffectDurationIncrease(ability, 1)"></span> seconds</div>
+                                        <div *ngIf="getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectEffectivenessIncrease(ability, 1)"></span></div>
                                 <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 1) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectDurationIncrease(ability, 1)"></span> seconds</div>
+                                <div
+                                *ngIf="getGodPermanentAbilityTargetEffectEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityTargetEffectEffectivenessIncrease(ability, 1) !== '0%'">
+                                <span class="statLabel">Permanent Targeted Effect Effectiveness Increase: </span> <span
+                                    class="statValue"
+                                    [innerHtml]="getGodPermanentAbilityTargetEffectEffectivenessIncrease(ability, 1)"></span></div>
+                            <div *ngIf="getGodPermanentAbilityTargetEffectDurationIncrease(ability, 1) !== 0"><span
+                                    class="statLabel">Permanent Targeted Effect Duration Increase: </span> <span class="statValue"
+                                    [innerHtml]="getGodPermanentAbilityTargetEffectDurationIncrease(ability, 1)"></span> seconds</div>
                                 <div *ngIf="getGodAbilityTargetEffectEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityTargetEffectEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodAbilityTargetEffectEffectivenessIncrease(ability, 1)"></span></div>
                                     <div *ngIf="getGodAbilityTargetEffectDurationIncrease(ability, 1) !== 0"><span class="statLabel">Targeted Effect Duration Increase: </span> <span
@@ -312,6 +332,10 @@
                                 <div>
                                     Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
                                     <hr/>
+                                    <div
+                            *ngIf="getGodPermanentAbilityEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentAbilityEffectivenessIncrease(ability, 2) !== '0%'">
+                            <span class="statLabel">Permanent Effectiveness Increase: </span> <span class="statValue"
+                                [innerHtml]="getGodPermanentAbilityEffectivenessIncrease(ability, 2)"></span></div>
                                     <div *ngIf="getGodAbilityEffectivenessIncrease(ability, 2) !== 0 && getGodAbilityEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Effectiveness Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityEffectivenessIncrease(ability, 2)"></span></div>
                                 <div *ngIf="getGodSecondaryAbilityEffectivenessIncrease(ability, 2) !== 0 && getGodSecondaryAbilityEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
@@ -320,10 +344,26 @@
                                     class="statValue" [innerHtml]="getGodAbilityEffectCountIncrease(ability, 2)"></span></div>
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 2) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                         class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 2)"></span></div>
+                                        <div
+                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%'">
+                                        <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
+                                            class="statValue"
+                                            [innerHtml]="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2)"></span></div>
+                                    <div *ngIf="getGodPermanentAbilityUserEffectDurationIncrease(ability,2) !== 0"><span class="statLabel">Permanent Gained
+                                            Effect Duration Increase: </span> <span class="statValue"
+                                            [innerHtml]="getGodPermanentAbilityUserEffectDurationIncrease(ability, 2)"></span> seconds</div>
                                 <div *ngIf="getGodAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectEffectivenessIncrease(ability, 2)"></span></div>
                                 <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 2) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectDurationIncrease(ability, 2)"></span> seconds</div>
+                                <div
+                                *ngIf="getGodPermanentAbilityTargetEffectEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentAbilityTargetEffectEffectivenessIncrease(ability, 2) !== '0%'">
+                                <span class="statLabel">Permanent Targeted Effect Effectiveness Increase: </span> <span
+                                    class="statValue"
+                                    [innerHtml]="getGodPermanentAbilityTargetEffectEffectivenessIncrease(ability, 2)"></span></div>
+                            <div *ngIf="getGodPermanentAbilityTargetEffectDurationIncrease(ability, 2) !== 0"><span
+                                    class="statLabel">Permanent Targeted Effect Duration Increase: </span> <span class="statValue"
+                                    [innerHtml]="getGodPermanentAbilityTargetEffectDurationIncrease(ability, 2)"></span> seconds</div>
                                 <div *ngIf="getGodAbilityTargetEffectEffectivenessIncrease(ability, 2) !== 0 && getGodAbilityTargetEffectEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Targeted Effect Effectiveness Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodAbilityTargetEffectEffectivenessIncrease(ability, 2)"></span></div>
                                     <div *ngIf="getGodAbilityTargetEffectDurationIncrease(ability, 2) !== 0"><span class="statLabel">Targeted Effect Duration Increase: </span> <span

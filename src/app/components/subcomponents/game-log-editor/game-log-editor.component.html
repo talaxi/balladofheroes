@@ -40,10 +40,22 @@
             <mat-checkbox class='battleUpdateText' [(ngModel)]="battleUpdates" (input)="battleUpdatesToggle()">
                 Battle State Updates
             </mat-checkbox>
-            <br />
+            <!--<br />
             <mat-checkbox class='battleUpdateText' [(ngModel)]="battleRewards" (input)="battleRewardsToggle()">
                 Battle Rewards
+            </mat-checkbox>-->
+            <br />
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="battleXpRewards" (input)="battleXpRewardsToggle()">
+                Battle XP Rewards
             </mat-checkbox>
+            <br />
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="battleCoinsRewards" (input)="battleCoinsRewardsToggle()">
+                Battle Coins Rewards
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class='battleUpdateText' [(ngModel)]="battleItemsRewards" (input)="battleItemsRewardsToggle()">
+                Battle Items Rewards
+            </mat-checkbox>            
             <br />
             <mat-checkbox class='battleItemText' [(ngModel)]="useBattleItem" (input)="useBattleItemToggle()">
                 Use Battle Item
@@ -58,10 +70,14 @@
             <br />
             <mat-checkbox class='battleUpdateText' [(ngModel)]="godLevelUp" (input)="godLevelUpToggle()">
                 God Level Up
-            </mat-checkbox>
+            </mat-checkbox>            
             <br/>
             <mat-checkbox class='battleUpdateText' [(ngModel)]="foundTreasureChest" (input)="foundTreasureChestToggle()">
                 Found Treasure Chest
+            </mat-checkbox>            
+            <br />
+            <mat-checkbox class='changeLocationText' [(ngModel)]="moveLocations" (input)="moveLocationsToggle()">
+                Change Locations
             </mat-checkbox>            
             <br />
             <mat-checkbox class='battleUpdateText' [(ngModel)]="achievementUnlocked"
@@ -72,6 +88,10 @@
             <mat-checkbox class='prayText' [(ngModel)]="prayToAltar" (input)="prayToAltarToggle()">
                 Pray To Altar
             </mat-checkbox>
+            <br/>
+            <mat-checkbox class='prayText' [(ngModel)]="godAffinityLevelUp" (input)="godAffinityLevelUpToggle()">
+                God Affinity Level Up
+            </mat-checkbox>
             <br />
             <div *ngIf="alchemyUnlocked">
                 <mat-checkbox class='alchemyText' [(ngModel)]="alchemyLevelUp" (input)="alchemyLevelUpToggle()">
@@ -80,6 +100,10 @@
                 <br />
                 <mat-checkbox class='alchemyText' [(ngModel)]="alchemyCreation" (input)="alchemyCreationToggle()">
                     Alchemy Creation
+                </mat-checkbox> 
+                <br />
+                <mat-checkbox class='alchemyText' [(ngModel)]="alchemyQueueEmpty" (input)="alchemyQueueEmptyToggle()">
+                    Alchemy Creation Queue Completed
                 </mat-checkbox>                
             </div>
             <div *ngIf="jewelcraftingUnlocked">
@@ -89,7 +113,11 @@
                 <br />
                 <mat-checkbox class='jewelcraftingText' [(ngModel)]="jewelcraftingCreation" (input)="jewelcraftingCreationToggle()">
                     Jewelcrafting Creation
-                </mat-checkbox>                
+                </mat-checkbox>      
+                <br />
+                <mat-checkbox class='jewelcraftingText' [(ngModel)]="jewelcraftingQueueEmpty" (input)="jewelcraftingQueueEmptyToggle()">
+                    Jewelcrafting Creation Queue Completed
+                </mat-checkbox>                          
             </div>
             <div *ngIf="followersUnlocked">
                 <mat-checkbox class='followerText' [(ngModel)]="followerSearch" (input)="followerSearchToggle()">

@@ -94,6 +94,10 @@
       justify-content: space-around;
       background-color: var(--background-quarternary);
     }
+
+    .webMarginLeft {
+      margin-left: .3rem;
+    }
     
     .sortOptions {
       width: 70%;

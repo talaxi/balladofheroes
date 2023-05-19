@@ -4,6 +4,7 @@ import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { LookupService } from '../lookup.service';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -12,7 +13,7 @@ export class TutorialService {
 
   constructor(private lookupService: LookupService, private deviceDetectorService: DeviceDetectorService) { }
 
-  getTutorialText(type: TutorialTypeEnum, newAbility?: Ability, character?: Character, addToLog: boolean = true) {    
+  getTutorialText(type: TutorialTypeEnum, newAbility?: Ability, character?: Character, addToLog: boolean = true, subzoneEnum?: SubZoneEnum) {    
     var text = "";
 
     if (type === TutorialTypeEnum.CharacterPassiveAbility) {
@@ -98,9 +99,18 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Alchemy) {
       text = "Alchemy allows you to craft battle items that you can use to aid your party or hinder your foes.";
     }
+    else if (type === TutorialTypeEnum.ChthonicFavorUpgrade1) {
+      text = "Every 8 hours, a random god will be selected to provide 25% more Chthonic Power when resetting your gods in the Underworld.";
+    }
+    else if (type === TutorialTypeEnum.ChthonicFavorUpgrade2) {
+      text = "You now gain Chthonic Favor in addition to gaining Chthonic Power when resetting your gods in the Underworld. Chthonic Favor directly multiplies the amount of Chthonic Power you gain.";
+    }
+    else if (type === TutorialTypeEnum.Overdrive) {
+      text = "You've obtained your first overdrive. A new bar is now under the unlocking character's health bar that shows their progress to using their overdrive. Attacking and being attacked by enemies increases your overdrive gauge, and once it reaches 100% you will enter a powerful state for a period of time. You can view the overdrive menu when looking at your characters in the menu.";
+    }
 
     if (addToLog)
-      this.lookupService.addTutorialToLog(type);
+      this.lookupService.addTutorialToLog(type, subzoneEnum);
 
     return text;
   }

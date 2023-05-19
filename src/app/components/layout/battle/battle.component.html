@@ -9,7 +9,7 @@
                 <img class="dropdownIcon" src="assets/svg/dropdown.svg">
             </button>
             <div class="s4Heading textCentered selectedSubzone pageHeader">
-                <strong>{{getActiveSubzoneName()}}</strong>
+                <strong class="clickableText" customToolTip [contentTemplate]="subzonePopover" (click)="jumpToBestiary()">{{getActiveSubzoneName()}}</strong>
             </div>
             <button *ngIf="isMobile && isNextSubzoneButtonAvailable()" class="buttonStyled nextSubzone"
                 (click)="goToNextSubzone()">
@@ -126,4 +126,10 @@
 
 <ng-template #zoneNavigationContent>
     <app-zone-navigation></app-zone-navigation>
+</ng-template>
+
+<ng-template #subzonePopover>
+    <div>
+        Click to view this subzone in the Bestiary.
+    </div>
 </ng-template>

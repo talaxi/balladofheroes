@@ -74,6 +74,11 @@
     padding: 2rem;
   }
 
+  .shopItemWidth {
+    width: 25%;
+    margin: auto;
+  }
+
   @media (max-width: 800px) {
     .compareEquipment {
       flex-direction: column;

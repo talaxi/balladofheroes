@@ -2,10 +2,12 @@
     <div class="header">
         <div class="balladHeader header">
             <span class="s4Heading balladTitle mainPageSectionHeader">Ballads</span>
-            <span>
+            <span class='flexBalladHeader'>
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
+                <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton"><img
+                    class="autoProgressIcon" src="assets/svg/gear.svg"></button>
             </span>
         </div>
         <hr />
@@ -32,7 +34,7 @@
                             <div *ngFor="let zone of availableZones">
                                 <div *ngIf="!zone.isSelected">
                                     <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
-                                        [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)">{{zone.zoneName}}
+                                        [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)" [disabled]="isSubZoneChangingDisabled()">{{zone.zoneName}}
                                         <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                                     </button>
                                 </div>
@@ -86,7 +88,7 @@
                             <div *ngIf="!subzone.isSelected">
                                 <span class="subzoneSpacer">&#8618;</span><span><button
                                         class="buttonAsTextKeepColor z3Heading clickableText"
-                                        [ngClass]="getSubzoneClass(subzone)"
+                                        [ngClass]="getSubzoneClass(subzone)" [disabled]="isSubZoneChangingDisabled()"
                                         (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
                                         getSubzoneName(subzone)}}
                                         {{getSubZoneSubText(subzone)}}
@@ -162,13 +164,13 @@
                 <div *ngIf="townsAvailable" class="quickJump centeredText">
                     <span>Jump to..</span>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"
+                    <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"  [disabled]="isSubZoneChangingDisabled()"
                         (click)="jumpToLatestShop()">Latest Town</button>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()"
+                    <button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()" [disabled]="isSubZoneChangingDisabled()"
                         (click)="jumpToPalaceOfHades()">Palace of Hades</button>
                     <br />
-                    <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()"
+                    <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()" [disabled]="isSubZoneChangingDisabled()"
                         (click)="jumpToColiseum()">Coliseum</button>
                 </div>
                 <div class="peekResources centeredText">
@@ -268,4 +270,8 @@
     <div>
         See a brief overview of your Jewelcrafting status.
     </div>
+</ng-template>
+
+<ng-template #autoProgressModal>
+    <app-auto-progress-options></app-auto-progress-options>
 </ng-template>

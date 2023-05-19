@@ -23,6 +23,7 @@ export class Profession {
 
     creationCurrentAmountCreated: number;
     creationCreateAmount: number;
+    isDurationHalved: boolean;
 
     recipeBookQualityToggle: [EquipmentQualityEnum, boolean][];
 
@@ -41,5 +42,6 @@ export class Profession {
         this.expToNextLevel = 20;
         this.creationCurrentAmountCreated = 0;
         this.creationCreateAmount = 1;
+        this.isDurationHalved = false;
     }
 }

@@ -17,5 +17,8 @@ export enum TutorialTypeEnum {
   ObscurredNotification,
   MobileOverlay,
   Jewelcrafting,
-  Alchemy
+  Alchemy,
+  ChthonicFavorUpgrade1,
+  ChthonicFavorUpgrade2,
+  Overdrive
 }

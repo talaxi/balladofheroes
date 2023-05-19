@@ -8,5 +8,7 @@ export enum ShopTypeEnum {
   Coliseum,
   Traveler, //teaches other classes
   Jewelcrafter,
-  StoryScene24
+  StoryScene24,
+  Trader,
+  AugeanStables
 }

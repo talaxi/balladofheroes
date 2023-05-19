@@ -61,7 +61,7 @@
 
         <div *ngIf="selectedBallad !== undefined && selectedZone === undefined && selectedSubzone === undefined"
             class="info textCentered">
-            <span class="s2Heading pageHeader">{{balladService.getBalladName(selectedBallad.type)}}</span>
+            <span class="s2Heading pageHeader">{{balladService.getBalladName(selectedBallad?.type)}}</span>
             <br />
             <span class="smallCaps bold">ballad</span>
             <br />
@@ -153,7 +153,11 @@
                 <div class="encounter" *ngFor="let encounter of enemyEncounters; let i = index">
                     <strong>Encounter {{i + 1}}</strong>
                     <br />
-                    <span [innerHtml]="getEnemyEncounter(encounter)"></span>
+                    <span [innerHtml]="getEnemyEncounter(encounter)" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="enemyEncounterPopover"></span>
+                    <ng-template #enemyEncounterPopover>
+                        <span>Hover enemy name in the "Enemies" section above to view details.</span>
+                    </ng-template>
                 </div>
             </div>
             <hr />

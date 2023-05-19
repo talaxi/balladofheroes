@@ -119,6 +119,7 @@ export class SlotMenuViewComponent {
 
       this.selectedItem = undefined;
       this.assignResource();
+      this.availableGems = this.availableGems.filter(item => item.amount > 0);
       this.removeUnavailableGems();
     }
   }
@@ -142,6 +143,7 @@ export class SlotMenuViewComponent {
       }
 
       this.assignResource();
+      this.availableGems = this.availableGems.filter(item => item.amount > 0);
       this.removeUnavailableGems();
     }
   }

@@ -12,6 +12,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 
 @Component({
   selector: 'app-follower-search-view',
@@ -19,7 +20,9 @@ import { DictionaryService } from 'src/app/services/utility/dictionary.service';
   styleUrls: ['./follower-search-view.component.css']
 })
 export class FollowerSearchViewComponent {
-  clearedZones: Zone[];
+  balladList: BalladEnum[] = [];
+  selectedBallad: BalladEnum | undefined = undefined;
+  clearedZones: Zone[] = [];
   isMobile = false;
 
   constructor(private globalService: GlobalService, private followerService: FollowersService, private lookupService: LookupService,
@@ -28,6 +31,7 @@ export class FollowerSearchViewComponent {
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
+    this.getBalladList();
   }
 
   getAssignedFollowers() {
@@ -44,6 +48,29 @@ export class FollowerSearchViewComponent {
 
   getClearedZones() {
     return this.followerService.getClearedZones();
+  }
+
+  getClearedZonesForBallad() {
+    if (this.selectedBallad === undefined)
+      return [];
+
+    return this.followerService.getClearedZonesForBallad(this.selectedBallad);
+  }
+
+  getBalladList() {
+    this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+    }).forEach(ballad => {
+      this.balladList.push(ballad.type);
+    });
+  }
+
+  getBalladName(ballad: BalladEnum) {
+      return "<span>" + this.balladService.getBalladName(ballad) +  " (" + this.followerService.getFollowerCountForBallad(ballad) + ")</span>";
+  }
+
+  showZonesForBallad(ballad: BalladEnum) {
+    this.selectedBallad = ballad;
   }
 
   incrementZoneFollowers(type: ZoneEnum) {

@@ -1,0 +1,61 @@
+<div class="container">
+    <div class="header">Auto Progress Options</div>
+    <hr />
+    <div class="options">
+        <div class='column1'>
+            <mat-radio-group customToolTip [contentTemplate]="autoProgressOptionPopover" (change)="autoProgressTypeToggle()" class="sortOptions" [(ngModel)]="autoProgressType" aria-label="Select an auto progress type">
+                <mat-radio-button [value]="completionStatusEnum.Cleared">Auto Progress to <span class="smallCaps bold clearedSubzoneColor">clear</span></mat-radio-button>
+                <br/>
+                <mat-radio-button [value]="completionStatusEnum.Complete">Auto Progress to <span class="smallCaps bold completedSubzoneColor">complete</span></mat-radio-button>                
+              </mat-radio-group>
+        </div>
+        <div class="column2">            
+            <mat-checkbox customToolTip [contentTemplate]="includeSideQuestContentPopover" [(ngModel)]="includeSideQuests" (input)="includeSideQuestsToggle()">
+                Include Side Quest Content
+            </mat-checkbox>            
+            <br/>
+            <mat-checkbox customToolTip [contentTemplate]="pauseOnStoryScenesPopover" [(ngModel)]="pauseStory" (input)="pauseStoryToggle()">
+                Pause On Story Scenes
+            </mat-checkbox>
+            <br/>
+            <mat-checkbox customToolTip [contentTemplate]="onlyIncludeVictoryCountPopover" [(ngModel)]="includeAllAchievements" (input)="includeAllAchievementsToggle()">
+                Only Include Victory Count Achievements
+            </mat-checkbox>    
+            <br/>
+            <mat-checkbox customToolTip [contentTemplate]="removeAutoProgressOnDeathPopover" [(ngModel)]="removeAutoProgressOnDeath" (input)="removeAutoProgressOnDeathToggle()">
+                Remove Auto Progress On Death
+            </mat-checkbox>          
+        </div>
+    </div>
+</div>
+
+
+<ng-template #autoProgressOptionPopover>
+    <div>
+        Auto Progressing to Clear will progress only as far as needed to move to the next subzone. Auto Progressing to Complete will stay in a subzone until all achievements have been completed.
+    </div>
+</ng-template>
+
+<ng-template #includeSideQuestContentPopover>
+    <div>
+        Include all side quest subzones when using auto progress.
+    </div>
+</ng-template>
+
+<ng-template #pauseOnStoryScenesPopover>
+    <div>
+        If you reach a story scene while auto progress is running, pause it.
+    </div>
+</ng-template>
+
+<ng-template #onlyIncludeVictoryCountPopover>
+    <div>
+        When progressing to Complete, check this to only consider achievements related to victory count. Unchecking this will include repeating subzones until all achievements, such as 10 second clear time for bosses, are completed.
+    </div>
+</ng-template>
+
+<ng-template #removeAutoProgressOnDeathPopover>
+    <div>
+        When you die, turn auto progress off so that you heal in town.
+    </div>
+</ng-template>

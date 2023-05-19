@@ -40,7 +40,7 @@
       <div *ngFor="let equipment of equipmentItems; let i = index" [ngClass]="get2ColumnClass(i, 2)">
         <div>
           <span customToolTip [contentTemplate]="equipmentContent" [tooltipDirection]="tooltipDirection"
-            class="screenMarginLeft">
+          [ngClass]="{'webMarginLeft': !isMobile }">
             <strong
               [ngClass]="getEquipmentClass(equipment.item)">{{dictionaryService.getItemName(equipment.item)}}:</strong>
             {{equipment.amount}}
@@ -64,7 +64,7 @@
       <div *ngFor="let resource of slotItems; let i = index" [ngClass]="get2ColumnClass(i, 2)">
         <div>
           <span customToolTip [contentTemplate]="equipmentContent" [tooltipDirection]="tooltipDirection"
-            class="screenMarginLeft">
+          [ngClass]="{'webMarginLeft': !isMobile }">
             <strong
               [ngClass]="lookupService.getEquipmentQualityClass(lookupService.getSlotItemQuality(resource.item))">{{dictionaryService.getItemName(resource.item)}}:</strong>
             {{resource.amount}}
@@ -87,7 +87,7 @@
       <div *ngFor="let resource of resources; let i = index">
         <div>
           <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
-          class="screenMarginLeft">
+          [ngClass]="{'webMarginLeft': !isMobile }">
           <strong [class]="getResourceClass(resource)">{{dictionaryService.getItemName(resource.item)}}:</strong> {{(isItemPercentage(resource.item) ? resource.amount * 100 : resource.amount)  | number : '1.0-3'}}{{(isItemPercentage(resource.item) ? "%" : "")}} 
           <hr />
         </span>
@@ -106,7 +106,7 @@
       <div *ngFor="let resource of battleItems; let i = index">
         <div>
           <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
-          class="screenMarginLeft">
+          [ngClass]="{'webMarginLeft': !isMobile }">
           <strong [class]="getResourceClass(resource)">{{dictionaryService.getItemName(resource.item)}}:</strong> {{(isItemPercentage(resource.item) ? resource.amount * 100 : resource.amount)  | number : '1.0-3'}}{{(isItemPercentage(resource.item) ? "%" : "")}} 
           <hr />
         </span>
@@ -125,7 +125,7 @@
       <div class="noLineHeight">
       <div *ngFor="let resource of craftingMaterials; let i = index" [ngClass]="get2ColumnClass(i, 2)">
         <div>
-          <button class="screenMarginLeft buttonAsText clickableText trackingButton">
+          <button class="buttonAsText clickableText trackingButton" [ngClass]="{'webMarginLeft': !isMobile }">
             <!--{{dictionaryService.getItemName(resource.item)}} x{{resource.amount}}-->
             <app-resource-item-view [flipToolTip]="shouldFlipMaterial(i, 2)" [resource]="resource.item" [canSetTrackingResource]="true"></app-resource-item-view>
           </button>
@@ -148,7 +148,7 @@
       <br />
       <div *ngFor="let charm of smallCharmResources; let i = index">
         <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
-          class="screenMarginLeft">
+        [ngClass]="{'webMarginLeft': !isMobile }">
           <strong [ngClass]="lookupService.getEquipmentQualityClass(quality.Basic)">{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
           <hr />
         </span>
@@ -166,7 +166,7 @@
       <br />
       <div *ngFor="let charm of largeCharmResources; let i = index">
         <span customToolTip [contentTemplate]="charmContent" [tooltipDirection]="tooltipDirection"
-          class="screenMarginLeft">
+        [ngClass]="{'webMarginLeft': !isMobile }">
           <strong [ngClass]="lookupService.getEquipmentQualityClass(quality.Rare)">{{dictionaryService.getItemName(charm.item)}}:</strong> {{charm.amount}}
           <hr />
         </span>

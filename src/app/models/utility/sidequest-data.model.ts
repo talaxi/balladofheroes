@@ -1,4 +1,5 @@
 import { Character } from "../character/character.model";
+import { BestiaryEnum } from "../enums/bestiary-enum.model";
 
 export class SidequestData {
     isAltarOfAsclepiusUnlocked: boolean;
@@ -6,6 +7,12 @@ export class SidequestData {
     weeklyMeleeEntries: number;
     lastWeeklyMeleeTicketReceived: Date;
     highestWeeklyMeleeRound: number;
+    traderHuntLevel: number;
+    traderBestiaryType: BestiaryEnum;
+    goldenApplesObtained: number;
+    augeanStablesLevel: number;
+    displayAugeanStablesPayScene: boolean;
+    maxAugeanStablesLevel: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -16,5 +23,10 @@ export class SidequestData {
         this.weeklyMeleeEntries = 1;
         this.highestWeeklyMeleeRound = 0;
         this.lastWeeklyMeleeTicketReceived = new Date();
+        this.traderHuntLevel = 0;
+        this.goldenApplesObtained = 0;
+        this.augeanStablesLevel = 0;
+        this.displayAugeanStablesPayScene = false;
+        this.maxAugeanStablesLevel = 3;
     }
 }

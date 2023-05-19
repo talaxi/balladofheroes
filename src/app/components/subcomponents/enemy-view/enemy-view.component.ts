@@ -125,9 +125,16 @@ export class EnemyViewComponent implements OnInit {
       return;
 
     if (this.battleService.targetCharacterMode) {
-      var targetingCharacter = this.globalService.globalVar.characters.find(item => item.type === this.battleService.characterInTargetMode);
-      if (targetingCharacter !== undefined) {
-        targetingCharacter.targeting = character;
+      if (this.battleService.characterInTargetMode === CharacterEnum.All) {
+        this.globalService.getActivePartyCharacters(true).forEach(member =>{
+          member.targeting = character;
+        });
+      }
+      else {
+        var targetingCharacter = this.globalService.globalVar.characters.find(item => item.type === this.battleService.characterInTargetMode);
+        if (targetingCharacter !== undefined) {
+          targetingCharacter.targeting = character;
+        }
       }
     }
 
@@ -165,7 +172,8 @@ export class EnemyViewComponent implements OnInit {
       'characterTargetedAdventurer': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Adventurer,
       'characterTargetedArcher': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Archer,
       'characterTargetedWarrior': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Warrior,
-      'characterTargetedPriest': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Priest
+      'characterTargetedPriest': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Priest,
+      'characterTargetedAll': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.All,
     };
   }
 
@@ -200,7 +208,7 @@ export class EnemyViewComponent implements OnInit {
       src += "priestTarget.svg";
 
     return src;
-  }  
+  }
 
   overlayEmitter(overlayRef: OverlayRef) {
     if (this.overlayRef !== undefined) {

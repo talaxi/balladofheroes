@@ -16,6 +16,11 @@ import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
+import { CharacterStats } from 'src/app/models/character/character-stats.model';
+import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
+import { LookupService } from '../lookup.service';
+import { KeybindService } from './keybind.service';
+import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 
 @Injectable({
@@ -24,11 +29,12 @@ import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 export class VersionControlService {
 
   constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService,
-    private achievementService: AchievementService, private initializationService: InitializationService) { }
+    private achievementService: AchievementService, private initializationService: InitializationService, private lookupService: LookupService,
+    private keybindService: KeybindService) { }
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -239,8 +245,7 @@ export class VersionControlService {
           this.globalService.globalVar.ballads.forEach(ballad => {
             ballad.zones.forEach(zone => {
               zone.subzones.forEach(subzone => {
-                if (subzone.type === SubZoneEnum.BlackSeaStormySkies && subzone.victoryCount >= 2500)
-                {
+                if (subzone.type === SubZoneEnum.BlackSeaStormySkies && subzone.victoryCount >= 2500) {
                   var charm = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.SmallCharmOfHaste);
                   if (charm !== undefined)
                     charm.amount += 1;
@@ -250,7 +255,7 @@ export class VersionControlService {
               });
             });
           });
-          
+
 
           var dionysus = new God(GodEnum.Dionysus);
           dionysus.name = "Dionysus";
@@ -351,12 +356,11 @@ export class VersionControlService {
 
           var achievementsCompleted = this.globalService.globalVar.totalAchievementsCompleted;
           var achievementFollowers = 0;
-          if (achievementsCompleted > 0)
-          {
+          if (achievementsCompleted > 0) {
             achievementsCompleted -= 1;
             achievementFollowers += 1;
 
-            
+
             while (achievementsCompleted > 12) {
               achievementFollowers += 1;
               achievementsCompleted -= 12;
@@ -369,7 +373,157 @@ export class VersionControlService {
               this.globalService.globalVar.followerData.availableFollowers += 1;
               this.globalService.globalVar.followerData.followers.push(new IndividualFollower());
             }
-          }            
+          }
+        }
+        if (version === .5) {
+          this.globalService.globalVar.gods.forEach(god => {
+            god.partyPermanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+            god.permanentStat3GainCount = [];
+            god.permanentStat4GainCount = [];
+            god.permanentAbility1GainCount = [];
+            god.permanentPassiveGainCount = [];
+            god.permanentAbility2GainCount = [];
+            god.permanentAbility3GainCount = [];
+            god.permanentAbilityUpgrades = [];
+          });
+
+          this.globalService.globalVar.characters.forEach(character => {
+            character.trackedStats.healingDone = 0;
+            character.trackedStats.damagingHitsTaken = 0;
+            character.trackedStats.healsMade = 0;
+            character.trackedStats.criticalsDealt = 0;  
+          });
+          
+          var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+          if (hades !== undefined) {
+            var passive = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              passive.maxCount = 3;
+              passive.userEffect[0].maxCount = 3;
+              passive.userEffect[0].effectiveness = 1.02 + ((passive.userEffect[0].effectiveness - 1.02) * (1/3)); 
+            }
+
+            var ability1 = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.cooldown += 6;
+            }
+
+            var ability2 = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.cooldown += 5;
+              ability2.effectiveness -= 0.05;
+            }
+          }
+
+          var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+          if (dionysusGod !== undefined) {
+            var ability1 = dionysusGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.targetType = TargetEnum.LowestHpPercent;
+            }
+
+            var ability2 = dionysusGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.targetEffect[0].effectiveness += .01;
+            }
+          }
+
+          this.initializationService.initializeBalladOfLabors();
+          var hurriedRetreat2 = this.balladService.findSubzone(SubZoneEnum.ColchisHurriedRetreat2);
+          if (hurriedRetreat2 !== undefined && hurriedRetreat2.isAvailable && hurriedRetreat2.victoryCount > 0) {
+            var labors = this.balladService.findBallad(BalladEnum.Labors);
+            var nemea = this.balladService.findZone(ZoneEnum.Nemea);
+            var cleonea = this.balladService.findSubzone(SubZoneEnum.NemeaCleonea);
+            var countryRoads = this.balladService.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo);
+            var oldCountryRoads = this.balladService.findSubzone(SubZoneEnum.NemeaCountryRoadsOne);
+
+            if (labors !== undefined) {
+              labors.isAvailable = true;
+              labors.notify = true;
+            }
+            if (nemea !== undefined) {
+              nemea.isAvailable = true;
+              nemea.notify = true;
+            }
+            if (cleonea !== undefined) {
+              cleonea.isAvailable = true;
+              cleonea.notify = true;
+            }
+            if (countryRoads !== undefined) {
+              countryRoads.isAvailable = true;
+              countryRoads.notify = true;
+            }
+            if (oldCountryRoads !== undefined) {
+              oldCountryRoads.isAvailable = false;              
+            }
+          }
+
+          this.globalService.globalVar.settings.set("autoProgressType", CompletionStatusEnum.Cleared);
+          this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
+          this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
+          this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);
+          this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", true);   
+          this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
+          this.globalService.globalVar.settings.set("loadingAccuracy", this.utilityService.averageLoadingAccuracy);
+          this.globalService.globalVar.settings.set("loadingTime", this.utilityService.averageActiveTimeLimit);
+
+          this.globalService.globalVar.gameLogSettings.set("battleXpRewards", true);
+          this.globalService.globalVar.gameLogSettings.set("battleCoinsRewards", true);
+          this.globalService.globalVar.gameLogSettings.set("battleItemsRewards", true);
+          this.globalService.globalVar.gameLogSettings.set("godAffinityLevelUp", true);
+          this.globalService.globalVar.gameLogSettings.set("alchemyQueueEmpty", false);
+          this.globalService.globalVar.gameLogSettings.set("jewelcraftingQueueEmpty", false);
+          this.globalService.globalVar.gameLogSettings.set("moveLocations", true);
+
+          this.globalService.globalVar.keybinds.set("toggleAllCharactersTargetMode", this.keybindService.altKeyBind + "keyT");
+
+          this.globalService.globalVar.sidequestData.traderHuntLevel = 0;
+          this.globalService.globalVar.sidequestData.goldenApplesObtained = 0;          
+          this.globalService.globalVar.sidequestData.augeanStablesLevel = 0;
+          this.globalService.globalVar.sidequestData.maxAugeanStablesLevel = 3;
+
+          var alchemy = this.globalService.globalVar.professions.find(type => type.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined && alchemy.upgrades.length > 0) {
+            alchemy.isDurationHalved = false;
+          }
+
+          var jewelcrafting = this.globalService.globalVar.professions.find(type => type.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined && jewelcrafting.upgrades.length > 0) {
+            jewelcrafting.isDurationHalved = false;
+            jewelcrafting.upgrades.forEach(upgrades => {
+              if (upgrades.chanceTo2xItem > 0) {
+                upgrades.chanceForUpgrade = upgrades.chanceTo2xItem / 2;
+                upgrades.chanceTo2xItem = 0;
+              }
+
+              if (upgrades.chanceTo5xItem > 0) {
+                upgrades.chanceToHalfDuration = upgrades.chanceTo5xItem * 2;
+                upgrades.chanceTo5xItem = 0;
+              }
+            });
+          }
+
+          this.globalService.globalVar.optionalScenesViewed.forEach(optionalStory => {
+            this.lookupService.addSideStoryToLog(optionalStory, undefined);
+          });
+
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Champion)!.displayOrder = 1;
+
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Gorgon) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Gorgon)!.displayOrder = 2;
+
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld)!.displayOrder = 3;
+
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Boar) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Boar)!.displayOrder = 4;
+
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Argo) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Argo)!.displayOrder = 5;
+
+          if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors) !== undefined)
+            this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors)!.displayOrder = 6;
         }
         if (version === .46) {          
           var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
