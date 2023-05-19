@@ -500,6 +500,8 @@ export class DictionaryService {
     else if (type === ItemsEnum.LargeCharmOfHaste)
       name = "Large Charm of Haste";
       
+    else if (type === ItemsEnum.SmallCharmOfHolyDestruction)
+    name = "Small Charm of Holy Destruction";
     else if (type === ItemsEnum.LargeCharmOfHolyDestruction)
       name = "Large Charm of Holy Destruction";
     else if (type === ItemsEnum.SmallCharmOfFireDestruction)
