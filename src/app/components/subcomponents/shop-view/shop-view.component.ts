@@ -1,6 +1,7 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
@@ -181,7 +182,10 @@ export class ShopViewComponent implements OnInit {
       }
 
       this.setTraderLevelUpText();
-      this.traderLevelUpKillsRemainingText = this.enemyGeneratorService.generateEnemy(this.globalService.globalVar.sidequestData.traderBestiaryType).name + " Kills: " + defeatCount + " / " + this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel();
+      if (this.atMaxTraderLevel())
+        this.traderLevelUpKillsRemainingText = "";
+      else
+        this.traderLevelUpKillsRemainingText = this.enemyGeneratorService.generateEnemy(this.globalService.globalVar.sidequestData.traderBestiaryType).name + " Kills: " + defeatCount + " / " + this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel();
       option.availableItems = this.subzoneGeneratorService.getAvailableTraderOptions(this.globalService.globalVar.sidequestData.traderHuntLevel);
     }
 
@@ -206,8 +210,18 @@ export class ShopViewComponent implements OnInit {
   setTraderLevelUpText() {    
     if (this.globalService.globalVar.sidequestData.traderHuntLevel === 1)
       this.traderLevelUpText = "“If you could help me get back the rest of my materials, I sure would appreciate it!”";
+    else if (this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel() === BestiaryEnum.None)
+      this.traderLevelUpText = "“This is all I have for now, but if I get any new leads I'll let you know!”";
     else
       this.traderLevelUpText = "“If you can continue to clear the way to more materials, I'd be happy to trade for them with you!”";
+  }
+
+  atMaxTraderLevel() {
+    if (this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel() === BestiaryEnum.None) {
+      return true;
+    }
+
+    return false;
   }
 
   sortFunction(a: ShopItem, b: ShopItem) {

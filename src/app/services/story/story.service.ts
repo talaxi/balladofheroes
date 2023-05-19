@@ -403,7 +403,7 @@ export class StoryService {
           "<div class='sceneDiv'>" + this.zosimeText("“That man is a monster. Did we do the right thing?”") + " She says, looking troubled. </div>" +
           "<div>You have been wrestling with the same question as well. Aeëtes was said to be immensely powerful, and the fear of failing your mission again no doubt impacted your decision. You close your eyes, trying to imagine how a hero would feel. What would Jason do?</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.thalesText("“We will return and set things right. I want to be the kind of hero who abolishes the evil in this world, and Ive never seen more evil in my life than in Colchis.") + "</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.thalesText("“We will return and set things right. I want to be the kind of hero who abolishes the evil in this world, and I've never seen more evil in my life than in Colchis.") + "</div>" +
           "<div class='sceneDiv'>" + this.thalesText("But we'll need to be stronger. We'll need to figure out a way to beat Aeëtes without sacrificing a city.") + "</div>" +
           "<div>" + this.thalesText("I've been thinking about this since we started our journey to Iolcus. I think it's time we attempt Heracles' trials again. If I want to be a hero, I have to be able to do what is right without fearing death. People need our help, and the only way we can do that is to keep moving forward.”") + "</div>";
     }
@@ -931,7 +931,7 @@ export class StoryService {
       if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
         this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked = true;
       }
-      if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {
+      if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {        
         this.globalService.globalVar.sidequestData.traderHuntLevel = 1;
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables2) {

@@ -3780,6 +3780,7 @@ export class BattleService {
         userGainsEffects = userGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
       }
 
+      //console.log("Triggered " + userGainsEffects[0].type);
       this.handleuserEffects(true, userGainsEffects, user, party, targets);
     }
 

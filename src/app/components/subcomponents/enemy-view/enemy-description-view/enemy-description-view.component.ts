@@ -15,7 +15,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class EnemyDescriptionViewComponent {
   @Input() character: Enemy;
-  defeatCount: number;
+  defeatCount: number = 0;
   subscription: any;
 
   constructor(public utilityService: UtilityService, public lookupService: LookupService, private dictionaryService: DictionaryService,

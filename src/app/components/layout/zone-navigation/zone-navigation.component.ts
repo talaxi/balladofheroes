@@ -436,7 +436,7 @@ export class ZoneNavigationComponent implements OnInit {
   }
   
   openAutoProgressOptions(content: any) {
-    var dialog = this.dialog.open(content, { width: '50%', maxHeight: '50%' });
+    var dialog = this.dialog.open(content, { width: '65%', maxHeight: '50%' });
   }
 
   ngOnDestroy() {

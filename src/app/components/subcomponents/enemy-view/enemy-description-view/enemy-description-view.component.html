@@ -1,7 +1,7 @@
 <div>
     <span class="s2Heading">{{character.name}}</span>
     <hr />
-    <div *ngIf="this.defeatCount < this.utilityService.killCountDisplayEnemyStatsAbilities">
+    <div *ngIf="this.defeatCount === undefined || this.defeatCount < this.utilityService.killCountDisplayEnemyStatsAbilities">
         Defeat {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount}} more {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount === 1 ? "time" : "times"}} for more
         info.
     </div>

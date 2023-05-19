@@ -342,6 +342,15 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.SafeRing) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
+    if (item === ItemsEnum.SirensongRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
+    }
+    if (item === ItemsEnum.RingOfCurses) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
+    }
+    if (item === ItemsEnum.BloodyShield) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
     if (item === ItemsEnum.AugeanStables1) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
     }

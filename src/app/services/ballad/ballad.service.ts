@@ -866,7 +866,7 @@ export class BalladService {
       return false;
 
     ballad.zones.forEach(zone => {
-      if (!zone.isAvailable || zone.subzones.some(subzone => !subzone.isAvailable))
+      if (!zone.isAvailable || zone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).some(subzone => !subzone.isAvailable))
         isFullyAvailable = false;
     })
 
@@ -879,7 +879,7 @@ export class BalladService {
     if (zone === undefined)
       return false;
 
-    if (zone.subzones.some(subzone => !subzone.isAvailable))
+    if (zone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).some(subzone => !subzone.isAvailable))
       isFullyAvailable = false;
 
     return isFullyAvailable;

@@ -224,7 +224,7 @@ export class BestiaryViewComponent {
       return 0;
 
     this.selectedBallad.zones.forEach(zone => {
-      zone.subzones.forEach(subzone => {
+      zone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
         if (enemyEncounters.length > 0) {
           enemyEncounters.forEach(encounter => {
@@ -247,7 +247,7 @@ export class BestiaryViewComponent {
       return 0;
 
     this.selectedBallad.zones.forEach(zone => {
-      zone.subzones.forEach(subzone => {
+      zone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
         if (enemyEncounters.length > 0) {
           enemyEncounters.forEach(encounter => {
@@ -271,7 +271,7 @@ export class BestiaryViewComponent {
     if (this.selectedZone === undefined)
       return 0;
     
-      this.selectedZone.subzones.forEach(subzone => {
+      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
         if (enemyEncounters.length > 0) {
           enemyEncounters.forEach(encounter => {
@@ -292,7 +292,7 @@ export class BestiaryViewComponent {
     if (this.selectedZone === undefined)
       return 0;
 
-      this.selectedZone.subzones.forEach(subzone => {
+      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
         if (enemyEncounters.length > 0) {
           enemyEncounters.forEach(encounter => {
@@ -469,7 +469,7 @@ export class BestiaryViewComponent {
       return 0;    
 
     this.selectedBallad.zones.forEach(zone => {
-      zone.subzones.forEach(subzone => {
+      zone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         var totalAchieves = this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
         var incompleteAchieves = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements);
         achievementCount += totalAchieves - incompleteAchieves;
@@ -488,7 +488,7 @@ export class BestiaryViewComponent {
       return -1;
 
     this.selectedBallad.zones.forEach(zone => {
-      zone.subzones.forEach(subzone => {
+      zone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         achievementCount += this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
       });
     });
@@ -501,7 +501,7 @@ export class BestiaryViewComponent {
     if (this.selectedZone === undefined)
       return 0;
 
-      this.selectedZone.subzones.forEach(subzone => {
+      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         var totalAchieves = this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
         var incompleteAchieves = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements);
         achievementCount += totalAchieves - incompleteAchieves;
@@ -518,7 +518,7 @@ export class BestiaryViewComponent {
       if (!this.balladService.isZoneFullyAvailable(this.selectedZone.type))
       return -1;
 
-      this.selectedZone.subzones.forEach(subzone => {
+      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
         achievementCount += this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
       });
 
