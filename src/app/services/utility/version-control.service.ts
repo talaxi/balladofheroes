@@ -525,6 +525,25 @@ export class VersionControlService {
           if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors)!.displayOrder = 6;
         }
+        if (version === .46) {          
+          var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+
+          if (apollo !== undefined) {
+            var ostinato = apollo.abilityList.find(item => item.name === "Ostinato");
+            if (ostinato !== undefined)
+            {
+              ostinato.targetType = TargetEnum.LowestHpPercent;
+            }
+          }
+
+          var priest = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Priest);
+
+          if (priest !== undefined) {
+            var heal = priest.abilityList.find(item => item.name === "Heal");
+            if (heal !== undefined)
+              heal.targetType = TargetEnum.LowestHpPercent;
+          }
+        }
 
         this.globalService.globalVar.currentVersion = version;
       }
