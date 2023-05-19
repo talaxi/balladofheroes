@@ -410,8 +410,8 @@ export class ColiseumService {
       var expectedCharacterStats = new PrimaryStats(2965, 220, 795, 650, 665, 750);
 
       var offsetRound = round - 9;
-      defensiveGrowthFactor = 1.21;
-      offensiveGrowthFactor = 1.14;
+      defensiveGrowthFactor = 1.29;
+      offensiveGrowthFactor = 1.18;
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
       expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
       expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);

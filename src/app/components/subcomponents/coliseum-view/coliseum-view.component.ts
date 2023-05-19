@@ -229,7 +229,7 @@ export class ColiseumViewComponent implements OnInit {
     "Completing Round 5: +10-50 Basic Crafting Materials<br/>" +
     "Completing Round 10: +30-70 Rough Gem Fragments<br/>" +
     "Completing Round 15: +25-100 Metal Scraps<br/>" +
-    "Completing Round 20: +60-100 Rough Gem Fragments<br/>" +
+    "Completing Round 20: +25-150 Chthonic Favor<br/>" +
     "Completing Round 25: +30-70 Uncommon Crafting Materials<br/>" +
     "Every successive boss fight: +100 Rough Gem Fragments<br/><br/>" +
     "<b><i>Rewards will continue to be adjusted as future content is added to the game</i></b>"

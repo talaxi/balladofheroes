@@ -400,7 +400,7 @@ export class VersionControlService {
             if (passive !== undefined) {
               passive.maxCount = 3;
               passive.userEffect[0].maxCount = 3;
-              passive.userEffect[0].effectiveness = 1.02 + ((passive.userEffect[0].effectiveness - 1.02) * (2/3)); 
+              passive.userEffect[0].effectiveness = 1.02 + ((passive.userEffect[0].effectiveness - 1.02) * (1/3)); 
             }
 
             var ability1 = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);

@@ -1867,7 +1867,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         userGainsEffect.duration += 1.5;
       else
-        userGainsEffect.effectiveness += .01;
+        userGainsEffect.effectiveness += .005;
     }
     else if (god.type === GodEnum.Nemesis) {
       if (ability.abilityUpgradeLevel <= 100)
@@ -2108,7 +2108,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Hades) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
           var userGainsEffect = ability.userEffect[0];
-          userGainsEffect.effectiveness = .05;
+          userGainsEffect.effectiveness = .005;
         }
         else if (god.type === GodEnum.Dionysus) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
@@ -2966,7 +2966,7 @@ export class GlobalService {
         this.globalVar.sidequestData.highestWeeklyMeleeRound = (losingRound - 1);
 
       var bonusXpBase = 3250;
-      var growthFactor = 1.33;
+      var growthFactor = 1.205;
 
       var bonusXp = Math.round((bonusXpBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusXpBase));
 
@@ -3013,8 +3013,8 @@ export class GlobalService {
     }
 
     if (round > 20) {
-      var rng = this.utilityService.getRandomInteger(60, 100);
-      var gainedItem = this.getRandomGem();
+      var rng = this.utilityService.getRandomInteger(25, 150);
+      var gainedItem = ItemsEnum.ChthonicFavor;
 
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
       this.gainResource(new ResourceValue(gainedItem, rng));

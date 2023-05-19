@@ -325,7 +325,7 @@ export class GodViewComponent implements OnInit {
     return rewards;
   }
 
-  //TODO: maybe come back to this but seems like an insane amount of work just to display the effectiveness upgrade
+  //maybe come back to this but seems like an insane amount of work just to display the effectiveness upgrade
   getAbilityUpgradeDescription(ability: { ability: Ability, upgradeLevel: number }) {
     return ability.upgradeLevel;
   }
