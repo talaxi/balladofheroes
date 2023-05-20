@@ -69,7 +69,9 @@ export class BestiaryViewComponent {
     
     this.menuService.setBestiaryPresets(undefined, undefined, undefined);     
     this.isMobile = this.deviceDetectorService.isMobile();
-    this.globalService.globalVar.ballads.filter(item => item.isAvailable).forEach(item => {
+    this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+    }).forEach(item => {
       this.availableBallads.push(item.type);
     });
   }

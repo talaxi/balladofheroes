@@ -6,7 +6,7 @@
     "testconfig": "ts-node ./test-config.index.ts",
     "config": "ts-node ./config.index.ts",
     "start": "ng serve",
-    "build": "npm install && npm run testconfig && ng build",
+    "build": "npm install && npm run testconfig && ng build --watch",
     "deploy": "npm run config && ng build --base-href=/balladofheroes/",
     "watch": "ng build --watch --configuration development",
     "test": "ng test"
@@ -25,6 +25,7 @@
     "@angular/router": "^15.1.4",
     "@stripe/stripe-js": "^1.52.0",
     "class-transformer": "^0.5.1",
+    "config": "^3.3.9",
     "crypto-js": "^4.1.1",
     "guid-typescript": "^1.0.9",
     "ng2-fittext": "^1.3.0",
@@ -35,7 +36,6 @@
     "rxjs": "~7.5.0",
     "seedrandom": "^3.0.5",
     "stripe": "^11.16.0",
-    "tslib": "^2.3.0",
     "zone.js": "~0.11.4"
   },
   "devDependencies": {
@@ -54,6 +54,7 @@
     "karma-jasmine": "~4.0.0",
     "karma-jasmine-html-reporter": "~1.7.0",
     "ts-node": "^10.9.1",
+    "tslib": "^2.5.2",
     "typescript": "~4.8.4"
   }
 }

@@ -207,4 +207,16 @@
       table {
         height: unset;
        }
+
+       .resources {
+        flex-wrap: wrap;
+       }
+
+       .craftingMaterialsSection {
+        width: 96%;
+      }
+  
+      .resourcesSection, .battleItemsSection {
+        width: 48%;
+      }
     }

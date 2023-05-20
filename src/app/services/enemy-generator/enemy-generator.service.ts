@@ -470,7 +470,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(247, 30, 53, 37, 30, 85);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 96;
+      enemy.xpGainFromDefeat = 100;
       enemy.loot.push(new LootItem(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 1, .06));
     }
     if (type === BestiaryEnum.Wretched) {
@@ -479,7 +479,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 98;
+      enemy.xpGainFromDefeat = 102;
       enemy.loot.push(new LootItem(ItemsEnum.MoltenShield, ItemTypeEnum.Equipment, 1, .02));
 
       var deathsTouch = new Ability();
@@ -494,11 +494,11 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Revenant) {
       enemy.name = "Revenant";
-      enemy.battleStats = new CharacterStats(320, 52, 102, 75, 35, 85);
+      enemy.battleStats = new CharacterStats(320, 52, 96, 75, 35, 85);
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 103;
+      enemy.xpGainFromDefeat = 106;
       enemy.loot.push(new LootItem(ItemsEnum.MoltenShield, ItemTypeEnum.Equipment, 1, .025));
       enemy.loot.push(new LootItem(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 1, .08));
 
@@ -514,7 +514,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.IncoherentBanshee) {
       enemy.name = "Incoherent Banshee";
-      enemy.battleStats = new CharacterStats(467, 63, 82, 40, 45, 75);
+      enemy.battleStats = new CharacterStats(447, 61, 82, 40, 45, 75);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 108;
@@ -532,7 +532,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.EngorgedShade) {
       enemy.name = "Engorged Shade";
-      enemy.battleStats = new CharacterStats(534, 80, 112, 75, 50, 75);
+      enemy.battleStats = new CharacterStats(522, 80, 112, 75, 50, 75);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 110;
@@ -541,10 +541,10 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CacklingSpectre) {
       enemy.name = "Cackling Spectre";
-      enemy.battleStats = new CharacterStats(543, 42, 86, 55, 50, 75);
+      enemy.battleStats = new CharacterStats(513, 42, 83, 55, 50, 75);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 108;
+      enemy.xpGainFromDefeat = 111;
       enemy.loot.push(new LootItem(ItemsEnum.VialOfTheLethe, ItemTypeEnum.CraftingMaterial, 2, .125));
     }
     if (type === BestiaryEnum.FloatingFlame) {
@@ -554,7 +554,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
       enemy.coinGainFromDefeat = 2;
-      enemy.xpGainFromDefeat = 107;
+      enemy.xpGainFromDefeat = 112;
       enemy.loot.push(new LootItem(ItemsEnum.SoulSpark, ItemTypeEnum.CraftingMaterial, 1, .05));
       enemy.loot.push(new LootItem(ItemsEnum.EssenceOfFire, ItemTypeEnum.CraftingMaterial, 1, .125));
 

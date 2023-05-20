@@ -1,5 +1,5 @@
 .bestiaryView {
-    height:100%;
+    height: 100%;
     background-color: var(--background-default);
     border-color: var(--background-header);
     color: var(--foreground-default);
@@ -11,8 +11,8 @@
     grid-template-columns: 20% auto 1fr;
     grid-template-rows: auto;
     justify-content: stretch;
-    grid-template-areas: 
-      "options vr info";
+    grid-template-areas:
+        "options vr info";
 }
 
 .options {
@@ -23,7 +23,9 @@
     grid-area: info;
 }
 
-.defaultBallad, .defaultZone, .defaultSubzone {
+.defaultBallad,
+.defaultZone,
+.defaultSubzone {
     color: var(--foreground-default);
 }
 
@@ -31,12 +33,16 @@
     color: var(--foreground-secondary) !important;
 }
 
-.enemyList, .enemyEncounterList, .itemList {
+.enemyList,
+.enemyEncounterList,
+.itemList {
     width: 100%;
     text-align: left;
 }
 
-.enemy, .encounter, .item { 
+.enemy,
+.encounter,
+.item {
     width: 25%;
     display: inline-block;
     text-align: center;
@@ -72,4 +78,20 @@
 
 .subheader {
     text-align: center;
+}
+
+@media (max-width: 800px) {
+
+    .balladView {
+        grid-template-columns: 35% auto 1fr;
+    }
+
+    .zoneSpacer {
+        margin-left: .15rem;
+    }
+
+    .subzoneSpacer {
+        margin-left: .4rem;
+    }
+
 }
