@@ -807,8 +807,8 @@ export class GlobalService {
       type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp ||
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp 
-       || type === StatusEffectEnum.ThousandCuts || type === StatusEffectEnum.Paralyze ||
-       type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.Stagger || 
+       || type === StatusEffectEnum.ThousandCuts || type === StatusEffectEnum.Paralyze || type === StatusEffectEnum.ArmorPenetrationDown ||
+       type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.Stagger || type === StatusEffectEnum.ArmorPenetrationUp ||
        type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
       type === StatusEffectEnum.LordOfTheUnderworld || type === StatusEffectEnum.Onslaught || type === StatusEffectEnum.EarthDamageUp || type === StatusEffectEnum.FireDamageUp
       || type === StatusEffectEnum.AirDamageUp || type === StatusEffectEnum.HolyDamageUp || type === StatusEffectEnum.LightningDamageUp || type === StatusEffectEnum.WaterDamageUp || type === StatusEffectEnum.EarthDamageDown || type === StatusEffectEnum.FireDamageDown

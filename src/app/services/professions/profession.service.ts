@@ -175,6 +175,8 @@ export class ProfessionService {
           selectedProfession.isDurationHalved = true;
           selectedProfession.creationTimerLength /= 2;
         }
+        else
+          selectedProfession.isDurationHalved = false;
 
 
         var rng = this.utilityService.getRandomNumber(0, 1);

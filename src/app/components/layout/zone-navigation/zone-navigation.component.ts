@@ -97,7 +97,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.quickView = activeOverview;
 
     this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
-      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     });
     var selectedBallad = this.balladService.getActiveBallad();
     if (selectedBallad !== undefined)
@@ -121,7 +121,7 @@ export class ZoneNavigationComponent implements OnInit {
         this.quickLinksUnlocked = true;
 
       this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
-        return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+        return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
       });
       var selectedBallad = this.balladService.getActiveBallad();
       if (selectedBallad !== undefined)
@@ -157,7 +157,7 @@ export class ZoneNavigationComponent implements OnInit {
     var relatedBallad: Ballad | undefined = this.balladService.getActiveBallad();
 
     this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
-      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     }).forEach(ballad => {
       ballad.isSelected = false;
       if (ballad.zones !== undefined && ballad.zones.length > 0)

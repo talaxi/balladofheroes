@@ -517,7 +517,7 @@ export class GodViewComponent implements OnInit {
 
   traverseSubMenu(direction: number) {
     var gods = this.globalService.globalVar.gods.sort(function (a, b) {
-      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     }).filter(item => item.isAvailable);
 
     var currentIndex = gods.findIndex(item => item.type === this.menuService.selectedGod);

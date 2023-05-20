@@ -80,7 +80,7 @@ export class MenuOptionsComponent implements OnInit {
     this.partyMembers = this.globalService.globalVar.characters.filter(item => item.isAvailable);
     this.selectedMenu = this.menuService.selectedMenuDisplay;
     this.gods = this.globalService.globalVar.gods.sort(function (a, b) {
-      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > a.displayOrder ? 1 : 0;
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     }).filter(item => item.isAvailable);
     this.godsAvailable = this.gods.length > 0;
     this.getProfessions();

@@ -501,6 +501,7 @@ export class AltarService {
       altarEffect.duration = altarEffect.totalDuration = 60;
       altarEffect.effectiveness = 1.1;
       altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.HadesEarthDamageUp) {
       altarEffect.duration = altarEffect.totalDuration = 30;

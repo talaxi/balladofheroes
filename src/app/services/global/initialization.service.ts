@@ -616,6 +616,8 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.GoldenApple, 25));
+      this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
 
       this.globalService.globalVar.chthonicPowers.attackBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 5;
