@@ -407,34 +407,18 @@ export class ColiseumService {
     }
     else if (round > 10) {
       //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
-      var expectedCharacterStats = new PrimaryStats(2965, 220, 795, 650, 665, 750);
+      var expectedCharacterStats = new PrimaryStats(2965, 190, 795, 530, 500, 750);
 
       var offsetRound = round - 9;
       defensiveGrowthFactor = 1.29;
-      offensiveGrowthFactor = 1.18;
+      offensiveGrowthFactor = 1.16;
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
       expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
       expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);
-      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 2.25);
+      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 1.25);
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
-      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
+      expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
     }
-
-    //to account for multiple enemies
-    var multipleEnemyModifier = 1;//enemyCount;
-    if (isBoss) {
-      if (round === 5 || round === 10)
-        multipleEnemyModifier = 3;
-      else
-        multipleEnemyModifier = 1.25;
-    }
-
-    expectedCharacterStats.maxHp *= multipleEnemyModifier;
-    expectedCharacterStats.attack *= multipleEnemyModifier;
-    expectedCharacterStats.defense *= multipleEnemyModifier;
-    expectedCharacterStats.agility *= multipleEnemyModifier;
-    expectedCharacterStats.luck *= multipleEnemyModifier;
-    expectedCharacterStats.resistance *= multipleEnemyModifier;
 
     //console.log("Searching for: ");
     //console.log("Is Boss: " + isBoss);
@@ -475,7 +459,42 @@ export class ColiseumService {
 
     var rng = this.utilityService.getRandomInteger(0, allRelevantEnemyParties.length - 1);
     var selectedEnemyTeam = allRelevantEnemyParties[rng];
-    //console.log("Normalize stats for round " + round + " , expected HP Total is " + expectedHpTotal);
+
+    //reobtain this because boss fights have variable enemy totals
+    enemyCount = selectedEnemyTeam.enemyList.length;
+    //to account for multiple enemies
+    var multipleEnemyModifier = 1;
+    if (enemyCount === 2)
+      multipleEnemyModifier = 1.25;
+      if (enemyCount === 3)
+      multipleEnemyModifier = 1.5;
+      if (enemyCount === 4)
+      multipleEnemyModifier = 1.75;
+
+    if (isBoss) {
+      if (round === 5 || round === 10)
+        multipleEnemyModifier *= 3;
+      else {
+        if (enemyCount === 1)
+        multipleEnemyModifier *= 1.15;
+        if (enemyCount === 2)
+        multipleEnemyModifier *= 1.325;
+        if (enemyCount === 3)
+        multipleEnemyModifier *= 1.5;
+        if (enemyCount === 4)
+        multipleEnemyModifier *= 1.625;
+
+      }
+    }
+
+    expectedCharacterStats.maxHp *= multipleEnemyModifier;
+    expectedCharacterStats.attack *= multipleEnemyModifier;
+    expectedCharacterStats.defense *= multipleEnemyModifier;
+    expectedCharacterStats.agility *= multipleEnemyModifier;
+    expectedCharacterStats.luck *= multipleEnemyModifier;
+    expectedCharacterStats.resistance *= multipleEnemyModifier;
+
+
     this.normalizeEnemyTeamStats(selectedEnemyTeam, expectedCharacterStats);
 
     return selectedEnemyTeam;
@@ -508,7 +527,7 @@ export class ColiseumService {
       totalAgility += enemy.battleStats.agility;
       totalLuck += enemy.battleStats.luck;
       totalResistance += enemy.battleStats.resistance;
-    });
+    });    
 
     enemyTeam.enemyList.forEach(enemy => {
       enemy.battleStats.maxHp = Math.round(enemy.battleStats.maxHp * (expectedStats.maxHp / totalHp));

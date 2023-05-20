@@ -184,7 +184,7 @@ export class AchievementsViewComponent implements OnInit {
     var selectedBallad = this.balladService.findBallad(parseInt(this.selectedBallad.toString()));    
     if (selectedBallad !== undefined)
     {
-      selectedBallad.zones.forEach(zone => {
+      selectedBallad.zones.filter(item => item.isAvailable).forEach(zone => {
         this.zones.push(zone.type);
       });      
     }
@@ -202,7 +202,7 @@ export class AchievementsViewComponent implements OnInit {
     var selectedZone = this.balladService.findZone(parseInt(this.selectedZone.toString()));    
     if (selectedZone !== undefined)
     {
-      selectedZone.subzones.forEach(subzone => {
+      selectedZone.subzones.filter(item => item.isAvailable).forEach(subzone => {
         this.subzones.push(subzone.type);
       });      
     }    

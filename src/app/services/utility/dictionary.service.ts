@@ -643,14 +643,14 @@ export class DictionaryService {
     if (type === ColiseumTournamentEnum.TournamentOfTheDead) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
+      tournament.quickVictoryThreshold = 90;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.UnderworldAccess, 1));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
     }
     if (type === ColiseumTournamentEnum.FlamesOfTartarus) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
+      tournament.quickVictoryThreshold = 90;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 2500));
       tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 10000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
@@ -658,7 +658,7 @@ export class DictionaryService {
     if (type === ColiseumTournamentEnum.ForgottenKings) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
+      tournament.quickVictoryThreshold = 90;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.HeroicElixirRecipe, 1));
       tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 25000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
@@ -666,7 +666,7 @@ export class DictionaryService {
     if (type === ColiseumTournamentEnum.RiverLords) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
+      tournament.quickVictoryThreshold = 90;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Coin, 8000));
       tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 65000));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
@@ -674,7 +674,7 @@ export class DictionaryService {
     if (type === ColiseumTournamentEnum.HadesTrial) {
       tournament.maxRounds = 5;
       tournament.tournamentTimerLength = 300;
-      tournament.quickVictoryThreshold = 120;
+      tournament.quickVictoryThreshold = 90;
       tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 90000));
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Hades, 1));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));

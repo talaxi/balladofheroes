@@ -1,8 +1,19 @@
 .options {
     display: flex;
-    justify-content: space-evenly;
+    justify-content: space-around;
 }
 
 .smallCaps {
     font-size: 1.2rem;
+}
+
+
+@media (max-width: 800px) {
+    .options {
+        display: block;
+    }
+
+    .column1 {
+        margin-bottom: 1rem;
+    }
 }

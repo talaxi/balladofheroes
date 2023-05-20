@@ -45,4 +45,10 @@
             "settings"
             "saveLoad";
     }
+
+    .twoColumn {
+        width: 100%;
+        display:block;
+    }
+    
 }

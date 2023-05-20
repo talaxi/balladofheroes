@@ -12,6 +12,7 @@ import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -38,7 +39,7 @@ export class FollowersService {
 
     this.globalService.globalVar.ballads.forEach(ballad => {
       ballad.zones.forEach(zone => {
-        if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
+        if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.type !== SubZoneEnum.NemeaCountryRoadsOne && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
           clearedZones.push(zone);
         }
       });
@@ -53,7 +54,7 @@ export class FollowersService {
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.type === type) {
         ballad.zones.forEach(zone => {
-          if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
+          if (zone.isAvailable && !zone.subzones.some(item => !this.lookupService.isSubzoneATown(item.type) && !this.balladService.isSubzoneSideQuest(item.type) && item.type !== SubZoneEnum.NemeaCountryRoadsOne && item.victoryCount < this.balladService.getVictoriesNeededToProceed(item.type))) {
             clearedZones.push(zone);
           }
         });
