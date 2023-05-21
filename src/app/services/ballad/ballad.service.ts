@@ -326,6 +326,17 @@ export class BalladService {
 
     zone.isSelected = true;
     zone.notify = false;
+
+    if (zone.type === ZoneEnum.Nemea) {
+    //this is dumb but I'm tired of it continuously popping up
+    var countryRoadsOne = this.findSubzone(SubZoneEnum.NemeaCountryRoadsOne);
+    var countryRoadsTwo = this.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo);
+
+    if (countryRoadsTwo !== undefined && countryRoadsTwo.isAvailable && countryRoadsOne !== undefined) {
+      countryRoadsOne.isAvailable = false;
+    }
+  }
+
     return zone.subzones.filter(item => item.isAvailable);
   }
 

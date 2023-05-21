@@ -366,10 +366,10 @@ export class LookupService {
     var secondaryRelatedTargetGainStatusEffectEffectiveness = 0;
     var secondaryRelatedTargetGainStatusEffectEffectivenessPercent = 0;
     var secondaryRelatedTargetGainStatusEffectTickFrequency = 0;
-
+    var cooldown = 0;
 
     if (effect !== undefined) {
-
+      cooldown = effect.cooldown;
       var relatedUserGainStatusEffect = effect?.userEffect[0];
 
       if (relatedUserGainStatusEffect !== undefined) {
@@ -415,7 +415,7 @@ export class LookupService {
     else if (type === ItemsEnum.FirePotion)
       name = "Deal " + effect.trueDamageAmount + " Fire damage to a target.";
     else if (type === ItemsEnum.PotentConcoction)
-      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP, up to " + effect.maxThreshold + " damage. A random element is used for the damage.";
+      name = "Deal " + (effect.trueDamagePercent * 100) + "% of a target's HP, up to " + effect.maxThreshold + " damage. A random element is used for the damage. " + cooldown + " second cooldown.";
     else if (type === ItemsEnum.PoisonFang || type === ItemsEnum.StranglingGasPotion)
       name = "Poison an enemy, dealing " + relatedTargetGainStatusEffectEffectiveness + " damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds.";
     else if (type === ItemsEnum.PoisonExtractPotion)
