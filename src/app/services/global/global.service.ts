@@ -840,7 +840,8 @@ export class GlobalService {
 
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
-      type === StatusEffectEnum.Dead)
+      type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
+      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir)
       persistsDeath = true;
 
     return persistsDeath;

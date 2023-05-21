@@ -959,11 +959,16 @@ export class BattleService {
       healAmount *= adjustedCriticalMultiplier;
 
       var healedAmount = this.gainHp(target, healAmount);
-      user.trackedStats.healingDone += healedAmount;
       
-        if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
-          !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
-          user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
+      user.trackedStats.healingDone += healedAmount;
+      if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
+        !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
+        user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
+
+      user.trackedStats.healsMade += 1;
+      if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
+        !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
+        user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
 
       if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
         (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
@@ -1094,11 +1099,6 @@ export class BattleService {
         targetEffects.push(effect.makeCopy());
       });
     }
-
-    user.trackedStats.healsMade += 1;
-    if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
-      !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
-      user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
 
     if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation) {
       var userBarrier = userEffects.find(item => item.type === StatusEffectEnum.Barrier);
@@ -1313,7 +1313,7 @@ export class BattleService {
             if (instantEffect.isAoe) {
               party.filter(item => !item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
                 user.trackedStats.healsMade += 1;
-                user.trackedStats.healingDone += barrierAmount;                
+                user.trackedStats.healingDone += barrierAmount;
                 if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
                   !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
                   user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
@@ -1344,9 +1344,9 @@ export class BattleService {
               if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
                 !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
                 user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
-                if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
-                  !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
-                  user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
+              if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
+                !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
+                user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
 
               var barrierTarget: Character | undefined;
               if (originalAbility !== undefined && originalAbility?.targetType === TargetEnum.Random)
@@ -1378,13 +1378,13 @@ export class BattleService {
             var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
             user.trackedStats.healsMade += 1;
             user.trackedStats.healingDone += barrierAmount;
-            
+
             if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
               !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
               user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
-              if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
-                !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
-                user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
+            if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
+              !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
+              user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
 
             if (user.battleInfo.barrierValue < user.battleStats.maxHp * instantEffect.threshold) {
               user.battleInfo.barrierValue += barrierAmount;
@@ -2307,7 +2307,15 @@ export class BattleService {
       var lordOfTheUnderworld = this.lookupService.characterHasAbility("Lord of the Underworld", attacker);
 
       if (lordOfTheUnderworld !== undefined) {
-        this.applyStatusEffect(lordOfTheUnderworld.userEffect[0].makeCopy(), attacker);
+        var copy = lordOfTheUnderworld.userEffect[0].makeCopy();
+        var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+        if (hades !== undefined) {
+          var lordOfTheUnderworldUpgrade = hades.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+          if (lordOfTheUnderworldUpgrade !== undefined && lordOfTheUnderworldUpgrade.userEffect.length > 0)
+            copy.effectiveness += lordOfTheUnderworldUpgrade.userEffect[0].effectiveness;
+        }
+
+        this.applyStatusEffect(copy, attacker);
       }
     }
 
@@ -3933,7 +3941,7 @@ export class BattleService {
         if (character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Bullseye) {
           this.battle.currentEnemies.enemyList.forEach(enemy => {
             var bullseyeDamage = enemy.overdriveInfo.criticalDamageTaken.find(item => item[0] === character.type);
-            if (bullseyeDamage !== undefined) {              
+            if (bullseyeDamage !== undefined) {
               this.applyStatusEffect(this.globalService.createDamageOverTimeEffect(5, 5, bullseyeDamage[1], "Bullseye", dotTypeEnum.TrueDamage), enemy);
               enemy.overdriveInfo.criticalDamageTaken = enemy.overdriveInfo.criticalDamageTaken.filter(item => item[0] !== character.type);
               //this.handletargetEffects(true, [], character, enemy, this.battle.currentEnemies.enemyList, [], 0);

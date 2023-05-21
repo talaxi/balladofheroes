@@ -147,7 +147,7 @@ export class GodNameViewComponent implements OnInit {
     if (passiveAbility === undefined)
       return passiveDescription;
 
-    passiveDescription = this.lookupService.getGodAbilityDescription(passiveAbility.name, this.character, passiveAbility);
+    passiveDescription = this.lookupService.getGodAbilityDescription(passiveAbility.name, this.character, passiveAbility, god);
 
     return passiveDescription;
   }
