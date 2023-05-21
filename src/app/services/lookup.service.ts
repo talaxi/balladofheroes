@@ -2818,7 +2818,7 @@ export class LookupService {
       description = "Increase multi target damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageOverTimeDamageUp)
       description = "Increase damage over time damage by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.ArmorPenetrationUp)
+    if (statusEffect.type === StatusEffectEnum.ArmorPenetrationUp)
       description = "Increase Armor Penetration by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.ReduceHealing)
@@ -4661,7 +4661,9 @@ export class LookupService {
       return description;
 
     var latestBallad = new Ballad();
-    this.globalService.globalVar.ballads.forEach(item => {
+    this.globalService.globalVar.ballads.sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
+    }).forEach(item => {
       if (item.isAvailable)
         latestBallad = item;
     });
@@ -4697,7 +4699,9 @@ export class LookupService {
       return description;
 
     var latestBallad = new Ballad();
-    this.globalService.globalVar.ballads.forEach(item => {
+    this.globalService.globalVar.ballads.sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
+    }).forEach(item => {
       if (item.isAvailable)
         latestBallad = item;
     });
@@ -6767,7 +6771,7 @@ export class LookupService {
       return BestiaryEnum.BloodthirstyHyena;
     if (level === 2)
       return BestiaryEnum.ScavengingCoyote;
-          
+
     return BestiaryEnum.None;
   }
 

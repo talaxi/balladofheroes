@@ -422,7 +422,7 @@ export class EnemyGeneratorService {
       ground.cooldown = ground.currentCooldown = 4;      
       ground.dealsDirectDamage = false;      
       ground.isAoe = true;
-      ground.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PreventEscape, -1, 1, false, false, true));
+      ground.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PreventEscape, 60, 1, false, false, true));
       enemy.abilityList.push(ground);
 
       var smash = new Ability();
