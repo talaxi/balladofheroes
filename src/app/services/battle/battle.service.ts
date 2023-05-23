@@ -2131,6 +2131,9 @@ export class BattleService {
       //attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);      
     }
 
+    //TODO: this is just testing for now
+    //adjustedAttack *= 2;
+    
     //2 * Attack^2 / (Attack + Defense)      
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementIncrease * elementalDamageDecrease
@@ -2935,6 +2938,12 @@ export class BattleService {
       }
       else
         this.battle.activeTournament.currentRound += 1;
+    }
+    
+    var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+    
+    if (autoProgress && (this.balladService.autoProgressShouldChangeSubZone(subZone) || this.balladService.isSubzoneTown(subZone.type))) {
+      this.balladService.selectNextSubzone();
     }
 
     this.initializeEnemyList();

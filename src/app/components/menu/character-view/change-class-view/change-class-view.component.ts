@@ -2,6 +2,7 @@ import { Component, Input, OnInit } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
@@ -171,28 +172,50 @@ export class ChangeClassViewComponent implements OnInit {
 
     var character1Weapon = character1.equipmentSet.weapon;
     var character2Weapon = character2.equipmentSet.weapon;
-    character1.equipmentSet.weapon = character2Weapon;
-    character2.equipmentSet.weapon = character1Weapon;
+    //character1.equipmentSet.weapon = character2Weapon;
+    //character2.equipmentSet.weapon = character1Weapon;
+    this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character1.type);
+    this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character2.type);
+    this.globalService.equipItem(character2Weapon, character1);
+    this.globalService.equipItem(character1Weapon, character2);
 
     var character1Armor = character1.equipmentSet.armor;
     var character2Armor = character2.equipmentSet.armor;
-    character1.equipmentSet.armor = character2Armor;
-    character2.equipmentSet.armor = character1Armor;
+    //character1.equipmentSet.armor = character2Armor;
+    //character2.equipmentSet.armor = character1Armor;
+    this.globalService.unequipItem(EquipmentTypeEnum.Armor, character1.type);
+    this.globalService.unequipItem(EquipmentTypeEnum.Armor, character2.type);
+    this.globalService.equipItem(character2Armor, character1);
+    this.globalService.equipItem(character1Armor, character2);
 
     var character1Shield = character1.equipmentSet.shield;
     var character2Shield = character2.equipmentSet.shield;
-    character1.equipmentSet.shield = character2Shield;
-    character2.equipmentSet.shield = character1Shield;
+    //character1.equipmentSet.shield = character2Shield;
+    //character2.equipmentSet.shield = character1Shield;
+    this.globalService.unequipItem(EquipmentTypeEnum.Shield, character1.type);
+    this.globalService.unequipItem(EquipmentTypeEnum.Shield, character2.type);
+    this.globalService.equipItem(character2Shield, character1);
+    this.globalService.equipItem(character1Shield, character2);
 
     var character1Ring = character1.equipmentSet.ring;
     var character2Ring = character2.equipmentSet.ring;
-    character1.equipmentSet.ring = character2Ring;
-    character2.equipmentSet.ring = character1Ring;
+    //character1.equipmentSet.ring = character2Ring;
+    //character2.equipmentSet.ring = character1Ring;
+    
+    this.globalService.unequipItem(EquipmentTypeEnum.Ring, character1.type);
+    this.globalService.unequipItem(EquipmentTypeEnum.Ring, character2.type);
+    this.globalService.equipItem(character2Ring, character1);
+    this.globalService.equipItem(character1Ring, character2);
 
     var character1Necklace = character1.equipmentSet.necklace;
     var character2Necklace = character2.equipmentSet.necklace;
-    character1.equipmentSet.necklace = character2Necklace;
-    character2.equipmentSet.necklace = character1Necklace;
+    //character1.equipmentSet.necklace = character2Necklace;
+    //character2.equipmentSet.necklace = character1Necklace;
+    
+    this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character1.type);
+    this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character2.type);
+    this.globalService.equipItem(character2Necklace, character1);
+    this.globalService.equipItem(character1Necklace, character2);
   }
 
   swapCharacterGods(newType: CharacterEnum, oldType: CharacterEnum) {

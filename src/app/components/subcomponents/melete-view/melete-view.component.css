@@ -1,0 +1,27 @@
+.row {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 1fr 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "cell1 cell2 cell3";
+
+    margin-bottom: 2rem;
+}
+
+.cell1 {
+    grid-area: cell1;
+}
+
+.cell2 {
+    grid-area: cell2;
+}
+
+.cell3 {
+    grid-area: cell3;
+}
+
+div, .cell {
+  transition: opacity .5s;
+}

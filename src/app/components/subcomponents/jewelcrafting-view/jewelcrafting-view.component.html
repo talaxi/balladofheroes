@@ -84,6 +84,8 @@
             </div>
             <br />
             <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
+            <br />
+            <span><i>{{getSelectedRecipeCurrentlyOwnedAmount()}} owned</i></span>
         </div>
     </div>
 </div>

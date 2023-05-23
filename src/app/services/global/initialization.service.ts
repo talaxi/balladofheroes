@@ -406,7 +406,9 @@ export class InitializationService {
   }
 
   devMode() {
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, 100000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, 300));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.BronzeHammer, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LightLeather, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, 1000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Fennel, 1000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.VialOfTheLethe, 10000));
@@ -466,8 +468,9 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfSpeed, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PotentConcoction, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.UnstablePotion, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ScalyRing, 1));
 
-    this.globalService.globalVar.currentStoryId = 31;
+    this.globalService.globalVar.currentStoryId = 310;
     this.globalService.globalVar.isDpsUnlocked = true;
     this.globalService.globalVar.altars.isUnlocked = true;
     this.globalService.globalVar.areBattleItemsUnlocked = true;
@@ -678,7 +681,7 @@ export class InitializationService {
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.JaggedSword);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.FurArmor);
-        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SirensongRing);
+        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ScalyRing);
         character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothNecklace);
       }
 

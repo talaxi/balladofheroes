@@ -3,6 +3,7 @@ import { ItemsEnum } from '../../models/enums/items-enum.model';
 import { ColiseumTournamentEnum } from '../../models/enums/coliseum-tournament-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
+import { MeleteActionEnum } from 'src/app/models/enums/melete-action-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -701,5 +702,17 @@ export class DictionaryService {
     else if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Eternal Melee";
     return "";
+  }
+
+  getMeleteActionName(action: MeleteActionEnum) {
+    var name = "";
+
+    if (action === MeleteActionEnum.BreatheInDeeply)
+      name = "Breathe In Deeply";
+
+    if (action === MeleteActionEnum.ExhaleDeeply)
+      name = "Exhale Deeply";
+
+    return name;
   }
 }

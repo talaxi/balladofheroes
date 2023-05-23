@@ -2721,6 +2721,7 @@ export class LookupService {
 
   getStatusEffectDescription(statusEffect: StatusEffect, character?: Character) {
     var description = "";
+    var thornsTotal = 0;
 
     if (statusEffect.type === StatusEffectEnum.AllPrimaryStatsUp)
       description = "Increase all Primary Stats by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -2853,8 +2854,17 @@ export class LookupService {
       description = "Deal increased damage after every attack. Current damage increase: " + this.utilityService.genericRound(((statusEffect.effectiveness) * statusEffect.count) * 100) + "%";
     if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking " + Math.round(statusEffect.effectiveness) + " damage every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
-    if (statusEffect.type === StatusEffectEnum.Thorns)
-      description = "Dealing damage back to auto attackers.";
+    if (statusEffect.type === StatusEffectEnum.Thorns) {
+      var thornsTotal = 0;
+      if (character !== undefined) {
+        character.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.Thorns).forEach(thorns => {
+          thornsTotal += thorns.effectiveness;
+        });
+      }
+
+      description = "Dealing " + thornsTotal + " damage back to auto attackers.";
+
+    }
     if (statusEffect.type === StatusEffectEnum.Stagger)
       description = "Increase auto attack cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Unsteady)
@@ -3263,7 +3273,7 @@ export class LookupService {
       }
     }
 
-    this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => item.amount > 0);
+    this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => this.getItemTypeFromItemEnum(item.item) !== ItemTypeEnum.Equipment || item.amount > 0);
   }
 
   getItemEquipCount(type: ItemsEnum, associatedResource?: ResourceValue) {

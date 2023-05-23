@@ -66,7 +66,7 @@ export class BattleComponent implements OnInit {
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
-      if (this.isMobile) {
+      /*if (this.isMobile) {
         this.checkForNotificationOverlayMessage(deltaTime);
 
         //handle auto progress here instead of zone navigation because zone navigation may not always be active
@@ -77,7 +77,7 @@ export class BattleComponent implements OnInit {
           (this.balladService.autoProgressShouldChangeSubZone(currentSubzone) || this.balladService.isSubzoneTown(currentSubzone.type))) {
           this.balladService.selectNextSubzone();
         }
-      }
+      }*/
 
       if (this.globalService.globalVar.currentStoryId === 0 && this.globalService.globalVar.isBattlePaused)
         this.showSkipButtonMessage = true;

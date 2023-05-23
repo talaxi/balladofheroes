@@ -212,6 +212,10 @@ export class AlchemyViewComponent implements OnInit {
     this.professionService.initializeCreation(this.alchemy.type, this.selectedRecipe, this.createAmount);
   }
 
+  getSelectedRecipeCurrentlyOwnedAmount() {
+    return this.lookupService.getResourceAmount(this.selectedRecipe.createdItem).toLocaleString();
+  }
+
   canCreateItem() {
     var canBuy = this.professionService.canCreateItem(this.selectedRecipe);
 

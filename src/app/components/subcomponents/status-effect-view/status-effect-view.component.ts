@@ -21,22 +21,34 @@ export class StatusEffectViewComponent implements OnInit {
   getPositiveStatusEffects() {
     //should also only display up to 6 effects + a catch all box
     var positiveEffects = this.character.battleInfo.statusEffects.filter(item => item.isPositive && !this.isEffectInvisible(item));
+    //only display one thorns
+    var foundThorns = false;
+    positiveEffects = positiveEffects.filter(effect => {
+      if (foundThorns && effect.type === StatusEffectEnum.Thorns) {
+        return false;
+      }
+
+      if (effect.type === StatusEffectEnum.Thorns)
+      foundThorns = true;
+
+      return true;
+    });
+
     var totalVisibleEffects = 6;
     var totalVisibleEffectCount = 0;
 
     var shouldIncludeCatchAll = false;
-    positiveEffects = positiveEffects.filter(effect => {      
-      if (totalVisibleEffectCount < totalVisibleEffects)
-      {
+    positiveEffects = positiveEffects.filter(effect => {
+      if (totalVisibleEffectCount < totalVisibleEffects) {
         totalVisibleEffectCount += 1;
         return true;
       }
-      if (!positiveEffects.some(item => item.type === StatusEffectEnum.StatusEffectDisplayCatchAll)) {        
-        shouldIncludeCatchAll = true;        
+      if (!positiveEffects.some(item => item.type === StatusEffectEnum.StatusEffectDisplayCatchAll)) {
+        shouldIncludeCatchAll = true;
       }
 
       return false;
-    });  
+    });
 
     if (shouldIncludeCatchAll)
       positiveEffects.push(this.displayCatchAll);
@@ -44,38 +56,36 @@ export class StatusEffectViewComponent implements OnInit {
     return positiveEffects;
   }
 
-  getNegativeStatusEffects() {    
+  getNegativeStatusEffects() {
     var negativeEffects = this.character.battleInfo.statusEffects.filter(item => !item.isPositive && !this.isEffectInvisible(item));
     //only display one DoT
-    var foundDoT = false;    
+    var foundDoT = false;
     negativeEffects = negativeEffects.filter(effect => {
-      if (foundDoT && effect.type === StatusEffectEnum.DamageOverTime)
-      {
+      if (foundDoT && effect.type === StatusEffectEnum.DamageOverTime) {
         return false;
       }
 
       if (effect.type === StatusEffectEnum.DamageOverTime)
         foundDoT = true;
 
-        return true;
-    });    
+      return true;
+    });
 
     var totalVisibleEffects = 6;
     var totalVisibleEffectCount = 0;
 
     var shouldIncludeCatchAll = false;
-    negativeEffects = negativeEffects.filter(effect => {      
-      if (totalVisibleEffectCount < totalVisibleEffects)
-      {
+    negativeEffects = negativeEffects.filter(effect => {
+      if (totalVisibleEffectCount < totalVisibleEffects) {
         totalVisibleEffectCount += 1;
         return true;
       }
-      if (!negativeEffects.some(item => item.type === StatusEffectEnum.StatusEffectDisplayCatchAll)) {        
-        shouldIncludeCatchAll = true;        
+      if (!negativeEffects.some(item => item.type === StatusEffectEnum.StatusEffectDisplayCatchAll)) {
+        shouldIncludeCatchAll = true;
       }
 
       return false;
-    });  
+    });
 
     if (shouldIncludeCatchAll)
       negativeEffects.push(this.displayCatchAll);
@@ -88,5 +98,5 @@ export class StatusEffectViewComponent implements OnInit {
       return true;
 
     return false;
-  }  
+  }
 }

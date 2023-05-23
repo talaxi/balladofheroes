@@ -35,6 +35,8 @@
     </div>
     <div class="purchaseButton">
         <button (click)="buyItem()" [disabled]="!canBuyItem() || outOfStock">Buy</button>
+        <br/>
+        <span><i>{{getCurrentlyOwnedAmount()}} owned</i></span>
     </div>
 </div>
 

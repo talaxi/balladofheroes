@@ -48,6 +48,7 @@ export class BackgroundService {
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
     this.handleFollowerPrayer(deltaTime);
+    this.handleMelete(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
     var activeSubzone = this.balladService.getActiveSubZone();
@@ -565,5 +566,15 @@ export class BackgroundService {
       character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
     }
+  }
+
+  handleMelete(deltaTime: number) {
+    if (this.globalService.globalVar.melete.activeActions.length > 0) {
+      this.globalService.globalVar.melete.activeActions.forEach(action => {
+        action[1] -= deltaTime;
+      });
+    }
+
+    this.globalService.globalVar.melete.activeActions = this.globalService.globalVar.melete.activeActions.filter(item => item[1] > 0);
   }
 }
