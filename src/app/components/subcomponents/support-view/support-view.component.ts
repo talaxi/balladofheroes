@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { GlobalService } from 'src/app/services/global/global.service';
 
 @Component({
   selector: 'app-support-view',
@@ -7,4 +8,11 @@ import { Component } from '@angular/core';
 })
 export class SupportViewComponent {
 
+  constructor(private globalService: GlobalService) {
+
+  }
+
+  isSupporterAlreadyPurchased() {
+    return this.globalService.globalVar.isSubscriber;
+  }
 }

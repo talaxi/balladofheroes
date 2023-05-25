@@ -2,5 +2,6 @@ export enum ResourceViewSortEnum {
   None,
   Quality,
   Name,
-  EnumValue
+  EnumValue,
+  Type
 }

@@ -8,51 +8,78 @@
     <div>
         <div class="resources">
             <!--resources, should be 3 columns-->
-            <div class="basicResources">
+            <div class="resourceList basicResources">
                 <div>
-                    <strong class="basicEquipment statLabel">Tranquility: </strong> <span class="statLabel">{{getTranquility()}}</span>
+                    <strong class="basicEquipment statLabel">Tranquility: </strong> <span
+                        class="statLabel">{{getTranquility()}}</span>
                 </div>
                 <div [ngStyle]="hiddenStyle(isConfidenceUnlocked())">
-                    <strong class="basicEquipment statLabel">Confidence: </strong> <span class="statLabel">{{getConfidence()}}</span>
+                    <strong class="basicEquipment statLabel">Confidence: </strong> <span
+                        class="statLabel">{{getConfidence()}}</span>
                 </div>
                 <div [ngStyle]="hiddenStyle(isFaithUnlocked())">
-                    <strong class="basicEquipment statLabel">Faith: </strong> <span class="statLabel">{{getFaith()}}</span>
+                    <strong class="basicEquipment statLabel">Faith: </strong> <span
+                        class="statLabel">{{getFaith()}}</span>
                 </div>
             </div>
+            <div class="resourceList uncommonResources">
+            </div>
+            <div class="resourceList rareResources">
+
+            </div>
         </div>
-        <hr/>
+        <hr />
         <div class="addedItems">
             <!--single row with a button to add up to 3 items, the added items will display here as well beside the button -->
-
+            <button (click)="openItemModal(useItemModal)">Use Item</button>
         </div>
-        <hr/>
+        <hr />
         <div class="meleteOptions">
             <div class="defaultPage">
                 <div class="row row1">
-                    <app-melete-action-button class="cell cell1" [action]="meleteAction.ReflectOnSelf" [ngStyle]="hiddenStyle(isConfidenceUnlocked())"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell2" [action]="meleteAction.BreatheInDeeply"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell3" [action]="meleteAction.ReflectOnOthers" [ngStyle]="hiddenStyle(isFaithUnlocked())"></app-melete-action-button>
+                    <app-melete-action-button class="cell cell1" [action]="meleteAction.ReflectOnSelf" [disabled]="isRowDisabled(1)"
+                        [ngStyle]="hiddenStyle(isConfidenceUnlocked())"></app-melete-action-button>
+                    <app-melete-action-button class="cell cell2" [disabled]="isRowDisabled(1)"
+                        [action]="meleteAction.BreatheInDeeply"></app-melete-action-button>
+                    <app-melete-action-button class="cell cell3" [action]="meleteAction.ReflectOnOthers" [disabled]="isRowDisabled(1)"
+                        [ngStyle]="hiddenStyle(isFaithUnlocked())"></app-melete-action-button>
                 </div>
 
                 <div class="row row2">
-                    <app-melete-action-button class="cell cell1" [action]="meleteAction.FocusOnConfidence"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell2" [action]="meleteAction.FocusOnTranquility"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell3" [action]="meleteAction.FocusOnFaith"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 2, 1))" class="cell cell1"
+                        [action]="meleteAction.FocusOnConfidence"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 2, 2))" class="cell cell2"
+                        [action]="meleteAction.FocusOnTranquility"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 2, 3))" class="cell cell3"
+                        [action]="meleteAction.FocusOnFaith"></app-melete-action-button>
                 </div>
 
                 <div class="row row3">
-                    <app-melete-action-button class="cell cell1" [action]="meleteAction.PrepareForAction"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell2" [action]="meleteAction.InternalContemplation"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell3" [action]="meleteAction.PrepareForPrayer"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 3, 1))" class="cell cell1"
+                        [action]="meleteAction.PrepareForAction"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 3, 2))" class="cell cell2"
+                        [action]="meleteAction.InternalContemplation"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 3, 3))" class="cell cell3"
+                        [action]="meleteAction.PrepareForPrayer"></app-melete-action-button>
                 </div>
 
                 <div class="row row4">
-                    <app-melete-action-button class="cell cell1" [action]="meleteAction.AcceptFaults"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell2" [action]="meleteAction.ExhaleDeeply"></app-melete-action-button>
-                    <app-melete-action-button class="cell cell3" [action]="meleteAction.AcceptHelp"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 4, 1))" class="cell cell1"
+                        [action]="meleteAction.AcceptFaults"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 4, 2))" class="cell cell2"
+                        [action]="meleteAction.ExhaleDeeply"></app-melete-action-button>
+                    <app-melete-action-button [ngStyle]="hiddenStyle(isCellUnlocked(1, 4, 3))" class="cell cell3"
+                        [action]="meleteAction.AcceptHelp"></app-melete-action-button>
                 </div>
             </div>
         </div>
     </div>
 
 </div>
+
+
+<ng-template #useItemModal>
+    <div>
+        See a brief overview of important resources and quick links to important locations.
+    </div>
+</ng-template>

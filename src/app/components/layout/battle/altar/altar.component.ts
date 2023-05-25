@@ -167,7 +167,11 @@ export class AltarComponent implements OnInit {
       }
     }
 
-    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your sacrifice and devotion to healing has honored Asclepius and impressed his father Apollo, God of Healing and Music. Apollo will now assist you on your adventure.");
+    var gameLogEntry = "Your sacrifice and devotion to healing has honored Asclepius and impressed his father Apollo, God of Healing and Music. Apollo will now assist you on your adventure.";
+    if (this.deviceDetectorService.isMobile()) 
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      else
+    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry);
   }
 
   gainThreshold2Reward() {
@@ -177,6 +181,10 @@ export class AltarComponent implements OnInit {
       alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.RejuvenatingElixir));
       
       var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.dictionaryService.getItemName(ItemsEnum.RejuvenatingElixir) + "</strong>.";
+      
+      if (this.deviceDetectorService.isMobile()) 
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      else
       this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);      
     }
   }
@@ -187,7 +195,12 @@ export class AltarComponent implements OnInit {
     var gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Right click Small Altars to toggle between the two options.";
     if (this.deviceDetectorService.isMobile())
       gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Tap and hold Small Altars to toggle between the two options.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry);
+   
+      
+      if (this.deviceDetectorService.isMobile()) 
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      else
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry);
   }
 
   gainThreshold4Reward() {
@@ -198,7 +211,11 @@ export class AltarComponent implements OnInit {
       alchemy.maxLevel += this.utilityService.alchemyLevelCapGain;
       
       var gameLogEntry = "Your max Alchemy level has increased to <strong>" + alchemy.maxLevel + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      
+      if (this.deviceDetectorService.isMobile()) 
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      else
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);  
     }
   }
 

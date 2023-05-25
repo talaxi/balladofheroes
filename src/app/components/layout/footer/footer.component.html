@@ -5,7 +5,7 @@
 </div>
 <div class="links">
     <div class="rightAlign">            
-        <span><a href="https://www.patreon.com/BalladOfHeroes" rel="noopener noreferrer" target="_blank">patreon</a> | <a href="https://discord.gg/gcRvF2AJGV" rel="noopener noreferrer" target="_blank">discord</a> <!-- *Bring this back as a form perhaps* | <a href="mailto:BalladOfHeroes@gmail.com">email</a>--></span>
+        <span><button class="buttonAsText supportButton" (click)="viewSupportModal(supporter)">support</button> | <a href="https://discord.gg/gcRvF2AJGV" rel="noopener noreferrer" target="_blank">discord</a> <!-- *Bring this back as a form perhaps* | <a href="mailto:BalladOfHeroes@gmail.com">email</a>--></span>
     </div>
 </div>
 </div>
@@ -22,6 +22,10 @@
     <div>
         This game is still in beta. There may be bugs and everything is subject to change.
     </div>
+</ng-template>
+
+<ng-template #supporter>
+    <app-support-view></app-support-view>
 </ng-template>
 
 <!--

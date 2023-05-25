@@ -39,16 +39,17 @@ export class JewelcraftingService {
   getActionLength(action: ProfessionActionsEnum) {
     var duration = 0;    
 
+    //TODO: reset
     if (action === ProfessionActionsEnum.CombiningGems)
-      duration = 2 * 60;
+      duration = 2 * 6;//0;
     if (action === ProfessionActionsEnum.Polish)
-      duration = 1 * 60;
+      duration = 1 * 6;//0;
     if (action === ProfessionActionsEnum.HeatingMetal)
-      duration = 2 * 60;
+      duration = 2 * 6;//0;
     if (action === ProfessionActionsEnum.ShapingMetal)
-      duration = 2 * 60;
+      duration = 2 * 6;//0;
     if (action === ProfessionActionsEnum.CoolingMetal)
-      duration = 1 * 60;
+      duration = 1 * 6;//0;
 
     return duration;
   }
@@ -371,7 +372,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 25;
+      recipe.expGain = 20;
     }
     if (item === ItemsEnum.MinorShieldSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -383,7 +384,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 25;
+      recipe.expGain = 20;
     }
     if (item === ItemsEnum.MinorNecklaceSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Rare;
@@ -395,11 +396,12 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.ShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.CoolingMetal);
 
-      recipe.expGain = 25;
+      recipe.expGain = 20;
     }
     if (item === ItemsEnum.DullRuby) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 12));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 12));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.CrackedRuby, 3));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 500));
 
       recipe.numberOfSteps = 2;
@@ -410,7 +412,8 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.DullAquamarine) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 12));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 12));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.CrackedAquamarine, 3));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 500));
 
       recipe.numberOfSteps = 2;
@@ -421,7 +424,8 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.DullOpal) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 12));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 12));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.CrackedOpal, 3));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 500));
 
       recipe.numberOfSteps = 2;
@@ -432,7 +436,8 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.DullTopaz) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 12));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 12));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.CrackedTopaz, 3));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 500));
 
       recipe.numberOfSteps = 2;
@@ -443,7 +448,8 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.DullAmethyst) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 12));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 12));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.CrackedAmethyst, 3));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 500));
 
       recipe.numberOfSteps = 2;
@@ -454,7 +460,8 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.DullEmerald) {
       recipe.quality = EquipmentQualityEnum.Uncommon;
-      recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 12));
+      //recipe.ingredients.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 12));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.CrackedEmerald, 3));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 500));
 
       recipe.numberOfSteps = 2;

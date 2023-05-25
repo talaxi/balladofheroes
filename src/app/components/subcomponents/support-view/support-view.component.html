@@ -1,1 +1,53 @@
-<p>support-view works!</p>
+<div>
+    <div class="textCentered">Thank you for considering supporting Ballad of Heroes!</div>
+    <br/>
+    <div>
+        <span class="sectionHeaderText sectionHeading">Supporter</span>
+        <br />
+        <br/>
+        <div>
+            For a one time $3 purchase, you will gain immediate access to:
+            <br/>
+            •2 gods, <span class="smallCaps bold dionysusColor">Dionysus</span> and <span class="smallCaps bold nemesisColor">Nemesis</span>.<br/>
+            <div  class="subbullet"><span>*<span class="smallCaps bold dionysusColor">Dionysus</span> is a support god who can give shields to allies, cause enemies to take extra damage, and put a
+            large amount of debuffs on all enemies randomly.</span><br/>
+            <span>*<span class="smallCaps bold nemesisColor">Nemesis</span> is a defensive-minded goddess who allows you to counter attack after an enemy attacks, force an
+            enemy to target you, and attack enemies multiple times with increased damage based on how much damage you
+            are receiving.</span><br/>
+            <span><i>*If you have already purchased these gods with in-game resources, their cost will be refunded to you.</i></span></div>
+            •Two <span class="bold specialEquipment">Special</span> quality necklaces only accessible for supporters, one focused on offense and the other on
+            defense.
+<br/>
+            •Double the number of Eternal Melee tickets per day and the ticket cap.
+<br/>
+            •Increase the offline 2x speed cap from 12 hours to 24 hours.
+<br/>
+            •100,000 Coins
+        </div>
+        <br />
+        <span *ngIf="isSupporterAlreadyPurchased()"><i>You are already a Supporter, thank you so much!</i></span>
+        <a *ngIf="!isSupporterAlreadyPurchased()" rel="noopener noreferrer" target="_blank" href="https://buy.stripe.com/28o5nUe9722tgMMbIJ">Purchase Supporter Benefits</a>
+    </div>
+    <br/>
+    <div>
+        <span class="sectionHeaderText sectionHeading">Patreon</span>
+        <br/>
+        <br/>
+        <div>
+            You can also support the development of this game monthly through Patreon. Regardless of what tier you sign up for on the Patreon, you will 
+            immediately be given access to the benefits listed above for Supporters. Also as a thank you for your support, I will include a code to redeem
+            additional rewards monthly, such as extra tickets to the Eternal Melee and useful resources to help your game progression.
+            <br/>
+            <br/>
+            <div>
+                <a rel="noopener noreferrer" target="_blank" href="https://www.patreon.com/BalladOfHeroes">View Patreon</a>
+            </div>
+        </div>
+    </div>
+    <br/>
+    <div>
+        <strong>
+            If you have any issues with receiving your benefits after purchase, please reach out to me via email at balladofheroes@gmail.com or via the Discord link on the right side of the footer.
+        </strong>
+    </div>
+</div>

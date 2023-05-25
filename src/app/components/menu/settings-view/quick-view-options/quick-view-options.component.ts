@@ -28,6 +28,7 @@ export class QuickViewOptionsComponent {
 
   ngOnInit() {   
     this.isMobile = this.deviceDetectorService.isMobile();
+    console.log(this.isMobile);
     this.altarsUnlocked = this.globalService.globalVar.altars.isUnlocked;
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.alchemyUnlocked = alchemy !== undefined && alchemy.isUnlocked;

@@ -53,7 +53,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .51;
+    return .55;
   }
 
   initializeGlobalVariables() {
@@ -807,10 +807,10 @@ export class GlobalService {
       type === StatusEffectEnum.DefenseDown || type === StatusEffectEnum.DefenseUp || type === StatusEffectEnum.ResistanceDown || type === StatusEffectEnum.ResistanceUp ||
       type === StatusEffectEnum.MaxHpDown || type === StatusEffectEnum.MaxHpUp || type === StatusEffectEnum.LuckDown || type === StatusEffectEnum.LuckUp ||
       type === StatusEffectEnum.Coda || type === StatusEffectEnum.Fortissimo || type === StatusEffectEnum.Staccato || type === StatusEffectEnum.DamageDealtUp ||
-      type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp 
-       || type === StatusEffectEnum.ThousandCuts || type === StatusEffectEnum.Paralyze || type === StatusEffectEnum.ArmorPenetrationDown ||
-       type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.Stagger || type === StatusEffectEnum.ArmorPenetrationUp ||
-       type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
+      type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp
+      || type === StatusEffectEnum.ThousandCuts || type === StatusEffectEnum.Paralyze || type === StatusEffectEnum.ArmorPenetrationDown ||
+      type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.Stagger || type === StatusEffectEnum.ArmorPenetrationUp ||
+      type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
       type === StatusEffectEnum.LordOfTheUnderworld || type === StatusEffectEnum.Onslaught || type === StatusEffectEnum.EarthDamageUp || type === StatusEffectEnum.FireDamageUp
       || type === StatusEffectEnum.AirDamageUp || type === StatusEffectEnum.HolyDamageUp || type === StatusEffectEnum.LightningDamageUp || type === StatusEffectEnum.WaterDamageUp || type === StatusEffectEnum.EarthDamageDown || type === StatusEffectEnum.FireDamageDown
       || type === StatusEffectEnum.AirDamageDown || type === StatusEffectEnum.HolyDamageDown || type === StatusEffectEnum.LightningDamageDown || type === StatusEffectEnum.WaterDamageDown || type === StatusEffectEnum.EarthDamageTakenUp || type === StatusEffectEnum.FireDamageTakenUp
@@ -1198,7 +1198,7 @@ export class GlobalService {
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
       var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attains level <strong>" + character.level + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);      
+      this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
 
     this.getCharacterLevelStatIncrease(character);
@@ -1400,24 +1400,24 @@ export class GlobalService {
     return this.utilityService.roundTo(multiplier + exponential + additive, 5);
   }
 
-  levelUpGod(god: God) {
+  levelUpGod(god: God, ignoreGameLogEntries: boolean = false) {
     god.level += 1;
     god.exp -= god.expToNextLevel;
 
-    if (god.name !== undefined && this.globalVar.gameLogSettings.get("godLevelUp")) {
+    if (god.name !== undefined && this.globalVar.gameLogSettings.get("godLevelUp") && !ignoreGameLogEntries) {
       var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " attains level <strong>" + god.level + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
 
     var getLevelUpType = this.getGodLevelIncreaseTypeByLevel(god, god.level);
     if (getLevelUpType === GodLevelIncreaseEnum.Stats)
-      this.doGodLevelStatIncrease(god);
+      this.doGodLevelStatIncrease(god, ignoreGameLogEntries);
     else if (getLevelUpType === GodLevelIncreaseEnum.NewAbility)
-      this.checkForNewGodAbilities(god);
+      this.checkForNewGodAbilities(god, ignoreGameLogEntries);
     else if (getLevelUpType === GodLevelIncreaseEnum.PermanentAbility)
-      this.checkForNewGodPermanentAbilities(god);
+      this.checkForNewGodPermanentAbilities(god, ignoreGameLogEntries);
     else if (getLevelUpType === GodLevelIncreaseEnum.AbilityUpgrade)
-      this.checkForNewGodAbilityUpgrades(god);
+      this.checkForNewGodAbilityUpgrades(god, ignoreGameLogEntries);
     else if (getLevelUpType === GodLevelIncreaseEnum.PermanentStats)
       this.checkForNewGodPermanentStats(god);
 
@@ -1446,7 +1446,7 @@ export class GlobalService {
     return new CharacterStats(maxHpGain * hpModifier, attackGain, defenseGain, agilityGain, luckGain, resistanceGain);
   }
 
-  doGodLevelStatIncrease(god: God) {
+  doGodLevelStatIncrease(god: God, ignoreGameLogEntries: boolean = false) {
     var statToIncrease = this.getNextStatToIncrease(god.lastStatGain);
     god.lastStatGain = statToIncrease;
     var statGainAmount = this.utilityService.godStatGainBaseAmount + (god.statGainCount * this.utilityService.godStatGainLevelIncrement);
@@ -1479,7 +1479,7 @@ export class GlobalService {
     if (statGainText !== "")
       statGainText = statGainText.substring(0, statGainText.length - 2);
 
-    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+    if (this.globalVar.gameLogSettings.get("godLevelUp") && !ignoreGameLogEntries) {
       var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " gains <strong>" + statGainText + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
     }
@@ -1487,11 +1487,11 @@ export class GlobalService {
     god.statGainCount += 1;
   }
 
-  checkForNewGodAbilities(god: God) {
+  checkForNewGodAbilities(god: God, ignoreGameLogEntries: boolean = false) {
     god.abilityList.forEach(ability => {
       if (god.level >= ability.requiredLevel) {
         if (!ability.isAvailable) {
-          if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+          if (this.globalVar.gameLogSettings.get("godLevelUp") && !ignoreGameLogEntries) {
             var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your god's name." : "");
             this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
           }
@@ -1501,12 +1501,12 @@ export class GlobalService {
     });
   }
 
-  checkForNewGodPermanentAbilities(god: God) {
+  checkForNewGodPermanentAbilities(god: God, ignoreGameLogEntries: boolean = false) {
     if (god.level === this.utilityService.permanentPassiveGodLevel) {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
       if (ability !== undefined) {
         ability.isPermanent = true;
-        if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        if (this.globalVar.gameLogSettings.get("godLevelUp") && !ignoreGameLogEntries) {
           var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
         }
@@ -1517,7 +1517,7 @@ export class GlobalService {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level);
       if (ability !== undefined) {
         ability.isPermanent = true;
-        if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        if (this.globalVar.gameLogSettings.get("godLevelUp") && !ignoreGameLogEntries) {
           var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
         }
@@ -1528,7 +1528,7 @@ export class GlobalService {
       var ability = god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level);
       if (ability !== undefined) {
         ability.isPermanent = true;
-        if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        if (this.globalVar.gameLogSettings.get("godLevelUp") && !ignoreGameLogEntries) {
           var gameLogEntry = "<strong>" + ability.name + "</strong> is now a permanent ability for <strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " and will persist even after resetting their level.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
         }
@@ -1536,7 +1536,7 @@ export class GlobalService {
     }
   }
 
-  checkForNewGodAbilityUpgrades(god: God) {
+  checkForNewGodAbilityUpgrades(god: God,ignoreGameLogEntries: boolean = false) {
     var ability = this.getWhichAbilityUpgrade(god, god.level);
     if (ability === undefined)
       return;
@@ -1556,7 +1556,7 @@ export class GlobalService {
       this.upgradeGodPassive(god);
     }
 
-    if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+    if (this.globalVar.gameLogSettings.get("godLevelUp") && !ignoreGameLogEntries) {
       var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>'s ability <strong>" + ability.ability.name + "</strong> has upgraded to level " + ability.upgradeLevel + ".";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
     }
@@ -1951,14 +1951,46 @@ export class GlobalService {
   isGodPermanentStatStillObtainable(god: God, godLevel: number) {
     var count = this.getGodPermanentStatObtainCount(god, godLevel);
 
-    if (godLevel % 100 === 0) {
-      if (count[1] >= this.utilityService.godPermanentStatGain2ObtainCap)
-        return false;
+    if (godLevel <= 500) {
+      if (godLevel % 100 === 0) {
+        if (count[1] >= this.utilityService.godPermanentStatGain2ObtainCap)
+          return false;
+      }
+      else if (godLevel % 50 === 0) {
+        if (count[1] >= this.utilityService.godPermanentStatGain1ObtainCap + this.globalVar.chthonicPowers.increasedGodPrimaryStatResets) {
+          return false;
+        }
+      }
     }
-    else if (godLevel % 50 === 0) {
-      if (count[1] >= this.utilityService.godPermanentStatGain1ObtainCap)
-        return false;
+    else if (godLevel <= 1000) {
+      if (godLevel % 100 === 0) {
+        if (count[1] >= this.utilityService.godPermanentStatGain4ObtainCap)
+          return false;
+      }
+      else if (godLevel % 50 === 0) {
+        if (count[1] >= this.utilityService.godPermanentStatGain3ObtainCap + this.globalVar.chthonicPowers.increasedPartyPrimaryStatResets)
+          return false;
+      }
     }
+    else {
+      if (godLevel % 200 === 50) {
+        if (count[1] >= this.utilityService.godPermanentAbility1ObtainCap)
+          return false;
+      }
+      else if (godLevel % 200 === 100) {
+        if (count[1] >= this.utilityService.godPermanentPassiveObtainCap)
+          return false;
+      }
+      else if (godLevel % 200 === 150) {
+        if (count[1] >= this.utilityService.godPermanentAbility2ObtainCap)
+          return false;
+      }
+      else if (godLevel % 200 === 0) {
+        if (count[1] >= this.utilityService.godPermanentAbility3ObtainCap)
+          return false;
+      }
+    }
+
     return true;
   }
 
@@ -2229,7 +2261,7 @@ export class GlobalService {
         else
           matchingCount[1] += 1;
 
-        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain1ObtainCap)
+        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain1ObtainCap + this.globalVar.chthonicPowers.increasedGodPrimaryStatResets)
           return;
       }
 
@@ -2269,7 +2301,7 @@ export class GlobalService {
         else
           matchingCount[1] += 1;
 
-        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain3ObtainCap)
+        if (matchingCount !== undefined && matchingCount[1] > this.utilityService.godPermanentStatGain3ObtainCap + this.globalVar.chthonicPowers.increasedPartyPrimaryStatResets)
           return;
       }
 
@@ -3022,7 +3054,7 @@ export class GlobalService {
       }
 
       //every 5 rounds, chance of items
-      this.handleEternalMeleeBossRewards(losingRound);      
+      this.handleEternalMeleeBossRewards(losingRound);
 
       this.giveCharactersBonusExp(this.getActivePartyCharacters(true), bonusXp);
       this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins));
@@ -3045,7 +3077,7 @@ export class GlobalService {
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
       this.gainResource(new ResourceValue(gainedItem, rng));
     }
-    
+
     if (round > 15) {
       var rng = this.utilityService.getRandomInteger(25, 100);
       var gainedItem = ItemsEnum.MetalScraps;
@@ -3060,7 +3092,7 @@ export class GlobalService {
       this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
       this.gainResource(new ResourceValue(gainedItem, rng));
     }
-    
+
     if (round > 25) {
       var rng = this.utilityService.getRandomInteger(30, 70);
       var gainedItem = this.getRandomUncommonMaterial();
@@ -3075,7 +3107,7 @@ export class GlobalService {
       if (round > 20) {
         var rng = 100;
         var gainedItem = this.getRandomGem();
-  
+
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + rng.toLocaleString() + " " + (rng === 1 ? this.dictionaryService.getItemName(gainedItem) : this.utilityService.handlePlural(this.dictionaryService.getItemName(gainedItem))) + "</strong>.");
         this.gainResource(new ResourceValue(gainedItem, rng));
       }
@@ -3084,7 +3116,7 @@ export class GlobalService {
     }
   }
 
-  setNewTournament(canRepeat: boolean = false) {    
+  setNewTournament(canRepeat: boolean = false) {
     var repeatColiseumFight = this.globalVar.settings.get("repeatColiseumFight") ?? false;
 
     if (!repeatColiseumFight || !canRepeat)
@@ -3109,7 +3141,7 @@ export class GlobalService {
 
     return battle.activeTournament;
   }
-  
+
   canEnterWeeklyMelee() {
     return this.globalVar.sidequestData.weeklyMeleeEntries > 0;
   }
@@ -3192,16 +3224,16 @@ export class GlobalService {
     var relevantAchievements = this.globalVar.achievements.filter(item => item.subzone === type);
     if (relevantAchievements.some(item => item.type === AchievementTypeEnum.HundredVictories))
       victoryCount = 100;
-      if (relevantAchievements.some(item => item.type === AchievementTypeEnum.ThousandVictories))
+    if (relevantAchievements.some(item => item.type === AchievementTypeEnum.ThousandVictories))
       victoryCount = 500;
-      if (relevantAchievements.some(item => item.type === AchievementTypeEnum.TenThousandVictories))
+    if (relevantAchievements.some(item => item.type === AchievementTypeEnum.TenThousandVictories))
       victoryCount = 2500;
-      if (relevantAchievements.some(item => item.type === AchievementTypeEnum.FiveThousandVictories))
+    if (relevantAchievements.some(item => item.type === AchievementTypeEnum.FiveThousandVictories))
       victoryCount = 5000;
 
     return victoryCount;
   }
-  
+
   getUncompletedAchievementCountBySubZone(subzoneType: SubZoneEnum) {
     var subzoneRelatedAchievements = this.globalVar.achievements.filter(item => item.subzone === subzoneType);
 

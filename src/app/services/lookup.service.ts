@@ -1190,7 +1190,6 @@ export class LookupService {
     if (type === ItemsEnum.HesperidianArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
       equipmentPiece.stats = new CharacterStats(1200, 0, 175, 0, 0, 0);
-      equipmentPiece.stats.elementResistance.air = .1;
       equipmentPiece.slotCount = 2;
       equipmentPiece.stats.abilityCooldownReduction = .025;
       equipmentPiece.stats.hpRegen = 14;

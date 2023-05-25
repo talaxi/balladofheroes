@@ -200,11 +200,11 @@ export class GodViewComponent implements OnInit {
         if (nextLevel % 100 === 0 && nextLevel <= 500)
           obtainCap = this.utilityService.godPermanentStatGain2ObtainCap;
         else if (nextLevel % 50 === 0 && nextLevel <= 500)
-          obtainCap = this.utilityService.godPermanentStatGain1ObtainCap;
+          obtainCap = this.utilityService.godPermanentStatGain1ObtainCap + this.globalService.globalVar.chthonicPowers.increasedGodPrimaryStatResets;
         else if (nextLevel % 100 === 0 && nextLevel <= 1000)
           obtainCap = this.utilityService.godPermanentStatGain4ObtainCap;
         else if (nextLevel % 50 === 0 && nextLevel <= 1000)
-          obtainCap = this.utilityService.godPermanentStatGain3ObtainCap;
+          obtainCap = this.utilityService.godPermanentStatGain3ObtainCap + this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets;
         else if (nextLevel % 200 === 50 && nextLevel <= 2000)
           obtainCap = this.utilityService.godPermanentAbility1ObtainCap;
         else if (nextLevel % 200 === 100 && nextLevel <= 2000)

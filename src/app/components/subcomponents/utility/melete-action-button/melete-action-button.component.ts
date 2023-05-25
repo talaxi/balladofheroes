@@ -10,6 +10,7 @@ import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 })
 export class MeleteActionButtonComponent {
   @Input() action: MeleteActionEnum;
+  @Input() disabled: boolean;
 
   constructor(private meleteService: MeleteService, private dictionaryService: DictionaryService) {
 
@@ -17,6 +18,10 @@ export class MeleteActionButtonComponent {
 
   getActionName() {
     return this.dictionaryService.getMeleteActionName(this.action);
+  }
+
+  getActionCooldown() {
+    return this.meleteService.getActionCooldown(this.action);
   }
 
   getBackgroundStyle() {

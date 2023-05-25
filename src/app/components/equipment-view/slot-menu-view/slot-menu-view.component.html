@@ -3,7 +3,19 @@
         <span class="s4Heading">Change Slots</span>
         <button class="buttonStyled" (click)="closeModal()">X</button>
     </div>
-    <hr />
+    <hr class="topMargin" />
+  <div class="filters">
+        <span>Sort by:</span>
+        <mat-radio-group class="sortOptions" (change)="setupAvailableGems()" [(ngModel)]="sortType" aria-label="Select a sorting option">
+          <mat-radio-button [value]="1">Quality</mat-radio-button>
+          <mat-radio-button [value]="2">Name</mat-radio-button>
+          <mat-radio-button [value]="3">Item ID</mat-radio-button>
+        </mat-radio-group>
+        <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>
+        <button class="buttonAsText clickableText m2Heading" (click)="openFilterMenu(filterContent)"><img
+            class="autoProgressIcon" src="assets/svg/gearTextColor.svg"></button>
+      </div>
+      <hr class="bottomMargin" />
     <div class="slotView">
             <div class="availableEquipment">
                 <div class="scrollable">
@@ -49,3 +61,8 @@
 <ng-template #confirmationBox>
     <app-confirmation-box [confirmationText]="confirmationText"></app-confirmation-box>
 </ng-template>
+
+
+<ng-template #filterContent>
+    <app-filter-items-view [dialogRef]="dialogRef" [prefix]="'slots'"></app-filter-items-view>
+  </ng-template>

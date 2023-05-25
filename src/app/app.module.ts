@@ -108,6 +108,7 @@ import { AutoProgressOptionsComponent } from './components/layout/zone-navigatio
 import { MeleteViewComponent } from './components/subcomponents/melete-view/melete-view.component';
 import { MeleteActionButtonComponent } from './components/subcomponents/utility/melete-action-button/melete-action-button.component';
 import { SupportViewComponent } from './components/subcomponents/support-view/support-view.component';
+import { FilterItemsViewComponent } from './components/subcomponents/filter-items-view/filter-items-view.component';
 
 @NgModule({
   declarations: [
@@ -180,7 +181,8 @@ import { SupportViewComponent } from './components/subcomponents/support-view/su
     AutoProgressOptionsComponent,
     MeleteViewComponent,
     MeleteActionButtonComponent,
-    SupportViewComponent,    
+    SupportViewComponent,
+    FilterItemsViewComponent,    
   ],
   imports: [
     BrowserModule,

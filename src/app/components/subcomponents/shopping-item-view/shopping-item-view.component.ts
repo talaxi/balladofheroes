@@ -104,8 +104,8 @@ export class ShoppingItemViewComponent implements OnInit {
       var resource = this.resourceGeneratorService.getResourceFromItemType(this.item.shopItem, 1);
 
       if (resource !== undefined) {
-        if (resource.item === ItemsEnum.SparringMatch) {
-          this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), 5000);
+        if (resource.item === ItemsEnum.SparringMatch) { //TODO: set to 5000
+          this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), 200000);
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass) {
           this.unlockClass(resource.item);

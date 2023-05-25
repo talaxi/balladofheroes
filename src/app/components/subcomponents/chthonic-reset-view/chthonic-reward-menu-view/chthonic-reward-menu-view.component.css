@@ -1,4 +1,4 @@
-.chthonicStats {
+.chthonicStats, .advancedUpgrades {
     display: flex;
     justify-content: space-around;
     margin: 1rem 0;
@@ -9,12 +9,17 @@
     text-align: center;
 }
 
+.largerChthonicStatUpgrades {
+    width: 25%;
+    text-align: center;
+}
+
 @media (max-width: 800px) {
     .chthonicStatUpgrade {
         width: 33.3333%;
     }
 
-    .chthonicStats {
+    .chthonicStats, .advancedUpgrades {
         flex-wrap: wrap;
         row-gap: 3rem;
     }

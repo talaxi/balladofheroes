@@ -5,12 +5,14 @@ import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
-import { MatDialog } from '@angular/material/dialog';
+import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { ResourceViewSortEnum } from 'src/app/models/enums/resource-view-sort-enum.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-slot-menu-view',
@@ -31,33 +33,100 @@ export class SlotMenuViewComponent {
   confirmationText = "";
   subscription: any;
   currentSlottedItemCount: number;
+  sortType: ResourceViewSortEnum = ResourceViewSortEnum.Quality;
+  ascendingSort: boolean = true;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, public dialog: MatDialog,
-    private gameLoopService: GameLoopService, private dictionaryService: DictionaryService) {
+    private gameLoopService: GameLoopService, private dictionaryService: DictionaryService, private deviceDetectorService: DeviceDetectorService) {
 
   }
 
   ngOnInit() {
     this.assignResource();
+    this.setupAvailableGems();
+  }
+
+  setupAvailableGems() {
+    var showBasicEquipment = this.globalService.globalVar.settings.get("slotsShowBasicFilter") ?? true;
+    var showUncommonEquipment = this.globalService.globalVar.settings.get("slotsShowUncommonFilter") ?? true;
+    var showRareEquipment = this.globalService.globalVar.settings.get("slotsShowRareFilter") ?? true;
+    var showEpicEquipment = this.globalService.globalVar.settings.get("slotsShowEpicFilter") ?? true;
+    var showSpecialEquipment = this.globalService.globalVar.settings.get("slotsShowSpecialFilter") ?? true;
+    var showExtraordinaryEquipment = this.globalService.globalVar.settings.get("slotsShowExtraordinaryFilter") ?? true;
+    var showUniqueEquipment = this.globalService.globalVar.settings.get("slotsShowUniqueFilter") ?? true;
+
     this.availableGems = this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.SlotItem);
+
+    if (!showBasicEquipment)
+      this.availableGems = this.availableGems.filter(item => this.lookupService.getSlotItemQuality(item.item) !== EquipmentQualityEnum.Basic);
+    if (!showUncommonEquipment)
+      this.availableGems = this.availableGems.filter(item => this.lookupService.getSlotItemQuality(item.item) !== EquipmentQualityEnum.Uncommon);
+    if (!showRareEquipment)
+      this.availableGems = this.availableGems.filter(item => this.lookupService.getSlotItemQuality(item.item) !== EquipmentQualityEnum.Rare);
+    /*if (!showEpicEquipment)
+    this.availableGems = this.availableGems.filter(item => this.lookupService.getSlotItemQuality(item.item) !== EquipmentQualityEnum.Epic);
+    if (!showSpecialEquipment)
+    this.availableGems = this.availableGems.filter(item => this.lookupService.getSlotItemQuality(item.item) !== EquipmentQualityEnum.Special);
+    if (!showExtraordinaryEquipment)
+    this.availableGems = this.availableGems.filter(item => this.lookupService.getSlotItemQuality(item.item) !== EquipmentQualityEnum.Extraordinary);
+    if (!showUniqueEquipment)
+    this.availableGems = this.availableGems.filter(item => this.lookupService.getSlotItemQuality(item.item) !== EquipmentQualityEnum.Unique);*/
+
     this.removeUnavailableGems();
+
+    this.availableGems.sort((a, b) => this.sortSlotItems(a, b));
+  }
+
+  toggleSort() {
+    this.ascendingSort = !this.ascendingSort;
+    this.setupAvailableGems();
+  }
+
+  sortSlotItems(a: ResourceValue, b: ResourceValue) {
+    var ascending = 1;
+    var descending = -1;
+
+    if (!this.ascendingSort) {
+      ascending = -1;
+      descending = 1;
+    }
+
+    if (this.sortType === ResourceViewSortEnum.Quality) {
+    var itemA = this.lookupService.getSlotItemQuality(a.item);
+    var itemB = this.lookupService.getSlotItemQuality(b.item);
+
+    return itemA < itemB ? descending : itemA > itemB ? ascending : 0;
+    }
+
+    if (this.sortType === ResourceViewSortEnum.Name) {
+      var nameA = this.dictionaryService.getItemName(a.item);
+      var nameB = this.dictionaryService.getItemName(b.item);
+
+      return nameA < nameB ? descending : nameA > nameB ? ascending : 0;
+    }
+
+    if (this.sortType === ResourceViewSortEnum.EnumValue) {      
+      return a.item < b.item ? descending : a.item > b.item ? ascending : 0;
+    }
+
+    return ascending;
   }
 
   ngAfterViewInit() {
     this.setupClickEvent();
     this.currentSlottedItemCount = document.querySelectorAll('.removeExtra').length;
 
-    this.subscription =  this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var divs = document.querySelectorAll('.removeExtra');
-      if (divs.length !== this.currentSlottedItemCount) {        
+      if (divs.length !== this.currentSlottedItemCount) {
         this.currentSlottedItemCount = divs.length;
         this.setupClickEvent();
       }
     });
   }
 
-  setupClickEvent() {    
-    var divs = document.querySelectorAll('.removeExtra');    
+  setupClickEvent() {
+    var divs = document.querySelectorAll('.removeExtra');
     divs.forEach(el => el.removeEventListener('click', () => this.removeGem(el)));
     divs.forEach(el => el.addEventListener('click', () => this.removeGem(el)));
   }
@@ -200,6 +269,17 @@ export class SlotMenuViewComponent {
 
   openConfirmationDialog() {
     return this.dialog.open(this.confirmationBox, { width: '40%', height: 'auto' });
+  }
+
+  openFilterMenu(slotMenuContent: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '60%', height: '65%', panelClass: 'mat-dialog-no-scroll' });
+
+    this.dialogRef.afterClosed().subscribe(() => {
+      this.setupAvailableGems();
+    });
   }
 
   ngOnDestroy() {

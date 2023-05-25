@@ -1,11 +1,14 @@
 import { Component, OnInit, ViewChild } from '@angular/core';
-import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
+import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { ResourceViewSortEnum } from 'src/app/models/enums/resource-view-sort-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
@@ -22,6 +25,7 @@ import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { JewelcraftingService } from 'src/app/services/professions/jewelcrafting.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -52,19 +56,21 @@ export class ShopViewComponent implements OnInit {
   shopItemCells: ShopItem[];
   filterEquipment = false;
   filterBattleItems = false;
-  toggleAscending = true;
+  dialogRef: MatDialogRef<any, any>;
+  sortType: ResourceViewSortEnum = ResourceViewSortEnum.Type;
+  ascendingSort: boolean = true;
 
   constructor(private subzoneGeneratorService: SubZoneGeneratorService, private balladService: BalladService, public dialog: MatDialog,
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
     private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
     private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService,
-    private enemyGeneratorService: EnemyGeneratorService, private layoutService: LayoutService) { }
+    private enemyGeneratorService: EnemyGeneratorService, private layoutService: LayoutService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
     this.getShopOptions();
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
-    this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);    
+    this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
@@ -82,7 +88,7 @@ export class ShopViewComponent implements OnInit {
   }
 
   augeanStablesCompleted() {
-    return this.globalService.globalVar.sidequestData.augeanStablesLevel >= this.globalService.globalVar.sidequestData.maxAugeanStablesLevel; 
+    return this.globalService.globalVar.sidequestData.augeanStablesLevel >= this.globalService.globalVar.sidequestData.maxAugeanStablesLevel;
   }
 
   getShopOptions() {
@@ -91,11 +97,11 @@ export class ShopViewComponent implements OnInit {
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
 
-      if (this.balladService.findSubzone(SubZoneEnum.ColchisGroveOfAres)?.isAvailable)
+    if (this.balladService.findSubzone(SubZoneEnum.ColchisGroveOfAres)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryScene24);
   }
 
-  getOptionText(type: ShopTypeEnum) {    
+  getOptionText(type: ShopTypeEnum) {
     return this.lookupService.getShopOptionText(type);
   }
 
@@ -155,28 +161,27 @@ export class ShopViewComponent implements OnInit {
       this.jewelcraftingService.handleShopOpen(this.activeSubzoneType);
       this.jewelcraftingService.checkForNewRecipes();
     }
-    
-    if (option.type === ShopTypeEnum.AugeanStables) {     
+
+    if (option.type === ShopTypeEnum.AugeanStables) {
       this.isDisplayingNewItems = false;
     }
 
-    if (option.type === ShopTypeEnum.Trader) {     
+    if (option.type === ShopTypeEnum.Trader) {
       this.isDisplayingNewItems = false;
 
       this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
       var defeatCount = 0;
       var defeatStats = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.globalService.globalVar.sidequestData.traderBestiaryType);
-      if (defeatStats !== undefined) {        
+      if (defeatStats !== undefined) {
         defeatCount = defeatStats.count;
       }
 
-      while (defeatCount >= this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel())
-      {                
+      while (defeatCount >= this.lookupService.getBestiaryHuntKillCountForCurrentTraderLevel()) {
         this.globalService.globalVar.sidequestData.traderHuntLevel += 1;
         this.globalService.globalVar.sidequestData.traderBestiaryType = this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel();
         defeatCount = 0;
         var defeatStats = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.globalService.globalVar.sidequestData.traderBestiaryType);
-        if (defeatStats !== undefined) {          
+        if (defeatStats !== undefined) {
           defeatCount = defeatStats.count;
         }
       }
@@ -189,8 +194,8 @@ export class ShopViewComponent implements OnInit {
       option.availableItems = this.subzoneGeneratorService.getAvailableTraderOptions(this.globalService.globalVar.sidequestData.traderHuntLevel);
     }
 
-    if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler || 
-      option.type === ShopTypeEnum.Trader || option.type === ShopTypeEnum.AugeanStables) {        
+    if (option.type === ShopTypeEnum.Crafter || option.type === ShopTypeEnum.General || option.type === ShopTypeEnum.Traveler ||
+      option.type === ShopTypeEnum.Trader || option.type === ShopTypeEnum.AugeanStables) {
       this.allItems = option.availableItems.sort((a, b) => this.sortFunction(a, b));
       this.newItems = option.availableItems.sort((a, b) => this.sortFunction(a, b)).filter(item => item.originalStore === this.activeSubzoneType);
 
@@ -207,7 +212,7 @@ export class ShopViewComponent implements OnInit {
     return this.globalService.globalVar.sidequestData.traderHuntLevel;
   }
 
-  setTraderLevelUpText() {    
+  setTraderLevelUpText() {
     if (this.globalService.globalVar.sidequestData.traderHuntLevel === 1)
       this.traderLevelUpText = "“If you could help me get back the rest of my materials, I sure would appreciate it!”";
     else if (this.lookupService.getBestiaryHuntTypeForCurrentTraderLevel() === BestiaryEnum.None)
@@ -228,46 +233,60 @@ export class ShopViewComponent implements OnInit {
     var positive = 1;
     var negative = -1;
 
-    if (this.toggleAscending) {
+    if (this.ascendingSort) {
       positive = -1;
       negative = 1;
     }
 
-    if (this.lookupService.getItemTypeFromItemEnum(a.shopItem) > this.lookupService.getItemTypeFromItemEnum(b.shopItem))
-      return positive;
-    else if (this.lookupService.getItemTypeFromItemEnum(a.shopItem) < this.lookupService.getItemTypeFromItemEnum(b.shopItem))
-      return negative;
-    else {
-      if (this.lookupService.getItemTypeFromItemEnum(a.shopItem) === ItemTypeEnum.Equipment) {
-        var equipmentA = this.lookupService.getEquipmentPieceByItemType(a.shopItem);
-        var equipmentB = this.lookupService.getEquipmentPieceByItemType(b.shopItem);
+    if (this.sortType === ResourceViewSortEnum.Type) {
+      if (this.lookupService.getItemTypeFromItemEnum(a.shopItem) > this.lookupService.getItemTypeFromItemEnum(b.shopItem))
+        return positive;
+      else if (this.lookupService.getItemTypeFromItemEnum(a.shopItem) < this.lookupService.getItemTypeFromItemEnum(b.shopItem))
+        return negative;
+      else {
+        if (this.lookupService.getItemTypeFromItemEnum(a.shopItem) === ItemTypeEnum.Equipment) {
+          var equipmentA = this.lookupService.getEquipmentPieceByItemType(a.shopItem);
+          var equipmentB = this.lookupService.getEquipmentPieceByItemType(b.shopItem);
 
-        if (equipmentA === undefined || equipmentB === undefined)
-          return a.shopItem > b.shopItem ? negative : a.shopItem < b.shopItem ? positive : 0;
+          if (equipmentA === undefined || equipmentB === undefined)
+            return a.shopItem > b.shopItem ? negative : a.shopItem < b.shopItem ? positive : 0;
 
-        if (equipmentA.equipmentType > equipmentB.equipmentType)
-          return negative;
-        else if (equipmentA.equipmentType < equipmentB.equipmentType)
-          return positive;
-        else {
-          if (equipmentA.weaponType > equipmentB.weaponType)
+          if (equipmentA.equipmentType > equipmentB.equipmentType)
             return negative;
-          else if (equipmentA.weaponType < equipmentB.weaponType)
+          else if (equipmentA.equipmentType < equipmentB.equipmentType)
             return positive;
           else {
-            if (equipmentA.quality > equipmentB.quality)
-              return positive;
-            else if (equipmentA.quality < equipmentB.quality)
+            if (equipmentA.weaponType > equipmentB.weaponType)
               return negative;
+            else if (equipmentA.weaponType < equipmentB.weaponType)
+              return positive;
             else {
-              return 0;
+              if (equipmentA.quality > equipmentB.quality)
+                return positive;
+              else if (equipmentA.quality < equipmentB.quality)
+                return negative;
+              else {
+                return 0;
+              }
             }
           }
         }
+        else
+          return a.shopItem > b.shopItem ? negative : a.shopItem < b.shopItem ? positive : 0;
       }
-      else
-        return a.shopItem > b.shopItem ? negative : a.shopItem < b.shopItem ? positive : 0;
     }
+    if (this.sortType === ResourceViewSortEnum.Name) {
+      var nameA = this.dictionaryService.getItemName(a.shopItem);
+      var nameB = this.dictionaryService.getItemName(b.shopItem);
+
+      return nameA < nameB ? negative : nameA > nameB ? positive : 0;
+    }
+
+    if (this.sortType === ResourceViewSortEnum.EnumValue) {
+      return a.shopItem < b.shopItem ? negative : a.shopItem > b.shopItem ? positive : 0;
+    }
+
+    return 0;
   }
 
   setupDisplayShopItems(): void {
@@ -277,7 +296,7 @@ export class ShopViewComponent implements OnInit {
     this.shopItems = this.shopItems.filter(item => this.balladService.findSubzone(item.originalStore)?.isAvailable);
 
     var filteredItems = this.filterItems(this.shopItems);
-    
+
     var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
 
     for (var i = 1; i <= filteredItems.length; i++) {
@@ -290,6 +309,8 @@ export class ShopViewComponent implements OnInit {
 
     if (this.shopItemCells.length !== 0)
       this.shopItemRows.push(this.shopItemCells);
+
+    this.shopItems.sort((a, b) => this.sortFunction(a, b));
   }
 
   toggleDisplayNewItemsView() {
@@ -323,9 +344,77 @@ export class ShopViewComponent implements OnInit {
   }
 
   filterItems(items: ShopItem[]) {
+    var showBasicEquipment = this.globalService.globalVar.settings.get("shopShowBasicFilter") ?? true;
+    var showUncommonEquipment = this.globalService.globalVar.settings.get("shopShowUncommonFilter") ?? true;
+    var showRareEquipment = this.globalService.globalVar.settings.get("shopShowRareFilter") ?? true;
+    var showEpicEquipment = this.globalService.globalVar.settings.get("shopShowEpicFilter") ?? true;
+    var showSpecialEquipment = this.globalService.globalVar.settings.get("shopShowSpecialFilter") ?? true;
+    var showExtraordinaryEquipment = this.globalService.globalVar.settings.get("shopShowExtraordinaryFilter") ?? true;
+    var showUniqueEquipment = this.globalService.globalVar.settings.get("shopShowUniqueFilter") ?? true;
+    var showWeaponsEquipment = this.globalService.globalVar.settings.get("shopShowWeaponsFilter") ?? true;
+    var showShieldsEquipment = this.globalService.globalVar.settings.get("shopShowShieldsFilter") ?? true;
+    var showArmorEquipment = this.globalService.globalVar.settings.get("shopShowArmorFilter") ?? true;
+    var showNecklacesEquipment = this.globalService.globalVar.settings.get("shopShowNecklacesFilter") ?? true;
+    var showRingsEquipment = this.globalService.globalVar.settings.get("shopShowRingsFilter") ?? true;
+    var showEquipment = this.globalService.globalVar.settings.get("shopShowEquipmentFilter") ?? true;
+    var showBattleItems = this.globalService.globalVar.settings.get("shopShowBattleItemsFilter") ?? true;
+    var showHealingItems = this.globalService.globalVar.settings.get("shopShowHealingItemsFilter") ?? true;
+    var showSlotItems = this.globalService.globalVar.settings.get("shopShowSlotItemsFilter") ?? true;
+
     var newItemList: ShopItem[] = [];
 
-    if (!this.filterEquipment && !this.filterBattleItems)
+    items.forEach(item => {
+      if (this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.Equipment) {
+        var equipment = this.lookupService.getEquipmentPieceByItemType(item.shopItem);
+        if (equipment === undefined || !showEquipment)
+          return;
+
+        if (!showBasicEquipment && equipment.quality === EquipmentQualityEnum.Basic)
+          return;
+        if (!showUncommonEquipment && equipment.quality === EquipmentQualityEnum.Uncommon)
+          return;
+        if (!showRareEquipment && equipment.quality === EquipmentQualityEnum.Rare)
+          return;
+        if (!showEpicEquipment && equipment.quality === EquipmentQualityEnum.Epic)
+          return;
+        if (!showSpecialEquipment && equipment.quality === EquipmentQualityEnum.Special)
+          return;
+        if (!showExtraordinaryEquipment && equipment.quality === EquipmentQualityEnum.Extraordinary)
+          return;
+        if (!showUniqueEquipment && equipment.quality === EquipmentQualityEnum.Unique)
+          return;
+
+        if (!showWeaponsEquipment && equipment.equipmentType === EquipmentTypeEnum.Weapon)
+          return;
+        if (!showShieldsEquipment && equipment.equipmentType === EquipmentTypeEnum.Shield)
+          return;
+        if (!showArmorEquipment && equipment.equipmentType === EquipmentTypeEnum.Armor)
+          return;
+        if (!showNecklacesEquipment && equipment.equipmentType === EquipmentTypeEnum.Necklace)
+          return;
+        if (!showRingsEquipment && equipment.equipmentType === EquipmentTypeEnum.Ring)
+          return;
+      }
+
+      if (this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.BattleItem) {
+        if (!showBattleItems)
+          return;
+      }
+
+      if (this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.SlotItem) {
+        if (!showSlotItems)
+          return;
+      }
+
+      if (this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.HealingItem) {
+        if (!showHealingItems)
+          return;
+      }
+
+      newItemList.push(item.makeCopy());
+    });
+
+    /*if (!this.filterEquipment && !this.filterBattleItems)
       return items;
 
     if (this.filterEquipment) {
@@ -341,13 +430,13 @@ export class ShopViewComponent implements OnInit {
           this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.HealingItem)
           newItemList.push(item.makeCopy());
       });
-    }
+    }*/
 
     return newItemList;
   }
 
   toggleSort() {
-    this.toggleAscending = !this.toggleAscending;
+    this.ascendingSort = !this.ascendingSort;
 
     this.newItems.sort((a, b) => this.sortFunction(a, b));
     this.allItems.sort((a, b) => this.sortFunction(a, b));
@@ -404,6 +493,17 @@ export class ShopViewComponent implements OnInit {
     }
 
     return scene;
+  }
+
+  openFilterMenu(slotMenuContent: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '60%', height: '65%', panelClass: 'mat-dialog-no-scroll' });
+
+    this.dialogRef.afterClosed().subscribe(dialogResult => {
+      this.setupDisplayShopItems();
+    });
   }
 
   ngOnDestroy() {

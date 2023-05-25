@@ -116,6 +116,13 @@ export class BattleService {
       if (this.lookupService.isSubzoneATown(subZone.type) && this.battle.activeTournament.type === ColiseumTournamentEnum.None) //no need to check any battle info
       {
         this.battle.atTown = true;
+
+        var subZone = this.balladService.getActiveSubZone();
+        var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+
+        if (autoProgress) {
+          this.balladService.selectNextSubzone();
+        }
         return;
       }
       else
@@ -959,7 +966,7 @@ export class BattleService {
       healAmount *= adjustedCriticalMultiplier;
 
       var healedAmount = this.gainHp(target, healAmount);
-      
+
       user.trackedStats.healingDone += healedAmount;
       if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
         !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
@@ -2133,7 +2140,8 @@ export class BattleService {
 
     //TODO: this is just testing for now
     //adjustedAttack *= 2;
-    
+    adjustedDefense *= 3;
+
     //2 * Attack^2 / (Attack + Defense)      
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementIncrease * elementalDamageDecrease
@@ -2146,9 +2154,6 @@ export class BattleService {
         dispenserOfDuesEffect.effectiveness = 0;
       }
     }
-
-    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-    //  + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     if (ability?.damageModifierRange !== undefined) {
       var rng = this.utilityService.getRandomNumber(1 - ability.damageModifierRange, 1 + ability.damageModifierRange);
@@ -2667,7 +2672,7 @@ export class BattleService {
             var party = this.globalService.getActivePartyCharacters(true);
             var potentialTargets = party.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
             var target = potentialTargets[this.utilityService.getRandomInteger(0, potentialTargets.length - 1)];
-            khalkotauroiFury.targetEffect[0].effectiveness = this.lookupService.getAdjustedAttack(character, undefined, false) * khalkotauroiFury.targetEffect[0].effectiveness;
+            //khalkotauroiFury.targetEffect[0].effectiveness = this.lookupService.getAdjustedAttack(character, undefined, false) * khalkotauroiFury.targetEffect[0].effectiveness;
             this.applyStatusEffect(khalkotauroiFury.targetEffect[0], target, undefined);
 
             if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
@@ -2686,6 +2691,7 @@ export class BattleService {
 
   updateBattleState(party: Character[], enemies: Character[]) {
     var stateChanged = false;
+    var enemiesDefeated = false;
 
     if (this.areCharactersDefeated(party)) {
       stateChanged = true;
@@ -2694,6 +2700,7 @@ export class BattleService {
 
     if (this.areCharactersDefeated(enemies)) {
       stateChanged = true;
+      enemiesDefeated = true;
       this.moveToNextBattle();
     }
 
@@ -2702,6 +2709,15 @@ export class BattleService {
       this.checkForOptionalScene();
       this.checkScene();
       this.checkBreakpoints();
+    }
+
+    if (enemiesDefeated) {
+      var subZone = this.balladService.getActiveSubZone();
+      var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+
+      if (autoProgress && (this.balladService.autoProgressShouldChangeSubZone(subZone) || this.balladService.isSubzoneTown(subZone.type))) {
+        this.balladService.selectNextSubzone();
+      }
     }
   }
 
@@ -2938,12 +2954,6 @@ export class BattleService {
       }
       else
         this.battle.activeTournament.currentRound += 1;
-    }
-    
-    var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
-    
-    if (autoProgress && (this.balladService.autoProgressShouldChangeSubZone(subZone) || this.balladService.isSubzoneTown(subZone.type))) {
-      this.balladService.selectNextSubzone();
     }
 
     this.initializeEnemyList();

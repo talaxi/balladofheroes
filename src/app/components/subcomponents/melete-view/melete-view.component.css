@@ -25,3 +25,17 @@
 div, .cell {
   transition: opacity .5s;
 }
+
+.resourceList {
+    width: 33%;
+    display: inline-block;
+    vertical-align: top;
+}
+
+.basicResources {
+    text-align: left;
+}
+
+.addedItems {
+    text-align: left;
+}

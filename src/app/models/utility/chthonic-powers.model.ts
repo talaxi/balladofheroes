@@ -10,6 +10,9 @@ export class ChthonicPowers {
     isChthonicFavorUnlocked: boolean;
     isChthonicResetUnlocked: boolean;
     preferredGod: GodEnum;    
+    increasedGodPrimaryStatResets: number;
+    increasedPartyPrimaryStatResets: number;
+    retainGodLevel: number;
 
     constructor() {
         this.isChthonicResetUnlocked = false;
@@ -21,6 +24,9 @@ export class ChthonicPowers {
         this.agilityBoostLevel = 0;
         this.luckBoostLevel = 0;
         this.resistanceBoostLevel = 0;
+        this.increasedGodPrimaryStatResets = 0;
+        this.increasedPartyPrimaryStatResets = 0;
+        this.retainGodLevel = 0;
     }
 
     getAttackBoostPercent() {
@@ -45,5 +51,17 @@ export class ChthonicPowers {
 
     getResistanceBoostPercent() {        
         return this.resistanceBoostLevel * .1;
+    }
+
+    getIncreasedGodPrimaryStatResetCount() {        
+        return this.increasedGodPrimaryStatResets;
+    }
+    
+    getIncreasedPartyPrimaryStatResetCount() {        
+        return this.increasedPartyPrimaryStatResets;
+    }
+    
+    getRetainGodLevelPercent() {        
+        return this.retainGodLevel * .01;
     }
 }

@@ -5,10 +5,12 @@ import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
+import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { ResourceViewSortEnum } from 'src/app/models/enums/resource-view-sort-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -37,6 +39,9 @@ export class EquipmentViewComponent implements OnInit {
   itemToSellPrice: number;
   sellAmount: number = 1;
   dialogRef: MatDialogRef<any, any>;
+  sortType: ResourceViewSortEnum = ResourceViewSortEnum.Quality;  
+  ascendingSort: boolean = true; 
+  filterPrefix = "equipment";
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog, private deviceDetectorService: DeviceDetectorService,
@@ -57,10 +62,37 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   setUpAvailableEquipment() {
+    var showBasicEquipment = this.globalService.globalVar.settings.get("equipmentShowBasicFilter") ?? true;
+    var showUncommonEquipment = this.globalService.globalVar.settings.get("equipmentShowUncommonFilter") ?? true;
+    var showRareEquipment = this.globalService.globalVar.settings.get("equipmentShowRareFilter") ?? true;
+    var showEpicEquipment = this.globalService.globalVar.settings.get("equipmentShowEpicFilter") ?? true;
+    var showSpecialEquipment = this.globalService.globalVar.settings.get("equipmentShowSpecialFilter") ?? true;
+    var showExtraordinaryEquipment = this.globalService.globalVar.settings.get("equipmentShowExtraordinaryFilter") ?? true;
+    var showUniqueEquipment = this.globalService.globalVar.settings.get("equipmentShowUniqueFilter") ?? true;
+    var showWeaponsEquipment = this.globalService.globalVar.settings.get("equipmentShowWeaponsFilter") ?? true;
+    var showShieldsEquipment = this.globalService.globalVar.settings.get("equipmentShowShieldsFilter") ?? true;
+    var showArmorEquipment = this.globalService.globalVar.settings.get("equipmentShowArmorFilter") ?? true;
+    var showNecklacesEquipment = this.globalService.globalVar.settings.get("equipmentShowNecklacesFilter") ?? true;
+    var showRingsEquipment = this.globalService.globalVar.settings.get("equipmentShowRingsFilter") ?? true;
+
     this.availableEquipment = [];
     this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment).forEach(equip => {
-      if (equip !== undefined)
+      if (equip !== undefined) {
+        var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(equip.item);
+        if (equipmentPiece === undefined)
+          return; 
+        var quality = equipmentPiece.quality;
+        var equipmentType = equipmentPiece.equipmentType;
+        if ((quality === EquipmentQualityEnum.Basic && !showBasicEquipment) || (quality === EquipmentQualityEnum.Uncommon && !showUncommonEquipment) ||
+        (quality === EquipmentQualityEnum.Rare && !showRareEquipment) || (quality === EquipmentQualityEnum.Epic && !showEpicEquipment) ||
+        (quality === EquipmentQualityEnum.Special && !showSpecialEquipment) || (quality === EquipmentQualityEnum.Extraordinary && !showExtraordinaryEquipment) ||
+        (quality === EquipmentQualityEnum.Unique && !showUniqueEquipment) || (equipmentType === EquipmentTypeEnum.Weapon && !showWeaponsEquipment) ||
+        (equipmentType === EquipmentTypeEnum.Shield && !showShieldsEquipment) || (equipmentType === EquipmentTypeEnum.Armor && !showArmorEquipment) ||
+        (equipmentType === EquipmentTypeEnum.Necklace && !showNecklacesEquipment) || (equipmentType === EquipmentTypeEnum.Ring && !showRingsEquipment))
+          return;
+        
         this.availableEquipment.push(this.lookupService.makeResourceCopy(equip));
+      }
     });
 
     this.globalService.globalVar.characters.forEach(character => {
@@ -85,7 +117,40 @@ export class EquipmentViewComponent implements OnInit {
         necklace.amount -= 1;
     });
 
-    this.availableEquipment = this.availableEquipment.filter(item => item.amount > 0);
+    this.availableEquipment = this.availableEquipment.filter(item => item.amount > 0).sort((a, b) => this.sortEquipment(a, b));
+  }
+
+  sortEquipment(a: ResourceValue, b: ResourceValue) {
+    var ascending = 1;
+    var descending = -1;
+
+    if (!this.ascendingSort) {
+      ascending = -1;
+      descending = 1;
+    }
+
+    if (this.sortType === ResourceViewSortEnum.Quality) {
+      var equipmentA = this.lookupService.getEquipmentPieceByItemType(a.item);
+      var equipmentB = this.lookupService.getEquipmentPieceByItemType(b.item);
+
+      var qualityA = equipmentA === undefined ? 0 : equipmentA.quality;
+      var qualityB = equipmentB === undefined ? 0 : equipmentB.quality;
+
+      return qualityA < qualityB ? descending : qualityA > qualityB ? ascending : 0;
+    }
+
+    if (this.sortType === ResourceViewSortEnum.Name) {
+      var nameA = this.dictionaryService.getItemName(a.item);
+      var nameB = this.dictionaryService.getItemName(b.item);
+
+      return nameA < nameB ? descending : nameA > nameB ? ascending : 0;
+    }
+
+    if (this.sortType === ResourceViewSortEnum.EnumValue) {      
+      return a.item < b.item ? descending : a.item > b.item ? ascending : 0;
+    }
+
+    return ascending;
   }
 
   hoverItem(item: ResourceValue) {
@@ -194,6 +259,11 @@ export class EquipmentViewComponent implements OnInit {
 
     return this.utilityService.getSanitizedHtml(equipmentStats);
   }*/
+  
+  toggleSort() {
+    this.ascendingSort = !this.ascendingSort;
+    this.setUpAvailableEquipment();
+  }
 
   setSellItem(equipment: ResourceValue) {
     var equipmentPiece = this.lookupService.getEquipmentPieceByItemType(equipment.item);
@@ -258,6 +328,17 @@ export class EquipmentViewComponent implements OnInit {
       this.dialogRef = this.dialog.open(slotMenuContent, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
     else
       this.dialogRef = this.dialog.open(slotMenuContent, { width: '60%', height: '65%', panelClass: 'mat-dialog-no-scroll' });
+  }
+
+  openFilterMenu(slotMenuContent: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialogRef = this.dialog.open(slotMenuContent, { width: '60%', height: '65%', panelClass: 'mat-dialog-no-scroll' });
+
+      this.dialogRef.afterClosed().subscribe(dialogResult => {
+        this.setUpAvailableEquipment();
+      });
   }
 
   closeModal() {

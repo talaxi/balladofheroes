@@ -22,6 +22,8 @@ import { LookupService } from '../lookup.service';
 import { KeybindService } from './keybind.service';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
+import { Melete } from 'src/app/models/melete/melete.model';
+import { JewelcraftingService } from '../professions/jewelcrafting.service';
 
 @Injectable({
   providedIn: 'root'
@@ -30,11 +32,11 @@ export class VersionControlService {
 
   constructor(public globalService: GlobalService, private utilityService: UtilityService, private balladService: BalladService,
     private achievementService: AchievementService, private initializationService: InitializationService, private lookupService: LookupService,
-    private keybindService: KeybindService) { }
+    private keybindService: KeybindService, private jewelcraftingService: JewelcraftingService) { }
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -391,16 +393,16 @@ export class VersionControlService {
             character.trackedStats.healingDone = 0;
             character.trackedStats.damagingHitsTaken = 0;
             character.trackedStats.healsMade = 0;
-            character.trackedStats.criticalsDealt = 0;  
+            character.trackedStats.criticalsDealt = 0;
           });
-          
+
           var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
           if (hades !== undefined) {
             var passive = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
             if (passive !== undefined) {
               passive.maxCount = 3;
               passive.userEffect[0].maxCount = 3;
-              passive.userEffect[0].effectiveness = 1.02 + ((passive.userEffect[0].effectiveness - 1.02) * (1/3)); 
+              passive.userEffect[0].effectiveness = 1.02 + ((passive.userEffect[0].effectiveness - 1.02) * (1 / 3));
             }
 
             var ability1 = hades.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
@@ -454,7 +456,7 @@ export class VersionControlService {
               countryRoads.notify = true;
             }
             if (oldCountryRoads !== undefined) {
-              oldCountryRoads.isAvailable = false;              
+              oldCountryRoads.isAvailable = false;
             }
           }
 
@@ -462,7 +464,7 @@ export class VersionControlService {
           this.globalService.globalVar.settings.set("autoProgressIncludeSideQuests", true);
           this.globalService.globalVar.settings.set("autoProgressPauseStory", false);
           this.globalService.globalVar.settings.set("autoProgressIncludeAllAchievements", false);
-          this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", true);   
+          this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", true);
           this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
           this.globalService.globalVar.settings.set("loadingAccuracy", this.utilityService.averageLoadingAccuracy);
           this.globalService.globalVar.settings.set("loadingTime", this.utilityService.averageActiveTimeLimit);
@@ -478,7 +480,7 @@ export class VersionControlService {
           this.globalService.globalVar.keybinds.set("toggleAllCharactersTargetMode", this.keybindService.altKeyBind + "keyT");
 
           this.globalService.globalVar.sidequestData.traderHuntLevel = 0;
-          this.globalService.globalVar.sidequestData.goldenApplesObtained = 0;          
+          this.globalService.globalVar.sidequestData.goldenApplesObtained = 0;
           this.globalService.globalVar.sidequestData.augeanStablesLevel = 0;
           this.globalService.globalVar.sidequestData.maxAugeanStablesLevel = 3;
 
@@ -525,13 +527,12 @@ export class VersionControlService {
           if (this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors) !== undefined)
             this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Labors)!.displayOrder = 6;
         }
-        if (version === .46) {          
+        if (version === .46) {
           var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
 
           if (apollo !== undefined) {
             var ostinato = apollo.abilityList.find(item => item.name === "Ostinato");
-            if (ostinato !== undefined)
-            {
+            if (ostinato !== undefined) {
               ostinato.targetType = TargetEnum.LowestHpPercent;
             }
           }
@@ -554,6 +555,70 @@ export class VersionControlService {
               this.globalService.globalVar.achievements.push(achievement);
             });
           }
+        }
+        if (version === .55) {
+          this.globalService.globalVar.melete = new Melete();
+
+          if (this.globalService.globalVar.altars.altar1 !== undefined && this.globalService.globalVar.altars.altar1.god === GodEnum.None)
+          this.globalService.globalVar.altars.altar1!.god = GodEnum.Athena;
+
+          var prefix = "equipment";
+          this.globalService.globalVar.settings.set(prefix + "ShowBasicFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowUncommonFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowRareFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowEpicFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowSpecialFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowExtraordinaryFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowUniqueFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowWeaponsFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowShieldsFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowArmorFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowNecklacesFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowRingsFilter", true);
+
+          prefix = "slots";
+          this.globalService.globalVar.settings.set(prefix + "ShowBasicFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowUncommonFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowRareFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowEpicFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowSpecialFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowExtraordinaryFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowUniqueFilter", true);
+
+          prefix = "shop";
+          this.globalService.globalVar.settings.set(prefix + "ShowBasicFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowUncommonFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowRareFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowEpicFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowSpecialFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowExtraordinaryFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowUniqueFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowWeaponsFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowShieldsFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowArmorFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowNecklacesFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowRingsFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowEquipmentFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowBattleItemsFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowHealingItemsFilter", true);
+          this.globalService.globalVar.settings.set(prefix + "ShowSlotItemsFilter", true);
+
+          
+        this.globalService.globalVar.chthonicPowers.increasedGodPrimaryStatResets = 0;
+        this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets = 0;
+        this.globalService.globalVar.chthonicPowers.retainGodLevel = 0;
+
+        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+        if (jewelcrafting !== undefined) {
+          jewelcrafting.availableRecipes.forEach(recipe => {
+            var updatedRecipe = this.jewelcraftingService.getRecipe(recipe.createdItem);
+            recipe.expGain = updatedRecipe.expGain;
+            recipe.ingredients = [];
+            updatedRecipe.ingredients.forEach(ingredient => {
+              recipe.ingredients.push(ingredient);
+            });
+          });
+        }
         }
 
         this.globalService.globalVar.currentVersion = version;
