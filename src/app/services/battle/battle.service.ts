@@ -472,8 +472,15 @@ export class BattleService {
         effect.tickTimer += deltaTime;
 
         if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
+          var caster: Character | undefined = undefined;
+          if (effect.casterEnum !== CharacterEnum.None) {
+            if (effect.casterEnum === CharacterEnum.Enemy) {
+              caster = this.battle.currentEnemies.enemyList.find(item => item.name === effect.caster);              
+            }
+          }
+
           //deal damage
-          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness, undefined, effect.element, false, true);
+          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness, caster, effect.element, false, true);
           var elementalText = "";
           if (effect.element !== ElementalTypeEnum.None)
             elementalText = this.getElementalDamageText(effect.element);
@@ -702,9 +709,17 @@ export class BattleService {
 
     var quicken = this.lookupService.characterHasAbility("Quicken", character);
     if (quicken !== undefined) {
+      var effectiveness = quicken.effectiveness;
+      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+      if (hermes !== undefined) {
+        var permanentAbility = hermes.permanentAbilityUpgrades.find(item => item.requiredLevel === quicken!.requiredLevel);
+        if (permanentAbility !== undefined && permanentAbility.effectiveness > 0)
+          effectiveness += permanentAbility.effectiveness;
+      }
+
       if (character.abilityList !== undefined && character.abilityList.length > 0)
         character.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-          ability.currentCooldown -= quicken!.effectiveness;
+          ability.currentCooldown -= effectiveness;
         });
 
       if (character.assignedGod1 !== undefined && character.assignedGod1 !== GodEnum.None) {
@@ -712,7 +727,7 @@ export class BattleService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown -= quicken!.effectiveness;
+              ability.currentCooldown -= effectiveness;
             });
         }
       }
@@ -722,7 +737,7 @@ export class BattleService {
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
             god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
-              ability.currentCooldown -= quicken!.effectiveness;
+              ability.currentCooldown -= effectiveness;
             });
         }
       }
@@ -2124,7 +2139,7 @@ export class BattleService {
 
     //var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);
     var adjustedAttack = attacker.battleStats.attack;
-    
+
     if (ability !== undefined && ability.name === "Shield Slam") {
       adjustedAttack += this.lookupService.getAdjustedDefense(attacker) * ability.secondaryEffectiveness;
     }
@@ -2397,7 +2412,7 @@ export class BattleService {
 
     if (attacker !== undefined &&
       attacker.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DamageOverTimeDamageUp)) {
-      var effect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DamageOverTimeDamageUp)!;
+      var effect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DamageOverTimeDamageUp)!;
       statusEffectDamageBonus = effect.effectiveness;
     }
 
@@ -2427,9 +2442,11 @@ export class BattleService {
 
     var totalDamageDealt = damage * elementIncrease * elementalDamageDecrease * bloodlustDamageBonus * altarIncrease * statusEffectDamageBonus * statusEffectDamageReduction;
 
-    var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
-    if (reduceDamage !== undefined && isReducable)
-      totalDamageDealt -= reduceDamage.effectiveness;
+    if (target !== undefined) {
+      var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);
+      if (reduceDamage !== undefined && isReducable)
+        totalDamageDealt -= reduceDamage.effectiveness;
+    }
 
     if (totalDamageDealt < 0)
       totalDamageDealt = 0;
@@ -2454,23 +2471,25 @@ export class BattleService {
         target.overdriveInfo.gaugeAmount = target.overdriveInfo.gaugeTotal;
     }
 
-    var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
-    if (matchingAbsorption !== undefined) {
-      if (matchingAbsorption.effectiveness > 0) {
-        matchingAbsorption.effectiveness -= damage;
-        damage = 0;
+    if (target !== undefined) {
+      var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
+      if (matchingAbsorption !== undefined) {
+        if (matchingAbsorption.effectiveness > 0) {
+          matchingAbsorption.effectiveness -= damage;
+          damage = 0;
 
-        if (matchingAbsorption.effectiveness < 0) {
-          //deal remaining damage to hp
-          damage = -matchingAbsorption.effectiveness;
-          matchingAbsorption.effectiveness = 0;
-          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== matchingAbsorption);
+          if (matchingAbsorption.effectiveness < 0) {
+            //deal remaining damage to hp
+            damage = -matchingAbsorption.effectiveness;
+            matchingAbsorption.effectiveness = 0;
+            target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== matchingAbsorption);
+          }
         }
       }
     }
 
     var actualDamageDealt = totalDamageDealt; //otherwise you return a reduced value from barrier
-    if (target.battleInfo.barrierValue > 0) {
+    if (target !== undefined && target.battleInfo.barrierValue > 0) {
       target.battleInfo.barrierValue -= totalDamageDealt;
       totalDamageDealt = 0;
 
@@ -2721,13 +2740,13 @@ export class BattleService {
     }
 
     if (stateChanged) {
-      this.battle.battleDuration = 0;     
+      this.battle.battleDuration = 0;
       this.checkForOptionalScene();
       this.checkScene();
       this.checkBreakpoints();
     }
 
-    if (enemiesDefeated && !this.globalService.globalVar.activeBattle.atScene) {      
+    if (enemiesDefeated && !this.globalService.globalVar.activeBattle.atScene) {
       var subZone = this.balladService.getActiveSubZone();
       var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
 

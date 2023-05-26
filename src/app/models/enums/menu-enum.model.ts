@@ -8,5 +8,6 @@ export enum MenuEnum {
   Resources,
   Achievements,
   Professions,
-  Bestiary
+  Bestiary,
+  Support
 }

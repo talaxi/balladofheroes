@@ -1698,9 +1698,9 @@ export class LookupService {
     var relatedTargetGainStatusEffectTickFrequency = 0;
     var cooldown = 0;
     var maxCountTimesEffectivenessPercent = 0;
+    var permanentEffectivenessIncrease = 0;
 
     if (ability !== undefined) {
-      var permanentEffectivenessIncrease = 0;
       var permanentUserEffectEffectivenessIncrease = 0;
       var permanentUserEffectDurationIncrease = 0;
       var permanentTargetEffectEffectivenessIncrease = 0;
@@ -1796,7 +1796,7 @@ export class LookupService {
     if (abilityName === "Special Delivery")
       abilityDescription = "Immediately perform <strong>" + ability?.userEffect.length + "</strong> auto attacks. Their damage is increased by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>. " + cooldown + " second cooldown.";
     if (abilityName === "Quicken")
-      abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ability?.effectiveness.toFixed(3) + "</strong> seconds. Passive.";
+      abilityDescription = "Every auto attack reduces your cooldowns by <strong>" + ((ability?.effectiveness ?? 0) + permanentEffectivenessIncrease).toFixed(3) + "</strong> seconds. Passive.";
 
     //Zeus
     if (abilityName === "Overload")

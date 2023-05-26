@@ -54,6 +54,12 @@
     <div class="clickableText navItem" (click)="switchView(menuEnum.Settings)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }">
       <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Settings }" (click)="switchView(menuEnum.Settings)">Settings</button>
     </div>  
+    <div *ngIf="isMobile">
+      <hr class='transparentHr'/>    
+      <div class="clickableText navItem" (click)="switchView(menuEnum.Support)" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Support }">
+        <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': menuService.selectedMenuDisplay === menuEnum.Support }" (click)="switchView(menuEnum.Support)">Support</button>
+      </div>
+    </div>  
     <!--This always needs to be the last HR-->
     <hr *ngIf="!isMobile" class='transparentHr' />  
   </div>

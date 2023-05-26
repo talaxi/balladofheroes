@@ -785,7 +785,7 @@ export class GlobalService {
     return statusEffect;
   }
 
-  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, abilityName: string, dotType: dotTypeEnum = dotTypeEnum.BasedOnAttack, associatedElement: ElementalTypeEnum = ElementalTypeEnum.None, isAoe: boolean = false) {
+  createDamageOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, abilityName: string, dotType: dotTypeEnum = dotTypeEnum.BasedOnAttack, associatedElement: ElementalTypeEnum = ElementalTypeEnum.None, isAoe: boolean = false, caster: string = "", casterEnum: CharacterEnum = CharacterEnum.None) {
     var statusEffect = new StatusEffect(StatusEffectEnum.DamageOverTime);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -794,6 +794,8 @@ export class GlobalService {
     statusEffect.dotType = dotType;
     statusEffect.element = associatedElement;
     statusEffect.isAoe = isAoe;
+    statusEffect.caster = caster;
+    statusEffect.casterEnum = casterEnum;
 
     return statusEffect;
   }

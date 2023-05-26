@@ -4951,7 +4951,7 @@ export class EnemyGeneratorService {
       spitVenom = this.randomizeCooldown(spitVenom);
       spitVenom.dealsDirectDamage = true;
       spitVenom.effectiveness = 4;
-      spitVenom.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .25, spitVenom.name, dotTypeEnum.BasedOnAttack));
+      spitVenom.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .25, spitVenom.name, dotTypeEnum.BasedOnAttack, undefined, undefined, enemy.name, CharacterEnum.Enemy));
       enemy.abilityList.push(spitVenom);
   
       var powerfulToxin = new Ability();
