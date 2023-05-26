@@ -1190,7 +1190,6 @@ export class LookupService {
     if (type === ItemsEnum.HesperidianArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
       equipmentPiece.stats = new CharacterStats(1200, 0, 175, 0, 0, 0);
-      equipmentPiece.stats.elementResistance.air = .1;
       equipmentPiece.slotCount = 2;
       equipmentPiece.stats.abilityCooldownReduction = .025;
       equipmentPiece.stats.hpRegen = 14;
@@ -1585,6 +1584,10 @@ export class LookupService {
     return 3;
   }
 
+  isMeleteAvailable() {
+    return false;
+  }
+
   getAbilityEffectiveAmount(character: Character, ability: Ability) {
     return ability.effectiveness * this.getAdjustedAttack(character);
   }
@@ -1829,7 +1832,7 @@ export class LookupService {
     if (abilityName === "Revelry")
       abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + Math.round(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
     if (abilityName === "Thyrsus")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has, up to 20 debuffs. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
       abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Have a Drink")
@@ -2721,6 +2724,7 @@ export class LookupService {
 
   getStatusEffectDescription(statusEffect: StatusEffect, character?: Character) {
     var description = "";
+    var thornsTotal = 0;
 
     if (statusEffect.type === StatusEffectEnum.AllPrimaryStatsUp)
       description = "Increase all Primary Stats by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -2853,8 +2857,17 @@ export class LookupService {
       description = "Deal increased damage after every attack. Current damage increase: " + this.utilityService.genericRound(((statusEffect.effectiveness) * statusEffect.count) * 100) + "%";
     if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking " + Math.round(statusEffect.effectiveness) + " damage every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
-    if (statusEffect.type === StatusEffectEnum.Thorns)
-      description = "Dealing damage back to auto attackers.";
+    if (statusEffect.type === StatusEffectEnum.Thorns) {
+      var thornsTotal = 0;
+      if (character !== undefined) {
+        character.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.Thorns).forEach(thorns => {
+          thornsTotal += thorns.effectiveness;
+        });
+      }
+
+      description = "Dealing " + thornsTotal + " damage back to auto attackers.";
+
+    }
     if (statusEffect.type === StatusEffectEnum.Stagger)
       description = "Increase auto attack cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Unsteady)
@@ -3263,7 +3276,7 @@ export class LookupService {
       }
     }
 
-    this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => item.amount > 0);
+    this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => this.getItemTypeFromItemEnum(item.item) !== ItemTypeEnum.Equipment || item.amount > 0);
   }
 
   getItemEquipCount(type: ItemsEnum, associatedResource?: ResourceValue) {
@@ -3733,7 +3746,11 @@ export class LookupService {
   }
 
   getAdjustedAttack(character: Character, ability?: Ability, forPartyMember: boolean = true) {
-    var attack = character.battleStats.attack;
+    return this.getAdjustedAttackModifier(character, ability, forPartyMember) * character.battleStats.attack;
+  }
+
+  getAdjustedAttackModifier(character: Character, ability?: Ability, forPartyMember: boolean = true) {
+    var modifier = 1;
     var activeFortissimo: any;
     var party = this.globalService.getActivePartyCharacters(true);
 
@@ -3745,7 +3762,7 @@ export class LookupService {
       });
 
       if (activeFortissimo !== undefined)
-        attack *= activeFortissimo.effectiveness;
+        modifier *= activeFortissimo.effectiveness;
     }
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
@@ -3758,7 +3775,7 @@ export class LookupService {
           if (effect.type === StatusEffectEnum.AttackUp || effect.type === StatusEffectEnum.AttackDown
             || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.LordOfTheUnderworld ||
             effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp) {
-            attack *= effect.effectiveness;
+            modifier *= effect.effectiveness;
           }
         });
       }
@@ -3766,20 +3783,15 @@ export class LookupService {
 
     if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
       var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
-      attack *= relevantAltarEffect!.effectiveness;
-    }
-
-    if (ability !== undefined && ability.name === "Shield Slam") {
-      //console.log("Shield Slam: " + this.getAdjustedDefense(character) + " * " + ability.secondaryEffectiveness);
-      attack += this.getAdjustedDefense(character) * ability.secondaryEffectiveness;
+      modifier *= relevantAltarEffect!.effectiveness;
     }
 
     //increase attack by % of barrier
     if (ability !== undefined && ability.name === "Gemini Strike") {
-      attack *= 1 + (character.battleInfo.barrierValue / character.battleStats.maxHp);
+      modifier *= 1 + (character.battleInfo.barrierValue / character.battleStats.maxHp);
     }
 
-    return attack;
+    return modifier;
   }
 
   getAdjustedDefense(character: Character, forPartyMember: boolean = true) {

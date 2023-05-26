@@ -1,0 +1,9 @@
+<div>
+    <button class="buttonStyled actionButton" [ngStyle]="getBackgroundStyle()" (click)="performAction()" [disabled]="disabled">
+        <div>
+            {{getActionName()}}
+            <br />
+            {{getActionCooldown()}} sec
+        </div>
+    </button>
+</div>

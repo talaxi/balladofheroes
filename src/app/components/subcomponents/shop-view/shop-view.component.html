@@ -52,14 +52,15 @@
   </table>
   <hr class="noMargin" />
   <div class="filters">
-    <span>Show:</span>
-    <button class="buttonAsText clickableText m2Heading"
-      [ngClass]="{'filterActive': !(filterEquipment || filterBattleItems) }" (click)="resetFilters()">All</button>
-    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'filterActive': filterEquipment }"
-      (click)="changeFilter('Equipment')">Equipment</button>
-    <button class="buttonAsText clickableText m2Heading" [ngClass]="{'filterActive': filterBattleItems }"
-      (click)="changeFilter('Battle Items')">Battle Items</button>
+    <span>Sort by:</span>
+    <mat-radio-group class="sortOptions" (change)="setupDisplayShopItems()" [(ngModel)]="sortType" aria-label="Select a sorting option">
+      <mat-radio-button [value]="4">Item Type</mat-radio-button>
+      <mat-radio-button [value]="2">Name</mat-radio-button>
+      <mat-radio-button [value]="3">Item ID</mat-radio-button>
+    </mat-radio-group>
     <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>
+    <button class="buttonAsText clickableText m2Heading" (click)="openFilterMenu(filterContent)"><img
+      class="autoProgressIcon" src="assets/svg/gearTextColor.svg"></button>
   </div>
   <hr class="noMargin" />
   <table>
@@ -115,4 +116,9 @@
 
 <ng-template #coliseumModal>
   <app-coliseum-view></app-coliseum-view>
+</ng-template>
+
+
+<ng-template #filterContent>
+  <app-filter-items-view [dialogRef]="dialogRef" [prefix]="'shop'"></app-filter-items-view>
 </ng-template>

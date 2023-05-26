@@ -57,7 +57,7 @@
     <div class="column recipeInfo">
         <div *ngIf="selectedRecipe !== undefined">
             <strong><span class="s4Heading smallCaps" [innerHtml]="getSelectedRecipeName()"></span></strong>
-            <br />
+            <br/>
             <span [innerHtml]="getSelectedRecipeQualityStars()"></span>
             <br />
             <span [innerHtml]="getSelectedRecipeDescription()"></span>
@@ -84,6 +84,8 @@
             </div>
             <br />
             <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
+            <br />
+            <span><i>{{getSelectedRecipeCurrentlyOwnedAmount()}} owned</i></span>
         </div>
     </div>
 </div>

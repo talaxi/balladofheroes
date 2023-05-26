@@ -1,6 +1,8 @@
 import { Component, OnInit } from '@angular/core';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { VersionControlService } from 'src/app/services/utility/version-control.service';
+import { MatDialog as MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-footer',
@@ -13,7 +15,7 @@ export class FooterComponent implements OnInit {
   changeLog: string[];
   allVersions: number[];
 
-  constructor(private versionControlService: VersionControlService) { }
+  constructor(private versionControlService: VersionControlService, public dialog: MatDialog, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.latestVersionChanges = this.versionControlService.getLatestChanges();
@@ -24,4 +26,12 @@ export class FooterComponent implements OnInit {
   getVersion() {
     return this.versionControlService.getCurrentVersion();
   }
+
+  viewSupportModal(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+    else
+      this.dialog.open(content, { width: '75%', height: '80%' });
+  }
+
 }

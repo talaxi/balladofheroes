@@ -110,12 +110,25 @@ export class BattleService {
       if (!continueShowing) {
         this.battle.atScene = false;
         this.battle.sceneType = SceneTypeEnum.None;
+
+        var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+
+        if (autoProgress) {
+          this.balladService.selectNextSubzone();
+        }
       }
     }
     else {
       if (this.lookupService.isSubzoneATown(subZone.type) && this.battle.activeTournament.type === ColiseumTournamentEnum.None) //no need to check any battle info
       {
         this.battle.atTown = true;
+
+        var subZone = this.balladService.getActiveSubZone();
+        var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+
+        if (autoProgress) {
+          this.balladService.selectNextSubzone();
+        }
         return;
       }
       else
@@ -959,7 +972,7 @@ export class BattleService {
       healAmount *= adjustedCriticalMultiplier;
 
       var healedAmount = this.gainHp(target, healAmount);
-      
+
       user.trackedStats.healingDone += healedAmount;
       if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
         !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
@@ -1136,6 +1149,8 @@ export class BattleService {
       var effect = targetEffects.find(item => item.type === StatusEffectEnum.Thyrsus);
       if (effect !== undefined) {
         var debuffCount = this.getDebuffsOnCharacter(target);
+        if (debuffCount > 20)
+          debuffCount = 20;
         effect.effectiveness -= 1;
         var effectivenessMultiplier = 1;
         effectivenessMultiplier += debuffCount * (abilityCopy.secondaryEffectiveness - 1);
@@ -2107,7 +2122,14 @@ export class BattleService {
     if (elementalType === undefined)
       elementalType = ElementalTypeEnum.None;
 
-    var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);
+    //var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);
+    var adjustedAttack = attacker.battleStats.attack;
+    
+    if (ability !== undefined && ability.name === "Shield Slam") {
+      adjustedAttack += this.lookupService.getAdjustedDefense(attacker) * ability.secondaryEffectiveness;
+    }
+
+    var adjustedAttackModifier = this.lookupService.getAdjustedAttackModifier(attacker, ability, isPartyAttacking);
     var adjustedDefense = this.lookupService.getAdjustedDefense(target, !isPartyAttacking) * this.lookupService.getArmorPenetrationMultiplier(attacker);
     var adjustedCriticalMultiplier = 1;
     if (isCritical)
@@ -2131,10 +2153,15 @@ export class BattleService {
       //attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);      
     }
 
-    //2 * Attack^2 / (Attack + Defense)      
+    adjustedDefense *= 3;
+
+    //separate out multipliers to attack from the exponent or things get too wild
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementIncrease * elementalDamageDecrease
-      * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
+      * Math.ceil((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) / (adjustedAttack + adjustedDefense)));
+
+    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
+    //  + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
@@ -2143,9 +2170,6 @@ export class BattleService {
         dispenserOfDuesEffect.effectiveness = 0;
       }
     }
-
-    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-    //  + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     if (ability?.damageModifierRange !== undefined) {
       var rng = this.utilityService.getRandomNumber(1 - ability.damageModifierRange, 1 + ability.damageModifierRange);
@@ -2664,7 +2688,7 @@ export class BattleService {
             var party = this.globalService.getActivePartyCharacters(true);
             var potentialTargets = party.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
             var target = potentialTargets[this.utilityService.getRandomInteger(0, potentialTargets.length - 1)];
-            khalkotauroiFury.targetEffect[0].effectiveness = this.lookupService.getAdjustedAttack(character, undefined, false) * khalkotauroiFury.targetEffect[0].effectiveness;
+            //khalkotauroiFury.targetEffect[0].effectiveness = this.lookupService.getAdjustedAttack(character, undefined, false) * khalkotauroiFury.targetEffect[0].effectiveness;
             this.applyStatusEffect(khalkotauroiFury.targetEffect[0], target, undefined);
 
             if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
@@ -2683,6 +2707,7 @@ export class BattleService {
 
   updateBattleState(party: Character[], enemies: Character[]) {
     var stateChanged = false;
+    var enemiesDefeated = false;
 
     if (this.areCharactersDefeated(party)) {
       stateChanged = true;
@@ -2691,14 +2716,24 @@ export class BattleService {
 
     if (this.areCharactersDefeated(enemies)) {
       stateChanged = true;
+      enemiesDefeated = true;
       this.moveToNextBattle();
     }
 
     if (stateChanged) {
-      this.battle.battleDuration = 0;
+      this.battle.battleDuration = 0;     
       this.checkForOptionalScene();
       this.checkScene();
       this.checkBreakpoints();
+    }
+
+    if (enemiesDefeated && !this.globalService.globalVar.activeBattle.atScene) {      
+      var subZone = this.balladService.getActiveSubZone();
+      var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+
+      if (autoProgress && (this.balladService.autoProgressShouldChangeSubZone(subZone) || this.balladService.isSubzoneTown(subZone.type))) {
+        this.balladService.selectNextSubzone();
+      }
     }
   }
 

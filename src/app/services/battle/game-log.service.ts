@@ -86,6 +86,10 @@ export class GameLogService {
       {
         this.notificationOverlayBuffer.push([entry, type, altarDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
       }
+      if (type === GameLogEntryEnum.SideQuest)
+      {
+        this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
+      }
     }
   }
 }

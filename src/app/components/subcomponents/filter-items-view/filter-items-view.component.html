@@ -1,0 +1,66 @@
+<div class="filterView">
+    <span class="s4Heading">Change Filters</span>
+    <hr />
+    <div class="filters">
+        <div *ngIf="prefix === 'shop'" class="column">
+            <span class="sectionHeaderText sectionHeading">Item Type</span> <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterEquipment" (input)="filterEquipmentToggle()">Equipment
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterBattleItems" (input)="filterBattleItemsToggle()">Battle Items
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterHealingItems" (input)="filterHealingItemsToggle()">Healing
+                Items
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterSlotItems" (input)="filterSlotItemsToggle()">Slot Items
+            </mat-checkbox>
+
+        </div>
+        <div class="column">
+            <span class="sectionHeaderText sectionHeading">Quality</span>
+            <br />
+            <mat-checkbox class="bold basicEquipment" [(ngModel)]="filterBasic" (input)="filterBasicToggle()">Basic
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold uncommonEquipment" [(ngModel)]="filterUncommon"
+                (input)="filterUncommonToggle()">Uncommon
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold rareEquipment" [(ngModel)]="filterRare" (input)="filterRareToggle()">Rare
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold epicEquipment" [(ngModel)]="filterEpic" (input)="filterEpicToggle()">Epic
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold specialEquipment" [(ngModel)]="filterSpecial"
+                (input)="filterSpecialToggle()">Special
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold extraordinaryEquipment" [(ngModel)]="filterExtraordinary"
+                (input)="filterExtraordinaryToggle()">Extraordinary
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold uniqueEquipment" [(ngModel)]="filterUnique" (input)="filterUniqueToggle()">Unique
+            </mat-checkbox>
+        </div>
+        <div *ngIf="prefix !== 'slots'" class="column">
+            <span class="sectionHeaderText sectionHeading">Equipment Type</span> <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterWeapons" (input)="filterWeaponsToggle()">Weapons
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterShields" (input)="filterShieldsToggle()">Shields
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterArmor" (input)="filterArmorToggle()">Armor
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterNecklaces" (input)="filterNecklacesToggle()">Necklaces
+            </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold" [(ngModel)]="filterRings" (input)="filterRingsToggle()">Rings
+            </mat-checkbox>
+        </div>
+    </div>
+</div>

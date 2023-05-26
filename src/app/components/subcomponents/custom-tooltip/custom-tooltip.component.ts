@@ -60,7 +60,7 @@ export class CustomTooltipComponent implements OnInit {
       //console.log("Height: " + screen.height + " < " + this.elementRef.nativeElement.getBoundingClientRect().y  + " + " + this.elementRef.nativeElement.getBoundingClientRect().height + " + " + this.tooltipElement.nativeElement.getBoundingClientRect().height);
       //console.log("Bounding:");
       //console.log(this.tooltipElement.nativeElement.getBoundingClientRect());
-      if ((screen.height * .8 < (this.elementRef.nativeElement.getBoundingClientRect().y + this.elementRef.nativeElement.getBoundingClientRect().height + this.tooltipElement.nativeElement.getBoundingClientRect().height)))
+      if ((screen.height * .795 < (this.elementRef.nativeElement.getBoundingClientRect().y + this.elementRef.nativeElement.getBoundingClientRect().height + this.tooltipElement.nativeElement.getBoundingClientRect().height)))
         this.shiftUp = true;
     }
   }

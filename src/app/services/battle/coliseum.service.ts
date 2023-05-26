@@ -379,7 +379,7 @@ export class ColiseumService {
     if (round % 5 === 0)
       isBoss = true;
 
-    var expectedCharacterStats = new PrimaryStats(3000, 145, 300, 200, 215, 250);
+    var expectedCharacterStats = new PrimaryStats(3000, 181, 100, 200, 215, 250);
     var defensiveGrowthFactor = 1.24;
     var offensiveGrowthFactor = 1.11;
 
@@ -393,10 +393,10 @@ export class ColiseumService {
     if (round > 5 && round <= 10) {
       defensiveGrowthFactor = 1.14;
       offensiveGrowthFactor = 1.10;
-      var expectedCharacterStats = new PrimaryStats(27000, 800, 2400, 1000, 900, 1500);
+      var expectedCharacterStats = new PrimaryStats(27000, 1050, 800, 1000, 900, 1500);
 
       if (round === 10)
-      expectedCharacterStats = new PrimaryStats(13500, 185, 575, 365, 450, 600);
+      expectedCharacterStats = new PrimaryStats(13500, 240, 192, 365, 450, 600);
 
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (((round - 1) % 5));
       expectedCharacterStats.defense *= defensiveGrowthFactor ** (((round - 1) % 5));
@@ -407,7 +407,7 @@ export class ColiseumService {
     }
     else if (round > 10) {
       //enemy.battleStats = new CharacterStats(37630, 530, 1670, 500, 750, 1350);
-      var expectedCharacterStats = new PrimaryStats(2965, 190, 795, 530, 500, 750);
+      var expectedCharacterStats = new PrimaryStats(2965, 285, 365, 530, 500, 750);
 
       var offsetRound = round - 9;
       defensiveGrowthFactor = 1.29;
@@ -415,7 +415,7 @@ export class ColiseumService {
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 14);
       expectedCharacterStats.defense *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 5);
       expectedCharacterStats.resistance *= defensiveGrowthFactor ** (offsetRound) + (offsetRound * 4.5);
-      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 1.25);
+      expectedCharacterStats.attack *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 1.8);
       expectedCharacterStats.agility *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3.5);
       expectedCharacterStats.luck *= offensiveGrowthFactor ** (offsetRound) + (offsetRound * 3);
     }
@@ -432,7 +432,7 @@ export class ColiseumService {
 
       var enumValue = propertyValue as SubZoneEnum;
 
-      if (!this.findSubzone(enumValue)?.isAvailable) {        
+      if (!this.findSubzone(enumValue)?.isAvailable || enumValue === SubZoneEnum.NemeaCountryRoadsOne) {        
         continue;
       }
 

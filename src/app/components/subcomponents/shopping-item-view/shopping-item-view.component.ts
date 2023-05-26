@@ -143,6 +143,10 @@ export class ShoppingItemViewComponent implements OnInit {
     }
   }
 
+  getCurrentlyOwnedAmount() {
+    return this.lookupService.getResourceAmount(this.item.shopItem).toLocaleString();
+  }
+
   unlockClass(item: ItemsEnum) {
     if (item === ItemsEnum.WarriorClass) {
       var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);

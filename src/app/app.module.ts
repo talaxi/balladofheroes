@@ -105,6 +105,10 @@ import { JewelcraftingOverviewComponent } from './components/layout/zone-navigat
 import { BestiaryViewComponent } from './components/menu/bestiary-view/bestiary-view.component';
 import { EnemyDescriptionViewComponent } from './components/subcomponents/enemy-view/enemy-description-view/enemy-description-view.component';
 import { AutoProgressOptionsComponent } from './components/layout/zone-navigation/auto-progress-options/auto-progress-options.component';
+import { MeleteViewComponent } from './components/subcomponents/melete-view/melete-view.component';
+import { MeleteActionButtonComponent } from './components/subcomponents/utility/melete-action-button/melete-action-button.component';
+import { SupportViewComponent } from './components/subcomponents/support-view/support-view.component';
+import { FilterItemsViewComponent } from './components/subcomponents/filter-items-view/filter-items-view.component';
 
 @NgModule({
   declarations: [
@@ -174,7 +178,11 @@ import { AutoProgressOptionsComponent } from './components/layout/zone-navigatio
     JewelcraftingOverviewComponent,
     BestiaryViewComponent,
     EnemyDescriptionViewComponent,
-    AutoProgressOptionsComponent,    
+    AutoProgressOptionsComponent,
+    MeleteViewComponent,
+    MeleteActionButtonComponent,
+    SupportViewComponent,
+    FilterItemsViewComponent,    
   ],
   imports: [
     BrowserModule,

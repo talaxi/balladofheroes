@@ -73,3 +73,56 @@
   .removeExtra {
     margin-left: .5rem;
   }
+
+  
+.filters {
+  padding-top: .25rem;
+  padding-bottom: .25rem;
+  display: flex;
+  justify-content: space-around;
+  background-color: var(--background-quarternary);
+}
+
+.webMarginLeft {
+  margin-left: .3rem;
+}
+
+.sortOptions {
+  width: 70%;
+  display:flex;
+  justify-content: space-around;      
+}
+
+.filterActive {
+  color: var(--foreground-secondary) !important;
+  font-weight: bold;
+}
+
+.active {
+  background-color: var(--button-selected) !important;
+  color: var(--foreground-secondary) !important;
+}
+
+
+.autoProgressIcon {
+  height: 1.1rem;
+  display:flex;
+  vertical-align: middle;
+}
+
+.noMargin {
+  margin: 0px;
+  padding: 0px;
+}
+
+.topMargin {
+  margin: 0px;
+  padding: 0px;
+  margin-top: .25rem;
+}
+
+.bottomMargin {
+  margin: 0px;
+  padding: 0px;
+  margin-bottom: .25rem;
+}

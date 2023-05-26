@@ -130,17 +130,14 @@ export class ZoneNavigationComponent implements OnInit {
       if (selectedZone !== undefined)
         this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);
 
-      var currentSubzone = this.availableSubZones?.find(item => item.isSelected);
-
-      if (this.autoProgress && currentSubzone !== undefined &&
-        (this.balladService.autoProgressShouldChangeSubZone(currentSubzone) || this.balladService.isSubzoneTown(currentSubzone.type))) {
-        this.balladService.selectNextSubzone();
-      }
-
       this.trackedResourcesColumn1 = this.globalService.globalVar.trackedResources.slice(0, 5);
       if (this.globalService.globalVar.trackedResources.length > 5)
         this.trackedResourcesColumn2 = this.globalService.globalVar.trackedResources.slice(5, 10);
     });
+  }
+
+  meleteFunctionalityAvailable() {
+    return this.lookupService.isMeleteAvailable();
   }
 
   getSubzoneName(subzone: SubZone) {
@@ -257,6 +254,13 @@ export class ZoneNavigationComponent implements OnInit {
       this.dialog.open(content, { width: '95%', height: '80%' });
     else
       this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
+  }
+
+  viewMelete(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%' });
+    else
+      this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh' });
   }
 
   getBalladClass(ballad: Ballad) {

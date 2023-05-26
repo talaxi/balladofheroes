@@ -114,6 +114,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
 
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, powerGain));
 
+    var originalLevel = god.level;
     god.level = 1;
     god.exp = 0;
     god.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
@@ -153,6 +154,15 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       if (god.level >= ability.requiredLevel)
         ability.isAvailable = true;
     });
+
+    var resetRetainAmount = this.globalService.globalVar.chthonicPowers.getRetainGodLevelPercent();
+    if (resetRetainAmount > 0) {
+      var godLevel = Math.floor(originalLevel * resetRetainAmount);
+      for (var i = 0; i < godLevel; i++) {
+        this.globalService.levelUpGod(god, true);
+      }
+      god.exp = 0;
+    }
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {      
     if (god.type === GodEnum.Hades) {

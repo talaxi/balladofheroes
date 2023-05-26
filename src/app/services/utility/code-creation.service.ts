@@ -16,8 +16,8 @@ export class CodeCreationService {
   
   setupRewards() {
     this.redeemableCode = new RedeemableCode();
-    this.redeemableCode.expirationDate = new Date('2023-05-29');            
-    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EternalMeleeTicket, 5));
+    this.redeemableCode.expirationDate = new Date('2023-06-15');            
+    this.redeemableCode.rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Subscriber, 1));
   }
 
   createCode() {

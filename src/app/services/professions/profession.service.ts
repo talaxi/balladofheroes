@@ -83,7 +83,7 @@ export class ProfessionService {
       }
     }
 
-    var rng = this.utilityService.getRandomNumber(0, 1);
+    var rng = this.utilityService.getRandomNumber(0, 1);    
     if (rng < this.getUpgradeChance(type, selectedProfession.creatingRecipe.quality)) {
       var gameLogEntry = "<strong>Bonus: " + this.dictionaryService.getItemName(selectedProfession.creatingRecipe.createdItem) + " Upgraded!</strong>";
       if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
@@ -121,10 +121,7 @@ export class ProfessionService {
       }
 
       var newRecipeLearned = this.checkForNewRecipes(type);
-
-      if (!newRecipeLearned) {
-        this.getLevelUpReward(type);
-      }
+      this.getLevelUpReward(type);
     }
 
     if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {

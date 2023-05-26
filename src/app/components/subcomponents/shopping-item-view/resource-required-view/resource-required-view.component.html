@@ -1,4 +1,4 @@
-<span (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false" [class]="getItemKeywordClass(resource.amount)">
+<span #spanElement (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false" [class]="getItemKeywordClass(resource.amount)">
     {{(resource.amount).toLocaleString()}}  {{displayName}} <i>({{insufficientText  | number}} owned)</i>
-    <app-custom-tooltip class='tooltip' [ngClass]="{'smallTooltip': isSmall}" *ngIf="showTooltip" [isSticky]="true" [text]="lookupService.getResourceDescription(resource.item)"></app-custom-tooltip>
+    <app-custom-tooltip class='tooltip' [ngClass]="{'smallTooltip': isSmall}" *ngIf="showTooltip" [isFlippedLeft]="flipToolTip" [elementRef]="spanElementRef" [isSticky]="true" [text]="lookupService.getResourceDescription(resource.item)"></app-custom-tooltip>
 </span>

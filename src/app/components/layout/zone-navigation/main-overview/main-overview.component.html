@@ -29,6 +29,9 @@
             <br />
             <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                 (click)="viewFollowers(followers)">View Followers</button>
+                <br/>
+                <button *ngIf="meleteFunctionalityAvailable()" class="buttonStyled stackedButtons"
+                            (click)="viewFollowers(melete)">Melete</button>
         </div>
     </div>
 </div>
@@ -39,3 +42,10 @@
         <app-follower-default-view></app-follower-default-view>
     </div>
 </ng-template>
+
+<ng-template #melete>
+    <div>
+        <app-melete-view></app-melete-view>
+    </div>
+</ng-template>
+

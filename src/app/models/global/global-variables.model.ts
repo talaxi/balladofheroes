@@ -26,6 +26,7 @@ import { SidequestData } from "../utility/sidequest-data.model";
 import { FollowerData } from "../followers/follower-data.model";
 import { RedeemableCode } from "../utility/redeemable-code.model";
 import { Profession } from "../professions/profession.model";
+import { Melete } from "../melete/melete.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -94,6 +95,8 @@ export class GlobalVariables {
     redeemedCodes: RedeemableCode[];
     isSubscriber: boolean;
     subscribedDate: Date;
+    @Type(() => Melete)
+    melete: Melete;
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -129,6 +132,7 @@ export class GlobalVariables {
         this.followerData = new FollowerData();
         this.extraSpeedEnabled = true;
         this.redeemedCodes = [];
-        this.isSubscriber = false;        
+        this.isSubscriber = false;  
+        this.melete = new Melete();      
     }
 }

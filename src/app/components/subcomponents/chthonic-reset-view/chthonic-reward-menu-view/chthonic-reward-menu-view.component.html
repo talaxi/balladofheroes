@@ -2,35 +2,110 @@
     <div class="textCentered chthonicPowerKeyword">Chthonic Power: {{getChthonicPower() | number : '1.0-2'}}</div>
     <hr />
     <div class="chthonicStats">
-        <div class="chthonicStatUpgrade">
+        <div customToolTip [contentTemplate]="maxHpPopover" class="chthonicStatUpgrade">
             Max HP: {{getChthonicMaxHPBoost() | number : '1.0-0'}}% <br />
-            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForMaxHp()}} CP Required</span><br/>
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForMaxHp().toLocaleString()}} CP Required</span><br/>
             <button [disabled]="this.getRequiredChthonicPowerForMaxHp() > getChthonicPower()" (click)="buyChthonicMaxHPBoost()">Increase</button>
         </div>
-        <div class="chthonicStatUpgrade">
+        <div customToolTip [contentTemplate]="attackPopover" class="chthonicStatUpgrade">
             Attack: {{getChthonicAttackBoost() | number : '1.0-0'}}% <br />
-            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAttack()}} CP Required</span><br/>
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAttack().toLocaleString()}} CP Required</span><br/>
             <button [disabled]="this.getRequiredChthonicPowerForAttack() > getChthonicPower()" (click)="buyChthonicAttackBoost()">Increase</button>
         </div>
-        <div class="chthonicStatUpgrade">
+        <div customToolTip [contentTemplate]="agilityPopover" class="chthonicStatUpgrade">
             Agility: {{getChthonicAgilityBoost() | number : '1.0-0'}}% <br />
-            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAgility()}} CP Required</span><br/>
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAgility().toLocaleString()}} CP Required</span><br/>
             <button [disabled]="this.getRequiredChthonicPowerForAgility() > getChthonicPower()" (click)="buyChthonicAgilityBoost()">Increase</button>
         </div>
-        <div class="chthonicStatUpgrade">
+        <div customToolTip [contentTemplate]="luckPopover" class="chthonicStatUpgrade">
             Luck: {{getChthonicLuckBoost() | number : '1.0-0'}}% <br />
-            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForLuck()}} CP Required</span><br/>
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForLuck().toLocaleString()}} CP Required</span><br/>
             <button [disabled]="this.getRequiredChthonicPowerForLuck() > getChthonicPower()" (click)="buyChthonicLuckBoost()">Increase</button>
         </div>
-        <div class="chthonicStatUpgrade">
+        <div customToolTip [contentTemplate]="defensePopover" class="chthonicStatUpgrade">
             Defense: {{getChthonicDefenseBoost() | number : '1.0-0'}}% <br />
-            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForDefense()}} CP Required</span><br/>
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForDefense().toLocaleString()}} CP Required</span><br/>
             <button [disabled]="this.getRequiredChthonicPowerForDefense() > getChthonicPower()" (click)="buyChthonicDefenseBoost()">Increase</button>
         </div>
-        <div class="chthonicStatUpgrade">
+        <div customToolTip [contentTemplate]="resistancePopover" class="chthonicStatUpgrade">
             Resistance: {{getChthonicResistanceBoost() | number : '1.0-0'}}% <br />
-            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForResistance()}} CP Required</span><br/>
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForResistance().toLocaleString()}} CP Required</span><br/>
             <button [disabled]="this.getRequiredChthonicPowerForResistance() > getChthonicPower()" (click)="buyChthonicResistanceBoost()">Increase</button>
         </div>
     </div>
+    <br/>
+    <div *ngIf="advancedUpgradesAvailable()" class="advancedUpgrades">
+        <div customToolTip [contentTemplate]="godPrimaryResetIncreasePopover" class="largerChthonicStatUpgrades">
+            Increase total number of resets for God Primary Stat Bonus: {{getChthonicGodPrimaryStatResetIncreaseBoost() | number : '1.0-0'}} <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForPrimaryGodStatIncrease().toLocaleString()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForPrimaryGodStatIncrease() > getChthonicPower()" (click)="buyChthonicGodPrimaryStatResetIncreaseBoost()">Increase</button>
+        </div>
+
+        <div customToolTip [contentTemplate]="partyPrimaryResetIncreasePopover" class="largerChthonicStatUpgrades">
+            Increase total number of resets for Party Primary Stat Bonus: {{getChthonicPartyPrimaryStatResetIncreaseBoost() | number : '1.0-0'}} <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForPrimaryPartyStatIncrease().toLocaleString()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForPrimaryPartyStatIncrease() > getChthonicPower()" (click)="buyChthonicPartyPrimaryStatResetIncreaseBoost()">Increase</button>
+        </div>
+
+        <div customToolTip [contentTemplate]="retainGodLevelPopover" class="largerChthonicStatUpgrades">
+            Retain a percent of your god levels after a Chthonic Reset: {{getChthonicRetainGodLevelBoost() | number : '1.0-0'}}% <br />
+            <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForRetainGodLevel().toLocaleString()}} CP Required</span><br/>
+            <button [disabled]="this.getRequiredChthonicPowerForRetainGodLevel() > getChthonicPower() || atRetainGodCap()" (click)="buyChthonicRetainGodLevelBoost()">Increase</button>
+        </div>
+    </div>
 </div>
+
+<ng-template #maxHpPopover>
+    <div>
+        Increase your characters' Max HP by this percent. Each upgrade level increases the amount by 10%.
+    </div>
+</ng-template>
+
+<ng-template #attackPopover>
+    <div>
+        Increase your characters' Attack by this percent. Each upgrade level increases the amount by 10%.
+    </div>
+</ng-template>
+
+<ng-template #agilityPopover>
+    <div>
+        Increase your characters' Agility by this percent. Each upgrade level increases the amount by 10%.
+    </div>
+</ng-template>
+
+<ng-template #luckPopover>
+    <div>
+        Increase your characters' Luck by this percent. Each upgrade level increases the amount by 10%.
+    </div>
+</ng-template>
+
+<ng-template #defensePopover>
+    <div>
+        Increase your characters' Defense by this percent. Each upgrade level increases the amount by 10%.
+    </div>
+</ng-template>
+
+<ng-template #resistancePopover>
+    <div>
+        Increase your characters' Resistance by this percent. Each upgrade level increases the amount by 10%.
+    </div>
+</ng-template>
+
+<ng-template #godPrimaryResetIncreasePopover>
+    <div>
+        Increase the number of times each god can gain the permanent primary stat bonus from god levels 50, 150, 250, 350, and 450. Each upgrade level increases the count by 1.
+    </div>
+</ng-template>
+
+<ng-template #partyPrimaryResetIncreasePopover>
+    <div>
+        Increase the number of times each god can gain the permanent party primary stat bonus from god levels 550, 650, 750, 850, and 950. Each upgrade level increases the count by 1.
+    </div>
+</ng-template>
+
+
+<ng-template #retainGodLevelPopover>
+    <div>
+        Retain a percentage of your god levels after performing a Chthonic Reset. Each upgrade level increases the amount by 1% and caps at 25% total.
+    </div>
+</ng-template>

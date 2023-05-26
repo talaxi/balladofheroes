@@ -60,6 +60,10 @@ export class JewelcraftingViewComponent {
     return this.jewelcrafting.expToNextLevel;
   }
 
+  getSelectedRecipeCurrentlyOwnedAmount() {
+    return this.lookupService.getResourceAmount(this.selectedRecipe.createdItem).toLocaleString();
+  }
+
   getCraftedItemName(recipe: Recipe) {
     return this.dictionaryService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
   }
