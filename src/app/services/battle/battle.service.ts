@@ -2155,22 +2155,13 @@ export class BattleService {
 
     adjustedDefense *= 3;
 
-    //2 * Attack^2 / (Attack + Defense)      
-    /*var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
-      * elementIncrease * elementalDamageDecrease
-      * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
-
-    console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
-*/
-
     //separate out multipliers to attack from the exponent or things get too wild
     var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementIncrease * elementalDamageDecrease
       * Math.ceil((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) / (adjustedAttack + adjustedDefense)));
 
-    console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+    //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
+    //  + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
@@ -2736,8 +2727,7 @@ export class BattleService {
       this.checkScene();
     }
 
-    if (enemiesDefeated && !this.globalService.globalVar.activeBattle.atScene) {
-      console.log("Not at scene");
+    if (enemiesDefeated && !this.globalService.globalVar.activeBattle.atScene) {      
       var subZone = this.balladService.getActiveSubZone();
       var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
 

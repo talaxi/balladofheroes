@@ -34,7 +34,7 @@
         </div>
     </div>
     <br/>
-    <div class="advancedUpgrades">
+    <div *ngIf="advancedUpgradesAvailable()" class="advancedUpgrades">
         <div customToolTip [contentTemplate]="godPrimaryResetIncreasePopover" class="largerChthonicStatUpgrades">
             Increase total number of resets for God Primary Stat Bonus: {{getChthonicGodPrimaryStatResetIncreaseBoost() | number : '1.0-0'}} <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForPrimaryGodStatIncrease().toLocaleString()}} CP Required</span><br/>

@@ -19,6 +19,10 @@ export class ChthonicRewardMenuViewComponent implements OnInit {
 
   }
 
+  advancedUpgradesAvailable() {
+    return this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked;
+  }
+
   getChthonicPower() {
     return this.lookupService.getResourceAmount(ItemsEnum.ChthonicPower);
   }

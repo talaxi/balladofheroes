@@ -448,6 +448,7 @@ export class InitializationService {
 
   devMode() {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, 30000000));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, 30000000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BronzeHammer, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LightLeather, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Olive, 1000));

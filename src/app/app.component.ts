@@ -248,12 +248,6 @@ export class AppComponent {
   getBatchRunTime(subzone: SubZone, totalDeltaTime: number) {
     var batchRunTime = this.globalService.globalVar.settings.get("loadingAccuracy") ?? this.utilityService.averageLoadingAccuracy;    
 
-    /*if (totalDeltaTime < 15 * 60) //if less than 30 min, you can be more accurate
-    {
-      console.log("More accurate");
-      batchRunTime = 2.5;
-    }*/
-
     if (this.balladService.isSubzoneTown(subzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
       batchRunTime = 30;
 

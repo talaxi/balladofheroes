@@ -83,8 +83,7 @@ export class ProfessionService {
       }
     }
 
-    var rng = this.utilityService.getRandomNumber(0, 1);
-    console.log("RNG value: " + rng);
+    var rng = this.utilityService.getRandomNumber(0, 1);    
     if (rng < this.getUpgradeChance(type, selectedProfession.creatingRecipe.quality)) {
       var gameLogEntry = "<strong>Bonus: " + this.dictionaryService.getItemName(selectedProfession.creatingRecipe.createdItem) + " Upgraded!</strong>";
       if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
@@ -306,7 +305,6 @@ export class ProfessionService {
     if (upgrades === undefined)
       return 0;
 
-    console.log("Upgrade change: " + upgrades.chanceForUpgrade);
     return upgrades.chanceForUpgrade;
   }
 

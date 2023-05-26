@@ -29,34 +29,6 @@ export class ItemBeltItemComponent implements OnInit {
       return;
 
     this.item = this.globalService.globalVar.itemBelt[this.slotNumber];
-
-    /*this.spinnerDivSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      if (this.isItemOnCooldown(this.slotNumber)) {
-        console.log("Checking for diameter");
-        this.changeDetector.detectChanges();
-        if (this.spinnerDiv !== undefined) {
-          console.log("Spinner found");
-          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
-            console.log("setting diameter to " + this.spinnerDiv.nativeElement.offsetHeight);
-            this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
-          }
-
-          if (this.spinnerDiv.nativeElement.offsetHeight <= this.spinnerDiameter) {
-            if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
-              this.spinnerDiameter = this.spinnerDiv.nativeElement.offsetHeight;
-            }
-          }
-
-          if (this.spinnerDiv.nativeElement.offsetHeight > this.spinnerDiameter) {
-            console.log("Unsub");
-            this.spinnerDivSubscription.unsubscribe();
-          }
-        }
-      }
-      else {
-        this.spinnerDivSubscription.unsubscribe();
-      }
-    });*/
   }
 
   checkForCooldown(slotNumber: number) {    

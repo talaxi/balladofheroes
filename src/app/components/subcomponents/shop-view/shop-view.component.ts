@@ -294,6 +294,7 @@ export class ShopViewComponent implements OnInit {
     this.shopItemRows = [];
 
     this.shopItems = this.shopItems.filter(item => this.balladService.findSubzone(item.originalStore)?.isAvailable);
+    this.shopItems.sort((a, b) => this.sortFunction(a, b));
 
     var filteredItems = this.filterItems(this.shopItems);
 
@@ -309,8 +310,6 @@ export class ShopViewComponent implements OnInit {
 
     if (this.shopItemCells.length !== 0)
       this.shopItemRows.push(this.shopItemCells);
-
-    this.shopItems.sort((a, b) => this.sortFunction(a, b));
   }
 
   toggleDisplayNewItemsView() {
