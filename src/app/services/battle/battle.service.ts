@@ -2721,10 +2721,10 @@ export class BattleService {
     }
 
     if (stateChanged) {
-      this.battle.battleDuration = 0;
-      this.checkBreakpoints();
+      this.battle.battleDuration = 0;     
       this.checkForOptionalScene();
       this.checkScene();
+      this.checkBreakpoints();
     }
 
     if (enemiesDefeated && !this.globalService.globalVar.activeBattle.atScene) {      

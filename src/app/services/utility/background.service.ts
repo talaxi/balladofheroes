@@ -48,7 +48,7 @@ export class BackgroundService {
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
     this.handleFollowerPrayer(deltaTime);
-    this.handleMelete(deltaTime);
+    //this.handleMelete(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
     var activeSubzone = this.balladService.getActiveSubZone();
