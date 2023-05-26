@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -16,13 +16,15 @@ export class ResourceRequiredViewComponent implements OnInit {
   insufficientText = 0;
   showTooltip: boolean = false;
   subscription: any;
+  @Input() flipToolTip: boolean = false;
+  @ViewChild('spanElement') spanElementRef: ElementRef;
 
   constructor(public lookupService: LookupService, private gameLoopService: GameLoopService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.displayName = this.dictionaryService.getItemName(this.resource.item);
     var userResourceAmount = this.lookupService.getResourceAmount(this.resource.item);
-    this.insufficientText = userResourceAmount;
+    this.insufficientText = userResourceAmount; 
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
       var userResourceAmount = this.lookupService.getResourceAmount(this.resource.item);
@@ -46,3 +48,4 @@ export class ResourceRequiredViewComponent implements OnInit {
       this.subscription.unsubscribe();
   }
 }
+

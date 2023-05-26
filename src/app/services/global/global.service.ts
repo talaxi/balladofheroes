@@ -1536,7 +1536,7 @@ export class GlobalService {
     }
   }
 
-  checkForNewGodAbilityUpgrades(god: God,ignoreGameLogEntries: boolean = false) {
+  checkForNewGodAbilityUpgrades(god: God, ignoreGameLogEntries: boolean = false) {
     var ability = this.getWhichAbilityUpgrade(god, god.level);
     if (ability === undefined)
       return;
@@ -2874,21 +2874,23 @@ export class GlobalService {
   }
 
   setAsSubscriber(date: Date) {
+    //TODO: once currency is implemented, check if they are already obtained and give currency instead
+    var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+    var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+
+    if (dionysus !== undefined)
+      dionysus.isAvailable = true;
+    if (nemesis !== undefined)
+      nemesis.isAvailable = true;
+
+      if (this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant) === undefined || this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant)?.amount === 0)
+      this.globalVar.resources.push(new ResourceValue(ItemsEnum.BlazingSunPendant, 1));
+      if (this.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendant) === undefined || this.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendant)?.amount === 0)
+      this.globalVar.resources.push(new ResourceValue(ItemsEnum.DarkMoonPendant, 1));
+
     if (!this.globalVar.isSubscriber) {
       this.globalVar.isSubscriber = true;
       this.globalVar.subscribedDate = date;
-
-      var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
-      var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
-
-      //TODO: once currency is implemented, check if they are already obtained and give currency instead
-      if (dionysus !== undefined)
-        dionysus.isAvailable = true;
-      if (nemesis !== undefined)
-        nemesis.isAvailable = true;
-
-      this.globalVar.resources.push(new ResourceValue(ItemsEnum.BlazingSunPendant, 1));
-      this.globalVar.resources.push(new ResourceValue(ItemsEnum.DarkMoonPendant, 1));
 
       var coinBonus = 100000;
       var coins = this.globalVar.resources.find(item => item.item === ItemsEnum.Coin);
@@ -3048,8 +3050,11 @@ export class GlobalService {
 
       var bonusCoins = Math.round((bonusCoinBase * (growthFactor ** (losingRound - 1))) + (((losingRound - 1) * 5) * bonusCoinBase));
 
-      if (this.globalVar.gameLogSettings.get("battleRewards")) {
+      if (this.globalVar.gameLogSettings.get("battleXpRewards")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your party gains <strong>" + bonusXp.toLocaleString() + " XP</strong>.");
+      }
+
+      if (this.globalVar.gameLogSettings.get("battleCoinsRewards")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive <strong>" + bonusCoins.toLocaleString() + " Coins</strong>.");
       }
 

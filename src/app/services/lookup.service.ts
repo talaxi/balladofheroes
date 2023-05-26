@@ -1584,6 +1584,10 @@ export class LookupService {
     return 3;
   }
 
+  isMeleteAvailable() {
+    return false;
+  }
+
   getAbilityEffectiveAmount(character: Character, ability: Ability) {
     return ability.effectiveness * this.getAdjustedAttack(character);
   }
@@ -1828,7 +1832,7 @@ export class LookupService {
     if (abilityName === "Revelry")
       abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + Math.round(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
     if (abilityName === "Thyrsus")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has, up to 20 debuffs. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
       abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Have a Drink")
@@ -3742,7 +3746,11 @@ export class LookupService {
   }
 
   getAdjustedAttack(character: Character, ability?: Ability, forPartyMember: boolean = true) {
-    var attack = character.battleStats.attack;
+    return this.getAdjustedAttackModifier(character, ability, forPartyMember) * character.battleStats.attack;
+  }
+
+  getAdjustedAttackModifier(character: Character, ability?: Ability, forPartyMember: boolean = true) {
+    var modifier = 1;
     var activeFortissimo: any;
     var party = this.globalService.getActivePartyCharacters(true);
 
@@ -3754,7 +3762,7 @@ export class LookupService {
       });
 
       if (activeFortissimo !== undefined)
-        attack *= activeFortissimo.effectiveness;
+        modifier *= activeFortissimo.effectiveness;
     }
 
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
@@ -3767,7 +3775,7 @@ export class LookupService {
           if (effect.type === StatusEffectEnum.AttackUp || effect.type === StatusEffectEnum.AttackDown
             || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.LordOfTheUnderworld ||
             effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp) {
-            attack *= effect.effectiveness;
+            modifier *= effect.effectiveness;
           }
         });
       }
@@ -3775,20 +3783,15 @@ export class LookupService {
 
     if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
       var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
-      attack *= relevantAltarEffect!.effectiveness;
-    }
-
-    if (ability !== undefined && ability.name === "Shield Slam") {
-      //console.log("Shield Slam: " + this.getAdjustedDefense(character) + " * " + ability.secondaryEffectiveness);
-      attack += this.getAdjustedDefense(character) * ability.secondaryEffectiveness;
+      modifier *= relevantAltarEffect!.effectiveness;
     }
 
     //increase attack by % of barrier
     if (ability !== undefined && ability.name === "Gemini Strike") {
-      attack *= 1 + (character.battleInfo.barrierValue / character.battleStats.maxHp);
+      modifier *= 1 + (character.battleInfo.barrierValue / character.battleStats.maxHp);
     }
 
-    return attack;
+    return modifier;
   }
 
   getAdjustedDefense(character: Character, forPartyMember: boolean = true) {

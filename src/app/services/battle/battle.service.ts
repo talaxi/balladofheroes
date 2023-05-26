@@ -110,6 +110,12 @@ export class BattleService {
       if (!continueShowing) {
         this.battle.atScene = false;
         this.battle.sceneType = SceneTypeEnum.None;
+
+        var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
+
+        if (autoProgress) {
+          this.balladService.selectNextSubzone();
+        }
       }
     }
     else {
@@ -1143,6 +1149,8 @@ export class BattleService {
       var effect = targetEffects.find(item => item.type === StatusEffectEnum.Thyrsus);
       if (effect !== undefined) {
         var debuffCount = this.getDebuffsOnCharacter(target);
+        if (debuffCount > 20)
+          debuffCount = 20;
         effect.effectiveness -= 1;
         var effectivenessMultiplier = 1;
         effectivenessMultiplier += debuffCount * (abilityCopy.secondaryEffectiveness - 1);
@@ -2114,7 +2122,14 @@ export class BattleService {
     if (elementalType === undefined)
       elementalType = ElementalTypeEnum.None;
 
-    var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);
+    //var adjustedAttack = this.lookupService.getAdjustedAttack(attacker, ability, isPartyAttacking);
+    var adjustedAttack = attacker.battleStats.attack;
+    
+    if (ability !== undefined && ability.name === "Shield Slam") {
+      adjustedAttack += this.lookupService.getAdjustedDefense(attacker) * ability.secondaryEffectiveness;
+    }
+
+    var adjustedAttackModifier = this.lookupService.getAdjustedAttackModifier(attacker, ability, isPartyAttacking);
     var adjustedDefense = this.lookupService.getAdjustedDefense(target, !isPartyAttacking) * this.lookupService.getArmorPenetrationMultiplier(attacker);
     var adjustedCriticalMultiplier = 1;
     if (isCritical)
@@ -2138,14 +2153,24 @@ export class BattleService {
       //attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);      
     }
 
-    //TODO: this is just testing for now
-    //adjustedAttack *= 2;
     adjustedDefense *= 3;
 
     //2 * Attack^2 / (Attack + Defense)      
-    var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
+    /*var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
       * elementIncrease * elementalDamageDecrease
       * Math.ceil(Math.pow(adjustedAttack, 2) / (adjustedAttack + adjustedDefense)));
+
+    console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
+      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+*/
+
+    //separate out multipliers to attack from the exponent or things get too wild
+    var damage = Math.round(damageMultiplier * abilityDamageMultiplier * adjustedCriticalMultiplier
+      * elementIncrease * elementalDamageDecrease
+      * Math.ceil((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) / (adjustedAttack + adjustedDefense)));
+
+    console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
+      + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
@@ -2706,12 +2731,13 @@ export class BattleService {
 
     if (stateChanged) {
       this.battle.battleDuration = 0;
+      this.checkBreakpoints();
       this.checkForOptionalScene();
       this.checkScene();
-      this.checkBreakpoints();
     }
 
-    if (enemiesDefeated) {
+    if (enemiesDefeated && !this.globalService.globalVar.activeBattle.atScene) {
+      console.log("Not at scene");
       var subZone = this.balladService.getActiveSubZone();
       var autoProgress = this.globalService.globalVar.settings.get("autoProgress") ?? false;
 

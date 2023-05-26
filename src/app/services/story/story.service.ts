@@ -651,6 +651,9 @@ export class StoryService {
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
       }
+      if (this.globalService.globalVar.currentStoryId === 7) {        
+        this.globalService.globalVar.settings.set("autoProgress", false);
+      }
       if (this.globalService.globalVar.currentStoryId === 8) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle.</i></b>");
       }
@@ -672,6 +675,9 @@ export class StoryService {
             this.globalService.globalVar.achievements.push(achievement);
           });
         }
+      }
+      if (this.globalService.globalVar.currentStoryId === 12) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Traveler, undefined, undefined, true, subzone.type));
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests, undefined, undefined, true, subzone.type));

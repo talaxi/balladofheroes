@@ -7,6 +7,7 @@ import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { MeletePagesEnum } from 'src/app/models/enums/melete-pages-enum.model';
+import { LookupService } from 'src/app/services/lookup.service';
 
 @Component({
   selector: 'app-melete-view',
@@ -20,7 +21,7 @@ export class MeleteViewComponent {
   activePage: MeletePagesEnum = MeletePagesEnum.Default;
 
   constructor(private meleteService: MeleteService, private globalService: GlobalService, public dialog: MatDialog,
-    private deviceDetectorService: DeviceDetectorService, private gameLoopService: GameLoopService) {
+    private deviceDetectorService: DeviceDetectorService, private gameLoopService: GameLoopService, private lookupService: LookupService) {
 
   }
 
@@ -29,6 +30,11 @@ export class MeleteViewComponent {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       this.checkForUnlockedCells();
     });
+  }
+
+
+  isMeleteAvailable() {
+    return this.lookupService.isMeleteAvailable();
   }
 
   getActionForCell(page: number, row: number, column: number) {

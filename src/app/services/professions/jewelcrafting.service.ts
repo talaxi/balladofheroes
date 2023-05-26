@@ -39,17 +39,16 @@ export class JewelcraftingService {
   getActionLength(action: ProfessionActionsEnum) {
     var duration = 0;    
 
-    //TODO: reset
     if (action === ProfessionActionsEnum.CombiningGems)
-      duration = 2 * 6;//0;
+      duration = 2 * 60;
     if (action === ProfessionActionsEnum.Polish)
-      duration = 1 * 6;//0;
+      duration = 1 * 60;
     if (action === ProfessionActionsEnum.HeatingMetal)
-      duration = 2 * 6;//0;
+      duration = 2 * 60;
     if (action === ProfessionActionsEnum.ShapingMetal)
-      duration = 2 * 6;//0;
+      duration = 2 * 60;
     if (action === ProfessionActionsEnum.CoolingMetal)
-      duration = 1 * 6;//0;
+      duration = 1 * 60;
 
     return duration;
   }
@@ -221,7 +220,7 @@ export class JewelcraftingService {
       upgrades.chanceForUpgrade += additionalChanceToUpgrade;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToUpgrade * 100) + "%</strong> chance to to gain an upgraded gem when making a " + qualityName + " quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToUpgrade * 100) + "%</strong> chance to to gain an upgraded gem when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
@@ -232,7 +231,7 @@ export class JewelcraftingService {
       upgrades.durationReduction += additionalDurationReduction;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "The time it takes to create a " + qualityName + " quality Jewelcrafting Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
+        var gameLogEntry = "The time it takes to create " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Jewelcrafting Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
@@ -243,7 +242,7 @@ export class JewelcraftingService {
       upgrades.chanceToRetainMaterials += additionalChanceToRetainMaterials;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making a " + qualityName + " quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }
@@ -252,7 +251,7 @@ export class JewelcraftingService {
       upgrades.chanceToHalfDuration += additionalChanceToHalfDuration;
 
       if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingLevelUp")) {
-        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToHalfDuration * 100) + "%</strong> chance to reduce crafting time by half when making a " + qualityName + " quality Jewelcrafting recipe.";
+        var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToHalfDuration * 100) + "%</strong> chance to reduce crafting time by half when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Jewelcrafting recipe.";
         this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
       }
     }

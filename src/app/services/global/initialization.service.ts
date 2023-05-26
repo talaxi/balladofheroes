@@ -475,7 +475,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.CoarseFur, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.AnimalHide, 10000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.BrokenNecklace, 10000));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoisonExtractPotion, 1000));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedRuby, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedEmerald, 10));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.LesserCrackedAquamarine, 10));
@@ -728,7 +728,7 @@ export class InitializationService {
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
-        character2.assignedGod1 = GodEnum.Artemis;
+        character2.assignedGod1 = GodEnum.Dionysus;
         character2.assignedGod2 = GodEnum.Apollo;
         character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.LiquidSaber);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
@@ -737,7 +737,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 9999;
+      var godLevel = 499;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

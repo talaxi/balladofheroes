@@ -596,7 +596,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Empusa) {
       enemy.name = "Empusa";
-      enemy.battleStats = new CharacterStats(725, 127, 32, 80, 45, 75);
+      enemy.battleStats = new CharacterStats(725, 112, 32, 80, 45, 75);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 122;
@@ -614,7 +614,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.InsaneSoul) {
       enemy.name = "Insane Soul";
-      enemy.battleStats = new CharacterStats(623, 113, 37, 44, 45, 100);
+      enemy.battleStats = new CharacterStats(623, 102, 37, 44, 45, 100);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 124;
@@ -628,12 +628,12 @@ export class EnemyGeneratorService {
       slam.cooldown = slam.currentCooldown = 18;
       slam = this.randomizeCooldown(slam);
       slam.dealsDirectDamage = true;
-      slam.effectiveness = 1;
+      slam.effectiveness = .8;
       enemy.abilityList.push(slam);
     }
     if (type === BestiaryEnum.DualWieldingButcher) {
       enemy.name = "Dual-Wielding Butcher";
-      enemy.battleStats = new CharacterStats(863, 91, 38, 110, 45, 125);
+      enemy.battleStats = new CharacterStats(863, 84, 38, 100, 45, 125);
       enemy.battleStats.elementResistance.holy = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
@@ -655,9 +655,9 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.HellRider) {
       enemy.name = "Hell Rider";
-      enemy.battleStats = new CharacterStats(1133, 130, 51, 40, 50, 120);
+      enemy.battleStats = new CharacterStats(1133, 126, 51, 40, 50, 120);
       enemy.battleStats.elementResistance.water = this.utilityService.enemyMinorElementalWeakness;
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 155;
       enemy.loot.push(new LootItem(ItemsEnum.MoltenArmor, ItemTypeEnum.Equipment, 1, .075));
@@ -685,7 +685,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.FieryNewt) {
       enemy.name = "Fiery Newt";
-      enemy.battleStats = new CharacterStats(712, 70, 27, 55, 55, 100);
+      enemy.battleStats = new CharacterStats(712, 68, 27, 55, 55, 100);
       enemy.battleStats.elementResistance.water = this.utilityService.enemyMinorElementalWeakness;
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.battleStats.elementIncrease.fire += .05;
@@ -740,7 +740,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.FallenHero) {
       enemy.name = "Fallen Hero";
-      enemy.battleStats = new CharacterStats(802, 108, 41, 40, 50, 150);
+      enemy.battleStats = new CharacterStats(786, 102, 40, 40, 50, 150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 133;
@@ -766,7 +766,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.TwistedSoul) {
       enemy.name = "Twisted Soul";
-      enemy.battleStats = new CharacterStats(809, 118, 46, 95, 50, 125);
+      enemy.battleStats = new CharacterStats(809, 113, 46, 95, 50, 125);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 130;
@@ -776,7 +776,7 @@ export class EnemyGeneratorService {
       var sap = new Ability();
       sap.name = "Sap";
       sap.isAvailable = true;
-      sap.cooldown = sap.currentCooldown = 15;
+      sap.cooldown = sap.currentCooldown = 17;
       sap = this.randomizeCooldown(sap);
       sap.dealsDirectDamage = false;
       sap.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Sap, -1, .2, true, false));
@@ -784,7 +784,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.BlessedShade) {
       enemy.name = "Blessed Shade";
-      enemy.battleStats = new CharacterStats(924, 177, 57, 65, 55, 125);
+      enemy.battleStats = new CharacterStats(864, 167, 54, 65, 55, 125);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 128;
@@ -793,7 +793,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.ExiledHoplite) {
       enemy.name = "Exiled Hoplite";
-      enemy.battleStats = new CharacterStats(1145, 183, 60, 52, 48, 200);
+      enemy.battleStats = new CharacterStats(925, 173, 55, 52, 48, 200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 4;
       enemy.xpGainFromDefeat = 147;
@@ -918,7 +918,7 @@ export class EnemyGeneratorService {
     //these two are barrier based, can continously create barriers
     if (type === BestiaryEnum.Castor) {
       enemy.name = "Castor";
-      enemy.battleStats = new CharacterStats(1750, 180, 55, 82, 75, 200);
+      enemy.battleStats = new CharacterStats(1250, 180, 55, 82, 75, 200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 250;
@@ -943,7 +943,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Pollux) {
       enemy.name = "Pollux";
-      enemy.battleStats = new CharacterStats(1517, 222, 56, 78, 104, 150);
+      enemy.battleStats = new CharacterStats(1167, 222, 56, 78, 104, 150);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250;
@@ -4733,7 +4733,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.NemeanLion) {
       enemy.name = "Nemean Lion";
-      enemy.battleStats = new CharacterStats(202150, 2370, 3460, 6250, 3900, 6800);
+      enemy.battleStats = new CharacterStats(202150, 2370, 3550, 6250, 3900, 6850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 12;
       enemy.xpGainFromDefeat = 3400;            
@@ -4927,7 +4927,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.LerneanHydra) {
       enemy.name = "Lernean Hydra";
-      enemy.battleStats = new CharacterStats(138948, 1988, 3800, 2400, 3850, 8850);
+      enemy.battleStats = new CharacterStats(138948, 1988, 4150, 2400, 3850, 8850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 8;
       enemy.xpGainFromDefeat = 1950; 
@@ -4971,7 +4971,7 @@ export class EnemyGeneratorService {
     }
         if (type === BestiaryEnum.HydraHead) {
       enemy.name = "Hydra Head";
-      enemy.battleStats = new CharacterStats(87504, 1988, 3800, 2400, 3850, 8850);
+      enemy.battleStats = new CharacterStats(87504, 1988, 4150, 2400, 3850, 8850);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 1350;     
@@ -5163,7 +5163,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.StymphalianBird) {
       enemy.name = "Stymphalian Bird";
-      enemy.battleStats = new CharacterStats(143750, 2280, 3950, 2850, 3550, 9650);
+      enemy.battleStats = new CharacterStats(143750, 2280, 4450, 2850, 3550, 9650);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 8;
       enemy.xpGainFromDefeat = 2350;   
@@ -5446,10 +5446,10 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.ErymanthianBoar) {
       enemy.name = "Erymanthian Boar";
-      enemy.battleStats = new CharacterStats(248079, 3432, 4375, 3900, 5450, 9450);
+      enemy.battleStats = new CharacterStats(248079, 3432, 5375, 3900, 5450, 9450);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
-      enemy.xpGainFromDefeat = 4600;   
+      enemy.xpGainFromDefeat = 4500;   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 2000, false, true, false));
       enemy.loot.push(new LootItem(ItemsEnum.Tusk, ItemTypeEnum.CraftingMaterial, 2, .075));
       enemy.loot.push(new LootItem(ItemsEnum.AnimalHide, ItemTypeEnum.CraftingMaterial, 1, .025));
@@ -5779,7 +5779,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.CretanBull) {
       enemy.name = "Cretan Bull";
-      enemy.battleStats = new CharacterStats(282742, 2543, 5485, 4950, 8875, 13800);
+      enemy.battleStats = new CharacterStats(282742, 2543, 7485, 4950, 8875, 13800);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 12;
       enemy.xpGainFromDefeat = 5050;  
@@ -6275,7 +6275,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Ladon) {
       enemy.name = "Ladon";
-      enemy.battleStats = new CharacterStats(297899, 2940, 7150, 9850, 5850, 16300);
+      enemy.battleStats = new CharacterStats(297899, 2940, 8180, 9850, 5850, 16300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 14;
       enemy.xpGainFromDefeat = 5250;    
@@ -6551,7 +6551,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Eurytion) {
       enemy.name = "Eurytion";
-      enemy.battleStats = new CharacterStats(153891, 2798, 5300, 6850, 6750, 14500);
+      enemy.battleStats = new CharacterStats(153891, 2798, 6300, 6850, 6750, 14500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
       enemy.xpGainFromDefeat = 2200;     
@@ -6578,7 +6578,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Orthrus) {
       enemy.name = "Orthrus";
-      enemy.battleStats = new CharacterStats(179312, 2738, 5225, 10950, 5450, 14500);
+      enemy.battleStats = new CharacterStats(179312, 2738, 6225, 10950, 5450, 14500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 6;
       enemy.xpGainFromDefeat = 3150;  
@@ -6607,10 +6607,10 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Geryon) {
       enemy.name = "Geryon";
-      enemy.battleStats = new CharacterStats(343904, 4250, 7480, 6650, 9850, 16500);
+      enemy.battleStats = new CharacterStats(352904, 4250, 11080, 6650, 10150, 16300);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
-      enemy.xpGainFromDefeat = 6350;            
+      enemy.xpGainFromDefeat = 6000;            
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .75, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, -1, .75, false, true, false));
       enemy.loot.push(new LootItem(ItemsEnum.BloodyShield, ItemTypeEnum.Equipment, 1, .035));
@@ -6658,7 +6658,7 @@ export class EnemyGeneratorService {
       shieldUp.cooldown = 22;
       shieldUp.currentCooldown = 3;
       shieldUp.dealsDirectDamage = false;
-      shieldUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 15, 1.6, false, true, true));
+      shieldUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 15, 1.75, false, true, true));
       enemy.abilityList.push(shieldUp);
 
       var enrage = new Ability();

@@ -136,6 +136,10 @@ export class ZoneNavigationComponent implements OnInit {
     });
   }
 
+  meleteFunctionalityAvailable() {
+    return this.lookupService.isMeleteAvailable();
+  }
+
   getSubzoneName(subzone: SubZone) {
     return this.balladService.getSubZoneName(subzone.type);
   }

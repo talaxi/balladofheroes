@@ -194,7 +194,7 @@
                         <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                             (click)="viewFollowers(followers)">View Followers</button>
                             <br/>
-                        <button class="buttonStyled stackedButtons" 
+                        <button *ngIf="meleteFunctionalityAvailable()" class="buttonStyled stackedButtons" 
                             (click)="viewMelete(melete)">Melete</button>
                     </div>
                 </div>

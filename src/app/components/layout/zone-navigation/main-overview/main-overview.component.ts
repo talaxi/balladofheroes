@@ -36,6 +36,10 @@ export class MainOverviewComponent {
     if (this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
       this.townsAvailable = true;
   }
+
+  meleteFunctionalityAvailable() {
+    return this.lookupService.isMeleteAvailable();
+  }
   
   isPalaceOfHadesAvailable() {
     var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);

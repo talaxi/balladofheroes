@@ -122,10 +122,7 @@ export class ProfessionService {
       }
 
       var newRecipeLearned = this.checkForNewRecipes(type);
-
-      if (!newRecipeLearned) {
-        this.getLevelUpReward(type);
-      }
+      this.getLevelUpReward(type);
     }
 
     if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {

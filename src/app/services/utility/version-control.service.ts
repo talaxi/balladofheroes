@@ -24,6 +24,7 @@ import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { Melete } from 'src/app/models/melete/melete.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
+import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -608,8 +609,35 @@ export class VersionControlService {
         this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets = 0;
         this.globalService.globalVar.chthonicPowers.retainGodLevel = 0;
 
+        var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+        if (alchemy !== undefined) {
+          var basicAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);          
+          var uncommonAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+          var rareAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Rare);
+
+          if (alchemy.level >= 22 && basicAlchemyUpgrades !== undefined)
+            basicAlchemyUpgrades.chanceToRetainMaterials += .05;
+            if (alchemy.level >= 25 && basicAlchemyUpgrades !== undefined)
+              basicAlchemyUpgrades.chanceTo5xItem += .025;
+
+              if (alchemy.level >= 50 && uncommonAlchemyUpgrades !== undefined)
+              uncommonAlchemyUpgrades.chanceTo5xItem += .025;
+
+              if (alchemy.level >= 55 && rareAlchemyUpgrades !== undefined)
+              rareAlchemyUpgrades.durationReduction += .04;              
+              if (alchemy.level >= 75 && rareAlchemyUpgrades !== undefined)
+              rareAlchemyUpgrades.chanceTo5xItem += .025;
+        }
+
         var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
-        if (jewelcrafting !== undefined) {
+        if (jewelcrafting !== undefined) {      
+          var uncommonJewelcraftingUpgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+
+          if (jewelcrafting.level >= 48 && uncommonJewelcraftingUpgrades !== undefined)
+            uncommonJewelcraftingUpgrades.chanceForUpgrade += .025;
+          if (jewelcrafting.level >= 42 && uncommonJewelcraftingUpgrades !== undefined)
+          uncommonJewelcraftingUpgrades.chanceToRetainMaterials += .05;
+
           jewelcrafting.availableRecipes.forEach(recipe => {
             var updatedRecipe = this.jewelcraftingService.getRecipe(recipe.createdItem);
             recipe.expGain = updatedRecipe.expGain;
