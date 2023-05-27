@@ -89,8 +89,9 @@ export class ProfessionService {
       if (selectedProfession.type === ProfessionEnum.Alchemy && this.globalService.globalVar.gameLogSettings.get("alchemyCreation")) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
       }
-      if (selectedProfession.type === ProfessionEnum.Jewelcrafting && this.globalService.globalVar.gameLogSettings.get("jewelcraftingCreation")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
+      if (selectedProfession.type === ProfessionEnum.Jewelcrafting) {
+        if (this.globalService.globalVar.gameLogSettings.get("jewelcraftingCreation"))
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
 
         createdItem = this.jewelcraftingService.getUpgradedItem(createdItem);
       }
