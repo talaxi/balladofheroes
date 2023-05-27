@@ -2449,18 +2449,21 @@ export class GlobalService {
     if (upgradedStats.xpGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.xpGain * 100) + "% XP Gain, ";
 
+    var upgradedAbilityName = god.abilityList.find(item => item.requiredLevel === upgradedAbilities.requiredLevel)?.name;
     if (upgradedAbilities.effectiveness > 0) {
-      var upgradedAbilityName = god.abilityList.find(item => item.requiredLevel === upgradedAbilities.requiredLevel)?.name;
       if (upgradedAbilityName === "Quicken")
         statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + " Effectiveness, ";
       else
         statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + "% Effectiveness, ";
     }
-    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {
-      if (upgradedAbilityName === "Second Wind")
-        statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + " Effectiveness, ";
+    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {      
+      if (upgradedAbilityName === "Second Wind"){
+        statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness) + " Effectiveness, ";
+      }
       else
+      {
         statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness * 100) + "% Buff Effectiveness, ";
+      }
     }
     if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].duration > 0)
       statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].duration) + " Second Buff Duration, ";
