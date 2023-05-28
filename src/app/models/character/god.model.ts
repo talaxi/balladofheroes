@@ -84,9 +84,9 @@ export class God {
             return new PrimaryStats(.9, .94, 1.3, 1.2, .85, 1.05); //6.24 total
         else if (type === GodEnum.Nemesis) 
             return new PrimaryStats(1.15, 1.01, 1.25, .8, .7, 1.25); //6.16 total
-        else if (type === GodEnum.Zeus) //STILL TODO
+        else if (type === GodEnum.Zeus) 
             return new PrimaryStats(.85, 1.1, 1.15, 1.05, 1.05, .7); //5.9 total
-        else if (type === GodEnum.Poseidon) //STILL TODO
+        else if (type === GodEnum.Poseidon)
             return new PrimaryStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
 
         return new PrimaryStats(1, 1, 1, 1, 1, 1);

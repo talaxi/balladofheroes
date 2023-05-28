@@ -95,7 +95,17 @@ export class SlotMenuViewComponent {
     var itemA = this.lookupService.getSlotItemQuality(a.item);
     var itemB = this.lookupService.getSlotItemQuality(b.item);
 
-    return itemA < itemB ? descending : itemA > itemB ? ascending : 0;
+    //if they are the same, sort by name secondarily
+    var matchingValue = 0;
+    if  (itemA === itemB)
+    {
+      var nameA = this.dictionaryService.getItemName(a.item);
+      var nameB = this.dictionaryService.getItemName(b.item);
+
+      matchingValue = nameA < nameB ? descending : nameA > nameB ? ascending : 0;
+    }
+
+    return itemA < itemB ? descending : itemA > itemB ? ascending : matchingValue;
     }
 
     if (this.sortType === ResourceViewSortEnum.Name) {

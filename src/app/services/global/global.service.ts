@@ -53,7 +53,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .55;
+    return .56;
   }
 
   initializeGlobalVariables() {
@@ -672,44 +672,46 @@ export class GlobalService {
     }
 
     if (god.type === GodEnum.Zeus) {
-      /*var divineStrike = new Ability();
-      divineStrike.name = "Divine Strike";
-      divineStrike.isAvailable = false;
-      divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      divineStrike.cooldown = divineStrike.currentCooldown = 30;
-      divineStrike.dealsDirectDamage = true;
-      divineStrike.effectiveness = 1.6;
-      divineStrike.elementalType = ElementalTypeEnum.Holy;
-      divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
-      god.abilityList.push(divineStrike);
+      var lightningBolt = new Ability();
+      lightningBolt.name = "Lightning Bolt";
+      lightningBolt.isAvailable = false;
+      lightningBolt.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      lightningBolt.cooldown = lightningBolt.currentCooldown = 35;
+      lightningBolt.dealsDirectDamage = true;
+      lightningBolt.effectiveness = 1.75;
+      lightningBolt.elementalType = ElementalTypeEnum.Lightning;
+      lightningBolt.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChanceToStun, 0, .25, true, false));
+      god.abilityList.push(lightningBolt);
 
-      var aegis = new Ability();
-      aegis.name = "Heavenly Shield";
-      aegis.requiredLevel = this.utilityService.godAbility2Level;
-      aegis.isAvailable = false;
-      aegis.cooldown = aegis.currentCooldown = 6;
-      aegis.userEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenDown, 8, .8, false, true));
-      god.abilityList.push(aegis);
+      var electrify = new Ability();
+      electrify.name = "Electrify";
+      electrify.requiredLevel = this.utilityService.godAbility2Level;
+      electrify.isAvailable = false;
+      electrify.effectiveness = 4;
+      electrify.cooldown = electrify.currentCooldown = 48;
+      electrify.elementalType = ElementalTypeEnum.Lightning;
+      electrify.targetEffect.push(this.createStatusEffect(StatusEffectEnum.LightningDamageTakenUp, 16, 1.1, false, false));
+      god.abilityList.push(electrify);
 
-      var blindingLight = new Ability();
-      blindingLight.name = "Blinding Light";
-      blindingLight.requiredLevel = this.utilityService.godAbility3Level;
-      blindingLight.isAvailable = false;
-      blindingLight.cooldown = blindingLight.currentCooldown = 25;
-      blindingLight.dealsDirectDamage = true;
-      blindingLight.effectiveness = .5;
-      blindingLight.elementalType = ElementalTypeEnum.Holy;
-      blindingLight.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false));
-      god.abilityList.push(blindingLight);
+      var chainLightning = new Ability();
+      chainLightning.name = "Chain Lightning";
+      chainLightning.requiredLevel = this.utilityService.godAbility3Level;
+      chainLightning.isAvailable = false;
+      chainLightning.cooldown = chainLightning.currentCooldown = 65;
+      chainLightning.dealsDirectDamage = true;
+      chainLightning.effectiveness = .5;
+      chainLightning.elementalType = ElementalTypeEnum.Lightning;
+      chainLightning.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true));
+      god.abilityList.push(chainLightning);
 
-      var secondWind = new Ability();
-      secondWind.name = "Second Wind";
-      secondWind.requiredLevel = this.utilityService.godPassiveLevel;
-      secondWind.isAvailable = false;
-      secondWind.isPassive = true;
-      secondWind.dealsDirectDamage = true;
-      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
-      god.abilityList.push(secondWind);*/
+      var overload = new Ability();
+      overload.name = "Overload";
+      overload.requiredLevel = this.utilityService.godPassiveLevel;
+      overload.isAvailable = false;
+      overload.isPassive = true;
+      overload.dealsDirectDamage = false;
+      overload.userEffect.push(this.createStatusEffect(StatusEffectEnum.Surge, -1, 1.05, false, true));
+      god.abilityList.push(overload);
     }
 
     if (god.type === GodEnum.Poseidon) {
@@ -820,7 +822,7 @@ export class GlobalService {
       || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp ||
       type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape
-      || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp)
+      || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge)
       refreshes = true;
 
     return refreshes;
@@ -2825,7 +2827,7 @@ export class GlobalService {
     if (type === EquipmentTypeEnum.Weapon) {
       if (character.equipmentSet.weapon?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
         var effect = character.equipmentSet.weapon.equipmentEffect.userEffect.length > 0 ?
-          character.equipmentSet.weapon.equipmentEffect.userEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetEffect[0];
+          character.equipmentSet.weapon.equipmentEffect.userEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetEffect[0];          
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
       }
 

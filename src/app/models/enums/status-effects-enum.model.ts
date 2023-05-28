@@ -129,5 +129,8 @@ export enum StatusEffectEnum {
     PreventEscape,
     AllPrimaryStatsUp,
     AllPrimaryStatsExcludeHpUp,
-    DamageOverTimeTakenDown
+    DamageOverTimeTakenDown,
+    Surge,
+    ChanceToStun,
+    RepeatDamageAfterDelay
   }
