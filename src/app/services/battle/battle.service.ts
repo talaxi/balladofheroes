@@ -1174,6 +1174,10 @@ export class BattleService {
       }
     }
 
+    var overload = this.lookupService.characterHasAbility("Overload", user);
+    if (overload !== undefined && elementalType === ElementalTypeEnum.Lightning) {
+      this.applyStatusEffect(overload.userEffect[0], user, party, user);
+    }
 
     //code specific to Stymphalian Birds
     if (user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ExtraTrueDamage) && abilityCopy.dealsDirectDamage) {
@@ -1866,6 +1870,12 @@ export class BattleService {
       }
 
       overallDamageMultiplier *= damageDealtUpAggregate;
+    }
+
+    var surge = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Surge);
+    if (surge !== undefined && !isAutoAttack) {
+      overallDamageMultiplier *= surge.effectiveness;
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Surge);      
     }
 
     if (target.battleInfo !== undefined && target.battleInfo.statusEffects.length > 0) {

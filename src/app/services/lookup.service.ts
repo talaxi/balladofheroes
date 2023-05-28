@@ -1800,13 +1800,13 @@ export class LookupService {
 
     //Zeus
     if (abilityName === "Overload")
-      abilityDescription = "Surge effect increases damage dealt by next ability by " + effectiveAmount + "%. Passive";
+      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by " + effectiveAmount + "%. Passive";
     if (abilityName === "Lightning Bolt")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Grants user Surge. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This has a " + relatedTargetGainStatusEffectEffectivenessPercent + "% chance to stun the target. " + cooldown + " second cooldown.";
+    if (abilityName === "Electrify")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Increase the Lightning Damage taken by target by " + relatedTargetGainStatusEffectEffectivenessPercent + "% for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Chain Lightning")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal 25% less damage to another random target. Repeat until all targets have been hit. " + cooldown + " second cooldown.";
-    if (abilityName === "Judgment")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
 
     //Hades
     if (abilityName === "Hellfire")
@@ -2744,6 +2744,8 @@ export class LookupService {
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
       description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.Surge)
+      description = "Increase damage dealt by next ability by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
       description = "Increase damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
@@ -4368,6 +4370,15 @@ export class LookupService {
     }
     else if (abilityName === "No Escape") {
       src += "noEscape.svg";
+    }
+    else if (abilityName === "Lightning Bolt") {
+      src += "lightningBolt.svg";
+    }
+    else if (abilityName === "Electrify") {
+      src += "electrify.svg";
+    }
+    else if (abilityName === "Chain Lightning") {
+      src += "chainLightning.svg";
     }
     else
       src += "sword.svg";

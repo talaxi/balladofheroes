@@ -37,7 +37,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -561,7 +561,7 @@ export class VersionControlService {
           this.globalService.globalVar.melete = new Melete();
 
           if (this.globalService.globalVar.altars.altar1 !== undefined && this.globalService.globalVar.altars.altar1.god === GodEnum.None)
-          this.globalService.globalVar.altars.altar1!.god = GodEnum.Athena;
+            this.globalService.globalVar.altars.altar1!.god = GodEnum.Athena;
 
           var prefix = "equipment";
           this.globalService.globalVar.settings.set(prefix + "ShowBasicFilter", true);
@@ -604,49 +604,74 @@ export class VersionControlService {
           this.globalService.globalVar.settings.set(prefix + "ShowHealingItemsFilter", true);
           this.globalService.globalVar.settings.set(prefix + "ShowSlotItemsFilter", true);
 
-          
-        this.globalService.globalVar.chthonicPowers.increasedGodPrimaryStatResets = 0;
-        this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets = 0;
-        this.globalService.globalVar.chthonicPowers.retainGodLevel = 0;
 
-        var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
-        if (alchemy !== undefined) {
-          var basicAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);          
-          var uncommonAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
-          var rareAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Rare);
+          this.globalService.globalVar.chthonicPowers.increasedGodPrimaryStatResets = 0;
+          this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets = 0;
+          this.globalService.globalVar.chthonicPowers.retainGodLevel = 0;
 
-          if (alchemy.level >= 22 && basicAlchemyUpgrades !== undefined)
-            basicAlchemyUpgrades.chanceToRetainMaterials += .05;
+          var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined) {
+            var basicAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Basic);
+            var uncommonAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+            var rareAlchemyUpgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Rare);
+
+            if (alchemy.level >= 22 && basicAlchemyUpgrades !== undefined)
+              basicAlchemyUpgrades.chanceToRetainMaterials += .05;
             if (alchemy.level >= 25 && basicAlchemyUpgrades !== undefined)
               basicAlchemyUpgrades.chanceTo5xItem += .025;
 
-              if (alchemy.level >= 50 && uncommonAlchemyUpgrades !== undefined)
+            if (alchemy.level >= 50 && uncommonAlchemyUpgrades !== undefined)
               uncommonAlchemyUpgrades.chanceTo5xItem += .025;
 
-              if (alchemy.level >= 55 && rareAlchemyUpgrades !== undefined)
-              rareAlchemyUpgrades.durationReduction += .04;              
-              if (alchemy.level >= 75 && rareAlchemyUpgrades !== undefined)
+            if (alchemy.level >= 55 && rareAlchemyUpgrades !== undefined)
+              rareAlchemyUpgrades.durationReduction += .04;
+            if (alchemy.level >= 75 && rareAlchemyUpgrades !== undefined)
               rareAlchemyUpgrades.chanceTo5xItem += .025;
-        }
+          }
 
-        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
-        if (jewelcrafting !== undefined) {      
-          var uncommonJewelcraftingUpgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
+          var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined) {
+            var uncommonJewelcraftingUpgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
 
-          if (jewelcrafting.level >= 48 && uncommonJewelcraftingUpgrades !== undefined)
-            uncommonJewelcraftingUpgrades.chanceForUpgrade += .025;
-          if (jewelcrafting.level >= 42 && uncommonJewelcraftingUpgrades !== undefined)
-          uncommonJewelcraftingUpgrades.chanceToRetainMaterials += .05;
+            if (jewelcrafting.level >= 48 && uncommonJewelcraftingUpgrades !== undefined)
+              uncommonJewelcraftingUpgrades.chanceForUpgrade += .025;
+            if (jewelcrafting.level >= 42 && uncommonJewelcraftingUpgrades !== undefined)
+              uncommonJewelcraftingUpgrades.chanceToRetainMaterials += .05;
 
-          jewelcrafting.availableRecipes.forEach(recipe => {
-            var updatedRecipe = this.jewelcraftingService.getRecipe(recipe.createdItem);
-            recipe.expGain = updatedRecipe.expGain;
-            recipe.ingredients = [];
-            updatedRecipe.ingredients.forEach(ingredient => {
-              recipe.ingredients.push(ingredient);
+            jewelcrafting.availableRecipes.forEach(recipe => {
+              var updatedRecipe = this.jewelcraftingService.getRecipe(recipe.createdItem);
+              recipe.expGain = updatedRecipe.expGain;
+              recipe.ingredients = [];
+              updatedRecipe.ingredients.forEach(ingredient => {
+                recipe.ingredients.push(ingredient);
+              });
             });
-          });
+          }
         }
+        if (version === .56) {
+          this.globalService.globalVar.characters.forEach(character => {
+            if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Enwater) && (character.equipmentSet.weapon === undefined ||
+              character.equipmentSet.weapon.itemType !== ItemsEnum.LiquidSaber)) {
+              character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Enwater);
+            }
+
+            if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Enair) && (character.equipmentSet.weapon === undefined ||
+              character.equipmentSet.weapon.itemType !== ItemsEnum.BirchBow)) {
+              character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Enair);
+            }
+
+            if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ReduceDirectDamage) && (character.equipmentSet.armor === undefined ||
+              (character.equipmentSet.armor.itemType !== ItemsEnum.BoarskinArmor && character.equipmentSet.armor.itemType !== ItemsEnum.ScaleArmor))) {
+              character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ReduceDirectDamage);
+            }
+
+            if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Thorns) &&
+             (character.equipmentSet.shield === undefined || (character.equipmentSet.shield.itemType !== ItemsEnum.Aegis && character.equipmentSet.shield.itemType !== ItemsEnum.SpikedShield)) &&
+             (character.equipmentSet.armor === undefined || character.equipmentSet.armor.itemType !== ItemsEnum.ScaleArmor) && 
+             (character.equipmentSet.ring === undefined || character.equipmentSet.ring.itemType !== ItemsEnum.ScalyRing)) {
+              character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ReduceDirectDamage);
+            }
+          });
         }
 
         this.globalService.globalVar.currentVersion = version;
