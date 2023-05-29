@@ -217,6 +217,7 @@ export class InitializationService {
 
     this.initializeBalladOfTheArgo();
     this.initializeBalladOfLabors();
+    this.initializeBalladOfOlympus();
   }
 
   initializeSettings() {
@@ -232,6 +233,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
     this.globalService.globalVar.settings.set("showEnemyHpAsPercent", false);
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", false);
+    this.globalService.globalVar.settings.set("autoExportOnUpdate", true);
     this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
     this.globalService.globalVar.settings.set("loadingAccuracy", this.utilityService.averageLoadingAccuracy);
     this.globalService.globalVar.settings.set("loadingTime", this.utilityService.lowActiveTimeLimit);
@@ -661,6 +663,8 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfZeus, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfZeus, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.GoldenApple, 25));
       this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
 
@@ -738,7 +742,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
       }
 
-      var godLevel = 1098;
+      var godLevel = 1999;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -1009,5 +1013,51 @@ export class InitializationService {
       erytheia.notificationType = erytheia.shouldShowSideQuestNotification();
       laborsBallad.zones.push(erytheia);
     }
+  }
+
+  initializeBalladOfOlympus() {
+    var olympusBallad = new Ballad(BalladEnum.Olympus);
+    olympusBallad.displayOrder = 7;
+    var zone1 = new Zone();
+    zone1.type = ZoneEnum.MountOlympus;
+    zone1.zoneName = "Mount Olympus";
+    zone1.subzones.push(new SubZone(SubZoneEnum.MountOlympusUpTheMountain));
+    zone1.subzones.push(new SubZone(SubZoneEnum.MountOlympusMeanderingPath));
+    zone1.subzones.push(new SubZone(SubZoneEnum.MountOlympusCouloir));
+    zone1.subzones.push(new SubZone(SubZoneEnum.MountOlympusMusesPlateau));
+    zone1.subzones.push(new SubZone(SubZoneEnum.MountOlympusPathwayToTheZenith));
+    zone1.subzones.push(new SubZone(SubZoneEnum.MountOlympusMytikasSummit));
+    zone1.subzones.push(new SubZone(SubZoneEnum.MountOlympusOlympus));
+    zone1.notificationType = zone1.shouldShowSideQuestNotification();
+    olympusBallad.zones.push(zone1);
+
+    var zone2 = new Zone();
+    zone2.type = ZoneEnum.HuntForYarrow;
+    zone2.zoneName = "The Hunt for Yarrow";
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowOlympianGrounds));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowMountainHike));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowWoodlandTrail));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowTrailFork1));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowTrailFork2));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowTrailFork3));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowDenseGreenery1));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowDenseGreenery2));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowDenseGreenery3));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowPromisingPathway1));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowPromisingPathway2));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowPromisingPathway3));
+    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowYarrowField));
+    zone2.notificationType = zone2.shouldShowSideQuestNotification();
+    olympusBallad.zones.push(zone2);
+    
+    var zone3 = new Zone();
+    zone3.type = ZoneEnum.HuntForYarrow;
+    zone3.zoneName = "War for the Mountain";
+    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainBattle1));
+    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainBattle2));
+    zone3.subzones.push(new SubZone(SubZoneEnum.WarForTheMountainBattle3));
+    olympusBallad.zones.push(zone3);
+
+    this.globalService.globalVar.ballads.push(olympusBallad);
   }
 }

@@ -31,6 +31,7 @@ export class CharacterStats {
     thorns: number;
     abilityCooldownReductionStart: number;   
     xpGain: number; 
+    elementResistanceReduction: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
@@ -59,6 +60,7 @@ export class CharacterStats {
         this.abilityCooldownReductionStart = 0;
         this.thorns = 0;
         this.xpGain = 0;
+        this.elementResistanceReduction = 0;
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {

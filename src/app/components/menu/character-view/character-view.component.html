@@ -147,7 +147,10 @@
                         [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
                         {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
-
+                        <span *ngIf="getElementResistanceReductionBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="elementResistanceReductionPopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Enemy Elemental Resistance Reduction:</strong>
+                        {{(getElementResistanceReductionBonus() * 100) | number : '1.0-2'}}%<br /></span>
                 </div>
                 <div class="secondaryColumn2">
                     <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
@@ -572,6 +575,17 @@
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getAbilityCooldownReductionStartStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #elementResistanceReductionPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementResistanceReductionDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getElementResistanceReductionStatBreakdown(this.character)">
 
         </div>
     </div>

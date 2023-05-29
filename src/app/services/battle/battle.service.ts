@@ -194,7 +194,7 @@ export class BattleService {
     enemies.forEach(enemy => {
       var isDefeated = this.isCharacterDefeated(enemy);
       if (!isDefeated) {
-        this.handleStatusEffectDurations(false, enemy, deltaTime);
+        this.handleStatusEffectDurations(false, enemy, party, deltaTime);
         this.handleAutoAttackTimer(enemy, deltaTime);
         this.checkAutoAttackTimer(false, enemy, party, enemies, deltaTime);
         this.handleAbilities(false, enemy, party, enemies, deltaTime, true);
@@ -438,7 +438,7 @@ export class BattleService {
     this.battle.battleDuration = 0;
   }
 
-  handleStatusEffectDurations(isPartyMember: boolean, character: Character, deltaTime: number) {
+  handleStatusEffectDurations(isPartyMember: boolean, character: Character, targets: Character[], deltaTime: number) {
     if (character.battleInfo.statusEffects.length === 0)
       return;
 
@@ -493,6 +493,23 @@ export class BattleService {
           }
 
           effect.tickTimer -= effect.tickFrequency;
+        }
+      }
+
+      if (effect.type === StatusEffectEnum.RepeatDamageAfterDelay && effect.duration <= 0) {
+        var target = this.getTarget(character, targets);
+        if (target !== undefined) {
+        var damageDealt = this.dealTrueDamage(isPartyMember, target, effect.effectiveness, character, effect.element, false, false);
+          var elementalText = "";
+          if (effect.element !== ElementalTypeEnum.None)
+            elementalText = this.getElementalDamageText(effect.element);
+
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " repeats their previous damage, dealing " + this.utilityService.bigNumberReducer(Math.round(damageDealt)) + elementalText + " damage to " + target.name + ".";
+
+          if ((isPartyMember && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
+            (!isPartyMember && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+          }
         }
       }
     });
@@ -1174,9 +1191,37 @@ export class BattleService {
       }
     }
 
+    if (abilityCopy.name === "Chain Lightning") {      
+      if (userEffects.some(item => item.type === StatusEffectEnum.RepeatDamageAfterDelay)) {
+        userEffects.filter(item => item.type === StatusEffectEnum.RepeatDamageAfterDelay).forEach(effect => {
+          effect.effectiveness = damageDealt;
+        });        
+      }
+    }
+
     var overload = this.lookupService.characterHasAbility("Overload", user);
     if (overload !== undefined && elementalType === ElementalTypeEnum.Lightning) {
-      this.applyStatusEffect(overload.userEffect[0], user, party, user);
+      var copy = overload.userEffect[0].makeCopy();
+        var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
+        if (zeus !== undefined) {
+          var overloadUpgrade = zeus.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+          if (overloadUpgrade !== undefined && overloadUpgrade.userEffect.length > 0)
+            copy.effectiveness += overloadUpgrade.userEffect[0].effectiveness;
+        }
+
+      this.applyStatusEffect(copy, user, party, user);
+    }
+
+    var chanceToStun = targetEffects.find(item => item.type === StatusEffectEnum.ChanceToStun);
+    if (chanceToStun !== undefined) {
+      var rng = this.utilityService.getRandomNumber(0, 1);
+      
+      if (rng <= chanceToStun.effectiveness)
+      {
+        targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, ability.secondaryEffectiveness, 0, false, false));
+      }
+
+      targetEffects = targetEffects.filter(item => item.type !== StatusEffectEnum.ChanceToStun);
     }
 
     //code specific to Stymphalian Birds
@@ -1847,6 +1892,16 @@ export class BattleService {
       altarMultiplier *= relevantAltarEffect!.effectiveness;
     }
 
+    if (elementalType === ElementalTypeEnum.Lightning && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusLightningDamageIncrease) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusLightningDamageIncrease);
+      altarMultiplier *= relevantAltarEffect!.effectiveness;
+    }
+    
+    if (elementalType === ElementalTypeEnum.Lightning && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease);
+      altarMultiplier *= relevantAltarEffect!.effectiveness;
+    }
+
     //check for basic damage up/down buffs
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var damageDealtUpAggregate = 1;
@@ -2173,7 +2228,7 @@ export class BattleService {
     var elementalDamageDecrease = 1;
     if (elementalType !== ElementalTypeEnum.None) {
       elementIncrease = this.getElementalDamageIncrease(elementalType, attacker);
-      elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);
+      elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target, attacker);
       attacker.overdriveInfo.lastUsedElement = elementalType;
       //attacker.trackedStats.elementalAttacksUsed.incrementStatByEnum(elementalType);      
     }
@@ -2404,7 +2459,7 @@ export class BattleService {
     var statusEffectDamageBonus = 1;
     var statusEffectDamageReduction = 1;
     if (elementalType !== ElementalTypeEnum.None) {
-      elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target);
+      elementalDamageDecrease = this.getElementalDamageDecrease(elementalType, target, attacker);
     }
 
     if (attacker !== undefined) {
@@ -2556,14 +2611,17 @@ export class BattleService {
     return 1 + (increase * altarIncrease);
   }
 
-  getElementalDamageDecrease(element: ElementalTypeEnum, target: Character) {
+  getElementalDamageDecrease(element: ElementalTypeEnum, target: Character, attacker?: Character) {
     var decrease = 0;
     var elementalReduction = 0;
 
     var resistanceDown = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AllElementalResistanceDown)
     if (resistanceDown !== undefined) {
-      elementalReduction = resistanceDown.effectiveness;
+      elementalReduction += resistanceDown.effectiveness;
     }
+
+    if (attacker !== undefined)
+      elementalReduction -= attacker.battleStats.elementResistanceReduction;
 
     if (element === ElementalTypeEnum.Holy)
       decrease = target.battleStats.elementResistance.holy + elementalReduction;

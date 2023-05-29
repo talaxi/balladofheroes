@@ -132,5 +132,28 @@ export enum SubZoneEnum {
   ErytheiaCadiz,
   ErytheiaIslandOfErytheia,
   ErytheiaGeryonsFarm,
-  Follower
+  Follower,
+  MountOlympusUpTheMountain,
+  MountOlympusMeanderingPath,
+  MountOlympusCouloir,
+  MountOlympusMusesPlateau,
+  MountOlympusPathwayToTheZenith,
+  MountOlympusMytikasSummit,
+  MountOlympusOlympus,
+  HuntForYarrowOlympianGrounds,
+  HuntForYarrowMountainHike,
+  HuntForYarrowWoodlandTrail,
+  HuntForYarrowTrailFork1,
+  HuntForYarrowTrailFork2,
+  HuntForYarrowTrailFork3,
+  HuntForYarrowDenseGreenery1,
+  HuntForYarrowDenseGreenery2,
+  HuntForYarrowDenseGreenery3,
+  HuntForYarrowPromisingPathway1,
+  HuntForYarrowPromisingPathway2,
+  HuntForYarrowPromisingPathway3,
+  HuntForYarrowYarrowField,
+  WarForTheMountainBattle1, //TODO: rename
+  WarForTheMountainBattle2, //TODO: rename
+  WarForTheMountainBattle3 //TODO: rename
 }

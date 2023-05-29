@@ -643,6 +643,8 @@ export class GodViewComponent implements OnInit {
         return this.utilityService.genericRound((ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length - baseAbility.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length));
       if (baseAbility.name === "Insanity")
         return this.utilityService.genericRound((ability.targetEffect.length - baseAbility.targetEffect.length));
+      if (baseAbility.name === "Chain Lightning")
+        return this.utilityService.genericRound((ability.userEffect.length - baseAbility.userEffect.length));
     }
 
     return 0;

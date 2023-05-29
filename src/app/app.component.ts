@@ -87,7 +87,7 @@ export class AppComponent {
     }
 
     this.checkForSupporterConfirmation();
-    this.versionControlService.updatePlayerVersion();
+    this.versionControlService.updatePlayerVersion(true);
 
     var lastPerformanceNow = 0;
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {

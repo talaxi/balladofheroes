@@ -64,7 +64,7 @@ export class BackgroundService {
       if (!isDefeated && !this.globalService.globalVar.isBattlePaused) {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleHpRegen(partyMember, deltaTime);
-        this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
+        this.battleService.handleStatusEffectDurations(true, partyMember, enemies, deltaTime);
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
         this.checkGodStatuses(partyMember);
 
@@ -237,6 +237,24 @@ export class BackgroundService {
         }
       }
 
+      if (effect.type === AltarEffectsEnum.ZeusRareSurge) {
+        var memberWithZeus = party.find(item => item.assignedGod1 === GodEnum.Zeus || item.assignedGod2 === GodEnum.Zeus);
+        if (memberWithZeus !== undefined) {
+          var surge = memberWithZeus.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Surge);
+          if (surge === undefined)
+          {
+            var overload = this.lookupService.characterHasAbility("Overload", memberWithZeus);
+            if (overload !== undefined) {
+              this.battleService.applyStatusEffect(overload.userEffect[0], memberWithZeus, party, memberWithZeus);
+            }
+          }
+          else
+          {
+            surge.effectiveness *= effect.effectiveness;
+          }
+        }
+      }
+
       effect.tickTimer -= effect.tickFrequency;
     }
   }
@@ -365,8 +383,7 @@ export class BackgroundService {
 
     if (effect.type === AltarEffectsEnum.DionysusRandomDebuff) {
       if (enemies !== undefined) {
-        enemies.forEach(member => {
-          ;
+        enemies.forEach(member => {        
           this.battleService.applyStatusEffect(this.globalService.createStatusEffect(this.battleService.getRandomPrimaryStatDownStatusEffect(true), 10, effect.effectiveness, false, false), member, enemies);
         });
       }
@@ -418,6 +435,20 @@ export class BackgroundService {
         {          
           dues.effectiveness *= effect.effectiveness;
         }
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.ZeusRareStun) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, effect.effectiveness, 1, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff) {
+      party.forEach(member => {
+        this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, effect.effectiveness, false, true), member, enemies);
       });
     }
   }

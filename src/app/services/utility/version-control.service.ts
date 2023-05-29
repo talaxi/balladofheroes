@@ -25,6 +25,7 @@ import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { Melete } from 'src/app/models/melete/melete.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
+declare var LZString: any;
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -103,7 +104,11 @@ export class VersionControlService {
     return date.toDateString().replace(/^\S+\s/, '');
   }
 
-  updatePlayerVersion() {
+  updatePlayerVersion(autoExport: boolean = false) { 
+    if (autoExport && this.getCurrentVersion() > this.globalService.globalVar.currentVersion) {
+      this.exportData();
+    }
+
     this.getListAscended().forEach(version => {
       if (this.globalService.globalVar.currentVersion < version) {
         if (version === .31) {
@@ -673,9 +678,29 @@ export class VersionControlService {
             }
           });
         }
+        if (version === .6) {
+          this.globalService.globalVar.settings.set("autoExportOnUpdate", true);
+        }
 
         this.globalService.globalVar.currentVersion = version;
       }
     });
+  }
+
+  exportData() {
+    var globalData = JSON.stringify(this.globalService.globalVar);
+    var compressedData = LZString.compressToBase64(globalData);
+
+    let file = new Blob([compressedData], { type: '.txt' });
+    let a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = "BalladOfHeroes-v" + this.globalService.globalVar.currentVersion.toString().replace(".", "_") + "-" + new Date().toLocaleDateString();
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
   }
 }

@@ -50,7 +50,13 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageDown ||
       effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown ||
       effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageDown ||
-      effect.type === StatusEffectEnum.AllElementalResistanceDown || effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
+      effect.type === StatusEffectEnum.AllElementalResistanceDown || effect.type === StatusEffectEnum.DamageOverTimeTakenDown ||
+      effect.type === StatusEffectEnum.EarthDamageTakenUp || effect.type === StatusEffectEnum.EarthDamageTakenDown ||
+      effect.type === StatusEffectEnum.AirDamageTakenUp || effect.type === StatusEffectEnum.AirDamageTakenDown ||
+      effect.type === StatusEffectEnum.WaterDamageTakenUp || effect.type === StatusEffectEnum.WaterDamageTakenDown ||
+      effect.type === StatusEffectEnum.LightningDamageTakenUp || effect.type === StatusEffectEnum.LightningDamageTakenDown ||
+      effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.HolyDamageTakenDown ||
+      effect.type === StatusEffectEnum.FireDamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenDown)
       return true;
 
     return false;
@@ -113,7 +119,13 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageDown)
       return "DMG";
     if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.DamageTakenDown ||
-      effect.type === StatusEffectEnum.AllElementalResistanceDown)
+      effect.type === StatusEffectEnum.AllElementalResistanceDown ||
+      effect.type === StatusEffectEnum.EarthDamageTakenUp || effect.type === StatusEffectEnum.EarthDamageTakenDown ||
+      effect.type === StatusEffectEnum.AirDamageTakenUp || effect.type === StatusEffectEnum.AirDamageTakenDown ||
+      effect.type === StatusEffectEnum.LightningDamageTakenUp || effect.type === StatusEffectEnum.LightningDamageTakenDown ||
+      effect.type === StatusEffectEnum.WaterDamageTakenUp || effect.type === StatusEffectEnum.WaterDamageTakenDown ||
+      effect.type === StatusEffectEnum.FireDamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenDown ||
+      effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.HolyDamageTakenDown)
       return "TKN";
     if (effect.type === StatusEffectEnum.Dead)
       return "KO";
@@ -154,17 +166,17 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   getSplitStatImage(effect: StatusEffect) {
     var img = "assets/svg/statUpSE.svg";
 
-    if (effect.type === StatusEffectEnum.EarthDamageUp)
+    if (effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageTakenUp)
       img = "assets/svg/earth.svg";
-    if (effect.type === StatusEffectEnum.AirDamageUp)
+    if (effect.type === StatusEffectEnum.AirDamageUp || effect.type === StatusEffectEnum.AirDamageTakenUp)
       img = "assets/svg/air.svg";
-    if (effect.type === StatusEffectEnum.HolyDamageUp)
+    if (effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageTakenUp)
       img = "assets/svg/holy.svg";
-    if (effect.type === StatusEffectEnum.LightningDamageUp)
+    if (effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageTakenUp)
       img = "assets/svg/lightning.svg";
-    if (effect.type === StatusEffectEnum.FireDamageUp)
+    if (effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageTakenUp)
       img = "assets/svg/fire.svg";
-    if (effect.type === StatusEffectEnum.WaterDamageUp)
+    if (effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageTakenUp)
       img = "assets/svg/water.svg";
     if (effect.type === StatusEffectEnum.AllElementalResistanceDown)
       img = "assets/svg/elementalResistanceDown.svg";
@@ -177,7 +189,10 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   getStatUpImage(effect: StatusEffect) {
     var img = "assets/svg/statUpSE.svg";
 
-    if (effect.type === StatusEffectEnum.DamageTakenDown)
+    if (effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.FireDamageTakenDown ||
+      effect.type === StatusEffectEnum.EarthDamageTakenDown || effect.type === StatusEffectEnum.LightningDamageTakenDown ||
+      effect.type === StatusEffectEnum.HolyDamageTakenDown || effect.type === StatusEffectEnum.WaterDamageTakenDown ||
+      effect.type === StatusEffectEnum.AirDamageTakenDown)
       img = "assets/svg/invertStatUpSE.svg";
 
     return img;
@@ -186,7 +201,10 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   getStatDownImage(effect: StatusEffect) {
     var img = "assets/svg/statDownSE.svg";
 
-    if (effect.type === StatusEffectEnum.DamageTakenUp)
+    if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenUp ||
+      effect.type === StatusEffectEnum.EarthDamageTakenUp || effect.type === StatusEffectEnum.LightningDamageTakenUp ||
+      effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.WaterDamageTakenUp ||
+      effect.type === StatusEffectEnum.AirDamageTakenUp)
       img = "assets/svg/invertStatDownSE.svg";
 
     return img;
@@ -348,9 +366,6 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Surge) {
       src += "Surge.svg";
     }
-    if (effect.type === StatusEffectEnum.RepeatDamageAfterDelay) {
-      src += "repeatDamageAfterDelay.svg";
-    }
     if (effect.type === StatusEffectEnum.Thyrsus) {
       src += "thyrsus.svg";
     }
@@ -368,6 +383,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.Immobilize || effect.type === StatusEffectEnum.CastingImmobilize) {
       src += "strangle.svg";
+    }
+    if (effect.type === StatusEffectEnum.RepeatDamageAfterDelay) {
+      src += "chainLightning.svg";
     }
 
     return src;

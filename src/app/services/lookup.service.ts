@@ -231,7 +231,9 @@ export class LookupService {
       type === ItemsEnum.SmallCharmOfDionysus || type === ItemsEnum.LargeCharmOfDionysus ||
       type === ItemsEnum.SmallSilverKantharos || type === ItemsEnum.SmallGildedKantharos ||
       type === ItemsEnum.SmallOrnateKantharos || type === ItemsEnum.SmallCrackedKantharos ||
-      type === ItemsEnum.SmallBuccheroKantharos || type === ItemsEnum.SmallBlackKantharos)
+      type === ItemsEnum.SmallBuccheroKantharos || type === ItemsEnum.SmallBlackKantharos ||
+      type === ItemsEnum.SmallCharmOfZeus || type === ItemsEnum.LargeCharmOfZeus ||
+      type === ItemsEnum.SmallCharmOfPoseidon || type === ItemsEnum.LargeCharmOfPoseidon)
       isACharm = true;
 
     return isACharm;
@@ -636,6 +638,16 @@ export class LookupService {
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
     if (type === ItemsEnum.LargeCharmOfNemesis)
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
+
+    if (type === ItemsEnum.SmallCharmOfZeus)
+      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfZeus)
+      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfPoseidon)
+      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
+    if (type === ItemsEnum.LargeCharmOfPoseidon)
+      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
 
     if (type === ItemsEnum.SmallOrnateKantharos)
       description = "Increase parties' Luck by <span class='charmDescriptor'>" + (this.charmService.getSmallOrnateKantharosValue()) + "</span>.";
@@ -1616,7 +1628,7 @@ export class LookupService {
       effectiveAmountPercent = this.utilityService.roundTo((ability.effectiveness - 1) * 100, 2);
       thresholdAmountPercent = Math.round((ability.threshold) * 100);
       abilityCount = ability.maxCount;
-      cooldown = this.utilityService.roundTo(ability.cooldown * character.battleStats.abilityCooldownReduction, 3);
+      cooldown = this.utilityService.roundTo(this.globalService.getAbilityCooldown(ability, character), 2);//this.utilityService.roundTo(ability.cooldown * character.battleStats.abilityCooldownReduction, 3);
 
       var relatedUserGainStatusEffect = ability?.userEffect[0];
 
@@ -1800,13 +1812,13 @@ export class LookupService {
 
     //Zeus
     if (abilityName === "Overload")
-      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by " + effectiveAmount + "%. Passive";
+      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by <strong>" + this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2) + "%</strong>. Passive.";
     if (abilityName === "Lightning Bolt")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This has a " + relatedTargetGainStatusEffectEffectivenessPercent + "% chance to stun the target. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This has a <strong>" + (this.utilityService.genericRound(relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> chance to stun the target for " + secondaryEffectiveAmount + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Electrify")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Increase the Lightning Damage taken by target by " + relatedTargetGainStatusEffectEffectivenessPercent + "% for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Increase the Lightning Damage taken by the target by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Chain Lightning")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds" + (ability !== undefined && ability.userEffect[1] !== undefined ? " and again after " + ability.userEffect[1].duration + " seconds" : "") + ". " + cooldown + " second cooldown.";
 
     //Hades
     if (abilityName === "Hellfire")
@@ -2744,8 +2756,8 @@ export class LookupService {
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
       description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.Surge)
-      description = "Increase damage dealt by next ability by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.Surge)
+      description = "Increase damage dealt by next ability by " + this.utilityService.genericRound((statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
       description = "Increase damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
@@ -2961,6 +2973,8 @@ export class LookupService {
       description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
     if (statusEffect.type === StatusEffectEnum.ChainsOfFate)
       description = "All of your attacks must target the enemy with Chains of Fate, and all of their attacks will target you.";
+    if (statusEffect.type === StatusEffectEnum.RepeatDamageAfterDelay)
+      description = "When this effect expires, deal " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " to a random target.";
 
 
     return description;
@@ -2984,11 +2998,6 @@ export class LookupService {
         durationString = Math.ceil(duration / 60) + " minutes";
     }
 
-    /*if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
-      description = "Increase all Primary Stats by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
-    if (effect.type === AltarEffectsEnum.SmallAltarPrayFortune)
-      description = "Increase Coin gain from battle by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
-*/
     if (effect.type === AltarEffectsEnum.AttackUp)
       description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.AthenaDefenseUp)
@@ -3087,6 +3096,19 @@ export class LookupService {
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
       description = "Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUp)
+      description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
+      description = "When the duration expires, increase a party member's Attack by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareStun)
+      description = "When the duration expires, stun all enemies for " + this.utilityService.roundTo(effect.effectiveness, 2) + " seconds.";
+    if (effect.type === AltarEffectsEnum.ZeusRareSurge)
+      description = "Every " + effect.tickFrequency + " seconds, give the character equipped with Zeus Surge. If Surge is already active, increase its effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+
 
     description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
     return description;
@@ -3213,6 +3235,19 @@ export class LookupService {
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
       description = "Only available when Nemesis is in your party. Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUp)
+      description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
+      description = "When the duration expires, increase a party member's Attack by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareStun)
+      description = "When the duration expires, stun all enemies for " + this.utilityService.roundTo(effect.effectiveness, 2) + " seconds.";
+    if (effect.type === AltarEffectsEnum.ZeusRareSurge)
+      description = "Only available while Zeus is in the party. Every " + effect.tickFrequency + " seconds, give the character equipped with Zeus Surge. If Surge is already active, increase its effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+
 
     description += " Effect lasts for " + durationString + ".";
     return description;
@@ -3495,7 +3530,7 @@ export class LookupService {
 
   getTotalAutoAttackCount(character: Character, forPartyMember: boolean = true, nonadjusted: boolean = false) {
     var adjustedAgility = this.getAdjustedAgility(character, forPartyMember);
-    if (nonadjusted)
+    if (nonadjusted)    
       adjustedAgility = character.battleStats.agility;
     var agilityPerAdditionalAttack = 750; //this is just a placeholder, gets overwritten below
     var remainingAgility = adjustedAgility;
@@ -3505,9 +3540,11 @@ export class LookupService {
 
     while (remainingAgility > 0 && !reachedFinalBreakpoint) {
       agilityPerAdditionalAttack = this.getAgilityPerAttackForAttackCount(attackCount);
+      //console.log("Agility needed for " + attackCount + ": " + agilityPerAdditionalAttack);
 
       if (remainingAgility > agilityPerAdditionalAttack) {
         remainingAgility -= agilityPerAdditionalAttack;
+        //console.log("Increase count, remaining agi " + remainingAgility);
         attackCount += 1;
       }
       else {
@@ -3515,8 +3552,10 @@ export class LookupService {
       }
     }
 
-    attackRemainder = remainingAgility / (agilityPerAdditionalAttack - this.getAgilityPerAttackForAttackCount(attackCount - 1));
+    //console.log("Remainder: " + remainingAgility + " / " + agilityPerAdditionalAttack + " - " + this.getAgilityPerAttackForAttackCount(attackCount - 1));
+    attackRemainder = remainingAgility / agilityPerAdditionalAttack;// - this.getAgilityPerAttackForAttackCount(attackCount - 1);
 
+    //console.log("Final count: " + attackCount + " and remainder " + attackRemainder);
     return attackCount + attackRemainder;
   }
 
@@ -3535,6 +3574,18 @@ export class LookupService {
     //Updated: 2 hits = 800, 3 hits = 2,400, 4 hits = 9,600, 5 hits = 60,000, 6 hits = 250,000   
 
     return agilityCost;
+  }
+
+  getTotalAgilityNeededForAttackCount(attackCount: number) {
+    var agilityNeeded = 0;
+
+    console.log("atk count: " + attackCount);
+    for (var i = attackCount; i > 0; i--) {
+      console.log("i: " + i);
+      agilityNeeded += this.getAgilityPerAttackForAttackCount(i);
+    }
+
+    return agilityNeeded;
   }
 
   getDamageCriticalChance(attacker: Character, target: Character) {
@@ -3783,8 +3834,8 @@ export class LookupService {
       }
     }
 
-    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusAttackUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusAttackUp);
       modifier *= relevantAltarEffect!.effectiveness;
     }
 
@@ -4673,7 +4724,7 @@ export class LookupService {
     var description = "Increases the number of times you hit when auto attacking, multiplying auto attack damage by <strong>" + this.utilityService.roundTo(totalAutoAttackCount, 3) + "</strong>.";
     if (totalAutoAttackCount >= 2)
       description += " On Hit effects occur <strong>" + Math.floor(totalAutoAttackCount) + "</strong> times from auto attacks.";
-    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)).toLocaleString() + "</strong>.";
+    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getTotalAgilityNeededForAttackCount(Math.floor(totalAutoAttackCount)).toLocaleString() + "</strong>.";
     return description;
   }
 
@@ -4761,7 +4812,7 @@ export class LookupService {
   }
 
   getArmorPenetrationDescription() {
-    return "Reduce target's defense by this percentage before any attack.";
+    return "Reduce target's defense by this percentage when you attack.";
   }
 
   getOverdriveGainBonusDescription() {
@@ -4810,6 +4861,10 @@ export class LookupService {
 
   getTickFrequencyBonusDescription() {
     return "Increases how frequently your damage over time effects deal damage.";
+  }
+
+  getElementResistanceReductionDescription() {
+    return "Reduce an enemy's elemental resistances when you attack.";
   }
 
   getElementName(type?: ElementalTypeEnum, name?: string) {
@@ -5126,6 +5181,17 @@ export class LookupService {
       breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.tickFrequency * 100, 2) + "%<br />";
     if (god.permanentStatGain.tickFrequency > 0)
       breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.tickFrequency * 100, 2) + "%<br />";
+
+    return breakdown;
+  }
+
+  getGodElementResistanceReductionStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.elementResistanceReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistanceReduction * 100, 2) + "%<br />";
+    if (god.permanentStatGain.tickFrequency > 0)
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistanceReduction * 100, 2) + "%<br />";
 
     return breakdown;
   }
@@ -5993,6 +6059,38 @@ export class LookupService {
     return breakdown;
   }
 
+  getElementResistanceReductionStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.elementResistanceReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo((character.baseStats.elementResistanceReduction) * 100, 2) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.elementResistanceReduction + assignedGod1.permanentStatGain.elementResistanceReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.elementResistanceReduction + assignedGod2.permanentStatGain.elementResistanceReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
+    }
+
+    var charmGain = this.charmService.getElementResistanceReductionFromCharms(this.globalService.globalVar.resources, character);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
+    }
+
+    /*var equipmentTickFrequencyGain = this.equipmentService.getTotalTickFrequencyGain(character.equipmentSet);
+    if (equipmentTickFrequencyGain > 0)
+      breakdown += "Equipment: +" + Math.round(equipmentTickFrequencyGain * 100) + "%<br />";
+*/
+    return breakdown;
+  }
+
   getElementalDamageIncreaseStatBreakdown(character: Character, type?: ElementalTypeEnum, name?: string) {
     var breakdown = "";
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
@@ -6495,6 +6593,19 @@ export class LookupService {
     if (effect === AltarEffectsEnum.NemesisRareDuesUp)
       name = "Dues Up After";
 
+    if (effect === AltarEffectsEnum.ZeusAttackUp)
+      name = "Attack Up";
+    if (effect === AltarEffectsEnum.ZeusAttackUpBuff)
+      name = "Attack Buff After";
+    if (effect === AltarEffectsEnum.ZeusLightningDamageIncrease)
+      name = "Lightning Damage Dealt Up";
+    if (effect === AltarEffectsEnum.ZeusRareSurge)
+      name = "Surge Over Time";
+    if (effect === AltarEffectsEnum.ZeusRareLightningDamageIncrease)
+      name = "Large Lightning Damage Dealt Up";
+    if (effect === AltarEffectsEnum.ZeusRareStun)
+      name = "Stun Debuff After";
+
     return name;
   }
 
@@ -6560,7 +6671,10 @@ export class LookupService {
     if (type === SubZoneEnum.CalydonBabblingStream || type === SubZoneEnum.CalydonDeadEnd || type === SubZoneEnum.CalydonHeavyThicket ||
       type === SubZoneEnum.CalydonMarkedTreeTrail || type === SubZoneEnum.CalydonMudpit || type === SubZoneEnum.CalydonOvergrownVerdure ||
       type === SubZoneEnum.CalydonShroudedFoliage || type === SubZoneEnum.CalydonSparseClearing || type === SubZoneEnum.CalydonTallGrass ||
-      type === SubZoneEnum.CalydonWateringHole || type === SubZoneEnum.CalydonWelltroddenPathway || type === SubZoneEnum.CalydonWornDownBarn)
+      type === SubZoneEnum.CalydonWateringHole || type === SubZoneEnum.CalydonWelltroddenPathway || type === SubZoneEnum.CalydonWornDownBarn ||
+      type === SubZoneEnum.HuntForYarrowTrailFork1 || type === SubZoneEnum.HuntForYarrowTrailFork2 || type === SubZoneEnum.HuntForYarrowTrailFork3 ||
+      type === SubZoneEnum.HuntForYarrowDenseGreenery1 || type === SubZoneEnum.HuntForYarrowDenseGreenery2 || type === SubZoneEnum.HuntForYarrowDenseGreenery3 ||
+      type === SubZoneEnum.HuntForYarrowPromisingPathway1 || type === SubZoneEnum.HuntForYarrowPromisingPathway2 || type === SubZoneEnum.HuntForYarrowPromisingPathway3)
       return true;
 
     return false;

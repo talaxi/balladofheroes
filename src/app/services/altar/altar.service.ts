@@ -320,6 +320,19 @@ export class AltarService {
           possibleEffects.push(AltarEffectsEnum.NemesisRareDuesUp);
       }
     }
+    if (godType === GodEnum.Zeus) {
+      if (altarType === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.ZeusAttackUp);
+        possibleEffects.push(AltarEffectsEnum.ZeusAttackUpBuff);
+        possibleEffects.push(AltarEffectsEnum.ZeusLightningDamageIncrease);
+      }
+      else if (altarType === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.ZeusRareStun);
+        possibleEffects.push(AltarEffectsEnum.ZeusRareLightningDamageIncrease);
+        if (this.globalService.isGodEquipped(godType) || ignorePartyRequirement)
+          possibleEffects.push(AltarEffectsEnum.ZeusRareSurge);
+      }
+    }
 
     return possibleEffects;
   }
@@ -605,6 +618,40 @@ export class AltarService {
       altarEffect.stacks = false;
       altarEffect.effectOnExpiration = true;    
     }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ZeusAttackUp) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ZeusAttackUpBuff) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusLightningDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.02;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareLightningDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.04;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareSurge) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.tickFrequency = (60 / 10);
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareStun) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+      altarEffect.isEffectMultiplier = false;
+    }
 
     return altarEffect;
   }
@@ -701,7 +748,8 @@ export class AltarService {
       effect.type === AltarEffectsEnum.AthenaRareBlind || effect.type === AltarEffectsEnum.ArtemisRareAttackDebuff || effect.type === AltarEffectsEnum.ApolloRareOstinato ||
       effect.type === AltarEffectsEnum.DionysusRandomDebuff || effect.type === AltarEffectsEnum.AresRareDealHpDamage || effect.type === AltarEffectsEnum.AresDamageOverTime ||
       effect.type === AltarEffectsEnum.DionysusSingleBarrier || effect.type === AltarEffectsEnum.DionysusRareMultiBarrier || effect.type === AltarEffectsEnum.DionysusRareFullDebuffs ||
-      effect.type === AltarEffectsEnum.NemesisLuckDebuff || effect.type === AltarEffectsEnum.NemesisRareDuesUp)    
+      effect.type === AltarEffectsEnum.NemesisLuckDebuff || effect.type === AltarEffectsEnum.NemesisRareDuesUp || effect.type === AltarEffectsEnum.ZeusRareStun ||
+      effect.type === AltarEffectsEnum.ZeusAttackUpBuff)    
       return true;
 
     return false;
@@ -730,6 +778,8 @@ export class AltarService {
       item = ItemsEnum.SmallCharmOfDionysus;
       if (type === GodEnum.Nemesis)
       item = ItemsEnum.SmallCharmOfNemesis;
+      if (type === GodEnum.Zeus)
+      item = ItemsEnum.SmallCharmOfZeus;
 
     return item;
   }
@@ -757,6 +807,8 @@ export class AltarService {
       item = ItemsEnum.LargeCharmOfDionysus;
       if (type === GodEnum.Nemesis)
       item = ItemsEnum.LargeCharmOfNemesis;
+      if (type === GodEnum.Zeus)
+      item = ItemsEnum.LargeCharmOfZeus;
 
     return item;
   }

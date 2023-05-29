@@ -221,6 +221,10 @@ export class CharacterViewComponent implements OnInit {
   getThornsBonus() {
     return this.character.battleStats.thorns;
   }
+  
+  getElementResistanceReductionBonus() {
+    return this.character.battleStats.elementResistanceReduction;
+  }
 
   getAbilityCooldownReductionWithBuffsBonus() {
     return (1 - this.character.battleStats.abilityCooldownReductionWithBuffs);
