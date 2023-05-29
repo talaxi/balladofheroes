@@ -19,6 +19,11 @@
     <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true"
       [notificationColor]="resetNotification"></app-notification-icon>
   </button>
+  <button *ngIf="option.type === shopTypeEnum.OlympicFavor" class="buttonStyled shopButtonText"
+    (click)="openShop(option, olympicFavorModal)">{{getOptionText(option.type)}}
+    <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true"
+      [notificationColor]="resetNotification"></app-notification-icon>
+  </button>
   <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
     to Hades <app-notification-icon [isButton]="true"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText"
@@ -106,6 +111,10 @@
   <app-chthonic-reset-view></app-chthonic-reset-view>
 </ng-template>
 
+<ng-template #olympicFavorModal>
+  <app-olympic-reset-view></app-olympic-reset-view>
+</ng-template>
+
 <ng-template #alchemyModal>
   <app-alchemy-view></app-alchemy-view>
 </ng-template>
@@ -117,7 +126,6 @@
 <ng-template #coliseumModal>
   <app-coliseum-view></app-coliseum-view>
 </ng-template>
-
 
 <ng-template #filterContent>
   <app-filter-items-view [dialogRef]="dialogRef" [prefix]="'shop'"></app-filter-items-view>

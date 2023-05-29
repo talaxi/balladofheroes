@@ -76,6 +76,14 @@ export class AlchemyService {
     return duration;
   }
 
+  doesUserHaveRecipe(item: ItemsEnum) {
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    if (alchemy === undefined)
+      return false;
+
+    return alchemy.availableRecipeItems.some(availableItem => item === availableItem);
+  }
+
   checkForNewRecipes() {
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     if (alchemy === undefined)

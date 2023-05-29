@@ -109,6 +109,9 @@ import { MeleteViewComponent } from './components/subcomponents/melete-view/mele
 import { MeleteActionButtonComponent } from './components/subcomponents/utility/melete-action-button/melete-action-button.component';
 import { SupportViewComponent } from './components/subcomponents/support-view/support-view.component';
 import { FilterItemsViewComponent } from './components/subcomponents/filter-items-view/filter-items-view.component';
+import { OlympicResetViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reset-view.component';
+import { OlympicResetMenuViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reset-menu-view/olympic-reset-menu-view.component';
+import { OlympicRewardMenuViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reward-menu-view/olympic-reward-menu-view.component';
 
 @NgModule({
   declarations: [
@@ -182,7 +185,10 @@ import { FilterItemsViewComponent } from './components/subcomponents/filter-item
     MeleteViewComponent,
     MeleteActionButtonComponent,
     SupportViewComponent,
-    FilterItemsViewComponent,    
+    FilterItemsViewComponent,
+    OlympicResetViewComponent,
+    OlympicResetMenuViewComponent,
+    OlympicRewardMenuViewComponent,    
   ],
   imports: [
     BrowserModule,

@@ -6898,6 +6898,9 @@ export class LookupService {
     if (type === ShopTypeEnum.AugeanStables) {
       text = "Augean Stables";
     }
+    if (type === ShopTypeEnum.OlympicFavor) {
+      text = "Olympic Favor";
+    }
 
     return text;
   }
@@ -6935,6 +6938,9 @@ export class LookupService {
       description = "Thales and Zosime begin to pick up their rhythm again and now take to the seas to follow in the footsteps of Jason and the Argonauts. As they travel east to Colchis, they soon realize that all is not quite like the stories.";
     else if (type === BalladEnum.Labors)
       description = "You finally feel ready to take on the trials of Heracles, the greatest of all mortals. Each step is a difficult one, but you gain new strength along the way.";
+    else if (type === BalladEnum.Olympus)
+      description = "War is finally at the doorstep of Mount Olympus. You arrive before your enemies and begin the necessary preparations.";
+
 
     return description;
   }

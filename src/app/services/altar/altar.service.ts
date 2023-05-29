@@ -180,10 +180,13 @@ export class AltarService {
   getNewAltar(type: AltarEnum, specifiedGod: GodEnum = GodEnum.None, noRepeatingAltars: boolean = true) {
     var altar = new AltarInfo();
 
+    //todo: remove
+    specifiedGod = GodEnum.Hades;
+
     altar.type = type;
-    if (specifiedGod === GodEnum.None)
-      altar.god = this.lookupService.getRandomGodEnum(noRepeatingAltars);
-    else
+    //if (specifiedGod === GodEnum.None)
+      //altar.god = this.lookupService.getRandomGodEnum(noRepeatingAltars);
+    //else
       altar.god = specifiedGod;
     altar.condition = this.getRandomSmallAltarCondition();
     altar.conditionMax = this.getAltarMaxConditions(altar);

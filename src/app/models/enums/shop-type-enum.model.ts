@@ -10,5 +10,6 @@ export enum ShopTypeEnum {
   Jewelcrafter,
   StoryScene24,
   Trader,
-  AugeanStables
+  AugeanStables,
+  OlympicFavor
 }

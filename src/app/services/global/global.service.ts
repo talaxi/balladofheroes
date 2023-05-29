@@ -3263,12 +3263,6 @@ export class GlobalService {
       cooldownReductionStart = character.battleStats.abilityCooldownReductionStart;
     }
 
-    if (ability.name === "Thousand Cuts") {
-      console.log("CDR: " + character.battleStats.abilityCooldownReduction);
-      console.log("CDRWB: " + cooldownReductionWithBuffs);
-      console.log(ability.cooldown + " * " + character.battleStats.abilityCooldownReduction + " * " + cooldownReductionWithBuffs + " = " + (this.utilityService.roundTo(ability.cooldown * (character.battleStats.abilityCooldownReduction * cooldownReductionWithBuffs * cooldownReductionStart), this.utilityService.genericRoundTo)));
-    }
-
     return this.utilityService.roundTo(ability.cooldown * (character.battleStats.abilityCooldownReduction * cooldownReductionWithBuffs * cooldownReductionStart), this.utilityService.genericRoundTo);
   }
 
