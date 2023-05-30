@@ -55,7 +55,7 @@ export class BackgroundService {
 
     if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
       activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
-        this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
+      this.lookupService.userNotInTownBattle()))
       enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {

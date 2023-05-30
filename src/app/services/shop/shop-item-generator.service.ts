@@ -363,6 +363,13 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 25));    
     }
 
+    if (item === ItemsEnum.Dionysus) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+    }
+    if (item === ItemsEnum.Nemesis) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+    }
+
     return new ShopItem(item, purchasePrice, originalStore);
   }
 }

@@ -36,6 +36,9 @@
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText"
     (click)="openShop(option, coliseumModal)">
     {{getOptionText(option.type)}}</button>
+    <button *ngIf="option.type === shopTypeEnum.Trials" class="buttonStyled shopButtonText"
+    (click)="openShop(option, trialsModal)">
+    {{getOptionText(option.type)}}</button>
   <br *ngIf="i < shopOptions.length-1" />
   <br *ngIf="i < shopOptions.length-1" />
 </div>
@@ -125,6 +128,10 @@
 
 <ng-template #coliseumModal>
   <app-coliseum-view></app-coliseum-view>
+</ng-template>
+
+<ng-template #trialsModal>
+  <app-trials-view></app-trials-view>
 </ng-template>
 
 <ng-template #filterContent>

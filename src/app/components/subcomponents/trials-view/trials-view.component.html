@@ -1,0 +1,47 @@
+<div class="centeredText mainPageSectionHeader">
+    <span class="s2Heading">Trials</span>
+</div>
+<div class="container">
+    <div class="overflowable column">
+        <div class="listList">
+            <div class="listBackground">
+                <div class="tournamentGrid">
+                    <div class="standardTournaments">
+                        <div class="tournamentSectionTitle">
+                            <span class="smallCaps tournamentSection">standard</span>
+                            <hr class="tournamentSectionEnder" />
+                        </div>
+                        <div *ngFor="let trial of getStandardTrials(); let i = index" (click)="chooseTrial(trial)"
+                            class="listItem" [ngClass]='getTrialNameColor(trial)'>
+                            <button class="buttonAsText clickableText listItemButton"
+                                [ngClass]='getTrialNameColor(trial)' [innerHtml]="getTrialName(trial)"></button>
+                            <hr class="noMargin" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="vr">
+        <hr class="vrHr" />
+    </div>
+    <div class="column column2">
+        <div *ngIf="selectedTrial !== undefined">
+            <strong><span class="s4Heading smallCaps" [innerHtml]="getTrialName()"></span></strong>
+            <br />
+            <br />
+            <span [innerHtml]="getTrialDescription()"></span>
+            <hr />
+            <div>
+
+                <hr />
+                <div>
+
+                    <br />
+                    <br />
+                    <button class="buttonStyled" (click)="startTrial()">Start Trial</button>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>

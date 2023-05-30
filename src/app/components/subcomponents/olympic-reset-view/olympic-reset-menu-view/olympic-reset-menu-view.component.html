@@ -1,1 +1,16 @@
-<p>olympic-reset-menu-view works!</p>
+<div class="olympicResetView">
+    <!--<button [disabled]="god.level <= 1" class="godResetButton" (click)="resetGod(god)">Reset {{god.name}}</button>-->
+    <div *ngFor="let class of availableCharacters">
+        <div class="class">
+            <span class="godName" [ngClass]="lookupService.getCharacterColorClass(class.type)">{{class.name}}</span>
+            <span class="godLevel" [ngClass]="lookupService.getCharacterColorClass(class.type)">Lv {{class.level}}</span>
+            <span class="godResetText">{{isMobile ? "gain.." : "results in.."}}</span>
+            <div class="godResetResult">
+                +1 Max Level
+                <!--<span class="chthonicFavorKeyword" *ngIf="globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked">{{getChthonicFavor(god) | number : '1.0-2'}} Chthonic Favor<br /></span>
+                <span class="chthonicPowerKeyword">{{getChthonicPower(god) | number : '1.0-2'}} Chthonic Power</span>-->
+            </div>
+        </div>
+        <hr />
+    </div>
+</div>

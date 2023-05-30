@@ -52,6 +52,22 @@ export class JewelcraftingService {
 
     return duration;
   }
+  
+  doesUserHaveRecipe(item: ItemsEnum) {
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+    if (jewelcrafting === undefined)
+      return false;
+
+    return jewelcrafting.availableRecipeItems.some(availableItem => item === availableItem);
+  }
+
+  learnRecipe(item: ItemsEnum) {
+    var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+    if (jewelcrafting === undefined)
+      return;
+
+      jewelcrafting.availableRecipeItems.push(item);
+  }
 
   checkForNewRecipes() {
     var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
@@ -60,127 +76,127 @@ export class JewelcraftingService {
     var newRecipeLearned = false;
 
     if (jewelcrafting.level >= 1) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedRuby)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedRuby));
+      if (!this.doesUserHaveRecipe(ItemsEnum.CrackedRuby)) {
+        this.learnRecipe(ItemsEnum.CrackedRuby);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.CrackedRuby);
       }
     }
     if (jewelcrafting.level >= 2) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedAquamarine)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedAquamarine));
+      if (!this.doesUserHaveRecipe(ItemsEnum.CrackedAquamarine)) {
+        this.learnRecipe(ItemsEnum.CrackedAquamarine);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.CrackedAquamarine);
       }
     }
     if (jewelcrafting.level >= 4) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedOpal)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedOpal));
+      if (!this.doesUserHaveRecipe(ItemsEnum.CrackedOpal)) {
+        this.learnRecipe(ItemsEnum.CrackedOpal);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.CrackedOpal);
       }
     }
     if (jewelcrafting.level >= 7) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorArmorSlotAddition)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorArmorSlotAddition));
+      if (!this.doesUserHaveRecipe(ItemsEnum.MinorArmorSlotAddition)) {
+        this.learnRecipe(ItemsEnum.MinorArmorSlotAddition);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.MinorArmorSlotAddition);
       }
     }
     if (jewelcrafting.level >= 10) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedTopaz)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedTopaz));
+      if (!this.doesUserHaveRecipe(ItemsEnum.CrackedTopaz)) {
+        this.learnRecipe(ItemsEnum.CrackedTopaz);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.CrackedTopaz);
       }
     }
     if (jewelcrafting.level >= 15) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedAmethyst)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedAmethyst));
+      if (!this.doesUserHaveRecipe(ItemsEnum.CrackedAmethyst)) {
+        this.learnRecipe(ItemsEnum.CrackedAmethyst);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.CrackedAmethyst);
       }
     }
     if (jewelcrafting.level >= 20) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.CrackedEmerald)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.CrackedEmerald));
+      if (!this.doesUserHaveRecipe(ItemsEnum.CrackedEmerald)) {
+        this.learnRecipe(ItemsEnum.CrackedEmerald);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.CrackedEmerald);
       }
     }
     if (jewelcrafting.level >= 25) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorNecklaceSlotAddition)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorNecklaceSlotAddition));
+      if (!this.doesUserHaveRecipe(ItemsEnum.MinorNecklaceSlotAddition)) {
+        this.learnRecipe(ItemsEnum.MinorNecklaceSlotAddition);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.MinorNecklaceSlotAddition);
       }
     }
     if (jewelcrafting.level >= 26) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullRuby)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullRuby));
+      if (!this.doesUserHaveRecipe(ItemsEnum.DullRuby)) {
+        this.learnRecipe(ItemsEnum.DullRuby);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.DullRuby);
       }
     }
     if (jewelcrafting.level >= 27) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullAquamarine)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullAquamarine));
+      if (!this.doesUserHaveRecipe(ItemsEnum.DullAquamarine)) {
+        this.learnRecipe(ItemsEnum.DullAquamarine);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.DullAquamarine);
       }
     }
     if (jewelcrafting.level >= 29) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorWeaponSlotAddition)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorWeaponSlotAddition));
+      if (!this.doesUserHaveRecipe(ItemsEnum.MinorWeaponSlotAddition)) {
+        this.learnRecipe(ItemsEnum.MinorWeaponSlotAddition);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.MinorWeaponSlotAddition);
       }
     }
     if (jewelcrafting.level >= 32) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullOpal)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullOpal));
+      if (!this.doesUserHaveRecipe(ItemsEnum.DullOpal)) {
+        this.learnRecipe(ItemsEnum.DullOpal);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.DullOpal);
       }
     }
     if (jewelcrafting.level >= 35) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullTopaz)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullTopaz));
+      if (!this.doesUserHaveRecipe(ItemsEnum.DullTopaz)) {
+        this.learnRecipe(ItemsEnum.DullTopaz);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.DullTopaz);
       }
     }
     if (jewelcrafting.level >= 40) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorShieldSlotAddition)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorShieldSlotAddition));
+      if (!this.doesUserHaveRecipe(ItemsEnum.MinorShieldSlotAddition)) {
+        this.learnRecipe(ItemsEnum.MinorShieldSlotAddition);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.MinorShieldSlotAddition);
       }
     }
     if (jewelcrafting.level >= 42) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullAmethyst)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullAmethyst));
+      if (!this.doesUserHaveRecipe(ItemsEnum.DullAmethyst)) {
+        this.learnRecipe(ItemsEnum.DullAmethyst);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.DullAmethyst);
       }
     }
     if (jewelcrafting.level >= 45) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.DullEmerald)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.DullEmerald));
+      if (!this.doesUserHaveRecipe(ItemsEnum.DullEmerald)) {
+        this.learnRecipe(ItemsEnum.DullEmerald);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.DullEmerald);
       }
     }
     if (jewelcrafting.level >= 48) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.RadiatingLightningStone)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.RadiatingLightningStone));
+      if (!this.doesUserHaveRecipe(ItemsEnum.RadiatingLightningStone)) {
+        this.learnRecipe(ItemsEnum.RadiatingLightningStone);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.RadiatingLightningStone);
       }
     }
     if (jewelcrafting.level >= 50) {
-      if (!jewelcrafting.availableRecipes.some(item => item.createdItem === ItemsEnum.MinorRingSlotAddition)) {
-        jewelcrafting.availableRecipes.push(this.getRecipe(ItemsEnum.MinorRingSlotAddition));
+      if (!this.doesUserHaveRecipe(ItemsEnum.MinorRingSlotAddition)) {
+        this.learnRecipe(ItemsEnum.MinorRingSlotAddition);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.MinorRingSlotAddition);
       }

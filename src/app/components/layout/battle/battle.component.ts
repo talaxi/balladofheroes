@@ -9,6 +9,7 @@ import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
@@ -129,7 +130,7 @@ export class BattleComponent implements OnInit {
 
   isAtTown() {
     if (this.activeSubzone !== undefined) {
-      return this.balladService.isSubzoneTown(this.activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
+      return this.balladService.isSubzoneTown(this.activeSubzone.type) && this.lookupService.userNotInTownBattle();
     }
     return false;
   }
@@ -143,7 +144,8 @@ export class BattleComponent implements OnInit {
 
   doingColiseumFight() {
     if (this.globalService.globalVar.activeBattle !== undefined)
-      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
+      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None ||
+       this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
 
     return false;
   }
@@ -261,7 +263,12 @@ export class BattleComponent implements OnInit {
   }
 
   getTournamentTimeRemaining() {
-    var timeRemaining = this.globalService.globalVar.activeBattle.activeTournament.tournamentTimerLength - this.globalService.globalVar.activeBattle.activeTournament.tournamentTimer;
+    var timeRemaining = 0;
+    
+    if (this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None)
+    timeRemaining = this.globalService.globalVar.activeBattle.activeTournament.tournamentTimerLength - this.globalService.globalVar.activeBattle.activeTournament.tournamentTimer;
+    else if (this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None)
+    timeRemaining = this.globalService.globalVar.activeBattle.activeTrial.timerLength - this.globalService.globalVar.activeBattle.activeTrial.timer;
 
     var value = this.utilityService.convertSecondsToMMSS(timeRemaining);
 

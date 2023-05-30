@@ -6669,6 +6669,92 @@ export class EnemyGeneratorService {
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.1, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);
     }
+    if (type === BestiaryEnum.Athena) {
+      enemy.name = "Athena";
+      enemy.battleStats = new CharacterStats(1.1, 1.05, 1.4, .8, .75, 1);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 20;
+      enemy.xpGainFromDefeat = 6000;            
+    
+    }
+    if (type === BestiaryEnum.Artemis) {
+      enemy.name = "Artemis";
+      enemy.battleStats = new CharacterStats(.8, .985, .75, 1.2, 1.5, 1.1);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 20;
+      enemy.xpGainFromDefeat = 6000;            
+      enemy.battleStats.criticalMultiplier += .6;
+
+      var paralyzingVolley = new Ability();
+      paralyzingVolley.name = "Paralyzing Volley";
+      paralyzingVolley.isAvailable = true;
+      paralyzingVolley.cooldown = 60;
+      paralyzingVolley.currentCooldown = 0;
+      paralyzingVolley.dealsDirectDamage = true;
+      paralyzingVolley.effectiveness = 7.8;
+      paralyzingVolley.isAoe = true;
+      paralyzingVolley.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 60, 0, false, false, true));
+      enemy.abilityList.push(paralyzingVolley);      
+      
+      var woundingArrow = new Ability();
+      woundingArrow.name = "Wounding Arrow";
+      woundingArrow.isAvailable = true;
+      woundingArrow.cooldown = woundingArrow.currentCooldown = 28;
+      woundingArrow.dealsDirectDamage = true;
+      woundingArrow.effectiveness = 5.25;
+      woundingArrow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 15, .5, false, false));
+      enemy.abilityList.push(woundingArrow);      
+
+      var revealingArrow = new Ability();
+      revealingArrow.name = "Revealing Arrow";
+      revealingArrow.isAvailable = true;
+      revealingArrow.cooldown = revealingArrow.currentCooldown = 23;
+      revealingArrow.dealsDirectDamage = true;
+      revealingArrow.effectiveness = 4.8;
+      revealingArrow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 15, .5, false, false));
+      enemy.abilityList.push(revealingArrow);      
+      
+      var exposeWeakness = new Ability();
+      exposeWeakness.name = "Expose Weakness";
+      exposeWeakness.isAvailable = true;
+      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 41;
+      exposeWeakness.dealsDirectDamage = true;
+      exposeWeakness.effectiveness = 6.8;
+      exposeWeakness.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
+      enemy.abilityList.push(exposeWeakness);
+    }
+    if (type === BestiaryEnum.Ares) {
+      enemy.name = "Ares";
+      enemy.battleStats = new CharacterStats(1.4, 1.0325, .725, .9, 1.15, .8775);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 20;
+      enemy.xpGainFromDefeat = 6000;            
+    
+    }
+    if (type === BestiaryEnum.Apollo) {
+      enemy.name = "Apollo";
+      enemy.battleStats = new CharacterStats(1.075, .9, .8, .85, 1.175, 1.45);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 20;
+      enemy.xpGainFromDefeat = 6000;
+    
+    }
+    if (type === BestiaryEnum.Hermes) {
+      enemy.name = "Hermes";
+      enemy.battleStats = new CharacterStats(.7, 1.07, .9, 1.5, 1.1, .6);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 20;
+      enemy.xpGainFromDefeat = 6000;            
+    
+    }
+    if (type === BestiaryEnum.Nemesis) {
+      enemy.name = "Nemesis";
+      enemy.battleStats = new CharacterStats(1.15, 1.01, 1.25, .8, .7, 1.25);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 20;
+      enemy.xpGainFromDefeat = 6000;            
+    
+    }
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

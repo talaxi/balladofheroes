@@ -299,5 +299,8 @@ export enum ItemsEnum {
   PerfectRadiatingFireStone,
   PerfectRadiatingWaterStone,
   PerfectRadiatingAirStone,
-  PerfectRadiatingEarthStone
+  PerfectRadiatingEarthStone,
+  Ambrosia,
+  Nemesis,
+  Dionysus
 }

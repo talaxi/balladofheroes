@@ -126,6 +126,7 @@ export class BalladService {
     this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
+    this.globalService.ResetTrialInfoAfterChangingSubzone();
 
     if (!this.isSubzoneTown(relatedSubzone.type)) {
       var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(relatedSubzone.type);
@@ -373,6 +374,7 @@ export class BalladService {
     this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
+    this.globalService.ResetTrialInfoAfterChangingSubzone();
 
     if (this.isSubzoneTown(subzone.type)) {
       this.globalService.globalVar.settings.set("autoProgress", false);

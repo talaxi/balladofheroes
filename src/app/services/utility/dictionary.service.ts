@@ -4,6 +4,8 @@ import { ColiseumTournamentEnum } from '../../models/enums/coliseum-tournament-e
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { MeleteActionEnum } from 'src/app/models/enums/melete-action-enum.model';
+import { Trial } from 'src/app/models/battle/trial.model';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -701,6 +703,22 @@ export class DictionaryService {
       return "Hades' Trial";
     else if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Eternal Melee";
+    return "";
+  }
+
+  getTrialInfoFromType(type: TrialEnum) {
+    var trial = new Trial();
+    trial.type = type;
+    trial.timerLength = 300;
+    return trial;
+  }
+
+  getTrialName(type: TrialEnum) {
+    if (type === TrialEnum.TrialOfSkill)
+      return "Trial of Skill";
+    if (type === TrialEnum.TrialOfEndurance)
+      return "Trial Of Endurance";
+    
     return "";
   }
 

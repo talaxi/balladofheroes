@@ -5,6 +5,7 @@ import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { ProfessionUpgrades } from 'src/app/models/professions/profession-upgrades.model';
+import { Recipe } from 'src/app/models/professions/recipe.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -35,18 +36,18 @@ export class ProfessionsViewComponent {
 
   ngOnInit() {
     this.isMobile = this.deviceDetectorService.isMobile();
-    this.selectedProfession = this.menuService.selectedProfession;    
+    this.selectedProfession = this.menuService.selectedProfession;
     if (this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession) === undefined)
       return;
-    this.upgrades = this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession)!.upgrades;    
+    this.upgrades = this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession)!.upgrades;
     this.qualityEnumList = this.setupQualityList();
-    
+
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.selectedProfession = this.menuService.selectedProfession;    
+      this.selectedProfession = this.menuService.selectedProfession;
       if (this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession) === undefined)
         return;
-      this.upgrades = this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession)!.upgrades;    
-      this.qualityEnumList = this.setupQualityList();      
+      this.upgrades = this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession)!.upgrades;
+      this.qualityEnumList = this.setupQualityList();
     });
   }
 
@@ -60,8 +61,7 @@ export class ProfessionsViewComponent {
 
   setupQualityList() {
     var qualityTypes: EquipmentQualityEnum[] = [];
-    for (const [propertyKey, propertyValue] of Object.entries(EquipmentQualityEnum))
-    {
+    for (const [propertyKey, propertyValue] of Object.entries(EquipmentQualityEnum)) {
       if (!Number.isNaN(Number(propertyKey))) {
         continue;
       }
@@ -78,13 +78,13 @@ export class ProfessionsViewComponent {
     return this.upgrades.filter(item => item.quality === quality);
   }
 
-  getUpgradeValues(upgrade: ProfessionUpgrades) {    
+  getUpgradeValues(upgrade: ProfessionUpgrades) {
     var description = "";
     var professionText = "";
 
     if (this.selectedProfession === ProfessionEnum.Alchemy)
       professionText = "alchemyText";
-      if (this.selectedProfession === ProfessionEnum.Jewelcrafting)
+    if (this.selectedProfession === ProfessionEnum.Jewelcrafting)
       professionText = "jewelcraftingText";
 
     var obtainedRecipeCount = this.getObtainedRecipeCount(upgrade.quality);
@@ -121,7 +121,12 @@ export class ProfessionsViewComponent {
     var profession = this.globalService.globalVar.professions.find(item => item.type === this.selectedProfession);
 
     if (profession !== undefined) {
-      profession.availableRecipes.forEach(recipe => {
+      var recipeList: Recipe[] = [];
+      profession.availableRecipeItems.forEach(item => {
+        recipeList.push(this.professionService.getRecipe(profession!.type, item));
+      });
+
+      recipeList.forEach(recipe => {
         if (recipe.quality === quality)
           count += 1;
       });
@@ -133,8 +138,7 @@ export class ProfessionsViewComponent {
   getTotalRecipeCount(quality: EquipmentQualityEnum) {
     var count = 0;
     var allItems: ItemsEnum[] = [];
-    for (const [propertyKey, propertyValue] of Object.entries(ItemsEnum))
-    {
+    for (const [propertyKey, propertyValue] of Object.entries(ItemsEnum)) {
       if (!Number.isNaN(Number(propertyKey))) {
         continue;
       }
@@ -142,8 +146,8 @@ export class ProfessionsViewComponent {
       var enumValue = propertyValue as ItemsEnum;
       //every other item type could feasibly be here I think, otherwise add more types to keep this list smaller
       if (enumValue !== ItemsEnum.None && this.lookupService.getItemTypeFromItemEnum(enumValue) !== ItemTypeEnum.Charm
-      && this.lookupService.getItemTypeFromItemEnum(enumValue) !== ItemTypeEnum.Equipment)
-      allItems.push(enumValue);
+        && this.lookupService.getItemTypeFromItemEnum(enumValue) !== ItemTypeEnum.Equipment)
+        allItems.push(enumValue);
     }
 
     allItems.forEach(item => {
@@ -168,19 +172,19 @@ export class ProfessionsViewComponent {
       this.subscription.unsubscribe();
   }
 
-  hasMoreThanOneProfession() {    
+  hasMoreThanOneProfession() {
     return this.globalService.globalVar.professions.filter(item => item.isUnlocked).length > 1;
   }
 
   traverseSubMenu(direction: number) {
     var currentIndex = this.globalService.globalVar.professions.findIndex(item => item.type === this.menuService.selectedProfession);
-      currentIndex += direction;
+    currentIndex += direction;
 
-      if (currentIndex < 0)
-        currentIndex = this.globalService.globalVar.professions.length - 1;
-      if (currentIndex > this.globalService.globalVar.professions.length - 1)
-        currentIndex = 0;
-      
-        this.menuService.setSelectedProfession(this.globalService.globalVar.professions[currentIndex].type);
+    if (currentIndex < 0)
+      currentIndex = this.globalService.globalVar.professions.length - 1;
+    if (currentIndex > this.globalService.globalVar.professions.length - 1)
+      currentIndex = 0;
+
+    this.menuService.setSelectedProfession(this.globalService.globalVar.professions[currentIndex].type);
   }
 }

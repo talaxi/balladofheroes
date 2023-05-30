@@ -144,7 +144,7 @@ export class AppComponent {
   updateGameState(deltaTime: number, activeSubzone: SubZone) {
     var originalDeltaTime = deltaTime;
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, activeSubzone);
-    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;    
+    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.lookupService.userNotInTownBattle();    
     if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
       this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
@@ -248,7 +248,7 @@ export class AppComponent {
   getBatchRunTime(subzone: SubZone, totalDeltaTime: number) {
     var batchRunTime = this.globalService.globalVar.settings.get("loadingAccuracy") ?? this.utilityService.averageLoadingAccuracy;    
 
-    if (this.balladService.isSubzoneTown(subzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
+    if (this.balladService.isSubzoneTown(subzone.type) && this.lookupService.userNotInTownBattle())
       batchRunTime = 30;
 
     return batchRunTime;

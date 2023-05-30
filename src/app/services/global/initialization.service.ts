@@ -675,6 +675,7 @@ export class InitializationService {
       this.globalService.globalVar.chthonicPowers.luckBoostLevel = 5;
       this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 5;
       this.globalService.globalVar.altars.largeAltarsUnlocked = true;
+      this.globalService.globalVar.extraSpeedTimeRemaining = 8 * 60 * 60;
 
       var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FendingMace, 1);
       if (resource !== undefined)
@@ -724,25 +725,25 @@ export class InitializationService {
       if (character1 !== undefined) {
         character1.assignedGod1 = GodEnum.Zeus;
         character1.assignedGod2 = GodEnum.Hermes;
-        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.JaggedSword);
-        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
+        character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BirchBow);
+        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.LightShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.FurArmor);
-        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ScalyRing);
-        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothNecklace);
+        character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.QuadRing);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BloodyNecklace);
       }
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
         character2.assignedGod1 = GodEnum.Dionysus;
         character2.assignedGod2 = GodEnum.Apollo;
-        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.LiquidSaber);
-        character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenShield);
-        character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenArmor);
-        character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.MoltenRing);
-        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SharkstoothPendant);
+        character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.RadiatingHammer);
+        character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SpiritShield);
+        character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.HesperidianArmor);
+        character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.SafeRing);
+        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BloodyNecklace);
       }
 
-      var godLevel = 1999;
+      var godLevel = 799;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {

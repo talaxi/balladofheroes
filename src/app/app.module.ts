@@ -112,6 +112,7 @@ import { FilterItemsViewComponent } from './components/subcomponents/filter-item
 import { OlympicResetViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reset-view.component';
 import { OlympicResetMenuViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reset-menu-view/olympic-reset-menu-view.component';
 import { OlympicRewardMenuViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reward-menu-view/olympic-reward-menu-view.component';
+import { TrialsViewComponent } from './components/subcomponents/trials-view/trials-view.component';
 
 @NgModule({
   declarations: [
@@ -188,7 +189,8 @@ import { OlympicRewardMenuViewComponent } from './components/subcomponents/olymp
     FilterItemsViewComponent,
     OlympicResetViewComponent,
     OlympicResetMenuViewComponent,
-    OlympicRewardMenuViewComponent,    
+    OlympicRewardMenuViewComponent,
+    TrialsViewComponent,    
   ],
   imports: [
     BrowserModule,

@@ -1,0 +1,133 @@
+.container {
+    display: flex;    
+    height: 45vh;
+    margin: 1rem;
+    background-color: var(--background-quarternary);
+    color: var(--foreground-default);
+    padding: .5rem;
+}
+
+.vr {
+    display: flex;
+    height: auto;
+}
+
+.overflowable {
+    overflow-y: auto;
+}
+
+
+.vrHr {
+    margin: 0 1rem;
+    padding: 0;
+    height: auto;
+}
+
+.flexAround {
+    display: flex;
+    justify-content: space-around;
+}
+
+.column {
+    width: 100%;
+}
+
+.column2 {
+    text-align:center;
+}
+
+.mainPageSectionHeader {
+    margin-top: .5rem;
+    color: #FFF;
+}
+
+.listItem {
+    cursor: pointer;
+}
+
+.listItemButton {
+    font-size: 1rem;
+    vertical-align: middle;
+    margin-left: .25rem;
+    margin-top: .5rem;
+    font-variant: small-caps;
+    font-weight: bold;
+}
+
+.listItem:hover {
+    background-color: var(--button-hover);    
+}
+.active {
+    background-color: var(--button-selected) !important;
+    color: var(--foreground-secondary) !important;
+}
+
+.activeBackground {
+    background-color: var(--button-selected) !important;    
+}
+
+.activeText {
+    color: var(--foreground-secondary) !important;
+}
+
+.rewardAlreadyObtained {
+    text-decoration: line-through;
+}
+
+.tournamentGrid {
+    display: grid;
+    height:100%;
+    grid-template-columns: auto;
+    grid-template-rows: 70% 1fr;
+    row-gap: 1rem;
+    justify-content: stretch;
+    grid-template-areas:
+        "standardTournaments"
+        "specialTournaments";
+}
+
+.standardTournaments {
+    grid-area: standardTournaments;
+    overflow: auto;
+}
+
+.specialTournaments {
+    grid-area: specialTournaments;
+    overflow: auto;
+}
+
+.listList, .listBackground {
+    height: 100%;
+}
+
+.tournamentSectionTitle {
+    display: grid;
+    height: auto;    
+    grid-template-columns: auto auto 1fr;
+    grid-template-rows: auto;
+    column-gap: .25rem;
+    justify-content: stretch;
+    grid-template-areas:
+        "recipeSectionToggle recipeSection recipeSectionEnder";
+    align-items: center;
+
+    color: #fff;
+    font-weight: bold;
+
+}
+
+.tournamentSection {
+    grid-area: recipeSection;
+}
+
+.tournamentSectionToggle {
+    grid-area: recipeSectionToggle;
+    width: 1.5rem;
+    padding: 2px 6px;
+}
+
+.tournamentSectionEnder {
+    grid-area: recipeSectionEnder;
+    width: 99%;
+    height: 0;
+}

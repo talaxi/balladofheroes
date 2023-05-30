@@ -3458,8 +3458,8 @@ export class SubZoneGeneratorService {
     }
 
     if (subzoneType === SubZoneEnum.MountOlympusOlympus) {
-      //zenith trials?
       shopOptions.push(new ShopOption(ShopTypeEnum.OlympicFavor, []));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Trials, []));
 
       return shopOptions;
     }

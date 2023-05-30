@@ -40,6 +40,7 @@ import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.mo
 import { DictionaryService } from '../utility/dictionary.service';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 import { Equipment } from 'src/app/models/resources/equipment.model';
+import { Trial } from 'src/app/models/battle/trial.model';
 
 @Injectable({
   providedIn: 'root'
@@ -3195,6 +3196,28 @@ export class GlobalService {
 
   canEnterWeeklyMelee() {
     return this.globalVar.sidequestData.weeklyMeleeEntries > 0;
+  }
+
+  ResetTrialInfoAfterChangingSubzone() {   
+    this.globalVar.activeBattle.activeTrial = this.setNewTrial(false);
+  }
+
+  setNewTrial(canRepeat: boolean = false) {
+    if (!canRepeat)
+      return new Trial();
+
+    var type = this.dictionaryService.getTrialInfoFromType(this.globalVar.activeBattle.activeTrial.type);
+
+    return this.startTrial(type);
+  }
+
+  startTrial(trial: Trial) {
+    var battle = new Battle();
+    battle.activeTrial = trial;
+
+    this.globalVar.activeBattle = battle;
+
+    return battle.activeTrial;
   }
 
   gainResource(item: ResourceValue) {

@@ -15,7 +15,7 @@ export class Profession {
     upgrades: ProfessionUpgrades[]; //each array item is for a different quality of recipe
     availableRecipeItems: number[];
     @Type(() => Recipe)
-    availableRecipes: Recipe[];
+    availableRecipes: Recipe[]; //DEPRECATED
 
     creatingRecipe: Recipe | undefined;
     creationTimer: number;

@@ -232,4 +232,10 @@ export enum BestiaryEnum {
   Orthrus,
   Geryon,
   None,
+  Artemis,
+  Athena,
+  Hermes,
+  Apollo,
+  Ares,
+  Nemesis
 }

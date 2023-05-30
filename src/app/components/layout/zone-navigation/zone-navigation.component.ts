@@ -186,6 +186,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
+    this.globalService.ResetTrialInfoAfterChangingSubzone();
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
@@ -215,6 +216,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
+      this.globalService.ResetTrialInfoAfterChangingSubzone();
 
       //var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
       //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -238,6 +240,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
+      this.globalService.ResetTrialInfoAfterChangingSubzone();
 
       //var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
       //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);

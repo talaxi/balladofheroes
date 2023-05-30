@@ -175,10 +175,8 @@ export class AltarComponent implements OnInit {
   }
 
   gainThreshold2Reward() {
-    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
-
-    if (alchemy !== undefined && !alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.RejuvenatingElixir)) {
-      alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.RejuvenatingElixir));
+    if (!this.alchemyService.doesUserHaveRecipe(ItemsEnum.RejuvenatingElixir)) {
+      this.alchemyService.learnRecipe(ItemsEnum.RejuvenatingElixir);
       
       var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.dictionaryService.getItemName(ItemsEnum.RejuvenatingElixir) + "</strong>.";
       

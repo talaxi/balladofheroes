@@ -53,6 +53,8 @@ import { DictionaryService } from '../utility/dictionary.service';
 import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { God } from 'src/app/models/character/god.model';
+import { TrialService } from './trial.service';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -72,7 +74,7 @@ export class BattleService {
     private lookupService: LookupService, private storyService: StoryService, private achievementService: AchievementService,
     private menuService: MenuService, public dialog: MatDialog, private tutorialService: TutorialService,
     private dpsCalculatorService: DpsCalculatorService, private coliseumService: ColiseumService, private altarService: AltarService,
-    private professionService: ProfessionService, private dictionaryService: DictionaryService) { }
+    private professionService: ProfessionService, private dictionaryService: DictionaryService, private trialService: TrialService) { }
 
   handleBattle(deltaTime: number, loadingContent: any) {
     deltaTime = this.utilityService.roundTo(deltaTime, this.utilityService.genericRoundTo);
@@ -119,7 +121,7 @@ export class BattleService {
       }
     }
     else {
-      if (this.lookupService.isSubzoneATown(subZone.type) && this.battle.activeTournament.type === ColiseumTournamentEnum.None) //no need to check any battle info
+      if (this.lookupService.isSubzoneATown(subZone.type) && this.lookupService.userNotInTownBattle(this.battle)) //no need to check any battle info
       {
         this.battle.atTown = true;
 
@@ -161,6 +163,16 @@ export class BattleService {
             this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You ran out of time before successfully completing your coliseum fight. You finished in round " + this.battle.activeTournament.currentRound + (this.battle.activeTournament.maxRounds !== -1 ? " of " + this.battle.activeTournament.maxRounds : "") + ".");
             this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
             this.battle.activeTournament = this.globalService.setNewTournament(true);
+          }
+        }
+
+        if (this.battle.activeTrial.type !== TrialEnum.None) {
+          this.battle.activeTrial.timer += deltaTime;
+
+          if (this.battle.activeTrial.timer >= this.battle.activeTrial.timerLength) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You ran out of time before successfully completing your trial.");
+            //this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
+            this.battle.activeTrial = this.globalService.setNewTrial(false);
           }
         }
       }
@@ -419,15 +431,19 @@ export class BattleService {
 
   initializeEnemyList() {
     var subZone = this.balladService.getActiveSubZone();
+    var enemyOptions: EnemyTeam[] = [];
 
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
       //tournament battles
       //console.log("Get " + this.battle.activeTournament.type + " enemy options for round " + this.battle.activeTournament.currentRound);
-      var enemyOptions = this.coliseumService.generateBattleOptions(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
+      enemyOptions = this.coliseumService.generateBattleOptions(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
+    }
+    else if (this.battle.activeTrial.type !== TrialEnum.None) {
+      enemyOptions = this.trialService.generateBattleOptions(this.battle.activeTrial);
     }
     else {
       //all standard battles
-      var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subZone.type);
+      enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subZone.type);
     }
 
     var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];

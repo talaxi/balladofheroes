@@ -11,5 +11,6 @@ export enum ShopTypeEnum {
   StoryScene24,
   Trader,
   AugeanStables,
-  OlympicFavor
+  OlympicFavor,
+  Trials
 }

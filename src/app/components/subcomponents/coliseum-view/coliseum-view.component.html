@@ -21,7 +21,7 @@
                             <hr class="noMargin" />
                         </div>
                     </div>
-                    <div class="specialTournaments">
+                    <div *ngIf="getSpecialColiseumTournaments().length > 0" class="specialTournaments">
                         <div class="tournamentSectionTitle">
                             <!--<button (click)="toggleQualitySection(qualityType)" class="buttonStyled smallButtonStyled recipeSectionToggle">{{hideRecipesByQuality(qualityType) ? "+" : "-"}}</button> -->
                             <span class="smallCaps tournamentSection">special</span>

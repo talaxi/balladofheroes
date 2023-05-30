@@ -23,12 +23,14 @@ export class JewelcraftingViewComponent {
   createAmount = 1;
   @ViewChild('confirmationBox') confirmationBox: any;
   jewelcrafting: Profession | undefined;
+  recipeList: Recipe[];
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
     private jewelcraftingService: JewelcraftingService, private professionService: ProfessionService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+    this.getFullRecipeList();
   }
 
   selectRecipe(recipe: Recipe) {
@@ -68,10 +70,21 @@ export class JewelcraftingViewComponent {
     return this.dictionaryService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
   }
 
+  getFullRecipeList() {
+    if (this.jewelcrafting === undefined)
+      return;
+
+    this.recipeList = [];
+    this.jewelcrafting.availableRecipeItems.forEach(item => {
+      this.recipeList.push(this.jewelcraftingService.getRecipe(item));
+    });
+  }
+
   getRecipeList(quality: EquipmentQualityEnum) {
     if (this.jewelcrafting === undefined)
       return [];
-    return this.jewelcrafting.availableRecipes.filter(item => item.quality === quality).reverse();
+
+    return this.recipeList.filter(item => item.quality === quality).reverse();
   }
 
   getSelectedRecipeName() {
@@ -275,7 +288,15 @@ export class JewelcraftingViewComponent {
   }
 
   recipesAtQualityLevelAmount(quality: EquipmentQualityEnum) {
-    return this.jewelcrafting?.availableRecipes.filter(item => item.quality === quality).length;
+    if (this.jewelcrafting === undefined)
+      return [];
+
+    var recipeList: Recipe[] = [];
+    this.jewelcrafting.availableRecipeItems.forEach(item => {
+      recipeList.push(this.jewelcraftingService.getRecipe(item));
+    });
+
+    return recipeList.filter(item => item.quality === quality).length;
   }
 
   toggleQualitySection(quality: EquipmentQualityEnum) {

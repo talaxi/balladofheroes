@@ -679,7 +679,55 @@ export class VersionControlService {
           });
         }
         if (version === .6) {
-          this.globalService.globalVar.settings.set("autoExportOnUpdate", true);
+          this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
+          this.initializationService.initializeBalladOfOlympus();
+
+          var geryonsFarm = this.balladService.findSubzone(SubZoneEnum.ErytheiaGeryonsFarm);
+          if (geryonsFarm !== undefined && geryonsFarm.isAvailable && geryonsFarm.victoryCount > 0) {
+            var olympus = this.balladService.findBallad(BalladEnum.Olympus);
+            var mountOlympus = this.balladService.findZone(ZoneEnum.MountOlympus);
+            var upTheMountain = this.balladService.findSubzone(SubZoneEnum.MountOlympusUpTheMountain);
+
+            if (olympus !== undefined) {
+              olympus.isAvailable = true;
+              olympus.notify = true;
+            }
+            if (mountOlympus !== undefined) {
+              mountOlympus.isAvailable = true;
+              mountOlympus.notify = true;
+            }
+            if (upTheMountain !== undefined) {
+              upTheMountain.isAvailable = true;
+              upTheMountain.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(upTheMountain.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
+            
+          }
+          //TODO: remove, this is just for testing
+          var olympusSubzone = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
+          olympusSubzone!.isAvailable = true;
+          //^^^
+
+          var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined) {
+            alchemy.availableRecipes.forEach(recipe => {
+              alchemy!.availableRecipeItems.push(recipe.createdItem);
+            });
+
+            alchemy.availableRecipes = [];
+          }
+
+          var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined) {
+            jewelcrafting.availableRecipes.forEach(recipe => {
+              jewelcrafting!.availableRecipeItems.push(recipe.createdItem);
+            });
+
+            jewelcrafting.availableRecipes = [];
+          }
         }
 
         this.globalService.globalVar.currentVersion = version;

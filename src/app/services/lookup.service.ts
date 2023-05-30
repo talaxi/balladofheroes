@@ -7,6 +7,8 @@ import { Character } from '../models/character/character.model';
 import { Enemy } from '../models/character/enemy.model';
 import { God } from '../models/character/god.model';
 import { OverdriveInfo } from '../models/character/overdrive-info.model';
+import { ColiseumTournamentEnum } from '../models/enums/coliseum-tournament-enum.model';
+import { TrialEnum } from '../models/enums/trial-enum.model';
 import { AchievementTypeEnum } from '../models/enums/achievement-type-enum.copy';
 import { AffinityLevelRewardEnum } from '../models/enums/affinity-level-reward-enum.model';
 import { ProfessionActionsEnum } from '../models/enums/profession-actions-enum.model';
@@ -49,6 +51,7 @@ import { EquipmentService } from './resources/equipment.service';
 import { DictionaryService } from './utility/dictionary.service';
 import { ShopTypeEnum } from '../models/enums/shop-type-enum.model';
 import { BalladEnum } from '../models/enums/ballad-enum.model';
+import { Battle } from '../models/battle/battle.model';
 
 @Injectable({
   providedIn: 'root'
@@ -6386,7 +6389,7 @@ export class LookupService {
       || subzoneEnum === SubZoneEnum.CalydonTownMarket || subzoneEnum === SubZoneEnum.CalydonAltarOfAsclepius || subzoneEnum === SubZoneEnum.AegeanSeaIolcus ||
       subzoneEnum === SubZoneEnum.AegeanSeaSalmydessus || subzoneEnum === SubZoneEnum.BlackSeaMariandyna || subzoneEnum === SubZoneEnum.ColchisCityCenter
       || subzoneEnum === SubZoneEnum.NemeaCleonea || subzoneEnum === SubZoneEnum.StymphaliaTiryns || subzoneEnum === SubZoneEnum.CoastOfCreteElis ||
-      subzoneEnum === SubZoneEnum.ErytheiaCadiz)
+      subzoneEnum === SubZoneEnum.ErytheiaCadiz || subzoneEnum === SubZoneEnum.MountOlympusOlympus)
       return true;
 
     return false;
@@ -6901,6 +6904,9 @@ export class LookupService {
     if (type === ShopTypeEnum.OlympicFavor) {
       text = "Olympic Favor";
     }
+    if (type === ShopTypeEnum.Trials) {
+      text = "Trials";
+    }
 
     return text;
   }
@@ -6943,5 +6949,12 @@ export class LookupService {
 
 
     return description;
+  }
+
+  userNotInTownBattle(battle?: Battle) {
+    if (battle === undefined)
+      battle = this.globalService.globalVar.activeBattle;
+
+    return battle.activeTournament.type === ColiseumTournamentEnum.None && battle.activeTrial.type === TrialEnum.None;
   }
 }
