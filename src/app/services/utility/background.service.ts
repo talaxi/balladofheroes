@@ -250,7 +250,7 @@ export class BackgroundService {
           }
           else
           {
-            surge.effectiveness *= effect.effectiveness;
+            surge.effectiveness = ((surge.effectiveness - 1) * effect.effectiveness) + 1;
           }
         }
       }

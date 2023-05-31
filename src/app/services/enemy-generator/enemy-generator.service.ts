@@ -6671,11 +6671,43 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Athena) {
       enemy.name = "Athena";
-      enemy.battleStats = new CharacterStats(1.1, 1.05, 1.4, .8, .75, 1);
+      enemy.battleStats = new CharacterStats(.825, 1.05, .675, .8, .75, .375);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
       enemy.xpGainFromDefeat = 6000;            
-    
+      enemy.battleStats.elementResistance.holy += .25;
+      enemy.battleStats.elementIncrease.holy += .5;
+      enemy.battleStats.hpRegen = 750;
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, -1, 11, false, true, false));
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, -1, 11, false, true, false));
+      
+      var divineStrike = new Ability();
+      divineStrike.name = "Divine Strike";
+      divineStrike.isAvailable = true;
+      divineStrike.cooldown = divineStrike.currentCooldown = 30;
+      divineStrike.dealsDirectDamage = true;
+      divineStrike.effectiveness = 8.65;
+      divineStrike.elementalType = ElementalTypeEnum.Holy;
+      divineStrike.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .75, true, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Divine Strike"));
+      enemy.abilityList.push(divineStrike);
+
+      var heavenlyShield = new Ability();
+      heavenlyShield.name = "Heavenly Shield";
+      heavenlyShield.isAvailable = true;
+      heavenlyShield.cooldown = heavenlyShield.currentCooldown = 60;
+      heavenlyShield.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 30, .7, false, true));
+      enemy.abilityList.push(heavenlyShield);
+
+      var blindingLight = new Ability();
+      blindingLight.name = "Blinding Light";
+      blindingLight.isAvailable = true;
+      blindingLight.cooldown = blindingLight.currentCooldown = 38;
+      blindingLight.isAoe = true;
+      blindingLight.dealsDirectDamage = true;
+      blindingLight.effectiveness = 3.3;
+      blindingLight.elementalType = ElementalTypeEnum.Holy;
+      blindingLight.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 15, 1, false, false, true));
+      enemy.abilityList.push(blindingLight);
     }
     if (type === BestiaryEnum.Artemis) {
       enemy.name = "Artemis";
@@ -6684,6 +6716,9 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 20;
       enemy.xpGainFromDefeat = 6000;            
       enemy.battleStats.criticalMultiplier += .6;
+      enemy.battleStats.armorPenetration += .2;
+      enemy.battleStats.elementResistance.lightning += .25;
+      enemy.battleStats.elementResistance.air += .25;
 
       var paralyzingVolley = new Ability();
       paralyzingVolley.name = "Paralyzing Volley";
@@ -6717,7 +6752,7 @@ export class EnemyGeneratorService {
       var exposeWeakness = new Ability();
       exposeWeakness.name = "Expose Weakness";
       exposeWeakness.isAvailable = true;
-      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 41;
+      exposeWeakness.cooldown = exposeWeakness.currentCooldown = 37;
       exposeWeakness.dealsDirectDamage = true;
       exposeWeakness.effectiveness = 6.8;
       exposeWeakness.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
@@ -6737,6 +6772,8 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
       enemy.xpGainFromDefeat = 6000;
+      enemy.battleStats.elementResistance.earth -= .25;
+      enemy.battleStats.elementResistance.fire -= .25;
     
     }
     if (type === BestiaryEnum.Hermes) {
@@ -6744,7 +6781,9 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(.7, 1.07, .9, 1.5, 1.1, .6);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
-      enemy.xpGainFromDefeat = 6000;            
+      enemy.xpGainFromDefeat = 6000;    
+      enemy.battleStats.elementResistance.air += .25; 
+      enemy.battleStats.elementResistance.earth += .25;       
     
     }
     if (type === BestiaryEnum.Nemesis) {
@@ -6752,7 +6791,13 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(1.15, 1.01, 1.25, .8, .7, 1.25);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
-      enemy.xpGainFromDefeat = 6000;            
+      enemy.xpGainFromDefeat = 6000;          
+      enemy.battleStats.elementResistance.water += .5;
+      enemy.battleStats.elementResistance.fire += .5;
+      enemy.battleStats.elementResistance.air += .5;
+      enemy.battleStats.elementResistance.lightning += .5;
+      enemy.battleStats.elementResistance.earth += .5;
+      enemy.battleStats.elementResistance.holy += .5;  
     
     }
 

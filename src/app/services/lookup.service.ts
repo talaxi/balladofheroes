@@ -141,7 +141,7 @@ export class LookupService {
     if (type === GodEnum.Apollo)
       description = "Apollo, God of Archery and Music, focuses on strengthening and healing allies. His abilities and upgrades allow the user to heal over time and provide a variety of buffs to the party.";
     if (type === GodEnum.Zeus)
-      description = "";
+      description = "Zeus, King of the Gods, focuses on dealing high ability damage. His abilities have various ways of increasing damage including dealing significantly more damage after each Lightning ability.";
     if (type === GodEnum.Ares)
       description = "Ares, God of War, focuses on creating as many damage over time effects as possible. His abilities and upgrades revolve around creating and improving the damage of damage over time effects.";
     if (type === GodEnum.Poseidon)
@@ -1020,7 +1020,7 @@ export class LookupService {
       equipmentPiece.stats.aoeDamage = .15;
       equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
       equipmentPiece.equipmentEffect.chance = .25;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", undefined, undefined, undefined, undefined, false));
+      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", 15000, undefined, undefined, undefined, false));
     }
 
     //bows
@@ -1815,9 +1815,9 @@ export class LookupService {
 
     //Zeus
     if (abilityName === "Overload")
-      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by <strong>" + this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2) + "%</strong>. Passive.";
+      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by <strong>" + this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness - 1) * 100, 2) + "%</strong>. Passive.";
     if (abilityName === "Lightning Bolt")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This has a <strong>" + (this.utilityService.genericRound(relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> chance to stun the target for " + secondaryEffectiveAmount + " seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This has a <strong>" + (this.utilityService.genericRound(relatedTargetGainStatusEffectEffectiveness * 100)) + "%</strong> chance to stun the target for " + secondaryEffectiveAmount + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Electrify")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Increase the Lightning Damage taken by the target by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Chain Lightning")
@@ -2749,7 +2749,7 @@ export class LookupService {
       description = "Increase Agility by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.AttackUp)
       description = "Increase Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
-    if (statusEffect.type === StatusEffectEnum.DefenseUp)
+    if (statusEffect.type === StatusEffectEnum.DefenseUp) 
       description = "Increase Defense by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.LuckUp)
       description = "Increase Luck by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -2760,7 +2760,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
       description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Surge)
-      description = "Increase damage dealt by next ability by " + this.utilityService.genericRound((statusEffect.effectiveness) * 100) + "%.";
+      description = "Increase damage dealt by next ability by " + this.utilityService.genericRound((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
       description = "Increase damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
@@ -4102,7 +4102,7 @@ export class LookupService {
 
         if (effect.type === StatusEffectEnum.InstantHpPercentDamage) {
           if (equipment.itemType === ItemsEnum.RadiatingHammer)
-            equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's HP.<br/>";
+            equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's HP, up to " + this.utilityService.bigNumberReducer(effect.threshold) + " damage.<br/>";
         }
 
 
@@ -4156,7 +4156,7 @@ export class LookupService {
           equipmentEffects += "Increase Armor Penetration by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
         if (effect.type === StatusEffectEnum.InstantAutoAttack)
-          equipmentEffects += "Immediately trigger another auto attack.<br/>";
+          equipmentEffects += "Immediately trigger another auto attack. Can only trigger once per auto attack.<br/>";
 
 
         if (effect.type === StatusEffectEnum.ReduceDirectDamage)

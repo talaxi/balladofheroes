@@ -89,14 +89,15 @@ export class TrialService {
   getAvailableBattlesForTrialOfSkill(previousBattle: BestiaryEnum = BestiaryEnum.None) {
     var enemyOptions: BestiaryEnum[] = [];
 
+    //TODO: fix this
     enemyOptions.push(BestiaryEnum.Athena);
-    enemyOptions.push(BestiaryEnum.Artemis);
-    enemyOptions.push(BestiaryEnum.Hermes);
-    enemyOptions.push(BestiaryEnum.Ares);
-    enemyOptions.push(BestiaryEnum.Apollo);
-    enemyOptions.push(BestiaryEnum.Nemesis);
+    //enemyOptions.push(BestiaryEnum.Artemis);
+    //enemyOptions.push(BestiaryEnum.Hermes);
+    //enemyOptions.push(BestiaryEnum.Ares);
+    //enemyOptions.push(BestiaryEnum.Apollo);
+    //enemyOptions.push(BestiaryEnum.Nemesis);
 
-    enemyOptions = enemyOptions.filter(item => item !== previousBattle);
+    //enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
     return enemyOptions;
   }  
@@ -134,12 +135,12 @@ export class TrialService {
     //increase weight of the highest stats if needed
     //divide these totals by 6, maybe *5 or something, and then apply the factor from enemy generator
     //maybe give each god some secondary stats as well
-    var hpFactor = 25;
-    var attackFactor = .6;
-    var defenseFactor = 6;
+    var hpFactor = 35;
+    var attackFactor = .7;
+    var defenseFactor = 7.75;
     var agilityFactor = 2.25;
-    var luckFactor = 1.5;
-    var resistanceFactor = 1.75;
+    var luckFactor = 1.65;
+    var resistanceFactor = 1.9;
     
     enemy.battleStats.maxHp = Math.round(enemy.battleStats.maxHp * individualStatTotal * 5 * hpFactor);
     enemy.battleStats.attack = Math.round(enemy.battleStats.attack * individualStatTotal * attackFactor);
@@ -149,6 +150,11 @@ export class TrialService {
     enemy.battleStats.resistance = Math.round(enemy.battleStats.resistance * individualStatTotal * resistanceFactor);
 
     enemy.battleStats.currentHp = enemy.battleStats.maxHp;
+
+    if (enemy.bestiaryType === BestiaryEnum.Athena)
+    {
+      enemy.battleStats.hpRegen = enemy.battleStats.maxHp / 1500;
+    }
 
     return enemy;
   }

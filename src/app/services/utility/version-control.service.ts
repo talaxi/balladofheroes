@@ -104,7 +104,7 @@ export class VersionControlService {
     return date.toDateString().replace(/^\S+\s/, '');
   }
 
-  updatePlayerVersion(autoExport: boolean = false) { 
+  updatePlayerVersion(autoExport: boolean = false) {
     if (autoExport && this.getCurrentVersion() > this.globalService.globalVar.currentVersion) {
       this.exportData();
     }
@@ -671,9 +671,9 @@ export class VersionControlService {
             }
 
             if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Thorns) &&
-             (character.equipmentSet.shield === undefined || (character.equipmentSet.shield.itemType !== ItemsEnum.Aegis && character.equipmentSet.shield.itemType !== ItemsEnum.SpikedShield)) &&
-             (character.equipmentSet.armor === undefined || character.equipmentSet.armor.itemType !== ItemsEnum.ScaleArmor) && 
-             (character.equipmentSet.ring === undefined || character.equipmentSet.ring.itemType !== ItemsEnum.ScalyRing)) {
+              (character.equipmentSet.shield === undefined || (character.equipmentSet.shield.itemType !== ItemsEnum.Aegis && character.equipmentSet.shield.itemType !== ItemsEnum.SpikedShield)) &&
+              (character.equipmentSet.armor === undefined || character.equipmentSet.armor.itemType !== ItemsEnum.ScaleArmor) &&
+              (character.equipmentSet.ring === undefined || character.equipmentSet.ring.itemType !== ItemsEnum.ScalyRing)) {
               character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ReduceDirectDamage);
             }
           });
@@ -681,6 +681,38 @@ export class VersionControlService {
         if (version === .6) {
           this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
           this.initializationService.initializeBalladOfOlympus();
+
+          var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
+          if (zeus !== undefined)
+            this.globalService.assignGodAbilityInfo(zeus);
+
+          var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+          if (apollo !== undefined) {
+            var ability1 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.userEffect[0].effectiveness = 1.15 + ((ability1.userEffect[0].effectiveness - 1.15) * (3 / 4));
+            }
+
+            var ability2 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.userEffect[0].effectiveness = 1.15 + ((ability2.userEffect[0].effectiveness - 1.15) * (3 / 4));
+            }
+
+            var ability3 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (ability3 !== undefined) {
+              ability3.userEffect[0].effectiveness = 1.15 + ((ability3.userEffect[0].effectiveness - 1.2) * (3 / 4));
+            }
+          }
+
+          var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+          if (ares !== undefined) {
+            var ability1 = ares.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.targetEffect[0].duration -= 5;
+              ability1.cooldown += 1;
+              ability1.targetEffect[0].duration -= Math.floor(ability1.abilityUpgradeLevel / 5) * .25;
+            }
+          }
 
           var geryonsFarm = this.balladService.findSubzone(SubZoneEnum.ErytheiaGeryonsFarm);
           if (geryonsFarm !== undefined && geryonsFarm.isAvailable && geryonsFarm.victoryCount > 0) {
@@ -704,7 +736,7 @@ export class VersionControlService {
                 this.globalService.globalVar.achievements.push(achievement);
               });
             }
-            
+
           }
           //TODO: remove, this is just for testing
           var olympusSubzone = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);

@@ -1,9 +1,11 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { Trial } from 'src/app/models/battle/trial.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
-import { ColiseumService } from 'src/app/services/battle/coliseum.service';
+import { TrialService } from 'src/app/services/battle/trial.service';
+import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
@@ -17,9 +19,11 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class TrialsViewComponent {
   selectedTrial: Trial;
   repeatColiseumFight: boolean = false;
+  tooltipDirection = DirectionEnum.Left;
 
-  constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
-    private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
+  constructor(private trialService: TrialService, private globalService: GlobalService, public dialog: MatDialog,
+    private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
+    private enemyGeneratorService: EnemyGeneratorService) { }
 
   ngOnInit(): void { 
     var standardTrials = this.getStandardTrials();
@@ -40,19 +44,10 @@ export class TrialsViewComponent {
       }
     }
 
-    //Trials.sort((a, b) => this.sortColiseumList(a, b));
-
     return Trials;
   }
 
-  /*sortColiseumList(a: TrialEnum, b: TrialEnum) {
-    var aLevel = this.getColiseumCompletionLevel(a);
-    var bLevel = this.getColiseumCompletionLevel(b);
-    return aLevel < bLevel ? -1 : aLevel > bLevel ? 1 : 0;
-  }*/
-
   chooseTrial(trial: TrialEnum) {
-    console.log("Chose trial " + trial);
     this.selectedTrial = this.dictionaryService.getTrialInfoFromType(trial);
   }
 
@@ -65,7 +60,32 @@ export class TrialsViewComponent {
   }
 
   getTrialDescription() {
-    return "";//this.coliseumService.getTournamentDescription(this.selectedTrial.type);
+    return "Do battle with a random god of Olympus. If you succeed, you will receive a buff increasing XP and Item Drop Rate for a duration of time.";
+  }
+
+  getEnemyTrialBoss() {
+    return this.enemyGeneratorService.generateEnemy(this.trialService.getTrialOfSkillBattle());
+  }
+
+  getTrialBossName() {
+    var boss = this.enemyGeneratorService.generateEnemy(this.trialService.getTrialOfSkillBattle());
+    
+    return "<span class='" + this.getGodColorClass(boss.name) + "'>" + boss.name + "</span>";
+  }
+
+  getGodColorClass(name: string) {
+    return {
+      'athenaColor': name === "Athena",
+      'zeusColor': name === "Zeus",
+      'apolloColor': name === "Apollo",
+      'aresColor': name === "Ares",
+      'poseidonColor': name === "Poseidon",
+      'artemisColor': name === "Artemis",
+      'hermesColor': name === "Hermes",
+      'hadesColor': name === "Hades",
+      'dionysusColor': name === "Dionysus",
+      'nemesisColor': name === "Nemesis"
+    };
   }
 
   /*getFirstTimeCompletionRewards() {
@@ -164,6 +184,37 @@ export class TrialsViewComponent {
   startTrial() {
     this.globalService.startTrial(this.selectedTrial);
     this.dialog.closeAll();
+  }
+
+  getRemainingPreferredGodTime() {
+    var date = new Date();
+    var endDate = new Date();
+
+    var remainingTime = 0;
+
+    if (date.getHours() >= this.utilityService.preferredGodStartTime2 && date.getHours() < this.utilityService.preferredGodEndTime2) {
+      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime2);
+      endDate.setMinutes(0, 0, 0);
+    }
+    else if (date.getHours() >= this.utilityService.preferredGodStartTime3 || date.getHours() < this.utilityService.preferredGodEndTime3) //between 8 PM and 3:59 AM
+    {
+      //in day prior
+      if (date.getHours() >= this.utilityService.preferredGodStartTime3)
+      {
+        endDate = new Date(new Date().setDate(new Date().getDate() + 1));
+        
+      }
+      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime3);
+      endDate.setMinutes(0, 0, 0);
+    }
+    else {
+      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime1);
+      endDate.setMinutes(0, 0, 0);
+    }
+
+    remainingTime = (endDate.getTime() - date.getTime()) / 1000;
+
+    return this.utilityService.convertSecondsToHHMMSS(remainingTime);
   }
 
   openModal(content: any) {    

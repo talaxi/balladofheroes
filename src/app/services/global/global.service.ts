@@ -41,6 +41,7 @@ import { DictionaryService } from '../utility/dictionary.service';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { Trial } from 'src/app/models/battle/trial.model';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -435,7 +436,7 @@ export class GlobalService {
       coda.requiredLevel = this.utilityService.godAbility3Level;
       coda.cooldown = coda.currentCooldown = 60;
       coda.dealsDirectDamage = false;
-      coda.userEffect.push(this.createStatusEffect(StatusEffectEnum.Coda, 5, 1.2, false, true));
+      coda.userEffect.push(this.createStatusEffect(StatusEffectEnum.Coda, 5, 1.15, false, true));
       god.abilityList.push(coda);
 
       var ostinato = new Ability();
@@ -543,9 +544,9 @@ export class GlobalService {
       rupture.name = "Rupture";
       rupture.isAvailable = false;
       rupture.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      rupture.cooldown = rupture.currentCooldown = 21;
+      rupture.cooldown = rupture.currentCooldown = 22;
       rupture.dealsDirectDamage = false;
-      rupture.targetEffect.push(this.createDamageOverTimeEffect(10, 2.5, .3, rupture.name, dotTypeEnum.BasedOnAttack));
+      rupture.targetEffect.push(this.createDamageOverTimeEffect(5, 2.5, .3, rupture.name, dotTypeEnum.BasedOnAttack));
       god.abilityList.push(rupture);
 
       var onslaught = new Ability();
@@ -689,7 +690,7 @@ export class GlobalService {
       electrify.name = "Electrify";
       electrify.requiredLevel = this.utilityService.godAbility2Level;
       electrify.isAvailable = false;
-      electrify.effectiveness = 4;
+      electrify.effectiveness = 3.75;
       electrify.dealsDirectDamage = true;
       electrify.cooldown = electrify.currentCooldown = 48;
       electrify.elementalType = ElementalTypeEnum.Lightning;
@@ -702,7 +703,7 @@ export class GlobalService {
       chainLightning.isAvailable = false;
       chainLightning.cooldown = chainLightning.currentCooldown = 65;
       chainLightning.dealsDirectDamage = true;
-      chainLightning.effectiveness = 2.5;
+      chainLightning.effectiveness = 2.75;
       chainLightning.elementalType = ElementalTypeEnum.Lightning;
       chainLightning.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 10, 1, false, true));
       god.abilityList.push(chainLightning);
@@ -712,6 +713,7 @@ export class GlobalService {
       overload.requiredLevel = this.utilityService.godPassiveLevel;
       overload.isAvailable = false;
       overload.isPassive = true;
+      overload.isActivatable = false;
       overload.dealsDirectDamage = false;
       overload.userEffect.push(this.createStatusEffect(StatusEffectEnum.Surge, -1, 1.05, false, true));
       god.abilityList.push(overload);
@@ -1612,18 +1614,18 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .02;
+        userGainsEffect.effectiveness += .015;
     }
     else if (god.type === GodEnum.Zeus) {
       if ((ability.abilityUpgradeLevel % 7 === 0 || ability.abilityUpgradeLevel === 50)  && ability.abilityUpgradeLevel <= 100)
       targetGainsEffect.effectiveness += .05;
     else
-      ability.effectiveness += .15;
+      ability.effectiveness += .175;
     }
     else if (god.type === GodEnum.Ares) {
       //every 5 upgrades until level 100, increase duration
       if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100)
-        targetGainsEffect.duration += .5;
+        targetGainsEffect.duration += .25;
       else
         targetGainsEffect.effectiveness += .05;
     }
@@ -1706,13 +1708,13 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .02;
+        userGainsEffect.effectiveness += .015;
     }
     else if (god.type === GodEnum.Zeus) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
       targetGainsEffect.effectiveness += .04;
     else
-      ability.effectiveness += .225;
+      ability.effectiveness += .2;
     }
     else if (god.type === GodEnum.Ares) {
       //every 5 upgrades until level 100, increase duration
@@ -1796,7 +1798,7 @@ export class GlobalService {
         userGainsEffect.duration += 1;
       }
       else
-        userGainsEffect.effectiveness += .02;
+        userGainsEffect.effectiveness += .015;
     }
     else if (god.type === GodEnum.Zeus) {
       if (ability.abilityUpgradeLevel === 45)
@@ -1804,7 +1806,7 @@ export class GlobalService {
       else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
       ability.cooldown -= .5;
     else
-      ability.effectiveness += .1;
+      ability.effectiveness += .125;
     }
     else if (god.type === GodEnum.Ares) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -1874,7 +1876,7 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Zeus) {
       if (ability.abilityUpgradeLevel <= 100)
-        userGainsEffect.effectiveness += .025;
+        userGainsEffect.effectiveness += .02;
     }
     else if (god.type === GodEnum.Ares) {
       //increase max count to 10
@@ -3218,6 +3220,10 @@ export class GlobalService {
     this.globalVar.activeBattle = battle;
 
     return battle.activeTrial;
+  }
+
+  handleTrialLoss(type: TrialEnum) {
+    this.resetCooldowns();
   }
 
   gainResource(item: ResourceValue) {

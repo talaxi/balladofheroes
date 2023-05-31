@@ -3431,6 +3431,7 @@ export class SubZoneGeneratorService {
       shopOptions.push(new ShopOption(ShopTypeEnum.Crafter, availableOptionsCrafter));        
     }
     
+    availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BronzeBeakNecklace, SubZoneEnum.CoastOfCreteElis));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.JaggedSword, SubZoneEnum.CoastOfCreteElis));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BirchBow, SubZoneEnum.CoastOfCreteElis));
     availableOptionsCrafter.push(this.shopItemGenerator.generateShopItem(ItemsEnum.RadiatingHammer, SubZoneEnum.CoastOfCreteElis));

@@ -498,6 +498,7 @@ export class AltarService {
       altarEffect.effectiveness = 50;      
       altarEffect.stacks = false;
       altarEffect.isEffectMultiplier = false;
+      altarEffect.effectOnExpiration = true;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AresRareOverdriveGain) {
       altarEffect.duration = altarEffect.totalDuration = 60;
@@ -629,7 +630,7 @@ export class AltarService {
       altarEffect.stacks = false;
       altarEffect.effectOnExpiration = true;
     }
-    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusLightningDamageIncrease) {
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ZeusLightningDamageIncrease) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 1.02;
       altarEffect.stacks = false;
@@ -642,7 +643,7 @@ export class AltarService {
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareSurge) {
       altarEffect.duration = altarEffect.totalDuration = 60;
       altarEffect.effectiveness = 1.1;
-      altarEffect.tickFrequency = (60 / 10);
+      altarEffect.tickFrequency = (60 / 4);
       altarEffect.stacks = false;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareStun) {

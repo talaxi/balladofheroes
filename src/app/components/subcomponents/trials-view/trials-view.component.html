@@ -33,7 +33,14 @@
             <span [innerHtml]="getTrialDescription()"></span>
             <hr />
             <div>
-
+                <span>Current Trial:</span>
+                <div>
+                    <span [innerHtml]="getTrialBossName()" customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="enemyPopover"></span>
+                    <ng-template #enemyPopover>
+                        <app-enemy-description-view [character]="getEnemyTrialBoss()"></app-enemy-description-view>
+                    </ng-template>
+                </div>
+                <span><i>Resets in <span [innerHtml]="getRemainingPreferredGodTime()"></span></i></span>
                 <hr />
                 <div>
 

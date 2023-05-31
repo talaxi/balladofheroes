@@ -171,7 +171,7 @@ export class BattleService {
 
           if (this.battle.activeTrial.timer >= this.battle.activeTrial.timerLength) {
             this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You ran out of time before successfully completing your trial.");
-            //this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
+            this.globalService.handleTrialLoss(this.battle.activeTrial.type);
             this.battle.activeTrial = this.globalService.setNewTrial(false);
           }
         }
@@ -531,6 +531,24 @@ export class BattleService {
     });
 
     character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(effect => effect.isPermanent || effect.duration > 0);
+
+    if (character.name === "Athena") { //Trial of Skill
+      var totalEffectiveness = 11;
+      var amountPerDebuff = 1.25;
+      var totalDebuffs = character.battleInfo.statusEffects.filter(item => !item.isPositive).length;
+      if (totalDebuffs > 8)
+        totalDebuffs = 8;
+
+      var defenseUpBuff = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DefenseUp);
+      if (defenseUpBuff !== undefined) {
+        defenseUpBuff.effectiveness = totalEffectiveness - (amountPerDebuff * totalDebuffs);         
+      }
+
+      var resistanceUpBuff = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ResistanceUp);
+      if (resistanceUpBuff !== undefined) {
+        resistanceUpBuff.effectiveness = totalEffectiveness - (amountPerDebuff * totalDebuffs);         
+      }
+    }
   }
 
   //add equipment and permanent stats to base stats
@@ -582,7 +600,7 @@ export class BattleService {
     character.battleInfo.autoAttackManuallyTriggered = false;
   }
 
-  handleAutoAttack(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], additionalDamageMultiplier?: number) {
+  handleAutoAttack(isPartyAttacking: boolean, character: Character, targets: Character[], party: Character[], additionalDamageMultiplier?: number, canTriggerInstantAutoAttack: boolean = true) {
     var target = this.getTarget(character, targets);
 
     if (target === undefined)
@@ -659,8 +677,8 @@ export class BattleService {
       }
     }
 
-    this.checkForEquipmentEffect(EffectTriggerEnum.OnAutoAttack, character, target, party, targets, undefined, undefined, Math.floor(totalAutoAttackCount));
-    this.checkForEquipmentEffect(EffectTriggerEnum.ChanceOnAutoAttack, character, target, party, targets, undefined, undefined, Math.floor(totalAutoAttackCount));
+    this.checkForEquipmentEffect(EffectTriggerEnum.OnAutoAttack, character, target, party, targets, undefined, undefined, Math.floor(totalAutoAttackCount), !canTriggerInstantAutoAttack);
+    this.checkForEquipmentEffect(EffectTriggerEnum.ChanceOnAutoAttack, character, target, party, targets, undefined, undefined, Math.floor(totalAutoAttackCount), !canTriggerInstantAutoAttack);
     this.applyToxin(character, target, party, targets);
 
     this.handleuserEffects(isPartyAttacking, [], character, party, targets, damageDealt);
@@ -1373,7 +1391,7 @@ export class BattleService {
 
           if (instantEffect.type === StatusEffectEnum.InstantAutoAttack) {
             instantEffect.type = StatusEffectEnum.None; //because handleAutoAttack calls this method as well, need to prevent this from being recast
-            this.handleAutoAttack(isPartyUsing, member, targets, party, instantEffect.effectiveness);
+            this.handleAutoAttack(isPartyUsing, member, targets, party, instantEffect.effectiveness, false); //prevent it from infinite looping itself
           }
 
           if (instantEffect.type === StatusEffectEnum.RepeatAbility && originalAbility !== undefined) {
@@ -1659,6 +1677,8 @@ export class BattleService {
 
               var percent = instantEffect.effectiveness * 100;
               var effectiveness = newTarget.battleStats.maxHp * instantEffect.effectiveness;
+              if (effectiveness > instantEffect.threshold)
+                effectiveness = instantEffect.threshold;
 
               var trueDamageDealt = this.dealTrueDamage(isPartyUsing, newTarget, effectiveness, user, instantEffect.element, true);
 
@@ -3647,7 +3667,7 @@ export class BattleService {
     return text;
   }
 
-  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character | undefined, party: Character[], targets: Character[], deltaTime: number = 0, originalTriggerTargetedAllies: boolean = false, totalAttempts: number = 1) {
+  checkForEquipmentEffect(trigger: EffectTriggerEnum, user: Character, target: Character | undefined, party: Character[], targets: Character[], deltaTime: number = 0, originalTriggerTargetedAllies: boolean = false, totalAttempts: number = 1, removeInstantAutoAttack: boolean = false) {
     var userGainsEffects: StatusEffect[] = [];
     var targetGainsEffects: StatusEffect[] = [];
     var rng = 0;
@@ -3915,6 +3935,9 @@ export class BattleService {
       });
     }
 
+    if (userGainsEffects.some(item => item.type === StatusEffectEnum.InstantAutoAttack))
+      console.log("Triggered second hit");
+
     if (userGainsEffects.length > 0) {
       //if it's already active, don't reapply
       if (trigger === EffectTriggerEnum.AlwaysActive) {
@@ -3924,6 +3947,11 @@ export class BattleService {
         });
 
         userGainsEffects = userGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
+      }
+
+      if (removeInstantAutoAttack) {
+        console.log("Removing");
+        userGainsEffects = userGainsEffects.filter(item => item.type !== StatusEffectEnum.InstantAutoAttack);
       }
 
       //console.log("Triggered " + userGainsEffects[0].type);
@@ -3938,7 +3966,7 @@ export class BattleService {
             effect.type = StatusEffectEnum.None;
         });
 
-        targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.None);
+        targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.None);        
       }
 
       targetGainsEffects.forEach(effect => {
@@ -3947,7 +3975,10 @@ export class BattleService {
           effect.effectiveness *= this.lookupService.getAdjustedAttack(user);
         }
       });
-
+      
+      if (removeInstantAutoAttack) {
+        targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.InstantAutoAttack);
+      }
 
       this.handletargetEffects(true, targetGainsEffects, user, target, targets, party, undefined, originalTriggerTargetedAllies);
     }
