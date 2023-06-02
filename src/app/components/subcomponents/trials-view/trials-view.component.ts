@@ -70,8 +70,15 @@ export class TrialsViewComponent {
   getTrialBossName() {
     var boss = this.enemyGeneratorService.generateEnemy(this.trialService.getTrialOfSkillBattle());
     
-    return "<span class='" + this.getGodColorClass(boss.name) + "'>" + boss.name + "</span>";
+    return boss.name;
   }
+
+  getEnemyTrialBossWithScaledStats() {
+    var boss = this.enemyGeneratorService.generateEnemy(this.trialService.getTrialOfSkillBattle());    
+    boss = this.trialService.scaleTrialOfSkillBattle(boss);
+    return boss;
+  }
+
 
   getGodColorClass(name: string) {
     return {

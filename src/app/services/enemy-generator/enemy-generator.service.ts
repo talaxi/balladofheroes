@@ -6671,7 +6671,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Athena) {
       enemy.name = "Athena";
-      enemy.battleStats = new CharacterStats(.825, 1.05, .675, .8, .75, .375);
+      enemy.battleStats = new CharacterStats(.8, 1.05, .625, .8, .75, .375);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
       enemy.xpGainFromDefeat = 6000;            
@@ -6711,7 +6711,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Artemis) {
       enemy.name = "Artemis";
-      enemy.battleStats = new CharacterStats(.8, .985, .75, 1.2, 1.5, 1.1);
+      enemy.battleStats = new CharacterStats(1, .985, .95, 1.2, 1.5, 1.1);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
       enemy.xpGainFromDefeat = 6000;            
@@ -6726,7 +6726,7 @@ export class EnemyGeneratorService {
       paralyzingVolley.cooldown = 60;
       paralyzingVolley.currentCooldown = 0;
       paralyzingVolley.dealsDirectDamage = true;
-      paralyzingVolley.effectiveness = 7.8;
+      paralyzingVolley.effectiveness = 7;
       paralyzingVolley.isAoe = true;
       paralyzingVolley.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Paralyze, 60, 0, false, false, true));
       enemy.abilityList.push(paralyzingVolley);      
@@ -6754,27 +6754,114 @@ export class EnemyGeneratorService {
       exposeWeakness.isAvailable = true;
       exposeWeakness.cooldown = exposeWeakness.currentCooldown = 37;
       exposeWeakness.dealsDirectDamage = true;
-      exposeWeakness.effectiveness = 6.8;
+      exposeWeakness.effectiveness = 6.4;
       exposeWeakness.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, 0, 1.2, true, true));
       enemy.abilityList.push(exposeWeakness);
     }
     if (type === BestiaryEnum.Ares) {
       enemy.name = "Ares";
-      enemy.battleStats = new CharacterStats(1.4, 1.0325, .725, .9, 1.15, .8775);
+      enemy.battleStats = new CharacterStats(1.4, 1.0325, .825, .9, 1.15, .8775);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
-      enemy.xpGainFromDefeat = 6000;            
+      enemy.xpGainFromDefeat = 6000;    
+      
+      var war = new Ability();
+      war.name = "Warpath";
+      war.isAvailable = true;
+      war.cooldown = 120;
+      war.currentCooldown = 0;
+      war.isAoe = true;
+      war.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantCurrentHpPercentDamage, -1, .5, true, false, true, undefined, undefined));
+      enemy.abilityList.push(war);   
+
+      var rupture = new Ability();
+      rupture.name = "Rupture";
+      rupture.isAvailable = true;
+      rupture.cooldown = rupture.currentCooldown = 20;
+      rupture.dealsDirectDamage = false;
+      rupture.targetEffect.push(this.globalService.createDamageOverTimeEffect(20, 2.5, .05, rupture.name, dotTypeEnum.EnemyMaxHpPercent));
+      enemy.abilityList.push(rupture);
+
+      var onslaught = new Ability();
+      onslaught.name = "Onslaught";
+      onslaught.requiredLevel = this.utilityService.godAbility2Level;
+      onslaught.isAvailable = true;
+      onslaught.dealsDirectDamage = true;
+      onslaught.cooldown = onslaught.currentCooldown = 32;
+      onslaught.effectiveness = 4.85;
+      onslaught.targetEffect.push(this.globalService.createDamageOverTimeEffect(8, 4, 1, onslaught.name, dotTypeEnum.BasedOnDamage));
+      enemy.abilityList.push(onslaught);
+
+      var revelInBlood = new Ability();
+      revelInBlood.name = "Revel in Blood";
+      revelInBlood.requiredLevel = this.utilityService.godAbility3Level;
+      revelInBlood.isAvailable = true;
+      revelInBlood.cooldown = 150;
+      revelInBlood.currentCooldown = 90;
+      revelInBlood.dealsDirectDamage = false;
+      revelInBlood.isAoe = true;
+      revelInBlood.targetEffect.push(this.globalService.createDamageOverTimeEffect(40, 8, .002, revelInBlood.name, dotTypeEnum.UserCurrentMaxHpPercent, undefined, true));
+      enemy.abilityList.push(revelInBlood);
     
     }
     if (type === BestiaryEnum.Apollo) {
       enemy.name = "Apollo";
       enemy.battleStats = new CharacterStats(1.075, .9, .8, .85, 1.175, 1.45);
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 20;
       enemy.xpGainFromDefeat = 6000;
       enemy.battleStats.elementResistance.earth -= .25;
       enemy.battleStats.elementResistance.fire -= .25;
     
+      var avertingArrow = new Ability();
+      avertingArrow.name = "Averting Arrow";
+      avertingArrow.isAvailable = true;
+      avertingArrow.cooldown = avertingArrow.currentCooldown = 60;
+      avertingArrow.dealsDirectDamage = true;
+      avertingArrow.effectiveness = 9.25;
+      avertingArrow.isAoe = true;
+      avertingArrow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, -1, 1, true, false, true));
+      enemy.abilityList.push(avertingArrow);   
+
+      var staccato = new Ability();
+      staccato.name = "Staccato";
+      staccato.isAvailable = true;
+      staccato.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      staccato.cooldown = staccato.currentCooldown = 35;
+      staccato.dealsDirectDamage = false;
+      staccato.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Staccato, 20, 2, false, true));
+      enemy.abilityList.push(staccato);
+
+      var fortissimo = new Ability();
+      fortissimo.name = "Fortissimo";
+      fortissimo.isAvailable = false;
+      fortissimo.requiredLevel = this.utilityService.godAbility2Level;
+      fortissimo.cooldown = fortissimo.currentCooldown = 50;
+      fortissimo.dealsDirectDamage = false;
+      fortissimo.secondaryEffectiveness = 1.01;
+      fortissimo.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Fortissimo, 20, 2, false, true));
+      enemy.abilityList.push(fortissimo);
+
+      var coda = new Ability();
+      coda.name = "Coda";
+      coda.isAvailable = false;
+      coda.requiredLevel = this.utilityService.godAbility3Level;
+      coda.cooldown = coda.currentCooldown = 60;
+      coda.dealsDirectDamage = false;
+      coda.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Coda, 20, 2, false, true));
+      enemy.abilityList.push(coda);
+
+      var ostinato = new Ability();
+      ostinato.name = "Ostinato";
+      ostinato.isAvailable = false;
+      ostinato.requiredLevel = this.utilityService.godPassiveLevel;
+      ostinato.isPassive = true;
+      ostinato.effectiveness = 5;
+      ostinato.heals = true;
+      ostinato.targetsAllies = true;
+      ostinato.targetType = TargetEnum.Self;
+      ostinato.cooldown = ostinato.currentCooldown = 20;
+      enemy.abilityList.push(ostinato);
     }
     if (type === BestiaryEnum.Hermes) {
       enemy.name = "Hermes";

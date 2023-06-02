@@ -46,6 +46,7 @@ export class StatusEffect {
         this.targetsAllies = false;
     }
 
+    //todo: terrible idea to maintain this in two places
     makeCopy() {
         var copy = new StatusEffect(this.type);
 

@@ -28,9 +28,10 @@ export class AltarService {
     private gameLogService: GameLogService) { }
 
   getTutorialAltar() {
+    //TODO: reset
     var altar = new AltarInfo();
-    altar.type = AltarEnum.Small; 
-    altar.god = GodEnum.Athena;
+    altar.type = AltarEnum.Large;//.Small; 
+    altar.god = this.lookupService.getRandomGodEnum();//GodEnum.Athena;
     altar.condition = AltarConditionEnum.Victories;
     altar.conditionCount = altar.conditionMax = 1;
 

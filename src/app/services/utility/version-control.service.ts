@@ -25,6 +25,7 @@ import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { Melete } from 'src/app/models/melete/melete.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
+import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 declare var LZString: any;
 
 @Injectable({
@@ -680,7 +681,15 @@ export class VersionControlService {
         }
         if (version === .6) {
           this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
+          this.globalService.globalVar.loadouts = [];
           this.initializationService.initializeBalladOfOlympus();
+
+          this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
+            if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === ItemsEnum.RadiatingHammer) {
+              var equipmentPiece = character.equipmentSet.weapon;
+              equipmentPiece.equipmentEffect.targetEffect[0].threshold = 15000;
+            }
+          });
 
           var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
           if (zeus !== undefined)
@@ -688,6 +697,11 @@ export class VersionControlService {
 
           var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
           if (apollo !== undefined) {
+            var passive = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              passive.effectiveness = .4 + (passive.abilityUpgradeLevel * .02);
+            }
+
             var ability1 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
             if (ability1 !== undefined) {
               ability1.userEffect[0].effectiveness = 1.15 + ((ability1.userEffect[0].effectiveness - 1.15) * (3 / 4));
@@ -701,6 +715,11 @@ export class VersionControlService {
             var ability3 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
             if (ability3 !== undefined) {
               ability3.userEffect[0].effectiveness = 1.15 + ((ability3.userEffect[0].effectiveness - 1.2) * (3 / 4));
+            }
+
+            var permanentPassive = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness /= 2;
             }
           }
 

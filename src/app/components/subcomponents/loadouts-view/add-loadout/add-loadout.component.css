@@ -1,0 +1,60 @@
+.addItem {
+    margin-left: 1rem;
+}
+
+.statLabel {
+    font-size: 1.1rem;
+}
+
+.label {
+    width: 30%;
+    display: inline-block;
+}
+
+.largerLabel {
+    width: 35%;
+    display: inline-block;
+}
+
+.value {
+    width: 50%;
+    display: inline-block;
+}
+
+.largerValue {
+    width: 50%;
+    display: inline-block;
+}
+
+.buttons {
+    margin-top: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+.column {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 .25rem;
+}
+
+.smallColumn {
+    width: 24%;
+}
+
+.largeColumn {
+    width: 36%;
+}
+
+.statValue {
+    vertical-align: middle;
+}
+
+.name {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.smallMarginRight {
+    margin-right: .5rem;
+}

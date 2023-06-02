@@ -1135,6 +1135,10 @@ button:disabled {
   font-size: 1rem;
 }
 
+.smallEquipmentText {
+  font-size: .915rem;
+}
+
 .mat-radio-checked .mat-radio-inner-circle {
   background-color: var(--foreground-accent);
 }

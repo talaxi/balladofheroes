@@ -1,0 +1,66 @@
+<div class="loadoutsView">
+    <div class="info s4Heading">
+        Loadouts
+    </div>
+    <hr />
+    <div class="loadoutItem" *ngFor="let loadout of loadouts">
+        <div class="loadoutInfo">
+            <div class="loadoutName s2Heading smallCaps" [innerHtml]="loadout.name">                 
+            </div>
+            <div class="column">
+                <span class="smallCaps bold" [ngClass]="getClassColor(loadout, 1)"
+                    [innerHtml]="getClassName(loadout, 1)"></span>
+                <br />
+                <span class="smallCaps bold" [ngClass]="getGodColor(loadout, 1, 1)"
+                    [innerHtml]="getGodName(loadout, 1, 1)"></span>
+                <br />
+                <span class="smallCaps bold" [ngClass]="getGodColor(loadout, 1, 2)"
+                    [innerHtml]="getGodName(loadout, 1, 2)"></span>
+                    <br/>
+                <span class="statValue" [innerHTML]="getWeapon(loadout, 1)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getShield(loadout, 1)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getArmor(loadout, 1)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getRing(loadout, 1)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getNecklace(loadout, 1)"></span>
+                
+            </div>
+            <div class="column">
+                <span class="smallCaps bold" [ngClass]="getClassColor(loadout, 2)"
+                    [innerHtml]="getClassName(loadout, 2)"></span>
+                <br />
+                <span class="smallCaps bold" [ngClass]="getGodColor(loadout, 2, 1)"
+                    [innerHtml]="getGodName(loadout, 2, 1)"></span>
+                <br />
+                <span class="smallCaps bold" [ngClass]="getGodColor(loadout, 2, 2)"
+                    [innerHtml]="getGodName(loadout, 2, 2)"></span>
+                    <br/>
+                <span class="statValue" [innerHTML]="getWeapon(loadout, 2)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getShield(loadout, 2)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getArmor(loadout, 2)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getRing(loadout, 2)"></span>
+                <br/>
+                <span class="statValue" [innerHTML]="getNecklace(loadout, 2)"></span>
+            </div>
+            <br />
+            <div class="buttons">
+                <button class="buttonStyled" (click)="selectLoadout(loadout)">Select</button>
+                <button class="buttonStyled" (click)="editLoadout(addLoadout, loadout)">Edit</button>
+            </div>
+        </div>
+    </div>
+    <div class="loadoutItem clickableText" (click)="addNewLoadout(addLoadout)">
+        <img class="itemImage" src="assets/svg/emptyItemSlot.svg">
+    </div>
+</div>
+
+
+<ng-template #addLoadout>
+    <app-add-loadout [ownDialogRef]="dialogRef" [mode]="mode" [existingLoadout]="existingLoadout"></app-add-loadout>
+</ng-template>

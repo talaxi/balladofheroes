@@ -30,6 +30,11 @@
             <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                 (click)="viewFollowers(followers)">View Followers</button>
                 <br/>
+                            <button class="buttonStyled stackedButtons" *ngIf="areLoadoutsAvailable()"
+                            (click)="viewLoadouts(loadouts)">
+                                View Loadouts
+                            </button>
+                <br/>
                 <button *ngIf="meleteFunctionalityAvailable()" class="buttonStyled stackedButtons"
                             (click)="viewFollowers(melete)">Melete</button>
         </div>
@@ -47,5 +52,9 @@
     <div>
         <app-melete-view></app-melete-view>
     </div>
+</ng-template>
+
+<ng-template #loadouts>
+    <app-loadouts-view></app-loadouts-view>
 </ng-template>
 

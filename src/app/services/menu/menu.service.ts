@@ -23,6 +23,7 @@ export class MenuService {
 
   partyMember1: BehaviorSubject<CharacterEnum>;
   partyMember2: BehaviorSubject<CharacterEnum>;
+  updateParty: boolean = false;
 
   selectedBestiaryBallad: Ballad | undefined;
   selectedBestiaryZone: Zone | undefined;

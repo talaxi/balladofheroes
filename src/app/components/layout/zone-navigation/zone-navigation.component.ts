@@ -140,6 +140,10 @@ export class ZoneNavigationComponent implements OnInit {
     return this.lookupService.isMeleteAvailable();
   }
 
+  areLoadoutsAvailable() {
+    return this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 2 || this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 4;
+  }
+
   getSubzoneName(subzone: SubZone) {
     return this.balladService.getSubZoneName(subzone.type);
   }
@@ -257,6 +261,13 @@ export class ZoneNavigationComponent implements OnInit {
       this.dialog.open(content, { width: '95%', height: '80%' });
     else
       this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
+  }
+  
+  viewLoadouts(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%' });
+    else
+      this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh'});
   }
 
   viewMelete(content: any) {

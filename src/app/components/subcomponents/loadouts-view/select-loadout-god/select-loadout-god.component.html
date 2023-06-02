@@ -1,0 +1,18 @@
+<div class="container">    
+    <div class="allGods">
+        <table>
+            <tr *ngFor="let cells of godRows;">
+                <td [ngClass]="getGodColor(undefined, c.type)" class="item" *ngFor="let c of cells;">
+                    <span class="s3Heading" [innerHtml]="getGodName(undefined, c.type)"></span>
+                    <br/>
+                    <span class="s3Heading" [innerHtml]="getGodLevel(undefined, c.type)"></span>
+                    <br />
+                    <span [innerHtml]="getGodDescription(undefined, c.type)"></span>
+                    <br />
+                    <br />
+                    <button (click)="selectNewGod(c.type)">Select</button>
+                </td>
+            </tr>
+        </table>
+    </div>
+</div>

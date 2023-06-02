@@ -132,5 +132,8 @@ export enum StatusEffectEnum {
     DamageOverTimeTakenDown,
     Surge,
     ChanceToStun,
-    RepeatDamageAfterDelay
+    RepeatDamageAfterDelay,
+    InstantCurrentHpPercentDamage,
+    DivineProtection,
+    RemoveBuff
   }

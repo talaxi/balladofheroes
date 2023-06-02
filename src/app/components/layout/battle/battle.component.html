@@ -111,8 +111,8 @@
     <div *ngIf="!isMobile" class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
-        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover"><img
-                class="settingsIcon icon" src="assets/svg/gear.svg"></button>
+        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover buttonStyled"><img
+                class="settingsIcon icon" src="assets/svg/gearWhite.svg"></button>
         <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
             class="skipToBottom arrow gameLogButton"><img class="arrowDownIcon icon"
                 src="assets/svg/arrowDown.svg"></button>

@@ -819,7 +819,7 @@ export class GlobalService {
       type === StatusEffectEnum.DamageDealtDown || type === StatusEffectEnum.DamageTakenDown || type === StatusEffectEnum.DamageTakenUp
       || type === StatusEffectEnum.ThousandCuts || type === StatusEffectEnum.Paralyze || type === StatusEffectEnum.ArmorPenetrationDown ||
       type === StatusEffectEnum.ReduceHealing || type === StatusEffectEnum.Stagger || type === StatusEffectEnum.ArmorPenetrationUp ||
-      type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown ||
+      type === StatusEffectEnum.Unsteady || type === StatusEffectEnum.AllElementalResistanceDown || type === StatusEffectEnum.DivineProtection ||
       type === StatusEffectEnum.LordOfTheUnderworld || type === StatusEffectEnum.Onslaught || type === StatusEffectEnum.EarthDamageUp || type === StatusEffectEnum.FireDamageUp
       || type === StatusEffectEnum.AirDamageUp || type === StatusEffectEnum.HolyDamageUp || type === StatusEffectEnum.LightningDamageUp || type === StatusEffectEnum.WaterDamageUp || type === StatusEffectEnum.EarthDamageDown || type === StatusEffectEnum.FireDamageDown
       || type === StatusEffectEnum.AirDamageDown || type === StatusEffectEnum.HolyDamageDown || type === StatusEffectEnum.LightningDamageDown || type === StatusEffectEnum.WaterDamageDown || type === StatusEffectEnum.EarthDamageTakenUp || type === StatusEffectEnum.FireDamageTakenUp
@@ -1787,7 +1787,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= 1.2;
       else if (ability.abilityUpgradeLevel === 15 || ability.abilityUpgradeLevel === 45 || ability.abilityUpgradeLevel === 75)
-        ability.userEffect.push(userGainsEffect.makeCopy());
+        ability.userEffect.push(this.makeStatusEffectCopy(userGainsEffect));
       else
         ability.userEffect.forEach(effect => { effect.effectiveness += .01 });
     }
@@ -1833,7 +1833,7 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Dionysus) {
       if (ability.abilityUpgradeLevel % 12 === 0 && ability.abilityUpgradeLevel <= 100)
-        ability.targetEffect.push(targetGainsEffect.makeCopy());
+        ability.targetEffect.push(this.makeStatusEffectCopy(targetGainsEffect));
       else {
         if (ability.abilityUpgradeLevel % 2 === 0 || (ability.abilityUpgradeLevel === 13 || ability.abilityUpgradeLevel === 37 ||
           ability.abilityUpgradeLevel === 61 || ability.abilityUpgradeLevel === 85)) {
@@ -1872,7 +1872,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= .5;
       else
-        ability.effectiveness += .035;
+        ability.effectiveness += .02;
     }
     else if (god.type === GodEnum.Zeus) {
       if (ability.abilityUpgradeLevel <= 100)
@@ -1898,7 +1898,7 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Dionysus) {
       if (ability.abilityUpgradeLevel === 44)
-        ability.userEffect.push(userGainsEffect.makeCopy());
+        ability.userEffect.push(this.makeStatusEffectCopy(userGainsEffect));
       else if (ability.abilityUpgradeLevel === 88)
         ability.cooldown -= 4;
       else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -2167,7 +2167,7 @@ export class GlobalService {
           ability.effectiveness += .025;
         }
         else if (god.type === GodEnum.Apollo) {
-          ability.effectiveness += .1;
+          ability.effectiveness += .05;
         }
         else if (god.type === GodEnum.Ares) {
           ability.effectiveness += .02;
@@ -3319,4 +3319,31 @@ export class GlobalService {
 
     return subzoneRelatedAchievements.filter(item => !item.completed).length;
   }
+
+  makeStatusEffectCopy(effect: StatusEffect) {
+    var copy = new StatusEffect(effect.type);
+
+    copy.duration = effect.duration;
+    copy.effectiveness = effect.effectiveness;
+    copy.isPermanent = effect.isPermanent;
+    copy.isInstant = effect.isInstant;
+    copy.isPositive = effect.isPositive;
+    copy.isAoe = effect.isAoe;
+    copy.count = effect.count;
+    copy.maxCount = effect.maxCount;
+    copy.caster = effect.caster;
+    copy.effectStacks = effect.effectStacks;
+    copy.casterEnum = effect.casterEnum;
+    copy.threshold = effect.threshold;
+    copy.targetsAllies = effect.targetsAllies;
+
+    copy.abilityName = effect.abilityName;
+    copy.tickFrequency = effect.tickFrequency;
+    copy.tickTimer = effect.tickTimer;
+    copy.dotType = effect.dotType;
+    copy.element = effect.element;
+    copy.triggersEvery = effect.triggersEvery;
+
+    return copy;
+}
 }

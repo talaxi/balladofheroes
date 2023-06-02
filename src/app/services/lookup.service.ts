@@ -2780,8 +2780,10 @@ export class LookupService {
       description = "Decrease damage dealt by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenDown)
       description = "Decrease damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.DivineProtection)
+      description = "Decrease all damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageOverTimeTakenDown)
-      description = "Decrease Damage Over Time damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+      description = "Decrease Damage Over Time damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.EarthDamageUp)
       description = "Increase Earth damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -3290,6 +3292,19 @@ export class LookupService {
 
     if (type === ItemsEnum.Coin)
       return Math.floor(resource.amount);
+
+    return resource.amount;
+  }
+
+  getResourceAmountMinusEquippedCount(type: ItemsEnum, extras?: ItemsEnum[]) {
+    var resource = this.globalService.globalVar.resources.find(item => item.item === type && this.globalService.extraItemsAreEqual(item.extras, extras));
+    if (resource === undefined)
+      return 0;
+
+    if (type === ItemsEnum.Coin)
+      return Math.floor(resource.amount);
+
+      //TODO: need to add equip count here but need to fix the issue brought up in discord bugs first
 
     return resource.amount;
   }
@@ -4102,7 +4117,7 @@ export class LookupService {
 
         if (effect.type === StatusEffectEnum.InstantHpPercentDamage) {
           if (equipment.itemType === ItemsEnum.RadiatingHammer)
-            equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's HP, up to " + this.utilityService.bigNumberReducer(effect.threshold) + " damage.<br/>";
+            equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's Max HP, up to " + this.utilityService.bigNumberReducer(effect.threshold) + " damage.<br/>";
         }
 
 

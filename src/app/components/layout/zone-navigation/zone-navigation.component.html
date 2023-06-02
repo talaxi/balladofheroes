@@ -6,8 +6,8 @@
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
-                <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton"><img
-                    class="autoProgressIcon" src="assets/svg/gear.svg"></button>
+                <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton buttonStyled"><img
+                    class="autoProgressIcon" src="assets/svg/gearWhite.svg"></button>
             </span>
         </div>
         <hr />
@@ -194,6 +194,11 @@
                         <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                             (click)="viewFollowers(followers)">View Followers</button>
                             <br/>
+                            <button class="buttonStyled stackedButtons" *ngIf="areLoadoutsAvailable()"
+                            (click)="viewLoadouts(loadouts)">
+                                View Loadouts
+                            </button>
+                            <br/>
                         <button *ngIf="meleteFunctionalityAvailable()" class="buttonStyled stackedButtons" 
                             (click)="viewMelete(melete)">Melete</button>
                     </div>
@@ -236,6 +241,10 @@
     <div>
         <app-melete-view></app-melete-view>
     </div>
+</ng-template>
+
+<ng-template #loadouts>
+    <app-loadouts-view></app-loadouts-view>
 </ng-template>
 
 <ng-template #chthonicFavorPopover>

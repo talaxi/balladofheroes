@@ -1,0 +1,18 @@
+<div class="container">    
+    <div class="allClasss">
+        <table>
+            <tr *ngFor="let cells of classRows;">
+                <td [ngClass]="getClassColor(undefined, c.type)" class="item" *ngFor="let c of cells;">
+                    <span class="s3Heading" [innerHtml]="getClassName(undefined, c.type)"></span>
+                    <br />
+                    <span class="s3Heading" [innerHtml]="getClassLevel(undefined, c.type)"></span>
+                    <br />
+                    <span [innerHtml]="getClassDescription(undefined, c.type)"></span>
+                    <br />
+                    <br />
+                    <button (click)="selectNewClass(c.type)">Select</button>
+                </td>
+            </tr>
+        </table>
+    </div>    
+</div>

@@ -33,17 +33,17 @@
             <span [innerHtml]="getTrialDescription()"></span>
             <hr />
             <div>
-                <span>Current Trial:</span>
-                <div>
-                    <span [innerHtml]="getTrialBossName()" customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="enemyPopover"></span>
+                <span>Current Trial:
+                 
+                    <span class="smallCaps bold" [ngClass]="getGodColorClass(getTrialBossName())" [innerHtml]="getTrialBossName()" customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="enemyPopover"></span>
                     <ng-template #enemyPopover>
-                        <app-enemy-description-view [character]="getEnemyTrialBoss()"></app-enemy-description-view>
+                        <app-enemy-description-view [character]="getEnemyTrialBossWithScaledStats()"></app-enemy-description-view>
                     </ng-template>
-                </div>
-                <span><i>Resets in <span [innerHtml]="getRemainingPreferredGodTime()"></span></i></span>
+                </span>
+                <br/>
+                <span><i>New trial in <span [innerHtml]="getRemainingPreferredGodTime()"></span></i></span>
                 <hr />
                 <div>
-
                     <br />
                     <br />
                     <button class="buttonStyled" (click)="startTrial()">Start Trial</button>

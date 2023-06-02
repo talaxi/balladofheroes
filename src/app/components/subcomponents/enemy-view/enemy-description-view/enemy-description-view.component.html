@@ -8,18 +8,18 @@
     <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayEnemyStatsAbilities">
         <div class="stats">
             <div class="statColumn1">
-                <span class='statLabel'>Attack:</span> {{character.battleStats.attack}}
+                <span class='statLabel'>Attack:</span> {{getAttack()}}
                 <br />
-                <span class='statLabel'>Agility:</span> {{character.battleStats.agility}}
+                <span class='statLabel'>Agility:</span> {{getAgility()}}
                 <br />
-                <span class='statLabel'>Luck:</span> {{character.battleStats.luck}}
+                <span class='statLabel'>Luck:</span> {{getLuck()}}
             </div>
             <div class="statColumn2">
-                <span class='statLabel'>Max HP:</span> {{character.battleStats.maxHp}}
+                <span class='statLabel'>Max HP:</span> {{getMaxHp()}}
                 <br />
-                <span class='statLabel'>Defense:</span> {{character.battleStats.defense}}
+                <span class='statLabel'>Defense:</span> {{getDefense()}}
                 <br />
-                <span class='statLabel'>Resistance:</span> {{character.battleStats.resistance}}
+                <span class='statLabel'>Resistance:</span> {{getResistance()}}
             </div>
         </div>
         <br/>            
