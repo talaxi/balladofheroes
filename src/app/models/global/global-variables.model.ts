@@ -28,6 +28,7 @@ import { RedeemableCode } from "../utility/redeemable-code.model";
 import { Profession } from "../professions/profession.model";
 import { Melete } from "../melete/melete.model";
 import { Loadout } from "../utility/loadout.model";
+import { StatusEffect } from "../battle/status-effect.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -100,6 +101,8 @@ export class GlobalVariables {
     melete: Melete;
     @Type(() => Loadout)
     loadouts: Loadout[];
+    @Type(() => StatusEffect)
+    globalStatusEffects: StatusEffect[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -138,5 +141,6 @@ export class GlobalVariables {
         this.isSubscriber = false;  
         this.melete = new Melete();    
         this.loadouts = [];  
+        this.globalStatusEffects = [];
     }
 }

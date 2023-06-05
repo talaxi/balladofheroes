@@ -743,7 +743,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BloodyNecklace);
       }
 
-      var godLevel = 99;
+      var godLevel = 1850;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
@@ -761,7 +761,7 @@ export class InitializationService {
       hermes!.affinityLevel = 15;
 
       var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
-      apollo!.isAvailable = true;
+      //apollo!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(apollo!);
       }
@@ -769,7 +769,7 @@ export class InitializationService {
       apollo!.affinityLevel = 15;
 
       var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
-      artemis!.isAvailable = true;
+      //artemis!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(artemis!);
       }
@@ -777,7 +777,7 @@ export class InitializationService {
       artemis!.affinityLevel = 15;
 
       var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
-      hades!.isAvailable = true;
+      //hades!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(hades!);
       }
@@ -785,7 +785,7 @@ export class InitializationService {
       hades!.affinityLevel = 15;
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
-      ares!.isAvailable = true;
+      //ares!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(ares!);
       }
@@ -793,7 +793,7 @@ export class InitializationService {
       ares!.affinityLevel = 15;
 
       var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
-      dionysus!.isAvailable = true;
+      //dionysus!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(dionysus!);
       }
@@ -801,7 +801,7 @@ export class InitializationService {
       dionysus!.affinityLevel = 15;
 
       var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
-      nemesis!.isAvailable = true;
+      //nemesis!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(nemesis!);
       }
@@ -809,7 +809,7 @@ export class InitializationService {
       nemesis!.affinityLevel = 15;
 
       var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
-      zeus!.isAvailable = true;
+      //zeus!.isAvailable = true;
       for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(zeus!);
       }
@@ -1035,7 +1035,6 @@ export class InitializationService {
     var zone2 = new Zone();
     zone2.type = ZoneEnum.HuntForYarrow;
     zone2.zoneName = "The Hunt for Yarrow";
-    zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowOlympianGrounds));
     zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowMountainHike));
     zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowWoodlandTrail));
     zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowTrailFork1));

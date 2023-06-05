@@ -144,6 +144,13 @@ export class BattleComponent implements OnInit {
 
   doingColiseumFight() {
     if (this.globalService.globalVar.activeBattle !== undefined)
+      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
+
+    return false;
+  }
+
+  doingColiseumOrTrialFight() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
       return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None ||
        this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
 
@@ -446,6 +453,24 @@ export class BattleComponent implements OnInit {
     this.layoutService.changeLayout(NavigationEnum.Menu);
     this.menuService.selectedMenuDisplay = MenuEnum.Bestiary; 
     this.menuService.setBestiaryPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());     
+  }
+
+  globalStatusEffectsActive() {
+    return this.globalService.globalVar.globalStatusEffects.length > 0;
+  }
+
+  preventRightClick() {
+    return false;
+  }
+
+  getAllGlobalEffects() {
+    var description = "";
+
+    this.globalService.globalVar.globalStatusEffects.forEach(effect => {
+      description += this.lookupService.getStatusEffectDescription(effect) + "<hr/>";
+    });
+
+    return description;
   }
 
   ngOnDestroy() {

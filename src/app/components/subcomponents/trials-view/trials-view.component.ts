@@ -95,77 +95,6 @@ export class TrialsViewComponent {
     };
   }
 
-  /*getFirstTimeCompletionRewards() {
-    var reward = "";
-
-    this.selectedTrial.completionReward.forEach(item => {
-      var itemName = (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item)));
-      if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
-
-        itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
-      }
-
-      reward += item.amount.toLocaleString() + " " + itemName + "<br/>";
-    });
-
-    return reward;
-  }
-
-  firstTimeRewardAlreadyObtained(type?: TrialEnum) {
-    if (type === undefined)
-      type = this.selectedTrial.type;
-
-    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === type);
-    if (tournamentType?.count !== undefined && tournamentType?.count >= 1)
-      return true;
-
-    return false;
-  }
-
-  getQuickCompletionRewards() {
-    var reward = "";
-
-    this.selectedTrial.quickCompletionReward.forEach(item => {
-      var itemName = (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item)));
-      if (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Equipment) {
-        var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(item.item)?.quality);
-
-        itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
-      }
-
-      reward += item.amount + " " + itemName + "<br/>";
-    });
-
-    return reward;
-  }
-
-  quickCompletionRewardAlreadyObtained(type?: TrialEnum) {
-    if (type === undefined)
-      type = this.selectedTrial.type;
-
-    var tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === type);
-    if (tournamentType?.quickVictoryCompleted)
-      return true;
-
-    return false;
-  }
-
-  //1 is not started, 2 is cleared, 3 is completed
-  getColiseumCompletionLevel(type: TrialEnum) {
-    var level = 1;
-
-    if (this.firstTimeRewardAlreadyObtained(type))
-      level = 2;
-
-    if (this.quickCompletionRewardAlreadyObtained(type))
-      level = 3;
-
-    return level;
-  }
-
-  */
-
   getTrialNameColor(type: TrialEnum) {    
     /*if (this.firstTimeRewardAlreadyObtained(type) && !this.quickCompletionRewardAlreadyObtained(type)) {              
         if (this.selectedTrial !== undefined && this.selectedTrial.type === type)
@@ -189,6 +118,10 @@ export class TrialsViewComponent {
   }
 
   startTrial() {
+    if (this.selectedTrial.type === TrialEnum.TrialOfSkill) {
+      this.selectedTrial.godEnum = this.trialService.getGodEnumFromTrialOfSkillBattle();
+    }
+
     this.globalService.startTrial(this.selectedTrial);
     this.dialog.closeAll();
   }
@@ -198,25 +131,12 @@ export class TrialsViewComponent {
     var endDate = new Date();
 
     var remainingTime = 0;
-
-    if (date.getHours() >= this.utilityService.preferredGodStartTime2 && date.getHours() < this.utilityService.preferredGodEndTime2) {
-      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime2);
-      endDate.setMinutes(0, 0, 0);
-    }
-    else if (date.getHours() >= this.utilityService.preferredGodStartTime3 || date.getHours() < this.utilityService.preferredGodEndTime3) //between 8 PM and 3:59 AM
-    {
-      //in day prior
-      if (date.getHours() >= this.utilityService.preferredGodStartTime3)
-      {
-        endDate = new Date(new Date().setDate(new Date().getDate() + 1));
-        
-      }
-      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime3);
-      endDate.setMinutes(0, 0, 0);
+    
+    if (date.getMinutes() >= 30) {
+      endDate.setHours(date.getHours() + 1, 0, 0);      
     }
     else {
-      endDate.setHours(endDate.getHours() - date.getHours() + this.utilityService.preferredGodEndTime1);
-      endDate.setMinutes(0, 0, 0);
+    endDate.setHours(date.getHours(), 30, 0);      
     }
 
     remainingTime = (endDate.getTime() - date.getTime()) / 1000;

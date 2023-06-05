@@ -1992,6 +1992,9 @@ export class LookupService {
     if (ability.name === "Bite") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
+    if (ability.name === "Bite" && (character.bestiaryType === BestiaryEnum.LerneanHydra || character.bestiaryType === BestiaryEnum.HydraHead)) {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. " + cooldown + " second cooldown.";
+    }
     if (ability.name === "Constrict") {
       abilityDescription = "Reduce target's Agility by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
@@ -2737,6 +2740,232 @@ export class LookupService {
     return abilityDescription;
   }
 
+  getStatusEffectName(type: StatusEffectEnum) {
+    var description = "";
+    if (type === StatusEffectEnum.AllPrimaryStatsUp)
+    description = "All Primary Stats Up";
+  if (type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp)
+    description = "All Primary Stats Up Excluding Max HP";
+  if (type === StatusEffectEnum.AgilityUp)
+    description = "Agility Up";
+  if (type === StatusEffectEnum.AttackUp)
+    description = "Attack Up";
+  if (type === StatusEffectEnum.DefenseUp) 
+    description = "Defense Up";
+  if (type === StatusEffectEnum.LuckUp)
+    description = "Luck UP";
+  if (type === StatusEffectEnum.ResistanceUp)
+    description = "Resistance Up";
+  if (type === StatusEffectEnum.MaxHpUp)
+    description = "Max HP Up";
+  if (type === StatusEffectEnum.DamageDealtUp)
+    description = "Damage Dealt Up";
+  if (type === StatusEffectEnum.Surge)
+    description = "Surge";
+  if (type === StatusEffectEnum.DamageTakenUp)
+    description = "Damage Taken Up";
+
+  if (type === StatusEffectEnum.AgilityDown)
+    description = "Agility Down";
+  if (type === StatusEffectEnum.AttackDown)
+    description = "Attack Down";
+  if (type === StatusEffectEnum.DefenseDown)
+    description = "Defense Down";
+  if (type === StatusEffectEnum.LuckDown)
+    description = "Luck Down";
+  if (type === StatusEffectEnum.ResistanceDown)
+    description = "Resistance Down";
+  if (type === StatusEffectEnum.MaxHpDown)
+    description = "Max HP Down";
+  if (type === StatusEffectEnum.DamageDealtDown)
+    description = "Damage Dealt Down";
+  if (type === StatusEffectEnum.DamageTakenDown)
+    description = "Damage Taken Down";
+    if (type === StatusEffectEnum.DivineProtection)
+    description = "Divine Protection";
+  if (type === StatusEffectEnum.DamageOverTimeTakenDown)
+    description = "Damage Over Time Taken Down";
+
+  if (type === StatusEffectEnum.EarthDamageUp)
+    description = "Earth Damage Up";
+  if (type === StatusEffectEnum.FireDamageUp)
+    description = "Fire Damage Up";
+  if (type === StatusEffectEnum.AirDamageUp)
+    description = "Air Damage Up";
+  if (type === StatusEffectEnum.HolyDamageUp)
+    description = "Holy Damage Up";
+  if (type === StatusEffectEnum.WaterDamageUp)
+    description = "Water Damage Up";
+  if (type === StatusEffectEnum.LightningDamageUp)
+    description = "Lightning Damage Up";
+
+  if (type === StatusEffectEnum.EarthDamageDown)
+    description = "Earth Damage Down";
+  if (type === StatusEffectEnum.FireDamageDown)
+    description = "Fire Damage Down";
+  if (type === StatusEffectEnum.AirDamageDown)
+    description = "Air Damage Down";
+  if (type === StatusEffectEnum.HolyDamageDown)
+    description = "Holy Damage Down";
+  if (type === StatusEffectEnum.WaterDamageDown)
+    description = "Water Damage Down";
+  if (type === StatusEffectEnum.LightningDamageDown)
+    description = "Lightning Damage Down";
+
+  if (type === StatusEffectEnum.EarthDamageTakenUp)
+    description = "Earth Damage Taken Up";
+  if (type === StatusEffectEnum.FireDamageTakenUp)
+    description = "Fire Damage Taken Up";
+  if (type === StatusEffectEnum.AirDamageTakenUp)
+    description = "Air Damage Taken Up";
+  if (type === StatusEffectEnum.HolyDamageTakenUp)
+    description = "Holy Damage Taken Up";
+  if (type === StatusEffectEnum.WaterDamageTakenUp)
+    description = "Water Damage Taken Up";
+  if (type === StatusEffectEnum.LightningDamageTakenUp)
+    description = "Lightning Damage Taken Up";
+
+  if (type === StatusEffectEnum.EarthDamageTakenDown)
+    description = "Earth Damage Taken Down";
+  if (type === StatusEffectEnum.FireDamageTakenDown)
+    description = "Fire Damage Taken Down";
+  if (type === StatusEffectEnum.AirDamageTakenDown)
+    description = "Air Damage Taken Down";
+  if (type === StatusEffectEnum.HolyDamageTakenDown)
+    description = "Holy Damage Taken Down";
+  if (type === StatusEffectEnum.WaterDamageTakenDown)
+    description = "Water Damage Taken Down";
+  if (type === StatusEffectEnum.LightningDamageTakenDown)
+    description = "Lightning Damage Taken Down";
+
+  if (type === StatusEffectEnum.AoeDamageUp)
+    description = "Multi Target Damage Up";
+  if (type === StatusEffectEnum.DamageOverTimeDamageUp)
+    description = "Damage Over Time Damage Up";
+  if (type === StatusEffectEnum.ArmorPenetrationUp)
+    description = "Armor Penetration Up";
+
+  if (type === StatusEffectEnum.ReduceHealing)
+    description = "Reduce Healing";
+  if (type === StatusEffectEnum.Blind)
+    description = "Blind";
+  if (type === StatusEffectEnum.Fortissimo)
+    description = "Fortissimo";
+  if (type === StatusEffectEnum.Coda)
+    description = "Coda";
+  if (type === StatusEffectEnum.Staccato)
+    description = "Staccato";
+  if (type === StatusEffectEnum.Dead)
+    description = "Dead";
+  if (type === StatusEffectEnum.Dodge)
+    description = "Dodge";
+  if (type === StatusEffectEnum.Untargetable)
+    description = "Untargetable";
+  if (type === StatusEffectEnum.InstantHealAfterAutoAttack)
+    description = "Instant Heal After Auto Attack";
+  if (type === StatusEffectEnum.Mark)
+    description = "Mark";
+  if (type === StatusEffectEnum.Thyrsus)
+    description = "Thyrsus";
+  if (type === StatusEffectEnum.Stun)
+    description = "Stun";
+  if (type === StatusEffectEnum.Paralyze)
+    description = "Paralyze";
+  if (type === StatusEffectEnum.RecentlyDefeated)
+    description = "Recently Defeated";
+  if (type === StatusEffectEnum.ThousandCuts)
+    description = "Thousand Cuts";
+  if (type === StatusEffectEnum.DamageOverTime)
+    description = "Damage Over Time";
+  if (type === StatusEffectEnum.Thorns)
+    description = "Thorns";
+  if (type === StatusEffectEnum.Stagger)
+    description = "Stagger";
+  if (type === StatusEffectEnum.Unsteady)
+    description = "Unsteady";
+  if (type === StatusEffectEnum.AutoAttackSpeedUp)
+    description = "Auto Attack Speed Up";
+  if (type === StatusEffectEnum.AbilitySpeedUp)
+    description = "Ability Speed Up";
+  if (type === StatusEffectEnum.Enfire)
+    description = "Enfire";
+  if (type === StatusEffectEnum.Enholy)
+    description = "Enholy";
+  if (type === StatusEffectEnum.Enearth)
+    description = "Enearth";
+  if (type === StatusEffectEnum.Enwater)
+    description = "Enwater";
+  if (type === StatusEffectEnum.Enlightning)
+    description = "Enlightning";
+  if (type === StatusEffectEnum.Enair)
+    description = "Enair";
+  if (type === StatusEffectEnum.AbsorbElementalDamage)
+    description = "Absorb Elemental Damage";
+  if (type === StatusEffectEnum.ReduceDirectDamage)
+    description = "Reduce Direct Damage";
+  if (type === StatusEffectEnum.BlessingOfDionysus)
+    description = "Blessing of Dionysus";
+  if (type === StatusEffectEnum.AllElementalResistanceDown)
+    description = "Reduce All Elemental Resistances";
+  if (type === StatusEffectEnum.Focus)
+    description = "Focus";
+  if (type === StatusEffectEnum.Taunt)
+    description = "Taunt";
+  if (type === StatusEffectEnum.BattleItemDamageUp)
+    description = "Battle Item Damage Up";
+  if (type === StatusEffectEnum.BattleItemEffectUp)
+    description = "Battle Item Effect Up";
+  if (type === StatusEffectEnum.ExtraTrueDamage)
+    description = "Extra True Damage";
+  if (type === StatusEffectEnum.Invulnerable)
+    description = "Invulnerable";
+  if (type === StatusEffectEnum.AutoAttackInvulnerable)
+    description = "Auto Attack Invulnerable";
+  if (type === StatusEffectEnum.Immobilize)
+    description = "Immobilize";
+  if (type === StatusEffectEnum.CastingImmobilize)
+    description = "Casting Immobilize";
+  if (type === StatusEffectEnum.PreventEscape)
+    description = "Prevent Escape.";
+
+  if (type === StatusEffectEnum.DebilitatingToxin)
+    description = "Debilitating Toxin";
+  if (type === StatusEffectEnum.PoisonousToxin)
+    description = "Poisonous Toxin";
+  if (type === StatusEffectEnum.WitheringToxin)
+    description = "Withering Toxin";
+  if (type === StatusEffectEnum.VenomousToxin)
+    description = "Venomous Toxin";
+  if (type === StatusEffectEnum.FlamingToxin)
+    description = "Flaming Toxin";
+  if (type === StatusEffectEnum.ParalyzingToxin)
+    description = "Paralyzing Toxin";
+
+  if (type === StatusEffectEnum.HeroicElixir)
+    description = "Heroic Elixir";
+  if (type === StatusEffectEnum.RejuvenatingElixir)
+    description = "Rejuvenating Elixir";
+  if (type === StatusEffectEnum.ElixirOfFortitude)
+    description = "Elixir of Fortitude";
+  if (type === StatusEffectEnum.ElixirOfSpeed)
+    description = "Elixir of Speed";
+
+  if (type === StatusEffectEnum.LordOfTheUnderworld)
+    description = "Lord of the Underworld";
+  if (type === StatusEffectEnum.Onslaught)
+    description = "Onslaught";
+  if (type === StatusEffectEnum.DispenserOfDues)
+    description = "Dispenser of Dues";
+  if (type === StatusEffectEnum.Retribution)
+    description = "Retribution";
+  if (type === StatusEffectEnum.ChainsOfFate)
+    description = "Chains of Fate";
+  if (type === StatusEffectEnum.RepeatDamageAfterDelay)
+    description = "Repeat Damage After Delay";
+
+    return description;
+  }
+
   getStatusEffectDescription(statusEffect: StatusEffect, character?: Character) {
     var description = "";
     var thornsTotal = 0;
@@ -2779,7 +3008,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.DamageDealtDown)
       description = "Decrease damage dealt by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenDown)
-      description = "Decrease damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+      description = "Decrease direct damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
       if (statusEffect.type === StatusEffectEnum.DivineProtection)
       description = "Decrease all damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageOverTimeTakenDown)
@@ -2849,11 +3078,11 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Blind)
       description = "Auto attacks have a " + Math.round((statusEffect.effectiveness) * 100) + "% chance to miss, dealing no damage and not triggering any associated effects.";
     if (statusEffect.type === StatusEffectEnum.Fortissimo)
-      description = "Apollo is playing at Fortissimo.";
+      description = "Apollo is playing at Fortissimo. Increase the party's Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Coda)
-      description = "Apollo is playing a Coda.";
+      description = "Apollo is playing a Coda. Increase the party's Luck by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Staccato)
-      description = "Apollo is playing a Staccato.";
+      description = "Apollo is playing a Staccato. Increase the party's Agility by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Dead)
       description = "This character is dead.";
     if (statusEffect.type === StatusEffectEnum.Dodge)
@@ -2981,6 +3210,10 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.RepeatDamageAfterDelay)
       description = "When this effect expires, deal " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " to a random target.";
 
+      if (statusEffect.type === StatusEffectEnum.ExperienceGainUp)
+      description = "Increase experience gain of all classes and gods by " + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%.";
+      if (statusEffect.type === StatusEffectEnum.LootRateUp)
+      description = "Increase chance to gain drops from enemies by " + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%.";
 
     return description;
   }
@@ -3304,9 +3537,15 @@ export class LookupService {
     if (type === ItemsEnum.Coin)
       return Math.floor(resource.amount);
 
-      //TODO: need to add equip count here but need to fix the issue brought up in discord bugs first
+    var equipCount = 0;
+    if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Equipment) {
+      var resourceWithExtras = new ResourceValue(type, resource.amount);
+      if (extras !== undefined)
+        resourceWithExtras.extras = extras;
+      equipCount = this.getItemEquipCount(type, resourceWithExtras);
+    }      
 
-    return resource.amount;
+    return resource.amount - equipCount;
   }
 
   useResource(type: ItemsEnum, amount: number, extras?: ItemsEnum[]) {
@@ -3320,7 +3559,10 @@ export class LookupService {
       resource.amount = 0;
 
     if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Equipment) {
-      var equipCount = this.getItemEquipCount(type);
+      var resourceWithExtras = new ResourceValue(type, resource.amount);
+      if (extras !== undefined)
+        resourceWithExtras.extras = extras;
+      var equipCount = this.getItemEquipCount(type, resourceWithExtras);
       if (equipCount > 0 && resource.amount < equipCount) {
         while (resource.amount < equipCount) {
           var character = this.getCharacterTypeEquippedWithItem(type);
@@ -3337,7 +3579,7 @@ export class LookupService {
   getItemEquipCount(type: ItemsEnum, associatedResource?: ResourceValue) {
     var equipCount = 0;
 
-    this.globalService.getActivePartyCharacters(true).forEach(member => {
+    this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(member => {
       if (member.equipmentSet.weapon !== undefined && member.equipmentSet.weapon.itemType === type &&
         (associatedResource === undefined || (this.globalService.extraItemsAreEqual(associatedResource?.extras, member.equipmentSet.weapon.associatedResource?.extras))))
         equipCount += 1;

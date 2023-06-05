@@ -464,11 +464,17 @@ export class BattleService {
       fastDebuffSpeed = relevantAltarEffect!.effectiveness;
     }
 
+    var fastDebuffSpeedStatus = 1;
+    var fastDebuffEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FastDebuffs);
+    if (fastDebuffEffect !== undefined) {
+      fastDebuffSpeedStatus = fastDebuffEffect.effectiveness;
+    }
+
     character.battleInfo.statusEffects.forEach(effect => {
       var previousDuration = effect.duration;
 
       if (!effect.isPositive)
-        effect.duration -= deltaTime * fastDebuffSpeed;
+        effect.duration -= deltaTime * fastDebuffSpeed * fastDebuffSpeedStatus;
       else
         effect.duration -= deltaTime;
 
@@ -794,6 +800,12 @@ export class BattleService {
       }
     }
 
+    if (character.name === "Hermes") { //assumed to be Hermes in the Trial of Skill
+      var abilitySpeedUp = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbilitySpeedUp);
+      if (abilitySpeedUp !== undefined)
+        abilitySpeedUp.effectiveness += .01;
+    }
+
     var instantHeal = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack);
     if (instantHeal !== undefined) {
       var healAmount = instantHeal.effectiveness * (1 + character.battleStats.healingDone);
@@ -909,6 +921,11 @@ export class BattleService {
     var unsteady = character.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.Unsteady);
     if (unsteady !== undefined) {
       deltaTime *= 1 - unsteady.effectiveness;
+    }
+
+    var abilitySpeedUp = character.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.AbilitySpeedUp);
+    if (abilitySpeedUp !== undefined) {
+      deltaTime *= abilitySpeedUp.effectiveness;
     }
 
     if (!character.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Stun || effect.type === StatusEffectEnum.Immobilize))
@@ -1201,6 +1218,12 @@ export class BattleService {
         targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10));
     }
 
+    if (user.name === "Hermes") { //assumed to be Hermes in the Trial of Skill
+      var attackSpeedUp = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AutoAttackSpeedUp);
+      if (attackSpeedUp !== undefined)
+        attackSpeedUp.effectiveness += .02;
+    }
+
     if (abilityCopy.name === "Revelry") {
       var effect = userEffects.find(item => item.type === StatusEffectEnum.Barrier);
       if (effect !== undefined) {
@@ -1214,14 +1237,28 @@ export class BattleService {
     if (abilityCopy.name === "Thyrsus") {
       var effect = targetEffects.find(item => item.type === StatusEffectEnum.Thyrsus);
       if (effect !== undefined) {
-        var debuffCount = this.getDebuffsOnCharacter(target);
-        if (debuffCount > 20)
-          debuffCount = 20;
-        effect.effectiveness -= 1;
-        var effectivenessMultiplier = 1;
-        effectivenessMultiplier += debuffCount * (abilityCopy.secondaryEffectiveness - 1);
-        effect.effectiveness *= effectivenessMultiplier;
-        effect.effectiveness += 1;
+        if (isPartyUsing) {
+          var debuffCount = this.getDebuffsOnCharacter(target);
+          if (debuffCount > 20)
+            debuffCount = 20;
+          effect.effectiveness -= 1;
+          var effectivenessMultiplier = 1;
+          effectivenessMultiplier += debuffCount * (abilityCopy.secondaryEffectiveness - 1);
+          effect.effectiveness *= effectivenessMultiplier;
+          effect.effectiveness += 1;
+        }
+        else {
+          var debuffCount = 0;//this.getDebuffsOnCharacter(target);
+          potentialTargets.forEach(potentialTarget => {
+            debuffCount += this.getDebuffsOnCharacter(potentialTarget);
+          });
+
+          effect.effectiveness -= 1;
+          var effectivenessMultiplier = 1;
+          effectivenessMultiplier += debuffCount * (abilityCopy.secondaryEffectiveness - 1);
+          effect.effectiveness *= effectivenessMultiplier;
+          effect.effectiveness += 1;
+        }
       }
     }
 
@@ -1532,10 +1569,10 @@ export class BattleService {
           if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnAttack)
             appliedStatusEffect.effectiveness = this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing) * appliedStatusEffect.effectiveness;
           else if (appliedStatusEffect.dotType === dotTypeEnum.BasedOnDamage) {
-            appliedStatusEffect.effectiveness = damageDealt * appliedStatusEffect.effectiveness;   
-          }                              
+            appliedStatusEffect.effectiveness = damageDealt * appliedStatusEffect.effectiveness;
+          }
           else if (appliedStatusEffect.dotType === dotTypeEnum.UserCurrentMaxHpPercent)
-              appliedStatusEffect.effectiveness = user.battleStats.currentHp * appliedStatusEffect.effectiveness;
+            appliedStatusEffect.effectiveness = user.battleStats.currentHp * appliedStatusEffect.effectiveness;
         }
 
         if (target !== undefined && appliedStatusEffect.dotType !== dotTypeEnum.None) {
@@ -1591,9 +1628,36 @@ export class BattleService {
         }
 
         if (instantEffect.type === StatusEffectEnum.RemoveBuff) {
-          var potentialTargetBuffs = target.battleInfo.statusEffects.filter(item => item.isPositive && !this.globalService.doesStatusEffectPersistDeath(item.type));
-          var randomBuff = potentialTargetBuffs[this.utilityService.getRandomInteger(0, potentialTargetBuffs.length - 1)];
-          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== randomBuff);
+          var resetTarget: Character | undefined = target;
+          if (abilityTargetedAllies && !instantEffect.targetsAllies) {
+            resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
+          }
+
+          var allTargets: Character[] = [];
+          if (instantEffect.isAoe) {
+            allTargets = potentialTargets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Invulnerable));
+          }
+          else {
+            if (resetTarget !== undefined)
+              allTargets.push(resetTarget);
+          }
+
+          if (allTargets !== undefined && allTargets.length > 0) {
+            allTargets.forEach(newTarget => {
+              var potentialTargetBuffs = newTarget.battleInfo.statusEffects.filter(item => item.isPositive && !this.globalService.isBuffUnremovable(item.type));
+              if (potentialTargetBuffs.length === 0)
+                return;
+
+              var randomBuff = potentialTargetBuffs[this.utilityService.getRandomInteger(0, potentialTargetBuffs.length - 1)];
+
+              if (this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) {
+                var effectGameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(newTarget.type) + "'>" + newTarget.name + "</strong>" + " loses " + this.lookupService.getStatusEffectName(randomBuff.type) + "!";
+                this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, effectGameLogEntry);
+
+              }
+              newTarget.battleInfo.statusEffects = newTarget.battleInfo.statusEffects.filter(item => item !== randomBuff);
+            });
+          }
         }
 
         if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
@@ -3184,6 +3248,10 @@ export class BattleService {
         this.battle.activeTournament.currentRound += 1;
     }
 
+    if (this.battle.activeTrial.type !== TrialEnum.None) {
+      this.trialService.handleTrialVictory(this.battle.activeTrial.type);
+    }
+
     this.initializeEnemyList();
   }
 
@@ -3200,6 +3268,12 @@ export class BattleService {
             return;
 
           var rng = this.utilityService.getRandomNumber(0, 1);
+          var lootChance = loot.chance;
+
+          var lootRateEffect = this.globalService.globalVar.globalStatusEffects.find(item => item.type === StatusEffectEnum.LootRateUp);
+          if (lootRateEffect !== undefined) {
+            lootChance = lootChance * lootRateEffect.effectiveness;
+          }
 
           if (rng <= loot.chance) {
             if (lootGained.some(item => item.item === loot.item)) {
@@ -3832,9 +3906,11 @@ export class BattleService {
       //console.log(user.equipmentSet.shield);
       user.equipmentSet.shield.equipmentEffect.userEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
+              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
@@ -3856,9 +3932,11 @@ export class BattleService {
 
       user.equipmentSet.shield.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
+              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
@@ -3882,9 +3960,11 @@ export class BattleService {
     if (user.equipmentSet.armor !== undefined && user.equipmentSet.armor.equipmentEffect.trigger === trigger) {
       user.equipmentSet.armor?.equipmentEffect.userEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
+              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
@@ -3906,9 +3986,11 @@ export class BattleService {
 
       user.equipmentSet.armor?.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
+              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
@@ -3935,9 +4017,11 @@ export class BattleService {
         //console.log("For effect")
         //console.log(effect);
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
+              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
@@ -3948,7 +4032,7 @@ export class BattleService {
           //this could be problematic if there are multiple triggers every effects
           user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
 
-          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {           
+          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
             userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
             user.equipmentSet.ring!.equipmentEffect.triggersEveryCount = 0;
           }
@@ -3959,9 +4043,11 @@ export class BattleService {
 
       user.equipmentSet.ring?.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
+              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
@@ -3985,9 +4071,11 @@ export class BattleService {
     if (user.equipmentSet.necklace !== undefined && user.equipmentSet.necklace.equipmentEffect.trigger === trigger) {
       user.equipmentSet.necklace?.equipmentEffect.userEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
+              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);
@@ -4009,9 +4097,11 @@ export class BattleService {
 
       user.equipmentSet.necklace?.equipmentEffect.targetEffect.forEach(effect => {
         if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          for (var i = 0; i < totalAttempts; i++) {
+            rng = this.utilityService.getRandomNumber(0, 1);
+            if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
+              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          }
         }
         else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
           rng = this.utilityService.getRandomNumber(0, 1);

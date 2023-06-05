@@ -293,6 +293,28 @@
     overflow: auto;
 }
 
+.subzoneName {
+    margin-left: 1.725rem;
+}
+
+.buffImage {    
+    width: 0.8rem;
+    height: 1rem;
+    vertical-align: super;
+}
+
+.buffEffects {
+    border: 2px solid var(--positive-status-effect);
+    height: 1.1rem;
+    display: flex;
+    justify-content: center;
+    width: 1.1rem;
+    margin: auto;
+    display: inline-block;
+    vertical-align: text-bottom;
+    margin-left: .5rem;
+}
+
 @media (max-width: 800px) {
     .gridContainer {
         position: relative;

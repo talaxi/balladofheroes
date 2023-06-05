@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -10,6 +10,7 @@ import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-loadouts-view',
@@ -21,15 +22,20 @@ export class LoadoutsViewComponent {
   dialogRef: MatDialogRef<any, any>;
   mode: string;
   existingLoadout: Loadout | undefined = undefined;
+  deleteConfirmationText = "";
+  @ViewChild('itemMissingConfirmation') itemMissingConfirmationBox: any;
+  itemMissingConfirmationText = "";
+  unequipAll: boolean = false;
 
   constructor(private deviceDetectorService: DeviceDetectorService, public dialog: MatDialog, private lookupService: LookupService,
-    private globalService: GlobalService, private dictionaryService: DictionaryService, private menuService: MenuService) {
+    private globalService: GlobalService, private dictionaryService: DictionaryService, private menuService: MenuService,
+    private utilityService: UtilityService) {
 
   }
 
-
   ngOnInit() {
     this.loadouts = this.globalService.globalVar.loadouts;
+    this.unequipAll = this.globalService.globalVar.settings.get("unequipAllLoadoutToggle") ?? false;
   }
 
   addNewLoadout(content: any) {
@@ -209,63 +215,141 @@ export class LoadoutsViewComponent {
     this.globalService.globalVar.activePartyMember1 = loadout.character1;
     character1.assignedGod1 = loadout.god1Character1;
     character1.assignedGod2 = loadout.god2Character1;
-    if (loadout.character1EquipmentSet.weapon !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.weapon.itemType, loadout.character1EquipmentSet.weapon.associatedResource?.extras) > 0) {
-      this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character1.type);
-      this.globalService.equipItem(loadout.character1EquipmentSet.weapon, character1);
-    }
-    if (loadout.character1EquipmentSet.shield !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.shield.itemType, loadout.character1EquipmentSet.shield.associatedResource?.extras) > 0) {
-      this.globalService.unequipItem(EquipmentTypeEnum.Shield, character1.type);
-      this.globalService.equipItem(loadout.character1EquipmentSet.shield, character1);
-    }
-    if (loadout.character1EquipmentSet.armor !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.armor.itemType, loadout.character1EquipmentSet.armor.associatedResource?.extras) > 0) {
-      this.globalService.unequipItem(EquipmentTypeEnum.Armor, character1.type);
-      this.globalService.equipItem(loadout.character1EquipmentSet.armor, character1);
-    }
-    if (loadout.character1EquipmentSet.ring !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.ring.itemType, loadout.character1EquipmentSet.ring.associatedResource?.extras) > 0) {
-      this.globalService.unequipItem(EquipmentTypeEnum.Ring, character1.type);
-      this.globalService.equipItem(loadout.character1EquipmentSet.ring, character1);
-    }
-    if (loadout.character1EquipmentSet.necklace !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.necklace.itemType, loadout.character1EquipmentSet.necklace.associatedResource?.extras) > 0) {
-      this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character1.type);
-      this.globalService.equipItem(loadout.character1EquipmentSet.necklace, character1);
-    }
 
-    //console.log("Party member 2: " + loadout.character2);
+    
     this.globalService.globalVar.activePartyMember2 = loadout.character2;
     character2.assignedGod1 = loadout.god1Character2;
     character2.assignedGod2 = loadout.god2Character2;
-    if (loadout.character2EquipmentSet.weapon !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.weapon.itemType, loadout.character2EquipmentSet.weapon.associatedResource?.extras) > 0) {
+
+    //do unequips first so that items are present to be equipped
+    if (this.unequipAll) {
+      console.log("Unequiipping everyone")
+      this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character =>{
+        this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Ring, character.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
+      });
+    }
+    else
+    {
+    if (loadout.character1EquipmentSet.weapon !== undefined)
+      this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character1.type);
+      if (loadout.character1EquipmentSet.shield !== undefined)
+      this.globalService.unequipItem(EquipmentTypeEnum.Shield, character1.type);
+      if (loadout.character1EquipmentSet.armor !== undefined)
+      this.globalService.unequipItem(EquipmentTypeEnum.Armor, character1.type);
+      if (loadout.character1EquipmentSet.ring !== undefined)
+      this.globalService.unequipItem(EquipmentTypeEnum.Ring, character1.type);
+      if (loadout.character1EquipmentSet.necklace !== undefined)
+      this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character1.type);
+
+      if (loadout.character2EquipmentSet.weapon !== undefined)
       this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character2.type);
-      this.globalService.equipItem(loadout.character2EquipmentSet.weapon, character2);
-    }
-    if (loadout.character2EquipmentSet.shield !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.shield.itemType, loadout.character2EquipmentSet.shield.associatedResource?.extras) > 0) {
+      if (loadout.character2EquipmentSet.shield !== undefined)
       this.globalService.unequipItem(EquipmentTypeEnum.Shield, character2.type);
-      this.globalService.equipItem(loadout.character2EquipmentSet.shield, character2);
-    }
-    if (loadout.character2EquipmentSet.armor !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.armor.itemType, loadout.character2EquipmentSet.armor.associatedResource?.extras) > 0) {
+      if (loadout.character2EquipmentSet.armor !== undefined)
       this.globalService.unequipItem(EquipmentTypeEnum.Armor, character2.type);
-      this.globalService.equipItem(loadout.character2EquipmentSet.armor, character2);
-    }
-    if (loadout.character2EquipmentSet.ring !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.ring.itemType, loadout.character2EquipmentSet.ring.associatedResource?.extras) > 0) {
+      if (loadout.character2EquipmentSet.ring !== undefined)
       this.globalService.unequipItem(EquipmentTypeEnum.Ring, character2.type);
-      this.globalService.equipItem(loadout.character2EquipmentSet.ring, character2);
-    }
-    if (loadout.character2EquipmentSet.necklace !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.necklace.itemType, loadout.character2EquipmentSet.necklace.associatedResource?.extras) > 0) {
+      if (loadout.character2EquipmentSet.necklace !== undefined)
       this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character2.type);
-      this.globalService.equipItem(loadout.character2EquipmentSet.necklace, character2);
     }
 
+    var itemIsMissing = false;
+    if (loadout.character1EquipmentSet.weapon !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.weapon.itemType, loadout.character1EquipmentSet.weapon.associatedResource?.extras) > 0) {
+      this.globalService.equipItem(loadout.character1EquipmentSet.weapon, character1);
+    }
+    else if (loadout.character1EquipmentSet.weapon !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character1EquipmentSet.shield !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.shield.itemType, loadout.character1EquipmentSet.shield.associatedResource?.extras) > 0) {
+      this.globalService.equipItem(loadout.character1EquipmentSet.shield, character1);
+    }
+    else if (loadout.character1EquipmentSet.shield !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character1EquipmentSet.armor !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.armor.itemType, loadout.character1EquipmentSet.armor.associatedResource?.extras) > 0) {      
+      this.globalService.equipItem(loadout.character1EquipmentSet.armor, character1);
+    }
+    else if (loadout.character1EquipmentSet.armor !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character1EquipmentSet.ring !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.ring.itemType, loadout.character1EquipmentSet.ring.associatedResource?.extras) > 0) {      
+      this.globalService.equipItem(loadout.character1EquipmentSet.ring, character1);
+    }
+    else if (loadout.character1EquipmentSet.ring !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character1EquipmentSet.necklace !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.necklace.itemType, loadout.character1EquipmentSet.necklace.associatedResource?.extras) > 0) {    
+      this.globalService.equipItem(loadout.character1EquipmentSet.necklace, character1);
+    }
+    else if (loadout.character1EquipmentSet.necklace !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character2EquipmentSet.weapon !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.weapon.itemType, loadout.character2EquipmentSet.weapon.associatedResource?.extras) > 0) {      
+      this.globalService.equipItem(loadout.character2EquipmentSet.weapon, character2);
+    }
+    else if (loadout.character2EquipmentSet.weapon !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character2EquipmentSet.shield !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.shield.itemType, loadout.character2EquipmentSet.shield.associatedResource?.extras) > 0) {
+      this.globalService.equipItem(loadout.character2EquipmentSet.shield, character2);
+    }
+    else if (loadout.character2EquipmentSet.shield !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character2EquipmentSet.armor !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.armor.itemType, loadout.character2EquipmentSet.armor.associatedResource?.extras) > 0) {      
+      this.globalService.equipItem(loadout.character2EquipmentSet.armor, character2);
+    }
+    else if (loadout.character2EquipmentSet.armor !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character2EquipmentSet.ring !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.ring.itemType, loadout.character2EquipmentSet.ring.associatedResource?.extras) > 0) {      
+      this.globalService.equipItem(loadout.character2EquipmentSet.ring, character2);
+    }    
+    else if (loadout.character2EquipmentSet.ring !== undefined)
+      itemIsMissing = true;
+
+    if (loadout.character2EquipmentSet.necklace !== undefined &&
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.necklace.itemType, loadout.character2EquipmentSet.necklace.associatedResource?.extras) > 0) {
+      this.globalService.equipItem(loadout.character2EquipmentSet.necklace, character2);
+    }
+    else if (loadout.character2EquipmentSet.necklace !== undefined)
+      itemIsMissing = true;
+
     this.menuService.updateParty = true;
+    
+    this.globalService.getActivePartyCharacters(true).forEach(member => {
+      this.globalService.calculateCharacterBattleStats(member);
+    });
+
+    if (itemIsMissing) {
+      this.itemMissingConfirmationText = "One or more items were missing from this loadout and will leave your characters with unequipped item slots.";
+      this.dialog.open(this.itemMissingConfirmationBox, { width: '40%', height: 'auto' });
+    }
+  }
+
+  deleteLoadout(content: any, loadout: Loadout) {
+    this.deleteConfirmationText = "Do you want to delete loadout " + loadout.name + "?";
+    var dialogRef = this.utilityService.openConfirmationDialog(content);
+
+      dialogRef.afterClosed().subscribe(dialogResult => {
+        if (dialogResult) {
+          this.globalService.globalVar.loadouts = this.globalService.globalVar.loadouts.filter(item => item !== loadout); 
+          this.loadouts = this.globalService.globalVar.loadouts;
+        }
+      });
   }
 
   editLoadout(content: any, loadout: Loadout) {
@@ -280,5 +364,9 @@ export class LoadoutsViewComponent {
     this.dialogRef.afterClosed().subscribe(() => {
       this.loadouts = this.globalService.globalVar.loadouts;
     });
+  }
+  
+  unequipAllToggle() {
+    this.globalService.globalVar.settings.set("unequipAllLoadoutToggle", this.unequipAll);
   }
 }

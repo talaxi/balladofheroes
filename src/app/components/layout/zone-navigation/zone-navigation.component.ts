@@ -267,7 +267,7 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.deviceDetectorService.isMobile())
       this.dialog.open(content, { width: '95%', height: '80%' });
     else
-      this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh'});
+      this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85vh'});
   }
 
   viewMelete(content: any) {

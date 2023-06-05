@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { last } from 'rxjs';
 import { Battle } from 'src/app/models/battle/battle.model';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { Ability } from 'src/app/models/character/ability.model';
@@ -8,7 +7,6 @@ import { Character } from 'src/app/models/character/character.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { God } from 'src/app/models/character/god.model';
 import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
-import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
@@ -23,14 +21,8 @@ import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.mode
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
-import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
-import { Ballad } from 'src/app/models/zone/ballad.model';
-import { SubZone } from 'src/app/models/zone/sub-zone.model';
-import { Zone } from 'src/app/models/zone/zone.model';
-import { AchievementService } from '../achievements/achievement.service';
-import { BalladService } from '../ballad/ballad.service';
 import { GameLogService } from '../battle/game-log.service';
 import { CharmService } from '../resources/charm.service';
 import { EquipmentService } from '../resources/equipment.service';
@@ -826,7 +818,7 @@ export class GlobalService {
       || type === StatusEffectEnum.AirDamageTakenUp || type === StatusEffectEnum.HolyDamageTakenUp || type === StatusEffectEnum.LightningDamageTakenUp || type === StatusEffectEnum.WaterDamageTakenUp || type === StatusEffectEnum.EarthDamageTakenDown || type === StatusEffectEnum.FireDamageTakenDown
       || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp ||
-      type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape
+      type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape || type === StatusEffectEnum.Thyrsus
       || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge)
       refreshes = true;
 
@@ -846,6 +838,18 @@ export class GlobalService {
   }
 
   doesStatusEffectPersistDeath(type: StatusEffectEnum) {
+    var persistsDeath = false;
+
+    if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
+      type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
+      type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
+      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir)
+      persistsDeath = true;
+
+    return persistsDeath;
+  }
+
+  isBuffUnremovable(type: StatusEffectEnum) {
     var persistsDeath = false;
 
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
@@ -1156,6 +1160,13 @@ export class GlobalService {
 
   getGodExpBonus(god: God) {
     var bonus = 1;
+
+    var expUpEffectAmount = 1;
+    var expUpEffect = this.globalVar.globalStatusEffects.find(item => item.type === StatusEffectEnum.ExperienceGainUp);
+    if (expUpEffect !== undefined) {
+      expUpEffectAmount = expUpEffect.effectiveness;
+    }
+
     var BoonOfOlympus = this.globalVar.resources.find(item => item.item === ItemsEnum.BoonOfOlympus);
     var BoonOfOlympusValue = 1;
     if (BoonOfOlympus !== undefined)
@@ -1176,7 +1187,7 @@ export class GlobalService {
       godLevelBonus += god.partyPermanentStatGain.xpGain;
     });
 
-    bonus *= BoonOfOlympusValue * affinityBoost * godLevelBonus;
+    bonus *= BoonOfOlympusValue * affinityBoost * godLevelBonus * expUpEffectAmount;
     return bonus;
   }
 
@@ -2167,7 +2178,7 @@ export class GlobalService {
           ability.effectiveness += .025;
         }
         else if (god.type === GodEnum.Apollo) {
-          ability.effectiveness += .05;
+          ability.effectiveness += .03;
         }
         else if (god.type === GodEnum.Ares) {
           ability.effectiveness += .02;
@@ -2269,7 +2280,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Dionysus) {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
           var targetGainsEffect = ability.targetEffect[0];
-          targetGainsEffect.effectiveness = -.02;
+          targetGainsEffect.effectiveness = -.002;
         }
         else if (god.type === GodEnum.Nemesis) {
           ability.effectiveness += .3;

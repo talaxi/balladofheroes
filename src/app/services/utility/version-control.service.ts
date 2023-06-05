@@ -683,6 +683,7 @@ export class VersionControlService {
           this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
           this.globalService.globalVar.loadouts = [];
           this.initializationService.initializeBalladOfOlympus();
+          this.globalService.globalVar.globalStatusEffects = [];
 
           this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
             if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === ItemsEnum.RadiatingHammer) {
@@ -719,7 +720,15 @@ export class VersionControlService {
 
             var permanentPassive = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
             if (permanentPassive !== undefined) {
-              permanentPassive.effectiveness /= 2;
+              permanentPassive.effectiveness *= (3/10);
+            }
+          }
+
+          var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+          if (dionysusGod !== undefined) {
+            var permanentAbility3 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined) {
+              permanentAbility3.targetEffect[0].effectiveness /= 10;
             }
           }
 

@@ -35,44 +35,54 @@
 <div class="column largeColumn">
     <span class="statLabel largerLabel">Class 1 Weapon: </span> <span class="statValue largerValue"
         [innerHTML]="getWeapon(newLoadout.character1EquipmentSet.weapon)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.weapon !== undefined" (click)="RemoveLoadoutCharacterWeapon(1)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterWeapon(selectLoadoutEquipmentModal, 1)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 1 Shield: </span> <span class="statValue largerValue"
         [innerHTML]="getShield(newLoadout.character1EquipmentSet.shield)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.shield !== undefined" (click)="RemoveLoadoutCharacterShield(1)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterShield(selectLoadoutEquipmentModal, 1)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 1 Armor: </span> <span class="statValue largerValue"
         [innerHTML]="getArmor(newLoadout.character1EquipmentSet.armor)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.armor !== undefined" (click)="RemoveLoadoutCharacterArmor(1)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterArmor(selectLoadoutEquipmentModal, 1)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 1 Ring: </span> <span class="statValue largerValue"
         [innerHTML]="getRing(newLoadout.character1EquipmentSet.ring)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.ring !== undefined" (click)="RemoveLoadoutCharacterRing(1)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterRing(selectLoadoutEquipmentModal, 1)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 1 Necklace: </span> <span class="statValue largerValue"
         [innerHTML]="getNecklace(newLoadout.character1EquipmentSet.necklace)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.necklace !== undefined" (click)="RemoveLoadoutCharacterNecklace(1)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterNecklace(selectLoadoutEquipmentModal, 1)">+</button>
     <br />
 </div>
 <div class="column largeColumn">
     <span class="statLabel largerLabel">Class 2 Weapon: </span> <span class="statValue largerValue"
         [innerHTML]="getWeapon(newLoadout.character2EquipmentSet.weapon)"></span>
+    <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.weapon !== undefined" (click)="RemoveLoadoutCharacterWeapon(2)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterWeapon(selectLoadoutEquipmentModal, 2)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 2 Shield: </span> <span class="statValue largerValue"
         [innerHTML]="getShield(newLoadout.character2EquipmentSet.shield)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.shield !== undefined" (click)="RemoveLoadoutCharacterShield(2)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterShield(selectLoadoutEquipmentModal, 2)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 2 Armor: </span> <span class="statValue largerValue"
         [innerHTML]="getArmor(newLoadout.character2EquipmentSet.armor)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.armor !== undefined" (click)="RemoveLoadoutCharacterArmor(2)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterArmor(selectLoadoutEquipmentModal, 2)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 2 Ring: </span> <span class="statValue largerValue"
         [innerHTML]="getRing(newLoadout.character2EquipmentSet.ring)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.ring !== undefined" (click)="RemoveLoadoutCharacterRing(2)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterRing(selectLoadoutEquipmentModal, 2)">+</button>
     <br />
     <span class="statLabel largerLabel">Class 2 Necklace: </span> <span class="statValue largerValue"
         [innerHTML]="getNecklace(newLoadout.character2EquipmentSet.necklace)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.necklace !== undefined" (click)="RemoveLoadoutCharacterNecklace(2)">-</button>
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterNecklace(selectLoadoutEquipmentModal, 2)">+</button>
     <br />
 </div>
@@ -94,4 +104,8 @@
 
 <ng-template #selectLoadoutEquipmentModal>
     <app-select-loadout-equipment [equipmentPieceType]="equipmentPieceType" [dialogRef]="dialogRef" (selectedEquipmentEmitter)="equipmentSelected($event)"></app-select-loadout-equipment>
+</ng-template>
+
+<ng-template #fieldConfirmationBox>
+    <app-confirmation-box [confirmationText]="fieldMissingConfirmationText" [cancelOptionAvailable]="false"></app-confirmation-box>
 </ng-template>

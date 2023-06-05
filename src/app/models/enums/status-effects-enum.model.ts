@@ -135,5 +135,8 @@ export enum StatusEffectEnum {
     RepeatDamageAfterDelay,
     InstantCurrentHpPercentDamage,
     DivineProtection,
-    RemoveBuff
+    RemoveBuff,
+    FastDebuffs,
+    ExperienceGainUp,
+    LootRateUp
   }

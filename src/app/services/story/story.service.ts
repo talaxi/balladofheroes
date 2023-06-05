@@ -923,11 +923,11 @@ export class StoryService {
     if (this.currentPage > this.pageCount) {
       this.globalService.globalVar.isBattlePaused = false;
       if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 15 Olives and Fennel.");
-        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 15);
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 25 Olives and Fennel.");
+        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 25);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
-        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 15);
+        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Fennel, 25);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
       }

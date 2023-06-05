@@ -15,6 +15,10 @@ import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { AltarService } from '../altar/altar.service';
 
 @Injectable({
   providedIn: 'root'
@@ -23,7 +27,8 @@ export class TrialService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService) { }
+    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService,
+    private altarService: AltarService) { }
 
   generateBattleOptions(trial: Trial) {
     var battleOptions: EnemyTeam[] = [];
@@ -52,26 +57,45 @@ export class TrialService {
     var availableEnums: BestiaryEnum[] = [];
 
     var date = new Date();
-    var dayBreakpoint = 1; //between 4:00 AM and 11:59 AM
+    /* var dayBreakpoint = 1; //between 4:00 AM and 11:59 AM
+ 
+     if (date.getHours() >= this.utilityService.preferredGodStartTime2 && date.getHours() < this.utilityService.preferredGodEndTime2) //between 12 PM and 7:59 PM
+       dayBreakpoint = 2;
+     else if (date.getHours() >= this.utilityService.preferredGodStartTime3 || date.getHours() < this.utilityService.preferredGodEndTime3) //between 8 PM and 3:59 AM
+       dayBreakpoint = 3;
+ 
+     var seedValue = date.getDay() + date.getMonth() + date.getFullYear() + dayBreakpoint;
+ 
+     var previousSeedValue = 0;
+ 
+     if (dayBreakpoint === 3)
+       previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 2;
+     else if (dayBreakpoint === 2)
+       previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 1;
+     else if (dayBreakpoint === 1) {
+       var yesterday = new Date(date);
+       yesterday.setDate(yesterday.getDate() - 1);
+ 
+       previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + 3;
+     }
+ */
+    var minuteModifier = "a";
+    if (date.getMinutes() >= 30)
+      minuteModifier = "b";
 
-    if (date.getHours() >= this.utilityService.preferredGodStartTime2 && date.getHours() < this.utilityService.preferredGodEndTime2) //between 12 PM and 7:59 PM
-      dayBreakpoint = 2;
-    else if (date.getHours() >= this.utilityService.preferredGodStartTime3 || date.getHours() < this.utilityService.preferredGodEndTime3) //between 8 PM and 3:59 AM
-      dayBreakpoint = 3;
-
-    var seedValue = date.getDay() + date.getMonth() + date.getFullYear() + dayBreakpoint;
-
-    var previousSeedValue = 0;
-
-    if (dayBreakpoint === 3)
-      previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 2;
-    else if (dayBreakpoint === 2)
-      previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 1;
-    else if (dayBreakpoint === 1) {
-      var yesterday = new Date(date);
-      yesterday.setDate(yesterday.getDate() - 1);
-
-      previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + 3;
+    var seedValue = date.getDay() + date.getMonth() + date.getFullYear() + date.getHours() + minuteModifier;
+    var previousSeedValue = "";
+    if (minuteModifier === "b")
+      previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + date.getHours() + "a";
+    else {
+      if (date.getHours() - 1 < 0) {
+        var yesterday = new Date(date);
+        yesterday.setDate(yesterday.getDate() - 1);
+        previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + "23b";
+      }
+      else {
+        previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + (date.getHours() - 1) + "b";
+      }
     }
 
     availableEnums = this.getAvailableBattlesForTrialOfSkill();
@@ -87,21 +111,46 @@ export class TrialService {
     return availableEnums[rng];
   }
 
+  getGodEnumFromTrialOfSkillBattle() {
+    var bestiaryEnum = this.getTrialOfSkillBattle();
+    var god = GodEnum.None;
+
+    if (bestiaryEnum === BestiaryEnum.Athena)
+      god = GodEnum.Athena;
+      if (bestiaryEnum === BestiaryEnum.Artemis)
+      god = GodEnum.Artemis;
+      if (bestiaryEnum === BestiaryEnum.Hermes)
+      god = GodEnum.Hermes;
+      if (bestiaryEnum === BestiaryEnum.Apollo)
+      god = GodEnum.Apollo;
+      if (bestiaryEnum === BestiaryEnum.Hades)
+      god = GodEnum.Hades;
+      if (bestiaryEnum === BestiaryEnum.Ares)
+      god = GodEnum.Ares;
+      if (bestiaryEnum === BestiaryEnum.Nemesis)
+      god = GodEnum.Nemesis;
+      if (bestiaryEnum === BestiaryEnum.Dionysus)
+      god = GodEnum.Dionysus;
+      if (bestiaryEnum === BestiaryEnum.Zeus)
+      god = GodEnum.Zeus;
+
+    return god;
+  }
+
   getAvailableBattlesForTrialOfSkill(previousBattle: BestiaryEnum = BestiaryEnum.None) {
     var enemyOptions: BestiaryEnum[] = [];
 
-    //TODO: fix this
     enemyOptions.push(BestiaryEnum.Athena);
-    //enemyOptions.push(BestiaryEnum.Artemis);
-    //enemyOptions.push(BestiaryEnum.Ares);
-    //enemyOptions.push(BestiaryEnum.Apollo);
-    //enemyOptions.push(BestiaryEnum.Hermes);
-    //enemyOptions.push(BestiaryEnum.Nemesis);
-    //enemyOptions.push(BestiaryEnum.Zeus);
-    //enemyOptions.push(BestiaryEnum.Dionysus);
-    //enemyOptions.push(BestiaryEnum.Hades);
+    enemyOptions.push(BestiaryEnum.Artemis);
+    enemyOptions.push(BestiaryEnum.Ares);
+    enemyOptions.push(BestiaryEnum.Apollo);
+    enemyOptions.push(BestiaryEnum.Hermes);
+    enemyOptions.push(BestiaryEnum.Nemesis);
+    enemyOptions.push(BestiaryEnum.Hades2);
+    enemyOptions.push(BestiaryEnum.Dionysus);
+    enemyOptions.push(BestiaryEnum.Zeus);
 
-    //enemyOptions = enemyOptions.filter(item => item !== previousBattle);
+    enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
     return enemyOptions;
   }
@@ -139,7 +188,6 @@ export class TrialService {
     if (partyTotalStats[1] === undefined)
       highestStatWeight = 1;
     else if (highestStats > lowestStats * 5) {
-      console.log("Scaling weight based on strongest party member");
       highestStatWeight = .8;
     }
 
@@ -183,7 +231,61 @@ export class TrialService {
     if (enemy.bestiaryType === BestiaryEnum.Athena) {
       enemy.battleStats.hpRegen = enemy.battleStats.maxHp / 1500;
     }
+    if (enemy.bestiaryType === BestiaryEnum.Nemesis) {
+      var thornsEffect = enemy.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
+      if (thornsEffect !== undefined)
+        thornsEffect.effectiveness = Math.round(enemy.battleStats.attack / 8);
+    }
 
     return enemy;
+  }
+
+  handleTrialVictory(type: TrialEnum) {
+    this.globalService.resetCooldowns();
+    var buffHours = 4;
+
+    if (type === TrialEnum.TrialOfSkill) {
+      var lootUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.LootRateUp, buffHours * 60 * 60, 1.25, false, true);
+      var xpUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.ExperienceGainUp, buffHours * 60 * 60, 1.25, false, true);
+      this.globalService.globalVar.globalStatusEffects.push(lootUpEffect);
+      this.globalService.globalVar.globalStatusEffects.push(xpUpEffect);
+
+      //gain affinity for the god
+      var affinityXpGain = 100;
+      var godEnum = this.globalService.globalVar.activeBattle.activeTrial.godEnum;
+      var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
+      if (god !== undefined) {    
+      god.affinityExp += affinityXpGain;
+
+      if (this.globalService.globalVar.gameLogSettings.get("battleXpRewards")) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain " + affinityXpGain + " Affinity XP for <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong>.");
+      }
+
+      if (god.affinityExp >= god.affinityExpToNextLevel) {
+        god.affinityExp -= god.affinityExpToNextLevel;
+        god.affinityLevel += 1;
+        god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
+
+        if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
+          var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+        }
+
+        if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
+          this.lookupService.gainResource(new ResourceValue(this.altarService.getSmallCharmOfGod(god.type), 1));
+        }
+        else if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.LargeCharm) {
+          this.lookupService.gainResource(new ResourceValue(this.altarService.getLargeCharmOfGod(god.type), 1));
+        }
+      }
+    }
+    }
+    else if (type === TrialEnum.TrialOfEndurance) {
+      //TODO
+    }
+
+
+    //then reset
+    this.globalService.globalVar.activeBattle.activeTrial = this.globalService.setNewTrial(false);
   }
 }

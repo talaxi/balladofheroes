@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, Input, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -26,6 +26,8 @@ export class AddLoadoutComponent {
   selectedGod: number;
   equipmentPieceType: EquipmentTypeEnum;
   loadoutName = "";
+  @ViewChild('fieldConfirmationBox') fieldMissingConfirmationBox: any;
+  fieldMissingConfirmationText = "";
 
   constructor(private deviceDetectorService: DeviceDetectorService, public dialog: MatDialog, private globalService: GlobalService,
     private lookupService: LookupService, private dictionaryService: DictionaryService, private keybindService: KeybindService) {
@@ -38,9 +40,12 @@ export class AddLoadoutComponent {
     this.newLoadout = new Loadout();
 
     if (this.mode === "Edit" && this.existingLoadout !== undefined)
-    {
-      this.newLoadout = this.existingLoadout;
+    {      
+      this.copyLoadout(this.newLoadout, this.existingLoadout);
     }
+    
+    if (this.loadoutName === "")
+      this.loadoutName = "Loadout " + (this.globalService.globalVar.loadouts.length + 1);
   }
 
   selectLoadoutCharacter(content: any, whichCharacter: number) {
@@ -235,6 +240,41 @@ export class AddLoadoutComponent {
     return name;
   }
 
+  RemoveLoadoutCharacterWeapon(whichCharacter: number) {
+    if (whichCharacter === 1)
+      this.newLoadout.character1EquipmentSet.weapon = undefined;
+    else if (whichCharacter === 2)
+      this.newLoadout.character2EquipmentSet.weapon = undefined;
+  }
+  
+  RemoveLoadoutCharacterShield(whichCharacter: number) {
+    if (whichCharacter === 1)
+      this.newLoadout.character1EquipmentSet.shield = undefined;
+    else if (whichCharacter === 2)
+      this.newLoadout.character2EquipmentSet.shield = undefined;
+  }
+  
+  RemoveLoadoutCharacterArmor(whichCharacter: number) {
+    if (whichCharacter === 1)
+      this.newLoadout.character1EquipmentSet.armor = undefined;
+    else if (whichCharacter === 2)
+      this.newLoadout.character2EquipmentSet.armor = undefined;
+  }
+  
+  RemoveLoadoutCharacterRing(whichCharacter: number) {
+    if (whichCharacter === 1)
+      this.newLoadout.character1EquipmentSet.ring = undefined;
+    else if (whichCharacter === 2)
+      this.newLoadout.character2EquipmentSet.ring = undefined;
+  }
+  
+  RemoveLoadoutCharacterNecklace(whichCharacter: number) {
+    if (whichCharacter === 1)
+      this.newLoadout.character1EquipmentSet.necklace = undefined;
+    else if (whichCharacter === 2)
+      this.newLoadout.character2EquipmentSet.necklace = undefined;
+  }
+
   addLoadout() {
     //need to do error handling and check if in edit or add mode
 
@@ -243,8 +283,23 @@ export class AddLoadoutComponent {
     else
       this.newLoadout.name = this.loadoutName;
 
+    if ((this.newLoadout.character1 === undefined || this.newLoadout.character1 === CharacterEnum.None) ||
+    (this.newLoadout.character2 === undefined || this.newLoadout.character2 === CharacterEnum.None) ||
+    (this.newLoadout.god1Character1 === undefined || this.newLoadout.god1Character1 === GodEnum.None) ||
+    (this.newLoadout.god2Character1 === undefined || this.newLoadout.god2Character1 === GodEnum.None) ||
+    (this.newLoadout.god1Character2 === undefined || this.newLoadout.god1Character2 === GodEnum.None) ||
+    (this.newLoadout.god2Character2 === undefined || this.newLoadout.god2Character2 === GodEnum.None))
+    {
+      this.fieldMissingConfirmationText = "One or more fields are missing. All character and god slots must be filled out to create a loadout.";
+      this.dialog.open(this.fieldMissingConfirmationBox, { width: '40%', height: 'auto' });
+      return;
+    }
+
     if (this.mode === "Add")
       this.globalService.globalVar.loadouts.push(this.newLoadout);
+    else if (this.mode === "Edit" && this.existingLoadout !== undefined) {
+      this.copyLoadout(this.existingLoadout, this.newLoadout);
+    }
       
     this.ownDialogRef.close();
   }
@@ -302,6 +357,26 @@ export class AddLoadoutComponent {
 
   outOfTextbox() {
     this.keybindService.isInTextbox = false;
+  }
+
+  copyLoadout(destinationLoadout: Loadout, populatedLoadout: Loadout) {
+    this.loadoutName = populatedLoadout.name;
+    destinationLoadout.character1 = populatedLoadout.character1;
+    destinationLoadout.character2 = populatedLoadout.character2;
+    destinationLoadout.god1Character1 = populatedLoadout.god1Character1;
+    destinationLoadout.god2Character1 = populatedLoadout.god2Character1;
+    destinationLoadout.god1Character2 = populatedLoadout.god1Character2;
+    destinationLoadout.god2Character2 = populatedLoadout.god2Character2;
+    destinationLoadout.character1EquipmentSet.weapon = populatedLoadout.character1EquipmentSet.weapon;
+    destinationLoadout.character1EquipmentSet.shield = populatedLoadout.character1EquipmentSet.shield;
+    destinationLoadout.character1EquipmentSet.armor = populatedLoadout.character1EquipmentSet.armor;
+    destinationLoadout.character1EquipmentSet.ring = populatedLoadout.character1EquipmentSet.ring;
+    destinationLoadout.character1EquipmentSet.necklace = populatedLoadout.character1EquipmentSet.necklace;
+    destinationLoadout.character2EquipmentSet.weapon = populatedLoadout.character2EquipmentSet.weapon;
+    destinationLoadout.character2EquipmentSet.shield = populatedLoadout.character2EquipmentSet.shield;
+    destinationLoadout.character2EquipmentSet.armor = populatedLoadout.character2EquipmentSet.armor;
+    destinationLoadout.character2EquipmentSet.ring = populatedLoadout.character2EquipmentSet.ring;
+    destinationLoadout.character2EquipmentSet.necklace = populatedLoadout.character2EquipmentSet.necklace;
   }
 
   ngOnDestroy() {

@@ -1,6 +1,6 @@
 <div class="gridContainer">
     <div class="header">
-        <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumFight(), 'headerFlex': !doingColiseumFight() }">
+        <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumOrTrialFight(), 'headerFlex': !doingColiseumOrTrialFight() }">
             <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
                 round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} <span *ngIf="globalService.globalVar.activeBattle.activeTournament.maxRounds !== -1">of
                 {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</span></div>            
@@ -9,13 +9,16 @@
                 <img class="dropdownIcon" src="assets/svg/dropdown.svg">
             </button>
             <div class="s4Heading textCentered selectedSubzone pageHeader">
-                <strong class="clickableText" customToolTip [contentTemplate]="subzonePopover" (click)="jumpToBestiary()">{{getActiveSubzoneName()}}</strong>
+                <strong class="clickableText" [ngClass]="{'subzoneName': globalStatusEffectsActive()}" customToolTip [contentTemplate]="subzonePopover" (click)="jumpToBestiary()">{{getActiveSubzoneName()}}</strong>
+                <div *ngIf="globalStatusEffectsActive()" class="buffEffects" customToolTip [contentTemplate]="globalEffectsPopover">
+                    <img (contextmenu)="preventRightClick()" class="buffImage" src="assets/svg/statUpSE.svg" />
+                </div>
             </div>
             <button *ngIf="isMobile && isNextSubzoneButtonAvailable()" class="buttonStyled nextSubzone"
                 (click)="goToNextSubzone()">
                 <img class="dropdownIcon" src="assets/svg/rightarrow.svg">
             </button>
-            <div class="alignCenter coliseumTime" *ngIf="doingColiseumFight()">{{getTournamentTimeRemaining()}}
+            <div class="alignCenter coliseumTime" *ngIf="doingColiseumOrTrialFight()">{{getTournamentTimeRemaining()}}
                 remaining</div>
             <div class="victoryCount" *ngIf="isMobile">
                 {{getSubzoneVictoryCount()}}
@@ -132,4 +135,11 @@
     <div>
         Click to view this subzone in the Bestiary.
     </div>
+</ng-template>
+
+<ng-template #globalEffectsPopover>
+    <strong>All Global Effects</strong>
+    <hr/>    
+    <div [innerHtml]="getAllGlobalEffects()"> 
+    </div>   
 </ng-template>

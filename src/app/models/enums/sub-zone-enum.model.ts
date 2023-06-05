@@ -140,7 +140,7 @@ export enum SubZoneEnum {
   MountOlympusPathwayToTheZenith,
   MountOlympusMytikasSummit,
   MountOlympusOlympus,
-  HuntForYarrowOlympianGrounds,
+  HuntForYarrowOlympianGrounds, //NOT USING
   HuntForYarrowMountainHike,
   HuntForYarrowWoodlandTrail,
   HuntForYarrowTrailFork1,

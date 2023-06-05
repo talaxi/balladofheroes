@@ -361,7 +361,10 @@ export class UtilityService {
     return pluralize(text);
   }
 
-  openConfirmationDialog() {          
-    return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });  
+  openConfirmationDialog(confirmationBoxComponent?: any) {          
+    if (confirmationBoxComponent !== undefined)
+      return this.dialog.open(confirmationBoxComponent, { width: '40%', height: 'auto' });  
+    else
+      return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });  
   }
 }

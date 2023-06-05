@@ -173,7 +173,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageTakenUp)
       img = "assets/svg/holy.svg";
     if (effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageTakenUp)
-      img = "assets/svg/lightning.svg";
+      img = "assets/svg/largeLightning.svg";
     if (effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageTakenUp)
       img = "assets/svg/fire.svg";
     if (effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageTakenUp)
@@ -389,6 +389,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.DivineProtection) {
       src += "divineProtection.svg";
+    }
+    if (effect.type === StatusEffectEnum.FastDebuffs) {
+      src += "boonOfDionysus.svg";
     }
 
     return src;

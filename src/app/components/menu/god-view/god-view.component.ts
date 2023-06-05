@@ -306,7 +306,10 @@ export class GodViewComponent implements OnInit {
           rewards += (targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (targetGainsEffect !== undefined && targetGainsEffect.duration > 0)
           rewards += (targetGainsEffect.duration) + " Sec Duration Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-
+        if (ability?.name === "Insanity") {
+          if (targetGainsEffect !== undefined && targetGainsEffect.effectiveness < 0)
+          rewards += Math.abs(targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        }
 
         if (rewards !== "")
           rewards = rewards.substring(0, rewards.length - 2);

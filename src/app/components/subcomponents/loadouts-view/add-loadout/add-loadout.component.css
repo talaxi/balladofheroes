@@ -1,5 +1,6 @@
 .addItem {
-    margin-left: 1rem;
+    margin-left: .2rem;
+    width: 2vw;
 }
 
 .statLabel {
@@ -22,7 +23,7 @@
 }
 
 .largerValue {
-    width: 50%;
+    width: 45%;
     display: inline-block;
 }
 
@@ -35,7 +36,7 @@
 .column {
     display: inline-block;
     vertical-align: top;
-    margin: 0 .25rem;
+    margin: 0 .2rem;
 }
 
 .smallColumn {
@@ -43,7 +44,7 @@
 }
 
 .largeColumn {
-    width: 36%;
+    width: 37%;
 }
 
 .statValue {
