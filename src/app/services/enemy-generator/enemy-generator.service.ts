@@ -6975,7 +6975,8 @@ export class EnemyGeneratorService {
       toTheDepths.cooldown = toTheDepths.currentCooldown = 240;
       toTheDepths.dealsDirectDamage = true;
       toTheDepths.effectiveness = 10;
-      toTheDepths.isAoe = true;      
+      toTheDepths.isAoe = true;     
+      toTheDepths.elementalType = ElementalTypeEnum.Earth; 
       enemy.abilityList.push(toTheDepths);
     }
     if (type === BestiaryEnum.Zeus) {

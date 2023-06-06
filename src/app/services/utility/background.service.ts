@@ -64,7 +64,7 @@ export class BackgroundService {
       if (!isDefeated && !this.globalService.globalVar.isBattlePaused) {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleHpRegen(partyMember, deltaTime);
-        this.battleService.handleStatusEffectDurations(true, partyMember, enemies, deltaTime);
+        this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
         this.checkGodStatuses(partyMember);
 

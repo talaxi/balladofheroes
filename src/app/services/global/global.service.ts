@@ -196,15 +196,15 @@ export class GlobalService {
       battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 10, 0, false, false, false, character.name));
       character.abilityList.push(battleCry);
 
-      var lastStand = new Ability();
-      lastStand.name = "Last Stand";
-      lastStand.requiredLevel = this.utilityService.characterPassiveLevel;
-      lastStand.isAvailable = false;
-      lastStand.isPassive = true;
-      lastStand.threshold = .25;
-      lastStand.isActivatable = false;
-      lastStand.effectiveness = 1.25;
-      character.abilityList.push(lastStand);
+      var counterattack = new Ability();
+      counterattack.name = "Counterattack";
+      counterattack.requiredLevel = this.utilityService.characterPassiveLevel;
+      counterattack.isAvailable = false;
+      counterattack.isPassive = true;
+      counterattack.threshold = .95;
+      counterattack.isActivatable = false;
+      counterattack.effectiveness = .25;
+      character.abilityList.push(counterattack);
 
       var shieldSlam = new Ability();
       shieldSlam.name = "Shield Slam";
@@ -933,7 +933,7 @@ export class GlobalService {
     character.battleStats.elementResistance.lightning = this.equipmentService.getTotalLightningDamageResistanceGain(character.equipmentSet);
     character.battleStats.elementResistance.air = this.equipmentService.getTotalAirDamageResistanceGain(character.equipmentSet);
     character.battleStats.elementResistance.earth = this.equipmentService.getTotalEarthDamageResistanceGain(character.equipmentSet);
-    
+
     this.checkForSetBonuses(character.equipmentSet, character.battleStats);
 
     //gods
@@ -2880,7 +2880,7 @@ export class GlobalService {
         }
       });
     }
-    
+
     this.calculateCharacterBattleStats(character);
   }
 
@@ -2959,6 +2959,23 @@ export class GlobalService {
     this.calculateCharacterBattleStats(character);
   }
 
+  getSetCount(set: EquipmentSetEnum, equipmentSet: EquipmentSet) {
+    var count = 0;
+
+    if (equipmentSet.weapon?.set === set)
+        count += 1;
+    if (equipmentSet.shield?.set === set)
+        count += 1;
+    if (equipmentSet.armor?.set === set)
+        count += 1;
+    if (equipmentSet.ring?.set === set)
+        count += 1;
+    if (equipmentSet.necklace?.set === set)
+        count += 1;
+
+    return count;
+}
+
   checkForSetBonuses(equipmentSet: EquipmentSet, stats?: CharacterStats) {
     if (stats === undefined)
       stats = new CharacterStats(0, 0, 0, 0, 0, 0);
@@ -2969,11 +2986,82 @@ export class GlobalService {
       return;
 
     setCounts.forEach(setCount => {
+      if (setCount[0] === EquipmentSetEnum.Athena) {
+        if (setCount[1] >= 2)
+          stats!.healingReceived = .1;
+        if (setCount[1] >= 3)
+          stats!.elementIncrease.holy = .5;
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Artemis) {
+        if (setCount[1] >= 2)
+          stats!.criticalMultiplier = .2;
+        if (setCount[1] >= 3)
+          stats!.debuffDuration = .2;
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Hermes) {
+        if (setCount[1] >= 2)
+          stats!.autoAttackCooldownReduction *= .9;
+        if (setCount[1] >= 3)
+          stats!.elementIncrease.air = .5;        
+      }
+
       if (setCount[0] === EquipmentSetEnum.Apollo) {
         if (setCount[1] >= 2)
           stats!.hpRegen = 100;
+          if (setCount[1] >= 3)
+          stats!.buffDuration = .2;
+          if (setCount[1] >= 5) //TODO
+          stats!.hpRegen = 100;
       }
-      //Put set bonuses here, if its the set and meets the count then gain character battle stats gain x or whatever
+
+      if (setCount[0] === EquipmentSetEnum.Hades) {
+        if (setCount[1] >= 2)
+          stats!.criticalMultiplier = .2;
+        if (setCount[1] >= 3)
+          stats!.aoeDamage = .3;
+        if (setCount[1] >= 5) //TODO
+          stats!.elementIncrease.holy = .5;
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Ares) {
+        if (setCount[1] >= 2)
+          stats!.tickFrequency = .05;
+        if (setCount[1] >= 3)
+          stats!.debuffDuration = .2;
+        if (setCount[1] >= 5) //TODO
+          stats!.elementIncrease.holy = .5;
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Nemesis) {
+        if (setCount[1] >= 2) {
+          stats!.elementResistance.holy = .1;
+          stats!.elementResistance.earth = .1;
+        }
+        if (setCount[1] >= 3)
+          stats!.thorns = 1000;
+        if (setCount[1] >= 5) //TODO
+          stats!.elementIncrease.holy = .5;
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Dionysus) {
+        if (setCount[1] >= 2)
+          stats!.debuffDuration = .1;
+        if (setCount[1] >= 3)
+          stats!.buffDuration = .2;
+        if (setCount[1] >= 5) //TODO
+          stats!.elementIncrease.holy = .5;
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Zeus) {
+        if (setCount[1] >= 2)
+          stats!.armorPenetration = .1;
+        if (setCount[1] >= 3)
+          stats!.elementIncrease.lightning = .5;
+        if (setCount[1] >= 5) //TODO
+          stats!.elementIncrease.holy = .5;
+      }
     });
 
     return stats;

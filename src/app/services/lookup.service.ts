@@ -122,7 +122,7 @@ export class LookupService {
     if (type === CharacterEnum.Archer)
       description = "The Archer class focuses on debilitating enemies with access to damage over time and stunning effects.";
     if (type === CharacterEnum.Warrior)
-      description = "The Warrior class focuses on taking damage as much as dealing damage with the ability to force enemies' attention and increase defense when HP is low.";
+      description = "The Warrior class focuses on taking damage as much as dealing damage with the ability to force enemies' attention and retaliate against attacks.";
     if (type === CharacterEnum.Priest)
       description = "The Priest class focuses on keeping the party healthy with healing and barrier effects.";
 
@@ -2179,9 +2179,11 @@ export class LookupService {
     //Warrior
     if (abilityName === "Battle Cry")
       abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. " + cooldown + " second cooldown.";
-    if (abilityName === "Last Stand")
-      abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
-    if (abilityName === "Shield Slam")
+    //if (abilityName === "Last Stand")
+      //abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
+    if (abilityName === "Counterattack")
+      abilityDescription = "When an enemy is forced to auto attack you, deal <strong>" + effectivenessPercent + "%</strong> of the damage back to them. If your HP is below <strong>" + thresholdAmountPercent + "%</strong>, also counterattack any damage dealing attack that is forced to target you with an auto attack. Passive.";
+      if (abilityName === "Shield Slam")
       abilityDescription = "Increase Attack by <strong>" + (secondaryEffectivenessPercent) + "% of Defense</strong> then deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. " + cooldown + " second cooldown.";
 
     //Priest
@@ -4633,10 +4635,10 @@ export class LookupService {
       defense *= relevantAltarEffect!.effectiveness;
     }
 
-    var lastStand = character.abilityList.find(item => item.name === "Last Stand" && item.isAvailable);
+    /*var lastStand = character.abilityList.find(item => item.name === "Last Stand" && item.isAvailable);
     if (lastStand !== undefined && character.battleStats.getHpPercent() <= lastStand.threshold) {
       defense *= lastStand.effectiveness;
-    }
+    }*/
 
     return defense;
   }

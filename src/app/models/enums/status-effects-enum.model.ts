@@ -139,5 +139,7 @@ export enum StatusEffectEnum {
     FastDebuffs,
     ExperienceGainUp,
     LootRateUp,
-    RandomElementalAbsorption
+    RandomElementalAbsorption,
+    InstantAutoAttackCounter,
+    OstinatoAfter
   }
