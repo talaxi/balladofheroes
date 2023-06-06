@@ -32,6 +32,8 @@
         [ngClass]="getGodColor(newLoadout.god2Character2)" [innerHTML]="getGodName(newLoadout.god2Character2)"></span>
     <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 2, 2)">+</button>
 </div>
+<br *ngIf="isMobile"/>
+<br *ngIf="isMobile"/>
 <div class="column largeColumn">
     <span class="statLabel largerLabel">Class 1 Weapon: </span> <span class="statValue largerValue"
         [innerHTML]="getWeapon(newLoadout.character1EquipmentSet.weapon)"></span>
@@ -59,6 +61,8 @@
     <button class="buttonStyled addItem" (click)="selectLoadoutCharacterNecklace(selectLoadoutEquipmentModal, 1)">+</button>
     <br />
 </div>
+<br *ngIf="isMobile"/>
+<br *ngIf="isMobile"/>
 <div class="column largeColumn">
     <span class="statLabel largerLabel">Class 2 Weapon: </span> <span class="statValue largerValue"
         [innerHTML]="getWeapon(newLoadout.character2EquipmentSet.weapon)"></span>

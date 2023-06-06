@@ -7162,6 +7162,25 @@ export class EnemyGeneratorService {
       sprint.dealsDirectDamage = false;
       sprint.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 13, 1.5, false, true, false));
       enemy.abilityList.push(sprint);
+
+      var headbutt = new Ability();
+      headbutt.name = "Headbutt";
+      headbutt.isAvailable = true;
+      headbutt.effectiveness = 5.5;
+      headbutt.dealsDirectDamage = true;
+      headbutt.cooldown = headbutt.currentCooldown = 22;
+      headbutt = this.randomizeCooldown(headbutt);      
+      enemy.abilityList.push(headbutt);
+      
+      var trample = new Ability();
+      trample.name = "Trample";
+      trample.isAvailable = true;
+      trample.cooldown = trample.currentCooldown = 14;
+      trample = this.randomizeCooldown(trample);
+      trample.dealsDirectDamage = true;
+      trample.effectiveness = 2;
+      trample.isAoe = true;
+      enemy.abilityList.push(trample);
     }
     if (type === BestiaryEnum.RabidJackal) {
       enemy.name = "Rabid Jackal";
@@ -7169,6 +7188,26 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var claw = new Ability();
+      claw.name = "Claw";
+      claw.isAvailable = true;
+      claw.effectiveness = 1.5;
+      claw.cooldown = claw.currentCooldown = 22;
+      claw = this.randomizeCooldown(claw);
+      claw.dealsDirectDamage = true;
+      claw.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .2, claw.name, dotTypeEnum.BasedOnDamage));
+      enemy.abilityList.push(claw);
+      
+      var tear = new Ability();
+      tear.name = "Tear";
+      tear.isAvailable = true;
+      tear.effectiveness = 1.5;
+      tear.cooldown = claw.currentCooldown = 22;
+      tear = this.randomizeCooldown(tear);
+      tear.dealsDirectDamage = true;
+      tear.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .3, tear.name, dotTypeEnum.BasedOnAttack));
+      enemy.abilityList.push(tear);
     }
     if (type === BestiaryEnum.GoldenEagle) {
       enemy.name = "Golden Eagle";
@@ -7176,6 +7215,44 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Air;
+      enemy.loot.push(new LootItem(ItemsEnum.EagleFeather, ItemTypeEnum.CraftingMaterial, 1, .03));
+            
+      var dive = new Ability();
+      dive.name = "Dive";
+      dive.isAvailable = true;
+      dive.effectiveness = 4.1;
+      dive.cooldown = dive.currentCooldown = 18;
+      dive = this.randomizeCooldown(dive);
+      dive.dealsDirectDamage = true;
+      dive.elementalType = ElementalTypeEnum.Air;
+      dive.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 4, 1, false, true));      
+      enemy.abilityList.push(dive);
+
+      var slash = new Ability();
+      slash.name = "Slash";
+      slash.isAvailable = true;
+      slash.effectiveness = 4;
+      slash.dealsDirectDamage = true;
+      slash.cooldown = slash.currentCooldown = 23;
+      slash = this.randomizeCooldown(slash);
+      slash.elementalType = ElementalTypeEnum.Air;
+      slash.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .7, false, false));
+      enemy.abilityList.push(slash);
+
+      var roost = new Ability();
+      roost.name = "Roost";
+      roost.isAvailable = true;
+      roost.cooldown = roost.currentCooldown = 28;
+      roost = this.randomizeCooldown(roost);
+      roost.dealsDirectDamage = false;
+      roost.heals = true;
+      roost.effectiveness = 3.5;
+      roost.targetsAllies = true;
+      roost.targetType = TargetEnum.Self;
+      roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.25, false, true, false));
+      roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.25, false, true, false));
+      enemy.abilityList.push(roost);
     }
     if (type === BestiaryEnum.EarthSprite) {
       enemy.name = "Earth Sprite";
@@ -7183,13 +7260,58 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;
+      
+      var throwStone = new Ability();
+      throwStone.name = "Throw Stone";
+      throwStone.isAvailable = true;
+      throwStone.cooldown = throwStone.currentCooldown = 20;
+      throwStone = this.randomizeCooldown(throwStone);
+      throwStone.dealsDirectDamage = true;
+      throwStone.effectiveness = 1.25;
+      throwStone.elementalType = ElementalTypeEnum.Earth;      
+      enemy.abilityList.push(throwStone);
+
+      var rockBlast = new Ability();
+      rockBlast.name = "Rock Blast";
+      rockBlast.isAvailable = true;
+      rockBlast.cooldown = rockBlast.currentCooldown = 20;
+      rockBlast = this.randomizeCooldown(rockBlast);
+      rockBlast.dealsDirectDamage = true;
+      rockBlast.isAoe = true;
+      rockBlast.effectiveness = 1.25;
+      rockBlast.elementalType = ElementalTypeEnum.Earth;
+      rockBlast.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceHealing, 15, .75, false, false, true));
+      enemy.abilityList.push(rockBlast);
     }
     if (type === BestiaryEnum.FireSprite) {
       enemy.name = "Fire Sprite";
       enemy.battleStats = new CharacterStats(144489, 2093, 3180, 4450, 5875, 10250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 888;
+      enemy.xpGainFromDefeat = 888;      
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Fire;
+      
+      var burn = new Ability();
+      burn.name = "Burn";
+      burn.isAvailable = true;
+      burn.cooldown = burn.currentCooldown = 16;
+      burn = this.randomizeCooldown(burn);
+      burn.dealsDirectDamage = false;
+      burn.targetEffect.push(this.globalService.createDamageOverTimeEffect(10, 5, .4, burn.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(burn);
+
+      var rockBlast = new Ability();
+      rockBlast.name = "Fire Blast";
+      rockBlast.isAvailable = true;
+      rockBlast.cooldown = rockBlast.currentCooldown = 20;
+      rockBlast = this.randomizeCooldown(rockBlast);
+      rockBlast.dealsDirectDamage = true;
+      rockBlast.isAoe = true;
+      rockBlast.effectiveness = 1.25;
+      rockBlast.elementalType = ElementalTypeEnum.Earth;
+      burn.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 3, .25, rockBlast.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(rockBlast);
     }
     if (type === BestiaryEnum.DeftChamois) {
       enemy.name = "Deft Chamois";
@@ -7197,6 +7319,34 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var sprint = new Ability();
+      sprint.name = "Sprint";
+      sprint.isAvailable = true;
+      sprint.cooldown = sprint.currentCooldown = 24;
+      scavenge = this.randomizeCooldown(sprint);
+      sprint.dealsDirectDamage = false;
+      sprint.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 13, 1.5, false, true, false));
+      enemy.abilityList.push(sprint);
+
+      var headbutt = new Ability();
+      headbutt.name = "Headbutt";
+      headbutt.isAvailable = true;
+      headbutt.effectiveness = 5.5;
+      headbutt.dealsDirectDamage = true;
+      headbutt.cooldown = headbutt.currentCooldown = 22;
+      headbutt = this.randomizeCooldown(headbutt);      
+      enemy.abilityList.push(headbutt);
+      
+      var trample = new Ability();
+      trample.name = "Trample";
+      trample.isAvailable = true;
+      trample.cooldown = trample.currentCooldown = 14;
+      trample = this.randomizeCooldown(trample);
+      trample.dealsDirectDamage = true;
+      trample.effectiveness = 2;
+      trample.isAoe = true;
+      enemy.abilityList.push(trample);
     }
     if (type === BestiaryEnum.HolySprite) {
       enemy.name = "Holy Sprite";
@@ -7204,6 +7354,29 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Holy;
+      
+      var throwStone = new Ability();
+      throwStone.name = "Holy Shock";
+      throwStone.isAvailable = true;
+      throwStone.cooldown = throwStone.currentCooldown = 20;
+      throwStone = this.randomizeCooldown(throwStone);
+      throwStone.dealsDirectDamage = true;
+      throwStone.effectiveness = 1.25;
+      throwStone.elementalType = ElementalTypeEnum.Holy;      
+      enemy.abilityList.push(throwStone);
+
+      var blindingLight = new Ability();
+      blindingLight.name = "Blinding Light";
+      blindingLight.isAvailable = true;
+      blindingLight.effectiveness = 1.6;
+      blindingLight.cooldown = blindingLight.currentCooldown = 24;
+      blindingLight = this.randomizeCooldown(blindingLight);
+      blindingLight.dealsDirectDamage = true;
+      blindingLight.isAoe = true;
+      blindingLight.elementalType = ElementalTypeEnum.Holy;
+      blindingLight.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 6, 1, false, false, true));
+      enemy.abilityList.push(blindingLight);
     }
     if (type === BestiaryEnum.FerociousBear) {
       enemy.name = "Ferocious Bear";
@@ -7211,6 +7384,26 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var claw = new Ability();
+      claw.name = "Claw";
+      claw.isAvailable = true;
+      claw.effectiveness = 1.5;
+      claw.cooldown = claw.currentCooldown = 22;
+      claw = this.randomizeCooldown(claw);
+      claw.dealsDirectDamage = true;
+      claw.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 3, .2, claw.name));
+      enemy.abilityList.push(claw);
+
+      var savagery = new Ability();
+      savagery.name = "Savagery";
+      savagery.isAvailable = true;
+      savagery.cooldown = savagery.currentCooldown = 13;
+      savagery = this.randomizeCooldown(savagery);
+      savagery.dealsDirectDamage = false;
+      savagery.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, -1, 1.15, false, true, false, undefined, undefined, true));
+      savagery.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, -1, 1.15, false, true, false, undefined, undefined, true));
+      enemy.abilityList.push(savagery);
     }
     if (type === BestiaryEnum.ForestNymphHealer) {
       enemy.name = "Forest Nymph Healer";
@@ -7218,6 +7411,29 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var entangle = new Ability();
+      entangle.name = "Entangle";
+      entangle.isAvailable = true;
+      entangle.effectiveness = 1.5;
+      entangle.cooldown = entangle.currentCooldown = 18;
+      entangle = this.randomizeCooldown(entangle);
+      entangle.dealsDirectDamage = true;
+      entangle.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 12, .85, false, false, false));
+      entangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .25, entangle.name, dotTypeEnum.BasedOnAttack));
+      enemy.abilityList.push(entangle);
+
+      var healingSpirits = new Ability();
+      healingSpirits.name = "Healing Spirits";
+      healingSpirits.targetType = TargetEnum.LowestHpPercent;
+      healingSpirits.isAvailable = false;
+      healingSpirits.effectiveness = 8.75;
+      healingSpirits.heals = true;
+      healingSpirits.targetsAllies = true;
+      healingSpirits.dealsDirectDamage = false;
+      healingSpirits.cooldown = healingSpirits.currentCooldown = 18;
+      healingSpirits = this.randomizeCooldown(healingSpirits);
+      enemy.abilityList.push(healingSpirits);
     }
     if (type === BestiaryEnum.ForestNymphAssailant) {
       enemy.name = "Forest Nymph Assailant";
@@ -7225,6 +7441,24 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var sneak = new Ability();
+      sneak.name = "Sneak";
+      sneak.isAvailable = true;
+      sneak.cooldown = sneak.currentCooldown = 18;
+      sneak = this.randomizeCooldown(sneak);
+      sneak.dealsDirectDamage = false;
+      sneak.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 8, 1.5, false, true, true));
+      enemy.abilityList.push(sneak);
+
+      var stab = new Ability();
+      stab.name = "Stab";
+      stab.isAvailable = true;
+      stab.effectiveness = 1.9;
+      stab.cooldown = stab.currentCooldown = 16;
+      stab = this.randomizeCooldown(stab);
+      stab.dealsDirectDamage = true;
+      enemy.abilityList.push(stab); 
     }
     if (type === BestiaryEnum.MagicSpark) {
       enemy.name = "Magic Spark";
@@ -7232,6 +7466,27 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+          
+      var shootSpark = new Ability();
+      shootSpark.name = "Shoot Spark";
+      shootSpark.isAvailable = true;
+      shootSpark.cooldown = shootSpark.currentCooldown = 20;
+      shootSpark = this.randomizeCooldown(shootSpark);
+      shootSpark.dealsDirectDamage = true;
+      shootSpark.effectiveness = 1.25;
+      shootSpark.randomElement = true; 
+      enemy.abilityList.push(shootSpark);
+      
+      var sparkfield = new Ability();
+      sparkfield.name = "Spark Field";
+      sparkfield.isAvailable = true;
+      sparkfield.cooldown = sparkfield.currentCooldown = 17;
+      sparkfield = this.randomizeCooldown(sparkfield);
+      sparkfield.dealsDirectDamage = true;
+      sparkfield.effectiveness = 1.4;
+      sparkfield.isAoe = true;      
+      sparkfield.randomElement = true;
+      enemy.abilityList.push(sparkfield);
     }
     if (type === BestiaryEnum.WaterSprite) {
       enemy.name = "Water Sprite";
@@ -7239,6 +7494,28 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var waterShot = new Ability();
+      waterShot.name = "Water Shot";
+      waterShot.isAvailable = true;
+      waterShot.cooldown = waterShot.currentCooldown = 20;
+      waterShot = this.randomizeCooldown(waterShot);
+      waterShot.dealsDirectDamage = true;
+      waterShot.effectiveness = 1.25;
+      waterShot.elementalType = ElementalTypeEnum.Water;      
+      enemy.abilityList.push(waterShot);
+
+      var spray = new Ability();
+      spray.name = "Spray";
+      spray.isAvailable = true;
+      spray.cooldown = spray.currentCooldown = 17;
+      spray = this.randomizeCooldown(spray);
+      spray.dealsDirectDamage = true;
+      spray.effectiveness = 1.4;
+      spray.isAoe = true;
+      spray.elementalType = ElementalTypeEnum.Water;
+      spray.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 6, .2, false, false, true));
+      enemy.abilityList.push(spray);
     }
     if (type === BestiaryEnum.LightningSprite) {
       enemy.name = "Lightning Sprite";
@@ -7246,6 +7523,57 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var throwStone = new Ability();
+      throwStone.name = "Lightning Bolt";
+      throwStone.isAvailable = true;
+      throwStone.cooldown = throwStone.currentCooldown = 20;
+      throwStone = this.randomizeCooldown(throwStone);
+      throwStone.dealsDirectDamage = true;
+      throwStone.effectiveness = 1.25;
+      throwStone.elementalType = ElementalTypeEnum.Lightning;      
+      enemy.abilityList.push(throwStone);
+
+      var blindingLight = new Ability();
+      blindingLight.name = "Lightning Arc";
+      blindingLight.isAvailable = true;
+      blindingLight.effectiveness = 1.6;
+      blindingLight.cooldown = blindingLight.currentCooldown = 24;
+      blindingLight = this.randomizeCooldown(blindingLight);
+      blindingLight.dealsDirectDamage = true;
+      blindingLight.isAoe = true;
+      blindingLight.elementalType = ElementalTypeEnum.Lightning;
+      blindingLight.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 5, 1, false, false, true));
+      enemy.abilityList.push(blindingLight);
+    }
+    if (type === BestiaryEnum.AirSprite) {
+      enemy.name = "Air Sprite";
+      enemy.battleStats = new CharacterStats(144489, 2093, 3180, 4450, 5875, 10250);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 888;
+      
+      var windPulse = new Ability();
+      windPulse.name = "Wind Pulse";
+      windPulse.isAvailable = true;
+      windPulse.cooldown = windPulse.currentCooldown = 20;
+      windPulse = this.randomizeCooldown(windPulse);
+      windPulse.dealsDirectDamage = true;
+      windPulse.effectiveness = 1.25;
+      windPulse.elementalType = ElementalTypeEnum.Air;      
+      enemy.abilityList.push(windPulse);
+
+      var windBlast = new Ability();
+      windBlast.name = "Wind Blast";
+      windBlast.isAvailable = true;
+      windBlast.effectiveness = 1.6;
+      windBlast.cooldown = windBlast.currentCooldown = 24;
+      windBlast = this.randomizeCooldown(windBlast);
+      windBlast.dealsDirectDamage = true;
+      windBlast.isAoe = true;
+      windBlast.elementalType = ElementalTypeEnum.Air;      
+      windBlast.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .7, false, false, true));
+      enemy.abilityList.push(windBlast);
     }
     if (type === BestiaryEnum.LowFlyingFalcon) {
       enemy.name = "Low-Flying Falcon";
@@ -7253,6 +7581,42 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var dive = new Ability();
+      dive.name = "Dive";
+      dive.isAvailable = true;
+      dive.effectiveness = 4.1;
+      dive.cooldown = dive.currentCooldown = 18;
+      dive = this.randomizeCooldown(dive);
+      dive.dealsDirectDamage = true;
+      dive.elementalType = ElementalTypeEnum.Air;
+      dive.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 4, 1, false, true));      
+      enemy.abilityList.push(dive);
+
+      var bombardment = new Ability();
+      bombardment.name = "Bombardment";
+      bombardment.isAvailable = true;
+      bombardment.effectiveness = 4.9;
+      bombardment.cooldown = bombardment.currentCooldown = 23;
+      bombardment = this.randomizeCooldown(bombardment);
+      bombardment.dealsDirectDamage = true;
+      bombardment.isAoe = true;
+      bombardment.elementalType = ElementalTypeEnum.Air;      
+      enemy.abilityList.push(bombardment);
+
+      var roost = new Ability();
+      roost.name = "Roost";
+      roost.isAvailable = true;
+      roost.cooldown = roost.currentCooldown = 28;
+      roost = this.randomizeCooldown(roost);
+      roost.dealsDirectDamage = false;
+      roost.heals = true;
+      roost.effectiveness = 3.5;
+      roost.targetsAllies = true;
+      roost.targetType = TargetEnum.Self;
+      roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 10, 1.25, false, true, false));
+      roost.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.25, false, true, false));
+      enemy.abilityList.push(roost);
     }
     if (type === BestiaryEnum.LargeGrub) {
       enemy.name = "Large Grub";
@@ -7260,6 +7624,26 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var rollThrough = new Ability();
+      rollThrough.name = "Roll";
+      rollThrough.isAvailable = true;
+      rollThrough.cooldown = rollThrough.currentCooldown = 18;
+      rollThrough = this.randomizeCooldown(rollThrough);
+      rollThrough.dealsDirectDamage = true;
+      rollThrough.isAoe = true;
+      rollThrough.effectiveness = 1.25;
+      enemy.abilityList.push(rollThrough);
+
+      var burrow = new Ability();
+      burrow.name = "Burrow";
+      burrow.isAvailable = true;
+      burrow.cooldown = burrow.currentCooldown = 26;
+      burrow = this.randomizeCooldown(burrow);
+      burrow.dealsDirectDamage = false;
+      burrow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Untargetable, 6, 1, false, true));    
+      burrow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.25, false, true, false));  
+      enemy.abilityList.push(burrow);
     }
     if (type === BestiaryEnum.ManEatingSundew) {
       enemy.name = "Man-Eating Sundew";
@@ -7267,6 +7651,25 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var devour = new Ability();
+      devour.name = "Devour";
+      devour.isAvailable = true;
+      devour.effectiveness = 2.4;
+      devour.cooldown = devour.currentCooldown = 23;
+      devour = this.randomizeCooldown(devour);
+      devour.dealsDirectDamage = true;
+      enemy.abilityList.push(devour);
+
+      var immobilize = new Ability();
+      immobilize.name = "Immobilize";
+      immobilize.isAvailable = true;
+      immobilize.effectiveness = 1.5;
+      immobilize.cooldown = immobilize.currentCooldown = 18;
+      immobilize = this.randomizeCooldown(immobilize);
+      immobilize.dealsDirectDamage = true;
+      immobilize.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false, false));
+      enemy.abilityList.push(immobilize);
     }
     if (type === BestiaryEnum.DevouringAldrovanda) {
       enemy.name = "Devouring Aldrovanda";
@@ -7274,6 +7677,25 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var devour = new Ability();
+      devour.name = "Devour";
+      devour.isAvailable = true;
+      devour.effectiveness = 2.4;
+      devour.cooldown = devour.currentCooldown = 23;
+      devour = this.randomizeCooldown(devour);
+      devour.dealsDirectDamage = true;
+      enemy.abilityList.push(devour);
+
+      var immobilize = new Ability();
+      immobilize.name = "Immobilize";
+      immobilize.isAvailable = true;
+      immobilize.effectiveness = 1.5;
+      immobilize.cooldown = immobilize.currentCooldown = 18;
+      immobilize = this.randomizeCooldown(immobilize);
+      immobilize.dealsDirectDamage = true;
+      immobilize.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 0, false, false, false));
+      enemy.abilityList.push(immobilize);
     }
     if (type === BestiaryEnum.CoiledViper) {
       enemy.name = "Coiled Viper";
@@ -7281,6 +7703,29 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var venomousBite = new Ability();
+      venomousBite.name = "Venomous Bite";
+      venomousBite.isAvailable = true;
+      venomousBite.effectiveness = 1.3;
+      venomousBite.cooldown = venomousBite.currentCooldown = 17;
+      venomousBite = this.randomizeCooldown(venomousBite);
+      venomousBite.dealsDirectDamage = true;
+      venomousBite.targetEffect.push(this.globalService.createDamageOverTimeEffect(10, 2, .25, venomousBite.name, dotTypeEnum.BasedOnAttack));
+      enemy.abilityList.push(venomousBite);
+
+      var coil = new Ability();
+      coil.name = "Coil";
+      coil.isAvailable = true;
+      coil.cooldown = coil.currentCooldown = 24;
+      coil = this.randomizeCooldown(coil);
+      coil.dealsDirectDamage = false;
+      coil.heals = true;
+      coil.effectiveness = .6;
+      coil.targetsAllies = true;
+      coil.targetType = TargetEnum.Self;
+      coil.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 12, 1.35, false, true, false));
+      enemy.abilityList.push(coil);
     }
     if (type === BestiaryEnum.ForestNymphWitch) {
       enemy.name = "Forest Nymph Witch";
@@ -7288,6 +7733,31 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var entangle = new Ability();
+      entangle.name = "Entangle";
+      entangle.isAvailable = true;
+      entangle.effectiveness = 1.5;
+      entangle.cooldown = entangle.currentCooldown = 18;
+      entangle = this.randomizeCooldown(entangle);
+      entangle.dealsDirectDamage = true;
+      entangle.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 12, .85, false, false, false));
+      entangle.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .25, entangle.name, dotTypeEnum.BasedOnAttack));
+      enemy.abilityList.push(entangle);
+
+      var spiritOfTheForest = new Ability();
+      spiritOfTheForest.name = "Spirit of the Forest";
+      spiritOfTheForest.isAvailable = true;
+      spiritOfTheForest.cooldown = spiritOfTheForest.currentCooldown = 28;
+      spiritOfTheForest = this.randomizeCooldown(spiritOfTheForest);
+      spiritOfTheForest.dealsDirectDamage = false;
+      spiritOfTheForest.heals = true;
+      spiritOfTheForest.effectiveness = .8;
+      spiritOfTheForest.targetsAllies = true;
+      spiritOfTheForest.targetType = TargetEnum.Self;
+      spiritOfTheForest.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.25, false, true, false));
+      spiritOfTheForest.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
+      enemy.abilityList.push(spiritOfTheForest);
     }
     if (type === BestiaryEnum.ForestNymphKeeper) {
       enemy.name = "Forest Nymph Keeper";
@@ -7295,6 +7765,30 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+
+      var poisonTippedArrows = new Ability();
+      poisonTippedArrows.name = "Poison Tipped Arrows";
+      poisonTippedArrows.isAvailable = true;
+      poisonTippedArrows.effectiveness = 6.2;
+      poisonTippedArrows.cooldown = poisonTippedArrows.currentCooldown = 24;
+      poisonTippedArrows = this.randomizeCooldown(poisonTippedArrows);
+      poisonTippedArrows.dealsDirectDamage = true;
+      poisonTippedArrows.targetEffect.push(this.globalService.createDamageOverTimeEffect(16, 4, 350, poisonTippedArrows.name, dotTypeEnum.TrueDamage));
+      enemy.abilityList.push(poisonTippedArrows);
+
+      var spiritOfTheForest = new Ability();
+      spiritOfTheForest.name = "Spirit of the Forest";
+      spiritOfTheForest.isAvailable = true;
+      spiritOfTheForest.cooldown = spiritOfTheForest.currentCooldown = 28;
+      spiritOfTheForest = this.randomizeCooldown(spiritOfTheForest);
+      spiritOfTheForest.dealsDirectDamage = false;
+      spiritOfTheForest.heals = true;
+      spiritOfTheForest.effectiveness = .8;
+      spiritOfTheForest.targetsAllies = true;
+      spiritOfTheForest.targetType = TargetEnum.Self;
+      spiritOfTheForest.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.25, false, true, false));
+      spiritOfTheForest.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
+      enemy.abilityList.push(spiritOfTheForest);
     }
     if (type === BestiaryEnum.MagicalSphere) {
       enemy.name = "Magical Sphere";
@@ -7302,13 +7796,48 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      
+      var sparkfield = new Ability();
+      sparkfield.name = "Spark Field";
+      sparkfield.isAvailable = true;
+      sparkfield.cooldown = sparkfield.currentCooldown = 17;
+      sparkfield = this.randomizeCooldown(sparkfield);
+      sparkfield.dealsDirectDamage = true;
+      sparkfield.effectiveness = 1.4;
+      sparkfield.isAoe = true;      
+      sparkfield.randomElement = true;
+      enemy.abilityList.push(sparkfield);
+
+      var eatMagic = new Ability();
+      eatMagic.name = "Eat Magic";
+      eatMagic.isAvailable = true;
+      eatMagic.cooldown = 10;
+      eatMagic.currentCooldown = 0;
+      eatMagic.dealsDirectDamage = false;
+      eatMagic.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomElementalAbsorption, 10, 15000, true, true, false));
+      enemy.abilityList.push(eatMagic);
     }
     if (type === BestiaryEnum.MammothMagicalSphere) {
       enemy.name = "Mammoth Magical Sphere";
       enemy.battleStats = new CharacterStats(144489, 2093, 3180, 4450, 5875, 10250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 888;
+      enemy.xpGainFromDefeat = 888;      
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 150000, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Fire));
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 150000, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Holy));
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 150000, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Lightning));
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 150000, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Earth));
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 150000, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Air));
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 150000, false, true, false, undefined, undefined, undefined, ElementalTypeEnum.Water));
+
+      var eatMagic = new Ability();
+      eatMagic.name = "Eat Magic";
+      eatMagic.isAvailable = true;
+      eatMagic.cooldown = 10;
+      eatMagic.currentCooldown = 10;
+      eatMagic.dealsDirectDamage = false;
+      eatMagic.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomElementalAbsorption, 30, 100000, true, true, false));
+      enemy.abilityList.push(eatMagic);
     }
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise

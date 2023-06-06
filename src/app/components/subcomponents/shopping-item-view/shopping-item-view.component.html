@@ -1,6 +1,6 @@
 <div class="shoppingItem">
     <div class="itemDescription">
-        <div *ngIf="isEquipment()" customToolTip [tooltipDirection]="tooltipDirection" [isDelayed]="false"
+        <div *ngIf="isEquipment()" customToolTip [tooltipDirection]="tooltipDirection" [isDelayed]="false" [isLargeTooltip]="true"
             [contentTemplate]="equipmentComparisonTemplate">
             <div [class]="getEquipmentClass()">
                 <span class="s4Heading" [innerHtml]="dictionaryService.getItemName(item.shopItem)"></span>

@@ -1406,7 +1406,13 @@ export class BattleService {
             this.applyStatusEffect(statusEffect, user, party, user);
             party.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RandomPrimaryStatUp); });
           }
+          if (instantEffect.type === StatusEffectEnum.RandomElementalAbsorption) {            
+            var statusEffect = this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, instantEffect.duration, instantEffect.effectiveness, false, true, instantEffect.isAoe, undefined, undefined, undefined, this.lookupService.getRandomElement());
+            this.applyStatusEffect(statusEffect, user, party, user);
+            party.forEach(partyMember => { partyMember.battleInfo.statusEffects = partyMember.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RandomElementalAbsorption); });
+          }
 
+          
           if (instantEffect.type === StatusEffectEnum.InstantHeal) {
             var healAmount = damageDealt * instantEffect.effectiveness * (1 + member.battleStats.healingDone);
 
@@ -2204,6 +2210,11 @@ export class BattleService {
     if (!appliedStatusEffect.isPositive && castingCharacter !== undefined &&
       castingCharacter.battleStats.debuffDuration > 0) {
       appliedStatusEffect.duration *= 1 + castingCharacter.battleStats.debuffDuration;
+    }
+
+    if (appliedStatusEffect.isPositive && castingCharacter !== undefined &&
+      castingCharacter.battleStats.buffDuration > 0) {
+      appliedStatusEffect.duration *= 1 + castingCharacter.battleStats.buffDuration;
     }
 
     if (castingCharacter !== undefined && castingCharacter.battleStats.tickFrequency > 0 && appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
@@ -3835,290 +3846,300 @@ export class BattleService {
     var targetGainsEffects: StatusEffect[] = [];
     var rng = 0;
 
-    //console.log("User " + user.name);
-
     //go through each equipment piece
-    if (user.equipmentSet.weapon !== undefined && user.equipmentSet.weapon.equipmentEffect.trigger === trigger) {
-      //console.log("Check weapon");
-      user.equipmentSet.weapon.equipmentEffect.userEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
-              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
-              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount += deltaTime;
+    if (user.equipmentSet.weapon !== undefined) {
+      user.equipmentSet.weapon.equipmentEffects.forEach(equipmentEffect => {
+        if (equipmentEffect.trigger === trigger) {
 
-          if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else {
-          for (var i = 0; i < totalAttempts; i++)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          equipmentEffect.userEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
+
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else {
+              for (var i = 0; i < totalAttempts; i++)
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+          });
+
+          equipmentEffect.targetEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
+
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else {
+              for (var i = 0; i < totalAttempts; i++)
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+          });
         }
       });
+    }
 
-      user.equipmentSet.weapon.equipmentEffect.targetEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
-              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.weapon!.equipmentEffect.chance)
-              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount += deltaTime;
 
-          if (user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.weapon!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else {
-          for (var i = 0; i < totalAttempts; i++)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+    if (user.equipmentSet.shield !== undefined) {
+      user.equipmentSet.shield.equipmentEffects.forEach(equipmentEffect => {
+        if (equipmentEffect.trigger === trigger) {
+
+          equipmentEffect.userEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
+
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
+              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          });
+
+          equipmentEffect.targetEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
+
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
+              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+          });
         }
       });
     }
 
-    if (user.equipmentSet.shield !== undefined && user.equipmentSet.shield.equipmentEffect.trigger === trigger) {
-      //console.log("Check shield on trigger " + trigger + " for user " + user.name);
-      //console.log(user.equipmentSet.shield);
-      user.equipmentSet.shield.equipmentEffect.userEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
+    if (user.equipmentSet.armor !== undefined) {
+      user.equipmentSet.armor.equipmentEffects.forEach(equipmentEffect => {
+        if (equipmentEffect.trigger === trigger) {
+
+          equipmentEffect.userEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
+
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
               userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.shield!.equipmentEffect.triggersEveryCount += deltaTime;
+          });
 
-          if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-      });
+          equipmentEffect.targetEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
 
-      user.equipmentSet.shield.equipmentEffect.targetEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
               targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
+          });
         }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.shield!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.shield!.equipmentEffect.triggersEveryCount += deltaTime;
-
-          if (user.equipmentSet.shield!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.shield!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
       });
     }
 
-    if (user.equipmentSet.armor !== undefined && user.equipmentSet.armor.equipmentEffect.trigger === trigger) {
-      user.equipmentSet.armor?.equipmentEffect.userEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
+    if (user.equipmentSet.ring !== undefined) {
+      user.equipmentSet.ring.equipmentEffects.forEach(equipmentEffect => {
+        if (equipmentEffect.trigger === trigger) {
+
+          equipmentEffect.userEffect.forEach(effect => {
+            //console.log("For effect")
+            //console.log(effect);
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
+
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
               userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.armor!.equipmentEffect.triggersEveryCount += deltaTime;
+          });
 
-          if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-      });
+          equipmentEffect.targetEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
 
-      user.equipmentSet.armor?.equipmentEffect.targetEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
               targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
+          });
         }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.armor!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.armor!.equipmentEffect.triggersEveryCount += deltaTime;
-
-          if (user.equipmentSet.armor!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.armor!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
       });
     }
 
-    if (user.equipmentSet.ring !== undefined && user.equipmentSet.ring.equipmentEffect.trigger === trigger) {
-      //console.log("Matched ring trigger " + trigger);
-      user.equipmentSet.ring?.equipmentEffect.userEffect.forEach(effect => {
-        //console.log("For effect")
-        //console.log(effect);
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
+    if (user.equipmentSet.necklace !== undefined) {
+      user.equipmentSet.necklace.equipmentEffects.forEach(equipmentEffect => {
+        if (equipmentEffect.trigger === trigger) {
+
+          equipmentEffect.userEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {
+              equipmentEffect.triggersEveryCount += deltaTime;
+
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
               userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
+          });
 
-          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-      });
+          equipmentEffect.targetEffect.forEach(effect => {
+            if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
+              for (var i = 0; i < totalAttempts; i++) {
+                rng = this.utilityService.getRandomNumber(0, 1);
+                if (rng <= equipmentEffect.chance)
+                  targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+              }
+            }
+            else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
+              rng = this.utilityService.getRandomNumber(0, 1);
+              if (rng <= equipmentEffect.chance)
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+            }
+            else if (trigger === EffectTriggerEnum.TriggersEvery) {              
+              equipmentEffect.triggersEveryCount += deltaTime;
 
-      user.equipmentSet.ring?.equipmentEffect.targetEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
+              if (equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
+                targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
+                equipmentEffect.triggersEveryCount = 0;
+              }
+            }
+            else
               targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
+          });
         }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.ring!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.ring!.equipmentEffect.triggersEveryCount += deltaTime;
-
-          if (user.equipmentSet.ring!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.ring!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-      });
-    }
-
-    if (user.equipmentSet.necklace !== undefined && user.equipmentSet.necklace.equipmentEffect.trigger === trigger) {
-      user.equipmentSet.necklace?.equipmentEffect.userEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
-              userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount += deltaTime;
-
-          if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          userGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-      });
-
-      user.equipmentSet.necklace?.equipmentEffect.targetEffect.forEach(effect => {
-        if (trigger === EffectTriggerEnum.ChanceOnAutoAttack) {
-          for (var i = 0; i < totalAttempts; i++) {
-            rng = this.utilityService.getRandomNumber(0, 1);
-            if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
-              targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-          }
-        }
-        else if (trigger === EffectTriggerEnum.ChanceOnAbilityUse) {
-          rng = this.utilityService.getRandomNumber(0, 1);
-          if (rng <= user.equipmentSet.necklace!.equipmentEffect.chance)
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-        }
-        else if (trigger === EffectTriggerEnum.TriggersEvery) {
-          //this could be problematic if there are multiple triggers every effects
-          user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount += deltaTime;
-
-          if (user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount >= effect.triggersEvery) {
-            targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
-            user.equipmentSet.necklace!.equipmentEffect.triggersEveryCount = 0;
-          }
-        }
-        else
-          targetGainsEffects.push(this.globalService.makeStatusEffectCopy(effect));
       });
     }
 

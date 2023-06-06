@@ -242,6 +242,141 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.BloodyNecklace) {
       return new ResourceValue(ItemsEnum.BloodyNecklace, amount);
     }
+    if (type === ItemsEnum.AthenasScythe) {
+      return new ResourceValue(ItemsEnum.AthenasScythe, amount);
+    }
+    if (type === ItemsEnum.ArtemissBow) {
+      return new ResourceValue(ItemsEnum.ArtemissBow, amount);
+    }
+    if (type === ItemsEnum.HermessStaff) {
+      return new ResourceValue(ItemsEnum.HermessStaff, amount);
+    }
+    if (type === ItemsEnum.ApollosBow) {
+      return new ResourceValue(ItemsEnum.ApollosBow, amount);
+    }
+    if (type === ItemsEnum.HadessBident) {
+      return new ResourceValue(ItemsEnum.HadessBident, amount);
+    }
+    if (type === ItemsEnum.AressSpear) {
+      return new ResourceValue(ItemsEnum.AressSpear, amount);
+    }
+    if (type === ItemsEnum.NemesissSword) {
+      return new ResourceValue(ItemsEnum.NemesissSword, amount);
+    }
+    if (type === ItemsEnum.DionysussScepter) {
+      return new ResourceValue(ItemsEnum.DionysussScepter, amount);
+    }
+    if (type === ItemsEnum.ZeussLightningBolts) {
+      return new ResourceValue(ItemsEnum.ZeussLightningBolts, amount);
+    }
+    if (type === ItemsEnum.AthenasShield) {
+      return new ResourceValue(ItemsEnum.AthenasShield, amount);
+    }
+    if (type === ItemsEnum.AthenasArmor) {
+      return new ResourceValue(ItemsEnum.AthenasArmor, amount);
+    }
+    if (type === ItemsEnum.AthenasRing) {
+      return new ResourceValue(ItemsEnum.AthenasRing, amount);
+    }
+    if (type === ItemsEnum.AthenasNecklace) {
+      return new ResourceValue(ItemsEnum.AthenasNecklace, amount);
+    }
+    if (type === ItemsEnum.ArtemissShield) {
+      return new ResourceValue(ItemsEnum.ArtemissShield, amount);
+    }
+    if (type === ItemsEnum.ArtemissArmor) {
+      return new ResourceValue(ItemsEnum.ArtemissArmor, amount);
+    }
+    if (type === ItemsEnum.ArtemissRing) {
+      return new ResourceValue(ItemsEnum.ArtemissRing, amount);
+    }
+    if (type === ItemsEnum.ArtemissNecklace) {
+      return new ResourceValue(ItemsEnum.ArtemissNecklace, amount);
+    }
+    if (type === ItemsEnum.HermessShield) {
+      return new ResourceValue(ItemsEnum.HermessShield, amount);
+    }
+    if (type === ItemsEnum.HermessArmor) {
+      return new ResourceValue(ItemsEnum.HermessArmor, amount);
+    }
+    if (type === ItemsEnum.HermessRing) {
+      return new ResourceValue(ItemsEnum.HermessRing, amount);
+    }
+    if (type === ItemsEnum.HermessNecklace) {
+      return new ResourceValue(ItemsEnum.HermessNecklace, amount);
+    }
+    if (type === ItemsEnum.ApollosShield) {
+      return new ResourceValue(ItemsEnum.ApollosShield, amount);
+    }
+    if (type === ItemsEnum.ApollosArmor) {
+      return new ResourceValue(ItemsEnum.ApollosArmor, amount);
+    }
+    if (type === ItemsEnum.ApollosRing) {
+      return new ResourceValue(ItemsEnum.ApollosRing, amount);
+    }
+    if (type === ItemsEnum.ApollosNecklace) {
+      return new ResourceValue(ItemsEnum.ApollosNecklace, amount);
+    }
+    if (type === ItemsEnum.HadessShield) {
+      return new ResourceValue(ItemsEnum.HadessShield, amount);
+    }
+    if (type === ItemsEnum.HadessArmor) {
+      return new ResourceValue(ItemsEnum.HadessArmor, amount);
+    }
+    if (type === ItemsEnum.HadessRing) {
+      return new ResourceValue(ItemsEnum.HadessRing, amount);
+    }
+    if (type === ItemsEnum.HadessNecklace) {
+      return new ResourceValue(ItemsEnum.HadessNecklace, amount);
+    }
+    if (type === ItemsEnum.AressShield) {
+      return new ResourceValue(ItemsEnum.AressShield, amount);
+    }
+    if (type === ItemsEnum.AressArmor) {
+      return new ResourceValue(ItemsEnum.AressArmor, amount);
+    }
+    if (type === ItemsEnum.AressRing) {
+      return new ResourceValue(ItemsEnum.AressRing, amount);
+    }
+    if (type === ItemsEnum.AressNecklace) {
+      return new ResourceValue(ItemsEnum.AressNecklace, amount);
+    }
+    if (type === ItemsEnum.NemesissShield) {
+      return new ResourceValue(ItemsEnum.NemesissShield, amount);
+    }
+    if (type === ItemsEnum.NemesissArmor) {
+      return new ResourceValue(ItemsEnum.NemesissArmor, amount);
+    }
+    if (type === ItemsEnum.NemesissRing) {
+      return new ResourceValue(ItemsEnum.NemesissRing, amount);
+    }
+    if (type === ItemsEnum.NemesissNecklace) {
+      return new ResourceValue(ItemsEnum.NemesissNecklace, amount);
+    }
+    if (type === ItemsEnum.DionysussShield) {
+      return new ResourceValue(ItemsEnum.DionysussShield, amount);
+    }
+    if (type === ItemsEnum.DionysussArmor) {
+      return new ResourceValue(ItemsEnum.DionysussArmor, amount);
+    }
+    if (type === ItemsEnum.DionysussRing) {
+      return new ResourceValue(ItemsEnum.DionysussRing, amount);
+    }
+    if (type === ItemsEnum.DionysussNecklace) {
+      return new ResourceValue(ItemsEnum.DionysussNecklace, amount);
+    }
+    if (type === ItemsEnum.ZeussShield) {
+      return new ResourceValue(ItemsEnum.ZeussShield, amount);
+    }
+    if (type === ItemsEnum.ZeussArmor) {
+      return new ResourceValue(ItemsEnum.ZeussArmor, amount);
+    }
+    if (type === ItemsEnum.ZeussRing) {
+      return new ResourceValue(ItemsEnum.ZeussRing, amount);
+    }
+    if (type === ItemsEnum.ZeussNecklace) {
+      return new ResourceValue(ItemsEnum.ZeussNecklace, amount);
+    }
 
     //equippables
     if (type === ItemsEnum.HealingHerb) {
@@ -678,7 +813,7 @@ export class ResourceGeneratorService {
   }
 
   getSlotItemValues(item: ItemsEnum) {
-    var baseLesserCrackedStatValue = 10;
+    var baseLesserCrackedStatValue = 15;
     var hpModifier = 5;
     var defensiveModifier = 1.5;
     if (item === ItemsEnum.LesserCrackedOpal) {
@@ -700,7 +835,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseLesserCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseCrackedStatValue = 20;
+    var baseCrackedStatValue = 30;
     if (item === ItemsEnum.CrackedOpal) {
       return new CharacterStats(0, baseCrackedStatValue, 0, 0, 0, 0);
     }
@@ -720,7 +855,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectCrackedStatValue = 25;
+    var basePerfectCrackedStatValue = 45;
     if (item === ItemsEnum.PerfectCrackedOpal) {
       return new CharacterStats(0, basePerfectCrackedStatValue, 0, 0, 0, 0);
     }
@@ -740,7 +875,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseDullStatValue = 40;
+    var baseDullStatValue = 60;
     if (item === ItemsEnum.DullOpal) {
       return new CharacterStats(0, baseDullStatValue, 0, 0, 0, 0);
     }
@@ -760,7 +895,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseDullStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectDullStatValue = 50;
+    var basePerfectDullStatValue = 90;
     if (item === ItemsEnum.PerfectDullOpal) {
       return new CharacterStats(0, basePerfectDullStatValue, 0, 0, 0, 0);
     }

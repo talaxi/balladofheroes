@@ -252,6 +252,8 @@ export class GodViewComponent implements OnInit {
           rewards += this.utilityService.roundTo(increaseValues.healingReceived * 100, 2) + "% Healing Received Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.debuffDuration > 0)
           rewards += this.utilityService.roundTo(increaseValues.debuffDuration * 100, 2) + "% Debuff Duration Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.buffDuration > 0)
+          rewards += this.utilityService.roundTo(increaseValues.buffDuration * 100, 2) + "% Buff Duration Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.overdriveGainFromAutoAttacks > 0)
           rewards += this.utilityService.roundTo(increaseValues.overdriveGainFromAutoAttacks * 100, 2) + "% Overdrive Gain From Auto Attacks Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.healingDone > 0)
@@ -396,6 +398,10 @@ export class GodViewComponent implements OnInit {
 
   getDebuffDurationBonus() {
     return this.god.statGain.debuffDuration + this.god.permanentStatGain.debuffDuration;
+  }
+
+  getBuffDurationBonus() {
+    return this.god.statGain.buffDuration + this.god.permanentStatGain.buffDuration;
   }
 
   getOverdriveGainFromAutoAttacksBonus() {

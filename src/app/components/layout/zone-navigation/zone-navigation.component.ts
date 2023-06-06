@@ -457,6 +457,15 @@ export class ZoneNavigationComponent implements OnInit {
     var dialog = this.dialog.open(content, { width: '65%', maxHeight: '50%' });
   }
 
+  untrackAllAvailable() {
+    return this.globalService.globalVar.trackedResources.filter(item => item !== ItemsEnum.Coin).length > 0;
+  }
+
+  untrackAllResources() {
+    this.globalService.globalVar.trackedResources = [];  
+    this.globalService.globalVar.trackedResources.push(ItemsEnum.Coin);
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

@@ -57,6 +57,7 @@
                     <span class="statValue" [innerHTML]="getNecklace(loadout, 2)"></span>
                 </div>
                 <br />
+                <br *ngIf="isMobile" />
                 <div class="buttons">
                     <button class="buttonStyled" (click)="selectLoadout(loadout)">Select</button>
                     <button class="buttonStyled" (click)="editLoadout(addLoadout, loadout)">Edit</button>

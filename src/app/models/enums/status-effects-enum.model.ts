@@ -138,5 +138,6 @@ export enum StatusEffectEnum {
     RemoveBuff,
     FastDebuffs,
     ExperienceGainUp,
-    LootRateUp
+    LootRateUp,
+    RandomElementalAbsorption
   }

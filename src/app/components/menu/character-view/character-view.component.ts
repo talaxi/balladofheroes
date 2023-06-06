@@ -206,6 +206,10 @@ export class CharacterViewComponent implements OnInit {
     return this.character.battleStats.debuffDuration;
   }
 
+  getBuffDurationBonus() {
+    return this.character.battleStats.buffDuration;
+  }
+
   getOverdriveGainFromAutoAttacksBonus() {
     return this.character.battleStats.overdriveGainFromAutoAttacks;
   }

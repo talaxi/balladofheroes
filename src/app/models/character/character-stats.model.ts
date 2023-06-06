@@ -23,6 +23,7 @@ export class CharacterStats {
     overdriveGain: number;
     healingReceived: number;
     debuffDuration: number;
+    buffDuration: number;
     overdriveGainFromAutoAttacks: number;
     healingDone: number;
     aoeDamage: number;
@@ -52,6 +53,7 @@ export class CharacterStats {
         this.overdriveGain = 0;
         this.healingReceived = 0;
         this.debuffDuration = 0;
+        this.buffDuration = 0;
         this.overdriveGainFromAutoAttacks = 0;
         this.healingDone = 0;
         this.aoeDamage = 0;

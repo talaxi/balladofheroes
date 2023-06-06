@@ -59,3 +59,18 @@
 .smallMarginRight {
     margin-right: .5rem;
 }
+
+@media (max-width: 800px) { 
+    .smallColumn {
+        width: 100%;
+    }
+    
+    .largeColumn {
+        width: 100%;
+      }
+
+      .addItem {
+        margin-left: .2rem;
+        width: 6.15vw;
+    }
+}

@@ -687,8 +687,8 @@ export class VersionControlService {
 
           this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
             if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === ItemsEnum.RadiatingHammer) {
-              var equipmentPiece = character.equipmentSet.weapon;
-              equipmentPiece.equipmentEffect.targetEffect[0].threshold = 15000;
+              var equipmentPiece = character.equipmentSet.weapon;              
+              equipmentPiece.equipmentEffects[0].targetEffect[0].threshold = 15000;
             }
           });
 

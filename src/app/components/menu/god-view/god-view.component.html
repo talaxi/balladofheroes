@@ -128,6 +128,10 @@
                 [contentTemplate]="debuffDurationBonusPopover"><strong [ngClass]="getGodColor()"
                     class="statLabel">Debuff Duration Bonus:</strong>
                 {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                <span *ngIf="getBuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="buffDurationBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Buff Duration Bonus:</strong>
+                {{(getBuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="overdriveGainFromAutoAttacksBonusPopover"><strong [ngClass]="getGodColor()"
                     class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
@@ -490,6 +494,16 @@
         <span class="description" [innerHtml]="this.lookupService.getDebuffDurationBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodDebuffDurationBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #buffDurationBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getBuffDurationBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodBuffDurationBonusStatBreakdown(this.god)">
 
         </div>
     </div>

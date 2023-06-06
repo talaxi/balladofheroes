@@ -218,6 +218,8 @@
                     </div>
                 </div>
             </div>
+            <br/>
+            <button class="buttonStyled" *ngIf="untrackAllAvailable()" (click)="untrackAllResources()">Untrack All</button>
         </div>
         <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
             <app-altar-overview></app-altar-overview>

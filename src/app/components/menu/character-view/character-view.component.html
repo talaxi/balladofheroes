@@ -97,6 +97,14 @@
                             class="statLabel">Ability
                             Cooldown Reduction:</strong>
                         {{getAbilityCooldownReductionBonus() | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="abilityCooldownReductionStartPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
+                            {{(getAbilityCooldownReductionStartBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
+                            {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getAutoAttackCooldownBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="autoAttackCooldownReductionPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Auto
@@ -110,23 +118,27 @@
                         [contentTemplate]="overdriveGainPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Overdrive Gain Bonus:</strong>
                         {{(getOverdriveGainBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip
+                            [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="overdriveGainFromAutoAttacksPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
+                            {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getHealingReceivedBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="healingReceivedPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Received Bonus:</strong>
                         {{(getHealingReceivedBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getDebuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="debuffDurationPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Debuff Duration Bonus:</strong>
-                        {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip
-                        [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="overdriveGainFromAutoAttacksPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
-                        {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="healingDonePopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Done Bonus:</strong>
                         {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getDebuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="debuffDurationPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Debuff Duration Bonus:</strong>
+                            {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>                    
+                            <span *ngIf="getBuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                                [contentTemplate]="buffDurationPopover"><strong [ngClass]="getCharacterColor()"
+                                    class="statLabel">Buff Duration Bonus:</strong>
+                                {{(getBuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>                                                    
                     <span *ngIf="getTickFrequencyBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Tick Frequency Bonus:</strong>
@@ -138,15 +150,7 @@
                     <span *ngIf="getThornsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="thornsPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Thorns:</strong>
-                        {{(getThornsBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="abilityCooldownReductionStartPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
-                        {{(getAbilityCooldownReductionStartBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
-                        {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        {{(getThornsBonus() * 100) | number : '1.0-2'}}%<br /></span>                    
                         <span *ngIf="getElementResistanceReductionBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="elementResistanceReductionPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Enemy Elemental Resistance Reduction:</strong>
@@ -499,6 +503,16 @@
         <span class="description" [innerHtml]="this.lookupService.getDebuffDurationBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getDebuffDurationBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #buffDurationPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getBuffDurationBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getBuffDurationBonusStatBreakdown(this.character)">
 
         </div>
     </div>

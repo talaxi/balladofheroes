@@ -45,3 +45,12 @@
 .statValue {
     vertical-align: middle;
 }
+
+
+
+@media (max-width: 800px) {     
+    .loadoutItem {
+        width: 96%;
+        height: 30vh;
+    }
+}

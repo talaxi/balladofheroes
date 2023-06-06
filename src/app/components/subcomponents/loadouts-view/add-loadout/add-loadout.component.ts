@@ -28,6 +28,7 @@ export class AddLoadoutComponent {
   loadoutName = "";
   @ViewChild('fieldConfirmationBox') fieldMissingConfirmationBox: any;
   fieldMissingConfirmationText = "";
+  isMobile = false;
 
   constructor(private deviceDetectorService: DeviceDetectorService, public dialog: MatDialog, private globalService: GlobalService,
     private lookupService: LookupService, private dictionaryService: DictionaryService, private keybindService: KeybindService) {
@@ -35,6 +36,7 @@ export class AddLoadoutComponent {
   }
 
   ngOnInit() {
+    this.isMobile = this.deviceDetectorService.isMobile();
     this.selectedCharacter = 0;
     this.selectedGod = 0;
     this.newLoadout = new Loadout();

@@ -592,6 +592,37 @@ export class EquipmentService {
     return total;
   }
 
+  getTotalBuffDurationGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.buffDuration;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.buffDuration;
+
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.buffDuration > 0)
+            total += slotItemValues.buffDuration;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.buffDuration;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.buffDuration;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.buffDuration;
+
+    return total;
+  }
+
   getTotalOverdriveGainFromAutoAttacksGain(equipmentSet: EquipmentSet) {
     var total = 0;
 

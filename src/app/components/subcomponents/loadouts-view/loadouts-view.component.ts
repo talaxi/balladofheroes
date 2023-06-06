@@ -26,6 +26,7 @@ export class LoadoutsViewComponent {
   @ViewChild('itemMissingConfirmation') itemMissingConfirmationBox: any;
   itemMissingConfirmationText = "";
   unequipAll: boolean = false;
+  isMobile = false;
 
   constructor(private deviceDetectorService: DeviceDetectorService, public dialog: MatDialog, private lookupService: LookupService,
     private globalService: GlobalService, private dictionaryService: DictionaryService, private menuService: MenuService,
@@ -34,6 +35,7 @@ export class LoadoutsViewComponent {
   }
 
   ngOnInit() {
+    this.isMobile = this.deviceDetectorService.isMobile();
     this.loadouts = this.globalService.globalVar.loadouts;
     this.unequipAll = this.globalService.globalVar.settings.get("unequipAllLoadoutToggle") ?? false;
   }
@@ -207,8 +209,7 @@ export class LoadoutsViewComponent {
   selectLoadout(loadout: Loadout) {
     var character1 = this.globalService.globalVar.characters.find(item => item.type === loadout.character1);
     var character2 = this.globalService.globalVar.characters.find(item => item.type === loadout.character2);
-    if (character1 === undefined || character2 === undefined) {
-      console.log("Couldnt find");
+    if (character1 === undefined || character2 === undefined) {      
       return;
     }
 
@@ -223,7 +224,6 @@ export class LoadoutsViewComponent {
 
     //do unequips first so that items are present to be equipped
     if (this.unequipAll) {
-      console.log("Unequiipping everyone")
       this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character =>{
         this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
         this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);

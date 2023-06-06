@@ -34,6 +34,8 @@ import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { Trial } from 'src/app/models/battle/trial.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
+import { EquipmentSetEnum } from 'src/app/models/enums/equipment-set-enum.model';
+import { EquipmentSet } from 'src/app/models/resources/equipment-set.model';
 
 @Injectable({
   providedIn: 'root'
@@ -915,6 +917,7 @@ export class GlobalService {
     character.battleStats.abilityCooldownReductionWithBuffs = (1 - this.equipmentService.getTotalAbilityCooldownReductionWithBuffsGain(character.equipmentSet));
     character.battleStats.overdriveGainFromAutoAttacks = this.equipmentService.getTotalOverdriveGainFromAutoAttacksGain(character.equipmentSet);
     character.battleStats.debuffDuration = this.equipmentService.getTotalDebuffDurationGain(character.equipmentSet);
+    character.battleStats.buffDuration = this.equipmentService.getTotalBuffDurationGain(character.equipmentSet);
     character.battleStats.overdriveGain = this.equipmentService.getTotalOverdriveGain(character.equipmentSet);
     character.battleStats.abilityCooldownReduction = (1 - this.equipmentService.getTotalAbilityCooldownReductionGain(character.equipmentSet));
     character.battleStats.autoAttackCooldownReduction = (1 - this.equipmentService.getTotalAutoAttackCooldownReductionGain(character.equipmentSet));
@@ -930,6 +933,8 @@ export class GlobalService {
     character.battleStats.elementResistance.lightning = this.equipmentService.getTotalLightningDamageResistanceGain(character.equipmentSet);
     character.battleStats.elementResistance.air = this.equipmentService.getTotalAirDamageResistanceGain(character.equipmentSet);
     character.battleStats.elementResistance.earth = this.equipmentService.getTotalEarthDamageResistanceGain(character.equipmentSet);
+    
+    this.checkForSetBonuses(character.equipmentSet, character.battleStats);
 
     //gods
     var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
@@ -949,6 +954,7 @@ export class GlobalService {
       character.battleStats.armorPenetration += god1.statGain.armorPenetration + god1.permanentStatGain.armorPenetration;
       character.battleStats.healingReceived += god1.statGain.healingReceived + god1.permanentStatGain.healingReceived;
       character.battleStats.debuffDuration += god1.statGain.debuffDuration + god1.permanentStatGain.debuffDuration;
+      character.battleStats.buffDuration += god1.statGain.buffDuration + god1.permanentStatGain.buffDuration;
       character.battleStats.overdriveGainFromAutoAttacks += god1.statGain.overdriveGainFromAutoAttacks + god1.permanentStatGain.overdriveGainFromAutoAttacks;
       character.battleStats.healingDone += god1.statGain.healingDone + god1.permanentStatGain.healingDone;
       character.battleStats.aoeDamage += god1.statGain.aoeDamage + god1.permanentStatGain.aoeDamage;
@@ -979,6 +985,7 @@ export class GlobalService {
       character.battleStats.armorPenetration += god2.statGain.armorPenetration + god2.permanentStatGain.armorPenetration;
       character.battleStats.healingReceived += god2.statGain.healingReceived + god2.permanentStatGain.healingReceived;
       character.battleStats.debuffDuration += god2.statGain.debuffDuration + god2.permanentStatGain.debuffDuration;
+      character.battleStats.buffDuration += god2.statGain.buffDuration + god2.permanentStatGain.buffDuration;
       character.battleStats.overdriveGainFromAutoAttacks += god2.statGain.overdriveGainFromAutoAttacks + god2.permanentStatGain.overdriveGainFromAutoAttacks;
       character.battleStats.healingDone += god2.statGain.healingDone + god2.permanentStatGain.healingDone;
       character.battleStats.aoeDamage += god2.statGain.aoeDamage + god2.permanentStatGain.aoeDamage;
@@ -1628,10 +1635,10 @@ export class GlobalService {
         userGainsEffect.effectiveness += .015;
     }
     else if (god.type === GodEnum.Zeus) {
-      if ((ability.abilityUpgradeLevel % 7 === 0 || ability.abilityUpgradeLevel === 50)  && ability.abilityUpgradeLevel <= 100)
-      targetGainsEffect.effectiveness += .05;
-    else
-      ability.effectiveness += .175;
+      if ((ability.abilityUpgradeLevel % 7 === 0 || ability.abilityUpgradeLevel === 50) && ability.abilityUpgradeLevel <= 100)
+        targetGainsEffect.effectiveness += .05;
+      else
+        ability.effectiveness += .175;
     }
     else if (god.type === GodEnum.Ares) {
       //every 5 upgrades until level 100, increase duration
@@ -1723,9 +1730,9 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Zeus) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
-      targetGainsEffect.effectiveness += .04;
-    else
-      ability.effectiveness += .2;
+        targetGainsEffect.effectiveness += .04;
+      else
+        ability.effectiveness += .2;
     }
     else if (god.type === GodEnum.Ares) {
       //every 5 upgrades until level 100, increase duration
@@ -1813,11 +1820,11 @@ export class GlobalService {
     }
     else if (god.type === GodEnum.Zeus) {
       if (ability.abilityUpgradeLevel === 45)
-      ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 20, 1, false, true));
+        ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatDamageAfterDelay, 20, 1, false, true));
       else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
-      ability.cooldown -= .5;
-    else
-      ability.effectiveness += .125;
+        ability.cooldown -= .5;
+      else
+        ability.effectiveness += .125;
     }
     else if (god.type === GodEnum.Ares) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -2105,7 +2112,7 @@ export class GlobalService {
         }
         else if (god.type === GodEnum.Hermes) {
           stats.agility += (godLevel - 450) / 4;
-        }        
+        }
         else if (god.type === GodEnum.Zeus) {
           stats.attack += (godLevel - 450) / 4;
         }
@@ -2493,7 +2500,7 @@ export class GlobalService {
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.holy * 100) + "% Holy Damage Increase, ";
     if (upgradedStats.elementIncrease.fire > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
-      if (upgradedStats.elementIncrease.lightning > 0)
+    if (upgradedStats.elementIncrease.lightning > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.lightning * 100) + "% Lightning Damage Increase, ";
     if (upgradedStats.overdriveGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
@@ -2511,12 +2518,11 @@ export class GlobalService {
       else
         statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + "% Effectiveness, ";
     }
-    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {      
-      if (upgradedAbilityName === "Second Wind"){
+    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {
+      if (upgradedAbilityName === "Second Wind") {
         statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness) + " Effectiveness, ";
       }
-      else
-      {
+      else {
         statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness * 100) + "% Buff Effectiveness, ";
       }
     }
@@ -2804,6 +2810,7 @@ export class GlobalService {
 
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RepeatDamageAfterDelay);
 
       if (member.abilityList !== undefined && member.abilityList.length > 0)
         member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
@@ -2862,68 +2869,114 @@ export class GlobalService {
       character.equipmentSet.necklace = selectedEquipmentPiece;
     }
 
-    if (selectedEquipmentPiece.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery &&
-      selectedEquipmentPiece.equipmentEffect.triggersEveryCount === 0) {
-      if (selectedEquipmentPiece.equipmentEffect.userEffect.length > 0)
-        selectedEquipmentPiece.equipmentEffect.triggersEveryCount = selectedEquipmentPiece.equipmentEffect.userEffect[0].triggersEvery;
-      else if (selectedEquipmentPiece.equipmentEffect.targetEffect.length > 0)
-        selectedEquipmentPiece.equipmentEffect.triggersEveryCount = selectedEquipmentPiece.equipmentEffect.targetEffect[0].triggersEvery;
+    if (selectedEquipmentPiece.equipmentEffects !== undefined && selectedEquipmentPiece.equipmentEffects.length > 0) {
+      selectedEquipmentPiece.equipmentEffects.forEach(equipmentEffect => {
+        if (equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery &&
+          equipmentEffect.triggersEveryCount === 0) {
+          if (equipmentEffect.userEffect.length > 0)
+            equipmentEffect.triggersEveryCount = equipmentEffect.userEffect[0].triggersEvery;
+          else if (equipmentEffect.targetEffect.length > 0)
+            equipmentEffect.triggersEveryCount = equipmentEffect.targetEffect[0].triggersEvery;
+        }
+      });
     }
+    
+    this.calculateCharacterBattleStats(character);
   }
 
   unequipItem(type: EquipmentTypeEnum | undefined, characterType: CharacterEnum) {
     var character = this.globalVar.characters.find(item => item.type === characterType);
 
-    if (character === undefined || type === undefined)
+    if (character === undefined)
+      return;
+    if (type === undefined)
       return;
 
     if (type === EquipmentTypeEnum.Weapon) {
-      if (character.equipmentSet.weapon?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
-        var effect = character.equipmentSet.weapon.equipmentEffect.userEffect.length > 0 ?
-          character.equipmentSet.weapon.equipmentEffect.userEffect[0] : character.equipmentSet.weapon.equipmentEffect.targetEffect[0];          
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.equipmentEffects.length > 0) {
+        character.equipmentSet.weapon.equipmentEffects.forEach(equipmentEffect => {
+          if (equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+            var effect = equipmentEffect.userEffect.length > 0 ?
+              equipmentEffect.userEffect[0] : equipmentEffect.targetEffect[0];
+            character!.battleInfo.statusEffects = character!.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+          }
+        });
       }
 
       character.equipmentSet.weapon = undefined;
     }
     if (type === EquipmentTypeEnum.Shield) {
-      if (character.equipmentSet.shield?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
-        var effect = character.equipmentSet.shield.equipmentEffect.userEffect.length > 0 ?
-          character.equipmentSet.shield.equipmentEffect.userEffect[0] : character.equipmentSet.shield.equipmentEffect.targetEffect[0];
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      if (character.equipmentSet.shield !== undefined && character.equipmentSet.shield.equipmentEffects.length > 0) {
+        character.equipmentSet.shield.equipmentEffects.forEach(equipmentEffect => {
+          if (equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+            var effect = equipmentEffect.userEffect.length > 0 ?
+              equipmentEffect.userEffect[0] : equipmentEffect.targetEffect[0];
+            character!.battleInfo.statusEffects = character!.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+          }
+        });
       }
 
       character.equipmentSet.shield = undefined;
     }
     if (type === EquipmentTypeEnum.Armor) {
-      if (character.equipmentSet.armor?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
-        var effect = character.equipmentSet.armor.equipmentEffect.userEffect.length > 0 ?
-          character.equipmentSet.armor.equipmentEffect.userEffect[0] : character.equipmentSet.armor.equipmentEffect.targetEffect[0];
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      if (character.equipmentSet.armor !== undefined && character.equipmentSet.armor.equipmentEffects.length > 0) {
+        character.equipmentSet.armor.equipmentEffects.forEach(equipmentEffect => {
+          if (equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+            var effect = equipmentEffect.userEffect.length > 0 ?
+              equipmentEffect.userEffect[0] : equipmentEffect.targetEffect[0];
+            character!.battleInfo.statusEffects = character!.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+          }
+        });
       }
 
       character.equipmentSet.armor = undefined;
     }
     if (type === EquipmentTypeEnum.Ring) {
-      if (character.equipmentSet.ring?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
-        var effect = character.equipmentSet.ring.equipmentEffect.userEffect.length > 0 ?
-          character.equipmentSet.ring.equipmentEffect.userEffect[0] : character.equipmentSet.ring.equipmentEffect.targetEffect[0];
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      if (character.equipmentSet.ring !== undefined && character.equipmentSet.ring.equipmentEffects.length > 0) {
+        character.equipmentSet.ring.equipmentEffects.forEach(equipmentEffect => {
+          if (equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+            var effect = equipmentEffect.userEffect.length > 0 ?
+              equipmentEffect.userEffect[0] : equipmentEffect.targetEffect[0];
+            character!.battleInfo.statusEffects = character!.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+          }
+        });
       }
-
       character.equipmentSet.ring = undefined;
     }
     if (type === EquipmentTypeEnum.Necklace) {
-      if (character.equipmentSet.necklace?.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
-        var effect = character.equipmentSet.necklace.equipmentEffect.userEffect.length > 0 ?
-          character.equipmentSet.necklace.equipmentEffect.userEffect[0] : character.equipmentSet.necklace.equipmentEffect.targetEffect[0];
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+      if (character.equipmentSet.necklace !== undefined && character.equipmentSet.necklace.equipmentEffects.length > 0) {
+        character.equipmentSet.necklace.equipmentEffects.forEach(equipmentEffect => {
+          if (equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive) {
+            var effect = equipmentEffect.userEffect.length > 0 ?
+              equipmentEffect.userEffect[0] : equipmentEffect.targetEffect[0];
+            character!.battleInfo.statusEffects = character!.battleInfo.statusEffects.filter(existingEffect => existingEffect.caster !== effect.caster);
+          }
+        });
       }
-
       character.equipmentSet.necklace = undefined;
     }
 
     this.calculateCharacterBattleStats(character);
+  }
+
+  checkForSetBonuses(equipmentSet: EquipmentSet, stats?: CharacterStats) {
+    if (stats === undefined)
+      stats = new CharacterStats(0, 0, 0, 0, 0, 0);
+
+    var setCounts = equipmentSet.getAllSetCounts();
+
+    if (setCounts.length === 0)
+      return;
+
+    setCounts.forEach(setCount => {
+      if (setCount[0] === EquipmentSetEnum.Apollo) {
+        if (setCount[1] >= 2)
+          stats!.hpRegen = 100;
+      }
+      //Put set bonuses here, if its the set and meets the count then gain character battle stats gain x or whatever
+    });
+
+    return stats;
   }
 
   getAchievementsForNextFollower() {
@@ -2943,9 +2996,9 @@ export class GlobalService {
     if (nemesis !== undefined)
       nemesis.isAvailable = true;
 
-      if (this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant) === undefined || this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant)?.amount === 0)
+    if (this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant) === undefined || this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant)?.amount === 0)
       this.globalVar.resources.push(new ResourceValue(ItemsEnum.BlazingSunPendant, 1));
-      if (this.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendant) === undefined || this.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendant)?.amount === 0)
+    if (this.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendant) === undefined || this.globalVar.resources.find(item => item.item === ItemsEnum.DarkMoonPendant)?.amount === 0)
       this.globalVar.resources.push(new ResourceValue(ItemsEnum.DarkMoonPendant, 1));
 
     if (!this.globalVar.isSubscriber) {
@@ -3211,7 +3264,7 @@ export class GlobalService {
     return this.globalVar.sidequestData.weeklyMeleeEntries > 0;
   }
 
-  ResetTrialInfoAfterChangingSubzone() {   
+  ResetTrialInfoAfterChangingSubzone() {
     this.globalVar.activeBattle.activeTrial = this.setNewTrial(false);
   }
 
@@ -3356,5 +3409,5 @@ export class GlobalService {
     copy.triggersEvery = effect.triggersEvery;
 
     return copy;
-}
+  }
 }
