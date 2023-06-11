@@ -153,7 +153,9 @@ export enum SubZoneEnum {
   HuntForYarrowPromisingPathway2,
   HuntForYarrowPromisingPathway3,
   HuntForYarrowYarrowField,
-  WarForTheMountainBattle1, //TODO: rename
-  WarForTheMountainBattle2, //TODO: rename
-  WarForTheMountainBattle3 //TODO: rename
+  WarForTheMountainBattleAtTheGates, 
+  WarForTheMountainOpenCourtyard,
+  WarForTheMountainStables, 
+  WarForTheMountainPalaces,
+  WarForTheMountainThePeak
 }

@@ -33,6 +33,8 @@ export class DictionaryService {
       name = "Boon of Olympus";
     if (type === ItemsEnum.ItemBeltUp)
       name = "Item Belt Size";
+      if (type === ItemsEnum.Ambrosia)
+      name = "Ambrosia";
 
     //healing items
     if (type === ItemsEnum.HealingHerb)
@@ -49,6 +51,18 @@ export class DictionaryService {
       name = "Restorative Salve";
     else if (type === ItemsEnum.FocusPotion)
       name = "Focus Potion";
+      else if (type === ItemsEnum.FireAbsorptionPotion)
+      name = "Fire Absorption Potion";
+      else if (type === ItemsEnum.WaterAbsorptionPotion)
+      name = "Water Absorption Potion";
+      else if (type === ItemsEnum.EarthAbsorptionPotion)
+      name = "Earth Absorption Potion";
+      else if (type === ItemsEnum.HolyAbsorptionPotion)
+      name = "Holy Absorption Potion";
+      else if (type === ItemsEnum.LightningAbsorptionPotion)
+      name = "Lightning Absorption Potion";
+      else if (type === ItemsEnum.AirAbsorptionPotion)
+      name = "Air Absorption Potion";
 
     //battle items
     else if (type === ItemsEnum.ThrowingStone)
@@ -512,6 +526,18 @@ export class DictionaryService {
       name = "Radiating Gemstone";
     else if (type === ItemsEnum.WhiteHorn)
       name = "White Horn";
+      else if (type === ItemsEnum.BlackHorn)
+      name = "Black Horn";
+      else if (type === ItemsEnum.MagicCore)
+      name = "Magic Core";
+      else if (type === ItemsEnum.EssenceOfEarth)
+      name = "Essence of Earth";
+      else if (type === ItemsEnum.EssenceOfAir)
+      name = "Essence of Air";
+      else if (type === ItemsEnum.EssenceOfLightning)
+      name = "Essence of Lightning";
+      else if (type === ItemsEnum.EssenceOfHoly)
+      name = "Essence of Holy";
     else if (type === ItemsEnum.PerfectCrackedRuby)
       name = "Perfect Cracked Ruby";
     else if (type === ItemsEnum.PerfectCrackedAmethyst)
@@ -570,6 +596,18 @@ export class DictionaryService {
       name = "Focus Potion Recipe";
     else if (type === ItemsEnum.PotentConcoctionRecipe)
       name = "Potent Concoction Recipe";
+      else if (type === ItemsEnum.FireAbsorptionPotionRecipe)
+      name = "Fire Absorption Recipe";
+      else if (type === ItemsEnum.HolyAbsorptionPotionRecipe)
+      name = "Holy Absorption Recipe";
+      else if (type === ItemsEnum.WaterAbsorptionPotionRecipe)
+      name = "Water Absorption Recipe";
+      else if (type === ItemsEnum.EarthAbsorptionPotionRecipe)
+      name = "Earth Absorption Recipe";
+      else if (type === ItemsEnum.LightningAbsorptionPotionRecipe)
+      name = "Lightning Absorption Recipe";
+      else if (type === ItemsEnum.AirAbsorptionPotionRecipe)
+      name = "Air Absorption Recipe";
 
     //charms
     else if (type === ItemsEnum.SmallCharmOfDetermination)
@@ -717,6 +755,10 @@ export class DictionaryService {
       name = "Hades";
     else if (type === ItemsEnum.Ares)
       name = "Ares";
+      else if (type === ItemsEnum.Nemesis)
+        name = "<span class='nemesisColor'>Nemesis</span>";
+        else if (type === ItemsEnum.Dionysus)
+          name = "<span class='dionysusColor'>Dionysus</span>";
     else if (type === ItemsEnum.AugeanStables1)
       name = "Repair Augean Stables Door";
     else if (type === ItemsEnum.AugeanStables2)

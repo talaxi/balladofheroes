@@ -18,12 +18,14 @@ export class DpsCalculatorService {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
       if (!this.globalService.globalVar.isGamePaused && !this.globalService.globalVar.isBattlePaused)
       {
-        if (this.globalService.globalVar.extraSpeedTimeRemaining > 0)
+        if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && this.globalService.globalVar.extraSpeedEnabled)
           deltaTime *= 2;
 
+        //console.log("RAT: " + this.rollingAverageTimer + " adding " + deltaTime);
         this.rollingAverageTimer += deltaTime;
 
         if (this.bonusTime > 0) {
+          console.log("Bonus Time, adding " + this.bonusTime);
           this.rollingAverageTimer += this.bonusTime;
           this.bonusTime = 0;
         }
@@ -90,6 +92,8 @@ export class DpsCalculatorService {
     //console.log(this.xpGain);
     if (this.xpGain === undefined || this.xpGain.length === 0)
       return xps;
+
+    console.log(this.xpGain);
 
     var rollingAverageTime = 120; //only factor in the latest 120 seconds
 

@@ -9,9 +9,9 @@
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getCharacterColor()">{{character.name}}</span>
             <br />
-            <span>Level {{character.level}}</span>
+            <span customToolTip class="buttonAsText clickableText" [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover">Level {{character.level}}</span>
             <br />
-            <span *ngIf="character.level < character.maxLevel">{{character.exp | number : '1.0-0'}} /
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{character.exp | number : '1.0-0'}} /
                 {{character.expToNextLevel | number : '1.0-0'}} XP to Level
                 {{character.level + 1}}</span>
             <span *ngIf="character.level === character.maxLevel">
@@ -785,4 +785,25 @@
 <ng-template #equipmentModal>
     <app-equipment-view [characterType]="this.character.type">
     </app-equipment-view>
+</ng-template>
+
+
+<ng-template #characterXpPopover>
+    <div>
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getCharacterXpBreakdown(this.character)">
+        </div>
+        <hr/>
+        <div>Click to see a breakdown of all permanent stats and abilities.</div>
+    </div>
+</ng-template>
+
+
+<ng-template #permanentStatBreakdownContent>
+    <div class="s4Heading">
+        Permanent Level Upgrades
+    </div>
+    <hr/>
+    <div [innerHtml]="this.getPermanentStatBreakdown()">
+        
+    </div>
 </ng-template>

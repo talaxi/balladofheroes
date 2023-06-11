@@ -145,8 +145,9 @@ export class AppComponent {
     var originalDeltaTime = deltaTime;
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, activeSubzone);
     var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.lookupService.userNotInTownBattle();    
-    if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
-      this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
+    //vv not used anymore I think
+    //if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
+      //this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
     this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
@@ -220,6 +221,7 @@ export class AppComponent {
       if (this.globalService.bankedTime + deltaTime <= batchTime) //amount of time banked is less than a batch so use it all
       {
         deltaTime += this.globalService.bankedTime;
+        this.dpsCalculatorService.bonusTime += this.globalService.bankedTime;
         this.globalService.bankedTime = 0;
         this.globalService.maxBankedTime = 0;
         this.lookupService.isUIHidden = false;
@@ -236,6 +238,7 @@ export class AppComponent {
         var useAmount = batchTime - deltaTime;
         this.globalService.bankedTime -= useAmount;
         deltaTime += useAmount;
+        this.dpsCalculatorService.bonusTime += useAmount;
 
         if (this.globalService.bankedTime <= 0)
           this.globalService.bankedTime = 0;

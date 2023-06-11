@@ -234,7 +234,7 @@ export class TrialService {
     if (enemy.bestiaryType === BestiaryEnum.Nemesis) {
       var thornsEffect = enemy.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
       if (thornsEffect !== undefined)
-        thornsEffect.effectiveness = Math.round(enemy.battleStats.attack / 8);
+        thornsEffect.effectiveness = Math.round(enemy.battleStats.attack / 6);
     }
 
     return enemy;
@@ -243,6 +243,9 @@ export class TrialService {
   handleTrialVictory(type: TrialEnum) {
     this.globalService.resetCooldowns();
     var buffHours = 4;
+    var todaysDate = new Date();
+    if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0)
+    buffHours *= 2;
 
     if (type === TrialEnum.TrialOfSkill) {
       var lootUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.LootRateUp, buffHours * 60 * 60, 1.25, false, true);
@@ -251,7 +254,7 @@ export class TrialService {
       this.globalService.globalVar.globalStatusEffects.push(xpUpEffect);
 
       //gain affinity for the god
-      var affinityXpGain = 100;
+      var affinityXpGain = 200;
       var godEnum = this.globalService.globalVar.activeBattle.activeTrial.godEnum;
       var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
       if (god !== undefined) {    

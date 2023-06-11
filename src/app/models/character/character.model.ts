@@ -35,7 +35,14 @@ export class Character {
     unlockedOverdrives: OverdriveNameEnum[];
     @Type(() => TrackedStats)
     trackedStats: TrackedStats;
-    targeting: Character | undefined;
+    targeting: Character | undefined;    
+    @Type(() => CharacterStats)
+    permanentStatGain: CharacterStats;
+    @Type(() => Ability)
+    permanentAbilityUpgrades: Ability[];
+    permanentAbility1GainCount: [number, number][];
+    permanentAbility2GainCount: [number, number][];
+    permanentPassiveGainCount: [number, number][];
 
     constructor(type?: CharacterEnum) {
         this.type = type === undefined ? CharacterEnum.None : type;
@@ -55,5 +62,10 @@ export class Character {
         this.abilityList = [];
         this.trackedStats = new TrackedStats();
         this.unlockedOverdrives = [OverdriveNameEnum.Smash];
+        this.permanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        this.permanentAbilityUpgrades = [];
+        this.permanentAbility1GainCount = [];
+        this.permanentAbility2GainCount = [];
+        this.permanentPassiveGainCount = [];
     }    
 }

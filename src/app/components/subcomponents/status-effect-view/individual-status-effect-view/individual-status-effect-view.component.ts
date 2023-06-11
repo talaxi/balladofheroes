@@ -37,7 +37,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp ||
       effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp ||
       effect.type === StatusEffectEnum.AllPrimaryStatsUp || 
-      effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown)
+      effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown ||
+      effect.type === StatusEffectEnum.HpRegenUp)
       return true;
 
     return false;
@@ -56,7 +57,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.WaterDamageTakenUp || effect.type === StatusEffectEnum.WaterDamageTakenDown ||
       effect.type === StatusEffectEnum.LightningDamageTakenUp || effect.type === StatusEffectEnum.LightningDamageTakenDown ||
       effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.HolyDamageTakenDown ||
-      effect.type === StatusEffectEnum.FireDamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenDown)
+      effect.type === StatusEffectEnum.FireDamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenDown ||
+      effect.type === StatusEffectEnum.ThornsDamageTakenUp)
       return true;
 
     return false;
@@ -125,7 +127,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.LightningDamageTakenUp || effect.type === StatusEffectEnum.LightningDamageTakenDown ||
       effect.type === StatusEffectEnum.WaterDamageTakenUp || effect.type === StatusEffectEnum.WaterDamageTakenDown ||
       effect.type === StatusEffectEnum.FireDamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenDown ||
-      effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.HolyDamageTakenDown)
+      effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.HolyDamageTakenDown ||
+      effect.type === StatusEffectEnum.ThornsDamageTakenUp)
       return "TKN";
     if (effect.type === StatusEffectEnum.Dead)
       return "KO";
@@ -137,6 +140,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "DOT";
     if (effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown)
       return "PEN";
+      if (effect.type === StatusEffectEnum.HpRegenUp)
+      return "RGN";
     if (effect.type === StatusEffectEnum.StatusEffectDisplayCatchAll) {
       var hiddenEffectCount = 0;
 
@@ -182,6 +187,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       img = "assets/svg/elementalResistanceDown.svg";
     if (effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
       img = "assets/svg/shieldSlam.svg";
+      if (effect.type === StatusEffectEnum.ThornsDamageTakenUp)
+      img = "assets/svg/thorns.svg";
 
     return img;
   }
@@ -204,7 +211,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.DamageTakenUp || effect.type === StatusEffectEnum.FireDamageTakenUp ||
       effect.type === StatusEffectEnum.EarthDamageTakenUp || effect.type === StatusEffectEnum.LightningDamageTakenUp ||
       effect.type === StatusEffectEnum.HolyDamageTakenUp || effect.type === StatusEffectEnum.WaterDamageTakenUp ||
-      effect.type === StatusEffectEnum.AirDamageTakenUp)
+      effect.type === StatusEffectEnum.AirDamageTakenUp || effect.type === StatusEffectEnum.ThornsDamageTakenUp)
       img = "assets/svg/invertStatDownSE.svg";
 
     return img;
@@ -392,6 +399,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.FastDebuffs) {
       src += "boonOfDionysus.svg";
+    }
+    if (effect.type === StatusEffectEnum.OstinatoAfter) {
+      src += "ostinato.svg";
     }
 
     return src;

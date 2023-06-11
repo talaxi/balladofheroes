@@ -263,5 +263,12 @@ export enum BestiaryEnum {
   ForestNymphWitch,
   ForestNymphKeeper,
   MagicalSphere,
-  MammothMagicalSphere
+  MammothMagicalSphere,
+  Agrius,
+  Thoon,
+  Mimon,
+  Mimas,
+  Aristaeus,
+  Gration,
+  Porphyrion
 }

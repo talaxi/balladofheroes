@@ -505,6 +505,11 @@ export class ShopViewComponent implements OnInit {
     });
   }
 
+  hasOlympicFavorBeenOpened() {
+    //TODO: story scene prob?
+    return false;
+  }
+
   ngOnDestroy() {
     this.layoutService.jumpedToColiseum = false;
 

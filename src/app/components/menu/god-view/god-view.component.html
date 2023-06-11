@@ -9,10 +9,10 @@
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getGodColor()">{{god.name}}</span>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">Level
-                {{god.level}}</span>
+            <button class="buttonAsText clickableText" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">Level
+                {{god.level}}</button>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">{{god.exp |
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="godXpPopover">{{god.exp |
                 number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
                 1}}</span>
         </div>
@@ -765,6 +765,19 @@
     <div>
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodXpBreakdown(this.god)">
         </div>
+        <hr/>
+        <div>Click to see a breakdown of all permanent stats and abilities.</div>
+    </div>
+</ng-template>
+
+
+<ng-template #permanentStatBreakdownContent>
+    <div class="s4Heading">
+        Permanent Level Upgrades
+    </div>
+    <hr/>
+    <div [innerHtml]="this.getPermanentStatBreakdown()">
+        
     </div>
 </ng-template>
 

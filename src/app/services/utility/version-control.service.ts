@@ -26,6 +26,8 @@ import { Melete } from 'src/app/models/melete/melete.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
+import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
+import { UsableItemEffect } from 'src/app/models/resources/usable-item-effect.model';
 declare var LZString: any;
 
 @Injectable({
@@ -679,16 +681,21 @@ export class VersionControlService {
             }
           });
         }
-        if (version === .6) {
+        if (version === .6) {          
           this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
           this.globalService.globalVar.loadouts = [];
           this.initializationService.initializeBalladOfOlympus();
           this.globalService.globalVar.globalStatusEffects = [];
+          this.globalService.globalVar.sidequestData.levelsForNextAmbrosia = this.utilityService.levelsNeededForAmbrosia;
 
           this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
             if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === ItemsEnum.RadiatingHammer) {
               var equipmentPiece = character.equipmentSet.weapon;              
-              equipmentPiece.equipmentEffects[0].targetEffect[0].threshold = 15000;
+              var equipmentEffect = new UsableItemEffect();
+              equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+              equipmentEffect.chance = .25;
+              equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", 15000, undefined, undefined, undefined, false));
+              equipmentPiece.equipmentEffects.push(equipmentEffect);
             }
           });
 
@@ -720,7 +727,7 @@ export class VersionControlService {
 
             var permanentPassive = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
             if (permanentPassive !== undefined) {
-              permanentPassive.effectiveness *= (3/10);
+              permanentPassive.effectiveness *= (2/10);
             }
           }
 
@@ -741,6 +748,21 @@ export class VersionControlService {
               ability1.targetEffect[0].duration -= Math.floor(ability1.abilityUpgradeLevel / 5) * .25;
             }
           }
+
+          this.globalService.globalVar.characters.forEach(character => {
+            this.globalService.assignAbilityInfo(character);
+
+            for (var i = 1; i < character.level; i++) {
+              this.globalService.checkForNewCharacterAbilities(character, i);
+            }
+          });
+
+          /*var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
+          if (warrior !== undefined) {
+            var battleCry = warrior.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (battleCry !== undefined)
+              battleCry.targetEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.ThornsDamageTakenUp, 10, 1.1, false, false, false, warrior.name));
+          }*/
 
           var geryonsFarm = this.balladService.findSubzone(SubZoneEnum.ErytheiaGeryonsFarm);
           if (geryonsFarm !== undefined && geryonsFarm.isAvailable && geryonsFarm.victoryCount > 0) {
@@ -766,7 +788,7 @@ export class VersionControlService {
             }
 
           }
-          //TODO: remove, this is just for testing
+          //TODO: remove, this is just for testing          
           var olympusSubzone = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
           olympusSubzone!.isAvailable = true;
           //^^^

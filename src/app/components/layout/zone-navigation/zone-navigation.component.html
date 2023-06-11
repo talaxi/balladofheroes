@@ -190,6 +190,12 @@
                             [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
                                 : '1.0-2'}}</span></span>
+                                <br *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0" />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0"
+                            class="resource ambrosiaKeyword" customToolTip
+                            [contentTemplate]="ambrosiaPopover">Ambrosia:
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.Ambrosia) | number
+                                : '1.0-2'}}</span></span>
                         <br />
                         <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                             (click)="viewFollowers(followers)">View Followers</button>
@@ -252,6 +258,12 @@
 <ng-template #chthonicFavorPopover>
     <div>
         {{lookupService.getItemDescription(itemsEnum.ChthonicFavor)}}
+    </div>
+</ng-template>
+
+<ng-template #ambrosiaPopover>
+    <div>
+        {{lookupService.getItemDescription(itemsEnum.Ambrosia)}}
     </div>
 </ng-template>
 

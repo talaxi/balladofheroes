@@ -21,7 +21,7 @@
   </button>
   <button *ngIf="option.type === shopTypeEnum.OlympicFavor" class="buttonStyled shopButtonText"
     (click)="openShop(option, olympicFavorModal)">{{getOptionText(option.type)}}
-    <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true"
+    <app-notification-icon *ngIf="!hasOlympicFavorBeenOpened()" [isButton]="true"
       [notificationColor]="resetNotification"></app-notification-icon>
   </button>
   <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak

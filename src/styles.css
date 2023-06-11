@@ -173,6 +173,7 @@
   --insufficientResourcesKeywordColor: #7a818c;
   --chthonicFavorColor: #ABB5DC;
   --chthonicPowerColor: #83C2A6;
+  --ambrosiaColor: #e3df96;
   --overdriveColor: #FA989E;
   --followerColor: #3DB6D1;
   --sidequestColor: #cc6f12;
@@ -461,6 +462,11 @@ h6 {
   color: var(--chthonicPowerColor);
 }
 
+.ambrosiaKeyword {
+  font-weight: 550;
+  color: var(--ambrosiaColor);
+}
+
 .baseWeight {
   font-weight: normal;
 }
@@ -521,6 +527,10 @@ h6 {
 
 .smallMarginLeft {
   margin-left: .5rem !important;
+}
+
+.statValue {
+  vertical-align: middle;
 }
 
 .buttonStyled:hover,
@@ -944,10 +954,6 @@ button {
 
 .positiveStatusEffectColor {
   color: var(--positive-status-effect);
-}
-
-.bold {
-  font-weight: bold;
 }
 
 .noMargin {

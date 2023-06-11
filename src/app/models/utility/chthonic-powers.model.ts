@@ -62,6 +62,6 @@ export class ChthonicPowers {
     }
     
     getRetainGodLevelPercent() {        
-        return this.retainGodLevel * .01;
+        return this.retainGodLevel * .005;
     }
 }

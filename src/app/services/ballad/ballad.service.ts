@@ -710,12 +710,16 @@ export class BalladService {
       name = "Promising Pathway 3";
       if (type === SubZoneEnum.HuntForYarrowYarrowField)
       name = "Yarrow Field";
-      if (type === SubZoneEnum.WarForTheMountainBattle1)
-      name = "Battle 1";
-      if (type === SubZoneEnum.WarForTheMountainBattle2)
-      name = "Battle 2";
-      if (type === SubZoneEnum.WarForTheMountainBattle3)
-      name = "Battle 3";
+      if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates)
+      name = "Battle at the Gates";
+      if (type === SubZoneEnum.WarForTheMountainOpenCourtyard)
+      name = "Open Courtyard";
+      if (type === SubZoneEnum.WarForTheMountainPalaces)
+      name = "Palaces";
+      if (type === SubZoneEnum.WarForTheMountainStables)
+      name = "Stables";
+      if (type === SubZoneEnum.WarForTheMountainThePeak)
+      name = "The Peak";
 
     return name;
   }
@@ -899,7 +903,8 @@ export class BalladService {
     if (type === SubZoneEnum.HuntForYarrowYarrowField)
       victories = bossVictories;
 
-    if (type === SubZoneEnum.WarForTheMountainBattle1 || type === SubZoneEnum.WarForTheMountainBattle2 || type === SubZoneEnum.WarForTheMountainBattle3)
+    if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates || type === SubZoneEnum.WarForTheMountainPalaces || type === SubZoneEnum.WarForTheMountainStables ||
+      type === SubZoneEnum.WarForTheMountainOpenCourtyard || type === SubZoneEnum.WarForTheMountainThePeak)
       victories = bossVictories;
 
     return victories;

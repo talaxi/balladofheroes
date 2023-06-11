@@ -698,6 +698,24 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.WhiteHorn) {
       return new ResourceValue(ItemsEnum.WhiteHorn, amount);
+    }    
+    if (type === ItemsEnum.BlackHorn) {
+      return new ResourceValue(ItemsEnum.BlackHorn, amount);
+    }
+    if (type === ItemsEnum.MagicCore) {
+      return new ResourceValue(ItemsEnum.MagicCore, amount);
+    }    
+    if (type === ItemsEnum.EssenceOfAir) {
+      return new ResourceValue(ItemsEnum.EssenceOfAir, amount);
+    }
+    if (type === ItemsEnum.EssenceOfEarth) {
+      return new ResourceValue(ItemsEnum.EssenceOfEarth, amount);
+    }
+    if (type === ItemsEnum.EssenceOfLightning) {
+      return new ResourceValue(ItemsEnum.EssenceOfLightning, amount);
+    }
+    if (type === ItemsEnum.EssenceOfHoly) {
+      return new ResourceValue(ItemsEnum.EssenceOfHoly, amount);
     }
     if (type === ItemsEnum.RadiatingAirStone)
       return new ResourceValue(ItemsEnum.RadiatingAirStone, amount);
@@ -789,6 +807,12 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PriestClass) {
       return new ResourceValue(ItemsEnum.PriestClass, amount);
+    }  
+    if (type === ItemsEnum.Dionysus) {
+      return new ResourceValue(ItemsEnum.Dionysus, amount);
+    }
+    if (type === ItemsEnum.Nemesis) {
+      return new ResourceValue(ItemsEnum.Nemesis, amount);
     }
     if (type === ItemsEnum.Coin) {
       return new ResourceValue(ItemsEnum.Coin, amount);

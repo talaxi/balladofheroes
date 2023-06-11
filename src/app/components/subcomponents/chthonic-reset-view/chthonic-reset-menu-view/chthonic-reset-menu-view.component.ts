@@ -30,7 +30,9 @@ export class ChthonicResetMenuViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
-    this.availableGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
+    this.availableGods = this.globalService.globalVar.gods.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
+    });
 
     if (this.globalService.globalVar.chthonicPowers.preferredGod !== GodEnum.None)    
       this.bonusGod = this.globalService.globalVar.chthonicPowers.preferredGod = this.lookupService.getPreferredGod();
@@ -62,7 +64,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       this.bonusGodText = "Now <b>HERE'S</b> someone that knows how to have a little fun! They oughtta start a cult or something for Dionysus, I'll be the first one to sign up!";
     }
     if (this.bonusGod === GodEnum.Zeus) {
-      
+      this.bonusGodText = "We're not really supposed to say his name down here, but if you happen to see the <i class='zeusColor storyCharacterName'>head honcho with all the lightning bolts</i>, put in a good word for me will ya?"
     }
     if (this.bonusGod === GodEnum.Poseidon) {
       
@@ -86,16 +88,18 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     var preferredGodBoost = 1;
 
     //give more for more levels at once so that there isn't a benefit in coming back every single level to stack favor
-    var multiLevelBoost = 0;
+   /* var multiLevelBoost = 0;
     if (god.level > 2) {
       multiLevelBoost = (god.level - 2) * .1;
-    }
+    }*/
 
     if (god.type === this.globalService.globalVar.chthonicPowers.preferredGod) {
       preferredGodBoost = 1.25;
     }
 
-    return this.utilityService.roundTo((((god.level - 1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
+    var baseAmount = 1.000815 ** (5325 * Math.log10(.08 * (Math.ceil(god.level * .8)) + 2)) - 1;
+
+    return this.utilityService.roundTo((baseAmount) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
   }
 
   getChthonicFavor(god: God) {    
@@ -156,12 +160,15 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     });
 
     var resetRetainAmount = this.globalService.globalVar.chthonicPowers.getRetainGodLevelPercent();
-    if (resetRetainAmount > 0) {
-      var godLevel = Math.floor(originalLevel * resetRetainAmount);
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(god, true);
+    if (resetRetainAmount > 0) {      
+      var xp = this.lookupService.getTotalExpRequiredForGodLevel(originalLevel);      
+      god.exp += xp * resetRetainAmount;
+
+      var previousXp: number | undefined = undefined;
+      while (god.exp >= god.expToNextLevel && (previousXp === undefined || god.exp < previousXp)) {
+        previousXp = god.exp;
+        this.globalService.levelUpGod(god);
       }
-      god.exp = 0;
     }
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {      

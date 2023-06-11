@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Ability } from 'src/app/models/character/ability.model';
+import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
@@ -38,7 +40,7 @@ export class GodViewComponent implements OnInit {
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService,
-    private altarService: AltarService) { }
+    private altarService: AltarService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -799,7 +801,160 @@ export class GodViewComponent implements OnInit {
 
     return 0;
   }
+  
+  openPermanentStatBreakdown(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
+  }
 
+  getPermanentStatBreakdown() {
+    var text = "";
+    var allPermanentStatCounts: [number, number][] = [];
+    this.god.permanentStat1GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentStat2GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentStat3GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentStat4GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentAbility1GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentAbility2GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentAbility3GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentPassiveGainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+
+    allPermanentStatCounts.sort((a, b) => this.sortStats(a, b)).forEach(item => {
+      if (item[1] > 0)
+      {
+        var stats = this.globalService.getNewGodPermanentStats(this.god, item[0]);
+        var abilities = this.globalService.getNewGodPermanentAbilityUpgrades(this.god, item[0]);
+        var increasedStat = this.getIncreasedStatFromStats(stats, abilities);      
+        var gainCap = 0;
+        if (item[0] === 50 || item[0] === 150 || item[0] === 250 || item[0] === 350 || item[0] === 450)
+          gainCap = this.utilityService.godPermanentStatGain1ObtainCap + this.globalService.globalVar.chthonicPowers.increasedGodPrimaryStatResets;
+          if (item[0] === 100 || item[0] === 200 || item[0] === 300 || item[0] === 400 || item[0] === 500)
+          gainCap = this.utilityService.godPermanentStatGain2ObtainCap;
+          if (item[0] === 950 || item[0] === 550 || item[0] === 650 || item[0] === 750 || item[0] === 850)
+          gainCap = this.utilityService.godPermanentStatGain3ObtainCap + this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets;
+          if (item[0] === 600 || item[0] === 700 || item[0] === 800 || item[0] === 900 || item[0] === 1000)
+          gainCap = this.utilityService.godPermanentStatGain4ObtainCap;
+
+          if (item[0] === 1050 || item[0] === 1250 || item[0] === 1450 || item[0] === 1650 || item[0] === 1850)
+          gainCap = this.utilityService.godPermanentAbility1ObtainCap;
+          if (item[0] === 1100 || item[0] === 1300 || item[0] === 1500 || item[0] === 1700 || item[0] === 1900)
+          gainCap = this.utilityService.godPermanentPassiveObtainCap;
+          if (item[0] === 1150 || item[0] === 1350 || item[0] === 1550 || item[0] === 1750 || item[0] === 1950)
+          gainCap = this.utilityService.godPermanentAbility2ObtainCap;
+          if (item[0] === 1200 || item[0] === 1400 || item[0] === 1600 || item[0] === 1800 || item[0] === 2000)
+          gainCap = this.utilityService.godPermanentAbility3ObtainCap;
+
+        var clearClass = "";
+        if (item[1] >= gainCap)
+          clearClass = "completedSubzoneColor";
+
+          var upgradedAbilityName = this.god.abilityList.find(item => item.requiredLevel === abilities.requiredLevel)?.name;          
+          if (upgradedAbilityName !== undefined)
+            upgradedAbilityName += " ";
+          else
+            upgradedAbilityName = "";
+
+        text += "<span class='statLabel bold " + this.god.name.toLowerCase() + "Color'>Level " + item[0] + ":</span> <span class='statValue " + clearClass + "'>" + upgradedAbilityName + "+" + increasedStat + " - " + item[1] + " / " + (gainCap) + " obtained</span><hr class='slimMargin'/>"; 
+      }
+    });
+
+    return text;
+  }
+
+  sortStats(a: [number, number], b: [number, number]) {
+    var ascending = 1;
+    var descending = -1;
+
+    return a[0] < b[0] ? descending : a[0] > b[0] ? ascending : 0;
+  }
+
+  getIncreasedStatFromStats(upgradedStats: CharacterStats, upgradedAbilities: Ability) {
+    var statGainText = "";
+
+    if (upgradedStats.maxHp > 0)
+      statGainText += Math.round(upgradedStats.maxHp) + " Max HP, ";
+    if (upgradedStats.attack > 0)
+      statGainText += Math.round(upgradedStats.attack) + " Attack, ";
+    if (upgradedStats.agility > 0)
+      statGainText += Math.round(upgradedStats.agility) + " Agility, ";
+    if (upgradedStats.luck > 0)
+      statGainText += Math.round(upgradedStats.luck) + " Luck, ";
+    if (upgradedStats.defense > 0)
+      statGainText += Math.round(upgradedStats.defense) + " Defense, ";
+    if (upgradedStats.resistance > 0)
+      statGainText += Math.round(upgradedStats.resistance) + " Resistance, ";
+
+    if (upgradedStats.hpRegen > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.hpRegen) + " HP Regen per 5 sec, ";
+    if (upgradedStats.criticalMultiplier > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.criticalMultiplier * 100) + "% Critical Multiplier, ";
+    if (upgradedStats.autoAttackCooldownReduction > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction, ";
+    if (upgradedStats.healingDone > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.healingDone * 100) + "% Healing Done, ";
+    if (upgradedStats.elementIncrease.holy > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.holy * 100) + "% Holy Damage Increase, ";
+    if (upgradedStats.elementIncrease.fire > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
+    if (upgradedStats.elementIncrease.lightning > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.lightning * 100) + "% Lightning Damage Increase, ";
+    if (upgradedStats.overdriveGain > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
+    if (upgradedStats.armorPenetration > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
+    if (upgradedStats.abilityCooldownReduction > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";
+    if (upgradedStats.xpGain > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.xpGain * 100) + "% XP Gain, ";
+
+    var upgradedAbilityName = this.god.abilityList.find(item => item.requiredLevel === upgradedAbilities.requiredLevel)?.name;
+      
+    if (upgradedAbilities.effectiveness > 0) {
+      if (upgradedAbilityName === "Quicken")
+        statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + " Effectiveness, ";
+      else
+        statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + "% Effectiveness, ";
+    }
+    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {
+      if (upgradedAbilityName === "Second Wind") {
+        statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness) + " Effectiveness, ";
+      }
+      else {
+        statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness * 100) + "% Buff Effectiveness, ";
+      }
+    }
+    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].duration > 0)
+      statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].duration) + " Second Buff Duration, ";
+    if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].effectiveness !== 0)
+      statGainText += this.utilityService.genericRound(Math.abs(upgradedAbilities.targetEffect[0].effectiveness) * 100) + "% Debuff Effectiveness, ";
+    if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].duration > 0)
+      statGainText += this.utilityService.genericRound(upgradedAbilities.targetEffect[0].duration) + " Second Debuff Duration, ";
+
+
+    if (statGainText !== "")
+      statGainText = statGainText.substring(0, statGainText.length - 2);
+
+    return statGainText;
+  }
+ 
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

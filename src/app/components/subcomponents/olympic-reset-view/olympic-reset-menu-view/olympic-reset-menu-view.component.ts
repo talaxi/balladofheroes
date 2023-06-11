@@ -4,10 +4,12 @@ import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
@@ -27,7 +29,7 @@ export class OlympicResetMenuViewComponent {
   isMobile: boolean = false;
 
   constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService, private gameLogService: GameLogService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -53,11 +55,48 @@ export class OlympicResetMenuViewComponent {
     return this.utilityService.roundTo((((god.level - 1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
   }
 
-  getAmbrosiaGain() {
-    
+  getAmbrosiaGain(levelsSpent: number) {
+    var totalGain = 0;
+    this.globalService.globalVar.sidequestData.levelsForNextAmbrosia -= levelsSpent;
+
+    while (this.globalService.globalVar.sidequestData.levelsForNextAmbrosia <= 0) {
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      this.globalService.globalVar.sidequestData.levelsForNextAmbrosia += this.utilityService.levelsNeededForAmbrosia;
+      totalGain += 1;
+    }
+
+    return totalGain;
   }
 
-  resetCharacters(god: God) {
+  getMaxLevel(character: Character) {
+    return character.maxLevel;
+  }
+
+  getNewMaxLevel(character: Character) {
+    return Math.round(character.maxLevel * 1.1);
+  }
+
+  resetLevelGain(character: Character) {
+    return Math.round(this.getNewMaxLevel(character) - this.getMaxLevel(character));
+  }
+
+  getLevelsNeededForAmbrosia() {
+    return this.globalService.globalVar.sidequestData.levelsForNextAmbrosia;
+  }
+
+  resetClass(character: Character) {
+    var totalGain = this.getAmbrosiaGain(character.maxLevel);
+    character.maxLevel = this.getNewMaxLevel(character);
+    character.level = 1;
+    character.exp = 0;
+    character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+    character.expToNextLevel = this.globalService.getCharacterXpToNextLevel(character.level);
+    this.globalService.calculateCharacterBattleStats(character, false);
+
+    if (totalGain > 0) {
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain " + totalGain + " Ambrosia.");
+    }
+
     /*var powerGain = this.getChthonicPower(god);
     var favorGain = this.getChthonicFavor(god);
 

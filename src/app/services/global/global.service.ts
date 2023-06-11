@@ -69,12 +69,25 @@ export class GlobalService {
     this.initializeItemBelt();
   }
 
+  getCharacterBaseStats(type: CharacterEnum) {
+    if (type === CharacterEnum.Adventurer)
+      return new CharacterStats(190, 16, 10, 0, 5, 8);
+    else if (type === CharacterEnum.Archer)
+      return new CharacterStats(200, 15, 6, 5, 13, 6);
+    else if (type === CharacterEnum.Warrior)
+      return new CharacterStats(225, 17, 12, 8, 8, 12);
+    else if (type === CharacterEnum.Priest)
+      return new CharacterStats(175, 17, 9, 6, 7, 10);
+
+    return new CharacterStats(0, 0, 0, 0, 0, 0);
+  }
+
   initializeCharacters() {
     var adventurer = new Character(CharacterEnum.Adventurer);
     adventurer.name = "Adventurer";
     adventurer.type = CharacterEnum.Adventurer;
     adventurer.isAvailable = true;
-    adventurer.baseStats = new CharacterStats(190, 16, 10, 0, 5, 8);
+    adventurer.baseStats = this.getCharacterBaseStats(CharacterEnum.Adventurer);
     adventurer.battleStats = adventurer.baseStats.makeCopy();
     adventurer.battleInfo.timeToAutoAttack = this.utilityService.quickAutoAttackSpeed;
     adventurer.battleInfo.autoAttackModifier = this.utilityService.weakAutoAttack;
@@ -87,7 +100,7 @@ export class GlobalService {
     archer.name = "Archer";
     archer.type = CharacterEnum.Archer;
     archer.isAvailable = false;
-    archer.baseStats = new CharacterStats(200, 15, 6, 5, 13, 6);
+    archer.baseStats = this.getCharacterBaseStats(CharacterEnum.Archer);
     archer.battleStats = archer.baseStats.makeCopy();
     archer.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
     archer.battleInfo.autoAttackModifier = this.utilityService.weakAutoAttack;
@@ -100,7 +113,7 @@ export class GlobalService {
     warrior.name = "Warrior";
     warrior.type = CharacterEnum.Warrior;
     warrior.isAvailable = false;
-    warrior.baseStats = new CharacterStats(225, 17, 12, 8, 8, 12);
+    warrior.baseStats = this.getCharacterBaseStats(CharacterEnum.Warrior);
     warrior.battleStats = warrior.baseStats.makeCopy();
     warrior.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
     warrior.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
@@ -113,7 +126,7 @@ export class GlobalService {
     priest.name = "Priest";
     priest.type = CharacterEnum.Priest;
     priest.isAvailable = false;
-    priest.baseStats = new CharacterStats(175, 17, 9, 6, 7, 10);
+    priest.baseStats = this.getCharacterBaseStats(CharacterEnum.Priest);
     priest.battleStats = priest.baseStats.makeCopy();
     priest.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
     priest.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
@@ -193,6 +206,7 @@ export class GlobalService {
       battleCry.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       battleCry.isAvailable = false;
       battleCry.cooldown = battleCry.currentCooldown = 16;
+      battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ThornsDamageTakenUp, 10, 1.1, false, false, false, character.name));
       battleCry.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Taunt, 10, 0, false, false, false, character.name));
       character.abilityList.push(battleCry);
 
@@ -201,7 +215,7 @@ export class GlobalService {
       counterattack.requiredLevel = this.utilityService.characterPassiveLevel;
       counterattack.isAvailable = false;
       counterattack.isPassive = true;
-      counterattack.threshold = .95;
+      counterattack.threshold = .25;
       counterattack.isActivatable = false;
       counterattack.effectiveness = .25;
       character.abilityList.push(counterattack);
@@ -764,7 +778,7 @@ export class GlobalService {
 
   createStatusEffect(type: StatusEffectEnum, duration: number, multiplier: number, isInstant: boolean, isPositive: boolean,
     isAoe: boolean = false, caster: string = "", threshold: number = 1, effectStacks: boolean = false,
-    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0, targetsAllies: boolean = false, abilityName: string = "", maxCount: number = 0) {
+    element: ElementalTypeEnum = ElementalTypeEnum.None, triggersEvery: number = 0, targetsAllies: boolean = false, abilityName: string = "", maxCount: number = 0, addedEffect: boolean = false) {
     var statusEffect = new StatusEffect(type);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -779,6 +793,7 @@ export class GlobalService {
     statusEffect.targetsAllies = targetsAllies;
     statusEffect.abilityName = abilityName;
     statusEffect.maxCount = maxCount;
+    statusEffect.addedEffect = addedEffect;
 
     if (duration === -1)
       statusEffect.isPermanent = true;
@@ -821,7 +836,8 @@ export class GlobalService {
       || type === StatusEffectEnum.AirDamageTakenDown || type === StatusEffectEnum.HolyDamageTakenDown || type === StatusEffectEnum.LightningDamageTakenDown || type === StatusEffectEnum.WaterDamageTakenDown ||
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp ||
       type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape || type === StatusEffectEnum.Thyrsus
-      || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge)
+      || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge ||
+      type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing)
       refreshes = true;
 
     return refreshes;
@@ -1265,9 +1281,12 @@ export class GlobalService {
     }
   }
 
-  checkForNewCharacterAbilities(character: Character) {
+  checkForNewCharacterAbilities(character: Character, level?: number) {
+    if (level === undefined)
+      level = character.level;
+
     character.abilityList.forEach(ability => {
-      if (character.level >= ability.requiredLevel) {
+      if (level! >= ability.requiredLevel) {
         if (!ability.isAvailable) {
           if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
             var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " learns a new " + (ability.isPassive ? " passive " : "") + " ability: <strong>" + ability.name + "</strong>." + (ability.isPassive ? " View passive ability description by hovering your character's name." : "");
@@ -1278,38 +1297,165 @@ export class GlobalService {
       }
     });
 
-    //do upgrades
-    if (character.level > 10) {
-      if (character.level % 10 === 2) {
-        this.upgradeCharacterAbility1(character, character.level);
+    //do upgrades   
+    if (level % 10 === 2) {
+      var matchingCount = character.permanentAbility1GainCount.find(item => item[0] === level);
+      if (matchingCount === undefined)
+        character.permanentAbility1GainCount.push([level, 1]);
+
+      if (matchingCount !== undefined && matchingCount[1] > this.utilityService.characterPermanentAbility1ObtainCap)
+        this.getCharacterLevelStatIncrease(character);
+      else {
+        this.upgradeCharacterAbility1(character, level);
+
+        if (matchingCount !== undefined)
+          matchingCount[1] += 1;
       }
-      if (character.level % 10 === 4) {
-        this.upgradeCharacterPassive(character, character.level);
+    }
+    if (level % 10 === 4) {
+      var matchingCount = character.permanentPassiveGainCount.find(item => item[0] === level);
+      if (matchingCount === undefined)
+        character.permanentPassiveGainCount.push([level, 1]);
+
+      if (matchingCount !== undefined && matchingCount[1] > this.utilityService.characterPermanentPassiveObtainCap)
+        this.getCharacterLevelStatIncrease(character);
+      else {
+        this.upgradeCharacterPassive(character, level);
+
+        if (matchingCount !== undefined)
+          matchingCount[1] += 1;
       }
-      if (character.level % 10 === 8) {
-        this.upgradeCharacterAbility2(character, character.level);
+    }
+    if (level % 10 === 8) {
+      var matchingCount = character.permanentAbility2GainCount.find(item => item[0] === level);
+      if (matchingCount === undefined)
+        character.permanentAbility2GainCount.push([level, 1]);
+
+      if (matchingCount !== undefined && matchingCount[1] > this.utilityService.characterPermanentAbility2ObtainCap)
+        this.getCharacterLevelStatIncrease(character);
+      else {
+        this.upgradeCharacterAbility2(character, level);
+
+        if (matchingCount !== undefined)
+          matchingCount[1] += 1;
       }
     }
   }
 
+  getCharacterAbilityUpgrade(character: Character, newLevel: number) {
+    var ability = new Ability(true);
+
+    if (newLevel % 10 === 2) {        //ability 1 
+      ability.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
+
+      if (character.type === CharacterEnum.Adventurer) {
+        ability.effectiveness += .15 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Archer) {
+        ability.effectiveness += .15 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Priest) {
+        ability.effectiveness += .05 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Warrior) {
+        if (ability.targetEffect.length === 0)
+          ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
+
+        ability.targetEffect[0].effectiveness += .025 * Math.ceil(newLevel / 10);
+      }
+    }
+    if (newLevel % 10 === 4) {        //passive 
+      ability.requiredLevel = this.utilityService.characterPassiveLevel;
+
+      if (character.type === CharacterEnum.Adventurer) {
+        ability.effectiveness += .025 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Archer) {
+        if (ability.targetEffect.length === 0)
+          ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
+
+        var targetGainsEffect = ability.targetEffect[0];
+        targetGainsEffect.effectiveness += .01 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Priest) {
+        ability.effectiveness += .025 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Warrior) {
+        ability.effectiveness += .025 * Math.ceil(newLevel / 10);
+      }
+    }
+    if (newLevel % 10 === 8) {        //ability 2
+      ability.requiredLevel = this.utilityService.characterAbility2Level;
+
+      if (character.type === CharacterEnum.Adventurer) {
+        if (ability.userEffect.length === 0)
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+        ability.userEffect[0].effectiveness += .0025 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Archer) {
+        ability.effectiveness += .1 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Priest) {
+        ability.effectiveness += .025 * Math.ceil(newLevel / 10);
+      }
+      if (character.type === CharacterEnum.Warrior) {
+        ability.effectiveness += .1 * Math.ceil(newLevel / 10);
+      }
+    }
+
+    return ability;
+  }
+
+  handleAbilityUpgradeValues(ability: Ability, upgradedAbility: Ability) {
+    ability.effectiveness += upgradedAbility.effectiveness;
+
+    if (upgradedAbility.userEffect !== undefined && upgradedAbility.userEffect.length > 0) {
+      if (ability.userEffect === undefined || ability.userEffect.length === 0) {
+        ability.userEffect = upgradedAbility.userEffect;
+      }
+      else {
+        ability.userEffect[0].effectiveness += upgradedAbility.userEffect[0].effectiveness;
+        ability.userEffect[0].duration += upgradedAbility.userEffect[0].duration;
+
+        if (ability.userEffect[1] !== undefined) {
+          ability.userEffect[1].effectiveness += upgradedAbility.userEffect[1].effectiveness;
+          ability.userEffect[1].duration += upgradedAbility.userEffect[1].duration;
+        }
+      }
+    }
+
+    if (upgradedAbility.targetEffect !== undefined && upgradedAbility.targetEffect.length > 0) {
+      if (ability.targetEffect === undefined || ability.targetEffect.length === 0) {
+        ability.targetEffect = upgradedAbility.targetEffect;
+      }
+      else {
+        ability.targetEffect[0].effectiveness += upgradedAbility.targetEffect[0].effectiveness;
+        ability.targetEffect[0].duration += upgradedAbility.targetEffect[0].duration;
+
+        if (ability.targetEffect[1] !== undefined) {
+          ability.targetEffect[1].effectiveness += upgradedAbility.targetEffect[1].effectiveness;
+          ability.targetEffect[1].duration += upgradedAbility.targetEffect[1].duration;
+        }
+      }
+    }
+
+
+    return ability;
+  }
+
   upgradeCharacterAbility1(character: Character, newLevel: number) {
-    var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
-    if (ability1 === undefined)
-      return;
+    var ability1 = character.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+
+    if (ability1 === undefined) {
+      ability1 = new Ability(true);
+      ability1.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
+      character.permanentAbilityUpgrades.push(ability1);
+    }
 
     ability1.abilityUpgradeLevel += 1;
-    if (character.type === CharacterEnum.Adventurer) {
-      ability1.effectiveness += .5;
-    }
-    if (character.type === CharacterEnum.Archer) {
-      ability1.effectiveness += .4;
-    }
-    if (character.type === CharacterEnum.Priest) {
-      ability1.effectiveness += .1;
-    }
-    if (character.type === CharacterEnum.Warrior) {
-      ability1.cooldown -= .5;
-    }
+    var upgradedAbilities = this.getCharacterAbilityUpgrade(character, newLevel);
+
+    ability1 = this.handleAbilityUpgradeValues(ability1, upgradedAbilities);
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
       var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
@@ -1318,51 +1464,39 @@ export class GlobalService {
   }
 
   upgradeCharacterPassive(character: Character, newLevel: number) {
-    var ability = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterPassiveLevel);
-    if (ability === undefined)
-      return;
+    var ability1 = character.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
 
-    ability.abilityUpgradeLevel += 1;
+    if (ability1 === undefined) {
+      ability1 = new Ability(true);
+      ability1.requiredLevel = this.utilityService.characterPassiveLevel;
+      character.permanentAbilityUpgrades.push(ability1);
+    }
 
-    var targetGainsEffect = ability.targetEffect[0];
+    ability1.abilityUpgradeLevel += 1;
+    var upgradedAbilities = this.getCharacterAbilityUpgrade(character, newLevel);
 
-    if (character.type === CharacterEnum.Adventurer) {
-      ability.effectiveness += .1;
-    }
-    if (character.type === CharacterEnum.Archer) {
-      targetGainsEffect.effectiveness += .025;
-    }
-    if (character.type === CharacterEnum.Priest) {
-      ability.effectiveness += .1;
-    }
-    if (character.type === CharacterEnum.Warrior) {
-      ability.effectiveness += .1;
-    }
+    ability1 = this.handleAbilityUpgradeValues(ability1, upgradedAbilities);
+
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
-      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability?.name + "</strong>.";
+      var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LearnAbility, gameLogEntry);
     }
   }
 
   upgradeCharacterAbility2(character: Character, newLevel: number) {
-    var ability1 = character.abilityList.find(ability => ability.requiredLevel === this.utilityService.characterAbility2Level);
-    if (ability1 === undefined)
-      return;
+    var ability1 = character.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+
+    if (ability1 === undefined) {
+      ability1 = new Ability(true);
+      ability1.requiredLevel = this.utilityService.characterAbility2Level;
+      character.permanentAbilityUpgrades.push(ability1);
+    }
 
     ability1.abilityUpgradeLevel += 1;
-    if (character.type === CharacterEnum.Adventurer) {
-      ability1.userEffect[0].effectiveness += .025;
-    }
-    if (character.type === CharacterEnum.Archer) {
-      ability1.effectiveness += .4;
-    }
-    if (character.type === CharacterEnum.Priest) {
-      ability1.effectiveness += .1;
-    }
-    if (character.type === CharacterEnum.Warrior) {
-      ability1.effectiveness += .3;
-    }
+    var upgradedAbilities = this.getCharacterAbilityUpgrade(character, newLevel);
+
+    ability1 = this.handleAbilityUpgradeValues(ability1, upgradedAbilities);
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
       var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " improves ability: <strong>" + ability1?.name + "</strong>.";
@@ -1411,13 +1545,12 @@ export class GlobalService {
   getCharacterXpToNextLevel(level: number) {
     var baseXp = 100;
     var factor = 1.333;
-    //if (level < 30) {            
     if (level > 9) {
       baseXp = 1000;
     }
     if (level > 49) {
       baseXp = 100000;
-      factor = 1.165;
+      factor = 1.242;
     }
     var additive = level > 4 ? 350 * (level) : 0;
     var exponential = (baseXp * (factor ** (level - 1)));
@@ -2185,7 +2318,7 @@ export class GlobalService {
           ability.effectiveness += .025;
         }
         else if (god.type === GodEnum.Apollo) {
-          ability.effectiveness += .03;
+          ability.effectiveness += .02;
         }
         else if (god.type === GodEnum.Ares) {
           ability.effectiveness += .02;
@@ -2963,18 +3096,18 @@ export class GlobalService {
     var count = 0;
 
     if (equipmentSet.weapon?.set === set)
-        count += 1;
+      count += 1;
     if (equipmentSet.shield?.set === set)
-        count += 1;
+      count += 1;
     if (equipmentSet.armor?.set === set)
-        count += 1;
+      count += 1;
     if (equipmentSet.ring?.set === set)
-        count += 1;
+      count += 1;
     if (equipmentSet.necklace?.set === set)
-        count += 1;
+      count += 1;
 
     return count;
-}
+  }
 
   checkForSetBonuses(equipmentSet: EquipmentSet, stats?: CharacterStats) {
     if (stats === undefined)
@@ -3004,15 +3137,15 @@ export class GlobalService {
         if (setCount[1] >= 2)
           stats!.autoAttackCooldownReduction *= .9;
         if (setCount[1] >= 3)
-          stats!.elementIncrease.air = .5;        
+          stats!.elementIncrease.air = .5;
       }
 
       if (setCount[0] === EquipmentSetEnum.Apollo) {
         if (setCount[1] >= 2)
           stats!.hpRegen = 100;
-          if (setCount[1] >= 3)
+        if (setCount[1] >= 3)
           stats!.buffDuration = .2;
-          if (setCount[1] >= 5) //TODO
+        if (setCount[1] >= 5) //TODO
           stats!.hpRegen = 100;
       }
 
@@ -3488,6 +3621,7 @@ export class GlobalService {
     copy.casterEnum = effect.casterEnum;
     copy.threshold = effect.threshold;
     copy.targetsAllies = effect.targetsAllies;
+    copy.addedEffect = effect.addedEffect;
 
     copy.abilityName = effect.abilityName;
     copy.tickFrequency = effect.tickFrequency;

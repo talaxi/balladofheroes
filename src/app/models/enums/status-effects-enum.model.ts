@@ -141,5 +141,11 @@ export enum StatusEffectEnum {
     LootRateUp,
     RandomElementalAbsorption,
     InstantAutoAttackCounter,
-    OstinatoAfter
+    OstinatoAfter,
+    HpRegenUp,
+    ThornsDamageTakenUp,
+    GaiasBlessing,
+    ChanceToReduceDefense,
+    ChanceToReduceResistance,
+    StockpileRock
   }

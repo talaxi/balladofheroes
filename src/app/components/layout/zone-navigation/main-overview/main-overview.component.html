@@ -26,6 +26,11 @@
                 class="resource chthonicFavorKeyword">Chthonic Favor:
                 <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
                     : '1.0-2'}}</span></span>
+                    <br *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0" />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0"
+                            class="resource ambrosiaKeyword">Ambrosia:
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.Ambrosia) | number
+                                : '1.0-2'}}</span></span>
             <br />
             <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                 (click)="viewFollowers(followers)">View Followers</button>

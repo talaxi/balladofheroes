@@ -61,6 +61,9 @@ export class UtilityService {
   public godPermanentPassiveObtainCap = 10;
   public godPermanentAbility2ObtainCap = 10;
   public godPermanentAbility3ObtainCap = 10;
+  public characterPermanentAbility1ObtainCap = 50;
+  public characterPermanentAbility2ObtainCap = 50;
+  public characterPermanentPassiveObtainCap = 50;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
@@ -112,6 +115,7 @@ export class UtilityService {
 
   public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
   public weeklyMeleeEntryCap = 7;
+  public levelsNeededForAmbrosia = 100;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 

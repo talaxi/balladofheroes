@@ -364,10 +364,10 @@ export class ShopItemGeneratorService {
     }
 
     if (item === ItemsEnum.Dionysus) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
     }
     if (item === ItemsEnum.Nemesis) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
     }
 
     if (item === ItemsEnum.AthenasScythe) {      
@@ -398,30 +398,39 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
     if (item === ItemsEnum.AthenasShield) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.ArtemissShield) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HermessShield) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HadessShield) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.ApollosShield) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.AressShield) {      
+    if (item === ItemsEnum.AressShield) {   
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));   
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.NemesissShield) {      
+    if (item === ItemsEnum.NemesissShield) {  
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));    
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.DionysussShield) {      
+    if (item === ItemsEnum.DionysussShield) {   
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));   
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ZeussShield) {      
+    if (item === ItemsEnum.ZeussShield) {     
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5)); 
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.AthenasArmor) {      
@@ -452,57 +461,75 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.AthenasRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.ArtemissRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HermessRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HadessRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.ApollosRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.AressRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.NemesissRing) {      
+    if (item === ItemsEnum.NemesissRing) {    
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));  
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.DionysussRing) {      
+    if (item === ItemsEnum.DionysussRing) {  
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));    
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ZeussRing) {      
+    if (item === ItemsEnum.ZeussRing) {     
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5)); 
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.AthenasNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.ArtemissNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HermessNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HadessNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.ApollosNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.AressNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.NemesissNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.DionysussNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.ZeussNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
 

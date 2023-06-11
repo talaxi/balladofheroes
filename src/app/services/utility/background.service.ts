@@ -43,7 +43,7 @@ export class BackgroundService {
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.handleItemCooldowns(deltaTime);
     this.checkForDailyOccurrences(deltaTime);
-    this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);    
+    this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);
     this.professionService.handleProfessionTimer(ProfessionEnum.Jewelcrafting, deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
@@ -55,7 +55,7 @@ export class BackgroundService {
 
     if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
       activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
-      this.lookupService.userNotInTownBattle()))
+        this.lookupService.userNotInTownBattle()))
       enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {
@@ -241,15 +241,13 @@ export class BackgroundService {
         var memberWithZeus = party.find(item => item.assignedGod1 === GodEnum.Zeus || item.assignedGod2 === GodEnum.Zeus);
         if (memberWithZeus !== undefined) {
           var surge = memberWithZeus.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Surge);
-          if (surge === undefined)
-          {
+          if (surge === undefined) {
             var overload = this.lookupService.characterHasAbility("Overload", memberWithZeus);
             if (overload !== undefined) {
               this.battleService.applyStatusEffect(overload.userEffect[0], memberWithZeus, party, memberWithZeus);
             }
           }
-          else
-          {
+          else {
             surge.effectiveness = ((surge.effectiveness - 1) * effect.effectiveness) + 1;
           }
         }
@@ -383,7 +381,7 @@ export class BackgroundService {
 
     if (effect.type === AltarEffectsEnum.DionysusRandomDebuff) {
       if (enemies !== undefined) {
-        enemies.forEach(member => {        
+        enemies.forEach(member => {
           this.battleService.applyStatusEffect(this.globalService.createStatusEffect(this.battleService.getRandomPrimaryStatDownStatusEffect(true), 10, effect.effectiveness, false, false), member, enemies);
         });
       }
@@ -431,8 +429,7 @@ export class BackgroundService {
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp) {
       party.forEach(member => {
         var dues = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
-        if (dues !== undefined)
-        {          
+        if (dues !== undefined) {
           dues.effectiveness *= effect.effectiveness;
         }
       });
@@ -456,8 +453,7 @@ export class BackgroundService {
   handleFollowerSearch(deltaTime: number) {
     var hour = 1 * 60 * 60; //average per hour
 
-    if (this.globalService.globalVar.timers.followerSearchZoneTimer < 0)
-    {
+    if (this.globalService.globalVar.timers.followerSearchZoneTimer < 0) {
       this.globalService.globalVar.timers.followerSearchZoneTimer = 0;
     }
 
@@ -495,8 +491,8 @@ export class BackgroundService {
       this.globalService.globalVar.timers.followerPrayerTimerLength = 60;
     }
 
-    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;    
-    if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {      
+    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;
+    if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {
       this.globalService.globalVar.timers.followerPrayerTimer -= this.globalService.globalVar.timers.followerPrayerTimerLength;
       this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.Praying).forEach(follower => {
         if (follower.assignedPrayerType === FollowerPrayerTypeEnum.Activate) {
@@ -577,6 +573,10 @@ export class BackgroundService {
       var ticketMultiplier = 1;
       if (this.globalService.globalVar.isSubscriber)
         ticketMultiplier = 2;
+
+      if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0) {
+        ticketMultiplier += 2;        
+      }
 
       this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays * ticketMultiplier;
       if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier))

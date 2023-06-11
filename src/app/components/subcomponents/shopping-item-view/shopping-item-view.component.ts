@@ -18,6 +18,7 @@ import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { StoryService } from 'src/app/services/story/story.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
 @Component({
   selector: 'app-shopping-item-view',
@@ -68,12 +69,21 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.AugeanStables3 && this.globalService.globalVar.sidequestData.augeanStablesLevel >= 3)
       outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.Nemesis && this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.Dionysus && this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
+      outOfStock = true;
 
     return outOfStock;
   }
 
   setItemPurchasePrice() {
     this.purchaseResourcesRequired = "";
+    if (this.item.purchasePrice.some(item => item.item === ItemsEnum.Ambrosia))
+    {
+      this.item.purchasePrice = this.item.purchasePrice.filter(item => item.item !== ItemsEnum.Coin);
+    }
+
     this.item.purchasePrice.forEach(resource => {
       var displayName = this.dictionaryService.getItemName(resource.item);
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
@@ -110,6 +120,9 @@ export class ShoppingItemViewComponent implements OnInit {
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass) {
           this.unlockClass(resource.item);
         }
+        else if (resource.item === ItemsEnum.Nemesis || resource.item === ItemsEnum.Dionysus) {
+          this.unlockGod(resource.item);
+        }
         else if (resource.item === ItemsEnum.AugeanStables1 || resource.item === ItemsEnum.AugeanStables2) {
           var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
           if (jewelcrafting !== undefined) {
@@ -134,7 +147,7 @@ export class ShoppingItemViewComponent implements OnInit {
             this.globalService.globalVar.sidequestData.augeanStablesLevel += 1;
             this.dialog.closeAll();
             this.storyService.displayOptionalScene(OptionalSceneEnum.AugeanStables6);
-            this.battleService.checkScene();            
+            this.battleService.checkScene();
           }
         }
         else
@@ -159,6 +172,21 @@ export class ShoppingItemViewComponent implements OnInit {
 
       if (priest !== undefined)
         priest.isAvailable = true;
+    }
+  }
+
+  unlockGod(item: ItemsEnum) {
+    if (item === ItemsEnum.Nemesis) {
+      var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+
+      if (nemesis !== undefined)
+        nemesis.isAvailable = true;
+    }
+    if (item === ItemsEnum.Dionysus) {
+      var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+
+      if (dionysus !== undefined)
+        dionysus.isAvailable = true;
     }
   }
 

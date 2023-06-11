@@ -2704,7 +2704,7 @@ export class SubZoneGeneratorService {
       enemyTeam4.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FireSprite));      
       battleOptions.push(enemyTeam4);
     }
-    if (type === SubZoneEnum.MountOlympusCouloir) {
+    if (type === SubZoneEnum.MountOlympusPathwayToTheZenith) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeftChamois)); 
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DeftChamois));            
@@ -3005,6 +3005,38 @@ export class SubZoneGeneratorService {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MammothMagicalSphere));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Agrius));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Thoon));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.WarForTheMountainOpenCourtyard) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Mimon));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Mimas));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.WarForTheMountainStables) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Aristaeus));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.WarForTheMountainPalaces) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Gration));      
+      battleOptions.push(enemyTeam);
+    }
+    if (type === SubZoneEnum.WarForTheMountainThePeak) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Porphyrion));      
       battleOptions.push(enemyTeam);
     }
 
@@ -3705,13 +3737,19 @@ export class SubZoneGeneratorService {
       subZoneEnums.push(SubZoneEnum.HuntForYarrowYarrowField);
     }   
     if (type === SubZoneEnum.HuntForYarrowYarrowField) {
-      subZoneEnums.push(SubZoneEnum.WarForTheMountainBattle1);
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainBattleAtTheGates);
     }       
-    if (type === SubZoneEnum.WarForTheMountainBattle1) {
-      subZoneEnums.push(SubZoneEnum.WarForTheMountainBattle2);
+    if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates) {
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainOpenCourtyard);
     }   
-    if (type === SubZoneEnum.WarForTheMountainBattle2) {
-      subZoneEnums.push(SubZoneEnum.WarForTheMountainBattle3);
+    if (type === SubZoneEnum.WarForTheMountainOpenCourtyard) {
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainStables);
+    }   
+    if (type === SubZoneEnum.WarForTheMountainStables) {
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainPalaces);
+    }   
+    if (type === SubZoneEnum.WarForTheMountainPalaces) {
+      subZoneEnums.push(SubZoneEnum.WarForTheMountainThePeak);
     }   
 
     return subZoneEnums;
@@ -3935,6 +3973,33 @@ export class SubZoneGeneratorService {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ToxicIchor, SubZoneEnum.NemeaCleonea)); 
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.VialOfTheCretanSea, SubZoneEnum.NemeaCleonea));
     }
+
+    return shopOptions;
+  }
+
+  getAvailableOlympianRewardOptions() {
+    var shopOptions: ShopItem[] = [];
+
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Nemesis, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Dionysus, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArtemissShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArtemissNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HermessShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HermessNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ApollosShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ApollosNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HadessShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HadessNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AressShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AressNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NemesissShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NemesissNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DionysussShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DionysussNecklace, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ZeussShield, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ZeussNecklace, SubZoneEnum.MountOlympusOlympus)); 
 
     return shopOptions;
   }
