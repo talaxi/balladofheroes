@@ -51,7 +51,7 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 375;
 
-  public godStatGainLevelIncrement = (1 / 20);
+  public godStatGainLevelIncrement = (1 / 25);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
@@ -61,9 +61,10 @@ export class UtilityService {
   public godPermanentPassiveObtainCap = 10;
   public godPermanentAbility2ObtainCap = 10;
   public godPermanentAbility3ObtainCap = 10;
-  public characterPermanentAbility1ObtainCap = 50;
-  public characterPermanentAbility2ObtainCap = 50;
-  public characterPermanentPassiveObtainCap = 50;
+  public characterPermanentAbility1ObtainCap = 25;
+  public characterPermanentAbility2ObtainCap = 25;
+  public characterPermanentPassiveObtainCap = 25;
+  public characterPermanentStatObtainCap = 25;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
@@ -80,7 +81,7 @@ export class UtilityService {
   public basePrayGodXpIncrease = 20;
   public largeAltarPrayGodXpIncrease = 250;
 
-  public killCountDisplayEnemyStatsAbilities = 1;
+  public killCountDisplayEnemyStatsAbilities = 0;
   public killCountDisplayBasicEnemyLoot = 10;
   public killCountDisplayFullEnemyLoot = 30;
 
@@ -95,6 +96,8 @@ export class UtilityService {
   public reprisalBonus = 2;
   public preservationAmount = .5;
   public bullseyeAmount = .5;
+  public quicknessCooldownReduction = 2;
+  public hopeThresholdMultiplier = 2;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;

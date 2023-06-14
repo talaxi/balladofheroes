@@ -365,5 +365,6 @@ export enum ItemsEnum {
   EssenceOfHoly,
   EssenceOfAir,
   BlackHorn,
-  MagicCore
+  MagicCore,
+  Nectar
 }

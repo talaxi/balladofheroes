@@ -50,6 +50,8 @@ export class GlobalVariables {
     resources: ResourceValue[];
     activePartyMember1: CharacterEnum;
     activePartyMember2: CharacterEnum;
+    partyMember1Hidden: boolean;
+    partyMember2Hidden: boolean;
     @Type(() => Battle)
     activeBattle: Battle;
     @Type(() => Achievement)
@@ -142,5 +144,7 @@ export class GlobalVariables {
         this.melete = new Melete();    
         this.loadouts = [];  
         this.globalStatusEffects = [];
+        this.partyMember1Hidden = false;
+        this.partyMember2Hidden = false;
     }
 }

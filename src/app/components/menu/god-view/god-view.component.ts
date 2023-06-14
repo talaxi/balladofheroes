@@ -288,31 +288,34 @@ export class GodViewComponent implements OnInit {
           rewards += (increaseValues.elementResistance.air * 100) + "% Air Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         var ability = this.god.abilityList.find(item => item.requiredLevel === increaseAbilities.requiredLevel);
+        var abilityName = "<span class='bold'>" + ability?.name + "</span>";
         var userGainsEffect = increaseAbilities.userEffect[0];
         var targetGainsEffect = increaseAbilities.targetEffect[0];
         if (increaseAbilities.effectiveness > 0)
         {
           if (ability?.name === "Quicken")
-          rewards += (increaseAbilities.effectiveness) + " Sec Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseAbilities.effectiveness) + " Sec Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           else
-          rewards += (increaseAbilities.effectiveness * 100) + "% Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseAbilities.effectiveness * 100) + "% Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         }
         if (userGainsEffect !== undefined && userGainsEffect.effectiveness > 0)
         {
           if (ability?.name === "Second Wind")
-          rewards += (userGainsEffect.effectiveness) + " HP Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (userGainsEffect.effectiveness) + " HP Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           else 
-          rewards += (userGainsEffect.effectiveness * 100) + "% Buff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (userGainsEffect.effectiveness * 100) + "% Buff Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         }
+        if (userGainsEffect !== undefined && userGainsEffect.threshold > 0)
+          rewards += (userGainsEffect.threshold * 100) + "% Threshold Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (userGainsEffect !== undefined && userGainsEffect.duration > 0)
-          rewards += (userGainsEffect.duration) + " Sec Duration Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (userGainsEffect.duration) + " Sec Duration Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (targetGainsEffect !== undefined && targetGainsEffect.effectiveness > 0)
-          rewards += (targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (targetGainsEffect !== undefined && targetGainsEffect.duration > 0)
-          rewards += (targetGainsEffect.duration) + " Sec Duration Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (targetGainsEffect.duration) + " Sec Duration Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (ability?.name === "Insanity") {
           if (targetGainsEffect !== undefined && targetGainsEffect.effectiveness < 0)
-          rewards += Math.abs(targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += Math.abs(targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         }
 
         if (rewards !== "")
@@ -698,6 +701,20 @@ export class GodViewComponent implements OnInit {
 
     return 0;
   }
+  
+
+  getAbilityUserEffectThresholdIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined) {      
+      return this.utilityService.genericRound((ability.userEffect[0].threshold - baseAbility.userEffect[0].threshold) * 100) + "%";
+    }
+
+    return 0;
+  }
+
 
   getPermanentAbilityUserEffectEffectivenessIncrease(ability: Ability) {
     var baseGod = new God(this.god.type);
@@ -714,6 +731,23 @@ export class GodViewComponent implements OnInit {
         return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
       else
         return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getPermanentAbilityUserEffectThresholdIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].threshold;
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {      
+      return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
     }
 
     return 0;
@@ -943,6 +977,8 @@ export class GodViewComponent implements OnInit {
     }
     if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].duration > 0)
       statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].duration) + " Second Buff Duration, ";
+      if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].threshold > 0)
+      statGainText += this.utilityService.genericRound((upgradedAbilities.userEffect[0].threshold) * 100) + "% Threshold Increase, ";
     if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].effectiveness !== 0)
       statGainText += this.utilityService.genericRound(Math.abs(upgradedAbilities.targetEffect[0].effectiveness) * 100) + "% Debuff Effectiveness, ";
     if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].duration > 0)

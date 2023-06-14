@@ -452,6 +452,28 @@ export class ZoneNavigationComponent implements OnInit {
 
     return "!";
   }
+
+  selectZone(zone: Zone) {
+    this.availableSubZones = this.balladService.selectZone(zone);
+
+    /*var selectedZone = this.balladService.getActiveZone();
+    if (selectedZone !== undefined)
+      this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);*/
+  }
+
+  selectSubZone(subzone: SubZone, zone: Zone) {
+    this.balladService.selectSubZone(subzone, zone);
+
+    /*this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
+    });
+    var selectedBallad = this.balladService.getActiveBallad();
+    if (selectedBallad !== undefined)
+      this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);
+    var selectedZone = this.balladService.getActiveZone();
+    if (selectedZone !== undefined)
+      this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);*/
+  }
   
   openAutoProgressOptions(content: any) {
     var dialog = this.dialog.open(content, { width: '65%', maxHeight: '50%' });

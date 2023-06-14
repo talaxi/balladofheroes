@@ -403,6 +403,18 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.OstinatoAfter) {
       src += "ostinato.svg";
     }
+    if (effect.type === StatusEffectEnum.GaiasBlessing) {
+      src += "earth.svg";
+    }
+    if (effect.type === StatusEffectEnum.StockpileRock) {
+      src += "heftyStone.svg";
+    }
+    if (effect.type === StatusEffectEnum.EarthenOffense) {
+      src += "sword.svg";
+    }
+    if (effect.type === StatusEffectEnum.EarthenDefense) {
+      src += "shieldSlam.svg";
+    }
 
     return src;
   }
@@ -460,8 +472,10 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     var durationString = "";
     if (duration < 60)
       durationString = duration + " seconds";
-    else
+    else if (duration < 60 * 60)
       durationString = Math.ceil(duration / 60) + " minutes";
+    else
+      durationString = Math.ceil(duration / (60 * 60)) + " hours";
 
     return "Remaining Duration: " + durationString;
   }

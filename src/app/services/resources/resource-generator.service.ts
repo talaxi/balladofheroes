@@ -717,6 +717,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.EssenceOfHoly) {
       return new ResourceValue(ItemsEnum.EssenceOfHoly, amount);
     }
+    if (type === ItemsEnum.Nectar) {
+      return new ResourceValue(ItemsEnum.Nectar, amount);
+    }
     if (type === ItemsEnum.RadiatingAirStone)
       return new ResourceValue(ItemsEnum.RadiatingAirStone, amount);
     if (type === ItemsEnum.RadiatingEarthStone)

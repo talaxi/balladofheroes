@@ -733,9 +733,23 @@ export class VersionControlService {
 
           var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
           if (dionysusGod !== undefined) {
+            var permanentAbility1 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined) {
+              permanentAbility1.targetEffect[0].threshold = (permanentAbility1.targetEffect[0].effectiveness / .1) * .25;
+              permanentAbility1.targetEffect[0].effectiveness = 0;
+            }
+
             var permanentAbility3 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
             if (permanentAbility3 !== undefined) {
               permanentAbility3.targetEffect[0].effectiveness /= 10;
+            }
+          }
+
+          var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+          if (hermes !== undefined) {
+            var permanentPassive = hermes.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness *= .4;
             }
           }
 
@@ -744,8 +758,30 @@ export class VersionControlService {
             var ability1 = ares.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
             if (ability1 !== undefined) {
               ability1.targetEffect[0].duration -= 5;
-              ability1.cooldown += 1;
+              ability1.cooldown += 2;
               ability1.targetEffect[0].duration -= Math.floor(ability1.abilityUpgradeLevel / 5) * .25;
+              ability1.targetEffect[0].effectiveness *= .5;
+              ability1.targetEffect[0].effectiveness += .05;
+            }
+
+            var ability3 = ares.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (ability3 !== undefined) {
+              ability3.targetEffect[0].effectiveness = ((ability3.targetEffect[0].effectiveness - 2) * 2) + 2;
+            }
+
+            var passive = ares.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              passive.effectiveness = .02 + ((passive.effectiveness - .025) * .8);
+            }
+
+            var permanentPassive = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness *= .5;
+            }
+
+            var permanentAbility3 = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined && permanentAbility3.targetEffect.length > 0 && permanentAbility3.targetEffect[0] !== undefined) {
+              permanentAbility3.targetEffect[0].effectiveness *= 2;
             }
           }
 

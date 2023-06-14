@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { OverdriveInfo } from 'src/app/models/character/overdrive-info.model';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
 
@@ -27,8 +28,18 @@ export class OverdriveViewComponent implements OnInit {
       }
 
       var enumValue = propertyValue as OverdriveNameEnum;
-      if (enumValue !== OverdriveNameEnum.None)
-        overdrives.push(enumValue);
+      if (enumValue !== OverdriveNameEnum.None) {
+        if (enumValue === OverdriveNameEnum.Quickness && this.character.type !== CharacterEnum.Adventurer)
+          continue;
+          if (enumValue === OverdriveNameEnum.Weaken && this.character.type !== CharacterEnum.Archer)
+          continue;
+          if (enumValue === OverdriveNameEnum.Revenge && this.character.type !== CharacterEnum.Warrior)
+          continue;
+          if (enumValue === OverdriveNameEnum.Hope && this.character.type !== CharacterEnum.Priest)
+          continue;
+
+        overdrives.push(enumValue);        
+      }
     }
 
     return overdrives;

@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
+import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { AnimationStateEnum } from 'src/app/models/enums/animation-state-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
@@ -463,11 +464,27 @@ export class BattleComponent implements OnInit {
     return false;
   }
 
+  getStatusEffectDuration(effect: StatusEffect) {
+    if (effect.duration < 0)
+      return "Resolves Upon Effect Condition";
+
+    var duration = Math.round(effect.duration);
+    var durationString = "";
+    if (duration < 60)
+      durationString = duration + " seconds";
+    else if (duration < 60 * 60)
+      durationString = Math.ceil(duration / 60) + " minutes";
+    else
+      durationString = Math.ceil(duration / (60 * 60)) + " hours";
+
+    return "Remaining Duration: " + durationString;
+  }
+
   getAllGlobalEffects() {
     var description = "";
 
     this.globalService.globalVar.globalStatusEffects.forEach(effect => {
-      description += this.lookupService.getStatusEffectDescription(effect) + "<hr/>";
+      description += this.lookupService.getStatusEffectDescription(effect) + "<br/><br/>" + this.getStatusEffectDuration(effect) + "<hr/>";
     });
 
     return description;

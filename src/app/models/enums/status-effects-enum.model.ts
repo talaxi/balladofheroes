@@ -147,5 +147,7 @@ export enum StatusEffectEnum {
     GaiasBlessing,
     ChanceToReduceDefense,
     ChanceToReduceResistance,
-    StockpileRock
+    StockpileRock,
+    EarthenDefense,
+    EarthenOffense
   }

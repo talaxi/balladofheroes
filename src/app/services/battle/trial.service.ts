@@ -117,21 +117,21 @@ export class TrialService {
 
     if (bestiaryEnum === BestiaryEnum.Athena)
       god = GodEnum.Athena;
-      if (bestiaryEnum === BestiaryEnum.Artemis)
+    if (bestiaryEnum === BestiaryEnum.Artemis)
       god = GodEnum.Artemis;
-      if (bestiaryEnum === BestiaryEnum.Hermes)
+    if (bestiaryEnum === BestiaryEnum.Hermes)
       god = GodEnum.Hermes;
-      if (bestiaryEnum === BestiaryEnum.Apollo)
+    if (bestiaryEnum === BestiaryEnum.Apollo)
       god = GodEnum.Apollo;
-      if (bestiaryEnum === BestiaryEnum.Hades)
+    if (bestiaryEnum === BestiaryEnum.Hades)
       god = GodEnum.Hades;
-      if (bestiaryEnum === BestiaryEnum.Ares)
+    if (bestiaryEnum === BestiaryEnum.Ares)
       god = GodEnum.Ares;
-      if (bestiaryEnum === BestiaryEnum.Nemesis)
+    if (bestiaryEnum === BestiaryEnum.Nemesis)
       god = GodEnum.Nemesis;
-      if (bestiaryEnum === BestiaryEnum.Dionysus)
+    if (bestiaryEnum === BestiaryEnum.Dionysus)
       god = GodEnum.Dionysus;
-      if (bestiaryEnum === BestiaryEnum.Zeus)
+    if (bestiaryEnum === BestiaryEnum.Zeus)
       god = GodEnum.Zeus;
 
     return god;
@@ -196,7 +196,7 @@ export class TrialService {
     //increase weight of the highest stats if needed
     //divide these totals by 6, maybe *5 or something, and then apply the factor from enemy generator
     //maybe give each god some secondary stats as well
-    var godLevelBeforeDamageReduction = 2500;
+    var godLevelBeforeDamageReduction = 2250;
     var hpFactor = 35;
     var attackFactor = .65;
     var defenseFactor = 7.25;
@@ -205,6 +205,11 @@ export class TrialService {
     var resistanceFactor = 2.4;
     var defenseScalingFactor = 1 + ((totalGodLevels - godLevelBeforeDamageReduction) / godLevelBeforeDamageReduction);
     var hpScalingFactor = 1 + ((totalGodLevels - godLevelBeforeDamageReduction) / (godLevelBeforeDamageReduction * 2));
+
+    if (defenseScalingFactor < 1)
+      defenseScalingFactor = 1;
+    if (hpScalingFactor < 1)
+      hpScalingFactor = 1;
 
     enemy.battleStats.maxHp = Math.round(enemy.battleStats.maxHp * individualStatTotal * 5 * hpFactor * hpScalingFactor);
     enemy.battleStats.attack = Math.round(enemy.battleStats.attack * individualStatTotal * attackFactor);
@@ -217,13 +222,13 @@ export class TrialService {
 
     //((.0025*((x-2000)*.055) ** 1.7) + 10)
     //var divineProtectionAmountPer10 = 20000;
-    if (totalGodLevels > 2500) {
-      var divineProtectionAmount = 1 - (((.00425 * ((totalGodLevels - godLevelBeforeDamageReduction) * .08) ** 1.5875) + 5) / 100);
+    if (totalGodLevels > godLevelBeforeDamageReduction) {
+      var divineProtectionAmount = 1 - (((.00425 * ((totalGodLevels - godLevelBeforeDamageReduction) * .08) ** 1.588) + 5) / 100);
       //var divineProtectionAmount = ((.0025*((totalGodLevels - 2000)*.055)**1.7) + 10);
       //console.log(divineProtectionAmount);
 
-      if (divineProtectionAmount < .25)
-        divineProtectionAmount = .25;
+      if (divineProtectionAmount < .2)
+        divineProtectionAmount = .2;
 
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, divineProtectionAmount, false, true));
     }
@@ -235,6 +240,19 @@ export class TrialService {
       var thornsEffect = enemy.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns);
       if (thornsEffect !== undefined)
         thornsEffect.effectiveness = Math.round(enemy.battleStats.attack / 6);
+
+      var noEscape = enemy.abilityList.find(item => item.name === "No Escape");
+      if (totalGodLevels > 5000) {
+        if (noEscape !== undefined) {
+          noEscape.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+        }
+      }
+
+      if (totalGodLevels > 10000) {
+        if (noEscape !== undefined) {
+          noEscape.userEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+        }
+      }
     }
 
     return enemy;
@@ -245,7 +263,7 @@ export class TrialService {
     var buffHours = 4;
     var todaysDate = new Date();
     if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0)
-    buffHours *= 2;
+      buffHours *= 2;
 
     if (type === TrialEnum.TrialOfSkill) {
       var lootUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.LootRateUp, buffHours * 60 * 60, 1.25, false, true);
@@ -257,31 +275,31 @@ export class TrialService {
       var affinityXpGain = 200;
       var godEnum = this.globalService.globalVar.activeBattle.activeTrial.godEnum;
       var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
-      if (god !== undefined) {    
-      god.affinityExp += affinityXpGain;
+      if (god !== undefined) {
+        god.affinityExp += affinityXpGain;
 
-      if (this.globalService.globalVar.gameLogSettings.get("battleXpRewards")) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain " + affinityXpGain + " Affinity XP for <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong>.");
+        if (this.globalService.globalVar.gameLogSettings.get("battleXpRewards")) {
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain " + affinityXpGain + " Affinity XP for <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong>.");
+        }
+
+        if (god.affinityExp >= god.affinityExpToNextLevel) {
+          god.affinityExp -= god.affinityExpToNextLevel;
+          god.affinityLevel += 1;
+          god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
+
+          if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
+            var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+          }
+
+          if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
+            this.lookupService.gainResource(new ResourceValue(this.altarService.getSmallCharmOfGod(god.type), 1));
+          }
+          else if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.LargeCharm) {
+            this.lookupService.gainResource(new ResourceValue(this.altarService.getLargeCharmOfGod(god.type), 1));
+          }
+        }
       }
-
-      if (god.affinityExp >= god.affinityExpToNextLevel) {
-        god.affinityExp -= god.affinityExpToNextLevel;
-        god.affinityLevel += 1;
-        god.affinityExpToNextLevel = this.utilityService.getFibonacciValue(god.affinityLevel + 3);
-
-        if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
-          var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
-        }
-
-        if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
-          this.lookupService.gainResource(new ResourceValue(this.altarService.getSmallCharmOfGod(god.type), 1));
-        }
-        else if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.LargeCharm) {
-          this.lookupService.gainResource(new ResourceValue(this.altarService.getLargeCharmOfGod(god.type), 1));
-        }
-      }
-    }
     }
     else if (type === TrialEnum.TrialOfEndurance) {
       //TODO

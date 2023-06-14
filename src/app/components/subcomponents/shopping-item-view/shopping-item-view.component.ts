@@ -287,6 +287,15 @@ export class ShoppingItemViewComponent implements OnInit {
     return name;
   }
 
+  getPartyMember(whichCharacter: number) {
+    var character = this.partyMembers[0];
+    if (whichCharacter === 2) {
+      character = this.partyMembers[1];
+    }
+
+    return character;
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

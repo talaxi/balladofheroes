@@ -44,11 +44,11 @@
     <div class="compareEquipment" *ngIf="partyMembers !== undefined && partyMembers.length > 0">
         <span class="item item1">
             <div class="textCentered bold smallCaps" [ngClass]="getCharacterColorClass(1)">{{getPartyMemberName(1)}}</div>
-            <app-equipment-item-view [equipment]="getEquippedComparisonItem(1)"></app-equipment-item-view>
+            <app-equipment-item-view [equipment]="getEquippedComparisonItem(1)" [character]="getPartyMember(1)"></app-equipment-item-view>
         </span>
         <span class="item item2 comparedEquipmentItem" *ngIf="partyMembers.length > 1">
             <div class="textCentered bold smallCaps" [ngClass]="getCharacterColorClass(2)">{{getPartyMemberName(2)}}</div>
-            <app-equipment-item-view [equipment]="getEquippedComparisonItem(2)"></app-equipment-item-view>
+            <app-equipment-item-view [equipment]="getEquippedComparisonItem(2)" [character]="getPartyMember(2)"></app-equipment-item-view>
         </span>
     </div>
 </ng-template>

@@ -7,5 +7,9 @@ export enum OverdriveNameEnum {
   Reprisal,
   Preservation,
   Harmony,
-  Bullseye
+  Bullseye,
+  Quickness,
+  Weaken,
+  Revenge,
+  Hope
 }

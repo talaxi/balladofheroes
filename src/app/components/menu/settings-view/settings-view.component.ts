@@ -51,7 +51,7 @@ export class SettingsViewComponent implements OnInit {
   ngOnInit(): void {
     if (this.deploymentService.codeCreationMode) {
       console.log(this.globalService.globalVar);
-      console.log(JSON.stringify(this.globalService.globalVar));
+      //console.log(JSON.stringify(this.globalService.globalVar));
 
       /*console.log("1 hit (default): " + this.lookupService.getAgilityPerAttackForAttackCount(0));
       console.log("2 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(1));
@@ -135,6 +135,7 @@ export class SettingsViewComponent implements OnInit {
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
           this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
+          //this.globalService.globalVar.currentVersion = 0.56; //TODO: REMOVE THIS, JUST FOR TESTING
           this.versionControlService.updatePlayerVersion();
 
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);

@@ -19,6 +19,7 @@ import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generato
 import { UtilityService } from '../utility/utility.service';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 import { AchievementService } from '../achievements/achievement.service';
+import { MenuService } from '../menu/menu.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class BalladService {
 
   constructor(private globalService: GlobalService, private gameLogService: GameLogService, private dpsCalculatorService: DpsCalculatorService,
     private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog, private menuService: MenuService) { }
 
   getBalladName(type?: BalladEnum) {
     var name = "";
@@ -44,7 +45,7 @@ export class BalladService {
       name = "Ballad of the Boar";
     if (type === BalladEnum.Argo)
       name = "Ballad of the Argo";
-      if (type === BalladEnum.Olympus)
+    if (type === BalladEnum.Olympus)
       name = "Ballad of Olympus";
 
     return name;
@@ -347,6 +348,24 @@ export class BalladService {
   selectSubZone(subzone: SubZone, zone: Zone) {
     if (this.isSubZoneToBeContinued(subzone)) {
       return;
+    }
+
+    if (subzone.type === SubZoneEnum.WarForTheMountainStables) {
+      this.globalService.globalVar.partyMember2Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {
+      this.globalService.globalVar.partyMember2Hidden = false;
+      this.menuService.updateParty = true;
+    }
+
+    if (subzone.type === SubZoneEnum.WarForTheMountainPalaces) {
+      this.globalService.globalVar.partyMember1Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {
+      this.globalService.globalVar.partyMember1Hidden = false;
+      this.menuService.updateParty = true;
     }
 
     this.globalService.globalVar.ballads.forEach(ballad => {
@@ -670,55 +689,55 @@ export class BalladService {
       name = "Island of Erytheia";
     if (type === SubZoneEnum.ErytheiaGeryonsFarm)
       name = "Geryon's Farm";
-      if (type === SubZoneEnum.MountOlympusUpTheMountain)
+    if (type === SubZoneEnum.MountOlympusUpTheMountain)
       name = "Up the Mountain";
-      if (type === SubZoneEnum.MountOlympusMeanderingPath)
+    if (type === SubZoneEnum.MountOlympusMeanderingPath)
       name = "Meandering Path";
-      if (type === SubZoneEnum.MountOlympusCouloir)
+    if (type === SubZoneEnum.MountOlympusCouloir)
       name = "Couloir";
-      if (type === SubZoneEnum.MountOlympusMusesPlateau)
+    if (type === SubZoneEnum.MountOlympusMusesPlateau)
       name = "Muses Plateau";
-      if (type === SubZoneEnum.MountOlympusPathwayToTheZenith)
+    if (type === SubZoneEnum.MountOlympusPathwayToTheZenith)
       name = "Path to the Zenith";
-      if (type === SubZoneEnum.MountOlympusMytikasSummit)
+    if (type === SubZoneEnum.MountOlympusMytikasSummit)
       name = "Mytikas Summit";
-      if (type === SubZoneEnum.MountOlympusOlympus)
+    if (type === SubZoneEnum.MountOlympusOlympus)
       name = "Olympus";
-      if (type === SubZoneEnum.HuntForYarrowOlympianGrounds)
+    if (type === SubZoneEnum.HuntForYarrowOlympianGrounds)
       name = "Olympian Grounds";
-      if (type === SubZoneEnum.HuntForYarrowMountainHike)
+    if (type === SubZoneEnum.HuntForYarrowMountainHike)
       name = "Mountain Hike";
-      if (type === SubZoneEnum.HuntForYarrowWoodlandTrail)
+    if (type === SubZoneEnum.HuntForYarrowWoodlandTrail)
       name = "Woodland Trail";
-      if (type === SubZoneEnum.HuntForYarrowTrailFork1)
+    if (type === SubZoneEnum.HuntForYarrowTrailFork1)
       name = "Trail Fork 1";
-      if (type === SubZoneEnum.HuntForYarrowTrailFork2)
+    if (type === SubZoneEnum.HuntForYarrowTrailFork2)
       name = "Trail Fork 2";
-      if (type === SubZoneEnum.HuntForYarrowTrailFork3)
+    if (type === SubZoneEnum.HuntForYarrowTrailFork3)
       name = "Trail Fork 3";
-      if (type === SubZoneEnum.HuntForYarrowDenseGreenery1)
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery1)
       name = "Dense Greenery 1";
-      if (type === SubZoneEnum.HuntForYarrowDenseGreenery2)
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery2)
       name = "Dense Greenery 2";
-      if (type === SubZoneEnum.HuntForYarrowDenseGreenery3)
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery3)
       name = "Dense Greenery 3";
-      if (type === SubZoneEnum.HuntForYarrowPromisingPathway1)
+    if (type === SubZoneEnum.HuntForYarrowPromisingPathway1)
       name = "Promising Pathway 1";
-      if (type === SubZoneEnum.HuntForYarrowPromisingPathway2)
+    if (type === SubZoneEnum.HuntForYarrowPromisingPathway2)
       name = "Promising Pathway 2";
-      if (type === SubZoneEnum.HuntForYarrowPromisingPathway3)
+    if (type === SubZoneEnum.HuntForYarrowPromisingPathway3)
       name = "Promising Pathway 3";
-      if (type === SubZoneEnum.HuntForYarrowYarrowField)
+    if (type === SubZoneEnum.HuntForYarrowYarrowField)
       name = "Yarrow Field";
-      if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates)
+    if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates)
       name = "Battle at the Gates";
-      if (type === SubZoneEnum.WarForTheMountainOpenCourtyard)
+    if (type === SubZoneEnum.WarForTheMountainOpenCourtyard)
       name = "Open Courtyard";
-      if (type === SubZoneEnum.WarForTheMountainPalaces)
+    if (type === SubZoneEnum.WarForTheMountainPalaces)
       name = "Palaces";
-      if (type === SubZoneEnum.WarForTheMountainStables)
+    if (type === SubZoneEnum.WarForTheMountainStables)
       name = "Stables";
-      if (type === SubZoneEnum.WarForTheMountainThePeak)
+    if (type === SubZoneEnum.WarForTheMountainThePeak)
       name = "The Peak";
 
     return name;
@@ -887,17 +906,17 @@ export class BalladService {
     if (type === SubZoneEnum.ErytheiaIslandOfErytheia || type === SubZoneEnum.ErytheiaGeryonsFarm)
       victories = bossVictories;
 
-      if (type === SubZoneEnum.MountOlympusUpTheMountain || type === SubZoneEnum.MountOlympusCouloir || type === SubZoneEnum.MountOlympusPathwayToTheZenith ||
-        type === SubZoneEnum.MountOlympusMeanderingPath || type === SubZoneEnum.MountOlympusMusesPlateau)
+    if (type === SubZoneEnum.MountOlympusUpTheMountain || type === SubZoneEnum.MountOlympusCouloir || type === SubZoneEnum.MountOlympusPathwayToTheZenith ||
+      type === SubZoneEnum.MountOlympusMeanderingPath || type === SubZoneEnum.MountOlympusMusesPlateau)
       victories = defaultVictories;
 
     if (type === SubZoneEnum.MountOlympusMytikasSummit)
       victories = bossVictories;
 
-      if (type === SubZoneEnum.HuntForYarrowDenseGreenery1 || type === SubZoneEnum.HuntForYarrowDenseGreenery2 || type === SubZoneEnum.HuntForYarrowDenseGreenery3 ||
-        type === SubZoneEnum.HuntForYarrowPromisingPathway1 || type === SubZoneEnum.HuntForYarrowPromisingPathway2 || type === SubZoneEnum.HuntForYarrowPromisingPathway3 ||
-        type === SubZoneEnum.HuntForYarrowTrailFork1 || type === SubZoneEnum.HuntForYarrowTrailFork2 || type === SubZoneEnum.HuntForYarrowTrailFork3 ||
-        type === SubZoneEnum.HuntForYarrowMountainHike || type === SubZoneEnum.HuntForYarrowOlympianGrounds || type === SubZoneEnum.HuntForYarrowWoodlandTrail)
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery1 || type === SubZoneEnum.HuntForYarrowDenseGreenery2 || type === SubZoneEnum.HuntForYarrowDenseGreenery3 ||
+      type === SubZoneEnum.HuntForYarrowPromisingPathway1 || type === SubZoneEnum.HuntForYarrowPromisingPathway2 || type === SubZoneEnum.HuntForYarrowPromisingPathway3 ||
+      type === SubZoneEnum.HuntForYarrowTrailFork1 || type === SubZoneEnum.HuntForYarrowTrailFork2 || type === SubZoneEnum.HuntForYarrowTrailFork3 ||
+      type === SubZoneEnum.HuntForYarrowMountainHike || type === SubZoneEnum.HuntForYarrowOlympianGrounds || type === SubZoneEnum.HuntForYarrowWoodlandTrail)
       victories = defaultVictories;
 
     if (type === SubZoneEnum.HuntForYarrowYarrowField)

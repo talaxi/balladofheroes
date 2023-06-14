@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
@@ -23,11 +24,13 @@ export class CurrentEquipmentViewComponent implements OnInit {
   equipmentModalOpened = false;
   @Output() unequipEmitter = new EventEmitter<boolean>();
   dialogRef: MatDialogRef<any, any>;
+  character: Character | undefined;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, public dialog: MatDialog,
     private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
+    this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType);
   }
 
   getEquippedItemResourceByType(type: EquipmentTypeEnum) {

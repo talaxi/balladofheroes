@@ -209,10 +209,10 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Narcissus, 2));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingSalve, 1));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughRubyFragment, 2));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughRubyFragment, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingSalve, 3));
       }
     }
     if (type === ZoneEnum.PeloposNisos) {
@@ -382,6 +382,48 @@ export class FollowersService {
         if (rewardLevel >= 3) {
           rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 2));
         }
+      }
+    }
+    
+    if (type === ZoneEnum.MountOlympus) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfFire, 4));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.BlackHorn, 2));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfEarth, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfHoly, 3));
+      }
+    }
+    
+    if (type === ZoneEnum.HuntForYarrow) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfWater, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfLightning, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EssenceOfAir, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicCore, 2));
+      }
+    }
+    
+    if (type === ZoneEnum.WarForTheMountain) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CanineFang, 2));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 3));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicTreeBark, 2));
       }
     }
 

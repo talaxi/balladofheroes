@@ -256,7 +256,7 @@
                         <div
                             *ngIf="getAbilityEffectivenessIncrease(ability) !== 0 && getAbilityEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Effectiveness Increase: </span> <span class="statValue"
-                                [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>
+                                [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>                            
                         <div
                             *ngIf="getSecondaryAbilityEffectivenessIncrease(ability) !== 0 && getSecondaryAbilityEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
@@ -273,6 +273,14 @@
                             <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
                                 class="statValue"
                                 [innerHtml]="getPermanentAbilityUserEffectEffectivenessIncrease(ability)"></span></div>
+                                <div *ngIf="getAbilityUserEffectThresholdIncrease(ability) !== 0 && getAbilityUserEffectThresholdIncrease(ability) !== '0%'">
+                                    <span class="statLabel">Gained Effect Threshold Increase: </span> <span class="statValue"
+                                        [innerHtml]="getAbilityUserEffectThresholdIncrease(ability)"></span></div>
+                                <div
+                            *ngIf="getPermanentAbilityUserEffectThresholdIncrease(ability) !== 0 && getPermanentAbilityUserEffectThresholdIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Gained Effect Threshold Increase: </span> <span
+                                class="statValue"
+                                [innerHtml]="getPermanentAbilityUserEffectThresholdIncrease(ability)"></span></div>
                         <div *ngIf="getPermanentAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Permanent Gained
                                 Effect Duration Increase: </span> <span class="statValue"
                                 [innerHtml]="getPermanentAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>

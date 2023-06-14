@@ -261,9 +261,9 @@ export class GlobalService {
       barrier.isAoe = true;
       barrier.targetsAllies = true;
       barrier.effectiveness = .7;
-      barrier.threshold = .10;
+      barrier.threshold = 1;
       barrier.cooldown = barrier.currentCooldown = 44;
-      barrier.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .7, true, true, true, "", .1));
+      barrier.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .7, true, true, true, "", 1));
       character.abilityList.push(barrier);
     }
   }
@@ -552,9 +552,9 @@ export class GlobalService {
       rupture.name = "Rupture";
       rupture.isAvailable = false;
       rupture.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      rupture.cooldown = rupture.currentCooldown = 22;
+      rupture.cooldown = rupture.currentCooldown = 23;
       rupture.dealsDirectDamage = false;
-      rupture.targetEffect.push(this.createDamageOverTimeEffect(5, 2.5, .3, rupture.name, dotTypeEnum.BasedOnAttack));
+      rupture.targetEffect.push(this.createDamageOverTimeEffect(5, 2.5, .35, rupture.name, dotTypeEnum.BasedOnAttack));
       god.abilityList.push(rupture);
 
       var onslaught = new Ability();
@@ -585,7 +585,7 @@ export class GlobalService {
       bloodlust.isActivatable = false;
       bloodlust.dealsDirectDamage = false;
       bloodlust.maxCount = 5;
-      bloodlust.effectiveness = .025;
+      bloodlust.effectiveness = .02;
       god.abilityList.push(bloodlust);
     }
 
@@ -837,7 +837,7 @@ export class GlobalService {
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp ||
       type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape || type === StatusEffectEnum.Thyrsus
       || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge ||
-      type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing)
+      type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock)
       refreshes = true;
 
     return refreshes;
@@ -882,7 +882,7 @@ export class GlobalService {
   getActivePartyCharacters(excludeEmptySlots: boolean) {
     var characters: Character[] = [];
 
-    if (this.globalVar.activePartyMember1 === CharacterEnum.None) {
+    if (this.globalVar.activePartyMember1 === CharacterEnum.None || this.globalVar.partyMember1Hidden) {
       if (!excludeEmptySlots)
         characters.push(new Character());
     }
@@ -894,7 +894,7 @@ export class GlobalService {
         characters.push(character1);
     }
 
-    if (this.globalVar.activePartyMember2 === CharacterEnum.None) {
+    if (this.globalVar.activePartyMember2 === CharacterEnum.None || this.globalVar.partyMember2Hidden) {
       if (!excludeEmptySlots)
         characters.push(new Character());
     }
@@ -1279,6 +1279,16 @@ export class GlobalService {
     if (character.level === 20) {
       character.unlockedOverdrives.push(OverdriveNameEnum.Fervor);
     }
+    else if (character.level === 30) {
+      if (character.type === CharacterEnum.Adventurer)
+        character.unlockedOverdrives.push(OverdriveNameEnum.Quickness);
+      if (character.type === CharacterEnum.Archer)
+        character.unlockedOverdrives.push(OverdriveNameEnum.Weaken);
+      if (character.type === CharacterEnum.Warrior)
+        character.unlockedOverdrives.push(OverdriveNameEnum.Revenge);
+      if (character.type === CharacterEnum.Priest)
+        character.unlockedOverdrives.push(OverdriveNameEnum.Hope);
+    }
   }
 
   checkForNewCharacterAbilities(character: Character, level?: number) {
@@ -1304,7 +1314,7 @@ export class GlobalService {
         character.permanentAbility1GainCount.push([level, 1]);
 
       if (matchingCount !== undefined && matchingCount[1] > this.utilityService.characterPermanentAbility1ObtainCap)
-        this.getCharacterLevelStatIncrease(character);
+        this.getCharacterLevelStatIncrease(character); //TODO: should give a large boost
       else {
         this.upgradeCharacterAbility1(character, level);
 
@@ -1778,7 +1788,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += .25;
       else
-        targetGainsEffect.effectiveness += .05;
+        targetGainsEffect.effectiveness += .025;
     }
     else if (god.type === GodEnum.Hades) {
       //every 10 upgrades until level 100, reduce cooldown
@@ -1965,7 +1975,7 @@ export class GlobalService {
       else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100)
         ability.cooldown -= .5;
       else
-        targetGainsEffect.effectiveness += .05;
+        targetGainsEffect.effectiveness += .1;
     }
     else if (god.type === GodEnum.Hades) {
       //every 10 upgrades until level 100, reduce cooldown
@@ -2035,7 +2045,7 @@ export class GlobalService {
         ability.maxCount += 1;
       else
         if (ability.abilityUpgradeLevel <= 100)
-          ability.effectiveness += .005;
+          ability.effectiveness += .004;
     }
     else if (god.type === GodEnum.Hades) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -2293,7 +2303,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Dionysus) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
           var userGainsEffect = ability.userEffect[0];
-          userGainsEffect.effectiveness = .1;
+          userGainsEffect.threshold = .025;
         }
         else if (god.type === GodEnum.Nemesis) {
           ability.effectiveness += 1;
@@ -2315,13 +2325,13 @@ export class GlobalService {
           ability.effectiveness += .1;
         }
         else if (god.type === GodEnum.Hermes) {
-          ability.effectiveness += .025;
+          ability.effectiveness += .01;
         }
         else if (god.type === GodEnum.Apollo) {
           ability.effectiveness += .02;
         }
         else if (god.type === GodEnum.Ares) {
-          ability.effectiveness += .02;
+          ability.effectiveness += .01;
         }
         else if (god.type === GodEnum.Hades) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
@@ -2412,7 +2422,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Ares) {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
           var targetGainsEffect = ability.targetEffect[0];
-          targetGainsEffect.effectiveness = .25;
+          targetGainsEffect.effectiveness = .5;
         }
         else if (god.type === GodEnum.Hades) {
           ability.effectiveness += .1;
@@ -2574,6 +2584,7 @@ export class GlobalService {
             else {
               upgradedAbility.userEffect[0].effectiveness += upgradedAbilities.userEffect[0].effectiveness;
               upgradedAbility.userEffect[0].duration += upgradedAbilities.userEffect[0].duration;
+              upgradedAbility.userEffect[0].threshold += upgradedAbilities.userEffect[0].threshold;
 
               if (upgradedAbility.userEffect[1] !== undefined) {
                 upgradedAbility.userEffect[1].effectiveness += upgradedAbilities.userEffect[1].effectiveness;
@@ -2661,6 +2672,8 @@ export class GlobalService {
     }
     if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].duration > 0)
       statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].duration) + " Second Buff Duration, ";
+    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].threshold > 0)
+      statGainText += this.utilityService.genericRound((upgradedAbilities.userEffect[0].threshold) * 100) + "% Threshold Increase, ";
     if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].effectiveness > 0)
       statGainText += this.utilityService.genericRound(upgradedAbilities.targetEffect[0].effectiveness * 100) + "% Debuff Effectiveness, ";
     if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].duration > 0)
@@ -3109,6 +3122,77 @@ export class GlobalService {
     return count;
   }
 
+  getSetBonusAmount(setType: EquipmentSetEnum, setCount: number) {
+    if (setType === EquipmentSetEnum.Athena) {
+      if (setCount === 2)
+        return .1;
+      else if (setCount === 3)
+        return .5;
+      else if (setCount === 5)
+        return .3;
+    }
+    if (setType === EquipmentSetEnum.Artemis) {
+      if (setCount === 2)
+        return .2;
+      else if (setCount === 3)
+        return .2;
+      else if (setCount === 5)
+        return .5;
+    }
+    if (setType === EquipmentSetEnum.Hermes) {
+      if (setCount === 2)
+        return .9;
+      else if (setCount === 3)
+        return .5;
+      else if (setCount === 5)
+        return .2;
+    }
+    if (setType === EquipmentSetEnum.Apollo) {
+      if (setCount === 2)
+        return 100;
+      else if (setCount === 3)
+        return .2;
+      else if (setCount === 5)
+        return .2;
+    }
+    if (setType === EquipmentSetEnum.Hades) {
+      if (setCount === 2)
+        return .2;
+      else if (setCount === 3)
+        return .3;
+      else if (setCount === 5)
+        return .2;
+    }
+    if (setType === EquipmentSetEnum.Ares) {
+      if (setCount === 2)
+        return .05;
+      else if (setCount === 3)
+        return .2;
+    }
+    if (setType === EquipmentSetEnum.Nemesis) {
+      if (setCount === 2)
+        return .1;
+      else if (setCount === 3)
+        return 2500;
+    }
+    if (setType === EquipmentSetEnum.Dionysus) {
+      if (setCount === 2)
+        return .1;
+      else if (setCount === 3)
+        return .2;
+    }
+    if (setType === EquipmentSetEnum.Zeus) {
+      if (setCount === 2)
+        return .1;
+      else if (setCount === 3)
+        return .5;
+      else if (setCount === 5)
+        return 10;
+    }
+
+    return 0;
+  }
+
   checkForSetBonuses(equipmentSet: EquipmentSet, stats?: CharacterStats) {
     if (stats === undefined)
       stats = new CharacterStats(0, 0, 0, 0, 0, 0);
@@ -3121,79 +3205,67 @@ export class GlobalService {
     setCounts.forEach(setCount => {
       if (setCount[0] === EquipmentSetEnum.Athena) {
         if (setCount[1] >= 2)
-          stats!.healingReceived = .1;
+          stats!.healingReceived += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.elementIncrease.holy = .5;
+          stats!.elementIncrease.holy += this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Artemis) {
         if (setCount[1] >= 2)
-          stats!.criticalMultiplier = .2;
+          stats!.criticalMultiplier += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.debuffDuration = .2;
+          stats!.debuffDuration += this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Hermes) {
         if (setCount[1] >= 2)
-          stats!.autoAttackCooldownReduction *= .9;
+          stats!.autoAttackCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.elementIncrease.air = .5;
+          stats!.elementIncrease.air += this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Apollo) {
         if (setCount[1] >= 2)
-          stats!.hpRegen = 100;
+          stats!.hpRegen += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.buffDuration = .2;
-        if (setCount[1] >= 5) //TODO
-          stats!.hpRegen = 100;
+          stats!.buffDuration += this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Hades) {
         if (setCount[1] >= 2)
-          stats!.criticalMultiplier = .2;
+          stats!.criticalMultiplier += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.aoeDamage = .3;
-        if (setCount[1] >= 5) //TODO
-          stats!.elementIncrease.holy = .5;
+          stats!.aoeDamage += this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Ares) {
         if (setCount[1] >= 2)
-          stats!.tickFrequency = .05;
+          stats!.tickFrequency += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.debuffDuration = .2;
-        if (setCount[1] >= 5) //TODO
-          stats!.elementIncrease.holy = .5;
+          stats!.debuffDuration += this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Nemesis) {
         if (setCount[1] >= 2) {
-          stats!.elementResistance.holy = .1;
-          stats!.elementResistance.earth = .1;
+          stats!.elementResistance.holy += this.getSetBonusAmount(setCount[0], 2);
+          stats!.elementResistance.earth += this.getSetBonusAmount(setCount[0], 2);
         }
         if (setCount[1] >= 3)
-          stats!.thorns = 1000;
-        if (setCount[1] >= 5) //TODO
-          stats!.elementIncrease.holy = .5;
+          stats!.thorns = this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Dionysus) {
         if (setCount[1] >= 2)
-          stats!.debuffDuration = .1;
+          stats!.debuffDuration += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.buffDuration = .2;
-        if (setCount[1] >= 5) //TODO
-          stats!.elementIncrease.holy = .5;
+          stats!.buffDuration += this.getSetBonusAmount(setCount[0], 3);
       }
 
       if (setCount[0] === EquipmentSetEnum.Zeus) {
         if (setCount[1] >= 2)
-          stats!.armorPenetration = .1;
+          stats!.armorPenetration += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
-          stats!.elementIncrease.lightning = .5;
-        if (setCount[1] >= 5) //TODO
-          stats!.elementIncrease.holy = .5;
+          stats!.elementIncrease.lightning += this.getSetBonusAmount(setCount[0], 3);
       }
     });
 

@@ -532,6 +532,9 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
+    if (item === ItemsEnum.Ambrosia) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));      
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

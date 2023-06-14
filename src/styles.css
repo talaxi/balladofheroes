@@ -1149,6 +1149,10 @@ button:disabled {
   background-color: var(--foreground-accent);
 }
 
+.unactivatedSetBonus {
+  opacity: .6;
+}
+
 @keyframes fadingAnimation {
   0% {
     opacity: 100%;

@@ -333,7 +333,7 @@ table tr td:nth-child(4n-3) {
 .characterHp {
     display: grid;
     grid-template-columns: 75% 1fr;
-    column-gap: .4rem;
+    column-gap: .3rem;
     justify-content: stretch;
     grid-template-areas:
         "hpBar hpAmount";

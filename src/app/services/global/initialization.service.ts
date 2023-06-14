@@ -777,7 +777,7 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Dionysus;
+        character1.assignedGod1 = GodEnum.Hermes;
         character1.assignedGod2 = GodEnum.Apollo;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ZeussLightningBolts);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ZeussShield);
@@ -797,10 +797,10 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ArtemissNecklace);
       }
 
-      var godLevel = 250;
+      var godLevel = 370;
       var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
       athena!.isAvailable = true;
-      for (var i = 0; i < 10; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(athena!);
       }
       athena!.exp = 0;
@@ -808,7 +808,7 @@ export class InitializationService {
 
       var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
       hermes!.isAvailable = true;
-      for (var i = 0; i < 100; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(hermes!);
       }
       hermes!.exp = 0;
@@ -816,7 +816,7 @@ export class InitializationService {
 
       var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
       apollo!.isAvailable = true;
-      for (var i = 0; i < 6000; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(apollo!);
       }
       apollo!.exp = 0;
@@ -824,7 +824,7 @@ export class InitializationService {
 
       var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
       artemis!.isAvailable = true;
-      for (var i = 0; i < 50; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(artemis!);
       }
       artemis!.exp = 0;
@@ -832,7 +832,7 @@ export class InitializationService {
 
       var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
       hades!.isAvailable = true;
-      for (var i = 0; i < 500; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(hades!);
       }
       hades!.exp = 0;
@@ -840,7 +840,7 @@ export class InitializationService {
 
       var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
       ares!.isAvailable = true;
-      for (var i = 0; i < 1000; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(ares!);
       }
       ares!.exp = 0;
@@ -848,7 +848,7 @@ export class InitializationService {
 
       var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
       dionysus!.isAvailable = true;
-      for (var i = 0; i < 1995; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(dionysus!);
       }
       dionysus!.exp = 0;
@@ -856,7 +856,7 @@ export class InitializationService {
 
       var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
       nemesis!.isAvailable = true;
-      for (var i = 0; i < 1500; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(nemesis!);
       }
       nemesis!.exp = 0;
@@ -864,7 +864,7 @@ export class InitializationService {
 
       var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
       zeus!.isAvailable = true;
-      for (var i = 0; i < 2500; i++) {
+      for (var i = 0; i < godLevel; i++) {
         this.globalService.levelUpGod(zeus!);
       }
       zeus!.exp = 0;

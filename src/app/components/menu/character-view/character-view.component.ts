@@ -467,6 +467,27 @@ export class CharacterViewComponent implements OnInit {
     return 0;
   }
 
+  getGodPermanentAbilityUserEffectThresholdIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var permanentAbilityUpgradeAmount = 0;
+    var originalGod = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (originalGod === undefined)
+      return 0;
+
+    var permanentAbilityUpgrade = originalGod.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].threshold;
+
+    if (ability !== undefined && ability.userEffect.length > 0) {      
+      return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+    }
+
+    return 0;
+  }
+
   getGodPermanentAbilityUserEffectDurationIncrease(ability: Ability, whichGod: number) {
     var matchTo = this.character.assignedGod1;
     if (whichGod === 2)
@@ -615,6 +636,22 @@ export class CharacterViewComponent implements OnInit {
         return this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness));
       else
         return Math.abs(this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness) * 100)) + "%";
+    }
+
+    return 0;
+  }
+  
+  getGodAbilityUserEffectThresholdIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
+
+    var baseGod = new God(matchTo);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {      
+      return Math.abs(this.utilityService.genericRound((ability.userEffect[0].threshold - baseAbility.userEffect[0].threshold) * 100)) + "%";
     }
 
     return 0;
@@ -790,6 +827,8 @@ export class CharacterViewComponent implements OnInit {
     }
     if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].duration > 0)
       statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].duration) + " Second Buff Duration, ";
+      if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].threshold > 0)
+      statGainText += this.utilityService.genericRound((upgradedAbilities.userEffect[0].threshold) * 100) + "% Threshold Increase, ";
     if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].effectiveness !== 0)
       statGainText += this.utilityService.genericRound(Math.abs(upgradedAbilities.targetEffect[0].effectiveness) * 100) + "% Debuff Effectiveness, ";
     if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].duration > 0)
