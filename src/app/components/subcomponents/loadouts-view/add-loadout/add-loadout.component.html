@@ -4,92 +4,128 @@
     </div>
     <hr />
     <div class="name">
-        <span class="statLabel smallMarginRight">Name: </span><input (focus)="inTextbox()" (blur)="outOfTextbox()" type="text" maxlength="30" [(ngModel)]="loadoutName" />    
+        <span class="statLabel smallMarginRight">Name: </span><input (focus)="inTextbox()" (blur)="outOfTextbox()"
+            type="text" maxlength="30" [(ngModel)]="loadoutName" />
     </div>
     <div class="column smallColumn">
-    <span class="statLabel label">Class 1: </span> <span class="statLabel value"
-        [ngClass]="getClassColor(newLoadout.character1)" [innerHTML]="getClassName(newLoadout.character1)"></span>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacter(selectLoadoutCharacterModal, 1)">+</button>
-    <br />
-    <span class="statLabel label">God 1: </span> <span class="statLabel value"
-        [ngClass]="getGodColor(newLoadout.god1Character1)" [innerHTML]="getGodName(newLoadout.god1Character1)"></span>
-    <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 1, 1)">+</button>
-    <br />
-    <span class="statLabel label">God 2: </span> <span class="statLabel value"
-        [ngClass]="getGodColor(newLoadout.god2Character1)" [innerHTML]="getGodName(newLoadout.god2Character1)"></span>
-    <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 1, 2)">+</button>
-    <br />
-    <br />
-    <span class="statLabel label">Class 2: </span> <span class="statLabel value"
-        [ngClass]="getClassColor(newLoadout.character2)" [innerHTML]="getClassName(newLoadout.character2)"></span>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacter(selectLoadoutCharacterModal, 2)">+</button>
-    <br />
-    <span class="statLabel label">God 1: </span> <span class="statLabel value"
-        [ngClass]="getGodColor(newLoadout.god1Character2)" [innerHTML]="getGodName(newLoadout.god1Character2)"></span>
-    <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 2, 1)">+</button>
-    <br />
-    <span class="statLabel label">God 2: </span> <span class="statLabel value"
-        [ngClass]="getGodColor(newLoadout.god2Character2)" [innerHTML]="getGodName(newLoadout.god2Character2)"></span>
-    <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 2, 2)">+</button>
-</div>
-<br *ngIf="isMobile"/>
-<br *ngIf="isMobile"/>
-<div class="column largeColumn">
-    <span class="statLabel largerLabel">Class 1 Weapon: </span> <span class="statValue largerValue"
-        [innerHTML]="getWeapon(newLoadout.character1EquipmentSet.weapon)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.weapon !== undefined" (click)="RemoveLoadoutCharacterWeapon(1)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterWeapon(selectLoadoutEquipmentModal, 1)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 1 Shield: </span> <span class="statValue largerValue"
-        [innerHTML]="getShield(newLoadout.character1EquipmentSet.shield)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.shield !== undefined" (click)="RemoveLoadoutCharacterShield(1)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterShield(selectLoadoutEquipmentModal, 1)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 1 Armor: </span> <span class="statValue largerValue"
-        [innerHTML]="getArmor(newLoadout.character1EquipmentSet.armor)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.armor !== undefined" (click)="RemoveLoadoutCharacterArmor(1)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterArmor(selectLoadoutEquipmentModal, 1)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 1 Ring: </span> <span class="statValue largerValue"
-        [innerHTML]="getRing(newLoadout.character1EquipmentSet.ring)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.ring !== undefined" (click)="RemoveLoadoutCharacterRing(1)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterRing(selectLoadoutEquipmentModal, 1)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 1 Necklace: </span> <span class="statValue largerValue"
-        [innerHTML]="getNecklace(newLoadout.character1EquipmentSet.necklace)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.necklace !== undefined" (click)="RemoveLoadoutCharacterNecklace(1)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterNecklace(selectLoadoutEquipmentModal, 1)">+</button>
-    <br />
-</div>
-<br *ngIf="isMobile"/>
-<br *ngIf="isMobile"/>
-<div class="column largeColumn">
-    <span class="statLabel largerLabel">Class 2 Weapon: </span> <span class="statValue largerValue"
-        [innerHTML]="getWeapon(newLoadout.character2EquipmentSet.weapon)"></span>
-    <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.weapon !== undefined" (click)="RemoveLoadoutCharacterWeapon(2)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterWeapon(selectLoadoutEquipmentModal, 2)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 2 Shield: </span> <span class="statValue largerValue"
-        [innerHTML]="getShield(newLoadout.character2EquipmentSet.shield)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.shield !== undefined" (click)="RemoveLoadoutCharacterShield(2)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterShield(selectLoadoutEquipmentModal, 2)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 2 Armor: </span> <span class="statValue largerValue"
-        [innerHTML]="getArmor(newLoadout.character2EquipmentSet.armor)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.armor !== undefined" (click)="RemoveLoadoutCharacterArmor(2)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterArmor(selectLoadoutEquipmentModal, 2)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 2 Ring: </span> <span class="statValue largerValue"
-        [innerHTML]="getRing(newLoadout.character2EquipmentSet.ring)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.ring !== undefined" (click)="RemoveLoadoutCharacterRing(2)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterRing(selectLoadoutEquipmentModal, 2)">+</button>
-    <br />
-    <span class="statLabel largerLabel">Class 2 Necklace: </span> <span class="statValue largerValue"
-        [innerHTML]="getNecklace(newLoadout.character2EquipmentSet.necklace)"></span>
-        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.necklace !== undefined" (click)="RemoveLoadoutCharacterNecklace(2)">-</button>
-    <button class="buttonStyled addItem" (click)="selectLoadoutCharacterNecklace(selectLoadoutEquipmentModal, 2)">+</button>
-    <br />
-</div>
+        <span class="statLabel label">Class 1: </span> <span class="statLabel value"
+            [ngClass]="getClassColor(newLoadout.character1)" [innerHTML]="getClassName(newLoadout.character1)"></span>
+        <button class="buttonStyled addItem" (click)="selectLoadoutCharacter(selectLoadoutCharacterModal, 1)">+</button>
+        <br />
+        <span class="statLabel label">God 1: </span> <span class="statLabel value"
+            [ngClass]="getGodColor(newLoadout.god1Character1)"
+            [innerHTML]="getGodName(newLoadout.god1Character1)"></span>
+        <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 1, 1)">+</button>
+        <br />
+        <span class="statLabel label">God 2: </span> <span class="statLabel value"
+            [ngClass]="getGodColor(newLoadout.god2Character1)"
+            [innerHTML]="getGodName(newLoadout.god2Character1)"></span>
+        <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 1, 2)">+</button>
+        <br />
+        <br />
+        <span class="statLabel label">Class 2: </span> <span class="statLabel value"
+            [ngClass]="getClassColor(newLoadout.character2)" [innerHTML]="getClassName(newLoadout.character2)"></span>
+        <button class="buttonStyled addItem" (click)="selectLoadoutCharacter(selectLoadoutCharacterModal, 2)">+</button>
+        <br />
+        <span class="statLabel label">God 1: </span> <span class="statLabel value"
+            [ngClass]="getGodColor(newLoadout.god1Character2)"
+            [innerHTML]="getGodName(newLoadout.god1Character2)"></span>
+        <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 2, 1)">+</button>
+        <br />
+        <span class="statLabel label">God 2: </span> <span class="statLabel value"
+            [ngClass]="getGodColor(newLoadout.god2Character2)"
+            [innerHTML]="getGodName(newLoadout.god2Character2)"></span>
+        <button class="buttonStyled addItem" (click)="selectLoadoutGod(selectLoadoutGodModal, 2, 2)">+</button>
+    </div>
+    <br *ngIf="isMobile" />
+    <br *ngIf="isMobile" />
+    <div class="column largeColumn">
+        <span class="statLabel largerLabel">Class 1 Weapon: </span>
+        <span class="statValue largerValue" customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+            [contentTemplate]="character1WeaponEquipmentTemplate"
+            [innerHTML]="getWeapon(newLoadout.character1EquipmentSet.weapon)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.weapon !== undefined"
+            (click)="RemoveLoadoutCharacterWeapon(1)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterWeapon(selectLoadoutEquipmentModal, 1)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 1 Shield: </span> <span class="statValue largerValue" customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character1ShieldEquipmentTemplate"
+            [innerHTML]="getShield(newLoadout.character1EquipmentSet.shield)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.shield !== undefined"
+            (click)="RemoveLoadoutCharacterShield(1)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterShield(selectLoadoutEquipmentModal, 1)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 1 Armor: </span> <span class="statValue largerValue" customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character1ArmorEquipmentTemplate"
+            [innerHTML]="getArmor(newLoadout.character1EquipmentSet.armor)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.armor !== undefined"
+            (click)="RemoveLoadoutCharacterArmor(1)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterArmor(selectLoadoutEquipmentModal, 1)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 1 Ring: </span> <span class="statValue largerValue" customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character1RingEquipmentTemplate"
+            [innerHTML]="getRing(newLoadout.character1EquipmentSet.ring)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.ring !== undefined"
+            (click)="RemoveLoadoutCharacterRing(1)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterRing(selectLoadoutEquipmentModal, 1)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 1 Necklace: </span> <span class="statValue largerValue" customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character1NecklaceEquipmentTemplate"
+            [innerHTML]="getNecklace(newLoadout.character1EquipmentSet.necklace)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character1EquipmentSet.necklace !== undefined"
+            (click)="RemoveLoadoutCharacterNecklace(1)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterNecklace(selectLoadoutEquipmentModal, 1)">+</button>
+        <br />
+    </div>
+    <br *ngIf="isMobile" />
+    <br *ngIf="isMobile" />
+    <div class="column largeColumn">
+        <span class="statLabel largerLabel">Class 2 Weapon: </span> <span class="statValue largerValue" customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character2WeaponEquipmentTemplate"
+            [innerHTML]="getWeapon(newLoadout.character2EquipmentSet.weapon)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.weapon !== undefined"
+            (click)="RemoveLoadoutCharacterWeapon(2)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterWeapon(selectLoadoutEquipmentModal, 2)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 2 Shield: </span> <span class="statValue largerValue"  customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character2ShieldEquipmentTemplate"
+            [innerHTML]="getShield(newLoadout.character2EquipmentSet.shield)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.shield !== undefined"
+            (click)="RemoveLoadoutCharacterShield(2)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterShield(selectLoadoutEquipmentModal, 2)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 2 Armor: </span> <span class="statValue largerValue"  customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character2ArmorEquipmentTemplate"
+            [innerHTML]="getArmor(newLoadout.character2EquipmentSet.armor)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.armor !== undefined"
+            (click)="RemoveLoadoutCharacterArmor(2)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterArmor(selectLoadoutEquipmentModal, 2)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 2 Ring: </span> <span class="statValue largerValue"  customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character2RingEquipmentTemplate"
+            [innerHTML]="getRing(newLoadout.character2EquipmentSet.ring)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.ring !== undefined"
+            (click)="RemoveLoadoutCharacterRing(2)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterRing(selectLoadoutEquipmentModal, 2)">+</button>
+        <br />
+        <span class="statLabel largerLabel">Class 2 Necklace: </span> <span class="statValue largerValue"  customToolTip [isDelayed]="false" [isLargeTooltip]="true"
+        [contentTemplate]="character2NecklaceEquipmentTemplate"
+            [innerHTML]="getNecklace(newLoadout.character2EquipmentSet.necklace)"></span>
+        <button class="buttonStyled addItem" *ngIf="newLoadout.character2EquipmentSet.necklace !== undefined"
+            (click)="RemoveLoadoutCharacterNecklace(2)">-</button>
+        <button class="buttonStyled addItem"
+            (click)="selectLoadoutCharacterNecklace(selectLoadoutEquipmentModal, 2)">+</button>
+        <br />
+    </div>
     <br />
     <br />
     <div class="buttons">
@@ -107,9 +143,64 @@
 </ng-template>
 
 <ng-template #selectLoadoutEquipmentModal>
-    <app-select-loadout-equipment [equipmentPieceType]="equipmentPieceType" [dialogRef]="dialogRef" (selectedEquipmentEmitter)="equipmentSelected($event)"></app-select-loadout-equipment>
+    <app-select-loadout-equipment [equipmentPieceType]="equipmentPieceType" [dialogRef]="dialogRef"
+        (selectedEquipmentEmitter)="equipmentSelected($event)"></app-select-loadout-equipment>
 </ng-template>
 
 <ng-template #fieldConfirmationBox>
-    <app-confirmation-box [confirmationText]="fieldMissingConfirmationText" [cancelOptionAvailable]="false"></app-confirmation-box>
+    <app-confirmation-box [confirmationText]="fieldMissingConfirmationText"
+        [cancelOptionAvailable]="false"></app-confirmation-box>
+</ng-template>
+
+
+<ng-template #character1WeaponEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character1EquipmentSet.weapon"
+        [associatedResource]="newLoadout.character1EquipmentSet.weapon?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character1)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character1ArmorEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character1EquipmentSet.armor"
+        [associatedResource]="newLoadout.character1EquipmentSet.armor?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character1)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character1ShieldEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character1EquipmentSet.shield"
+        [associatedResource]="newLoadout.character1EquipmentSet.shield?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character1)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character1RingEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character1EquipmentSet.ring"
+        [associatedResource]="newLoadout.character1EquipmentSet.ring?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character1)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character1NecklaceEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character1EquipmentSet.necklace"
+        [associatedResource]="newLoadout.character1EquipmentSet.necklace?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character1)"></app-equipment-item-view>
+</ng-template>
+
+<ng-template #character2WeaponEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character2EquipmentSet.weapon"
+        [associatedResource]="newLoadout.character2EquipmentSet.weapon?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character2)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character2ArmorEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character2EquipmentSet.armor"
+        [associatedResource]="newLoadout.character2EquipmentSet.armor?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character2)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character2ShieldEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character2EquipmentSet.shield"
+        [associatedResource]="newLoadout.character2EquipmentSet.shield?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character2)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character2RingEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character2EquipmentSet.ring"
+        [associatedResource]="newLoadout.character2EquipmentSet.ring?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character2)"></app-equipment-item-view>
+</ng-template>
+<ng-template #character2NecklaceEquipmentTemplate>
+    <app-equipment-item-view [equipment]="newLoadout.character2EquipmentSet.necklace"
+        [associatedResource]="newLoadout.character2EquipmentSet.necklace?.associatedResource"
+        [character]="getCharacterFromType(newLoadout.character2)"></app-equipment-item-view>
 </ng-template>

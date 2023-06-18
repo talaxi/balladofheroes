@@ -68,7 +68,7 @@ export class UtilityService {
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
-  public firstJewelcraftingLevelCap = 25; 
+  public firstJewelcraftingLevelCap = 25;
   public jewelcraftingLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
@@ -91,7 +91,7 @@ export class UtilityService {
   public overdriveHealingNeededToUnlockPreservation = 100000;
   public overdriveHealsNeededToUnlockHarmony = 25000;
   public overdriveCriticalsNeededToUnlockBullseye = 15000;
-  
+
   public reprisalAmount = 1;
   public reprisalBonus = 2;
   public preservationAmount = .5;
@@ -350,14 +350,26 @@ export class UtilityService {
     if (text === "Vial of the Black Sea")
       return "Vials of the Black Sea";
 
-      if (text === "Vial of the Cretan Sea")
+    if (text === "Vial of the Cretan Sea")
       return "Vials of the Cretan Sea";
 
     if (text === "Essence of Fire")
       return "Essences of Fire";
 
-      if (text === "Essence of Water")
+    if (text === "Essence of Water")
       return "Essences of Water";
+
+    if (text === "Essence of Earth")
+      return "Essences of Earth";
+
+    if (text === "Essence of Lightning")
+      return "Essences of Lightning";
+
+    if (text === "Essence of Air")
+      return "Essences of Air";
+
+    if (text === "Essence of Holy")
+      return "Essences of Holy";
 
     if (text === "Small Topaz")
       return "Small Topazes";
@@ -368,10 +380,10 @@ export class UtilityService {
     return pluralize(text);
   }
 
-  openConfirmationDialog(confirmationBoxComponent?: any) {          
+  openConfirmationDialog(confirmationBoxComponent?: any) {
     if (confirmationBoxComponent !== undefined)
-      return this.dialog.open(confirmationBoxComponent, { width: '40%', height: 'auto' });  
+      return this.dialog.open(confirmationBoxComponent, { width: '40%', height: 'auto' });
     else
-      return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });  
+      return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });
   }
 }

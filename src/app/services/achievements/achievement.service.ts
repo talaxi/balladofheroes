@@ -339,6 +339,55 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.MagicTreeBark, 5));
       else if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
         rewards.push(new ResourceValue(ItemsEnum.MetalScraps, 100));
+        
+      else if (subzoneType === SubZoneEnum.MountOlympusUpTheMountain)
+      rewards.push(new ResourceValue(ItemsEnum.CanineFang, 10));
+      else if (subzoneType === SubZoneEnum.MountOlympusMeanderingPath)
+      rewards.push(new ResourceValue(ItemsEnum.EagleFeather, 10));
+      else if (subzoneType === SubZoneEnum.MountOlympusCouloir)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfEarth, 20));
+      else if (subzoneType === SubZoneEnum.MountOlympusMusesPlateau)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfHoly, 20));
+      else if (subzoneType === SubZoneEnum.MountOlympusPathwayToTheZenith)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfFire, 45));
+      else if (subzoneType === SubZoneEnum.MountOlympusMytikasSummit)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfHoly, 20));
+
+      else if (subzoneType === SubZoneEnum.HuntForYarrowMountainHike)
+      rewards.push(new ResourceValue(ItemsEnum.RadiatingGemstone, 10));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowWoodlandTrail)
+      rewards.push(new ResourceValue(ItemsEnum.MagicCore, 6));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork1)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfLightning, 20));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork2)
+      rewards.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 50));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork3)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfWater, 20));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery1)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfAir, 20));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery2)
+      rewards.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 50));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery3)
+      rewards.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 50));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway1)
+      rewards.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 50));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway2)
+      rewards.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 50));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway3)
+      rewards.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 50));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowYarrowField)
+      rewards.push(new ResourceValue(ItemsEnum.MagicCore, 35));
+      
+      else if (subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates)
+      rewards.push(new ResourceValue(ItemsEnum.GiantNecklace, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard)
+      rewards.push(new ResourceValue(ItemsEnum.GiantArmor, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainStables)
+      rewards.push(new ResourceValue(ItemsEnum.GiantSword, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainPalaces)
+      rewards.push(new ResourceValue(ItemsEnum.GiantRing, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
+      rewards.push(new ResourceValue(ItemsEnum.GiantShield, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThousandVictories) {
@@ -360,6 +409,9 @@ export class AchievementService {
       var coastOfCreteBoonBonus = .04;
       var gardenOfTheHesperidesBoonBonus = .04;
       var erytheiaBoonBonus = .05;
+      var mountOlympusBoonBonus = .04;
+      var huntForYarrowBoonBonus = .04;
+      var warForTheMountainBoonBonus = .05;
 
       if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aigosthenaBoonBonus));
@@ -397,6 +449,12 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, gardenOfTheHesperidesBoonBonus));
         else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Erytheia))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, erytheiaBoonBonus));
+        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.MountOlympus))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, mountOlympusBoonBonus));
+        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.HuntForYarrow))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, huntForYarrowBoonBonus));
+        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.WarForTheMountain))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, warForTheMountainBoonBonus));
     }
 
     if (achievementType === AchievementTypeEnum.TenThousandVictories) {
@@ -642,6 +700,55 @@ export class AchievementService {
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
     else if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
+      
+      else if (subzoneType === SubZoneEnum.MountOlympusUpTheMountain)
+      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.MountOlympusMeanderingPath)
+      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.MountOlympusCouloir)
+      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.MountOlympusMusesPlateau)
+      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.MountOlympusPathwayToTheZenith)
+      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.MountOlympusMytikasSummit)
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
+
+      else if (subzoneType === SubZoneEnum.HuntForYarrowMountainHike)
+      rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowWoodlandTrail)
+      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork1)
+      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork2)
+      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork3)
+      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery1)
+      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery2)
+      rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery3)
+      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway1)
+      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway2)
+      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway3)
+      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.HuntForYarrowYarrowField)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, 1));
+      
+      else if (subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainStables)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainPalaces)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
+      else if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
@@ -688,6 +795,18 @@ export class AchievementService {
         if (subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia)
         rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
         if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
+        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+        if (subzoneType === SubZoneEnum.HuntForYarrowYarrowField)
+        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates)
+        rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard)
+        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainStables)
+        rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainPalaces)
+        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
         rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
     }
 
@@ -738,6 +857,18 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, 1));
         if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
+        if (subzoneType === SubZoneEnum.HuntForYarrowYarrowField)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainStables)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainPalaces)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, 1));
+        if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
     }
 
     if (achievementType === AchievementTypeEnum.Complete) {
@@ -753,6 +884,9 @@ export class AchievementService {
       }
       if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm) {
         rewards.push(new ResourceValue(ItemsEnum.ItemBeltUp, 1));
+      }
+      if (subzoneType === SubZoneEnum.WarForTheMountainThePeak) {
+        rewards.push(new ResourceValue(ItemsEnum.BonusXp, 10000000));
       }
     }
 

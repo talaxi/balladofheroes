@@ -28,6 +28,7 @@ import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.mode
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { DictionaryService } from './dictionary.service';
+import { EquipmentService } from '../resources/equipment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +38,7 @@ export class BackgroundService {
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
     private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
     private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService,
-    private dictionaryService: DictionaryService) { }
+    private dictionaryService: DictionaryService, private equipmentService: EquipmentService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
@@ -66,6 +67,7 @@ export class BackgroundService {
         this.battleService.handleHpRegen(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
+        this.checkForThornsGems(partyMember);
         this.checkGodStatuses(partyMember);
 
         if (!isInTown) {
@@ -596,6 +598,19 @@ export class BackgroundService {
     else if ((character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) &&
       character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+    }
+  }
+
+  checkForThornsGems(character: Character) {
+    var total = this.equipmentService.getFlatThornDamageGain(character.equipmentSet);
+
+    if (total > 0) {
+      var gemThornsEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns && item.caster === character.name + "Gems");
+
+      if (gemThornsEffect === undefined)
+        character.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, total, false, true, false, character.name + "Gems"));
+      else
+        gemThornsEffect.effectiveness = total;
     }
   }
 

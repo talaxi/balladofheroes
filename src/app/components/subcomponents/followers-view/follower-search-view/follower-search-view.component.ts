@@ -53,7 +53,7 @@ export class FollowerSearchViewComponent {
   getClearedZonesForBallad() {
     if (this.selectedBallad === undefined)
       return [];
-
+    
     return this.followerService.getClearedZonesForBallad(this.selectedBallad);
   }
 

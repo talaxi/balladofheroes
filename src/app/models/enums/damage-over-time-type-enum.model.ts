@@ -4,5 +4,6 @@ export enum dotTypeEnum {
     BasedOnAttack,
     BasedOnDamage,
     EnemyMaxHpPercent,
-    UserCurrentMaxHpPercent
+    UserCurrentMaxHpPercent,
+    BasedOnHeal
   }

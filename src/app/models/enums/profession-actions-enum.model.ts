@@ -20,4 +20,10 @@ export enum ProfessionActionsEnum {
   RareCombineIngredientsPot,
   RareCombineIngredientsPotion,
   RareCrushIngredients,  
+  CombiningStones,
+  RareCombiningGems,
+  RareCombiningStones,  
+  SpecialHeatingMetal,
+  SpecialShapingMetal,
+  SpecialCoolingMetal,
 }

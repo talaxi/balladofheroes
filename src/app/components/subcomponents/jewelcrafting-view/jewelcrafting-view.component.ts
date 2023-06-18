@@ -84,7 +84,9 @@ export class JewelcraftingViewComponent {
     if (this.jewelcrafting === undefined)
       return [];
 
-    return this.recipeList.filter(item => item.quality === quality).reverse();
+    return this.recipeList.filter(item => item.quality === quality).sort(function (a, b) {
+      return a.displayOrder > b.displayOrder ? -1 : a.displayOrder < b.displayOrder ? 1 : 0;
+    });
   }
 
   getSelectedRecipeName() {

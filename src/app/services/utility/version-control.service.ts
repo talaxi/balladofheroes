@@ -734,9 +734,9 @@ export class VersionControlService {
           var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
           if (dionysusGod !== undefined) {
             var permanentAbility1 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
-            if (permanentAbility1 !== undefined) {
-              permanentAbility1.targetEffect[0].threshold = (permanentAbility1.targetEffect[0].effectiveness / .1) * .25;
-              permanentAbility1.targetEffect[0].effectiveness = 0;
+            if (permanentAbility1 !== undefined && permanentAbility1.userEffect[0] !== undefined) {
+              permanentAbility1.userEffect[0].threshold = (permanentAbility1.userEffect[0].effectiveness / .1) * .25;
+              permanentAbility1.userEffect[0].effectiveness = 0;
             }
 
             var permanentAbility3 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
@@ -825,8 +825,8 @@ export class VersionControlService {
 
           }
           //TODO: remove, this is just for testing          
-          var olympusSubzone = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
-          olympusSubzone!.isAvailable = true;
+          //var olympusSubzone = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
+          //olympusSubzone!.isAvailable = true;
           //^^^
 
           var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
@@ -845,6 +845,15 @@ export class VersionControlService {
             });
 
             jewelcrafting.availableRecipes = [];
+            
+            if (jewelcrafting.level >= 3)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.PointedStone);
+              if (jewelcrafting.level >= 8)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.ShiningStone);
+              if (jewelcrafting.level >= 30)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.JaggedStone);
+              if (jewelcrafting.level >= 38)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.BlessedStone);
           }
         }
 

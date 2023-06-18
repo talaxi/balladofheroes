@@ -50,6 +50,10 @@ export class AddLoadoutComponent {
       this.loadoutName = "Loadout " + (this.globalService.globalVar.loadouts.length + 1);
   }
 
+  getCharacterFromType(type: CharacterEnum) {
+    return this.globalService.globalVar.characters.find(item => item.type === type);
+  }
+
   selectLoadoutCharacter(content: any, whichCharacter: number) {
     this.selectedCharacter = whichCharacter;
     this.selectedGod = 0;

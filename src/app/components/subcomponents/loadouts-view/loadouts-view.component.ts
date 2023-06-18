@@ -123,6 +123,10 @@ export class LoadoutsViewComponent {
 
     return name;
   }
+  
+  getCharacterFromType(type: CharacterEnum) {
+    return this.globalService.globalVar.characters.find(item => item.type === type);
+  }
 
   getEquipmentText(item: Equipment) {
     var itemText = "";

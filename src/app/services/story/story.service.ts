@@ -108,6 +108,18 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 35 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.ErytheiaGeryonsFarm))
       this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 36 && this.balladService.getActiveSubZone().type === SubZoneEnum.MountOlympusUpTheMountain)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 37 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.MountOlympusMytikasSummit))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 39 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.HuntForYarrowTrailFork3))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 40 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.HuntForYarrowYarrowField))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 41 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.WarForTheMountainOpenCourtyard))
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 42 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.WarForTheMountainThePeak))
+      this.showStory = true;
 
     if (this.showStory)
       this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, this.balladService.getActiveSubZone().type);
@@ -433,7 +445,7 @@ export class StoryService {
           "<div>" + this.zosimeText("“We already fought this boar once, doesn't that count?”") + " Zosime laments, shivering under her own layers. The boar who once destroyed much of the Calydonian countryside was first captured and spared by Heracles on the top of Mount Erymanthos.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.thalesText("“Surely we're almost there now. Let's look just a little longer, or I might freeze to death out here.”") + " You reply.</div>" +
-        "<div>The minutes come and go without any luck. Just as you decide to turn around and try again another day, you see the boar charging in your direction. You seem to have finally found its territory, and it was not happy to see you.</div>";
+          "<div>The minutes come and go without any luck. Just as you decide to turn around and try again another day, you see the boar charging in your direction. You seem to have finally found its territory, and it was not happy to see you.</div>";
     }
     else if (storyId === 32) {
       if (pageCount === 1)
@@ -446,7 +458,7 @@ export class StoryService {
           "<div>You hardly believe your eyes when you happen upon a hidden oasis in the middle of the desert. The deep green of the foliage and blue of the water is a welcome sight on your monotonous journey. You and Zosime quickly make your way to the water, taking a much needed break.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.thalesText("“First we'll make our way to the Garden of the Hesperides and see if we can get a golden apple. After that, we'll make way to the island of Erytheia and look for the cattle on Geryon’s farm. We can loop back from the north and finish up the few labors left on our way back home.”") + " You say, mentally recalling the maps of Heracles's travels you studied before leaving Greece.</div>" +
-        "<div>" + this.zosimeText("“I'm glad you've got all of the stories memorized.”") + " Zosime replies while filling several canteens with water from the oasis. " + this.zosimeText("“Lead the way and I'm right beside you.”") + "</div>";
+          "<div>" + this.zosimeText("“I'm glad you've got all of the stories memorized.”") + " Zosime replies while filling several canteens with water from the oasis. " + this.zosimeText("“Lead the way and I'm right beside you.”") + "</div>";
     }
     else if (storyId === 34) {
       if (pageCount === 1)
@@ -462,8 +474,8 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.hermesText("“You've accomplished quite a lot since the last time we spoke! You sure can go a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
           "<div>" + this.hermesText("“You've impressed quite a few of us on Olympus. Even father is ready to speak to you now.”") + " Zeus, father of Hermes, Athena, and many others, was seeking your presence. You felt equal parts excitement and anxiety. </div>";
-      else if (pageCount === 3)        
-          sceneText = "<div class='sceneDiv'>" + this.hermesText("“I think the Giants and the Titans are ready to make their move. Hopefully this time, they'll get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
+      else if (pageCount === 3)
+        sceneText = "<div class='sceneDiv'>" + this.hermesText("“I think the Giants and the Titans are ready to make their move. Hopefully this time, they'll get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
           "<div>You quickly make your way to tell the news to Zosime. It seems a change of plans was in order and that Heracles's trials would have to wait a little longer. Your destination was now Mount Olympus.</div>";
     }
 
@@ -651,7 +663,7 @@ export class StoryService {
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
       }
-      if (this.globalService.globalVar.currentStoryId === 7) {        
+      if (this.globalService.globalVar.currentStoryId === 7) {
         this.globalService.globalVar.settings.set("autoProgress", false);
       }
       if (this.globalService.globalVar.currentStoryId === 8) {
@@ -837,6 +849,15 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Thank you! With your help, I can fix up the walls and keep the livestock out of the elements.") + "</div>" +
           "<div>" + this.commonCharacterText("“I think that will just about do it. You know, while I was working I stumbled upon this weird rock. I'm not quite sure what to do with it, but maybe you can make use of it?”") + "</div>";
     }
+    if (scene === OptionalSceneEnum.HephaestusJewelcrafting) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You move towards the sound of metalwork and sure enough the divine blacksmith Hephaestus is pounding away at his anvil. He does not notice you as you approach, as he is lost in the fervor of his work. You do not speak, as you are lost in the beauty of it.</div>" +
+          "<div class='sceneDiv'>The blacksmith alternates between the heaviest of blows and most delicate of touches to shape the metal exactly as he wants it. The fire of the forge roared but bent entirely to his will. If blacksmithing was an art, there was no greater artist than Hephaestus.</div>" +
+          "<div>After some time, the god eventually notices your presence.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Ah, you must be the mortals here to aid us in battle. You've been the talk of Olympus for some time.”") + " He says as he puts down his tools. He nods for you to follow as he walks back towards an armory holding his greatest artwork.</div>" +
+          this.commonCharacterText("“I made a couple of pieces for you. Won't have you dying on my watch. Here, try this on and go give it a test run.”");
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -853,6 +874,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Atalanta", "<span class='commonCharacterColor storyCharacterName'>Atalanta</span>");
     sceneText = sceneText.replaceAll("Heracles", "<span class='commonCharacterColor storyCharacterName'>Heracles</span>");
     sceneText = sceneText.replaceAll("Heracles's", "<span class='commonCharacterColor storyCharacterName'>Heracles's</span>");
+    sceneText = sceneText.replaceAll("Hephaestus", "<span class='commonCharacterColor storyCharacterName'>Hephaestus</span>");
 
     return sceneText;
   }
@@ -910,6 +932,9 @@ export class StoryService {
     if (this.showOptionalStory === OptionalSceneEnum.AugeanStables6) {
       this.pageCount = 1;
     }
+    if (this.showOptionalStory === OptionalSceneEnum.HephaestusJewelcrafting) {
+      this.pageCount = 2;
+    }
 
     this.sceneText = this.getOptionalStoryText(this.showOptionalStory, this.currentPage);
 
@@ -937,7 +962,7 @@ export class StoryService {
       if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
         this.globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked = true;
       }
-      if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {        
+      if (this.showOptionalStory === OptionalSceneEnum.TraderIntro) {
         this.globalService.globalVar.sidequestData.traderHuntLevel = 1;
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables2) {
@@ -959,6 +984,23 @@ export class StoryService {
 
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.");
         this.professionService.learnRecipe(ProfessionEnum.Jewelcrafting, ItemsEnum.RadiatingHolyStone);
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.HephaestusJewelcrafting) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hephaestus provides you with the Divine Targe and Divine Plate.");
+        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.DivinePlate, 1);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);
+        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.DivineTarge, 1);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);
+
+        var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+        if (jewelcrafting !== undefined) {
+          jewelcrafting.maxLevel += 25;
+
+          var gameLogEntry = "Watching Hephestaus work has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
+        }
       }
 
       this.currentPage = 1;

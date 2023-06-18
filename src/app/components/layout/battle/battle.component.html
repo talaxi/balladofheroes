@@ -73,7 +73,7 @@
             <div class="skipButton">
                 <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next
                             page</strong></i></span>                
-                <button class="floatRight arrow" (click)="skipStory()">&#8594;</button>
+                <button class="floatRight arrow buttonStyled" (click)="skipStory()">&#8594;</button>
             </div>
             <div class="loadingBar">
                 <mat-progress-bar mode="determinate" [value]="getPagePercent()"

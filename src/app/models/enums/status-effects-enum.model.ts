@@ -149,5 +149,10 @@ export enum StatusEffectEnum {
     ChanceToReduceResistance,
     StockpileRock,
     EarthenDefense,
-    EarthenOffense
+    EarthenOffense,
+    InstantHealBasedOnMaxHpPercent,
+    HealingDoneUp,
+    ReduceCooldowns,
+    ThornsDamageUp,
+    AllElementalResistanceUp
   }

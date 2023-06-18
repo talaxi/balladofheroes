@@ -440,8 +440,18 @@ export class EquipmentService {
   getTotalHpRegenGain(equipmentSet: EquipmentSet) {
     var total = 0;
 
-    if (equipmentSet.weapon !== undefined)
+    if (equipmentSet.weapon !== undefined) {
       total += equipmentSet.weapon.stats.hpRegen;
+
+      if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
+        equipmentSet.weapon.associatedResource.extras.length > 0) {
+        equipmentSet.weapon.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.hpRegen > 0)
+            total += slotItemValues.hpRegen;
+        });
+      }
+    }
 
     if (equipmentSet.shield !== undefined) {
       total += equipmentSet.shield.stats.hpRegen;
@@ -456,14 +466,44 @@ export class EquipmentService {
       }
     }
 
-    if (equipmentSet.armor !== undefined)
+    if (equipmentSet.armor !== undefined) {
       total += equipmentSet.armor.stats.hpRegen;
 
-    if (equipmentSet.necklace !== undefined)
+      if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
+        equipmentSet.armor.associatedResource.extras.length > 0) {
+        equipmentSet.armor.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.hpRegen > 0)
+            total += slotItemValues.hpRegen;
+        });
+      }
+    }
+
+    if (equipmentSet.necklace !== undefined) {
       total += equipmentSet.necklace.stats.hpRegen;
 
-    if (equipmentSet.ring !== undefined)
+      if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
+        equipmentSet.necklace.associatedResource.extras.length > 0) {
+        equipmentSet.necklace.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.hpRegen > 0)
+            total += slotItemValues.hpRegen;
+        });
+      }
+    }
+
+    if (equipmentSet.ring !== undefined) {
       total += equipmentSet.ring.stats.hpRegen;
+
+      if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
+        equipmentSet.ring.associatedResource.extras.length > 0) {
+        equipmentSet.ring.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.hpRegen > 0)
+            total += slotItemValues.hpRegen;
+        });
+      }
+    }
 
     return total;
   }
@@ -843,12 +883,89 @@ export class EquipmentService {
   getTotalThornsGain(equipmentSet: EquipmentSet) {
     var total = 0;
 
-    if (equipmentSet.weapon !== undefined)
+    if (equipmentSet.weapon !== undefined) {
       total += equipmentSet.weapon.stats.thorns;
+
+      /*if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
+        equipmentSet.weapon.associatedResource.extras.length > 0) {
+        equipmentSet.weapon.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }*/
+    }
 
     if (equipmentSet.shield !== undefined) {
       total += equipmentSet.shield.stats.thorns;
 
+      /*if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }*/
+    }
+
+    if (equipmentSet.armor !== undefined) {
+      total += equipmentSet.armor.stats.thorns;
+
+      /*if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
+        equipmentSet.armor.associatedResource.extras.length > 0) {
+        equipmentSet.armor.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }*/
+    }
+
+    if (equipmentSet.necklace !== undefined) {
+      total += equipmentSet.necklace.stats.thorns;
+
+      /*if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
+        equipmentSet.necklace.associatedResource.extras.length > 0) {
+        equipmentSet.necklace.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }*/
+    }
+
+    if (equipmentSet.ring !== undefined) {
+      total += equipmentSet.ring.stats.thorns;
+
+      /*if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
+        equipmentSet.ring.associatedResource.extras.length > 0) {
+        equipmentSet.ring.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }*/
+    }
+
+    return total;
+  }
+
+  getFlatThornDamageGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined) {
+      if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
+        equipmentSet.weapon.associatedResource.extras.length > 0) {
+        equipmentSet.weapon.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }
+    }
+
+    if (equipmentSet.shield !== undefined) {
       if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
         equipmentSet.shield.associatedResource.extras.length > 0) {
         equipmentSet.shield.associatedResource.extras.forEach(extra => {
@@ -859,14 +976,38 @@ export class EquipmentService {
       }
     }
 
-    if (equipmentSet.armor !== undefined)
-      total += equipmentSet.armor.stats.thorns;
+    if (equipmentSet.armor !== undefined) {
+      if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
+        equipmentSet.armor.associatedResource.extras.length > 0) {
+        equipmentSet.armor.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }
+    }
 
-    if (equipmentSet.necklace !== undefined)
-      total += equipmentSet.necklace.stats.thorns;
+    if (equipmentSet.necklace !== undefined) {
+      if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
+        equipmentSet.necklace.associatedResource.extras.length > 0) {
+        equipmentSet.necklace.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }
+    }
 
-    if (equipmentSet.ring !== undefined)
-      total += equipmentSet.ring.stats.thorns;
+    if (equipmentSet.ring !== undefined) {
+      if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
+        equipmentSet.ring.associatedResource.extras.length > 0) {
+        equipmentSet.ring.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.thorns > 0)
+            total += slotItemValues.thorns;
+        });
+      }
+    }
 
     return total;
   }

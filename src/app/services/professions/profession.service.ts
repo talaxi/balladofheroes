@@ -360,7 +360,8 @@ export class ProfessionService {
     var baseAmount = 20;
     var multiplier = 25;
 
-    return baseAmount + (multiplier * (level - 1));
+    //TODO: revert
+    return 1;//baseAmount + (multiplier * (level - 1));
   }
 
   checkForNewRecipes(type: ProfessionEnum) {

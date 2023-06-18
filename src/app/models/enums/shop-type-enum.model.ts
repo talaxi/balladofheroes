@@ -12,5 +12,7 @@ export enum ShopTypeEnum {
   Trader,
   AugeanStables,
   OlympicFavor,
-  Trials
+  Trials,
+  StoryZeus,
+  Hephaestus
 }

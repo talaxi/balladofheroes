@@ -837,7 +837,8 @@ export class GlobalService {
       type === StatusEffectEnum.AoeDamageUp || type === StatusEffectEnum.ChainsOfFate || type === StatusEffectEnum.Retribution || type === StatusEffectEnum.DamageOverTimeDamageUp ||
       type === StatusEffectEnum.AutoAttackSpeedUp || type === StatusEffectEnum.AbilitySpeedUp || type === StatusEffectEnum.PreventEscape || type === StatusEffectEnum.Thyrsus
       || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge ||
-      type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock)
+      type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock ||
+      type === StatusEffectEnum.HealingDoneUp || type === StatusEffectEnum.ThornsDamageUp || type === StatusEffectEnum.AllElementalResistanceUp)
       refreshes = true;
 
     return refreshes;
@@ -3173,13 +3174,15 @@ export class GlobalService {
       if (setCount === 2)
         return .1;
       else if (setCount === 3)
-        return 2500;
+        return .25;
     }
     if (setType === EquipmentSetEnum.Dionysus) {
       if (setCount === 2)
         return .1;
       else if (setCount === 3)
         return .2;
+      else if (setCount === 5)
+        return .25;
     }
     if (setType === EquipmentSetEnum.Zeus) {
       if (setCount === 2)

@@ -29,6 +29,12 @@
   <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText"
     (click)="progressStory()">Speak
     to the King <app-notification-icon [isButton]="true"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.StoryZeus" class="buttonStyled shopButtonText"
+    (click)="progressStory()">Speak
+    to Zeus <app-notification-icon [isButton]="true"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.Hephaestus" class="buttonStyled shopButtonText"
+    (click)="handleHephaestusJewelcrafting(option)">Speak
+    to Hephaestus <app-notification-icon [isButton]="true"></app-notification-icon></button>
     <button *ngIf="option.type === shopTypeEnum.AugeanStables" class="buttonStyled shopButtonText"
     (click)="openShop(option, augeanStablesModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="!augeanStablesCompleted()" [isButton]="true"

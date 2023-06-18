@@ -414,16 +414,16 @@ export class FollowersService {
     }
     
     if (type === ZoneEnum.WarForTheMountain) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.CanineFang, 2));
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughOpalFragment, 6));
 
       if (rewardLevel >= 2) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ToxicIchor, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughRubyFragment, 6));
       }
       if (rewardLevel >= 3) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 3));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughTopazFragment, 6));
       }
       if (rewardLevel >= 4) {
-        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicTreeBark, 2));
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Nectar, 1));
       }
     }
 

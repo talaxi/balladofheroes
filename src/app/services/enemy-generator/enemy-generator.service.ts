@@ -6241,7 +6241,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(141048, 2258, 3540, 5280, 5675, 11250);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 10;
-      enemy.xpGainFromDefeat = 1000;     
+      enemy.xpGainFromDefeat = 1750;     
       enemy.loot.push(new LootItem(ItemsEnum.GoldenApple, ItemTypeEnum.Progression, 1, .01));
       
       var wildSwing = new Ability();
@@ -7994,6 +7994,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;      
+      enemy.loot.push(new LootItem(ItemsEnum.GiantHammer, ItemTypeEnum.Equipment, 1, .01));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var savageSlam = new Ability();
@@ -8038,6 +8039,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.loot.push(new LootItem(ItemsEnum.GiantNecklace, ItemTypeEnum.Equipment, 1, .01));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
       
       var luckyHit = new Ability();
@@ -8081,6 +8083,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.loot.push(new LootItem(ItemsEnum.GiantShield, ItemTypeEnum.Equipment, 1, .01));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var stockpileRock = new Ability();
@@ -8119,6 +8122,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.loot.push(new LootItem(ItemsEnum.GiantArmor, ItemTypeEnum.Equipment, 1, .01));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var knockAround = new Ability();
@@ -8158,6 +8162,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.loot.push(new LootItem(ItemsEnum.GiantSword, ItemTypeEnum.Equipment, 1, .01));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var quickAttack = new Ability();
@@ -8187,6 +8192,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.loot.push(new LootItem(ItemsEnum.GiantRing, ItemTypeEnum.Equipment, 1, .01));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var rollingBoulder = new Ability();
@@ -8216,6 +8222,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 888;
+      enemy.loot.push(new LootItem(ItemsEnum.PorphyrionsMace, ItemTypeEnum.Equipment, 1, .01));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       //should be multi phased -- either changes style at 50% or changes every X seconds 

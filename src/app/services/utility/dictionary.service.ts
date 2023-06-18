@@ -186,6 +186,16 @@ export class DictionaryService {
       name = "Nemesis's Sword";
     else if (type === ItemsEnum.ZeussLightningBolts)
       name = "Zeus's Lightning Bolts";
+      else if (type === ItemsEnum.GiantSword)
+      name = "Giant Sword";
+      else if (type === ItemsEnum.GiantHammer)
+      name = "Giant Hammer";
+      else if (type === ItemsEnum.PorphyrionsMace)
+      name = "Porphyrion's Mace";
+      else if (type === ItemsEnum.DivinePlate)
+      name = "Divine Plate";
+      else if (type === ItemsEnum.DivineTarge)
+      name = "Divine Targe";
 
     //shields
     else if (type === ItemsEnum.IronShield)
@@ -226,6 +236,8 @@ export class DictionaryService {
       name = "Nemesis's Shield";
     else if (type === ItemsEnum.ZeussShield)
       name = "Zeus's Shield";
+      else if (type === ItemsEnum.GiantShield)
+      name = "Giant Shield";
 
     //necklaces
     else if (type === ItemsEnum.ForgottenLocket)
@@ -268,6 +280,8 @@ export class DictionaryService {
       name = "Nemesis's Necklace";
     else if (type === ItemsEnum.ZeussNecklace)
       name = "Zeus's Necklace";
+      else if (type === ItemsEnum.GiantNecklace)
+      name = "Giant Necklace";
 
     //armor
     else if (type === ItemsEnum.LinenArmor)
@@ -316,6 +330,8 @@ export class DictionaryService {
       name = "Nemesis's Armor";
     else if (type === ItemsEnum.ZeussArmor)
       name = "Zeus's Armor";
+      else if (type === ItemsEnum.GiantArmor)
+      name = "Giant Armor";
 
     //rings
     else if (type === ItemsEnum.MoltenRing)
@@ -364,6 +380,8 @@ export class DictionaryService {
       name = "Nemesis's Ring";
     else if (type === ItemsEnum.ZeussRing)
       name = "Zeus's Ring";
+      else if (type === ItemsEnum.GiantRing)
+      name = "Giant Ring";
 
     //crafting materials
     else if (type === ItemsEnum.LightLeather)
@@ -586,7 +604,59 @@ export class DictionaryService {
       name = "Radiating Lightning Stone";
     else if (type === ItemsEnum.RadiatingWaterStone)
       name = "Radiating Water Stone";
-
+    else if (type === ItemsEnum.Nectar)
+      name = "Nectar";
+      else if (type === ItemsEnum.FlawedRuby)
+      name = "Flawed Ruby";
+    else if (type === ItemsEnum.FlawedAmethyst)
+      name = "Flawed Amethyst";
+    else if (type === ItemsEnum.FlawedTopaz)
+      name = "Flawed Topaz";
+    else if (type === ItemsEnum.FlawedOpal)
+      name = "Flawed Opal";
+    else if (type === ItemsEnum.FlawedAquamarine)
+      name = "Flawed Aquamarine";
+    else if (type === ItemsEnum.FlawedEmerald)
+      name = "Flawed Emerald";
+      else if (type === ItemsEnum.PerfectFlawedRuby)
+      name = "Perfect Flawed Ruby";
+    else if (type === ItemsEnum.PerfectFlawedAmethyst)
+      name = "Perfect Flawed Amethyst";
+    else if (type === ItemsEnum.PerfectFlawedTopaz)
+      name = "Perfect Flawed Topaz";
+    else if (type === ItemsEnum.PerfectFlawedOpal)
+      name = "Perfect Flawed Opal";
+    else if (type === ItemsEnum.PerfectFlawedAquamarine)
+      name = "Perfect Flawed Aquamarine";
+    else if (type === ItemsEnum.PerfectFlawedEmerald)
+      name = "Perfect Flawed Emerald";
+      else if (type === ItemsEnum.PointedStone)
+      name = "Pointed Stone";
+      else if (type === ItemsEnum.PerfectPointedStone)
+      name = "Perfect Pointed Stone";
+      else if (type === ItemsEnum.ShiningStone)
+      name = "Shining Stone";
+      else if (type === ItemsEnum.PerfectShiningStone)
+      name = "Perfect Shining Stone";
+      else if (type === ItemsEnum.JaggedStone)
+      name = "Jagged Stone";
+      else if (type === ItemsEnum.PerfectJaggedStone)
+      name = "Perfect Jagged Stone";
+      else if (type === ItemsEnum.BlessedStone)
+      name = "Blessed Stone";
+      else if (type === ItemsEnum.PerfectBlessedStone)
+      name = "Perfect Blessed Stone";
+      else if (type === ItemsEnum.WeaponSlotAddition)
+      name = "Weapon Slot Addition";
+    else if (type === ItemsEnum.RingSlotAddition)
+      name = "Ring Slot Addition";
+    else if (type === ItemsEnum.ArmorSlotAddition)
+      name = "Armor Slot Addition";
+    else if (type === ItemsEnum.ShieldSlotAddition)
+      name = "Shield Slot Addition";
+    else if (type === ItemsEnum.NecklaceSlotAddition)
+      name = "Necklace Slot Addition";
+      
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Poison Extract Potion Recipe";

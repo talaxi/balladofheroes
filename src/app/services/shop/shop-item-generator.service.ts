@@ -350,6 +350,33 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.BloodyShield) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.DivinePlate) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.DivineTarge) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.GiantSword) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.GiantHammer) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.GiantArmor) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.GiantShield) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.GiantRing) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.GiantNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
+    if (item === ItemsEnum.PorphyrionsMace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
     if (item === ItemsEnum.AugeanStables1) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 25));

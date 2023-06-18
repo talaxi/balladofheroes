@@ -3942,6 +3942,8 @@ export class SubZoneGeneratorService {
     }
 
     if (subzoneType === SubZoneEnum.MountOlympusOlympus) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.StoryZeus, []));
+      shopOptions.push(new ShopOption(ShopTypeEnum.Hephaestus, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.OlympicFavor, []));
       shopOptions.push(new ShopOption(ShopTypeEnum.Trials, []));
 

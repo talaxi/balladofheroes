@@ -16,5 +16,6 @@ export enum OptionalSceneEnum {
   AugeanStables3,
   AugeanStables4,
   AugeanStables5,
-  AugeanStables6
+  AugeanStables6,
+  HephaestusJewelcrafting
 }

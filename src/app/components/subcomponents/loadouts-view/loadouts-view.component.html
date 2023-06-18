@@ -25,15 +25,20 @@
                     <span class="smallCaps bold" [ngClass]="getGodColor(loadout, 1, 2)"
                         [innerHtml]="getGodName(loadout, 1, 2)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getWeapon(loadout, 1)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character1WeaponEquipmentTemplate" [innerHTML]="getWeapon(loadout, 1)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getShield(loadout, 1)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character1ShieldEquipmentTemplate" [innerHTML]="getShield(loadout, 1)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getArmor(loadout, 1)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character1ArmorEquipmentTemplate" [innerHTML]="getArmor(loadout, 1)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getRing(loadout, 1)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character1RingEquipmentTemplate" [innerHTML]="getRing(loadout, 1)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getNecklace(loadout, 1)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character1NecklaceEquipmentTemplate" [innerHTML]="getNecklace(loadout, 1)"></span>
 
                 </div>
                 <div class="column">
@@ -46,15 +51,20 @@
                     <span class="smallCaps bold" [ngClass]="getGodColor(loadout, 2, 2)"
                         [innerHtml]="getGodName(loadout, 2, 2)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getWeapon(loadout, 2)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character2WeaponEquipmentTemplate" [innerHTML]="getWeapon(loadout, 2)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getShield(loadout, 2)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character2ShieldEquipmentTemplate" [innerHTML]="getShield(loadout, 2)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getArmor(loadout, 2)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character2ArmorEquipmentTemplate" [innerHTML]="getArmor(loadout, 2)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getRing(loadout, 2)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character2RingEquipmentTemplate" [innerHTML]="getRing(loadout, 2)"></span>
                     <br />
-                    <span class="statValue" [innerHTML]="getNecklace(loadout, 2)"></span>
+                    <span class="statValue" customToolTip [isDelayed]="true" [isLargeTooltip]="true"
+                    [contentTemplate]="character2NecklaceEquipmentTemplate" [innerHTML]="getNecklace(loadout, 2)"></span>
                 </div>
                 <br />
                 <br *ngIf="isMobile" />
@@ -64,6 +74,59 @@
                     <button class="buttonStyled" (click)="deleteLoadout(deleteConfirmation, loadout)">Delete</button>
                 </div>
             </div>
+
+
+            <ng-template #character1WeaponEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character1EquipmentSet.weapon"
+                    [associatedResource]="loadout.character1EquipmentSet.weapon?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character1)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character1ArmorEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character1EquipmentSet.armor"
+                    [associatedResource]="loadout.character1EquipmentSet.armor?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character1)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character1ShieldEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character1EquipmentSet.shield"
+                    [associatedResource]="loadout.character1EquipmentSet.shield?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character1)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character1RingEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character1EquipmentSet.ring"
+                    [associatedResource]="loadout.character1EquipmentSet.ring?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character1)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character1NecklaceEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character1EquipmentSet.necklace"
+                    [associatedResource]="loadout.character1EquipmentSet.necklace?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character1)"></app-equipment-item-view>
+            </ng-template>
+
+            <ng-template #character2WeaponEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character2EquipmentSet.weapon"
+                    [associatedResource]="loadout.character2EquipmentSet.weapon?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character2)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character2ArmorEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character2EquipmentSet.armor"
+                    [associatedResource]="loadout.character2EquipmentSet.armor?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character2)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character2ShieldEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character2EquipmentSet.shield"
+                    [associatedResource]="loadout.character2EquipmentSet.shield?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character2)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character2RingEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character2EquipmentSet.ring"
+                    [associatedResource]="loadout.character2EquipmentSet.ring?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character2)"></app-equipment-item-view>
+            </ng-template>
+            <ng-template #character2NecklaceEquipmentTemplate>
+                <app-equipment-item-view [equipment]="loadout.character2EquipmentSet.necklace"
+                    [associatedResource]="loadout.character2EquipmentSet.necklace?.associatedResource"
+                    [character]="getCharacterFromType(loadout.character2)"></app-equipment-item-view>
+            </ng-template>
         </div>
         <div class="loadoutItem clickableText" (click)="addNewLoadout(addLoadout)">
             <img class="itemImage" src="assets/svg/emptyItemSlot.svg">
