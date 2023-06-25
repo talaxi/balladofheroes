@@ -1,5 +1,5 @@
 <div>
-    <!--<div class="filters">
+  <!--<div class="filters">
         <span>Sort by:</span>
         <mat-radio-group class="sortOptions" (change)="setupDisplayShopItems()" [(ngModel)]="sortType" aria-label="Select a sorting option">
           <mat-radio-button [value]="4">Item Type</mat-radio-button>
@@ -11,11 +11,28 @@
           class="autoProgressIcon" src="assets/svg/gearTextColor.svg"></button>
       </div>
       <hr class="noMargin" />-->
-      <table>
-        <tr *ngFor="let cells of shopItemRows;">
-          <td class="item" *ngFor="let c of cells;">
-            <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
-          </td>
-        </tr>
-      </table>    
+  <div class="textCentered">
+    <span class="sectionHeaderText sectionHeading">specialty</span>
+  </div>
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+
+  <br />
+  <br />
+
+  <div class="textCentered">
+    <span class="sectionHeaderText sectionHeading">equipment</span>
+  </div>
+  <table>
+    <tr *ngFor="let cells of equipmentItemRows;">
+      <td class="item" *ngFor="let c of cells;">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="equipmentItems.length"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
 </div>

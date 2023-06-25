@@ -31,8 +31,8 @@ export class ShoppingItemViewComponent implements OnInit {
   purchaseResourcesRequired: string = "";
   partyMembers: Character[];
   subscription: any;
-  tooltipDirection = DirectionEnum.Right;
   outOfStock: boolean = false;
+  @Input() tooltipDirection = DirectionEnum.Right;  
   @Input() excludeItemDescriptionLocationText = false;
   @Input() totalItemsInShop = 0;
 
