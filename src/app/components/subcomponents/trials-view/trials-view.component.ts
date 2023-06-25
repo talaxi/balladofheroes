@@ -47,6 +47,10 @@ export class TrialsViewComponent {
     return Trials;
   }
 
+  isTrialOfResolve() {
+    return this.selectedTrial.type === TrialEnum.TrialOfResolve;
+  }
+  
   chooseTrial(trial: TrialEnum) {
     this.selectedTrial = this.dictionaryService.getTrialInfoFromType(trial);
   }

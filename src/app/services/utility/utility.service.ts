@@ -316,6 +316,36 @@ export class UtilityService {
       }
 
       reducedNumber += "M";
+    }    
+    else if (this.getDigitCount(originalAmount) <= 12) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 9;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "B";
+    }    
+    else if (this.getDigitCount(originalAmount) <= 15) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 12;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "T";
+    }
+    else if (this.getDigitCount(originalAmount) <= 18) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 15;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "AA";
     }
 
     return reducedNumber;

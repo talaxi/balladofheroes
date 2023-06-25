@@ -168,30 +168,30 @@ export class GodViewComponent implements OnInit {
       }
       if (nextLevelType === GodLevelIncreaseEnum.NewAbility) {
         if (nextLevel === this.utilityService.godPassiveLevel) {
-          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " (Passive Ability)</span>";
+          rewards += "<span><strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + "</strong> (Passive Ability)</span>";
         }
         if (nextLevel === this.utilityService.godAbility2Level) {
-          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + " (Ability 2)</span>";
+          rewards += "<span><strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + "</strong> (Ability 2)</span>";
         }
         if (nextLevel === this.utilityService.godAbility3Level) {
-          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " (Ability 3)</span>";
+          rewards += "<span><strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + "</strong> (Ability 3)</span>";
         }
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {
         if (nextLevel === this.utilityService.permanentPassiveGodLevel) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " After Level Reset";
+          rewards += "Permanently Keep <strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + "</strong> After Level Reset";
         }
         if (nextLevel === this.utilityService.permanentGodAbility2Level) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + " After Level Reset";
+          rewards += "Permanently Keep <strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + "</strong> After Level Reset";
         }
         if (nextLevel === this.utilityService.permanentGodAbility3Level) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " After Level Reset";
+          rewards += "Permanently Keep <strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + "</strong> After Level Reset";
         }
       }
       if (nextLevelType === GodLevelIncreaseEnum.AbilityUpgrade) {
         var upgradedAbility = this.globalService.getWhichAbilityUpgrade(this.god, nextLevel);
         if (upgradedAbility !== undefined)
-          rewards += upgradedAbility.ability.name + " Upgrade " + upgradedAbility.upgradeLevel;
+          rewards += "<strong>" + upgradedAbility.ability.name + "</strong> Upgrade " + upgradedAbility.upgradeLevel;
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentStats) {
         var increaseValues = this.globalService.getNewGodPermanentStats(this.god, nextLevel);
@@ -708,7 +708,7 @@ export class GodViewComponent implements OnInit {
     this.globalService.assignGodAbilityInfo(baseGod);
     var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
-    if (baseAbility !== undefined) {      
+    if (baseAbility !== undefined && ability.userEffect.length > 0 && ability.userEffect[0].threshold !== undefined && !Number.isNaN(ability.userEffect[0].threshold)) {      
       return this.utilityService.genericRound((ability.userEffect[0].threshold - baseAbility.userEffect[0].threshold) * 100) + "%";
     }
 
@@ -743,7 +743,8 @@ export class GodViewComponent implements OnInit {
 
     var permanentAbilityUpgradeAmount = 0;
     var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0 &&
+      permanentAbilityUpgrade.userEffect[0].threshold !== undefined && !Number.isNaN(permanentAbilityUpgrade.userEffect[0].threshold))
       permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].threshold;
 
     if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {      

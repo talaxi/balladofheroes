@@ -26,11 +26,11 @@ export class EquipmentItemViewComponent implements OnInit {
   constructor(public lookupService: LookupService, private gameLoopService: GameLoopService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
-    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);
+    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);    
     this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment, this.character);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);
+      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);      
       this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment, this.character);
     });
   }
@@ -70,5 +70,15 @@ export class EquipmentItemViewComponent implements OnInit {
     }
     
     return "";
+  }
+/*
+  ngOnChanges(changes: any) {
+    console.log("Changes");
+    console.log(changes);
+  }*/
+
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+      this.subscription.unsubscribe();
   }
 }

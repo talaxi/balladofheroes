@@ -918,8 +918,8 @@ export class DictionaryService {
   getTrialName(type: TrialEnum) {
     if (type === TrialEnum.TrialOfSkill)
       return "Trial of Skill";
-    if (type === TrialEnum.TrialOfEndurance)
-      return "Trial Of Endurance";
+    if (type === TrialEnum.TrialOfResolve)
+      return "???";//"Trial Of Resolve"; //TODO: set this back
 
     return "";
   }

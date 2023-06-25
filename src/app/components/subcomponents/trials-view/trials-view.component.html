@@ -27,6 +27,10 @@
     </div>
     <div class="column column2">
         <div *ngIf="selectedTrial !== undefined">
+            <div *ngIf="isTrialOfResolve()">
+                <span>Coming soon!</span>
+            </div>
+            <div *ngIf="!isTrialOfResolve()">
             <strong><span class="s4Heading smallCaps" [innerHtml]="getTrialName()"></span></strong>
             <br />
             <br />
@@ -49,6 +53,7 @@
                     <button class="buttonStyled" (click)="startTrial()">Start Trial</button>
                 </div>
             </div>
+        </div>
         </div>
     </div>
 </div>

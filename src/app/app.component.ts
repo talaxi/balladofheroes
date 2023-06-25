@@ -94,6 +94,7 @@ export class AppComponent {
       deltaTime = this.utilityService.roundTo(deltaTime, 5);
       var checkupPerformanceNow = performance.now();
 
+      //todo: move the 5 runs thing here? things that are subscribing to the emit here aren't keeping up with the deltatime change
       this.gameCheckup(deltaTime);
 
       if (this.globalService.globalVar.performanceMode) {
@@ -135,7 +136,7 @@ export class AppComponent {
     while (runCount <= maxRunCount) {
       if (runCount > 1)
         deltaTime = 0;
-      
+      //console.log("Run Count: " + runCount + " Max Count: " + maxRunCount);
       this.updateGameState(deltaTime, activeSubzone);
       runCount += 1;
     }
@@ -150,6 +151,7 @@ export class AppComponent {
       //this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
+    //console.log("originalDeltaTime: " + originalDeltaTime + " New: " + deltaTime);
     this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
 
     if (isInTown)
@@ -225,6 +227,7 @@ export class AppComponent {
         this.globalService.bankedTime = 0;
         this.globalService.maxBankedTime = 0;
         this.lookupService.isUIHidden = false;
+        //console.log("Caught up");
         this.globalService.globalVar.isCatchingUp = false;        
         this.gameLogService.disableOverlayBuffer = false;
 

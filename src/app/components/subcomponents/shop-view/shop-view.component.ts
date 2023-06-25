@@ -104,7 +104,7 @@ export class ShopViewComponent implements OnInit {
     if (this.balladService.findSubzone(SubZoneEnum.ColchisGroveOfAres)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryScene24);
 
-    if (this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus)?.isAvailable)
+    if (this.balladService.findSubzone(SubZoneEnum.HuntForYarrowMountainHike)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryZeus);
 
     if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting))

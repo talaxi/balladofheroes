@@ -24,13 +24,14 @@ export class CurrentEquipmentViewComponent implements OnInit {
   equipmentModalOpened = false;
   @Output() unequipEmitter = new EventEmitter<boolean>();
   dialogRef: MatDialogRef<any, any>;
-  character: Character | undefined;
+  @Input() character: Character | undefined;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, public dialog: MatDialog,
     private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
-    this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType);
+    if (this.character === undefined)
+      this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType);
   }
 
   getEquippedItemResourceByType(type: EquipmentTypeEnum) {

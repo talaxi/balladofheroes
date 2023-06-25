@@ -19,6 +19,7 @@ import { UtilityService } from '../utility/utility.service';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { DictionaryService } from '../utility/dictionary.service';
 import { ProfessionService } from '../professions/profession.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -139,6 +140,14 @@ export class StoryService {
 
   hermesText(text: string) {
     return "<span class='hermesColor bold'>" + text + "</span>";
+  }
+
+  zeusText(text: string) {
+    return "<span class='zeusColor bold'>" + text + "</span>";
+  }
+
+  athenaText(text: string) {
+    return "<span class='athenaColor bold'>" + text + "</span>";
   }
 
   commonCharacterText(text: string) {
@@ -475,8 +484,101 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>" + this.hermesText("“You've accomplished quite a lot since the last time we spoke! You sure can go a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
           "<div>" + this.hermesText("“You've impressed quite a few of us on Olympus. Even father is ready to speak to you now.”") + " Zeus, father of Hermes, Athena, and many others, was seeking your presence. You felt equal parts excitement and anxiety. </div>";
       else if (pageCount === 3)
-        sceneText = "<div class='sceneDiv'>" + this.hermesText("“I think the Giants and the Titans are ready to make their move. Hopefully this time, they'll get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.hermesText("“He believes the Giants and the Titans are ready to make their move. Hopefully this time, they'll get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
           "<div>You quickly make your way to tell the news to Zosime. It seems a change of plans was in order and that Heracles's trials would have to wait a little longer. Your destination was now Mount Olympus.</div>";
+    }
+    else if (storyId === 36) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You make your way to the base of Mount Olympus with great haste. The peaks are farther than the eye can see, extending into the clouds. </div>" +
+          "<div class='sceneDiv'>As you take your first steps up the mountain, you think back to the days spent on Aigosthena. You loved to read the stories of the gods, but never expected to be a part of them yourself. You've met gods, faced monsters, and ascended from the Underworld. </div>" +
+          "<div>Although you feel some trepidation, most importantly you feel ready. You know that you can do this. Each step you take up the mountain is one step closer to becoming the hero you know you can be.</div>";
+    }
+    else if (storyId === 37) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>All around you, you notice the sprites begin to behave differently. Air Sprites dance in the wind, Fire Sprites lash playfully out at one another, Lightning Sprites dive from the clouds to the earth.</div>" +
+          "<div>" + this.zosimeText("“This area is teeming with magic. We must be close!”") + " Zosime says, picking up her pace. Before long, you reach the peak of Mytikas and are greeted with an ornate golden gate. As if noticing your presence, the gate slowly opens itself allowing you entry into the home of the gods.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>As you step inside, you are immediately awed by the sights. Massive ornate palaces surround a large open plaza. It is quiet as you approach, and you only notice a few areas of activity. The sound of metal on metal draws your attention, likely the god Hephaestus  preparing for war. Several of the Oceanids make their way towards one of the palaces, perhaps speaking to the gods on Oceanus's behalf.</div>" +
+          "<div class='sceneDiv'>One particular palace stands out among all of the others in its size and detail. This could only belong to the King of Gods.</div>" +
+          "<div>" + this.thalesText("“Let's speak to Zeus and see what we can do to help prepare.”") + " You say.</div>";
+    }
+    else if (storyId === 38) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>The inside of the extravagant palace mirrors the outside, with hallway after hallway of beautiful ornaments and gilded paths. You make your way to the inner sanctum of the palace to find Zeus meeting with the Oceanids. You anxiously await your turn to speak, but the King of Gods immediately rises at the sight of you.</div>" +
+          "<div class='sceneDiv'>" + this.zeusText("“Ah, look who finally decided to show up. When I call for an audience, I expect you to answer immediately!”") + " He bellows, his voice booming throughout the halls.</div>" +
+          "<div>You and Zosime both immediately kneel, anxiously dropping your heads. You were not sure what to expect, and your mind raced for answers on your delayed journey.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>Zeus bursts into laughter. " + this.zeusText("“Merely a joke! Rise, rise!”") + " He says, making his way towards you. " + this.zeusText("“Don't look so frightened! My daughters believe you will be the key to protecting our home. I see it as well.”") + " He continues, inspecting the two of you. " + this.zeusText("“Yes, yes, I think you will do handsomely.”") + "</div>" +
+          "<div>His jovial demeanor shifts into a more serious posture. " + this.zeusText("“War is right on our doorstep. These envoys of Oceanus tell me that the Giants will arrive within the day and the Titans right behind them. The time has come.”") + "</div>";
+      else if (pageCount === 3)
+        sceneText = "<div class='sceneDiv'>" + this.zeusText("“I have a task for you before it is too late. Do you know of the yarrow plant? There is a field nearby that grows the exact yarrow I need for our preparations. The only field in all of Greece to grow it. It will be a dangerous journey! But a necessary one. Retrieve this for me. Then our preparations will be complete, and I will know for sure you are who we need.”") + "</div>" +
+          "<div class='sceneDiv'>You nod fervently. " + this.thalesText("“We will return with what you need, King of Gods.”") + "</div>" +
+          "<div>Zeus bursts into laughter again. " + this.zeusText("“Yes, please, and do be quick about it. I will aid you with my power just in case.”") + "</div>";
+    }
+    else if (storyId === 39) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>" + this.zosimeText("“What do you think the yarrow is for?”") + " Zosime asks, cutting back the brush of the pathless greenery.</div>" +
+          "<div>" + this.thalesText("“Some sort of magical defense, maybe?”") + " You reply as you follow. " + this.thalesText("“It sounds like we arrived just in time. This is our chance to prove ourselves.”") + "</div>";
+    }
+    else if (storyId === 40) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You collect a healthy amount of yarrow and hurry back to Olympus. The courtyard was beginning to fill up with more familiar faces. You see Athena making the rounds and having conversations with her siblings. Hermes had forgone his traditional attire and donned armor instead. You quickly make your way to Zeus with the yarrow he requested.</div>" +
+          "<div class='sceneDiv'>" + this.zeusText("“You're back! And just in time.”") + " He says after you present him with his request. " + this.zeusText("“Very good. With this, we're ready for the victory celebration!”") + "</div>" +
+          "<div>" + this.thalesText("“The -- what?”") + "</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>Zeus laughs at your confusion. " + this.zeusText("“This yarrow makes the perfect Ambrosia! It's been too long since we had a proper reason to celebrate.”") + "</div>" +
+          "<div class='sceneDiv'>A horn sounds from outside. Zeus places the yarrow to his side and stands from his throne.</div>" +
+          "<div>" + this.zeusText("“It is time. Come.”") + "</div>";
+      else if (pageCount === 3)
+        sceneText = "<div class='sceneDiv'>You walk with Zeus to the gates of Olympus. In the distance, you see numerous giants coming your way. You glance towards Zosime, who gives you a reassuring nod back. Almost all of the Olympian gods surround you, although Hades was noticeably absent.</div>" +
+          "<div class='sceneDiv'>" + this.zeusText("“Open the gates.”") + " Zeus commands. " + this.zeusText("“I've waited long enough. Let's not drag this out.”") + "</div>" +
+          "The giants begin to pick up speed as the gates open. You do not see any titans, but you knew they would be close. You tried to focus on the impending threat. The gods would be better suited to battle the gargantuan titans, and you had a score to settle with the giants. As the first wave makes it to the gates, you charge in to greet them.";
+    }
+    else if (storyId === 41) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You take a moment to catch your breath and scan the battlefield. Some giants had pushed forward into the main courtyard of Olympus, but had not made much success beyond that. Ares remained near the gates, a one god army drawing blood from every giant who attempted to enter. You catch sight of Apollo bringing a giant down with an arrow to the skull and Poseidon doing battle with two giants himself.</div>" +
+          "<div>You were correct to be weary of the titans. Shortly after the giants pushed through the gates, they made their move. Zeus quickly engaged the massive Hyperion while Athena and Hermes were doing battle with Coeus between palaces.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>Between all of the battling, you notice two giants splitting from the main group. One was heading towards Zeus's palace, the other towards the royal stables.</div>" +
+          "<div>" + this.zosimeText("“Thales! Take the stables, I've got the palace!”") + " Zosime shouts, heading after the giant going to the palace. You in turn make for the stables. </div>";
+    }
+    else if (storyId === 42) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>Slowly but surely, you are able to stymie the giant threat. As more and more of the gods are able to focus on the titans, you can see them beginning to pull back to the gates of Olympus.</div>" +
+          "<div class='sceneDiv'>" + this.zosimeText("“We did it. We did it Thales!”") + " Zosime excitedly says to you. You can scarcely believe it.</div>" +
+          "<div>Zeus returns to the center of the courtyard. " + this.zeusText("“It would seem a lifetime in Tartarus is not enough of a punishment.”") + " His voice booms throughout all of Olympus. " + this.zeusText("“This time you will —”") + "</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>Zeus's proclamation stops short as he notices the fallen giants rising from the dead. Slowly but surely, they each rise to their feet once again, fully revived. Gration continues his dash towards Zeus's palace to ransack the keep, while Aristaeus arrives at the stable to scatter the royal steeds.</div>" +
+          "<div class='sceneDiv'>" + this.zeusText("“What is the meaning of this? Has Hades betrayed us?!”") + " Zeus shouts in anger.</div>" +
+          "<div class='sceneDiv'>You try to figure out your next move within all of the confusion. Many of the gods move to re-engage the fallen giants. You find Athena in the crowd and make your way over to your patron goddess. You see the spark of realization in her eyes.</div>" +
+          "<div>" + this.athenaText("“We were betrayed. But not by him.”") + "</div>";
+      else if (pageCount === 3)
+        sceneText = "<div class='sceneDiv'>At the Olympus gates, the giant Enceladus finally arrives. He is in no hurry to join the fight, sauntering through the gates towards you. Behind him is a man you haven't seen since your time in the Underworld: Khronos. The two of them approach Athena in the courtyards.</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("“Hello again, my heroes.”") + " Khronos says to you and Zosime. " + this.commonCharacterText("“You've done so well.”") + "</div>" +
+          "<div class='sceneDiv'>" + this.athenaText("“What is the meaning of this, snake? The spell was not cast to work on giants!”") + "Athena hisses, every word covered in venom.</div>" +
+          "<div>Khronos turns his attention to Athena. " + this.commonCharacterText("“What is the meaning of anything, Athena? You, the goddess of wisdom. Your brother, the god of war. Your father, king of gods. You think you know everything. Do you know what you all should be called? The gods of hubris.") + "</div>";
+      else if (pageCount === 4)
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("Only hubris would convince you that you could surpass time. You believe that you will rule this world forever. And what do you do when you see your time coming to an end? You break the rules. You try to control time itself. You come to me with a request to turn these mortals into abominations, stepping in and out of time.") + "</div>" +
+          "<div class='sceneDiv'>" + this.commonCharacterText("But Athena. <b>No one</b> controls time.”") + "</div>" +
+          "<div>" + this.thalesText("“You asked me to learn what is means to be a hero.”") + " You interject. " + this.thalesText("“This isn't it! The deceit, the backstabbing… being a hero is doing what is right no matter the cost. No matter what it takes.”") + "</div>";
+      else if (pageCount === 5)
+        sceneText = "<div class='sceneDiv'>" + "Khronos turns his glance back to you. " + this.commonCharacterText("“Indeed, you are correct. We must do what has to be done, and what is more right than following the natural order of things? The seasons change, my son, and the season of gods on Olympus is over.”") + "</div>" +
+          "<div class='sceneDiv'>With that, Enceladus rushes in to attack. Athena quickly engages him, their battle sprawling all over the courtyard.</div>" +
+          "<div class='sceneDiv'>While you and Athena were processing Khronos's betrayal, Zosime was trying to think of a solution. " + this.zosimeText("“Thales, we need to run. If we aren't here, the giants will die for good. It's the only way.”") + "</div>" +
+          "<div>She's right. You turn to run but find that you aren't able to move at all.</div>";
+      else if (pageCount === 6)
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You've journeyed all this way, you should stay to watch the end.”") + " Khronos says whilst casting a spell to bind you in place. You're forced to watch as the giants and titans combined might drive your allies back. " + this.commonCharacterText("“In time, you will see that this is right. All things must change.”") + "</div>" +
+          "<div class='sceneDiv'>The winged giant Alcyoneus had joined with Enceladus in the battle against Athena, and the two were overwhelming her. You struggle against your shackles with all over your might to no avail. Just as things were beginning to look dire, the ground began to quake all over Olympus.</div>" +
+          "<div class='sceneDiv'>" + this.hadesText("“KHRONOS.”") + "</div>" +
+          "<div>Hades had finally arrived to the battle.</div>";
+      else if (pageCount === 7)
+        sceneText = "<div class='sceneDiv'>" + this.hadesText("“You speak of hubris, and yet YOU attempt to sow chaos and control my domain. You have no right to decide which souls do and do not come to me. And these prisoners you freed,”") + " he says, pointing at the titans, " + this.hadesText("“belong to ME.”") + " Flames gush from the ground, creating a divide between the olympians and their attackers.</div>" +
+          "<div class='sceneDiv'>The spell Khronos cast on you is interrupted, allowing you to move freely once again. You immediately rush to Athena's aid.</div>" +
+          "<div class='sceneDiv'>" + this.athenaText("“We must leave this place. We cannot win.”") + " she says. Not even Zeus would question her expertise on warfare.</div>" +
+          "<div class='sceneDiv'>" + this.athenaText("“Leave. As far away from here as you can. I will find you.”") + " She says to you. </div>" +
+          "<div>At Athena's command, you race from Mount Olympus as quickly as possible.</div>";
+      else if (pageCount === 8)
+        sceneText = "<div><i class='s4Heading'>End of Chapter 1</i></div>"
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -485,6 +587,10 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
     sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
     sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
+    sceneText = sceneText.replaceAll("Ares", "<span class='aresColor storyCharacterName'>Ares</span>");
+    sceneText = sceneText.replaceAll("Apollo", "<span class='apolloColor storyCharacterName'>Apollo</span>");
+    sceneText = sceneText.replaceAll("Poseidon", "<span class='athenaColor storyCharacterName'>Poseidon</span>");
+    sceneText = sceneText.replaceAll("Zeus", "<span class='athenaColor storyCharacterName'>Zeus</span>");
     sceneText = sceneText.replaceAll("Heracles", "<span class='commonCharacterColor storyCharacterName'>Heracles</span>");
     sceneText = sceneText.replaceAll("Jason", "<span class='commonCharacterColor storyCharacterName'>Jason</span>");
     sceneText = sceneText.replaceAll("Odysseus", "<span class='commonCharacterColor storyCharacterName'>Odysseus</span>");
@@ -497,6 +603,13 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Enceladus", "<span class='commonCharacterColor storyCharacterName'>Enceladus</span>");
     sceneText = sceneText.replaceAll("Aeëtes", "<span class='commonCharacterColor storyCharacterName'>AEËTES</span>");
     sceneText = sceneText.replaceAll("Aeetes", "<span class='commonCharacterColor storyCharacterName'>AEËTES</span>");
+    sceneText = sceneText.replaceAll("Hephaestus", "<span class='commonCharacterColor storyCharacterName'>Hephaestus</span>");
+    sceneText = sceneText.replaceAll("Oceanus", "<span class='commonCharacterColor storyCharacterName'>Oceanus</span>");
+    sceneText = sceneText.replaceAll("Hyperion", "<span class='commonCharacterColor storyCharacterName'>Hyperion</span>");
+    sceneText = sceneText.replaceAll("Coeus", "<span class='commonCharacterColor storyCharacterName'>Coeus</span>");
+    sceneText = sceneText.replaceAll("Alcyoneus", "<span class='commonCharacterColor storyCharacterName'>Alcyoneus</span>");
+    sceneText = sceneText.replaceAll("Gration", "<span class='commonCharacterColor storyCharacterName'>Gration</span>");
+    sceneText = sceneText.replaceAll("Aristaeus", "<span class='commonCharacterColor storyCharacterName'>Aristaeus</span>");
 
     return sceneText;
   }
@@ -620,6 +733,27 @@ export class StoryService {
     if (this.globalService.globalVar.currentStoryId === 35) {
       this.pageCount = 3;
     }
+    if (this.globalService.globalVar.currentStoryId === 36) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 37) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 38) {
+      this.pageCount = 3;
+    }
+    if (this.globalService.globalVar.currentStoryId === 39) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 40) {
+      this.pageCount = 3;
+    }
+    if (this.globalService.globalVar.currentStoryId === 41) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 42) {
+      this.pageCount = 8;
+    }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
 
@@ -639,6 +773,8 @@ export class StoryService {
       this.showStory = false;
       this.globalService.globalVar.isBattlePaused = false;
       var subzone = this.balladService.getActiveSubZone();
+      if (this.globalService.globalVar.activeBattle !== undefined)
+        this.globalService.globalVar.activeBattle.atScene = false;
 
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
@@ -721,6 +857,28 @@ export class StoryService {
           });
         }
       }
+
+      if (this.globalService.globalVar.currentStoryId === 38) {
+        this.globalService.globalVar.settings.set("autoProgress", false);
+        this.balladService.setActiveSubZone(SubZoneEnum.MountOlympusOlympus);
+      }
+      if (this.globalService.globalVar.currentStoryId === 39) {
+        var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
+        if (zeus !== undefined) {
+          zeus.isAvailable = true;
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of the almighty Zeus, God of Thunder and Lightning.");
+        }
+
+        var mountainHike = this.balladService.findSubzone(SubZoneEnum.HuntForYarrowMountainHike);
+        if (mountainHike !== undefined) {
+          mountainHike.isAvailable = true;
+          mountainHike.notify = true;
+
+          this.achievementService.createDefaultAchievementsForSubzone(mountainHike.type).forEach(achievement => {
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+      }
     }
 
     return this.showStory;
@@ -766,6 +924,9 @@ export class StoryService {
           this.commonCharacterText("“That is a start. See that it continues.”") + " Acheron says, sinking back into the depths of the sea.";
       else if (pageCount === 2)
         sceneText = "As soon as Acheron is out of sight, the familiar shade darts towards you again. " + this.commonCharacterText("“I saw the whole thing! How much prayin' does someone need, I mean sheesh! Well, I'll let the boys know to start coming out here and say sweet nothins' to Oceanus if they want their sea breeze. You start coming by at the palace and I'll sweeten our deal alright?”");
+      else if (pageCount === 3)
+        sceneText = "<div class='sceneDiv s4Heading bold textCentered sidequestText'>Side Quest Complete!</div>" +
+          this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, false);;
     }
     if (scene === OptionalSceneEnum.CalydonDenMother) {
       if (pageCount === 1)
@@ -792,6 +953,9 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "With a final blow, the shadow dissolves into nothingness. Almost immediately, the area brightens back to normal levels. All of the fighting seems to have barely phased Hypnos, although he did seem to waken.<br/><br/>" +
           this.commonCharacterText("“I was having quite the nightmare. Thanks for that...”") + " He murmurs, falling back asleep. Your job complete, you make your way back to the shade to deliver the good news.";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv s4Heading bold textCentered sidequestText'>Side Quest Complete!</div>" +
+          this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade2, undefined, undefined, false);
     }
     if (scene === OptionalSceneEnum.Jewelcrafting) {
       if (pageCount === 1)
@@ -894,7 +1058,7 @@ export class StoryService {
       this.pageCount = 1;
     }
     if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade1Scene3) {
-      this.pageCount = 2;
+      this.pageCount = 3;
     }
     if (this.showOptionalStory === OptionalSceneEnum.CalydonDenMother) {
       this.pageCount = 1;
@@ -906,7 +1070,7 @@ export class StoryService {
       this.pageCount = 1;
     }
     if (this.showOptionalStory === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3) {
-      this.pageCount = 1;
+      this.pageCount = 2;
     }
     if (this.showOptionalStory === OptionalSceneEnum.Jewelcrafting) {
       this.pageCount = 2;

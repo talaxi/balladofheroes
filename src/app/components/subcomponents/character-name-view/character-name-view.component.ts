@@ -95,6 +95,10 @@ export class CharacterNameViewComponent implements OnInit {
       return true;
   }
 
+  isCharacterAtMaxLevel() {
+    return this.character.level >= this.character.maxLevel;
+  }
+
   goToCharacterDetails() {
     if (this.isButtonActive()) {
       this.layoutService.changeLayout(NavigationEnum.Menu);

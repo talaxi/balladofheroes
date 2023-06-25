@@ -1,5 +1,5 @@
 .xpBarWidth {
-    width: 75%;
+    width: 74.2%;
 }
 
 .mat-progress-bar-element,
@@ -32,7 +32,7 @@
 .flex {
     display: flex;
     justify-content: space-between;
-    width: 75%; 
+    width: 74.2%; 
 }
 
 .targetIcon {

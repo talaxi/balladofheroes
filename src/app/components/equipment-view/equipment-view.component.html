@@ -41,7 +41,7 @@
     </div>
     <div class="existingEquipment">
       <div>
-        <app-current-equipment-view [characterType]="characterType"
+        <app-current-equipment-view [characterType]="characterType" [character]="character"
           (unequipEmitter)="itemUnequipped($event)"></app-current-equipment-view>
       </div>
       <hr />

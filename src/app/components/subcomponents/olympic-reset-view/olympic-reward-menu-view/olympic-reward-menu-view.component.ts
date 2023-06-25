@@ -1,6 +1,8 @@
 import { Component } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
+import { LookupService } from 'src/app/services/lookup.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 
 @Component({
@@ -13,22 +15,25 @@ export class OlympicRewardMenuViewComponent {
   shopItemRows: ShopItem[][];
   shopItemCells: ShopItem[];
   
+  equipmentItems: ShopItem[];  
+  equipmentItemRows: ShopItem[][];
+  equipmentItemCells: ShopItem[];
 
-  constructor(private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService) {
+  constructor(private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService, private lookupService: LookupService) {
     
   }
 
   ngOnInit() {
-    this.shopItems = this.subzoneGeneratorService.getAvailableOlympianRewardOptions();
+    var allItems = this.subzoneGeneratorService.getAvailableOlympianRewardOptions();
+    this.equipmentItems = allItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.Equipment);
+    this.shopItems = allItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) !== ItemTypeEnum.Equipment);
     this.setupDisplayShopItems();
+    this.setupDisplayEquipmentItems();
   }
 
   setupDisplayShopItems(): void {
     this.shopItemCells = [];
     this.shopItemRows = [];
-
-    //this.shopItems = this.shopItems.filter(item => this.balladService.findSubzone(item.originalStore)?.isAvailable);
-    //this.shopItems.sort((a, b) => this.sortFunction(a, b));
 
     var filteredItems = this.filterItems(this.shopItems);
 
@@ -44,6 +49,26 @@ export class OlympicRewardMenuViewComponent {
 
     if (this.shopItemCells.length !== 0)
       this.shopItemRows.push(this.shopItemCells);
+  }
+
+  setupDisplayEquipmentItems(): void {
+    this.equipmentItemCells = [];
+    this.equipmentItemRows = [];
+
+    var filteredItems = this.filterItems(this.equipmentItems);
+
+    var maxColumns = this.deviceDetectorService.isMobile() ? 2 : 4;
+
+    for (var i = 1; i <= filteredItems.length; i++) {
+      this.equipmentItemCells.push(filteredItems[i - 1]);
+      if ((i % maxColumns) == 0) {
+        this.equipmentItemRows.push(this.equipmentItemCells);
+        this.equipmentItemCells = [];
+      }
+    }
+
+    if (this.equipmentItemCells.length !== 0)
+      this.equipmentItemRows.push(this.equipmentItemCells);
   }
 
   filterItems(shopItems: ShopItem[])

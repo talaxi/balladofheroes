@@ -53,14 +53,14 @@ export class SettingsViewComponent implements OnInit {
       console.log(this.globalService.globalVar);
       //console.log(JSON.stringify(this.globalService.globalVar));
 
-      console.log("1 hit (default): " + this.lookupService.getAgilityPerAttackForAttackCount(0));
+      /*console.log("1 hit (default): " + this.lookupService.getAgilityPerAttackForAttackCount(0));
       console.log("2 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(1));
       console.log("3 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(2));
       console.log("4 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(3));
       console.log("5 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(4));
       console.log("6 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(5));
       console.log("7 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(6));
-      console.log("8 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(7));
+      console.log("8 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(7));*/
     }
 
     //this.patreonAccessService.getPatronList();

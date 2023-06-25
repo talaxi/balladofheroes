@@ -128,8 +128,9 @@
                     [character]="getCharacterFromType(loadout.character2)"></app-equipment-item-view>
             </ng-template>
         </div>
-        <div class="loadoutItem clickableText" (click)="addNewLoadout(addLoadout)">
-            <img class="itemImage" src="assets/svg/emptyItemSlot.svg">
+        <div [ngClass]="{'newLoadoutDisabled': atMaxLoadouts()}" customToolTip [isDelayed]="true" [tooltipDirection]="tooltipDirection"
+        [contentTemplate]="addLoadoutTemplate" class="loadoutItem clickableText" (click)="addNewLoadout(addLoadout)">
+            <img class="itemImage" [ngClass]="{'newLoadoutDisabled': atMaxLoadouts()}" src="assets/svg/emptyItemSlot.svg">
         </div>
     </div>
 </div>
@@ -146,4 +147,13 @@
 <ng-template #itemMissingConfirmation>
     <app-confirmation-box [confirmationText]="itemMissingConfirmationText"
         [cancelOptionAvailable]="false"></app-confirmation-box>
+</ng-template>
+
+<ng-template #addLoadoutTemplate>
+    <div *ngIf="!atMaxLoadouts()">
+        Click or tap here to create a new loadout.
+    </div>
+    <div *ngIf="atMaxLoadouts()">
+        You are at your maximum allotment of loadouts. Please edit an existing loadout or delete one to make room for a new loadout.
+    </div>
 </ng-template>

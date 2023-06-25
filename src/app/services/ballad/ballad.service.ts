@@ -266,6 +266,7 @@ export class BalladService {
   selectNextSubzone() {
     var currentSubzone = this.getActiveSubZone();
     var includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
+    var shouldHideCountryRoads1 = this.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo)?.isAvailable ?? false;
 
     var nextSubzoneFound = false;
     var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
@@ -278,6 +279,7 @@ export class BalladService {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable);//.slice().reverse();
           reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
+              (!shouldHideCountryRoads1 || (shouldHideCountryRoads1 && subzone.type !== SubZoneEnum.NemeaCountryRoadsOne)) &&
               !this.autoProgressShouldChangeSubZone(subzone) && (includeSideQuests || (!includeSideQuests && this.shouldSubzoneShowSideQuestNotification(subzone.type) !== NotificationTypeEnum.SideQuest))) {
               nextSubzoneFound = true;
               if (currentSubzone.type !== subzone.type) { //don't constantly re-enter the same subzone

@@ -27,6 +27,7 @@ export class OlympicResetMenuViewComponent {
   bonusGodText = "";
   bonusGodName: string;
   isMobile: boolean = false;
+  olympicLevelCap = 100;
 
   constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
     private deviceDetectorService: DeviceDetectorService, private gameLogService: GameLogService) { }
@@ -35,24 +36,6 @@ export class OlympicResetMenuViewComponent {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.availableCharacters = this.globalService.globalVar.characters.filter(item => item.isAvailable);
     this.availableGods = this.globalService.globalVar.gods.filter(item => item.isAvailable);
-  }
-
-  getChthonicPower(god: God) {
-    //should give slightly more per level and also have a multiplier from favor
-    var chthonicFavorMultiplier = this.lookupService.getChthonicFavorMultiplier();
-    var preferredGodBoost = 1;
-
-    //give more for more levels at once so that there isn't a benefit in coming back every single level to stack favor
-    var multiLevelBoost = 0;
-    if (god.level > 2) {
-      multiLevelBoost = (god.level - 2) * .1;
-    }
-
-    if (god.type === this.globalService.globalVar.chthonicPowers.preferredGod) {
-      preferredGodBoost = 1.25;
-    }
-
-    return this.utilityService.roundTo((((god.level - 1) / 2) + multiLevelBoost) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
   }
 
   getAmbrosiaGain(levelsSpent: number) {
@@ -73,7 +56,10 @@ export class OlympicResetMenuViewComponent {
   }
 
   getNewMaxLevel(character: Character) {
-    return Math.round(character.maxLevel * 1.1);
+    if (character.maxLevel >= this.olympicLevelCap)
+      return character.maxLevel;
+
+    return character.maxLevel + 5;
   }
 
   resetLevelGain(character: Character) {

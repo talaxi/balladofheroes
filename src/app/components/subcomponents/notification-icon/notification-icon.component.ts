@@ -14,6 +14,7 @@ export class NotificationIconComponent implements OnInit {
   constructor() { }
 
   ngOnInit(): void {
+    
   }
 
   baseClass() {

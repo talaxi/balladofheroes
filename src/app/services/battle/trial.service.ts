@@ -33,7 +33,7 @@ export class TrialService {
   generateBattleOptions(trial: Trial) {
     var battleOptions: EnemyTeam[] = [];
 
-    if (trial.type === TrialEnum.TrialOfEndurance) {
+    if (trial.type === TrialEnum.TrialOfResolve) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
@@ -107,7 +107,7 @@ export class TrialService {
     availableEnums = this.getAvailableBattlesForTrialOfSkill(previousGod);
 
     rng = this.utilityService.getRandomSeededInteger(0, availableEnums.length - 1, seedValue.toString());
-
+    
     return availableEnums[rng];
   }
 
@@ -140,15 +140,24 @@ export class TrialService {
   getAvailableBattlesForTrialOfSkill(previousBattle: BestiaryEnum = BestiaryEnum.None) {
     var enemyOptions: BestiaryEnum[] = [];
 
-    enemyOptions.push(BestiaryEnum.Athena);
-    enemyOptions.push(BestiaryEnum.Artemis);
-    enemyOptions.push(BestiaryEnum.Ares);
-    enemyOptions.push(BestiaryEnum.Apollo);
-    enemyOptions.push(BestiaryEnum.Hermes);
-    enemyOptions.push(BestiaryEnum.Nemesis);
-    enemyOptions.push(BestiaryEnum.Hades2);
-    enemyOptions.push(BestiaryEnum.Dionysus);
-    enemyOptions.push(BestiaryEnum.Zeus);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Athena);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Artemis);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Ares);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Apollo);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Hermes);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Nemesis);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Hades2);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Dionysus);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Zeus);
 
     enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
@@ -301,7 +310,7 @@ export class TrialService {
         }
       }
     }
-    else if (type === TrialEnum.TrialOfEndurance) {
+    else if (type === TrialEnum.TrialOfResolve) {
       //TODO
     }
 

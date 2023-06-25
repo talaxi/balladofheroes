@@ -79,7 +79,7 @@ export class BackgroundService {
   }
 
   handleTown(deltaTime: number, loading: any) {
-    var party = this.globalService.getActivePartyCharacters(true);
+    var party = this.globalService.getActivePartyCharacters(true);    
     this.gainHpInTown(party, deltaTime);
   }
 
@@ -190,7 +190,7 @@ export class BackgroundService {
 
     if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
       if (effect.type === AltarEffectsEnum.AthenaHealOverTime || effect.type === AltarEffectsEnum.AthenaRareHealOverTime) {
-        party.forEach(member => {
+        party.forEach(member => {          
           this.battleService.gainHp(member, effect.effectiveness);
         });
       }
@@ -269,7 +269,7 @@ export class BackgroundService {
     }
 
     if (effect.type === AltarEffectsEnum.AthenaHeal) {
-      party.forEach(member => {
+      party.forEach(member => {        
         this.battleService.gainHp(member, effect.effectiveness);
       });
     }
@@ -292,14 +292,16 @@ export class BackgroundService {
       }
     }
 
-    if (effect.type === AltarEffectsEnum.ApolloHeal) {
-      party = party.sort(function (a, b) {
-        return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
-          a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
-      });
-      var target = party[0];
-
-      this.battleService.gainHp(target, effect.effectiveness);
+    if (effect.type === AltarEffectsEnum.ApolloHeal) {      
+      if (party !== undefined && party.length > 0) {
+        party = party.sort(function (a, b) {
+          return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
+            a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
+        });
+        var target = party[0];
+      
+        this.battleService.gainHp(target, effect.effectiveness);
+      }
     }
 
     if (effect.type === AltarEffectsEnum.HermesAbilityCooldown) {
@@ -395,17 +397,21 @@ export class BackgroundService {
       });
     }
 
-    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier) {
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier) {      
       var barrierTarget = this.lookupService.getRandomPartyMember(party);
+      if (barrierTarget !== undefined) {
       var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(barrierTarget, true));
       barrierTarget.battleInfo.barrierValue += barrierAmount;
+      }
     }
 
     if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier) {
+      if (party.length > 0) {
       party.forEach(member => {
         var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(member, true));
         member.battleInfo.barrierValue += barrierAmount;
       });
+    }
     }
 
     if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs) {
@@ -577,7 +583,7 @@ export class BackgroundService {
         ticketMultiplier = 2;
 
       if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0) {
-        ticketMultiplier += 2;        
+        ticketMultiplier += 2;
       }
 
       this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays * ticketMultiplier;

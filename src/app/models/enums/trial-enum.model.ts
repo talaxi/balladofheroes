@@ -1,5 +1,5 @@
 export enum TrialEnum {
   None,
   TrialOfSkill,
-  TrialOfEndurance
+  TrialOfResolve
 }

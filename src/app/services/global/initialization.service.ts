@@ -38,6 +38,8 @@ import { IndividualFollower } from 'src/app/models/followers/individual-follower
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
 import { UtilityService } from '../utility/utility.service';
+import { CharacterStats } from 'src/app/models/character/character-stats.model';
+import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -233,7 +235,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
     this.globalService.globalVar.settings.set("showEnemyHpAsPercent", false);
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", false);
-    this.globalService.globalVar.settings.set("autoExportOnUpdate", true);
+    this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
     this.globalService.globalVar.settings.set("fps", this.utilityService.averageFps);
     this.globalService.globalVar.settings.set("loadingAccuracy", this.utilityService.averageLoadingAccuracy);
     this.globalService.globalVar.settings.set("loadingTime", this.utilityService.lowActiveTimeLimit);
@@ -529,7 +531,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.NemesissSword, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussScepter, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ZeussLightningBolts, 1));
-    
+
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.AthenasShield, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ArtemissShield, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.HermessShield, 1));
@@ -587,7 +589,7 @@ export class InitializationService {
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.PoisonExtractPotion));
     //this.globalService.globalVar.alchemy.availableRecipes.push(this.alchemyService.getRecipe(ItemsEnum.HeroicElixir));
 
-    var allAchievementsComplete = true;
+    var allAchievementsComplete = false;
 
     if (allAchievementsComplete) {
       this.globalService.globalVar.followerData.numberOfFollowersGainedFromAchievements = 100;
@@ -722,12 +724,12 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1000));
       this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
 
-      this.globalService.globalVar.chthonicPowers.attackBoostLevel = 5;
-      this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 5;
-      this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 5;
-      this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 5;
-      this.globalService.globalVar.chthonicPowers.luckBoostLevel = 5;
-      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 5;
+      this.globalService.globalVar.chthonicPowers.attackBoostLevel = 10;
+      this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 10;
+      this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 10;
+      this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 10;
+      this.globalService.globalVar.chthonicPowers.luckBoostLevel = 10;
+      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 100; //TODO: 10
       this.globalService.globalVar.altars.largeAltarsUnlocked = true;
       this.globalService.globalVar.extraSpeedTimeRemaining = 8 * 60 * 60;
 
@@ -763,7 +765,7 @@ export class InitializationService {
         this.lookupService.gainResource(resource);
 
       this.globalService.globalVar.activePartyMember1 = CharacterEnum.Adventurer;
-      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye);  });     //
+      this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye); });     //
       this.globalService.globalVar.activePartyMember2 = CharacterEnum.Archer;
       this.globalService.globalVar.itemBeltSize = 1;
       this.globalService.globalVar.sidequestData.traderHuntLevel = 2;
@@ -777,10 +779,10 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Zeus;
-        character1.assignedGod2 = GodEnum.Apollo;
+        character1.assignedGod1 = GodEnum.Athena;
+        character1.assignedGod2 = GodEnum.Hermes;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasScythe);
-        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasShield);
+        character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DivineTarge);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasArmor);
         character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasRing);
         character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasNecklace);
@@ -797,85 +799,181 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussNecklace);
       }
 
-      var godLevel = 670;
-      var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
-      athena!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(athena!);
-      }
-      athena!.exp = 0;
-      athena!.affinityLevel = 15;
+      var chthonicResetCount = 2;
+      var godLevel = 1;
 
-      var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
-      hermes!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(hermes!);
-      }
-      hermes!.exp = 0;
-      hermes!.affinityLevel = 15;
+      for (var j = 0; j < chthonicResetCount; j++) {
+        var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
+        athena!.isAvailable = true;
+        athena!.level = 1;
+        athena!.exp = 0;
+        athena!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        athena!.lastStatGain = CharacterStatEnum.Resistance;
+        athena!.statGainCount = 0;
+        athena!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(athena!);
 
-      var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
-      apollo!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(apollo!);
-      }
-      apollo!.exp = 0;
-      apollo!.affinityLevel = 15;
+        if (j < chthonicResetCount - 1)
+          godLevel = 2000;
+        else
+          godLevel = 9150;
 
-      var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
-      artemis!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(artemis!);
-      }
-      artemis!.exp = 0;
-      artemis!.affinityLevel = 15;
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(athena!);
+        }
+        athena!.exp = 0;
+        athena!.affinityLevel = 15;
 
-      var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
-      hades!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(hades!);
-      }
-      hades!.exp = 0;
-      hades!.affinityLevel = 15;
+        var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+        hermes!.isAvailable = true;
+        hermes!.level = 1;
+        hermes!.exp = 0;
+        hermes!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        hermes!.lastStatGain = CharacterStatEnum.Resistance;
+        hermes!.statGainCount = 0;
+        hermes!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(hermes!);
 
-      var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
-      ares!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(ares!);
-      }
-      ares!.exp = 0;
-      ares!.affinityLevel = 15;
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(hermes!);
+        }
+        hermes!.exp = 0;
+        hermes!.affinityLevel = 15;
 
-      var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
-      dionysus!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(dionysus!);
-      }
-      dionysus!.exp = 0;
-      dionysus!.affinityLevel = 15;
+        var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+        apollo!.isAvailable = true;
+        apollo!.level = 1;
+        apollo!.exp = 0;
+        apollo!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        apollo!.lastStatGain = CharacterStatEnum.Resistance;
+        apollo!.statGainCount = 0;
+        apollo!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(apollo!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(apollo!);
+        }
+        apollo!.exp = 0;
+        apollo!.affinityLevel = 15;
 
-      var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
-      nemesis!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(nemesis!);
-      }
-      nemesis!.exp = 0;
-      nemesis!.affinityLevel = 15;
+        var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
+        artemis!.isAvailable = true;
+        artemis!.level = 1;
+        artemis!.exp = 0;
+        artemis!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        artemis!.lastStatGain = CharacterStatEnum.Resistance;
+        artemis!.statGainCount = 0;
+        artemis!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(artemis!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(artemis!);
+        }
+        artemis!.exp = 0;
+        artemis!.affinityLevel = 15;
 
-      var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
-      zeus!.isAvailable = true;
-      for (var i = 0; i < godLevel; i++) {
-        this.globalService.levelUpGod(zeus!);
+        var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+        hades!.isAvailable = true;
+        hades!.level = 1;
+        hades!.exp = 0;
+        hades!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        hades!.lastStatGain = CharacterStatEnum.Resistance;
+        hades!.statGainCount = 0;
+        hades!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(hades!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(hades!);
+        }
+        hades!.exp = 0;
+        hades!.affinityLevel = 15;
+
+        var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+        ares!.isAvailable = true;
+        ares!.level = 1;
+        ares!.exp = 0;
+        ares!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        ares!.lastStatGain = CharacterStatEnum.Resistance;
+        ares!.statGainCount = 0;
+        ares!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(ares!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(ares!);
+        }
+        ares!.exp = 0;
+        ares!.affinityLevel = 15;
+
+        var dionysus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+        dionysus!.isAvailable = true;
+        dionysus!.level = 1;
+        dionysus!.exp = 0;
+        dionysus!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        dionysus!.lastStatGain = CharacterStatEnum.Resistance;
+        dionysus!.statGainCount = 0;
+        dionysus!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(dionysus!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(dionysus!);
+        }
+        dionysus!.exp = 0;
+        dionysus!.affinityLevel = 15;
+
+        var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+        nemesis!.isAvailable = true;
+        nemesis!.level = 1;
+        nemesis!.exp = 0;
+        nemesis!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        nemesis!.lastStatGain = CharacterStatEnum.Resistance;
+        nemesis!.statGainCount = 0;
+        nemesis!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(nemesis!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(nemesis!);
+        }
+        nemesis!.exp = 0;
+        nemesis!.affinityLevel = 15;
+
+        var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
+        zeus!.isAvailable = true;
+        zeus!.level = 1;
+        zeus!.exp = 0;
+        zeus!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        zeus!.lastStatGain = CharacterStatEnum.Resistance;
+        zeus!.statGainCount = 0;
+        zeus!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(zeus!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(zeus!);
+        }
+        zeus!.exp = 0;
+        zeus!.affinityLevel = 15;
       }
-      zeus!.exp = 0;
-      zeus!.affinityLevel = 15;
 
       var characterLevel = 29;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
+        character.level = 1;
+        character.exp = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+      });
 
+      var characterLevel = 34;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+        character.level = 1;
+        character.exp = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+      });
+
+      var characterLevel = 39;
+      this.globalService.globalVar.characters.forEach(character => {
+        for (var i = 0; i < characterLevel; i++) {
+          this.globalService.levelUpPartyMember(character);
+        }
+      });
+
+      this.globalService.globalVar.characters.forEach(character => {
         this.globalService.calculateCharacterBattleStats(character);
         character.battleStats.currentHp = character.battleStats.maxHp;
       });
@@ -1103,7 +1201,7 @@ export class InitializationService {
     zone2.subzones.push(new SubZone(SubZoneEnum.HuntForYarrowYarrowField));
     zone2.notificationType = zone2.shouldShowSideQuestNotification();
     olympusBallad.zones.push(zone2);
-    
+
     var zone3 = new Zone();
     zone3.type = ZoneEnum.WarForTheMountain;
     zone3.zoneName = "War for the Mountain";

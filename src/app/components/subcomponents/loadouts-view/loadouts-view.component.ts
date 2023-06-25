@@ -2,6 +2,7 @@ import { Component, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
@@ -27,6 +28,7 @@ export class LoadoutsViewComponent {
   itemMissingConfirmationText = "";
   unequipAll: boolean = false;
   isMobile = false;
+  tooltipDirection = DirectionEnum.Down;
 
   constructor(private deviceDetectorService: DeviceDetectorService, public dialog: MatDialog, private lookupService: LookupService,
     private globalService: GlobalService, private dictionaryService: DictionaryService, private menuService: MenuService,
@@ -41,6 +43,9 @@ export class LoadoutsViewComponent {
   }
 
   addNewLoadout(content: any) {
+    if (this.atMaxLoadouts())
+      return;
+
     this.mode = "Add";
     this.existingLoadout = undefined;
 
@@ -126,6 +131,15 @@ export class LoadoutsViewComponent {
   
   getCharacterFromType(type: CharacterEnum) {
     return this.globalService.globalVar.characters.find(item => item.type === type);
+  }
+
+  atMaxLoadouts() {
+    var maxLoadouts = 50;
+
+    if (this.globalService.globalVar.loadouts.length >= maxLoadouts)
+      return true;
+
+    return false;
   }
 
   getEquipmentText(item: Equipment) {

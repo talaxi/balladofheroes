@@ -46,7 +46,9 @@
     vertical-align: middle;
 }
 
-
+.newLoadoutDisabled {
+    opacity: .6;
+}
 
 @media (max-width: 800px) {     
     .loadoutItem {

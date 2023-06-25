@@ -14,7 +14,7 @@
             <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{character.exp | number : '1.0-0'}} /
                 {{character.expToNextLevel | number : '1.0-0'}} XP to Level
                 {{character.level + 1}}</span>
-            <span *ngIf="character.level === character.maxLevel">
+            <span class="bold" *ngIf="character.level === character.maxLevel">
                 MAX
             </span>
             <br />
@@ -37,7 +37,7 @@
                         class='webVersion'>Equipment</span></button>
             </span>
             <div class="sectionInfo">
-                <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
+                <app-current-equipment-view [characterType]="character.type" [character]="character" [canChangeEquipment]="true">
                 </app-current-equipment-view>
             </div>
         </div>
@@ -286,7 +286,7 @@
 
                             <ng-template #abilityPopover>
                                 <div>
-                                    Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
+                                    Ability Upgrade Level {{getGodAbilityUpgradeLevel(ability)}}
                                     <hr/>
                                     <div
                                     *ngIf="getGodPermanentAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityEffectivenessIncrease(ability, 1) !== '0%'">

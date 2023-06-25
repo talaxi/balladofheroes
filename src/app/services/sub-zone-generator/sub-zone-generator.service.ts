@@ -2763,11 +2763,11 @@ export class SubZoneGeneratorService {
       battleOptions.push(enemyTeam);
 
       var enemyTeam2: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ForestNymphAssailant)); 
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ForestNymphAssailant)); 
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ForestNymphAssailant)); 
+      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ForestNymphAssailant)); 
       battleOptions.push(enemyTeam2);
     }
-    if (type === SubZoneEnum.MountOlympusCouloir) {
+    if (type === SubZoneEnum.HuntForYarrowWoodlandTrail) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ForestNymphHealer)); 
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ForestNymphAssailant));            
@@ -3974,6 +3974,14 @@ export class SubZoneGeneratorService {
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.EssenceOfWater, SubZoneEnum.NemeaCleonea)); 
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ToxicIchor, SubZoneEnum.NemeaCleonea)); 
       shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.VialOfTheCretanSea, SubZoneEnum.NemeaCleonea));
+    }    
+    if (level >= 4)
+    {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MetalNuggets, SubZoneEnum.NemeaCleonea)); 
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.EssenceOfEarth, SubZoneEnum.NemeaCleonea)); 
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.EssenceOfAir, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MagicTreeBark, SubZoneEnum.NemeaCleonea));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.SerpentScale, SubZoneEnum.NemeaCleonea));
     }
 
     return shopOptions;
@@ -3984,6 +3992,7 @@ export class SubZoneGeneratorService {
 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Nemesis, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Dionysus, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Ambrosia, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasShield, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasNecklace, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArtemissShield, SubZoneEnum.MountOlympusOlympus)); 

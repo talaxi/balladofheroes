@@ -57,7 +57,7 @@ export class CharacterViewComponent implements OnInit {
       if (this.menuService.selectedCharacter !== undefined && this.menuService.selectedCharacter !== this.character.type) {
         var selectedCharacter = this.globalService.globalVar.characters.find(item => item.type === this.menuService.selectedCharacter);
         if (selectedCharacter !== undefined) {
-          this.character = selectedCharacter;
+          this.character = selectedCharacter;          
           this.characterAbilityList = this.character.abilityList.sort(function (a, b) {
             return a.isPassive && !b.isPassive ? -1 : !a.isPassive && b.isPassive ? 1 : 0;
           }).filter(item => item.isAvailable);
@@ -318,108 +318,93 @@ export class CharacterViewComponent implements OnInit {
 
 
   getAbilityUpgradeLevel(ability: Ability) {
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined)
+      return 0;
+
+    return permanentAbilityIncreases.abilityUpgradeLevel;
+  }
+
+  getGodAbilityUpgradeLevel(ability: Ability) {
     return ability.abilityUpgradeLevel;
   }
 
   getAbilityEffectivenessIncrease(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined)
+      return 0;
 
-    if (baseAbility !== undefined) {
-      return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness) * 100) + "%";
-    }
+    //var baseCharacter = new Character(this.character.type);
+    //this.globalService.assignAbilityInfo(baseCharacter);
+    //var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
 
-    return 0;
+    //if (baseAbility !== undefined) {
+      //return this.utilityService.genericRound((ability.effectiveness - baseAbility.effectiveness) * 100) + "%";
+    //}
+    return this.utilityService.genericRound((permanentAbilityIncreases.effectiveness) * 100) + "%";
   }
 
   getSecondaryAbilityEffectivenessIncrease(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined)
+      return 0;
 
-    if (baseAbility !== undefined) {
-      return this.utilityService.genericRound((ability.secondaryEffectiveness - baseAbility.secondaryEffectiveness) * 100) + "%";
-    }
-
-    return 0;
+    return this.utilityService.genericRound((permanentAbilityIncreases.secondaryEffectiveness) * 100) + "%";    
   }
 
   getAbilityEffectCountIncrease(ability: Ability) {
     var baseCharacter = new Character(this.character.type);
     this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
 
     return 0;
   }
 
   getAbilityEffectMaxCountIncrease(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined)
+      return 0;
 
-    if (baseAbility !== undefined) {
-      return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));
-    }
-
-    return 0;
+    return this.utilityService.genericRound(permanentAbilityIncreases.maxCount);    
   }
 
   getAbilityUserEffectEffectivenessIncrease(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined || permanentAbilityIncreases.userEffect.length === 0)
+      return 0;
 
-    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {
-      return Math.abs(this.utilityService.genericRound((ability.userEffect[0].effectiveness - baseAbility.userEffect[0].effectiveness) * 100)) + "%";
-    }
-
-    return 0;
+    return this.utilityService.genericRound((permanentAbilityIncreases.userEffect[0].effectiveness) * 100) + "%";    
   }
 
-  getAbilityUserEffectDurationIncrease(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+  getAbilityUserEffectDurationIncrease(ability: Ability) {    
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined || permanentAbilityIncreases.userEffect.length === 0)
+      return 0;
 
-    if (baseAbility !== undefined && baseAbility.userEffect.length > 0)
-      return this.utilityService.roundTo((ability.userEffect[0].duration - baseAbility.userEffect[0].duration), 2);
-
-    return 0;
+    return this.utilityService.genericRound(permanentAbilityIncreases.userEffect[0].duration);    
   }
 
   getAbilityTargetEffectEffectivenessIncrease(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined || permanentAbilityIncreases.targetEffect.length === 0)
+      return 0;
 
-    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0) {
-      return Math.abs(this.utilityService.genericRound((ability.targetEffect[0].effectiveness - baseAbility.targetEffect[0].effectiveness) * 100)) + "%";
-    }
-
-    return 0;
+    return this.utilityService.genericRound((permanentAbilityIncreases.targetEffect[0].effectiveness) * 100) + "%";    
   }
 
   getAbilityTargetEffectDurationIncrease(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined || permanentAbilityIncreases.targetEffect.length === 0)
+      return 0;
 
-    if (baseAbility !== undefined && baseAbility.targetEffect.length > 0)
-      return this.utilityService.roundTo((ability.targetEffect[0].duration - baseAbility.targetEffect[0].duration), 2);
-
-    return 0;
+    return this.utilityService.genericRound(permanentAbilityIncreases.targetEffect[0].duration);    
   }
 
   getAbilityCooldownReduction(ability: Ability) {
-    var baseCharacter = new Character(this.character.type);
-    this.globalService.assignAbilityInfo(baseCharacter);
-    var baseAbility = baseCharacter.abilityList.find(item => item.name === ability.name);
+    var permanentAbilityIncreases = this.character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);    
+    if (permanentAbilityIncreases === undefined)
+      return 0;
 
-    if (baseAbility !== undefined)
-      return this.utilityService.genericRound(Math.abs(ability.cooldown - baseAbility.cooldown));
-
-    return 0;
+    return this.utilityService.genericRound(permanentAbilityIncreases.cooldown);    
   }
 
   getGodPermanentAbilityEffectivenessIncrease(ability: Ability, whichGod: number) {
@@ -476,12 +461,16 @@ export class CharacterViewComponent implements OnInit {
     var originalGod = this.globalService.globalVar.gods.find(item => item.type === matchTo);
     if (originalGod === undefined)
       return 0;
-
-    var permanentAbilityUpgrade = originalGod.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
-    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0)
+    
+    var permanentAbilityUpgrade = originalGod.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel); 
+    console.log("Abi");
+    console.log(permanentAbilityUpgrade);   
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0 &&
+      permanentAbilityUpgrade.userEffect[0].threshold !== undefined && !Number.isNaN(permanentAbilityUpgrade.userEffect[0].threshold))
       permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].threshold;
 
-    if (ability !== undefined && ability.userEffect.length > 0) {      
+    if (ability !== undefined && ability.userEffect.length > 0) {   
+      console.log("Threshold amount: " + permanentAbilityUpgradeAmount);   
       return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
     }
 
@@ -650,7 +639,7 @@ export class CharacterViewComponent implements OnInit {
     this.globalService.assignGodAbilityInfo(baseGod);
     var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
-    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {      
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0 && ability.userEffect[0].threshold !== undefined && !Number.isNaN(ability.userEffect[0].threshold)) {      
       return Math.abs(this.utilityService.genericRound((ability.userEffect[0].threshold - baseAbility.userEffect[0].threshold) * 100)) + "%";
     }
 
