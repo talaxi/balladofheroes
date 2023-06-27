@@ -4256,7 +4256,7 @@ export class LookupService {
       description = "When this effect expires, deal " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " to a random target.";
 
     if (statusEffect.type === StatusEffectEnum.FastDebuffs)
-      description = "Reduce the duration of any debuffs inflicted by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      description = "Reduce the duration of any debuffs inflicted by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.ExperienceGainUp)
       description = "Increase experience gain of all classes and gods by " + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.LootRateUp)
