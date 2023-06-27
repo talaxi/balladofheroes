@@ -191,6 +191,11 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
     this.globalService.ResetTrialInfoAfterChangingSubzone();
+ 
+      this.globalService.globalVar.partyMember2Hidden = false;
+      this.menuService.updateParty = true;
+      this.globalService.globalVar.partyMember1Hidden = false;
+      this.menuService.updateParty = true;
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";

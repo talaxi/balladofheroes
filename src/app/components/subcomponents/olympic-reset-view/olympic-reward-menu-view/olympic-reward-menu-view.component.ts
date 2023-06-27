@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { LookupService } from 'src/app/services/lookup.service';
@@ -49,6 +50,20 @@ export class OlympicRewardMenuViewComponent {
 
     if (this.shopItemCells.length !== 0)
       this.shopItemRows.push(this.shopItemCells);
+  }
+
+  
+  getShopItemTooltipDirection(index: number) {
+    if (index % 4 === 0)
+      return DirectionEnum.Right;
+    else if (index % 4 === 1)
+      return DirectionEnum.Right;
+      else if (index % 4 === 2)
+      return DirectionEnum.Left;
+      else if (index % 4 === 3)
+      return DirectionEnum.Left;
+
+      return DirectionEnum.Right;
   }
 
   setupDisplayEquipmentItems(): void {

@@ -528,6 +528,8 @@ export class DictionaryService {
       name = "Bronze Beak";
     else if (type === ItemsEnum.GoldenApple)
       name = "Golden Apple";
+      else if (type === ItemsEnum.OlympicCommendation)
+      name = "Olympic Commendation";
     else if (type === ItemsEnum.MagicTreeBark)
       name = "Magic Tree Bark";
     else if (type === ItemsEnum.CanineFang)

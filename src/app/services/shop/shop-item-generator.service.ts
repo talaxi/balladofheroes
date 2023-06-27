@@ -577,6 +577,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.MetalNuggets) {
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 10));      
     }
+    if (item === ItemsEnum.OlympicCommendation) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 3));      
+    }    
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

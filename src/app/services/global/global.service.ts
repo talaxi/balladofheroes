@@ -1165,7 +1165,7 @@ export class GlobalService {
       //inactive gods
       this.globalVar.gods.filter(god => god.isAvailable &&
         (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-          var inactiveGodModifier = .25; //this can be increased maybe with future items
+          var inactiveGodModifier = this.getInactiveGodXpRate(); 
 
           this.giveGodExp(god, enemy.xpGainFromDefeat * inactiveGodModifier * partySizeMultiplier);
         });
@@ -1181,6 +1181,15 @@ export class GlobalService {
         }
       });
     });
+  }
+
+  getInactiveGodXpRate() {
+    var additive = 0;
+    var commendations = this.globalVar.resources.find(item => item.item === ItemsEnum.OlympicCommendation);
+    if (commendations !== undefined)
+      additive = commendations.amount * .05;
+    
+    return .25 + additive;
   }
 
   getGodExpBonus(god: God) {
@@ -1316,7 +1325,7 @@ export class GlobalService {
         character.permanentAbility1GainCount.push([level, 1]);
 
       if (matchingCount !== undefined && matchingCount[1] > this.utilityService.characterPermanentAbility1ObtainCap)
-        this.getCharacterLevelStatIncrease(character); //TODO: should give a large boost
+        this.getCharacterLevelStatIncrease(character);
       else {
         this.upgradeCharacterAbility1(character, level);
 
@@ -1367,7 +1376,7 @@ export class GlobalService {
         ability.effectiveness += .15 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Priest) {
-        ability.effectiveness += .05 * Math.ceil(newLevel / 10);
+        ability.effectiveness += .04 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Warrior) {
         if (ability.targetEffect.length === 0)
@@ -1458,7 +1467,7 @@ export class GlobalService {
   upgradeCharacterAbility1(character: Character, newLevel: number) {
     var ability1 = character.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
 
-    if (ability1 === undefined) {      
+    if (ability1 === undefined) {
       ability1 = new Ability(true);
       ability1.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
       character.permanentAbilityUpgrades.push(ability1);
@@ -1466,8 +1475,8 @@ export class GlobalService {
 
     ability1.abilityUpgradeLevel += 1;
     var upgradedAbilities = this.getCharacterAbilityUpgrade(character, newLevel);
-    
-    ability1 = this.handleAbilityUpgradeValues(ability1, upgradedAbilities);    
+
+    ability1 = this.handleAbilityUpgradeValues(ability1, upgradedAbilities);
 
     var baseAbility = character.abilityList.find(item => item.requiredLevel === ability1?.requiredLevel);
 
@@ -1512,7 +1521,7 @@ export class GlobalService {
     var upgradedAbilities = this.getCharacterAbilityUpgrade(character, newLevel);
 
     ability1 = this.handleAbilityUpgradeValues(ability1, upgradedAbilities);
-    
+
     var baseAbility = character.abilityList.find(item => item.requiredLevel === ability1?.requiredLevel);
 
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
@@ -3292,11 +3301,30 @@ export class GlobalService {
     //TODO: once currency is implemented, check if they are already obtained and give currency instead
     var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
     var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+    var ambrosiaCost = 10;
 
-    if (dionysus !== undefined)
-      dionysus.isAvailable = true;
-    if (nemesis !== undefined)
-      nemesis.isAvailable = true;
+    if (dionysus !== undefined) {
+      if (dionysus.isAvailable) {
+        var ambrosia = this.globalVar.resources.find(item => item.item === ItemsEnum.Ambrosia);
+        if (ambrosia !== undefined)
+          ambrosia.amount += ambrosiaCost;
+        else
+          this.globalVar.resources.push(new ResourceValue(ItemsEnum.Ambrosia, ambrosiaCost));
+      }
+      else
+        dionysus.isAvailable = true;
+    }
+    if (nemesis !== undefined) {
+      if (nemesis.isAvailable) {
+        var ambrosia = this.globalVar.resources.find(item => item.item === ItemsEnum.Ambrosia);
+        if (ambrosia !== undefined)
+          ambrosia.amount += ambrosiaCost;
+        else
+          this.globalVar.resources.push(new ResourceValue(ItemsEnum.Ambrosia, ambrosiaCost));
+      }
+      else
+        nemesis.isAvailable = true;
+    }
 
     if (this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant) === undefined || this.globalVar.resources.find(item => item.item === ItemsEnum.BlazingSunPendant)?.amount === 0)
       this.globalVar.resources.push(new ResourceValue(ItemsEnum.BlazingSunPendant, 1));

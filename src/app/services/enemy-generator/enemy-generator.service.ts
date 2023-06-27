@@ -8107,7 +8107,7 @@ export class EnemyGeneratorService {
       var landslide = new Ability();
       landslide.name = "Landslide";
       landslide.isAvailable = true;
-      landslide.effectiveness = 6.5;
+      landslide.effectiveness = 6.85;
       landslide.cooldown = landslide.currentCooldown = 26;
       landslide.dealsDirectDamage = true;
       landslide.isAoe = true;
@@ -8149,7 +8149,7 @@ export class EnemyGeneratorService {
       var shatter = new Ability();
       shatter.name = "Shatter";
       shatter.isAvailable = true;
-      shatter.effectiveness = 16;
+      shatter.effectiveness = 20;
       shatter.cooldown = shatter.currentCooldown = 10000;
       shatter.dealsDirectDamage = true;
       shatter.isAoe = true;
@@ -8168,7 +8168,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Aristaeus) {
       enemy.name = "Aristaeus";
-      enemy.battleStats = new CharacterStats(775225, 6550, 13000, 11500, 7250, 20000);
+      enemy.battleStats = new CharacterStats(775225, 6850, 13000, 14500, 7250, 20000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 5800;
@@ -8200,7 +8200,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Gration) {
       enemy.name = "Gration";
-      enemy.battleStats = new CharacterStats(760250, 8000, 12500, 9500, 11500, 20000);
+      enemy.battleStats = new CharacterStats(760250, 8200, 12500, 9500, 12500, 20000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 5800;
@@ -8232,7 +8232,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Porphyrion) {
       enemy.name = "Porphyrion";
-      enemy.battleStats = new CharacterStats(1678650, 11000, 19750, 20500, 25000, 31500);
+      enemy.battleStats = new CharacterStats(1679650, 9250, 20950, 20500, 18500, 31500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 11150;
@@ -8284,12 +8284,12 @@ export class EnemyGeneratorService {
       var maim = new Ability();
       maim.name = "Maim";
       maim.isAvailable = true;
-      maim.effectiveness = 6.8;
-      maim.cooldown = maim.currentCooldown = 18;
-      maim = this.randomizeCooldown(maim);
+      maim.effectiveness = 6.6;
+      maim.cooldown = 18;
+      maim.currentCooldown = 15;
       maim.dealsDirectDamage = true;      
       maim.elementalType = ElementalTypeEnum.Earth;
-      maim.targetEffect.push(this.globalService.createDamageOverTimeEffect(10, 2, .5, maim.name, dotTypeEnum.BasedOnDamage, ElementalTypeEnum.Earth));
+      maim.targetEffect.push(this.globalService.createDamageOverTimeEffect(10, 2, .4, maim.name, dotTypeEnum.BasedOnDamage, ElementalTypeEnum.Earth));
       maim.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceHealing, 18, .5, false, false, false));
       maim.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.StockpileRock, -1, 1, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(maim);

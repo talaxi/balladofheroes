@@ -16,6 +16,7 @@ import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 
 @Component({
   selector: 'app-main-overview',
@@ -28,7 +29,7 @@ export class MainOverviewComponent {
   
   constructor(public globalService: GlobalService, public lookupService: LookupService, private balladService: BalladService,
     private dpsCalculatorService: DpsCalculatorService, private gameLogService: GameLogService, public dialog: MatDialog,
-    private deviceDetectorService: DeviceDetectorService, private layoutService: LayoutService) {
+    private deviceDetectorService: DeviceDetectorService, private layoutService: LayoutService, private menuService: MenuService) {
 
   }
   
@@ -96,7 +97,14 @@ export class MainOverviewComponent {
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
-    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+    this.globalService.ResetTournamentInfoAfterChangingSubzone(); 
+    this.globalService.ResetTrialInfoAfterChangingSubzone();
+
+     
+    this.globalService.globalVar.partyMember2Hidden = false;
+    this.menuService.updateParty = true;
+    this.globalService.globalVar.partyMember1Hidden = false;
+    this.menuService.updateParty = true;
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";

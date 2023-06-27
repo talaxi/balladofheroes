@@ -355,7 +355,8 @@ export class LookupService {
     }
 
     if (type === ItemsEnum.BoonOfOlympus || type === ItemsEnum.ChthonicFavor || type === ItemsEnum.ChthonicPower || type === ItemsEnum.UnderworldAccess ||
-      type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2 || type === ItemsEnum.GoldenApple || type === ItemsEnum.Ambrosia)
+      type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2 || type === ItemsEnum.GoldenApple || type === ItemsEnum.Ambrosia ||
+      type === ItemsEnum.OlympicCommendation)
       return ItemTypeEnum.Progression;
 
     return ItemTypeEnum.None;
@@ -514,8 +515,7 @@ export class LookupService {
       name = "Recipe for Alchemy item <b>Earth Absorption Potion</b>.";
 
     //equipment
-    else if (this.getEquipmentPieceByItemType(type) !== undefined) {
-      console.log("Test1");
+    else if (this.getEquipmentPieceByItemType(type) !== undefined) {      
       name = this.getEquipmentStats(this.getEquipmentPieceByItemType(type), associatedResource, canRemoveExtra) + "<br/><br/>" + this.getEquipmentEffects(this.getEquipmentPieceByItemType(type));
     }
 
@@ -554,7 +554,9 @@ export class LookupService {
     else if (type === ItemsEnum.Ares)
       name = "Gain <span class='aresColor smallCaps'>Ares</span> as an equippable god";
     else if (type === ItemsEnum.GoldenApple)
-      name = "Increase max Alchemy level by 1. Can only obtain 25 Golden Apples.";
+      name = "Each Golden Apple increase max Alchemy level by 1. Can only obtain 25 Golden Apples.";
+    else if (type === ItemsEnum.OlympicCommendation)
+      name = "Increase unequipped god XP gain by 5% for a total of " + (this.globalService.getInactiveGodXpRate() * 100) + "%. Can only obtain 5 Olympic Commendations.";
     else if (type == ItemsEnum.Ambrosia)
       name = "Favored food of the gods. Use to buy special items and upgrades from the Olympic Favor menu.";
 
@@ -3723,7 +3725,7 @@ export class LookupService {
     if (ability.name === "Knock Around") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. Increase your number of rocks by 1. " + cooldown + " second cooldown.";
     }
-    if (ability.name === "Shatter") {
+    if (ability.name === "Shatter" && character.bestiaryType === BestiaryEnum.Mimas) {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. This ability is used immediately when you have 5 rocks. All rocks are removed after use. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Quick Attack") {
@@ -3748,7 +3750,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Increase target's auto attack cooldown by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Rockfall") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. Damage is increased by 20% per rock. Used immediately upon activation of Earthen Offense. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. Damage is increased by 20% per rock. Used immediately upon activation of Earthen Offense.";
     }
     if (ability.name === "Earthen Offense") {
       abilityDescription = "Enter Earthen Offense mode, increasing the user's Attack and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> while active. " + cooldown + " second cooldown.";
@@ -5454,6 +5456,8 @@ export class LookupService {
               equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Water damage to all targets as true damage every " + effect.triggersEvery + " seconds. <br/>";
             else if (equipment.itemType === ItemsEnum.AthenasScythe)
               equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Holy damage to your target as true damage. <br/>";
+            else if (equipment.itemType === ItemsEnum.ZeussNecklace)
+              equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of your ability's damage as true Lightning damage.<br/>";
             else
               equipmentEffects += "Deal an additional " + effect.effectiveness + " damage.<br/>";
           }
@@ -5463,10 +5467,6 @@ export class LookupService {
               equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's Max HP, up to " + this.utilityService.bigNumberReducer(effect.threshold) + " damage.<br/>";
           }
 
-          if (effect.type === StatusEffectEnum.InstantTrueDamage) {
-            if (equipment.itemType === ItemsEnum.ZeussNecklace)
-              equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% your ability's damage as true Lightning damage.<br/>";
-          }
 
           if (effect.type === StatusEffectEnum.DefenseDown)
             equipmentEffects += "Decrease target's Defense by " + Math.round((1 - effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
@@ -5549,9 +5549,6 @@ export class LookupService {
           if (effect.type === StatusEffectEnum.AllElementalResistanceUp)
             equipmentEffects += "Increase all Elemental Resistances by " + Math.round((effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
-          if (effect.type === StatusEffectEnum.LuckUp)
-            equipmentEffects += "Increase Luck by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
-
           if (effect.type === StatusEffectEnum.DefenseUp)
             equipmentEffects += "Increase Defense by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
@@ -5560,6 +5557,9 @@ export class LookupService {
 
           if (effect.type === StatusEffectEnum.AirDamageUp)
             equipmentEffects += "Increase Air Damage Bonus by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+            if (effect.type === StatusEffectEnum.LightningDamageUp)
+            equipmentEffects += "Increase Lightning Damage Bonus by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
           if (effect.type === StatusEffectEnum.EarthDamageUp)
             equipmentEffects += "Increase Earth Damage Bonus by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
@@ -5654,9 +5654,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Healing Received</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Holy Damage Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: While Second Wind is active, reduce your damage taken by " + (set5Amount * 100) + "%.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Healing Received</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Holy Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: While Second Wind is active, reduce your damage taken by " + (set5Amount * 100) + "%.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Artemis) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>artemis's regalia</span><br/>";
@@ -5664,9 +5664,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Critical Multiplier Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Debuff Duration</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: Your critical hits stun your target for " + (set5Amount) + " seconds.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Critical Multiplier Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Debuff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Your critical hits stun your target for " + (set5Amount) + " seconds.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Hermes) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>hermes's regalia</span><br/>";
@@ -5674,9 +5674,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + this.utilityService.genericRound((1 - set2Amount) * 100) + "% Auto Attack Cooldown Reduction</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Air Damage Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: You have a " + (set5Amount * 100) + "% chance to deal an additional 100% Attack Air Damage when auto attacking.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + this.utilityService.genericRound((1 - set2Amount) * 100) + "% Auto Attack Cooldown Reduction</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Air Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: You have a " + (set5Amount * 100) + "% chance to deal an additional 100% Attack Air Damage when auto attacking.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Apollo) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>apollo's regalia</span><br/>";
@@ -5684,9 +5684,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount) + " HP Regen per 5 sec</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Buff Duration</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: After using Ostinato, use it again at " + (set5Amount * 100) + "% effectiveness after 5 seconds.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount) + " HP Regen per 5 sec</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Buff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: After using Ostinato, use it again at " + (set5Amount * 100) + "% effectiveness after 5 seconds.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Hades) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>hades's regalia</span><br/>";
@@ -5694,9 +5694,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Critical Multiplier Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Multiple Target Damage Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: Hellfire has a " + (set5Amount * 100) + "% chance to trigger Earthquake.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Critical Multiplier Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Multiple Target Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Hellfire has a " + (set5Amount * 100) + "% chance to trigger Earthquake.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Ares) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>ares's regalia</span><br/>";
@@ -5704,9 +5704,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Tick Frequency</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Debuff Duration</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: Your Damage over Time ticks can critically hit.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Tick Frequency</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Debuff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Your Damage over Time ticks can critically hit.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Nemesis) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>nemesis's regalia</span><br/>";
@@ -5714,9 +5714,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Holy and Earth Resistance Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Thorns</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: Your Thorns is increased by your Dispenser of Dues total.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Holy and Earth Resistance Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Thorns</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Your Thorns is increased by your Dispenser of Dues total.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Dionysus) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>dionysus's regalia</span><br/>";
@@ -5724,9 +5724,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Debuff Duration</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Buff Duration</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: When you debuff a target, you have a 20% chance to give a random party member a random " + (set5Amount * 100) + "% primary stat buff. When you buff a target, you have a 20% chance to give a random enemy a random " + (set5Amount * 100) + "% primary stat debuff.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Debuff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Buff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: When you debuff a target, you have a 20% chance to give a random party member a random " + (set5Amount * 100) + "% primary stat buff. When you buff a target, you have a 20% chance to give a random enemy a random " + (set5Amount * 100) + "% primary stat debuff.</span><br/>";
       }
       if (equipment.set === EquipmentSetEnum.Zeus) {
         equipmentEffects += "<span class='bold smallCaps setName s3Heading'>zeus's regalia</span><br/>";
@@ -5734,9 +5734,9 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Armor Penetration</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Lightning Damage Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='positiveStatusEffectColor'>(5) Set</span></b>: Every damage dealing ability you use has a 20% chance to deal the same damage again after " + (set5Amount) + " seconds.</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Armor Penetration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Lightning Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Every damage dealing ability you use has a 20% chance to deal the same damage again after " + (set5Amount) + " seconds.</span><br/>";
       }
     }
 

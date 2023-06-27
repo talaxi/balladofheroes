@@ -396,5 +396,6 @@ export enum ItemsEnum {
   PerfectFlawedEmerald,
   MetalNuggets,
   DivinePlate,
-  DivineTarge
+  DivineTarge,
+  OlympicCommendation
 }

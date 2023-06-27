@@ -73,8 +73,10 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.Dionysus && this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
       outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.OlympicCommendation && this.lookupService.getResourceAmount(ItemsEnum.OlympicCommendation) >= 5)
+      outOfStock = true;
 
-    return outOfStock;
+    return outOfStock;  
   }
 
   setItemPurchasePrice() {

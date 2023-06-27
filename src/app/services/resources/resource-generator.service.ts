@@ -747,6 +747,8 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.Nectar) {
       return new ResourceValue(ItemsEnum.Nectar, amount);
     }
+    if (type === ItemsEnum.OlympicCommendation)
+      return new ResourceValue(ItemsEnum.OlympicCommendation, amount);
     if (type === ItemsEnum.RadiatingAirStone)
       return new ResourceValue(ItemsEnum.RadiatingAirStone, amount);
     if (type === ItemsEnum.RadiatingEarthStone)

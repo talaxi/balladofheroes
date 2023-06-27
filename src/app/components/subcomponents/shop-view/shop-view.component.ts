@@ -2,6 +2,7 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
@@ -110,6 +111,19 @@ export class ShopViewComponent implements OnInit {
     if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting))
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Hephaestus);
 
+  }
+
+  getShopItemTooltipDirection(index: number) {
+    if (index % 4 === 0)
+      return DirectionEnum.Right;
+    else if (index % 4 === 1)
+      return DirectionEnum.Right;
+      else if (index % 4 === 2)
+      return DirectionEnum.Left;
+      else if (index % 4 === 3)
+      return DirectionEnum.Left;
+
+      return DirectionEnum.Right;
   }
 
   getOptionText(type: ShopTypeEnum) {

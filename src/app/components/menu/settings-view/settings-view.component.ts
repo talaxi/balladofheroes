@@ -138,10 +138,14 @@ export class SettingsViewComponent implements OnInit {
           //this.globalService.globalVar.currentVersion = 0.56; //TODO: REMOVE THIS, JUST FOR TESTING
           this.versionControlService.updatePlayerVersion();
 
+          console.log("First");
+          console.log(this.globalService.globalVar.playerNavigation.currentSubzone);
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
-          //console.log(this.globalService.globalVar);
+          //console.log(this.globalService.globalVar);          
+          console.log("Second");
+          console.log(this.globalService.globalVar.playerNavigation.currentSubzone);
 
           this.getSettings();
         }

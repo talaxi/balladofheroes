@@ -2753,7 +2753,7 @@ export class SubZoneGeneratorService {
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HolySprite));
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HolySprite));            
       enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EarthSprite));   
-      enemyTeam2.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FireSprite));   
+      enemyTeam3.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FireSprite));   
       battleOptions.push(enemyTeam3);
     }
     if (type === SubZoneEnum.HuntForYarrowMountainHike) {
@@ -3992,6 +3992,7 @@ export class SubZoneGeneratorService {
 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Nemesis, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Dionysus, SubZoneEnum.MountOlympusOlympus)); 
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.OlympicCommendation, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Ambrosia, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasShield, SubZoneEnum.MountOlympusOlympus)); 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasNecklace, SubZoneEnum.MountOlympusOlympus)); 

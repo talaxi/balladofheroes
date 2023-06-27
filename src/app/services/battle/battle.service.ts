@@ -437,9 +437,9 @@ export class BattleService {
   }
 
   initializeEnemyList() {
-    console.log("init enemies");
+    //console.log("init enemies");
     var subZone = this.balladService.getActiveSubZone();
-    console.log("Subzone: " + subZone.type);
+    //console.log("Subzone: " + subZone.type);
     var enemyOptions: EnemyTeam[] = [];
 
     if (this.battle.activeTournament.type !== ColiseumTournamentEnum.None) {
@@ -455,8 +455,8 @@ export class BattleService {
       enemyOptions = this.subzoneGeneratorService.generateBattleOptions(subZone.type);
     }
 
-    console.log("Enemy options");
-    console.log(enemyOptions);
+    //console.log("Enemy options");
+    //console.log(enemyOptions);
     var randomEnemyTeam = enemyOptions[this.utilityService.getRandomInteger(0, enemyOptions.length - 1)];
     if (subZone.type === SubZoneEnum.AigosthenaUpperCoast && subZone.victoryCount < 2)
       this.battle.currentEnemies = enemyOptions[0];
@@ -857,7 +857,7 @@ export class BattleService {
         if (Math.round(healAmount) > 0) {
           if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
             (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong> gains " + Math.round(healAmount) + " HP" + (instantHeal.abilityName !== undefined && instantHeal.abilityName !== "" ? " from " + instantHeal.abilityName : "") + ".";
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong> gains " + this.utilityService.bigNumberReducer(healAmount) + " HP" + (instantHeal.abilityName !== undefined && instantHeal.abilityName !== "" ? " from " + instantHeal.abilityName : "") + ".";
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
         }
@@ -1483,7 +1483,7 @@ export class BattleService {
 
     if (user.name === "Mimas") {
       var rockCount = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.StockpileRock)?.stackCount;
-      if (rockCount !== undefined && rockCount >= 2) {
+      if (rockCount !== undefined && rockCount >= 5) {
         var shatter = user.abilityList.find(item => item.name === "Shatter");
         if (shatter !== undefined) {
           user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.StockpileRock);
@@ -3045,7 +3045,7 @@ export class BattleService {
       statusEffectDamageReduction *= effect.effectiveness;
     }
 
-    if (isDamageOverTime && bloodlust !== undefined && this.battle !== undefined && this.battle.currentEnemies !== undefined) {
+    if (isDamageOverTime && target.type === CharacterEnum.Enemy && bloodlust !== undefined && this.battle !== undefined && this.battle.currentEnemies !== undefined) {
       var totalDots = 0;
       this.battle.currentEnemies.enemyList.forEach(enemy => {
         totalDots += enemy.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.DamageOverTime).length;
@@ -3063,10 +3063,10 @@ export class BattleService {
       altarIncrease *= relevantAltarEffect!.effectiveness;
     }
 
-    //console.log(damage + " * " + elementIncrease + " * " + elementalDamageDecrease + " * " + bloodlustDamageBonus + " * " + altarIncrease + " * " + statusEffectDamageBonus + " * " + statusEffectDamageReduction);
+    console.log(damage + " * " + elementIncrease + " * " + elementalDamageDecrease + " * " + bloodlustDamageBonus + " * " + altarIncrease + " * " + statusEffectDamageBonus + " * " + statusEffectDamageReduction);
     var totalDamageDealt = damage * elementIncrease * elementalDamageDecrease * bloodlustDamageBonus * altarIncrease * statusEffectDamageBonus * statusEffectDamageReduction;
 
-    //console.log("TDD: " + totalDamageDealt);
+    console.log("TDD: " + totalDamageDealt);
 
     if (target !== undefined) {
       var reduceDamage = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceDirectDamage);

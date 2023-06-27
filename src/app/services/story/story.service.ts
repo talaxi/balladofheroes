@@ -504,8 +504,8 @@ export class StoryService {
     }
     else if (storyId === 38) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>The inside of the extravagant palace mirrors the outside, with hallway after hallway of beautiful ornaments and gilded paths. You make your way to the inner sanctum of the palace to find Zeus meeting with the Oceanids. You anxiously await your turn to speak, but the King of Gods immediately rises at the sight of you.</div>" +
-          "<div class='sceneDiv'>" + this.zeusText("“Ah, look who finally decided to show up. When I call for an audience, I expect you to answer immediately!”") + " He bellows, his voice booming throughout the halls.</div>" +
+        sceneText = "<div class='sceneDiv'>The inside of the extravagant palace mirrors the outside, with hallway after hallway of beautiful ornaments and gilded paths. You make your way to the inner sanctum of the palace to find Zeus meeting with the Oceanids. You anxiously await your turn to speak, but the King of Gods immediately rises at the sight of you. Did he seem angry?</div>" +
+          "<div class='sceneDiv'>" + this.zeusText("“And look who finally decided to show up.”") + " He bellows, his voice booming throughout the halls.</div>" +
           "<div>You and Zosime both immediately kneel, anxiously dropping your heads. You were not sure what to expect, and your mind raced for answers on your delayed journey.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>Zeus bursts into laughter. " + this.zeusText("“Merely a joke! Rise, rise!”") + " He says, making his way towards you. " + this.zeusText("“Don't look so frightened! My daughters believe you will be the key to protecting our home. I see it as well.”") + " He continues, inspecting the two of you. " + this.zeusText("“Yes, yes, I think you will do handsomely.”") + "</div>" +
@@ -556,19 +556,19 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>At the Olympus gates, the giant Enceladus finally arrives. He is in no hurry to join the fight, sauntering through the gates towards you. Behind him is a man you haven't seen since your time in the Underworld: Khronos. The two of them approach Athena in the courtyards.</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("“Hello again, my heroes.”") + " Khronos says to you and Zosime. " + this.commonCharacterText("“You've done so well.”") + "</div>" +
           "<div class='sceneDiv'>" + this.athenaText("“What is the meaning of this, snake? The spell was not cast to work on giants!”") + "Athena hisses, every word covered in venom.</div>" +
-          "<div>Khronos turns his attention to Athena. " + this.commonCharacterText("“What is the meaning of anything, Athena? You, the goddess of wisdom. Your brother, the god of war. Your father, king of gods. You think you know everything. Do you know what you all should be called? The gods of hubris.") + "</div>";
+          "<div>Khronos turns his attention to Athena. " + this.commonCharacterText("“Surely you understand. You, the goddess of wisdom. Your brother, the god of war. Your father, king of gods. You think you know everything. Do you know what you all should be called? The gods of hubris.") + "</div>";
       else if (pageCount === 4)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("Only hubris would convince you that you could surpass time. You believe that you will rule this world forever. And what do you do when you see your time coming to an end? You break the rules. You try to control time itself. You come to me with a request to turn these mortals into abominations, stepping in and out of time.") + "</div>" +
           "<div class='sceneDiv'>" + this.commonCharacterText("But Athena. <b>No one</b> controls time.”") + "</div>" +
-          "<div>" + this.thalesText("“You asked me to learn what is means to be a hero.”") + " You interject. " + this.thalesText("“This isn't it! The deceit, the backstabbing… being a hero is doing what is right no matter the cost. No matter what it takes.”") + "</div>";
+          "<div>" + this.thalesText("“You asked me to learn what it means to be a hero.”") + " You interject. " + this.thalesText("“This isn't it! The deceit, the backstabbing… being a hero is doing what is right no matter the cost. No matter what it takes.”") + "</div>";
       else if (pageCount === 5)
-        sceneText = "<div class='sceneDiv'>" + "Khronos turns his glance back to you. " + this.commonCharacterText("“Indeed, you are correct. We must do what has to be done, and what is more right than following the natural order of things? The seasons change, my son, and the season of gods on Olympus is over.”") + "</div>" +
+        sceneText = "<div class='sceneDiv'>" + "Khronos turns his glance back to you. " + this.commonCharacterText("“Yes, yes... We must do what has to be done, and what is more right than following the natural order of things? The seasons change, my son, and the season of gods on Olympus is over.”") + "</div>" +
           "<div class='sceneDiv'>With that, Enceladus rushes in to attack. Athena quickly engages him, their battle sprawling all over the courtyard.</div>" +
           "<div class='sceneDiv'>While you and Athena were processing Khronos's betrayal, Zosime was trying to think of a solution. " + this.zosimeText("“Thales, we need to run. If we aren't here, the giants will die for good. It's the only way.”") + "</div>" +
           "<div>She's right. You turn to run but find that you aren't able to move at all.</div>";
       else if (pageCount === 6)
-        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You've journeyed all this way, you should stay to watch the end.”") + " Khronos says whilst casting a spell to bind you in place. You're forced to watch as the giants and titans combined might drive your allies back. " + this.commonCharacterText("“In time, you will see that this is right. All things must change.”") + "</div>" +
-          "<div class='sceneDiv'>The winged giant Alcyoneus had joined with Enceladus in the battle against Athena, and the two were overwhelming her. You struggle against your shackles with all over your might to no avail. Just as things were beginning to look dire, the ground began to quake all over Olympus.</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You've journeyed all this way, you should stay. I am grateful to you both. Without your heroism, the Olympians would be able to simply do as they please without care of the consequences.”") + " Khronos says whilst casting a spell to bind you in place. You're forced to watch as the giants and titans combined might drive your allies back. " + this.commonCharacterText("“In time, you will see that this is right. All things must change.”") + "</div>" +
+          "<div class='sceneDiv'>The winged giant Alcyoneus had joined with Enceladus in the battle against Athena, and the two were overwhelming her. You struggle against your shackles with all of your might to no avail. Just as things were beginning to look dire, the ground began to quake all over Olympus.</div>" +
           "<div class='sceneDiv'>" + this.hadesText("“KHRONOS.”") + "</div>" +
           "<div>Hades had finally arrived to the battle.</div>";
       else if (pageCount === 7)
@@ -589,8 +589,8 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
     sceneText = sceneText.replaceAll("Ares", "<span class='aresColor storyCharacterName'>Ares</span>");
     sceneText = sceneText.replaceAll("Apollo", "<span class='apolloColor storyCharacterName'>Apollo</span>");
-    sceneText = sceneText.replaceAll("Poseidon", "<span class='athenaColor storyCharacterName'>Poseidon</span>");
-    sceneText = sceneText.replaceAll("Zeus", "<span class='athenaColor storyCharacterName'>Zeus</span>");
+    sceneText = sceneText.replaceAll("Poseidon", "<span class='poseidonColor storyCharacterName'>Poseidon</span>");
+    sceneText = sceneText.replaceAll("Zeus", "<span class='zeusColor storyCharacterName'>Zeus</span>");
     sceneText = sceneText.replaceAll("Heracles", "<span class='commonCharacterColor storyCharacterName'>Heracles</span>");
     sceneText = sceneText.replaceAll("Jason", "<span class='commonCharacterColor storyCharacterName'>Jason</span>");
     sceneText = sceneText.replaceAll("Odysseus", "<span class='commonCharacterColor storyCharacterName'>Odysseus</span>");
@@ -1019,7 +1019,7 @@ export class StoryService {
           "<div class='sceneDiv'>The blacksmith alternates between the heaviest of blows and most delicate of touches to shape the metal exactly as he wants it. The fire of the forge roared but bent entirely to his will. If blacksmithing was an art, there was no greater artist than Hephaestus.</div>" +
           "<div>After some time, the god eventually notices your presence.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“Ah, you must be the mortals here to aid us in battle. You've been the talk of Olympus for some time.”") + " He says as he puts down his tools. He nods for you to follow as he walks back towards an armory holding his greatest artwork.</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You must be the mortals here to aid us in battle. You've been the talk of Olympus for some time.”") + " He says as he puts down his tools. He nods for you to follow as he makes his way back towards an armory holding his greatest artwork.</div>" +
           this.commonCharacterText("“I made a couple of pieces for you. Won't have you dying on my watch. Here, try this on and go give it a test run.”");
     }
 

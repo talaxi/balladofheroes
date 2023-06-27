@@ -1175,6 +1175,10 @@ button:disabled {
   opacity: .6;
 }
 
+.unactivatedSetColor {
+  color: var(--foreground-tertiary);
+}
+
 @keyframes fadingAnimation {
   0% {
     opacity: 100%;

@@ -879,12 +879,16 @@ export class GodViewComponent implements OnInit {
         var abilities = this.globalService.getNewGodPermanentAbilityUpgrades(this.god, item[0]);
         var increasedStat = this.getIncreasedStatFromStats(stats, abilities);      
         var gainCap = 0;
+        var partyText = "";
+
         if (item[0] === 50 || item[0] === 150 || item[0] === 250 || item[0] === 350 || item[0] === 450)
           gainCap = this.utilityService.godPermanentStatGain1ObtainCap + this.globalService.globalVar.chthonicPowers.increasedGodPrimaryStatResets;
           if (item[0] === 100 || item[0] === 200 || item[0] === 300 || item[0] === 400 || item[0] === 500)
           gainCap = this.utilityService.godPermanentStatGain2ObtainCap;
-          if (item[0] === 950 || item[0] === 550 || item[0] === 650 || item[0] === 750 || item[0] === 850)
-          gainCap = this.utilityService.godPermanentStatGain3ObtainCap + this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets;
+          if (item[0] === 950 || item[0] === 550 || item[0] === 650 || item[0] === 750 || item[0] === 850) {
+            gainCap = this.utilityService.godPermanentStatGain3ObtainCap + this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets;
+            partyText = " to party";
+          }
           if (item[0] === 600 || item[0] === 700 || item[0] === 800 || item[0] === 900 || item[0] === 1000)
           gainCap = this.utilityService.godPermanentStatGain4ObtainCap;
 
@@ -903,11 +907,11 @@ export class GodViewComponent implements OnInit {
 
           var upgradedAbilityName = this.god.abilityList.find(item => item.requiredLevel === abilities.requiredLevel)?.name;          
           if (upgradedAbilityName !== undefined)
-            upgradedAbilityName += " ";
+            upgradedAbilityName = "<b>" + upgradedAbilityName + "</b> ";
           else
             upgradedAbilityName = "";
 
-        text += "<span class='statLabel bold " + this.god.name.toLowerCase() + "Color'>Level " + item[0] + ":</span> <span class='statValue " + clearClass + "'>" + upgradedAbilityName + "+" + increasedStat + " - " + item[1] + " / " + (gainCap) + " obtained</span><hr class='slimMargin'/>"; 
+        text += "<span class='statLabel bold " + this.god.name.toLowerCase() + "Color'>Level " + item[0] + ":</span> <span class='statValue " + clearClass + "'>" + upgradedAbilityName + "+" + increasedStat + partyText + " - " + item[1] + " / " + (gainCap) + " obtained</span><hr class='slimMargin'/>"; 
       }
     });
 

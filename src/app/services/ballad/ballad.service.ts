@@ -82,7 +82,7 @@ export class BalladService {
     return subzone;
   }
 
-  setActiveSubZone(type: SubZoneEnum) {
+  setActiveSubZone(type: SubZoneEnum) {    
     var relatedZone: Zone | undefined = this.getActiveZone();
     var relatedBallad: Ballad | undefined = this.getActiveBallad();
     var relatedSubzone: SubZone = this.getActiveSubZone();
@@ -115,6 +115,24 @@ export class BalladService {
     }
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
     this.globalService.resetCooldowns();
+    
+    if (relatedSubzone.type === SubZoneEnum.WarForTheMountainStables) {
+      this.globalService.globalVar.partyMember2Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {      
+      this.globalService.globalVar.partyMember2Hidden = false;
+      this.menuService.updateParty = true;
+    }
+
+    if (relatedSubzone.type === SubZoneEnum.WarForTheMountainPalaces) {
+      this.globalService.globalVar.partyMember1Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {
+      this.globalService.globalVar.partyMember1Hidden = false;
+      this.menuService.updateParty = true;
+    }
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.getSubZoneName(relatedSubzone.type) + "</strong>.";
