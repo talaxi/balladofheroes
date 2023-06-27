@@ -109,7 +109,8 @@ export class VersionControlService {
   }
 
   updatePlayerVersion(autoExport: boolean = false) {
-    if (autoExport && this.getCurrentVersion() > this.globalService.globalVar.currentVersion) {
+    var shouldAutoExport = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? false;
+    if (autoExport && shouldAutoExport && this.getCurrentVersion() > this.globalService.globalVar.currentVersion) {
       this.exportData();
     }
 
