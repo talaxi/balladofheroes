@@ -39,17 +39,16 @@ export class JewelcraftingService {
   getActionLength(action: ProfessionActionsEnum) {
     var duration = 0;
 
-    //TODO: REVERT
     if (action === ProfessionActionsEnum.CombiningStones)
-      duration = 1;//1 * 60;
+      duration = 1 * 60;
     if (action === ProfessionActionsEnum.CombiningGems)
-      duration = 1;//2 * 60;
+      duration = 2 * 60;
     if (action === ProfessionActionsEnum.RareCombiningStones)
       duration = 3 * 60;
     if (action === ProfessionActionsEnum.RareCombiningGems)
       duration = 4 * 60;
     if (action === ProfessionActionsEnum.Polish)
-      duration = 1;//1 * 60;
+      duration = 1 * 60;
     if (action === ProfessionActionsEnum.HeatingMetal)
       duration = 2 * 60;
     if (action === ProfessionActionsEnum.ShapingMetal)

@@ -3297,8 +3297,7 @@ export class GlobalService {
       return 12;
   }
 
-  setAsSubscriber(date: Date) {
-    //TODO: once currency is implemented, check if they are already obtained and give currency instead
+  setAsSubscriber(date: Date) {    
     var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
     var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
     var ambrosiaCost = 10;

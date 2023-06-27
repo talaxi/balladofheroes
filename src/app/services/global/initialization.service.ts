@@ -729,7 +729,7 @@ export class InitializationService {
       this.globalService.globalVar.chthonicPowers.maxHpBoostLevel = 10;
       this.globalService.globalVar.chthonicPowers.resistanceBoostLevel = 10;
       this.globalService.globalVar.chthonicPowers.luckBoostLevel = 10;
-      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 100; //TODO: 10
+      this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 10;
       this.globalService.globalVar.altars.largeAltarsUnlocked = true;
       this.globalService.globalVar.extraSpeedTimeRemaining = 8 * 60 * 60;
 

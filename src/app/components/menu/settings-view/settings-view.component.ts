@@ -134,18 +134,12 @@ export class SettingsViewComponent implements OnInit {
         var decompressedData = LZString.decompressFromBase64(fileReader.result);
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
-          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
-          //this.globalService.globalVar.currentVersion = 0.56; //TODO: REMOVE THIS, JUST FOR TESTING
+          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);          
           this.versionControlService.updatePlayerVersion();
 
-          console.log("First");
-          console.log(this.globalService.globalVar.playerNavigation.currentSubzone);
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
-          //console.log(this.globalService.globalVar);          
-          console.log("Second");
-          console.log(this.globalService.globalVar.playerNavigation.currentSubzone);
 
           this.getSettings();
         }

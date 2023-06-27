@@ -926,13 +926,6 @@ export class VersionControlService {
             }
           });
 
-          /*var warrior = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Warrior);
-          if (warrior !== undefined) {
-            var battleCry = warrior.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
-            if (battleCry !== undefined)
-              battleCry.targetEffect.unshift(this.globalService.createStatusEffect(StatusEffectEnum.ThornsDamageTakenUp, 10, 1.1, false, false, false, warrior.name));
-          }*/
-
           var geryonsFarm = this.balladService.findSubzone(SubZoneEnum.ErytheiaGeryonsFarm);
           if (geryonsFarm !== undefined && geryonsFarm.isAvailable && geryonsFarm.victoryCount > 0) {
             var olympus = this.balladService.findBallad(BalladEnum.Olympus);
@@ -957,10 +950,6 @@ export class VersionControlService {
             }
 
           }
-          //TODO: remove, this is just for testing          
-          //var olympusSubzone = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
-          //olympusSubzone!.isAvailable = true;
-          //^^^
 
           var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
           if (alchemy !== undefined) {

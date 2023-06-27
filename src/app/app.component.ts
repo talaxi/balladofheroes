@@ -94,7 +94,6 @@ export class AppComponent {
       deltaTime = this.utilityService.roundTo(deltaTime, 5);
       var checkupPerformanceNow = performance.now();
 
-      //todo: move the 5 runs thing here? things that are subscribing to the emit here aren't keeping up with the deltatime change
       this.gameCheckup(deltaTime);
 
       if (this.globalService.globalVar.performanceMode) {

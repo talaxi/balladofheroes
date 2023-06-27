@@ -462,15 +462,12 @@ export class CharacterViewComponent implements OnInit {
     if (originalGod === undefined)
       return 0;
     
-    var permanentAbilityUpgrade = originalGod.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel); 
-    console.log("Abi");
-    console.log(permanentAbilityUpgrade);   
+    var permanentAbilityUpgrade = originalGod.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);     
     if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0 &&
       permanentAbilityUpgrade.userEffect[0].threshold !== undefined && !Number.isNaN(permanentAbilityUpgrade.userEffect[0].threshold))
       permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].threshold;
 
-    if (ability !== undefined && ability.userEffect.length > 0) {   
-      console.log("Threshold amount: " + permanentAbilityUpgradeAmount);   
+    if (ability !== undefined && ability.userEffect.length > 0) {         
       return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
     }
 

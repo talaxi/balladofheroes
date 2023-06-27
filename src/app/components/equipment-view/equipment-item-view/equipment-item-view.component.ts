@@ -71,11 +71,6 @@ export class EquipmentItemViewComponent implements OnInit {
     
     return "";
   }
-/*
-  ngOnChanges(changes: any) {
-    console.log("Changes");
-    console.log(changes);
-  }*/
 
   ngOnDestroy() {
     if (this.subscription !== undefined)
