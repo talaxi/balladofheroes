@@ -140,6 +140,10 @@ export class ZoneNavigationComponent implements OnInit {
     return this.lookupService.isMeleteAvailable();
   }
 
+  areLoadoutsAvailable() {
+    return this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 2 || this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 4;
+  }
+
   getSubzoneName(subzone: SubZone) {
     return this.balladService.getSubZoneName(subzone.type);
   }
@@ -186,6 +190,12 @@ export class ZoneNavigationComponent implements OnInit {
     this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
+    this.globalService.ResetTrialInfoAfterChangingSubzone();
+ 
+      this.globalService.globalVar.partyMember2Hidden = false;
+      this.menuService.updateParty = true;
+      this.globalService.globalVar.partyMember1Hidden = false;
+      this.menuService.updateParty = true;
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
     var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
@@ -215,6 +225,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
+      this.globalService.ResetTrialInfoAfterChangingSubzone();
 
       //var gameLogEntry = "You move to <strong>" + "Asphodel" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
       //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -238,6 +249,7 @@ export class ZoneNavigationComponent implements OnInit {
       this.dpsCalculatorService.xpGain = [];
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
+      this.globalService.ResetTrialInfoAfterChangingSubzone();
 
       //var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
       //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
@@ -254,6 +266,13 @@ export class ZoneNavigationComponent implements OnInit {
       this.dialog.open(content, { width: '95%', height: '80%' });
     else
       this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
+  }
+  
+  viewLoadouts(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%' });
+    else
+      this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85vh'});
   }
 
   viewMelete(content: any) {
@@ -438,9 +457,40 @@ export class ZoneNavigationComponent implements OnInit {
 
     return "!";
   }
+
+  selectZone(zone: Zone) {
+    this.availableSubZones = this.balladService.selectZone(zone);
+
+    /*var selectedZone = this.balladService.getActiveZone();
+    if (selectedZone !== undefined)
+      this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);*/
+  }
+
+  selectSubZone(subzone: SubZone, zone: Zone) {
+    this.balladService.selectSubZone(subzone, zone);
+
+    /*this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
+    });
+    var selectedBallad = this.balladService.getActiveBallad();
+    if (selectedBallad !== undefined)
+      this.availableZones = selectedBallad.zones.filter(item => item.isAvailable);
+    var selectedZone = this.balladService.getActiveZone();
+    if (selectedZone !== undefined)
+      this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);*/
+  }
   
   openAutoProgressOptions(content: any) {
     var dialog = this.dialog.open(content, { width: '65%', maxHeight: '50%' });
+  }
+
+  untrackAllAvailable() {
+    return this.globalService.globalVar.trackedResources.filter(item => item !== ItemsEnum.Coin).length > 0;
+  }
+
+  untrackAllResources() {
+    this.globalService.globalVar.trackedResources = [];  
+    this.globalService.globalVar.trackedResources.push(ItemsEnum.Coin);
   }
 
   ngOnDestroy() {

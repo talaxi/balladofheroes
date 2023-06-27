@@ -51,7 +51,7 @@ export class UtilityService {
   public permanentGodAbility2Level = 175;
   public permanentGodAbility3Level = 375;
 
-  public godStatGainLevelIncrement = (1 / 18);
+  public godStatGainLevelIncrement = (1 / 25);
   public godStatGainBaseAmount = 6;
   public godPermanentStatGain1ObtainCap = 10;
   public godPermanentStatGain2ObtainCap = 10;
@@ -61,10 +61,14 @@ export class UtilityService {
   public godPermanentPassiveObtainCap = 10;
   public godPermanentAbility2ObtainCap = 10;
   public godPermanentAbility3ObtainCap = 10;
+  public characterPermanentAbility1ObtainCap = 25;
+  public characterPermanentAbility2ObtainCap = 25;
+  public characterPermanentPassiveObtainCap = 25;
+  public characterPermanentStatObtainCap = 25;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
-  public firstJewelcraftingLevelCap = 25; 
+  public firstJewelcraftingLevelCap = 25;
   public jewelcraftingLevelCapGain = 25;
 
   public smallAltarAffinityGain = 1;
@@ -77,7 +81,7 @@ export class UtilityService {
   public basePrayGodXpIncrease = 20;
   public largeAltarPrayGodXpIncrease = 250;
 
-  public killCountDisplayEnemyStatsAbilities = 1;
+  public killCountDisplayEnemyStatsAbilities = 0;
   public killCountDisplayBasicEnemyLoot = 10;
   public killCountDisplayFullEnemyLoot = 30;
 
@@ -87,11 +91,13 @@ export class UtilityService {
   public overdriveHealingNeededToUnlockPreservation = 100000;
   public overdriveHealsNeededToUnlockHarmony = 25000;
   public overdriveCriticalsNeededToUnlockBullseye = 15000;
-  
+
   public reprisalAmount = 1;
   public reprisalBonus = 2;
   public preservationAmount = .5;
   public bullseyeAmount = .5;
+  public quicknessCooldownReduction = 2;
+  public hopeThresholdMultiplier = 2;
 
   public enemyMinorElementalWeakness = -.1;
   public enemyMediumElementalWeakness = -.25;
@@ -112,6 +118,7 @@ export class UtilityService {
 
   public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
   public weeklyMeleeEntryCap = 7;
+  public levelsNeededForAmbrosia = 100;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
@@ -309,6 +316,36 @@ export class UtilityService {
       }
 
       reducedNumber += "M";
+    }    
+    else if (this.getDigitCount(originalAmount) <= 12) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 9;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "B";
+    }    
+    else if (this.getDigitCount(originalAmount) <= 15) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 12;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "T";
+    }
+    else if (this.getDigitCount(originalAmount) <= 18) {
+      var leadingNumberCount = this.getDigitCount(originalAmount) - 15;
+      reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
+      if (3 - leadingNumberCount > 0) {
+        var remainingCount = 3 - leadingNumberCount;
+        reducedNumber += "." + originalAmount.toString().substring(leadingNumberCount, leadingNumberCount + remainingCount);
+      }
+
+      reducedNumber += "AA";
     }
 
     return reducedNumber;
@@ -343,14 +380,26 @@ export class UtilityService {
     if (text === "Vial of the Black Sea")
       return "Vials of the Black Sea";
 
-      if (text === "Vial of the Cretan Sea")
+    if (text === "Vial of the Cretan Sea")
       return "Vials of the Cretan Sea";
 
     if (text === "Essence of Fire")
       return "Essences of Fire";
 
-      if (text === "Essence of Water")
+    if (text === "Essence of Water")
       return "Essences of Water";
+
+    if (text === "Essence of Earth")
+      return "Essences of Earth";
+
+    if (text === "Essence of Lightning")
+      return "Essences of Lightning";
+
+    if (text === "Essence of Air")
+      return "Essences of Air";
+
+    if (text === "Essence of Holy")
+      return "Essences of Holy";
 
     if (text === "Small Topaz")
       return "Small Topazes";
@@ -361,7 +410,10 @@ export class UtilityService {
     return pluralize(text);
   }
 
-  openConfirmationDialog() {          
-    return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });  
+  openConfirmationDialog(confirmationBoxComponent?: any) {
+    if (confirmationBoxComponent !== undefined)
+      return this.dialog.open(confirmationBoxComponent, { width: '40%', height: 'auto' });
+    else
+      return this.dialog.open(ConfirmationBoxComponent, { width: '40%', height: 'auto' });
   }
 }

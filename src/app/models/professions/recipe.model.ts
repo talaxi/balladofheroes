@@ -15,9 +15,11 @@ export class Recipe {
     steps: ProfessionActionsEnum[];
     expGain: number;
     quality: EquipmentQualityEnum;
+    displayOrder: number;
 
     constructor() {
         this.ingredients = [];
         this.steps = [];
+        this.displayOrder = 0;
     }
 }

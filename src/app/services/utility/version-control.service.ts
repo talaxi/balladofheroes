@@ -25,6 +25,11 @@ import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { Melete } from 'src/app/models/melete/melete.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
+import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
+import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
+import { UsableItemEffect } from 'src/app/models/resources/usable-item-effect.model';
+import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
+declare var LZString: any;
 
 @Injectable({
   providedIn: 'root'
@@ -37,7 +42,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -103,7 +108,12 @@ export class VersionControlService {
     return date.toDateString().replace(/^\S+\s/, '');
   }
 
-  updatePlayerVersion() {
+  updatePlayerVersion(autoExport: boolean = false) {
+    var shouldAutoExport = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? false;
+    if (autoExport && shouldAutoExport && this.getCurrentVersion() > this.globalService.globalVar.currentVersion) {
+      this.exportData();
+    }
+
     this.getListAscended().forEach(version => {
       if (this.globalService.globalVar.currentVersion < version) {
         if (version === .31) {
@@ -666,16 +676,329 @@ export class VersionControlService {
             }
 
             if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Thorns) &&
-             (character.equipmentSet.shield === undefined || (character.equipmentSet.shield.itemType !== ItemsEnum.Aegis && character.equipmentSet.shield.itemType !== ItemsEnum.SpikedShield)) &&
-             (character.equipmentSet.armor === undefined || character.equipmentSet.armor.itemType !== ItemsEnum.ScaleArmor) && 
-             (character.equipmentSet.ring === undefined || character.equipmentSet.ring.itemType !== ItemsEnum.ScalyRing)) {
+              (character.equipmentSet.shield === undefined || (character.equipmentSet.shield.itemType !== ItemsEnum.Aegis && character.equipmentSet.shield.itemType !== ItemsEnum.SpikedShield)) &&
+              (character.equipmentSet.armor === undefined || character.equipmentSet.armor.itemType !== ItemsEnum.ScaleArmor) &&
+              (character.equipmentSet.ring === undefined || character.equipmentSet.ring.itemType !== ItemsEnum.ScalyRing)) {
               character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ReduceDirectDamage);
             }
           });
+        }
+        if (version === .6) {
+          this.globalService.globalVar.settings.set("autoExportOnUpdate", false);
+          this.globalService.globalVar.loadouts = [];
+          this.initializationService.initializeBalladOfOlympus();
+          this.globalService.globalVar.globalStatusEffects = [];
+          this.globalService.globalVar.sidequestData.levelsForNextAmbrosia = this.utilityService.levelsNeededForAmbrosia;
+
+          this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
+            if (character.equipmentSet.weapon !== undefined && character.equipmentSet.weapon.itemType === ItemsEnum.RadiatingHammer) {
+              var equipmentPiece = character.equipmentSet.weapon;
+              var equipmentEffect = new UsableItemEffect();
+              equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+              equipmentEffect.chance = .25;
+              equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", 15000, undefined, undefined, undefined, false));
+              equipmentPiece.equipmentEffects.push(equipmentEffect);
+            }
+          });
+
+          var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
+          if (zeus !== undefined) {
+            this.globalService.assignGodAbilityInfo(zeus);
+            zeus.displayOrder = 9;
+          }
+
+          var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+          if (hermes !== undefined) {           
+            var permanentAbility = hermes.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (permanentAbility !== undefined && permanentAbility.userEffect.length > 1) {
+              permanentAbility.userEffect[0].effectiveness /= 2;
+              permanentAbility.userEffect[1].effectiveness /= 2;
+            }
+          }
+        
+          var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+          if (apollo !== undefined) {
+            var passive = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              passive.effectiveness = .4 + (passive.abilityUpgradeLevel * .015);
+            }
+
+            var ability1 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.userEffect[0].effectiveness = 1.15 + ((ability1.userEffect[0].effectiveness - 1.15) * (3 / 4));
+            }
+
+            var ability2 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.userEffect[0].effectiveness = 1.15 + ((ability2.userEffect[0].effectiveness - 1.15) * (3 / 4));
+            }
+
+            var ability3 = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (ability3 !== undefined) {
+              ability3.userEffect[0].effectiveness = 1.15 + ((ability3.userEffect[0].effectiveness - 1.2) * (3 / 4));
+            }
+
+            var permanentAbility1 = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined) {
+              permanentAbility1.userEffect[0].effectiveness = (permanentAbility1.userEffect[0].effectiveness / .05) * .03;
+            }
+
+            var permanentAbility2 = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (permanentAbility2 !== undefined) {
+              permanentAbility2.userEffect[0].effectiveness = (permanentAbility2.userEffect[0].effectiveness / .05) * .03;
+            }
+
+            var permanentAbility3 = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined) {
+              permanentAbility3.userEffect[0].effectiveness = (permanentAbility3.userEffect[0].effectiveness / .05) * .03;
+            }
+
+            var permanentPassive = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness *= (2.5 / 10);
+            }
+          }
+
+          var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+          if (dionysusGod !== undefined) {
+            var permanentAbility1 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined && permanentAbility1.userEffect[0] !== undefined) {
+              var totalGainCount = 0;
+              dionysusGod.permanentAbility1GainCount.forEach(item => {
+                totalGainCount += item[1];
+              });
+              
+              permanentAbility1.userEffect[0].threshold = totalGainCount * .025;
+              permanentAbility1.userEffect[0].effectiveness = 0;
+            }
+
+            var permanentAbility3 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined) {
+              permanentAbility3.targetEffect[0].effectiveness = (permanentAbility3.targetEffect[0].effectiveness / .02) * .0028;
+            }
+          }
+
+          var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+          if (hermes !== undefined) {
+            var permanentPassive = hermes.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness *= .4;
+            }
+          }
+
+          var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);
+          if (hades !== undefined) {
+            var permanentAbility1 = hades.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined) {
+              permanentAbility1.effectiveness = (permanentAbility1.effectiveness / .25) * .2;
+            }
+
+            var permanentAbility2 = hades.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (permanentAbility2 !== undefined) {
+              permanentAbility2.effectiveness = (permanentAbility2.effectiveness / .3) * .25;
+            }
+          }
+
+          var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
+          if (athena !== undefined) {
+            var permanentAbility1 = athena.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined) {
+              permanentAbility1.effectiveness = (permanentAbility1.effectiveness / .5) * .6;
+            }
+
+            var permanentAbility3 = athena.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined) {
+              permanentAbility3.effectiveness = (permanentAbility3.effectiveness / .15) * .25;
+            }
+          }          
+          
+          var nemesisGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+          if (nemesisGod !== undefined) {
+            var permanentAbility1 = nemesisGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined) {
+              permanentAbility1.effectiveness = permanentAbility1.effectiveness  * .5;
+            }
+
+            var permanentAbility3 = nemesisGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined) {
+              permanentAbility3.effectiveness = (permanentAbility3.effectiveness / .3) * .25;
+            }
+          }
+
+          var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+          if (ares !== undefined) {
+            var ability1 = ares.abilityList.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.targetEffect[0].duration -= 5;
+              ability1.cooldown += 2;
+              ability1.targetEffect[0].duration -= Math.floor(ability1.abilityUpgradeLevel / 5) * .25;
+              ability1.targetEffect[0].effectiveness *= .5;
+              ability1.targetEffect[0].effectiveness += .05;
+            }
+
+            var ability3 = ares.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (ability3 !== undefined) {
+              ability3.targetEffect[0].effectiveness = ((ability3.targetEffect[0].effectiveness - 2) * 2) + 2;
+            }
+
+            var passive = ares.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              passive.effectiveness = .02 + ((passive.effectiveness - .025) * .8);
+            }
+
+            var permanentPassive = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness *= .5;
+            }
+
+            var permanentAbility1 = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined && permanentAbility1.targetEffect.length > 0 && permanentAbility1.targetEffect[0] !== undefined) {
+              permanentAbility1.targetEffect[0].effectiveness = (permanentAbility1.targetEffect[0].effectiveness / .15) * .1;
+            }
+
+            var permanentAbility3 = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined && permanentAbility3.targetEffect.length > 0 && permanentAbility3.targetEffect[0] !== undefined) {
+              permanentAbility3.targetEffect[0].effectiveness *= 2;
+            }
+          }
+
+          this.globalService.globalVar.characters.forEach(character => {
+            this.globalService.assignAbilityInfo(character);
+
+            for (var i = 1; i < character.level; i++) {
+              this.globalService.checkForNewCharacterAbilities(character, i);
+            }
+
+            if (character.equipmentSet.weapon !== undefined) {
+              var existingWeapon = this.lookupService.getEquipmentPieceByItemType(character.equipmentSet.weapon?.itemType);
+              if (existingWeapon !== undefined) {
+
+                existingWeapon.associatedResource = character.equipmentSet.weapon.associatedResource;
+
+                this.globalService.equipItem(existingWeapon, character);
+              }
+            }
+            if (character.equipmentSet.shield !== undefined) {
+              var existingShield = this.lookupService.getEquipmentPieceByItemType(character.equipmentSet.shield?.itemType);
+              if (existingShield !== undefined) {
+
+                existingShield.associatedResource = character.equipmentSet.shield.associatedResource;
+
+                this.globalService.equipItem(existingShield, character);
+              }
+            }
+            if (character.equipmentSet.armor !== undefined) {
+              var existingArmor = this.lookupService.getEquipmentPieceByItemType(character.equipmentSet.armor?.itemType);
+              if (existingArmor !== undefined) {
+
+                existingArmor.associatedResource = character.equipmentSet.armor.associatedResource;
+
+                this.globalService.equipItem(existingArmor, character);
+              }
+            }
+            if (character.equipmentSet.ring !== undefined) {
+              var existingRing = this.lookupService.getEquipmentPieceByItemType(character.equipmentSet.ring?.itemType);
+              if (existingRing !== undefined) {
+
+                existingRing.associatedResource = character.equipmentSet.ring.associatedResource;
+
+                this.globalService.equipItem(existingRing, character);
+              }
+            }
+            if (character.equipmentSet.necklace !== undefined) {
+              var existingNecklace = this.lookupService.getEquipmentPieceByItemType(character.equipmentSet.necklace?.itemType);
+              if (existingNecklace !== undefined) {
+
+                existingNecklace.associatedResource = character.equipmentSet.necklace.associatedResource;
+
+                this.globalService.equipItem(existingNecklace, character);
+              }
+            }
+
+            if (character.level === 30) {
+              if (character.type === CharacterEnum.Adventurer)
+                character.unlockedOverdrives.push(OverdriveNameEnum.Quickness);
+              if (character.type === CharacterEnum.Archer)
+                character.unlockedOverdrives.push(OverdriveNameEnum.Weaken);
+              if (character.type === CharacterEnum.Warrior)
+                character.unlockedOverdrives.push(OverdriveNameEnum.Revenge);
+              if (character.type === CharacterEnum.Priest)
+                character.unlockedOverdrives.push(OverdriveNameEnum.Hope);
+            }
+          });
+
+          var geryonsFarm = this.balladService.findSubzone(SubZoneEnum.ErytheiaGeryonsFarm);
+          if (geryonsFarm !== undefined && geryonsFarm.isAvailable && geryonsFarm.victoryCount > 0) {
+            var olympus = this.balladService.findBallad(BalladEnum.Olympus);
+            var mountOlympus = this.balladService.findZone(ZoneEnum.MountOlympus);
+            var upTheMountain = this.balladService.findSubzone(SubZoneEnum.MountOlympusUpTheMountain);
+
+            if (olympus !== undefined) {
+              olympus.isAvailable = true;
+              olympus.notify = true;
+            }
+            if (mountOlympus !== undefined) {
+              mountOlympus.isAvailable = true;
+              mountOlympus.notify = true;
+            }
+            if (upTheMountain !== undefined) {
+              upTheMountain.isAvailable = true;
+              upTheMountain.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(upTheMountain.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
+
+          }
+
+          var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined) {
+            alchemy.availableRecipes.forEach(recipe => {
+              alchemy!.availableRecipeItems.push(recipe.createdItem);
+            });
+
+            alchemy.availableRecipes = [];
+          }
+
+          var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
+          if (jewelcrafting !== undefined) {
+            jewelcrafting.availableRecipes.forEach(recipe => {
+              jewelcrafting!.availableRecipeItems.push(recipe.createdItem);
+            });
+
+            jewelcrafting.availableRecipes = [];
+
+            if (jewelcrafting.level >= 3)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.PointedStone);
+            if (jewelcrafting.level >= 8)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.ShiningStone);
+            if (jewelcrafting.level >= 30)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.JaggedStone);
+            if (jewelcrafting.level >= 38)
+              this.jewelcraftingService.learnRecipe(ItemsEnum.BlessedStone);
+          }
         }
 
         this.globalService.globalVar.currentVersion = version;
       }
     });
+  }
+
+  exportData() {
+    var globalData = JSON.stringify(this.globalService.globalVar);
+    var compressedData = LZString.compressToBase64(globalData);
+
+    let file = new Blob([compressedData], { type: '.txt' });
+    let a = document.createElement("a"),
+      url = URL.createObjectURL(file);
+    a.href = url;
+    a.download = "BalladOfHeroes-v" + this.globalService.globalVar.currentVersion.toString().replace(".", "_") + "-" + new Date().toLocaleDateString();
+    document.body.appendChild(a);
+    a.click();
+    setTimeout(function () {
+      document.body.removeChild(a);
+      window.URL.revokeObjectURL(url);
+    }, 0);
   }
 }

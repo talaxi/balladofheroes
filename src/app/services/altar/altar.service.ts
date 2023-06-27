@@ -29,7 +29,7 @@ export class AltarService {
 
   getTutorialAltar() {
     var altar = new AltarInfo();
-    altar.type = AltarEnum.Small; 
+    altar.type = AltarEnum.Small;
     altar.god = GodEnum.Athena;
     altar.condition = AltarConditionEnum.Victories;
     altar.conditionCount = altar.conditionMax = 1;
@@ -194,14 +194,12 @@ export class AltarService {
   getRandomEffect(altar: AltarInfo, comingFromFollowers: boolean = false) {
     var possibleEffects: AltarEffectsEnum[] = [];
 
-    //possibleEffects.push(AltarEffectsEnum.AttackUp); //this should be for Zeus, not everyone
-
     possibleEffects = this.getPossibleEffects(altar.god, altar.type);
 
     possibleEffects = possibleEffects.filter(item => item !== this.globalService.globalVar.altars.activeAltarEffect1?.type &&
       item !== this.globalService.globalVar.altars.activeAltarEffect2?.type && item !== this.globalService.globalVar.altars.activeAltarEffect3?.type);
 
-    if (comingFromFollowers && this.globalService.globalVar.altars.additionalAltarEffects.length > 0) {
+    if (this.globalService.globalVar.altars.additionalAltarEffects !== undefined && this.globalService.globalVar.altars.additionalAltarEffects.length > 0) {
       this.globalService.globalVar.altars.additionalAltarEffects.forEach(effect => {
         possibleEffects = possibleEffects.filter(item => item !== effect.type);
       });
@@ -318,6 +316,19 @@ export class AltarService {
         possibleEffects.push(AltarEffectsEnum.NemesisRareThorns);
         if (this.globalService.isGodEquipped(godType) || ignorePartyRequirement)
           possibleEffects.push(AltarEffectsEnum.NemesisRareDuesUp);
+      }
+    }
+    if (godType === GodEnum.Zeus) {
+      if (altarType === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.ZeusAttackUp);
+        possibleEffects.push(AltarEffectsEnum.ZeusAttackUpBuff);
+        possibleEffects.push(AltarEffectsEnum.ZeusLightningDamageIncrease);
+      }
+      else if (altarType === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.ZeusRareStun);
+        possibleEffects.push(AltarEffectsEnum.ZeusRareLightningDamageIncrease);
+        if (this.globalService.isGodEquipped(godType) || ignorePartyRequirement)
+          possibleEffects.push(AltarEffectsEnum.ZeusRareSurge);
       }
     }
 
@@ -482,9 +493,10 @@ export class AltarService {
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.AresDamageOverTime) {
       altarEffect.duration = altarEffect.totalDuration = 30;
-      altarEffect.effectiveness = 50;      
+      altarEffect.effectiveness = 50;
       altarEffect.stacks = false;
       altarEffect.isEffectMultiplier = false;
+      altarEffect.effectOnExpiration = true;
     }
     if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AresRareOverdriveGain) {
       altarEffect.duration = altarEffect.totalDuration = 60;
@@ -534,7 +546,7 @@ export class AltarService {
       altarEffect.tickFrequency = (60 / 12);
       altarEffect.stacks = false;
       altarEffect.isEffectMultiplier = false;
-      altarEffect.element = this.lookupService.getRandomElement();      
+      altarEffect.element = this.lookupService.getRandomElement();
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.DionysusRandomBuff) {
       altarEffect.duration = altarEffect.totalDuration = 30;
@@ -569,14 +581,14 @@ export class AltarService {
       altarEffect.duration = altarEffect.totalDuration = 60;
       altarEffect.effectiveness = .95;
       altarEffect.stacks = false;
-      altarEffect.effectOnExpiration = true;     
+      altarEffect.effectOnExpiration = true;
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.NemesisDealDamage) {
       altarEffect.duration = altarEffect.totalDuration = 30;
       altarEffect.effectiveness = 100;
       altarEffect.tickFrequency = (30 / 6);
       altarEffect.stacks = false;
-      altarEffect.isEffectMultiplier = false; 
+      altarEffect.isEffectMultiplier = false;
     }
     if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.NemesisLuckDebuff) {
       altarEffect.duration = altarEffect.totalDuration = 30;
@@ -603,14 +615,48 @@ export class AltarService {
       altarEffect.duration = altarEffect.totalDuration = 60;
       altarEffect.effectiveness = 1.05;
       altarEffect.stacks = false;
-      altarEffect.effectOnExpiration = true;    
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ZeusAttackUp) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ZeusAttackUpBuff) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.ZeusLightningDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.02;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareLightningDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.04;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareSurge) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.tickFrequency = (60 / 4);
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.ZeusRareStun) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+      altarEffect.isEffectMultiplier = false;
     }
 
     return altarEffect;
   }
 
-  setAltarEffect(effectType: AltarEffectsEnum, altar: AltarInfo, additionalAltarEffect: boolean = false) { 
-    var altarEffect = this.getBaseAltarEffect(altar.type, effectType);   
+  setAltarEffect(effectType: AltarEffectsEnum, altar: AltarInfo, additionalAltarEffect: boolean = false) {
+    var altarEffect = this.getBaseAltarEffect(altar.type, effectType);
     var god = this.globalService.globalVar.gods.find(item => item.type === altar.god);
 
     if (god !== undefined) {
@@ -655,40 +701,36 @@ export class AltarService {
       altarEffect.effectiveness = this.utilityService.roundTo(altarEffect.effectiveness, 5);
     }
 
-    if (additionalAltarEffect)
-    {
+    if (additionalAltarEffect) {
       if (this.globalService.globalVar.altars.additionalAltarEffects === undefined)
         this.globalService.globalVar.altars.additionalAltarEffects = [];
 
       this.globalService.globalVar.altars.additionalAltarEffects.push(altarEffect);
     }
-    else {      
+    else {
       if (altar === this.globalService.globalVar.altars.altar1) {
-        if (this.globalService.globalVar.altars.activeAltarEffect1 !== undefined && 
-          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect1))
-          {
-            this.globalService.globalVar.altars.activeAltarEffect1.duration = 0;
-            this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect1);
-          }
+        if (this.globalService.globalVar.altars.activeAltarEffect1 !== undefined &&
+          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect1)) {
+          this.globalService.globalVar.altars.activeAltarEffect1.duration = 0;
+          this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect1);
+        }
         this.globalService.globalVar.altars.activeAltarEffect1 = altarEffect;
       }
       if (altar === this.globalService.globalVar.altars.altar2) {
-        if (this.globalService.globalVar.altars.activeAltarEffect2 !== undefined && 
-          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect2))
-          {
-            this.globalService.globalVar.altars.activeAltarEffect2.duration = 0;
-            this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect2);
-          }
+        if (this.globalService.globalVar.altars.activeAltarEffect2 !== undefined &&
+          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect2)) {
+          this.globalService.globalVar.altars.activeAltarEffect2.duration = 0;
+          this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect2);
+        }
 
         this.globalService.globalVar.altars.activeAltarEffect2 = altarEffect;
       }
       if (altar === this.globalService.globalVar.altars.altar3) {
-        if (this.globalService.globalVar.altars.activeAltarEffect3 !== undefined && 
-          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect3))
-          {
-            this.globalService.globalVar.altars.activeAltarEffect3.duration = 0;
-            this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect3);
-          }
+        if (this.globalService.globalVar.altars.activeAltarEffect3 !== undefined &&
+          this.isEndOfDurationEffect(this.globalService.globalVar.altars.activeAltarEffect3)) {
+          this.globalService.globalVar.altars.activeAltarEffect3.duration = 0;
+          this.globalService.globalVar.altars.additionalAltarEffects.push(this.globalService.globalVar.altars.activeAltarEffect3);
+        }
 
         this.globalService.globalVar.altars.activeAltarEffect3 = altarEffect;
       }
@@ -701,7 +743,8 @@ export class AltarService {
       effect.type === AltarEffectsEnum.AthenaRareBlind || effect.type === AltarEffectsEnum.ArtemisRareAttackDebuff || effect.type === AltarEffectsEnum.ApolloRareOstinato ||
       effect.type === AltarEffectsEnum.DionysusRandomDebuff || effect.type === AltarEffectsEnum.AresRareDealHpDamage || effect.type === AltarEffectsEnum.AresDamageOverTime ||
       effect.type === AltarEffectsEnum.DionysusSingleBarrier || effect.type === AltarEffectsEnum.DionysusRareMultiBarrier || effect.type === AltarEffectsEnum.DionysusRareFullDebuffs ||
-      effect.type === AltarEffectsEnum.NemesisLuckDebuff || effect.type === AltarEffectsEnum.NemesisRareDuesUp)    
+      effect.type === AltarEffectsEnum.NemesisLuckDebuff || effect.type === AltarEffectsEnum.NemesisRareDuesUp || effect.type === AltarEffectsEnum.ZeusRareStun ||
+      effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
       return true;
 
     return false;
@@ -726,10 +769,12 @@ export class AltarService {
       item = ItemsEnum.SmallCharmOfPoseidon;
     if (type === GodEnum.Hades)
       item = ItemsEnum.SmallCharmOfHades;
-      if (type === GodEnum.Dionysus)
+    if (type === GodEnum.Dionysus)
       item = ItemsEnum.SmallCharmOfDionysus;
-      if (type === GodEnum.Nemesis)
+    if (type === GodEnum.Nemesis)
       item = ItemsEnum.SmallCharmOfNemesis;
+    if (type === GodEnum.Zeus)
+      item = ItemsEnum.SmallCharmOfZeus;
 
     return item;
   }
@@ -753,10 +798,12 @@ export class AltarService {
       item = ItemsEnum.LargeCharmOfPoseidon;
     if (type === GodEnum.Hades)
       item = ItemsEnum.LargeCharmOfHades;
-      if (type === GodEnum.Dionysus)
+    if (type === GodEnum.Dionysus)
       item = ItemsEnum.LargeCharmOfDionysus;
-      if (type === GodEnum.Nemesis)
+    if (type === GodEnum.Nemesis)
       item = ItemsEnum.LargeCharmOfNemesis;
+    if (type === GodEnum.Zeus)
+      item = ItemsEnum.LargeCharmOfZeus;
 
     return item;
   }

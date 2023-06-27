@@ -1,0 +1,76 @@
+.addItem {
+    margin-left: .2rem;
+    width: 2vw;
+}
+
+.statLabel {
+    font-size: 1.1rem;
+}
+
+.label {
+    width: 30%;
+    display: inline-block;
+}
+
+.largerLabel {
+    width: 35%;
+    display: inline-block;
+}
+
+.value {
+    width: 50%;
+    display: inline-block;
+}
+
+.largerValue {
+    width: 45%;
+    display: inline-block;
+}
+
+.buttons {
+    margin-top: 2rem;
+    width: 100%;
+    text-align: center;
+}
+
+.column {
+    display: inline-block;
+    vertical-align: top;
+    margin: 0 .2rem;
+}
+
+.smallColumn {
+    width: 24%;
+}
+
+.largeColumn {
+    width: 37%;
+}
+
+.statValue {
+    vertical-align: middle;
+}
+
+.name {
+    text-align: center;
+    margin-bottom: 1rem;
+}
+
+.smallMarginRight {
+    margin-right: .5rem;
+}
+
+@media (max-width: 800px) { 
+    .smallColumn {
+        width: 100%;
+    }
+    
+    .largeColumn {
+        width: 100%;
+      }
+
+      .addItem {
+        margin-left: .2rem;
+        width: 6.15vw;
+    }
+}

@@ -21,6 +21,7 @@ export class StatusEffect {
     stackCount: number;
     triggersEvery: number; //for effects that trigger every X seconds
     targetsAllies: boolean;
+    addedEffect: boolean; //an effect that is added from combat and not normally part of the ability used
 
     //for DoTs
     abilityName: string;
@@ -44,8 +45,10 @@ export class StatusEffect {
         this.stackCount = 1;
         this.triggersEvery = 0;
         this.targetsAllies = false;
+        this.addedEffect = false;
     }
 
+    //todo: terrible idea to maintain this in two places
     makeCopy() {
         var copy = new StatusEffect(this.type);
 
@@ -62,6 +65,7 @@ export class StatusEffect {
         copy.casterEnum = this.casterEnum;
         copy.threshold = this.threshold;
         copy.targetsAllies = this.targetsAllies;
+        copy.addedEffect = this.addedEffect;
 
         copy.abilityName = this.abilityName;
         copy.tickFrequency = this.tickFrequency;

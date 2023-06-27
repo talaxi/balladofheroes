@@ -87,7 +87,7 @@ export class AppComponent {
     }
 
     this.checkForSupporterConfirmation();
-    this.versionControlService.updatePlayerVersion();
+    this.versionControlService.updatePlayerVersion(true);
 
     var lastPerformanceNow = 0;
     var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
@@ -135,7 +135,7 @@ export class AppComponent {
     while (runCount <= maxRunCount) {
       if (runCount > 1)
         deltaTime = 0;
-      
+      //console.log("Run Count: " + runCount + " Max Count: " + maxRunCount);
       this.updateGameState(deltaTime, activeSubzone);
       runCount += 1;
     }
@@ -144,11 +144,13 @@ export class AppComponent {
   updateGameState(deltaTime: number, activeSubzone: SubZone) {
     var originalDeltaTime = deltaTime;
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, activeSubzone);
-    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;    
-    if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
-      this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
+    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.lookupService.userNotInTownBattle();    
+    //vv not used anymore I think
+    //if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
+      //this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
+    //console.log("originalDeltaTime: " + originalDeltaTime + " New: " + deltaTime);
     this.backgroundService.handleBackgroundTimers(deltaTime, isInTown);
 
     if (isInTown)
@@ -220,9 +222,11 @@ export class AppComponent {
       if (this.globalService.bankedTime + deltaTime <= batchTime) //amount of time banked is less than a batch so use it all
       {
         deltaTime += this.globalService.bankedTime;
+        this.dpsCalculatorService.bonusTime += this.globalService.bankedTime;
         this.globalService.bankedTime = 0;
         this.globalService.maxBankedTime = 0;
         this.lookupService.isUIHidden = false;
+        //console.log("Caught up");
         this.globalService.globalVar.isCatchingUp = false;        
         this.gameLogService.disableOverlayBuffer = false;
 
@@ -236,6 +240,7 @@ export class AppComponent {
         var useAmount = batchTime - deltaTime;
         this.globalService.bankedTime -= useAmount;
         deltaTime += useAmount;
+        this.dpsCalculatorService.bonusTime += useAmount;
 
         if (this.globalService.bankedTime <= 0)
           this.globalService.bankedTime = 0;
@@ -248,7 +253,7 @@ export class AppComponent {
   getBatchRunTime(subzone: SubZone, totalDeltaTime: number) {
     var batchRunTime = this.globalService.globalVar.settings.get("loadingAccuracy") ?? this.utilityService.averageLoadingAccuracy;    
 
-    if (this.balladService.isSubzoneTown(subzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None)
+    if (this.balladService.isSubzoneTown(subzone.type) && this.lookupService.userNotInTownBattle())
       batchRunTime = 30;
 
     return batchRunTime;

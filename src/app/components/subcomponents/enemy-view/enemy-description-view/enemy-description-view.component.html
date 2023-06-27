@@ -1,55 +1,63 @@
 <div>
     <span class="s2Heading">{{character.name}}</span>
     <hr />
-    <div *ngIf="this.defeatCount === undefined || this.defeatCount < this.utilityService.killCountDisplayEnemyStatsAbilities">
-        Defeat {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount}} more {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount === 1 ? "time" : "times"}} for more
+    <div
+        *ngIf="this.defeatCount === undefined || this.defeatCount < this.utilityService.killCountDisplayEnemyStatsAbilities">
+        Defeat {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount}} more
+        {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount === 1 ? "time" : "times"}} for more
         info.
     </div>
     <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayEnemyStatsAbilities">
         <div class="stats">
             <div class="statColumn1">
-                <span class='statLabel'>Attack:</span> {{character.battleStats.attack}}
+                <span class='statLabel'>Attack:</span> {{getAttack()}}
                 <br />
-                <span class='statLabel'>Agility:</span> {{character.battleStats.agility}}
+                <span class='statLabel'>Agility:</span> {{getAgility()}}
                 <br />
-                <span class='statLabel'>Luck:</span> {{character.battleStats.luck}}
+                <span class='statLabel'>Luck:</span> {{getLuck()}}
             </div>
             <div class="statColumn2">
-                <span class='statLabel'>Max HP:</span> {{character.battleStats.maxHp}}
+                <span class='statLabel'>Max HP:</span> {{getMaxHp()}}
                 <br />
-                <span class='statLabel'>Defense:</span> {{character.battleStats.defense}}
+                <span class='statLabel'>Defense:</span> {{getDefense()}}
                 <br />
-                <span class='statLabel'>Resistance:</span> {{character.battleStats.resistance}}
+                <span class='statLabel'>Resistance:</span> {{getResistance()}}
             </div>
         </div>
-        <br/>            
+        <br />
         <div>
-            <span class='statLabel'>Attack Speed: </span> <span class="statValue"> {{getCharacterAttackSpeed()}}</span>
-            <br *ngIf="getElementalStrengths() !== ''"/>
-            <span *ngIf="getElementalStrengths() !== ''" [innerHtml]="getElementalStrengths()"></span>                
-            <br *ngIf="getElementalWeaknesses() !== ''"/>
-            <span *ngIf="getElementalWeaknesses() !== ''" [innerHtml]="getElementalWeaknesses()"></span>                
-        </div>
-        <br />            
-        <span *ngIf="character.abilityList.length === 0">No abilities.</span>
-        <div *ngIf="character.abilityList.length > 0">
-            <div *ngFor="let ability of character.abilityList">
-                <span class='statLabel'>{{ability.name}}</span> - <span class="statValue"
-                    [innerHtml]='lookupService.getEnemyAbilityDescription(character, ability)'></span>
+            <div [ngClass]="{'stats': getElementalStrengths() !== '' && getElementalWeaknesses() !== ''}"
+                *ngIf="getElementalStrengths() !== '' || getElementalWeaknesses() !== ''">
+                <span *ngIf="getElementalStrengths() !== ''" [innerHtml]="getElementalStrengths()"></span>
+                <span *ngIf="getElementalWeaknesses() !== ''" [innerHtml]="getElementalWeaknesses()"></span>
+                <br />
             </div>
         </div>
-        <!-- abilities -->
+        <br />
+        <span class='statLabel'>Auto Attack Speed: </span> <span class="statValue"> {{getCharacterAttackSpeed()}}</span>
+        <div>
+            <span *ngIf="character.abilityList.length === 0">No abilities.</span>
+            <div *ngIf="character.abilityList.length > 0">
+                <div *ngFor="let ability of character.abilityList">
+                    <span class='statLabel'>{{ability.name}}</span> - <span class="statValue"
+                        [innerHtml]='lookupService.getEnemyAbilityDescription(character, ability)'></span>
+                </div>
+            </div>
+        </div>
         <hr />
         <div *ngIf="this.defeatCount < this.utilityService.killCountDisplayBasicEnemyLoot">
-            Defeat {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount}} more {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount === 1 ? "time" : "times"}} for more
+            Defeat {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount}} more
+            {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount === 1 ? "time" : "times"}} for more
             info.
         </div>
         <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot">
             <span>
-                <span class='statLabel'>Coins:</span> <span class="statValue"> {{character.coinGainFromDefeat}}</span>                    
+                <span class='statLabel'>Coins:</span> <span class="statValue">
+                    {{character.coinGainFromDefeat.toLocaleString()}}</span>
             </span>
-            <br/>
-            <span class='statLabel'>XP:</span> <span class="statValue"> {{character.xpGainFromDefeat}}</span>
+            <br />
+            <span class='statLabel'>XP:</span> <span class="statValue">
+                {{character.xpGainFromDefeat.toLocaleString()}}</span>
             <br />
             <span *ngIf="character.loot.length === 0">No loot.</span>
             <div *ngIf="character.loot.length > 0">
@@ -62,7 +70,8 @@
         <div
             *ngIf="this.defeatCount >= this.utilityService.killCountDisplayBasicEnemyLoot && this.defeatCount < this.utilityService.killCountDisplayFullEnemyLoot">
             <hr />
-            Defeat {{this.utilityService.killCountDisplayFullEnemyLoot - this.defeatCount}} more {{this.utilityService.killCountDisplayFullEnemyLoot - this.defeatCount === 1 ? "time" : "times"}} for more
+            Defeat {{this.utilityService.killCountDisplayFullEnemyLoot - this.defeatCount}} more
+            {{this.utilityService.killCountDisplayFullEnemyLoot - this.defeatCount === 1 ? "time" : "times"}} for more
             info.
         </div>
     </div>

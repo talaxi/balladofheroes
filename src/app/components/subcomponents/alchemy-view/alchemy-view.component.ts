@@ -23,12 +23,14 @@ export class AlchemyViewComponent implements OnInit {
   createAmount = 1;
   @ViewChild('confirmationBox') confirmationBox: any;
   alchemy: Profession | undefined;
+  recipeList: Recipe[];
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
     private alchemyService: AlchemyService, private professionService: ProfessionService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    this.getFullRecipeList();
   }
 
   selectRecipe(recipe: Recipe) {
@@ -64,10 +66,21 @@ export class AlchemyViewComponent implements OnInit {
     return this.dictionaryService.getItemName(recipe.createdItem) + " <i class='amountAvailable'>(" + this.professionService.getAmountCanCreate(recipe) + " available)</i>";
   }
 
+  getFullRecipeList() {
+    if (this.alchemy === undefined)
+      return;
+
+    this.recipeList = [];
+    this.alchemy.availableRecipeItems.forEach(item => {
+      this.recipeList.push(this.alchemyService.getRecipe(item));
+    });
+  }
+
   getRecipeList(quality: EquipmentQualityEnum) {
     if (this.alchemy === undefined)
       return [];
-    return this.alchemy.availableRecipes.filter(item => item.quality === quality).reverse();
+
+    return this.recipeList.filter(item => item.quality === quality).reverse();
   }
 
   getSelectedRecipeName() {
@@ -267,7 +280,15 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   recipesAtQualityLevelAmount(quality: EquipmentQualityEnum) {
-    return this.alchemy?.availableRecipes.filter(item => item.quality === quality).length;
+    if (this.alchemy === undefined)
+      return 0;
+
+    var recipeList: Recipe[] = [];
+    this.alchemy.availableRecipeItems.forEach(item => {
+      recipeList.push(this.alchemyService.getRecipe(item));
+    });
+
+    return recipeList.filter(item => item.quality === quality).length;
   }
 
   toggleQualitySection(quality: EquipmentQualityEnum) {

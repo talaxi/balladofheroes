@@ -21,7 +21,7 @@
                             <hr class="noMargin" />
                         </div>
                     </div>
-                    <div class="specialTournaments">
+                    <div *ngIf="getSpecialColiseumTournaments().length > 0" class="specialTournaments">
                         <div class="tournamentSectionTitle">
                             <!--<button (click)="toggleQualitySection(qualityType)" class="buttonStyled smallButtonStyled recipeSectionToggle">{{hideRecipesByQuality(qualityType) ? "+" : "-"}}</button> -->
                             <span class="smallCaps tournamentSection">special</span>
@@ -84,7 +84,7 @@
                     <span>Gain increasing XP, Item, and Coin rewards the further you progress!</span>
                     <br />
                     <br />
-                    <span class="clickableText" (click)="openModal(eternalMeleeRewardsModal)">View Rewards</span>
+                    <button class="buttonStyled" (click)="openModal(eternalMeleeRewardsModal)">View Rewards</button>
                     <br />
                     <br />
                     <button class="buttonStyled" [disabled]="!canEnterWeeklyMelee()" (click)="startTournament()">Start

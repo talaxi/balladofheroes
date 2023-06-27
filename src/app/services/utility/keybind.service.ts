@@ -7,10 +7,15 @@ export class KeybindService {
   altKeyBind = '{alt}';
   ctrlKeyBind = '{ctrl}';
   shiftKeyBind = '{shift}';
+  isInTextbox = false;
+
 
   constructor() { }
 
   doesKeyMatchKeybind(event: KeyboardEvent, binding: string) {
+    if (this.isInTextbox)
+      return false;
+
     var lookingforAlt = binding.toLocaleLowerCase().includes(this.altKeyBind.toLocaleLowerCase());
     binding = binding.toLocaleLowerCase().replace(this.altKeyBind.toLocaleLowerCase(), "");
 

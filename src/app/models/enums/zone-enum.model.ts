@@ -17,5 +17,8 @@ export enum ZoneEnum {
   Erymanthus,
   CoastOfCrete,
   GardenOfTheHesperides,
-  Erytheia
+  Erytheia,
+  MountOlympus,
+  HuntForYarrow,
+  WarForTheMountain
 }

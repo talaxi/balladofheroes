@@ -13,8 +13,9 @@ export class Profession {
     isUnlocked: boolean;
     @Type(() => ProfessionUpgrades)
     upgrades: ProfessionUpgrades[]; //each array item is for a different quality of recipe
+    availableRecipeItems: number[];
     @Type(() => Recipe)
-    availableRecipes: Recipe[];
+    availableRecipes: Recipe[]; //DEPRECATED
 
     creatingRecipe: Recipe | undefined;
     creationTimer: number;
@@ -31,6 +32,7 @@ export class Profession {
         this.type = ProfessionEnum.None;
         this.level = 0;
         this.maxLevel = 0;
+        this.availableRecipeItems = [];
         this.availableRecipes = [];
         this.upgrades = [];
         this.recipeBookQualityToggle = [];

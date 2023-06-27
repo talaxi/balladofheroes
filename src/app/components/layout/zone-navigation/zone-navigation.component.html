@@ -6,8 +6,8 @@
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
                 </mat-checkbox>
-                <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton"><img
-                    class="autoProgressIcon" src="assets/svg/gear.svg"></button>
+                <button *ngIf="areAltarsAvailable()" (click)="openAutoProgressOptions(autoProgressModal)" class="autoProgressButton buttonStyled"><img
+                    class="autoProgressIcon" src="assets/svg/gearWhite.svg"></button>
             </span>
         </div>
         <hr />
@@ -34,7 +34,7 @@
                             <div *ngFor="let zone of availableZones">
                                 <div *ngIf="!zone.isSelected">
                                     <span class="zoneSpacer">&#8618;</span><button class="buttonAsTextKeepColor z2Heading clickableText"
-                                        [ngClass]="getZoneClass(zone)" (click)="balladService.selectZone(zone)" [disabled]="isSubZoneChangingDisabled()">{{zone.zoneName}}
+                                        [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)" [disabled]="isSubZoneChangingDisabled()">{{zone.zoneName}}
                                         <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                                     </button>
                                 </div>
@@ -46,7 +46,7 @@
                                             <span class="subzoneSpacer">&#8618;</span><span><button
                                                     class="buttonAsTextKeepColor z3Heading clickableText"
                                                     [ngClass]="getSubzoneClass(subzone)"
-                                                    (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone)
+                                                    (click)="selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone)
                                                     ? "To Be Continued!" :
                                                     getSubzoneName(subzone)}}
                                                     {{getSubZoneSubText(subzone)}}
@@ -77,7 +77,7 @@
                 <div *ngFor="let zone of availableZones">
                     <div *ngIf="!zone.isSelected">
                         <button class="buttonAsTextKeepColor z2Heading clickableText" [ngClass]="getZoneClass(zone)"
-                            (click)="balladService.selectZone(zone)">{{zone.zoneName}}
+                            (click)="selectZone(zone)">{{zone.zoneName}}
                             <app-notification-icon *ngIf="zone.notify" [notificationColor]="zone.notificationType"></app-notification-icon>
                         </button>
                     </div>
@@ -89,7 +89,7 @@
                                 <span class="subzoneSpacer">&#8618;</span><span><button
                                         class="buttonAsTextKeepColor z3Heading clickableText"
                                         [ngClass]="getSubzoneClass(subzone)" [disabled]="isSubZoneChangingDisabled()"
-                                        (click)="balladService.selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
+                                        (click)="selectSubZone(subzone, zone)">{{balladService.isSubZoneToBeContinued(subzone) ? "To Be Continued!" :
                                         getSubzoneName(subzone)}}
                                         {{getSubZoneSubText(subzone)}}
                                         <app-notification-icon *ngIf="subzone.notify"
@@ -190,9 +190,20 @@
                             [contentTemplate]="chthonicFavorPopover">Chthonic Favor:
                             <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
                                 : '1.0-2'}}</span></span>
+                                <br *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0" />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0"
+                            class="resource ambrosiaKeyword" customToolTip
+                            [contentTemplate]="ambrosiaPopover">Ambrosia:
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.Ambrosia) | number
+                                : '1.0-2'}}</span></span>
                         <br />
                         <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                             (click)="viewFollowers(followers)">View Followers</button>
+                            <br/>
+                            <button class="buttonStyled stackedButtons" *ngIf="areLoadoutsAvailable()"
+                            (click)="viewLoadouts(loadouts)">
+                                View Loadouts
+                            </button>
                             <br/>
                         <button *ngIf="meleteFunctionalityAvailable()" class="buttonStyled stackedButtons" 
                             (click)="viewMelete(melete)">Melete</button>
@@ -213,6 +224,8 @@
                     </div>
                 </div>
             </div>
+            <br/>
+            <button class="buttonStyled" *ngIf="untrackAllAvailable()" (click)="untrackAllResources()">Untrack All</button>
         </div>
         <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
             <app-altar-overview></app-altar-overview>
@@ -238,9 +251,19 @@
     </div>
 </ng-template>
 
+<ng-template #loadouts>
+    <app-loadouts-view></app-loadouts-view>
+</ng-template>
+
 <ng-template #chthonicFavorPopover>
     <div>
         {{lookupService.getItemDescription(itemsEnum.ChthonicFavor)}}
+    </div>
+</ng-template>
+
+<ng-template #ambrosiaPopover>
+    <div>
+        {{lookupService.getItemDescription(itemsEnum.Ambrosia)}}
     </div>
 </ng-template>
 

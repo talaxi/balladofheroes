@@ -19,17 +19,31 @@
     <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true"
       [notificationColor]="resetNotification"></app-notification-icon>
   </button>
+  <button *ngIf="option.type === shopTypeEnum.OlympicFavor" class="buttonStyled shopButtonText"
+    (click)="openShop(option, olympicFavorModal)">{{getOptionText(option.type)}}
+    <app-notification-icon *ngIf="!hasOlympicFavorBeenOpened()" [isButton]="true"
+      [notificationColor]="resetNotification"></app-notification-icon>
+  </button>
   <button *ngIf="option.type === shopTypeEnum.Story" class="buttonStyled shopButtonText" (click)="progressStory()">Speak
     to Hades <app-notification-icon [isButton]="true"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.StoryScene24" class="buttonStyled shopButtonText"
     (click)="progressStory()">Speak
     to the King <app-notification-icon [isButton]="true"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.StoryZeus" class="buttonStyled shopButtonText"
+    (click)="progressStory()">Speak
+    to Zeus <app-notification-icon [isButton]="true"></app-notification-icon></button>
+    <button *ngIf="option.type === shopTypeEnum.Hephaestus" class="buttonStyled shopButtonText"
+    (click)="handleHephaestusJewelcrafting(option)">Speak
+    to Hephaestus <app-notification-icon [isButton]="true" [notificationColor]="professionNotification"></app-notification-icon></button>
     <button *ngIf="option.type === shopTypeEnum.AugeanStables" class="buttonStyled shopButtonText"
     (click)="openShop(option, augeanStablesModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="!augeanStablesCompleted()" [isButton]="true"
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>
   <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText"
     (click)="openShop(option, coliseumModal)">
+    {{getOptionText(option.type)}}</button>
+    <button *ngIf="option.type === shopTypeEnum.Trials" class="buttonStyled shopButtonText"
+    (click)="openShop(option, trialsModal)">
     {{getOptionText(option.type)}}</button>
   <br *ngIf="i < shopOptions.length-1" />
   <br *ngIf="i < shopOptions.length-1" />
@@ -65,8 +79,8 @@
   <hr class="noMargin" />
   <table>
     <tr *ngFor="let cells of shopItemRows;">
-      <td class="item" *ngFor="let c of cells;">
-        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length"></app-shopping-item-view>
+      <td class="item" *ngFor="let c of cells; let i = index">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length" [tooltipDirection]="getShopItemTooltipDirection(i)"></app-shopping-item-view>
       </td>
     </tr>
   </table>
@@ -106,6 +120,10 @@
   <app-chthonic-reset-view></app-chthonic-reset-view>
 </ng-template>
 
+<ng-template #olympicFavorModal>
+  <app-olympic-reset-view></app-olympic-reset-view>
+</ng-template>
+
 <ng-template #alchemyModal>
   <app-alchemy-view></app-alchemy-view>
 </ng-template>
@@ -118,6 +136,9 @@
   <app-coliseum-view></app-coliseum-view>
 </ng-template>
 
+<ng-template #trialsModal>
+  <app-trials-view></app-trials-view>
+</ng-template>
 
 <ng-template #filterContent>
   <app-filter-items-view [dialogRef]="dialogRef" [prefix]="'shop'"></app-filter-items-view>

@@ -1,6 +1,6 @@
 <div class="gridContainer">
     <div class="header">
-        <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumFight(), 'headerFlex': !doingColiseumFight() }">
+        <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumOrTrialFight(), 'headerFlex': !doingColiseumOrTrialFight() }">
             <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
                 round {{globalService.globalVar.activeBattle.activeTournament.currentRound}} <span *ngIf="globalService.globalVar.activeBattle.activeTournament.maxRounds !== -1">of
                 {{globalService.globalVar.activeBattle.activeTournament.maxRounds}}</span></div>            
@@ -9,13 +9,16 @@
                 <img class="dropdownIcon" src="assets/svg/dropdown.svg">
             </button>
             <div class="s4Heading textCentered selectedSubzone pageHeader">
-                <strong class="clickableText" customToolTip [contentTemplate]="subzonePopover" (click)="jumpToBestiary()">{{getActiveSubzoneName()}}</strong>
+                <strong class="clickableText" [ngClass]="{'subzoneName': globalStatusEffectsActive()}" customToolTip [contentTemplate]="subzonePopover" (click)="jumpToBestiary()">{{getActiveSubzoneName()}}</strong>
+                <div *ngIf="globalStatusEffectsActive()" class="buffEffects" customToolTip [contentTemplate]="globalEffectsPopover">
+                    <img (contextmenu)="preventRightClick()" class="buffImage" src="assets/svg/statUpSE.svg" />
+                </div>
             </div>
             <button *ngIf="isMobile && isNextSubzoneButtonAvailable()" class="buttonStyled nextSubzone"
                 (click)="goToNextSubzone()">
                 <img class="dropdownIcon" src="assets/svg/rightarrow.svg">
             </button>
-            <div class="alignCenter coliseumTime" *ngIf="doingColiseumFight()">{{getTournamentTimeRemaining()}}
+            <div class="alignCenter coliseumTime" *ngIf="doingColiseumOrTrialFight()">{{getTournamentTimeRemaining()}}
                 remaining</div>
             <div class="victoryCount" *ngIf="isMobile">
                 {{getSubzoneVictoryCount()}}
@@ -70,7 +73,7 @@
             <div class="skipButton">
                 <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next
                             page</strong></i></span>                
-                <button class="floatRight arrow" (click)="skipStory()">&#8594;</button>
+                <button class="floatRight arrow buttonStyled" (click)="skipStory()">&#8594;</button>
             </div>
             <div class="loadingBar">
                 <mat-progress-bar mode="determinate" [value]="getPagePercent()"
@@ -111,8 +114,8 @@
     <div *ngIf="!isMobile" class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
-        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover"><img
-                class="settingsIcon icon" src="assets/svg/gear.svg"></button>
+        <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover buttonStyled"><img
+                class="settingsIcon icon" src="assets/svg/gearWhite.svg"></button>
         <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
             class="skipToBottom arrow gameLogButton"><img class="arrowDownIcon icon"
                 src="assets/svg/arrowDown.svg"></button>
@@ -132,4 +135,11 @@
     <div>
         Click to view this subzone in the Bestiary.
     </div>
+</ng-template>
+
+<ng-template #globalEffectsPopover>
+    <strong>All Global Effects</strong>
+    <hr/>    
+    <div [innerHtml]="getAllGlobalEffects()"> 
+    </div>   
 </ng-template>

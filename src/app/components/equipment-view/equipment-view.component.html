@@ -41,7 +41,7 @@
     </div>
     <div class="existingEquipment">
       <div>
-        <app-current-equipment-view [characterType]="characterType"
+        <app-current-equipment-view [characterType]="characterType" [character]="character"
           (unequipEmitter)="itemUnequipped($event)"></app-current-equipment-view>
       </div>
       <hr />
@@ -75,10 +75,10 @@
   <ng-template #template>
     <div class="compareEquipment">
       <span class="item">
-        <app-equipment-item-view [equipment]="hoveredItem" [associatedResource]="hoveredItemAsResource"></app-equipment-item-view>
+        <app-equipment-item-view [equipment]="hoveredItem" [associatedResource]="hoveredItemAsResource" [character]="character"></app-equipment-item-view>
       </span>
       <span class="item comparedEquipmentItem">
-        <app-equipment-item-view [equipment]="getEquippedComparisonItem()" [associatedResource]="getEquippedComparisonItemAsResource()"></app-equipment-item-view>
+        <app-equipment-item-view [equipment]="getEquippedComparisonItem()" [associatedResource]="getEquippedComparisonItemAsResource()" [character]="character"></app-equipment-item-view>
       </span>
     </div>
   </ng-template>

@@ -13,6 +13,7 @@ export class SidequestData {
     augeanStablesLevel: number;
     displayAugeanStablesPayScene: boolean;
     maxAugeanStablesLevel: number;
+    levelsForNextAmbrosia: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -28,5 +29,6 @@ export class SidequestData {
         this.augeanStablesLevel = 0;
         this.displayAugeanStablesPayScene = false;
         this.maxAugeanStablesLevel = 3;
+        this.levelsForNextAmbrosia = 100;
     }
 }

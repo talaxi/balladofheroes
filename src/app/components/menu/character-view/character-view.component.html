@@ -9,12 +9,12 @@
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getCharacterColor()">{{character.name}}</span>
             <br />
-            <span>Level {{character.level}}</span>
+            <span customToolTip class="buttonAsText clickableText" [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover">Level {{character.level}}</span>
             <br />
-            <span *ngIf="character.level < character.maxLevel">{{character.exp | number : '1.0-0'}} /
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{character.exp | number : '1.0-0'}} /
                 {{character.expToNextLevel | number : '1.0-0'}} XP to Level
                 {{character.level + 1}}</span>
-            <span *ngIf="character.level === character.maxLevel">
+            <span class="bold" *ngIf="character.level === character.maxLevel">
                 MAX
             </span>
             <br />
@@ -37,7 +37,7 @@
                         class='webVersion'>Equipment</span></button>
             </span>
             <div class="sectionInfo">
-                <app-current-equipment-view [characterType]="character.type" [canChangeEquipment]="true">
+                <app-current-equipment-view [characterType]="character.type" [character]="character" [canChangeEquipment]="true">
                 </app-current-equipment-view>
             </div>
         </div>
@@ -97,6 +97,14 @@
                             class="statLabel">Ability
                             Cooldown Reduction:</strong>
                         {{getAbilityCooldownReductionBonus() | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="abilityCooldownReductionStartPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
+                            {{(getAbilityCooldownReductionStartBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
+                            {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getAutoAttackCooldownBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="autoAttackCooldownReductionPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Auto
@@ -110,23 +118,27 @@
                         [contentTemplate]="overdriveGainPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Overdrive Gain Bonus:</strong>
                         {{(getOverdriveGainBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip
+                            [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="overdriveGainFromAutoAttacksPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
+                            {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getHealingReceivedBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="healingReceivedPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Received Bonus:</strong>
                         {{(getHealingReceivedBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getDebuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="debuffDurationPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Debuff Duration Bonus:</strong>
-                        {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip
-                        [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="overdriveGainFromAutoAttacksPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
-                        {{(getOverdriveGainFromAutoAttacksBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="healingDonePopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Done Bonus:</strong>
                         {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getDebuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="debuffDurationPopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Debuff Duration Bonus:</strong>
+                            {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>                    
+                            <span *ngIf="getBuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                                [contentTemplate]="buffDurationPopover"><strong [ngClass]="getCharacterColor()"
+                                    class="statLabel">Buff Duration Bonus:</strong>
+                                {{(getBuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>                                                    
                     <span *ngIf="getTickFrequencyBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Tick Frequency Bonus:</strong>
@@ -138,16 +150,11 @@
                     <span *ngIf="getThornsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="thornsPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Thorns:</strong>
-                        {{(getThornsBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getAbilityCooldownReductionStartBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="abilityCooldownReductionStartPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Ability Cooldown Reduction Entering Subzone:</strong>
-                        {{(getAbilityCooldownReductionStartBonus() * 100) | number : '1.0-2'}}%<br /></span>
-                    <span *ngIf="getAbilityCooldownReductionWithBuffsBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
-                        [contentTemplate]="abilityCooldownReductionWithBuffsPopover"><strong [ngClass]="getCharacterColor()"
-                            class="statLabel">Ability Cooldown Reduction With Buffs:</strong>
-                        {{(getAbilityCooldownReductionWithBuffsBonus() * 100) | number : '1.0-2'}}%<br /></span>
-
+                        {{(getThornsBonus() * 100) | number : '1.0-2'}}%<br /></span>                    
+                        <span *ngIf="getElementResistanceReductionBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                        [contentTemplate]="elementResistanceReductionPopover"><strong [ngClass]="getCharacterColor()"
+                            class="statLabel">Enemy Elemental Resistance Reduction:</strong>
+                        {{(getElementResistanceReductionBonus() * 100) | number : '1.0-2'}}%<br /></span>
                 </div>
                 <div class="secondaryColumn2">
                     <span *ngIf="getHolyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
@@ -279,7 +286,7 @@
 
                             <ng-template #abilityPopover>
                                 <div>
-                                    Ability Upgrade Level {{getAbilityUpgradeLevel(ability)}}
+                                    Ability Upgrade Level {{getGodAbilityUpgradeLevel(ability)}}
                                     <hr/>
                                     <div
                                     *ngIf="getGodPermanentAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityEffectivenessIncrease(ability, 1) !== '0%'">
@@ -303,6 +310,12 @@
                                             [innerHtml]="getGodPermanentAbilityUserEffectDurationIncrease(ability, 1)"></span> seconds</div>
                                         <div *ngIf="getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectEffectivenessIncrease(ability, 1)"></span></div>
+                                <div *ngIf="getGodAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodAbilityUserEffectThresholdIncrease(ability, 1) !== '0%'"><span class="statLabel">Gained Effect Threshold Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityUserEffectThresholdIncrease(ability, 1)"></span></div>
+                                <div
+                            *ngIf="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== '0%'">
+                            <span class="statLabel">Permanent Gained Effect Threshold Increase: </span> <span class="statValue"
+                                [innerHtml]="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1)"></span></div>
                                 <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 1) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectDurationIncrease(ability, 1)"></span> seconds</div>
                                 <div
@@ -354,6 +367,12 @@
                                             [innerHtml]="getGodPermanentAbilityUserEffectDurationIncrease(ability, 2)"></span> seconds</div>
                                 <div *ngIf="getGodAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Gained Effect Effectiveness Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectEffectivenessIncrease(ability, 2)"></span></div>
+                                <div *ngIf="getGodAbilityUserEffectThresholdIncrease(ability, 2) !== 0 && getGodAbilityUserEffectThresholdIncrease(ability, 2) !== '0%'"><span class="statLabel">Gained Effect Threshold Increase: </span> <span
+                                    class="statValue" [innerHtml]="getGodAbilityUserEffectThresholdIncrease(ability, 2)"></span></div>
+                                    <div
+                            *ngIf="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 2) !== 0 && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 2) !== '0%'">
+                            <span class="statLabel">Permanent Gained Effect Threshold Increase: </span> <span class="statValue"
+                                [innerHtml]="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 2)"></span></div>
                                 <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 2) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
                                 class="statValue" [innerHtml]="getGodAbilityUserEffectDurationIncrease(ability, 2)"></span> seconds</div>
                                 <div
@@ -501,6 +520,16 @@
     </div>
 </ng-template>
 
+<ng-template #buffDurationPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getBuffDurationBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getBuffDurationBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
 <ng-template #overdriveGainFromAutoAttacksPopover>
     <div>
         <span class="description"
@@ -572,6 +601,17 @@
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getAbilityCooldownReductionStartStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #elementResistanceReductionPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getElementResistanceReductionDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getElementResistanceReductionStatBreakdown(this.character)">
 
         </div>
     </div>
@@ -757,4 +797,25 @@
 <ng-template #equipmentModal>
     <app-equipment-view [characterType]="this.character.type">
     </app-equipment-view>
+</ng-template>
+
+
+<ng-template #characterXpPopover>
+    <div>
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getCharacterXpBreakdown(this.character)">
+        </div>
+        <hr/>
+        <div>Click to see a breakdown of all permanent stats and abilities.</div>
+    </div>
+</ng-template>
+
+
+<ng-template #permanentStatBreakdownContent>
+    <div class="s4Heading">
+        Permanent Level Upgrades
+    </div>
+    <hr/>
+    <div [innerHtml]="this.getPermanentStatBreakdown()">
+        
+    </div>
 </ng-template>

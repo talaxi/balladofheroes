@@ -1,0 +1,25 @@
+<div class="olympicResetView">
+    <!--<button [disabled]="god.level <= 1" class="godResetButton" (click)="resetGod(god)">Reset {{god.name}}</button>-->
+    <div class="centeredText">
+        For every 100 levels you reset, you will receive 1 <strong class="ambrosiaKeyword">Ambrosia</strong>.
+        <br/>
+        Next <strong class="ambrosiaKeyword">Ambrosia</strong>: {{getLevelsNeededForAmbrosia()}} levels        
+    </div>
+    <br/>
+    <br/>
+    <div *ngFor="let class of availableCharacters">
+        <div class="class">
+            <span class="godName" [ngClass]="lookupService.getCharacterColorClass(class.type)">{{class.name}}</span>
+            <span class="godLevel" [ngClass]="lookupService.getCharacterColorClass(class.type)">Lv {{class.level}}</span>
+            <span class="godResetText">{{isMobile ? "gain.." : "results in.."}}</span>
+            <div class="godResetResult">
+                <span *ngIf="class.maxLevel < olympicLevelCap">+{{resetLevelGain(class)}} Max Level</span>
+                <span *ngIf="class.maxLevel >= olympicLevelCap">Reset Character Level to 1</span>
+                <!--<span class="chthonicFavorKeyword" *ngIf="globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked">{{getChthonicFavor(god) | number : '1.0-2'}} Chthonic Favor<br /></span>
+                <span class="chthonicPowerKeyword">{{getChthonicPower(god) | number : '1.0-2'}} Chthonic Power</span>-->
+            </div>
+            <button [disabled]="class.level < getMaxLevel(class)" class="godResetButton" (click)="resetClass(class)">Reset {{class.name}}</button>
+        </div>
+        <hr />
+    </div>
+</div>

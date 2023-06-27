@@ -589,6 +589,32 @@ export class CharmService {
     return amount;
   }
 
+  getElementResistanceReductionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfZeusValue();
+    var largeCharmValue = this.getLargeCharmOfZeusValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfZeus);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfZeus);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Zeus || character.assignedGod2 === GodEnum.Zeus))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Zeus || character.assignedGod2 === GodEnum.Zeus))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfZeusValue() {
+    return .01;
+  }
+
+  getLargeCharmOfZeusValue() {
+    return .03;
+  }
+
   getSmallCharmOfNemesisValue() {
     return .025;
   }

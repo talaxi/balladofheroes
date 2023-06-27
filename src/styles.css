@@ -173,6 +173,7 @@
   --insufficientResourcesKeywordColor: #7a818c;
   --chthonicFavorColor: #ABB5DC;
   --chthonicPowerColor: #83C2A6;
+  --ambrosiaColor: #e3df96;
   --overdriveColor: #FA989E;
   --followerColor: #3DB6D1;
   --sidequestColor: #cc6f12;
@@ -325,8 +326,26 @@ a:link {
   color: var(--foreground-quarternary);
 }
 
+.setName {
+  color: var(--foreground-accent);
+}
+
 * {
   font-family: "Candara", sans-serif !important;
+}
+
+@media (max-aspect-ratio: 4/3) and (min-width: 1151px) {
+  html,
+  body {
+    font-size: 1.9vmin;
+  }
+}
+
+@media (max-aspect-ratio: 3.6/3) and (min-width: 1151px) {
+  html,
+  body {
+    font-size: 1.6vmin;
+  }
 }
 
 @media (max-width: 1150px) and (min-width:  801px) {
@@ -432,6 +451,10 @@ h6 {
   font-weight: inherit;
 }
 
+.accentColor {
+  color: var(--foreground-accent);
+}
+
 .keyword {
   font-weight: 550;
 }
@@ -459,6 +482,11 @@ h6 {
 .chthonicPowerKeyword {
   font-weight: 550;
   color: var(--chthonicPowerColor);
+}
+
+.ambrosiaKeyword {
+  font-weight: 550;
+  color: var(--ambrosiaColor);
 }
 
 .baseWeight {
@@ -521,6 +549,10 @@ h6 {
 
 .smallMarginLeft {
   margin-left: .5rem !important;
+}
+
+.statValue {
+  vertical-align: middle;
 }
 
 .buttonStyled:hover,
@@ -946,10 +978,6 @@ button {
   color: var(--positive-status-effect);
 }
 
-.bold {
-  font-weight: bold;
-}
-
 .noMargin {
   margin: 0;
 }
@@ -1135,8 +1163,20 @@ button:disabled {
   font-size: 1rem;
 }
 
+.smallEquipmentText {
+  font-size: .915rem;
+}
+
 .mat-radio-checked .mat-radio-inner-circle {
   background-color: var(--foreground-accent);
+}
+
+.unactivatedSetBonus {
+  opacity: .6;
+}
+
+.unactivatedSetColor {
+  color: var(--foreground-tertiary);
 }
 
 @keyframes fadingAnimation {

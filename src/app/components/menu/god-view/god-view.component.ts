@@ -1,6 +1,8 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Ability } from 'src/app/models/character/ability.model';
+import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
@@ -38,7 +40,7 @@ export class GodViewComponent implements OnInit {
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService,
-    private altarService: AltarService) { }
+    private altarService: AltarService, public dialog: MatDialog) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -166,30 +168,30 @@ export class GodViewComponent implements OnInit {
       }
       if (nextLevelType === GodLevelIncreaseEnum.NewAbility) {
         if (nextLevel === this.utilityService.godPassiveLevel) {
-          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " (Passive Ability)</span>";
+          rewards += "<span><strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + "</strong> (Passive Ability)</span>";
         }
         if (nextLevel === this.utilityService.godAbility2Level) {
-          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + " (Ability 2)</span>";
+          rewards += "<span><strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + "</strong> (Ability 2)</span>";
         }
         if (nextLevel === this.utilityService.godAbility3Level) {
-          rewards += "<span>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " (Ability 3)</span>";
+          rewards += "<span><strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + "</strong> (Ability 3)</span>";
         }
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentAbility) {
         if (nextLevel === this.utilityService.permanentPassiveGodLevel) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + " After Level Reset";
+          rewards += "Permanently Keep <strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel)?.name + "</strong> After Level Reset";
         }
         if (nextLevel === this.utilityService.permanentGodAbility2Level) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + " After Level Reset";
+          rewards += "Permanently Keep <strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility2Level)?.name + "</strong> After Level Reset";
         }
         if (nextLevel === this.utilityService.permanentGodAbility3Level) {
-          rewards += "Permanently Keep " + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + " After Level Reset";
+          rewards += "Permanently Keep <strong>" + this.god.abilityList.find(item => item.requiredLevel === this.utilityService.godAbility3Level)?.name + "</strong> After Level Reset";
         }
       }
       if (nextLevelType === GodLevelIncreaseEnum.AbilityUpgrade) {
         var upgradedAbility = this.globalService.getWhichAbilityUpgrade(this.god, nextLevel);
         if (upgradedAbility !== undefined)
-          rewards += upgradedAbility.ability.name + " Upgrade " + upgradedAbility.upgradeLevel;
+          rewards += "<strong>" + upgradedAbility.ability.name + "</strong> Upgrade " + upgradedAbility.upgradeLevel;
       }
       if (nextLevelType === GodLevelIncreaseEnum.PermanentStats) {
         var increaseValues = this.globalService.getNewGodPermanentStats(this.god, nextLevel);
@@ -252,6 +254,8 @@ export class GodViewComponent implements OnInit {
           rewards += this.utilityService.roundTo(increaseValues.healingReceived * 100, 2) + "% Healing Received Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.debuffDuration > 0)
           rewards += this.utilityService.roundTo(increaseValues.debuffDuration * 100, 2) + "% Debuff Duration Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          if (increaseValues.buffDuration > 0)
+          rewards += this.utilityService.roundTo(increaseValues.buffDuration * 100, 2) + "% Buff Duration Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.overdriveGainFromAutoAttacks > 0)
           rewards += this.utilityService.roundTo(increaseValues.overdriveGainFromAutoAttacks * 100, 2) + "% Overdrive Gain From Auto Attacks Bonus " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.healingDone > 0)
@@ -284,29 +288,35 @@ export class GodViewComponent implements OnInit {
           rewards += (increaseValues.elementResistance.air * 100) + "% Air Damage Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
         var ability = this.god.abilityList.find(item => item.requiredLevel === increaseAbilities.requiredLevel);
+        var abilityName = "<span class='bold'>" + ability?.name + "</span>";
         var userGainsEffect = increaseAbilities.userEffect[0];
         var targetGainsEffect = increaseAbilities.targetEffect[0];
         if (increaseAbilities.effectiveness > 0)
         {
           if (ability?.name === "Quicken")
-          rewards += (increaseAbilities.effectiveness) + " Sec Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseAbilities.effectiveness) + " Sec Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           else
-          rewards += (increaseAbilities.effectiveness * 100) + "% Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (increaseAbilities.effectiveness * 100) + "% Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         }
         if (userGainsEffect !== undefined && userGainsEffect.effectiveness > 0)
         {
           if (ability?.name === "Second Wind")
-          rewards += (userGainsEffect.effectiveness) + " HP Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (userGainsEffect.effectiveness) + " HP Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
           else 
-          rewards += (userGainsEffect.effectiveness * 100) + "% Buff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (userGainsEffect.effectiveness * 100) + "% Buff Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         }
+        if (userGainsEffect !== undefined && userGainsEffect.threshold > 0)
+          rewards += (userGainsEffect.threshold * 100) + "% Threshold Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (userGainsEffect !== undefined && userGainsEffect.duration > 0)
-          rewards += (userGainsEffect.duration) + " Sec Duration Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (userGainsEffect.duration) + " Sec Duration Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (targetGainsEffect !== undefined && targetGainsEffect.effectiveness > 0)
-          rewards += (targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+          rewards += (targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (targetGainsEffect !== undefined && targetGainsEffect.duration > 0)
-          rewards += (targetGainsEffect.duration) + " Sec Duration Increase to " + ability?.name + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
-
+          rewards += (targetGainsEffect.duration) + " Sec Duration Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        if (ability?.name === "Insanity") {
+          if (targetGainsEffect !== undefined && targetGainsEffect.effectiveness < 0)
+          rewards += Math.abs(targetGainsEffect.effectiveness * 100) + "% Debuff Effectiveness Increase to " + abilityName + " " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
+        }
 
         if (rewards !== "")
           rewards = rewards.substring(0, rewards.length - 2);
@@ -393,6 +403,10 @@ export class GodViewComponent implements OnInit {
 
   getDebuffDurationBonus() {
     return this.god.statGain.debuffDuration + this.god.permanentStatGain.debuffDuration;
+  }
+
+  getBuffDurationBonus() {
+    return this.god.statGain.buffDuration + this.god.permanentStatGain.buffDuration;
   }
 
   getOverdriveGainFromAutoAttacksBonus() {
@@ -643,6 +657,8 @@ export class GodViewComponent implements OnInit {
         return this.utilityService.genericRound((ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length - baseAbility.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length));
       if (baseAbility.name === "Insanity")
         return this.utilityService.genericRound((ability.targetEffect.length - baseAbility.targetEffect.length));
+      if (baseAbility.name === "Chain Lightning")
+        return this.utilityService.genericRound((ability.userEffect.length - baseAbility.userEffect.length));
     }
 
     return 0;
@@ -685,6 +701,20 @@ export class GodViewComponent implements OnInit {
 
     return 0;
   }
+  
+
+  getAbilityUserEffectThresholdIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    if (baseAbility !== undefined && ability.userEffect.length > 0 && ability.userEffect[0].threshold !== undefined && !Number.isNaN(ability.userEffect[0].threshold)) {      
+      return this.utilityService.genericRound((ability.userEffect[0].threshold - baseAbility.userEffect[0].threshold) * 100) + "%";
+    }
+
+    return 0;
+  }
+
 
   getPermanentAbilityUserEffectEffectivenessIncrease(ability: Ability) {
     var baseGod = new God(this.god.type);
@@ -701,6 +731,24 @@ export class GodViewComponent implements OnInit {
         return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
       else
         return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
+    }
+
+    return 0;
+  }
+
+  getPermanentAbilityUserEffectThresholdIncrease(ability: Ability) {
+    var baseGod = new God(this.god.type);
+    this.globalService.assignGodAbilityInfo(baseGod);
+    var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
+
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined && permanentAbilityUpgrade.userEffect !== undefined && permanentAbilityUpgrade.userEffect.length > 0 &&
+      permanentAbilityUpgrade.userEffect[0].threshold !== undefined && !Number.isNaN(permanentAbilityUpgrade.userEffect[0].threshold))
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.userEffect[0].threshold;
+
+    if (baseAbility !== undefined && baseAbility.userEffect.length > 0) {      
+      return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
     }
 
     return 0;
@@ -788,7 +836,166 @@ export class GodViewComponent implements OnInit {
 
     return 0;
   }
+  
+  openPermanentStatBreakdown(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%', panelClass: 'mat-dialog-no-scroll' });
+    else
+      this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
+  }
 
+  getPermanentStatBreakdown() {
+    var text = "";
+    var allPermanentStatCounts: [number, number][] = [];
+    this.god.permanentStat1GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentStat2GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentStat3GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentStat4GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentAbility1GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentAbility2GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentAbility3GainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+    this.god.permanentPassiveGainCount.forEach(item => {
+      allPermanentStatCounts.push(item);
+    });
+
+    allPermanentStatCounts.sort((a, b) => this.sortStats(a, b)).forEach(item => {
+      if (item[1] > 0)
+      {
+        var stats = this.globalService.getNewGodPermanentStats(this.god, item[0]);
+        var abilities = this.globalService.getNewGodPermanentAbilityUpgrades(this.god, item[0]);
+        var increasedStat = this.getIncreasedStatFromStats(stats, abilities);      
+        var gainCap = 0;
+        var partyText = "";
+
+        if (item[0] === 50 || item[0] === 150 || item[0] === 250 || item[0] === 350 || item[0] === 450)
+          gainCap = this.utilityService.godPermanentStatGain1ObtainCap + this.globalService.globalVar.chthonicPowers.increasedGodPrimaryStatResets;
+          if (item[0] === 100 || item[0] === 200 || item[0] === 300 || item[0] === 400 || item[0] === 500)
+          gainCap = this.utilityService.godPermanentStatGain2ObtainCap;
+          if (item[0] === 950 || item[0] === 550 || item[0] === 650 || item[0] === 750 || item[0] === 850) {
+            gainCap = this.utilityService.godPermanentStatGain3ObtainCap + this.globalService.globalVar.chthonicPowers.increasedPartyPrimaryStatResets;
+            partyText = " to party";
+          }
+          if (item[0] === 600 || item[0] === 700 || item[0] === 800 || item[0] === 900 || item[0] === 1000)
+          gainCap = this.utilityService.godPermanentStatGain4ObtainCap;
+
+          if (item[0] === 1050 || item[0] === 1250 || item[0] === 1450 || item[0] === 1650 || item[0] === 1850)
+          gainCap = this.utilityService.godPermanentAbility1ObtainCap;
+          if (item[0] === 1100 || item[0] === 1300 || item[0] === 1500 || item[0] === 1700 || item[0] === 1900)
+          gainCap = this.utilityService.godPermanentPassiveObtainCap;
+          if (item[0] === 1150 || item[0] === 1350 || item[0] === 1550 || item[0] === 1750 || item[0] === 1950)
+          gainCap = this.utilityService.godPermanentAbility2ObtainCap;
+          if (item[0] === 1200 || item[0] === 1400 || item[0] === 1600 || item[0] === 1800 || item[0] === 2000)
+          gainCap = this.utilityService.godPermanentAbility3ObtainCap;
+
+        var clearClass = "";
+        if (item[1] >= gainCap)
+          clearClass = "completedSubzoneColor";
+
+          var upgradedAbilityName = this.god.abilityList.find(item => item.requiredLevel === abilities.requiredLevel)?.name;          
+          if (upgradedAbilityName !== undefined)
+            upgradedAbilityName = "<b>" + upgradedAbilityName + "</b> ";
+          else
+            upgradedAbilityName = "";
+
+        text += "<span class='statLabel bold " + this.god.name.toLowerCase() + "Color'>Level " + item[0] + ":</span> <span class='statValue " + clearClass + "'>" + upgradedAbilityName + "+" + increasedStat + partyText + " - " + item[1] + " / " + (gainCap) + " obtained</span><hr class='slimMargin'/>"; 
+      }
+    });
+
+    return text;
+  }
+
+  sortStats(a: [number, number], b: [number, number]) {
+    var ascending = 1;
+    var descending = -1;
+
+    return a[0] < b[0] ? descending : a[0] > b[0] ? ascending : 0;
+  }
+
+  getIncreasedStatFromStats(upgradedStats: CharacterStats, upgradedAbilities: Ability) {
+    var statGainText = "";
+
+    if (upgradedStats.maxHp > 0)
+      statGainText += Math.round(upgradedStats.maxHp) + " Max HP, ";
+    if (upgradedStats.attack > 0)
+      statGainText += Math.round(upgradedStats.attack) + " Attack, ";
+    if (upgradedStats.agility > 0)
+      statGainText += Math.round(upgradedStats.agility) + " Agility, ";
+    if (upgradedStats.luck > 0)
+      statGainText += Math.round(upgradedStats.luck) + " Luck, ";
+    if (upgradedStats.defense > 0)
+      statGainText += Math.round(upgradedStats.defense) + " Defense, ";
+    if (upgradedStats.resistance > 0)
+      statGainText += Math.round(upgradedStats.resistance) + " Resistance, ";
+
+    if (upgradedStats.hpRegen > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.hpRegen) + " HP Regen per 5 sec, ";
+    if (upgradedStats.criticalMultiplier > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.criticalMultiplier * 100) + "% Critical Multiplier, ";
+    if (upgradedStats.autoAttackCooldownReduction > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.autoAttackCooldownReduction * 100) + "% Auto Attack Cooldown Reduction, ";
+    if (upgradedStats.healingDone > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.healingDone * 100) + "% Healing Done, ";
+    if (upgradedStats.elementIncrease.holy > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.holy * 100) + "% Holy Damage Increase, ";
+    if (upgradedStats.elementIncrease.fire > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
+    if (upgradedStats.elementIncrease.lightning > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.lightning * 100) + "% Lightning Damage Increase, ";
+    if (upgradedStats.overdriveGain > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
+    if (upgradedStats.armorPenetration > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
+    if (upgradedStats.abilityCooldownReduction > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";
+    if (upgradedStats.xpGain > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.xpGain * 100) + "% XP Gain, ";
+
+    var upgradedAbilityName = this.god.abilityList.find(item => item.requiredLevel === upgradedAbilities.requiredLevel)?.name;
+      
+    if (upgradedAbilities.effectiveness > 0) {
+      if (upgradedAbilityName === "Quicken")
+        statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + " Effectiveness, ";
+      else
+        statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + "% Effectiveness, ";
+    }
+    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {
+      if (upgradedAbilityName === "Second Wind") {
+        statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness) + " Effectiveness, ";
+      }
+      else {
+        statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].effectiveness * 100) + "% Buff Effectiveness, ";
+      }
+    }
+    if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].duration > 0)
+      statGainText += this.utilityService.genericRound(upgradedAbilities.userEffect[0].duration) + " Second Buff Duration, ";
+      if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].threshold > 0)
+      statGainText += this.utilityService.genericRound((upgradedAbilities.userEffect[0].threshold) * 100) + "% Threshold Increase, ";
+    if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].effectiveness !== 0)
+      statGainText += this.utilityService.genericRound(Math.abs(upgradedAbilities.targetEffect[0].effectiveness) * 100) + "% Debuff Effectiveness, ";
+    if (upgradedAbilities.targetEffect !== undefined && upgradedAbilities.targetEffect.length > 0 && upgradedAbilities.targetEffect[0].duration > 0)
+      statGainText += this.utilityService.genericRound(upgradedAbilities.targetEffect[0].duration) + " Second Debuff Duration, ";
+
+
+    if (statGainText !== "")
+      statGainText = statGainText.substring(0, statGainText.length - 2);
+
+    return statGainText;
+  }
+ 
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

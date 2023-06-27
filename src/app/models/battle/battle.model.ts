@@ -6,6 +6,7 @@ import { ColiseumTournamentEnum } from "../enums/coliseum-tournament-enum.model"
 import { SceneTypeEnum } from "../enums/scene-type-enum.model";
 import { ResourceValue } from "../resources/resource-value.model";
 import { ColiseumTournament } from "./coliseum-tournament.model";
+import { Trial } from "./trial.model";
 
 export class Battle {    
     @Type(() => EnemyTeam)
@@ -21,6 +22,7 @@ export class Battle {
     battleDuration: number;
 
     activeTournament: ColiseumTournament;
+    activeTrial: Trial;
 
     constructor() {
         this.currentEnemies = new EnemyTeam();
@@ -30,5 +32,6 @@ export class Battle {
         this.chestRewards = [];
         this.battleDuration = 0;
         this.activeTournament = new ColiseumTournament();
+        this.activeTrial = new Trial();
     }
 }

@@ -1,0 +1,38 @@
+<div>
+  <!--<div class="filters">
+        <span>Sort by:</span>
+        <mat-radio-group class="sortOptions" (change)="setupDisplayShopItems()" [(ngModel)]="sortType" aria-label="Select a sorting option">
+          <mat-radio-button [value]="4">Item Type</mat-radio-button>
+          <mat-radio-button [value]="2">Name</mat-radio-button>
+          <mat-radio-button [value]="3">Item ID</mat-radio-button>
+        </mat-radio-group>
+        <button class="buttonAsText clickableText m2Heading" (click)="toggleSort()">&#8645;</button>
+        <button class="buttonAsText clickableText m2Heading" (click)="openFilterMenu(filterContent)"><img
+          class="autoProgressIcon" src="assets/svg/gearTextColor.svg"></button>
+      </div>
+      <hr class="noMargin" />-->
+  <div class="textCentered">
+    <span class="sectionHeaderText sectionHeading">specialty</span>
+  </div>
+  <table>
+    <tr *ngFor="let cells of shopItemRows;">
+      <td class="item" *ngFor="let c of cells; let i = index">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="shopItems.length" [tooltipDirection]="getShopItemTooltipDirection(i)"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+
+  <br />
+  <br />
+
+  <div class="textCentered">
+    <span class="sectionHeaderText sectionHeading">equipment</span>
+  </div>
+  <table>
+    <tr *ngFor="let cells of equipmentItemRows;">
+      <td class="item" *ngFor="let c of cells; let i = index">
+        <app-shopping-item-view [item]="c" [totalItemsInShop]="equipmentItems.length" [tooltipDirection]="getShopItemTooltipDirection(i)"></app-shopping-item-view>
+      </td>
+    </tr>
+  </table>
+</div>

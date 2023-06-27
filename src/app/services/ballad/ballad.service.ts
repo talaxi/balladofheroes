@@ -19,6 +19,7 @@ import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generato
 import { UtilityService } from '../utility/utility.service';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
 import { AchievementService } from '../achievements/achievement.service';
+import { MenuService } from '../menu/menu.service';
 
 @Injectable({
   providedIn: 'root'
@@ -27,7 +28,7 @@ export class BalladService {
 
   constructor(private globalService: GlobalService, private gameLogService: GameLogService, private dpsCalculatorService: DpsCalculatorService,
     private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService,
-    public dialog: MatDialog) { }
+    public dialog: MatDialog, private menuService: MenuService) { }
 
   getBalladName(type?: BalladEnum) {
     var name = "";
@@ -44,6 +45,8 @@ export class BalladService {
       name = "Ballad of the Boar";
     if (type === BalladEnum.Argo)
       name = "Ballad of the Argo";
+    if (type === BalladEnum.Olympus)
+      name = "Ballad of Olympus";
 
     return name;
   }
@@ -79,7 +82,7 @@ export class BalladService {
     return subzone;
   }
 
-  setActiveSubZone(type: SubZoneEnum) {
+  setActiveSubZone(type: SubZoneEnum) {    
     var relatedZone: Zone | undefined = this.getActiveZone();
     var relatedBallad: Ballad | undefined = this.getActiveBallad();
     var relatedSubzone: SubZone = this.getActiveSubZone();
@@ -112,6 +115,24 @@ export class BalladService {
     }
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
     this.globalService.resetCooldowns();
+    
+    if (relatedSubzone.type === SubZoneEnum.WarForTheMountainStables) {
+      this.globalService.globalVar.partyMember2Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {      
+      this.globalService.globalVar.partyMember2Hidden = false;
+      this.menuService.updateParty = true;
+    }
+
+    if (relatedSubzone.type === SubZoneEnum.WarForTheMountainPalaces) {
+      this.globalService.globalVar.partyMember1Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {
+      this.globalService.globalVar.partyMember1Hidden = false;
+      this.menuService.updateParty = true;
+    }
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.getSubZoneName(relatedSubzone.type) + "</strong>.";
@@ -124,6 +145,7 @@ export class BalladService {
     this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
+    this.globalService.ResetTrialInfoAfterChangingSubzone();
 
     if (!this.isSubzoneTown(relatedSubzone.type)) {
       var enemyOptions = this.subzoneGeneratorService.generateBattleOptions(relatedSubzone.type);
@@ -262,6 +284,7 @@ export class BalladService {
   selectNextSubzone() {
     var currentSubzone = this.getActiveSubZone();
     var includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
+    var shouldHideCountryRoads1 = this.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo)?.isAvailable ?? false;
 
     var nextSubzoneFound = false;
     var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
@@ -274,6 +297,7 @@ export class BalladService {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable);//.slice().reverse();
           reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
+              (!shouldHideCountryRoads1 || (shouldHideCountryRoads1 && subzone.type !== SubZoneEnum.NemeaCountryRoadsOne)) &&
               !this.autoProgressShouldChangeSubZone(subzone) && (includeSideQuests || (!includeSideQuests && this.shouldSubzoneShowSideQuestNotification(subzone.type) !== NotificationTypeEnum.SideQuest))) {
               nextSubzoneFound = true;
               if (currentSubzone.type !== subzone.type) { //don't constantly re-enter the same subzone
@@ -346,6 +370,24 @@ export class BalladService {
       return;
     }
 
+    if (subzone.type === SubZoneEnum.WarForTheMountainStables) {
+      this.globalService.globalVar.partyMember2Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {
+      this.globalService.globalVar.partyMember2Hidden = false;
+      this.menuService.updateParty = true;
+    }
+
+    if (subzone.type === SubZoneEnum.WarForTheMountainPalaces) {
+      this.globalService.globalVar.partyMember1Hidden = true;
+      this.menuService.updateParty = true;
+    }
+    else {
+      this.globalService.globalVar.partyMember1Hidden = false;
+      this.menuService.updateParty = true;
+    }
+
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.zones !== undefined && ballad.zones.length > 0)
         ballad.zones.forEach(zone => {
@@ -371,6 +413,7 @@ export class BalladService {
     this.dpsCalculatorService.xpGain = [];
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
+    this.globalService.ResetTrialInfoAfterChangingSubzone();
 
     if (this.isSubzoneTown(subzone.type)) {
       this.globalService.globalVar.settings.set("autoProgress", false);
@@ -666,6 +709,56 @@ export class BalladService {
       name = "Island of Erytheia";
     if (type === SubZoneEnum.ErytheiaGeryonsFarm)
       name = "Geryon's Farm";
+    if (type === SubZoneEnum.MountOlympusUpTheMountain)
+      name = "Up the Mountain";
+    if (type === SubZoneEnum.MountOlympusMeanderingPath)
+      name = "Meandering Path";
+    if (type === SubZoneEnum.MountOlympusCouloir)
+      name = "Couloir";
+    if (type === SubZoneEnum.MountOlympusMusesPlateau)
+      name = "Muses Plateau";
+    if (type === SubZoneEnum.MountOlympusPathwayToTheZenith)
+      name = "Path to the Zenith";
+    if (type === SubZoneEnum.MountOlympusMytikasSummit)
+      name = "Mytikas Summit";
+    if (type === SubZoneEnum.MountOlympusOlympus)
+      name = "Olympus";
+    if (type === SubZoneEnum.HuntForYarrowOlympianGrounds)
+      name = "Olympian Grounds";
+    if (type === SubZoneEnum.HuntForYarrowMountainHike)
+      name = "Mountain Hike";
+    if (type === SubZoneEnum.HuntForYarrowWoodlandTrail)
+      name = "Woodland Trail";
+    if (type === SubZoneEnum.HuntForYarrowTrailFork1)
+      name = "Trail Fork 1";
+    if (type === SubZoneEnum.HuntForYarrowTrailFork2)
+      name = "Trail Fork 2";
+    if (type === SubZoneEnum.HuntForYarrowTrailFork3)
+      name = "Trail Fork 3";
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery1)
+      name = "Dense Greenery 1";
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery2)
+      name = "Dense Greenery 2";
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery3)
+      name = "Dense Greenery 3";
+    if (type === SubZoneEnum.HuntForYarrowPromisingPathway1)
+      name = "Promising Pathway 1";
+    if (type === SubZoneEnum.HuntForYarrowPromisingPathway2)
+      name = "Promising Pathway 2";
+    if (type === SubZoneEnum.HuntForYarrowPromisingPathway3)
+      name = "Promising Pathway 3";
+    if (type === SubZoneEnum.HuntForYarrowYarrowField)
+      name = "Yarrow Field";
+    if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates)
+      name = "Battle at the Gates";
+    if (type === SubZoneEnum.WarForTheMountainOpenCourtyard)
+      name = "Open Courtyard";
+    if (type === SubZoneEnum.WarForTheMountainPalaces)
+      name = "Palaces";
+    if (type === SubZoneEnum.WarForTheMountainStables)
+      name = "Stables";
+    if (type === SubZoneEnum.WarForTheMountainThePeak)
+      name = "The Peak";
 
     return name;
   }
@@ -833,6 +926,26 @@ export class BalladService {
     if (type === SubZoneEnum.ErytheiaIslandOfErytheia || type === SubZoneEnum.ErytheiaGeryonsFarm)
       victories = bossVictories;
 
+    if (type === SubZoneEnum.MountOlympusUpTheMountain || type === SubZoneEnum.MountOlympusCouloir || type === SubZoneEnum.MountOlympusPathwayToTheZenith ||
+      type === SubZoneEnum.MountOlympusMeanderingPath || type === SubZoneEnum.MountOlympusMusesPlateau)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.MountOlympusMytikasSummit)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.HuntForYarrowDenseGreenery1 || type === SubZoneEnum.HuntForYarrowDenseGreenery2 || type === SubZoneEnum.HuntForYarrowDenseGreenery3 ||
+      type === SubZoneEnum.HuntForYarrowPromisingPathway1 || type === SubZoneEnum.HuntForYarrowPromisingPathway2 || type === SubZoneEnum.HuntForYarrowPromisingPathway3 ||
+      type === SubZoneEnum.HuntForYarrowTrailFork1 || type === SubZoneEnum.HuntForYarrowTrailFork2 || type === SubZoneEnum.HuntForYarrowTrailFork3 ||
+      type === SubZoneEnum.HuntForYarrowMountainHike || type === SubZoneEnum.HuntForYarrowOlympianGrounds || type === SubZoneEnum.HuntForYarrowWoodlandTrail)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.HuntForYarrowYarrowField)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.WarForTheMountainBattleAtTheGates || type === SubZoneEnum.WarForTheMountainPalaces || type === SubZoneEnum.WarForTheMountainStables ||
+      type === SubZoneEnum.WarForTheMountainOpenCourtyard || type === SubZoneEnum.WarForTheMountainThePeak)
+      victories = bossVictories;
+
     return victories;
   }
 
@@ -841,7 +954,8 @@ export class BalladService {
       type === SubZoneEnum.AsphodelLostHaven || type === SubZoneEnum.ElysiumColiseum || type === SubZoneEnum.PeloposNisosTravelPost ||
       type === SubZoneEnum.CalydonTownMarket || type === SubZoneEnum.AegeanSeaIolcus || type === SubZoneEnum.AegeanSeaSalmydessus ||
       type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
-      type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz) {
+      type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz ||
+      type === SubZoneEnum.MountOlympusOlympus) {
       return true;
     }
 

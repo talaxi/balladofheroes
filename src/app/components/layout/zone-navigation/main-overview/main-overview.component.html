@@ -26,9 +26,19 @@
                 class="resource chthonicFavorKeyword">Chthonic Favor:
                 <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.ChthonicFavor) | number
                     : '1.0-2'}}</span></span>
+                    <br *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0" />
+                        <span *ngIf="lookupService.getResourceAmount(itemsEnum.Ambrosia) > 0"
+                            class="resource ambrosiaKeyword">Ambrosia:
+                            <span class="baseWeight">{{lookupService.getResourceAmount(itemsEnum.Ambrosia) | number
+                                : '1.0-2'}}</span></span>
             <br />
             <button class="buttonStyled stackedButtons" *ngIf="areFollowersAvailable()"
                 (click)="viewFollowers(followers)">View Followers</button>
+                <br/>
+                            <button class="buttonStyled stackedButtons" *ngIf="areLoadoutsAvailable()"
+                            (click)="viewLoadouts(loadouts)">
+                                View Loadouts
+                            </button>
                 <br/>
                 <button *ngIf="meleteFunctionalityAvailable()" class="buttonStyled stackedButtons"
                             (click)="viewFollowers(melete)">Melete</button>
@@ -47,5 +57,9 @@
     <div>
         <app-melete-view></app-melete-view>
     </div>
+</ng-template>
+
+<ng-template #loadouts>
+    <app-loadouts-view></app-loadouts-view>
 </ng-template>
 

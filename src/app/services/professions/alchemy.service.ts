@@ -76,6 +76,22 @@ export class AlchemyService {
     return duration;
   }
 
+  doesUserHaveRecipe(item: ItemsEnum) {
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    if (alchemy === undefined)
+      return false;
+
+    return alchemy.availableRecipeItems.some(availableItem => item === availableItem);
+  }
+
+  learnRecipe(item: ItemsEnum) {
+    var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+    if (alchemy === undefined)
+      return;
+
+    alchemy.availableRecipeItems.push(item);
+  }
+
   checkForNewRecipes() {
     var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     if (alchemy === undefined)
@@ -83,177 +99,177 @@ export class AlchemyService {
     var newRecipeLearned = false;
 
     if (alchemy.level >= 1) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HealingPoultice)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HealingPoultice));
+      if (!this.doesUserHaveRecipe(ItemsEnum.HealingPoultice)) {
+        this.learnRecipe(ItemsEnum.HealingPoultice);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.HealingPoultice);
       }
     }
     if (alchemy.level >= 2) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.ExplodingPotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.ExplodingPotion));
+      if (!this.doesUserHaveRecipe(ItemsEnum.ExplodingPotion)) {
+        this.learnRecipe(ItemsEnum.ExplodingPotion);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.ExplodingPotion);
       }
     }
     if (alchemy.level >= 4) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.DebilitatingToxin)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.DebilitatingToxin));
+      if (!this.doesUserHaveRecipe(ItemsEnum.DebilitatingToxin)) {
+        this.learnRecipe(ItemsEnum.DebilitatingToxin);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.DebilitatingToxin);
       }
     }
     if (alchemy.level >= 7) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HealingSalve)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HealingSalve));
+      if (!this.doesUserHaveRecipe(ItemsEnum.HealingSalve)) {
+        this.learnRecipe(ItemsEnum.HealingSalve);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.HealingSalve);
       }
     }
     if (alchemy.level >= 10) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.FirePotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.FirePotion));
+      if (!this.doesUserHaveRecipe(ItemsEnum.FirePotion)) {
+        this.learnRecipe(ItemsEnum.FirePotion);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.FirePotion);
       }
     }
     if (alchemy.level >= 15) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PoisonousToxin)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PoisonousToxin));
+      if (!this.doesUserHaveRecipe(ItemsEnum.PoisonousToxin)) {
+        this.learnRecipe(ItemsEnum.PoisonousToxin);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.PoisonousToxin);
       }
     }
     if (alchemy.level >= 20) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.StranglingGasPotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.StranglingGasPotion));
+      if (!this.doesUserHaveRecipe(ItemsEnum.StranglingGasPotion)) {
+        this.learnRecipe(ItemsEnum.StranglingGasPotion);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.StranglingGasPotion);
       }
     }
 
     if (alchemy.level >= 22) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.SoulEssence)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.SoulEssence));
+      if (!this.doesUserHaveRecipe(ItemsEnum.SoulEssence)) {
+        this.learnRecipe(ItemsEnum.SoulEssence);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.SoulEssence);
       }
     }
     if (alchemy.level >= 25) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.SatchelOfHerbs)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.SatchelOfHerbs));
+      if (!this.doesUserHaveRecipe(ItemsEnum.SatchelOfHerbs)) {
+        this.learnRecipe(ItemsEnum.SatchelOfHerbs);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.SatchelOfHerbs);
       }
     }
     if (alchemy.level >= 26) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.UnstablePotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.UnstablePotion));
+      if (!this.doesUserHaveRecipe(ItemsEnum.UnstablePotion)) {
+        this.learnRecipe(ItemsEnum.UnstablePotion);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.UnstablePotion);
       }
     }
     if (alchemy.level >= 27) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.ElixirOfFortitude)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.ElixirOfFortitude));
+      if (!this.doesUserHaveRecipe(ItemsEnum.ElixirOfFortitude)) {
+        this.learnRecipe(ItemsEnum.ElixirOfFortitude);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfFortitude);
       }
     }
     if (alchemy.level >= 29) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.WitheringToxin)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.WitheringToxin));
+      if (!this.doesUserHaveRecipe(ItemsEnum.WitheringToxin)) {
+        this.learnRecipe(ItemsEnum.WitheringToxin);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.WitheringToxin);
       }
     }
     if (alchemy.level >= 32) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.RestorativePoultice)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.RestorativePoultice));
+      if (!this.doesUserHaveRecipe(ItemsEnum.RestorativePoultice)) {
+        this.learnRecipe(ItemsEnum.RestorativePoultice);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.RestorativePoultice);
       }
     }
     if (alchemy.level >= 35) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.BoomingPotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.BoomingPotion));
+      if (!this.doesUserHaveRecipe(ItemsEnum.BoomingPotion)) {
+        this.learnRecipe(ItemsEnum.BoomingPotion);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.BoomingPotion);
       }
     }
     if (alchemy.level >= 40) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.VenomousToxin)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.VenomousToxin));
+      if (!this.doesUserHaveRecipe(ItemsEnum.VenomousToxin)) {
+        this.learnRecipe(ItemsEnum.VenomousToxin);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.VenomousToxin);
       }
     }
     if (alchemy.level >= 45) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.RestorativeSalve)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.RestorativeSalve));
+      if (!this.doesUserHaveRecipe(ItemsEnum.RestorativeSalve)) {
+        this.learnRecipe(ItemsEnum.RestorativeSalve);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.RestorativeSalve);
       }
     }
     if (alchemy.level >= 50) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.BushelOfHerbs)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.BushelOfHerbs));
+      if (!this.doesUserHaveRecipe(ItemsEnum.BushelOfHerbs)) {
+        this.learnRecipe(ItemsEnum.BushelOfHerbs);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.BushelOfHerbs);
       }
     }
     if (alchemy.level >= 51) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.ElixirOfSpeed)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.ElixirOfSpeed));
+      if (!this.doesUserHaveRecipe(ItemsEnum.ElixirOfSpeed)) {
+        this.learnRecipe(ItemsEnum.ElixirOfSpeed);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfSpeed);
       }
     }    
     if (alchemy.level >= 52) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PotentEssence)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PotentEssence));
+      if (!this.doesUserHaveRecipe(ItemsEnum.PotentEssence)) {
+        this.learnRecipe(ItemsEnum.PotentEssence);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.PotentEssence);
       }
     }
     if (alchemy.level >= 54) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HoneyPoultice)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HoneyPoultice));
+      if (!this.doesUserHaveRecipe(ItemsEnum.HoneyPoultice)) {
+        this.learnRecipe(ItemsEnum.HoneyPoultice);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.HoneyPoultice);
       }
     }    
     if (alchemy.level >= 55) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.PiercingPotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.PiercingPotion));
+      if (!this.doesUserHaveRecipe(ItemsEnum.PiercingPotion)) {
+        this.learnRecipe(ItemsEnum.PiercingPotion);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.PiercingPotion);
       }
     }
     if (alchemy.level >= 57) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.FlamingToxin)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.FlamingToxin));
+      if (!this.doesUserHaveRecipe(ItemsEnum.FlamingToxin)) {
+        this.learnRecipe(ItemsEnum.FlamingToxin);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.FlamingToxin);
       }
     }
     if (alchemy.level >= 65) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.SlowingPotion)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.SlowingPotion));
+      if (!this.doesUserHaveRecipe(ItemsEnum.SlowingPotion)) {
+        this.learnRecipe(ItemsEnum.SlowingPotion);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.SlowingPotion);
       }
     }
     if (alchemy.level >= 70) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.HoneySalve)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.HoneySalve));
+      if (!this.doesUserHaveRecipe(ItemsEnum.HoneySalve)) {
+        this.learnRecipe(ItemsEnum.HoneySalve);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.HoneySalve);
       }
     }
     if (alchemy.level >= 75) {
-      if (!alchemy.availableRecipes.some(item => item.createdItem === ItemsEnum.ParalyzingToxin)) {
-        alchemy.availableRecipes.push(this.getRecipe(ItemsEnum.ParalyzingToxin));
+      if (!this.doesUserHaveRecipe(ItemsEnum.ParalyzingToxin)) {
+        this.learnRecipe(ItemsEnum.ParalyzingToxin);
         newRecipeLearned = true;
         this.updateGameLogWithNewRecipe(ItemsEnum.ParalyzingToxin);
       }

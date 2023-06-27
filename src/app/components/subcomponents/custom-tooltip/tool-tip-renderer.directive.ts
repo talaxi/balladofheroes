@@ -54,8 +54,8 @@ export class ToolTipRendererDirective {
     if (this.tooltipDirection === DirectionEnum.Right) {      
       var tooltipPercent = this.isLargeTooltip ? this.largeTooltipPercent : this.regularTooltipPercent;
 
-      if ((screen.width * (1-tooltipPercent) < (this._elementRef.nativeElement.getBoundingClientRect().x + this._elementRef.nativeElement.getBoundingClientRect().width)))
-        this.tooltipDirection = DirectionEnum.DownRight;      
+      /*if ((screen.width * (1-tooltipPercent) < (this._elementRef.nativeElement.getBoundingClientRect().x + this._elementRef.nativeElement.getBoundingClientRect().width)))
+        this.tooltipDirection = DirectionEnum.DownRight;      */
     }
 
     if (this.tooltipDirection === DirectionEnum.Down) {

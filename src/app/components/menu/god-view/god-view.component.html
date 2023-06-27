@@ -9,10 +9,10 @@
         <div class="baseInfo">
             <span class="s2Heading pageHeader" [ngClass]="getGodColor()">{{god.name}}</span>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">Level
-                {{god.level}}</span>
+            <button class="buttonAsText clickableText" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">Level
+                {{god.level}}</button>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" [contentTemplate]="godXpPopover">{{god.exp |
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="godXpPopover">{{god.exp |
                 number : '1.0-0'}} / {{god.expToNextLevel | number : '1.0-0'}} XP to Level {{god.level +
                 1}}</span>
         </div>
@@ -128,6 +128,10 @@
                 [contentTemplate]="debuffDurationBonusPopover"><strong [ngClass]="getGodColor()"
                     class="statLabel">Debuff Duration Bonus:</strong>
                 {{(getDebuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                <span *ngIf="getBuffDurationBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                [contentTemplate]="buffDurationBonusPopover"><strong [ngClass]="getGodColor()"
+                    class="statLabel">Buff Duration Bonus:</strong>
+                {{(getBuffDurationBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getOverdriveGainFromAutoAttacksBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="overdriveGainFromAutoAttacksBonusPopover"><strong [ngClass]="getGodColor()"
                     class="statLabel">Overdrive Gain From Auto Attacks Bonus:</strong>
@@ -252,7 +256,7 @@
                         <div
                             *ngIf="getAbilityEffectivenessIncrease(ability) !== 0 && getAbilityEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Effectiveness Increase: </span> <span class="statValue"
-                                [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>
+                                [innerHtml]="getAbilityEffectivenessIncrease(ability)"></span></div>                            
                         <div
                             *ngIf="getSecondaryAbilityEffectivenessIncrease(ability) !== 0 && getSecondaryAbilityEffectivenessIncrease(ability) !== '0%'">
                             <span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
@@ -269,6 +273,14 @@
                             <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
                                 class="statValue"
                                 [innerHtml]="getPermanentAbilityUserEffectEffectivenessIncrease(ability)"></span></div>
+                                <div *ngIf="getAbilityUserEffectThresholdIncrease(ability) !== 0 && getAbilityUserEffectThresholdIncrease(ability) !== '0%'">
+                                    <span class="statLabel">Gained Effect Threshold Increase: </span> <span class="statValue"
+                                        [innerHtml]="getAbilityUserEffectThresholdIncrease(ability)"></span></div>
+                                <div
+                            *ngIf="getPermanentAbilityUserEffectThresholdIncrease(ability) !== 0 && getPermanentAbilityUserEffectThresholdIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Gained Effect Threshold Increase: </span> <span
+                                class="statValue"
+                                [innerHtml]="getPermanentAbilityUserEffectThresholdIncrease(ability)"></span></div>
                         <div *ngIf="getPermanentAbilityUserEffectDurationIncrease(ability) !== 0"><span class="statLabel">Permanent Gained
                                 Effect Duration Increase: </span> <span class="statValue"
                                 [innerHtml]="getPermanentAbilityUserEffectDurationIncrease(ability)"></span> seconds</div>
@@ -490,6 +502,16 @@
         <span class="description" [innerHtml]="this.lookupService.getDebuffDurationBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodDebuffDurationBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #buffDurationBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getBuffDurationBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodBuffDurationBonusStatBreakdown(this.god)">
 
         </div>
     </div>
@@ -751,6 +773,19 @@
     <div>
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodXpBreakdown(this.god)">
         </div>
+        <hr/>
+        <div>Click to see a breakdown of all permanent stats and abilities.</div>
+    </div>
+</ng-template>
+
+
+<ng-template #permanentStatBreakdownContent>
+    <div class="s4Heading">
+        Permanent Level Upgrades
+    </div>
+    <hr/>
+    <div [innerHtml]="this.getPermanentStatBreakdown()">
+        
     </div>
 </ng-template>
 

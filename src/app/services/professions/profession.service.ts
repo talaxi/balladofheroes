@@ -239,7 +239,7 @@ export class ProfessionService {
     }
   }
 
-  learnRecipe(type: ProfessionEnum, item: ItemsEnum) {
+  /*learnRecipe(type: ProfessionEnum, item: ItemsEnum) {
     var selectedProfession = this.globalService.globalVar.professions.find(item => item.type === type);
     if (selectedProfession === undefined)
       return;
@@ -247,7 +247,7 @@ export class ProfessionService {
     if (!selectedProfession.availableRecipes.some(recipe => recipe.createdItem === item)) {
       selectedProfession.availableRecipes.push(this.getRecipe(type, item));
     }
-  }
+  }*/
 
   getDurationReduction(type: ProfessionEnum, quality: EquipmentQualityEnum) {
     var selectedProfession = this.globalService.globalVar.professions.find(item => item.type === type);
@@ -403,5 +403,22 @@ export class ProfessionService {
       return this.jewelcraftingService.getActionLength(actionEnum);
 
     return ProfessionActionsEnum.None;
+  }
+
+  doesUserHaveRecipe(type: ProfessionEnum, item: ItemsEnum) {
+    if (type === ProfessionEnum.Alchemy)
+    return this.alchemyService.doesUserHaveRecipe(item);
+  if (type === ProfessionEnum.Jewelcrafting)
+    return this.jewelcraftingService.doesUserHaveRecipe(item);
+
+    return false;
+  }
+
+  learnRecipe(type: ProfessionEnum, item: ItemsEnum) {
+    if (type === ProfessionEnum.Alchemy)
+      return this.alchemyService.learnRecipe(item);
+    if (type === ProfessionEnum.Jewelcrafting)
+      return this.jewelcraftingService.learnRecipe(item);
+
   }
 }

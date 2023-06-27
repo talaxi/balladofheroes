@@ -109,6 +109,15 @@ import { MeleteViewComponent } from './components/subcomponents/melete-view/mele
 import { MeleteActionButtonComponent } from './components/subcomponents/utility/melete-action-button/melete-action-button.component';
 import { SupportViewComponent } from './components/subcomponents/support-view/support-view.component';
 import { FilterItemsViewComponent } from './components/subcomponents/filter-items-view/filter-items-view.component';
+import { OlympicResetViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reset-view.component';
+import { OlympicResetMenuViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reset-menu-view/olympic-reset-menu-view.component';
+import { OlympicRewardMenuViewComponent } from './components/subcomponents/olympic-reset-view/olympic-reward-menu-view/olympic-reward-menu-view.component';
+import { TrialsViewComponent } from './components/subcomponents/trials-view/trials-view.component';
+import { LoadoutsViewComponent } from './components/subcomponents/loadouts-view/loadouts-view.component';
+import { AddLoadoutComponent } from './components/subcomponents/loadouts-view/add-loadout/add-loadout.component';
+import { SelectLoadoutCharacterComponent } from './components/subcomponents/loadouts-view/select-loadout-character/select-loadout-character.component';
+import { SelectLoadoutGodComponent } from './components/subcomponents/loadouts-view/select-loadout-god/select-loadout-god.component';
+import { SelectLoadoutEquipmentComponent } from './components/subcomponents/loadouts-view/select-loadout-equipment/select-loadout-equipment.component';
 
 @NgModule({
   declarations: [
@@ -182,7 +191,16 @@ import { FilterItemsViewComponent } from './components/subcomponents/filter-item
     MeleteViewComponent,
     MeleteActionButtonComponent,
     SupportViewComponent,
-    FilterItemsViewComponent,    
+    FilterItemsViewComponent,
+    OlympicResetViewComponent,
+    OlympicResetMenuViewComponent,
+    OlympicRewardMenuViewComponent,
+    TrialsViewComponent,
+    LoadoutsViewComponent,
+    AddLoadoutComponent,
+    SelectLoadoutCharacterComponent,
+    SelectLoadoutGodComponent,
+    SelectLoadoutEquipmentComponent,    
   ],
   imports: [
     BrowserModule,

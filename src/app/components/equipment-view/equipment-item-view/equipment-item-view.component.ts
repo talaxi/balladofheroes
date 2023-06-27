@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { Character } from 'src/app/models/character/character.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
@@ -15,6 +16,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class EquipmentItemViewComponent implements OnInit {
   @Input() equipment: Equipment | undefined;
+  @Input() character: Character | undefined;
   @Input() associatedResource: ResourceValue | undefined;
   @Input() isSlotMenu: boolean = false;
   equipmentStats = "";
@@ -24,12 +26,12 @@ export class EquipmentItemViewComponent implements OnInit {
   constructor(public lookupService: LookupService, private gameLoopService: GameLoopService, public dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
-    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);
-    this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
+    this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);    
+    this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment, this.character);
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);
-      this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment);
+      this.equipmentStats = this.lookupService.getEquipmentStats(this.equipment, this.associatedResource, this.isSlotMenu);      
+      this.equipmentEffects = this.lookupService.getEquipmentEffects(this.equipment, this.character);
     });
   }
 
@@ -68,5 +70,10 @@ export class EquipmentItemViewComponent implements OnInit {
     }
     
     return "";
+  }
+
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+      this.subscription.unsubscribe();
   }
 }

@@ -26,7 +26,7 @@ export class EnemyViewComponent implements OnInit {
   @Input() character: Enemy;
   @Input() showNewEnemyGroupAnimation: boolean = false;
   @Input() isBoss = false;
-  tooltipDirection = DirectionEnum.Down;
+  tooltipDirection = DirectionEnum.DownRight;
   defeatCount: number;
   subscription: any;
   characterTargeting: boolean = false;

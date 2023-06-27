@@ -33,6 +33,7 @@
 .autoProgressIcon {
     height: 1.1rem;
     vertical-align: middle;
+    display: flex;
 }
 
 .zoneList {

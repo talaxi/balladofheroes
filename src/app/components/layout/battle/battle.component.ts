@@ -1,6 +1,7 @@
 import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import * as pluralize from 'pluralize';
+import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { AnimationStateEnum } from 'src/app/models/enums/animation-state-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
@@ -9,6 +10,7 @@ import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
@@ -129,7 +131,7 @@ export class BattleComponent implements OnInit {
 
   isAtTown() {
     if (this.activeSubzone !== undefined) {
-      return this.balladService.isSubzoneTown(this.activeSubzone.type) && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None;
+      return this.balladService.isSubzoneTown(this.activeSubzone.type) && this.lookupService.userNotInTownBattle();
     }
     return false;
   }
@@ -144,6 +146,14 @@ export class BattleComponent implements OnInit {
   doingColiseumFight() {
     if (this.globalService.globalVar.activeBattle !== undefined)
       return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None;
+
+    return false;
+  }
+
+  doingColiseumOrTrialFight() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
+      return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None ||
+       this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
 
     return false;
   }
@@ -261,7 +271,12 @@ export class BattleComponent implements OnInit {
   }
 
   getTournamentTimeRemaining() {
-    var timeRemaining = this.globalService.globalVar.activeBattle.activeTournament.tournamentTimerLength - this.globalService.globalVar.activeBattle.activeTournament.tournamentTimer;
+    var timeRemaining = 0;
+    
+    if (this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None)
+    timeRemaining = this.globalService.globalVar.activeBattle.activeTournament.tournamentTimerLength - this.globalService.globalVar.activeBattle.activeTournament.tournamentTimer;
+    else if (this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None)
+    timeRemaining = this.globalService.globalVar.activeBattle.activeTrial.timerLength - this.globalService.globalVar.activeBattle.activeTrial.timer;
 
     var value = this.utilityService.convertSecondsToMMSS(timeRemaining);
 
@@ -439,6 +454,40 @@ export class BattleComponent implements OnInit {
     this.layoutService.changeLayout(NavigationEnum.Menu);
     this.menuService.selectedMenuDisplay = MenuEnum.Bestiary; 
     this.menuService.setBestiaryPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());     
+  }
+
+  globalStatusEffectsActive() {
+    return this.globalService.globalVar.globalStatusEffects.length > 0;
+  }
+
+  preventRightClick() {
+    return false;
+  }
+
+  getStatusEffectDuration(effect: StatusEffect) {
+    if (effect.duration < 0)
+      return "Resolves Upon Effect Condition";
+
+    var duration = Math.round(effect.duration);
+    var durationString = "";
+    if (duration < 60)
+      durationString = duration + " seconds";
+    else if (duration < 60 * 60)
+      durationString = Math.ceil(duration / 60) + " minutes";
+    else
+      durationString = Math.ceil(duration / (60 * 60)) + " hours";
+
+    return "Remaining Duration: " + durationString;
+  }
+
+  getAllGlobalEffects() {
+    var description = "";
+
+    this.globalService.globalVar.globalStatusEffects.forEach(effect => {
+      description += this.lookupService.getStatusEffectDescription(effect) + "<br/><br/>" + this.getStatusEffectDuration(effect) + "<hr/>";
+    });
+
+    return description;
   }
 
   ngOnDestroy() {

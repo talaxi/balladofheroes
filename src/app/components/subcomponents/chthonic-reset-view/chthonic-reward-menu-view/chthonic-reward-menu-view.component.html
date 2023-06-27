@@ -48,7 +48,7 @@
         </div>
 
         <div customToolTip [contentTemplate]="retainGodLevelPopover" class="largerChthonicStatUpgrades">
-            Retain a percent of your god levels after a Chthonic Reset: {{getChthonicRetainGodLevelBoost() | number : '1.0-0'}}% <br />
+            Retain a percent of experience obtained after a Chthonic Reset: {{getChthonicRetainGodLevelBoost() | number : '1.0-2'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForRetainGodLevel().toLocaleString()}} CP Required</span><br/>
             <button [disabled]="this.getRequiredChthonicPowerForRetainGodLevel() > getChthonicPower() || atRetainGodCap()" (click)="buyChthonicRetainGodLevelBoost()">Increase</button>
         </div>
@@ -106,6 +106,6 @@
 
 <ng-template #retainGodLevelPopover>
     <div>
-        Retain a percentage of your god levels after performing a Chthonic Reset. Each upgrade level increases the amount by 1% and caps at 25% total.
+        Retain a percentage of the experience you've gained for this god after performing a Chthonic Reset. Each upgrade level increases the amount by .5% and caps at 25% total.
     </div>
 </ng-template>

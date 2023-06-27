@@ -1,0 +1,18 @@
+<table>
+    <tr>
+        <td class="clickableText tabItem" [ngClass]="{'active': isDisplayingResetView }" (click)="toggleView()">
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': isDisplayingResetView }">Reset</button>
+        </td>
+        <td class="clickableText tabItem" [ngClass]="{'active': !isDisplayingResetView }" (click)="toggleView()">
+            <button class="buttonAsText clickableText m1Heading" [ngClass]="{'active': !isDisplayingResetView }">Reward</button>            
+            <app-notification-icon class="notificationMarginLeft" *ngIf="showNotificationIcon">
+            </app-notification-icon>
+        </td>
+    </tr>
+</table>
+
+<hr class="noMargin" />
+<div class="info">
+    <app-olympic-reset-menu-view *ngIf="isDisplayingResetView"></app-olympic-reset-menu-view>
+    <app-olympic-reward-menu-view *ngIf="!isDisplayingResetView"></app-olympic-reward-menu-view>
+</div>

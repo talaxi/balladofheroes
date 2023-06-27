@@ -27,6 +27,8 @@ import { FollowerData } from "../followers/follower-data.model";
 import { RedeemableCode } from "../utility/redeemable-code.model";
 import { Profession } from "../professions/profession.model";
 import { Melete } from "../melete/melete.model";
+import { Loadout } from "../utility/loadout.model";
+import { StatusEffect } from "../battle/status-effect.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -48,6 +50,8 @@ export class GlobalVariables {
     resources: ResourceValue[];
     activePartyMember1: CharacterEnum;
     activePartyMember2: CharacterEnum;
+    partyMember1Hidden: boolean;
+    partyMember2Hidden: boolean;
     @Type(() => Battle)
     activeBattle: Battle;
     @Type(() => Achievement)
@@ -97,6 +101,10 @@ export class GlobalVariables {
     subscribedDate: Date;
     @Type(() => Melete)
     melete: Melete;
+    @Type(() => Loadout)
+    loadouts: Loadout[];
+    @Type(() => StatusEffect)
+    globalStatusEffects: StatusEffect[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -133,6 +141,10 @@ export class GlobalVariables {
         this.extraSpeedEnabled = true;
         this.redeemedCodes = [];
         this.isSubscriber = false;  
-        this.melete = new Melete();      
+        this.melete = new Melete();    
+        this.loadouts = [];  
+        this.globalStatusEffects = [];
+        this.partyMember1Hidden = false;
+        this.partyMember2Hidden = false;
     }
 }

@@ -28,6 +28,7 @@ import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.mode
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { DictionaryService } from './dictionary.service';
+import { EquipmentService } from '../resources/equipment.service';
 
 @Injectable({
   providedIn: 'root'
@@ -37,13 +38,13 @@ export class BackgroundService {
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
     private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
     private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService,
-    private dictionaryService: DictionaryService) { }
+    private dictionaryService: DictionaryService, private equipmentService: EquipmentService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
     this.handleItemCooldowns(deltaTime);
     this.checkForDailyOccurrences(deltaTime);
-    this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);    
+    this.professionService.handleProfessionTimer(ProfessionEnum.Alchemy, deltaTime);
     this.professionService.handleProfessionTimer(ProfessionEnum.Jewelcrafting, deltaTime);
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
@@ -55,7 +56,7 @@ export class BackgroundService {
 
     if (this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.currentEnemies !== undefined &&
       activeSubzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !(this.balladService.isSubzoneTown(activeSubzone.type) &&
-        this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.None))
+        this.lookupService.userNotInTownBattle()))
       enemies = this.globalService.globalVar.activeBattle.currentEnemies.enemyList;
 
     party.forEach(partyMember => {
@@ -64,8 +65,9 @@ export class BackgroundService {
       if (!isDefeated && !this.globalService.globalVar.isBattlePaused) {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleHpRegen(partyMember, deltaTime);
-        this.battleService.handleStatusEffectDurations(true, partyMember, deltaTime);
+        this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
+        this.checkForThornsGems(partyMember);
         this.checkGodStatuses(partyMember);
 
         if (!isInTown) {
@@ -77,7 +79,7 @@ export class BackgroundService {
   }
 
   handleTown(deltaTime: number, loading: any) {
-    var party = this.globalService.getActivePartyCharacters(true);
+    var party = this.globalService.getActivePartyCharacters(true);    
     this.gainHpInTown(party, deltaTime);
   }
 
@@ -188,7 +190,7 @@ export class BackgroundService {
 
     if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
       if (effect.type === AltarEffectsEnum.AthenaHealOverTime || effect.type === AltarEffectsEnum.AthenaRareHealOverTime) {
-        party.forEach(member => {
+        party.forEach(member => {          
           this.battleService.gainHp(member, effect.effectiveness);
         });
       }
@@ -237,6 +239,22 @@ export class BackgroundService {
         }
       }
 
+      if (effect.type === AltarEffectsEnum.ZeusRareSurge) {
+        var memberWithZeus = party.find(item => item.assignedGod1 === GodEnum.Zeus || item.assignedGod2 === GodEnum.Zeus);
+        if (memberWithZeus !== undefined) {
+          var surge = memberWithZeus.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Surge);
+          if (surge === undefined) {
+            var overload = this.lookupService.characterHasAbility("Overload", memberWithZeus);
+            if (overload !== undefined) {
+              this.battleService.applyStatusEffect(overload.userEffect[0], memberWithZeus, party, memberWithZeus);
+            }
+          }
+          else {
+            surge.effectiveness = ((surge.effectiveness - 1) * effect.effectiveness) + 1;
+          }
+        }
+      }
+
       effect.tickTimer -= effect.tickFrequency;
     }
   }
@@ -251,7 +269,7 @@ export class BackgroundService {
     }
 
     if (effect.type === AltarEffectsEnum.AthenaHeal) {
-      party.forEach(member => {
+      party.forEach(member => {        
         this.battleService.gainHp(member, effect.effectiveness);
       });
     }
@@ -274,14 +292,16 @@ export class BackgroundService {
       }
     }
 
-    if (effect.type === AltarEffectsEnum.ApolloHeal) {
-      party = party.sort(function (a, b) {
-        return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
-          a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
-      });
-      var target = party[0];
-
-      this.battleService.gainHp(target, effect.effectiveness);
+    if (effect.type === AltarEffectsEnum.ApolloHeal) {      
+      if (party !== undefined && party.length > 0) {
+        party = party.sort(function (a, b) {
+          return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
+            a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
+        });
+        var target = party[0];
+      
+        this.battleService.gainHp(target, effect.effectiveness);
+      }
     }
 
     if (effect.type === AltarEffectsEnum.HermesAbilityCooldown) {
@@ -366,7 +386,6 @@ export class BackgroundService {
     if (effect.type === AltarEffectsEnum.DionysusRandomDebuff) {
       if (enemies !== undefined) {
         enemies.forEach(member => {
-          ;
           this.battleService.applyStatusEffect(this.globalService.createStatusEffect(this.battleService.getRandomPrimaryStatDownStatusEffect(true), 10, effect.effectiveness, false, false), member, enemies);
         });
       }
@@ -378,17 +397,21 @@ export class BackgroundService {
       });
     }
 
-    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier) {
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier) {      
       var barrierTarget = this.lookupService.getRandomPartyMember(party);
+      if (barrierTarget !== undefined) {
       var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(barrierTarget, true));
       barrierTarget.battleInfo.barrierValue += barrierAmount;
+      }
     }
 
     if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier) {
+      if (party.length > 0) {
       party.forEach(member => {
         var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(member, true));
         member.battleInfo.barrierValue += barrierAmount;
       });
+    }
     }
 
     if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs) {
@@ -414,10 +437,23 @@ export class BackgroundService {
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp) {
       party.forEach(member => {
         var dues = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
-        if (dues !== undefined)
-        {          
+        if (dues !== undefined) {
           dues.effectiveness *= effect.effectiveness;
         }
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.ZeusRareStun) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, effect.effectiveness, 1, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff) {
+      party.forEach(member => {
+        this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, effect.effectiveness, false, true), member, enemies);
       });
     }
   }
@@ -425,8 +461,7 @@ export class BackgroundService {
   handleFollowerSearch(deltaTime: number) {
     var hour = 1 * 60 * 60; //average per hour
 
-    if (this.globalService.globalVar.timers.followerSearchZoneTimer < 0)
-    {
+    if (this.globalService.globalVar.timers.followerSearchZoneTimer < 0) {
       this.globalService.globalVar.timers.followerSearchZoneTimer = 0;
     }
 
@@ -464,8 +499,8 @@ export class BackgroundService {
       this.globalService.globalVar.timers.followerPrayerTimerLength = 60;
     }
 
-    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;    
-    if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {      
+    this.globalService.globalVar.timers.followerPrayerTimer += deltaTime;
+    if (this.globalService.globalVar.timers.followerPrayerTimer >= this.globalService.globalVar.timers.followerPrayerTimerLength) {
       this.globalService.globalVar.timers.followerPrayerTimer -= this.globalService.globalVar.timers.followerPrayerTimerLength;
       this.globalService.globalVar.followerData.followers.filter(item => item.assignedTo === FollowerActionEnum.Praying).forEach(follower => {
         if (follower.assignedPrayerType === FollowerPrayerTypeEnum.Activate) {
@@ -547,6 +582,10 @@ export class BackgroundService {
       if (this.globalService.globalVar.isSubscriber)
         ticketMultiplier = 2;
 
+      if (todaysDate.getDay() === 6 || todaysDate.getDay() === 0) {
+        ticketMultiplier += 2;
+      }
+
       this.globalService.globalVar.sidequestData.weeklyMeleeEntries += diffDays * ticketMultiplier;
       if (this.globalService.globalVar.sidequestData.weeklyMeleeEntries > (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier))
         this.globalService.globalVar.sidequestData.weeklyMeleeEntries = (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier);
@@ -565,6 +604,19 @@ export class BackgroundService {
     else if ((character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) &&
       character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+    }
+  }
+
+  checkForThornsGems(character: Character) {
+    var total = this.equipmentService.getFlatThornDamageGain(character.equipmentSet);
+
+    if (total > 0) {
+      var gemThornsEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns && item.caster === character.name + "Gems");
+
+      if (gemThornsEffect === undefined)
+        character.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, total, false, true, false, character.name + "Gems"));
+      else
+        gemThornsEffect.effectiveness = total;
     }
   }
 

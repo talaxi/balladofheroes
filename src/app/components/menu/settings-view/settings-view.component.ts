@@ -37,6 +37,7 @@ export class SettingsViewComponent implements OnInit {
   quickViewOverlayFlipped: boolean = false;
   showPartyHpAsPercent: boolean = false;
   showEnemyHpAsPercent: boolean = false;
+  autoExportOnUpdate: boolean = true;
   @Input() isMobile = false;
   confirmationText = "";
   @ViewChild('confirmationBox') confirmationBox: any;
@@ -50,7 +51,7 @@ export class SettingsViewComponent implements OnInit {
   ngOnInit(): void {
     if (this.deploymentService.codeCreationMode) {
       console.log(this.globalService.globalVar);
-      console.log(JSON.stringify(this.globalService.globalVar));
+      //console.log(JSON.stringify(this.globalService.globalVar));
 
       /*console.log("1 hit (default): " + this.lookupService.getAgilityPerAttackForAttackCount(0));
       console.log("2 hits: " + this.lookupService.getAgilityPerAttackForAttackCount(1));
@@ -89,6 +90,7 @@ export class SettingsViewComponent implements OnInit {
     this.quickViewOverlayFlipped = this.globalService.globalVar.settings.get("quickViewOverlayFlipped") ?? false;
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
+    this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? true;
   }
 
   public SaveGame() {
@@ -119,20 +121,7 @@ export class SettingsViewComponent implements OnInit {
   }
 
   public SaveGameToFile() {
-    var globalData = JSON.stringify(this.globalService.globalVar);
-    var compressedData = LZString.compressToBase64(globalData);
-
-    let file = new Blob([compressedData], { type: '.txt' });
-    let a = document.createElement("a"),
-      url = URL.createObjectURL(file);
-    a.href = url;
-    a.download = "BalladOfHeroes-v" + this.globalService.globalVar.currentVersion.toString().replace(".", "_") + "-" + new Date().toLocaleDateString();
-    document.body.appendChild(a);
-    a.click();
-    setTimeout(function () {
-      document.body.removeChild(a);
-      window.URL.revokeObjectURL(url);
-    }, 0);
+    this.versionControlService.exportData();
   }
 
   public LoadGameFromFile() {
@@ -145,13 +134,12 @@ export class SettingsViewComponent implements OnInit {
         var decompressedData = LZString.decompressFromBase64(fileReader.result);
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
-          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);
+          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);          
           this.versionControlService.updatePlayerVersion();
 
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);
           this.storyService.showStory = false;
           this.globalService.globalVar.isBattlePaused = false;
-          //console.log(this.globalService.globalVar);
 
           this.getSettings();
         }
@@ -220,6 +208,9 @@ export class SettingsViewComponent implements OnInit {
   }
   showPartyHpAsPercentToggle() {
     this.globalService.globalVar.settings.set("showPartyHpAsPercent", this.showPartyHpAsPercent);
+  }
+  autoExportOnUpdateToggle() {
+    this.globalService.globalVar.settings.set("autoExportOnUpdate", this.autoExportOnUpdate);
   }
 
   ngOnDestroy() {    

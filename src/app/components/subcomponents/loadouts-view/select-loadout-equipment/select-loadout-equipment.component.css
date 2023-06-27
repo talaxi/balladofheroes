@@ -1,0 +1,156 @@
+.equipmentOverview {
+    height: 100%;
+  }
+  
+  .flexHeaderBetween {
+    display: flex;
+    justify-content: space-between;
+  }
+  
+  .equipmentView {
+    display: grid;
+    width: 100%;
+    height: 89%;
+    grid-template-columns: 1fr 1fr;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    gap: 1rem;
+    grid-template-areas:
+      "availableEquipment existingEquipment";
+  
+    color: var(--foreground-default);
+  }
+  
+  .availableEquipment {
+    grid-area: availableEquipment;
+    overflow-y: auto;
+    margin-bottom: 1rem;
+  }
+  
+  .existingEquipment {
+    grid-area: existingEquipment;
+  }
+  
+  .characterSelect {
+    grid-area: characterSelect;
+  }
+  
+  .compareEquipment {
+    display: flex;
+    justify-content: space-evenly;
+  }
+  
+  .comparedEquipmentItem {
+    border-left: 1px solid gray;
+  }
+  
+  .item {
+    padding: 2rem;
+  }
+  
+  .equipmentItem {
+    font-size: 1rem;
+  }
+  
+  
+  .flex {
+    display: flex;
+    justify-content: space-around;
+  }
+  
+  .flexBetween {
+    display: flex;
+    justify-content: space-between;
+    width: 95%;
+    /* needs to match .leftAlignedMiniHr */
+  }
+  
+  .leftAlignedMiniHr {
+    width: 95%;
+  }
+  
+  .filterOption {
+    color: var(--inactive-filter);
+    font-size: 1.2rem;
+  }
+  
+  .filterOption.filterActive {
+    color: var(--active-filter);
+  }
+  
+  .sellItem {
+    text-align: center;
+  }
+  
+  .equipmentItemButton {
+    text-align: left;
+  }
+  
+  .icon {
+    width: 1rem;
+    height: 100%;
+    aspect-ratio: 1/1;
+  }
+  
+  .filters {
+    padding-top: .25rem;
+    padding-bottom: .25rem;
+    display: flex;
+    justify-content: space-around;
+    background-color: var(--background-quarternary);
+  }
+  
+  .webMarginLeft {
+    margin-left: .3rem;
+  }
+  
+  .sortOptions {
+    width: 70%;
+    display:flex;
+    justify-content: space-around;      
+  }
+  
+  .filterActive {
+    color: var(--foreground-secondary) !important;
+    font-weight: bold;
+  }
+  
+  .active {
+    background-color: var(--button-selected) !important;
+    color: var(--foreground-secondary) !important;
+  }
+  
+  .noMargin {
+    margin: 0px;
+    padding: 0px;
+  }
+  
+  .topMargin {
+    margin: 0px;
+    padding: 0px;
+    margin-top: .25rem;
+  }
+  
+  .bottomMargin {
+    margin: 0px;
+    padding: 0px;
+    margin-bottom: .25rem;
+  }
+  
+  
+  .autoProgressIcon {
+    height: 1.1rem;
+    display:flex;
+    vertical-align: middle;
+  }
+  
+  @media (max-width: 800px) {
+    .compareEquipment {
+      flex-direction: column;
+    }
+  
+    .comparedEquipmentItem {
+      border-top: 1px solid gray;
+      border-left: unset;
+    }
+  }

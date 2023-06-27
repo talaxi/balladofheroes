@@ -48,5 +48,11 @@ export enum AltarEffectsEnum {
   NemesisDealDamage,
   NemesisRareThorns,
   NemesisRareArmorPenetrationUp,
-  NemesisRareDuesUp
+  NemesisRareDuesUp,
+  ZeusAttackUp,
+  ZeusLightningDamageIncrease,
+  ZeusAttackUpBuff,
+  ZeusRareLightningDamageIncrease,
+  ZeusRareStun,
+  ZeusRareSurge
 }

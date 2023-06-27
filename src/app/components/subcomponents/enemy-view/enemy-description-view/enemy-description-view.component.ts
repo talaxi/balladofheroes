@@ -162,6 +162,30 @@ export class EnemyDescriptionViewComponent {
     return decreases;
   }
 
+  getAttack() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.attack);
+  }
+  
+  getMaxHp() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.maxHp);
+  }
+  
+  getDefense() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.defense);
+  }
+  
+  getAgility() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.agility);
+  }
+  
+  getLuck() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.luck);
+  }
+  
+  getResistance() {
+    return this.utilityService.bigNumberReducer(this.character.battleStats.resistance);
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

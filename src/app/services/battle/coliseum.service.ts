@@ -442,6 +442,11 @@ export class ColiseumService {
           continue;
         }
       }
+      else if (round === 15) {
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo) {        
+          continue;
+        }
+      }
       //eventually add round limiter here when you have more stuff
       else {
         if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar &&

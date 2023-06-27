@@ -7,6 +7,8 @@ import { Character } from '../models/character/character.model';
 import { Enemy } from '../models/character/enemy.model';
 import { God } from '../models/character/god.model';
 import { OverdriveInfo } from '../models/character/overdrive-info.model';
+import { ColiseumTournamentEnum } from '../models/enums/coliseum-tournament-enum.model';
+import { TrialEnum } from '../models/enums/trial-enum.model';
 import { AchievementTypeEnum } from '../models/enums/achievement-type-enum.copy';
 import { AffinityLevelRewardEnum } from '../models/enums/affinity-level-reward-enum.model';
 import { ProfessionActionsEnum } from '../models/enums/profession-actions-enum.model';
@@ -49,6 +51,8 @@ import { EquipmentService } from './resources/equipment.service';
 import { DictionaryService } from './utility/dictionary.service';
 import { ShopTypeEnum } from '../models/enums/shop-type-enum.model';
 import { BalladEnum } from '../models/enums/ballad-enum.model';
+import { Battle } from '../models/battle/battle.model';
+import { EquipmentSetEnum } from '../models/enums/equipment-set-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -100,11 +104,11 @@ export class LookupService {
     return name;
   }
 
-  getTotalXpGainFromEnemyTeam(enemyTeam: Enemy[]) {
+  getTotalXpGainFromEnemyTeam(enemyTeam: Enemy[], sizeMultiplier: number) {
     var totalXp = 0;
 
     enemyTeam.forEach(enemy => {
-      totalXp += enemy.xpGainFromDefeat;
+      totalXp += enemy.xpGainFromDefeat * sizeMultiplier;
     });
 
     return totalXp;
@@ -118,7 +122,7 @@ export class LookupService {
     if (type === CharacterEnum.Archer)
       description = "The Archer class focuses on debilitating enemies with access to damage over time and stunning effects.";
     if (type === CharacterEnum.Warrior)
-      description = "The Warrior class focuses on taking damage as much as dealing damage with the ability to force enemies' attention and increase defense when HP is low.";
+      description = "The Warrior class focuses on taking damage as much as dealing damage with the ability to force enemies' attention and retaliate against attacks.";
     if (type === CharacterEnum.Priest)
       description = "The Priest class focuses on keeping the party healthy with healing and barrier effects.";
 
@@ -138,7 +142,7 @@ export class LookupService {
     if (type === GodEnum.Apollo)
       description = "Apollo, God of Archery and Music, focuses on strengthening and healing allies. His abilities and upgrades allow the user to heal over time and provide a variety of buffs to the party.";
     if (type === GodEnum.Zeus)
-      description = "";
+      description = "Zeus, King of the Gods, focuses on dealing high ability damage. His abilities have various ways of increasing damage including dealing significantly more damage after each Lightning ability.";
     if (type === GodEnum.Ares)
       description = "Ares, God of War, focuses on creating as many damage over time effects as possible. His abilities and upgrades revolve around creating and improving the damage of damage over time effects.";
     if (type === GodEnum.Poseidon)
@@ -187,15 +191,17 @@ export class LookupService {
     if (action === ProfessionActionsEnum.StoreIngredients)
       name = "Store ingredients for future use";
 
-    if (action === ProfessionActionsEnum.CombiningGems)
+    if (action === ProfessionActionsEnum.CombiningGems || action === ProfessionActionsEnum.RareCombiningGems)
       name = "Combining gemstone fragments";
+    if (action === ProfessionActionsEnum.CombiningStones || action === ProfessionActionsEnum.RareCombiningStones)
+      name = "Combining stone pieces";
     if (action === ProfessionActionsEnum.Polish)
       name = "Polishing stone";
-    if (action === ProfessionActionsEnum.HeatingMetal)
+    if (action === ProfessionActionsEnum.HeatingMetal || action === ProfessionActionsEnum.SpecialHeatingMetal)
       name = "Heating metal to expand"
-    if (action === ProfessionActionsEnum.ShapingMetal)
+    if (action === ProfessionActionsEnum.ShapingMetal || action === ProfessionActionsEnum.SpecialShapingMetal)
       name = "Shaping metal"
-    if (action === ProfessionActionsEnum.CoolingMetal)
+    if (action === ProfessionActionsEnum.CoolingMetal || action === ProfessionActionsEnum.SpecialCoolingMetal)
       name = "Cooling metal for use"
 
     return name;
@@ -231,7 +237,9 @@ export class LookupService {
       type === ItemsEnum.SmallCharmOfDionysus || type === ItemsEnum.LargeCharmOfDionysus ||
       type === ItemsEnum.SmallSilverKantharos || type === ItemsEnum.SmallGildedKantharos ||
       type === ItemsEnum.SmallOrnateKantharos || type === ItemsEnum.SmallCrackedKantharos ||
-      type === ItemsEnum.SmallBuccheroKantharos || type === ItemsEnum.SmallBlackKantharos)
+      type === ItemsEnum.SmallBuccheroKantharos || type === ItemsEnum.SmallBlackKantharos ||
+      type === ItemsEnum.SmallCharmOfZeus || type === ItemsEnum.LargeCharmOfZeus ||
+      type === ItemsEnum.SmallCharmOfPoseidon || type === ItemsEnum.LargeCharmOfPoseidon)
       isACharm = true;
 
     return isACharm;
@@ -243,7 +251,9 @@ export class LookupService {
       type === ItemsEnum.LesserCrackedRuby || type === ItemsEnum.LesserCrackedTopaz || type === ItemsEnum.LesserCrackedOpal ||
       type === ItemsEnum.LesserCrackedAmethyst || type === ItemsEnum.LesserCrackedEmerald || type === ItemsEnum.LesserCrackedAquamarine ||
       type === ItemsEnum.PerfectCrackedRuby || type === ItemsEnum.PerfectCrackedTopaz || type === ItemsEnum.PerfectCrackedOpal ||
-      type === ItemsEnum.PerfectCrackedAmethyst || type === ItemsEnum.PerfectCrackedEmerald || type === ItemsEnum.PerfectCrackedAquamarine)
+      type === ItemsEnum.PerfectCrackedAmethyst || type === ItemsEnum.PerfectCrackedEmerald || type === ItemsEnum.PerfectCrackedAquamarine ||
+      type === ItemsEnum.PointedStone || type === ItemsEnum.PerfectPointedStone || type === ItemsEnum.ShiningStone ||
+      type === ItemsEnum.PerfectShiningStone)
       return EquipmentQualityEnum.Basic;
 
     if (type === ItemsEnum.DullRuby || type === ItemsEnum.DullTopaz || type === ItemsEnum.DullOpal || type === ItemsEnum.DullAmethyst ||
@@ -252,11 +262,15 @@ export class LookupService {
       type === ItemsEnum.RadiatingEarthStone || type === ItemsEnum.RadiatingLightningStone || type === ItemsEnum.RadiatingFireStone ||
       type === ItemsEnum.RadiatingHolyStone || type === ItemsEnum.RadiatingWaterStone || type === ItemsEnum.PerfectRadiatingWaterStone ||
       type === ItemsEnum.PerfectRadiatingEarthStone || type === ItemsEnum.PerfectRadiatingLightningStone || type === ItemsEnum.PerfectRadiatingFireStone ||
-      type === ItemsEnum.PerfectRadiatingHolyStone || type === ItemsEnum.PerfectRadiatingAirStone)
+      type === ItemsEnum.PerfectRadiatingHolyStone || type === ItemsEnum.PerfectRadiatingAirStone || type === ItemsEnum.JaggedStone ||
+      type === ItemsEnum.PerfectJaggedStone || type === ItemsEnum.BlessedStone || type === ItemsEnum.PerfectBlessedStone)
       return EquipmentQualityEnum.Uncommon;
 
     if (type === ItemsEnum.MinorWeaponSlotAddition || type === ItemsEnum.MinorRingSlotAddition || type === ItemsEnum.MinorShieldSlotAddition ||
-      type === ItemsEnum.MinorArmorSlotAddition || type === ItemsEnum.MinorNecklaceSlotAddition)
+      type === ItemsEnum.MinorArmorSlotAddition || type === ItemsEnum.MinorNecklaceSlotAddition || type === ItemsEnum.PerfectFlawedAmethyst ||
+      type === ItemsEnum.FlawedRuby || type === ItemsEnum.FlawedTopaz || type === ItemsEnum.FlawedOpal || type === ItemsEnum.FlawedAmethyst ||
+      type === ItemsEnum.FlawedEmerald || type === ItemsEnum.FlawedAquamarine || type === ItemsEnum.PerfectFlawedRuby || type === ItemsEnum.PerfectFlawedTopaz || type === ItemsEnum.PerfectFlawedOpal ||
+      type === ItemsEnum.PerfectFlawedEmerald || type === ItemsEnum.PerfectFlawedAquamarine)
       return EquipmentQualityEnum.Rare;
 
     return EquipmentQualityEnum.Basic;
@@ -265,7 +279,9 @@ export class LookupService {
   getItemTypeFromItemEnum(type: ItemsEnum) {
     if (type === ItemsEnum.HealingHerb || type === ItemsEnum.HealingPoultice || type === ItemsEnum.HealingSalve ||
       type === ItemsEnum.RestorativeHerb || type === ItemsEnum.FocusPotion || type === ItemsEnum.RestorativePoultice ||
-      type === ItemsEnum.RestorativeSalve || type === ItemsEnum.HoneyPoultice || type === ItemsEnum.HoneySalve) {
+      type === ItemsEnum.RestorativeSalve || type === ItemsEnum.HoneyPoultice || type === ItemsEnum.HoneySalve ||
+      type === ItemsEnum.FireAbsorptionPotion || type === ItemsEnum.HolyAbsorptionPotion || type === ItemsEnum.AirAbsorptionPotion ||
+      type === ItemsEnum.EarthAbsorptionPotion || type === ItemsEnum.LightningAbsorptionPotion || type === ItemsEnum.WaterAbsorptionPotion) {
       return ItemTypeEnum.HealingItem;
     }
 
@@ -298,14 +314,16 @@ export class LookupService {
       type === ItemsEnum.Honey || type === ItemsEnum.AnimalHide || type === ItemsEnum.EssenceOfWater || type === ItemsEnum.Tusk ||
       type === ItemsEnum.SharpFeather || type === ItemsEnum.BronzeBeak || type === ItemsEnum.MagicTreeBark || type === ItemsEnum.CanineFang ||
       type === ItemsEnum.SmallAnimalBones || type === ItemsEnum.VialOfTheCretanSea || type === ItemsEnum.PristineCrabClaw || type === ItemsEnum.BirchBark ||
-      type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn || type === ItemsEnum.PotentEssence) {
+      type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn || type === ItemsEnum.PotentEssence || type === ItemsEnum.BlackHorn ||
+      type === ItemsEnum.MagicCore || type === ItemsEnum.EssenceOfHoly || type === ItemsEnum.EssenceOfLightning || type === ItemsEnum.EssenceOfAir ||
+      type === ItemsEnum.EssenceOfEarth) {
       return ItemTypeEnum.CraftingMaterial;
     }
 
     if (this.isItemACharm(type))
       return ItemTypeEnum.Charm;
 
-    if (type === ItemsEnum.Coin || type === ItemsEnum.EternalMeleeTicket)
+    if (type === ItemsEnum.Coin || type === ItemsEnum.EternalMeleeTicket || type === ItemsEnum.Nectar)
       return ItemTypeEnum.Resource;
 
     if (type === ItemsEnum.CrackedRuby || type === ItemsEnum.CrackedTopaz || type === ItemsEnum.CrackedOpal ||
@@ -322,7 +340,14 @@ export class LookupService {
       type === ItemsEnum.RadiatingFireStone || type === ItemsEnum.RadiatingEarthStone || type === ItemsEnum.RadiatingLightningStone ||
       type === ItemsEnum.RadiatingAirStone || type === ItemsEnum.RadiatingWaterStone || type === ItemsEnum.PerfectRadiatingHolyStone ||
       type === ItemsEnum.PerfectRadiatingFireStone || type === ItemsEnum.PerfectRadiatingEarthStone || type === ItemsEnum.PerfectRadiatingLightningStone ||
-      type === ItemsEnum.PerfectRadiatingAirStone || type === ItemsEnum.PerfectRadiatingWaterStone)
+      type === ItemsEnum.PerfectRadiatingAirStone || type === ItemsEnum.PerfectRadiatingWaterStone || type === ItemsEnum.PointedStone ||
+      type === ItemsEnum.PerfectPointedStone || type === ItemsEnum.ShiningStone || type === ItemsEnum.PerfectShiningStone ||
+      type === ItemsEnum.JaggedStone || type === ItemsEnum.BlessedStone || type === ItemsEnum.PerfectJaggedStone || type === ItemsEnum.PerfectBlessedStone ||
+      type === ItemsEnum.FlawedRuby || type === ItemsEnum.FlawedTopaz || type === ItemsEnum.FlawedOpal || type === ItemsEnum.FlawedAmethyst ||
+      type === ItemsEnum.FlawedEmerald || type === ItemsEnum.FlawedAquamarine || type === ItemsEnum.PerfectFlawedRuby || type === ItemsEnum.PerfectFlawedTopaz ||
+      type === ItemsEnum.PerfectFlawedOpal || type === ItemsEnum.PerfectFlawedAmethyst || type === ItemsEnum.PerfectFlawedEmerald || type === ItemsEnum.PerfectFlawedAquamarine || type === ItemsEnum.WeaponSlotAddition ||
+      type === ItemsEnum.RingSlotAddition || type === ItemsEnum.ShieldSlotAddition || type === ItemsEnum.ArmorSlotAddition ||
+      type === ItemsEnum.NecklaceSlotAddition)
       return ItemTypeEnum.SlotItem;
 
     if (this.getEquipmentPieceByItemType(type) !== undefined) {
@@ -330,7 +355,8 @@ export class LookupService {
     }
 
     if (type === ItemsEnum.BoonOfOlympus || type === ItemsEnum.ChthonicFavor || type === ItemsEnum.ChthonicPower || type === ItemsEnum.UnderworldAccess ||
-      type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2 || type === ItemsEnum.GoldenApple)
+      type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2 || type === ItemsEnum.GoldenApple || type === ItemsEnum.Ambrosia ||
+      type === ItemsEnum.OlympicCommendation)
       return ItemTypeEnum.Progression;
 
     return ItemTypeEnum.None;
@@ -405,6 +431,19 @@ export class LookupService {
     else if (type === ItemsEnum.FocusPotion)
       name = "Fill " + relatedUserGainStatusEffectEffectivenessPercent + "% of a party member's Overdrive gauge. " + effect.cooldown + " second cooldown.";
 
+    else if (type === ItemsEnum.FireAbsorptionPotion)
+      name = "Absorb " + relatedUserGainStatusEffectEffectiveness + " Fire damage for " + relatedUserGainStatusEffectDuration + " seconds. " + effect.cooldown + " second cooldown.";
+    else if (type === ItemsEnum.HolyAbsorptionPotion)
+      name = "Absorb " + relatedUserGainStatusEffectEffectiveness + " Holy damage for " + relatedUserGainStatusEffectDuration + " seconds. " + effect.cooldown + " second cooldown.";
+    else if (type === ItemsEnum.LightningAbsorptionPotion)
+      name = "Absorb " + relatedUserGainStatusEffectEffectiveness + " Lightning damage for " + relatedUserGainStatusEffectDuration + " seconds. " + effect.cooldown + " second cooldown.";
+    else if (type === ItemsEnum.AirAbsorptionPotion)
+      name = "Absorb " + relatedUserGainStatusEffectEffectiveness + " Air damage for " + relatedUserGainStatusEffectDuration + " seconds. " + effect.cooldown + " second cooldown.";
+    else if (type === ItemsEnum.EarthAbsorptionPotion)
+      name = "Absorb " + relatedUserGainStatusEffectEffectiveness + " Earth damage for " + relatedUserGainStatusEffectDuration + " seconds. " + effect.cooldown + " second cooldown.";
+    else if (type === ItemsEnum.WaterAbsorptionPotion)
+      name = "Absorb " + relatedUserGainStatusEffectEffectiveness + " Water damage for " + relatedUserGainStatusEffectDuration + " seconds. " + effect.cooldown + " second cooldown.";
+
     //battle items
     else if (type === ItemsEnum.ThrowingStone || type === ItemsEnum.ExplodingPotion || type === ItemsEnum.HeftyStone)
       name = "Deal " + effect.trueDamageAmount + " damage to a target.";
@@ -462,9 +501,21 @@ export class LookupService {
       name = "Recipe for Alchemy item <b>Focus Potion</b>.";
     else if (type === ItemsEnum.PotentConcoctionRecipe)
       name = "Recipe for Alchemy item <b>Potent Concoction</b>.";
+    else if (type === ItemsEnum.FireAbsorptionPotionRecipe)
+      name = "Recipe for Alchemy item <b>Fire Absorption Potion</b>.";
+    else if (type === ItemsEnum.HolyAbsorptionPotionRecipe)
+      name = "Recipe for Alchemy item <b>Holy Absorption Potion</b>.";
+    else if (type === ItemsEnum.WaterAbsorptionPotionRecipe)
+      name = "Recipe for Alchemy item <b>Water Absorption Potion</b>.";
+    else if (type === ItemsEnum.LightningAbsorptionPotionRecipe)
+      name = "Recipe for Alchemy item <b>Lightning Absorption Potion</b>.";
+    else if (type === ItemsEnum.AirAbsorptionPotionRecipe)
+      name = "Recipe for Alchemy item <b>Air Absorption Potion</b>.";
+    else if (type === ItemsEnum.EarthAbsorptionPotionRecipe)
+      name = "Recipe for Alchemy item <b>Earth Absorption Potion</b>.";
 
     //equipment
-    else if (this.getEquipmentPieceByItemType(type) !== undefined) {
+    else if (this.getEquipmentPieceByItemType(type) !== undefined) {      
       name = this.getEquipmentStats(this.getEquipmentPieceByItemType(type), associatedResource, canRemoveExtra) + "<br/><br/>" + this.getEquipmentEffects(this.getEquipmentPieceByItemType(type));
     }
 
@@ -486,6 +537,10 @@ export class LookupService {
       name = "New Class: Warrior<br/><br/>" + this.getCharacterDescription(CharacterEnum.Warrior);
     else if (type === ItemsEnum.PriestClass)
       name = "New Class: Priest<br/><br/>" + this.getCharacterDescription(CharacterEnum.Priest);
+    else if (type === ItemsEnum.Nemesis)
+      name = "New God: Nemesis<br/><br/>" + this.getGodDescription(GodEnum.Nemesis);
+    else if (type === ItemsEnum.Dionysus)
+      name = "New God: Dionysus<br/><br/>" + this.getGodDescription(GodEnum.Dionysus);
     else if (type === ItemsEnum.BonusXp)
       name = "Give bonus XP to all characters and gods.";
     else if (type == ItemsEnum.ItemBeltUp)
@@ -499,7 +554,11 @@ export class LookupService {
     else if (type === ItemsEnum.Ares)
       name = "Gain <span class='aresColor smallCaps'>Ares</span> as an equippable god";
     else if (type === ItemsEnum.GoldenApple)
-      name = "Increase max Alchemy level by 1. Can only obtain 25 Golden Apples.";
+      name = "Each Golden Apple increase max Alchemy level by 1. Can only obtain 25 Golden Apples.";
+    else if (type === ItemsEnum.OlympicCommendation)
+      name = "Increase unequipped god XP gain by 5% for a total of " + (this.globalService.getInactiveGodXpRate() * 100) + "%. Can only obtain 5 Olympic Commendations.";
+    else if (type == ItemsEnum.Ambrosia)
+      name = "Favored food of the gods. Use to buy special items and upgrades from the Olympic Favor menu.";
 
     return name;
   }
@@ -637,6 +696,16 @@ export class LookupService {
     if (type === ItemsEnum.LargeCharmOfNemesis)
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
 
+    if (type === ItemsEnum.SmallCharmOfZeus)
+      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span>.";
+    if (type === ItemsEnum.LargeCharmOfZeus)
+      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span>.";
+
+    if (type === ItemsEnum.SmallCharmOfPoseidon)
+      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
+    if (type === ItemsEnum.LargeCharmOfPoseidon)
+      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
+
     if (type === ItemsEnum.SmallOrnateKantharos)
       description = "Increase parties' Luck by <span class='charmDescriptor'>" + (this.charmService.getSmallOrnateKantharosValue()) + "</span>.";
     if (type === ItemsEnum.SmallSilverKantharos)
@@ -684,6 +753,11 @@ export class LookupService {
     if (slotItemValues.elementIncrease.water > 0)
       description = "+<b>" + (slotItemValues.elementIncrease.water * 100) + "% Water Damage Increase</b>";
 
+    if (slotItemValues.hpRegen > 0)
+      description = "+<b>" + (slotItemValues.hpRegen) + " HP Regen</b>";
+    if (slotItemValues.thorns > 0)
+      description = "+<b>" + (slotItemValues.thorns) + " Thorns</b>";
+
     var slotStarDisclaimer = "An item can only have as many slots total as it has stars.";
     if (item === ItemsEnum.MinorWeaponSlotAddition)
       description = "Add a slot to a Weapon, up to 3 slots total. " + slotStarDisclaimer;
@@ -717,20 +791,16 @@ export class LookupService {
     var description = "";
     if (item === ItemsEnum.Coin)
       description = "Use to trade with merchants.";
+    else if (item === ItemsEnum.Ambrosia)
+      description = "Use to trade with Olympians.";
     else if (item === ItemsEnum.EternalMeleeTicket)
       description = "One extra entry to the <strong>Eternal Melee</strong> coliseum battle.";
+    else if (item === ItemsEnum.Nectar)
+      description = "Can be traded for Ambrosia. Gain from winning trial fights.";
     else {
       description = "Used for crafting.";
       if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs || item === ItemsEnum.PotentEssence)
         return description;
-
-      /*if (item === ItemsEnum.CrackedRuby || item === ItemsEnum.CrackedEmerald || item === ItemsEnum.CrackedAquamarine ||
-        item === ItemsEnum.CrackedOpal || item === ItemsEnum.CrackedTopaz || item === ItemsEnum.CrackedAmethyst ||
-        item === ItemsEnum.LesserCrackedRuby || item === ItemsEnum.LesserCrackedEmerald || item === ItemsEnum.LesserCrackedAquamarine ||
-        item === ItemsEnum.LesserCrackedOpal || item === ItemsEnum.LesserCrackedTopaz || item === ItemsEnum.LesserCrackedAmethyst ||
-        item === ItemsEnum.DullRuby || item === ItemsEnum.DullEmerald || item === ItemsEnum.DullAquamarine ||
-        item === ItemsEnum.DullOpal || item === ItemsEnum.DullTopaz || item === ItemsEnum.DullAmethyst)
-        return itemNotYetImplementedText;*/
 
       if (!excludeResourceLocations) {
         var locations = this.getResourceItemLocations(item);
@@ -927,43 +997,49 @@ export class LookupService {
     }
     if (type === ItemsEnum.SteelSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 18, 0, 20, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 27, 0, 30, 0, 0);
       equipmentPiece.stats.overdriveGain = .05;
     }
     if (type === ItemsEnum.SwordOfFlames) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 24, 0, 25, 0, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.OnAbilityUse;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 30, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire, undefined, false));
+      equipmentPiece.stats = new CharacterStats(0, 36, 0, 38, 0, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.OnAbilityUse;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 30, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire, undefined, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.GoldenSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 80, 0, 85, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 160, 0, 190, 0, 0);
       equipmentPiece.stats.overdriveGain = .1;
       equipmentPiece.slotCount = 1;
     }
     if (type === ItemsEnum.BlackLance) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Spear);
-      equipmentPiece.stats = new CharacterStats(0, 125, 0, 0, 145, 40);
+      equipmentPiece.stats = new CharacterStats(0, 250, 0, 0, 290, 80);
       equipmentPiece.stats.criticalMultiplier = .15;
       equipmentPiece.stats.aoeDamage = .15;
       equipmentPiece.slotCount = 2;
     }
     if (type === ItemsEnum.LiquidSaber) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(650, 125, 40, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(1300, 250, 80, 0, 0, 0);
       equipmentPiece.stats.elementIncrease.water = .2;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enwater, -1, 1, false, true, false, type.toString()));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enwater, -1, 1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 2;
     }
     if (type === ItemsEnum.JaggedSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
-      equipmentPiece.stats = new CharacterStats(0, 145, 150, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 290, 300, 0, 0, 0);
       equipmentPiece.stats.autoAttackCooldownReduction = .05;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
-      equipmentPiece.equipmentEffect.chance = .2;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 12, .75, false, false));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .2;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 12, .75, false, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 2;
     }
 
@@ -982,30 +1058,34 @@ export class LookupService {
     }
     if (type === ItemsEnum.SteelHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 32, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 48, 0, 0, 0, 0);
       equipmentPiece.stats.armorPenetration = .025;
     }
     if (type === ItemsEnum.FendingMace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(80, 48, 0, 0, 0, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.OnAutoAttack;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 28, true, false, false, "Fending Mace", undefined, undefined, undefined, undefined, false));
+      equipmentPiece.stats = new CharacterStats(120, 72, 0, 0, 0, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.OnAutoAttack;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 28, true, false, false, "Fending Mace", undefined, undefined, undefined, undefined, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.DiamondHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 135, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 270, 0, 0, 0, 0);
       equipmentPiece.stats.armorPenetration = .05;
       equipmentPiece.slotCount = 1;
     }
     if (type === ItemsEnum.RadiatingHammer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 225, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 450, 0, 0, 0, 0);
       equipmentPiece.stats.armorPenetration = .075;
       equipmentPiece.stats.abilityCooldownReduction = .05;
       equipmentPiece.stats.aoeDamage = .15;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
-      equipmentPiece.equipmentEffect.chance = .25;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", undefined, undefined, undefined, undefined, false));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect.chance = .25;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .02, true, false, false, "Radiating Hammer", 15000, undefined, undefined, undefined, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
 
     //bows
@@ -1020,35 +1100,200 @@ export class LookupService {
     if (type === ItemsEnum.Venomstrike) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Bow);
       equipmentPiece.stats = new CharacterStats(0, 15, 0, 0, 12, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
-      equipmentPiece.equipmentEffect.chance = .2;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 3, 13, "Venomstrike", dotTypeEnum.TrueDamage));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .2;
+      equipmentEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 3, 13, "Venomstrike", dotTypeEnum.TrueDamage));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.ElysianOakBow) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 20, 0, 0, 16, 0);
+      equipmentPiece.stats = new CharacterStats(0, 30, 0, 0, 24, 0);
       equipmentPiece.stats.criticalMultiplier = .05;
     }
     if (type === ItemsEnum.SpiritBow) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 30, 0, 0, 22, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enearth, -1, 1, false, true, false, type.toString()));
+      equipmentPiece.stats = new CharacterStats(0, 45, 0, 0, 33, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enearth, -1, 1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.EagleEye) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 80, 0, 0, 85, 0);
+      equipmentPiece.stats = new CharacterStats(0, 160, 0, 0, 170, 0);
       equipmentPiece.stats.criticalMultiplier = .15;
       equipmentPiece.slotCount = 1;
     }
     if (type === ItemsEnum.BirchBow) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Bow);
-      equipmentPiece.stats = new CharacterStats(0, 135, 0, 0, 150, 0);
+      equipmentPiece.stats = new CharacterStats(0, 270, 0, 0, 300, 0);
       equipmentPiece.stats.criticalMultiplier = .15;
       equipmentPiece.stats.overdriveGain = .1;
       equipmentPiece.slotCount = 2;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enair, -1, 1, false, true, false, type.toString()));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enair, -1, 1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.GiantHammer) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 425, 0, 0, 150, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .075;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.stats.elementIncrease.earth = .15;
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.GiantSword) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 250, 165, 0, 165, 0);
+      equipmentPiece.stats.autoAttackCooldownReduction = .075;
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.stats.elementIncrease.earth = .15;
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.PorphyrionsMace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 0, 500, 500, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .075;
+      equipmentPiece.stats.armorPenetration = .125;
+      equipmentPiece.stats.elementIncrease.earth = .25;
+      equipmentPiece.slotCount = 3;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect.chance = (1/3);
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EarthDamageUp, 15, 1.5, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.AthenasScythe) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(4375, 1000, 1500, 0, 0, 0);
+      equipmentPiece.stats.armorPenetration = .2;
+      equipmentPiece.stats.healingReceived = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect.chance = (1 / 3);
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, .4, true, false, false, this.dictionaryService.getItemName(type).toString(), 0, false, ElementalTypeEnum.Holy));
+      equipmentEffect.targetEffect[0].dotType = dotTypeEnum.BasedOnAttack;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Athena;
+    }
+    if (type === ItemsEnum.ArtemissBow) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Bow);
+      equipmentPiece.stats = new CharacterStats(0, 1000, 0, 875, 1375, 0);
+      equipmentPiece.stats.debuffDuration = .15;
+      equipmentPiece.stats.criticalMultiplier = .25;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnCriticalHit;
+      equipmentEffect.chance = (1 / 3);
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .6, false, false, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Artemis;
+    }
+    if (type === ItemsEnum.HermessStaff) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 1300, 1875, 0, 0, 0);
+      equipmentPiece.stats.overdriveGain = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enair, -1, 1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect2.chance = .1;
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AutoAttackSpeedUp, 10, 1.2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Hermes;
+    }
+    if (type === ItemsEnum.ApollosBow) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Bow);
+      equipmentPiece.stats = new CharacterStats(4375, 1000, 0, 0, 0, 1500);
+      equipmentPiece.stats.buffDuration = .1;
+      equipmentPiece.stats.healingDone = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnHeal;
+      equipmentEffect.chance = .5;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.HealingDoneUp, 20, 1.2, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Apollo;
+    }
+    if (type === ItemsEnum.HadessBident) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Spear);
+      equipmentPiece.stats = new CharacterStats(0, 1300, 0, 0, 1875, 0);
+      equipmentPiece.stats.criticalMultiplier = .2;
+      equipmentPiece.stats.aoeDamage = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect.chance = .25;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.25, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Hades;
+    }
+
+    if (type === ItemsEnum.AressSpear) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Spear);
+      equipmentPiece.stats = new CharacterStats(6500, 1000, 0, 0, 0, 1000);
+      equipmentPiece.stats.debuffDuration = .15;
+      equipmentPiece.stats.tickFrequency = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnDotTick;
+      equipmentEffect.chance = .05;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 15, 1.25, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Ares;
+    }
+    if (type === ItemsEnum.NemesissSword) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 1000, 1500, 0, 0, 1500);
+      equipmentPiece.stats.armorPenetration = .2;
+      equipmentPiece.stats.overdriveGain = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect.chance = .25;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ThornsDamageUp, 15, 1.2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Nemesis;
+    }
+    if (type === ItemsEnum.DionysussScepter) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 1300, 1875, 0, 0, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .075;
+      equipmentPiece.stats.debuffDuration = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnDebuff;
+      equipmentEffect.chance = .1;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 20, .2, false, false, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Dionysus;
+    }
+    if (type === ItemsEnum.ZeussLightningBolts) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Spear);
+      equipmentPiece.stats = new CharacterStats(0, 1300, 0, 0, 1875, 0);
+      equipmentPiece.stats.elementIncrease.lightning = .2;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enlightning, -1, 1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect2.chance = (1 / 3);
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LightningDamageUp, 15, 1.2, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zeus;
     }
 
     //shields
@@ -1062,55 +1307,176 @@ export class LookupService {
     }
     if (type === ItemsEnum.Aegis) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 15, 0, 0, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 5, false, true, false, type.toString()));
+      equipmentPiece.stats = new CharacterStats(0, 0, 22, 0, 0, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 8, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.MoltenShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 28, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 42, 0, 0, 0);
       equipmentPiece.stats.hpRegen += 3;
       equipmentPiece.stats.elementResistance.fire += .05;
     }
     if (type === ItemsEnum.ShieldOfTheHealer) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 60, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 90, 0, 0, 0);
       equipmentPiece.stats.hpRegen += 5;
       equipmentPiece.stats.healingDone += .05;
     }
     if (type === ItemsEnum.ShieldOfTheSea) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(450, 0, 145, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(900, 0, 290, 0, 0, 0);
       equipmentPiece.stats.hpRegen += 10;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, .25, true, false, true, this.dictionaryService.getItemName(type).toString(), 0, false, ElementalTypeEnum.Water, 40));
-      equipmentPiece.equipmentEffect.targetEffect[0].dotType = dotTypeEnum.BasedOnAttack;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, .25, true, false, true, this.dictionaryService.getItemName(type).toString(), 0, false, ElementalTypeEnum.Water, 40));
+      equipmentEffect.targetEffect[0].dotType = dotTypeEnum.BasedOnAttack;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.SpikedShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 180, 0, 0, 130);
+      equipmentPiece.stats = new CharacterStats(0, 0, 360, 0, 0, 260);
       equipmentPiece.stats.hpRegen += 12;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 650, false, true, false, type.toString()));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 650, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.BloodyShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 175, 0, 0, 175);
+      equipmentPiece.stats = new CharacterStats(0, 0, 350, 0, 0, 350);
       equipmentPiece.stats.hpRegen += 15;
       equipmentPiece.stats.armorPenetration = .1;
       equipmentPiece.stats.aoeDamage = .1;
     }
     if (type === ItemsEnum.SpiritShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 250, 0, 0, 225);
-      equipmentPiece.stats.healingDone = .1;
-      equipmentPiece.stats.abilityCooldownReduction = .075;
+      equipmentPiece.stats = new CharacterStats(0, 0, 500, 0, 0, 450);
+      equipmentPiece.stats.healingDone = .15;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
     }
     if (type === ItemsEnum.LightShield) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(450, 0, 150, 0, 0, 215);
+      equipmentPiece.stats = new CharacterStats(900, 0, 300, 0, 0, 430);
       equipmentPiece.stats.overdriveGain = .1;
       equipmentPiece.stats.elementIncrease.air = .15;
+    }
+    if (type === ItemsEnum.DivineTarge) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 750, 0, 0, 400);
+      equipmentPiece.slotCount = 4;
+      equipmentPiece.stats.elementResistance.earth = .05;
+      equipmentPiece.stats.elementResistance.air = .05;
+      equipmentPiece.stats.elementResistance.water = .05;
+      equipmentPiece.stats.elementResistance.holy = .05;
+      equipmentPiece.stats.elementResistance.lightning = .05;
+      equipmentPiece.stats.elementResistance.fire = .05;
+      equipmentPiece.stats.hpRegen = 12;
+      equipmentPiece.stats.elementIncrease.fire = .075;
+    }
+    if (type === ItemsEnum.GiantShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 600, 0, 0, 550);
+      equipmentPiece.stats.hpRegen += 20;
+      equipmentPiece.stats.elementIncrease.earth = .15;
+      equipmentPiece.stats.armorPenetration = .075;
+    }
+    if (type === ItemsEnum.AthenasShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(6250, 0, 1250, 0, 0, 0);
+      equipmentPiece.stats.hpRegen += 45;
+      equipmentPiece.stats.elementIncrease.holy = .2;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 1000, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Athena;
+    }
+    if (type === ItemsEnum.ArtemissShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(4375, 0, 875, 0, 0, 875);
+      equipmentPiece.stats.hpRegen += 45;
+      equipmentPiece.stats.criticalMultiplier = .15;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Artemis;
+    }
+    if (type === ItemsEnum.HermessShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(4375, 0, 875, 0, 0, 875);
+      equipmentPiece.stats.hpRegen += 45;
+      equipmentPiece.stats.autoAttackCooldownReduction = .05;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .1;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.HpRegenUp, 10, 2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Hermes;
+    }
+    if (type === ItemsEnum.ApollosShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(6250, 0, 0, 0, 0, 1250);
+      equipmentPiece.stats.hpRegen += 100;
+      equipmentPiece.stats.healingDone = .15;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Apollo;
+    }
+    if (type === ItemsEnum.HadessShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(4375, 0, 875, 0, 875, 0);
+      equipmentPiece.stats.hpRegen += 45;
+      equipmentPiece.stats.aoeDamage += .1;
+      equipmentPiece.stats.elementIncrease.earth = .3;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Hades;
+    }
+    if (type === ItemsEnum.AressShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(6250, 0, 1250, 0, 0, 0);
+      equipmentPiece.stats.hpRegen += 45;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Ares;
+    }
+    if (type === ItemsEnum.NemesissShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(4375, 0, 875, 0, 0, 875);
+      equipmentPiece.stats.hpRegen += 45;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 1000, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.stats.elementResistance.fire = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Nemesis;
+    }
+    if (type === ItemsEnum.DionysussShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 1250, 0, 0, 1250);
+      equipmentPiece.stats.hpRegen += 45;
+      equipmentPiece.stats.abilityCooldownReduction = .025;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackDown, 15, .75, false, false, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Dionysus;
+    }
+    if (type === ItemsEnum.ZeussShield) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(4375, 0, 350, 0, 0, 350);
+      equipmentPiece.stats.hpRegen += 45;
+      equipmentPiece.stats.criticalMultiplier = .15;
+      equipmentPiece.stats.elementIncrease.lightning = .15;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Zeus;
     }
 
     //armor
@@ -1132,56 +1498,68 @@ export class LookupService {
     }
     if (type === ItemsEnum.SteelArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(240, 0, 25, 0, 0, 10);
+      equipmentPiece.stats = new CharacterStats(360, 0, 38, 0, 0, 15);
     }
     if (type === ItemsEnum.MoltenArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(300, 0, 20, 10, 0, 0);
+      equipmentPiece.stats = new CharacterStats(450, 0, 30, 15, 0, 0);
       equipmentPiece.stats.elementResistance.fire += .05;
     }
     if (type === ItemsEnum.HardenedLeatherArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(450, 0, 100, 25, 0, 0);
+      equipmentPiece.stats = new CharacterStats(675, 0, 150, 38, 0, 0);
     }
     if (type === ItemsEnum.BearskinArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(600, 0, 75, 65, 0, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
-      equipmentPiece.equipmentEffect.chance = .25;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
+      equipmentPiece.stats = new CharacterStats(900, 0, 115, 100, 0, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .25;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 10, 1.25, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.BoarskinArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(600, 0, 135, 0, 0, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 20, false, true, false));
+      equipmentPiece.stats = new CharacterStats(900, 0, 215, 0, 0, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 20, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.FeatheredTunic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(950, 0, 100, 60, 0, 75);
+      equipmentPiece.stats = new CharacterStats(1900, 0, 200, 120, 0, 150);
       equipmentPiece.stats.elementResistance.air = .1;
       equipmentPiece.slotCount = 2;
     }
     if (type === ItemsEnum.FurArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(500, 0, 180, 135, 0, 0);
+      equipmentPiece.stats = new CharacterStats(1000, 0, 360, 270, 0, 0);
       equipmentPiece.stats.autoAttackCooldownReduction = .025;
       equipmentPiece.slotCount = 1;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
-      equipmentPiece.equipmentEffect.chance = .2;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ArmorPenetrationUp, 8, 1.2, false, true));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ArmorPenetrationUp, 8, 1.2, false, true));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.ScaleArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(800, 0, 180, 0, 0, 135);
+      equipmentPiece.stats = new CharacterStats(1600, 0, 360, 0, 0, 270);
       equipmentPiece.slotCount = 2;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 500, false, true, false, type.toString()));
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 75, false, true, false));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 500, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceDirectDamage, -1, 75, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
     }
     if (type === ItemsEnum.HideArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(850, 0, 275, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(1700, 0, 550, 0, 0, 0);
       equipmentPiece.slotCount = 2;
       equipmentPiece.stats.armorPenetration = .05;
       equipmentPiece.stats.aoeDamage = .15;
@@ -1189,55 +1567,173 @@ export class LookupService {
     }
     if (type === ItemsEnum.HesperidianArmor) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(1200, 0, 175, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(2400, 0, 350, 0, 0, 0);
       equipmentPiece.slotCount = 2;
       equipmentPiece.stats.abilityCooldownReduction = .025;
       equipmentPiece.stats.hpRegen = 14;
-      equipmentPiece.stats.healingDone = .05;
+      equipmentPiece.stats.healingDone = .075;
+    }
+    if (type === ItemsEnum.DivinePlate) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(1500, 250, 500, 0, 0, 0);
+      equipmentPiece.slotCount = 4;
+      equipmentPiece.stats.elementResistance.earth = .05;
+      equipmentPiece.stats.elementResistance.air = .05;
+      equipmentPiece.stats.elementResistance.water = .05;
+      equipmentPiece.stats.elementResistance.holy = .05;
+      equipmentPiece.stats.elementResistance.lightning = .05;
+      equipmentPiece.stats.elementResistance.fire = .05;
+      equipmentPiece.stats.hpRegen = 15;
+      equipmentPiece.stats.elementIncrease.fire = .1;
+    }
+    if (type === ItemsEnum.GiantArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(1800, 0, 300, 0, 200, 0);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.criticalMultiplier = .1;
+      equipmentPiece.stats.overdriveGain = .125;
+      equipmentPiece.stats.elementIncrease.earth = .15;
+    }
+    if (type === ItemsEnum.AthenasArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1000, 0, 0, 1000);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.healingReceived = .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect.chance = .15;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHealBasedOnMaxHpPercent, -1, .1, true, true));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.set = EquipmentSetEnum.Athena;
+    }
+    if (type === ItemsEnum.ArtemissArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1000, 1000, 0, 0);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.debuffDuration = .075;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.stats.criticalMultiplier = .1;
+      equipmentPiece.set = EquipmentSetEnum.Artemis;
+    }
+    if (type === ItemsEnum.HermessArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 500, 1500, 0, 0);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.elementIncrease.air = .15;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.set = EquipmentSetEnum.Hermes;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .1;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 10, 1.2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.ApollosArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1000, 0, 0, 1000);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.hpRegen = 40;
+      equipmentPiece.stats.buffDuration = .1;
+      equipmentPiece.stats.healingDone = .1;
+      equipmentPiece.set = EquipmentSetEnum.Apollo;
+    }
+    if (type === ItemsEnum.HadessArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1000, 0, 1000, 0);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.stats.aoeDamage = .1;
+      equipmentPiece.stats.elementIncrease.fire = .15;
+      equipmentPiece.set = EquipmentSetEnum.Hades;
+    }
+    if (type === ItemsEnum.AressArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(7500, 0, 1875, 0, 0, 0);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.debuffDuration = .075;
+      equipmentPiece.stats.healingReceived = .15;
+      equipmentPiece.stats.hpRegen = 40;
+      equipmentPiece.set = EquipmentSetEnum.Ares;
+    }
+    if (type === ItemsEnum.NemesissArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1000, 0, 0, 1000);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.stats.elementResistance.air = .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 800, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.set = EquipmentSetEnum.Nemesis;
+    }
+    if (type === ItemsEnum.DionysussArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1000, 0, 0, 1000);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.buffDuration = .075;
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.set = EquipmentSetEnum.Dionysus;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 15, 1.25, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.ZeussArmor) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1000, 1000, 0, 0);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.stats.elementIncrease.lightning = .1;
+      equipmentPiece.set = EquipmentSetEnum.Zeus;
     }
 
     //necklace
     if (type === ItemsEnum.ForgottenLocket) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 4, 4, 4, 4, 4);
+      equipmentPiece.stats = new CharacterStats(0, 5, 5, 5, 5, 5);
     }
     if (type === ItemsEnum.PendantOfFortune) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 25, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 40, 0);
       equipmentPiece.stats.criticalMultiplier = .1;
     }
     if (type === ItemsEnum.PendantOfPower) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 25, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 40, 0, 0, 0, 0);
       equipmentPiece.stats.armorPenetration = .05;
     }
     if (type === ItemsEnum.PendantOfSpeed) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 25, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 40, 0, 0);
       equipmentPiece.stats.overdriveGain = .1;
     }
     if (type === ItemsEnum.GemmedNecklace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 25);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 40);
       equipmentPiece.stats.elementResistance.earth += .1;
     }
     if (type === ItemsEnum.SharkstoothNecklace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 70, 0, 80, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 140, 0, 160, 0, 0);
       equipmentPiece.stats.autoAttackCooldownReduction = .05;
       equipmentPiece.stats.overdriveGain = .1;
     }
     if (type === ItemsEnum.SharkstoothPendant) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 70, 0, 0, 80, 0);
+      equipmentPiece.stats = new CharacterStats(0, 140, 0, 0, 160, 0);
       equipmentPiece.stats.abilityCooldownReduction = .05;
       equipmentPiece.stats.armorPenetration = .05;
     }
     if (type === ItemsEnum.BlazingSunPendant) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
-      equipmentPiece.stats.autoAttackCooldownReduction += .1;
-      equipmentPiece.stats.abilityCooldownReduction += .1;
+      equipmentPiece.stats.autoAttackCooldownReduction += .075;
+      equipmentPiece.stats.abilityCooldownReduction += .075;
       equipmentPiece.stats.overdriveGain += .2;
       equipmentPiece.stats.criticalMultiplier += .25;
       equipmentPiece.stats.tickFrequency += .05;
@@ -1253,86 +1749,255 @@ export class LookupService {
     }
     if (type === ItemsEnum.BronzeBeakNecklace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 90, 0, 0, 90, 0);
+      equipmentPiece.stats = new CharacterStats(0, 180, 0, 0, 180, 0);
       equipmentPiece.stats.elementIncrease.air += .15;
       equipmentPiece.stats.overdriveGain += .15;
       equipmentPiece.slotCount = 3;
     }
     if (type === ItemsEnum.BloodyNecklace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 60, 0, 60, 0, 60);
+      equipmentPiece.stats = new CharacterStats(0, 120, 0, 120, 0, 120);
       equipmentPiece.stats.armorPenetration += .075;
       equipmentPiece.stats.aoeDamage += .075;
+    }
+    if (type === ItemsEnum.GiantNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 120, 120, 0, 0, 120);
+      equipmentPiece.stats.armorPenetration += .05;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enearth, -1, 1, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.AthenasNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 2000, 0, 0, 0);
+      equipmentPiece.stats.overdriveGain += .1;
+      equipmentPiece.stats.autoAttackCooldownReduction += .1;
+      equipmentPiece.stats.elementIncrease.holy += .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Athena;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect.chance = .1;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, 10, .9, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.ArtemissNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 2000, 0);
+      equipmentPiece.stats.debuffDuration += .075;
+      equipmentPiece.stats.criticalMultiplier += .1;
+      equipmentPiece.stats.armorPenetration += .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Artemis;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect.chance = .1;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffDurationIncrease, -1, 1.1, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.HermessNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 2000, 0, 0);
+      equipmentPiece.stats.criticalMultiplier += .15;
+      equipmentPiece.stats.autoAttackCooldownReduction += .05;
+      equipmentPiece.stats.elementIncrease.air += .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Hermes;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .1;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 10, 1.2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.ApollosNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 2000);
+      equipmentPiece.stats.healingDone += .1;
+      equipmentPiece.stats.buffDuration += .1;
+      equipmentPiece.stats.overdriveGain += .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Apollo;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnHeal;
+      equipmentEffect.chance = (1 / 3);
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Barrier, -1, .1, true, true, false, type.toString()));
+      equipmentEffect.userEffect[0].dotType = dotTypeEnum.BasedOnHeal;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+
+    }
+    if (type === ItemsEnum.HadessNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 2000, 0);
+      equipmentPiece.stats.aoeDamage += .15;
+      equipmentPiece.stats.criticalMultiplier += .15;
+      equipmentPiece.stats.abilityCooldownReduction += .05;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Hades;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect.chance = .1;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceCooldowns, -1, 1.2, true, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.AressNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(10000, 0, 0, 0, 0, 0);
+      equipmentPiece.stats.debuffDuration += .1;
+      equipmentPiece.stats.tickFrequency += .05;
+      equipmentPiece.stats.abilityCooldownReduction += .075;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Ares;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnDotTick;
+      equipmentEffect.chance = .025;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeDamageUp, 15, 1.2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.NemesissNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 2000, 0, 0, 0);
+      equipmentPiece.stats.overdriveGain += .1;
+      equipmentPiece.stats.elementResistance.lightning += .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 1000, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect2.chance = .25;
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllElementalResistanceUp, 15, .2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Nemesis;
+    }
+    if (type === ItemsEnum.DionysussNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 2000, 0, 0, 0);
+      equipmentPiece.stats.debuffDuration += .1;
+      equipmentPiece.stats.buffDuration += .1;
+      equipmentPiece.stats.abilityCooldownReduction += .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Dionysus;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.WhenEnteringBattle;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, .1, true, true, false, type.toString()));
+      equipmentEffect.userEffect[0].dotType = dotTypeEnum.UserCurrentMaxHpPercent;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.ZeussNecklace) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 2000, 0, 0, 0, 0);
+      equipmentPiece.stats.criticalMultiplier += .1;
+      equipmentPiece.stats.armorPenetration += .1;
+      equipmentPiece.stats.elementIncrease.lightning += .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Zeus;
+
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
+      equipmentEffect2.chance = .1;
+      equipmentEffect2.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, .1, true, false, false, "Zeus's Necklace"));
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zeus;
     }
 
     //ring
     if (type === ItemsEnum.MoltenRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 20);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 30);
       equipmentPiece.stats.elementResistance.fire += .10;
     }
     //+% to elemental damage, absorb certain amount of elemental damage
     if (type === ItemsEnum.FracturedRubyRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 20, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 30, 0);
       equipmentPiece.stats.elementIncrease.fire += .15;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Fire, 75));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Fire, 75));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.FracturedAmethystRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 20);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 30);
       equipmentPiece.stats.elementIncrease.air += .15;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Air, 75));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Air, 75));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.FracturedAquamarineRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 20, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 30, 0, 0);
       equipmentPiece.stats.elementIncrease.water += .15;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Water, 75));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Water, 75));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.FracturedEmeraldRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 0, 20, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 0, 30, 0, 0, 0);
       equipmentPiece.stats.elementIncrease.earth += .15;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Earth, 75));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Earth, 75));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.FracturedOpalRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(0, 20, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(0, 30, 0, 0, 0, 0);
       equipmentPiece.stats.elementIncrease.lightning += .15;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Lightning, 75));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Lightning, 75));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.FracturedTopazRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(100, 0, 0, 0, 0, 0);
+      equipmentPiece.stats = new CharacterStats(150, 0, 0, 0, 0, 0);
       equipmentPiece.stats.elementIncrease.holy += .15;
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Holy, 75));
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 75, 1000, false, true, false, type.toString(), 0, false, ElementalTypeEnum.Holy, 75));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.BedazzledRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Rare);
-      equipmentPiece.stats = new CharacterStats(150, 0, 0, 0, 25, 0);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BattleItemEffectUp, -1, 1.5, false, true, false, type.toString()));
+      equipmentPiece.stats = new CharacterStats(225, 0, 0, 0, 38, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BattleItemEffectUp, -1, 1.5, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.RingOfNightmares) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 35, 0, 0, 0, 70);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
-      equipmentPiece.equipmentEffect.chance = .15;
-      equipmentPiece.equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 20, .8, true, false, false));
+      equipmentPiece.stats = new CharacterStats(0, 70, 0, 0, 0, 140);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .15;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RandomPrimaryStatDownExcludeHp, 20, .8, true, false, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 2;
     }
     if (type === ItemsEnum.ScalyRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 75, 0, 0, 85);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 450, false, true, false, type.toString()));
+      equipmentPiece.stats = new CharacterStats(0, 0, 150, 0, 0, 200);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 450, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.QuadRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
@@ -1341,22 +2006,123 @@ export class LookupService {
     }
     if (type === ItemsEnum.RingOfCurses) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 40, 0, 50, 50, 0);
+      equipmentPiece.stats = new CharacterStats(0, 80, 0, 100, 100, 0);
       equipmentPiece.stats.debuffDuration += .1;
       equipmentPiece.slotCount = 1;
     }
     if (type === ItemsEnum.SirensongRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 0, 75, 75, 35);
-      equipmentPiece.equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
-      equipmentPiece.equipmentEffect.chance = .2;
-      equipmentPiece.equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, -1, 1, true, true));
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 150, 150, 70);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, -1, 1, true, true));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.SafeRing) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 175, 0, 0, 175);
+      equipmentPiece.stats = new CharacterStats(0, 0, 350, 0, 0, 350);
       equipmentPiece.stats.abilityCooldownReduction = .1;
       equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.GiantRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 350, 0, 350, 0);
+      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats.elementIncrease.earth = .075;
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.AthenasRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 1250, 0, 0, 0);
+      equipmentPiece.stats.hpRegen = 35;
+      equipmentPiece.stats.healingReceived = .15;
+      equipmentPiece.slotCount = 2;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enholy, -1, 1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.set = EquipmentSetEnum.Athena;
+    }
+    if (type === ItemsEnum.ArtemissRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 0, 0, 1250, 0);
+      equipmentPiece.stats.debuffDuration = .05;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.criticalMultiplier = .15;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Artemis;
+    }
+    if (type === ItemsEnum.HermessRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 0, 1250, 0, 0);
+      equipmentPiece.stats.elementIncrease.air = .1;
+      equipmentPiece.stats.autoAttackCooldownReduction = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Hermes;
+
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .1;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AirDamageUp, 10, 1.2, false, true, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.ApollosRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 0, 0, 0, 1250);
+      equipmentPiece.stats.hpRegen = 35;
+      equipmentPiece.stats.overdriveGain = .15;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Apollo;
+    }
+    if (type === ItemsEnum.HadessRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 0, 0, 1250, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.aoeDamage = .15;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Hades;
+    }
+    if (type === ItemsEnum.AressRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(6250, 1250, 0, 0, 0, 0);
+      equipmentPiece.stats.tickFrequency = .1;
+      equipmentPiece.stats.healingReceived = .1;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Ares;
+    }
+    if (type === ItemsEnum.NemesissRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 0, 0, 0, 1250);
+      equipmentPiece.stats.elementResistance.water = .1;
+      equipmentPiece.stats.autoAttackCooldownReduction = .1;
+      equipmentPiece.slotCount = 2;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, 1250, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.set = EquipmentSetEnum.Nemesis;
+    }
+    if (type === ItemsEnum.DionysussRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 1250, 0, 0, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.debuffDuration = .1;
+      equipmentPiece.stats.buffDuration = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Dionysus;
+    }
+    if (type === ItemsEnum.ZeussRing) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 1250, 0, 0, 1250, 0);
+      equipmentPiece.stats.elementIncrease.lightning = .1;
+      equipmentPiece.stats.criticalMultiplier = .15;
+      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.slotCount = 2;
+      equipmentPiece.set = EquipmentSetEnum.Zeus;
     }
 
     return equipmentPiece;
@@ -1446,7 +2212,14 @@ export class LookupService {
       name = "Harmony";
     if (type === OverdriveNameEnum.Bullseye)
       name = "Bullseye";
-
+    if (type === OverdriveNameEnum.Hope)
+      name = "Hope";
+    if (type === OverdriveNameEnum.Weaken)
+      name = "Weaken";
+    if (type === OverdriveNameEnum.Revenge)
+      name = "Revenge";
+    if (type === OverdriveNameEnum.Quickness)
+      name = "Quickness";
 
     return name;
   }
@@ -1478,6 +2251,18 @@ export class LookupService {
     if (type === OverdriveNameEnum.Bullseye) {
       description = "After 20 seconds, apply a Damage over Time effect on all targets for 50% of the critical damage you dealt to that target while this effect was active.";
     }
+    if (type === OverdriveNameEnum.Weaken) {
+      description = "For 20 seconds, increase your damage by 10% for 15 seconds after applying a debuff to a target. This effect stacks up to 10 times.";
+    }
+    if (type === OverdriveNameEnum.Quickness) {
+      description = "For 20 seconds, using Quick Hit will reduce the cooldown of your abilities by " + this.utilityService.quicknessCooldownReduction + " seconds.";
+    }
+    if (type === OverdriveNameEnum.Revenge) {
+      description = "For 20 seconds, counterattack any damage dealing attack with an auto attack.";
+    }
+    if (type === OverdriveNameEnum.Hope) {
+      description = "For 20 seconds, the threshold for any barriers you apply are doubled.";
+    }
 
     return description;
   }
@@ -1505,6 +2290,18 @@ export class LookupService {
     }
     if (type === OverdriveNameEnum.Bullseye) {
       description = "Deal " + this.utilityService.overdriveCriticalsNeededToUnlockBullseye.toLocaleString() + " critical hits. <i>(" + character.trackedStats.criticalsDealt.toLocaleString() + ")</i>";
+    }
+    if (type === OverdriveNameEnum.Quickness) {
+      description = "Unique to the Adventurer class. Reach character level 30. <i>(" + character.level + ")</i>";
+    }
+    if (type === OverdriveNameEnum.Hope) {
+      description = "Unique to the Priest class. Reach character level 30. <i>(" + character.level + ")</i>";
+    }
+    if (type === OverdriveNameEnum.Revenge) {
+      description = "Unique to the Warrior class. Reach character level 30. <i>(" + character.level + ")</i>";
+    }
+    if (type === OverdriveNameEnum.Weaken) {
+      description = "Unique to the Archer class. Reach character level 30. <i>(" + character.level + ")</i>";
     }
 
     return description;
@@ -1576,6 +2373,34 @@ export class LookupService {
       overdriveInfo.gainPerBeingAttacked = 0;
       overdriveInfo.gainPerAbility = 1.5;
     }
+    if (type === OverdriveNameEnum.Quickness) {
+      overdriveInfo.gaugeTotal = 150;
+      overdriveInfo.activeLength = 20;
+      overdriveInfo.gainPerAutoAttack = 1.25;
+      overdriveInfo.gainPerBeingAttacked = .75;
+      overdriveInfo.gainPerAbility = 1;
+    }
+    if (type === OverdriveNameEnum.Weaken) {
+      overdriveInfo.gaugeTotal = 120;
+      overdriveInfo.activeLength = 20;
+      overdriveInfo.gainPerAutoAttack = .5;
+      overdriveInfo.gainPerBeingAttacked = .5;
+      overdriveInfo.gainPerAbility = 1.5;
+    }
+    if (type === OverdriveNameEnum.Revenge) {
+      overdriveInfo.gaugeTotal = 150;
+      overdriveInfo.activeLength = 20;
+      overdriveInfo.gainPerAutoAttack = .5;
+      overdriveInfo.gainPerBeingAttacked = 1.5;
+      overdriveInfo.gainPerAbility = .75;
+    }
+    if (type === OverdriveNameEnum.Hope) {
+      overdriveInfo.gaugeTotal = 135;
+      overdriveInfo.activeLength = 20;
+      overdriveInfo.gainPerAutoAttack = .5;
+      overdriveInfo.gainPerBeingAttacked = 1;
+      overdriveInfo.gainPerAbility = 1;
+    }
 
     return overdriveInfo;
   }
@@ -1588,8 +2413,8 @@ export class LookupService {
     return false;
   }
 
-  getAbilityEffectiveAmount(character: Character, ability: Ability) {
-    return ability.effectiveness * this.getAdjustedAttack(character);
+  getAbilityEffectiveAmount(character: Character, ability: Ability, permanentAbilityUpgrade?: Ability) {
+    return (ability.effectiveness + (permanentAbilityUpgrade === undefined ? 0 : permanentAbilityUpgrade.effectiveness)) * this.getAdjustedAttack(character);
   }
 
   getCharacterAbilityDescription(abilityName: string, character: Character, ability?: Ability) {
@@ -1608,21 +2433,42 @@ export class LookupService {
     var relatedTargetGainStatusEffectEffectivenessPercent = 0;
     var relatedTargetGainStatusEffectTickFrequency = 0;
     var cooldown = 0;
+    var permanentEffectivenessIncrease = 0;
+    var permanentAbility: Ability | undefined = undefined;
 
     if (ability !== undefined) {
-      effectivenessPercent = this.utilityService.roundTo(ability.effectiveness * 100, 2);
+      permanentAbility = character.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+      var permanentUserEffectEffectivenessIncrease = 0;
+      var permanentUserEffectDurationIncrease = 0;
+      var permanentTargetEffectEffectivenessIncrease = 0;
+      var permanentTargetEffectDurationIncrease = 0;
+
+      if (permanentAbility !== undefined) {
+        permanentEffectivenessIncrease = permanentAbility.effectiveness;
+
+        if (permanentAbility.userEffect !== undefined && permanentAbility.userEffect.length > 0) {
+          permanentUserEffectEffectivenessIncrease = permanentAbility.userEffect[0].effectiveness;
+          permanentUserEffectDurationIncrease = permanentAbility.userEffect[0].duration;
+        }
+        if (permanentAbility.targetEffect !== undefined && permanentAbility.targetEffect.length > 0) {
+          permanentTargetEffectEffectivenessIncrease = permanentAbility.targetEffect[0].effectiveness;
+          permanentTargetEffectDurationIncrease = permanentAbility.targetEffect[0].duration;
+        }
+      }
+
+      effectivenessPercent = this.utilityService.roundTo((ability.effectiveness + permanentEffectivenessIncrease) * 100, 2);
       secondaryEffectivenessPercent = ability.secondaryEffectiveness * 100;
-      effectiveAmount = Math.round(this.getAbilityEffectiveAmount(character, ability));
-      effectiveAmountPercent = this.utilityService.roundTo((ability.effectiveness - 1) * 100, 2);
+      effectiveAmount = Math.round(this.getAbilityEffectiveAmount(character, ability, permanentAbility));
+      effectiveAmountPercent = this.utilityService.roundTo(((ability.effectiveness + permanentEffectivenessIncrease) - 1) * 100, 2);
       thresholdAmountPercent = Math.round((ability.threshold) * 100);
       abilityCount = ability.maxCount;
-      cooldown = this.utilityService.roundTo(ability.cooldown * character.battleStats.abilityCooldownReduction, 3);
+      cooldown = this.utilityService.roundTo(this.globalService.getAbilityCooldown(ability, character), 2);//this.utilityService.roundTo(ability.cooldown * character.battleStats.abilityCooldownReduction, 3);
 
       var relatedUserGainStatusEffect = ability?.userEffect[0];
 
       if (relatedUserGainStatusEffect !== undefined) {
-        relatedUserGainStatusEffectDuration = Math.round(relatedUserGainStatusEffect.duration);
-        relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness;
+        relatedUserGainStatusEffectDuration = Math.round(relatedUserGainStatusEffect.duration + permanentUserEffectDurationIncrease);
+        relatedUserGainStatusEffectEffectiveness = relatedUserGainStatusEffect.effectiveness + permanentUserEffectEffectivenessIncrease;
         if (relatedUserGainStatusEffectEffectiveness < 1)
           relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2);
         else
@@ -1632,8 +2478,8 @@ export class LookupService {
       var relatedTargetGainStatusEffect = ability?.targetEffect[0];
 
       if (relatedTargetGainStatusEffect !== undefined) {
-        relatedTargetGainStatusEffectDuration = Math.round(relatedTargetGainStatusEffect.duration);
-        relatedTargetGainStatusEffectEffectiveness = relatedTargetGainStatusEffect.effectiveness;
+        relatedTargetGainStatusEffectDuration = Math.round(relatedTargetGainStatusEffect.duration + permanentTargetEffectDurationIncrease);
+        relatedTargetGainStatusEffectEffectiveness = relatedTargetGainStatusEffect.effectiveness + permanentTargetEffectEffectivenessIncrease;
         if (relatedTargetGainStatusEffectEffectiveness < 1)
           relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedTargetGainStatusEffectEffectiveness) * 100, 2);
         else
@@ -1660,9 +2506,11 @@ export class LookupService {
 
     //Warrior
     if (abilityName === "Battle Cry")
-      abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. " + cooldown + " second cooldown.";
-    if (abilityName === "Last Stand")
-      abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
+      abilityDescription = "Draw a target's focus for the next <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds, forcing all attacks to target you. Also, apply a debuff on the target that increases their damage taken from Thorns effects by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    //if (abilityName === "Last Stand")
+    //abilityDescription = "When HP drops below <strong>" + thresholdAmountPercent + "%</strong>, increase Defense by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
+    if (abilityName === "Counterattack")
+      abilityDescription = "When an enemy is forced to auto attack you, deal <strong>" + effectivenessPercent + "%</strong> of the damage back to them. If your HP is below <strong>" + thresholdAmountPercent + "%</strong>, also immediately auto attack after any damage dealing attack from an enemy forced to target you. Passive.";
     if (abilityName === "Shield Slam")
       abilityDescription = "Increase Attack by <strong>" + (secondaryEffectivenessPercent) + "% of Defense</strong> then deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. " + cooldown + " second cooldown.";
 
@@ -1699,21 +2547,24 @@ export class LookupService {
     var cooldown = 0;
     var maxCountTimesEffectivenessPercent = 0;
     var permanentEffectivenessIncrease = 0;
+    var permanentAbility: Ability | undefined = undefined;
 
     if (ability !== undefined) {
       var permanentUserEffectEffectivenessIncrease = 0;
       var permanentUserEffectDurationIncrease = 0;
+      var permanentUserEffectThresholdIncrease = 0;
       var permanentTargetEffectEffectivenessIncrease = 0;
       var permanentTargetEffectDurationIncrease = 0;
 
       if (god !== undefined) {
-        var permanentAbility = god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+        permanentAbility = god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
         if (permanentAbility !== undefined) {
           permanentEffectivenessIncrease = permanentAbility.effectiveness;
 
           if (permanentAbility.userEffect !== undefined && permanentAbility.userEffect.length > 0) {
             permanentUserEffectEffectivenessIncrease = permanentAbility.userEffect[0].effectiveness;
             permanentUserEffectDurationIncrease = permanentAbility.userEffect[0].duration;
+            permanentUserEffectThresholdIncrease = permanentAbility.userEffect[0].threshold;
           }
           if (permanentAbility.targetEffect !== undefined && permanentAbility.targetEffect.length > 0) {
             permanentTargetEffectEffectivenessIncrease = permanentAbility.targetEffect[0].effectiveness;
@@ -1723,7 +2574,7 @@ export class LookupService {
       }
 
       effectivenessPercent = this.utilityService.genericRound((ability.effectiveness + permanentEffectivenessIncrease) * 100);
-      effectiveAmount = this.utilityService.genericRound(this.getAbilityEffectiveAmount(character, ability));
+      effectiveAmount = this.utilityService.genericRound(this.getAbilityEffectiveAmount(character, ability, permanentAbility));
       effectiveAmountPercent = this.utilityService.genericRound(((ability.effectiveness + permanentEffectivenessIncrease) - 1) * 100);
       secondaryEffectiveAmount = ability.secondaryEffectiveness;
       secondaryEffectiveAmountPercent = this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100);
@@ -1736,7 +2587,7 @@ export class LookupService {
 
       if (relatedUserGainStatusEffect !== undefined) {
         relatedUserGainStatusEffectDuration = this.utilityService.genericRound(relatedUserGainStatusEffect.duration + permanentUserEffectDurationIncrease);
-        relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold;
+        relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold + permanentUserEffectThresholdIncrease;
         relatedUserGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedUserGainStatusEffect.effectiveness + permanentUserEffectEffectivenessIncrease);
         if (relatedUserGainStatusEffectEffectiveness < 1)
           relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2);
@@ -1800,13 +2651,13 @@ export class LookupService {
 
     //Zeus
     if (abilityName === "Overload")
-      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by " + effectiveAmount + "%. Passive";
+      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by <strong>" + this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness - 1) * 100, 2) + "%</strong>. Passive.";
     if (abilityName === "Lightning Bolt")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This has a " + relatedTargetGainStatusEffectEffectivenessPercent + "% chance to stun the target. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. This has a <strong>" + (this.utilityService.genericRound(relatedTargetGainStatusEffectEffectiveness * 100)) + "%</strong> chance to stun the target for " + secondaryEffectiveAmount + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Electrify")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Increase the Lightning Damage taken by target by " + relatedTargetGainStatusEffectEffectivenessPercent + "% for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Increase the Lightning Damage taken by the target by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Chain Lightning")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds" + (ability !== undefined && ability.userEffect[1] !== undefined ? " and again after " + ability.userEffect[1].duration + " seconds" : "") + ". " + cooldown + " second cooldown.";
 
     //Hades
     if (abilityName === "Hellfire")
@@ -1824,17 +2675,17 @@ export class LookupService {
     if (abilityName === "Onslaught")
       abilityDescription = "After your next ability, apply a damage over time effect to the targets that deals an additional <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Revel in Blood")
-      abilityDescription = "Reduce your own current HP by 10%. Apply a damage over time effect to all targets that deals <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "% of HP Loss</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Reduce your own current HP by 10%. Apply a damage over time effect to all targets that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of HP Loss</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Bloodlust")
-      abilityDescription = "Increase all damage over time effectiveness by <strong>" + effectivenessPercent + "%</strong> per active damage over time effect amongst all enemies, up to <strong>" + ability?.maxCount + "</strong> effects for a total of <strong>" + (maxCountTimesEffectivenessPercent) + "%</strong> increase.";
+      abilityDescription = "Increase all damage over time effectiveness by <strong>" + effectivenessPercent + "%</strong> per active damage over time effect amongst all enemies, up to <strong>" + ability?.maxCount + "</strong> effects for a total of <strong>" + this.utilityService.genericRound(maxCountTimesEffectivenessPercent) + "%</strong> increase.";
 
     //Dionysus
     if (abilityName === "Revelry")
-      abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + Math.round(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
+      abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
     if (abilityName === "Thyrsus")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has, up to 20 debuffs. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
-      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + this.utilityService.genericRound(100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Have a Drink")
       abilityDescription = "Every " + cooldown + " seconds, give yourself " + (ability?.userEffect.length === 1 ? "a" : ability?.userEffect.length) + " random <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff" + (ability?.userEffect.length === 1 ? "" : "s") + " for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
 
@@ -1976,6 +2827,9 @@ export class LookupService {
     }
     if (ability.name === "Bite") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Bite" && (character.bestiaryType === BestiaryEnum.LerneanHydra || character.bestiaryType === BestiaryEnum.HydraHead)) {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Constrict") {
       abilityDescription = "Reduce target's Agility by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
@@ -2416,7 +3270,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their Attack by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Plunge") {
-      abilityDescription = "Become untargetable for for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Become untargetable for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Zigzag") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the user's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
@@ -2551,7 +3405,7 @@ export class LookupService {
       abilityDescription = "Increase the user's Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Khalkotauroi Fury") {
-      abilityDescription = "After the first Khalkotauroi dies, apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> Fire damage after <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds.";
+      abilityDescription = "After the first Khalkotauroi dies, apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectiveness + "</strong> Fire damage after <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds.";
     }
     if (ability.name === "Nip") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
@@ -2710,7 +3564,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Throw Boulder") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. Reduce target's auto attack cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. Increase target's auto attack cooldown by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Enrage") {
       abilityDescription = "Increase all of the user's primary stats except for max HP by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for the rest of the battle. This effect can stack. " + cooldown + " second cooldown.";
@@ -2718,14 +3572,436 @@ export class LookupService {
     if (ability.name === "Geryon's Shields") {
       abilityDescription = "Reduce all damage taken and damage over time effectiveness by 25%. When HP is reduced below 50%, increase the damage reduction to 50%. When HP is reduced below 25%, increase the damage reduction to 75%.";
     }
+    if (ability.name === "Athena's Protection") {
+      abilityDescription = "Increase Defense and Resistance by 1000%. Every debuff currently afflicting Athena reduces this amount by 125%.";
+    }
+    if (ability.name === "Divine Strike")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
+    if (ability.name === "Heavenly Shield")
+      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Blinding Light")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets and apply a <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Wounding Arrow")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their attack by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Revealing Arrow")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Paralyzing Volley")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets and paralyze them for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Expose Weakness")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Any negative status effects on the target have their duration increased by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the original duration. " + cooldown + " second cooldown.";
+    if (ability.name === "Hermes's Gift")
+      abilityDescription = "Every auto attack reduces Ability Cooldown Speed by 1%. Every ability reduces Auto Attack Cooldown Speed by 2%.";
+    if (ability.name === "Nimble Strike")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. " + cooldown + " second cooldown.";
+    if (ability.name === "Take Flight")
+      abilityDescription = "Increase your Attack and Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Special Delivery")
+      abilityDescription = "Immediately perform <strong>" + ability?.userEffect.length + "</strong> auto attacks. Their damage is increased by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>. " + cooldown + " second cooldown.";
+    if (ability.name === "Staccato")
+      abilityDescription = "Increase the party's agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Staccato is active, each party member performs a free auto attack. " + cooldown + " second cooldown.";
+    if (ability.name === "Fortissimo")
+      abilityDescription = "Increase the party's attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Fortissimo is active, reduce your other cooldowns by <strong>" + secondaryEffectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
+    if (ability.name === "Coda")
+      abilityDescription = "Increase the party's luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Coda is active, cleanse a random debuff from a party member. " + cooldown + " second cooldown.";
+    if (ability.name === "Ostinato")
+      abilityDescription = "Every " + cooldown + " seconds, heal a party member for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP. Targets the party member with the lowest HP %.";
+    if (ability.name === "Rupture")
+      abilityDescription = "Apply a damage over time effect to a target that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Onslaught")
+      abilityDescription = "After your next ability, apply a damage over time effect to the targets that deals an additional <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Revel in Blood")
+      abilityDescription = "Reduce your own current HP by 10%. Apply a damage over time effect to all targets that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of HP Loss</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Warpath") {
+      abilityDescription = "Instantly reduce all target's current HP by <strong>" + (effectivenessPercent) + "%</strong>. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Retribution")
+      abilityDescription = "The next <strong>" + (abilityCount === 1 ? " time " : abilityCount + " times ") + "</strong> you are attacked, reduce the damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage back to the target. " + cooldown + " second cooldown.";
+    if (ability.name === "Chains of Fate")
+      abilityDescription = "Create a link between you and one target forcing you both to only target each other. Attacks against you from this target increase <strong>Dues</strong> gain by an additional <strong>" + (effectivenessPercent - 100) + "%</strong>. Lasts " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "No Escape")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times. Nemesis's <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
+    if (ability.name === "Dispenser of Dues")
+      abilityDescription = "When Nemesis takes damage, increase her <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Her next ability's damage is increased by the amount of <strong>Dues</strong> and is then reset back to 0.";
+    if (ability.name === "Revelry")
+      abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
+    if (ability.name === "Thyrsus")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has, up to 20 debuffs. " + cooldown + " second cooldown.";
+    if (ability.name === "Insanity")
+      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + this.utilityService.genericRound(100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Have a Drink")
+      abilityDescription = "Every " + cooldown + " seconds, give yourself " + (ability?.userEffect.length === 1 ? "a" : ability?.userEffect.length) + " random <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff" + (ability?.userEffect.length === 1 ? "" : "s") + " for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
+    if (ability.name === "To The Depths") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Overload")
+      abilityDescription = "Every ability you use that deals Lightning damage grants you Surge. Surge increases the damage dealt by your next ability by <strong>" + this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness - 1) * 100, 2) + "%</strong>. Passive.";
+    if (ability.name === "Lightning Bolt")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage and Stun the target for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Electrify")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Increase the Lightning Damage taken by the target by <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+    if (ability.name === "Chain Lightning")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage. Deal the same amount of damage again after " + relatedUserGainStatusEffectDuration + " seconds" + (ability !== undefined && ability.userEffect[1] !== undefined ? " and again after " + ability.userEffect[1].duration + " seconds" : "") + ". " + cooldown + " second cooldown.";
+    if (ability.name === "Headbutt") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Tear") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> Fire damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Throw Stone") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Rock Blast") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets and reduce their Healing Received by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Fire Blast") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to all targets and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> Fire damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Holy Shock") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Holy damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Shoot Spark") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Elemental damage to a target. The element chosen is random. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Spark Field") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Elemental damage to all targets. The element chosen is random. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Water Shot") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Water damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Lightning Strike") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Lightning damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Wind Pulse") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Air damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Wind Blast") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Air damage to all targets and reduce their Defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Roll") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Burrow") {
+      abilityDescription = "Become untargetable for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds and increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Devour") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Eat Magic") {
+      abilityDescription = "Absorb <strong>" + relatedUserGainStatusEffectEffectiveness + "</strong> damage of a random element for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Savage Slam") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. Increase target's auto attack cooldown by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Wild Swing Combo") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage twice to all targets. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%.  Increase target's auto attack cooldown by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Earthen Might") {
+      abilityDescription = "Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Earthen Fortune") {
+      abilityDescription = "Increase the user's Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Earthen Armor") {
+      abilityDescription = "Increase the user's Defense by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Earthen Speed") {
+      abilityDescription = "Increase the user's Agility by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Earthen Guard") {
+      abilityDescription = "Increase the user's Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Lucky Hit") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. There is a <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> chance to stun the target, reduce their Defense, or reduce their Resistance. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Crushing Blow") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target and increase their Damage Taken by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Stockpile Rock") {
+      abilityDescription = "Increase your number of rocks by 1. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Landslide") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. Damage is increased by 20% per rock. If you have more than 3 rocks, reduce the targets' auto attack cooldown rate by <strong>75%</strong> for <strong>10</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Knock Around") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. Increase your number of rocks by 1. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Shatter" && character.bestiaryType === BestiaryEnum.Mimas) {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. This ability is used immediately when you have 5 rocks. All rocks are removed after use. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Quick Attack") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target and reduce the user's Auto Attack Cooldown Rate by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Rolling Boulder") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target and reduce the user's Ability Cooldown Rate by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Thump") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Blitz") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets twice. Increase your number of rocks by 1. If this critically hits a target, increase your number of rocks by 2 instead. Only usable while Earthen Offense is active. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Maim") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. reduce their Healing Received by <strong>" + (100 - secondaryRelatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + secondaryRelatedTargetGainStatusEffectDuration + "</strong> seconds. Only usable while Earthen Offense is active. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Pointed Stones") {
+      abilityDescription = "Give the user Thorns, dealing <strong>" + relatedUserGainStatusEffectEffectiveness + "</strong> damage back to attackers for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. Only usable while Earthen Defense is active. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Glancing Blow") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Increase target's auto attack cooldown by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Rockfall") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Earth damage to all targets. Damage is increased by 20% per rock. Used immediately upon activation of Earthen Offense.";
+    }
+    if (ability.name === "Earthen Offense") {
+      abilityDescription = "Enter Earthen Offense mode, increasing the user's Attack and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> while active. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Earthen Defense") {
+      abilityDescription = "Enter Earthen Defense mode, increasing the user's Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> while active. " + cooldown + " second cooldown.";
+    }
 
     return abilityDescription;
+  }
+
+  getStatusEffectName(type: StatusEffectEnum) {
+    var description = "";
+    if (type === StatusEffectEnum.AllPrimaryStatsUp)
+      description = "All Primary Stats Up";
+    if (type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp)
+      description = "All Primary Stats Up Excluding Max HP";
+    if (type === StatusEffectEnum.AgilityUp)
+      description = "Agility Up";
+    if (type === StatusEffectEnum.AttackUp)
+      description = "Attack Up";
+    if (type === StatusEffectEnum.DefenseUp)
+      description = "Defense Up";
+    if (type === StatusEffectEnum.LuckUp)
+      description = "Luck UP";
+    if (type === StatusEffectEnum.ResistanceUp)
+      description = "Resistance Up";
+    if (type === StatusEffectEnum.MaxHpUp)
+      description = "Max HP Up";
+    if (type === StatusEffectEnum.DamageDealtUp)
+      description = "Damage Dealt Up";
+    if (type === StatusEffectEnum.Surge)
+      description = "Surge";
+    if (type === StatusEffectEnum.DamageTakenUp)
+      description = "Damage Taken Up";
+
+    if (type === StatusEffectEnum.AgilityDown)
+      description = "Agility Down";
+    if (type === StatusEffectEnum.AttackDown)
+      description = "Attack Down";
+    if (type === StatusEffectEnum.DefenseDown)
+      description = "Defense Down";
+    if (type === StatusEffectEnum.LuckDown)
+      description = "Luck Down";
+    if (type === StatusEffectEnum.ResistanceDown)
+      description = "Resistance Down";
+    if (type === StatusEffectEnum.MaxHpDown)
+      description = "Max HP Down";
+    if (type === StatusEffectEnum.DamageDealtDown)
+      description = "Damage Dealt Down";
+    if (type === StatusEffectEnum.DamageTakenDown)
+      description = "Damage Taken Down";
+    if (type === StatusEffectEnum.DivineProtection)
+      description = "Divine Protection";
+    if (type === StatusEffectEnum.GaiasBlessing)
+      description = "Gaia's Blessing";
+    if (type === StatusEffectEnum.DamageOverTimeTakenDown)
+      description = "Damage Over Time Taken Down";
+
+    if (type === StatusEffectEnum.EarthDamageUp)
+      description = "Earth Damage Up";
+    if (type === StatusEffectEnum.FireDamageUp)
+      description = "Fire Damage Up";
+    if (type === StatusEffectEnum.AirDamageUp)
+      description = "Air Damage Up";
+    if (type === StatusEffectEnum.HolyDamageUp)
+      description = "Holy Damage Up";
+    if (type === StatusEffectEnum.WaterDamageUp)
+      description = "Water Damage Up";
+    if (type === StatusEffectEnum.LightningDamageUp)
+      description = "Lightning Damage Up";
+
+    if (type === StatusEffectEnum.EarthDamageDown)
+      description = "Earth Damage Down";
+    if (type === StatusEffectEnum.FireDamageDown)
+      description = "Fire Damage Down";
+    if (type === StatusEffectEnum.AirDamageDown)
+      description = "Air Damage Down";
+    if (type === StatusEffectEnum.HolyDamageDown)
+      description = "Holy Damage Down";
+    if (type === StatusEffectEnum.WaterDamageDown)
+      description = "Water Damage Down";
+    if (type === StatusEffectEnum.LightningDamageDown)
+      description = "Lightning Damage Down";
+
+    if (type === StatusEffectEnum.EarthDamageTakenUp)
+      description = "Earth Damage Taken Up";
+    if (type === StatusEffectEnum.FireDamageTakenUp)
+      description = "Fire Damage Taken Up";
+    if (type === StatusEffectEnum.AirDamageTakenUp)
+      description = "Air Damage Taken Up";
+    if (type === StatusEffectEnum.HolyDamageTakenUp)
+      description = "Holy Damage Taken Up";
+    if (type === StatusEffectEnum.WaterDamageTakenUp)
+      description = "Water Damage Taken Up";
+    if (type === StatusEffectEnum.LightningDamageTakenUp)
+      description = "Lightning Damage Taken Up";
+
+    if (type === StatusEffectEnum.EarthDamageTakenDown)
+      description = "Earth Damage Taken Down";
+    if (type === StatusEffectEnum.FireDamageTakenDown)
+      description = "Fire Damage Taken Down";
+    if (type === StatusEffectEnum.AirDamageTakenDown)
+      description = "Air Damage Taken Down";
+    if (type === StatusEffectEnum.HolyDamageTakenDown)
+      description = "Holy Damage Taken Down";
+    if (type === StatusEffectEnum.WaterDamageTakenDown)
+      description = "Water Damage Taken Down";
+    if (type === StatusEffectEnum.LightningDamageTakenDown)
+      description = "Lightning Damage Taken Down";
+
+    if (type === StatusEffectEnum.HpRegenUp)
+      description = "HP Regen Up";
+    if (type === StatusEffectEnum.AoeDamageUp)
+      description = "Multi Target Damage Up";
+    if (type === StatusEffectEnum.DamageOverTimeDamageUp)
+      description = "Damage Over Time Damage Up";
+    if (type === StatusEffectEnum.ArmorPenetrationUp)
+      description = "Armor Penetration Up";
+
+    if (type === StatusEffectEnum.ReduceHealing)
+      description = "Reduce Healing";
+    if (type === StatusEffectEnum.Blind)
+      description = "Blind";
+    if (type === StatusEffectEnum.Fortissimo)
+      description = "Fortissimo";
+    if (type === StatusEffectEnum.Coda)
+      description = "Coda";
+    if (type === StatusEffectEnum.Staccato)
+      description = "Staccato";
+    if (type === StatusEffectEnum.Dead)
+      description = "Dead";
+    if (type === StatusEffectEnum.Dodge)
+      description = "Dodge";
+    if (type === StatusEffectEnum.Untargetable)
+      description = "Untargetable";
+    if (type === StatusEffectEnum.InstantHealAfterAutoAttack)
+      description = "Instant Heal After Auto Attack";
+    if (type === StatusEffectEnum.Mark)
+      description = "Mark";
+    if (type === StatusEffectEnum.Thyrsus)
+      description = "Thyrsus";
+    if (type === StatusEffectEnum.Stun)
+      description = "Stun";
+    if (type === StatusEffectEnum.Paralyze)
+      description = "Paralyze";
+    if (type === StatusEffectEnum.RecentlyDefeated)
+      description = "Recently Defeated";
+    if (type === StatusEffectEnum.ThousandCuts)
+      description = "Thousand Cuts";
+    if (type === StatusEffectEnum.DamageOverTime)
+      description = "Damage Over Time";
+    if (type === StatusEffectEnum.Thorns)
+      description = "Thorns";
+    if (type === StatusEffectEnum.Stagger)
+      description = "Stagger";
+    if (type === StatusEffectEnum.Unsteady)
+      description = "Unsteady";
+    if (type === StatusEffectEnum.AutoAttackSpeedUp)
+      description = "Auto Attack Speed Up";
+    if (type === StatusEffectEnum.AbilitySpeedUp)
+      description = "Ability Speed Up";
+    if (type === StatusEffectEnum.Enfire)
+      description = "Enfire";
+    if (type === StatusEffectEnum.Enholy)
+      description = "Enholy";
+    if (type === StatusEffectEnum.Enearth)
+      description = "Enearth";
+    if (type === StatusEffectEnum.Enwater)
+      description = "Enwater";
+    if (type === StatusEffectEnum.Enlightning)
+      description = "Enlightning";
+    if (type === StatusEffectEnum.Enair)
+      description = "Enair";
+    if (type === StatusEffectEnum.AbsorbElementalDamage)
+      description = "Absorb Elemental Damage";
+    if (type === StatusEffectEnum.ReduceDirectDamage)
+      description = "Reduce Direct Damage";
+    if (type === StatusEffectEnum.BlessingOfDionysus)
+      description = "Blessing of Dionysus";
+    if (type === StatusEffectEnum.AllElementalResistanceDown)
+      description = "Reduce All Elemental Resistances";
+    if (type === StatusEffectEnum.AllElementalResistanceUp)
+      description = "Increase All Elemental Resistances";
+    if (type === StatusEffectEnum.ThornsDamageUp)
+      description = "Thorns Damage Up";
+    if (type === StatusEffectEnum.Focus)
+      description = "Focus";
+    if (type === StatusEffectEnum.Taunt)
+      description = "Taunt";
+    if (type === StatusEffectEnum.BattleItemDamageUp)
+      description = "Battle Item Damage Up";
+    if (type === StatusEffectEnum.BattleItemEffectUp)
+      description = "Battle Item Effect Up";
+    if (type === StatusEffectEnum.ExtraTrueDamage)
+      description = "Extra True Damage";
+    if (type === StatusEffectEnum.Invulnerable)
+      description = "Invulnerable";
+    if (type === StatusEffectEnum.AutoAttackInvulnerable)
+      description = "Auto Attack Invulnerable";
+    if (type === StatusEffectEnum.Immobilize)
+      description = "Immobilize";
+    if (type === StatusEffectEnum.CastingImmobilize)
+      description = "Casting Immobilize";
+    if (type === StatusEffectEnum.PreventEscape)
+      description = "Prevent Escape";
+
+    if (type === StatusEffectEnum.DebilitatingToxin)
+      description = "Debilitating Toxin";
+    if (type === StatusEffectEnum.PoisonousToxin)
+      description = "Poisonous Toxin";
+    if (type === StatusEffectEnum.WitheringToxin)
+      description = "Withering Toxin";
+    if (type === StatusEffectEnum.VenomousToxin)
+      description = "Venomous Toxin";
+    if (type === StatusEffectEnum.FlamingToxin)
+      description = "Flaming Toxin";
+    if (type === StatusEffectEnum.ParalyzingToxin)
+      description = "Paralyzing Toxin";
+
+    if (type === StatusEffectEnum.HeroicElixir)
+      description = "Heroic Elixir";
+    if (type === StatusEffectEnum.RejuvenatingElixir)
+      description = "Rejuvenating Elixir";
+    if (type === StatusEffectEnum.ElixirOfFortitude)
+      description = "Elixir of Fortitude";
+    if (type === StatusEffectEnum.ElixirOfSpeed)
+      description = "Elixir of Speed";
+
+    if (type === StatusEffectEnum.LordOfTheUnderworld)
+      description = "Lord of the Underworld";
+    if (type === StatusEffectEnum.Onslaught)
+      description = "Onslaught";
+    if (type === StatusEffectEnum.DispenserOfDues)
+      description = "Dispenser of Dues";
+    if (type === StatusEffectEnum.Retribution)
+      description = "Retribution";
+    if (type === StatusEffectEnum.ChainsOfFate)
+      description = "Chains of Fate";
+    if (type === StatusEffectEnum.RepeatDamageAfterDelay)
+      description = "Repeat Damage After Delay";
+
+    return description;
   }
 
   getStatusEffectDescription(statusEffect: StatusEffect, character?: Character) {
     var description = "";
     var thornsTotal = 0;
 
+    if (statusEffect.type === StatusEffectEnum.ThornsDamageTakenUp)
+      description = "Increase Thorns damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.AllPrimaryStatsUp)
       description = "Increase all Primary Stats by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp)
@@ -2744,10 +4020,14 @@ export class LookupService {
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
       description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
-      if (statusEffect.type === StatusEffectEnum.Surge)
-      description = "Increase damage dealt by next ability by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.Surge)
+      description = "Increase damage dealt by next ability by " + this.utilityService.genericRound((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
       description = "Increase damage taken by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.EarthenOffense)
+      description = "Increase Attack and Luck by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.EarthenDefense)
+      description = "Increase Defense and Resistance by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.AgilityDown)
       description = "Decrease Agility by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
@@ -2764,9 +4044,13 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.DamageDealtDown)
       description = "Decrease damage dealt by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenDown)
-      description = "Decrease damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+      description = "Decrease direct damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.DivineProtection)
+      description = "Decrease all damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "%.";
+    if (statusEffect.type === StatusEffectEnum.GaiasBlessing)
+      description = "Decrease all damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "% and heal for 5% of HP every 30 seconds.";
     if (statusEffect.type === StatusEffectEnum.DamageOverTimeTakenDown)
-      description = "Decrease Damage Over Time damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
+      description = "Decrease Damage Over Time damage taken by " + this.utilityService.roundTo(((1 - statusEffect.effectiveness) * 100), 2) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.EarthDamageUp)
       description = "Increase Earth damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
@@ -2820,6 +4104,8 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.LightningDamageTakenDown)
       description = "Reduce Lightning damage taken by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
 
+    if (statusEffect.type === StatusEffectEnum.HpRegenUp)
+      description = "Increase HP regen by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.AoeDamageUp)
       description = "Increase multi target damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageOverTimeDamageUp)
@@ -2832,11 +4118,11 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Blind)
       description = "Auto attacks have a " + Math.round((statusEffect.effectiveness) * 100) + "% chance to miss, dealing no damage and not triggering any associated effects.";
     if (statusEffect.type === StatusEffectEnum.Fortissimo)
-      description = "Apollo is playing at Fortissimo.";
+      description = "Apollo is playing at Fortissimo. Increase the party's Attack by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Coda)
-      description = "Apollo is playing a Coda.";
+      description = "Apollo is playing a Coda. Increase the party's Luck by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Staccato)
-      description = "Apollo is playing a Staccato.";
+      description = "Apollo is playing a series of Staccato notes. Increase the party's Agility by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Dead)
       description = "This character is dead.";
     if (statusEffect.type === StatusEffectEnum.Dodge)
@@ -2860,16 +4146,17 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.DamageOverTime)
       description = "Taking " + Math.round(statusEffect.effectiveness) + " damage every " + this.utilityService.roundTo(statusEffect.tickFrequency, 2) + " seconds.";
     if (statusEffect.type === StatusEffectEnum.Thorns) {
-      var thornsTotal = 0;
+      thornsTotal = 0;
       if (character !== undefined) {
         character.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.Thorns).forEach(thorns => {
           thornsTotal += thorns.effectiveness;
         });
       }
 
-      description = "Dealing " + thornsTotal + " damage back to auto attackers.";
+      description = "Dealing " + this.utilityService.bigNumberReducer(thornsTotal) + " damage back to auto attackers.";
 
-    }
+    } if (statusEffect.type === StatusEffectEnum.StockpileRock)
+      description = "Stockpiling rocks. Current total is " + statusEffect.stackCount + ".";
     if (statusEffect.type === StatusEffectEnum.Stagger)
       description = "Increase auto attack cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Unsteady)
@@ -2908,6 +4195,10 @@ export class LookupService {
       description = Math.round((1 - statusEffect.effectiveness) * 100) + "% chance to avoid negative status effects.";
     if (statusEffect.type === StatusEffectEnum.AllElementalResistanceDown)
       description = "All elemental resistances reduced by " + Math.abs(statusEffect.effectiveness * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.AllElementalResistanceUp)
+      description = "All elemental resistances increased by " + Math.abs((statusEffect.effectiveness) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.ThornsDamageUp)
+      description = "Thorns damage increased by " + this.utilityService.genericRound(Math.abs((statusEffect.effectiveness - 1) * 100)) + "%.";
     if (statusEffect.type === StatusEffectEnum.Focus)
       description = statusEffect.caster + " is focusing all attacks on you.";
     if (statusEffect.type === StatusEffectEnum.Taunt)
@@ -2961,7 +4252,13 @@ export class LookupService {
       description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
     if (statusEffect.type === StatusEffectEnum.ChainsOfFate)
       description = "All of your attacks must target the enemy with Chains of Fate, and all of their attacks will target you.";
+    if (statusEffect.type === StatusEffectEnum.RepeatDamageAfterDelay)
+      description = "When this effect expires, deal " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " to a random target.";
 
+    if (statusEffect.type === StatusEffectEnum.ExperienceGainUp)
+      description = "Increase experience gain of all classes and gods by " + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%.";
+    if (statusEffect.type === StatusEffectEnum.LootRateUp)
+      description = "Increase chance to gain drops from enemies by " + this.utilityService.roundTo((statusEffect.effectiveness - 1) * 100, 2) + "%.";
 
     return description;
   }
@@ -2984,11 +4281,6 @@ export class LookupService {
         durationString = Math.ceil(duration / 60) + " minutes";
     }
 
-    /*if (effect.type === AltarEffectsEnum.SmallAltarPrayStrength)
-      description = "Increase all Primary Stats by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
-    if (effect.type === AltarEffectsEnum.SmallAltarPrayFortune)
-      description = "Increase Coin gain from battle by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>Remaining Duration: " + durationString + "<br/>";
-*/
     if (effect.type === AltarEffectsEnum.AttackUp)
       description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.AthenaDefenseUp)
@@ -3087,6 +4379,19 @@ export class LookupService {
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
       description = "Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUp)
+      description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
+      description = "When the duration expires, increase a party member's Attack by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareStun)
+      description = "When the duration expires, stun all enemies for " + this.utilityService.roundTo(effect.effectiveness, 2) + " seconds.";
+    if (effect.type === AltarEffectsEnum.ZeusRareSurge)
+      description = "Every " + effect.tickFrequency + " seconds, give the character equipped with Zeus Surge. If Surge is already active, increase its effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+
 
     description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
     return description;
@@ -3213,6 +4518,19 @@ export class LookupService {
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
       description = "Only available when Nemesis is in your party. Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUp)
+      description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
+      description = "When the duration expires, increase a party member's Attack by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareLightningDamageIncrease)
+      description = "Increase Lightning Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.ZeusRareStun)
+      description = "When the duration expires, stun all enemies for " + this.utilityService.roundTo(effect.effectiveness, 2) + " seconds.";
+    if (effect.type === AltarEffectsEnum.ZeusRareSurge)
+      description = "Only available while Zeus is in the party. Every " + effect.tickFrequency + " seconds, give the character equipped with Zeus Surge. If Surge is already active, increase its effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+
 
     description += " Effect lasts for " + durationString + ".";
     return description;
@@ -3256,6 +4574,25 @@ export class LookupService {
     return resource.amount;
   }
 
+  getResourceAmountMinusEquippedCount(type: ItemsEnum, extras?: ItemsEnum[]) {
+    var resource = this.globalService.globalVar.resources.find(item => item.item === type && this.globalService.extraItemsAreEqual(item.extras, extras));
+    if (resource === undefined)
+      return 0;
+
+    if (type === ItemsEnum.Coin)
+      return Math.floor(resource.amount);
+
+    var equipCount = 0;
+    if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Equipment) {
+      var resourceWithExtras = new ResourceValue(type, resource.amount);
+      if (extras !== undefined)
+        resourceWithExtras.extras = extras;
+      equipCount = this.getItemEquipCount(type, resourceWithExtras);
+    }
+
+    return resource.amount - equipCount;
+  }
+
   useResource(type: ItemsEnum, amount: number, extras?: ItemsEnum[]) {
     var resource = this.globalService.globalVar.resources.find(item => item.item === type && this.globalService.extraItemsAreEqual(item.extras, extras));
     if (resource === undefined)
@@ -3267,7 +4604,10 @@ export class LookupService {
       resource.amount = 0;
 
     if (this.getItemTypeFromItemEnum(type) === ItemTypeEnum.Equipment) {
-      var equipCount = this.getItemEquipCount(type);
+      var resourceWithExtras = new ResourceValue(type, resource.amount);
+      if (extras !== undefined)
+        resourceWithExtras.extras = extras;
+      var equipCount = this.getItemEquipCount(type, resourceWithExtras);
       if (equipCount > 0 && resource.amount < equipCount) {
         while (resource.amount < equipCount) {
           var character = this.getCharacterTypeEquippedWithItem(type);
@@ -3284,7 +4624,7 @@ export class LookupService {
   getItemEquipCount(type: ItemsEnum, associatedResource?: ResourceValue) {
     var equipCount = 0;
 
-    this.globalService.getActivePartyCharacters(true).forEach(member => {
+    this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(member => {
       if (member.equipmentSet.weapon !== undefined && member.equipmentSet.weapon.itemType === type &&
         (associatedResource === undefined || (this.globalService.extraItemsAreEqual(associatedResource?.extras, member.equipmentSet.weapon.associatedResource?.extras))))
         equipCount += 1;
@@ -3393,6 +4733,36 @@ export class LookupService {
       itemEffect.dealsDamage = false;
       itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FillOverdriveGauge, 0, .1, true, true));
       itemEffect.cooldown = 12;
+    }
+    if (item === ItemsEnum.FireAbsorptionPotion) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 7500, false, true, false, undefined, 0, false, ElementalTypeEnum.Fire));
+      itemEffect.cooldown = 30;
+    }
+    if (item === ItemsEnum.HolyAbsorptionPotion) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 7500, false, true, false, undefined, 0, false, ElementalTypeEnum.Holy));
+      itemEffect.cooldown = 30;
+    }
+    if (item === ItemsEnum.EarthAbsorptionPotion) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 7500, false, true, false, undefined, 0, false, ElementalTypeEnum.Earth));
+      itemEffect.cooldown = 30;
+    }
+    if (item === ItemsEnum.LightningAbsorptionPotion) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 7500, false, true, false, undefined, 0, false, ElementalTypeEnum.Lightning));
+      itemEffect.cooldown = 30;
+    }
+    if (item === ItemsEnum.AirAbsorptionPotion) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 7500, false, true, false, undefined, 0, false, ElementalTypeEnum.Air));
+      itemEffect.cooldown = 30;
+    }
+    if (item === ItemsEnum.WaterAbsorptionPotion) {
+      itemEffect.dealsDamage = false;
+      itemEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbsorbElementalDamage, 30, 7500, false, true, false, undefined, 0, false, ElementalTypeEnum.Water));
+      itemEffect.cooldown = 30;
     }
     if (item === ItemsEnum.ThrowingStone) {
       itemEffect.dealsDamage = true;
@@ -3505,9 +4875,11 @@ export class LookupService {
 
     while (remainingAgility > 0 && !reachedFinalBreakpoint) {
       agilityPerAdditionalAttack = this.getAgilityPerAttackForAttackCount(attackCount);
+      //console.log("Agility needed for " + attackCount + ": " + agilityPerAdditionalAttack);
 
       if (remainingAgility > agilityPerAdditionalAttack) {
         remainingAgility -= agilityPerAdditionalAttack;
+        //console.log("Increase count, remaining agi " + remainingAgility);
         attackCount += 1;
       }
       else {
@@ -3515,8 +4887,10 @@ export class LookupService {
       }
     }
 
-    attackRemainder = remainingAgility / (agilityPerAdditionalAttack - this.getAgilityPerAttackForAttackCount(attackCount - 1));
+    //console.log("Remainder: " + remainingAgility + " / " + agilityPerAdditionalAttack + " - " + this.getAgilityPerAttackForAttackCount(attackCount - 1));
+    attackRemainder = remainingAgility / agilityPerAdditionalAttack;// - this.getAgilityPerAttackForAttackCount(attackCount - 1);
 
+    //console.log("Final count: " + attackCount + " and remainder " + attackRemainder);
     return attackCount + attackRemainder;
   }
 
@@ -3535,6 +4909,16 @@ export class LookupService {
     //Updated: 2 hits = 800, 3 hits = 2,400, 4 hits = 9,600, 5 hits = 60,000, 6 hits = 250,000   
 
     return agilityCost;
+  }
+
+  getTotalAgilityNeededForAttackCount(attackCount: number) {
+    var agilityNeeded = 0;
+
+    for (var i = attackCount; i > 0; i--) {
+      agilityNeeded += this.getAgilityPerAttackForAttackCount(i);
+    }
+
+    return agilityNeeded;
   }
 
   getDamageCriticalChance(attacker: Character, target: Character) {
@@ -3700,13 +5084,14 @@ export class LookupService {
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.LuckUp ||
         effect.type === StatusEffectEnum.LuckDown || effect.type === StatusEffectEnum.LordOfTheUnderworld
-        || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp);
+        || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp
+        || effect.type === StatusEffectEnum.EarthenOffense);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
           if (effect.type === StatusEffectEnum.LuckUp || effect.type === StatusEffectEnum.LuckDown
             || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.LordOfTheUnderworld ||
-            effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp) {
+            effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || effect.type === StatusEffectEnum.EarthenOffense) {
             luck *= effect.effectiveness;
           }
         });
@@ -3727,12 +5112,13 @@ export class LookupService {
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.ResistanceUp ||
         effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp
-        || effect.type === StatusEffectEnum.RecentlyDefeated);
+        || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.EarthenDefense);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
           if (effect.type === StatusEffectEnum.ResistanceUp || effect.type === StatusEffectEnum.ResistanceDown
-            || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp) {
+            || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp
+            || effect.type === StatusEffectEnum.EarthenDefense) {
             resistance *= effect.effectiveness;
           }
         });
@@ -3770,21 +5156,22 @@ export class LookupService {
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.AttackUp ||
         effect.type === StatusEffectEnum.AttackDown || effect.type === StatusEffectEnum.LordOfTheUnderworld
-        || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp);
+        || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp
+        || effect.type === StatusEffectEnum.EarthenOffense);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
           if (effect.type === StatusEffectEnum.AttackUp || effect.type === StatusEffectEnum.AttackDown
             || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.LordOfTheUnderworld ||
-            effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp) {
+            effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || effect.type === StatusEffectEnum.EarthenOffense) {
             modifier *= effect.effectiveness;
           }
         });
       }
     }
 
-    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp) !== undefined) {
-      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.AttackUp);
+    if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusAttackUp) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusAttackUp);
       modifier *= relevantAltarEffect!.effectiveness;
     }
 
@@ -3802,12 +5189,14 @@ export class LookupService {
     if (character.battleInfo !== undefined && character.battleInfo.statusEffects.length > 0) {
       var relevantStatusEffects = character.battleInfo.statusEffects.filter(effect => effect.type === StatusEffectEnum.DefenseUp ||
         effect.type === StatusEffectEnum.DefenseDown || effect.type === StatusEffectEnum.ElixirOfFortitude
-        || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp);
+        || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp
+        || effect.type === StatusEffectEnum.EarthenDefense);
 
       if (relevantStatusEffects.length > 0) {
         relevantStatusEffects.forEach(effect => {
           if (effect.type === StatusEffectEnum.DefenseUp || effect.type === StatusEffectEnum.DefenseDown || effect.type === StatusEffectEnum.ElixirOfFortitude
-            || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp) {
+            || effect.type === StatusEffectEnum.RecentlyDefeated || effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp
+            || effect.type === StatusEffectEnum.EarthenDefense) {
             defense *= effect.effectiveness;
           }
         });
@@ -3819,10 +5208,10 @@ export class LookupService {
       defense *= relevantAltarEffect!.effectiveness;
     }
 
-    var lastStand = character.abilityList.find(item => item.name === "Last Stand" && item.isAvailable);
+    /*var lastStand = character.abilityList.find(item => item.name === "Last Stand" && item.isAvailable);
     if (lastStand !== undefined && character.battleStats.getHpPercent() <= lastStand.threshold) {
       defense *= lastStand.effectiveness;
-    }
+    }*/
 
     return defense;
   }
@@ -3908,17 +5297,17 @@ export class LookupService {
       return equipmentStats;
 
     if (equipment.stats.maxHp > 0)
-      equipmentStats += "+" + equipment.stats.maxHp + " Max HP<br />";
+      equipmentStats += "+" + equipment.stats.maxHp.toLocaleString() + " Max HP<br />";
     if (equipment.stats.attack > 0)
-      equipmentStats += "+" + equipment.stats.attack.toString() + " Attack<br />";
+      equipmentStats += "+" + equipment.stats.attack.toLocaleString() + " Attack<br />";
     if (equipment.stats.agility > 0)
-      equipmentStats += "+" + equipment.stats.agility + " Agility<br />";
+      equipmentStats += "+" + equipment.stats.agility.toLocaleString() + " Agility<br />";
     if (equipment.stats.defense > 0)
-      equipmentStats += "+" + equipment.stats.defense + " Defense<br />";
+      equipmentStats += "+" + equipment.stats.defense.toLocaleString() + " Defense<br />";
     if (equipment.stats.luck > 0)
-      equipmentStats += "+" + equipment.stats.luck + " Luck<br />";
+      equipmentStats += "+" + equipment.stats.luck.toLocaleString() + " Luck<br />";
     if (equipment.stats.resistance > 0)
-      equipmentStats += "+" + equipment.stats.resistance + " Resistance<br />";
+      equipmentStats += "+" + equipment.stats.resistance.toLocaleString() + " Resistance<br />";
 
     if (equipment.stats.hpRegen > 0)
       equipmentStats += "+" + equipment.stats.hpRegen + " HP / 5 Sec<br />";
@@ -3936,6 +5325,8 @@ export class LookupService {
       equipmentStats += "+" + (equipment.stats.healingReceived * 100) + "% Healing Received<br />";
     if (equipment.stats.debuffDuration > 0)
       equipmentStats += "+" + (equipment.stats.debuffDuration * 100) + "% Debuff Duration<br />";
+    if (equipment.stats.buffDuration > 0)
+      equipmentStats += "+" + (equipment.stats.buffDuration * 100) + "% Buff Duration<br />";
     if (equipment.stats.overdriveGainFromAutoAttacks > 0)
       equipmentStats += "+" + (equipment.stats.overdriveGainFromAutoAttacks * 100) + "% Overdrive Gain From Auto Attacks Bonus<br />";
     if (equipment.stats.healingDone > 0)
@@ -3943,37 +5334,45 @@ export class LookupService {
     if (equipment.stats.aoeDamage > 0)
       equipmentStats += "+" + (equipment.stats.aoeDamage * 100) + "% Multiple Target Damage Increase<br />";
     if (equipment.stats.tickFrequency > 0)
-      equipmentStats += "+" + (equipment.stats.tickFrequency * 100) + "% Damage Over Time Tick Frequency Reduction<br />";
+      equipmentStats += "+" + (equipment.stats.tickFrequency * 100) + "% Damage Over Time Tick Frequency Rate<br />";
     if (equipment.stats.abilityCooldownReductionStart > 0)
       equipmentStats += "+" + (equipment.stats.abilityCooldownReductionStart * 100) + "% Ability Cooldown Reduction Entering Subzone<br />";
     if (equipment.stats.abilityCooldownReductionWithBuffs > 0)
       equipmentStats += "+" + (equipment.stats.abilityCooldownReductionWithBuffs * 100) + "% Ability Cooldown Reduction With Buffs<br />";
     if (equipment.stats.thorns > 0)
       equipmentStats += "+" + (equipment.stats.thorns * 100) + "% Auto Attack Damage Reflected Back<br />";
-    if (equipment.stats.elementIncrease.holy > 0)
-      equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% Holy Damage Bonus<br />";
-    if (equipment.stats.elementIncrease.fire > 0)
-      equipmentStats += "+" + (equipment.stats.elementIncrease.fire * 100) + "% Fire Damage Bonus<br />";
-    if (equipment.stats.elementIncrease.lightning > 0)
-      equipmentStats += "+" + (equipment.stats.elementIncrease.lightning * 100) + "% Lightning Damage Bonus<br />";
-    if (equipment.stats.elementIncrease.water > 0)
-      equipmentStats += "+" + (equipment.stats.elementIncrease.water * 100) + "% Water Damage Bonus<br />";
-    if (equipment.stats.elementIncrease.air > 0)
-      equipmentStats += "+" + (equipment.stats.elementIncrease.air * 100) + "% Air Damage Bonus<br />";
-    if (equipment.stats.elementIncrease.earth > 0)
-      equipmentStats += "+" + (equipment.stats.elementIncrease.earth * 100) + "% Earth Damage Bonus<br />";
-    if (equipment.stats.elementResistance.holy > 0)
-      equipmentStats += "+" + (equipment.stats.elementResistance.holy * 100) + "% Holy Resistance Bonus<br />";
-    if (equipment.stats.elementResistance.fire > 0)
-      equipmentStats += "+" + (equipment.stats.elementResistance.fire * 100) + "% Fire Resistance Bonus<br />";
-    if (equipment.stats.elementResistance.lightning > 0)
-      equipmentStats += "+" + (equipment.stats.elementResistance.lightning * 100) + "% Lightning Resistance Bonus<br />";
-    if (equipment.stats.elementResistance.air > 0)
-      equipmentStats += "+" + (equipment.stats.elementResistance.air * 100) + "% Air Resistance Bonus<br />";
-    if (equipment.stats.elementResistance.water > 0)
-      equipmentStats += "+" + (equipment.stats.elementResistance.water * 100) + "% Water Resistance Bonus<br />";
-    if (equipment.stats.elementResistance.earth > 0)
-      equipmentStats += "+" + (equipment.stats.elementResistance.earth * 100) + "% Earth Resistance Bonus<br />";
+    if (equipment.stats.elementIncrease.holy > 0 && equipment.stats.elementIncrease.holy === equipment.stats.elementIncrease.fire)
+      equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% All Elemental Damage Bonus<br />";
+    else {
+      if (equipment.stats.elementIncrease.holy > 0)
+        equipmentStats += "+" + (equipment.stats.elementIncrease.holy * 100) + "% Holy Damage Bonus<br />";
+      if (equipment.stats.elementIncrease.fire > 0)
+        equipmentStats += "+" + (equipment.stats.elementIncrease.fire * 100) + "% Fire Damage Bonus<br />";
+      if (equipment.stats.elementIncrease.lightning > 0)
+        equipmentStats += "+" + (equipment.stats.elementIncrease.lightning * 100) + "% Lightning Damage Bonus<br />";
+      if (equipment.stats.elementIncrease.water > 0)
+        equipmentStats += "+" + (equipment.stats.elementIncrease.water * 100) + "% Water Damage Bonus<br />";
+      if (equipment.stats.elementIncrease.air > 0)
+        equipmentStats += "+" + (equipment.stats.elementIncrease.air * 100) + "% Air Damage Bonus<br />";
+      if (equipment.stats.elementIncrease.earth > 0)
+        equipmentStats += "+" + (equipment.stats.elementIncrease.earth * 100) + "% Earth Damage Bonus<br />";
+    }
+    if (equipment.stats.elementResistance.holy > 0 && equipment.stats.elementResistance.holy === equipment.stats.elementResistance.fire)
+      equipmentStats += "+" + (equipment.stats.elementResistance.holy * 100) + "% All Elemental Resistances Bonus<br />";
+    else {
+      if (equipment.stats.elementResistance.holy > 0)
+        equipmentStats += "+" + (equipment.stats.elementResistance.holy * 100) + "% Holy Resistance Bonus<br />";
+      if (equipment.stats.elementResistance.fire > 0)
+        equipmentStats += "+" + (equipment.stats.elementResistance.fire * 100) + "% Fire Resistance Bonus<br />";
+      if (equipment.stats.elementResistance.lightning > 0)
+        equipmentStats += "+" + (equipment.stats.elementResistance.lightning * 100) + "% Lightning Resistance Bonus<br />";
+      if (equipment.stats.elementResistance.air > 0)
+        equipmentStats += "+" + (equipment.stats.elementResistance.air * 100) + "% Air Resistance Bonus<br />";
+      if (equipment.stats.elementResistance.water > 0)
+        equipmentStats += "+" + (equipment.stats.elementResistance.water * 100) + "% Water Resistance Bonus<br />";
+      if (equipment.stats.elementResistance.earth > 0)
+        equipmentStats += "+" + (equipment.stats.elementResistance.earth * 100) + "% Earth Resistance Bonus<br />";
+    }
 
     if (associatedResource === undefined && equipment.slotCount > 0) {
       equipmentStats += "<b>" + equipment.slotCount + " Open " + (equipment.slotCount === 1 ? "Slot" : "Slots") + "</b><br/>";
@@ -4006,135 +5405,341 @@ export class LookupService {
     return equipmentStats;
   }
 
-  getEquipmentEffects(equipment: Equipment | undefined) {
+  getEquipmentEffects(equipment: Equipment | undefined, character?: Character) {
     var equipmentEffects = ""; //using basic equipment color for equipment effect
 
     if (equipment === undefined)
       return equipmentEffects;
 
-    if (equipment.equipmentEffect.targetEffect !== undefined && equipment.equipmentEffect.targetEffect.length > 0) {
-      equipment.equipmentEffect.targetEffect.forEach(effect => {
-        equipmentEffects += "<b><span class='positiveStatusEffectColor'>";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-          equipmentEffects += "Always Active: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAutoAttack)
-          equipmentEffects += "On Auto Attack: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAbilityUse)
-          equipmentEffects += "On Ability Use: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnHit)
-          equipmentEffects += "On Hit: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
-          equipmentEffects += "Triggers Over Time: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
-          equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
-          equipmentEffects += "Chance on Ability Use (" + (equipment.equipmentEffect.chance * 100) + "%): ";
+    equipment.equipmentEffects.forEach(equipmentEffect => {
+      if (equipmentEffect.targetEffect !== undefined && equipmentEffect.targetEffect.length > 0) {
+        equipmentEffect.targetEffect.forEach(effect => {
+          equipmentEffects += "<b><span class='positiveStatusEffectColor'>";
+          if (equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+            equipmentEffects += "Always Active: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.OnAutoAttack)
+            equipmentEffects += "On Auto Attack: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.OnAbilityUse)
+            equipmentEffects += "On Ability Use: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.OnHit)
+            equipmentEffects += "On Hit: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
+            equipmentEffects += "Triggers Over Time: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
+            equipmentEffects += "Chance On Auto Attack (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
+            equipmentEffects += "Chance On Ability Use (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceWhenDamageTaken)
+            equipmentEffects += "Chance When Damage Taken (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnHeal)
+            equipmentEffects += "Chance When Healing (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnCriticalHit)
+            equipmentEffects += "Chance On Critical Hit (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnDotTick)
+            equipmentEffects += "Chance On Damage Over Time Tick (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnDebuff)
+            equipmentEffects += "Chance On Debuff (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.WhenEnteringBattle)
+            equipmentEffects += "When First Entering Subzone: ";
 
-        equipmentEffects += "</span></b>";
+          equipmentEffects += "</span></b>";
 
-        if (effect.type === StatusEffectEnum.DamageOverTime) {
-          if (equipment.itemType === ItemsEnum.Venomstrike)
-            equipmentEffects += "Poison your target, dealing " + effect.effectiveness + " damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds.<br/>";
-        }
+          if (effect.type === StatusEffectEnum.DamageOverTime) {
+            if (equipment.itemType === ItemsEnum.Venomstrike)
+              equipmentEffects += "Poison your target, dealing " + effect.effectiveness + " damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds.<br/>";
+          }
 
-        if (effect.type === StatusEffectEnum.InstantTrueDamage) {
-          if (equipment.itemType === ItemsEnum.SwordOfFlames)
-            equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
-          else if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
-            equipmentEffects += "Deal " + Math.round(effect.effectiveness * 100) + "% of Attack Water damage to all targets as true damage every " + effect.triggersEvery + " seconds. <br/>";
-          else
-            equipmentEffects += "Deal an additional " + effect.effectiveness + " damage.<br/>";
-        }
+          if (effect.type === StatusEffectEnum.InstantTrueDamage) {
+            if (equipment.itemType === ItemsEnum.SwordOfFlames)
+              equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
+            else if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
+              equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Water damage to all targets as true damage every " + effect.triggersEvery + " seconds. <br/>";
+            else if (equipment.itemType === ItemsEnum.AthenasScythe)
+              equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Holy damage to your target as true damage. <br/>";
+            else if (equipment.itemType === ItemsEnum.ZeussNecklace)
+              equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of your ability's damage as true Lightning damage.<br/>";
+            else
+              equipmentEffects += "Deal an additional " + effect.effectiveness + " damage.<br/>";
+          }
 
-        if (effect.type === StatusEffectEnum.InstantHpPercentDamage) {
-          if (equipment.itemType === ItemsEnum.RadiatingHammer)
-            equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's HP.<br/>";
-        }
+          if (effect.type === StatusEffectEnum.InstantHpPercentDamage) {
+            if (equipment.itemType === ItemsEnum.RadiatingHammer)
+              equipmentEffects += "Deal an additional " + (effect.effectiveness * 100) + "% of the target's Max HP, up to " + this.utilityService.bigNumberReducer(effect.threshold) + " damage.<br/>";
+          }
 
 
-        if (effect.type === StatusEffectEnum.DefenseDown)
-          equipmentEffects += "Decrease target's Defense by " + Math.round((1 - effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
+          if (effect.type === StatusEffectEnum.DefenseDown)
+            equipmentEffects += "Decrease target's Defense by " + Math.round((1 - effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.AttackDown)
+            equipmentEffects += "Decrease target's Attack by " + Math.round((1 - effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.Stagger)
+            equipmentEffects += "Increase target's Auto Attack Cooldown Rate by " + Math.round((effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.DebuffDurationIncrease)
+            equipmentEffects += "Increase the duration of all enemy debuffs by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
+
+          if (effect.type === StatusEffectEnum.RandomPrimaryStatDown) {
+            equipmentEffects += "Inflict a <strong>" + Math.round((1 - effect.effectiveness) * 100) + "%</strong> random primary stat reduction on a target for <strong>" + effect.duration + "</strong> seconds.";
+          }
+          if (effect.type === StatusEffectEnum.RandomPrimaryStatDownExcludeHp) {
+            equipmentEffects += "Inflict a <strong>" + Math.round((1 - effect.effectiveness) * 100) + "%</strong> random primary stat reduction (excluding HP) on a target for <strong>" + effect.duration + "</strong> seconds.";
+          }
+        });
+      }
+
+      if (equipmentEffect.userEffect !== undefined && equipmentEffect.userEffect.length > 0) {
+        equipmentEffect.userEffect.forEach(effect => {
+          equipmentEffects += "<b><span class='positiveStatusEffectColor'>";
+          if (equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
+            equipmentEffects += "Always Active: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.OnAutoAttack)
+            equipmentEffects += "On Auto Attack: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.OnAbilityUse)
+            equipmentEffects += "On Ability Use: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.OnHit)
+            equipmentEffects += "On Hit: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
+            equipmentEffects += "Triggers Over Time: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
+            equipmentEffects += "Chance On Auto Attack (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
+            equipmentEffects += "Chance On Ability Use (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceWhenDamageTaken)
+            equipmentEffects += "Chance When Damage Taken (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnHeal)
+            equipmentEffects += "Chance When Healing (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnCriticalHit)
+            equipmentEffects += "Chance On Critical Hit (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnDotTick)
+            equipmentEffects += "Chance On Damage Over Time Tick (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnDebuff)
+            equipmentEffects += "Chance On Debuff (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.WhenEnteringBattle)
+            equipmentEffects += "When First Entering Subzone: ";
+
+          equipmentEffects += "</span></b>";
+
+          if (effect.type === StatusEffectEnum.Thorns) {
+            equipmentEffects += "Deal " + effect.effectiveness + " damage to those who auto attack you. <br/>";
+          }
+
+          if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp)
+            equipmentEffects += "Increase Damage Over Time Damage Dealt by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
+
+          if (effect.type === StatusEffectEnum.BattleItemDamageUp)
+            equipmentEffects += "Increase damage dealt by battle items by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
+
+          if (effect.type === StatusEffectEnum.BattleItemEffectUp)
+            equipmentEffects += "Increase healing or damage dealt by battle items by " + Math.round((effect.effectiveness - 1) * 100) + "%. (Does not increase effectiveness of items that grant effects)<br/>";
+
+          if (effect.type === StatusEffectEnum.AutoAttackSpeedUp)
+            equipmentEffects += "Reduce Auto Attack Cooldown Rate by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.ResistanceUp)
+            equipmentEffects += "Increase Resistance by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.LuckUp)
+            equipmentEffects += "Increase Luck by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.ThornsDamageUp)
+            equipmentEffects += "Increase Thorns damage by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.AllElementalResistanceUp)
+            equipmentEffects += "Increase all Elemental Resistances by " + Math.round((effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.DefenseUp)
+            equipmentEffects += "Increase Defense by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.AttackUp)
+            equipmentEffects += "Increase Attack by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.AirDamageUp)
+            equipmentEffects += "Increase Air Damage Bonus by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+            if (effect.type === StatusEffectEnum.LightningDamageUp)
+            equipmentEffects += "Increase Lightning Damage Bonus by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.EarthDamageUp)
+            equipmentEffects += "Increase Earth Damage Bonus by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.HpRegenUp)
+            equipmentEffects += "Increase HP Regen by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.AgilityUp)
+            equipmentEffects += "Increase Agility by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.ArmorPenetrationUp)
+            equipmentEffects += "Increase Armor Penetration by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.HealingDoneUp)
+            equipmentEffects += "Increase Healing Done by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.Barrier) {
+            if (equipment.itemType === ItemsEnum.ApollosNecklace)
+              equipmentEffects += "Give your target a Barrier for " + Math.round((effect.effectiveness) * 100) + "% of the amount healed.<br/>";
+          }
+
+          if (effect.type === StatusEffectEnum.SelfBarrier) {
+            if (equipment.itemType === ItemsEnum.DionysussNecklace)
+              equipmentEffects += "Gain a Barrier for " + Math.round((effect.effectiveness) * 100) + "% of your Max HP.<br/>";
+          }
+
+          if (effect.type === StatusEffectEnum.ReduceCooldowns)
+            equipmentEffects += "Reduce your cooldowns by " + Math.round((effect.effectiveness - 1) * 100) + "% of their remaining cooldown.<br/>";
+
+          if (effect.type === StatusEffectEnum.DamageTakenDown)
+            equipmentEffects += "Reduce Damage Taken by " + Math.round((1 - effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
+
+          if (effect.type === StatusEffectEnum.InstantAutoAttack)
+            equipmentEffects += "Immediately trigger another auto attack. Can only trigger once per auto attack.<br/>";
+
+          if (effect.type === StatusEffectEnum.InstantHealBasedOnMaxHpPercent)
+            equipmentEffects += "Heal for " + Math.round((effect.effectiveness) * 100) + "% of your Max HP.<br/>";
 
 
-        if (effect.type === StatusEffectEnum.RandomPrimaryStatDown) {
-          equipmentEffects += "Inflict a <strong>" + Math.round((1 - effect.effectiveness) * 100) + "%</strong> random primary stat reduction on a target for <strong>" + effect.duration + "</strong> seconds.";
-        }
-        if (effect.type === StatusEffectEnum.RandomPrimaryStatDownExcludeHp) {
-          equipmentEffects += "Inflict a <strong>" + Math.round((1 - effect.effectiveness) * 100) + "%</strong> random primary stat reduction (excluding HP) on a target for <strong>" + effect.duration + "</strong> seconds.";
-        }
-      });
+          if (effect.type === StatusEffectEnum.ReduceDirectDamage)
+            equipmentEffects += "Reduce damage from every direct attack by " + effect.effectiveness + ".<br/>";
+
+          if (effect.type === StatusEffectEnum.Enearth)
+            equipmentEffects += "All auto attacks and non-elemental abilities have the Earth element.<br/>";
+          if (effect.type === StatusEffectEnum.Enfire)
+            equipmentEffects += "All auto attacks and non-elemental abilities have the Fire element.<br/>";
+          if (effect.type === StatusEffectEnum.Enholy)
+            equipmentEffects += "All auto attacks and non-elemental abilities have the Holy element.<br/>";
+          if (effect.type === StatusEffectEnum.Enwater)
+            equipmentEffects += "All auto attacks and non-elemental abilities have the Water element.<br/>";
+          if (effect.type === StatusEffectEnum.Enair)
+            equipmentEffects += "All auto attacks and non-elemental abilities have the Air element.<br/>";
+          if (effect.type === StatusEffectEnum.Enlightning)
+            equipmentEffects += "All auto attacks and non-elemental abilities have the Lightning element.<br/>";
+
+          if (equipment.itemType === ItemsEnum.FracturedRubyRing)
+            equipmentEffects += "Absorb " + effect.effectiveness + " Fire damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+          if (equipment.itemType === ItemsEnum.FracturedTopazRing)
+            equipmentEffects += "Absorb " + effect.effectiveness + " Holy damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+          if (equipment.itemType === ItemsEnum.FracturedOpalRing)
+            equipmentEffects += "Absorb " + effect.effectiveness + " Lightning damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+          if (equipment.itemType === ItemsEnum.FracturedAquamarineRing)
+            equipmentEffects += "Absorb " + effect.effectiveness + " Water damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+          if (equipment.itemType === ItemsEnum.FracturedAmethystRing)
+            equipmentEffects += "Absorb " + effect.effectiveness + " Air damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+          if (equipment.itemType === ItemsEnum.FracturedEmeraldRing)
+            equipmentEffects += "Absorb " + effect.effectiveness + " Earth damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+        });
+      }
+    });
+
+    //need to determine if set bonus is active, maybe cleaner way of doing this?
+    if (equipment.set !== EquipmentSetEnum.None) {
+      if (equipmentEffects !== "")
+        equipmentEffects += "<br/>";
+
+      var setCount = 0;
+      if (character !== undefined) {
+        var allSetCounts = character.equipmentSet.getAllSetCounts();
+        //console.log("All set counts");
+        //console.log(allSetCounts);
+        var relevantSetCount = allSetCounts.find(item => item[0] === equipment.set);
+        if (relevantSetCount !== undefined)
+          setCount = relevantSetCount[1];
+
+        //console.log("Set count: " + setCount);
+      }
+
+      if (equipment.set === EquipmentSetEnum.Athena) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>athena's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Healing Received</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Holy Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: While Second Wind is active, reduce your damage taken by " + (set5Amount * 100) + "%.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Artemis) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>artemis's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Critical Multiplier Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Debuff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Your critical hits stun your target for " + (set5Amount) + " seconds.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Hermes) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>hermes's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + this.utilityService.genericRound((1 - set2Amount) * 100) + "% Auto Attack Cooldown Reduction</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Air Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: You have a " + (set5Amount * 100) + "% chance to deal an additional 100% Attack Air Damage when auto attacking.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Apollo) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>apollo's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount) + " HP Regen per 5 sec</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Buff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: After using Ostinato, use it again at " + (set5Amount * 100) + "% effectiveness after 5 seconds.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Hades) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>hades's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Critical Multiplier Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Multiple Target Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Hellfire has a " + (set5Amount * 100) + "% chance to trigger Earthquake.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Ares) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>ares's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Tick Frequency</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Debuff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Your Damage over Time ticks can critically hit.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Nemesis) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>nemesis's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Holy and Earth Resistance Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Thorns</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Your Thorns is increased by your Dispenser of Dues total.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Dionysus) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>dionysus's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Debuff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Buff Duration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: When you debuff a target, you have a 20% chance to give a random party member a random " + (set5Amount * 100) + "% primary stat buff. When you buff a target, you have a 20% chance to give a random enemy a random " + (set5Amount * 100) + "% primary stat debuff.</span><br/>";
+      }
+      if (equipment.set === EquipmentSetEnum.Zeus) {
+        equipmentEffects += "<span class='bold smallCaps setName s3Heading'>zeus's regalia</span><br/>";
+        var set2Amount = this.globalService.getSetBonusAmount(equipment.set, 2);
+        var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
+        var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
+
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Armor Penetration</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Lightning Damage Bonus</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Every damage dealing ability you use has a 20% chance to deal the same damage again after " + (set5Amount) + " seconds.</span><br/>";
+      }
     }
 
-    if (equipment.equipmentEffect.userEffect !== undefined && equipment.equipmentEffect.userEffect.length > 0) {
-      equipment.equipmentEffect.userEffect.forEach(effect => {
-        equipmentEffects += "<b><span class='positiveStatusEffectColor'>";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.AlwaysActive)
-          equipmentEffects += "Always Active: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAutoAttack)
-          equipmentEffects += "On Auto Attack: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnAbilityUse)
-          equipmentEffects += "On Ability Use: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.OnHit)
-          equipmentEffects += "On Hit: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
-          equipmentEffects += "Triggers Over Time: ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
-          equipmentEffects += "Chance on Auto Attack (" + (equipment.equipmentEffect.chance * 100) + "%): ";
-        if (equipment.equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
-          equipmentEffects += "Chance on Ability Use (" + (equipment.equipmentEffect.chance * 100) + "%): ";
-
-        equipmentEffects += "</span></b>";
-
-        if (effect.type === StatusEffectEnum.Thorns) {
-          equipmentEffects += "Deal " + effect.effectiveness + " damage to those who auto attack you. <br/>";
-        }
-
-        if (effect.type === StatusEffectEnum.BattleItemDamageUp)
-          equipmentEffects += "Increase damage dealt by battle items by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
-
-        if (effect.type === StatusEffectEnum.BattleItemEffectUp)
-          equipmentEffects += "Increase healing or damage dealt by battle items by " + Math.round((effect.effectiveness - 1) * 100) + "%. (Does not increase effectiveness of items that grant effects)<br/>";
-
-        if (effect.type === StatusEffectEnum.AgilityUp)
-          equipmentEffects += "Increase Agility by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
-
-        if (effect.type === StatusEffectEnum.ArmorPenetrationUp)
-          equipmentEffects += "Increase Armor Penetration by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
-
-        if (effect.type === StatusEffectEnum.InstantAutoAttack)
-          equipmentEffects += "Immediately trigger another auto attack.<br/>";
-
-
-        if (effect.type === StatusEffectEnum.ReduceDirectDamage)
-          equipmentEffects += "Reduce damage from every direct attack by " + effect.effectiveness + ".<br/>";
-
-        if (effect.type === StatusEffectEnum.Enearth)
-          equipmentEffects += "All auto attacks and non-elemental abilities have the Earth element.<br/>";
-        if (effect.type === StatusEffectEnum.Enfire)
-          equipmentEffects += "All auto attacks and non-elemental abilities have the Fire element.<br/>";
-        if (effect.type === StatusEffectEnum.Enholy)
-          equipmentEffects += "All auto attacks and non-elemental abilities have the Holy element.<br/>";
-        if (effect.type === StatusEffectEnum.Enwater)
-          equipmentEffects += "All auto attacks and non-elemental abilities have the Water element.<br/>";
-        if (effect.type === StatusEffectEnum.Enair)
-          equipmentEffects += "All auto attacks and non-elemental abilities have the Air element.<br/>";
-        if (effect.type === StatusEffectEnum.Enlightning)
-          equipmentEffects += "All auto attacks and non-elemental abilities have the Lightning element.<br/>";
-
-        if (equipment.itemType === ItemsEnum.FracturedRubyRing)
-          equipmentEffects += "Absorb " + effect.effectiveness + " Fire damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
-        if (equipment.itemType === ItemsEnum.FracturedTopazRing)
-          equipmentEffects += "Absorb " + effect.effectiveness + " Holy damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
-        if (equipment.itemType === ItemsEnum.FracturedOpalRing)
-          equipmentEffects += "Absorb " + effect.effectiveness + " Lightning damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
-        if (equipment.itemType === ItemsEnum.FracturedAquamarineRing)
-          equipmentEffects += "Absorb " + effect.effectiveness + " Water damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
-        if (equipment.itemType === ItemsEnum.FracturedAmethystRing)
-          equipmentEffects += "Absorb " + effect.effectiveness + " Air damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
-        if (equipment.itemType === ItemsEnum.FracturedEmeraldRing)
-          equipmentEffects += "Absorb " + effect.effectiveness + " Earth damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
-      });
-    }
 
     equipmentEffects = this.utilityService.getSanitizedHtml(equipmentEffects);
 
@@ -4267,6 +5872,24 @@ export class LookupService {
     }
     if (type === ItemsEnum.SlowingPotion) {
       src += "slowingPotion.svg";
+    }
+    if (type === ItemsEnum.FireAbsorptionPotion) {
+      src += "fireAbsorptionPotion.svg";
+    }
+    if (type === ItemsEnum.HolyAbsorptionPotion) {
+      src += "holyAbsorptionPotion.svg";
+    }
+    if (type === ItemsEnum.EarthAbsorptionPotion) {
+      src += "earthAbsorptionPotion.svg";
+    }
+    if (type === ItemsEnum.LightningAbsorptionPotion) {
+      src += "lightningAbsorptionPotion.svg";
+    }
+    if (type === ItemsEnum.WaterAbsorptionPotion) {
+      src += "waterAbsorptionPotion.svg";
+    }
+    if (type === ItemsEnum.AirAbsorptionPotion) {
+      src += "airAbsorptionPotion.svg";
     }
 
     return src;
@@ -4624,6 +6247,22 @@ export class LookupService {
     return breakdown;
   }
 
+  getCharacterXpBreakdown(character: Character) {
+    var godLevelBonus = 1;
+
+    this.globalService.globalVar.gods.forEach(god => {
+      godLevelBonus += god.partyPermanentStatGain.xpGain;
+    });
+
+    var breakdown = "Total Character XP Bonus: " + this.utilityService.roundTo((godLevelBonus - 1) * 100, 3) + "% <hr/>";
+
+
+    if (godLevelBonus > 1)
+      breakdown += "Permanent God Level Boost: *" + this.utilityService.roundTo(godLevelBonus, 3) + "<br/>";
+
+    return breakdown;
+  }
+
   getPartyXpGainDescription() {
     return "Increase the XP Gain for all characters and gods regardless of who is active.";
   }
@@ -4673,7 +6312,7 @@ export class LookupService {
     var description = "Increases the number of times you hit when auto attacking, multiplying auto attack damage by <strong>" + this.utilityService.roundTo(totalAutoAttackCount, 3) + "</strong>.";
     if (totalAutoAttackCount >= 2)
       description += " On Hit effects occur <strong>" + Math.floor(totalAutoAttackCount) + "</strong> times from auto attacks.";
-    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getAgilityPerAttackForAttackCount(Math.floor(totalAutoAttackCount)).toLocaleString() + "</strong>.";
+    description += "<br/>Agility needed for <strong>" + Math.ceil(totalAutoAttackCount) + "</strong> total hits: <strong>" + this.getTotalAgilityNeededForAttackCount(Math.floor(totalAutoAttackCount)).toLocaleString() + "</strong>.";
     return description;
   }
 
@@ -4757,11 +6396,11 @@ export class LookupService {
   }
 
   getCriticalMultiplierDescription() {
-    return "Increase the amount of damage dealt when dealing a critical hit.";
+    return "Increase the amount of damage dealt when dealing a critical hit. Critical heals receive 25% of this bonus.";
   }
 
   getArmorPenetrationDescription() {
-    return "Reduce target's defense by this percentage before any attack.";
+    return "Reduce target's defense by this percentage when you attack.";
   }
 
   getOverdriveGainBonusDescription() {
@@ -4774,6 +6413,10 @@ export class LookupService {
 
   getDebuffDurationBonusDescription() {
     return "Increase the duration of any debuff you inflict.";
+  }
+
+  getBuffDurationBonusDescription() {
+    return "Increase the duration of any buffs you apply.";
   }
 
   getOverdriveGainFromAutoAttacksBonusDescription() {
@@ -4810,6 +6453,10 @@ export class LookupService {
 
   getTickFrequencyBonusDescription() {
     return "Increases how frequently your damage over time effects deal damage.";
+  }
+
+  getElementResistanceReductionDescription() {
+    return "Reduce an enemy's elemental resistances when you attack.";
   }
 
   getElementName(type?: ElementalTypeEnum, name?: string) {
@@ -5064,6 +6711,17 @@ export class LookupService {
     return breakdown;
   }
 
+  getGodBuffDurationBonusStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.buffDuration > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.buffDuration * 100, 2) + "%<br />";
+    if (god.permanentStatGain.buffDuration > 0)
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.buffDuration * 100, 2) + "%<br />";
+
+    return breakdown;
+  }
+
   getGodOverdriveGainFromAutoAttacksBonusStatBreakdown(god: God) {
     var breakdown = "";
 
@@ -5126,6 +6784,17 @@ export class LookupService {
       breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.tickFrequency * 100, 2) + "%<br />";
     if (god.permanentStatGain.tickFrequency > 0)
       breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.tickFrequency * 100, 2) + "%<br />";
+
+    return breakdown;
+  }
+
+  getGodElementResistanceReductionStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.elementResistanceReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.elementResistanceReduction * 100, 2) + "%<br />";
+    if (god.permanentStatGain.tickFrequency > 0)
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.elementResistanceReduction * 100, 2) + "%<br />";
 
     return breakdown;
   }
@@ -5536,6 +7205,10 @@ export class LookupService {
     }
 
     var equipmentTotalHpRegenGain = this.equipmentService.getTotalHpRegenGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.hpRegen > 0)
+      equipmentTotalHpRegenGain += setStats.hpRegen;
+
     if (equipmentTotalHpRegenGain > 0)
       breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentTotalHpRegenGain, 2) + "<br />";
     /*
@@ -5571,6 +7244,10 @@ export class LookupService {
     }
 
     var equipmentTotalCriticalMultiplierGain = this.equipmentService.getTotalCriticalMultiplierGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.criticalMultiplier > 0)
+      equipmentTotalCriticalMultiplierGain += setStats.criticalMultiplier;
+
     if (equipmentTotalCriticalMultiplierGain > 0)
       breakdown += "Equipment: +" + Math.round(equipmentTotalCriticalMultiplierGain * 100) + "%<br />";
 
@@ -5603,6 +7280,10 @@ export class LookupService {
     }
 
     var equipmentOverdriveGain = this.equipmentService.getTotalOverdriveGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.overdriveGain > 0)
+      equipmentOverdriveGain += setStats.overdriveGain;
+
     if (equipmentOverdriveGain > 0)
       breakdown += "Equipment: +" + Math.round(equipmentOverdriveGain * 100) + "%<br />";
 
@@ -5635,6 +7316,10 @@ export class LookupService {
     }
 
     var equipmentHealingReceivedGain = this.equipmentService.getTotalHealingReceivedGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.healingReceived > 0)
+      equipmentHealingReceivedGain += setStats.healingReceived;
+
     if (equipmentHealingReceivedGain > 0)
       breakdown += "Equipment: +" + Math.round(equipmentHealingReceivedGain * 100) + "%<br />";
 
@@ -5667,8 +7352,49 @@ export class LookupService {
     }
 
     var equipmentDebuffDurationGain = this.equipmentService.getTotalDebuffDurationGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.debuffDuration > 0)
+      equipmentDebuffDurationGain += setStats.debuffDuration;
+
     if (equipmentDebuffDurationGain > 0)
       breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentDebuffDurationGain * 100, 2) + "%<br />";
+
+    return breakdown;
+  }
+
+  getBuffDurationBonusStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.buffDuration > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo((character.baseStats.buffDuration) * 100, 2) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.buffDuration + assignedGod1.permanentStatGain.buffDuration;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.buffDuration + assignedGod2.permanentStatGain.buffDuration;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
+    }
+
+    /*
+    var charmGain = this.charmService.getTotalDebuffDurationAdditionFromCharms(this.globalService.globalVar.resources, character);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
+    }*/
+
+    var equipmentBuffDurationGain = this.equipmentService.getTotalBuffDurationGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.buffDuration > 0)
+      equipmentBuffDurationGain += setStats.buffDuration;
+
+    if (equipmentBuffDurationGain > 0)
+      breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentBuffDurationGain * 100, 2) + "%<br />";
 
     return breakdown;
   }
@@ -5699,6 +7425,10 @@ export class LookupService {
     }
 
     var equipmentTotalOverdriveGainFromAutoAttacksGain = this.equipmentService.getTotalOverdriveGainFromAutoAttacksGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.overdriveGainFromAutoAttacks > 0)
+      equipmentTotalOverdriveGainFromAutoAttacksGain += setStats.overdriveGainFromAutoAttacks;
+
     if (equipmentTotalOverdriveGainFromAutoAttacksGain > 0)
       breakdown += "Equipment: +" + equipmentTotalOverdriveGainFromAutoAttacksGain + "%<br />";
 
@@ -5731,6 +7461,10 @@ export class LookupService {
     }
 
     var equipmentHealingDoneGain = this.equipmentService.getTotalHealingDoneGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.healingDone > 0)
+      equipmentHealingDoneGain += setStats.healingDone;
+
     if (equipmentHealingDoneGain > 0)
       breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentHealingDoneGain * 100, 2) + "%<br />";
 
@@ -5763,6 +7497,10 @@ export class LookupService {
     }
 
     var equipmentArmorPenetrationGain = this.equipmentService.getTotalArmorPenetrationGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.armorPenetration > 0)
+      equipmentArmorPenetrationGain += setStats.armorPenetration;
+
     if (equipmentArmorPenetrationGain > 0)
       breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentArmorPenetrationGain * 100, 2) + "%<br />";
 
@@ -5795,6 +7533,10 @@ export class LookupService {
     }
 
     var equipmentAbilityCooldownReductionGain = this.equipmentService.getTotalAbilityCooldownReductionGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.abilityCooldownReduction > 0)
+      equipmentAbilityCooldownReductionGain += setStats.abilityCooldownReduction;
+
     if (equipmentAbilityCooldownReductionGain > 0)
       breakdown += "Equipment: *" + this.utilityService.roundTo(equipmentAbilityCooldownReductionGain * 100, 2) + "%<br />";
 
@@ -5827,6 +7569,10 @@ export class LookupService {
     }
 
     var equipmentAutoAttackCooldownReductionGain = this.equipmentService.getTotalAutoAttackCooldownReductionGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.autoAttackCooldownReduction > 0)
+      equipmentAutoAttackCooldownReductionGain += setStats.autoAttackCooldownReduction;
+
     if (equipmentAutoAttackCooldownReductionGain > 0)
       breakdown += "Equipment: *" + this.utilityService.roundTo(equipmentAutoAttackCooldownReductionGain * 100, 2) + "%<br />";
 
@@ -5859,6 +7605,10 @@ export class LookupService {
     }
 
     var equipmentAoeDamageGain = this.equipmentService.getTotalAoeDamageGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.aoeDamage > 0)
+      equipmentAoeDamageGain += setStats.aoeDamage;
+
     if (equipmentAoeDamageGain > 0)
       breakdown += "Equipment: +" + Math.round(equipmentAoeDamageGain * 100) + "%<br />";
 
@@ -5891,6 +7641,10 @@ export class LookupService {
     }
 
     var equipmentAbilityCooldownReductionGain = this.equipmentService.getTotalAbilityCooldownReductionStartGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.abilityCooldownReductionStart > 0)
+      equipmentAbilityCooldownReductionGain += setStats.abilityCooldownReductionStart;
+
     if (equipmentAbilityCooldownReductionGain > 0)
       breakdown += "Equipment: *" + this.utilityService.roundTo(equipmentAbilityCooldownReductionGain * 100, 2) + "%<br />";
 
@@ -5923,6 +7677,10 @@ export class LookupService {
     }
 
     var equipmentAbilityCooldownReductionWithBuffsGain = this.equipmentService.getTotalAbilityCooldownReductionWithBuffsGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.abilityCooldownReductionWithBuffs > 0)
+      equipmentAbilityCooldownReductionWithBuffsGain += setStats.abilityCooldownReductionWithBuffs;
+
     if (equipmentAbilityCooldownReductionWithBuffsGain > 0)
       breakdown += "Equipment: *" + this.utilityService.roundTo(equipmentAbilityCooldownReductionWithBuffsGain * 100, 2) + "%<br />";
 
@@ -5955,6 +7713,10 @@ export class LookupService {
     }
 
     var equipmentTickFrequencyGain = this.equipmentService.getTotalTickFrequencyGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.tickFrequency > 0)
+      equipmentTickFrequencyGain += setStats.tickFrequency;
+
     if (equipmentTickFrequencyGain > 0)
       breakdown += "Equipment: +" + Math.round(equipmentTickFrequencyGain * 100) + "%<br />";
 
@@ -5987,9 +7749,45 @@ export class LookupService {
     }
 
     var equipmentThornsGain = this.equipmentService.getTotalThornsGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.thorns > 0)
+      equipmentThornsGain += setStats.thorns;
+
     if (equipmentThornsGain > 0)
       breakdown += "Equipment: +" + Math.round(equipmentThornsGain * 100) + "%<br />";
 
+    return breakdown;
+  }
+
+  getElementResistanceReductionStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.elementResistanceReduction > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo((character.baseStats.elementResistanceReduction) * 100, 2) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.elementResistanceReduction + assignedGod1.permanentStatGain.elementResistanceReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.elementResistanceReduction + assignedGod2.permanentStatGain.elementResistanceReduction;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + this.utilityService.roundTo(godStatGain * 100, 2) + "%<br />";
+    }
+
+    var charmGain = this.charmService.getElementResistanceReductionFromCharms(this.globalService.globalVar.resources, character);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + this.utilityService.roundTo(charmGain * 100, 2) + "%<br />";
+    }
+
+    /*var equipmentTickFrequencyGain = this.equipmentService.getTotalTickFrequencyGain(character.equipmentSet);
+    if (equipmentTickFrequencyGain > 0)
+      breakdown += "Equipment: +" + Math.round(equipmentTickFrequencyGain * 100) + "%<br />";
+*/
     return breakdown;
   }
 
@@ -6012,6 +7810,10 @@ export class LookupService {
       }
 
       var equipmentHolyDamageIncreaseGain = this.equipmentService.getTotalHolyDamageIncreaseGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementIncrease.holy > 0)
+        equipmentHolyDamageIncreaseGain += setStats.elementIncrease.holy;
+
       if (equipmentHolyDamageIncreaseGain > 0)
         breakdown += "Equipment: +" + Math.round(equipmentHolyDamageIncreaseGain * 100) + "%<br />";
 
@@ -6034,6 +7836,10 @@ export class LookupService {
       }
 
       var equipmentFireDamageIncreaseGain = this.equipmentService.getTotalFireDamageIncreaseGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementIncrease.fire > 0)
+        equipmentFireDamageIncreaseGain += setStats.elementIncrease.fire;
+
       if (equipmentFireDamageIncreaseGain > 0)
         breakdown += "Equipment: +" + Math.round(equipmentFireDamageIncreaseGain * 100) + "%<br />";
 
@@ -6056,6 +7862,10 @@ export class LookupService {
       }
 
       var equipmentLightningDamageIncreaseGain = this.equipmentService.getTotalLightningDamageIncreaseGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementIncrease.lightning > 0)
+        equipmentLightningDamageIncreaseGain += setStats.elementIncrease.lightning;
+
       if (equipmentLightningDamageIncreaseGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentLightningDamageIncreaseGain * 100, 2) + "%<br />";
 
@@ -6078,6 +7888,10 @@ export class LookupService {
       }
 
       var equipmentWaterDamageIncreaseGain = this.equipmentService.getTotalWaterDamageIncreaseGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementIncrease.water > 0)
+        equipmentWaterDamageIncreaseGain += setStats.elementIncrease.water;
+
       if (equipmentWaterDamageIncreaseGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentWaterDamageIncreaseGain * 100, 2) + "%<br />";
 
@@ -6100,6 +7914,10 @@ export class LookupService {
       }
 
       var equipmentAirDamageIncreaseGain = this.equipmentService.getTotalAirDamageIncreaseGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementIncrease.air > 0)
+        equipmentAirDamageIncreaseGain += setStats.elementIncrease.air;
+
       if (equipmentAirDamageIncreaseGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentAirDamageIncreaseGain * 100, 2) + "%<br />";
 
@@ -6122,6 +7940,10 @@ export class LookupService {
       }
 
       var equipmentEarthDamageIncreaseGain = this.equipmentService.getTotalEarthDamageIncreaseGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementIncrease.earth > 0)
+        equipmentEarthDamageIncreaseGain += setStats.elementIncrease.earth;
+
       if (equipmentEarthDamageIncreaseGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentEarthDamageIncreaseGain * 100, 2) + "%<br />";
 
@@ -6155,6 +7977,10 @@ export class LookupService {
       }
 
       var equipmentHolyDamageResistanceGain = this.equipmentService.getTotalHolyDamageResistanceGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementResistance.holy > 0)
+        equipmentHolyDamageResistanceGain += setStats.elementResistance.holy;
+
       if (equipmentHolyDamageResistanceGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentHolyDamageResistanceGain * 100, 2) + "%<br />";
 
@@ -6177,6 +8003,10 @@ export class LookupService {
       }
 
       var equipmentFireDamageResistanceGain = this.equipmentService.getTotalFireDamageResistanceGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementResistance.fire > 0)
+        equipmentFireDamageResistanceGain += setStats.elementResistance.fire;
+
       if (equipmentFireDamageResistanceGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentFireDamageResistanceGain * 100, 2) + "%<br />";
 
@@ -6200,6 +8030,10 @@ export class LookupService {
       }
 
       var equipmentLightningDamageResistanceGain = this.equipmentService.getTotalLightningDamageResistanceGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementResistance.lightning > 0)
+        equipmentLightningDamageResistanceGain += setStats.elementResistance.lightning;
+
       if (equipmentLightningDamageResistanceGain > 0)
         breakdown += "Equipment: +" + Math.round(equipmentLightningDamageResistanceGain * 100) + "%<br />";
 
@@ -6223,6 +8057,10 @@ export class LookupService {
       }
 
       var equipmentWaterDamageResistanceGain = this.equipmentService.getTotalWaterDamageResistanceGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementResistance.water > 0)
+        equipmentWaterDamageResistanceGain += setStats.elementResistance.water;
+
       if (equipmentWaterDamageResistanceGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentWaterDamageResistanceGain * 100, 2) + "%<br />";
 
@@ -6246,6 +8084,10 @@ export class LookupService {
       }
 
       var equipmentAirDamageResistanceGain = this.equipmentService.getTotalAirDamageResistanceGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementResistance.air > 0)
+        equipmentAirDamageResistanceGain += setStats.elementResistance.air;
+
       if (equipmentAirDamageResistanceGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentAirDamageResistanceGain * 100, 2) + "%<br />";
 
@@ -6269,6 +8111,10 @@ export class LookupService {
       }
 
       var equipmentEarthDamageResistanceGain = this.equipmentService.getTotalEarthDamageResistanceGain(character.equipmentSet);
+      var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+      if (setStats !== undefined && setStats.elementResistance.earth > 0)
+        equipmentEarthDamageResistanceGain += setStats.elementResistance.earth;
+
       if (equipmentEarthDamageResistanceGain > 0)
         breakdown += "Equipment: +" + this.utilityService.roundTo(equipmentEarthDamageResistanceGain * 100, 2) + "%<br />";
 
@@ -6288,7 +8134,7 @@ export class LookupService {
       || subzoneEnum === SubZoneEnum.CalydonTownMarket || subzoneEnum === SubZoneEnum.CalydonAltarOfAsclepius || subzoneEnum === SubZoneEnum.AegeanSeaIolcus ||
       subzoneEnum === SubZoneEnum.AegeanSeaSalmydessus || subzoneEnum === SubZoneEnum.BlackSeaMariandyna || subzoneEnum === SubZoneEnum.ColchisCityCenter
       || subzoneEnum === SubZoneEnum.NemeaCleonea || subzoneEnum === SubZoneEnum.StymphaliaTiryns || subzoneEnum === SubZoneEnum.CoastOfCreteElis ||
-      subzoneEnum === SubZoneEnum.ErytheiaCadiz)
+      subzoneEnum === SubZoneEnum.ErytheiaCadiz || subzoneEnum === SubZoneEnum.MountOlympusOlympus)
       return true;
 
     return false;
@@ -6369,7 +8215,7 @@ export class LookupService {
     });
     rng = this.utilityService.getRandomSeededInteger(0, availableEnums.length - 1, seedValue.toString());
 
-    return availableEnums[rng];
+    return GodEnum.Zeus;//availableEnums[rng];
   }
 
   getAffinityRewardForLevel(level: number) {
@@ -6495,6 +8341,19 @@ export class LookupService {
     if (effect === AltarEffectsEnum.NemesisRareDuesUp)
       name = "Dues Up After";
 
+    if (effect === AltarEffectsEnum.ZeusAttackUp)
+      name = "Attack Up";
+    if (effect === AltarEffectsEnum.ZeusAttackUpBuff)
+      name = "Attack Buff After";
+    if (effect === AltarEffectsEnum.ZeusLightningDamageIncrease)
+      name = "Lightning Damage Dealt Up";
+    if (effect === AltarEffectsEnum.ZeusRareSurge)
+      name = "Surge Over Time";
+    if (effect === AltarEffectsEnum.ZeusRareLightningDamageIncrease)
+      name = "Large Lightning Damage Dealt Up";
+    if (effect === AltarEffectsEnum.ZeusRareStun)
+      name = "Stun Debuff After";
+
     return name;
   }
 
@@ -6547,6 +8406,15 @@ export class LookupService {
 
   }
 
+  getTotalExpRequiredForGodLevel(level: number) {
+    var totalAmount = 0;
+    for (var i = 2; i <= level; i++) {
+      totalAmount += this.globalService.getGodXpToNextLevel(i);
+    }
+
+    return totalAmount;
+  }
+
   getProfessionName(profession: ProfessionEnum) {
     if (profession === ProfessionEnum.Alchemy)
       return "Alchemy";
@@ -6560,7 +8428,10 @@ export class LookupService {
     if (type === SubZoneEnum.CalydonBabblingStream || type === SubZoneEnum.CalydonDeadEnd || type === SubZoneEnum.CalydonHeavyThicket ||
       type === SubZoneEnum.CalydonMarkedTreeTrail || type === SubZoneEnum.CalydonMudpit || type === SubZoneEnum.CalydonOvergrownVerdure ||
       type === SubZoneEnum.CalydonShroudedFoliage || type === SubZoneEnum.CalydonSparseClearing || type === SubZoneEnum.CalydonTallGrass ||
-      type === SubZoneEnum.CalydonWateringHole || type === SubZoneEnum.CalydonWelltroddenPathway || type === SubZoneEnum.CalydonWornDownBarn)
+      type === SubZoneEnum.CalydonWateringHole || type === SubZoneEnum.CalydonWelltroddenPathway || type === SubZoneEnum.CalydonWornDownBarn ||
+      type === SubZoneEnum.HuntForYarrowTrailFork1 || type === SubZoneEnum.HuntForYarrowTrailFork2 || type === SubZoneEnum.HuntForYarrowTrailFork3 ||
+      type === SubZoneEnum.HuntForYarrowDenseGreenery1 || type === SubZoneEnum.HuntForYarrowDenseGreenery2 || type === SubZoneEnum.HuntForYarrowDenseGreenery3 ||
+      type === SubZoneEnum.HuntForYarrowPromisingPathway1 || type === SubZoneEnum.HuntForYarrowPromisingPathway2 || type === SubZoneEnum.HuntForYarrowPromisingPathway3)
       return true;
 
     return false;
@@ -6784,6 +8655,12 @@ export class LookupService {
     if (type === ShopTypeEnum.AugeanStables) {
       text = "Augean Stables";
     }
+    if (type === ShopTypeEnum.OlympicFavor) {
+      text = "Olympic Favor";
+    }
+    if (type === ShopTypeEnum.Trials) {
+      text = "Trials";
+    }
 
     return text;
   }
@@ -6794,6 +8671,8 @@ export class LookupService {
       return BestiaryEnum.BloodthirstyHyena;
     if (level === 2)
       return BestiaryEnum.ScavengingCoyote;
+    if (level === 3)
+      return BestiaryEnum.RabidJackal;
 
     return BestiaryEnum.None;
   }
@@ -6821,7 +8700,17 @@ export class LookupService {
       description = "Thales and Zosime begin to pick up their rhythm again and now take to the seas to follow in the footsteps of Jason and the Argonauts. As they travel east to Colchis, they soon realize that all is not quite like the stories.";
     else if (type === BalladEnum.Labors)
       description = "You finally feel ready to take on the trials of Heracles, the greatest of all mortals. Each step is a difficult one, but you gain new strength along the way.";
+    else if (type === BalladEnum.Olympus)
+      description = "War is finally at the doorstep of Mount Olympus. You arrive before your enemies and begin the necessary preparations.";
+
 
     return description;
+  }
+
+  userNotInTownBattle(battle?: Battle) {
+    if (battle === undefined)
+      battle = this.globalService.globalVar.activeBattle;
+
+    return battle.activeTournament.type === ColiseumTournamentEnum.None && battle.activeTrial.type === TrialEnum.None;
   }
 }

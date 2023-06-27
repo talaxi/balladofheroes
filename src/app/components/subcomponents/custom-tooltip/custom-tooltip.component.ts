@@ -30,7 +30,7 @@ export class CustomTooltipComponent implements OnInit {
   @Input() isFlippedLeft: boolean = false;
   tooltipTheme: boolean = true;
   regularTooltipPercent = .38; //these need to match the css
-  largeTooltipPercent = .55; //these need to match the css
+  largeTooltipPercent = .58; //these need to match the css
   shiftLeft = false;
   shiftUp = false;
 

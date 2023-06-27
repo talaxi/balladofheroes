@@ -2,9 +2,12 @@ import { Component, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
@@ -17,6 +20,7 @@ import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
+import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -64,7 +68,8 @@ export class ShopViewComponent implements OnInit {
     private gameLoopService: GameLoopService, private storyService: StoryService, private battleService: BattleService,
     private lookupService: LookupService, public globalService: GlobalService, private alchemyService: AlchemyService,
     private utilityService: UtilityService, private deviceDetectorService: DeviceDetectorService, private jewelcraftingService: JewelcraftingService,
-    private enemyGeneratorService: EnemyGeneratorService, private layoutService: LayoutService, private dictionaryService: DictionaryService) { }
+    private enemyGeneratorService: EnemyGeneratorService, private layoutService: LayoutService, private dictionaryService: DictionaryService,
+    private gameLogService: GameLogService) { }
 
   ngOnInit(): void {
     this.activeSubzoneType = this.balladService.getActiveSubZone().type;
@@ -99,6 +104,26 @@ export class ShopViewComponent implements OnInit {
 
     if (this.balladService.findSubzone(SubZoneEnum.ColchisGroveOfAres)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryScene24);
+
+    if (this.balladService.findSubzone(SubZoneEnum.HuntForYarrowMountainHike)?.isAvailable)
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.StoryZeus);
+
+    if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting))
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Hephaestus);
+
+  }
+
+  getShopItemTooltipDirection(index: number) {
+    if (index % 4 === 0)
+      return DirectionEnum.Right;
+    else if (index % 4 === 1)
+      return DirectionEnum.Right;
+      else if (index % 4 === 2)
+      return DirectionEnum.Left;
+      else if (index % 4 === 3)
+      return DirectionEnum.Left;
+
+      return DirectionEnum.Right;
   }
 
   getOptionText(type: ShopTypeEnum) {
@@ -490,8 +515,18 @@ export class ShopViewComponent implements OnInit {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.AugeanStables6)) {
       scene = OptionalSceneEnum.AugeanStables6;
     }
+    if (option.type === ShopTypeEnum.Hephaestus && this.balladService.getActiveSubZone().type === SubZoneEnum.MountOlympusOlympus &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting)) {
+      scene = OptionalSceneEnum.HephaestusJewelcrafting;
+    }
 
     return scene;
+  }
+
+  handleHephaestusJewelcrafting(option: ShopOption) {
+    var optionalSceneToDisplay = this.optionalSceneToDisplay(option);
+    this.storyService.displayOptionalScene(optionalSceneToDisplay);
+    this.battleService.checkScene();
   }
 
   openFilterMenu(slotMenuContent: any) {
@@ -503,6 +538,18 @@ export class ShopViewComponent implements OnInit {
     this.dialogRef.afterClosed().subscribe(dialogResult => {
       this.setupDisplayShopItems();
     });
+  }
+
+  hasOlympicFavorBeenOpened() {
+    var anyCharacterMaxLevelRaised = false;
+    this.globalService.globalVar.characters.forEach(item => {
+      if (item.maxLevel > 30)
+        anyCharacterMaxLevelRaised = true;
+    });
+
+    var ambrosia = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.Ambrosia);
+
+    return anyCharacterMaxLevelRaised || ambrosia !== undefined;
   }
 
   ngOnDestroy() {

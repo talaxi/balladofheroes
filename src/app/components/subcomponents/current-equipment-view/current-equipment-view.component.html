@@ -99,7 +99,7 @@
   <div class="equippedItem">
     <div class="item">
       <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Weapon)"
-        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Weapon)?.associatedResource"></app-equipment-item-view>
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Weapon)?.associatedResource" [character]="character"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -108,7 +108,7 @@
   <div class="equippedItem">
     <div class="item">
       <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Shield)"
-        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Shield)?.associatedResource"></app-equipment-item-view>
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Shield)?.associatedResource" [character]="character"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -117,7 +117,7 @@
   <div class="equippedItem">
     <div class="item">
       <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Armor)"
-        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Armor)?.associatedResource"></app-equipment-item-view>
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Armor)?.associatedResource" [character]="character"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -126,7 +126,7 @@
   <div class="equippedItem">
     <div class="item">
       <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Ring)"
-        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Ring)?.associatedResource"></app-equipment-item-view>
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Ring)?.associatedResource" [character]="character"></app-equipment-item-view>
     </div>
   </div>
 </ng-template>
@@ -135,7 +135,7 @@
   <div class="equippedItem">
     <div class="item">
       <app-equipment-item-view [equipment]="getEquippedItemByType(equipmentTypeEnum.Necklace)"
-        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Necklace)?.associatedResource">
+        [associatedResource]="getEquippedItemByType(equipmentTypeEnum.Necklace)?.associatedResource" [character]="character">
       </app-equipment-item-view>
     </div>
   </div>

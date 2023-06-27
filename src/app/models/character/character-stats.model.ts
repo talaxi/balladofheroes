@@ -23,6 +23,7 @@ export class CharacterStats {
     overdriveGain: number;
     healingReceived: number;
     debuffDuration: number;
+    buffDuration: number;
     overdriveGainFromAutoAttacks: number;
     healingDone: number;
     aoeDamage: number;
@@ -31,6 +32,7 @@ export class CharacterStats {
     thorns: number;
     abilityCooldownReductionStart: number;   
     xpGain: number; 
+    elementResistanceReduction: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
@@ -51,6 +53,7 @@ export class CharacterStats {
         this.overdriveGain = 0;
         this.healingReceived = 0;
         this.debuffDuration = 0;
+        this.buffDuration = 0;
         this.overdriveGainFromAutoAttacks = 0;
         this.healingDone = 0;
         this.aoeDamage = 0;
@@ -59,6 +62,7 @@ export class CharacterStats {
         this.abilityCooldownReductionStart = 0;
         this.thorns = 0;
         this.xpGain = 0;
+        this.elementResistanceReduction = 0;
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {

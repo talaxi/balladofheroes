@@ -172,8 +172,6 @@ export class EquipmentViewComponent implements OnInit {
       return;
 
     this.globalService.equipItem(selectedEquipmentPiece, character);
-
-    this.globalService.calculateCharacterBattleStats(character);
     this.setUpAvailableEquipment();
   }
 

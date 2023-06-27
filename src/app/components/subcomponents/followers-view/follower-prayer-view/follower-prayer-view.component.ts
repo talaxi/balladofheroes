@@ -3,6 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { FollowerActionEnum } from 'src/app/models/enums/follower-action-enum.model';
 import { FollowerPrayerTypeEnum } from 'src/app/models/enums/follower-prayer-type-enum.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { FollowersService } from 'src/app/services/followers/followers.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -25,6 +26,19 @@ export class FollowerPrayerViewComponent {
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.largeAltarsAvailable = this.globalService.globalVar.altars.largeAltarsUnlocked;
+  }
+
+  getAltarCount() {
+    var count = undefined;
+
+    var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
+    var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+    if (artemis !== undefined && artemis.isAvailable)
+      count = "two";
+    if (hermes !== undefined && hermes.isAvailable)
+      count = "three";
+
+    return count;
   }
 
   getUnassignedFollowers() {
@@ -74,7 +88,7 @@ export class FollowerPrayerViewComponent {
   getAssignedFollowers() {
     return this.followerService.getAssignedFollowers();
   }
-  
+
   unassignAll() {
     this.globalService.globalVar.followerData.followers.forEach(follower => {
       follower.assignedTo = FollowerActionEnum.None;
