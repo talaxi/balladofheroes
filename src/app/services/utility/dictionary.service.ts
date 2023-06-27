@@ -460,6 +460,8 @@ export class DictionaryService {
       name = "Fish Scale";
     else if (type === ItemsEnum.MetalScraps)
       name = "Metal Scraps";
+      else if (type === ItemsEnum.MetalNuggets)
+      name = "Metal Nuggets";
     else if (type === ItemsEnum.CrackedRuby)
       name = "Cracked Ruby";
     else if (type === ItemsEnum.CrackedAmethyst)

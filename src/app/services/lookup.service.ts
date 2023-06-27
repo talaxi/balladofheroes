@@ -316,7 +316,7 @@ export class LookupService {
       type === ItemsEnum.SmallAnimalBones || type === ItemsEnum.VialOfTheCretanSea || type === ItemsEnum.PristineCrabClaw || type === ItemsEnum.BirchBark ||
       type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn || type === ItemsEnum.PotentEssence || type === ItemsEnum.BlackHorn ||
       type === ItemsEnum.MagicCore || type === ItemsEnum.EssenceOfHoly || type === ItemsEnum.EssenceOfLightning || type === ItemsEnum.EssenceOfAir ||
-      type === ItemsEnum.EssenceOfEarth) {
+      type === ItemsEnum.EssenceOfEarth || type === ItemsEnum.MetalNuggets) {
       return ItemTypeEnum.CraftingMaterial;
     }
 

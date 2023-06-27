@@ -597,6 +597,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.MetalScraps) {
       return new ResourceValue(ItemsEnum.MetalScraps, amount);
     }
+    if (type === ItemsEnum.MetalNuggets) {
+      return new ResourceValue(ItemsEnum.MetalNuggets, amount);
+    }
     if (type === ItemsEnum.CrackedRuby) {
       return new ResourceValue(ItemsEnum.CrackedRuby, amount);
     }
