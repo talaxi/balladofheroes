@@ -123,7 +123,7 @@ export class TrialService {
       god = GodEnum.Hermes;
     if (bestiaryEnum === BestiaryEnum.Apollo)
       god = GodEnum.Apollo;
-    if (bestiaryEnum === BestiaryEnum.Hades)
+    if (bestiaryEnum === BestiaryEnum.Hades2)
       god = GodEnum.Hades;
     if (bestiaryEnum === BestiaryEnum.Ares)
       god = GodEnum.Ares;
