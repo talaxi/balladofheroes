@@ -600,6 +600,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.MetalNuggets) {
       return new ResourceValue(ItemsEnum.MetalNuggets, amount);
     }
+    if (type === ItemsEnum.Ambrosia) {
+      return new ResourceValue(ItemsEnum.Ambrosia, amount);
+    }
     if (type === ItemsEnum.CrackedRuby) {
       return new ResourceValue(ItemsEnum.CrackedRuby, amount);
     }

@@ -27,6 +27,9 @@ export class MainComponent implements OnInit {
     private utilityService: UtilityService) { }
 
   ngOnInit(): void {
+    //TODO: remove this on deploy unless complete
+    //this.lookupService.isUIHidden = true;
+
     this.isMobile = this.deviceDetectorService.isMobile();
     
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
@@ -48,6 +51,19 @@ export class MainComponent implements OnInit {
 
   getActiveTimeAmount() {
     return (this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.averageActiveTimeLimit) / 60;
+  }
+
+  getFunFact() {
+    var fact = "<strong><i>Tip:</i> ";
+
+    var factList: string[] = [];
+    factList.push("You receive more XP based on how many enemies are in the enemy party when defeating them. 2 enemies increase XP gain by 15%, 3 enemies increase XP gain by 30%, and 4 enemies increase XP gain by 45%.");
+    factList.push("Any barrier amount your characters have is reset when switching subzones.")
+
+    var rng = this.utilityService.getRandomInteger(0, factList.length);
+
+
+    return factList[rng] + "</strong>";
   }
 
   ngOnDestroy() {    

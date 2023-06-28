@@ -7290,7 +7290,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 1690;
       enemy.battleStats.elementResistance.earth += .5;     
       enemy.battleInfo.elementalType = ElementalTypeEnum.Earth;
-      enemy.loot.push(new LootItem(ItemsEnum.EarthAbsorptionPotionRecipe, ItemTypeEnum.Resource, 1, .01));
+      enemy.loot.push(new LootItem(ItemsEnum.EarthAbsorptionPotionRecipe, ItemTypeEnum.Resource, 1, .01));  //TODO: .01
       enemy.loot.push(new LootItem(ItemsEnum.EssenceOfEarth, ItemTypeEnum.CraftingMaterial, 1, .075));
       
       var throwStone = new Ability();

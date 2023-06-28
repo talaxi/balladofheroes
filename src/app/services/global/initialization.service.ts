@@ -504,6 +504,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.SerpentScale, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RadiatingGemstone, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.WhiteHorn, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.Nectar, 100));
 
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ParalyzingToxin, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FlamingToxin, 100));
@@ -799,7 +800,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussNecklace);
       }
 
-      var chthonicResetCount = 4;
+      var chthonicResetCount = 1;
       var godLevel = 1;
 
       for (var j = 0; j < chthonicResetCount; j++) {
