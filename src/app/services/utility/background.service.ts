@@ -49,6 +49,7 @@ export class BackgroundService {
     this.handleAltarEffectDurations(deltaTime);
     this.handleFollowerSearch(deltaTime);
     this.handleFollowerPrayer(deltaTime);
+    this.handleGlobalStatusEffectDurations(deltaTime);
     //this.handleMelete(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
@@ -76,6 +77,18 @@ export class BackgroundService {
         }
       }
     });
+  }
+
+  handleGlobalStatusEffectDurations(deltaTime: number) {
+    if (this.globalService.globalVar.globalStatusEffects.length === 0)
+      return;
+
+    this.globalService.globalVar.globalStatusEffects.forEach(effect => {     
+        effect.duration -= deltaTime;
+    });
+
+    this.globalService.globalVar.globalStatusEffects = this.globalService.globalVar.globalStatusEffects.filter(effect => effect.isPermanent || effect.duration > 0);
+
   }
 
   handleTown(deltaTime: number, loading: any) {

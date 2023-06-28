@@ -277,8 +277,32 @@ export class TrialService {
     if (type === TrialEnum.TrialOfSkill) {
       var lootUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.LootRateUp, buffHours * 60 * 60, 1.25, false, true);
       var xpUpEffect = this.globalService.createStatusEffect(StatusEffectEnum.ExperienceGainUp, buffHours * 60 * 60, 1.25, false, true);
-      this.globalService.globalVar.globalStatusEffects.push(lootUpEffect);
-      this.globalService.globalVar.globalStatusEffects.push(xpUpEffect);
+
+      var existingLootUpEffect = this.globalService.globalVar.globalStatusEffects.find(item => item.type === StatusEffectEnum.LootRateUp);
+      if (existingLootUpEffect !== undefined) {
+        if (existingLootUpEffect.effectiveness < lootUpEffect.effectiveness)
+          existingLootUpEffect.effectiveness = lootUpEffect.effectiveness;
+
+          if (existingLootUpEffect.duration < lootUpEffect.duration)
+          existingLootUpEffect.duration = lootUpEffect.duration;
+      }
+      else
+      {
+        this.globalService.globalVar.globalStatusEffects.push(lootUpEffect);
+      }
+
+      var existingXpUpEffect = this.globalService.globalVar.globalStatusEffects.find(item => item.type === StatusEffectEnum.ExperienceGainUp);
+      if (existingXpUpEffect !== undefined) {
+        if (existingXpUpEffect.effectiveness < xpUpEffect.effectiveness)
+          existingXpUpEffect.effectiveness = xpUpEffect.effectiveness;
+
+          if (existingXpUpEffect.duration < xpUpEffect.duration)
+          existingXpUpEffect.duration = xpUpEffect.duration;
+      }
+      else
+      {
+        this.globalService.globalVar.globalStatusEffects.push(xpUpEffect);
+      }
 
       //gain affinity for the god
       var affinityXpGain = 200;
