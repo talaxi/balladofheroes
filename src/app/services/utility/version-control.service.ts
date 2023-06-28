@@ -42,7 +42,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -977,6 +977,12 @@ export class VersionControlService {
               this.jewelcraftingService.learnRecipe(ItemsEnum.JaggedStone);
             if (jewelcrafting.level >= 38)
               this.jewelcraftingService.learnRecipe(ItemsEnum.BlessedStone);
+          }
+        }
+        if (version === .61) {
+          var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined) {
+            alchemy.availableRecipeItems = alchemy.availableRecipeItems.filter((item, index, self) => self.indexOf(item) === index);
           }
         }
 

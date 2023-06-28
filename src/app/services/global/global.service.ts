@@ -49,7 +49,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .6;
+    return .61;
   }
 
   initializeGlobalVariables() {

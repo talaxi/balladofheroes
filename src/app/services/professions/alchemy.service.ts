@@ -737,6 +737,72 @@ export class AlchemyService {
 
       recipe.expGain = 40;
     }
+    if (item === ItemsEnum.EarthAbsorptionPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicCore, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfEarth, 3));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 40;
+    }
+    if (item === ItemsEnum.FireAbsorptionPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicCore, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfFire, 3));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 40;
+    }
+    if (item === ItemsEnum.WaterAbsorptionPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicCore, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 40;
+    }
+    if (item === ItemsEnum.AirAbsorptionPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicCore, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfAir, 3));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 40;
+    }
+    if (item === ItemsEnum.LightningAbsorptionPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicCore, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfLightning, 3));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 40;
+    }
+    if (item === ItemsEnum.HolyAbsorptionPotion) {
+      recipe.quality = EquipmentQualityEnum.Rare;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicCore, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfHoly, 3));      
+
+      recipe.numberOfSteps = 2;
+      recipe.steps.push(ProfessionActionsEnum.ExtractEssence);
+      recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
+
+      recipe.expGain = 40;
+    }
 
     return recipe;
   }
