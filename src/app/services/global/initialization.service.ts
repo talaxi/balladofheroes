@@ -786,7 +786,7 @@ export class InitializationService {
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DivineTarge);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasArmor);
         character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasRing);
-        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasNecklace);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ZeussNecklace);
       }
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);

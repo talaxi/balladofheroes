@@ -1907,6 +1907,7 @@ export class LookupService {
       equipmentEffect2.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
       equipmentEffect2.chance = .1;
       equipmentEffect2.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, .1, true, false, false, "Zeus's Necklace"));
+      equipmentEffect2.targetEffect[0].dotType = dotTypeEnum.EnemyMaxHpPercent;
       equipmentPiece.equipmentEffects.push(equipmentEffect2);
       equipmentPiece.slotCount = 3;
       equipmentPiece.set = EquipmentSetEnum.Zeus;

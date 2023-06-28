@@ -4657,7 +4657,7 @@ export class BattleService {
           effect.effectiveness *= this.lookupService.getAdjustedAttack(user);
         }
 
-        if (effect.type === StatusEffectEnum.InstantTrueDamage && effect.dotType === dotTypeEnum.EnemyMaxHpPercent && damageDealt !== undefined)        
+        if (effect.type === StatusEffectEnum.InstantTrueDamage && effect.dotType === dotTypeEnum.EnemyMaxHpPercent && damageDealt !== undefined)     
           effect.effectiveness *= damageDealt!;
       });
 
