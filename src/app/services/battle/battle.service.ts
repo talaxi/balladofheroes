@@ -755,7 +755,7 @@ export class BattleService {
       if (thorns !== undefined || target.battleStats.thorns > 0 || reprisalThorns > 0 || dispenserOfDuesBonusThorns > 0 ||
         (!isPartyAttacking && (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisThorns) !== undefined ||
           this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.NemesisRareThorns) !== undefined)) ||
-        (counterattack !== undefined && this.warriorCounterattackActive(target, character))) {
+        (counterattack !== undefined && this.warriorCounterattackActive(target, character))) {         
         var thornsPercentDamage = damageDealt * target.battleStats.thorns;
         thornsPercentDamage += damageDealt * reprisalThorns;
 
@@ -782,7 +782,7 @@ export class BattleService {
 
         //console.log(thornsEffectiveness + " + " + thornsPercentDamage + " + " + altarThornsDamage + " + " + dispenserOfDuesBonusThorns + " * " + reprisalThornsBonus + " * " + thornsDamageUp);
         var totalThornsDamage = (thornsEffectiveness + thornsPercentDamage + altarThornsDamage + dispenserOfDuesBonusThorns) * reprisalThornsBonus * thornsDamageUp;
-        var thornsDamageTakenUpEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThornsDamageTakenUp);
+        var thornsDamageTakenUpEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThornsDamageTakenUp);
         if (thornsDamageTakenUpEffect !== undefined)
           totalThornsDamage *= thornsDamageTakenUpEffect.effectiveness;
 
