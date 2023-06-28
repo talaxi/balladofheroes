@@ -5269,7 +5269,12 @@ export class LookupService {
       }
     }
 
-    return defaultMultiplier - (character.battleStats.armorPenetration * altarMultiplier * statusMultiplier);
+    var adjustedAmount = defaultMultiplier - (character.battleStats.armorPenetration * altarMultiplier * statusMultiplier);
+
+    if (adjustedAmount < 0)
+      adjustedAmount = 0;
+
+    return adjustedAmount;
   }
 
   getChthonicFavorMultiplier(asPercent: boolean = false) {

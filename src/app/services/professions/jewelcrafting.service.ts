@@ -78,7 +78,8 @@ export class JewelcraftingService {
     if (jewelcrafting === undefined)
       return;
 
-    jewelcrafting.availableRecipeItems.push(item);
+    if (!jewelcrafting.availableRecipeItems.some(availableItem => item === availableItem))
+      jewelcrafting.availableRecipeItems.push(item);
   }
 
   checkForNewRecipes() {
@@ -349,7 +350,7 @@ export class JewelcraftingService {
     else if (jewelcrafting.level <= 50) {
       upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Uncommon);
       qualityName = "Uncommon";
-    }    
+    }
     else if (jewelcrafting.level <= 75) {
       upgrades = jewelcrafting.upgrades.find(item => item.quality === EquipmentQualityEnum.Rare);
       qualityName = "Rare";
@@ -858,7 +859,7 @@ export class JewelcraftingService {
       recipe.steps.push(ProfessionActionsEnum.SpecialShapingMetal);
       recipe.steps.push(ProfessionActionsEnum.SpecialCoolingMetal);
       recipe.displayOrder = 2;
-      
+
       recipe.expGain = 40;
     }
     if (item === ItemsEnum.ShieldSlotAddition) {

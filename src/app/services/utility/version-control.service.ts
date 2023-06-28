@@ -42,7 +42,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -708,14 +708,14 @@ export class VersionControlService {
           }
 
           var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
-          if (hermes !== undefined) {           
+          if (hermes !== undefined) {
             var permanentAbility = hermes.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
             if (permanentAbility !== undefined && permanentAbility.userEffect.length > 1) {
               permanentAbility.userEffect[0].effectiveness /= 2;
               permanentAbility.userEffect[1].effectiveness /= 2;
             }
           }
-        
+
           var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
           if (apollo !== undefined) {
             var passive = apollo.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
@@ -767,7 +767,7 @@ export class VersionControlService {
               dionysusGod.permanentAbility1GainCount.forEach(item => {
                 totalGainCount += item[1];
               });
-              
+
               permanentAbility1.userEffect[0].threshold = totalGainCount * .025;
               permanentAbility1.userEffect[0].effectiveness = 0;
             }
@@ -810,13 +810,13 @@ export class VersionControlService {
             if (permanentAbility3 !== undefined) {
               permanentAbility3.effectiveness = (permanentAbility3.effectiveness / .15) * .25;
             }
-          }          
-          
+          }
+
           var nemesisGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
           if (nemesisGod !== undefined) {
             var permanentAbility1 = nemesisGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
             if (permanentAbility1 !== undefined) {
-              permanentAbility1.effectiveness = permanentAbility1.effectiveness  * .5;
+              permanentAbility1.effectiveness = permanentAbility1.effectiveness * .5;
             }
 
             var permanentAbility3 = nemesisGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
@@ -984,6 +984,56 @@ export class VersionControlService {
           if (alchemy !== undefined) {
             alchemy.availableRecipeItems = alchemy.availableRecipeItems.filter((item, index, self) => self.indexOf(item) === index);
           }
+        }
+        if (version === .62) {
+          var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+          if (alchemy !== undefined) {
+            alchemy.availableRecipeItems = alchemy.availableRecipeItems.filter((item, index, self) => self.indexOf(item) === index);
+          }
+
+          if (!this.globalService.globalVar.isSubscriber) {
+            if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 2));
+            if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 2));
+          }
+
+          if (this.lookupService.getResourceAmount(ItemsEnum.AthenasNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.ArtemissNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.HermessNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.ApollosNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.AressNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.HadessNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.DionysussNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.NemesissNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.ZeussNecklace) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.AthenasShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.ArtemissShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.HermessShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.ApollosShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.AressShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.HadessShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.DionysussShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.NemesissShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+          if (this.lookupService.getResourceAmount(ItemsEnum.ZeussShield) > 0)
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
         }
 
         this.globalService.globalVar.currentVersion = version;

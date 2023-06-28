@@ -89,7 +89,8 @@ export class AlchemyService {
     if (alchemy === undefined)
       return;
 
-    alchemy.availableRecipeItems.push(item);
+    if (!alchemy.availableRecipeItems.some(availableItem => item === availableItem))
+      alchemy.availableRecipeItems.push(item);
   }
 
   checkForNewRecipes() {
