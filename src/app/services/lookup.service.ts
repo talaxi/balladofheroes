@@ -373,7 +373,7 @@ export class LookupService {
   }
 
   giveCharactersBonusExp(amount: number) {
-    this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), amount);
+    this.globalService.giveCharactersBonusExp(amount);
   }
 
   getItemDescription(type: ItemsEnum, associatedResource?: ResourceValue, canRemoveExtra: boolean = false, excludeResourceLocationDescription: boolean = false): string {

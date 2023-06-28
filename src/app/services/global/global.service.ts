@@ -1112,30 +1112,18 @@ export class GlobalService {
     return stats;
   }
 
-  giveCharactersBonusExp(party: Character[], bonusXp: number) {
-    var activeParty = this.getActivePartyCharacters(true);
-
-    //bonus XP has no restrictions on being dead
-    activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {
+  giveCharactersBonusExp(bonusXp: number) {
+    //bonus XP has no restrictions on being dead or activity
+    this.globalVar.characters.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {
       this.giveCharacterExp(partyMember, bonusXp);
     });
 
     //active gods
-    this.globalVar.gods.filter(god => god.isAvailable &&
-      activeParty.some(partyMember => (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type))).forEach(god => {
-        this.giveGodExp(god, bonusXp);
-      });
+    this.globalVar.gods.filter(god => god.isAvailable).forEach(god => {
+      this.giveGodExp(god, bonusXp);
+    });
 
-    //inactive gods
-    this.globalVar.gods.filter(god => god.isAvailable &&
-      (!activeParty.some(partyMember => (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-        var inactiveGodModifier = 1; //no need to reduce bonus XP for inactive gods
-
-        this.giveGodExp(god, bonusXp * inactiveGodModifier);
-      });
-
-
-    party.forEach(partyMember => {
+    this.globalVar.characters.filter(partyMember => partyMember.isAvailable).forEach(partyMember => {
       var previousXp: number | undefined = undefined;
       while (partyMember.exp >= partyMember.expToNextLevel && partyMember.level < partyMember.maxLevel && (previousXp === undefined || partyMember.exp < previousXp)) {
         previousXp = partyMember.exp;
@@ -1165,7 +1153,7 @@ export class GlobalService {
       //inactive gods
       this.globalVar.gods.filter(god => god.isAvailable &&
         (!activeParty.some(partyMember => !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead) && (partyMember.assignedGod1 === god.type || partyMember.assignedGod2 === god.type)))).forEach(god => {
-          var inactiveGodModifier = this.getInactiveGodXpRate(); 
+          var inactiveGodModifier = this.getInactiveGodXpRate();
 
           this.giveGodExp(god, enemy.xpGainFromDefeat * inactiveGodModifier * partySizeMultiplier);
         });
@@ -1188,7 +1176,7 @@ export class GlobalService {
     var commendations = this.globalVar.resources.find(item => item.item === ItemsEnum.OlympicCommendation);
     if (commendations !== undefined)
       additive = commendations.amount * .05;
-    
+
     return .25 + additive;
   }
 
@@ -3297,7 +3285,7 @@ export class GlobalService {
       return 12;
   }
 
-  setAsSubscriber(date: Date) {    
+  setAsSubscriber(date: Date) {
     var dionysus = this.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
     var nemesis = this.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
     var ambrosiaCost = 10;
@@ -3503,7 +3491,7 @@ export class GlobalService {
       //every 5 rounds, chance of items
       this.handleEternalMeleeBossRewards(losingRound);
 
-      this.giveCharactersBonusExp(this.getActivePartyCharacters(true), bonusXp);
+      this.giveCharactersBonusExp(bonusXp);
       this.gainResource(new ResourceValue(ItemsEnum.Coin, bonusCoins));
     }
   }

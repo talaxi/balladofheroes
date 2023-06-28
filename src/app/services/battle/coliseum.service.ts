@@ -88,7 +88,7 @@ export class ColiseumService {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.HeroicElixir);
           }
           else if (reward.item === ItemsEnum.BonusXp) {
-            this.globalService.giveCharactersBonusExp(this.globalService.getActivePartyCharacters(true), reward.amount);
+            this.globalService.giveCharactersBonusExp(reward.amount);
           }
           else if (reward.item === ItemsEnum.Hades) {
             var hades = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades);

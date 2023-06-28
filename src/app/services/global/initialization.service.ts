@@ -781,7 +781,7 @@ export class InitializationService {
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
         character1.assignedGod1 = GodEnum.Nemesis;
-        character1.assignedGod2 = GodEnum.Hermes;
+        character1.assignedGod2 = GodEnum.Artemis;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasScythe);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DivineTarge);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasArmor);
@@ -791,7 +791,7 @@ export class InitializationService {
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
-        character2.assignedGod1 = GodEnum.Apollo;
+        character2.assignedGod1 = GodEnum.Dionysus;
         character2.assignedGod2 = GodEnum.Ares;
         character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PorphyrionsMace);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussShield);
@@ -800,7 +800,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
       }
 
-      var chthonicResetCount = 10;
+      var chthonicResetCount = 1;
       var godLevel = 1;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -817,7 +817,7 @@ export class InitializationService {
         if (j < chthonicResetCount - 1)
           godLevel = 2000;
         else
-          godLevel = 100;
+          godLevel = 2000;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -957,7 +957,7 @@ export class InitializationService {
         character.baseStats = this.globalService.getCharacterBaseStats(character.type);
       });
 
-      var characterLevel = 34;
+      var characterLevel = 1;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
