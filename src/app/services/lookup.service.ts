@@ -8223,7 +8223,7 @@ export class LookupService {
     });
     rng = this.utilityService.getRandomSeededInteger(0, availableEnums.length - 1, seedValue.toString());
 
-    return GodEnum.Zeus;//availableEnums[rng];
+    return availableEnums[rng];
   }
 
   getAffinityRewardForLevel(level: number) {
