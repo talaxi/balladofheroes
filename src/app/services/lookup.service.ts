@@ -273,6 +273,10 @@ export class LookupService {
       type === ItemsEnum.PerfectFlawedEmerald || type === ItemsEnum.PerfectFlawedAquamarine)
       return EquipmentQualityEnum.Rare;
 
+      if (type === ItemsEnum.WeaponSlotAddition || type === ItemsEnum.RingSlotAddition || type === ItemsEnum.ShieldSlotAddition ||
+        type === ItemsEnum.ArmorSlotAddition || type === ItemsEnum.NecklaceSlotAddition)
+        return EquipmentQualityEnum.Special;
+
     return EquipmentQualityEnum.Basic;
   }
 
@@ -8546,7 +8550,9 @@ export class LookupService {
     var isAddingASlot = false;
 
     if (item === ItemsEnum.MinorWeaponSlotAddition || item === ItemsEnum.MinorRingSlotAddition || item === ItemsEnum.MinorArmorSlotAddition ||
-      item === ItemsEnum.MinorNecklaceSlotAddition || item === ItemsEnum.MinorShieldSlotAddition)
+      item === ItemsEnum.MinorNecklaceSlotAddition || item === ItemsEnum.MinorShieldSlotAddition || item === ItemsEnum.WeaponSlotAddition || 
+      item === ItemsEnum.RingSlotAddition || item === ItemsEnum.ArmorSlotAddition ||
+      item === ItemsEnum.NecklaceSlotAddition || item === ItemsEnum.ShieldSlotAddition)
       isAddingASlot = true;
 
     return isAddingASlot;

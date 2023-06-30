@@ -823,7 +823,7 @@ export class JewelcraftingService {
 
       recipe.expGain = 35;
     }
-    if (item === ItemsEnum.WeaponSlotAddition) {
+    /*if (item === ItemsEnum.WeaponSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Special;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 5000));
@@ -835,7 +835,7 @@ export class JewelcraftingService {
       recipe.displayOrder = 3;
 
       recipe.expGain = 40;
-    }
+    }*/
     if (item === ItemsEnum.RingSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Special;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
@@ -849,7 +849,7 @@ export class JewelcraftingService {
 
       recipe.expGain = 40;
     }
-    if (item === ItemsEnum.ArmorSlotAddition) {
+    /*if (item === ItemsEnum.ArmorSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Special;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
@@ -861,8 +861,8 @@ export class JewelcraftingService {
       recipe.displayOrder = 2;
 
       recipe.expGain = 40;
-    }
-    if (item === ItemsEnum.ShieldSlotAddition) {
+    }*/
+    /*if (item === ItemsEnum.ShieldSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Special;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
       recipe.ingredients.push(new ResourceValue(ItemsEnum.Coin, 2000));
@@ -874,7 +874,7 @@ export class JewelcraftingService {
       recipe.displayOrder = 5;
 
       recipe.expGain = 40;
-    }
+    }*/
     if (item === ItemsEnum.NecklaceSlotAddition) {
       recipe.quality = EquipmentQualityEnum.Special;
       recipe.ingredients.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));

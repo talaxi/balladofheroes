@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { Character } from 'src/app/models/character/character.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
@@ -12,7 +13,7 @@ export class StatusEffectViewComponent implements OnInit {
   @Input() character: Character;
   displayCatchAll: StatusEffect;
 
-  constructor() { }
+  constructor(private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.displayCatchAll = new StatusEffect(StatusEffectEnum.StatusEffectDisplayCatchAll);
@@ -36,6 +37,9 @@ export class StatusEffectViewComponent implements OnInit {
 
     var totalVisibleEffects = 6;
     var totalVisibleEffectCount = 0;
+
+    if (this.deviceDetectorService.isMobile())
+      totalVisibleEffects = 4;
 
     var shouldIncludeCatchAll = false;
     positiveEffects = positiveEffects.filter(effect => {
@@ -73,6 +77,9 @@ export class StatusEffectViewComponent implements OnInit {
 
     var totalVisibleEffects = 6;
     var totalVisibleEffectCount = 0;
+    
+    if (this.deviceDetectorService.isMobile())
+      totalVisibleEffects = 4;
 
     var shouldIncludeCatchAll = false;
     negativeEffects = negativeEffects.filter(effect => {

@@ -804,7 +804,8 @@ export class BattleService {
         var additionalTargets = potentialTargets.filter(item => item !== target);
         if (additionalTargets.length > 0) {
           additionalTargets.forEach(additionalTarget => {
-            var additionalDamageDealt = this.dealDamage(isPartyAttacking, character, additionalTarget, false, undefined, barrage!.effectiveness);
+            //var additionalDamageDealt = this.dealDamage(isPartyAttacking, character, additionalTarget, false, undefined, this.getAbilityEffectiveness(barrage!, 1, character, false));
+            var additionalDamageDealt = this.dealTrueDamage(!isPartyAttacking, additionalTarget, damageDealt * this.getAbilityEffectiveness(barrage!, 1, character, false), character, undefined, false);
 
             if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) {
               var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + "'s attack hits <strong>" + additionalTarget.name + "</strong> for " + this.utilityService.bigNumberReducer(additionalDamageDealt) + " damage as well.";
@@ -2756,7 +2757,7 @@ export class BattleService {
       * Math.ceil((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) / (adjustedAttack + adjustedDefense)));
 
     //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-    //  + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+     // + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
 
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {

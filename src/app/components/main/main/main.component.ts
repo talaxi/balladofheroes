@@ -58,7 +58,10 @@ export class MainComponent implements OnInit {
 
     var factList: string[] = [];
     factList.push("You receive more XP based on how many enemies are in the enemy party when defeating them. 2 enemies increase XP gain by 15%, 3 enemies increase XP gain by 30%, and 4 enemies increase XP gain by 45%.");
-    factList.push("Any barrier amount your characters have is reset when switching subzones.")
+    factList.push("Any barrier amount your characters have is reset when switching subzones.");
+    factList.push("You can adjust your FPS in the Settings for a smoother or less CPU-intensive experience.");
+    factList.push("Your party can consist of at most 2 classes and 4 gods.");
+
 
     var rng = this.utilityService.getRandomInteger(0, factList.length);
 
