@@ -229,6 +229,7 @@ export class AppComponent {
         //console.log("Caught up");
         this.globalService.globalVar.isCatchingUp = false;        
         this.gameLogService.disableOverlayBuffer = false;
+        this.gameSaveService.saveGame();
 
         if (this.catchupDialog !== undefined) {
           this.catchupDialog.close();
