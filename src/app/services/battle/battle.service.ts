@@ -463,6 +463,41 @@ export class BattleService {
     else
       this.battle.currentEnemies = randomEnemyTeam;
     this.battle.battleDuration = 0;
+
+         
+    if (this.battle.activeTrial.type === TrialEnum.TrialOfSkill) {
+      var bestiaryEnum: BestiaryEnum | undefined = undefined;
+      if (this.battle.currentEnemies !== undefined && this.battle.currentEnemies.enemyList.length > 0) {
+        bestiaryEnum = this.battle.currentEnemies.enemyList[0].bestiaryType;        
+      }
+
+      this.battle.activeTrial.godEnum = this.getGodEnumFromTrialOfSkillBattle(bestiaryEnum);
+    }
+  }
+
+  getGodEnumFromTrialOfSkillBattle(bestiaryEnum: BestiaryEnum | undefined) {    
+    var god = GodEnum.None;
+
+    if (bestiaryEnum === BestiaryEnum.Athena)
+      god = GodEnum.Athena;
+    if (bestiaryEnum === BestiaryEnum.Artemis)
+      god = GodEnum.Artemis;
+    if (bestiaryEnum === BestiaryEnum.Hermes)
+      god = GodEnum.Hermes;
+    if (bestiaryEnum === BestiaryEnum.Apollo)
+      god = GodEnum.Apollo;
+    if (bestiaryEnum === BestiaryEnum.Hades2)
+      god = GodEnum.Hades;
+    if (bestiaryEnum === BestiaryEnum.Ares)
+      god = GodEnum.Ares;
+    if (bestiaryEnum === BestiaryEnum.Nemesis)
+      god = GodEnum.Nemesis;
+    if (bestiaryEnum === BestiaryEnum.Dionysus)
+      god = GodEnum.Dionysus;
+    if (bestiaryEnum === BestiaryEnum.Zeus)
+      god = GodEnum.Zeus;
+
+    return god;
   }
 
   handleStatusEffectDurations(isPartyMember: boolean, character: Character, targets: Character[], party: Character[], deltaTime: number) {
@@ -4635,8 +4670,7 @@ export class BattleService {
       //if it's already active, don't reapply
       if (trigger === EffectTriggerEnum.AlwaysActive) {
         userGainsEffects.forEach(effect => {
-          if (user.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster)) {
-            console.log("none'd");
+          if (user.battleInfo.statusEffects.some(existingEffect => existingEffect.caster === effect.caster)) {            
             effect.type = StatusEffectEnum.None;
           }
         });

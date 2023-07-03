@@ -125,11 +125,7 @@ export class TrialsViewComponent {
     return {};
   }
 
-  startTrial() {
-    if (this.selectedTrial.type === TrialEnum.TrialOfSkill) {
-      this.selectedTrial.godEnum = this.trialService.getGodEnumFromTrialOfSkillBattle();
-    }
-
+  startTrial() {    
     this.globalService.startTrial(this.selectedTrial);
     this.dialog.closeAll();
   }

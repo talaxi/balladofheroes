@@ -1010,6 +1010,15 @@ export class LookupService {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Sword);
       equipmentPiece.stats = new CharacterStats(0, 12, 0, 15, 0, 0);
     }
+    if (type === ItemsEnum.HarpyTalon) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Uncommon, WeaponTypeEnum.Sword);
+      equipmentPiece.stats = new CharacterStats(0, 14, 0, 14, 0, 0);
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
+      equipmentEffect.chance = .1;
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseDown, 10, .9, false, false));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
     if (type === ItemsEnum.SteelSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Rare, WeaponTypeEnum.Sword);
       equipmentPiece.stats = new CharacterStats(0, 27, 0, 30, 0, 0);
@@ -1020,7 +1029,7 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(0, 36, 0, 38, 0, 0);
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.OnAbilityUse;
-      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 30, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire, undefined, false));
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 42, true, false, false, "Sword of Flames", undefined, undefined, ElementalTypeEnum.Fire, undefined, false));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.GoldenSword) {
@@ -1081,7 +1090,7 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(120, 72, 0, 0, 0, 0);
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.OnAutoAttack;
-      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 28, true, false, false, "Fending Mace", undefined, undefined, undefined, undefined, false));
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, 38, true, false, false, "Fending Mace", undefined, undefined, undefined, undefined, false));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.DiamondHammer) {

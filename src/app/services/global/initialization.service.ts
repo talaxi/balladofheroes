@@ -658,6 +658,11 @@ export class InitializationService {
     resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SwordOfFlames, 1);
     if (resource !== undefined)
       this.lookupService.gainResource(resource);
+
+      
+    resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HarpyTalon, 1);
+    if (resource !== undefined)
+      this.lookupService.gainResource(resource);
     //console.log(this.globalService.globalVar.achievements);
   }
 

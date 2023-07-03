@@ -23,6 +23,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.FortifiedBronzeSword) {
       return new ResourceValue(ItemsEnum.FortifiedBronzeSword, amount);
     }
+    if (type === ItemsEnum.HarpyTalon) {
+      return new ResourceValue(ItemsEnum.HarpyTalon, amount);
+    }
     if (type === ItemsEnum.SteelSword) {
       return new ResourceValue(ItemsEnum.SteelSword, amount);
     }

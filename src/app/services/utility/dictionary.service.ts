@@ -122,6 +122,8 @@ export class DictionaryService {
       name = "Bronze Sword";
     else if (type === ItemsEnum.FortifiedBronzeSword)
       name = "Fortified Bronze Sword";
+      else if (type === ItemsEnum.HarpyTalon)
+      name = "Harpy Talon";
     else if (type === ItemsEnum.SteelSword)
       name = "Steel Sword";
     else if (type === ItemsEnum.SwordOfFlames)

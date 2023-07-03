@@ -397,5 +397,6 @@ export enum ItemsEnum {
   MetalNuggets,
   DivinePlate,
   DivineTarge,
-  OlympicCommendation
-}
+  OlympicCommendation,
+  HarpyTalon
+} 
