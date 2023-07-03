@@ -53,6 +53,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.ThrowingStone) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 10));
     }
+    if (item === ItemsEnum.HarpyTalon) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 300));
+    }
     if (item === ItemsEnum.FortifiedBronzeSword) {
       purchasePrice.push(new ResourceValue(ItemsEnum.BronzeSword, 1));
       purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, 10));

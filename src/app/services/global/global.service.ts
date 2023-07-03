@@ -36,6 +36,7 @@ import { Trial } from 'src/app/models/battle/trial.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { EquipmentSetEnum } from 'src/app/models/enums/equipment-set-enum.model';
 import { EquipmentSet } from 'src/app/models/resources/equipment-set.model';
+import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -3592,7 +3593,6 @@ export class GlobalService {
     if (!repeatTrialFight || !canRepeat)
       return new Trial();
 
-    console.log("Repeating");
     var type = this.dictionaryService.getTrialInfoFromType(this.globalVar.activeBattle.activeTrial.type);
 
     return this.startTrial(type);

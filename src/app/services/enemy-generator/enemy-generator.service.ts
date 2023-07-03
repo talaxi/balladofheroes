@@ -164,6 +164,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 55;
       enemy.coinGainFromDefeat = 2;
       enemy.loot.push(new LootItem(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 1, .1));
+      enemy.loot.push(new LootItem(ItemsEnum.HarpyTalon, ItemTypeEnum.Equipment, 1, .01));
       //chance to drop leather
 
       var claw = new Ability();
@@ -185,6 +186,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 58;
       enemy.coinGainFromDefeat = 2;
       enemy.loot.push(new LootItem(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 1, .1));
+      enemy.loot.push(new LootItem(ItemsEnum.HarpyTalon, ItemTypeEnum.Equipment, 1, .01));
       //chance to drop leather
 
       var enrage = new Ability();
@@ -202,6 +204,7 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 55;
       enemy.coinGainFromDefeat = 2;
       enemy.loot.push(new LootItem(ItemsEnum.Leather, ItemTypeEnum.CraftingMaterial, 1, .1));
+      enemy.loot.push(new LootItem(ItemsEnum.HarpyTalon, ItemTypeEnum.Equipment, 1, .01));
       //chance to drop leather
 
       var ravage = new Ability();
@@ -559,7 +562,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 118;
       enemy.loot.push(new LootItem(ItemsEnum.MoltenArmor, ItemTypeEnum.Equipment, 1, .02));
-      enemy.loot.push(new LootItem(ItemsEnum.SwordOfFlames, ItemTypeEnum.Equipment, 1, .005));
+      enemy.loot.push(new LootItem(ItemsEnum.SwordOfFlames, ItemTypeEnum.Equipment, 1, .01));
 
       var slice = new Ability();
       slice.name = "Slice";
@@ -638,7 +641,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
       enemy.xpGainFromDefeat = 136;
-      enemy.loot.push(new LootItem(ItemsEnum.SwordOfFlames, ItemTypeEnum.Equipment, 1, .01));
+      enemy.loot.push(new LootItem(ItemsEnum.SwordOfFlames, ItemTypeEnum.Equipment, 1, .02));
       enemy.loot.push(new LootItem(ItemsEnum.RoughRubyFragment, ItemTypeEnum.CraftingMaterial, 1, .02));
       enemy.battleStats.elementIncrease.fire = .1;
 
