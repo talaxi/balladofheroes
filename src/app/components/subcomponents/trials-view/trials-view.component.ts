@@ -1,5 +1,6 @@
 import { Component } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Trial } from 'src/app/models/battle/trial.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -18,14 +19,17 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 })
 export class TrialsViewComponent {
   selectedTrial: Trial;
-  repeatColiseumFight: boolean = false;
+  repeatTrialFight: boolean = false;
   tooltipDirection = DirectionEnum.Left;
+  isMobile: boolean = false;
 
   constructor(private trialService: TrialService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
-    private enemyGeneratorService: EnemyGeneratorService) { }
+    private enemyGeneratorService: EnemyGeneratorService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void { 
+    this.isMobile = this.deviceDetectorService.isMobile();
+    this.repeatTrialFight = this.globalService.globalVar.settings.get("repeatTrialFight") ?? false;
     var standardTrials = this.getStandardTrials();
     if (standardTrials.length > 0)
       this.selectedTrial = this.dictionaryService.getTrialInfoFromType(standardTrials[0]);
@@ -150,5 +154,9 @@ export class TrialsViewComponent {
 
   openModal(content: any) {    
     return this.dialog.open(content, { width: '40%', height: 'auto' });      
+  }
+  
+  repeatTrialFightToggle() {
+    this.globalService.globalVar.settings.set("repeatTrialFight", this.repeatTrialFight);
   }
 }

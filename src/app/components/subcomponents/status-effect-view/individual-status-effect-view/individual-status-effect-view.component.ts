@@ -373,7 +373,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "retribution.svg";
     }
     if (effect.type === StatusEffectEnum.Surge) {
-      src += "Surge.svg";
+      src += "surge.svg";
     }
     if (effect.type === StatusEffectEnum.Thyrsus) {
       src += "thyrsus.svg";

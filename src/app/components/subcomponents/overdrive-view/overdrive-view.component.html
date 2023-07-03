@@ -16,8 +16,8 @@
             </div>
         </div>
     </div>
-    <div class="vr">
-        <hr class="vrHr" />
+    <div [ngClass]="{'vr': !isMobile}">
+        <hr [ngClass]="{'vrHr': !isMobile, 'mobileDivider': isMobile}" />
     </div>
     <div class="column column2">
         <div *ngIf="selectedOverdriveInfo !== undefined">

@@ -119,7 +119,9 @@
         <br />
         <br />
         <div class="importExportDiv">
-            <textarea (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport" name="importExport" rows="10"
+            <textarea *ngIf="!isMobile" (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport" name="importExport" rows="10"
+                [(ngModel)]="importExportValue"></textarea>
+                <textarea *ngIf="isMobile" (focus)="inTextbox()" (blur)="outOfTextbox()" id="importExport" name="importExport" rows="5"
                 [(ngModel)]="importExportValue"></textarea>
             <div class="importExportButtons">
                 <button class="buttonStyled" (click)="LoadGame()">

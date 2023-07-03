@@ -5,6 +5,7 @@ import { CustomTooltipComponent } from './custom-tooltip.component';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { GlobalService } from 'src/app/services/global/global.service';
 
 @Directive({
   selector: '[customToolTip]'
@@ -38,6 +39,7 @@ export class ToolTipRendererDirective {
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
     private _elementRef: ElementRef,
+    private globalService: GlobalService,
     private gameLoopService: GameLoopService,
     private deviceDetectorService: DeviceDetectorService) { }
 

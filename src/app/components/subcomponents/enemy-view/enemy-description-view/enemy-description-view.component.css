@@ -22,3 +22,12 @@
 .enemyHpPercentMarginRight {
     margin-right: 1rem;
 }
+
+.smallText {
+    font-size: .8rem;
+}
+
+.lootItem {
+    width: 33%;
+    display: inline-block;
+}

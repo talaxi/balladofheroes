@@ -330,8 +330,13 @@ export class BattleComponent implements OnInit {
   }
 
   checkForNotificationOverlayMessage(deltaTime: number) {
+    var removeMessage = false;
+
     if (this.globalService.globalVar.isGamePaused)
       deltaTime = 0;
+
+    if (deltaTime > 0)
+      console.log("New check");
 
     this.notificationOverlayMessage = "";
 
@@ -356,7 +361,8 @@ export class BattleComponent implements OnInit {
     }
 
     if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Hiding) {
-      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== nextMessage);      
+      console.log("Hiding initial message");
+      removeMessage = true;      
     }
 
     var hardStop = 5;
@@ -381,11 +387,15 @@ export class BattleComponent implements OnInit {
 
         if (additionalMessage[2] <= 0 && additionalMessage[3] === AnimationStateEnum.Hiding) {
           this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);
+          console.log("Hiding additional message");
         }
-
-        extraItemCount += 1;
+        else
+          extraItemCount += 1;
       }
     }
+
+    if (removeMessage)
+      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== nextMessage);      
   }
 
   skipOverlayMessage() {

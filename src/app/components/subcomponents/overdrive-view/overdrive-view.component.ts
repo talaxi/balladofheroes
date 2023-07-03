@@ -1,4 +1,5 @@
 import { Component, Input, OnInit } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { OverdriveInfo } from 'src/app/models/character/overdrive-info.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -13,10 +14,12 @@ import { LookupService } from 'src/app/services/lookup.service';
 export class OverdriveViewComponent implements OnInit {
   @Input() character: Character;
   selectedOverdriveInfo: OverdriveInfo;
+  isMobile: boolean = false;
 
-  constructor(public lookupService: LookupService) { }
+  constructor(public lookupService: LookupService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
   }
 
   getOverdrives() {

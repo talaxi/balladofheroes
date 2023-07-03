@@ -952,6 +952,25 @@ export class JewelcraftingService {
       upgradedItem = ItemsEnum.PerfectRadiatingEarthStone;
     }
 
+    if (item === ItemsEnum.FlawedRuby) {
+      upgradedItem = ItemsEnum.PerfectFlawedRuby;
+    }
+    if (item === ItemsEnum.FlawedEmerald) {
+      upgradedItem = ItemsEnum.PerfectFlawedEmerald;
+    }
+    if (item === ItemsEnum.FlawedAmethyst) {
+      upgradedItem = ItemsEnum.PerfectFlawedAmethyst;
+    }
+    if (item === ItemsEnum.FlawedTopaz) {
+      upgradedItem = ItemsEnum.PerfectFlawedTopaz;
+    }
+    if (item === ItemsEnum.FlawedOpal) {
+      upgradedItem = ItemsEnum.PerfectFlawedOpal;
+    }
+    if (item === ItemsEnum.FlawedAquamarine) {
+      upgradedItem = ItemsEnum.PerfectFlawedAquamarine;
+    }
+
     return upgradedItem;
   }
 }

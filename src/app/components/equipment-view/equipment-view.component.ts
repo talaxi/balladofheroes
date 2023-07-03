@@ -42,6 +42,7 @@ export class EquipmentViewComponent implements OnInit {
   sortType: ResourceViewSortEnum = ResourceViewSortEnum.Quality;  
   ascendingSort: boolean = true; 
   filterPrefix = "equipment";
+  customSellAmount: number = 0;
 
   constructor(private globalService: GlobalService, public lookupService: LookupService, private gameLoopService: GameLoopService,
     private menuService: MenuService, private utilityService: UtilityService, public dialog: MatDialog, private deviceDetectorService: DeviceDetectorService,
@@ -288,8 +289,11 @@ export class EquipmentViewComponent implements OnInit {
     return this.lookupService.getResourceAmount(this.itemToSell.itemType, this.itemToSell.associatedResource?.extras) - this.lookupService.getItemEquipCount(this.itemToSell.itemType, this.itemToSell.associatedResource);
   }
 
-  changeSellAmount(amount: number) {
+  changeSellAmount(amount: number, resetCustomAmount: boolean = false) {
     this.sellAmount = amount;
+
+    if (resetCustomAmount)
+      this.customSellAmount = 0;
   }
 
   sellItem() {
@@ -346,9 +350,24 @@ export class EquipmentViewComponent implements OnInit {
   itemSlotted(slotted: boolean) {
     this.setUpAvailableEquipment();
   }
+  
+  inTextbox() {
+    this.menuService.inTextbox = true;
+  }
+
+  outOfTextbox() {
+    this.menuService.inTextbox = false;
+  }
+
+  useCustomAmount() {
+    if (this.customSellAmount > 0 && this.customSellAmount <= this.getTotalItemToSellAmount())
+      this.changeSellAmount(this.customSellAmount);
+  }
 
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
+
+      this.menuService.inTextbox = false;
   }
 }

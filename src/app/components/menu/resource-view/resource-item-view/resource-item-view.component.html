@@ -1,5 +1,5 @@
 
-<div class="resourceContainer" (mouseover)="showTooltip = true" (mouseleave)="showTooltip = false">
+<div class="resourceContainer" (mouseover)="shouldShowTooltip(true)" (mouseleave)="shouldShowTooltip(false)">
     <span #spanElement class="spanElement" (click)="setTrackingResource()">
         <span class="bold">{{getPluralizedItemName(resource)}}:</span> {{lookupService.getResourceAmount(resource) | number}}
     </span>

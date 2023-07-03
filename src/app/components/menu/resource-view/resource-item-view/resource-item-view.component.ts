@@ -55,4 +55,11 @@ export class ResourceItemViewComponent implements OnInit {
 
     return qualityClass;    
   }
+  
+  shouldShowTooltip(show: boolean) {
+    this.showTooltip = show;    
+
+    if (!show)
+      this.globalService.globalVar.settings.set("viewAllResourceLocations", false);
+  }
 }

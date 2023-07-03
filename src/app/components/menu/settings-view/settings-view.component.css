@@ -51,4 +51,7 @@
         display:block;
     }
     
+    #importExport {
+        width: 96.5%;
+    }
 }

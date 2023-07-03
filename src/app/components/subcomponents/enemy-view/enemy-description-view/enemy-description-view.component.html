@@ -1,4 +1,4 @@
-<div>
+<div #enemyDescriptionView>
     <span class="s2Heading">{{character.name}}</span>
     <hr />
     <div
@@ -7,7 +7,7 @@
         {{this.utilityService.killCountDisplayEnemyStatsAbilities - this.defeatCount === 1 ? "time" : "times"}} for more
         info.
     </div>
-    <div *ngIf="this.defeatCount >= this.utilityService.killCountDisplayEnemyStatsAbilities">
+    <div #infoView *ngIf="this.defeatCount >= this.utilityService.killCountDisplayEnemyStatsAbilities">
         <div class="stats">
             <div class="statColumn1">
                 <span class='statLabel'>Attack:</span> {{getAttack()}}
@@ -62,7 +62,8 @@
             <span *ngIf="character.loot.length === 0">No loot.</span>
             <div *ngIf="character.loot.length > 0">
                 <span class='statLabel'>Possible Loot:</span>
-                <div *ngFor="let loot of character.loot">
+                <br/>
+                <div class="lootItem" *ngFor="let loot of character.loot">
                     {{getLootItem(loot)}}
                 </div>
             </div>

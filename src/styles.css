@@ -1151,8 +1151,8 @@ button:disabled {
 }
 
 .fading {
-  -webkit-animation: fadingAnimation .5s forwards;
-  animation: fadingAnimation .5s forwards;
+  -webkit-animation: fadingAnimation .55s forwards;
+  animation: fadingAnimation .55s forwards;
 }
 
 .sceneDiv {
@@ -1165,6 +1165,10 @@ button:disabled {
 
 .smallEquipmentText {
   font-size: .915rem;
+}
+
+.verySmallEquipmentText {
+  font-size: .825rem;
 }
 
 .mat-radio-checked .mat-radio-inner-circle {

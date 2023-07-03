@@ -1,6 +1,7 @@
 import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 
@@ -19,7 +20,8 @@ export class ResourceRequiredViewComponent implements OnInit {
   @Input() flipToolTip: boolean = false;
   @ViewChild('spanElement') spanElementRef: ElementRef;
 
-  constructor(public lookupService: LookupService, private gameLoopService: GameLoopService, public dictionaryService: DictionaryService) { }
+  constructor(public lookupService: LookupService, private gameLoopService: GameLoopService, public dictionaryService: DictionaryService,
+    private globalService: GlobalService) { }
 
   ngOnInit(): void {
     this.displayName = this.dictionaryService.getItemName(this.resource.item);
@@ -41,6 +43,13 @@ export class ResourceRequiredViewComponent implements OnInit {
       classText = "insufficientResourcesKeyword";
 
     return classText;
+  }
+
+  shouldShowTooltip(show: boolean) {
+    this.showTooltip = show;    
+    
+    if (!show)
+      this.globalService.globalVar.settings.set("viewAllResourceLocations", false);    
   }
 
   ngOnDestroy() {

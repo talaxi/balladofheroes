@@ -50,8 +50,8 @@
         </div>
     </div>
     <div class="spacer">
-        <div class="vr">
-            <hr class="vrHr" />
+        <div [ngClass]="{'vr': !isMobile}">
+            <hr [ngClass]="{'vrHr': !isMobile, 'mobileDivider': isMobile}" />
         </div>
     </div>
     <div class="column recipeInfo">
@@ -71,16 +71,17 @@
             <br />
             <div class="flex">
                 <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 1}"
-                    (click)="changeCreateAmount(1)">1x</button>
+                    (click)="changeCreateAmount(1, true)">1x</button>
                 <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 5}"
-                    (click)="changeCreateAmount(5)">5x</button>
+                    (click)="changeCreateAmount(5, true)">5x</button>
                 <button class="buttonAsText clickableText filterOption"
-                    [ngClass]="{'filterActive': createAmount === 25}" (click)="changeCreateAmount(25)">25x</button>
+                    [ngClass]="{'filterActive': createAmount === 25}" (click)="changeCreateAmount(25, true)">25x</button>
                 <button class="buttonAsText clickableText filterOption"
-                    [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100)">100x</button>
+                    [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100, true)">100x</button>
                 <button class="buttonAsText clickableText filterOption"
                     [ngClass]="{'filterActive': createAmount !== 1 && createAmount !== 5 && createAmount !== 25 && createAmount !== 100 && createAmount === getTotalItemToCreateAmount()}"
-                    (click)="changeCreateAmount(getTotalItemToCreateAmount())">All</button>
+                    (click)="changeCreateAmount(getTotalItemToCreateAmount(), true)">All</button>
+                    <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()" (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customCreateAmount" />
             </div>
             <br />
             <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>

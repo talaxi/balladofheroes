@@ -131,3 +131,19 @@
     width: 99%;
     height: 0;
 }
+
+@media (max-width: 800px) {
+    .container {
+        flex-direction: column;    
+        height: 80%;
+    }
+
+    .column {
+        height: 50%;
+    }
+
+    .mobileDivider {
+        border-color: var(--foreground-accent);
+        border-width: 3px;
+    }
+}
