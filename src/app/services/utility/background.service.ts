@@ -24,6 +24,7 @@ import { AlchemyService } from '../professions/alchemy.service';
 import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from './utility.service';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
+import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -71,6 +72,16 @@ export class BackgroundService {
         this.checkForThornsGems(partyMember);
         this.checkGodStatuses(partyMember);
 
+        if (partyMember.overdriveInfo !== undefined && partyMember.overdriveInfo.isActive && partyMember.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Revenge && partyMember.overdriveInfo.revengeTime !== undefined) {
+          if (partyMember.overdriveInfo.revengeTime <= 0) {            
+            partyMember.overdriveInfo.revengeTime = 0;
+          }
+          else
+          {            
+            partyMember.overdriveInfo.revengeTime -= deltaTime;
+          }
+        }
+
         if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
           this.handleAbilityCooldowns(partyMember, deltaTime);
@@ -83,8 +94,8 @@ export class BackgroundService {
     if (this.globalService.globalVar.globalStatusEffects.length === 0)
       return;
 
-    this.globalService.globalVar.globalStatusEffects.forEach(effect => {     
-        effect.duration -= deltaTime;
+    this.globalService.globalVar.globalStatusEffects.forEach(effect => {
+      effect.duration -= deltaTime;
     });
 
     this.globalService.globalVar.globalStatusEffects = this.globalService.globalVar.globalStatusEffects.filter(effect => effect.isPermanent || effect.duration > 0);
@@ -92,7 +103,7 @@ export class BackgroundService {
   }
 
   handleTown(deltaTime: number, loading: any) {
-    var party = this.globalService.getActivePartyCharacters(true);    
+    var party = this.globalService.getActivePartyCharacters(true);
     this.gainHpInTown(party, deltaTime);
   }
 
@@ -203,7 +214,7 @@ export class BackgroundService {
 
     if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
       if (effect.type === AltarEffectsEnum.AthenaHealOverTime || effect.type === AltarEffectsEnum.AthenaRareHealOverTime) {
-        party.forEach(member => {          
+        party.forEach(member => {
           this.battleService.gainHp(member, effect.effectiveness);
         });
       }
@@ -282,7 +293,7 @@ export class BackgroundService {
     }
 
     if (effect.type === AltarEffectsEnum.AthenaHeal) {
-      party.forEach(member => {        
+      party.forEach(member => {
         this.battleService.gainHp(member, effect.effectiveness);
       });
     }
@@ -305,14 +316,14 @@ export class BackgroundService {
       }
     }
 
-    if (effect.type === AltarEffectsEnum.ApolloHeal) {      
+    if (effect.type === AltarEffectsEnum.ApolloHeal) {
       if (party !== undefined && party.length > 0) {
         party = party.sort(function (a, b) {
           return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
             a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
         });
         var target = party[0];
-      
+
         this.battleService.gainHp(target, effect.effectiveness);
       }
     }
@@ -410,21 +421,21 @@ export class BackgroundService {
       });
     }
 
-    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier) {      
+    if (effect.type === AltarEffectsEnum.DionysusSingleBarrier) {
       var barrierTarget = this.lookupService.getRandomPartyMember(party);
       if (barrierTarget !== undefined) {
-      var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(barrierTarget, true));
-      barrierTarget.battleInfo.barrierValue += barrierAmount;
+        var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(barrierTarget, true));
+        barrierTarget.battleInfo.barrierValue += barrierAmount;
       }
     }
 
     if (effect.type === AltarEffectsEnum.DionysusRareMultiBarrier) {
       if (party.length > 0) {
-      party.forEach(member => {
-        var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(member, true));
-        member.battleInfo.barrierValue += barrierAmount;
-      });
-    }
+        party.forEach(member => {
+          var barrierAmount = Math.round((effect.effectiveness - 1) * this.lookupService.getAdjustedMaxHp(member, true));
+          member.battleInfo.barrierValue += barrierAmount;
+        });
+      }
     }
 
     if (effect.type === AltarEffectsEnum.DionysusRareFullDebuffs) {

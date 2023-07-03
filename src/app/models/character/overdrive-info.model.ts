@@ -16,6 +16,7 @@ export class OverdriveInfo {
     isActive: boolean;
     lastUsedElement: ElementalTypeEnum; //used specifically for Nature overdrive
     damageTaken: number; //used specifically for Protection overdrive
+    revengeTime: number; //used specifically for Revenge overdrive 
     criticalDamageTaken: [CharacterEnum, number][]; //used specifically for Bullseye overdrive
 
     constructor() {
@@ -33,5 +34,6 @@ export class OverdriveInfo {
         this.lastUsedElement = ElementalTypeEnum.None;
         this.damageTaken = 0;
         this.criticalDamageTaken = [];
+        this.revengeTime = 0;
     }
 }

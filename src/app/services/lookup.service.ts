@@ -2283,7 +2283,7 @@ export class LookupService {
       description = "For 20 seconds, using Quick Hit will reduce the cooldown of your abilities by " + this.utilityService.quicknessCooldownReduction + " seconds.";
     }
     if (type === OverdriveNameEnum.Revenge) {
-      description = "For 20 seconds, counterattack any damage dealing attack with an auto attack.";
+      description = "For 20 seconds, counterattack any damage dealing attack with an auto attack. Cannot trigger more than once per second.";
     }
     if (type === OverdriveNameEnum.Hope) {
       description = "For 20 seconds, the threshold for any barriers you apply are doubled.";

@@ -2853,8 +2853,9 @@ export class BattleService {
 
     target.trackedStats.damageTaken += totalDamageDealt;
 
-    if (target.overdriveInfo.isActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Revenge) {
+    if (target.overdriveInfo.isActive && target.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Revenge && target.overdriveInfo.revengeTime <= 0) {      
       this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantAutoAttack, -1, 1, true, true, true, attacker.name), target, undefined, attacker);
+      target.overdriveInfo.revengeTime = 1;
     }
 
     var counterattack = this.lookupService.characterHasAbility("Counterattack", target);
