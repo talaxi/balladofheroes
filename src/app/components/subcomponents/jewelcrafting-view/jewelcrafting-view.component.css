@@ -144,6 +144,10 @@
     height: 0;
 }
 
+.customNumberWidth {
+    width: 3rem;
+  }
+  
 
 @media (max-width: 800px) { 
     .offsetWidth {
@@ -153,5 +157,16 @@
     .recipeBook {
         margin: .5rem;
         padding: .25rem;
+        flex-direction: column;    
+        height: 60vh;
       }
+
+    .column {
+        height: 50%;
+    }
+
+    .mobileDivider {
+        border-color: var(--foreground-accent);
+        border-width: 3px;
+    }
 }

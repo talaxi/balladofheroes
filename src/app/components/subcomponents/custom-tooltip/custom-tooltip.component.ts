@@ -2,6 +2,7 @@ import { Component, ElementRef, Input, OnInit, Renderer2, TemplateRef, ViewChild
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 
 @Component({
@@ -33,8 +34,11 @@ export class CustomTooltipComponent implements OnInit {
   largeTooltipPercent = .58; //these need to match the css
   shiftLeft = false;
   shiftUp = false;
+  subscription: any;
+  viewingAllItems: boolean = false;
 
-  constructor(private balladService: BalladService, private globalService: GlobalService, public dialog: MatDialog) { }
+  constructor(private balladService: BalladService, private globalService: GlobalService, public dialog: MatDialog,
+    private gameLoopService: GameLoopService) { }
 
   ngOnInit(): void {
     this.tooltipTheme = this.globalService.globalVar.settings.get("tooltipTheme") ?? true;
@@ -43,13 +47,29 @@ export class CustomTooltipComponent implements OnInit {
   ngAfterViewInit() {
     var divs = document.querySelectorAll('.subzoneClickableItem');
     divs.forEach(el => el.addEventListener('click', event => {
+      console.log("Clicked"); //seems to not be attaching the listener when you view all      
       var className = el.getAttribute("class");
       var subzoneEnumValue = className?.split(" ")[1];
-      if (subzoneEnumValue !== undefined) {
-        this.jumpToSubzone(Number(subzoneEnumValue) as SubZoneEnum);
-        this.dialog.closeAll();
+      if (subzoneEnumValue !== undefined) {        
+        if (subzoneEnumValue === 'viewAll')
+        {
+          this.globalService.globalVar.settings.set("viewAllResourceLocations", true);                  
+        }
+        else
+        {
+          this.jumpToSubzone(Number(subzoneEnumValue) as SubZoneEnum);
+          this.dialog.closeAll();
+        }
       }
     }));
+
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => { 
+      if (!this.viewingAllItems && this.globalService.globalVar.settings.get("viewAllResourceLocations"))
+      {
+        this.setClickEvent();
+        this.viewingAllItems = true;
+      }
+    });
     
     if (this.elementRef !== undefined) {
       //console.log("Width: " + screen.width + " < " + this.elementRef.nativeElement.getBoundingClientRect().x  + " + " + this.elementRef.nativeElement.getBoundingClientRect().width + " + " + this.tooltipElement.nativeElement.getBoundingClientRect().width);
@@ -65,6 +85,18 @@ export class CustomTooltipComponent implements OnInit {
     }
   }
 
+  setClickEvent() {
+    var divs = document.querySelectorAll('.subzoneClickableItem');
+    divs.forEach(el => el.addEventListener('click', event => {           
+      var className = el.getAttribute("class");
+      var subzoneEnumValue = className?.split(" ")[1];
+      if (subzoneEnumValue !== undefined) {                
+        this.jumpToSubzone(Number(subzoneEnumValue) as SubZoneEnum);
+        this.dialog.closeAll();        
+      }
+    }));
+  }
+
   jumpToSubzone(type: SubZoneEnum) {
     var startingPoint = this.balladService.findSubzone(type);
     if (startingPoint !== undefined) {
@@ -73,5 +105,10 @@ export class CustomTooltipComponent implements OnInit {
     }
 
     this.globalService.globalVar.settings.set("autoProgress", false);
+  }
+  
+  ngOnDestroy() {
+    if (this.subscription !== undefined)
+      this.subscription.unsubscribe();
   }
 }

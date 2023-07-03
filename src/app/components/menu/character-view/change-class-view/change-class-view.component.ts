@@ -127,6 +127,9 @@ export class ChangeClassViewComponent implements OnInit {
   }
 
   selectNewClass(type: CharacterEnum) {    
+    if (this.swappingClass === undefined)
+      return;
+
     var swappingType = 1;
     if (this.swappingClass === 1)
       swappingType = this.globalService.globalVar.activePartyMember1;

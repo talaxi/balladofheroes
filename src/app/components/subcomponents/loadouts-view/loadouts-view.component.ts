@@ -149,12 +149,16 @@ export class LoadoutsViewComponent {
     var qualityClass = this.lookupService.getEquipmentQualityClass(item.quality);
     var extraNameAddition = this.lookupService.getEquipmentExtraNameAddition(item.associatedResource);
 
+    var fullName = itemName + extraNameAddition;
+
     var smallTextClass = "";
     
-    if (itemName.length > 14 && extraNameAddition !== "")
+    if (itemName.length >= 18)
+      smallTextClass = " verySmallEquipmentText";
+    else if (itemName.length >= 14)
       smallTextClass = " smallEquipmentText";
 
-    itemText = "<strong class='" + qualityClass + smallTextClass + "'>" + itemName + extraNameAddition + "</strong>";
+    itemText = "<strong class='" + qualityClass + smallTextClass + "'>" + fullName + "</strong>";
 
     return itemText;
   }

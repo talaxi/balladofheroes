@@ -19,7 +19,7 @@ export class MainComponent implements OnInit {
   public navigationEnum = NavigationEnum;
   underworldAnimation = false;
   maxBankedTime = 0;
-  displayFunFacts = false;
+  displayFunFacts = true;
   isMobile = false;
 
   constructor(private layoutService: LayoutService, private gameLoopService: GameLoopService, public lookupService: LookupService,
@@ -53,20 +53,19 @@ export class MainComponent implements OnInit {
     return (this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.averageActiveTimeLimit) / 60;
   }
 
-  getFunFact() {
-    var fact = "<strong><i>Tip:</i> ";
-
+  getFunFact() {    
     var factList: string[] = [];
     factList.push("You receive more XP based on how many enemies are in the enemy party when defeating them. 2 enemies increase XP gain by 15%, 3 enemies increase XP gain by 30%, and 4 enemies increase XP gain by 45%.");
     factList.push("Any barrier amount your characters have is reset when switching subzones.");
     factList.push("You can adjust your FPS in the Settings for a smoother or less CPU-intensive experience.");
     factList.push("Your party can consist of at most 2 classes and 4 gods.");
+    factList.push("By default, inactive classes gain no XP and inactive gods gain 25% XP from battle.");
+
+    var seed = new Date().getDay() + new Date().getMonth() + new Date().getFullYear() + new Date().getHours() + new Date().getMinutes();
+    var rng = this.utilityService.getRandomSeededInteger(0, factList.length-1, seed.toString());
 
 
-    var rng = this.utilityService.getRandomInteger(0, factList.length);
-
-
-    return factList[rng] + "</strong>";
+    return "<strong><i>Tip:</i> " + factList[rng] + "</strong>";
   }
 
   ngOnDestroy() {    

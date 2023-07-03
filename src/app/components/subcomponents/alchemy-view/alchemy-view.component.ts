@@ -1,4 +1,5 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { DeviceDetectorService } from 'ngx-device-detector';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
@@ -8,6 +9,7 @@ import { Recipe } from 'src/app/models/professions/recipe.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
+import { MenuService } from 'src/app/services/menu/menu.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
@@ -24,11 +26,15 @@ export class AlchemyViewComponent implements OnInit {
   @ViewChild('confirmationBox') confirmationBox: any;
   alchemy: Profession | undefined;
   recipeList: Recipe[];
+  isMobile: boolean = false;
+  customCreateAmount: number = 0;
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
-    private alchemyService: AlchemyService, private professionService: ProfessionService, private dictionaryService: DictionaryService) { }
+    private alchemyService: AlchemyService, private professionService: ProfessionService, private dictionaryService: DictionaryService,
+    private deviceDetectorService: DeviceDetectorService, private menuService: MenuService) { }
 
   ngOnInit(): void {
+    this.isMobile = this.deviceDetectorService.isMobile();
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.getFullRecipeList();
   }
@@ -239,8 +245,11 @@ export class AlchemyViewComponent implements OnInit {
     this.professionService.spendResourcesOnRecipe(this.selectedRecipe);
   }
 
-  changeCreateAmount(amount: number) {
+  changeCreateAmount(amount: number, resetCustomAmount: boolean = false) {
     this.createAmount = amount;
+
+    if (resetCustomAmount)
+      this.customCreateAmount = 0;
   }
 
   getTotalAmountToCreate() {
@@ -273,6 +282,19 @@ export class AlchemyViewComponent implements OnInit {
     var name = this.lookupService.getQualityTypeName(quality);
 
     return "<span class='" + name.toLowerCase() + "Equipment bold'>" + name.toLowerCase() + " recipes</span>";
+  }
+
+  inTextbox() {
+    this.menuService.inTextbox = true;
+  }
+
+  outOfTextbox() {
+    this.menuService.inTextbox = false;
+  }
+
+  useCustomAmount() {
+    if (this.customCreateAmount > 0 && this.customCreateAmount <= this.getTotalItemToCreateAmount())
+      this.changeCreateAmount(this.customCreateAmount);
   }
 
   getXpIncrease() {
@@ -311,5 +333,9 @@ export class AlchemyViewComponent implements OnInit {
       return false;
     else 
       return qualityToggle[1];
+  }
+  
+  ngOnDestroy() {
+    this.menuService.inTextbox = false;
   }
 }

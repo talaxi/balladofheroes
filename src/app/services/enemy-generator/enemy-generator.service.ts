@@ -7116,8 +7116,8 @@ export class EnemyGeneratorService {
       enemy.name = "Nemesis";
       enemy.battleStats = new CharacterStats(1.15, 1.01, 1.25, .8, .7, 1.25);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
-      enemy.coinGainFromDefeat = 20;
-      enemy.xpGainFromDefeat = 6000;      
+      enemy.coinGainFromDefeat = 500;
+      enemy.xpGainFromDefeat = 50000;      
       enemy.loot.push(new LootItem(ItemsEnum.NemesissRing, ItemTypeEnum.Equipment, 1, .05));
       enemy.loot.push(new LootItem(ItemsEnum.NemesissArmor, ItemTypeEnum.Equipment, 1, .05));    
       enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .1));      
@@ -8175,6 +8175,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementIncrease.earth += .25;
       enemy.battleStats.elementResistance.earth += .5;
       enemy.loot.push(new LootItem(ItemsEnum.GiantSword, ItemTypeEnum.Equipment, 1, .01));
+      enemy.loot.push(new LootItem(ItemsEnum.MetalNuggets, ItemTypeEnum.CraftingMaterial, 1, .02));   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var quickAttack = new Ability();
@@ -8207,6 +8208,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.elementIncrease.earth += .25;
       enemy.battleStats.elementResistance.earth += .5;
       enemy.loot.push(new LootItem(ItemsEnum.GiantRing, ItemTypeEnum.Equipment, 1, .01));
+      enemy.loot.push(new LootItem(ItemsEnum.MetalNuggets, ItemTypeEnum.CraftingMaterial, 1, .02));   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.GaiasBlessing, -1, .5, false, true));
 
       var rollingBoulder = new Ability();

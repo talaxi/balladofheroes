@@ -515,12 +515,12 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ElixirOfSpeed, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PotentConcoction, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.UnstablePotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.FireAbsorptionPotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.HolyAbsorptionPotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.LightningAbsorptionPotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.AirAbsorptionPotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.EarthAbsorptionPotion, 100));
-    this.lookupService.gainResource(new ResourceValue(ItemsEnum.WaterAbsorptionPotion, 100));
+    //this.lookupService.gainResource(new ResourceValue(ItemsEnum.FireAbsorptionPotion, 100));
+    //this.lookupService.gainResource(new ResourceValue(ItemsEnum.HolyAbsorptionPotion, 100));
+    //this.lookupService.gainResource(new ResourceValue(ItemsEnum.LightningAbsorptionPotion, 100));
+    //this.lookupService.gainResource(new ResourceValue(ItemsEnum.AirAbsorptionPotion, 100));
+    //this.lookupService.gainResource(new ResourceValue(ItemsEnum.EarthAbsorptionPotion, 100));
+    //this.lookupService.gainResource(new ResourceValue(ItemsEnum.WaterAbsorptionPotion, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ScalyRing, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.NecklaceSlotAddition, 10));
 
@@ -570,6 +570,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.NemesissArmor, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.DionysussArmor, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ZeussArmor, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.GiantNecklace, 5));
 
     this.globalService.globalVar.currentStoryId = 310;
     this.globalService.globalVar.isDpsUnlocked = true;
@@ -787,7 +788,7 @@ export class InitializationService {
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DivineTarge);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasArmor);
         character1.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasRing);
-        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
+        character1.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ApollosNecklace);
       }
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
@@ -798,7 +799,7 @@ export class InitializationService {
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussShield);
         character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussArmor);
         character2.equipmentSet.ring = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussRing);
-        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
+        character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ApollosNecklace);
       }
 
       var chthonicResetCount = 1;

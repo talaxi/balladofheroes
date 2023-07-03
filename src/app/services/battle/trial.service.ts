@@ -340,6 +340,6 @@ export class TrialService {
 
 
     //then reset
-    this.globalService.globalVar.activeBattle.activeTrial = this.globalService.setNewTrial(false);
+    this.globalService.globalVar.activeBattle.activeTrial = this.globalService.setNewTrial(true);
   }
 }

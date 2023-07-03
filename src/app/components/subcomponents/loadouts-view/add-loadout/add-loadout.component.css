@@ -1,3 +1,8 @@
+.info {
+    display: flex;
+    justify-content: space-between;
+}
+
 .addItem {
     margin-left: .2rem;
     width: 2vw;

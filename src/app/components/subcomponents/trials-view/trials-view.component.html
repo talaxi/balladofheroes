@@ -21,9 +21,9 @@
                 </div>
             </div>
         </div>
-    </div>
-    <div class="vr">
-        <hr class="vrHr" />
+    </div>  
+    <div [ngClass]="{'vr': !isMobile}">
+        <hr [ngClass]="{'vrHr': !isMobile, 'mobileDivider': isMobile}" />
     </div>
     <div class="column column2">
         <div *ngIf="selectedTrial !== undefined">
@@ -51,6 +51,12 @@
                     <br />
                     <br />
                     <button class="buttonStyled" (click)="startTrial()">Start Trial</button>
+                    <br />
+                    <div class='flexAround'>
+                        <mat-checkbox [(ngModel)]="repeatTrialFight" (input)="repeatTrialFightToggle()">
+                            Repeat Trial
+                        </mat-checkbox>
+                    </div>
                 </div>
             </div>
         </div>

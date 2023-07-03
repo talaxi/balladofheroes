@@ -1,4 +1,4 @@
-import { Component, Input } from '@angular/core';
+import { Component, ElementRef, Input, ViewChild } from '@angular/core';
 import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { LootItem } from 'src/app/models/resources/loot-item.model';
@@ -17,6 +17,8 @@ export class EnemyDescriptionViewComponent {
   @Input() character: Enemy;
   defeatCount: number = 0;
   subscription: any;
+  @ViewChild('enemyDescriptionView') containerDiv: ElementRef;
+  @ViewChild('infoView') infoDiv: ElementRef;
 
   constructor(public utilityService: UtilityService, public lookupService: LookupService, private dictionaryService: DictionaryService,
     private gameLoopService: GameLoopService, private globalService: GlobalService) {
@@ -24,6 +26,14 @@ export class EnemyDescriptionViewComponent {
   }
 
   ngOnInit() {
+    //var div = document.getElementById('enemyDescriptionView');
+   
+    /*if (div !== undefined && div !== null && div.scrollHeight > div.clientHeight)
+    {      
+      console.log("Adding");
+      div.classList.add('extremelySmallText');
+    }*/
+
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.character !== undefined) {
         var defeatCount = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.character.bestiaryType);
@@ -31,6 +41,13 @@ export class EnemyDescriptionViewComponent {
           this.defeatCount = defeatCount.count;
       }
     });
+  }
+
+  ngAfterViewInit() {
+    if (this.containerDiv !== undefined && (window.innerHeight * .98) < this.containerDiv.nativeElement.clientHeight + this.containerDiv.nativeElement.getBoundingClientRect().y)
+    {      
+      this.containerDiv.nativeElement.classList.add('smallText');
+    }
   }
 
   getLootItem(loot: LootItem) {

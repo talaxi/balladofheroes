@@ -53,6 +53,7 @@ import { ShopTypeEnum } from '../models/enums/shop-type-enum.model';
 import { BalladEnum } from '../models/enums/ballad-enum.model';
 import { Battle } from '../models/battle/battle.model';
 import { EquipmentSetEnum } from '../models/enums/equipment-set-enum.model';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
   providedIn: 'root'
@@ -64,7 +65,7 @@ export class LookupService {
   constructor(private globalService: GlobalService, private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService,
     private charmService: CharmService, private enemyGeneratorService: EnemyGeneratorService, private balladService: BalladService,
     private shopItemGeneratorService: ShopItemGeneratorService, private resourceGeneratorService: ResourceGeneratorService,
-    private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
+    private equipmentService: EquipmentService, private dictionaryService: DictionaryService, private deviceDetectorService: DeviceDetectorService) { }
 
   getSubZoneCompletionByType(type: SubZoneEnum) {
     var chosenSubzone = new SubZone();
@@ -895,6 +896,12 @@ export class LookupService {
 
     //matchingSubzones.forEach(subzone => {
     var locationTotal = 4;
+
+    if (this.globalService.globalVar.settings.get("viewAllResourceLocations"))
+    {
+      locationTotal = matchingSubzones.length;
+    }
+
     for (var i = 0; i < locationTotal; i++) {
       var subzone = matchingSubzones[i];
       var matchedSubzone = this.balladService.findSubzone(subzone);
@@ -925,8 +932,12 @@ export class LookupService {
       }
     });
 
+    var clickOrTap = "Click";
+    if (this.deviceDetectorService.isMobile())
+      clickOrTap = "Tap";
+
     if (matchingSubzoneAvailableTotal > locationTotal)
-      locations += "and " + (matchingSubzoneAvailableTotal - locationTotal) + " other locations.";
+      locations += "and " + (matchingSubzoneAvailableTotal - locationTotal) + " other locations. <br/><u class='subzoneClickableItem viewAll'>" + clickOrTap + " to view all.</u>";
     return this.utilityService.getSanitizedHtml(locations);
     //<div>???</div><div>???</div>";
   }
@@ -1771,7 +1782,7 @@ export class LookupService {
 
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enearth, -1, 1, false, true, false));
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Enearth, -1, 1, false, true, false, type.toString()));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.AthenasNecklace) {

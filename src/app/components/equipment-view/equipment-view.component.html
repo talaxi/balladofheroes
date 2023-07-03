@@ -52,14 +52,15 @@
         <br />
         <div class="flex">
           <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount === 1}"
-            (click)="changeSellAmount(1)">1x</button>
+            (click)="changeSellAmount(1, true)">1x</button>
           <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount === 5}"
-            (click)="changeSellAmount(5)">5x</button>
+            (click)="changeSellAmount(5, true)">5x</button>
           <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': sellAmount === 25}"
-            (click)="changeSellAmount(25)">25x</button>
+            (click)="changeSellAmount(25, true)">25x</button>
           <button class="buttonAsText clickableText filterOption"
             [ngClass]="{'filterActive': sellAmount !== 1 && sellAmount !== 5 && sellAmount !== 25 && sellAmount === getTotalItemToSellAmount()}"
-            (click)="changeSellAmount(getTotalItemToSellAmount())">All</button>
+            (click)="changeSellAmount(getTotalItemToSellAmount(), true)">All</button>
+            <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()" (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customSellAmount" />
         </div>
         <br />
         <button [disabled]="this.getTotalItemToSellAmount() < this.sellAmount" (click)="sellItem()">Sell</button>

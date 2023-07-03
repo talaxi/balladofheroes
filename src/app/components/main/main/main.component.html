@@ -36,7 +36,7 @@
                 <div *ngIf="displayFunFacts">
                     <br/>
                     <br/>
-                    <span [innerHtml]="getFunFact()"></span>
+                    <div class='centeredText' [innerHtml]="getFunFact()"></div>
                 </div>
             </div>
         </div>
@@ -62,7 +62,7 @@
                 <app-quick-view class="quickLinks" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-quick-view>
                 <app-party class="partyArea" [isMobile]="true"
                     [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-party>                                
-            </div>
+            </div> 
             <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
                 <app-menu-display [isMobile]="true" class="menuDisplay screenMargin"></app-menu-display>
             </div>
@@ -83,7 +83,7 @@
                 <div *ngIf="displayFunFacts">
                     <br/>
                     <br/>
-                    <span [innerHtml]="getFunFact()"></span>
+                    <div class='centeredText' [innerHtml]="getFunFact()"></div>
                 </div>
             </div>
         </div>

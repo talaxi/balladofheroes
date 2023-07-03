@@ -49,7 +49,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .62;
+    return .63;
   }
 
   initializeGlobalVariables() {
@@ -2955,8 +2955,9 @@ export class GlobalService {
     var party = this.globalVar.characters.filter(item => item.isAvailable);
 
     party.forEach(member => {
-      member.battleInfo.autoAttackTimer = 0;//this.getAutoAttackTime(member);
+      member.battleInfo.autoAttackTimer = 0;
       member.battleInfo.barrierValue = 0;
+      member.battleStats.currentHp = member.battleStats.maxHp;
 
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
@@ -3586,9 +3587,12 @@ export class GlobalService {
   }
 
   setNewTrial(canRepeat: boolean = false) {
-    if (!canRepeat)
+    var repeatTrialFight = this.globalVar.settings.get("repeatTrialFight") ?? false;
+
+    if (!repeatTrialFight || !canRepeat)
       return new Trial();
 
+    console.log("Repeating");
     var type = this.dictionaryService.getTrialInfoFromType(this.globalVar.activeBattle.activeTrial.type);
 
     return this.startTrial(type);
