@@ -46,8 +46,7 @@ export class CustomTooltipComponent implements OnInit {
 
   ngAfterViewInit() {
     var divs = document.querySelectorAll('.subzoneClickableItem');
-    divs.forEach(el => el.addEventListener('click', event => {
-      console.log("Clicked"); //seems to not be attaching the listener when you view all      
+    divs.forEach(el => el.addEventListener('click', event => {      
       var className = el.getAttribute("class");
       var subzoneEnumValue = className?.split(" ")[1];
       if (subzoneEnumValue !== undefined) {        

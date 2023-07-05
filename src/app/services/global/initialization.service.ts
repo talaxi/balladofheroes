@@ -807,7 +807,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ApollosNecklace);
       }
 
-      var chthonicResetCount = 1;
+      var chthonicResetCount = 10;
       var godLevel = 1;
 
       for (var j = 0; j < chthonicResetCount; j++) {

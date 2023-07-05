@@ -82,7 +82,7 @@ export class BalladService {
     return subzone;
   }
 
-  setActiveSubZone(type: SubZoneEnum) {    
+  setActiveSubZone(type: SubZoneEnum) {
     var relatedZone: Zone | undefined = this.getActiveZone();
     var relatedBallad: Ballad | undefined = this.getActiveBallad();
     var relatedSubzone: SubZone = this.getActiveSubZone();
@@ -115,12 +115,12 @@ export class BalladService {
     }
     this.globalService.globalVar.playerNavigation.currentSubzone = relatedSubzone;
     this.globalService.resetCooldowns();
-    
+
     if (relatedSubzone.type === SubZoneEnum.WarForTheMountainStables) {
       this.globalService.globalVar.partyMember2Hidden = true;
       this.menuService.updateParty = true;
     }
-    else {      
+    else {
       this.globalService.globalVar.partyMember2Hidden = false;
       this.menuService.updateParty = true;
     }
@@ -284,17 +284,38 @@ export class BalladService {
   selectNextSubzone() {
     var currentSubzone = this.getActiveSubZone();
     var includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
+    var onlyProgressForward = this.globalService.globalVar.settings.get("autoProgressProgressFromCurrentSubzone") ?? false;
     var shouldHideCountryRoads1 = this.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo)?.isAvailable ?? false;
+
+    var currentBallad = this.getActiveBallad();
+    var currentZone = this.getActiveZone();
+    var currentSubzone = this.getActiveSubZone();
 
     var nextSubzoneFound = false;
     var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
       return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     });//.slice().reverse();
+
+    if (onlyProgressForward && currentBallad !== undefined)
+      reverseOrderBallads = reverseOrderBallads.filter(item => item.displayOrder >= currentBallad!.displayOrder);
+
     reverseOrderBallads.forEach(ballad => {
       if (!nextSubzoneFound) {
         var reverseZones = ballad.zones.filter(item => item.isAvailable);//.slice().reverse();
+
+        if (onlyProgressForward && currentZone !== undefined) {
+          var currentZoneIndex = reverseZones.findIndex(item => item === currentZone!);
+          reverseZones = reverseZones.filter((item, index) => index >= currentZoneIndex);
+        }
+
         reverseZones.forEach(zone => {
           var reverseSubzones = zone.subzones.filter(item => item.isAvailable);//.slice().reverse();
+
+          if (onlyProgressForward && currentSubzone !== undefined) {
+            var currentSubzoneIndex = reverseSubzones.findIndex(item => item === currentSubzone!);
+            reverseSubzones = reverseSubzones.filter((item, index) => index >= currentSubzoneIndex);
+          }
+
           reverseSubzones.forEach(subzone => {
             if (!nextSubzoneFound && subzone.type !== SubZoneEnum.CalydonAltarOfAsclepius && !this.isSubzoneTown(subzone.type) &&
               (!shouldHideCountryRoads1 || (shouldHideCountryRoads1 && subzone.type !== SubZoneEnum.NemeaCountryRoadsOne)) &&

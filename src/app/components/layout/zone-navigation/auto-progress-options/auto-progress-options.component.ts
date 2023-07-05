@@ -14,6 +14,7 @@ export class AutoProgressOptionsComponent {
   completionStatusEnum = CompletionStatusEnum;
   includeAllAchievements: boolean;
   removeAutoProgressOnDeath: boolean;
+  progressFromCurrentSubzone: boolean;
 
   constructor(private globalService: GlobalService) {
 
@@ -23,6 +24,7 @@ export class AutoProgressOptionsComponent {
     this.autoProgressType = this.globalService.globalVar.settings.get("autoProgressType") ?? CompletionStatusEnum.Cleared;
     this.includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;
     this.pauseStory = this.globalService.globalVar.settings.get("autoProgressPauseStory") ?? false;
+    this.progressFromCurrentSubzone = this.globalService.globalVar.settings.get("autoProgressProgressFromCurrentSubzone") ?? false;
     this.includeAllAchievements = !this.globalService.globalVar.settings.get("autoProgressIncludeAllAchievements") ?? true;   
     this.removeAutoProgressOnDeath = this.globalService.globalVar.settings.get("autoProgressRemoveOnDeath") ?? true;    
   }
@@ -45,5 +47,9 @@ export class AutoProgressOptionsComponent {
 
   removeAutoProgressOnDeathToggle() {
     this.globalService.globalVar.settings.set("autoProgressRemoveOnDeath", this.removeAutoProgressOnDeath);
+  }
+
+  progressFromCurrentSubzoneToggle() {
+    this.globalService.globalVar.settings.set("autoProgressProgressFromCurrentSubzone", this.progressFromCurrentSubzone);
   }
 }

@@ -22,6 +22,10 @@
                 Only Include Victory Count Achievements
             </mat-checkbox>    
             <br/>
+            <mat-checkbox customToolTip [contentTemplate]="progressFromCurrentSubzonePopover" [(ngModel)]="progressFromCurrentSubzone" (input)="progressFromCurrentSubzoneToggle()">
+                Progress From Current Subzone
+            </mat-checkbox>    
+            <br/>
             <mat-checkbox customToolTip [contentTemplate]="removeAutoProgressOnDeathPopover" [(ngModel)]="removeAutoProgressOnDeath" (input)="removeAutoProgressOnDeathToggle()">
                 Remove Auto Progress On Death
             </mat-checkbox>          
@@ -57,5 +61,11 @@
 <ng-template #removeAutoProgressOnDeathPopover>
     <div>
         When you die, turn auto progress off so that you heal in town.
+    </div>
+</ng-template>
+
+<ng-template #progressFromCurrentSubzonePopover>
+    <div>        
+        When checked, you will only progress forward from whichever subzone you have selected. When unchecked, auto-progress will start from the earliest subzone that does not meet the clear or complete condition.
     </div>
 </ng-template>

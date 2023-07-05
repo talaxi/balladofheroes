@@ -2708,9 +2708,9 @@ export class LookupService {
     if (abilityName === "Revelry")
       abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Attack</strong> HP Shield, up to <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their total health. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
     if (abilityName === "Thyrsus")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active debuff the target has, up to 20 debuffs. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active unique debuff the target has, up to 20 debuffs. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
-      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies. Each effect reduces the stat by <strong>" + this.utilityService.genericRound(100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Randomly distribute <strong>" + ability?.targetEffect.length + "</strong> random stat decreasing debuffs amongst enemies (Excluding Max HP). Each effect reduces the stat by <strong>" + this.utilityService.genericRound(100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the target already has a debuff of that type, increase its duration by <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Have a Drink")
       abilityDescription = "Every " + cooldown + " seconds, give yourself " + (ability?.userEffect.length === 1 ? "a" : ability?.userEffect.length) + " random <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> stat increasing buff" + (ability?.userEffect.length === 1 ? "" : "s") + " for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
 
@@ -3630,6 +3630,8 @@ export class LookupService {
       abilityDescription = "Increase the party's luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Coda is active, cleanse a random debuff from a party member. " + cooldown + " second cooldown.";
     if (ability.name === "Ostinato")
       abilityDescription = "Every " + cooldown + " seconds, heal a party member for <strong>" + (effectivenessPercent) + "% of Attack</strong> HP. Targets the party member with the lowest HP %.";
+      if (ability.name === "Averting Arrow")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Remove a single non-permanent buff from each target hit. " + cooldown + " second cooldown.";
     if (ability.name === "Rupture")
       abilityDescription = "Apply a damage over time effect to a target that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (ability.name === "Onslaught")
@@ -3637,7 +3639,7 @@ export class LookupService {
     if (ability.name === "Revel in Blood")
       abilityDescription = "Reduce your own current HP by 10%. Apply a damage over time effect to all targets that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of HP Loss</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (ability.name === "Warpath") {
-      abilityDescription = "Instantly reduce all target's current HP by <strong>" + (effectivenessPercent) + "%</strong>. " + cooldown + " second cooldown.";
+      abilityDescription = "Instantly reduce all target's current HP by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong>. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Retribution")
       abilityDescription = "The next <strong>" + (abilityCount === 1 ? " time " : abilityCount + " times ") + "</strong> you are attacked, reduce the damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage back to the target. " + cooldown + " second cooldown.";
@@ -4405,7 +4407,7 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
-      description = "Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      description = "When the duration expires, increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ZeusAttackUp)
       description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
@@ -4544,7 +4546,7 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
-      description = "Only available when Nemesis is in your party. Increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+      description = "Only available when Nemesis is in your party. When the duration expires, increase the Dues of the party member using Nemesis by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ZeusAttackUp)
       description = "Increase Attack of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
