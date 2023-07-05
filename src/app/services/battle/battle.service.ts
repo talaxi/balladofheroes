@@ -2872,8 +2872,17 @@ export class BattleService {
     if (retributionEffect !== undefined) {
       var retribution = this.lookupService.characterHasAbility("Retribution", target);
       if (retribution !== undefined) {
+        var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+        var permanentEffectiveness = 0;
+        if (nemesis !== undefined) {
+          var permanentUpgrade = nemesis.permanentAbilityUpgrades.find(item => item.requiredLevel === retribution!.requiredLevel);
+          if (permanentUpgrade !== undefined && target.type !== CharacterEnum.Enemy) {
+            permanentEffectiveness += permanentUpgrade.effectiveness;
+          }
+        }
+        
         //ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness, true, true, true, attacker.name));
-        this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness, true, true, true, attacker.name), target, undefined, attacker);
+        this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness + permanentEffectiveness, true, true, true, attacker.name), target, undefined, attacker);
         retributionEffect.count -= 1;
 
         if (retributionEffect.count <= 0)
