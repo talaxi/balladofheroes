@@ -1453,7 +1453,7 @@ export class BattleService {
       }
     }
 
-    this.handleuserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy, healedAmount);
+    this.handleuserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy, healedAmount, isGodAbility);
     this.handletargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, abilityCopy.targetsAllies, abilityCopy);
 
     if (isPartyUsing) {
@@ -1579,7 +1579,7 @@ export class BattleService {
     return false;
   }
 
-  handleuserEffects(isPartyUsing: boolean, userEffect: StatusEffect[], user: Character, party: Character[], targets: Character[], damageDealt: number = 0, originalAbility?: Ability, healingDone: number = 0) {
+  handleuserEffects(isPartyUsing: boolean, userEffect: StatusEffect[], user: Character, party: Character[], targets: Character[], damageDealt: number = 0, originalAbility?: Ability, healingDone: number = 0, fromGodAbility: boolean = false) {
     if (userEffect.length > 0) {
       userEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = this.globalService.makeStatusEffectCopy(gainedStatusEffect);
@@ -1668,7 +1668,7 @@ export class BattleService {
             var repeatCount = originalAbility.userEffect.filter(effect => effect.type === StatusEffectEnum.RepeatAbility).length;
             originalAbility.userEffect = originalAbility.userEffect.filter(item => item.type !== StatusEffectEnum.RepeatAbility);
             for (var i = 0; i < repeatCount; i++) {
-              this.useAbility(isPartyUsing, originalAbility, user, targets, party, false, undefined, i < repeatCount - 1);
+              this.useAbility(isPartyUsing, originalAbility, user, targets, party, fromGodAbility, undefined, i < repeatCount - 1);
             }
           }
 
@@ -2803,6 +2803,7 @@ export class BattleService {
 
     //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
     // + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);    
+    // console.log("Damage pre dues: " + damage);
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
       damage += dispenserOfDuesEffect.effectiveness;
@@ -2810,6 +2811,7 @@ export class BattleService {
         dispenserOfDuesEffect.effectiveness = 0;
       }
     }
+    //console.log("Damage post dues: " + damage);
 
     if (ability?.damageModifierRange !== undefined) {
       var rng = this.utilityService.getRandomNumber(1 - ability.damageModifierRange, 1 + ability.damageModifierRange);
