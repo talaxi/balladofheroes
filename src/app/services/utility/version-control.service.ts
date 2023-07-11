@@ -1059,6 +1059,73 @@ export class VersionControlService {
             this.globalService.globalVar.sidequestData.levelsForNextAmbrosia = 50;
 
           this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) !== ItemTypeEnum.Charm);
+          
+          this.globalService.globalVar.gods.forEach(god => {
+            var smallCharms = this.lookupService.getGodAffinitySmallCharmCount(god);
+            var largeCharms = this.lookupService.getGodAffinityLargeCharmCount(god);
+
+            if (god.type === GodEnum.Athena) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAthena, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAthena, largeCharms));  
+            }
+            if (god.type === GodEnum.Artemis) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfArtemis, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfArtemis, largeCharms));  
+            }
+            if (god.type === GodEnum.Hermes) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHermes, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHermes, largeCharms));  
+            }
+            if (god.type === GodEnum.Apollo) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfApollo, largeCharms));  
+            }
+            if (god.type === GodEnum.Hades) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, largeCharms));  
+            }
+            if (god.type === GodEnum.Ares) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAres, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, largeCharms));  
+            }
+            if (god.type === GodEnum.Dionysus) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, largeCharms));  
+            }
+            if (god.type === GodEnum.Nemesis) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, largeCharms));  
+            }
+            if (god.type === GodEnum.Zeus) {
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfZeus, smallCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfZeus, largeCharms));  
+            }
+          });
+
+          var tournamentOfTheDead = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.TournamentOfTheDead);
+          if (tournamentOfTheDead !== undefined && tournamentOfTheDead.quickVictoryCompleted) {
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
+          }
+          
+          var flamesOfTartarus = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.FlamesOfTartarus);
+          if (flamesOfTartarus !== undefined && flamesOfTartarus.quickVictoryCompleted) {
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
+          }
+          
+          var forgottenKings = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.ForgottenKings);
+          if (forgottenKings !== undefined && forgottenKings.quickVictoryCompleted) {
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+          }
+          
+          var riverLords = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.RiverLords);
+          if (riverLords !== undefined && riverLords.quickVictoryCompleted) {
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
+          }
+          
+          var hadesTrial = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);
+          if (hadesTrial !== undefined && hadesTrial.quickVictoryCompleted) {
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
+          }
 
           var windyGale = this.lookupService.getSubZoneByType(SubZoneEnum.BlackSeaWindyGale);
           if (windyGale.isAvailable) {
