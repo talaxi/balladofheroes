@@ -206,7 +206,7 @@ export class TrialService {
     //divide these totals by 6, maybe *5 or something, and then apply the factor from enemy generator
     //maybe give each god some secondary stats as well
     var godLevelBeforeDamageReduction = 2350;
-    var hpFactor = 40.5;
+    var hpFactor = 38.5;
     var attackFactor = .65;
     var defenseFactor = 6.25;
     var agilityFactor = 2.25;
