@@ -34,7 +34,7 @@ export class ToolTipRendererDirective {
   @Input() isLargeTooltip: boolean = false;
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
   regularTooltipPercent = .38; //these need to match the css
-  largeTooltipPercent = .55; //these need to match the css
+  largeTooltipPercent = .58; //these need to match the css
 
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
@@ -55,7 +55,7 @@ export class ToolTipRendererDirective {
 
     if (this.tooltipDirection === DirectionEnum.Right) {      
       var tooltipPercent = this.isLargeTooltip ? this.largeTooltipPercent : this.regularTooltipPercent;
-
+      
       if ((screen.width * (1-tooltipPercent) < (this._elementRef.nativeElement.getBoundingClientRect().x + this._elementRef.nativeElement.getBoundingClientRect().width)))
         this.tooltipDirection = DirectionEnum.DownRight;
     }
@@ -215,6 +215,7 @@ export class ToolTipRendererDirective {
           tooltipRef.instance.text = this.text;
           tooltipRef.instance.contentTemplate = this.contentTemplate;
           tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;
+          tooltipRef.instance.tooltipDirection = this.tooltipDirection;
         }
       });
     }
@@ -223,7 +224,8 @@ export class ToolTipRendererDirective {
         const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
         tooltipRef.instance.text = this.text;
         tooltipRef.instance.contentTemplate = this.contentTemplate;  
-        tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;      
+        tooltipRef.instance.isLargeTooltip = this.isLargeTooltip; 
+        tooltipRef.instance.tooltipDirection = this.tooltipDirection;     
       }
     }
   }

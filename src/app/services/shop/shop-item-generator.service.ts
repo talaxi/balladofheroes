@@ -68,7 +68,7 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.FortifiedBronzeArmor) {
       purchasePrice.push(new ResourceValue(ItemsEnum.BronzeArmor, 1));
-      purchasePrice.push(new ResourceValue(ItemsEnum.PetrifiedBark, 8));
+      purchasePrice.push(new ResourceValue(ItemsEnum.PetrifiedBark, 3));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 500));
     }
     if (item === ItemsEnum.Venomstrike) {

@@ -18,7 +18,7 @@
                 MAX
             </span>
             <br />
-            <button *ngIf="otherClassesAvailable" class="changeButton buttonStyled"
+            <button *ngIf="otherClassesAvailable" class="changeButton buttonStyled" [disabled]="cannotChangeGodsOrClass()"
                 (click)="openChangeClassMenu(changeClassView)">Change Class</button>
         </div>
         <div class="god2Info">
@@ -275,7 +275,7 @@
         <br />
         <div *ngIf="multipleGodsAvailable()">
             <span class="sectionHeaderText sectionHeading middleAlign">Equipped God Abilities</span>
-            <button *ngIf="changeGodsAvailable" class="changeButton buttonStyled buttonOffset"
+            <button *ngIf="changeGodsAvailable" class="changeButton buttonStyled buttonOffset" [disabled]="cannotChangeGodsOrClass()"
                 (click)="openChangeGodMenu(changeGodView)">Change Gods</button>
             <div class="sectionInfo">
                 <div *ngFor="let ability of god1AbilityList">

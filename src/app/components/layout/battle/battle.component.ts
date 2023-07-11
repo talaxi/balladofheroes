@@ -5,6 +5,7 @@ import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { AnimationStateEnum } from 'src/app/models/enums/animation-state-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
+import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
@@ -144,7 +145,7 @@ export class BattleComponent implements OnInit {
   doingColiseumOrTrialFight() {
     if (this.globalService.globalVar.activeBattle !== undefined)
       return this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None ||
-       this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
+        this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
 
     return false;
   }
@@ -263,11 +264,11 @@ export class BattleComponent implements OnInit {
 
   getTournamentTimeRemaining() {
     var timeRemaining = 0;
-    
+
     if (this.globalService.globalVar.activeBattle.activeTournament.type !== ColiseumTournamentEnum.None)
-    timeRemaining = this.globalService.globalVar.activeBattle.activeTournament.tournamentTimerLength - this.globalService.globalVar.activeBattle.activeTournament.tournamentTimer;
+      timeRemaining = this.globalService.globalVar.activeBattle.activeTournament.tournamentTimerLength - this.globalService.globalVar.activeBattle.activeTournament.tournamentTimer;
     else if (this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None)
-    timeRemaining = this.globalService.globalVar.activeBattle.activeTrial.timerLength - this.globalService.globalVar.activeBattle.activeTrial.timer;
+      timeRemaining = this.globalService.globalVar.activeBattle.activeTrial.timerLength - this.globalService.globalVar.activeBattle.activeTrial.timer;
 
     var value = this.utilityService.convertSecondsToMMSS(timeRemaining);
 
@@ -353,7 +354,7 @@ export class BattleComponent implements OnInit {
 
     if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Hiding) {
       console.log("Hiding initial message");
-      removeMessage = true;      
+      removeMessage = true;
     }
 
     var hardStop = 5;
@@ -366,7 +367,7 @@ export class BattleComponent implements OnInit {
         var additionalMessage = this.gameLogService.notificationOverlayBuffer[extraItemCount];
         this.notificationOverlayMessage += "<br/>" + additionalMessage[0];
         if (additionalMessage[3] === AnimationStateEnum.Initial)
-        additionalMessage[3] = AnimationStateEnum.Display;
+          additionalMessage[3] = AnimationStateEnum.Display;
         additionalMessage[2] -= deltaTime;
 
         //first animate
@@ -386,7 +387,7 @@ export class BattleComponent implements OnInit {
     }
 
     if (removeMessage)
-      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== nextMessage);      
+      this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== nextMessage);
   }
 
   skipOverlayMessage() {
@@ -453,8 +454,8 @@ export class BattleComponent implements OnInit {
 
   jumpToBestiary() {
     this.layoutService.changeLayout(NavigationEnum.Menu);
-    this.menuService.selectedMenuDisplay = MenuEnum.Bestiary; 
-    this.menuService.setBestiaryPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());     
+    this.menuService.selectedMenuDisplay = MenuEnum.Bestiary;
+    this.menuService.setBestiaryPresets(this.balladService.getActiveBallad(), this.balladService.getActiveZone(), this.balladService.getActiveSubZone());
   }
 
   globalStatusEffectsActive() {
@@ -466,8 +467,16 @@ export class BattleComponent implements OnInit {
   }
 
   getStatusEffectDuration(effect: StatusEffect) {
-    if (effect.duration < 0)
-      return "Resolves Upon Effect Condition";
+    if (effect.duration < 0) {
+      if (effect.resolution !== undefined) {
+        if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
+          return "Always Active - " + this.dictionaryService.getItemName(Number(effect.caster));
+          else if (effect.resolution === EffectResolutionEnum.AlwaysActive)
+          return "Always Active";
+      }
+      else
+        return "Resolves Upon Effect Condition";
+    }
 
     var duration = Math.round(effect.duration);
     var durationString = "";

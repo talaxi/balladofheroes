@@ -398,5 +398,12 @@ export enum ItemsEnum {
   DivinePlate,
   DivineTarge,
   OlympicCommendation,
-  HarpyTalon
+  HarpyTalon,
+  ExtraSpeed1Hour,
+  LargeOrnateKantharos,
+  LargeSilverKantharos,
+  LargeBuccheroKantharos,
+  LargeGildedKantharos,
+  LargeCrackedKantharos,
+  LargeBlackKantharos
 } 

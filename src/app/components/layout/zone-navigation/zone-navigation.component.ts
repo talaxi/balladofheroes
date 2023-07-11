@@ -41,6 +41,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
   styleUrls: ['./zone-navigation.component.css']
 })
 export class ZoneNavigationComponent implements OnInit {
+  temporarilyUnavailableBallads: Ballad[] = [];
   availableBallads: Ballad[];
   availableZones: Zone[];
   availableSubZones: SubZone[];
@@ -96,6 +97,19 @@ export class ZoneNavigationComponent implements OnInit {
     if (activeOverview !== undefined)
       this.quickView = activeOverview;
 
+    var gorgonBallad = this.balladService.findBallad(BalladEnum.Gorgon);
+    if (this.balladService.findBallad(BalladEnum.Underworld)?.isAvailable && !this.balladService.findBallad(BalladEnum.Gorgon)?.isAvailable) {
+      if (this.temporarilyUnavailableBallads.length === 0) {
+        var championBallad = this.balladService.findBallad(BalladEnum.Champion);
+        if (championBallad !== undefined)
+          this.temporarilyUnavailableBallads.push(championBallad);
+        if (gorgonBallad !== undefined)
+          this.temporarilyUnavailableBallads.push(gorgonBallad);
+      }
+    }
+    else
+      this.temporarilyUnavailableBallads = [];
+
     this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
       return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
     });
@@ -120,6 +134,19 @@ export class ZoneNavigationComponent implements OnInit {
       if (this.balladService.findSubzone(SubZoneEnum.AigosthenaLowerCoast)?.isAvailable)
         this.quickLinksUnlocked = true;
 
+        var gorgonBallad = this.balladService.findBallad(BalladEnum.Gorgon);
+        if (this.balladService.findBallad(BalladEnum.Underworld)?.isAvailable && !this.balladService.findBallad(BalladEnum.Gorgon)?.isAvailable) {
+          if (this.temporarilyUnavailableBallads.length === 0) {
+            var championBallad = this.balladService.findBallad(BalladEnum.Champion);
+            if (championBallad !== undefined)
+              this.temporarilyUnavailableBallads.push(championBallad);
+            if (gorgonBallad !== undefined)
+              this.temporarilyUnavailableBallads.push(gorgonBallad);
+          }
+        }
+        else
+          this.temporarilyUnavailableBallads = [];
+    
       this.availableBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
         return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
       });
@@ -191,24 +218,24 @@ export class ZoneNavigationComponent implements OnInit {
     this.globalService.globalVar.activeBattle.battleDuration = 0;
     this.globalService.ResetTournamentInfoAfterChangingSubzone();
     this.globalService.ResetTrialInfoAfterChangingSubzone();
- 
-      this.globalService.globalVar.partyMember2Hidden = false;
-      this.menuService.updateParty = true;
-      this.globalService.globalVar.partyMember1Hidden = false;
-      this.menuService.updateParty = true;
+
+    this.globalService.globalVar.partyMember2Hidden = false;
+    this.menuService.updateParty = true;
+    this.globalService.globalVar.partyMember1Hidden = false;
+    this.menuService.updateParty = true;
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
-    var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
-    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
     }
-    
+
     this.globalService.globalVar.settings.set("autoProgress", false);
 
     if (this.isMobile) {
       this.dialog.closeAll();
     }
   }
-  
+
   isSubZoneChangingDisabled() {
     return this.globalService.getActivePartyCharacters(true).some(item => item.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.PreventEscape));
   }
@@ -267,12 +294,12 @@ export class ZoneNavigationComponent implements OnInit {
     else
       this.dialog.open(content, { width: '75%', minHeight: '75vh', maxHeight: '75vh', id: 'dialogNoPadding' });
   }
-  
+
   viewLoadouts(content: any) {
     if (this.deviceDetectorService.isMobile())
       this.dialog.open(content, { width: '95%', height: '80%' });
     else
-      this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85vh'});
+      this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85vh' });
   }
 
   viewMelete(content: any) {
@@ -479,7 +506,7 @@ export class ZoneNavigationComponent implements OnInit {
     if (selectedZone !== undefined)
       this.availableSubZones = selectedZone.subzones.filter(item => item.isAvailable);*/
   }
-  
+
   openAutoProgressOptions(content: any) {
     var dialog = this.dialog.open(content, { width: '65%', maxHeight: '50%' });
   }
@@ -489,7 +516,7 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   untrackAllResources() {
-    this.globalService.globalVar.trackedResources = [];  
+    this.globalService.globalVar.trackedResources = [];
     this.globalService.globalVar.trackedResources.push(ItemsEnum.Coin);
   }
 

@@ -58,6 +58,21 @@
     "item1 item2";
 }
 
+.compareEquipment1Member {
+  /*display: flex;
+    justify-content: space-evenly;*/
+
+  display: grid;
+  height: 100%;
+  width: 100%;
+  grid-template-columns: 100%;
+  /*grid-gap: .5rem;*/
+  grid-template-rows: auto;
+  justify-content: stretch;
+  grid-template-areas:
+    "item1";
+}
+
 .item1 {
   grid-area: item1;
 }

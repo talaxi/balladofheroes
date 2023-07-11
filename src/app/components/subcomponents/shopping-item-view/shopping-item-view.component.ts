@@ -19,6 +19,7 @@ import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.mode
 import { StoryService } from 'src/app/services/story/story.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 
 @Component({
   selector: 'app-shopping-item-view',
@@ -87,13 +88,18 @@ export class ShoppingItemViewComponent implements OnInit {
     }
 
     this.item.purchasePrice.forEach(resource => {
+      var amount = resource.amount;
+      if (this.item.shopItem === ItemsEnum.SparringMatch) {        
+        amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+      }
+
       var displayName = this.dictionaryService.getItemName(resource.item);
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
       //var insufficientText = "";
       //if (userResourceAmount < resource.amount)
       var insufficientText = " <i>(" + userResourceAmount + " owned)</i>";
 
-      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(this.lookupService.getItemTypeFromItemEnum(resource.item), resource.item, resource.amount, userResourceAmount) + "'>" + (resource.amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
+      this.purchaseResourcesRequired += "<span class='" + this.getItemKeywordClass(this.lookupService.getItemTypeFromItemEnum(resource.item), resource.item, amount, userResourceAmount) + "'>" + (amount).toLocaleString() + " " + displayName + insufficientText + "</span><br/>";
     });
 
     if (this.purchaseResourcesRequired.length > 0) {
@@ -117,7 +123,8 @@ export class ShoppingItemViewComponent implements OnInit {
 
       if (resource !== undefined) {
         if (resource.item === ItemsEnum.SparringMatch) { 
-          this.globalService.giveCharactersBonusExp(5000);
+          this.globalService.giveCharactersBonusExp(5000);          
+          this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass) {
           this.unlockClass(resource.item);
@@ -192,11 +199,27 @@ export class ShoppingItemViewComponent implements OnInit {
     }
   }
 
+  getResource(resource: ResourceValue) {    
+    var resourceCopy = this.lookupService.makeResourceCopy(resource);
+
+      if (this.item.shopItem === ItemsEnum.SparringMatch) {
+        resourceCopy.amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+        resourceCopy.amount = Math.round(resourceCopy.amount);
+      }
+
+      return resourceCopy;
+  }
+
   canBuyItem() {
     var canBuy = true;
     this.item.purchasePrice.forEach(resource => {
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
-      if (userResourceAmount < resource.amount)
+      var amount = resource.amount;
+      if (this.item.shopItem === ItemsEnum.SparringMatch) {
+        amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+      }
+
+      if (userResourceAmount < amount)
         canBuy = false;
     });
 
@@ -205,7 +228,12 @@ export class ShoppingItemViewComponent implements OnInit {
 
   spendResourcesOnItem() {
     this.item.purchasePrice.forEach(resource => {
-      this.lookupService.useResource(resource.item, resource.amount);
+      var amount = resource.amount;
+      if (this.item.shopItem === ItemsEnum.SparringMatch) {
+        amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+      }
+
+      this.lookupService.useResource(resource.item, amount);
     });
   }
 

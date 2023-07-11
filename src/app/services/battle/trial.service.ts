@@ -83,18 +83,18 @@ export class TrialService {
     if (date.getMinutes() >= 30)
       minuteModifier = "b";
 
-    var seedValue = date.getDay() + date.getMonth() + date.getFullYear() + date.getHours() + minuteModifier;
+    var seedValue = date.getDate().toString() + date.getMonth().toString() + date.getHours().toString() + minuteModifier + date.getFullYear().toString();
     var previousSeedValue = "";
     if (minuteModifier === "b")
-      previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + date.getHours() + "a";
+      previousSeedValue = date.getDate().toString() + date.getMonth().toString() + date.getHours().toString() + "a" + date.getFullYear().toString();
     else {
       if (date.getHours() - 1 < 0) {
         var yesterday = new Date(date);
         yesterday.setDate(yesterday.getDate() - 1);
-        previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + "23b";
+        previousSeedValue = yesterday.getDate().toString() + yesterday.getMonth().toString() + "23b" + yesterday.getFullYear().toString();
       }
       else {
-        previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + (date.getHours() - 1) + "b";
+        previousSeedValue = date.getDate().toString() + date.getMonth().toString()  + (date.getHours() - 1).toString() + "b" + date.getFullYear().toString();
       }
     }
 
@@ -107,7 +107,7 @@ export class TrialService {
     availableEnums = this.getAvailableBattlesForTrialOfSkill(previousGod);
 
     rng = this.utilityService.getRandomSeededInteger(0, availableEnums.length - 1, seedValue.toString());
-    
+
     return availableEnums[rng];
   }
 
@@ -205,10 +205,10 @@ export class TrialService {
     //increase weight of the highest stats if needed
     //divide these totals by 6, maybe *5 or something, and then apply the factor from enemy generator
     //maybe give each god some secondary stats as well
-    var godLevelBeforeDamageReduction = 2250;
-    var hpFactor = 37.5;
+    var godLevelBeforeDamageReduction = 2350;
+    var hpFactor = 40.5;
     var attackFactor = .65;
-    var defenseFactor = 6.75;
+    var defenseFactor = 6.25;
     var agilityFactor = 2.25;
     var luckFactor = 1.625;
     var resistanceFactor = 2.4;

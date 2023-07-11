@@ -174,6 +174,10 @@ export class CharacterViewComponent implements OnInit {
     }
   }
 
+  cannotChangeGodsOrClass() {
+    return this.lookupService.cannotSwapGodsOrClasses();
+  }
+
   areGodsAvailable() {
     return this.globalService.globalVar.gods.some(item => item.isAvailable);
   }

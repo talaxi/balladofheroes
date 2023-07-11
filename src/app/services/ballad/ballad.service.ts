@@ -65,7 +65,8 @@ export class BalladService {
   getActiveSubZone(search: boolean = false) {
     var subzone = new SubZone();
 
-    if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined || search) {
+    if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined || 
+      this.globalService.globalVar.playerNavigation.currentSubzone.type === SubZoneEnum.None || search) {
       var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
       if (activeBallad !== undefined) {
         var zone = activeBallad.zones.find(item => item.isSelected);
@@ -73,6 +74,17 @@ export class BalladService {
           if (zone.subzones.some(item => item.isSelected))
             subzone = zone.subzones.find(item => item.isSelected)!;
         }
+      }
+
+      if (subzone.type === SubZoneEnum.None) {
+        this.globalService.globalVar.ballads.forEach(ballad => {
+          ballad.zones.forEach(zone => {
+            zone.subzones.forEach(subzoneOption => {
+              if (subzoneOption.isSelected)
+              subzone = subzoneOption;
+            })
+          })
+        })
       }
     }
     else {
@@ -810,9 +822,9 @@ export class BalladService {
       victories = bossVictories;
 
     if (type === SubZoneEnum.DodonaDelphiOutskirts)
-      victories = defaultVictories;
+      victories = aigosthenaVictories;
     if (type === SubZoneEnum.DodonaCoastalRoadsOfLocris)
-      victories = defaultVictories;
+      victories = aigosthenaVictories;
     if (type === SubZoneEnum.DodonaCountryside)
       victories = bossVictories;
     if (type === SubZoneEnum.DodonaMountainOpening)

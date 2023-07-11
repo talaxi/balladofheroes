@@ -29,6 +29,8 @@ import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.mode
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { UsableItemEffect } from 'src/app/models/resources/usable-item-effect.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
+import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
+import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 declare var LZString: any;
 
 @Injectable({
@@ -42,7 +44,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -993,9 +995,9 @@ export class VersionControlService {
 
           if (!this.globalService.globalVar.isSubscriber) {
             if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
-            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 2));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 2));
             if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
-            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 2));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 2));
           }
 
           if (this.lookupService.getResourceAmount(ItemsEnum.AthenasNecklace) > 0)
@@ -1034,6 +1036,152 @@ export class VersionControlService {
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
           if (this.lookupService.getResourceAmount(ItemsEnum.ZeussShield) > 0)
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1));
+        }
+        if (version === .64) {
+          var levelsReset = 0;
+          this.globalService.globalVar.characters.forEach(character => {
+            if (character.maxLevel > 30) {
+              var maxLevelGain = character.maxLevel - 30;
+              for (var i = 5; i <= maxLevelGain; i+=5) {                
+                levelsReset += i + 30;
+              }
+            }
+          });
+
+          if (levelsReset > 0) {
+            var originalAmount = Math.floor(levelsReset / 100);
+            var newAmount = Math.floor(levelsReset / 50);
+            
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, newAmount - originalAmount));
+            this.globalService.globalVar.sidequestData.levelsForNextAmbrosia = (50 - levelsReset % 50);
+          }
+          else
+            this.globalService.globalVar.sidequestData.levelsForNextAmbrosia = 50;
+
+          this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) !== ItemTypeEnum.Charm);
+
+          var windyGale = this.lookupService.getSubZoneByType(SubZoneEnum.BlackSeaWindyGale);
+          if (windyGale.isAvailable) {
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.BlackSeaWindyGale);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.BlackSeaWindyGale).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && windyGale !== undefined && windyGale.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && windyGale !== undefined && windyGale.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && windyGale !== undefined && windyGale.victoryCount >= 2500)
+                achievement.completed = true;
+
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
+
+          var yarrowField = this.lookupService.getSubZoneByType(SubZoneEnum.HuntForYarrowYarrowField);
+          if (yarrowField.isAvailable) {
+          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.HuntForYarrowYarrowField);
+          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.HuntForYarrowYarrowField).forEach(achievement => {
+            if (achievement.type === AchievementTypeEnum.HundredVictories && yarrowField !== undefined && yarrowField.victoryCount >= 100)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.ThousandVictories && yarrowField !== undefined && yarrowField.victoryCount >= 500)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.TenThousandVictories && yarrowField !== undefined && yarrowField.victoryCount >= 2500)
+              achievement.completed = true;
+
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+
+          var battleAtTheGates = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainBattleAtTheGates);
+          if (battleAtTheGates.isAvailable) {
+          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainBattleAtTheGates);
+          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainBattleAtTheGates).forEach(achievement => {
+            if (achievement.type === AchievementTypeEnum.HundredVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 100)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.ThousandVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 500)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.TenThousandVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 2500)
+              achievement.completed = true;
+
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+
+          var openCourtyard = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainOpenCourtyard);
+          if (openCourtyard.isAvailable) {
+          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainOpenCourtyard);
+          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainOpenCourtyard).forEach(achievement => {
+            if (achievement.type === AchievementTypeEnum.HundredVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 100)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.ThousandVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 500)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.TenThousandVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 2500)
+              achievement.completed = true;
+
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+
+          var stables = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainStables);
+          if (stables.isAvailable) {
+          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainStables);
+          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainStables).forEach(achievement => {
+            if (achievement.type === AchievementTypeEnum.HundredVictories && stables !== undefined && stables.victoryCount >= 100)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.ThousandVictories && stables !== undefined && stables.victoryCount >= 500)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.TenThousandVictories && stables !== undefined && stables.victoryCount >= 2500)
+              achievement.completed = true;
+
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+
+          var palaces = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainPalaces);
+          if (palaces.isAvailable) {
+          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainPalaces);
+          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainPalaces).forEach(achievement => {
+            if (achievement.type === AchievementTypeEnum.HundredVictories && palaces !== undefined && palaces.victoryCount >= 100)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.ThousandVictories && palaces !== undefined && palaces.victoryCount >= 500)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.TenThousandVictories && palaces !== undefined && palaces.victoryCount >= 2500)
+              achievement.completed = true;
+
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+
+          var thePeak = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainThePeak);
+          if (thePeak.isAvailable) {
+          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainThePeak);
+          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainThePeak).forEach(achievement => {
+            if (achievement.type === AchievementTypeEnum.HundredVictories && thePeak !== undefined && thePeak.victoryCount >= 100)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.ThousandVictories && thePeak !== undefined && thePeak.victoryCount >= 500)
+              achievement.completed = true;
+            if (achievement.type === AchievementTypeEnum.TenThousandVictories && thePeak !== undefined && thePeak.victoryCount >= 2500)
+              achievement.completed = true;
+
+            this.globalService.globalVar.achievements.push(achievement);
+          });
+        }
+
+          this.globalService.globalVar.achievements.forEach(achievement => {
+            if (achievement.completed && this.achievementService.getAchievementReward(achievement.subzone, achievement.type).some(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm)) {
+              this.achievementService.getAchievementReward(achievement.subzone, achievement.type).forEach(reward => {
+                if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Charm) {
+                  this.lookupService.gainResource(this.lookupService.makeResourceCopy(reward));
+                }
+              });
+            }
+          });
+          /*this.globalService.globalVar.ballads.forEach(ballad => {
+            ballad.zones = ballad.zones.filter(item => item.type !== ZoneEnum.None);
+            ballad.zones.forEach(zone => {
+              zone.subzones.forEach(subzone => {
+                
+              })
+            });
+          });*/
         }
 
         this.globalService.globalVar.currentVersion = version;

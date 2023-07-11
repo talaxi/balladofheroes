@@ -32,6 +32,11 @@
     overflow: hidden;
 }
 
+.shiftDown {
+    transform: translateY(50%);
+    overflow: hidden;
+}
+
 .shiftLeft {
     transform: translateX(-50%);
     overflow: hidden;
@@ -39,5 +44,10 @@
 
 .shiftUpLeft {
     transform: translateY(-50%) translateX(-50%);
+    overflow: hidden;
+}
+
+.shiftDownLeft {
+    transform: translateY(50%) translateX(-50%);
     overflow: hidden;
 }

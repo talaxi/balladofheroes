@@ -100,11 +100,11 @@ export class CharmService {
   }
 
   getSmallCharmOfIngenuityValue() {
-    return .01;
+    return .005;
   }
 
   getLargeCharmOfIngenuityValue() {
-    return .03;
+    return .015;
   }
 
   getTotalAbilityCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
@@ -647,16 +647,43 @@ export class CharmService {
     return 15;
   }
 
+  getLargeOrnateKantharosValue() {
+    return 100;
+  }
+
+  getLargeSilverKantharosValue() {
+    return 100;
+  }
+
+  getLargeBuccheroKantharosValue() {
+    return 100;
+  }
+
+  getLargeGildedKantharosValue() {
+    return 100;
+  }
+
+  getLargeCrackedKantharosValue() {
+    return 500;
+  }
+
+  getLargeBlackKantharosValue() {
+    return 100;
+  }
+
   getTotalMaxHpAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
     var smallCharmValue = this.getSmallCrackedKantharosValue();
-    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+    var largeCharmValue = this.getLargeCrackedKantharosValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCrackedKantharos);
-    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCrackedKantharos);
 
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
+
+      if (largeCharm !== undefined && largeCharm.amount > 0)
+        amount += largeCharmValue * largeCharm.amount;
 
     return amount;
   }
@@ -664,13 +691,16 @@ export class CharmService {
   getTotalAttackAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
     var smallCharmValue = this.getSmallBlackKantharosValue();
-    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+    var largeCharmValue = this.getLargeBlackKantharosValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallBlackKantharos);
-    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeBlackKantharos);
 
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
+
+      if (largeCharm !== undefined && largeCharm.amount > 0)
+        amount += largeCharmValue * largeCharm.amount;
 
     return amount;
   }
@@ -678,13 +708,16 @@ export class CharmService {
   getTotalLuckAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
     var smallCharmValue = this.getSmallOrnateKantharosValue();
-    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+    var largeCharmValue = this.getLargeOrnateKantharosValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallOrnateKantharos);
-    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeOrnateKantharos);
 
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
+
+      if (largeCharm !== undefined && largeCharm.amount > 0)
+        amount += largeCharmValue * largeCharm.amount;
 
     return amount;
   }
@@ -692,13 +725,16 @@ export class CharmService {
   getTotalAgilityAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
     var smallCharmValue = this.getSmallBuccheroKantharosValue();
-    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+    var largeCharmValue = this.getLargeBuccheroKantharosValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallBuccheroKantharos);
-    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeBuccheroKantharos);
 
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
+
+      if (largeCharm !== undefined && largeCharm.amount > 0)
+        amount += largeCharmValue * largeCharm.amount;
 
     return amount;
   }
@@ -706,13 +742,16 @@ export class CharmService {
   getTotalDefenseAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
     var smallCharmValue = this.getSmallGildedKantharosValue();
-    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+    var largeCharmValue = this.getLargeGildedKantharosValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallGildedKantharos);
-    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeGildedKantharos);
 
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
+
+      if (largeCharm !== undefined && largeCharm.amount > 0)
+        amount += largeCharmValue * largeCharm.amount;
 
     return amount;
   }
@@ -720,13 +759,16 @@ export class CharmService {
   getTotalResistanceAdditionFromCharms(resources: ResourceValue[]) {
     var amount = 0;
     var smallCharmValue = this.getSmallSilverKantharosValue();
-    //var largeCharmValue = this.getLargeCharmOfRejuvenationValue();
+    var largeCharmValue = this.getLargeSilverKantharosValue();
 
     var smallCharm = resources.find(item => item.item === ItemsEnum.SmallSilverKantharos);
-    //var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfRejuvenation);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeSilverKantharos);
 
     if (smallCharm !== undefined && smallCharm.amount > 0)
       amount += smallCharmValue * smallCharm.amount;
+
+      if (largeCharm !== undefined && largeCharm.amount > 0)
+        amount += largeCharmValue * largeCharm.amount;
 
     return amount;
   }

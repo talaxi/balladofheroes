@@ -135,6 +135,10 @@ export class ChangeClassViewComponent implements OnInit {
       swappingType = this.globalService.globalVar.activePartyMember1;
     if (this.swappingClass === 2)
       swappingType = this.globalService.globalVar.activePartyMember2;
+    var swappingCharacter = this.globalService.globalVar.characters.find(item => item.type === swappingType);    
+    var currentHpPercent = 1;
+    if (swappingCharacter !== undefined)
+      currentHpPercent = swappingCharacter.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(swappingCharacter, true);
 
     if (this.swapEquipment)    
       this.swapCharacterEquipment(type, swappingType);      
@@ -157,6 +161,7 @@ export class ChangeClassViewComponent implements OnInit {
       this.globalService.globalVar.activePartyMember2 = type;
 
     this.menuService.setSelectedCharacter(type);
+
     this.swappingClass = undefined;
     this.currentParty = this.globalService.getActivePartyCharacters(false);
     this.setupDisplayClasses();
@@ -164,6 +169,10 @@ export class ChangeClassViewComponent implements OnInit {
     this.currentParty.forEach(member => {
       this.globalService.calculateCharacterBattleStats(member);
     });
+
+    var swappedToCharacter = this.globalService.globalVar.characters.find(item => item.type === type);
+    if (swappedToCharacter !== undefined)
+      swappedToCharacter.battleStats.currentHp = this.lookupService.getAdjustedMaxHp(swappedToCharacter, true) * currentHpPercent;
   }
 
   swapCharacterEquipment(newType: CharacterEnum, oldType: CharacterEnum) {

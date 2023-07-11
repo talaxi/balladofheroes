@@ -118,7 +118,7 @@ export class UtilityService {
 
   public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
   public weeklyMeleeEntryCap = 7;
-  public levelsNeededForAmbrosia = 100;
+  public levelsNeededForAmbrosia = 50;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 

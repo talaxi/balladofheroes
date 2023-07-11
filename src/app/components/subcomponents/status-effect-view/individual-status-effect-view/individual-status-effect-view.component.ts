@@ -2,9 +2,11 @@ import { OverlayRef } from '@angular/cdk/overlay';
 import { Component, Input, OnInit } from '@angular/core';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { Character } from 'src/app/models/character/character.model';
+import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
+import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -19,7 +21,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   @Input() displayedEffects: StatusEffect[]
   overlayRef: OverlayRef;
 
-  constructor(private lookupService: LookupService, private utilityService: UtilityService) { }
+  constructor(private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService) { }
 
   ngOnInit(): void {
   }
@@ -467,8 +469,16 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect === undefined)
       effect = this.statusEffect;
 
-    if (effect.duration < 0)
-      return "Resolves Upon Effect Condition";
+    if (effect.duration < 0) {
+      if (effect.resolution !== undefined) {
+        if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
+          return "Always Active - " + this.dictionaryService.getItemName(Number(effect.caster));
+        else if (effect.resolution === EffectResolutionEnum.AlwaysActive)
+          return "Always Active";
+      }
+      else
+        return "Resolves Upon Effect Condition";
+    }
 
     var duration = Math.round(effect.duration);
     var durationString = "";

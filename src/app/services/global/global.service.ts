@@ -37,6 +37,7 @@ import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { EquipmentSetEnum } from 'src/app/models/enums/equipment-set-enum.model';
 import { EquipmentSet } from 'src/app/models/resources/equipment-set.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -50,7 +51,7 @@ export class GlobalService {
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
 
   getCurrentVersion() {
-    return .63;
+    return .64;
   }
 
   initializeGlobalVariables() {
@@ -678,7 +679,8 @@ export class GlobalService {
       dispenserOfDues.isActivatable = false;
       dispenserOfDues.dealsDirectDamage = false;
       dispenserOfDues.effectiveness = .05;
-      dispenserOfDues.userEffect.push(this.createStatusEffect(StatusEffectEnum.DispenserOfDues, -1, 0, false, true));
+      dispenserOfDues.userEffect.push(this.createStatusEffect(StatusEffectEnum.DispenserOfDues, -1, 0, false, true));      
+      dispenserOfDues.userEffect[0].resolution = EffectResolutionEnum.AlwaysActive;
       god.abilityList.push(dispenserOfDues);
     }
 
@@ -870,13 +872,17 @@ export class GlobalService {
     return persistsDeath;
   }
 
-  isBuffUnremovable(type: StatusEffectEnum) {
+  isBuffUnremovable(effect: StatusEffect) {
     var persistsDeath = false;
+    var type = effect.type;
 
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir)
+      persistsDeath = true;
+
+    if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
       persistsDeath = true;
 
     return persistsDeath;
@@ -1137,12 +1143,11 @@ export class GlobalService {
 
   giveCharactersExp(party: Character[], defeatedEnemies: EnemyTeam, partySizeMultiplier: number = 1) {
     var activeParty = this.getActivePartyCharacters(true);
-
+    
     defeatedEnemies.enemyList.forEach(enemy => {
       activeParty.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel
-        && !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {
-          //needs to have some sort of modification factor on beating enemies at a certain lvl compared to you
-          partyMember.exp += enemy.xpGainFromDefeat * partySizeMultiplier;
+        && !partyMember.battleInfo.statusEffects.some(effect => effect.type === StatusEffectEnum.Dead)).forEach(partyMember => {                    
+          this.giveCharacterExp(partyMember, enemy.xpGainFromDefeat * partySizeMultiplier);          
         });
 
       //active gods
@@ -1220,8 +1225,14 @@ export class GlobalService {
     this.globalVar.gods.forEach(god => {
       godLevelBonus += god.partyPermanentStatGain.xpGain;
     });
+    
+    var expUpEffectAmount = 1;
+    var expUpEffect = this.globalVar.globalStatusEffects.find(item => item.type === StatusEffectEnum.ExperienceGainUp);
+    if (expUpEffect !== undefined) {
+      expUpEffectAmount = expUpEffect.effectiveness;
+    }
 
-    partyMember.exp += xpAmount * godLevelBonus;
+    partyMember.exp += xpAmount * godLevelBonus * expUpEffectAmount;
   }
 
   giveGodExp(god: God, xpAmount: number) {
@@ -2960,6 +2971,7 @@ export class GlobalService {
       member.battleInfo.barrierValue = 0;
       member.battleStats.currentHp = member.battleStats.maxHp;
 
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.duration <= 0 || item.type === StatusEffectEnum.LordOfTheUnderworld);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RepeatDamageAfterDelay);
@@ -3722,6 +3734,7 @@ export class GlobalService {
     copy.threshold = effect.threshold;
     copy.targetsAllies = effect.targetsAllies;
     copy.addedEffect = effect.addedEffect;
+    copy.resolution = effect.resolution;
 
     copy.abilityName = effect.abilityName;
     copy.tickFrequency = effect.tickFrequency;

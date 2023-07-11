@@ -44,9 +44,15 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.Town) {
       if (this.deviceDetectorService.isMobile())
-        text = "Towns offer respite and the opportunity to trade. Every few seconds, you will regain HP. Tap the 'General' option to see new equipment options.";
+        text = "Towns offer respite and the opportunity to trade. Tap the 'General' option to see new equipment options.";
       else
-        text = "Towns offer respite and the opportunity to trade. Every few seconds, you will regain HP. Click the 'General' option to see new equipment options.";
+        text = "Towns offer respite and the opportunity to trade. Click the 'General' option to see new equipment options.";
+    }
+    else if (type === TutorialTypeEnum.ExtraSpeed) {
+      if (this.deviceDetectorService.isMobile())
+        text = "You've received 1 hour of extra speed time. This allows you to run the game at 2x speed. Normally, you will accrue this when leaving the game. If you prefer to turn this off or pause it, tap the » button in the header.";
+      else
+        text = "You've received 1 hour of extra speed time. This allows you to run the game at 2x speed. Normally, you will accrue this when leaving the game. If you prefer to turn this off or pause it, click the » button in the header.";
     }
     else if (type === TutorialTypeEnum.Crafting) {
       text = "Crafters can create unique items with materials found from battle. Keep an eye out for what loot you are receiving from individual enemies.";

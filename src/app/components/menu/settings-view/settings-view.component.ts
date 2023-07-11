@@ -134,7 +134,7 @@ export class SettingsViewComponent implements OnInit {
         var decompressedData = LZString.decompressFromBase64(fileReader.result);
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
-          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);          
+          this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);                
           this.versionControlService.updatePlayerVersion();
 
           this.globalService.globalVar.playerNavigation.currentSubzone = this.balladService.getActiveSubZone(true);

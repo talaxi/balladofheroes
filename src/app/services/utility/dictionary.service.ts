@@ -23,6 +23,8 @@ export class DictionaryService {
       name = "Coin";
     if (type === ItemsEnum.EternalMeleeTicket)
       name = "Eternal Melee Ticket";
+      if (type === ItemsEnum.ExtraSpeed1Hour)
+      name = "Hour of Extra Speed";
 
     //progression
     if (type === ItemsEnum.ChthonicFavor)
@@ -811,6 +813,18 @@ export class DictionaryService {
       name = "Small Bucchero Kantharos";
     else if (type === ItemsEnum.SmallCrackedKantharos)
       name = "Small Cracked Kantharos";
+      else if (type === ItemsEnum.LargeOrnateKantharos)
+      name = "Large Ornate Kantharos";
+    else if (type === ItemsEnum.LargeGildedKantharos)
+      name = "Large Gilded Kantharos";
+    else if (type === ItemsEnum.LargeBlackKantharos)
+      name = "Large Black Kantharos";
+    else if (type === ItemsEnum.LargeSilverKantharos)
+      name = "Large Silver Kantharos";
+    else if (type === ItemsEnum.LargeBuccheroKantharos)
+      name = "Large Bucchero Kantharos";
+    else if (type === ItemsEnum.LargeCrackedKantharos)
+      name = "Large Cracked Kantharos";
 
     //other
     else if (type === ItemsEnum.SparringMatch)

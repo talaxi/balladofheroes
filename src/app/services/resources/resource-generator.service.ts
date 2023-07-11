@@ -13,6 +13,10 @@ export class ResourceGeneratorService {
   constructor() { }
 
   getResourceFromItemType(type: ItemsEnum, amount: number) {
+    if (type === ItemsEnum.ExtraSpeed1Hour) {
+      return new ResourceValue(ItemsEnum.ExtraSpeed1Hour, amount);
+    }
+
     //swords
     if (type === ItemsEnum.IronSword) {
       return new ResourceValue(ItemsEnum.IronSword, amount);

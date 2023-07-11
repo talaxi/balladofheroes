@@ -60,6 +60,8 @@ export class MainComponent implements OnInit {
     factList.push("You can adjust your FPS in the Settings for a smoother or less CPU-intensive experience.");
     factList.push("Your party can consist of at most 2 classes and 4 gods.");
     factList.push("By default, inactive classes gain no XP and inactive gods gain 25% XP from battle.");
+    factList.push("All classes can use any weapon type without any penalty or boost.");
+    factList.push("Eternal Melee tickets, Trial boss rotation, and Chthonic Preferred God Resets are based on real time and not game time.");
     if (this.isMobile)
       factList.push("Tap on an enemy's name to see their stats, ability details, and possible loot.");
     else

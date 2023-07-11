@@ -404,6 +404,14 @@ export class BattleService {
         this.globalService.globalVar.freeTreasureChests.aigosthenaLowerCoastAwarded = true;
       }
 
+      //auto gain 2x speed in delphi outskirts
+      /*if (subzone.type === SubZoneEnum.DodonaDelphiOutskirts && subzone.victoryCount >= 0 &&
+        !this.globalService.globalVar.freeTreasureChests.delphiOutskirts) {
+        treasureChestChance = 1;
+        this.globalService.globalVar.freeTreasureChests.delphiOutskirts = true;
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ExtraSpeed, undefined, undefined, true, subzone.type));
+      }*/
+
       //auto gain throwing stones in dodona mountain opening
       if (subzone.type === SubZoneEnum.DodonaMountainOpening && subzone.victoryCount >= 0 &&
         !this.globalService.globalVar.freeTreasureChests.dodonaMountainOpening) {
@@ -417,13 +425,20 @@ export class BattleService {
         this.globalService.globalVar.activeBattle.sceneType = SceneTypeEnum.Chest;
         this.globalService.globalVar.activeBattle.chestRewards = this.subzoneGeneratorService.getTreasureChestRewards(subzone.type);
         this.globalService.globalVar.activeBattle.chestRewards.forEach(reward => {
-          this.lookupService.gainResource(reward);
-          this.lookupService.addLootToLog(reward.item, reward.amount, subzone.type);
-          if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
-            var itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
-            if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Equipment) {
-              var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item)?.quality);
-              itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
+          var itemName = "";
+          if (reward.item === ItemsEnum.ExtraSpeed1Hour) {
+            itemName = "Hour of Extra Speed";
+            this.globalService.globalVar.extraSpeedTimeRemaining += 1 * 60 * 60;
+          }
+          else {
+            this.lookupService.gainResource(reward);
+            this.lookupService.addLootToLog(reward.item, reward.amount, subzone.type);
+            if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
+              itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
+              if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Equipment) {
+                var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item)?.quality);
+                itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
+              }
             }
 
             this.gameLogService.updateGameLog(GameLogEntryEnum.TreasureChestRewards, "You find a treasure chest containing <strong>" + reward.amount + " " + itemName + "</strong>.");
@@ -731,9 +746,18 @@ export class BattleService {
 
     var damageMultiplier = this.getDamageMultiplier(character, target, additionalDamageMultiplier, true, elementalType) * totalAutoAttackCount;
 
-    var damageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, autoAttackMultiplier, damageMultiplier, undefined, elementalType);
+    var allDamageDealt = this.dealDamage(isPartyAttacking, character, target, isCritical, autoAttackMultiplier, damageMultiplier, undefined, elementalType);
+    var damageDealt = allDamageDealt[0];
 
-    var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attacks <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+    var additionalDamageTargets = "";
+    if (allDamageDealt[1] !== undefined && allDamageDealt[1] > 0) {
+      additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[1]) + " blocked by barrier)</i>";
+    }
+    if (allDamageDealt[2] !== undefined && allDamageDealt[2] > 0) {
+      additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[2]) + " absorbed)</i>";
+    }
+
+    var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " attacks <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "") + additionalDamageTargets;
     if (isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyAutoAttacks")) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.PartyAutoAttacks, gameLogEntry);
     }
@@ -1204,10 +1228,21 @@ export class BattleService {
           if (isCritical)
             wasDamageCritical = true;
 
-          damageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType);
+          var allDamageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType);
+          damageDealt = allDamageDealt[0];
+
           if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
             (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(potentialTarget.type) + "'>" + potentialTarget.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+
+            var additionalDamageTargets = "";
+            if (allDamageDealt[1] !== undefined && allDamageDealt[1] > 0) {
+              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[1]) + " blocked by barrier)</i>";
+            }
+            if (allDamageDealt[2] !== undefined && allDamageDealt[2] > 0) {
+              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[2]) + " absorbed)</i>";
+            }
+
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(potentialTarget.type) + "'>" + potentialTarget.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "") + additionalDamageTargets;
             this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
           }
           onslaughtUsed = this.checkForOnslaught(damageDealt, user, potentialTarget, potentialTargets, abilityCopy, abilityWillRepeat);
@@ -1220,10 +1255,20 @@ export class BattleService {
         if (isCritical)
           wasDamageCritical = true;
 
-        damageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType);
+        var allDamageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType);
+        damageDealt = allDamageDealt[0];
+
+        var additionalDamageTargets = "";
+            if (allDamageDealt[1] !== undefined && allDamageDealt[1] > 0) {
+              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[1]) + " blocked by barrier)</i>";
+            }
+            if (allDamageDealt[2] !== undefined && allDamageDealt[2] > 0) {
+              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[2]) + " absorbed)</i>";
+            }
+
         if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
           (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on <strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong> for " + this.utilityService.bigNumberReducer(damageDealt) + elementalText + " damage." + (isCritical ? " <strong>Critical hit!</strong>" : "") + additionalDamageTargets;
           this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
         }
         onslaughtUsed = this.checkForOnslaught(damageDealt, user, target, potentialTargets, abilityCopy, abilityWillRepeat);
@@ -1890,7 +1935,7 @@ export class BattleService {
 
           if (allTargets !== undefined && allTargets.length > 0) {
             allTargets.forEach(newTarget => {
-              var potentialTargetBuffs = newTarget.battleInfo.statusEffects.filter(item => item.isPositive && !this.globalService.isBuffUnremovable(item.type));
+              var potentialTargetBuffs = newTarget.battleInfo.statusEffects.filter(item => item.isPositive && !this.globalService.isBuffUnremovable(item));
               if (potentialTargetBuffs.length === 0)
                 return;
 
@@ -2138,10 +2183,20 @@ export class BattleService {
               elementalText = this.getElementalDamageText(elementalType);
             var damageMultiplier = this.getDamageMultiplier(target, targetedEnemy, undefined, false, elementalType);
             var isCritical = this.isDamageCritical(target, targetedEnemy);
-            counterDamageDealt = this.dealDamage(isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType);
+            var allDamageDealt = this.dealDamage(isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType);
+            counterDamageDealt = allDamageDealt[0];
+
+            var additionalDamageTargets = "";
+            if (allDamageDealt[1] !== undefined && allDamageDealt[1] > 0) {
+              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[1]) + " blocked by barrier)</i>";
+            }
+            if (allDamageDealt[2] !== undefined && allDamageDealt[2] > 0) {
+              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[2]) + " absorbed)</i>";
+            }
+
             if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
               (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-              var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>" + " counters for " + this.utilityService.bigNumberReducer(counterDamageDealt) + elementalText + " damage on <strong class='" + this.globalService.getCharacterColorClassText(targetedEnemy.type) + "'>" + targetedEnemy.name + "</strong>." + (isCritical ? " <strong>Critical hit!</strong>" : "");
+              var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>" + " counters for " + this.utilityService.bigNumberReducer(counterDamageDealt) + elementalText + " damage on <strong class='" + this.globalService.getCharacterColorClassText(targetedEnemy.type) + "'>" + targetedEnemy.name + "</strong>." + (isCritical ? " <strong>Critical hit!</strong>" : "") + additionalDamageTargets;
               this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
             }
           }
@@ -2750,7 +2805,7 @@ export class BattleService {
     return target;
   }
 
-  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum) {
+  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum) : [number, number, number] {
     //damage formula, check for shields, check for ko
     if (abilityDamageMultiplier === undefined)
       abilityDamageMultiplier = 1;
@@ -2882,7 +2937,7 @@ export class BattleService {
             permanentEffectiveness += permanentUpgrade.effectiveness;
           }
         }
-        
+
         //ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness, true, true, true, attacker.name));
         this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, retribution.effectiveness + permanentEffectiveness, true, true, true, attacker.name), target, undefined, attacker);
         retributionEffect.count -= 1;
@@ -2913,11 +2968,11 @@ export class BattleService {
               var permanentChainsUpgrade = nemesis.permanentAbilityUpgrades.find(item => item.requiredLevel === chainsOfFate!.requiredLevel);
               chainsMultiplier = chainsOfFate.effectiveness;
               if (permanentChainsUpgrade !== undefined && target.type !== CharacterEnum.Enemy)
-              chainsMultiplier += permanentChainsUpgrade.effectiveness;
+                chainsMultiplier += permanentChainsUpgrade.effectiveness;
             }
           }
         }
-        
+
         dispenserOfDuesEffect.effectiveness += Math.round(totalDamageDealt * (dispenserOfDues.effectiveness + permanentEffectiveness) * chainsMultiplier);
 
         if (dispenserOfDuesEffect.effectiveness > target.battleStats.maxHp * 3)
@@ -2982,22 +3037,28 @@ export class BattleService {
         target.overdriveInfo.gaugeAmount = target.overdriveInfo.gaugeTotal;
     }
 
+    var absorptionDamage = 0;
     var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
-    if (matchingAbsorption !== undefined) {
+    if (matchingAbsorption !== undefined) {      
       if (matchingAbsorption.effectiveness > 0) {
+        absorptionDamage = matchingAbsorption.effectiveness;
         matchingAbsorption.effectiveness -= damage;
         damage = 0;
 
         if (matchingAbsorption.effectiveness < 0) {
-          //deal remaining damage to hp
+          //deal remaining damage to hp          
           damage = -matchingAbsorption.effectiveness;
           matchingAbsorption.effectiveness = 0;
           target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item !== matchingAbsorption);
         }
+        else
+          absorptionDamage -= matchingAbsorption.effectiveness;
       }
     }
 
+    var barrierDamage = 0;
     if (target.battleInfo.barrierValue > 0) {
+      barrierDamage = target.battleInfo.barrierValue;
       target.battleInfo.barrierValue -= damage;
       damage = 0;
 
@@ -3006,6 +3067,8 @@ export class BattleService {
         damage = -target.battleInfo.barrierValue;
         target.battleInfo.barrierValue = 0;
       }
+      else
+        barrierDamage -= target.battleInfo.barrierValue;
     }
 
     target.battleStats.currentHp -= damage;
@@ -3058,7 +3121,7 @@ export class BattleService {
       }
     }
 
-    return totalDamageDealt;
+    return [totalDamageDealt, barrierDamage, absorptionDamage];
   }
 
   //DoTs
@@ -4843,8 +4906,7 @@ export class BattleService {
       elementalType = ElementalTypeEnum.Air;
     }
 
-    if (elementalType === ElementalTypeEnum.None && character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Nature)
-    {      
+    if (elementalType === ElementalTypeEnum.None && character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Nature) {
       elementalType = character.overdriveInfo.lastUsedElement;
     }
 

@@ -51,6 +51,7 @@ export class BackgroundService {
     this.handleFollowerSearch(deltaTime);
     this.handleFollowerPrayer(deltaTime);
     this.handleGlobalStatusEffectDurations(deltaTime);
+    this.handleSparringMatchMultiplier(deltaTime);
     //this.handleMelete(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
@@ -652,5 +653,19 @@ export class BackgroundService {
     }
 
     this.globalService.globalVar.melete.activeActions = this.globalService.globalVar.melete.activeActions.filter(item => item[1] > 0);
+  }
+
+  handleSparringMatchMultiplier(deltaTime: number) {
+    this.globalService.globalVar.sidequestData.sparringMatchTimer += deltaTime;
+    var resetTimer = 15 * 60;
+
+    if (this.globalService.globalVar.sidequestData.sparringMatchTimer >= resetTimer) {
+      this.globalService.globalVar.sidequestData.sparringMatchTimer -= resetTimer;
+
+      this.globalService.globalVar.sidequestData.sparringMatchMultiplier /= 1.1;
+
+      if (this.globalService.globalVar.sidequestData.sparringMatchMultiplier < 1)
+      this.globalService.globalVar.sidequestData.sparringMatchMultiplier = 1;
+    }
   }
 }

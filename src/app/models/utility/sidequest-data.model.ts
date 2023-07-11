@@ -14,6 +14,8 @@ export class SidequestData {
     displayAugeanStablesPayScene: boolean;
     maxAugeanStablesLevel: number;
     levelsForNextAmbrosia: number;
+    sparringMatchMultiplier: number;
+    sparringMatchTimer: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -29,6 +31,8 @@ export class SidequestData {
         this.augeanStablesLevel = 0;
         this.displayAugeanStablesPayScene = false;
         this.maxAugeanStablesLevel = 3;
-        this.levelsForNextAmbrosia = 100;
+        this.levelsForNextAmbrosia = 50;
+        this.sparringMatchMultiplier = 1;
+        this.sparringMatchTimer = 0;
     }
 }

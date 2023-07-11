@@ -1,6 +1,7 @@
 import { Character } from "../character/character.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { dotTypeEnum } from "../enums/damage-over-time-type-enum.model";
+import { EffectResolutionEnum } from "../enums/effect-resolution-enum.model";
 import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { StatusEffectEnum } from "../enums/status-effects-enum.model";
 
@@ -22,6 +23,7 @@ export class StatusEffect {
     triggersEvery: number; //for effects that trigger every X seconds
     targetsAllies: boolean;
     addedEffect: boolean; //an effect that is added from combat and not normally part of the ability used
+    resolution: EffectResolutionEnum | undefined;
 
     //for DoTs
     abilityName: string;

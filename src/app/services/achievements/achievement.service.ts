@@ -67,8 +67,11 @@ export class AchievementService {
       subzoneType === SubZoneEnum.LernaSpringOfAmymone || subzoneType === SubZoneEnum.StymphaliaLakeStymphalia ||
       subzoneType === SubZoneEnum.ErymanthusSnowCappedPeaks || subzoneType === SubZoneEnum.CoastOfCreteAppleOrchards ||
       subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides || subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia ||
-      subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
+      subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
+      subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
+      subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale) {        
       newAchievements.push(thirtySecondClear);
+      }
 
     var tenSecondClear = new Achievement(AchievementTypeEnum.TenSecondClear, subzoneType);
 
@@ -81,13 +84,15 @@ export class AchievementService {
       subzoneType === SubZoneEnum.LernaSpringOfAmymone || subzoneType === SubZoneEnum.StymphaliaLakeStymphalia ||
       subzoneType === SubZoneEnum.ErymanthusSnowCappedPeaks || subzoneType === SubZoneEnum.CoastOfCreteAppleOrchards ||
       subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides || subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia ||
-      subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
+      subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
+      subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
+      subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
 
     if (subzoneType === SubZoneEnum.LibyaIsleCenter || subzoneType === SubZoneEnum.ElysiumWavesOfOceanus ||
-      subzoneType === SubZoneEnum.TheLetheHypnosIsland || subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
+      subzoneType === SubZoneEnum.TheLetheHypnosIsland || subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.WarForTheMountainThePeak)
       newAchievements.push(completeClear);
 
     return newAchievements;
@@ -457,63 +462,64 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, warForTheMountainBoonBonus));
     }
 
+    //need to figure out what you actually want
     if (achievementType === AchievementTypeEnum.TenThousandVictories) {
       if (subzoneType === SubZoneEnum.AigosthenaUpperCoast)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
       else if (subzoneType === SubZoneEnum.AigosthenaBay)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
       else if (subzoneType === SubZoneEnum.AigosthenaLowerCoast)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.AigosthenaWesternWoodlands)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.AigosthenaHeartOfTheWoods)
-        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, 1)); 
 
       else if (subzoneType === SubZoneEnum.DodonaDelphiOutskirts)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
       else if (subzoneType === SubZoneEnum.DodonaCoastalRoadsOfLocris)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
       else if (subzoneType === SubZoneEnum.DodonaCountryside)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
       else if (subzoneType === SubZoneEnum.DodonaMountainOpening)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
       else if (subzoneType === SubZoneEnum.DodonaMountainPassOne)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
       else if (subzoneType === SubZoneEnum.DodonaLakeTrichonida)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
       else if (subzoneType === SubZoneEnum.DodonaMountainPassTwo)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.DodonaAmbracianGulf)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.LibyaBeach)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
       else if (subzoneType === SubZoneEnum.LibyaRockyOutcrops)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
       else if (subzoneType === SubZoneEnum.LibyaDeeperPath)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
       else if (subzoneType === SubZoneEnum.LibyaIsleCenter)
-        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
 
       else if (subzoneType === SubZoneEnum.AsphodelTheDepths)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, 1));
       else if (subzoneType === SubZoneEnum.AsphodelForgottenHalls)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
       else if (subzoneType === SubZoneEnum.AsphodelEndlessStaircase)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, 1));
       else if (subzoneType === SubZoneEnum.AsphodelFieryPassage)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
       else if (subzoneType === SubZoneEnum.AsphodelDarkenedMeadows)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, 1));
       else if (subzoneType === SubZoneEnum.AsphodelLetheBasin)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.AsphodelLetheTributary)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, 1));
       else if (subzoneType === SubZoneEnum.ElysiumElysianFields)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.ElysiumOpenPlains)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
       else if (subzoneType === SubZoneEnum.ElysiumGatesOfHornAndIvory)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
       else if (subzoneType === SubZoneEnum.ElysiumWindingPaths)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, 1));
       else if (subzoneType === SubZoneEnum.ElysiumWaterloggedMarsh)
@@ -529,53 +535,53 @@ export class AchievementService {
       else if (subzoneType === SubZoneEnum.TheLetheStillWaters)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, 1));
       else if (subzoneType === SubZoneEnum.TheLetheHypnosIsland)
-        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, 1));
 
       else if (subzoneType === SubZoneEnum.PeloposNisosGatesOfTheUnderworld)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosArcadianRoads)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosFootOfTheMountain)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosSteepAscent)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosMountParthenionCaverns)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosValleyOpening)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossArcadia)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosTrekAcrossAcheae)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.PeloposNisosPatrasBorder)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, 1));
 
       else if (subzoneType === SubZoneEnum.CalydonForestPassage)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
       else if (subzoneType === SubZoneEnum.CalydonHeavyThicket)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, 1));
       else if (subzoneType === SubZoneEnum.CalydonWelltroddenPathway)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
       else if (subzoneType === SubZoneEnum.CalydonSparseClearing)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, 1));
       else if (subzoneType === SubZoneEnum.CalydonShroudedFoliage)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
       else if (subzoneType === SubZoneEnum.CalydonBabblingStream)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, 1));
       else if (subzoneType === SubZoneEnum.CalydonMudpit)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
       else if (subzoneType === SubZoneEnum.CalydonMarkedTreeTrail)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, 1));
       else if (subzoneType === SubZoneEnum.CalydonOvergrownVerdure)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
       else if (subzoneType === SubZoneEnum.CalydonWornDownBarn)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
       else if (subzoneType === SubZoneEnum.CalydonWateringHole)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
       else if (subzoneType === SubZoneEnum.CalydonTallGrass)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
       else if (subzoneType === SubZoneEnum.CalydonDeadEnd)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
 
       else if (subzoneType === SubZoneEnum.AegeanSeaOpenSeas)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
@@ -621,121 +627,121 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, 1));
         
       else if (subzoneType === SubZoneEnum.NemeaCountryRoadsTwo)
-      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
     else if (subzoneType === SubZoneEnum.NemeaRollingHills)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, 1));
     else if (subzoneType === SubZoneEnum.NemeaFlatlands)
-      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
     else if (subzoneType === SubZoneEnum.NemeaLairOfTheLion)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
 
     else if (subzoneType === SubZoneEnum.LernaAroundTheInachus)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, 1));
     else if (subzoneType === SubZoneEnum.LernaThickMarsh)
-      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, 1));
     else if (subzoneType === SubZoneEnum.LernaSwampySurroundings)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, 1));
     else if (subzoneType === SubZoneEnum.LernaDarkenedThicket)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, 1));
     else if (subzoneType === SubZoneEnum.LernaSpringOfAmymone)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
 
     else if (subzoneType === SubZoneEnum.StymphaliaArcadianWilderness)
-      rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
     else if (subzoneType === SubZoneEnum.StymphaliaAbandonedVillage)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, 1));
     else if (subzoneType === SubZoneEnum.StymphaliaSourceOfTheLadon)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, 1));
     else if (subzoneType === SubZoneEnum.StymphaliaLakeStymphalia)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfAirDestruction, 1));
 
     else if (subzoneType === SubZoneEnum.ErymanthusLadonRiverbeds)
-      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, 1));
     else if (subzoneType === SubZoneEnum.ErymanthusGreatMassif)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
     else if (subzoneType === SubZoneEnum.ErymanthusCragInlet)
-      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthProtection, 1));
     else if (subzoneType === SubZoneEnum.ErymanthusMountainClimb)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
     else if (subzoneType === SubZoneEnum.ErymanthusSnowCappedPeaks)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyProtection, 1));
 
     else if (subzoneType === SubZoneEnum.CoastOfCreteDownThePineios)
-      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
     else if (subzoneType === SubZoneEnum.CoastOfCreteSoutheasternIonianSeas)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterDestruction, 1));
     else if (subzoneType === SubZoneEnum.CoastOfCreteCretanSeas)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, 1));
     else if (subzoneType === SubZoneEnum.CoastOfCreteCretanCoast)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, 1));
     else if (subzoneType === SubZoneEnum.CoastOfCreteVillageGardens)
-      rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
     else if (subzoneType === SubZoneEnum.CoastOfCreteAppleOrchards)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, 1));
 
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesSouthernCretanSeas)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningProtection, 1));
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesLibyanOutskirts)
-      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesDesertSands)
-      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, 1));
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesSaharanDunes)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesHiddenOasis)
-      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesMoroccanCoast)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, 1));
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesFertileFields)
-      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
     else if (subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
 
     else if (subzoneType === SubZoneEnum.ErytheiaLushValley)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireProtection, 1));
     else if (subzoneType === SubZoneEnum.ErytheiaWesternOceanWaters)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
     else if (subzoneType === SubZoneEnum.ErytheiaPillarsOfHeracles)
-      rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, 1));
     else if (subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
     else if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHaste, 1));
       
       else if (subzoneType === SubZoneEnum.MountOlympusUpTheMountain)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfEarthDestruction, 1));
       else if (subzoneType === SubZoneEnum.MountOlympusMeanderingPath)
-      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfLightningDestruction, 1));
       else if (subzoneType === SubZoneEnum.MountOlympusCouloir)
-      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfIngenuity, 1));
       else if (subzoneType === SubZoneEnum.MountOlympusMusesPlateau)
-      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, 1));
       else if (subzoneType === SubZoneEnum.MountOlympusPathwayToTheZenith)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfRejuvenation, 1));
       else if (subzoneType === SubZoneEnum.MountOlympusMytikasSummit)
       rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
 
       else if (subzoneType === SubZoneEnum.HuntForYarrowMountainHike)
-      rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowWoodlandTrail)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHaste, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork1)
-      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork2)
-      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowTrailFork3)
-      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfWaterProtection, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery1)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery2)
-      rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfFireDestruction, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowDenseGreenery3)
-      rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfPreparation, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway1)
-      rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyProtection, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway2)
-      rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfDetermination, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowPromisingPathway3)
-      rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+      rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
       else if (subzoneType === SubZoneEnum.HuntForYarrowYarrowField)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, 1));
       
@@ -748,7 +754,7 @@ export class AchievementService {
       else if (subzoneType === SubZoneEnum.WarForTheMountainPalaces)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
       else if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
-      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
+      rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
@@ -781,33 +787,35 @@ export class AchievementService {
       if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
         if (subzoneType === SubZoneEnum.NemeaLairOfTheLion)
-        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
         if (subzoneType === SubZoneEnum.LernaSpringOfAmymone)
-        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
         if (subzoneType === SubZoneEnum.StymphaliaLakeStymphalia)
-        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
         if (subzoneType === SubZoneEnum.ErymanthusSnowCappedPeaks)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
         if (subzoneType === SubZoneEnum.CoastOfCreteAppleOrchards)
-        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
         if (subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides)
-        rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
         if (subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia)
-        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
         if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
-        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+        if (subzoneType === SubZoneEnum.MountOlympusMytikasSummit)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
         if (subzoneType === SubZoneEnum.HuntForYarrowYarrowField)
-        rewards.push(new ResourceValue(ItemsEnum.SmallSilverKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCrackedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard)
-        rewards.push(new ResourceValue(ItemsEnum.SmallOrnateKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainStables)
-        rewards.push(new ResourceValue(ItemsEnum.SmallBuccheroKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainPalaces)
-        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
-        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
     }
 
     if (achievementType === AchievementTypeEnum.TenSecondClear) {
@@ -842,9 +850,9 @@ export class AchievementService {
       if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfFireProtection, 1));
         if (subzoneType === SubZoneEnum.NemeaLairOfTheLion)
-        rewards.push(new ResourceValue(ItemsEnum.SmallBlackKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, 1));
         if (subzoneType === SubZoneEnum.LernaSpringOfAmymone)
-        rewards.push(new ResourceValue(ItemsEnum.SmallGildedKantharos, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
         if (subzoneType === SubZoneEnum.StymphaliaLakeStymphalia)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfHolyDestruction, 1));
         if (subzoneType === SubZoneEnum.ErymanthusSnowCappedPeaks)
@@ -852,11 +860,13 @@ export class AchievementService {
         if (subzoneType === SubZoneEnum.CoastOfCreteAppleOrchards)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
         if (subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides)
-        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfDetermination, 1));
         if (subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, 1));
         if (subzoneType === SubZoneEnum.ErytheiaGeryonsFarm)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
+        if (subzoneType === SubZoneEnum.MountOlympusMytikasSummit)
+        rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningProtection, 1));
         if (subzoneType === SubZoneEnum.HuntForYarrowYarrowField)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfLightningDestruction, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates)

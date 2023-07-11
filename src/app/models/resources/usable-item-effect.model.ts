@@ -18,7 +18,7 @@ export class UsableItemEffect {
     chance: number; //for effects that don't land every time
     elementalProperty: ElementalTypeEnum;    
     triggersEveryCount: number;
-    cooldown: number;
+    cooldown: number;    
 
     constructor() {
         this.userEffect = [];

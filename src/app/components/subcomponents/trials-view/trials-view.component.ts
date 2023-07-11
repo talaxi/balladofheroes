@@ -68,7 +68,7 @@ export class TrialsViewComponent {
   }
 
   getTrialDescription() {
-    return "Do battle with a random god of Olympus. If you succeed, you will receive a buff increasing XP and Item Drop Rate for a duration of time.";
+    return "Do battle with a random god of Olympus. If you succeed, you will receive a buff increasing XP and Item Drop Rate for a duration of time. You will not be able to change classes or gods during the trial.";
   }
 
   getEnemyTrialBoss() {

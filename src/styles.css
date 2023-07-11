@@ -1183,6 +1183,11 @@ button:disabled {
   color: var(--foreground-tertiary);
 }
 
+.shiftDown {
+  transform: translateY(15%) !important;
+  overflow: hidden;
+}
+
 @keyframes fadingAnimation {
   0% {
     opacity: 100%;
