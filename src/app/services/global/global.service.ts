@@ -2971,7 +2971,7 @@ export class GlobalService {
       member.battleInfo.barrierValue = 0;
       member.battleStats.currentHp = member.battleStats.maxHp;
 
-      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.duration <= 0 || item.type === StatusEffectEnum.LordOfTheUnderworld);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.duration <= 0 || this.isBuffUnremovable(item) || item.type === StatusEffectEnum.LordOfTheUnderworld);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RepeatDamageAfterDelay);
