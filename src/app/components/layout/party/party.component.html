@@ -36,8 +36,8 @@
                                 class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
                                 class="red-progress characterBar overdriveProgressBar highBar"
-                                [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.autoMode}">
-                            </mat-progress-bar> <span class="hpMpText">
+                                [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.autoMode }">
+                            </mat-progress-bar> <span class="hpMpText" [ngClass]="{'overdriveActive': isOverdriveActive(character)}">
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                             </span>
                         </div>

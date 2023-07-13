@@ -707,9 +707,9 @@ export class LookupService {
       description = "Reflect <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> of damage taken back to the attacker for the character equipped with Nemesis.";
 
     if (type === ItemsEnum.SmallCharmOfZeus)
-      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span>.";
+      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfZeusValue() * 100) + "%</span>.";
     if (type === ItemsEnum.LargeCharmOfZeus)
-      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span>.";
+      description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfZeusValue() * 100) + "%</span>.";
 
     if (type === ItemsEnum.SmallCharmOfPoseidon)
       description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
@@ -4442,11 +4442,11 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.NemesisLuckDebuff)
       description = "When the duration expires, reduce all enemies' Luck by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisThorns)
-      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of auto attack damage taken by party members back to their attacker.";
     if (effect.type === AltarEffectsEnum.NemesisDealDamage)
       description = "Deal " + effect.effectiveness + " damage to an enemy every " + effect.tickFrequency + " seconds.";
     if (effect.type === AltarEffectsEnum.NemesisRareThorns)
-      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of auto attack damage taken by party members back to their attacker.";
     if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)
@@ -4581,11 +4581,11 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.NemesisLuckDebuff)
       description = "When the duration expires, reduce all enemies' Luck by " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisThorns)
-      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of auto attack damage taken by party members back to their attacker.";
     if (effect.type === AltarEffectsEnum.NemesisDealDamage)
       description = "Deal " + effect.effectiveness + " damage to an enemy every " + effect.tickFrequency + " seconds.";
     if (effect.type === AltarEffectsEnum.NemesisRareThorns)
-      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of damage taken by party members back to their attacker.";
+      description = "Deal " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of auto attack damage taken by party members back to their attacker.";
     if (effect.type === AltarEffectsEnum.NemesisRareArmorPenetrationUp)
       description = "Increase the Armor Penetration of all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.NemesisRareDuesUp)

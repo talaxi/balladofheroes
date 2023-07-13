@@ -284,6 +284,10 @@ export class PartyComponent implements OnInit {
     return ability.isAvailable;
   }
 
+  isOverdriveActive(character: Character) {
+    return character.overdriveInfo.isActive;
+  }
+
   getCharacterAbility(character: Character, abilityNumber: number) {
     var ability: Ability = new Ability();
 

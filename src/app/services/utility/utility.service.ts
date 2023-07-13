@@ -352,7 +352,7 @@ export class UtilityService {
   }
 
   getDigitCount(x: number) {
-    return (Math.log10((x ^ (x >> 31)) - (x >> 31)) | 0) + 1;
+    return Math.log(x) * Math.LOG10E + 1 | 0;
   }
 
   //angular material creates all of these divs and they don't close and it causes lag issues

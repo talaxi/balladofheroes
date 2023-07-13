@@ -5,5 +5,8 @@ export enum ColiseumTournamentEnum {
   ForgottenKings,
   RiverLords,
   HadesTrial,
-  WeeklyMelee
+  WeeklyMelee,
+  /*HeroesOfYore1,
+  ElementalPressure,
+  HeroesOfYore2*/
 }

@@ -128,7 +128,7 @@ export class LoadoutsViewComponent {
 
     return name;
   }
-  
+
   getCharacterFromType(type: CharacterEnum) {
     return this.globalService.globalVar.characters.find(item => item.type === type);
   }
@@ -142,6 +142,10 @@ export class LoadoutsViewComponent {
     return false;
   }
 
+  cannotChangeGodsOrClass() {
+    return this.lookupService.cannotSwapGodsOrClasses();
+  }
+
   getEquipmentText(item: Equipment) {
     var itemText = "";
 
@@ -152,7 +156,7 @@ export class LoadoutsViewComponent {
     var fullName = itemName + extraNameAddition;
 
     var smallTextClass = "";
-    
+
     if (itemName.length >= 18)
       smallTextClass = " verySmallEquipmentText";
     else if (itemName.length >= 14)
@@ -231,22 +235,34 @@ export class LoadoutsViewComponent {
   selectLoadout(loadout: Loadout) {
     var character1 = this.globalService.globalVar.characters.find(item => item.type === loadout.character1);
     var character2 = this.globalService.globalVar.characters.find(item => item.type === loadout.character2);
-    if (character1 === undefined || character2 === undefined) {      
+    if (character1 === undefined || character2 === undefined) {
       return;
     }
+
+    this.globalService.globalVar.characters.forEach(character => {
+      if (character.assignedGod1 === loadout.god1Character1 || character.assignedGod1 === loadout.god1Character2 ||
+        character.assignedGod1 === loadout.god2Character1 || character.assignedGod1 === loadout.god2Character2) {
+        character.assignedGod1 = GodEnum.None;
+      }
+
+      if (character.assignedGod2 === loadout.god1Character1 || character.assignedGod2 === loadout.god1Character2 ||
+        character.assignedGod2 === loadout.god2Character1 || character.assignedGod2 === loadout.god2Character2) {
+        character.assignedGod2 = GodEnum.None;
+      }
+    });
 
     this.globalService.globalVar.activePartyMember1 = loadout.character1;
     character1.assignedGod1 = loadout.god1Character1;
     character1.assignedGod2 = loadout.god2Character1;
 
-    
+
     this.globalService.globalVar.activePartyMember2 = loadout.character2;
     character2.assignedGod1 = loadout.god1Character2;
     character2.assignedGod2 = loadout.god2Character2;
 
     //do unequips first so that items are present to be equipped
     if (this.unequipAll) {
-      this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character =>{
+      this.globalService.globalVar.characters.filter(item => item.isAvailable).forEach(character => {
         this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character.type);
         this.globalService.unequipItem(EquipmentTypeEnum.Shield, character.type);
         this.globalService.unequipItem(EquipmentTypeEnum.Armor, character.type);
@@ -254,29 +270,28 @@ export class LoadoutsViewComponent {
         this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character.type);
       });
     }
-    else
-    {
-    if (loadout.character1EquipmentSet.weapon !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character1.type);
+    else {
+      if (loadout.character1EquipmentSet.weapon !== undefined)
+        this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character1.type);
       if (loadout.character1EquipmentSet.shield !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Shield, character1.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Shield, character1.type);
       if (loadout.character1EquipmentSet.armor !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Armor, character1.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Armor, character1.type);
       if (loadout.character1EquipmentSet.ring !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Ring, character1.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Ring, character1.type);
       if (loadout.character1EquipmentSet.necklace !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character1.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character1.type);
 
       if (loadout.character2EquipmentSet.weapon !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character2.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Weapon, character2.type);
       if (loadout.character2EquipmentSet.shield !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Shield, character2.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Shield, character2.type);
       if (loadout.character2EquipmentSet.armor !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Armor, character2.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Armor, character2.type);
       if (loadout.character2EquipmentSet.ring !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Ring, character2.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Ring, character2.type);
       if (loadout.character2EquipmentSet.necklace !== undefined)
-      this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character2.type);
+        this.globalService.unequipItem(EquipmentTypeEnum.Necklace, character2.type);
     }
 
     var itemIsMissing = false;
@@ -295,28 +310,28 @@ export class LoadoutsViewComponent {
       itemIsMissing = true;
 
     if (loadout.character1EquipmentSet.armor !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.armor.itemType, loadout.character1EquipmentSet.armor.associatedResource?.extras) > 0) {      
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.armor.itemType, loadout.character1EquipmentSet.armor.associatedResource?.extras) > 0) {
       this.globalService.equipItem(loadout.character1EquipmentSet.armor, character1);
     }
     else if (loadout.character1EquipmentSet.armor !== undefined)
       itemIsMissing = true;
 
     if (loadout.character1EquipmentSet.ring !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.ring.itemType, loadout.character1EquipmentSet.ring.associatedResource?.extras) > 0) {      
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.ring.itemType, loadout.character1EquipmentSet.ring.associatedResource?.extras) > 0) {
       this.globalService.equipItem(loadout.character1EquipmentSet.ring, character1);
     }
     else if (loadout.character1EquipmentSet.ring !== undefined)
       itemIsMissing = true;
 
     if (loadout.character1EquipmentSet.necklace !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.necklace.itemType, loadout.character1EquipmentSet.necklace.associatedResource?.extras) > 0) {    
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character1EquipmentSet.necklace.itemType, loadout.character1EquipmentSet.necklace.associatedResource?.extras) > 0) {
       this.globalService.equipItem(loadout.character1EquipmentSet.necklace, character1);
     }
     else if (loadout.character1EquipmentSet.necklace !== undefined)
       itemIsMissing = true;
 
     if (loadout.character2EquipmentSet.weapon !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.weapon.itemType, loadout.character2EquipmentSet.weapon.associatedResource?.extras) > 0) {      
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.weapon.itemType, loadout.character2EquipmentSet.weapon.associatedResource?.extras) > 0) {
       this.globalService.equipItem(loadout.character2EquipmentSet.weapon, character2);
     }
     else if (loadout.character2EquipmentSet.weapon !== undefined)
@@ -330,16 +345,16 @@ export class LoadoutsViewComponent {
       itemIsMissing = true;
 
     if (loadout.character2EquipmentSet.armor !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.armor.itemType, loadout.character2EquipmentSet.armor.associatedResource?.extras) > 0) {      
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.armor.itemType, loadout.character2EquipmentSet.armor.associatedResource?.extras) > 0) {
       this.globalService.equipItem(loadout.character2EquipmentSet.armor, character2);
     }
     else if (loadout.character2EquipmentSet.armor !== undefined)
       itemIsMissing = true;
 
     if (loadout.character2EquipmentSet.ring !== undefined &&
-      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.ring.itemType, loadout.character2EquipmentSet.ring.associatedResource?.extras) > 0) {      
+      this.lookupService.getResourceAmountMinusEquippedCount(loadout.character2EquipmentSet.ring.itemType, loadout.character2EquipmentSet.ring.associatedResource?.extras) > 0) {
       this.globalService.equipItem(loadout.character2EquipmentSet.ring, character2);
-    }    
+    }
     else if (loadout.character2EquipmentSet.ring !== undefined)
       itemIsMissing = true;
 
@@ -351,7 +366,7 @@ export class LoadoutsViewComponent {
       itemIsMissing = true;
 
     this.menuService.updateParty = true;
-    
+
     this.globalService.getActivePartyCharacters(true).forEach(member => {
       this.globalService.calculateCharacterBattleStats(member);
     });
@@ -366,12 +381,12 @@ export class LoadoutsViewComponent {
     this.deleteConfirmationText = "Do you want to delete loadout " + loadout.name + "?";
     var dialogRef = this.utilityService.openConfirmationDialog(content);
 
-      dialogRef.afterClosed().subscribe(dialogResult => {
-        if (dialogResult) {
-          this.globalService.globalVar.loadouts = this.globalService.globalVar.loadouts.filter(item => item !== loadout); 
-          this.loadouts = this.globalService.globalVar.loadouts;
-        }
-      });
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {
+        this.globalService.globalVar.loadouts = this.globalService.globalVar.loadouts.filter(item => item !== loadout);
+        this.loadouts = this.globalService.globalVar.loadouts;
+      }
+    });
   }
 
   editLoadout(content: any, loadout: Loadout) {
@@ -387,7 +402,7 @@ export class LoadoutsViewComponent {
       this.loadouts = this.globalService.globalVar.loadouts;
     });
   }
-  
+
   unequipAllToggle() {
     this.globalService.globalVar.settings.set("unequipAllLoadoutToggle", this.unequipAll);
   }

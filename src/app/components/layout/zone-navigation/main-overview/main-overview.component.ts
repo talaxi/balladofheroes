@@ -203,6 +203,34 @@ export class MainOverviewComponent {
     this.globalService.globalVar.settings.set("autoProgress", false);
     }
   }
+  
+  isOlympusAvailable() {
+    var coliseum = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
+    if (coliseum !== undefined && coliseum.isAvailable) {
+      return true;
+    }
+    return false;
+  }
+  
+  jumpToOlympus() {
+    var startingPoint = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
+    if (startingPoint !== undefined) {
+      this.balladService.setActiveSubZone(startingPoint.type);
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;    
+
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
+    this.globalService.globalVar.activeBattle.battleDuration = 0;
+    this.globalService.globalVar.activeBattle.activeTournament = new ColiseumTournament();
+
+    /*var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
+    this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+*/
+    this.globalService.globalVar.settings.set("autoProgress", false);
+    }
+  }
 
   viewFollowers(content: any) {
     if (this.deviceDetectorService.isMobile())
