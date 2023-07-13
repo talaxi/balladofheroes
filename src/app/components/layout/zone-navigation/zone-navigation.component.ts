@@ -277,9 +277,28 @@ export class ZoneNavigationComponent implements OnInit {
       this.globalService.globalVar.activeBattle.battleDuration = 0;
       this.globalService.ResetTournamentInfoAfterChangingSubzone();
       this.globalService.ResetTrialInfoAfterChangingSubzone();
+      
+      this.globalService.globalVar.settings.set("autoProgress", false);
+    }
+    if (this.isMobile) {
+      this.dialog.closeAll();
+    }
+  }
 
-      //var gameLogEntry = "You move to <strong>" + "Elysium" + " - " + this.balladService.getSubZoneName(startingPoint.type) + "</strong>.";
-      //this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+  jumpToOlympus() {
+    var startingPoint = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
+    if (startingPoint !== undefined) {
+      this.balladService.setActiveSubZone(startingPoint.type);
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
+
+      this.dpsCalculatorService.rollingAverageTimer = 0;
+      this.dpsCalculatorService.partyDamagingActions = [];
+      this.dpsCalculatorService.enemyDamagingActions = [];
+      this.dpsCalculatorService.xpGain = [];
+      this.globalService.globalVar.activeBattle.battleDuration = 0;
+      this.globalService.ResetTournamentInfoAfterChangingSubzone();
+      this.globalService.ResetTrialInfoAfterChangingSubzone();
+
       this.layoutService.jumpedToColiseum = true;
       this.globalService.globalVar.settings.set("autoProgress", false);
     }
@@ -445,6 +464,14 @@ export class ZoneNavigationComponent implements OnInit {
 
   isColiseumAvailable() {
     var coliseum = this.balladService.findSubzone(SubZoneEnum.ElysiumColiseum);
+    if (coliseum !== undefined && coliseum.isAvailable) {
+      return true;
+    }
+    return false;
+  }
+
+  isOlympusAvailable() {
+    var coliseum = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
     if (coliseum !== undefined && coliseum.isAvailable) {
       return true;
     }

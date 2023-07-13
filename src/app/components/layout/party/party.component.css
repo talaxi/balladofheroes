@@ -233,6 +233,10 @@
     display: flex;
 }
 
+.overdriveActive {
+    color: var(--overdriveColor);
+}
+
 .characterTargeted:hover,
 .targetModeActive {
     border: 2px solid red !important;

@@ -68,6 +68,10 @@
   filter: brightness(50%);
 }
 
+.overdriveActive .mdc-linear-progress__buffer-bar {
+  background-color: var(--overdriveColor) !important;  
+}
+
 .barrier-progress {
   --mdc-linear-progress-active-indicator-color: var(--barrierColor) !important;
 }

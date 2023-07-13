@@ -177,6 +177,9 @@
                     <br />
                     <button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()" [disabled]="isSubZoneChangingDisabled()"
                         (click)="jumpToColiseum()">Coliseum</button>
+                        <br />
+                    <button class="buttonStyled stackedButtons" *ngIf="isOlympusAvailable()" [disabled]="isSubZoneChangingDisabled()"
+                        (click)="jumpToOlympus()">Olympus</button>
                 </div>
                 <div class="peekResources centeredText">
                     <div class="textLeftAligned inlineBlock">
