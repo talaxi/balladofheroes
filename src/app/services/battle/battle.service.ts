@@ -433,15 +433,16 @@ export class BattleService {
           else {
             this.lookupService.gainResource(reward);
             this.lookupService.addLootToLog(reward.item, reward.amount, subzone.type);
-            if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
-              itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
-              if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Equipment) {
-                var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item)?.quality);
-                itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
-              }
+
+            itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
+            if (this.lookupService.getItemTypeFromItemEnum(reward.item) === ItemTypeEnum.Equipment) {
+              var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(reward.item)?.quality);
+              itemName = "<span class='" + qualityClass + "'>" + itemName + "</span>";
             }
 
-            this.gameLogService.updateGameLog(GameLogEntryEnum.TreasureChestRewards, "You find a treasure chest containing <strong>" + reward.amount + " " + itemName + "</strong>.");
+            if (this.globalService.globalVar.gameLogSettings.get("foundTreasureChest")) {
+              this.gameLogService.updateGameLog(GameLogEntryEnum.TreasureChestRewards, "You find a treasure chest containing <strong>" + reward.amount + " " + itemName + "</strong>.");
+            }
           }
         });
 
@@ -1259,12 +1260,12 @@ export class BattleService {
         damageDealt = allDamageDealt[0];
 
         var additionalDamageTargets = "";
-            if (allDamageDealt[1] !== undefined && allDamageDealt[1] > 0) {
-              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[1]) + " blocked by barrier)</i>";
-            }
-            if (allDamageDealt[2] !== undefined && allDamageDealt[2] > 0) {
-              additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[2]) + " absorbed)</i>";
-            }
+        if (allDamageDealt[1] !== undefined && allDamageDealt[1] > 0) {
+          additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[1]) + " blocked by barrier)</i>";
+        }
+        if (allDamageDealt[2] !== undefined && allDamageDealt[2] > 0) {
+          additionalDamageTargets += "<i> (" + this.utilityService.bigNumberReducer(allDamageDealt[2]) + " absorbed)</i>";
+        }
 
         if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
           (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
@@ -2805,7 +2806,7 @@ export class BattleService {
     return target;
   }
 
-  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum) : [number, number, number] {
+  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum): [number, number, number] {
     //damage formula, check for shields, check for ko
     if (abilityDamageMultiplier === undefined)
       abilityDamageMultiplier = 1;
@@ -3039,7 +3040,7 @@ export class BattleService {
 
     var absorptionDamage = 0;
     var matchingAbsorption = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AbsorbElementalDamage && item.element === elementalType)
-    if (matchingAbsorption !== undefined) {      
+    if (matchingAbsorption !== undefined) {
       if (matchingAbsorption.effectiveness > 0) {
         absorptionDamage = matchingAbsorption.effectiveness;
         matchingAbsorption.effectiveness -= damage;
