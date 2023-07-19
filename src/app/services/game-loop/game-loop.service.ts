@@ -13,6 +13,10 @@ export class GameLoopService {
 
   public Update(): void {  
     var dateNow = Date.now();    
+    if (this.globalService.globalVar.lastTimeStamp > dateNow) {
+      this.globalService.globalVar.lastTimeStamp = dateNow;
+    }
+
     const deltaTime = (dateNow - this.globalService.globalVar.lastTimeStamp) / 1000;
   
     this.deltaTime = deltaTime;
@@ -24,7 +28,7 @@ export class GameLoopService {
     }
 
     var fpsInterval = 1000 / fps;
-    //console.log(dateNow - this.globalService.globalVar.lastTimeStamp + " vs " + fpsInterval);
+    //console.log(dateNow - this.globalService.globalVar.lastTimeStamp + " vs " + fpsInterval);    
     if (fps === this.utilityService.highFps || dateNow - this.globalService.globalVar.lastTimeStamp > fpsInterval)
       shouldEmit = true;    
 
