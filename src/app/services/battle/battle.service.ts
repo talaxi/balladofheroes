@@ -4046,7 +4046,7 @@ export class BattleService {
             lootChance = lootChance * lootRateEffect.effectiveness;
           }
 
-          if (rng <= loot.chance) {
+          if (rng <= lootChance) {
             if (lootGained.some(item => item.item === loot.item)) {
               var existingLootItem = lootGained.find(item => item.item === loot.item);
               if (existingLootItem !== undefined)
