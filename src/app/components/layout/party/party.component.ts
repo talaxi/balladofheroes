@@ -119,8 +119,10 @@ export class PartyComponent implements OnInit {
 
   isOverdriveAvailable(character: Character) {
     if (character.level >= this.utilityService.characterOverdriveLevel &&
-      !this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Overdrive))
+      !this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Overdrive)) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Overdrive, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
+      this.globalService.handleTutorialModal();
+    }
 
     return character.level >= this.utilityService.characterOverdriveLevel;
   }
@@ -491,6 +493,38 @@ export class PartyComponent implements OnInit {
       this.party[0].overdriveInfo.autoMode = !this.party[0].overdriveInfo.autoMode;
     }
 
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter1AllAbilities"))) {
+      this.party[0].battleInfo.autoAttackAutoMode = !this.party[0].battleInfo.autoAttackAutoMode;
+
+        var ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+        if (ability !== undefined)
+          ability.autoMode = !ability.autoMode;   
+          
+      ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+      if (ability !== undefined)
+        ability.autoMode = !ability.autoMode;
+    
+      var godAbility = this.getGodAbility(this.party[0], 1, 0);
+      godAbility.autoMode = !godAbility.autoMode;
+    
+      godAbility = this.getGodAbility(this.party[0], 1, 1);
+      godAbility.autoMode = !godAbility.autoMode;
+    
+      godAbility = this.getGodAbility(this.party[0], 1, 2);
+      godAbility.autoMode = !godAbility.autoMode;
+    
+      godAbility = this.getGodAbility(this.party[0], 2, 0);
+      godAbility.autoMode = !godAbility.autoMode;
+        
+      godAbility = this.getGodAbility(this.party[0], 2, 1);
+      godAbility.autoMode = !godAbility.autoMode;    
+    
+      godAbility = this.getGodAbility(this.party[0], 2, 2);
+      godAbility.autoMode = !godAbility.autoMode;    
+    
+      this.party[0].overdriveInfo.autoMode = !this.party[0].overdriveInfo.autoMode;
+    }
+
     //Character 2
     if (this.party[1] !== undefined) {
       if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("toggleCharacter2TargetMode"))) {
@@ -601,6 +635,38 @@ export class PartyComponent implements OnInit {
       if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter2Overdrive"))) {
         this.party[1].overdriveInfo.autoMode = !this.party[1].overdriveInfo.autoMode;
       }
+      
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter2AllAbilities"))) {
+      this.party[1].battleInfo.autoAttackAutoMode = !this.party[1].battleInfo.autoAttackAutoMode;
+
+        var ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+        if (ability !== undefined)
+          ability.autoMode = !ability.autoMode;   
+          
+      ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+      if (ability !== undefined)
+        ability.autoMode = !ability.autoMode;
+    
+      var godAbility = this.getGodAbility(this.party[1], 1, 0);
+      godAbility.autoMode = !godAbility.autoMode;
+    
+      godAbility = this.getGodAbility(this.party[1], 1, 1);
+      godAbility.autoMode = !godAbility.autoMode;
+    
+      godAbility = this.getGodAbility(this.party[1], 1, 2);
+      godAbility.autoMode = !godAbility.autoMode;
+    
+      godAbility = this.getGodAbility(this.party[1], 2, 0);
+      godAbility.autoMode = !godAbility.autoMode;
+        
+      godAbility = this.getGodAbility(this.party[1], 2, 1);
+      godAbility.autoMode = !godAbility.autoMode;    
+    
+      godAbility = this.getGodAbility(this.party[1], 2, 2);
+      godAbility.autoMode = !godAbility.autoMode;    
+    
+      this.party[1].overdriveInfo.autoMode = !this.party[1].overdriveInfo.autoMode;
+    }
     }
   }
 

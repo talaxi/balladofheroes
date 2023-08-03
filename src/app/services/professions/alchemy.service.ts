@@ -35,6 +35,7 @@ export class AlchemyService {
         alchemy.level = 1;
         alchemy.maxLevel += this.utilityService.firstAlchemyLevelCap;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy,  undefined, undefined, true, subzone));
+        this.globalService.handleTutorialModal();
       }
     }
   }

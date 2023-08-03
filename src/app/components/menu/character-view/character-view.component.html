@@ -296,6 +296,11 @@
                                 class="statValue" [innerHtml]="getGodAbilityEffectivenessIncrease(ability, 1)"></span></div>
                                 <div *ngIf="getGodSecondaryAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodSecondaryAbilityEffectivenessIncrease(ability, 1) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodSecondaryAbilityEffectivenessIncrease(ability, 1)"></span></div>
+                                    <div
+                                    *ngIf="getGodPermanentSecondaryAbilityEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentSecondaryAbilityEffectivenessIncrease(ability, 1) !== '0%'">
+                                    <span class="statLabel">Permanent Additional Ability Effect Effectiveness Increase: </span> <span
+                                        class="statValue"
+                                        [innerHtml]="getGodPermanentSecondaryAbilityEffectivenessIncrease(ability, 1)"></span></div>
                                 <div *ngIf="getGodAbilityEffectCountIncrease(ability, 1) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodAbilityEffectCountIncrease(ability, 1)"></span></div>
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 1) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
@@ -353,6 +358,12 @@
                                 class="statValue" [innerHtml]="getGodAbilityEffectivenessIncrease(ability, 2)"></span></div>
                                 <div *ngIf="getGodSecondaryAbilityEffectivenessIncrease(ability, 2) !== 0 && getGodSecondaryAbilityEffectivenessIncrease(ability, 2) !== '0%'"><span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodSecondaryAbilityEffectivenessIncrease(ability, 2)"></span></div>
+                                    <div
+                                    *ngIf="getGodPermanentSecondaryAbilityEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentSecondaryAbilityEffectivenessIncrease(ability, 2) !== '0%'">
+                                    <span class="statLabel">Permanent Additional Ability Effect Effectiveness Increase: </span> <span
+                                        class="statValue"
+                                        [innerHtml]="getGodPermanentSecondaryAbilityEffectivenessIncrease(ability, 2)"></span></div>
+
                                 <div *ngIf="getGodAbilityEffectCountIncrease(ability, 2) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodAbilityEffectCountIncrease(ability, 2)"></span></div>
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 2) !== 0"><span class="statLabel">Effect Count Increase: </span> <span

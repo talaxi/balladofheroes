@@ -48,13 +48,19 @@
             </mat-checkbox>
         </span> 
         <br />
+        <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="showTutorialsAsModals"
+                (input)="showTutorialsAsModalsToggle()">Show Tutorials As Modals
+            </mat-checkbox>
+        </span> 
+        <br />
         <br />
         <div>
             <div *ngIf="!isMobile" class="updateKeybinds twoColumn">
                 <button class="buttonStyled" (click)="openKeybinds(keybindContent)">Update Keybinds</button>
             </div>            
             <div class="updateKeybinds twoColumn">
-                <button class="buttonStyled" (click)="openKeybinds(quickViewOptionsContent)">Update Quick View
+                <button class="buttonStyled" (click)="openQuickViewOptions(quickViewOptionsContent)">Update Quick View
                     Options</button>
             </div>
             <div *ngIf="isMobile" class="updateKeybinds twoColumn">
@@ -160,6 +166,11 @@
             </div>
             <br />
         </div>
+        <br/>
+        <br/>
+        <button class="buttonStyled" (click)="resetGame()">
+            Reset Game
+        </button>
     </div>
 </div>
 

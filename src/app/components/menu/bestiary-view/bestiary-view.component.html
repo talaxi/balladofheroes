@@ -83,7 +83,7 @@
             <span>Total Achievements Completed: {{zoneAchievementsCompleted()}} / {{zoneTotalAchievements() === -1 ? nameHiddenText : zoneTotalAchievements()}}</span>
         </div>
         <div *ngIf="selectedSubzone !== undefined && isAltarOfAsclepius()" class="info textCentered">
-            <span class="s2Heading pageHeader">{{balladService.getSubZoneName(selectedSubzone.type)}}</span>
+            <button class="buttonAsText clickableText s2Heading pageHeader" (click)="goToSubzone(selectedSubzone.type)">{{balladService.getSubZoneName(selectedSubzone.type)}}</button>            
             <br />
             <span class="smallCaps bold">special</span>
             <br />
@@ -94,7 +94,7 @@
             </div>
         </div>
         <div *ngIf="selectedSubzone !== undefined && isTown()" class="info textCentered">
-            <span class="s2Heading pageHeader">{{balladService.getSubZoneName(selectedSubzone.type)}}</span>
+            <button class="buttonAsText clickableText s2Heading pageHeader" (click)="goToSubzone(selectedSubzone.type)">{{balladService.getSubZoneName(selectedSubzone.type)}}</button>            
             <br />
             <span class="smallCaps bold">town</span>
             <br />
@@ -122,7 +122,8 @@
             </div>
         </div>
         <div *ngIf="selectedSubzone !== undefined && !isTown() && !isAltarOfAsclepius()" class="info textCentered">
-            <span class="s2Heading pageHeader">{{balladService.getSubZoneName(selectedSubzone.type)}}</span>
+            <button class="buttonAsText clickableText s2Heading pageHeader" (click)="goToSubzone(selectedSubzone.type)">{{balladService.getSubZoneName(selectedSubzone.type)}}</button>            
+            <!--<span class="s2Heading pageHeader">{{balladService.getSubZoneName(selectedSubzone.type)}}</span>-->
             <br />
             <span class="smallCaps bold">subzone</span>
             <br />

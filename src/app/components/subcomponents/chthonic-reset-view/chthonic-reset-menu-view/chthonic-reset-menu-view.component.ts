@@ -87,6 +87,9 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     var chthonicFavorMultiplier = this.lookupService.getChthonicFavorMultiplier();
     var preferredGodBoost = 1;
 
+    if (god.level <= 1)
+      return 0;
+
     //give more for more levels at once so that there isn't a benefit in coming back every single level to stack favor
    /* var multiLevelBoost = 0;
     if (god.level > 2) {
@@ -97,9 +100,19 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       preferredGodBoost = 1.25;
     }
 
-    var baseAmount = 1.000815 ** (5325 * Math.log10(.08 * (Math.ceil(god.level * .8)) + 2)) - 1;
+    var baseAmount = 1.00081475 ** (5325 * Math.log10(.08 * (Math.ceil((god.level + 13) * .8)) + 2)) - 1;
 
-    return this.utilityService.roundTo((baseAmount) * (1 + chthonicFavorMultiplier) * preferredGodBoost, 2);
+    if (god.level <= 100) {
+      baseAmount -= (5 - ((god.level/100) * 5));
+
+      if (god.level <= 10) {
+        baseAmount -= (1.5 - ((god.level/10) * 1.5));
+      }
+    }
+    
+    var darkOrbs = this.lookupService.getResourceAmount(ItemsEnum.DarkOrb);
+
+    return this.utilityService.roundTo((baseAmount) * (1 + chthonicFavorMultiplier) * preferredGodBoost * (1 + (darkOrbs * .1)), 2);
   }
 
   getChthonicFavor(god: God) {    
@@ -119,6 +132,8 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ChthonicPower, powerGain));
 
     var originalLevel = god.level;
+    if (originalLevel > god.highestLevelReached)
+      god.highestLevelReached = originalLevel;
     god.level = 1;
     god.exp = 0;
     god.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);

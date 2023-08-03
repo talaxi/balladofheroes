@@ -778,8 +778,9 @@ export class StoryService {
 
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
-        this.globalService.globalVar.isBattlePaused = false;
+        this.globalService.globalVar.isBattlePaused = false;                              
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type));
+        this.globalService.handleTutorialModal();
 
         if (this.deviceDetectorService.isMobile())
           this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type));
@@ -788,10 +789,12 @@ export class StoryService {
         this.globalService.globalVar.settings.set("autoProgress", false);
         this.balladService.setActiveSubZone(SubZoneEnum.DodonaDelphi);
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
+        this.globalService.handleTutorialModal();
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting, undefined, undefined, true, subzone.type));
+        this.globalService.handleTutorialModal();
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis)?.quality);
         var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
@@ -826,9 +829,11 @@ export class StoryService {
       }
       if (this.globalService.globalVar.currentStoryId === 12) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Traveler, undefined, undefined, true, subzone.type));
+        this.globalService.handleTutorialModal();
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests, undefined, undefined, true, subzone.type));
+        this.globalService.handleTutorialModal();
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
           championBallad.isAvailable = true;

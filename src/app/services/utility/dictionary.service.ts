@@ -23,7 +23,7 @@ export class DictionaryService {
       name = "Coin";
     if (type === ItemsEnum.EternalMeleeTicket)
       name = "Eternal Melee Ticket";
-      if (type === ItemsEnum.ExtraSpeed1Hour)
+    if (type === ItemsEnum.ExtraSpeed1Hour)
       name = "Hour of Extra Speed";
 
     //progression
@@ -35,7 +35,7 @@ export class DictionaryService {
       name = "Boon of Olympus";
     if (type === ItemsEnum.ItemBeltUp)
       name = "Item Belt Size";
-      if (type === ItemsEnum.Ambrosia)
+    if (type === ItemsEnum.Ambrosia)
       name = "Ambrosia";
 
     //healing items
@@ -53,17 +53,17 @@ export class DictionaryService {
       name = "Restorative Salve";
     else if (type === ItemsEnum.FocusPotion)
       name = "Focus Potion";
-      else if (type === ItemsEnum.FireAbsorptionPotion)
+    else if (type === ItemsEnum.FireAbsorptionPotion)
       name = "Fire Absorption Potion";
-      else if (type === ItemsEnum.WaterAbsorptionPotion)
+    else if (type === ItemsEnum.WaterAbsorptionPotion)
       name = "Water Absorption Potion";
-      else if (type === ItemsEnum.EarthAbsorptionPotion)
+    else if (type === ItemsEnum.EarthAbsorptionPotion)
       name = "Earth Absorption Potion";
-      else if (type === ItemsEnum.HolyAbsorptionPotion)
+    else if (type === ItemsEnum.HolyAbsorptionPotion)
       name = "Holy Absorption Potion";
-      else if (type === ItemsEnum.LightningAbsorptionPotion)
+    else if (type === ItemsEnum.LightningAbsorptionPotion)
       name = "Lightning Absorption Potion";
-      else if (type === ItemsEnum.AirAbsorptionPotion)
+    else if (type === ItemsEnum.AirAbsorptionPotion)
       name = "Air Absorption Potion";
 
     //battle items
@@ -124,7 +124,7 @@ export class DictionaryService {
       name = "Bronze Sword";
     else if (type === ItemsEnum.FortifiedBronzeSword)
       name = "Fortified Bronze Sword";
-      else if (type === ItemsEnum.HarpyTalon)
+    else if (type === ItemsEnum.HarpyTalon)
       name = "Harpy Talon";
     else if (type === ItemsEnum.SteelSword)
       name = "Steel Sword";
@@ -190,15 +190,15 @@ export class DictionaryService {
       name = "Nemesis's Sword";
     else if (type === ItemsEnum.ZeussLightningBolts)
       name = "Zeus's Lightning Bolts";
-      else if (type === ItemsEnum.GiantSword)
+    else if (type === ItemsEnum.GiantSword)
       name = "Giant Sword";
-      else if (type === ItemsEnum.GiantHammer)
+    else if (type === ItemsEnum.GiantHammer)
       name = "Giant Hammer";
-      else if (type === ItemsEnum.PorphyrionsMace)
+    else if (type === ItemsEnum.PorphyrionsMace)
       name = "Porphyrion's Mace";
-      else if (type === ItemsEnum.DivinePlate)
+    else if (type === ItemsEnum.DivinePlate)
       name = "Divine Plate";
-      else if (type === ItemsEnum.DivineTarge)
+    else if (type === ItemsEnum.DivineTarge)
       name = "Divine Targe";
 
     //shields
@@ -240,7 +240,7 @@ export class DictionaryService {
       name = "Nemesis's Shield";
     else if (type === ItemsEnum.ZeussShield)
       name = "Zeus's Shield";
-      else if (type === ItemsEnum.GiantShield)
+    else if (type === ItemsEnum.GiantShield)
       name = "Giant Shield";
 
     //necklaces
@@ -284,7 +284,7 @@ export class DictionaryService {
       name = "Nemesis's Necklace";
     else if (type === ItemsEnum.ZeussNecklace)
       name = "Zeus's Necklace";
-      else if (type === ItemsEnum.GiantNecklace)
+    else if (type === ItemsEnum.GiantNecklace)
       name = "Giant Necklace";
 
     //armor
@@ -334,7 +334,7 @@ export class DictionaryService {
       name = "Nemesis's Armor";
     else if (type === ItemsEnum.ZeussArmor)
       name = "Zeus's Armor";
-      else if (type === ItemsEnum.GiantArmor)
+    else if (type === ItemsEnum.GiantArmor)
       name = "Giant Armor";
 
     //rings
@@ -384,7 +384,7 @@ export class DictionaryService {
       name = "Nemesis's Ring";
     else if (type === ItemsEnum.ZeussRing)
       name = "Zeus's Ring";
-      else if (type === ItemsEnum.GiantRing)
+    else if (type === ItemsEnum.GiantRing)
       name = "Giant Ring";
 
     //crafting materials
@@ -464,7 +464,7 @@ export class DictionaryService {
       name = "Fish Scale";
     else if (type === ItemsEnum.MetalScraps)
       name = "Metal Scraps";
-      else if (type === ItemsEnum.MetalNuggets)
+    else if (type === ItemsEnum.MetalNuggets)
       name = "Metal Nuggets";
     else if (type === ItemsEnum.CrackedRuby)
       name = "Cracked Ruby";
@@ -534,7 +534,7 @@ export class DictionaryService {
       name = "Bronze Beak";
     else if (type === ItemsEnum.GoldenApple)
       name = "Golden Apple";
-      else if (type === ItemsEnum.OlympicCommendation)
+    else if (type === ItemsEnum.OlympicCommendation)
       name = "Olympic Commendation";
     else if (type === ItemsEnum.MagicTreeBark)
       name = "Magic Tree Bark";
@@ -552,17 +552,17 @@ export class DictionaryService {
       name = "Radiating Gemstone";
     else if (type === ItemsEnum.WhiteHorn)
       name = "White Horn";
-      else if (type === ItemsEnum.BlackHorn)
+    else if (type === ItemsEnum.BlackHorn)
       name = "Black Horn";
-      else if (type === ItemsEnum.MagicCore)
+    else if (type === ItemsEnum.MagicCore)
       name = "Magic Core";
-      else if (type === ItemsEnum.EssenceOfEarth)
+    else if (type === ItemsEnum.EssenceOfEarth)
       name = "Essence of Earth";
-      else if (type === ItemsEnum.EssenceOfAir)
+    else if (type === ItemsEnum.EssenceOfAir)
       name = "Essence of Air";
-      else if (type === ItemsEnum.EssenceOfLightning)
+    else if (type === ItemsEnum.EssenceOfLightning)
       name = "Essence of Lightning";
-      else if (type === ItemsEnum.EssenceOfHoly)
+    else if (type === ItemsEnum.EssenceOfHoly)
       name = "Essence of Holy";
     else if (type === ItemsEnum.PerfectCrackedRuby)
       name = "Perfect Cracked Ruby";
@@ -614,7 +614,7 @@ export class DictionaryService {
       name = "Radiating Water Stone";
     else if (type === ItemsEnum.Nectar)
       name = "Nectar";
-      else if (type === ItemsEnum.FlawedRuby)
+    else if (type === ItemsEnum.FlawedRuby)
       name = "Flawed Ruby";
     else if (type === ItemsEnum.FlawedAmethyst)
       name = "Flawed Amethyst";
@@ -626,7 +626,7 @@ export class DictionaryService {
       name = "Flawed Aquamarine";
     else if (type === ItemsEnum.FlawedEmerald)
       name = "Flawed Emerald";
-      else if (type === ItemsEnum.PerfectFlawedRuby)
+    else if (type === ItemsEnum.PerfectFlawedRuby)
       name = "Perfect Flawed Ruby";
     else if (type === ItemsEnum.PerfectFlawedAmethyst)
       name = "Perfect Flawed Amethyst";
@@ -638,23 +638,23 @@ export class DictionaryService {
       name = "Perfect Flawed Aquamarine";
     else if (type === ItemsEnum.PerfectFlawedEmerald)
       name = "Perfect Flawed Emerald";
-      else if (type === ItemsEnum.PointedStone)
+    else if (type === ItemsEnum.PointedStone)
       name = "Pointed Stone";
-      else if (type === ItemsEnum.PerfectPointedStone)
+    else if (type === ItemsEnum.PerfectPointedStone)
       name = "Perfect Pointed Stone";
-      else if (type === ItemsEnum.ShiningStone)
+    else if (type === ItemsEnum.ShiningStone)
       name = "Shining Stone";
-      else if (type === ItemsEnum.PerfectShiningStone)
+    else if (type === ItemsEnum.PerfectShiningStone)
       name = "Perfect Shining Stone";
-      else if (type === ItemsEnum.JaggedStone)
+    else if (type === ItemsEnum.JaggedStone)
       name = "Jagged Stone";
-      else if (type === ItemsEnum.PerfectJaggedStone)
+    else if (type === ItemsEnum.PerfectJaggedStone)
       name = "Perfect Jagged Stone";
-      else if (type === ItemsEnum.BlessedStone)
+    else if (type === ItemsEnum.BlessedStone)
       name = "Blessed Stone";
-      else if (type === ItemsEnum.PerfectBlessedStone)
+    else if (type === ItemsEnum.PerfectBlessedStone)
       name = "Perfect Blessed Stone";
-      else if (type === ItemsEnum.WeaponSlotAddition)
+    else if (type === ItemsEnum.WeaponSlotAddition)
       name = "Weapon Slot Addition";
     else if (type === ItemsEnum.RingSlotAddition)
       name = "Ring Slot Addition";
@@ -664,7 +664,7 @@ export class DictionaryService {
       name = "Shield Slot Addition";
     else if (type === ItemsEnum.NecklaceSlotAddition)
       name = "Necklace Slot Addition";
-      
+
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
       name = "Poison Extract Potion Recipe";
@@ -674,17 +674,17 @@ export class DictionaryService {
       name = "Focus Potion Recipe";
     else if (type === ItemsEnum.PotentConcoctionRecipe)
       name = "Potent Concoction Recipe";
-      else if (type === ItemsEnum.FireAbsorptionPotionRecipe)
+    else if (type === ItemsEnum.FireAbsorptionPotionRecipe)
       name = "Fire Absorption Recipe";
-      else if (type === ItemsEnum.HolyAbsorptionPotionRecipe)
+    else if (type === ItemsEnum.HolyAbsorptionPotionRecipe)
       name = "Holy Absorption Recipe";
-      else if (type === ItemsEnum.WaterAbsorptionPotionRecipe)
+    else if (type === ItemsEnum.WaterAbsorptionPotionRecipe)
       name = "Water Absorption Recipe";
-      else if (type === ItemsEnum.EarthAbsorptionPotionRecipe)
+    else if (type === ItemsEnum.EarthAbsorptionPotionRecipe)
       name = "Earth Absorption Recipe";
-      else if (type === ItemsEnum.LightningAbsorptionPotionRecipe)
+    else if (type === ItemsEnum.LightningAbsorptionPotionRecipe)
       name = "Lightning Absorption Recipe";
-      else if (type === ItemsEnum.AirAbsorptionPotionRecipe)
+    else if (type === ItemsEnum.AirAbsorptionPotionRecipe)
       name = "Air Absorption Recipe";
 
     //charms
@@ -813,7 +813,7 @@ export class DictionaryService {
       name = "Small Bucchero Kantharos";
     else if (type === ItemsEnum.SmallCrackedKantharos)
       name = "Small Cracked Kantharos";
-      else if (type === ItemsEnum.LargeOrnateKantharos)
+    else if (type === ItemsEnum.LargeOrnateKantharos)
       name = "Large Ornate Kantharos";
     else if (type === ItemsEnum.LargeGildedKantharos)
       name = "Large Gilded Kantharos";
@@ -845,16 +845,18 @@ export class DictionaryService {
       name = "Hades";
     else if (type === ItemsEnum.Ares)
       name = "Ares";
-      else if (type === ItemsEnum.Nemesis)
-        name = "<span class='nemesisColor'>Nemesis</span>";
-        else if (type === ItemsEnum.Dionysus)
-          name = "<span class='dionysusColor'>Dionysus</span>";
+    else if (type === ItemsEnum.Nemesis)
+      name = "<span class='nemesisColor'>Nemesis</span>";
+    else if (type === ItemsEnum.Dionysus)
+      name = "<span class='dionysusColor'>Dionysus</span>";
     else if (type === ItemsEnum.AugeanStables1)
       name = "Repair Augean Stables Door";
     else if (type === ItemsEnum.AugeanStables2)
       name = "Repair Augean Stables Roof";
     else if (type === ItemsEnum.AugeanStables3)
       name = "Repair Augean Stable Walls";
+    else if (type === ItemsEnum.DarkOrb)
+      name = "Dark Orb";
 
     return name;
   }
@@ -904,6 +906,30 @@ export class DictionaryService {
       tournament.completionReward.push(new ResourceValue(ItemsEnum.Hades, 1));
       tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
     }
+    if (type === ColiseumTournamentEnum.HeroesOfYore1) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 90;      
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 2000000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.DarkOrb, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+    }
+    if (type === ColiseumTournamentEnum.ElementalPressure) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 90;      
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 4500000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.DarkOrb, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore2) {
+      tournament.maxRounds = 5;
+      tournament.tournamentTimerLength = 300;
+      tournament.quickVictoryThreshold = 90;      
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.BonusXp, 7500000));
+      tournament.completionReward.push(new ResourceValue(ItemsEnum.HadessBident, 1));
+      tournament.quickCompletionReward.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+    }
     if (type === ColiseumTournamentEnum.WeeklyMelee) {
       tournament.maxRounds = -1;
       tournament.tournamentTimerLength = 300;
@@ -923,6 +949,12 @@ export class DictionaryService {
       return "River Lords";
     else if (type === ColiseumTournamentEnum.HadesTrial)
       return "Hades' Trial";
+    else if (type === ColiseumTournamentEnum.HeroesOfYore1)
+      return "Heroes of Yore 1";
+    else if (type === ColiseumTournamentEnum.ElementalPressure)
+      return "Chaotic Pressure";
+    else if (type === ColiseumTournamentEnum.HeroesOfYore2)
+      return "Heroes of Yore 2";
     else if (type === ColiseumTournamentEnum.WeeklyMelee)
       return "Eternal Melee";
     return "";
@@ -939,7 +971,7 @@ export class DictionaryService {
     if (type === TrialEnum.TrialOfSkill)
       return "Trial of Skill";
     if (type === TrialEnum.TrialOfResolve)
-      return "???";//"Trial Of Resolve"; //TODO: set this back
+      return "Trial of Resolve";
 
     return "";
   }

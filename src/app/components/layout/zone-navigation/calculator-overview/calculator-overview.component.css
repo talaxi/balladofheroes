@@ -1,0 +1,24 @@
+.xps {
+    align-self: center;
+    font-weight: bold;
+    color: var(--battle-update-text);
+}
+
+.dpsChecks {
+    display: flex;
+    justify-content: space-around;
+    margin: .15rem 0;
+    flex-direction: column;
+}
+
+.partyDps {
+    align-self: center;
+    font-weight: bold;
+    color: var(--positive-status-effect);
+}
+
+.enemyDps {
+    align-self: center;
+    font-weight: bold;
+    color: #FF6478;
+}

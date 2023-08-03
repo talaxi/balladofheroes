@@ -288,7 +288,7 @@ export class FollowersService {
       }
     }
     if (type === ZoneEnum.Nemea) {
-      if (rewardLevel === 1) {
+      if (rewardLevel === 1 || rewardLevel === 2) {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Honey, 2));
       }
       else if (rewardLevel >= 3) {

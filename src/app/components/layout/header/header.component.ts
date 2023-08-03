@@ -89,8 +89,9 @@ export class HeaderComponent implements OnInit {
           if (this.menuService.selectedMenuDisplay === MenuEnum.Professions && this.menuService.selectedProfession === ProfessionEnum.None)
           this.menuService.setSelectedProfession(ProfessionEnum.Alchemy);
       }
-      else
+      else {
         this.layoutService.changeLayout(NavigationEnum.Default);
+      }
 
       this.utilityService.removeExcessOverlayDivs();
     }

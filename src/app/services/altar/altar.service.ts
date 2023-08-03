@@ -687,14 +687,19 @@ export class AltarService {
       if (priest !== undefined) {
         var faith = priest.abilityList.find(item => item.name === "Faith" && item.isAvailable);
         if (faith !== undefined) {
-          //console.log(altarEffect.effectiveness + " * " + faith.effectiveness + " = " + altarEffect.effectiveness * faith.effectiveness);
-          if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1) {
-            altarEffect.effectiveness = (altarEffect.effectiveness - 1) * (faith.effectiveness) + 1;
+          var faithEffectiveness = faith.effectiveness;
+
+          var permanentUpgrades = priest.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);          
+          if (permanentUpgrades !== undefined)
+            faithEffectiveness += permanentUpgrades.effectiveness;
+
+          if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1) {            
+            altarEffect.effectiveness = (altarEffect.effectiveness - 1) * (faithEffectiveness) + 1;
           }
           else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1)
-            altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (faith.effectiveness));
+            altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (faithEffectiveness));
           else
-            altarEffect.effectiveness *= faith.effectiveness;
+            altarEffect.effectiveness *= faithEffectiveness;
         }
       }
 

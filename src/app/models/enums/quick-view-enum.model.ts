@@ -7,5 +7,6 @@ export enum QuickViewEnum {
     Altars,
     ItemBelt,
     GameText,
-    Jewelcrafting
+    Jewelcrafting,
+    Calculators
   }

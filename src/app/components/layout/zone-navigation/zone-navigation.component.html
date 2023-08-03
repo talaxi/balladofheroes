@@ -1,7 +1,7 @@
 <div class="navigationGrid">
     <div class="header">
         <div class="balladHeader header">
-            <span class="s4Heading balladTitle mainPageSectionHeader">Ballads</span>
+            <span class="s4Heading balladTitle mainPageSectionHeader" customToolTip [contentTemplate]="balladPopover">Ballads</span>
             <span class='flexBalladHeader'>
                 <mat-checkbox class="example-margin" [(ngModel)]="autoProgress" (input)="autoProgressToggle()">Auto
                     Progress
@@ -315,6 +315,19 @@
 <ng-template #unavailableUnderworldPopover>
     <div>
         These ballads will become available again if you can escape from the Underworld.
+    </div>
+</ng-template>
+
+<ng-template #balladPopover>
+    <div>
+        <strong>Ballads</strong> are like story chapters and contain Zones and Subzones where you will fight increasingly more difficult enemies. You are currently on:
+        <br/>
+        <br/>
+        Ballad: <span class="bold smallCaps">{{getActiveBalladName()}}</span>
+        <br/>
+        Zone: <span class="bold smallCaps">{{getActiveZoneName()}}</span>
+        <br/> 
+        Subzone: <span class="bold smallCaps">{{getActiveSubzoneName()}}</span>
     </div>
 </ng-template>
 

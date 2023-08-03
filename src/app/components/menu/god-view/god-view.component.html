@@ -262,6 +262,11 @@
                             <span class="statLabel">Additional Ability Effect Effectiveness Increase: </span> <span
                                 class="statValue"
                                 [innerHtml]="getSecondaryAbilityEffectivenessIncrease(ability)"></span></div>
+                                <div
+                            *ngIf="getPermanentSecondaryAbilityEffectivenessIncrease(ability) !== 0 && getPermanentSecondaryAbilityEffectivenessIncrease(ability) !== '0%'">
+                            <span class="statLabel">Permanent Additional Ability Effect Effectiveness Increase: </span> <span
+                                class="statValue"
+                                [innerHtml]="getPermanentSecondaryAbilityEffectivenessIncrease(ability)"></span></div>
                         <div *ngIf="getAbilityEffectCountIncrease(ability) !== 0"><span class="statLabel">Effect Count
                                 Increase: </span> <span class="statValue"
                                 [innerHtml]="getAbilityEffectCountIncrease(ability)"></span></div>
@@ -780,8 +785,9 @@
 
 
 <ng-template #permanentStatBreakdownContent>
-    <div class="s4Heading">
-        Permanent Level Upgrades
+    <div class="s4Heading flexBetween">
+        <span>Permanent Level Upgrades</span>
+        <span class="statLabel bold s5Heading">Highest Level Reached: <span [ngClass]="getGodColor()">{{getHighestLevelReached()}}</span></span>
     </div>
     <hr/>
     <div [innerHtml]="this.getPermanentStatBreakdown()">

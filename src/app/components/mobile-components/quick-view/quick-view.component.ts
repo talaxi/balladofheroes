@@ -32,7 +32,8 @@ export class QuickViewComponent {
   displayQuickViewItemBelt: boolean;
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
-  displayQuickViewJewelcrafting: boolean;
+  displayQuickViewJewelcrafting: boolean;  
+  displayQuickViewCalculators: boolean;
 
   constructor(private balladService: BalladService, public globalService: GlobalService, private gameLoopService: GameLoopService,
     private battleService: BattleService, private lookupService: LookupService) {
@@ -47,6 +48,7 @@ export class QuickViewComponent {
     this.displayQuickViewAltars = this.globalService.globalVar.settings.get("displayQuickViewAltars") ?? false;
     this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
     this.displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting") ?? false;
+    this.displayQuickViewCalculators = this.globalService.globalVar.settings.get("displayQuickViewCalculators") ?? false;
 
     this.trackedResourcesColumn1 = this.globalService.globalVar.trackedResources.slice(0, 5);
     if (this.globalService.globalVar.trackedResources.length > 5)

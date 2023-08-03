@@ -405,5 +405,6 @@ export enum ItemsEnum {
   LargeBuccheroKantharos,
   LargeGildedKantharos,
   LargeCrackedKantharos,
-  LargeBlackKantharos
+  LargeBlackKantharos,
+  DarkOrb
 } 

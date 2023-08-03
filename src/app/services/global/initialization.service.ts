@@ -229,8 +229,9 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("autoProgress", false);
     this.globalService.globalVar.settings.set("showOnlyUncompletedAchievements", false);
     this.globalService.globalVar.settings.set("achievementsPerPage", 5);
-    this.globalService.globalVar.settings.set("storyStyle", StoryStyleSettingEnum.Medium);
+    this.globalService.globalVar.settings.set("storyStyle", StoryStyleSettingEnum.Slow);
     this.globalService.globalVar.settings.set("tooltipTheme", true);
+    this.globalService.globalVar.settings.set("showTutorialsAsModals", true);
     this.globalService.globalVar.settings.set("changeClassSwapEquipment", true);
     this.globalService.globalVar.settings.set("changeClassSwapGods", true);
     this.globalService.globalVar.settings.set("showEnemyHpAsPercent", false);
@@ -424,6 +425,10 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("autoToggleCharacter2God2Ability2", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit8");
     this.globalService.globalVar.keybinds.set("autoToggleCharacter2God2Ability3", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit9");
     this.globalService.globalVar.keybinds.set("autoToggleCharacter2Overdrive", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit0");
+    
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter1AllAbilities", "");
+    this.globalService.globalVar.keybinds.set("autoToggleCharacter2AllAbilities", "");
+
   }
 
   initializeBestiaryDefeatCount() {
@@ -809,7 +814,7 @@ export class InitializationService {
       }
 
       var chthonicResetCount = 1;
-      var godLevel = 1;
+      var godLevel = 2000;
 
       for (var j = 0; j < chthonicResetCount; j++) {
         var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
@@ -823,9 +828,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 2000;
+          godLevel = 1200;
         else
-          godLevel = 2000;
+          godLevel = 1200;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -960,11 +965,11 @@ export class InitializationService {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
-        //character.level = 1;
-        //character.exp = 0;
-        //character.baseStats = this.globalService.getCharacterBaseStats(character.type);
+        character.level = 1;
+        character.exp = 0;
+        character.baseStats = this.globalService.getCharacterBaseStats(character.type);
       });
-      /*
+      
             var characterLevel = 1;
             this.globalService.globalVar.characters.forEach(character => {
               for (var i = 0; i < characterLevel; i++) {
@@ -1003,11 +1008,11 @@ export class InitializationService {
                 this.globalService.levelUpPartyMember(character);
               }
       
-              character.level = 1;
-              character.exp = 0;
+              //character.level = 1;
+              //character.exp = 0;
               character.baseStats = this.globalService.getCharacterBaseStats(character.type);
               character.maxLevel = 100;
-            });*/
+            });
 
       this.globalService.globalVar.characters.forEach(character => {
         this.globalService.calculateCharacterBattleStats(character);

@@ -41,6 +41,11 @@
                 src="assets/svg/jewelcrafting.svg">
             <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/jewelcraftingDisabled.svg">
         </button>
+        <button *ngIf="isQuickViewAvailable() && displayQuickViewCalculators" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.Calculators)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.Calculators" class="icon iconEnabled"
+                src="assets/svg/calculator.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/calculatorDisabled.svg">
+        </button>   
     </div>
     <div class="overlay" [ngClass]="{'flipOverlay': overlayShouldFlip}" *ngIf="quickView !== quickViewEnum.None">
         <div class="overviewQuickView centeredText" *ngIf="quickView === quickViewEnum.Overview">
@@ -74,6 +79,9 @@
                     </div>
                 </div>
             </div>
+        </div>        
+        <div class="calculatorsView centeredText" *ngIf="quickView === quickViewEnum.Calculators">
+            <app-calculator-overview></app-calculator-overview>
         </div>
     </div>
 </div>

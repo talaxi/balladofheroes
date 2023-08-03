@@ -90,7 +90,7 @@ export class AppComponent {
     this.versionControlService.updatePlayerVersion(true);
 
     var lastPerformanceNow = 0;
-    var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
+    var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {      
       deltaTime = this.utilityService.roundTo(deltaTime, 5);
       var checkupPerformanceNow = performance.now();
 
@@ -207,7 +207,7 @@ export class AppComponent {
     
     var batchTime = this.getBatchRunTime(subzone, deltaTime); //runs the game in batches of 5 seconds max    
     //user was afk, run battle in batches until you're caught up
-    if (deltaTime > batchTime) {
+    if (deltaTime > batchTime) {      
       this.lookupService.isUIHidden = true;
       this.globalService.globalVar.isCatchingUp = true;
       this.gameLogService.disableOverlayBuffer = true;
@@ -225,8 +225,7 @@ export class AppComponent {
         this.dpsCalculatorService.bonusTime += this.globalService.bankedTime;
         this.globalService.bankedTime = 0;
         this.globalService.maxBankedTime = 0;
-        this.lookupService.isUIHidden = false;
-        //console.log("Caught up");
+        this.lookupService.isUIHidden = false;        
         this.globalService.globalVar.isCatchingUp = false;        
         this.gameLogService.disableOverlayBuffer = false;
         this.gameSaveService.saveGame();

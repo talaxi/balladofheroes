@@ -678,6 +678,21 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.MinorNecklaceSlotAddition) {
       return new ResourceValue(ItemsEnum.MinorNecklaceSlotAddition, amount);
+    }    
+    if (type === ItemsEnum.WeaponSlotAddition) {
+      return new ResourceValue(ItemsEnum.WeaponSlotAddition, amount);
+    }
+    if (type === ItemsEnum.ArmorSlotAddition) {
+      return new ResourceValue(ItemsEnum.ArmorSlotAddition, amount);
+    }
+    if (type === ItemsEnum.RingSlotAddition) {
+      return new ResourceValue(ItemsEnum.RingSlotAddition, amount);
+    }
+    if (type === ItemsEnum.ShieldSlotAddition) {
+      return new ResourceValue(ItemsEnum.ShieldSlotAddition, amount);
+    }
+    if (type === ItemsEnum.NecklaceSlotAddition) {
+      return new ResourceValue(ItemsEnum.NecklaceSlotAddition, amount);
     }
     if (type === ItemsEnum.LamiaHeart) {
       return new ResourceValue(ItemsEnum.LamiaHeart, amount);
@@ -936,6 +951,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.AugeanStables3) {
       return new ResourceValue(ItemsEnum.AugeanStables3, amount);
+    }
+    if (type === ItemsEnum.DarkOrb) {
+      return new ResourceValue(ItemsEnum.DarkOrb, amount);
     }
 
     return new ResourceValue(ItemsEnum.None, 0);

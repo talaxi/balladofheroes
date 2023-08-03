@@ -366,7 +366,7 @@ export class LookupService {
 
     if (type === ItemsEnum.BoonOfOlympus || type === ItemsEnum.ChthonicFavor || type === ItemsEnum.ChthonicPower || type === ItemsEnum.UnderworldAccess ||
       type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2 || type === ItemsEnum.GoldenApple || type === ItemsEnum.Ambrosia ||
-      type === ItemsEnum.OlympicCommendation)
+      type === ItemsEnum.OlympicCommendation || type === ItemsEnum.DarkOrb)
       return ItemTypeEnum.Progression;
 
     return ItemTypeEnum.None;
@@ -557,6 +557,8 @@ export class LookupService {
       name = "Gain an extra item belt slot.";
     else if (type === ItemsEnum.ChthonicFavorUpgrade1)
       name = "At different intervals, random gods will give 25% more <strong>Chthonic Power</strong>";
+      else if (type === ItemsEnum.DarkOrb)
+      name = "Increase <strong>Chthonic Power</strong> gain by 10% per Dark Orb.";
     else if (type === ItemsEnum.ChthonicFavorUpgrade2)
       name = "Gain access to <strong>Chthonic Favor</strong>, a new resource that increases the amount of Chthonic Power you gain";
     else if (type === ItemsEnum.Hades)
@@ -1213,7 +1215,7 @@ export class LookupService {
     if (type === ItemsEnum.AthenasScythe) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Sword);
       equipmentPiece.stats = new CharacterStats(4375, 1000, 1500, 0, 0, 0);
-      equipmentPiece.stats.armorPenetration = .2;
+      equipmentPiece.stats.armorPenetration = .15;
       equipmentPiece.stats.healingReceived = .15;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAbilityUse;
@@ -1301,7 +1303,7 @@ export class LookupService {
     if (type === ItemsEnum.NemesissSword) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Sword);
       equipmentPiece.stats = new CharacterStats(0, 1000, 1500, 0, 0, 1500);
-      equipmentPiece.stats.armorPenetration = .2;
+      equipmentPiece.stats.armorPenetration = .15;
       equipmentPiece.stats.overdriveGain = .15;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
@@ -2617,11 +2619,13 @@ export class LookupService {
       var permanentUserEffectThresholdIncrease = 0;
       var permanentTargetEffectEffectivenessIncrease = 0;
       var permanentTargetEffectDurationIncrease = 0;
+      var permanentSecondaryEffectivenessIncrease = 0;
 
       if (god !== undefined) {
         permanentAbility = god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
         if (permanentAbility !== undefined) {
           permanentEffectivenessIncrease = permanentAbility.effectiveness;
+          permanentSecondaryEffectivenessIncrease = permanentAbility.secondaryEffectiveness;
 
           if (permanentAbility.userEffect !== undefined && permanentAbility.userEffect.length > 0) {
             permanentUserEffectEffectivenessIncrease = permanentAbility.userEffect[0].effectiveness;
@@ -2638,7 +2642,7 @@ export class LookupService {
       effectivenessPercent = this.utilityService.genericRound((ability.effectiveness + permanentEffectivenessIncrease) * 100);
       effectiveAmount = this.utilityService.genericRound(this.getAbilityEffectiveAmount(character, ability, permanentAbility));
       effectiveAmountPercent = this.utilityService.genericRound(((ability.effectiveness + permanentEffectivenessIncrease) - 1) * 100);
-      secondaryEffectiveAmount = ability.secondaryEffectiveness;
+      secondaryEffectiveAmount = this.utilityService.genericRound(ability.secondaryEffectiveness + permanentSecondaryEffectivenessIncrease);
       secondaryEffectiveAmountPercent = this.utilityService.genericRound((secondaryEffectiveAmount - 1) * 100);
       thresholdAmountPercent = this.utilityService.genericRound((ability.threshold) * 100);
       abilityCount = ability.maxCount;
@@ -2759,7 +2763,7 @@ export class LookupService {
     if (abilityName === "No Escape")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
     if (abilityName === "Dispenser of Dues")
-      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by " + (effectivenessPercent) + "% of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0. <strong>Dues</strong> cannot exceed 3x your Max HP.";
+      abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by <strong>" + (effectivenessPercent) + "%</strong> of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0. <strong>Dues</strong> cannot exceed <strong>" + (this.utilityService.genericRound((secondaryEffectiveAmount) * 100)) + "%</strong> of your Max HP.";
 
 
     return abilityDescription;
@@ -2947,7 +2951,7 @@ export class LookupService {
     if (ability.name === "Stagger") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Reduce target's auto attack cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
-    if (ability.name === "Fire Breath") {
+    if (ability.name === "Flame Breath") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their defense by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Tail Swipe") {
@@ -3827,7 +3831,136 @@ export class LookupService {
     }
     if (ability.name === "Earthen Defense") {
       abilityDescription = "Enter Earthen Defense mode, increasing the user's Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> while active. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Cut") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Medusa's Gaze") {
+      abilityDescription = "Stun all targets for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Spirit of a Hero") {
+      abilityDescription = "Increase all of the user's primary stats except for max HP by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for the rest of the battle. " + cooldown + " second cooldown.";
+    }       
+    if (ability.name === "From The Skies") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Becomes available after current HP drops below 65%. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Fly Away") {
+      abilityDescription = "Avoid all auto attacks for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds.";
     }
+    if (ability.name === "Bare Down") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target two times. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "True Arrow") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Precision Shot") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. This is guaranteed to be a critical hit. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Incredible Speed") {
+      abilityDescription = "Increase the user's Agility and Auto Attack Speed Rate by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Sword Swipe") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Pinpoint") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target three times. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Silver Tongue") {
+      abilityDescription = "Reduce ability cooldown rate of all targets by " + relatedTargetGainStatusEffectEffectivenessPercent + "% for " + relatedTargetGainStatusEffectDuration + " seconds. " + cooldown + " second cooldown.";
+    }  
+    if (ability.name === "Swordplay") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target twice. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }  
+    if (ability.name === "Feint" && character.bestiaryType === BestiaryEnum.Theseus) {
+      abilityDescription = "Immediately perform <strong>" + ability?.userEffect.length + "</strong> auto attacks. Their damage is increased by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Natural Leader") {
+      abilityDescription = "Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Hot Touch") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to a target and apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> Fire damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Heat Up") {
+      abilityDescription = "Increase the user's Fire Damage Dealt by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Chaos") {
+      abilityDescription = "Give a target a random negative stat reduction of <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Chaos (Auto Attack)") {
+      abilityDescription = "Reduce target's auto attack cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Swipe") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Wind Up") {
+      abilityDescription = "Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> permanently. This effect can stack. " + cooldown + " second cooldown.";
+    }   
+    if (ability.name === "Kick") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target two times. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Mesmerizing Dance") {
+      abilityDescription = "Reduce all targets' Healing Received by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Flame Spiral") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Fire damage to a target. Apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> Fire damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Chaos (Ability)") {
+      abilityDescription = "Reduce target's ability cooldown rate by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Chaotic Blast") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Damage is randomly modified by " + ((1 - damageModifierRange) * 100) + "% to " + ((damageModifierRange + 1) * 100) + "%. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Strangle Hold") {
+      abilityDescription = "Indefinitely stun a target. This can be removed by dealing " + relatedUserGainStatusEffectMaxCount + " damage to the user. " + cooldown + " second cooldown.";
+    }  
+    if (ability.name === "Enfeebling Touch") {
+      abilityDescription = "All damage dealing abilities apply a random primary stat reducing debuff for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Chaos (Cooldown)") {
+      abilityDescription = "Reset one ability cooldown back to its maximum for all targets. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Uppercut") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and reduce their Healing Received by <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "One Two Punch") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target two times. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Flame of the Hearth") {
+      abilityDescription = "Increase the user's Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> and cause all of their attacks to be Fire elemental for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. Reduce the user's Defense by <strong>" + secondaryRelatedUserGainStatusEffectEffectivenessPercent + "%</strong>  for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Enchanted") {
+      abilityDescription = "Cause all of the user's attacks to be a random element for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Quick Attack") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Weakening Blow") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a random negative stat reduction of <strong>" + (100 - relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
+    if (ability.name === "Famed Inventor") {
+      abilityDescription = "Increase the parties' Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. Give each party member a Barrier of <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "% of Attack</strong> HP. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Prized Invention") {
+      abilityDescription = "Apply a damage over time effect that deals <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "% of Attack</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Father's Love") {
+      abilityDescription = "Increase the parties' Defense and Resistance by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }   
+    if (ability.name === "Fly High") {
+      abilityDescription = "Become untargetable and dodge all auto attacks for for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }     
+    if (ability.name === "Sky's The Limit") {
+      abilityDescription = "Reduce the user's ability cooldowns by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. This effect can stack. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Sweep") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to all targets twice. " + cooldown + " second cooldown.";
+    }        
+    if (ability.name === "Mighty Punch") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and apply a Stun for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }
+    if (ability.name === "Hydra-Poisoned Arrows") {
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    }    
 
     return abilityDescription;
   }
@@ -3957,6 +4090,8 @@ export class LookupService {
       description = "Dodge";
     if (type === StatusEffectEnum.Untargetable)
       description = "Untargetable";
+      if (type === StatusEffectEnum.Submerge)
+      description = "Submerge";
     if (type === StatusEffectEnum.InstantHealAfterAutoAttack)
       description = "Instant Heal After Auto Attack";
     if (type === StatusEffectEnum.Mark)
@@ -4199,6 +4334,8 @@ export class LookupService {
       description = "Avoid all auto attacks.";
     if (statusEffect.type === StatusEffectEnum.Untargetable)
       description = "Cannot be targeted directly by any attacks.";
+      if (statusEffect.type === StatusEffectEnum.Submerge)
+        description = "Cannot be targeted directly by any attacks. Force to re-emerge by dealing " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage. Damage remaining: " + this.utilityService.bigNumberReducer(statusEffect.maxCount - statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.InstantHealAfterAutoAttack)
       description = "Your next auto attack will also heal you for " + statusEffect.effectiveness + " HP.";
     if (statusEffect.type === StatusEffectEnum.Mark)
@@ -4317,13 +4454,15 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Onslaught)
       description = "Your next damaging ability will also apply a damage over time effect onto its targets.";
     if (statusEffect.type === StatusEffectEnum.DispenserOfDues)
-      description = "Increase your next damaging ability by " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + ". Amount cannot exceed 3x your Max HP " + (character === undefined ? "." : "(" + this.utilityService.bigNumberReducer(character.battleStats.maxHp * 3) + ").");
+      description = "Increase your next damaging ability by " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + ". Amount cannot exceed " + this.utilityService.genericRound(statusEffect.maxCount * 100) + "% of your Max HP " + (character === undefined ? "." : "(" + this.utilityService.bigNumberReducer(character.battleStats.maxHp * (statusEffect.maxCount)) + ").");
     if (statusEffect.type === StatusEffectEnum.Retribution)
       description = "Reduce the damage of the next " + statusEffect.count + " attacks you receive by " + Math.round((1 - statusEffect.effectiveness) * 100) + "% and counter attack the enemy who attacked you.";
     if (statusEffect.type === StatusEffectEnum.ChainsOfFate)
       description = "All of your attacks must target the enemy with Chains of Fate, and all of their attacks will target you.";
     if (statusEffect.type === StatusEffectEnum.RepeatDamageAfterDelay)
       description = "When this effect expires, deal " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " to a random target.";
+      if (statusEffect.type === StatusEffectEnum.AbilityAppliesDebuff)
+      description = "Apply a random primary stat debuff to target after using an ability.";
 
     if (statusEffect.type === StatusEffectEnum.FastDebuffs)
       description = "Reduce the duration of any debuffs inflicted by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
@@ -5288,8 +5427,8 @@ export class LookupService {
     return defense;
   }
 
-  getAdjustedCriticalMultiplier(character: Character, forPartyMember: boolean = true) {
-    var defaultMultiplier = 1.25;
+  getAdjustedCriticalMultiplier(character: Character, forPartyMember: boolean = true, isHeal: boolean = false) {
+    var defaultMultiplier = .25;
 
     var altarIncrease = 0;
     if (forPartyMember && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ArtemisCriticalDamageUp) !== undefined) {
@@ -5302,7 +5441,10 @@ export class LookupService {
       altarIncrease *= relevantAltarEffect!.effectiveness;
     }
 
-    return defaultMultiplier + character.battleStats.criticalMultiplier + altarIncrease;
+    if (isHeal)
+      return 1 + ((defaultMultiplier + character.battleStats.criticalMultiplier + altarIncrease) * .25);
+    else
+      return 1 + defaultMultiplier + character.battleStats.criticalMultiplier + altarIncrease;
   }
 
   getOverdriveGainMultiplier(character: Character, isAutoAttack: boolean = false) {
@@ -5612,7 +5754,7 @@ export class LookupService {
             equipmentEffects += "Increase healing or damage dealt by battle items by " + Math.round((effect.effectiveness - 1) * 100) + "%. (Does not increase effectiveness of items that grant effects)<br/>";
 
           if (effect.type === StatusEffectEnum.AutoAttackSpeedUp)
-            equipmentEffects += "Reduce Auto Attack Cooldown Rate by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+            equipmentEffects += "Increase Auto Attack Cooldown Rate by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
           if (effect.type === StatusEffectEnum.ResistanceUp)
             equipmentEffects += "Increase Resistance by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";

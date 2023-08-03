@@ -22,5 +22,6 @@ export enum TutorialTypeEnum {
   ChthonicFavorUpgrade2,
   Overdrive,
   Traveler,
-  ExtraSpeed
+  ExtraSpeed,
+  Enemies
 }

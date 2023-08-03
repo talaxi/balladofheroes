@@ -118,6 +118,8 @@ import { AddLoadoutComponent } from './components/subcomponents/loadouts-view/ad
 import { SelectLoadoutCharacterComponent } from './components/subcomponents/loadouts-view/select-loadout-character/select-loadout-character.component';
 import { SelectLoadoutGodComponent } from './components/subcomponents/loadouts-view/select-loadout-god/select-loadout-god.component';
 import { SelectLoadoutEquipmentComponent } from './components/subcomponents/loadouts-view/select-loadout-equipment/select-loadout-equipment.component';
+import { TutorialBoxComponent } from './components/subcomponents/utility/tutorial-box/tutorial-box.component';
+import { CalculatorOverviewComponent } from './components/layout/zone-navigation/calculator-overview/calculator-overview.component';
 
 @NgModule({
   declarations: [
@@ -200,7 +202,9 @@ import { SelectLoadoutEquipmentComponent } from './components/subcomponents/load
     AddLoadoutComponent,
     SelectLoadoutCharacterComponent,
     SelectLoadoutGodComponent,
-    SelectLoadoutEquipmentComponent,    
+    SelectLoadoutEquipmentComponent,
+    TutorialBoxComponent,
+    CalculatorOverviewComponent,    
   ],
   imports: [
     BrowserModule,

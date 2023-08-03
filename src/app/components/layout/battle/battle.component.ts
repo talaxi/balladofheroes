@@ -327,9 +327,6 @@ export class BattleComponent implements OnInit {
     if (this.globalService.globalVar.isGamePaused)
       deltaTime = 0;
 
-    if (deltaTime > 0)
-      console.log("New check");
-
     this.notificationOverlayMessage = "";
 
     this.pruneOverlayBuffer();
@@ -352,8 +349,7 @@ export class BattleComponent implements OnInit {
       nextMessage[0] = nextMessage[0].replace("gameText", "fading gameText");
     }
 
-    if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Hiding) {
-      console.log("Hiding initial message");
+    if (nextMessage[2] <= 0 && nextMessage[3] === AnimationStateEnum.Hiding) {      
       removeMessage = true;
     }
 
@@ -378,8 +374,7 @@ export class BattleComponent implements OnInit {
         }
 
         if (additionalMessage[2] <= 0 && additionalMessage[3] === AnimationStateEnum.Hiding) {
-          this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);
-          console.log("Hiding additional message");
+          this.gameLogService.notificationOverlayBuffer = this.gameLogService.notificationOverlayBuffer.filter(item => item !== additionalMessage);          
         }
         else
           extraItemCount += 1;

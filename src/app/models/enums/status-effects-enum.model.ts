@@ -154,5 +154,12 @@ export enum StatusEffectEnum {
     HealingDoneUp,
     ReduceCooldowns,
     ThornsDamageUp,
-    AllElementalResistanceUp
+    AllElementalResistanceUp,
+    HealAfterDuration,
+    CounterStun,
+    Submerge, //similar to Ladon thing -- become untargetable for X seconds with a damage cap. if the cap is met, then they are brought back. otherwise big heal and buffs
+    AutomaticCritical,
+    AbilityAppliesDebuff,
+    ResetRandomCooldown,
+    GainRandomEnBuff
   }

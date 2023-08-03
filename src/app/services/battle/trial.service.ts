@@ -34,10 +34,7 @@ export class TrialService {
     var battleOptions: EnemyTeam[] = [];
 
     if (trial.type === TrialEnum.TrialOfResolve) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FallenHero));
-      battleOptions.push(enemyTeam);
+      battleOptions.push(this.getTrialOfResolveBattle());
     }
     if (trial.type === TrialEnum.TrialOfSkill) {
       var trialOfSkillBattle = this.enemyGeneratorService.generateEnemy(this.getTrialOfSkillBattle());
@@ -50,35 +47,78 @@ export class TrialService {
       battleOptions.push(enemyTeam);
     }
 
+    battleOptions.forEach(enemyTeam => {
+      enemyTeam.enemyList.forEach(enemy => {
+        var duplicateNameList = enemyTeam.enemyList.filter(item => item.name === enemy.name);
+        if (duplicateNameList.length > 1) {
+          var count = "A";
+          duplicateNameList.forEach(duplicateEnemy => {
+            if (duplicateEnemy.abilityList.length > 0) {
+              //go through user/target effects, look for caster, update name
+              duplicateEnemy.abilityList.forEach(ability => {
+                if (ability.userEffect.length > 0 && ability.userEffect.filter(item => item.caster !== "").length > 0) {
+                  ability.userEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                      effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+
+                if (ability.targetEffect.length > 0 && ability.targetEffect.filter(item => item.caster !== "").length > 0) {
+                  ability.targetEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                      effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+              })
+            }
+            duplicateEnemy.name += " " + count;
+
+            var charCode = count.charCodeAt(0);
+            count = String.fromCharCode(++charCode);
+          })
+        }
+      });
+    });
+
     return battleOptions;
+  }
+
+  getTrialOfResolveBattle() {
+    var enemyTeam: EnemyTeam = new EnemyTeam();
+    var stage = this.globalService.globalVar.sidequestData.trialStage;
+
+    if (stage === 1) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineOwl));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineOwl));
+    }
+    if (stage === 2) {      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LightningRemnant));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LightningRemnant));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LightningRemnant));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LightningRemnant));
+    }
+    if (stage === 3) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrocodile));      
+    }
+    if (stage === 4) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OlympianAttendants));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OlympianAttendants));
+    }
+    if (stage === 5) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineRam));      
+    }
+
+    return enemyTeam;
   }
 
   getTrialOfSkillBattle() {
     var availableEnums: BestiaryEnum[] = [];
 
     var date = new Date();
-    /* var dayBreakpoint = 1; //between 4:00 AM and 11:59 AM
- 
-     if (date.getHours() >= this.utilityService.preferredGodStartTime2 && date.getHours() < this.utilityService.preferredGodEndTime2) //between 12 PM and 7:59 PM
-       dayBreakpoint = 2;
-     else if (date.getHours() >= this.utilityService.preferredGodStartTime3 || date.getHours() < this.utilityService.preferredGodEndTime3) //between 8 PM and 3:59 AM
-       dayBreakpoint = 3;
- 
-     var seedValue = date.getDay() + date.getMonth() + date.getFullYear() + dayBreakpoint;
- 
-     var previousSeedValue = 0;
- 
-     if (dayBreakpoint === 3)
-       previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 2;
-     else if (dayBreakpoint === 2)
-       previousSeedValue = date.getDay() + date.getMonth() + date.getFullYear() + 1;
-     else if (dayBreakpoint === 1) {
-       var yesterday = new Date(date);
-       yesterday.setDate(yesterday.getDate() - 1);
- 
-       previousSeedValue = yesterday.getDay() + yesterday.getMonth() + yesterday.getFullYear() + 3;
-     }
- */
     var minuteModifier = "a";
     if (date.getMinutes() >= 30)
       minuteModifier = "b";
@@ -94,7 +134,7 @@ export class TrialService {
         previousSeedValue = yesterday.getDate().toString() + yesterday.getMonth().toString() + "23b" + yesterday.getFullYear().toString();
       }
       else {
-        previousSeedValue = date.getDate().toString() + date.getMonth().toString()  + (date.getHours() - 1).toString() + "b" + date.getFullYear().toString();
+        previousSeedValue = date.getDate().toString() + date.getMonth().toString() + (date.getHours() - 1).toString() + "b" + date.getFullYear().toString();
       }
     }
 
@@ -206,9 +246,9 @@ export class TrialService {
     //divide these totals by 6, maybe *5 or something, and then apply the factor from enemy generator
     //maybe give each god some secondary stats as well
     var godLevelBeforeDamageReduction = 2350;
-    var hpFactor = 38.75;
+    var hpFactor = 38;
     var attackFactor = .65;
-    var defenseFactor = 6;
+    var defenseFactor = 5.8;
     var agilityFactor = 2.25;
     var luckFactor = 1.625;
     var resistanceFactor = 2.4;
@@ -263,6 +303,26 @@ export class TrialService {
         }
       }
     }
+    if (enemy.bestiaryType === BestiaryEnum.Artemis) {
+      if (totalGodLevels > 1000) {
+        enemy.battleStats.criticalMultiplier = .25;
+      }
+      else if (totalGodLevels > 2000) {
+        enemy.battleStats.criticalMultiplier = .35;
+      }
+      else if (totalGodLevels > 4000) {
+        enemy.battleStats.criticalMultiplier = .45;
+      }
+      else if (totalGodLevels > 6000) {
+        enemy.battleStats.criticalMultiplier = .55;
+      }
+      else if (totalGodLevels > 8000) {
+        enemy.battleStats.criticalMultiplier = .65;
+      }
+      else if (totalGodLevels > 10000) {
+        enemy.battleStats.criticalMultiplier = .75;
+      }
+    }
 
     return enemy;
   }
@@ -283,11 +343,10 @@ export class TrialService {
         if (existingLootUpEffect.effectiveness < lootUpEffect.effectiveness)
           existingLootUpEffect.effectiveness = lootUpEffect.effectiveness;
 
-          if (existingLootUpEffect.duration < lootUpEffect.duration)
+        if (existingLootUpEffect.duration < lootUpEffect.duration)
           existingLootUpEffect.duration = lootUpEffect.duration;
       }
-      else
-      {
+      else {
         this.globalService.globalVar.globalStatusEffects.push(lootUpEffect);
       }
 
@@ -296,11 +355,10 @@ export class TrialService {
         if (existingXpUpEffect.effectiveness < xpUpEffect.effectiveness)
           existingXpUpEffect.effectiveness = xpUpEffect.effectiveness;
 
-          if (existingXpUpEffect.duration < xpUpEffect.duration)
+        if (existingXpUpEffect.duration < xpUpEffect.duration)
           existingXpUpEffect.duration = xpUpEffect.duration;
       }
-      else
-      {
+      else {
         this.globalService.globalVar.globalStatusEffects.push(xpUpEffect);
       }
 
@@ -336,6 +394,7 @@ export class TrialService {
     }
     else if (type === TrialEnum.TrialOfResolve) {
       //TODO
+      this.globalService.globalVar.sidequestData.trialStage += 1;
     }
 
 

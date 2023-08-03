@@ -1,0 +1,20 @@
+<div class="dps" class="s4Heading textCentered pageHeader dpsChecks">
+    <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
+        Party DPS: {{getPartyDps()}}
+    </span>
+    <span class='smallText enemyDps' customToolTip [contentTemplate]="dpsTemplate">
+        Incoming DPS: {{getEnemyDps()}}
+    </span>
+    <span class='smallText xps' customToolTip [contentTemplate]="xpsTemplate">
+        XPS: {{getXps()}}
+    </span>
+</div>
+
+
+<ng-template #dpsTemplate>
+    Damage Per Second is calculated over a 120 second period and is reset upon changing sub zones.
+</ng-template>
+
+<ng-template #xpsTemplate>
+    XP Per Second is calculated over a 120 second period and is reset upon changing sub zones. This does not include any XP modifiers such as Boon of Olympus.
+</ng-template>

@@ -419,6 +419,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.EarthenDefense) {
       src += "shieldSlam.svg";
     }
+    if (effect.type === StatusEffectEnum.HealAfterDuration) {
+      src += "heal.svg";
+    }
+    if (effect.type === StatusEffectEnum.CounterStun) {
+      src += "lightning.svg";
+    }
+    if (effect.type === StatusEffectEnum.AbilityAppliesDebuff) {
+      src += "abilityAppliesDebuff.svg";
+    }
 
     return src;
   }

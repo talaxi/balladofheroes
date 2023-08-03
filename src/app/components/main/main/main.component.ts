@@ -33,7 +33,7 @@ export class MainComponent implements OnInit {
     this.isMobile = this.deviceDetectorService.isMobile();
     
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      this.navigation = this.layoutService.navigation;
+      this.navigation = this.layoutService.navigation;      
     });
   }
 

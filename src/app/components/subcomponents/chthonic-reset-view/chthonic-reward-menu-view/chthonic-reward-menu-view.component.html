@@ -5,32 +5,32 @@
         <div customToolTip [contentTemplate]="maxHpPopover" class="chthonicStatUpgrade">
             Max HP: {{getChthonicMaxHPBoost() | number : '1.0-0'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForMaxHp().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForMaxHp() > getChthonicPower()" (click)="buyChthonicMaxHPBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForMaxHp() > getChthonicPower()" (click)="buyChthonicMaxHPBoost()">Increase</button>
         </div>
         <div customToolTip [contentTemplate]="attackPopover" class="chthonicStatUpgrade">
             Attack: {{getChthonicAttackBoost() | number : '1.0-0'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAttack().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForAttack() > getChthonicPower()" (click)="buyChthonicAttackBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForAttack() > getChthonicPower()" (click)="buyChthonicAttackBoost()">Increase</button>
         </div>
         <div customToolTip [contentTemplate]="agilityPopover" class="chthonicStatUpgrade">
             Agility: {{getChthonicAgilityBoost() | number : '1.0-0'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForAgility().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForAgility() > getChthonicPower()" (click)="buyChthonicAgilityBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForAgility() > getChthonicPower()" (click)="buyChthonicAgilityBoost()">Increase</button>
         </div>
         <div customToolTip [contentTemplate]="luckPopover" class="chthonicStatUpgrade">
             Luck: {{getChthonicLuckBoost() | number : '1.0-0'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForLuck().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForLuck() > getChthonicPower()" (click)="buyChthonicLuckBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForLuck() > getChthonicPower()" (click)="buyChthonicLuckBoost()">Increase</button>
         </div>
         <div customToolTip [contentTemplate]="defensePopover" class="chthonicStatUpgrade">
             Defense: {{getChthonicDefenseBoost() | number : '1.0-0'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForDefense().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForDefense() > getChthonicPower()" (click)="buyChthonicDefenseBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForDefense() > getChthonicPower()" (click)="buyChthonicDefenseBoost()">Increase</button>
         </div>
         <div customToolTip [contentTemplate]="resistancePopover" class="chthonicStatUpgrade">
             Resistance: {{getChthonicResistanceBoost() | number : '1.0-0'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForResistance().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForResistance() > getChthonicPower()" (click)="buyChthonicResistanceBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForResistance() > getChthonicPower()" (click)="buyChthonicResistanceBoost()">Increase</button>
         </div>
     </div>
     <br/>
@@ -38,19 +38,19 @@
         <div customToolTip [contentTemplate]="godPrimaryResetIncreasePopover" class="largerChthonicStatUpgrades">
             Increase total number of resets for God Primary Stat Bonus: {{getChthonicGodPrimaryStatResetIncreaseBoost() | number : '1.0-0'}} <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForPrimaryGodStatIncrease().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForPrimaryGodStatIncrease() > getChthonicPower()" (click)="buyChthonicGodPrimaryStatResetIncreaseBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForPrimaryGodStatIncrease() > getChthonicPower()" (click)="buyChthonicGodPrimaryStatResetIncreaseBoost()">Increase</button>
         </div>
 
         <div customToolTip [contentTemplate]="partyPrimaryResetIncreasePopover" class="largerChthonicStatUpgrades">
             Increase total number of resets for Party Primary Stat Bonus: {{getChthonicPartyPrimaryStatResetIncreaseBoost() | number : '1.0-0'}} <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForPrimaryPartyStatIncrease().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForPrimaryPartyStatIncrease() > getChthonicPower()" (click)="buyChthonicPartyPrimaryStatResetIncreaseBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForPrimaryPartyStatIncrease() > getChthonicPower()" (click)="buyChthonicPartyPrimaryStatResetIncreaseBoost()">Increase</button>
         </div>
 
         <div customToolTip [contentTemplate]="retainGodLevelPopover" class="largerChthonicStatUpgrades">
             Retain a percent of experience obtained after a Chthonic Reset: {{getChthonicRetainGodLevelBoost() | number : '1.0-2'}}% <br />
             <span class="chthonicPowerKeyword">{{getRequiredChthonicPowerForRetainGodLevel().toLocaleString()}} CP Required</span><br/>
-            <button [disabled]="this.getRequiredChthonicPowerForRetainGodLevel() > getChthonicPower() || atRetainGodCap()" (click)="buyChthonicRetainGodLevelBoost()">Increase</button>
+            <button class="buttonStyled" [disabled]="this.getRequiredChthonicPowerForRetainGodLevel() > getChthonicPower() || atRetainGodCap()" (click)="buyChthonicRetainGodLevelBoost()">Increase</button>
         </div>
     </div>
 </div>

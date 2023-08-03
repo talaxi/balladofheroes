@@ -32,6 +32,7 @@ export class JewelcraftingService {
         jewelcrafting.level = 1;
         jewelcrafting.maxLevel += this.utilityService.firstJewelcraftingLevelCap;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Jewelcrafting, undefined, undefined, true, subzone));
+        this.globalService.handleTutorialModal();
       }
     }
   }
@@ -912,6 +913,19 @@ export class JewelcraftingService {
     }
     if (item === ItemsEnum.CrackedAquamarine) {
       upgradedItem = ItemsEnum.PerfectCrackedAquamarine;
+    }
+
+    if (item === ItemsEnum.PointedStone) {
+      upgradedItem = ItemsEnum.PerfectPointedStone;
+    }
+    if (item === ItemsEnum.ShiningStone) {
+      upgradedItem = ItemsEnum.PerfectShiningStone;
+    }
+    if (item === ItemsEnum.JaggedStone) {
+      upgradedItem = ItemsEnum.PerfectJaggedStone;
+    }
+    if (item === ItemsEnum.BlessedStone) {
+      upgradedItem = ItemsEnum.PerfectBlessedStone;
     }
 
     if (item === ItemsEnum.DullRuby) {

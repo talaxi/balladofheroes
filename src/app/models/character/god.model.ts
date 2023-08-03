@@ -9,6 +9,7 @@ export class God {
     name: string;
     type: GodEnum;
     level: number;
+    highestLevelReached: number;
     @Type(() => PrimaryStats)
     gainModifiers: PrimaryStats;
     @Type(() => CharacterStats)
@@ -42,6 +43,7 @@ export class God {
     constructor(type: GodEnum) {
         this.type = type;
         this.level = 1;
+        this.highestLevelReached = 1;
         this.gainModifiers = this.getGainModifier(type);
         this.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
         this.permanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);

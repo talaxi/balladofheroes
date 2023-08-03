@@ -271,7 +271,7 @@ export class BackgroundService {
           if (surge === undefined) {
             var overload = this.lookupService.characterHasAbility("Overload", memberWithZeus);
             if (overload !== undefined) {
-              this.battleService.applyStatusEffect(overload.userEffect[0], memberWithZeus, party, memberWithZeus);
+              this.battleService.applyStatusEffect(this.globalService.makeStatusEffectCopy(overload.userEffect[0]), memberWithZeus, party, memberWithZeus);
             }
           }
           else {

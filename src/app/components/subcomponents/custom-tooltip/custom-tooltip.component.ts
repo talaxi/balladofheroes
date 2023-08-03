@@ -82,9 +82,7 @@ export class CustomTooltipComponent implements OnInit {
       var overlayPane = this.selfRef.nativeElement.closest(".cdk-overlay-pane");
       
       var screenWidth = screen.width - this.selfRef.nativeElement.getBoundingClientRect().width;      
-      if (this.tooltipDirection === DirectionEnum.Left) {
-        //console.log(this.selfRef.nativeElement.getBoundingClientRect().x + " + " + this.selfRef.nativeElement.getBoundingClientRect().width + " > " + (screen.width * (this.largeTooltipPercent-.05)));
-        console.log(this.selfRef.nativeElement.getBoundingClientRect().x + " <= " + (screen.width * .02));
+      if (this.tooltipDirection === DirectionEnum.Left) {        
         if (this.selfRef.nativeElement.getBoundingClientRect().x <= screen.width * .02) {          
           overlayPane.classList.add('shiftDown');          
           //console.log("left shift down");

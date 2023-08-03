@@ -18,6 +18,7 @@ import { Stripe } from 'stripe';
 import { PatreonAccessService } from 'src/app/services/utility/patreon-access.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
+import { InitializationService } from 'src/app/services/global/initialization.service';
 
 @Component({
   selector: 'app-settings-view',
@@ -38,6 +39,7 @@ export class SettingsViewComponent implements OnInit {
   showPartyHpAsPercent: boolean = false;
   showEnemyHpAsPercent: boolean = false;
   autoExportOnUpdate: boolean = true;
+  showTutorialsAsModals: boolean = false;
   @Input() isMobile = false;
   confirmationText = "";
   @ViewChild('confirmationBox') confirmationBox: any;
@@ -46,7 +48,7 @@ export class SettingsViewComponent implements OnInit {
     public utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
     private versionControlService: VersionControlService, private codeCreationService: CodeCreationService,
     private codeRedemptionService: CodeRedemptionService, private patreonAccessService: PatreonAccessService, private lookupService: LookupService,
-    private menuService: MenuService) { }
+    private menuService: MenuService, private initializationService: InitializationService) { }
 
   ngOnInit(): void {
     if (this.deploymentService.codeCreationMode) {
@@ -91,6 +93,7 @@ export class SettingsViewComponent implements OnInit {
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
     this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? true;
+    this.showTutorialsAsModals = this.globalService.globalVar.settings.get("showTutorialsAsModals") ?? false;
   }
 
   public SaveGame() {
@@ -194,6 +197,28 @@ export class SettingsViewComponent implements OnInit {
       this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '50%', id: 'dialogNoPadding' });
   }
 
+  openQuickViewOptions(content: any) {
+    if (this.isMobile)
+      this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
+    else
+    this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
+  }
+
+  resetGame() {
+    if (confirm("This will export a copy of your current data and then reset your game back to the start. Continue?")) {
+      this.SaveGameToFile();
+      var isSubscriber = this.globalService.globalVar.isSubscriber;      
+      var subscribedDate = this.globalService.globalVar.subscribedDate;
+
+      this.globalService.initializeGlobalVariables();
+      this.initializationService.initializeVariables();
+      
+      if (isSubscriber) {
+        this.globalService.setAsSubscriber(subscribedDate);
+      }
+    }
+  }
+
   enterRedemptionCode() {
     this.confirmationText = this.codeRedemptionService.redeemCode(this.enteredRedemptionCode);
     if (this.confirmationText !== "")
@@ -211,6 +236,9 @@ export class SettingsViewComponent implements OnInit {
   }
   autoExportOnUpdateToggle() {
     this.globalService.globalVar.settings.set("autoExportOnUpdate", this.autoExportOnUpdate);
+  }
+  showTutorialsAsModalsToggle() {
+    this.globalService.globalVar.settings.set("showTutorialsAsModals", this.showTutorialsAsModals);
   }
 
   ngOnDestroy() {    

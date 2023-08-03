@@ -618,6 +618,19 @@ export class GodViewComponent implements OnInit {
     return 0;
   }
 
+  getPermanentSecondaryAbilityEffectivenessIncrease(ability: Ability) {
+    var permanentAbilityUpgradeAmount = 0;
+    var permanentAbilityUpgrade = this.god.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.secondaryEffectiveness;
+
+    if (ability !== undefined) {      
+        return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
+    }
+
+    return 0;
+  }
+
   getAbilityEffectivenessIncrease(ability: Ability) {
     var baseGod = new God(this.god.type);
     this.globalService.assignGodAbilityInfo(baseGod);
@@ -971,6 +984,9 @@ export class GodViewComponent implements OnInit {
         statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + " Effectiveness, ";
       else
         statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + "% Effectiveness, ";
+    }     
+    if (upgradedAbilities.secondaryEffectiveness > 0) {      
+        statGainText += this.utilityService.genericRound(upgradedAbilities.secondaryEffectiveness * 100) + "% Additional Effect Effectiveness, ";
     }
     if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {
       if (upgradedAbilityName === "Second Wind") {
@@ -996,6 +1012,14 @@ export class GodViewComponent implements OnInit {
     return statGainText;
   }
  
+  getHighestLevelReached() {
+    var highestLevelReached = this.god.highestLevelReached;
+    if (this.god.level > highestLevelReached)
+      highestLevelReached = this.god.level;
+
+    return highestLevelReached;
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

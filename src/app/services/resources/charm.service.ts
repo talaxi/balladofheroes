@@ -624,27 +624,27 @@ export class CharmService {
   }  
 
   getSmallOrnateKantharosValue() {
-    return 15;
+    return 30;
   }
 
   getSmallSilverKantharosValue() {
-    return 15;
+    return 30;
   }
 
   getSmallBuccheroKantharosValue() {
-    return 15;
+    return 30;
   }
 
   getSmallGildedKantharosValue() {
-    return 15;
+    return 30;
   }
 
   getSmallCrackedKantharosValue() {
-    return 75;
+    return 30;
   }
 
   getSmallBlackKantharosValue() {
-    return 15;
+    return 30;
   }
 
   getLargeOrnateKantharosValue() {

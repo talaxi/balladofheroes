@@ -30,6 +30,10 @@
             <mat-checkbox *ngIf="jewelcraftingUnlocked" [(ngModel)]="displayQuickViewJewelcrafting" (input)="displayQuickViewJewelcraftingToggle()">
                 Jewelcrafting
             </mat-checkbox>
+            <br />
+            <mat-checkbox *ngIf="isMobile" [(ngModel)]="displayQuickViewCalculators" (input)="displayQuickViewCalculatorsToggle()">
+                Calculators
+            </mat-checkbox>
         </div>
     </div>
 </div>

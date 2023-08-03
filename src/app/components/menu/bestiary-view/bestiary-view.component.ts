@@ -7,9 +7,11 @@ import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
+import { LayoutService } from 'src/app/models/global/layout.service';
 import { LootItem } from 'src/app/models/resources/loot-item.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
@@ -51,7 +53,8 @@ export class BestiaryViewComponent {
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private deviceDetectorService: DeviceDetectorService,
     private subzoneGeneratorService: SubZoneGeneratorService, private utilityService: UtilityService, public lookupService: LookupService,
-    private dictionaryService: DictionaryService, private achievementService: AchievementService, private menuService: MenuService) {
+    private dictionaryService: DictionaryService, private achievementService: AchievementService, private menuService: MenuService,
+    private layoutService: LayoutService) {
 
   }
 
@@ -62,12 +65,12 @@ export class BestiaryViewComponent {
 
     if (presetBallad !== undefined)
       this.selectBallad(presetBallad);
-      if (presetZone !== undefined)
+    if (presetZone !== undefined)
       this.selectZone(presetZone);
-      if (presetSubzone !== undefined)
+    if (presetSubzone !== undefined)
       this.selectSubzone(presetSubzone);
-    
-    this.menuService.setBestiaryPresets(undefined, undefined, undefined);     
+
+    this.menuService.setBestiaryPresets(undefined, undefined, undefined);
     this.isMobile = this.deviceDetectorService.isMobile();
     this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
       return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
@@ -207,6 +210,19 @@ export class BestiaryViewComponent {
     return this.balladService.getSubZoneName(type);
   }
 
+  goToSubzone(type: SubZoneEnum) {
+    var startingPoint = this.balladService.findSubzone(type);
+    if (startingPoint !== undefined) {
+      this.balladService.setActiveSubZone(startingPoint.type);
+      this.globalService.globalVar.playerNavigation.currentSubzone = startingPoint;
+    }
+
+    this.globalService.globalVar.settings.set("autoProgress", false);
+
+    this.layoutService.changeLayout(NavigationEnum.Default);
+    this.utilityService.removeExcessOverlayDivs();
+  }
+
   getEnemyName(enemy: Enemy) {
     var defeatCount = 0;
     var name = this.nameHiddenText;
@@ -272,19 +288,19 @@ export class BestiaryViewComponent {
     var enemyList: Enemy[] = [];
     if (this.selectedZone === undefined)
       return 0;
-    
-      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
-        var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
-        if (enemyEncounters.length > 0) {
-          enemyEncounters.forEach(encounter => {
-            encounter.enemyList.forEach(enemy => {
-              if (!enemyList.some(item => item.bestiaryType === enemy.bestiaryType)) {
-                enemyList.push(enemy);
-              }
-            })
-          });
-        }
-      });
+
+    this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
+      var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
+      if (enemyEncounters.length > 0) {
+        enemyEncounters.forEach(encounter => {
+          encounter.enemyList.forEach(enemy => {
+            if (!enemyList.some(item => item.bestiaryType === enemy.bestiaryType)) {
+              enemyList.push(enemy);
+            }
+          })
+        });
+      }
+    });
 
     return enemyList.length;
   }
@@ -294,20 +310,20 @@ export class BestiaryViewComponent {
     if (this.selectedZone === undefined)
       return 0;
 
-      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
-        var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
-        if (enemyEncounters.length > 0) {
-          enemyEncounters.forEach(encounter => {
-            encounter.enemyList.forEach(enemy => {
-              if (!enemyList.some(item => item.bestiaryType === enemy.bestiaryType)) {
-                var defeatCountStat = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === enemy.bestiaryType);
-                if (defeatCountStat !== undefined && defeatCountStat.count > 0)
-                  enemyList.push(enemy);
-              }
-            });
+    this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
+      var enemyEncounters = this.subzoneGeneratorService.generateBattleOptions(subzone.type, false);
+      if (enemyEncounters.length > 0) {
+        enemyEncounters.forEach(encounter => {
+          encounter.enemyList.forEach(enemy => {
+            if (!enemyList.some(item => item.bestiaryType === enemy.bestiaryType)) {
+              var defeatCountStat = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === enemy.bestiaryType);
+              if (defeatCountStat !== undefined && defeatCountStat.count > 0)
+                enemyList.push(enemy);
+            }
           });
-        }
-      });
+        });
+      }
+    });
 
     return enemyList.length;
   }
@@ -468,7 +484,7 @@ export class BestiaryViewComponent {
   balladAchievementsCompleted() {
     var achievementCount = 0;
     if (this.selectedBallad === undefined)
-      return 0;    
+      return 0;
 
     this.selectedBallad.zones.forEach(zone => {
       zone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
@@ -486,7 +502,7 @@ export class BestiaryViewComponent {
     if (this.selectedBallad === undefined)
       return 0;
 
-      if (!this.balladService.isBalladFullyAvailable(this.selectedBallad.type))
+    if (!this.balladService.isBalladFullyAvailable(this.selectedBallad.type))
       return -1;
 
     this.selectedBallad.zones.forEach(zone => {
@@ -503,11 +519,11 @@ export class BestiaryViewComponent {
     if (this.selectedZone === undefined)
       return 0;
 
-      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
-        var totalAchieves = this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
-        var incompleteAchieves = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements);
-        achievementCount += totalAchieves - incompleteAchieves;
-      });
+    this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
+      var totalAchieves = this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
+      var incompleteAchieves = this.achievementService.getUncompletedAchievementCountBySubZone(subzone.type, this.globalService.globalVar.achievements);
+      achievementCount += totalAchieves - incompleteAchieves;
+    });
 
     return achievementCount;
   }
@@ -517,12 +533,12 @@ export class BestiaryViewComponent {
     if (this.selectedZone === undefined)
       return 0;
 
-      if (!this.balladService.isZoneFullyAvailable(this.selectedZone.type))
+    if (!this.balladService.isZoneFullyAvailable(this.selectedZone.type))
       return -1;
 
-      this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
-        achievementCount += this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
-      });
+    this.selectedZone.subzones.filter(item => item.type !== SubZoneEnum.NemeaCountryRoadsOne).forEach(subzone => {
+      achievementCount += this.achievementService.getAchievementsBySubZone(subzone.type, this.globalService.globalVar.achievements).length;
+    });
 
     return achievementCount;
   }

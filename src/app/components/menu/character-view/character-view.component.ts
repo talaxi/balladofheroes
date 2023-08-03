@@ -430,7 +430,23 @@ export class CharacterViewComponent implements OnInit {
     else
       return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
   }
+  
+  getGodPermanentSecondaryAbilityEffectivenessIncrease(ability: Ability, whichGod: number) {
+    var matchTo = this.character.assignedGod1;
+    if (whichGod === 2)
+      matchTo = this.character.assignedGod2;
 
+    var permanentAbilityUpgradeAmount = 0;
+    var originalGod = this.globalService.globalVar.gods.find(item => item.type === matchTo);
+    if (originalGod === undefined)
+      return 0;
+
+    var permanentAbilityUpgrade = originalGod.permanentAbilityUpgrades.find(item => item.requiredLevel === ability.requiredLevel);
+    if (permanentAbilityUpgrade !== undefined)
+      permanentAbilityUpgradeAmount = permanentAbilityUpgrade.secondaryEffectiveness;
+
+      return this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100) + "%";
+  }
 
   getGodPermanentAbilityUserEffectEffectivenessIncrease(ability: Ability, whichGod: number) {
     var matchTo = this.character.assignedGod1;

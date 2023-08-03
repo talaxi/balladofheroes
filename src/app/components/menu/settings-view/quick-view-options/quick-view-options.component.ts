@@ -17,6 +17,7 @@ export class QuickViewOptionsComponent {
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
   displayQuickViewJewelcrafting: boolean;
+  displayQuickViewCalculators: boolean;
 
   altarsUnlocked = false;
   alchemyUnlocked = false;
@@ -75,6 +76,12 @@ export class QuickViewOptionsComponent {
         this.displayQuickViewJewelcrafting = false;
       else
         this.displayQuickViewJewelcrafting = displayQuickViewJewelcrafting;
+
+        var displayQuickViewCalculators = this.globalService.globalVar.settings.get("displayQuickViewCalculators");
+        if (displayQuickViewCalculators === undefined)
+          this.displayQuickViewCalculators = false;
+        else
+          this.displayQuickViewCalculators = displayQuickViewCalculators;
   }
 
   displayQuickViewOverviewToggle() {
@@ -103,5 +110,9 @@ export class QuickViewOptionsComponent {
 
   displayQuickViewJewelcraftingToggle() {
     this.globalService.globalVar.settings.set("displayQuickViewJewelcrafting", this.displayQuickViewJewelcrafting);
+  }
+
+  displayQuickViewCalculatorsToggle() {    
+    this.globalService.globalVar.settings.set("displayQuickViewCalculators", this.displayQuickViewCalculators);
   }
 }

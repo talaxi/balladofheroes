@@ -16,6 +16,7 @@ export class SidequestData {
     levelsForNextAmbrosia: number;
     sparringMatchMultiplier: number;
     sparringMatchTimer: number;
+    trialStage: number;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -34,5 +35,6 @@ export class SidequestData {
         this.levelsForNextAmbrosia = 50;
         this.sparringMatchMultiplier = 1;
         this.sparringMatchTimer = 0;
+        this.trialStage = 1;
     }
 }

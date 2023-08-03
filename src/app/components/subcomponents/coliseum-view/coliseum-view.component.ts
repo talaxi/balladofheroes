@@ -101,7 +101,7 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   getRequiredDpsForSelectedTournament() {
-    return this.utilityService.roundTo(this.coliseumService.getRequiredDps(this.selectedTournament.type), 0);
+    return this.utilityService.bigNumberReducer(this.coliseumService.getRequiredDps(this.selectedTournament.type));
   }
 
   getFirstTimeCompletionRewards() {

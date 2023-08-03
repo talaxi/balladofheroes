@@ -44,7 +44,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1042,7 +1042,7 @@ export class VersionControlService {
           this.globalService.globalVar.characters.forEach(character => {
             if (character.maxLevel > 30) {
               var maxLevelGain = character.maxLevel - 30;
-              for (var i = 5; i <= maxLevelGain; i+=5) {                
+              for (var i = 5; i <= maxLevelGain; i += 5) {
                 levelsReset += i + 30;
               }
             }
@@ -1051,7 +1051,7 @@ export class VersionControlService {
           if (levelsReset > 0) {
             var originalAmount = Math.floor(levelsReset / 100);
             var newAmount = Math.floor(levelsReset / 50);
-            
+
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, newAmount - originalAmount));
             this.globalService.globalVar.sidequestData.levelsForNextAmbrosia = (50 - levelsReset % 50);
           }
@@ -1059,46 +1059,46 @@ export class VersionControlService {
             this.globalService.globalVar.sidequestData.levelsForNextAmbrosia = 50;
 
           this.globalService.globalVar.resources = this.globalService.globalVar.resources.filter(item => this.lookupService.getItemTypeFromItemEnum(item.item) !== ItemTypeEnum.Charm);
-          
+
           this.globalService.globalVar.gods.forEach(god => {
             var smallCharms = this.lookupService.getGodAffinitySmallCharmCount(god);
             var largeCharms = this.lookupService.getGodAffinityLargeCharmCount(god);
 
             if (god.type === GodEnum.Athena) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAthena, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAthena, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAthena, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAthena, largeCharms));
             }
             if (god.type === GodEnum.Artemis) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfArtemis, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfArtemis, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfArtemis, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfArtemis, largeCharms));
             }
             if (god.type === GodEnum.Hermes) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHermes, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHermes, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHermes, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHermes, largeCharms));
             }
             if (god.type === GodEnum.Apollo) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfApollo, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfApollo, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfApollo, largeCharms));
             }
             if (god.type === GodEnum.Hades) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfHades, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, largeCharms));
             }
             if (god.type === GodEnum.Ares) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAres, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfAres, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfAres, largeCharms));
             }
             if (god.type === GodEnum.Dionysus) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, largeCharms));
             }
             if (god.type === GodEnum.Nemesis) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfNemesis, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfNemesis, largeCharms));
             }
             if (god.type === GodEnum.Zeus) {
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfZeus, smallCharms));  
-              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfZeus, largeCharms));  
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfZeus, smallCharms));
+              this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfZeus, largeCharms));
             }
           });
 
@@ -1106,22 +1106,22 @@ export class VersionControlService {
           if (tournamentOfTheDead !== undefined && tournamentOfTheDead.quickVictoryCompleted) {
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfIngenuity, 1));
           }
-          
+
           var flamesOfTartarus = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.FlamesOfTartarus);
           if (flamesOfTartarus !== undefined && flamesOfTartarus.quickVictoryCompleted) {
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfFireDestruction, 1));
           }
-          
+
           var forgottenKings = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.ForgottenKings);
           if (forgottenKings !== undefined && forgottenKings.quickVictoryCompleted) {
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfRejuvenation, 1));
           }
-          
+
           var riverLords = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.RiverLords);
           if (riverLords !== undefined && riverLords.quickVictoryCompleted) {
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfWaterProtection, 1));
           }
-          
+
           var hadesTrial = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);
           if (hadesTrial !== undefined && hadesTrial.quickVictoryCompleted) {
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfEarthDestruction, 1));
@@ -1144,93 +1144,93 @@ export class VersionControlService {
 
           var yarrowField = this.lookupService.getSubZoneByType(SubZoneEnum.HuntForYarrowYarrowField);
           if (yarrowField.isAvailable) {
-          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.HuntForYarrowYarrowField);
-          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.HuntForYarrowYarrowField).forEach(achievement => {
-            if (achievement.type === AchievementTypeEnum.HundredVictories && yarrowField !== undefined && yarrowField.victoryCount >= 100)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.ThousandVictories && yarrowField !== undefined && yarrowField.victoryCount >= 500)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.TenThousandVictories && yarrowField !== undefined && yarrowField.victoryCount >= 2500)
-              achievement.completed = true;
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.HuntForYarrowYarrowField);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.HuntForYarrowYarrowField).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && yarrowField !== undefined && yarrowField.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && yarrowField !== undefined && yarrowField.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && yarrowField !== undefined && yarrowField.victoryCount >= 2500)
+                achievement.completed = true;
 
-            this.globalService.globalVar.achievements.push(achievement);
-          });
-        }
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
 
           var battleAtTheGates = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainBattleAtTheGates);
           if (battleAtTheGates.isAvailable) {
-          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainBattleAtTheGates);
-          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainBattleAtTheGates).forEach(achievement => {
-            if (achievement.type === AchievementTypeEnum.HundredVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 100)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.ThousandVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 500)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.TenThousandVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 2500)
-              achievement.completed = true;
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainBattleAtTheGates);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainBattleAtTheGates).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && battleAtTheGates !== undefined && battleAtTheGates.victoryCount >= 2500)
+                achievement.completed = true;
 
-            this.globalService.globalVar.achievements.push(achievement);
-          });
-        }
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
 
           var openCourtyard = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainOpenCourtyard);
           if (openCourtyard.isAvailable) {
-          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainOpenCourtyard);
-          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainOpenCourtyard).forEach(achievement => {
-            if (achievement.type === AchievementTypeEnum.HundredVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 100)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.ThousandVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 500)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.TenThousandVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 2500)
-              achievement.completed = true;
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainOpenCourtyard);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainOpenCourtyard).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && openCourtyard !== undefined && openCourtyard.victoryCount >= 2500)
+                achievement.completed = true;
 
-            this.globalService.globalVar.achievements.push(achievement);
-          });
-        }
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
 
           var stables = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainStables);
           if (stables.isAvailable) {
-          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainStables);
-          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainStables).forEach(achievement => {
-            if (achievement.type === AchievementTypeEnum.HundredVictories && stables !== undefined && stables.victoryCount >= 100)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.ThousandVictories && stables !== undefined && stables.victoryCount >= 500)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.TenThousandVictories && stables !== undefined && stables.victoryCount >= 2500)
-              achievement.completed = true;
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainStables);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainStables).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && stables !== undefined && stables.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && stables !== undefined && stables.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && stables !== undefined && stables.victoryCount >= 2500)
+                achievement.completed = true;
 
-            this.globalService.globalVar.achievements.push(achievement);
-          });
-        }
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
 
           var palaces = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainPalaces);
           if (palaces.isAvailable) {
-          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainPalaces);
-          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainPalaces).forEach(achievement => {
-            if (achievement.type === AchievementTypeEnum.HundredVictories && palaces !== undefined && palaces.victoryCount >= 100)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.ThousandVictories && palaces !== undefined && palaces.victoryCount >= 500)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.TenThousandVictories && palaces !== undefined && palaces.victoryCount >= 2500)
-              achievement.completed = true;
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainPalaces);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainPalaces).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && palaces !== undefined && palaces.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && palaces !== undefined && palaces.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && palaces !== undefined && palaces.victoryCount >= 2500)
+                achievement.completed = true;
 
-            this.globalService.globalVar.achievements.push(achievement);
-          });
-        }
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
 
           var thePeak = this.lookupService.getSubZoneByType(SubZoneEnum.WarForTheMountainThePeak);
           if (thePeak.isAvailable) {
-          this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainThePeak);
-          this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainThePeak).forEach(achievement => {
-            if (achievement.type === AchievementTypeEnum.HundredVictories && thePeak !== undefined && thePeak.victoryCount >= 100)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.ThousandVictories && thePeak !== undefined && thePeak.victoryCount >= 500)
-              achievement.completed = true;
-            if (achievement.type === AchievementTypeEnum.TenThousandVictories && thePeak !== undefined && thePeak.victoryCount >= 2500)
-              achievement.completed = true;
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.WarForTheMountainThePeak);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.WarForTheMountainThePeak).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && thePeak !== undefined && thePeak.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && thePeak !== undefined && thePeak.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && thePeak !== undefined && thePeak.victoryCount >= 2500)
+                achievement.completed = true;
 
-            this.globalService.globalVar.achievements.push(achievement);
-          });
-        }
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
 
           this.globalService.globalVar.achievements.forEach(achievement => {
             if (achievement.completed && this.achievementService.getAchievementReward(achievement.subzone, achievement.type).some(item => this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm)) {
@@ -1241,14 +1241,75 @@ export class VersionControlService {
               });
             }
           });
-          /*this.globalService.globalVar.ballads.forEach(ballad => {
-            ballad.zones = ballad.zones.filter(item => item.type !== ZoneEnum.None);
-            ballad.zones.forEach(zone => {
-              zone.subzones.forEach(subzone => {
-                
-              })
-            });
-          });*/
+        }
+        if (version === .65) {
+          this.globalService.globalVar.sidequestData.trialStage = 1;
+          this.globalService.globalVar.settings.set("showTutorialsAsModals", false);
+
+          var heroesOfYore1 = new ColiseumDefeatCount(ColiseumTournamentEnum.HeroesOfYore1, 0);
+          var hadesTrial = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);
+          if (hadesTrial !== undefined && hadesTrial.count > 0) {
+            heroesOfYore1.isAvailable = true;
+          }
+
+          this.globalService.globalVar.coliseumDefeatCount.push(heroesOfYore1);
+          this.globalService.globalVar.coliseumDefeatCount.push(new ColiseumDefeatCount(ColiseumTournamentEnum.ElementalPressure, 0));
+          this.globalService.globalVar.coliseumDefeatCount.push(new ColiseumDefeatCount(ColiseumTournamentEnum.HeroesOfYore2, 0));
+
+          this.globalService.globalVar.keybinds.set("autoToggleCharacter1AllAbilities", "");
+          this.globalService.globalVar.keybinds.set("autoToggleCharacter2AllAbilities", "");
+
+          this.globalService.globalVar.gods.forEach(god => {
+            god.highestLevelReached = god.level;
+          });
+
+          var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
+          if (zeus !== undefined && zeus.isAvailable && zeus.abilityList.length > 0) {
+            var overload = zeus.abilityList.find(item => item.name === "Overload");
+            if (overload !== undefined && overload.userEffect.length > 0)
+              overload.userEffect[0].duration = -1;
+          }
+
+          var aresGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+          if (aresGod !== undefined) {
+            var permanentPassive = aresGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              var totalGainCount = 0;
+              aresGod.permanentPassiveGainCount.forEach(item => {
+                totalGainCount += item[1];
+              });
+              
+              permanentPassive.effectiveness = totalGainCount * .0058;
+            }
+          }
+
+          var nemesisGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
+          if (nemesisGod !== undefined) {
+            var passive = nemesisGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (passive !== undefined) {
+              passive.userEffect[0].duration = -1;
+              passive.effectiveness = .2;
+              passive.secondaryEffectiveness = .2;
+
+              for (var i = 1; i <= passive.abilityUpgradeLevel; i++) { 
+                if (i % 10 === 0 && i <= 100)
+                passive.effectiveness += .08;
+              else if (i <= 100)
+                passive.secondaryEffectiveness += .02;
+              }              
+            }
+
+            var permanentPassive = nemesisGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              var totalGainCount = 0;
+              nemesisGod.permanentPassiveGainCount.forEach(item => {
+                totalGainCount += item[1];
+              });
+
+              permanentPassive.effectiveness = 0;
+              permanentPassive.secondaryEffectiveness = totalGainCount * .04;
+            }
+          }
         }
 
         this.globalService.globalVar.currentVersion = version;

@@ -1,3 +1,8 @@
+.flexBetween {
+    display: flex;
+    justify-content: space-between;
+}
+
 .gridContainer {
     display: grid;    
     height: 100%;

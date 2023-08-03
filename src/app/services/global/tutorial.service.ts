@@ -26,9 +26,9 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.AutoAttack) {
       if (this.deviceDetectorService.isMobile())
-        text = "You automatically attack opponents over time. Tap and hold the sword by your character's name for more details.";
+        text = "On the bottom of your screen is your character information. Here you can see your character's health and all abilities available to you. Currently, you only have access to an auto attack that automatically deals attack damage to an enemy over time. Tap and hold the sword by your character's name for more details.";
       else
-        text = "You automatically attack opponents over time. Hover over the sword by your character's name for more details.";
+        text = "On the left side of your screen is your character information. Here you can see your character's health and all abilities available to you. Currently, you only have access to an auto attack that automatically deals attack damage to an enemy over time. Hover over the sword by your character's name for more details.<br/><br/>Enemies are displayed in the middle of your screen. When you reduce all enemies' HP to 0, you will gain XP and immediately begin fighting a new set of enemies. Hover over an enemy's name to see more details about them.";
     }
     else if (type === TutorialTypeEnum.BattleItems) {
       if (this.deviceDetectorService.isMobile())
@@ -38,9 +38,9 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.NewSubzone) {
       if (this.deviceDetectorService.isMobile())
-        text = "You've won enough battles here to move to the next area. To the right of the subzone name, tap the down arrow and then tap 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible.";
+        text = "As you proceed through the game, you will need to defeat enough enemies in an area before being able to move forward. You've won enough battles in the 'Upper Coast' subzone to continue. To the right of the subzone name, tap the down arrow and then tap 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible. Continue to proceed through each subzone to progress the story.";
       else
-        text = "You've won enough battles here to move to the next area. On the right side of the screen, select 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible.";
+        text = "As you proceed through the game, you will need to defeat enough enemies in an area before being able to move forward. You've won enough battles in the 'Upper Coast' subzone to continue. On the right side of the screen, select 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible. Continue to proceed through each subzone to progress the story.";
     }
     else if (type === TutorialTypeEnum.Town) {
       if (this.deviceDetectorService.isMobile())

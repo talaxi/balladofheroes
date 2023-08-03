@@ -53,18 +53,18 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var menuGoToAchievements = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToAchievements");
     if (menuGoToAchievements !== undefined)
       this.menuKeybinds.push(menuGoToAchievements);
-    
-      var menuGoToProfessions = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToProfessions");
-      if (menuGoToProfessions !== undefined)
-        this.menuKeybinds.push(menuGoToProfessions);
+
+    var menuGoToProfessions = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToProfessions");
+    if (menuGoToProfessions !== undefined)
+      this.menuKeybinds.push(menuGoToProfessions);
 
     var menuGoToSettings = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToSettings");
     if (menuGoToSettings !== undefined)
       this.menuKeybinds.push(menuGoToSettings);
 
-      var menuGoToBestiary = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToBestiary");
-      if (menuGoToBestiary !== undefined)
-        this.menuKeybinds.push(menuGoToBestiary);
+    var menuGoToBestiary = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuGoToBestiary");
+    if (menuGoToBestiary !== undefined)
+      this.menuKeybinds.push(menuGoToBestiary);
 
     var menuTraverseSubMenuUp = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "menuTraverseSubMenuUp");
     if (menuTraverseSubMenuUp !== undefined)
@@ -82,9 +82,9 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (openMenu !== undefined)
       this.battleKeybinds.push(openMenu);
 
-      var openLog = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openLog");
-      if (openLog !== undefined)
-        this.battleKeybinds.push(openLog);
+    var openLog = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openLog");
+    if (openLog !== undefined)
+      this.battleKeybinds.push(openLog);
 
     var openOverviewQuickView = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openOverviewQuickView");
     if (openOverviewQuickView !== undefined)
@@ -98,29 +98,29 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (openAlchemyQuickView !== undefined)
       this.battleKeybinds.push(openAlchemyQuickView);
 
-      var openJewelcraftingQuickView = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openJewelcraftingQuickView");
+    var openJewelcraftingQuickView = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openJewelcraftingQuickView");
     if (openJewelcraftingQuickView !== undefined)
       this.battleKeybinds.push(openJewelcraftingQuickView);
 
-      var openFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openFirstAvailableAltar");
-      if (openFirstAvailableAltar !== undefined)
-        this.battleKeybinds.push(openFirstAvailableAltar);
+    var openFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openFirstAvailableAltar");
+    if (openFirstAvailableAltar !== undefined)
+      this.battleKeybinds.push(openFirstAvailableAltar);
 
-        var secondFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openSecondAvailableAltar");
-      if (secondFirstAvailableAltar !== undefined)
-        this.battleKeybinds.push(secondFirstAvailableAltar);
+    var secondFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openSecondAvailableAltar");
+    if (secondFirstAvailableAltar !== undefined)
+      this.battleKeybinds.push(secondFirstAvailableAltar);
 
-        var thirdFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openThirdAvailableAltar");
-      if (thirdFirstAvailableAltar !== undefined)
-        this.battleKeybinds.push(thirdFirstAvailableAltar);
-  
-        var toggleAllCharactersTargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleAllCharactersTargetMode");
-        if (toggleAllCharactersTargetMode !== undefined)
-          this.battleKeybinds.push(toggleAllCharactersTargetMode);
+    var thirdFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openThirdAvailableAltar");
+    if (thirdFirstAvailableAltar !== undefined)
+      this.battleKeybinds.push(thirdFirstAvailableAltar);
 
-      var toggleCharacter1TargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter1TargetMode");
-      if (toggleCharacter1TargetMode !== undefined)
-        this.battleKeybinds.push(toggleCharacter1TargetMode);
+    var toggleAllCharactersTargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleAllCharactersTargetMode");
+    if (toggleAllCharactersTargetMode !== undefined)
+      this.battleKeybinds.push(toggleAllCharactersTargetMode);
+
+    var toggleCharacter1TargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter1TargetMode");
+    if (toggleCharacter1TargetMode !== undefined)
+      this.battleKeybinds.push(toggleCharacter1TargetMode);
 
     var useCharacter1AutoAttack = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "useCharacter1AutoAttack");
     if (useCharacter1AutoAttack !== undefined)
@@ -201,6 +201,12 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var autoToggleCharacter1Overdrive = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter1Overdrive");
     if (autoToggleCharacter1Overdrive !== undefined)
       this.battleKeybinds.push(autoToggleCharacter1Overdrive);
+
+
+    var autoToggleCharacter1AllAbilities = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter1AllAbilities");
+    if (autoToggleCharacter1AllAbilities !== undefined)
+      this.battleKeybinds.push(autoToggleCharacter1AllAbilities);
+
 
     var toggleCharacter2TargetMode = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "toggleCharacter2TargetMode");
     if (toggleCharacter2TargetMode !== undefined)
@@ -285,6 +291,11 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var autoToggleCharacter2Overdrive = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter2Overdrive");
     if (autoToggleCharacter2Overdrive !== undefined)
       this.battleKeybinds.push(autoToggleCharacter2Overdrive);
+
+    var autoToggleCharacter2AllAbilities = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter2AllAbilities");
+    if (autoToggleCharacter2AllAbilities !== undefined)
+      this.battleKeybinds.push(autoToggleCharacter2AllAbilities);
+
   }
 
   updateKeybind(keybind: [string, any]) {
@@ -302,12 +313,12 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (name === "menuGoToResources")
       updatedName = "Open Resources Page";
     if (name === "menuGoToAchievements")
-      updatedName = "Open Achievements Page";      
+      updatedName = "Open Achievements Page";
     if (name === "menuGoToProfessions")
-    updatedName = "Open Professions Page";
+      updatedName = "Open Professions Page";
     if (name === "menuGoToSettings")
       updatedName = "Open Settings Page";
-      if (name === "menuGoToBestiary")
+    if (name === "menuGoToBestiary")
       updatedName = "Open Bestiary Page";
     if (name === "menuTraverseSubMenuUp")
       updatedName = "Traverse Down Submenu";
@@ -317,29 +328,33 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Toggle Pause/Play";
     if (name === "openMenu")
       updatedName = "Open Menu";
-      if (name === "openLog")
-        updatedName = "Open Log";
+    if (name === "openLog")
+      updatedName = "Open Log";
     if (name === "openOverviewQuickView")
       updatedName = "Open Overview Quick View";
     if (name === "openResourcesQuickView")
       updatedName = "Open Resources Quick View";
     if (name === "openAlchemyQuickView")
       updatedName = "Open Alchemy Quick View";
-      if (name === "openJewelcraftingQuickView")
+    if (name === "openJewelcraftingQuickView")
       updatedName = "Open Jewelcrafting Quick View";
-      if (name === "useCharacter1AutoAttack")
+    if (name === "useCharacter1AutoAttack")
       updatedName = "Use Character 1 Auto Attack";
-      if (name === "openFirstAvailableAltar")
-      updatedName = "Pray At First Altar"; 
-      if (name === "openSecondAvailableAltar")
-      updatedName = "Pray At Second Altar"; 
-      if (name === "openThirdAvailableAltar")
-      updatedName = "Pray At Third Altar";      
-      if (name === "toggleAllCharactersTargetMode")
+    if (name === "openFirstAvailableAltar")
+      updatedName = "Pray At First Altar";
+    if (name === "openSecondAvailableAltar")
+      updatedName = "Pray At Second Altar";
+    if (name === "openThirdAvailableAltar")
+      updatedName = "Pray At Third Altar";
+    if (name === "toggleAllCharactersTargetMode")
       updatedName = "Toggle All Characters Target Mode";
+    if (name === "autoToggleCharacter1AllAbilities")
+      updatedName = "Toggle All Character 1 Abilities";
+    if (name === "autoToggleCharacter2AllAbilities")
+      updatedName = "Toggle All Character 1 Abilities";
     if (name === "toggleCharacter1TargetMode")
       updatedName = "Toggle Character 1 Target Mode";
-      if (name === "toggleCharacter2TargetMode")
+    if (name === "toggleCharacter2TargetMode")
       updatedName = "Toggle Character 2 Target Mode";
     if (name === "useCharacter1Ability1")
       updatedName = "Use Character 1 Ability 1";
@@ -423,7 +438,7 @@ export class UpdateKeybindsViewComponent implements OnInit {
     return updatedName;
   }
 
-  
+
   getKeybindButton(keybind: [string, any]) {
     if (this.updateKeybindMode && this.keybindToUpdate !== undefined && this.keybindToUpdate[0] === keybind[0]) {
       return "&nbsp;";

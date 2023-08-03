@@ -146,6 +146,18 @@ export class ColiseumService {
     if (type === ColiseumTournamentEnum.RiverLords) {
       tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);
     }
+    
+    if (type === ColiseumTournamentEnum.HadesTrial) {
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HeroesOfYore1);
+    }
+    
+    if (type === ColiseumTournamentEnum.HeroesOfYore1) {
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.ElementalPressure);
+    }
+    
+    if (type === ColiseumTournamentEnum.ElementalPressure) {
+      tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HeroesOfYore2);
+    }
 
     if (tournamentType !== undefined) {
       tournamentType.isAvailable = true;
@@ -324,6 +336,100 @@ export class ColiseumService {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Hades));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore1 && round === 1) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Perseus));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore1 && round === 2) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Bellerophon));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore1 && round === 3) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Atalanta));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore1 && round === 4) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Oedipus));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore1 && round === 5) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Theseus));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.ElementalPressure && round === 1) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FlamingCorpse));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FlamingCorpse));
+      battleOptions.push(enemyTeam);
+    }    
+    if (type === ColiseumTournamentEnum.ElementalPressure && round === 2) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Exploder));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Exploder));   
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.ElementalPressure && round === 3) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedNightmare));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Exploder));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MalignedSpirit));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.ElementalPressure && round === 4) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PossessedArm));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PossessedArm));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PossessedLeg));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PossessedLeg));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.ElementalPressure && round === 5) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();  
+      enemyTeam.isBossFight = true;    
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FragmentOfChaos));
+      battleOptions.push(enemyTeam);
+    }    
+    if (type === ColiseumTournamentEnum.HeroesOfYore2 && round === 1) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Abderus));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore2 && round === 2) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Meleager));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore2 && round === 3) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Jason));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore2 && round === 4) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Daedelus));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Icarus));
+      battleOptions.push(enemyTeam);
+    }
+    if (type === ColiseumTournamentEnum.HeroesOfYore2 && round === 5) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Heracles));
       battleOptions.push(enemyTeam);
     }
 

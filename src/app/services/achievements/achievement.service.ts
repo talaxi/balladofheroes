@@ -1010,10 +1010,12 @@ export class AchievementService {
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade1) {
             this.lookupService.enableChthonicFavoredGod();
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, true, subzoneType));
+            this.globalService.handleTutorialModal();
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade2) {
             this.lookupService.enableChthonicFavor();
             this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade2,  undefined, undefined, true, subzoneType));
+            this.globalService.handleTutorialModal();
           }
           else
             this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
@@ -1028,6 +1030,7 @@ export class AchievementService {
 
     if (previousAchievementCount === 0 && this.globalService.globalVar.totalAchievementsCompleted > 0) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements,  undefined, undefined, true, subzoneType));
+      this.globalService.handleTutorialModal();
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Followers,  undefined, undefined, true, subzoneType));
     }
 

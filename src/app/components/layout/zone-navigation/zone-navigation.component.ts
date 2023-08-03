@@ -168,7 +168,7 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   areLoadoutsAvailable() {
-    return this.globalService.globalVar.characters.filter(item => item.isAvailable).length > 2 || this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 4;
+    return this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 4;
   }
 
   getSubzoneName(subzone: SubZone) {
@@ -545,6 +545,20 @@ export class ZoneNavigationComponent implements OnInit {
   untrackAllResources() {
     this.globalService.globalVar.trackedResources = [];
     this.globalService.globalVar.trackedResources.push(ItemsEnum.Coin);
+  }
+
+  getActiveBalladName() {
+    var ballad = this.balladService.getActiveBallad();
+    return ballad === undefined ? "" : this.balladService.getBalladName(ballad.type);
+  }
+
+  getActiveZoneName() {
+    return this.balladService.getActiveZone()?.zoneName;
+  }
+
+  getActiveSubzoneName() {
+    var subzone = this.balladService.getActiveSubZone();
+    return subzone === undefined ? "" : this.balladService.getSubZoneName(subzone.type);
   }
 
   ngOnDestroy() {

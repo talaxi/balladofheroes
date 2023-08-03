@@ -38,6 +38,11 @@ import { EquipmentSetEnum } from 'src/app/models/enums/equipment-set-enum.model'
 import { EquipmentSet } from 'src/app/models/resources/equipment-set.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
+import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utility/confirmation-box/confirmation-box.component';
+import { MatDialog } from '@angular/material/dialog';
+import { TutorialBoxComponent } from 'src/app/components/subcomponents/utility/tutorial-box/tutorial-box.component';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Injectable({
   providedIn: 'root'
@@ -48,10 +53,11 @@ export class GlobalService {
   globalVar = new GlobalVariables();
 
   constructor(private utilityService: UtilityService, private gameLogService: GameLogService, private charmService: CharmService,
-    private equipmentService: EquipmentService, private dictionaryService: DictionaryService) { }
+    private equipmentService: EquipmentService, private dictionaryService: DictionaryService, public dialog: MatDialog, 
+    private deviceDetectorService: DeviceDetectorService) { }
 
   getCurrentVersion() {
-    return .64;
+    return .65;
   }
 
   initializeGlobalVariables() {
@@ -654,7 +660,7 @@ export class GlobalService {
       chainsOfFate.requiredLevel = this.utilityService.godAbility2Level;
       chainsOfFate.isAvailable = false;
       chainsOfFate.dealsDirectDamage = false;
-      chainsOfFate.effectiveness = 1.01;
+      chainsOfFate.effectiveness = 1.05;
       chainsOfFate.cooldown = chainsOfFate.currentCooldown = 36;
       chainsOfFate.userEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, true));
       chainsOfFate.targetEffect.push(this.createStatusEffect(StatusEffectEnum.ChainsOfFate, 15, 1, false, false));
@@ -678,7 +684,8 @@ export class GlobalService {
       dispenserOfDues.isPassive = true;
       dispenserOfDues.isActivatable = false;
       dispenserOfDues.dealsDirectDamage = false;
-      dispenserOfDues.effectiveness = .05;
+      dispenserOfDues.effectiveness = .2;
+      dispenserOfDues.secondaryEffectiveness = .2;
       dispenserOfDues.userEffect.push(this.createStatusEffect(StatusEffectEnum.DispenserOfDues, -1, 0, false, true));      
       dispenserOfDues.userEffect[0].resolution = EffectResolutionEnum.AlwaysActive;
       god.abilityList.push(dispenserOfDues);
@@ -1821,7 +1828,7 @@ export class GlobalService {
         userGainsEffect.effectiveness -= .05;
       }
       else
-        ability.effectiveness += .20;
+        ability.effectiveness += .1;
     }
     else if (god.type === GodEnum.Dionysus) {
       //every 33 upgrades until level 100, add extra hit
@@ -2061,7 +2068,7 @@ export class GlobalService {
         ability.maxCount += 1;
       else
         if (ability.abilityUpgradeLevel <= 100)
-          ability.effectiveness += .004;
+          ability.effectiveness += .002;
     }
     else if (god.type === GodEnum.Hades) {
       if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
@@ -2070,8 +2077,10 @@ export class GlobalService {
         userGainsEffect.effectiveness += .003;
     }
     else if (god.type === GodEnum.Nemesis) {
-      if (ability.abilityUpgradeLevel <= 100)
-        ability.effectiveness += .025;
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.effectiveness += .08;
+      else if (ability.abilityUpgradeLevel <= 100)
+        ability.secondaryEffectiveness += .02;
     }
     else if (god.type === GodEnum.Dionysus) {
       if (ability.abilityUpgradeLevel === 44)
@@ -2347,7 +2356,7 @@ export class GlobalService {
           ability.effectiveness += .025;
         }
         else if (god.type === GodEnum.Ares) {
-          ability.effectiveness += .01;
+          ability.effectiveness += .0058;
         }
         else if (god.type === GodEnum.Hades) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
@@ -2360,7 +2369,7 @@ export class GlobalService {
           userGainsEffect.effectiveness = .02;
         }
         else if (god.type === GodEnum.Nemesis) {
-          ability.effectiveness += .1;
+          ability.secondaryEffectiveness += .04;
         }
         if (god.type === GodEnum.Zeus) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
@@ -2584,7 +2593,8 @@ export class GlobalService {
         god.permanentAbilityUpgrades.push(upgradedAbilities);
       }
       else {
-        upgradedAbility.effectiveness += upgradedAbilities.effectiveness;
+        upgradedAbility.effectiveness += upgradedAbilities.effectiveness;        
+        upgradedAbility.secondaryEffectiveness += upgradedAbilities.secondaryEffectiveness;        
 
         if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0) {
           if (upgradedAbility.userEffect === undefined || upgradedAbility.userEffect.length === 0) {
@@ -2677,6 +2687,9 @@ export class GlobalService {
         statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + " Effectiveness, ";
       else
         statGainText += this.utilityService.genericRound(upgradedAbilities.effectiveness * 100) + "% Effectiveness, ";
+    }
+    if (upgradedAbilities.secondaryEffectiveness > 0) {      
+        statGainText += this.utilityService.genericRound(upgradedAbilities.secondaryEffectiveness * 100) + "% Additional Ability Effect Effectiveness, ";
     }
     if (upgradedAbilities.userEffect !== undefined && upgradedAbilities.userEffect.length > 0 && upgradedAbilities.userEffect[0].effectiveness > 0) {
       if (upgradedAbilityName === "Second Wind") {
@@ -3744,5 +3757,17 @@ export class GlobalService {
     copy.triggersEvery = effect.triggersEvery;
 
     return copy;
+  }
+  
+  handleTutorialModal() {    
+    if (!this.globalVar.settings.get("showTutorialsAsModals")) 
+      return;
+
+    //make a TutorialBoxComponent that handles skipping tutorials
+    //need to figure out how to pass inputs    
+    if (this.deviceDetectorService.isMobile())
+      return this.dialog.open(TutorialBoxComponent, { width: '80%', height: 'auto'  });    
+    else
+      return this.dialog.open(TutorialBoxComponent, { width: '40%', height: 'auto'  });    
   }
 }
