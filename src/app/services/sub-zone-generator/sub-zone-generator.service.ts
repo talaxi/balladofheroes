@@ -3168,9 +3168,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.AigosthenaWesternWoodlands) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.HealingHerb, 1));
     }
-    if (type === SubZoneEnum.DodonaDelphiOutskirts) {
-      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ExtraSpeed1Hour, 1));
-    }
+    //if (type === SubZoneEnum.DodonaDelphiOutskirts) {
+      //rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ExtraSpeed1Hour, 1));
+    //}
     if (type === SubZoneEnum.DodonaMountainOpening) {
       rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.ThrowingStone, 40));
     }

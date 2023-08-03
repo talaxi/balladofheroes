@@ -2030,7 +2030,7 @@ export class BattleService {
 
         }
 
-        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
+        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {          
           var resetTarget: Character | undefined = target;
           if (abilityTargetedAllies && !instantEffect.targetsAllies) {
             resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);

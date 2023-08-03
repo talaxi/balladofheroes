@@ -5694,7 +5694,7 @@ export class LookupService {
             equipmentEffects += "Decrease target's Attack by " + Math.round((1 - effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
           if (effect.type === StatusEffectEnum.Stagger)
-            equipmentEffects += "Increase target's Auto Attack Cooldown Rate by " + Math.round((effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
+            equipmentEffects += "Increase target's Auto Attack cooldown by " + Math.round((effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
           if (effect.type === StatusEffectEnum.DebuffDurationIncrease)
             equipmentEffects += "Increase the duration of all enemy debuffs by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
@@ -5754,7 +5754,7 @@ export class LookupService {
             equipmentEffects += "Increase healing or damage dealt by battle items by " + Math.round((effect.effectiveness - 1) * 100) + "%. (Does not increase effectiveness of items that grant effects)<br/>";
 
           if (effect.type === StatusEffectEnum.AutoAttackSpeedUp)
-            equipmentEffects += "Increase Auto Attack Cooldown Rate by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
+            equipmentEffects += "Reduce Auto Attack cooldown by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
           if (effect.type === StatusEffectEnum.ResistanceUp)
             equipmentEffects += "Increase Resistance by " + Math.round((effect.effectiveness - 1) * 100) + "% for " + effect.duration + " seconds.<br/>";

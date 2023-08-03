@@ -396,6 +396,10 @@ export class BestiaryViewComponent {
     return highestEnemyCount;
   }
 
+  getHighestXps(subzone: SubZone) {
+    return this.utilityService.bigNumberReducer(subzone.maxXps);
+  }
+
   itemIsMaterial(item: ItemsEnum) {
     return false;//this.lookupService.getItemTypeFromItemEnum(item) === ItemTypeEnum.CraftingMaterial;
   }

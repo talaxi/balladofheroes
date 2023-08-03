@@ -369,6 +369,10 @@ export class PartyComponent implements OnInit {
 
     xps = this.dpsCalculatorService.calculateXps();
 
+    var activeSubzone = this.balladService.getActiveSubZone();
+    if (activeSubzone !== undefined && (activeSubzone.maxXps === undefined || activeSubzone.maxXps < Math.round(xps)))
+      activeSubzone.maxXps = Math.round(xps);
+
     return this.utilityService.bigNumberReducer(Math.round(xps));
   }
 

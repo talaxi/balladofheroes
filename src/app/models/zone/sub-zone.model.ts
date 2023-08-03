@@ -13,6 +13,7 @@ export class SubZone {
     //battleOptions: EnemyTeam[];
     victoryCount: number;
     fastestCompletion: number;
+    maxXps: number;
     //winsNeeded: number; //wins needed to proceed to next subzone
     isAvailable: boolean;
     notify: boolean;
@@ -31,6 +32,7 @@ export class SubZone {
         //this.battleOptions = [];
         this.victoryCount = 0;
         this.isAvailable = false;
+        this.maxXps = 0;
         //this.isTown = this.isSubzoneTown(this.type);        
         //this.notificationType = this.shouldShowSideQuestNotification(this.type);
     }    
