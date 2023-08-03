@@ -962,8 +962,8 @@ export class JewelcraftingService {
     if (item === ItemsEnum.RadiatingEarthStone) {
       upgradedItem = ItemsEnum.PerfectRadiatingEarthStone;
     }
-    if (item === ItemsEnum.RadiatingEarthStone) {
-      upgradedItem = ItemsEnum.PerfectRadiatingEarthStone;
+    if (item === ItemsEnum.RadiatingWaterStone) {
+      upgradedItem = ItemsEnum.PerfectRadiatingWaterStone;
     }
 
     if (item === ItemsEnum.FlawedRuby) {
