@@ -636,11 +636,11 @@ export class CharmService {
   }
 
   getSmallGildedKantharosValue() {
-    return 150;
+    return 30;
   }
 
   getSmallCrackedKantharosValue() {
-    return 30;
+    return 150;
   }
 
   getSmallBlackKantharosValue() {
