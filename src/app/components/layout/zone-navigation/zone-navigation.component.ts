@@ -168,7 +168,7 @@ export class ZoneNavigationComponent implements OnInit {
   }
 
   areLoadoutsAvailable() {
-    return this.globalService.globalVar.gods.filter(item => item.isAvailable).length > 4;
+    return this.globalService.globalVar.gods.filter(item => item.isAvailable).length >= 4;
   }
 
   getSubzoneName(subzone: SubZone) {
