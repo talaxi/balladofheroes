@@ -636,7 +636,7 @@ export class CharmService {
   }
 
   getSmallGildedKantharosValue() {
-    return 30;
+    return 150;
   }
 
   getSmallCrackedKantharosValue() {
