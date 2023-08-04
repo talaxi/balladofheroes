@@ -13,7 +13,7 @@ export class KeybindService {
   constructor() { }
 
   doesKeyMatchKeybind(event: KeyboardEvent, binding: string) {
-    if (this.isInTextbox)
+    if (this.isInTextbox || binding === "" || binding === undefined)
       return false;
 
     var lookingforAlt = binding.toLocaleLowerCase().includes(this.altKeyBind.toLocaleLowerCase());

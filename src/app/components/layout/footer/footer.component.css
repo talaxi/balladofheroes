@@ -42,11 +42,11 @@ a:hover {
 }
 
 a:link {
-    color: var(--foreground-quarternary);
+    color: var(--foreground-quaternary);
 }
 
 .supportButton {
-    color: var(--foreground-quarternary);
+    color: var(--foreground-quaternary);
     font-variant: small-caps;
     text-decoration: underline;
     font-weight: bold;

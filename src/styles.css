@@ -327,7 +327,7 @@ a:hover {
 }
 
 a:link {
-  color: var(--foreground-quarternary);
+  color: var(--foreground-quaternary);
 }
 
 .setName {
