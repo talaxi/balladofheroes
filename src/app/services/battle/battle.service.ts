@@ -56,6 +56,7 @@ import { God } from 'src/app/models/character/god.model';
 import { TrialService } from './trial.service';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { EquipmentSetEnum } from 'src/app/models/enums/equipment-set-enum.model';
+import { LinkInfo } from 'src/app/models/character/link-info.model';
 
 @Injectable({
   providedIn: 'root'
@@ -2418,7 +2419,7 @@ export class BattleService {
     if (ability.name !== "Barrage" && ability.manuallyTriggered && user.linkInfo.remainingLinks > 0)
     {
       user.linkInfo.remainingLinks -= 1;
-      linkMultiplier = 1 + (this.getLinkChainPercent(user.linkInfo.linkChain) / 100);
+      linkMultiplier = 1 + (this.getLinkChainPercent(user.linkInfo) / 100);
       user.linkInfo.linkChain += 1;
     }
     else {
@@ -2432,8 +2433,8 @@ export class BattleService {
     return effectiveness;
   }
 
-  getLinkChainPercent(count: number) {
-    return 10 + (count * 15) + (bonusChain);    
+  getLinkChainPercent(linkInfo: LinkInfo) {
+    return 10 + (linkInfo.linkChain * 15) + (linkInfo.bonusChain);    
   }
 
   getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false, willAbilityRepeat: boolean = false, lastOfMultiTarget: boolean = true) {

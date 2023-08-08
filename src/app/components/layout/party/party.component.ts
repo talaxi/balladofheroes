@@ -385,7 +385,7 @@ export class PartyComponent implements OnInit {
   }
 
   getCharacterNextLinkDamage(character: Character) {
-    return this.battleService.getLinkChainPercent(character.linkInfo.linkChain);
+    return this.battleService.getLinkChainPercent(character.linkInfo);
   }
 
   setupKeybinds(event: KeyboardEvent) {

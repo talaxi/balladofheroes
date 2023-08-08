@@ -428,6 +428,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.AbilityAppliesDebuff) {
       src += "abilityAppliesDebuff.svg";
     }
+    if (effect.type === StatusEffectEnum.HealingDoneUp) {
+      src += "healingDoneUp.svg";
+    }
 
     return src;
   }

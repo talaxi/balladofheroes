@@ -9422,60 +9422,58 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(heroesGrit);
     }        
     if (type === BestiaryEnum.PurpleJellyfish) {      
-      enemy.name = "Purple Jellyfish";
-      //TODO
+      enemy.name = "Purple Jellyfish";      
       enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
             
-      var flameSpiral = new Ability();
-      flameSpiral.name = "Flame Spiral";
-      flameSpiral.isAvailable = true;
-      flameSpiral.effectiveness = 7.6;
-      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
-      flameSpiral = this.randomizeCooldown(flameSpiral);
-      flameSpiral.dealsDirectDamage = true;
-      flameSpiral.isAoe = true;
-      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
-      enemy.abilityList.push(flameSpiral);
-      
-      var heatUp = new Ability();
-      heatUp.name = "Heat Up";
-      heatUp.isAvailable = true;
-      heatUp.cooldown = heatUp.currentCooldown = 14;
-      heatUp = this.randomizeCooldown(heatUp);
-      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
-      heatUp.dealsDirectDamage = false;
-      enemy.abilityList.push(heatUp);           
+      var stinger = new Ability();
+      stinger.name = "Stinger";
+      stinger.isAvailable = true;
+      stinger.effectiveness = 4.4;
+      stinger.cooldown = stinger.currentCooldown = 22;
+      stinger = this.randomizeCooldown(stinger);
+      stinger.dealsDirectDamage = true;
+      stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 2, .25, stinger.name, dotTypeEnum.BasedOnDamage));
+      enemy.abilityList.push(stinger);
+
+      var venom = new Ability();
+      venom.name = "Stunning Venom";
+      venom.isAvailable = true;
+      venom.cooldown = venom.currentCooldown = 16;
+      venom = this.randomizeCooldown(venom);
+      venom.dealsDirectDamage = true;
+      venom.effectiveness = 3.4;      
+      venom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 1, false, false));
+      enemy.abilityList.push(venom);            
     }     
     if (type === BestiaryEnum.BlueJellyfish) {      
-      enemy.name = "Blue Jellyfish";
-      //TODO
-      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
-      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.name = "Blue Jellyfish";      
+      enemy.battleStats = new CharacterStats(487192, 5025, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
             
-      var flameSpiral = new Ability();
-      flameSpiral.name = "Flame Spiral";
-      flameSpiral.isAvailable = true;
-      flameSpiral.effectiveness = 7.6;
-      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
-      flameSpiral = this.randomizeCooldown(flameSpiral);
-      flameSpiral.dealsDirectDamage = true;
-      flameSpiral.isAoe = true;
-      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
-      enemy.abilityList.push(flameSpiral);
+      var stinger = new Ability();
+      stinger.name = "Stinger";
+      stinger.isAvailable = true;
+      stinger.effectiveness = 4.4;
+      stinger.cooldown = stinger.currentCooldown = 22;
+      stinger = this.randomizeCooldown(stinger);
+      stinger.dealsDirectDamage = true;
+      stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 2, .25, stinger.name, dotTypeEnum.BasedOnDamage));
+      enemy.abilityList.push(stinger);
       
-      var heatUp = new Ability();
-      heatUp.name = "Heat Up";
-      heatUp.isAvailable = true;
-      heatUp.cooldown = heatUp.currentCooldown = 14;
-      heatUp = this.randomizeCooldown(heatUp);
-      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
-      heatUp.dealsDirectDamage = false;
-      enemy.abilityList.push(heatUp);           
+      var venom = new Ability();
+      venom.name = "Stunning Venom";
+      venom.isAvailable = true;
+      venom.cooldown = venom.currentCooldown = 16;
+      venom = this.randomizeCooldown(venom);
+      venom.dealsDirectDamage = true;
+      venom.effectiveness = 3.4;      
+      venom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 1, false, false));
+      enemy.abilityList.push(venom);            
     } 
     if (type === BestiaryEnum.AgitatedStingray) {      
       enemy.name = "Agitated Stingray";
@@ -9509,27 +9507,30 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;   
+      enemy.xpGainFromDefeat = 2200;               
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Air;      
             
-      var flameSpiral = new Ability();
-      flameSpiral.name = "Flame Spiral";
-      flameSpiral.isAvailable = true;
-      flameSpiral.effectiveness = 7.6;
-      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
-      flameSpiral = this.randomizeCooldown(flameSpiral);
-      flameSpiral.dealsDirectDamage = true;
-      flameSpiral.isAoe = true;
-      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
-      enemy.abilityList.push(flameSpiral);
-      
-      var heatUp = new Ability();
-      heatUp.name = "Heat Up";
-      heatUp.isAvailable = true;
-      heatUp.cooldown = heatUp.currentCooldown = 14;
-      heatUp = this.randomizeCooldown(heatUp);
-      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
-      heatUp.dealsDirectDamage = false;
-      enemy.abilityList.push(heatUp);           
+      var bombardment = new Ability();
+      bombardment.name = "Bombardment";
+      bombardment.isAvailable = true;
+      bombardment.effectiveness = 4.9;
+      bombardment.cooldown = bombardment.currentCooldown = 23;
+      bombardment = this.randomizeCooldown(bombardment);
+      bombardment.dealsDirectDamage = true;
+      bombardment.isAoe = true;
+      bombardment.elementalType = ElementalTypeEnum.Air;      
+      enemy.abilityList.push(bombardment);
+
+      var gouge = new Ability();
+      gouge.name = "Gouge";
+      gouge.isAvailable = true;
+      gouge.cooldown = gouge.currentCooldown = 22;
+      gouge = this.randomizeCooldown(gouge);
+      gouge.dealsDirectDamage = true;      
+      gouge.effectiveness = 4.5;      
+      gouge.elementalType = ElementalTypeEnum.Air;
+      gouge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 8, .5, false, false));
+      enemy.abilityList.push(gouge);         
     } 
     if (type === BestiaryEnum.MauveStinger) {      
       enemy.name = "Mauve Stinger";
@@ -9538,25 +9539,35 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
             
-      var flameSpiral = new Ability();
-      flameSpiral.name = "Flame Spiral";
-      flameSpiral.isAvailable = true;
-      flameSpiral.effectiveness = 7.6;
-      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
-      flameSpiral = this.randomizeCooldown(flameSpiral);
-      flameSpiral.dealsDirectDamage = true;
-      flameSpiral.isAoe = true;
-      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
-      enemy.abilityList.push(flameSpiral);
-      
-      var heatUp = new Ability();
-      heatUp.name = "Heat Up";
-      heatUp.isAvailable = true;
-      heatUp.cooldown = heatUp.currentCooldown = 14;
-      heatUp = this.randomizeCooldown(heatUp);
-      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
-      heatUp.dealsDirectDamage = false;
-      enemy.abilityList.push(heatUp);           
+      var stinger = new Ability();
+      stinger.name = "Stinger";
+      stinger.isAvailable = true;
+      stinger.effectiveness = 4.4;
+      stinger.cooldown = stinger.currentCooldown = 22;
+      stinger = this.randomizeCooldown(stinger);
+      stinger.dealsDirectDamage = true;
+      stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 2, .25, stinger.name, dotTypeEnum.BasedOnDamage));
+      enemy.abilityList.push(stinger);
+
+      var stunningVenom = new Ability();
+      stunningVenom.name = "Stunning Venom";
+      stunningVenom.isAvailable = true;
+      stunningVenom.cooldown = stunningVenom.currentCooldown = 16;
+      stunningVenom = this.randomizeCooldown(stunningVenom);
+      stunningVenom.dealsDirectDamage = true;
+      stunningVenom.effectiveness = 3.4;      
+      stunningVenom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 1, false, false));
+      enemy.abilityList.push(stunningVenom);    
+
+      var venom = new Ability();
+      venom.name = "Slowing Venom";
+      venom.isAvailable = true;
+      venom.cooldown = venom.currentCooldown = 16;
+      venom = this.randomizeCooldown(venom);
+      venom.dealsDirectDamage = true;
+      venom.effectiveness = 3.4;      
+      venom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 12, .5, false, false));
+      enemy.abilityList.push(venom);          
     } 
     if (type === BestiaryEnum.FishFrenzy) {      
       enemy.name = "Fish Frenzy";

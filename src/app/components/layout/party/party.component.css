@@ -414,4 +414,9 @@ table tr td:nth-child(4n-3) {
     .targetModeActive {
         border: 2px solid var(--background-default) !important;
     }
+
+    .abilityGrid {
+        height: 96%;        
+    }
+    
 }

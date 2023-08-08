@@ -6,3 +6,18 @@
     display: table;
     margin: 0 auto;
 }
+
+.discordIcon {
+    height: 5vw;
+    width: 5vw;
+    margin-right: .5rem;
+}
+
+.flex {
+    display: flex;
+}
+
+.discordLink {
+    display: flex;
+    align-self: center;
+}

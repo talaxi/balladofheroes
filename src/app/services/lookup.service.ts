@@ -4232,6 +4232,8 @@ export class LookupService {
       description = "Increase Attack and Luck by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.EarthenDefense)
       description = "Increase Defense and Resistance by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.HealingDoneUp)
+        description = "Increase Healing Done by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.AgilityDown)
       description = "Decrease Agility by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
@@ -4462,6 +4464,8 @@ export class LookupService {
       description = "When this effect expires, deal " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " to a random target.";
     if (statusEffect.type === StatusEffectEnum.AbilityAppliesDebuff)
       description = "Apply a random primary stat debuff to target after using an ability.";
+      if (statusEffect.type === StatusEffectEnum.OstinatoAfter)
+      description = "Cast Ostinato at " + Math.round(statusEffect.effectiveness * 100) + "% effectiveness.";
 
     if (statusEffect.type === StatusEffectEnum.FastDebuffs)
       description = "Reduce the duration of any debuffs inflicted by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
