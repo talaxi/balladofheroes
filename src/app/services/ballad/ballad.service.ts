@@ -47,6 +47,8 @@ export class BalladService {
       name = "Ballad of the Argo";
     if (type === BalladEnum.Olympus)
       name = "Ballad of Olympus";
+    if (type === BalladEnum.Labyrinth)
+      name = "Ballad of the Labyrinth";
 
     return name;
   }
@@ -65,7 +67,7 @@ export class BalladService {
   getActiveSubZone(search: boolean = false) {
     var subzone = new SubZone();
 
-    if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined || 
+    if (this.globalService.globalVar.playerNavigation.currentSubzone === undefined ||
       this.globalService.globalVar.playerNavigation.currentSubzone.type === SubZoneEnum.None || search) {
       var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);
       if (activeBallad !== undefined) {
@@ -81,7 +83,7 @@ export class BalladService {
           ballad.zones.forEach(zone => {
             zone.subzones.forEach(subzoneOption => {
               if (subzoneOption.isSelected)
-              subzone = subzoneOption;
+                subzone = subzoneOption;
             })
           })
         })
@@ -792,6 +794,61 @@ export class BalladService {
       name = "Stables";
     if (type === SubZoneEnum.WarForTheMountainThePeak)
       name = "The Peak";
+    if (type === SubZoneEnum.CreteTravelsAtSea)
+      name = "Travels at Sea";
+    if (type === SubZoneEnum.CreteApproachingCrete)
+      name = "Approaching Crete";
+    if (type === SubZoneEnum.CreteRapidWaters)
+      name = "Rapid Waters";
+    if (type === SubZoneEnum.CreteTurbulentCurrents)
+      name = "Turbulent Currents";
+    if (type === SubZoneEnum.CreteWhirlpool)
+      name = "Whirlpool";
+    if (type === SubZoneEnum.CreteNorthernCretanCoast)
+      name = "Northern Cretan Coast";
+    if (type === SubZoneEnum.CreteKnossos)
+      name = "Knossos";
+    if (type === SubZoneEnum.TheLabyrinthCenterFork)
+      name = "Center Fork";
+    if (type === SubZoneEnum.TheLabyrinthCenterPath)
+      name = "Center Path";
+    if (type === SubZoneEnum.TheLabyrinthColdHallway)
+      name = "Cold Hallway";
+    if (type === SubZoneEnum.TheLabyrinthDarkCorridor)
+      name = "Dark Corridor";
+    if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter)
+      name = "Labyrinth Center";
+    if (type === SubZoneEnum.TheLabyrinthLeftFork)
+      name = "Left Fork";
+    if (type === SubZoneEnum.TheLabyrinthLeftPath)
+      name = "Left Path";
+    if (type === SubZoneEnum.TheLabyrinthLeftTurn)
+      name = "Left Turn";
+    if (type === SubZoneEnum.TheLabyrinthLongPassage1)
+      name = "Long Passage 1";
+    if (type === SubZoneEnum.TheLabyrinthLongPassage2)
+      name = "Long Passage 2";
+    if (type === SubZoneEnum.TheLabyrinthOrnateEntryway)
+      name = "Ornate Entryway";
+    if (type === SubZoneEnum.TheLabyrinthRightCorner)
+      name = "Right Corner";
+    if (type === SubZoneEnum.TheLabyrinthRightFork)
+      name = "Right Fork";
+    if (type === SubZoneEnum.TheLabyrinthRightPath)
+      name = "Right Path";
+    if (type === SubZoneEnum.TheLabyrinthRoundedPath)
+      name = "Rounded Path";
+    if (type === SubZoneEnum.TheLabyrinthSlopedHallway)
+      name = "Sloped Hallway";
+    if (type === SubZoneEnum.TheLabyrinthSolidWall1)
+      name = "Solid Wall 1";
+    if (type === SubZoneEnum.TheLabyrinthSolidWall2)
+      name = "Solid Wall 2";
+    if (type === SubZoneEnum.TheLabyrinthSolidWall3)
+      name = "Solid Wall 3";
+    if (type === SubZoneEnum.TheLabyrinthSolidWall4)
+      name = "Solid Wall 4";
+
 
     return name;
   }
@@ -979,6 +1036,25 @@ export class BalladService {
       type === SubZoneEnum.WarForTheMountainOpenCourtyard || type === SubZoneEnum.WarForTheMountainThePeak)
       victories = bossVictories;
 
+    if (type === SubZoneEnum.CreteTravelsAtSea || type === SubZoneEnum.CreteApproachingCrete || type === SubZoneEnum.CreteRapidWaters ||
+      type === SubZoneEnum.CreteTurbulentCurrents || type === SubZoneEnum.CreteNorthernCretanCoast || type === SubZoneEnum.CreteKnossos)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.CreteWhirlpool)
+      victories = bossVictories;
+
+    if (type === SubZoneEnum.TheLabyrinthLeftPath || type === SubZoneEnum.TheLabyrinthLeftFork || type === SubZoneEnum.TheLabyrinthColdHallway ||
+      type === SubZoneEnum.TheLabyrinthRightCorner || type === SubZoneEnum.TheLabyrinthSolidWall1 || type === SubZoneEnum.TheLabyrinthCenterPath ||
+      type === SubZoneEnum.TheLabyrinthSlopedHallway || type === SubZoneEnum.TheLabyrinthRoundedPath || type === SubZoneEnum.TheLabyrinthLeftTurn ||
+      type === SubZoneEnum.TheLabyrinthSolidWall3 || type === SubZoneEnum.TheLabyrinthCenterFork || type === SubZoneEnum.TheLabyrinthDarkCorridor ||
+      type === SubZoneEnum.TheLabyrinthOrnateEntryway || type === SubZoneEnum.TheLabyrinthRightFork || type === SubZoneEnum.TheLabyrinthSolidWall4 ||
+      type === SubZoneEnum.TheLabyrinthRightPath || type === SubZoneEnum.TheLabyrinthLongPassage1 || type === SubZoneEnum.TheLabyrinthLongPassage2 ||
+      type === SubZoneEnum.TheLabyrinthSolidWall2)
+      victories = defaultVictories;
+
+    if (type === SubZoneEnum.TheLabyrinthLabyrinthCenter)
+      victories = bossVictories;
+
     return victories;
   }
 
@@ -988,7 +1064,7 @@ export class BalladService {
       type === SubZoneEnum.CalydonTownMarket || type === SubZoneEnum.AegeanSeaIolcus || type === SubZoneEnum.AegeanSeaSalmydessus ||
       type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
       type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz ||
-      type === SubZoneEnum.MountOlympusOlympus) {
+      type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos) {
       return true;
     }
 

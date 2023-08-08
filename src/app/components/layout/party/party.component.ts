@@ -376,6 +376,18 @@ export class PartyComponent implements OnInit {
     return this.utilityService.bigNumberReducer(Math.round(xps));
   }
 
+  getCharacterRemainingLinks(character: Character) {
+    return character.linkInfo.remainingLinks;
+  }
+
+  getCharacterTotalLinks(character: Character) {
+    return character.linkInfo.totalLinks;
+  }
+
+  getCharacterNextLinkDamage(character: Character) {
+    return this.battleService.getLinkChainPercent(character.linkInfo.linkChain);
+  }
+
   setupKeybinds(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;
 

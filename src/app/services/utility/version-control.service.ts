@@ -1311,6 +1311,32 @@ export class VersionControlService {
             }
           }
         }
+        if (version === .7) {
+          //TODO: make this match up for new ballad
+          var thePeakSubZone = this.balladService.findSubzone(SubZoneEnum.WarForTheMountainThePeak);
+          if (thePeakSubZone !== undefined && thePeakSubZone.isAvailable && thePeakSubZone.victoryCount > 0) {
+            var labyrinth = this.balladService.findBallad(BalladEnum.Labyrinth);
+            var crete = this.balladService.findZone(ZoneEnum.Crete);
+            var travelsAtSea = this.balladService.findSubzone(SubZoneEnum.CreteTravelsAtSea);
+
+            if (labyrinth !== undefined) {
+              labyrinth.isAvailable = true;
+              labyrinth.notify = true;
+            }
+            if (crete !== undefined) {
+              crete.isAvailable = true;
+              crete.notify = true;
+            }
+            if (travelsAtSea !== undefined) {
+              travelsAtSea.isAvailable = true;
+              travelsAtSea.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(travelsAtSea.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
+          }
+        }
 
         this.globalService.globalVar.currentVersion = version;
       }

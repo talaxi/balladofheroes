@@ -3271,6 +3271,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.ErytheiaGeryonsFarm) {
       balladEnums.push(BalladEnum.Olympus);
     }
+    if (type === SubZoneEnum.WarForTheMountainThePeak) {
+      balladEnums.push(BalladEnum.Labyrinth);
+    }
 
     return balladEnums;
   }
@@ -3335,6 +3338,12 @@ export class SubZoneGeneratorService {
     }
     if (type === SubZoneEnum.HuntForYarrowYarrowField) {
       zoneEnums.push(ZoneEnum.WarForTheMountain);
+    }
+    if (type === SubZoneEnum.WarForTheMountainThePeak) {
+      zoneEnums.push(ZoneEnum.Crete);
+    }
+    if (type === SubZoneEnum.CreteNorthernCretanCoast) {
+      zoneEnums.push(ZoneEnum.Labyrinth);
     }
 
     return zoneEnums;
@@ -3748,6 +3757,77 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.WarForTheMountainPalaces) {
       subZoneEnums.push(SubZoneEnum.WarForTheMountainThePeak);
     }   
+    if (type === SubZoneEnum.WarForTheMountainThePeak) {
+      subZoneEnums.push(SubZoneEnum.CreteTravelsAtSea);
+    }   
+    if (type === SubZoneEnum.CreteTravelsAtSea) {
+      subZoneEnums.push(SubZoneEnum.CreteApproachingCrete);
+    }       
+    if (type === SubZoneEnum.CreteApproachingCrete) {
+      subZoneEnums.push(SubZoneEnum.CreteRapidWaters);
+    }   
+    if (type === SubZoneEnum.CreteRapidWaters) {
+      subZoneEnums.push(SubZoneEnum.CreteTurbulentCurrents);
+    }   
+    if (type === SubZoneEnum.CreteTurbulentCurrents) {
+      subZoneEnums.push(SubZoneEnum.CreteWhirlpool);
+    }   
+    if (type === SubZoneEnum.CreteWhirlpool) {
+      subZoneEnums.push(SubZoneEnum.CreteNorthernCretanCoast);
+    }   
+    if (type === SubZoneEnum.CreteNorthernCretanCoast) {
+      subZoneEnums.push(SubZoneEnum.CreteKnossos);
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthLeftPath);
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthCenterPath);
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthRightPath);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthLeftPath) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthColdHallway);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthColdHallway) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthRightCorner);
+    }       
+    if (type === SubZoneEnum.TheLabyrinthRightCorner) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthSolidWall1);
+    }       
+    if (type === SubZoneEnum.TheLabyrinthCenterPath) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthSlopedHallway);
+    }       
+    if (type === SubZoneEnum.TheLabyrinthSlopedHallway) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthLeftFork);
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthCenterFork);
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthRightFork);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthLeftFork) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthRoundedPath);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthRoundedPath) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthLeftTurn);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthLeftTurn) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthSolidWall3);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthCenterFork) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthDarkCorridor);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthDarkCorridor) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthOrnateEntryway);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthOrnateEntryway) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthLabyrinthCenter);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthRightFork) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthSolidWall4);
+    }  
+    if (type === SubZoneEnum.TheLabyrinthRightPath) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthLongPassage1);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthLongPassage1) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthLongPassage2);
+    }   
+    if (type === SubZoneEnum.TheLabyrinthLongPassage2) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthSolidWall2);
+    }     
 
     return subZoneEnums;
   }

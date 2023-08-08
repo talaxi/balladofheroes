@@ -90,6 +90,12 @@
     right: 1.5rem;
 }
 
+.gameLogClear {
+    position: absolute;
+    top: 0;
+    right: 3.5rem;
+}
+
 .skipToBottom {
     position: absolute;
     bottom: 0;

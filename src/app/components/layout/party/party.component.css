@@ -115,7 +115,7 @@
 
 .abilityGrid {
     display: grid;
-    margin: .5rem;
+    margin: .1rem .5rem;
     height: 100%;
     grid-template-columns: 1fr 1fr 1fr;
     grid-template-rows: 1fr 1fr 1fr;
@@ -369,6 +369,11 @@ table tr td:nth-child(4n-3) {
     grid-area: hpBarSlot;
 }
 
+.linkText {
+    font-size: .85rem;
+    text-align: center;
+    color: var(--linkText);
+}
 
 @media (max-width: 800px) {
     .gridContainer {

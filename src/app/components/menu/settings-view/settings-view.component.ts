@@ -135,6 +135,8 @@ export class SettingsViewComponent implements OnInit {
       let fileReader = new FileReader();
       fileReader.onload = (e) => {
         var decompressedData = LZString.decompressFromBase64(fileReader.result);
+        console.log(decompressedData);
+        decompressedData.replace("耬","");
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
           this.globalService.globalVar = plainToInstance(GlobalVariables, loadDataJson);                

@@ -1264,6 +1264,7 @@ export class GlobalService {
 
     this.getCharacterLevelStatIncrease(character);
     this.checkForNewCharacterAbilities(character);
+    this.checkForNewCharacterLinks(character);
     this.checkForNewCharacterOverdrives(character);
 
     this.calculateCharacterBattleStats(character);
@@ -1290,6 +1291,14 @@ export class GlobalService {
     if (this.globalVar.gameLogSettings.get("partyLevelUp")) {
       var gameLogEntry = "<strong class='" + this.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " gains <strong>" + (maxHpBonusMultiplier * statIncrease) + " Max HP</strong> and <strong>" + statIncrease + " to all other primary stats</strong>.";
       this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+    }
+  }
+
+  checkForNewCharacterLinks(character: Character) {
+    if (character.level % 10 === 6)
+    {
+      character.linkInfo.totalLinks += 1;
+      character.linkInfo.remainingLinks += 1;
     }
   }
 
@@ -2986,8 +2995,13 @@ export class GlobalService {
 
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.duration <= 0 || this.isBuffUnremovable(item) || item.type === StatusEffectEnum.LordOfTheUnderworld);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Surge);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RepeatDamageAfterDelay);
+
+      var dispenserOfDues = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
+      if (dispenserOfDues !== undefined)
+        dispenserOfDues.effectiveness = 0;
 
       if (member.abilityList !== undefined && member.abilityList.length > 0)
         member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {

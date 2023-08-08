@@ -934,11 +934,11 @@ export class BattleService {
     }
 
     var instantHeal = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack);
-    if (instantHeal !== undefined) {
+    if (instantHeal !== undefined) {      
       var healAmount = instantHeal.effectiveness * (1 + character.battleStats.healingDone);
 
       if (character !== undefined) {
-        this.gainHp(character, healAmount);
+        healAmount = this.gainHp(character, healAmount);
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.InstantHealAfterAutoAttack);
 
         if (Math.round(healAmount) > 0) {
@@ -1215,6 +1215,12 @@ export class BattleService {
     var wasDamageCritical: boolean = false;
 
     this.handleConditionalAbilityChanges(abilityCopy, user, party);
+
+    if (!ability.heals && !ability.dealsDirectDamage && ability.manuallyTriggered) {      
+      user.linkInfo.remainingLinks -= 1;
+      user.linkInfo.linkChain += 1;
+      user.linkInfo.bonusChain += 15;
+    }
 
     if (target === undefined)
       return false;
@@ -1611,7 +1617,12 @@ export class BattleService {
 
     if (secondWind !== undefined && !
       user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack)) {
+      var permanentUpgrades = this.getGodPermanentAbilityUpgrades(secondWind, user);
       var statusEffect = this.globalService.makeStatusEffectCopy(secondWind.userEffect[0]);
+
+      if (permanentUpgrades !== undefined && permanentUpgrades.userEffect.length > 0)
+        statusEffect.effectiveness += permanentUpgrades.userEffect[0].effectiveness;
+
       this.applyStatusEffect(statusEffect, user, party, user);
     }
 
@@ -1716,25 +1727,25 @@ export class BattleService {
           if (instantEffect.type === StatusEffectEnum.InstantHeal) {
             var healAmount = damageDealt * instantEffect.effectiveness * (1 + member.battleStats.healingDone);
 
+            if (member !== undefined)
+              healAmount = this.gainHp(member, healAmount);
+
             if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) {
               var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong> gains " + this.utilityService.bigNumberReducer(Math.round(healAmount)) + " HP" + (instantEffect.abilityName !== undefined && instantEffect.abilityName !== "" ? " from " + instantEffect.abilityName : "") + ".";
               this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
             }
-
-            if (member !== undefined)
-              this.gainHp(member, healAmount);
           }
 
           if (instantEffect.type === StatusEffectEnum.InstantHealBasedOnMaxHpPercent) {
             var healAmount = member.battleStats.maxHp * instantEffect.effectiveness * (1 + member.battleStats.healingDone);
 
+            if (member !== undefined)
+              healAmount = this.gainHp(member, healAmount);
+
             if (this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) {
               var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(member.type) + "'>" + member.name + "</strong> gains " + this.utilityService.bigNumberReducer(Math.round(healAmount)) + " HP" + (instantEffect.abilityName !== undefined && instantEffect.abilityName !== "" ? " from " + instantEffect.abilityName : "") + ".";
               this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
             }
-
-            if (member !== undefined)
-              this.gainHp(member, healAmount);
           }
 
           if (instantEffect.type === StatusEffectEnum.DebuffDurationIncrease) {
@@ -1769,7 +1780,7 @@ export class BattleService {
               sapDamage = this.dealTrueDamage(isPartyUsing, target, sapDamage, undefined, undefined, true);
               this.gainHp(user, sapDamage);
             }
-          }          
+          }
 
           if (instantEffect.type === StatusEffectEnum.SelfKO) {
             user.battleStats.currentHp = 0;
@@ -2024,13 +2035,13 @@ export class BattleService {
               }
             }
 
-            var rng = this.utilityService.getRandomInteger(0, abilityList.length - 1);            
+            var rng = this.utilityService.getRandomInteger(0, abilityList.length - 1);
             abilityList[rng].currentCooldown = this.globalService.getAbilityCooldown(abilityList[rng], target, true);
           }
 
         }
 
-        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {          
+        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
           var resetTarget: Character | undefined = target;
           if (abilityTargetedAllies && !instantEffect.targetsAllies) {
             resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
@@ -2402,10 +2413,27 @@ export class BattleService {
         permanentEffectivenessIncrease = permanentCharacterAbilityUpgrades.effectiveness;
     }
 
+    var linkMultiplier = 1;
     //console.log("Effectiveness: (" + ability.effectiveness + " + " + permanentEffectivenessIncrease + ") * " + effectivenessModifier); 
-    var effectiveness = (ability.effectiveness + permanentEffectivenessIncrease) * effectivenessModifier;
+    if (ability.name !== "Barrage" && ability.manuallyTriggered && user.linkInfo.remainingLinks > 0)
+    {
+      user.linkInfo.remainingLinks -= 1;
+      linkMultiplier = 1 + (this.getLinkChainPercent(user.linkInfo.linkChain) / 100);
+      user.linkInfo.linkChain += 1;
+    }
+    else {
+      user.linkInfo.remainingLinks = user.linkInfo.totalLinks;      
+      user.linkInfo.linkChain = 0;
+      user.linkInfo.bonusChain = 0;
+    }
+
+    var effectiveness = (ability.effectiveness + permanentEffectivenessIncrease) * effectivenessModifier * linkMultiplier;    
 
     return effectiveness;
+  }
+
+  getLinkChainPercent(count: number) {
+    return 10 + (count * 15) + (bonusChain);    
   }
 
   getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false, willAbilityRepeat: boolean = false, lastOfMultiTarget: boolean = true) {
@@ -3491,7 +3519,6 @@ export class BattleService {
       healModifier *= reduceHealingDebuff.effectiveness;
 
     healAmount = healAmount * healModifier;
-
     character.battleStats.currentHp += healAmount;
 
     if (Math.ceil(character.battleStats.currentHp) > Math.ceil(this.lookupService.getAdjustedMaxHp(character, true))) {

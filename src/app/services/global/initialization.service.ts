@@ -220,6 +220,7 @@ export class InitializationService {
     this.initializeBalladOfTheArgo();
     this.initializeBalladOfLabors();
     this.initializeBalladOfOlympus();
+    this.initializeBalladOfTheLabyrinth();
   }
 
   initializeSettings() {
@@ -793,7 +794,7 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Nemesis;
+        character1.assignedGod1 = GodEnum.Hermes;
         character1.assignedGod2 = GodEnum.Artemis;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasScythe);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DivineTarge);
@@ -804,7 +805,7 @@ export class InitializationService {
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
-        character2.assignedGod1 = GodEnum.Dionysus;
+        character2.assignedGod1 = GodEnum.Apollo;
         character2.assignedGod2 = GodEnum.Ares;
         character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.PorphyrionsMace);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DionysussShield);
@@ -828,9 +829,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 1200;
+          godLevel = 2000;
         else
-          godLevel = 1200;
+          godLevel = 2000;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -998,6 +999,8 @@ export class InitializationService {
       
               character.level = 1;
               character.exp = 0;
+              character.linkInfo.totalLinks = 0;
+              character.linkInfo.remainingLinks = 0;
               character.baseStats = this.globalService.getCharacterBaseStats(character.type);
               character.maxLevel = 100;
             });
@@ -1254,5 +1257,50 @@ export class InitializationService {
     olympusBallad.zones.push(zone3);
 
     this.globalService.globalVar.ballads.push(olympusBallad);
+  }
+
+  initializeBalladOfTheLabyrinth() {
+    var labyrinthBallad = new Ballad(BalladEnum.Labyrinth);
+    labyrinthBallad.displayOrder = 8;
+    var zone1 = new Zone();
+    zone1.type = ZoneEnum.Crete;
+    zone1.zoneName = "Crete";
+    zone1.subzones.push(new SubZone(SubZoneEnum.CreteTravelsAtSea));
+    zone1.subzones.push(new SubZone(SubZoneEnum.CreteApproachingCrete));
+    zone1.subzones.push(new SubZone(SubZoneEnum.CreteRapidWaters));
+    zone1.subzones.push(new SubZone(SubZoneEnum.CreteTurbulentCurrents));
+    zone1.subzones.push(new SubZone(SubZoneEnum.CreteWhirlpool));
+    zone1.subzones.push(new SubZone(SubZoneEnum.CreteNorthernCretanCoast));
+    zone1.subzones.push(new SubZone(SubZoneEnum.CreteKnossos));
+    zone1.notificationType = zone1.shouldShowSideQuestNotification();
+    labyrinthBallad.zones.push(zone1);
+
+    var zone2 = new Zone();
+    zone2.type = ZoneEnum.Labyrinth;
+    zone2.zoneName = "The Labyrinth";
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLeftPath));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthColdHallway));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthRightCorner));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthSolidWall1));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthCenterPath));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthSlopedHallway));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLeftFork));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthRoundedPath));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLeftTurn));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthSolidWall3));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthCenterFork));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthDarkCorridor));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthOrnateEntryway));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLabyrinthCenter));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthRightFork));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthSolidWall4));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthRightPath));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLongPassage1));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLongPassage2));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthSolidWall2));
+    zone2.notificationType = zone2.shouldShowSideQuestNotification();
+    labyrinthBallad.zones.push(zone2);
+
+    this.globalService.globalVar.ballads.push(labyrinthBallad);
   }
 }

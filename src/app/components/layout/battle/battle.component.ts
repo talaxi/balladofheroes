@@ -254,6 +254,10 @@ export class BattleComponent implements OnInit {
       scrollToTop.scrollTop = scrollToTop.scrollHeight;
   }
 
+  clearGameLog() {
+    this.gameLogService.gameLog = [];
+  }
+
   getExpectedExpPerSec() {
     return this.lookupService.getSubzoneExpPerSec(this.activeSubzone.type);
   }

@@ -119,8 +119,10 @@ export class AbilityViewComponent implements OnInit {
 
   toggleAuto() {    
     this.autoMode = !this.autoMode;
-    if (this.ability !== undefined)
+    if (this.ability !== undefined) {
       this.ability.autoMode = this.autoMode;
+      this.ability.manuallyTriggered = false;
+    }
     else
       this.character.battleInfo.autoAttackAutoMode = this.autoMode;
 
@@ -129,9 +131,9 @@ export class AbilityViewComponent implements OnInit {
 
   manuallyTrigger() {
     if (this.ability !== undefined)
-      this.ability.manuallyTriggered = true;
+      this.ability.manuallyTriggered = !this.ability.manuallyTriggered;
     else
-      this.character.battleInfo.autoAttackManuallyTriggered = true;
+      this.character.battleInfo.autoAttackManuallyTriggered = !this.character.battleInfo.autoAttackManuallyTriggered;
   }
 
   getStrokeColor() {

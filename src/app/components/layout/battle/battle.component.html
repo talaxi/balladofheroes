@@ -116,8 +116,10 @@
             [innerHtml]="this.displayGameUpdates()"></div>
         <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover buttonStyled"><img
                 class="settingsIcon icon" src="assets/svg/gearWhite.svg"></button>
+        <button (click)="clearGameLog()" class="gameLogClear gameLogButton showOnHover buttonStyled"><img
+                class="settingsIcon icon" src="assets/svg/clear.svg"></button>
         <button *ngIf="displayScrollToBottom(scrollToTop)" (click)="skipToBottom(scrollToTop)"
-            class="skipToBottom arrow gameLogButton"><img class="arrowDownIcon icon"
+            class="skipToBottom arrow gameLogButton buttonStyled"><img class="arrowDownIcon icon"
                 src="assets/svg/arrowDown.svg"></button>
     </div>
 </div>

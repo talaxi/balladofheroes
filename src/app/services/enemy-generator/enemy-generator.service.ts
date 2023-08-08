@@ -6876,7 +6876,7 @@ export class EnemyGeneratorService {
       ostinato.isAvailable = true;
       ostinato.requiredLevel = this.utilityService.godPassiveLevel;
       ostinato.isPassive = true;
-      ostinato.effectiveness = 6.5;
+      ostinato.effectiveness = 6.8;
       ostinato.heals = true;
       ostinato.targetsAllies = true;
       ostinato.targetType = TargetEnum.Self;
@@ -9420,7 +9420,846 @@ export class EnemyGeneratorService {
       heroesGrit.dealsDirectDamage = false;
       heroesGrit.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.5, false, true));      
       enemy.abilityList.push(heroesGrit);
-    }    
+    }        
+    if (type === BestiaryEnum.PurpleJellyfish) {      
+      enemy.name = "Purple Jellyfish";
+      //TODO
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    }     
+    if (type === BestiaryEnum.BlueJellyfish) {      
+      enemy.name = "Blue Jellyfish";
+      //TODO
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.AgitatedStingray) {      
+      enemy.name = "Agitated Stingray";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+       
+      var stinger = new Ability();
+      stinger.name = "Stinger";
+      stinger.isAvailable = true;
+      stinger.effectiveness = 4.4;
+      stinger.cooldown = stinger.currentCooldown = 22;
+      stinger = this.randomizeCooldown(stinger);
+      stinger.dealsDirectDamage = true;
+      stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 2, .25, stinger.name, dotTypeEnum.BasedOnDamage));
+      enemy.abilityList.push(stinger);
+
+      var venom = new Ability();
+      venom.name = "Slowing Venom";
+      venom.isAvailable = true;
+      venom.cooldown = venom.currentCooldown = 16;
+      venom = this.randomizeCooldown(venom);
+      venom.dealsDirectDamage = true;
+      venom.effectiveness = 3.4;      
+      venom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 12, .5, false, false));
+      enemy.abilityList.push(venom);              
+    } 
+    if (type === BestiaryEnum.GreaterGrebe) {      
+      enemy.name = "Greater Grebe";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.MauveStinger) {      
+      enemy.name = "Mauve Stinger";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.FishFrenzy) {      
+      enemy.name = "Fish Frenzy";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.RiledUpDolphin) {      
+      enemy.name = "Riled Up Dolphin";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.PoseidonsDolphin) {      
+      enemy.name = "Poseidon's Dolphin";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.GreatWeever) {      
+      enemy.name = "Great Weever";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.BeardedVulture) {      
+      enemy.name = "Bearded Vulture";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.RedFootedFalcon) {      
+      enemy.name = "Red-Footed Falcon";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.LabyrinthGuard) {      
+      enemy.name = "Labyrinth Guard";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.TwistedShadow) {      
+      enemy.name = "Twisted Shadow";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.FracturedShape) {      
+      enemy.name = "Fractured Shape";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.CrawlingOutline) {      
+      enemy.name = "Crawling Outline";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.SpinningSilhouette) {      
+      enemy.name = "Spinning Silhouette";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.DisfiguredShape) {      
+      enemy.name = "Disfigured Shape";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.ToxicSludge) {      
+      enemy.name = "Toxic Sludge";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.SilentPhantom) {      
+      enemy.name = "Silent Phantom";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.EnchantedArmor) {      
+      enemy.name = "Enchanted Armor";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.FidgetingPhantom) {      
+      enemy.name = "Fidgeting Phantom";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.TranslucentPhantom) {      
+      enemy.name = "Translucent Phantom";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.RivetingPhantom) {      
+      enemy.name = "Riveting Phantom";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.BronzeAutomaton) {      
+      enemy.name = "Bronze Automaton";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.BewitchedCloak) {      
+      enemy.name = "Bewitched Cloak";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.IntertwinedShadows) {      
+      enemy.name = "Intertwined Shadows";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.GoldAutomaton) {      
+      enemy.name = "Gold Automaton";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.TheMinotaur) {      
+      enemy.name = "The Minotaur";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.DustyCloak) {      
+      enemy.name = "Dusty Cloak";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.DarkSpecter) {      
+      enemy.name = "Dark Specter";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    } 
+    if (type === BestiaryEnum.WingedApparation) {      
+      enemy.name = "Winged Apparation";
+      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;   
+            
+      var flameSpiral = new Ability();
+      flameSpiral.name = "Flame Spiral";
+      flameSpiral.isAvailable = true;
+      flameSpiral.effectiveness = 7.6;
+      flameSpiral.cooldown = flameSpiral.currentCooldown = 19;
+      flameSpiral = this.randomizeCooldown(flameSpiral);
+      flameSpiral.dealsDirectDamage = true;
+      flameSpiral.isAoe = true;
+      flameSpiral.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .4, flameSpiral.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire));
+      enemy.abilityList.push(flameSpiral);
+      
+      var heatUp = new Ability();
+      heatUp.name = "Heat Up";
+      heatUp.isAvailable = true;
+      heatUp.cooldown = heatUp.currentCooldown = 14;
+      heatUp = this.randomizeCooldown(heatUp);
+      heatUp.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FireDamageUp, 15, 1.5, false, true));      
+      heatUp.dealsDirectDamage = false;
+      enemy.abilityList.push(heatUp);           
+    }     
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

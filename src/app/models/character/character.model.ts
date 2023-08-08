@@ -8,6 +8,7 @@ import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
 import { God } from "./god.model";
 import { OverdriveInfo } from "./overdrive-info.model";
+import { LinkInfo } from "./link-info.model";
 import { TrackedStats } from "./tracked-stats.model";
 
 export class Character {
@@ -31,7 +32,9 @@ export class Character {
     @Type(() => EquipmentSet)
     equipmentSet: EquipmentSet;
     @Type(() => OverdriveInfo)
-    overdriveInfo: OverdriveInfo;    
+    overdriveInfo: OverdriveInfo;  
+    @Type(() => LinkInfo)
+    linkInfo: LinkInfo;  
     unlockedOverdrives: OverdriveNameEnum[];
     @Type(() => TrackedStats)
     trackedStats: TrackedStats;
@@ -58,6 +61,7 @@ export class Character {
         this.battleInfo = new BattleInfo(type);
         this.equipmentSet = new EquipmentSet();
         this.overdriveInfo = new OverdriveInfo();
+        this.linkInfo = new LinkInfo();
 
         this.abilityList = [];
         this.trackedStats = new TrackedStats();
