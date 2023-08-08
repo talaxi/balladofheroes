@@ -20,6 +20,10 @@
     position: relative;
 }
 
+.scrollable {
+    overflow-y: auto;
+}
+
 .transparentHr {
     margin: 0;
     padding: 0;
