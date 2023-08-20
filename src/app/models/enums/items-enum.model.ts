@@ -406,5 +406,12 @@ export enum ItemsEnum {
   LargeGildedKantharos,
   LargeCrackedKantharos,
   LargeBlackKantharos,
-  DarkOrb
+  DarkOrb,
+  ElixirOfFortune,
+  BouncingPotion,
+  SandToxin,
+  MagicSalve,
+  ElectrifiedToxin,
+  MagicRevivify,
+  MagicToxin
 } 

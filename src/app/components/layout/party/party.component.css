@@ -375,6 +375,10 @@ table tr td:nth-child(4n-3) {
     color: var(--linkText);
 }
 
+.marginLeft {
+    margin-left: 1rem;
+}
+
 @media (max-width: 800px) {
     .gridContainer {
         grid-template-rows: auto 1fr 1fr;

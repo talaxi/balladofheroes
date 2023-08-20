@@ -170,7 +170,7 @@ export class CharacterViewComponent implements OnInit {
       return this.lookupService.getGodColorClass(god);
     }
     else {
-      return this.lookupService.getCharacterColorClass(this.character.type)
+      return this.lookupService.getCharacterColorClass(this.character.type);
     }
   }
 

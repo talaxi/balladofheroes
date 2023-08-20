@@ -735,6 +735,10 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfHades, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfZeus, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfZeus, 5));*/
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfPoseidon, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfPoseidon, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.SmallCharmOfDionysus, 5));
+      this.lookupService.gainResource(new ResourceValue(ItemsEnum.LargeCharmOfDionysus, 5));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.GoldenApple, 25));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1000));
       this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
@@ -794,7 +798,7 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Hermes;
+        character1.assignedGod1 = GodEnum.Poseidon;
         character1.assignedGod2 = GodEnum.Artemis;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasScythe);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DivineTarge);
@@ -831,7 +835,7 @@ export class InitializationService {
         if (j < chthonicResetCount - 1)
           godLevel = 2000;
         else
-          godLevel = 2000;
+          godLevel = 200;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);
@@ -959,6 +963,21 @@ export class InitializationService {
         }
         zeus!.exp = 0;
         zeus!.affinityLevel = 15;
+        
+        var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
+        poseidon!.isAvailable = true;
+        poseidon!.level = 1;
+        poseidon!.exp = 0;
+        poseidon!.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        poseidon!.lastStatGain = CharacterStatEnum.Resistance;
+        poseidon!.statGainCount = 0;
+        poseidon!.expToNextLevel = 200;
+        this.globalService.assignGodAbilityInfo(poseidon!);
+        for (var i = 0; i < godLevel; i++) {
+          this.globalService.levelUpGod(poseidon!);
+        }
+        poseidon!.exp = 0;
+        poseidon!.affinityLevel = 15;
       }
 
       var characterLevel = 29;

@@ -66,6 +66,8 @@ export class UtilityService {
   public characterPermanentPassiveObtainCap = 25;
   public characterPermanentStatObtainCap = 25;
 
+  public nonDamageLinkBoost = 15;
+
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
   public firstJewelcraftingLevelCap = 25;

@@ -161,5 +161,8 @@ export enum StatusEffectEnum {
     AutomaticCritical,
     AbilityAppliesDebuff,
     ResetRandomCooldown,
-    GainRandomEnBuff
+    GainRandomEnBuff,
+    DamageShield,
+    Flow,
+    KingOfTheSea
   }

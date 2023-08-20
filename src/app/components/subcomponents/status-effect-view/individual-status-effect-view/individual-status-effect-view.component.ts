@@ -431,6 +431,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.HealingDoneUp) {
       src += "healingDoneUp.svg";
     }
+    if (effect.type === StatusEffectEnum.Flow) {
+      src += "flow.svg";
+    }
+    if (effect.type === StatusEffectEnum.KingOfTheSea) {
+      src += "kingOfTheSea.svg";
+    }
 
     return src;
   }

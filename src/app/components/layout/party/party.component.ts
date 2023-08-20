@@ -698,6 +698,34 @@ export class PartyComponent implements OnInit {
     return this.utilityService.bigNumberReducer(Math.ceil(this.lookupService.getAdjustedMaxHp(character)));
   }
 
+  characterDpsBreakdown(which: number) {    
+    var character = this.party[which];
+
+    var breakdown = this.dpsCalculatorService.getCharacterDps(character.type);
+    var percent = this.dpsCalculatorService.getCharacterDpsPercent(character.type);
+
+    return "<span class='bold smallCaps " + character.name.toLowerCase() + "Color'>" + character.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown) + " (" + this.utilityService.roundTo(percent * 100, 1) + "%)";
+  }
+  
+  godDpsBreakdown(whichCharacter: number, whichGod: number) {    
+    var character = this.party[whichCharacter];
+    var godEnum = GodEnum.None;
+
+    if (whichGod === 1)
+      godEnum = character.assignedGod1;
+    else if (whichGod === 2)
+    godEnum = character.assignedGod2;
+
+    var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
+    if (god === undefined)
+      return "";
+
+    var breakdown = this.dpsCalculatorService.getGodDps(godEnum);
+    //var percent = this.dpsCalculatorService.getGodDpsPercent(godEnum);
+
+    return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown);
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

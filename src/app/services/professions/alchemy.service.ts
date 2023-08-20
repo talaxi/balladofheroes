@@ -276,6 +276,55 @@ export class AlchemyService {
         this.updateGameLogWithNewRecipe(ItemsEnum.ParalyzingToxin);
       }
     }
+    if (alchemy.level >= 76) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.ElixirOfFortune)) {
+        this.learnRecipe(ItemsEnum.ElixirOfFortune);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfFortune);
+      }
+    }
+    if (alchemy.level >= 80) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BouncingPotion)) {
+        this.learnRecipe(ItemsEnum.BouncingPotion);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BouncingPotion);
+      }
+    }
+    if (alchemy.level >= 82) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.SandToxin)) {
+        this.learnRecipe(ItemsEnum.SandToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.SandToxin);
+      }
+    }    
+    if (alchemy.level >= 85) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MagicSalve)) {
+        this.learnRecipe(ItemsEnum.MagicSalve);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MagicSalve);
+      }
+    }
+    if (alchemy.level >= 90) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.ElectrifiedToxin)) {
+        this.learnRecipe(ItemsEnum.ElectrifiedToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ElectrifiedToxin);
+      }
+    }
+    if (alchemy.level >= 95) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MagicRevivify)) {
+        this.learnRecipe(ItemsEnum.MagicRevivify);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MagicRevivify);
+      }
+    }
+    if (alchemy.level >= 100) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MagicToxin)) {
+        this.learnRecipe(ItemsEnum.MagicToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MagicToxin);
+      }
+    }
 
     return newRecipeLearned;
   }
@@ -305,6 +354,10 @@ export class AlchemyService {
     else if (alchemy.level <= 75) {
       upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Rare);
       qualityName = "Rare";
+    }
+    else if (alchemy.level <= 100) {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Epic);
+      qualityName = "Epic";
     }
 
     if (upgrades === undefined)

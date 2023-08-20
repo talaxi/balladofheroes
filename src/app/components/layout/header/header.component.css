@@ -101,11 +101,6 @@
     opacity: .5;
 }
 
-.menuRelativeOverlay {
-    position: relative;
-    overflow: auto;
-}
-
 .menuOverlay {
     position: absolute;
     z-index: 25;

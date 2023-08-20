@@ -148,7 +148,7 @@ export class LookupService {
     if (type === GodEnum.Ares)
       description = "Ares, God of War, focuses on creating as many damage over time effects as possible. His abilities and upgrades revolve around creating and improving the damage of damage over time effects.";
     if (type === GodEnum.Poseidon)
-      description = "";
+      description = "Poseidon, God of the Sea, focuses on chaining fast and powerful Water attacks together. His abilities have shorter cooldowns and more powerful effects when used in succession.";
     if (type === GodEnum.Hades)
       description = "Hades, God of the Underworld, focuses on dealing damage to all enemies. All of his abilities attack the entire enemy party and he has access to Fire and Earth elemental damage.";
     if (type === GodEnum.Nemesis)
@@ -2763,6 +2763,16 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times. Your <strong>Dues</strong> total does not reset. " + cooldown + " second cooldown.";
     if (abilityName === "Dispenser of Dues")
       abilityDescription = "You always have <strong>Dues</strong>. When you take damage, increase <strong>Dues</strong> by <strong>" + (effectivenessPercent) + "%</strong> of the damage taken. Increase your next ability's damage by the amount of <strong>Dues</strong> and reset it back to 0. <strong>Dues</strong> cannot exceed <strong>" + (this.utilityService.genericRound((secondaryEffectiveAmount) * 100)) + "%</strong> of your Max HP.";
+      
+    //Poseidon
+    if (abilityName === "Flow")
+    abilityDescription = "After dealing Water damage with an ability, subsequent Water damaging abilities will immediately reduce their cooldown by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "</strong>%. Passive.";
+  if (abilityName === "Crashing Waves")
+    abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage to a target and apply <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> Unsteady for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If the previous ability used was a Poseidon ability, increase effect duration by <strong>" + secondaryEffectiveAmount + "</strong> seconds. " + cooldown + " second cooldown.";
+  if (abilityName === "Whirlpool")
+    abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage to all targets. If the previous ability used was a Poseidon ability, increase the damage dealt by <strong>" + secondaryEffectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
+  if (abilityName === "Tsunami")
+    abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times and give the user King of the Sea, increasing Damage Dealt by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. Increase duration by <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds for each hit. If the previous ability used was a Poseidon ability, the ability hits " + secondaryEffectiveAmount + " more time" + (secondaryEffectiveAmount > 1 ? "s" : "") + ". " + cooldown + " second cooldown.";
 
 
     return abilityDescription;
@@ -4224,6 +4234,8 @@ export class LookupService {
       description = "Increase Max HP by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageDealtUp)
       description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+      if (statusEffect.type === StatusEffectEnum.KingOfTheSea)
+      description = "Increase damage dealt by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Surge)
       description = "Increase damage dealt by next ability by " + this.utilityService.genericRound((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.DamageTakenUp)
@@ -4373,6 +4385,8 @@ export class LookupService {
       description = "Reduce auto attack cooldown by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.AbilitySpeedUp)
       description = "Reduce ability cooldown by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.Flow)
+      description = "If your next ability deals Water damage, immediately reduce its cooldown by " + this.utilityService.genericRound((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.Enfire)
       description = "All auto attacks and non-elemental abilities have the Fire element.";
     if (statusEffect.type === StatusEffectEnum.Enholy)
@@ -6231,7 +6245,7 @@ export class LookupService {
     else if (abilityName === "No Escape") {
       src += "noEscape.svg";
     }
-    else if (abilityName === "Lightning Bolt") {
+    else if (abilityName === "Light ning Bolt") {
       src += "lightningBolt.svg";
     }
     else if (abilityName === "Electrify") {
@@ -6239,6 +6253,15 @@ export class LookupService {
     }
     else if (abilityName === "Chain Lightning") {
       src += "chainLightning.svg";
+    }
+    else if (abilityName === "Crashing Waves") {
+      src += "crashingWaves.svg";
+    }
+    else if (abilityName === "Whirlpool") {
+      src += "whirlpool.svg";
+    }
+    else if (abilityName === "Tsunami") {
+      src += "tsunami.svg";
     }
     else
       src += "sword.svg";

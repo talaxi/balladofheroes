@@ -586,7 +586,11 @@ export class BattleService {
           }
 
           //deal damage
-          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness * criticalDamageBonus, caster, effect.element, false, true);
+          var godType = GodEnum.None;
+          if (effect.abilityName === "Rupture" || effect.abilityName === "Onslaught" || effect.abilityName === "Revel in Blood") 
+            godType = GodEnum.Ares;
+
+          var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness * criticalDamageBonus, caster, effect.element, false, true, godType);
           var elementalText = "";
           if (effect.element !== ElementalTypeEnum.None)
             elementalText = this.getElementalDamageText(effect.element);
@@ -607,7 +611,7 @@ export class BattleService {
       if (effect.type === StatusEffectEnum.RepeatDamageAfterDelay && effect.duration <= 0) {
         var target = this.getTarget(character, targets);
         if (target !== undefined) {
-          var damageDealt = this.dealTrueDamage(isPartyMember, target, effect.effectiveness, character, effect.element, false, false);
+          var damageDealt = this.dealTrueDamage(isPartyMember, target, effect.effectiveness, character, effect.element, false, false, GodEnum.Zeus);
           var elementalText = "";
           if (effect.element !== ElementalTypeEnum.None)
             elementalText = this.getElementalDamageText(effect.element);
@@ -935,7 +939,7 @@ export class BattleService {
     }
 
     var instantHeal = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack);
-    if (instantHeal !== undefined) {      
+    if (instantHeal !== undefined) {
       var healAmount = instantHeal.effectiveness * (1 + character.battleStats.healingDone);
 
       if (character !== undefined) {
@@ -1083,7 +1087,7 @@ export class BattleService {
           god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
             if (handleCooldown)
               this.handleAbilityCooldown(character, ability, deltaTime);
-            this.checkAbilityCooldown(isPartyUsing, character, ability, deltaTime, partyMembers, targets, true);
+            this.checkAbilityCooldown(isPartyUsing, character, ability, deltaTime, partyMembers, targets, true, god!.type);
           });
       }
     }
@@ -1095,7 +1099,7 @@ export class BattleService {
           god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
             if (handleCooldown)
               this.handleAbilityCooldown(character, ability, deltaTime);
-            this.checkAbilityCooldown(isPartyUsing, character, ability, deltaTime, partyMembers, targets, true);
+            this.checkAbilityCooldown(isPartyUsing, character, ability, deltaTime, partyMembers, targets, true, god!.type);
           });
       }
     }
@@ -1168,17 +1172,24 @@ export class BattleService {
       ability.currentCooldown -= deltaTime;
   }
 
-  checkAbilityCooldown(isPartyUsing: boolean, character: Character, ability: Ability, deltaTime: number, partyMembers: Character[], targets: Character[], isGodAbility: boolean) {
+  checkAbilityCooldown(isPartyUsing: boolean, character: Character, ability: Ability, deltaTime: number, partyMembers: Character[], targets: Character[], isGodAbility: boolean, godType?: GodEnum) {
     if (ability.currentCooldown <= 0) {
 
       if (targets !== undefined && targets.length > 0 && (ability.autoMode || ability.manuallyTriggered) &&
         this.avoidAbilityRedundancy(ability, character, partyMembers)) {
         ability.currentCooldown = 0;
 
-        var abilityUsed = this.useAbility(isPartyUsing, ability, character, targets, partyMembers, isGodAbility);
+        var abilityUsed = this.useAbility(isPartyUsing, ability, character, targets, partyMembers, isGodAbility, undefined, undefined, undefined, undefined, godType);
 
-        if (abilityUsed)
+        if (abilityUsed) {
           ability.currentCooldown = this.globalService.getAbilityCooldown(ability, character);
+
+          var flowEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flow);
+          if (flowEffect !== undefined && flowEffect.count === 2) {
+            ability.currentCooldown /= flowEffect.effectiveness;
+            character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.Flow && item.count === 2));
+          }
+        }
       }
 
       ability.manuallyTriggered = false;
@@ -1203,7 +1214,7 @@ export class BattleService {
   }
 
   //isPartyUsing = is the character using the ability a party member or enemy
-  useAbility(isPartyUsing: boolean, ability: Ability, user: Character, targets: Character[], party: Character[], isGodAbility: boolean, effectivenessModifier: number = 1, abilityWillRepeat: boolean = false, effectShouldRepeat: boolean = true) {
+  useAbility(isPartyUsing: boolean, ability: Ability, user: Character, targets: Character[], party: Character[], isGodAbility: boolean, effectivenessModifier: number = 1, abilityWillRepeat: boolean = false, effectShouldRepeat: boolean = true, fromRepeat: boolean = false, godType?: GodEnum) {
     var abilityCopy = ability.makeCopy();
     var potentialTargets = targets.filter(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead || item.type === StatusEffectEnum.Invulnerable));
     var target = this.getTarget(user, abilityCopy.targetsAllies ? party : targets, abilityCopy.targetType !== undefined ? abilityCopy.targetType : TargetEnum.Random);
@@ -1215,16 +1226,21 @@ export class BattleService {
     var targetEffects: StatusEffect[] = [];
     var wasDamageCritical: boolean = false;
 
+    var keepFlow = false;
     this.handleConditionalAbilityChanges(abilityCopy, user, party);
-
-    if (!ability.heals && !ability.dealsDirectDamage && ability.manuallyTriggered) {      
-      user.linkInfo.remainingLinks -= 1;
-      user.linkInfo.linkChain += 1;
-      user.linkInfo.bonusChain += 15;
-    }
 
     if (target === undefined)
       return false;
+
+    if (user.battleInfo.lastUsedPoseidonAbility && !fromRepeat && (abilityCopy.name === "Crashing Waves" || abilityCopy.name === "Whirlpool" || abilityCopy.name === "Tsunami")) {
+      this.handleExtraPoseidonFunctionality(user, abilityCopy);
+    }
+
+    if (!ability.heals && !ability.dealsDirectDamage && ability.manuallyTriggered) {
+      user.linkInfo.remainingLinks -= 1;
+      user.linkInfo.linkChain += 1;
+      user.linkInfo.bonusChain += this.utilityService.nonDamageLinkBoost;
+    }
 
     var invulnerability = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Invulnerable);
     if (invulnerability !== undefined) {
@@ -1262,6 +1278,17 @@ export class BattleService {
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
 
+      var flowEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flow);
+      if (flowEffect !== undefined) {
+        flowEffect.count = 2;
+      }
+
+      var flow = this.lookupService.characterHasAbility("Flow", user);
+      if (flow !== undefined && elementalType === ElementalTypeEnum.Water) {        
+        keepFlow = true;
+        userEffects.push(this.globalService.makeStatusEffectCopy(flow.userEffect[0]));
+      }
+
       if (abilityCopy.isAoe) {
         potentialTargets.forEach((potentialTarget, index, array) => {
           var isLastInList = false;
@@ -1274,7 +1301,7 @@ export class BattleService {
           if (isCritical)
             wasDamageCritical = true;
 
-          var allDamageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType);
+          var allDamageDealt = this.dealDamage(isPartyUsing, user, potentialTarget, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType, godType);
           damageDealt = allDamageDealt[0];
 
           if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
@@ -1301,7 +1328,7 @@ export class BattleService {
         if (isCritical)
           wasDamageCritical = true;
 
-        var allDamageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType);
+        var allDamageDealt = this.dealDamage(isPartyUsing, user, target, isCritical, abilityEffectiveness, damageMultiplier, abilityCopy, elementalType, godType);
         damageDealt = allDamageDealt[0];
 
         var additionalDamageTargets = "";
@@ -1627,6 +1654,15 @@ export class BattleService {
       this.applyStatusEffect(statusEffect, user, party, user);
     }
 
+    if (abilityCopy.name === "Crashing Waves" || abilityCopy.name === "Whirlpool" || abilityCopy.name === "Tsunami")
+      user.battleInfo.lastUsedPoseidonAbility = true;
+    else
+      user.battleInfo.lastUsedPoseidonAbility = false;
+
+    if (!keepFlow) {      
+      user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flow);
+    }
+
     if (user.level >= this.utilityService.characterOverdriveLevel) {
       user.overdriveInfo.gaugeAmount += user.overdriveInfo.gainPerAbility * this.lookupService.getOverdriveGainMultiplier(user);
       if (user.overdriveInfo.gaugeAmount > user.overdriveInfo.gaugeTotal)
@@ -1770,7 +1806,7 @@ export class BattleService {
             var repeatCount = originalAbility.userEffect.filter(effect => effect.type === StatusEffectEnum.RepeatAbility).length;
             originalAbility.userEffect = originalAbility.userEffect.filter(item => item.type !== StatusEffectEnum.RepeatAbility);
             for (var i = 0; i < repeatCount; i++) {
-              this.useAbility(isPartyUsing, originalAbility, user, targets, party, fromGodAbility, undefined, i < repeatCount - 1);
+              this.useAbility(isPartyUsing, originalAbility, user, targets, party, fromGodAbility, undefined, i < repeatCount - 1, undefined, true);
             }
           }
 
@@ -2274,7 +2310,7 @@ export class BattleService {
               elementalText = this.getElementalDamageText(elementalType);
             var damageMultiplier = this.getDamageMultiplier(target, targetedEnemy, undefined, false, elementalType);
             var isCritical = this.isDamageCritical(target, targetedEnemy);
-            var allDamageDealt = this.dealDamage(isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType);
+            var allDamageDealt = this.dealDamage(isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType, GodEnum.Nemesis);
             counterDamageDealt = allDamageDealt[0];
 
             var additionalDamageTargets = "";
@@ -2354,6 +2390,23 @@ export class BattleService {
     }
   }
 
+  handleExtraPoseidonFunctionality(user: Character, ability: Ability) {
+    if (ability.name === "Crashing Waves") {
+      var effect = ability.targetEffect[0];
+      effect.duration += ability.secondaryEffectiveness;
+    }
+
+    if (ability.name === "Whirlpool") {
+      ability.effectiveness *= ability.secondaryEffectiveness;
+    }
+
+    if (ability.name === "Tsunami") {
+      for (var i = 0; i < ability.secondaryEffectiveness; i++) {
+        ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      }
+    }
+  }
+
   getGodPermanentAbilityUpgrades(baseAbility?: Ability, user?: Character) {
     if (baseAbility === undefined || user === undefined)
       return undefined;
@@ -2416,25 +2469,24 @@ export class BattleService {
 
     var linkMultiplier = 1;
     //console.log("Effectiveness: (" + ability.effectiveness + " + " + permanentEffectivenessIncrease + ") * " + effectivenessModifier); 
-    if (ability.name !== "Barrage" && ability.manuallyTriggered && user.linkInfo.remainingLinks > 0)
-    {
+    if (ability.name !== "Barrage" && ability.manuallyTriggered && user.linkInfo.remainingLinks > 0) {
       user.linkInfo.remainingLinks -= 1;
       linkMultiplier = 1 + (this.getLinkChainPercent(user.linkInfo) / 100);
       user.linkInfo.linkChain += 1;
     }
     else {
-      user.linkInfo.remainingLinks = user.linkInfo.totalLinks;      
+      user.linkInfo.remainingLinks = user.linkInfo.totalLinks;
       user.linkInfo.linkChain = 0;
       user.linkInfo.bonusChain = 0;
     }
 
-    var effectiveness = (ability.effectiveness + permanentEffectivenessIncrease) * effectivenessModifier * linkMultiplier;    
+    var effectiveness = (ability.effectiveness + permanentEffectivenessIncrease) * effectivenessModifier * linkMultiplier;
 
     return effectiveness;
   }
 
   getLinkChainPercent(linkInfo: LinkInfo) {
-    return 10 + (linkInfo.linkChain * 15) + (linkInfo.bonusChain);    
+    return 10 + (linkInfo.linkChain * 15) + (linkInfo.bonusChain);
   }
 
   getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false, willAbilityRepeat: boolean = false, lastOfMultiTarget: boolean = true) {
@@ -2916,7 +2968,7 @@ export class BattleService {
     return target;
   }
 
-  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum): [number, number, number] {
+  dealDamage(isPartyAttacking: boolean, attacker: Character, target: Character, isCritical: boolean, abilityDamageMultiplier?: number, damageMultiplier?: number, ability?: Ability, elementalType?: ElementalTypeEnum, godType?: GodEnum): [number, number, number] {
     //damage formula, check for shields, check for ko
     if (abilityDamageMultiplier === undefined)
       abilityDamageMultiplier = 1;
@@ -3216,8 +3268,9 @@ export class BattleService {
     if (target.battleStats.currentHp < 0)
       target.battleStats.currentHp = 0;
 
-    if (isPartyAttacking)
-      this.dpsCalculatorService.addPartyDamageAction(totalDamageDealt);
+    if (isPartyAttacking) {
+      this.dpsCalculatorService.addPartyDamageAction(totalDamageDealt, attacker, godType);
+    }
     else
       this.dpsCalculatorService.addEnemyDamageAction(totalDamageDealt);
 
@@ -3272,7 +3325,7 @@ export class BattleService {
   }
 
   //DoTs
-  dealTrueDamage(isPartyAttacking: boolean, target: Character, damage: number, attacker?: Character, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, isReducable: boolean = true, isDamageOverTime: boolean = false) {
+  dealTrueDamage(isPartyAttacking: boolean, target: Character, damage: number, attacker?: Character, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, isReducable: boolean = true, isDamageOverTime: boolean = false, godType?: GodEnum) {
     if (damage < 0)
       damage = 0;
 
@@ -3434,7 +3487,7 @@ export class BattleService {
     }
 
     if (isPartyAttacking)
-      this.dpsCalculatorService.addPartyDamageAction(totalDamageDealt);
+      this.dpsCalculatorService.addPartyDamageAction(totalDamageDealt, attacker, godType);
     else
       this.dpsCalculatorService.addEnemyDamageAction(totalDamageDealt);
 
