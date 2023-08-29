@@ -295,6 +295,17 @@ export class BalladService {
     return inZone;
   }
 
+  getLatestSubzone() {    
+    var reverseOrderBallads = this.globalService.globalVar.ballads.filter(item => item.isAvailable).sort(function (a, b) {
+      return a.displayOrder < b.displayOrder ? -1 : a.displayOrder > b.displayOrder ? 1 : 0;
+    }).slice().reverse();
+
+    var reverseZones =  reverseOrderBallads[0].zones.filter(item => item.isAvailable).slice().reverse();
+    var lastSubzone = reverseZones[0].subzones.filter(item => item.isAvailable).slice().reverse()[0].type;
+
+    return lastSubzone;
+  }
+
   selectNextSubzone() {
     var currentSubzone = this.getActiveSubZone();
     var includeSideQuests = this.globalService.globalVar.settings.get("autoProgressIncludeSideQuests") ?? true;

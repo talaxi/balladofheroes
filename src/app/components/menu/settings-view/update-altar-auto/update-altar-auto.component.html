@@ -1,0 +1,10 @@
+<div>
+    <div class="twoColumn">
+        <span class="smallCaps bold">altar 1</span>
+        <br />
+        <mat-button-toggle-group [(ngModel)]="altar1Setting" aria-label="Altar 1 Setting" (change)="setAltarSetting(1)">
+            <mat-button-toggle [value]="altarEnum.Small">Small</mat-button-toggle>
+            <mat-button-toggle [value]="altarEnum.Large">Large</mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+</div>

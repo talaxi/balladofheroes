@@ -1,7 +1,7 @@
 <div class="olympicResetView">
     <!--<button [disabled]="god.level <= 1" class="godResetButton" (click)="resetGod(god)">Reset {{god.name}}</button>-->
     <div class="centeredText">
-        For every 100 levels you reset, you will receive 1 <strong class="ambrosiaKeyword">Ambrosia</strong>.
+        For every {{getTotalLevelsNeededForAmbrosia()}} levels you reset, you will receive 1 <strong class="ambrosiaKeyword">Ambrosia</strong>.
         <br/>
         Next <strong class="ambrosiaKeyword">Ambrosia</strong>: {{getLevelsNeededForAmbrosia()}} levels        
     </div>

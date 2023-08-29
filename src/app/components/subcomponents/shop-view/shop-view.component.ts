@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
@@ -38,6 +38,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
   styleUrls: ['./shop-view.component.css']
 })
 export class ShopViewComponent implements OnInit {
+  @Input() showAllShopOptions: boolean = false;
   shopOptions: ShopOption[];
   subscription: any;
   activeSubzoneType: SubZoneEnum;
@@ -77,10 +78,11 @@ export class ShopViewComponent implements OnInit {
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
+      if (!this.showAllShopOptions && this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
+        //if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
         this.activeSubzoneType = this.balladService.getActiveSubZone().type;
-        this.getShopOptions();
+        this.getShopOptions(); 
       }
     });
   }
@@ -97,7 +99,12 @@ export class ShopViewComponent implements OnInit {
   }
 
   getShopOptions() {
-    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData);
+    if (this.showAllShopOptions)
+    {
+      this.activeSubzoneType = this.balladService.getLatestSubzone();
+      this.isDisplayingNewItems = false;
+    }
+    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData, this.showAllShopOptions);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);

@@ -114,6 +114,9 @@ export class TutorialService {
     else if (type === TutorialTypeEnum.Overdrive) {
       text = "You've obtained your first overdrive. A new bar is now under the unlocking character's health bar that shows their progress to using their overdrive. Attacking and being attacked by enemies increases your overdrive gauge, and once it reaches 100% you will enter a powerful state for a period of time. You can view the overdrive menu when looking at your characters in the menu.";
     }
+    else if (type === TutorialTypeEnum.Link) {
+      text = "You can now empower your abilities in the form of Links. When you manually select an ability, you will activate a Link and deal increased damage. As you level up, you will be able to link more abilities together and deal increasingly higher damage with them.";
+    }
     else if (type === TutorialTypeEnum.Traveler) {
       text = "The Traveler will teach you new classes for a price. You can only have two classes active at any given time, but any new classes you learn will be available to switch to by selecting a class in the Menu and pressing 'Change Class'.";
     }

@@ -29,12 +29,14 @@ export class AbilityViewComponent implements OnInit {
   spinnerDivSubscription: any;
   isMobile: boolean = false;
   longPressStartTime = 0;
+  verboseMode = false;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     private globalService: GlobalService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
+    this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
 
     if (this.ability === undefined)
       this.autoMode = this.character.battleInfo.autoAttackAutoMode;
@@ -67,7 +69,7 @@ export class AbilityViewComponent implements OnInit {
       return 0;
 
     var progress = 100 - ((this.ability.currentCooldown / this.globalService.getAbilityCooldown(this.ability, this.character)) * 100);
-    
+
     if (progress < 0)
       progress = 0;
 
@@ -92,8 +94,7 @@ export class AbilityViewComponent implements OnInit {
     else
       description = this.lookupService.getCharacterAbilityDescription(this.ability.name, this.character, this.ability);
 
-    if (description === "")
-    {
+    if (description === "") {
       var god: God | undefined = undefined;
       if (this.god !== undefined)
         god = this.globalService.globalVar.gods.find(item => item.type === this.god);
@@ -117,7 +118,7 @@ export class AbilityViewComponent implements OnInit {
     }
   }
 
-  toggleAuto() {    
+  toggleAuto() {
     this.autoMode = !this.autoMode;
     if (this.ability !== undefined) {
       this.ability.autoMode = this.autoMode;
@@ -213,8 +214,34 @@ export class AbilityViewComponent implements OnInit {
     return "<span class='keybind'>" + keybindKey + "</span>";
   }
 
-  preventRightClick() {    
+  preventRightClick() {
     return false;
+  }
+
+  getAutoManualText() {
+    var isAuto = true;
+    if (this.ability !== undefined) {
+      isAuto = this.ability.autoMode;
+    }
+    else
+      isAuto = this.character.battleInfo.autoAttackAutoMode;
+
+    if (isAuto)
+      return "AUTO";
+    else
+      return "MANUAL";
+  }
+
+  getLinkText() {
+    var isLinking = false;
+    if (this.ability !== undefined) {
+      isLinking = this.ability.manuallyTriggered;
+    }
+
+    if (isLinking)
+      return "LINKED";
+    else
+      return "";
   }
 
   ngOnDestroy() {

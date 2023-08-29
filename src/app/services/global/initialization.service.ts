@@ -529,6 +529,7 @@ export class InitializationService {
     //this.lookupService.gainResource(new ResourceValue(ItemsEnum.WaterAbsorptionPotion, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ScalyRing, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.NecklaceSlotAddition, 10));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.JaggedStone, 10));
 
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.AthenasScythe, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ArtemissBow, 1));
@@ -980,17 +981,17 @@ export class InitializationService {
         poseidon!.affinityLevel = 15;
       }
 
-      var characterLevel = 29;
+      var characterLevel = 4;
       this.globalService.globalVar.characters.forEach(character => {
         for (var i = 0; i < characterLevel; i++) {
           this.globalService.levelUpPartyMember(character);
         }
-        character.level = 1;
-        character.exp = 0;
+        //character.level = 1;
+        //character.exp = 0;
         character.baseStats = this.globalService.getCharacterBaseStats(character.type);
       });
       
-            var characterLevel = 1;
+          /*  var characterLevel = 1;
             this.globalService.globalVar.characters.forEach(character => {
               for (var i = 0; i < characterLevel; i++) {
                 this.globalService.levelUpPartyMember(character);
@@ -1034,7 +1035,7 @@ export class InitializationService {
               //character.exp = 0;
               character.baseStats = this.globalService.getCharacterBaseStats(character.type);
               character.maxLevel = 100;
-            });
+            });*/
 
       this.globalService.globalVar.characters.forEach(character => {
         this.globalService.calculateCharacterBattleStats(character);

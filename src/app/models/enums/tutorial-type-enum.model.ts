@@ -23,5 +23,6 @@ export enum TutorialTypeEnum {
   Overdrive,
   Traveler,
   ExtraSpeed,
-  Enemies
+  Enemies,
+  Link
 }

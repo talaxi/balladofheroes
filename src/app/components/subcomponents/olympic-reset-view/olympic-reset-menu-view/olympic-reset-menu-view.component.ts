@@ -66,6 +66,10 @@ export class OlympicResetMenuViewComponent {
     return Math.round(this.getNewMaxLevel(character) - this.getMaxLevel(character));
   }
 
+  getTotalLevelsNeededForAmbrosia() {
+    return this.utilityService.levelsNeededForAmbrosia;
+  }
+
   getLevelsNeededForAmbrosia() {
     return this.globalService.globalVar.sidequestData.levelsForNextAmbrosia;
   }

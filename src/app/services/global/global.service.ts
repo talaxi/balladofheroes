@@ -950,7 +950,7 @@ export class GlobalService {
     character.battleStats.healingReceived = this.equipmentService.getTotalHealingReceivedGain(character.equipmentSet);
     character.battleStats.healingDone = this.equipmentService.getTotalHealingDoneGain(character.equipmentSet);
     character.battleStats.aoeDamage = this.equipmentService.getTotalAoeDamageGain(character.equipmentSet);
-    character.battleStats.thorns = this.equipmentService.getTotalThornsGain(character.equipmentSet);
+    character.battleStats.thorns = this.equipmentService.getTotalThornsGain(character.equipmentSet);    
     character.battleStats.tickFrequency = this.equipmentService.getTotalTickFrequencyGain(character.equipmentSet);
     character.battleStats.abilityCooldownReductionStart = (1 - this.equipmentService.getTotalAbilityCooldownReductionStartGain(character.equipmentSet));
     character.battleStats.abilityCooldownReductionWithBuffs = (1 - this.equipmentService.getTotalAbilityCooldownReductionWithBuffsGain(character.equipmentSet));
@@ -1131,6 +1131,57 @@ export class GlobalService {
     stats.elementResistance.air = this.utilityService.roundTo(stats.elementResistance.air, roundAmount);
 
     return stats;
+  }
+
+  setGodStatuses(character: Character) {
+    /*if ((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis) && 
+    !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", character);
+      if (dispenserOfDues !== undefined) {
+        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
+      }
+    }*/
+    if (character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) {
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Retribution))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Retribution);
+
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ChainsOfFate))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ChainsOfFate);
+    }
+
+    if ((character.assignedGod1 !== GodEnum.Ares && character.assignedGod2 !== GodEnum.Ares) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Onslaught)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
+    }
+
+    if ((character.assignedGod1 !== GodEnum.Hades && character.assignedGod2 !== GodEnum.Hades) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.LordOfTheUnderworld)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
+    }
+    
+    if ((character.assignedGod1 !== GodEnum.Zeus && character.assignedGod2 !== GodEnum.Zeus) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Surge)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Surge);
+    }
+
+    if ((character.assignedGod1 !== GodEnum.Poseidon && character.assignedGod2 !== GodEnum.Poseidon) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Flow)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flow);
+    }
+
+    if (character.assignedGod1 !== GodEnum.Apollo && character.assignedGod2 !== GodEnum.Apollo) {      
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Staccato))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Staccato);
+
+        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Fortissimo))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Fortissimo);
+
+        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Coda))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Coda);
+    }
   }
 
   giveCharactersBonusExp(bonusXp: number) {
@@ -3195,6 +3246,17 @@ export class GlobalService {
           }
         });
       }
+      
+      if (character.equipmentSet.necklace !== undefined && character.equipmentSet.necklace.associatedResource !== undefined) {
+          var associatedResource = character.equipmentSet.necklace.associatedResource;    
+
+          /*associatedResource.extras.forEach(filledSlot => {
+            if () {
+
+            }
+          });*/        
+      }
+
       character.equipmentSet.necklace = undefined;
     }
 

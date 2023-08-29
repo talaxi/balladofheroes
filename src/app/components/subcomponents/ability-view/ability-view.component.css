@@ -59,11 +59,11 @@
 }
 
 .linkActive {
-    background-color: var(--linkText);
+    background-image: radial-gradient(rgba(0, 0, 0, .0) 35%, var(--linkText));
     border-radius: 50%;
     height: 80%;
     width: 80%;
     position: absolute;
     display: flex;
-    opacity: 40%;
+    opacity: 100%;
 }

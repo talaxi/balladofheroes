@@ -331,6 +331,20 @@ export class AltarService {
           possibleEffects.push(AltarEffectsEnum.ZeusRareSurge);
       }
     }
+    
+    if (godType === GodEnum.Poseidon) {
+      if (altarType === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.PoseidonWaterDamageIncrease);
+        possibleEffects.push(AltarEffectsEnum.PoseidonDealWaterDamage);
+        possibleEffects.push(AltarEffectsEnum.PoseidonUnsteady);
+      }
+      else if (altarType === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.PoseidonRareWaterDamageIncrease);
+        possibleEffects.push(AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter);
+        if (this.globalService.isGodEquipped(godType) || ignorePartyRequirement)
+          possibleEffects.push(AltarEffectsEnum.PoseidonRareFlow);
+      }
+    }
 
     return possibleEffects;
   }
@@ -651,6 +665,41 @@ export class AltarService {
       altarEffect.effectOnExpiration = true;
       altarEffect.isEffectMultiplier = false;
     }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.PoseidonDealWaterDamage) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = .1;      
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+      altarEffect.isEffectMultiplier = false;
+    }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.PoseidonUnsteady) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = .1;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;      
+      altarEffect.countTowards1 = true;
+    }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.PoseidonWaterDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.02;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.PoseidonRareWaterDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.04;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.1;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.PoseidonRareFlow) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.02;
+      altarEffect.stacks = false;
+    }
 
     return altarEffect;
   }
@@ -678,6 +727,8 @@ export class AltarService {
       if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1) {
         altarEffect.effectiveness = (altarEffect.effectiveness - 1) * (1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness)) + 1;
       }
+      else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1 && altarEffect.countTowards1)
+        altarEffect.effectiveness = ((altarEffect.effectiveness) * (1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness)));
       else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1)
         altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (1 + (effectivenessIncreaseCount * this.utilityService.affinityRewardPrayerEffectiveness)));
       else
@@ -696,6 +747,8 @@ export class AltarService {
           if (altarEffect.isEffectMultiplier && altarEffect.effectiveness > 1) {            
             altarEffect.effectiveness = (altarEffect.effectiveness - 1) * (faithEffectiveness) + 1;
           }
+          else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1 && altarEffect.countTowards1)
+          altarEffect.effectiveness = altarEffect.effectiveness * (faithEffectiveness);
           else if (altarEffect.isEffectMultiplier && altarEffect.effectiveness < 1)
             altarEffect.effectiveness = 1 - ((1 - altarEffect.effectiveness) * (faithEffectiveness));
           else
@@ -749,7 +802,8 @@ export class AltarService {
       effect.type === AltarEffectsEnum.DionysusRandomDebuff || effect.type === AltarEffectsEnum.AresRareDealHpDamage || effect.type === AltarEffectsEnum.AresDamageOverTime ||
       effect.type === AltarEffectsEnum.DionysusSingleBarrier || effect.type === AltarEffectsEnum.DionysusRareMultiBarrier || effect.type === AltarEffectsEnum.DionysusRareFullDebuffs ||
       effect.type === AltarEffectsEnum.NemesisLuckDebuff || effect.type === AltarEffectsEnum.NemesisRareDuesUp || effect.type === AltarEffectsEnum.ZeusRareStun ||
-      effect.type === AltarEffectsEnum.ZeusAttackUpBuff)
+      effect.type === AltarEffectsEnum.ZeusAttackUpBuff || effect.type === AltarEffectsEnum.PoseidonUnsteady || effect.type === AltarEffectsEnum.PoseidonDealWaterDamage ||
+      effect.type === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter)
       return true;
 
     return false;
@@ -777,9 +831,9 @@ export class AltarService {
     if (type === GodEnum.Dionysus)
       item = ItemsEnum.SmallCharmOfDionysus;
     if (type === GodEnum.Nemesis)
-      item = ItemsEnum.SmallCharmOfNemesis;
-    if (type === GodEnum.Zeus)
-      item = ItemsEnum.SmallCharmOfZeus;
+      item = ItemsEnum.SmallCharmOfNemesis;    
+      if (type === GodEnum.Poseidon)
+      item = ItemsEnum.SmallCharmOfPoseidon;
 
     return item;
   }
@@ -806,9 +860,9 @@ export class AltarService {
     if (type === GodEnum.Dionysus)
       item = ItemsEnum.LargeCharmOfDionysus;
     if (type === GodEnum.Nemesis)
-      item = ItemsEnum.LargeCharmOfNemesis;
-    if (type === GodEnum.Zeus)
-      item = ItemsEnum.LargeCharmOfZeus;
+      item = ItemsEnum.LargeCharmOfNemesis;  
+      if (type === GodEnum.Poseidon)
+      item = ItemsEnum.LargeCharmOfPoseidon;
 
     return item;
   }

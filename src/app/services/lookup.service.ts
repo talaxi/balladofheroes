@@ -4619,7 +4619,18 @@ export class LookupService {
       description = "When the duration expires, stun all enemies for " + this.utilityService.roundTo(effect.effectiveness, 2) + " seconds.";
     if (effect.type === AltarEffectsEnum.ZeusRareSurge)
       description = "Every " + effect.tickFrequency + " seconds, give the character equipped with Zeus Surge. If Surge is already active, increase its effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
-
+      if (effect.type === AltarEffectsEnum.PoseidonUnsteady)
+      description = "When the duration expires, give all enemies' a  " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% Unsteady debuff.";
+    if (effect.type === AltarEffectsEnum.PoseidonDealWaterDamage)
+      description = "When the duration expires, deal " + this.utilityService.genericRound(effect.effectiveness * 100) + "% of Parties' combined Attack Water damage to an enemy.";
+    if (effect.type === AltarEffectsEnum.PoseidonWaterDamageIncrease)
+      description = "Increase Water Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.PoseidonRareWaterDamageIncrease)
+      description = "Increase Water Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter)
+    description = "When the duration expires, reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.PoseidonRareFlow)
+    description = "Increase effectiveness of Flow by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
 
     description += "<br/>Remaining Duration: " + durationString + "<br/><hr/>";
     return description;
@@ -4758,7 +4769,18 @@ export class LookupService {
       description = "When the duration expires, stun all enemies for " + this.utilityService.roundTo(effect.effectiveness, 2) + " seconds.";
     if (effect.type === AltarEffectsEnum.ZeusRareSurge)
       description = "Only available while Zeus is in the party. Every " + effect.tickFrequency + " seconds, give the character equipped with Zeus Surge. If Surge is already active, increase its effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
-
+      if (effect.type === AltarEffectsEnum.PoseidonUnsteady)
+      description = "When the duration expires, give all enemies' a  " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% Unsteady debuff.";
+    if (effect.type === AltarEffectsEnum.PoseidonDealWaterDamage)
+      description = "When the duration expires, deal " + this.utilityService.genericRound(effect.effectiveness * 100) + "% of Parties' combined Attack Water damage to an enemy.";
+    if (effect.type === AltarEffectsEnum.PoseidonWaterDamageIncrease)
+      description = "Increase Water Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.PoseidonRareWaterDamageIncrease)
+      description = "Increase Water Damage Dealt by all party members by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter)
+    description = "When the duration expires, reduce all party members' ability cooldowns by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
+    if (effect.type === AltarEffectsEnum.PoseidonRareFlow)
+    description = "Only available when Poseidon is in your party. Increase effectiveness of Flow by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
 
     description += " Effect lasts for " + durationString + ".";
     return description;
@@ -8613,6 +8635,19 @@ export class LookupService {
       name = "Large Lightning Damage Dealt Up";
     if (effect === AltarEffectsEnum.ZeusRareStun)
       name = "Stun Debuff After";
+      
+    if (effect === AltarEffectsEnum.PoseidonUnsteady)
+    name = "Unsteady Debuff After";
+  if (effect === AltarEffectsEnum.PoseidonDealWaterDamage)
+    name = "Deal Water Damage After";
+  if (effect === AltarEffectsEnum.PoseidonWaterDamageIncrease)
+    name = "Water Damage Dealt Up";
+  if (effect === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter)
+    name = "Ability Cooldown Reduction After";
+  if (effect === AltarEffectsEnum.PoseidonRareWaterDamageIncrease)
+    name = "Large Water Damage Dealt Up";
+  if (effect === AltarEffectsEnum.PoseidonRareFlow)
+    name = "Flow Up";
 
     return name;
   }

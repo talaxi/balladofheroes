@@ -381,6 +381,12 @@ export class PartyComponent implements OnInit {
   }
 
   getCharacterTotalLinks(character: Character) {
+    if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Link) && 
+    character.type === CharacterEnum.Adventurer && character.level >= this.utilityService.characterLinkLevel) {
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Link, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
+      this.globalService.handleTutorialModal();
+    }
+
     return character.linkInfo.totalLinks;
   }
 

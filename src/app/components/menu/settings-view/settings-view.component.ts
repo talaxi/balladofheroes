@@ -40,6 +40,7 @@ export class SettingsViewComponent implements OnInit {
   showEnemyHpAsPercent: boolean = false;
   autoExportOnUpdate: boolean = true;
   showTutorialsAsModals: boolean = false;
+  verboseMode: boolean = false;
   @Input() isMobile = false;
   confirmationText = "";
   @ViewChild('confirmationBox') confirmationBox: any;
@@ -94,6 +95,7 @@ export class SettingsViewComponent implements OnInit {
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
     this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? true;
     this.showTutorialsAsModals = this.globalService.globalVar.settings.get("showTutorialsAsModals") ?? false;
+    this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
   }
 
   public SaveGame() {
@@ -241,6 +243,9 @@ export class SettingsViewComponent implements OnInit {
   }
   showTutorialsAsModalsToggle() {
     this.globalService.globalVar.settings.set("showTutorialsAsModals", this.showTutorialsAsModals);
+  }
+  verboseModeToggle() {
+    this.globalService.globalVar.settings.set("verboseMode", this.verboseMode);
   }
 
   ngOnDestroy() {    

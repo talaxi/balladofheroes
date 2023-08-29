@@ -54,5 +54,11 @@ export enum AltarEffectsEnum {
   ZeusAttackUpBuff,
   ZeusRareLightningDamageIncrease,
   ZeusRareStun,
-  ZeusRareSurge
+  ZeusRareSurge,
+  PoseidonWaterDamageIncrease,
+  PoseidonUnsteady,
+  PoseidonDealWaterDamage,
+  PoseidonRareWaterDamageIncrease,
+  PoseidonRareReduceAbilityCooldownAfter,
+  PoseidonRareFlow
 }

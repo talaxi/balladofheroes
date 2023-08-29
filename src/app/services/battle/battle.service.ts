@@ -587,7 +587,7 @@ export class BattleService {
 
           //deal damage
           var godType = GodEnum.None;
-          if (effect.abilityName === "Rupture" || effect.abilityName === "Onslaught" || effect.abilityName === "Revel in Blood") 
+          if (effect.abilityName === "Rupture" || effect.abilityName === "Onslaught" || effect.abilityName === "Revel in Blood")
             godType = GodEnum.Ares;
 
           var damageDealt = this.dealTrueDamage(!isPartyMember, character, effect.effectiveness * criticalDamageBonus, caster, effect.element, false, true, godType);
@@ -1189,10 +1189,10 @@ export class BattleService {
             ability.currentCooldown /= flowEffect.effectiveness;
             character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.Flow && item.count === 2));
           }
+          
+          ability.manuallyTriggered = false;
         }
       }
-
-      ability.manuallyTriggered = false;
 
       this.handlePostAbilityUseEffects(ability, character);
     }
@@ -1236,10 +1236,18 @@ export class BattleService {
       this.handleExtraPoseidonFunctionality(user, abilityCopy);
     }
 
-    if (!ability.heals && !ability.dealsDirectDamage && ability.manuallyTriggered) {
+    //console.log(ability.name + ": " + (!ability.heals || ability.heals === undefined) + " + " + (!ability.dealsDirectDamage || ability.dealsDirectDamage === undefined) + " + " + ability.manuallyTriggered);
+    if ((!ability.heals || ability.heals === undefined) && (!ability.dealsDirectDamage || ability.dealsDirectDamage === undefined) && ability.manuallyTriggered) {
+      //console.log(ability.name + " Non DD Link");
       user.linkInfo.remainingLinks -= 1;
       user.linkInfo.linkChain += 1;
       user.linkInfo.bonusChain += this.utilityService.nonDamageLinkBoost;
+            
+      if (user.linkInfo.remainingLinks <= 0) {
+        user.linkInfo.remainingLinks = user.linkInfo.totalLinks;
+        user.linkInfo.linkChain = 0;
+        user.linkInfo.bonusChain = 0;
+      }
     }
 
     var invulnerability = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Invulnerable);
@@ -1277,6 +1285,9 @@ export class BattleService {
     if (abilityCopy.dealsDirectDamage) {
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
+        
+      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat);
+      abilityEffectiveness *= linkMultiplier;
 
       var flowEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flow);
       if (flowEffect !== undefined) {
@@ -1284,9 +1295,17 @@ export class BattleService {
       }
 
       var flow = this.lookupService.characterHasAbility("Flow", user);
-      if (flow !== undefined && elementalType === ElementalTypeEnum.Water) {        
+      if (flow !== undefined && elementalType === ElementalTypeEnum.Water) {
         keepFlow = true;
-        userEffects.push(this.globalService.makeStatusEffectCopy(flow.userEffect[0]));
+        var flowStatus = this.globalService.makeStatusEffectCopy(flow.userEffect[0]);
+
+        if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareFlow) !== undefined) {
+          var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareFlow);
+          if (relevantAltarEffect !== undefined)
+            flowStatus.effectiveness = ((flowStatus.effectiveness - 1) * relevantAltarEffect.effectiveness) + 1;
+        }
+
+        userEffects.push(flowStatus);
       }
 
       if (abilityCopy.isAoe) {
@@ -1347,7 +1366,10 @@ export class BattleService {
         onslaughtUsed = this.checkForOnslaught(damageDealt, user, target, potentialTargets, abilityCopy, abilityWillRepeat);
       }
     }
-    else if (abilityCopy.heals) {
+    else if (abilityCopy.heals) {      
+      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability);
+      abilityEffectiveness *= linkMultiplier;
+
       var healingDoneModifier = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
       var adjustedHealingDone = user.battleStats.healingDone;
       if (healingDoneModifier !== undefined)
@@ -1659,7 +1681,7 @@ export class BattleService {
     else
       user.battleInfo.lastUsedPoseidonAbility = false;
 
-    if (!keepFlow) {      
+    if (!keepFlow) {
       user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flow);
     }
 
@@ -2467,26 +2489,40 @@ export class BattleService {
         permanentEffectivenessIncrease = permanentCharacterAbilityUpgrades.effectiveness;
     }
 
-    var linkMultiplier = 1;
-    //console.log("Effectiveness: (" + ability.effectiveness + " + " + permanentEffectivenessIncrease + ") * " + effectivenessModifier); 
-    if (ability.name !== "Barrage" && ability.manuallyTriggered && user.linkInfo.remainingLinks > 0) {
-      user.linkInfo.remainingLinks -= 1;
-      linkMultiplier = 1 + (this.getLinkChainPercent(user.linkInfo) / 100);
-      user.linkInfo.linkChain += 1;
-    }
-    else {
-      user.linkInfo.remainingLinks = user.linkInfo.totalLinks;
-      user.linkInfo.linkChain = 0;
-      user.linkInfo.bonusChain = 0;
-    }
-
-    var effectiveness = (ability.effectiveness + permanentEffectivenessIncrease) * effectivenessModifier * linkMultiplier;
+    var effectiveness = (ability.effectiveness + permanentEffectivenessIncrease) * effectivenessModifier;
 
     return effectiveness;
   }
 
-  getLinkChainPercent(linkInfo: LinkInfo) {
-    return 10 + (linkInfo.linkChain * 15) + (linkInfo.bonusChain);
+  handleDamageDealingLink(linkInfo: LinkInfo, ability: Ability, abilityRepeats: boolean = false) {    
+    var linkMultiplier = 1;
+
+    if (ability.name !== "Barrage" && ability.manuallyTriggered && linkInfo.remainingLinks > 0) {
+      if  (!abilityRepeats) {
+        linkInfo.remainingLinks -= 1;
+        linkInfo.linkChain += 1;
+      }
+
+      linkMultiplier = 1 + (this.getLinkChainPercent(linkInfo, abilityRepeats) / 100);
+      
+
+      if (linkInfo.remainingLinks <= 0) {
+        linkInfo.remainingLinks = linkInfo.totalLinks;
+        linkInfo.linkChain = 0;
+        linkInfo.bonusChain = 0;
+      }
+    }
+
+    return linkMultiplier;
+  }
+
+  getLinkChainPercent(linkInfo: LinkInfo, abilityRepeats: boolean = false) {
+    var repeaterBonus = 0; //if an ability repeats, add 1 temporarily so that it doesn't add it every time on repeat
+
+    if (abilityRepeats)
+      repeaterBonus += 1;
+
+    return 10 + ((linkInfo.linkChain + repeaterBonus) * this.utilityService.damageLinkBoost) + (linkInfo.bonusChain);
   }
 
   getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false, willAbilityRepeat: boolean = false, lastOfMultiTarget: boolean = true) {
@@ -2548,6 +2584,16 @@ export class BattleService {
 
     if (elementalType === ElementalTypeEnum.Lightning && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease) !== undefined) {
       var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.ZeusRareLightningDamageIncrease);
+      altarMultiplier *= relevantAltarEffect!.effectiveness;
+    }
+
+    if (elementalType === ElementalTypeEnum.Water && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonWaterDamageIncrease) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonWaterDamageIncrease);
+      altarMultiplier *= relevantAltarEffect!.effectiveness;
+    }
+
+    if (elementalType === ElementalTypeEnum.Water && this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareWaterDamageIncrease) !== undefined) {
+      var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareWaterDamageIncrease);
       altarMultiplier *= relevantAltarEffect!.effectiveness;
     }
 

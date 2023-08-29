@@ -4,7 +4,7 @@
         (touchstart)="longPressStart()" (touchend)="longPressEnd()">
             <div>
                 <span class='abilityTimer' [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
-                <div class="linkActive" *ngIf="isAutoAttack ? character.battleInfo.autoAttackManuallyTriggered : ability.manuallyTriggered">
+                <div class="linkActive" *ngIf="!isAutoAttack && ability.manuallyTriggered">
                     
                 </div>
                 <img class="abilityImage" (contextmenu)="preventRightClick()"
@@ -20,12 +20,12 @@
 
 <ng-template #abilityPopover>
     <div>
-        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong>
+        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong> <span *ngIf="verboseMode">{{getAutoManualText()}} {{getLinkText()}}</span>
         <!--<hr class="miniHr" />-->
         <hr />
         <span [innerHtml]="getAbilityDescription()"></span>        
         <hr />
         <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
-        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>
+        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>        
     </div>
 </ng-template>

@@ -481,6 +481,56 @@ export class BackgroundService {
         this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 10, effect.effectiveness, false, true), member, enemies);
       });
     }
+    
+    if (effect.type === AltarEffectsEnum.PoseidonUnsteady) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 10, effect.effectiveness, false, false), member, enemies);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.PoseidonDealWaterDamage) {
+      if (enemies !== undefined && party !== undefined) {
+        var totalAttack = 0;
+        party.forEach(member => {
+          totalAttack += this.lookupService.getAdjustedAttack(member);
+        });
+        var damage = totalAttack * effect.effectiveness;        
+
+        var target = this.lookupService.getRandomPartyMember(enemies);
+        this.battleService.dealTrueDamage(true, target, damage, undefined, ElementalTypeEnum.Water);
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter) {
+      party.forEach(member => {
+        if (member.abilityList !== undefined && member.abilityList.length > 0)
+          member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+            ability.currentCooldown /= effect.effectiveness;
+          });
+
+        if (member.assignedGod1 !== undefined && member.assignedGod1 !== GodEnum.None) {
+          var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod1);
+          if (god !== undefined) {
+            if (god.abilityList !== undefined && god.abilityList.length > 0)
+              god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+                ability.currentCooldown /= effect.effectiveness;
+              });
+          }
+        }
+
+        if (member.assignedGod2 !== undefined && member.assignedGod2 !== GodEnum.None) {
+          var god = this.globalService.globalVar.gods.find(item => item.type === member.assignedGod2);
+          if (god !== undefined) {
+            if (god.abilityList !== undefined && god.abilityList.length > 0)
+              god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+                ability.currentCooldown /= effect.effectiveness;
+              });
+          }
+        }
+      });
+    }
   }
 
   handleFollowerSearch(deltaTime: number) {
@@ -634,14 +684,19 @@ export class BackgroundService {
 
   checkForThornsGems(character: Character) {
     var total = this.equipmentService.getFlatThornDamageGain(character.equipmentSet);
+    var gemThornsEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns && item.caster === character.name + "Gems");
 
     if (total > 0) {
-      var gemThornsEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Thorns && item.caster === character.name + "Gems");
-
-      if (gemThornsEffect === undefined)
-        character.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, total, false, true, false, character.name + "Gems"));
-      else
+      if (gemThornsEffect === undefined)  {
+        character.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Thorns, -1, total, false, true, false, character.name + "Gems"));        
+      }
+      else {
         gemThornsEffect.effectiveness = total;
+      }
+    }
+    else if (total === 0 && gemThornsEffect !== undefined)
+    {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.Thorns && item.caster === character.name + "Gems"));
     }
   }
 
