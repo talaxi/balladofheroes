@@ -51,7 +51,7 @@
                     </div>
                 </div>
                 <div class="abilities">
-                    <div *ngIf="getCharacterTotalLinks(character) > 0" class="smallCaps bold linkText">{{getCharacterRemainingLinks(character)}}/{{getCharacterTotalLinks(character)}} Link{{getCharacterTotalLinks(character) > 1 ? "s" : ""}}  - next ability +{{getCharacterNextLinkDamage(character)}}%</div>
+                    <div *ngIf="getCharacterTotalLinks(character) > 0" class="smallCaps bold linkText">{{getCharacterRemainingLinks(character)}}/{{getCharacterTotalLinks(character)}} Link{{getCharacterTotalLinks(character) > 1 ? "s" : ""}}  - <span *ngIf="!isLinkOffCooldown(character)">... {{getLinkCooldown(character)}} seconds</span><span *ngIf="isLinkOffCooldown(character)">next ability +{{getCharacterNextLinkDamage(character)}}%</span></div>
                     <div class="abilityGrid">
                         <app-ability-view class="autoAttack" [character]="character" [isAutoAttack]="true">
                         </app-ability-view>

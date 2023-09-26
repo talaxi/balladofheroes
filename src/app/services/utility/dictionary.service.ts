@@ -115,6 +115,20 @@ export class DictionaryService {
       name = "Potent Concoction";
     else if (type === ItemsEnum.ParalyzingToxin)
       name = "Paralyzing Toxin";
+      else if (type === ItemsEnum.SandToxin)
+      name = "Sand Toxin";
+      else if (type === ItemsEnum.ElectrifiedToxin)
+      name = "Electrified Toxin";
+      else if (type === ItemsEnum.MagicToxin)
+      name = "Magic Toxin";
+      else if (type === ItemsEnum.ElixirOfFortune)
+      name = "Elixir of Fortune";
+      else if (type === ItemsEnum.MagicRevivify)
+      name = "Magic Revivify";
+      else if (type === ItemsEnum.BouncingPotion)
+      name = "Bouncing Potion";
+      else if (type === ItemsEnum.MagicSalve)
+      name = "Magic Salve";
 
     //equipment
     //swords
@@ -190,6 +204,8 @@ export class DictionaryService {
       name = "Nemesis's Sword";
     else if (type === ItemsEnum.ZeussLightningBolts)
       name = "Zeus's Lightning Bolts";
+      else if (type === ItemsEnum.PoseidonsTrident)
+        name = "Poseidon's Trident";
     else if (type === ItemsEnum.GiantSword)
       name = "Giant Sword";
     else if (type === ItemsEnum.GiantHammer)
@@ -242,6 +258,8 @@ export class DictionaryService {
       name = "Zeus's Shield";
     else if (type === ItemsEnum.GiantShield)
       name = "Giant Shield";
+      else if (type === ItemsEnum.PoseidonsShield)
+        name = "Poseidon's Shield";
 
     //necklaces
     else if (type === ItemsEnum.ForgottenLocket)
@@ -286,6 +304,8 @@ export class DictionaryService {
       name = "Zeus's Necklace";
     else if (type === ItemsEnum.GiantNecklace)
       name = "Giant Necklace";
+      else if (type === ItemsEnum.PoseidonsNecklace)
+        name = "Poseidon's Necklace";
 
     //armor
     else if (type === ItemsEnum.LinenArmor)
@@ -336,6 +356,8 @@ export class DictionaryService {
       name = "Zeus's Armor";
     else if (type === ItemsEnum.GiantArmor)
       name = "Giant Armor";
+    else if (type === ItemsEnum.PoseidonsArmor)
+      name = "Poseidon's Armor";
 
     //rings
     else if (type === ItemsEnum.MoltenRing)
@@ -386,6 +408,8 @@ export class DictionaryService {
       name = "Zeus's Ring";
     else if (type === ItemsEnum.GiantRing)
       name = "Giant Ring";
+      else if (type === ItemsEnum.PoseidonsRing)
+        name = "Poseidon's Ring";
 
     //crafting materials
     else if (type === ItemsEnum.LightLeather)

@@ -324,5 +324,6 @@ export enum BestiaryEnum {
   TheMinotaur,
   DustyCloak,
   DarkSpecter,
-  WingedApparation
+  WingedApparation,
+  Poseidon
 }

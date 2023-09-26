@@ -20,7 +20,7 @@
 
 <ng-template #abilityPopover>
     <div>
-        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong> <span *ngIf="verboseMode">{{getAutoManualText()}} {{getLinkText()}}</span>
+        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong> <span *ngIf="verboseMode"> {{getAutoManualText()}} {{getLinkText()}}</span>
         <!--<hr class="miniHr" />-->
         <hr />
         <span [innerHtml]="getAbilityDescription()"></span>        

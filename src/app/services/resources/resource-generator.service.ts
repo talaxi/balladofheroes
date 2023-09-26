@@ -411,7 +411,21 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.DivineTarge) {
       return new ResourceValue(ItemsEnum.DivineTarge, amount);
     }
-
+    if (type === ItemsEnum.PoseidonsTrident) {
+      return new ResourceValue(ItemsEnum.PoseidonsTrident, amount);
+    }
+    if (type === ItemsEnum.PoseidonsShield) {
+      return new ResourceValue(ItemsEnum.PoseidonsShield, amount);
+    }
+    if (type === ItemsEnum.PoseidonsArmor) {
+      return new ResourceValue(ItemsEnum.PoseidonsArmor, amount);
+    }
+    if (type === ItemsEnum.PoseidonsRing) {
+      return new ResourceValue(ItemsEnum.PoseidonsRing, amount);
+    }
+    if (type === ItemsEnum.PoseidonsNecklace) {
+      return new ResourceValue(ItemsEnum.PoseidonsNecklace, amount);
+    }
     //equippables
     if (type === ItemsEnum.HealingHerb) {
       return new ResourceValue(ItemsEnum.HealingHerb, amount);
@@ -502,6 +516,27 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.PotentConcoction) {
       return new ResourceValue(ItemsEnum.PotentConcoction, amount);
+    }
+    if (type === ItemsEnum.SandToxin) {
+      return new ResourceValue(ItemsEnum.SandToxin, amount);
+    }
+    if (type === ItemsEnum.ElectrifiedToxin) {
+      return new ResourceValue(ItemsEnum.ElectrifiedToxin, amount);
+    }
+    if (type === ItemsEnum.MagicToxin) {
+      return new ResourceValue(ItemsEnum.MagicToxin, amount);
+    }
+    if (type === ItemsEnum.BouncingPotion) {
+      return new ResourceValue(ItemsEnum.BouncingPotion, amount);
+    }
+    if (type === ItemsEnum.MagicRevivify) {
+      return new ResourceValue(ItemsEnum.MagicRevivify, amount);
+    }
+    if (type === ItemsEnum.MagicSalve) {
+      return new ResourceValue(ItemsEnum.MagicSalve, amount);
+    }
+    if (type === ItemsEnum.ElixirOfFortune) {
+      return new ResourceValue(ItemsEnum.ElixirOfFortune, amount);
     }
 
     //materials

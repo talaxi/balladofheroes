@@ -121,6 +121,12 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 42 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.WarForTheMountainThePeak))
       this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 43 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteTravelsAtSea))
+      this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 44 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteWhirlpool))
+      this.showStory = true;
+      else if (this.globalService.globalVar.currentStoryId === 45 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLabyrinthLabyrinthCenter))
+      this.showStory = true;
 
     if (this.showStory)
       this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, this.balladService.getActiveSubZone().type);
@@ -136,6 +142,10 @@ export class StoryService {
 
   hadesText(text: string) {
     return "<span class='hadesColor bold'>" + text + "</span>";
+  }
+
+  poseidonText(text: string) {
+    return "<span class='poseidonColor bold'>" + text + "</span>";
   }
 
   hermesText(text: string) {
@@ -580,6 +590,31 @@ export class StoryService {
       else if (pageCount === 8)
         sceneText = "<div><i class='s4Heading'>End of Chapter 1</i></div>"
     }
+    else if (storyId === 43) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You stand alone at the prow of a ship bound for Crete. A week had passed since your encounter with Khronos, and yet not even the calm waves of the sea could fix your uneasiness. You knew there was no other option, but the guilt of fleeing the battle still weighed upon you.</div>" +
+          "<div class='sceneDiv'>Zosime had decided you should return to Crete. It was about as far away from Olympus as you could go, and she thought returning to some normalcy and following another hero would do you some good.  You weren't sure it was going to be that easy to return to normalcy. You hadn’t made contact with any of the Olympian gods since the battle for Olympus, and you weren't sure what may have happened to them.</div>" + 
+          "<div>Lost in your thoughts, you absently watched the rhythm of the waves.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>In an instant, the waves turned violent. Sailors hurried across the boat, the captain of the vessel shouted out orders. The crashing of the waves roused Zosime from her cabin, racing across the deck towards you.</div>" +
+          "<div class='sceneDiv'>" + this.zosimeText("“Storms?”") + " She asked groggily. The sun had just begun to rise and illuminate the sky, revealing a blue canvas with hardly a cloud in sight. You looked again to the sea and saw what looked like shining fins breaching the water. </div>" +
+          "<div>" + this.thalesText("“No. Worse. I think the God of the Sea is angry with us.”") + "</div>";
+    }
+    else if (storyId === 44) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>The current of the water pulls you deeper and deeper towards the whirlpool. The panicked crew do everything they can to steer out of it, but the sea has taken on a life of its own.</div>" +
+          "<div class='sceneDiv'>" + this.poseidonText("“I SAT IDLY BY WHILE MY NIECES PUT TOGETHER THIS FOLLY OF A PLAN. NO LONGER.”") + " A voice booming deep from the middle of the whirlpool calls out. " + this.poseidonText("“I WILL BE KEEPING A MUCH CLOSER EYE ON YOU.”") + "</div>" + 
+          "<div class='sceneDiv'>You feel Poseidon granting you his power as the waves finally begin to calm. The whirlpool dissipates, freeing your ship from its clutches. Despite drawing the Sea God’s ire, you were grateful to see him. The gods hadn’t given up, and they were ready to fight back for their home.</div>" +
+          "<div>Your ship soon arrives on the shores of Crete, and you begin your journey to the Labyrinth of the Minotaur.</div>";      
+    }    
+    else if (storyId === 45) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>With the Minotaur defeated, you work your way out of the Labyrinth and back to Knossos. On the return journey, your meeting with Poseidon crept its way into your thoughts. It would seem the gods had escaped unscathed, but you had not heard yet from Athena.</div>" +
+          "<div>Upon arriving in Knossos, you make your way to the religious sanctuary within the Palace of Minos. You begin praying to your patron goddess, hoping for a sign on what to do next.</div>";          
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>After some time, a vision slowly appears to you, almost begrudgingly. Athena had the makings of a plan, but did not seem sure about it. Eager to right your loss at Mount Olympus, you were determined to see it through regardless of the danger.</div>" +          
+          "<div>You finish your prayer to Athena, and begin to make travel plans with Zosime. Your next target: The island of Aiaia. Home to the sorceress Circe, sister of Aeëtes.</div>";
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -753,6 +788,15 @@ export class StoryService {
     }
     if (this.globalService.globalVar.currentStoryId === 42) {
       this.pageCount = 8;
+    }
+    if (this.globalService.globalVar.currentStoryId === 43) {
+      this.pageCount = 2;
+    }
+    if (this.globalService.globalVar.currentStoryId === 44) {
+      this.pageCount = 1;
+    }
+    if (this.globalService.globalVar.currentStoryId === 45) {
+      this.pageCount = 2;
     }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);

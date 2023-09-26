@@ -191,6 +191,8 @@ export class EnemyViewComponent implements OnInit {
         src += "warriorTarget.svg";
       if (character.type === CharacterEnum.Priest)
         src += "priestTarget.svg";
+        if (character.type === CharacterEnum.Monk)
+          src += "monkTarget.svg";
     }
     return src;
   }
@@ -206,6 +208,8 @@ export class EnemyViewComponent implements OnInit {
       src += "warriorTarget.svg";
     if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Priest)
       src += "priestTarget.svg";
+      if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Monk)
+      src += "monkTarget.svg";
 
     return src;
   }

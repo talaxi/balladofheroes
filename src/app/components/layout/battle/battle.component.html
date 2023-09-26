@@ -26,6 +26,11 @@
                 </app-notification-icon>
             </div>
         </div>
+        <div class="centeredText" *ngIf="doingEternalMeleeFight()">
+            <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">
+                Repeat Eternal Melee Until Out Of Tickets
+            </mat-checkbox>
+        </div>
         <hr />
     </div>
     <div class="scene"

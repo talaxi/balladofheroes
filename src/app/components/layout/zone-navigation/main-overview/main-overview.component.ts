@@ -62,6 +62,15 @@ export class MainOverviewComponent {
     return this.globalService.globalVar.followerData.availableFollowers > 0;
   }
 
+
+  openAllShopView(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '90%' });
+    else
+      this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85vh' });
+  }
+
+
   jumpToLatestShop() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();
     var relatedZone: Zone | undefined = this.balladService.getActiveZone();

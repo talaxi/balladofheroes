@@ -269,6 +269,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.VenomousToxin) {
       src += "venomousToxin.svg";
     }
+    if (effect.type === StatusEffectEnum.SandToxin) {
+      src += "sandToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.ElectrifiedToxin) {
+      src += "electrifiedToxin.svg";
+    }
+    if (effect.type === StatusEffectEnum.MagicToxin) {
+      src += "magicToxin.svg";
+    }
     if (effect.type === StatusEffectEnum.HeroicElixir) {
       src += "heroicElixir.svg";
     }
@@ -280,6 +289,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.ElixirOfSpeed) {
       src += "elixirOfSpeed.svg";
+    }
+    if (effect.type === StatusEffectEnum.ElixirOfFortune) {
+      src += "elixirOfFortune.svg";
     }
     if (effect.type === StatusEffectEnum.Thorns) {
       src += "thorns.svg";
@@ -310,6 +322,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.Stagger) {
       src += "stagger.svg";
+    }
+    if (effect.type === StatusEffectEnum.Insight) {
+      src += "insight.svg";
     }
     if (effect.type === StatusEffectEnum.AutoAttackSpeedUp) {
       src += "attackSpeedUp.svg";

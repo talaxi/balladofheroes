@@ -164,5 +164,11 @@ export enum StatusEffectEnum {
     GainRandomEnBuff,
     DamageShield,
     Flow,
-    KingOfTheSea
+    KingOfTheSea,
+    SpiritUnleashed,
+    Insight,
+    SandToxin,
+    ElectrifiedToxin,
+    MagicToxin,
+    ElixirOfFortune
   }

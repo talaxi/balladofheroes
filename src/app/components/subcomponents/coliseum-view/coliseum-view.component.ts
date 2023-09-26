@@ -29,7 +29,7 @@ export class ColiseumViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.rewardsText = this.setRewardsText();
-    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false
+    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
     var standardTournaments = this.getStandardColiseumTournaments();
     if (standardTournaments.length > 0)
       this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(standardTournaments[0]);

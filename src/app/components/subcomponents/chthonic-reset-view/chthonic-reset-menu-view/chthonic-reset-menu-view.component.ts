@@ -67,7 +67,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       this.bonusGodText = "We're not really supposed to say his name down here, but if you happen to see the <i class='zeusColor storyCharacterName'>head honcho with all the lightning bolts</i>, put in a good word for me will ya?"
     }
     if (this.bonusGod === GodEnum.Poseidon) {
-      
+      this.bonusGodText = "Boy oh boy, is there anything like the ocean breeze? Seriously, it's about the only nice thing we have left down here. If you manage to get some favor from Poseidon, bring it by will ya?";
     }
 
     this.bonusGodText = "<strong>" + this.bonusGodText + "</strong>";
@@ -80,6 +80,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     this.bonusGodText = this.bonusGodText.replaceAll("Ares", "<span class='aresColor storyCharacterName'>Ares</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Nemesis", "<span class='nemesisColor storyCharacterName'>Nemesis</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Dionysus", "<span class='dionysusColor storyCharacterName'>Dionysus</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Poseidon", "<span class='poseidonColor storyCharacterName'>Poseidon</span>");
   }
 
   getChthonicPower(god: God) {

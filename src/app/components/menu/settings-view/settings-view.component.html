@@ -70,7 +70,7 @@
                     Options</button>
             </div>
             <div class="updateKeybinds twoColumn">
-                <button class="buttonStyled" (click)="openQuickViewOptions(updateAltarsAutoContent)">Update Altars/Auto</button>
+                <button class="buttonStyled" (click)="openQuickViewOptions(updateAltarsAutoContent)">Select Altars State</button>
             </div>
             <div *ngIf="isMobile" class="updateKeybinds twoColumn">
                 <button class="buttonStyled" (click)="openKeybinds(overlayNotificationsContent)">Update Overlay
@@ -239,25 +239,25 @@
 
 <ng-template #lowLoadingTimePopover>
     <div>
-        Automate the game for up to 30 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 30 minutes of away time.
     </div>
 </ng-template>
 
 <ng-template #averageLoadingTimePopover>
     <div>
-        Automate the game for up to 60 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 60 minutes of away time.
     </div>
 </ng-template>
 
 <ng-template #highLoadingTimePopover>
     <div>
-        Automate the game for up to 120 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 120 minutes of away time.
     </div>
 </ng-template>
 
 <ng-template #veryHighLoadingTimePopover>
     <div>
-        Automate the game for up to 240 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 240 minutes of away time.
     </div>
 </ng-template>
 

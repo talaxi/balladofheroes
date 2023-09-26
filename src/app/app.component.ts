@@ -177,11 +177,15 @@ export class AppComponent {
     var activeTimeLimit = this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.lowActiveTimeLimit; 
 
     if (deltaTime > activeTimeLimit) {
-      this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - activeTimeLimit;
+      //this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - activeTimeLimit;
       deltaTime = activeTimeLimit;
     }
-    var doubleSpeedActive = false;
+    //var doubleSpeedActive = false;
 
+    if (this.globalService.globalVar.extraSpeedEnabled)
+      deltaTime *= 2;
+
+      /*
     //if (!this.globalService.globalVar.isCatchingUp) {
       if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && //deltaTime < this.utilityService.activeTimeLimit / 2 &&
         this.globalService.globalVar.extraSpeedEnabled) {          
@@ -195,16 +199,17 @@ export class AppComponent {
           doubleSpeedActive = true;
         }
       }
-    //}
+    //}*/
 
     //cap extra speed after you deduct the catch up speed amount
-    var timeLimit = this.utilityService.extraSpeedTimeLimit;
+    /*var timeLimit = this.utilityService.extraSpeedTimeLimit;
     if (this.globalService.globalVar.isSubscriber)
       timeLimit = this.utilityService.patronExtraSpeedTimeLimit;
 
     if (this.globalService.globalVar.extraSpeedTimeRemaining > timeLimit)
     this.globalService.globalVar.extraSpeedTimeRemaining = timeLimit;
-    
+    */
+
     var batchTime = this.getBatchRunTime(subzone, deltaTime); //runs the game in batches of 5 seconds max    
     //user was afk, run battle in batches until you're caught up
     if (deltaTime > batchTime) {      

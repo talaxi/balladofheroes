@@ -139,6 +139,7 @@
   --archerColor: #12A901;
   --warriorColor: #0695FB;
   --priestColor: #D063EE;
+  --monkColor: #edac82;  /*#aca2fc;*/
 
   --itemColor: #ffffff;
   --athenaColor: #7fbffa;
@@ -761,6 +762,12 @@ body {
   color: var(--priestColor);
   stroke: var(--priestColor) !important;
   --mdc-circular-progress-active-indicator-color: var(--priestColor) !important;
+}
+
+.monkColor {
+  color: var(--monkColor);
+  stroke: var(--monkColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--monkColor) !important;
 }
 
 .itemColor {

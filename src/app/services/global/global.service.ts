@@ -86,6 +86,8 @@ export class GlobalService {
       return new CharacterStats(225, 17, 12, 8, 8, 12);
     else if (type === CharacterEnum.Priest)
       return new CharacterStats(175, 17, 9, 6, 7, 10);
+      else if (type === CharacterEnum.Monk)
+      return new CharacterStats(210, 19, 8, 8, 10, 7);
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);
   }
@@ -142,6 +144,19 @@ export class GlobalService {
     this.assignAbilityInfo(priest);
 
     this.globalVar.characters.push(priest);
+    
+    var monk = new Character(CharacterEnum.Monk);
+    monk.name = "Monk";
+    monk.type = CharacterEnum.Monk;
+    monk.isAvailable = false;
+    monk.baseStats = this.getCharacterBaseStats(CharacterEnum.Monk);
+    monk.battleStats = monk.baseStats.makeCopy();
+    monk.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
+    monk.battleInfo.autoAttackModifier = this.utilityService.strongAutoAttack;
+    this.calculateCharacterBattleStats(monk);
+    this.assignAbilityInfo(monk);
+
+    this.globalVar.characters.push(monk);
   }
 
   assignAbilityInfo(character: Character) {
@@ -273,6 +288,41 @@ export class GlobalService {
       barrier.cooldown = barrier.currentCooldown = 44;
       barrier.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .7, true, true, true, "", 1));
       character.abilityList.push(barrier);
+    }
+    
+    if (character.type === CharacterEnum.Monk) {
+      var palmStrike = new Ability();
+      palmStrike.name = "Palm Strike";
+      palmStrike.isAvailable = false;
+      palmStrike.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
+      palmStrike.effectiveness = 1.9;
+      palmStrike.cooldown = palmStrike.currentCooldown = 21;
+      palmStrike.dealsDirectDamage = true;
+      palmStrike.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenUp, 8, 1.25, false, false));
+      character.abilityList.push(palmStrike);
+
+      var insight = new Ability();
+      insight.name = "Insight";
+      insight.effectiveness = .2;
+      insight.requiredLevel = this.utilityService.characterPassiveLevel;
+      insight.maxCount = 4;
+      insight.isAvailable = false;
+      insight.isPassive = true;
+      insight.isActivatable = false;
+      insight.userEffect.push(this.createStatusEffect(StatusEffectEnum.Insight, 4, 1.05, false, true));
+      character.abilityList.push(insight);
+
+      var spiritUnleashed = new Ability();
+      spiritUnleashed.name = "Spirit Unleashed"; 
+      spiritUnleashed.requiredLevel = this.utilityService.characterAbility2Level;
+      spiritUnleashed.isAvailable = false;
+      spiritUnleashed.effectiveness = 2.1;
+      spiritUnleashed.secondaryEffectiveness = .15;
+      spiritUnleashed.maxCount = 10;
+      spiritUnleashed.threshold = 1.5;
+      spiritUnleashed.dealsDirectDamage = true;
+      spiritUnleashed.cooldown = spiritUnleashed.currentCooldown = 48;      
+      character.abilityList.push(spiritUnleashed);
     }
   }
 
@@ -856,7 +906,7 @@ export class GlobalService {
       || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge ||
       type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock ||
       type === StatusEffectEnum.HealingDoneUp || type === StatusEffectEnum.ThornsDamageUp || type === StatusEffectEnum.AllElementalResistanceUp ||
-      type === StatusEffectEnum.AbsorbElementalDamage)
+      type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight)
       refreshes = true;
 
     return refreshes;
@@ -868,7 +918,8 @@ export class GlobalService {
     if (type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.WitheringToxin ||
       type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed || type === StatusEffectEnum.FlamingToxin ||
-      type === StatusEffectEnum.ParalyzingToxin || type === StatusEffectEnum.KingOfTheSea)
+      type === StatusEffectEnum.ParalyzingToxin || type === StatusEffectEnum.KingOfTheSea || type === StatusEffectEnum.ElixirOfFortune ||
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
       refreshes = true;
 
     return refreshes;
@@ -880,7 +931,8 @@ export class GlobalService {
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
-      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir)
+      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
       persistsDeath = true;
 
     return persistsDeath;
@@ -893,7 +945,8 @@ export class GlobalService {
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
-      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir)
+      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
       persistsDeath = true;
 
     if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
@@ -1373,6 +1426,8 @@ export class GlobalService {
         character.unlockedOverdrives.push(OverdriveNameEnum.Revenge);
       if (character.type === CharacterEnum.Priest)
         character.unlockedOverdrives.push(OverdriveNameEnum.Hope);
+      if (character.type === CharacterEnum.Monk)
+        character.unlockedOverdrives.push(OverdriveNameEnum.Flurry);
     }
   }
 
@@ -1457,6 +1512,9 @@ export class GlobalService {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
 
         ability.targetEffect[0].effectiveness += .025 * Math.ceil(newLevel / 10);
+      }      
+      if (character.type === CharacterEnum.Monk) {
+        ability.effectiveness += .15 * Math.ceil(newLevel / 10);
       }
     }
     if (newLevel % 10 === 4) {        //passive 
@@ -1478,6 +1536,13 @@ export class GlobalService {
       if (character.type === CharacterEnum.Warrior) {
         ability.effectiveness += .025 * Math.ceil(newLevel / 10);
       }
+      if (character.type === CharacterEnum.Monk) {
+        if (ability.userEffect.length === 0)
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+
+        var userGainsEffect = ability.userEffect[0];
+        userGainsEffect.effectiveness += .025 * Math.ceil(newLevel / 10);
+      }
     }
     if (newLevel % 10 === 8) {        //ability 2
       ability.requiredLevel = this.utilityService.characterAbility2Level;
@@ -1494,6 +1559,9 @@ export class GlobalService {
         ability.effectiveness += .025 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Warrior) {
+        ability.effectiveness += .1 * Math.ceil(newLevel / 10);
+      }      
+      if (character.type === CharacterEnum.Monk) {
         ability.effectiveness += .1 * Math.ceil(newLevel / 10);
       }
     }
@@ -1613,6 +1681,8 @@ export class GlobalService {
       return 'warriorColor';
     if (type === CharacterEnum.Priest)
       return 'priestColor';
+      if (type === CharacterEnum.Monk)
+      return 'monkColor';
 
     return '';
   }
@@ -3349,6 +3419,14 @@ export class GlobalService {
       else if (setCount === 5)
         return 10;
     }
+    if (setType === EquipmentSetEnum.Poseidon) {
+      if (setCount === 2)
+        return .05; //abil cd reduction
+      else if (setCount === 3)
+        return .5; //water dmg  
+      else if (setCount === 5)
+        return .1; //chance for water ability to trigger again
+    }
 
     return 0;
   }
@@ -3426,6 +3504,13 @@ export class GlobalService {
           stats!.armorPenetration += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
           stats!.elementIncrease.lightning += this.getSetBonusAmount(setCount[0], 3);
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Poseidon) {
+        if (setCount[1] >= 2)
+          stats!.abilityCooldownReduction += this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 3)
+          stats!.elementIncrease.water += this.getSetBonusAmount(setCount[0], 3);
       }
     });
 

@@ -69,6 +69,7 @@ export class UtilityService {
 
   public damageLinkBoost = 10;
   public nonDamageLinkBoost = 15;
+  public linkCooldown = 15;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;

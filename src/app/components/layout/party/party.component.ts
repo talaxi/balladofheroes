@@ -394,6 +394,14 @@ export class PartyComponent implements OnInit {
     return this.battleService.getLinkChainPercent(character.linkInfo);
   }
 
+  isLinkOffCooldown(character: Character) {
+    return character.linkInfo.cooldown <= 0;
+  }
+
+  getLinkCooldown(character: Character) {
+    return Math.round(character.linkInfo.cooldown);
+  }
+
   setupKeybinds(event: KeyboardEvent) {
     var keybinds = this.globalService.globalVar.keybinds;
 

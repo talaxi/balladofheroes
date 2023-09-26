@@ -51,6 +51,7 @@ export class BattleComponent implements OnInit {
   storyAnimationTimerCap = .5;
   @Input() isMobile = false;
   notificationOverlayMessage = "";
+  repeatColiseumFight: boolean = false;
 
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private battleService: BattleService,
     private utilityService: UtilityService, private gameLogService: GameLogService, public storyService: StoryService,
@@ -64,6 +65,7 @@ export class BattleComponent implements OnInit {
 
     this.activeSubzone = this.balladService.getActiveSubZone();
     this.showDevStats = this.deploymentService.showStats;
+    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
 
     if (this.globalService.globalVar.activeBattle !== undefined)
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
@@ -117,6 +119,11 @@ export class BattleComponent implements OnInit {
       this.skipToBottom(this.gameLogScroll.nativeElement);
   }
 
+  
+  repeatColiseumFightToggle() {
+    this.globalService.globalVar.settings.set("repeatColiseumFight", this.repeatColiseumFight);
+  }
+
   skipStory() {
     this.globalService.globalVar.timers.scenePageTimer = this.globalService.globalVar.timers.scenePageLength;
   }
@@ -148,6 +155,11 @@ export class BattleComponent implements OnInit {
         this.globalService.globalVar.activeBattle.activeTrial.type !== TrialEnum.None;
 
     return false;
+  }
+  
+  doingEternalMeleeFight() {    
+    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
+    return this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee;        
   }
 
   isAtStoryScene() {

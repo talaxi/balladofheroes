@@ -413,5 +413,11 @@ export enum ItemsEnum {
   MagicSalve,
   ElectrifiedToxin,
   MagicRevivify,
-  MagicToxin
+  MagicToxin,
+  PoseidonsTrident,
+  PoseidonsShield,
+  PoseidonsArmor,
+  PoseidonsRing,
+  PoseidonsNecklace,
+  MagicDust
 } 

@@ -21,9 +21,9 @@
         </button>        
     </div>    
 
-    <div class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
+    <div class="extraTimeItem centerAlign">
       <button class="buttonAsText clickableText globalHeaderItem normalFontSize" (click)="toggleExtraSpeed()">
-        <span *ngIf="getExtraSpeedTime() !== '00:00:00'"><span class="fastForwardArrows">&#187; </span><span customToolTip [contentTemplate]="extraTimePopover" [tooltipDirection]="tooltipDirection"> ({{getExtraSpeedTime()}})</span></span>
+        <span class="headerTextItems clickableText globalHeaderItem">game speed: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
       </button>
     </div>
 
