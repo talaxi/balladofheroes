@@ -1648,7 +1648,7 @@ export class EnemyGeneratorService {
       var healingHerb = new Ability();
       healingHerb.name = "Healing Herb";
       healingHerb.targetType = TargetEnum.LowestHpPercent;
-      healingHerb.isAvailable = false;
+      healingHerb.isAvailable = true;
       healingHerb.effectiveness = .75;
       healingHerb.heals = true;
       healingHerb.targetsAllies = true;
@@ -5367,7 +5367,7 @@ export class EnemyGeneratorService {
       var healingSpirits = new Ability();
       healingSpirits.name = "Healing Spirits";
       healingSpirits.targetType = TargetEnum.LowestHpPercent;
-      healingSpirits.isAvailable = false;
+      healingSpirits.isAvailable = true;
       healingSpirits.effectiveness = 8.75;
       healingSpirits.heals = true;
       healingSpirits.targetsAllies = true;
@@ -7176,6 +7176,74 @@ export class EnemyGeneratorService {
       dispenserOfDues.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DispenserOfDues, -1, 0, false, true));
       enemy.abilityList.push(dispenserOfDues);
     }
+    if (type === BestiaryEnum.Poseidon) {
+      enemy.name = "Poseidon";
+      enemy.battleStats = new CharacterStats(.98, 1, .96, .95, 1.05, .9);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 500;
+      enemy.xpGainFromDefeat = 50000;    
+      enemy.loot.push(new LootItem(ItemsEnum.PoseidonsRing, ItemTypeEnum.Equipment, 1, .05));
+      enemy.loot.push(new LootItem(ItemsEnum.PoseidonsArmor, ItemTypeEnum.Equipment, 1, .05));
+      enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .1));
+      enemy.battleStats.elementResistance.water += .5; 
+      enemy.battleStats.elementIncrease.water += .25;     
+      //increases by X% every time an ability is used
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.WaterDamageUp, -1, 1.1, false, true, false));      
+      
+      //just for description purposes
+      var stab = new Ability();
+      stab.name = "Battering Current";
+      stab.isAvailable = true;
+      stab.dealsDirectDamage = false;
+      stab.cooldown = stab.currentCooldown = 100000;
+      enemy.abilityList.push(stab);
+
+      var callOfTheOcean = new Ability();
+      callOfTheOcean.name = "Call of the Ocean";
+      callOfTheOcean.isAvailable = true;
+      callOfTheOcean.cooldown = callOfTheOcean.currentCooldown = 22;
+      callOfTheOcean = this.randomizeCooldown(callOfTheOcean);
+      callOfTheOcean.dealsDirectDamage = false; 
+      callOfTheOcean.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AbilitySpeedUp, 10, 1.5, false, true, false));
+      enemy.abilityList.push(callOfTheOcean);      
+
+      var crashingWaves = new Ability();
+      crashingWaves.name = "Crashing Waves";
+      crashingWaves.isAvailable = true;
+      crashingWaves.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      crashingWaves.cooldown = crashingWaves.currentCooldown = 25;
+      crashingWaves.dealsDirectDamage = true;
+      crashingWaves.effectiveness = 6.95;
+      crashingWaves.secondaryEffectiveness = 4;
+      crashingWaves.elementalType = ElementalTypeEnum.Water;
+      crashingWaves.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 12, .25, false, false));
+      enemy.abilityList.push(crashingWaves);
+
+      var whirlpool = new Ability();
+      whirlpool.name = "Whirlpool";
+      whirlpool.requiredLevel = this.utilityService.godAbility2Level;
+      whirlpool.isAvailable = true;
+      whirlpool.effectiveness = 5.6;
+      whirlpool.dealsDirectDamage = true;
+      whirlpool.secondaryEffectiveness = 1.5;
+      whirlpool.cooldown = whirlpool.currentCooldown = 32;
+      whirlpool.elementalType = ElementalTypeEnum.Water;
+      whirlpool.isAoe = true;
+      enemy.abilityList.push(whirlpool);
+
+      var tsunami = new Ability();
+      tsunami.name = "Tsunami";
+      tsunami.requiredLevel = this.utilityService.godAbility3Level;
+      tsunami.isAvailable = true;
+      tsunami.cooldown = tsunami.currentCooldown = 45;
+      tsunami.dealsDirectDamage = true;
+      tsunami.effectiveness = 4.5;
+      tsunami.secondaryEffectiveness = 1;
+      tsunami.elementalType = ElementalTypeEnum.Water;
+      tsunami.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.KingOfTheSea, 5, 1.05, false, true));
+      tsunami.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      enemy.abilityList.push(tsunami);
+    }
     if (type === BestiaryEnum.AgileChamois) {
       enemy.name = "Agile Chamois";
       enemy.battleStats = new CharacterStats(186489, 3275, 3730, 6150, 6675, 11000);
@@ -7469,7 +7537,7 @@ export class EnemyGeneratorService {
       var healingSpirits = new Ability();
       healingSpirits.name = "Healing Spirits";
       healingSpirits.targetType = TargetEnum.LowestHpPercent;
-      healingSpirits.isAvailable = false;
+      healingSpirits.isAvailable = true;
       healingSpirits.effectiveness = 10;
       healingSpirits.heals = true;
       healingSpirits.targetsAllies = true;
@@ -9449,8 +9517,8 @@ export class EnemyGeneratorService {
       enemy.abilityList.push(venom);            
     }     
     if (type === BestiaryEnum.BlueJellyfish) {      
-      enemy.name = "Blue Jellyfish";      
-      enemy.battleStats = new CharacterStats(487192, 5025, 15500, 16050, 15500, 16200);      
+      enemy.name = "Blue Jellyfish";            
+      enemy.battleStats = new CharacterStats(487192, 5025, 8200, 12050, 16500, 16200);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
@@ -9458,8 +9526,8 @@ export class EnemyGeneratorService {
       var stinger = new Ability();
       stinger.name = "Stinger";
       stinger.isAvailable = true;
-      stinger.effectiveness = 4.4;
-      stinger.cooldown = stinger.currentCooldown = 22;
+      stinger.effectiveness = 8.4;
+      stinger.cooldown = stinger.currentCooldown = 16;
       stinger = this.randomizeCooldown(stinger);
       stinger.dealsDirectDamage = true;
       stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 2, .25, stinger.name, dotTypeEnum.BasedOnDamage));
@@ -9468,7 +9536,7 @@ export class EnemyGeneratorService {
       var venom = new Ability();
       venom.name = "Stunning Venom";
       venom.isAvailable = true;
-      venom.cooldown = venom.currentCooldown = 16;
+      venom.cooldown = venom.currentCooldown = 17;
       venom = this.randomizeCooldown(venom);
       venom.dealsDirectDamage = true;
       venom.effectiveness = 3.4;      
@@ -9477,7 +9545,7 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.AgitatedStingray) {      
       enemy.name = "Agitated Stingray";
-      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleStats = new CharacterStats(494064, 6350, 8450, 11400, 17500, 16600);          
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
@@ -9485,7 +9553,7 @@ export class EnemyGeneratorService {
       var stinger = new Ability();
       stinger.name = "Stinger";
       stinger.isAvailable = true;
-      stinger.effectiveness = 4.4;
+      stinger.effectiveness = 9.2;
       stinger.cooldown = stinger.currentCooldown = 22;
       stinger = this.randomizeCooldown(stinger);
       stinger.dealsDirectDamage = true;
@@ -9495,7 +9563,7 @@ export class EnemyGeneratorService {
       var venom = new Ability();
       venom.name = "Slowing Venom";
       venom.isAvailable = true;
-      venom.cooldown = venom.currentCooldown = 16;
+      venom.cooldown = venom.currentCooldown = 18;
       venom = this.randomizeCooldown(venom);
       venom.dealsDirectDamage = true;
       venom.effectiveness = 3.4;      
@@ -9504,7 +9572,7 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.GreaterGrebe) {      
       enemy.name = "Greater Grebe";
-      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleStats = new CharacterStats(490029, 6150, 8000, 12650, 17000, 17250);      
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;               
@@ -9513,8 +9581,8 @@ export class EnemyGeneratorService {
       var bombardment = new Ability();
       bombardment.name = "Bombardment";
       bombardment.isAvailable = true;
-      bombardment.effectiveness = 4.9;
-      bombardment.cooldown = bombardment.currentCooldown = 23;
+      bombardment.effectiveness = 8.25;
+      bombardment.cooldown = bombardment.currentCooldown = 21;
       bombardment = this.randomizeCooldown(bombardment);
       bombardment.dealsDirectDamage = true;
       bombardment.isAoe = true;
@@ -9524,17 +9592,17 @@ export class EnemyGeneratorService {
       var gouge = new Ability();
       gouge.name = "Gouge";
       gouge.isAvailable = true;
-      gouge.cooldown = gouge.currentCooldown = 22;
+      gouge.cooldown = gouge.currentCooldown = 20;
       gouge = this.randomizeCooldown(gouge);
       gouge.dealsDirectDamage = true;      
-      gouge.effectiveness = 4.5;      
+      gouge.effectiveness =  8.5;      
       gouge.elementalType = ElementalTypeEnum.Air;
       gouge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 8, .5, false, false));
       enemy.abilityList.push(gouge);         
     } 
     if (type === BestiaryEnum.MauveStinger) {      
       enemy.name = "Mauve Stinger";
-      enemy.battleStats = new CharacterStats(487192, 6125, 15500, 16050, 15500, 16200);      
+      enemy.battleStats = new CharacterStats(495590, 6500, 8500, 13350, 17500, 17500);         
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
@@ -9542,30 +9610,30 @@ export class EnemyGeneratorService {
       var stinger = new Ability();
       stinger.name = "Stinger";
       stinger.isAvailable = true;
-      stinger.effectiveness = 4.4;
+      stinger.effectiveness = 9;
       stinger.cooldown = stinger.currentCooldown = 22;
       stinger = this.randomizeCooldown(stinger);
       stinger.dealsDirectDamage = true;
-      stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 2, .25, stinger.name, dotTypeEnum.BasedOnDamage));
+      stinger.targetEffect.push(this.globalService.createDamageOverTimeEffect(6, 2, .33, stinger.name, dotTypeEnum.BasedOnDamage));
       enemy.abilityList.push(stinger);
 
       var stunningVenom = new Ability();
       stunningVenom.name = "Stunning Venom";
       stunningVenom.isAvailable = true;
-      stunningVenom.cooldown = stunningVenom.currentCooldown = 16;
+      stunningVenom.cooldown = stunningVenom.currentCooldown = 23;
       stunningVenom = this.randomizeCooldown(stunningVenom);
       stunningVenom.dealsDirectDamage = true;
-      stunningVenom.effectiveness = 3.4;      
-      stunningVenom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 4, 1, false, false));
+      stunningVenom.effectiveness = 5.4;      
+      stunningVenom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 5, 1, false, false));
       enemy.abilityList.push(stunningVenom);    
 
       var venom = new Ability();
       venom.name = "Slowing Venom";
       venom.isAvailable = true;
-      venom.cooldown = venom.currentCooldown = 16;
+      venom.cooldown = venom.currentCooldown = 19;
       venom = this.randomizeCooldown(venom);
       venom.dealsDirectDamage = true;
-      venom.effectiveness = 3.4;      
+      venom.effectiveness = 6.8;      
       venom.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 12, .5, false, false));
       enemy.abilityList.push(venom);          
     } 
