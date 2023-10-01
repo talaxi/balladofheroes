@@ -136,8 +136,7 @@ export class SettingsViewComponent implements OnInit {
     if (confirm("This will overwrite your existing game data. Continue?")) {
       let fileReader = new FileReader();
       fileReader.onload = (e) => {
-        var decompressedData = LZString.decompressFromBase64(fileReader.result);
-        console.log(decompressedData);
+        var decompressedData = LZString.decompressFromBase64(fileReader.result);        
         decompressedData.replace("耬","");
         var loadDataJson = <GlobalVariables>JSON.parse(decompressedData);
         if (loadDataJson !== null && loadDataJson !== undefined) {
