@@ -31,6 +31,7 @@ import { UsableItemEffect } from 'src/app/models/resources/usable-item-effect.mo
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
+import { Character } from 'src/app/models/character/character.model';
 declare var LZString: any;
 
 @Injectable({
@@ -44,7 +45,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1315,7 +1316,7 @@ export class VersionControlService {
           this.initializationService.initializeBalladOfTheLabyrinth();
 
           var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
-          if (poseidon !== undefined) {            
+          if (poseidon !== undefined) {
             this.globalService.assignGodAbilityInfo(poseidon);
             poseidon.displayOrder = 10;
           }
@@ -1345,9 +1346,23 @@ export class VersionControlService {
           }
 
           this.globalService.globalVar.characters.forEach(character => {
-            character.linkInfo.totalLinks += Math.floor((character.level+4) / 10);
-            character.linkInfo.remainingLinks += Math.floor((character.level+4) / 10);
+            character.linkInfo.totalLinks += Math.floor((character.level + 4) / 10);
+            character.linkInfo.remainingLinks += Math.floor((character.level + 4) / 10);
           });
+        }
+        if (version === .71) {
+          var monk = new Character(CharacterEnum.Monk);
+          monk.name = "Monk";
+          monk.type = CharacterEnum.Monk;
+          monk.isAvailable = false;
+          monk.baseStats = this.globalService.getCharacterBaseStats(CharacterEnum.Monk);
+          monk.battleStats = monk.baseStats.makeCopy();
+          monk.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
+          monk.battleInfo.autoAttackModifier = this.utilityService.strongAutoAttack;
+          this.globalService.calculateCharacterBattleStats(monk);
+          this.globalService.assignAbilityInfo(monk);
+
+          this.globalService.globalVar.characters.push(monk);
         }
 
         this.globalService.globalVar.currentVersion = version;

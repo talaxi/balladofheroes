@@ -3454,7 +3454,7 @@ export class SubZoneGeneratorService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DustyCloak));
       battleOptions.push(enemyTeam);
     }
-    if (type === SubZoneEnum.TheLabyrinthCenterPath) {
+    if (type === SubZoneEnum.TheLabyrinthRightPath) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LabyrinthGuard));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FracturedShape));

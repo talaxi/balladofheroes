@@ -586,6 +586,8 @@ export class DictionaryService {
       name = "Birch Bark";
     else if (type === ItemsEnum.RadiatingGemstone)
       name = "Radiating Gemstone";
+      else if (type === ItemsEnum.MagicDust)
+        name = "Magic Dust";
     else if (type === ItemsEnum.WhiteHorn)
       name = "White Horn";
     else if (type === ItemsEnum.BlackHorn)

@@ -57,7 +57,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService) { }
 
   getCurrentVersion() {
-    return .7;
+    return .71;
   }
 
   initializeGlobalVariables() {
@@ -906,7 +906,7 @@ export class GlobalService {
       || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge ||
       type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock ||
       type === StatusEffectEnum.HealingDoneUp || type === StatusEffectEnum.ThornsDamageUp || type === StatusEffectEnum.AllElementalResistanceUp ||
-      type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight)
+      type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight || type === StatusEffectEnum.Flow)
       refreshes = true;
 
     return refreshes;
@@ -2853,6 +2853,8 @@ export class GlobalService {
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.fire * 100) + "% Fire Damage Increase, ";
     if (upgradedStats.elementIncrease.lightning > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.lightning * 100) + "% Lightning Damage Increase, ";
+      if (upgradedStats.elementIncrease.water > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.water * 100) + "% Water Damage Increase, ";
     if (upgradedStats.overdriveGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
     if (upgradedStats.armorPenetration > 0)
