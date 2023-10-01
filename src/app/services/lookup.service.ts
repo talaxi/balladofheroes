@@ -732,9 +732,9 @@ export class LookupService {
       description = "When equipped with Zeus and attacking, reduce your target's elemental resistances by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfZeusValue() * 100) + "%</span>.";
 
     if (type === ItemsEnum.SmallCharmOfPoseidon)
-      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfNemesisValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
+      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getSmallCharmOfPoseidonValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
     if (type === ItemsEnum.LargeCharmOfPoseidon)
-      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfNemesisValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
+      description = "Reduce Ability Cooldown by <span class='charmDescriptor'>" + (this.charmService.getLargeCharmOfPoseidonValue() * 100) + "%</span> when you first enter a subzone while equipped with Poseidon.";
 
     if (type === ItemsEnum.SmallOrnateKantharos)
       description = "Increase parties' Luck by <span class='charmDescriptor'>" + (this.charmService.getSmallOrnateKantharosValue()) + "</span>.";

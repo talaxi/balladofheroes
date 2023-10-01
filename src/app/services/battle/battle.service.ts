@@ -4519,7 +4519,7 @@ export class BattleService {
     }
 
     if (itemType === ItemTypeEnum.HealingItem || itemType === ItemTypeEnum.Toxin || itemType === ItemTypeEnum.Elixir) {
-      if (isEnemy || isCharacterDead)
+      if (isEnemy || (isCharacterDead && this.battleItemInUse !== ItemsEnum.MagicRevivify))
         isTargetable = false;
     }
 
