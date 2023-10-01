@@ -452,6 +452,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.KingOfTheSea) {
       src += "kingOfTheSea.svg";
     }
+    if (effect.type === StatusEffectEnum.DamageShield) {
+      src += "shielding.svg";
+    }
 
     return src;
   }

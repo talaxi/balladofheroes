@@ -594,7 +594,7 @@ export class StoryService {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You stand alone at the prow of a ship bound for Crete. A week had passed since your encounter with Khronos, and yet not even the calm waves of the sea could fix your uneasiness. You knew there was no other option, but the guilt of fleeing the battle still weighed upon you.</div>" +
           "<div class='sceneDiv'>Zosime had decided you should return to Crete. It was about as far away from Olympus as you could go, and she thought returning to some normalcy and following another hero would do you some good.  You weren't sure it was going to be that easy to return to normalcy. You hadn’t made contact with any of the Olympian gods since the battle for Olympus, and you weren't sure what may have happened to them.</div>" + 
-          "<div>Lost in your thoughts, you absently watched the rhythm of the waves.</div>";
+          "<div>Lost in your thoughts, you absently watch the rhythm of the waves.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>In an instant, the waves turned violent. Sailors hurried across the boat, the captain of the vessel shouted out orders. The crashing of the waves roused Zosime from her cabin, racing across the deck towards you.</div>" +
           "<div class='sceneDiv'>" + this.zosimeText("“Storms?”") + " She asked groggily. The sun had just begun to rise and illuminate the sky, revealing a blue canvas with hardly a cloud in sight. You looked again to the sea and saw what looked like shining fins breaching the water. </div>" +
@@ -638,6 +638,7 @@ export class StoryService {
     sceneText = sceneText.replaceAll("Enceladus", "<span class='commonCharacterColor storyCharacterName'>Enceladus</span>");
     sceneText = sceneText.replaceAll("Aeëtes", "<span class='commonCharacterColor storyCharacterName'>AEËTES</span>");
     sceneText = sceneText.replaceAll("Aeetes", "<span class='commonCharacterColor storyCharacterName'>AEËTES</span>");
+    sceneText = sceneText.replaceAll("Circe", "<span class='commonCharacterColor storyCharacterName'>Circe</span>");
     sceneText = sceneText.replaceAll("Hephaestus", "<span class='commonCharacterColor storyCharacterName'>Hephaestus</span>");
     sceneText = sceneText.replaceAll("Oceanus", "<span class='commonCharacterColor storyCharacterName'>Oceanus</span>");
     sceneText = sceneText.replaceAll("Hyperion", "<span class='commonCharacterColor storyCharacterName'>Hyperion</span>");
@@ -906,7 +907,6 @@ export class StoryService {
           });
         }
       }
-
       if (this.globalService.globalVar.currentStoryId === 38) {
         this.globalService.globalVar.settings.set("autoProgress", false);
         this.balladService.setActiveSubZone(SubZoneEnum.MountOlympusOlympus);
@@ -926,6 +926,13 @@ export class StoryService {
           this.achievementService.createDefaultAchievementsForSubzone(mountainHike.type).forEach(achievement => {
             this.globalService.globalVar.achievements.push(achievement);
           });
+        }
+      }      
+      if (this.globalService.globalVar.currentStoryId === 45) {
+        var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
+        if (poseidon !== undefined) {
+          poseidon.isAvailable = true;
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Poseidon, God of the Sea.");
         }
       }
     }
@@ -1070,12 +1077,19 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You must be the mortals here to aid us in battle. You've been the talk of Olympus for some time.”") + " He says as he puts down his tools. He nods for you to follow as he makes his way back towards an armory holding his greatest artwork.</div>" +
           this.commonCharacterText("“I made a couple of pieces for you. Won't have you dying on my watch. Here, try this on and go give it a test run.”");
+    }    
+    if (scene === OptionalSceneEnum.IslandOfNaxos) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>You take a detour to the nearby Island of Naxos. The cult of Dionysus is alive and well here, and it is home to one of his largest temples.</div>" +
+          "<div class='sceneDiv'>When you arrive, you are surprised to see Dionysus himself, seemingly unphased by recent events. A party was in full swing and you decided the best way to make amends and venerate the god of wine was to partake.</div>" +
+          "<div>You're not quite sure what was in the wine, but you eventually leave the island with a throbbing headache and a greater knowledge of mixology.</div>";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
     sceneText = sceneText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");
     sceneText = sceneText.replaceAll("Hades", "<span class='hadesColor storyCharacterName'>Hades</span>");
+    sceneText = sceneText.replaceAll("Dionysus", "<span class='dionysusColor storyCharacterName'>Dionysus</span>");
     sceneText = sceneText.replaceAll("Hermes", "<span class='hermesColor storyCharacterName'>Hermes</span>");
     sceneText = sceneText.replaceAll("Artemis", "<span class='artemisColor storyCharacterName'>Artemis</span>");
     sceneText = sceneText.replaceAll("Hecate", "<span class='commonCharacterColor storyCharacterName'>Hecate</span>");
@@ -1148,6 +1162,9 @@ export class StoryService {
     if (this.showOptionalStory === OptionalSceneEnum.HephaestusJewelcrafting) {
       this.pageCount = 2;
     }
+    if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {      
+      this.pageCount = 1;
+    }
 
     this.sceneText = this.getOptionalStoryText(this.showOptionalStory, this.currentPage);
 
@@ -1213,6 +1230,15 @@ export class StoryService {
 
           var gameLogEntry = "Watching Hephestaus work has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
+        }
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {
+        var alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
+        if (alchemy !== undefined) {
+          alchemy.maxLevel += 25;
+
+          var gameLogEntry = "Your experience on the Island of Naxos has improved your Alchemy skills. Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
         }
       }
 

@@ -182,7 +182,7 @@ export class TrialService {
   getAvailableBattlesForTrialOfSkill(previousBattle: BestiaryEnum = BestiaryEnum.None) {
     var enemyOptions: BestiaryEnum[] = [];
 
-    /*if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable)
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Athena);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Artemis);
@@ -199,11 +199,11 @@ export class TrialService {
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Dionysus);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable)
-      enemyOptions.push(BestiaryEnum.Zeus);*/
+      enemyOptions.push(BestiaryEnum.Zeus);
       if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Poseidon);
 
-    //enemyOptions = enemyOptions.filter(item => item !== previousBattle);
+    enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
     return enemyOptions;
   }

@@ -590,6 +590,12 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoseidonsShield, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.PoseidonsNecklace, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.GiantNecklace, 5));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShadowSpear, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShadowArmor, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShadowRing, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShadowShield, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShadowNecklace, 1));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.RagingBull, 5));
 
     this.globalService.globalVar.currentStoryId = 310;
     this.globalService.globalVar.isDpsUnlocked = true;

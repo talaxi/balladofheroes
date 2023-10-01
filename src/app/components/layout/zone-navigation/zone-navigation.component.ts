@@ -49,6 +49,7 @@ export class ZoneNavigationComponent implements OnInit {
   autoProgress: boolean = false;
   itemsEnum = ItemsEnum;
   townsAvailable = false;
+  underworldAvailable = false;
   quickView: QuickViewEnum = QuickViewEnum.Overview;
   quickViewEnum = QuickViewEnum;
   trackedResourcesColumn1: ItemsEnum[] = [];
@@ -122,6 +123,9 @@ export class ZoneNavigationComponent implements OnInit {
 
     if (this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
       this.townsAvailable = true;
+
+      if (this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades)?.isAvailable)
+      this.underworldAvailable = true;
 
     if (this.balladService.findSubzone(SubZoneEnum.AigosthenaLowerCoast)?.isAvailable)
       this.quickLinksUnlocked = true;

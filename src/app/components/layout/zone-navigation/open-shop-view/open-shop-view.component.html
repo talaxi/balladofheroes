@@ -22,4 +22,3 @@
 <div class="textCentered" *ngIf="isColiseumAvailable()">Eternal Melee Tickets: <span [innerHtml]="getEternalMeleeTickets()"></span></div>
 <br/>
 <div class="textCentered" *ngIf="isOlympusAvailable()">Current God Trial: <span [ngClass]="getGodColorClass(getGodTrialName())" class="smallCaps bold" [innerHtml]="getGodTrialName()"></span></div>
-<!-- TODO: should also display current trial boss and number of melee tickets -->

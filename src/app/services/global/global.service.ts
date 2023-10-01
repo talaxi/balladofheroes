@@ -57,7 +57,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService) { }
 
   getCurrentVersion() {
-    return .65;
+    return .7;
   }
 
   initializeGlobalVariables() {
@@ -3421,11 +3421,17 @@ export class GlobalService {
     }
     if (setType === EquipmentSetEnum.Poseidon) {
       if (setCount === 2)
-        return .05; //abil cd reduction
+        return .05; 
       else if (setCount === 3)
-        return .5; //water dmg  
+        return .5; 
       else if (setCount === 5)
-        return .1; //chance for water ability to trigger again
+        return .1; 
+    }    
+    if (setType === EquipmentSetEnum.Shadow) {
+      if (setCount === 2)
+        return .3;
+      else if (setCount === 3)
+        return .5;
     }
 
     return 0;
@@ -3511,6 +3517,11 @@ export class GlobalService {
           stats!.abilityCooldownReduction += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
           stats!.elementIncrease.water += this.getSetBonusAmount(setCount[0], 3);
+      }
+      
+      if (setCount[0] === EquipmentSetEnum.Shadow) {
+        if (setCount[1] >= 2)
+          stats!.aoeDamage += this.getSetBonusAmount(setCount[0], 2);
       }
     });
 

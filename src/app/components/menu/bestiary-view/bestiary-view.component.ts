@@ -109,7 +109,7 @@ export class BestiaryViewComponent {
 
   getShopOptions(type: SubZoneEnum) {
     this.shopOptions = this.subzoneGeneratorService.getShopOptions(type, this.globalService.globalVar.sidequestData);
-    this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story && item.type !== ShopTypeEnum.StoryScene24 && item.type !== ShopTypeEnum.StoryZeus);
+    this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story && item.type !== ShopTypeEnum.StoryScene24 && item.type !== ShopTypeEnum.StoryZeus && item.type !== ShopTypeEnum.IslandOfNaxos);
   }
 
   selectSubzone(type: SubZoneEnum) {

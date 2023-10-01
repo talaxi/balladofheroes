@@ -426,6 +426,34 @@ export class FollowersService {
         rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Nectar, 1));
       }
     }
+    
+    if (type === ZoneEnum.Crete) {
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.VialOfTheCretanSea, 3));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.EagleFeather, 2));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RoughAquamarineFragment, 6));
+      }
+      if (rewardLevel >= 4) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.SharpFeather, 3));
+      }
+    }
+    
+    if (type === ZoneEnum.Labyrinth) {
+      if (rewardLevel <= 3)
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalNuggets, 2));
+      else
+      rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MetalNuggets, 5));
+
+      if (rewardLevel >= 2) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.MagicDust, 3));
+      }
+      if (rewardLevel >= 3) {
+        rewards.push(this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Coin, 200));
+      }
+    }
 
     return rewards;
   }

@@ -237,7 +237,7 @@
                 [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span
                     class="statValue"> -
                     <span
-                        [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability)"></span></span>
+                        [innerHtml]="lookupService.getCharacterAbilityDescription(ability.name, character, ability, true)"></span></span>
 
                         <ng-template #abilityPopover>
                             <div>

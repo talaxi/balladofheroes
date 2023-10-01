@@ -104,7 +104,7 @@ export class ShopViewComponent implements OnInit {
       this.activeSubzoneType = this.balladService.getLatestSubzone();
       this.isDisplayingNewItems = false;
     }
-    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData, this.showAllShopOptions);
+    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData, this.showAllShopOptions, this.globalService.globalVar.ballads, this.globalService.globalVar.optionalScenesViewed);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
@@ -118,6 +118,8 @@ export class ShopViewComponent implements OnInit {
     if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting))
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Hephaestus);
 
+      if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos))
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.IslandOfNaxos);
   }
 
   getShopItemTooltipDirection(index: number) {
@@ -526,12 +528,22 @@ export class ShopViewComponent implements OnInit {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting)) {
       scene = OptionalSceneEnum.HephaestusJewelcrafting;
     }
+    if (option.type === ShopTypeEnum.IslandOfNaxos && this.balladService.getActiveSubZone().type === SubZoneEnum.CreteKnossos &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos)) {
+      scene = OptionalSceneEnum.IslandOfNaxos;
+    }
 
     return scene;
   }
 
   handleHephaestusJewelcrafting(option: ShopOption) {
     var optionalSceneToDisplay = this.optionalSceneToDisplay(option);
+    this.storyService.displayOptionalScene(optionalSceneToDisplay);
+    this.battleService.checkScene();
+  }
+
+  handleIslandOfNaxos(option: ShopOption) {    
+    var optionalSceneToDisplay = this.optionalSceneToDisplay(option);    
     this.storyService.displayOptionalScene(optionalSceneToDisplay);
     this.battleService.checkScene();
   }

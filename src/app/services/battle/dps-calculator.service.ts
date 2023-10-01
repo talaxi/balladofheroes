@@ -22,7 +22,7 @@ export class DpsCalculatorService {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
       if (!this.globalService.globalVar.isGamePaused && !this.globalService.globalVar.isBattlePaused)
       {
-        if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && this.globalService.globalVar.extraSpeedEnabled)
+        if (this.globalService.globalVar.extraSpeedEnabled)
           deltaTime *= 2;
         
         this.rollingAverageTimer += deltaTime;

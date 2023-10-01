@@ -419,5 +419,18 @@ export enum ItemsEnum {
   PoseidonsArmor,
   PoseidonsRing,
   PoseidonsNecklace,
-  MagicDust
+  MagicDust,
+  MonkClass,
+  LesserFlawedRuby,
+  LesserFlawedOpal,
+  LesserFlawedAquamarine,
+  LesserFlawedTopaz,
+  LesserFlawedAmethyst,
+  LesserFlawedEmerald,  
+  ShadowSpear,
+  ShadowShield,
+  ShadowArmor,
+  ShadowRing,
+  ShadowNecklace,
+  RagingBull
 } 

@@ -138,7 +138,7 @@ export class GlobalVariables {
         this.isBattlePaused = false;
         this.sidequestData = new SidequestData();
         this.followerData = new FollowerData();
-        this.extraSpeedEnabled = true;
+        this.extraSpeedEnabled = false;
         this.redeemedCodes = [];
         this.isSubscriber = false;  
         this.melete = new Melete();    
