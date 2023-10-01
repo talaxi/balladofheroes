@@ -69,7 +69,8 @@ export class AchievementService {
       subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides || subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia ||
       subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
-      subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale) {        
+      subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
+      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter) {        
       newAchievements.push(thirtySecondClear);
       }
 
@@ -86,7 +87,8 @@ export class AchievementService {
       subzoneType === SubZoneEnum.GardenOfTheHesperidesGardenOfTheHesperides || subzoneType === SubZoneEnum.ErytheiaIslandOfErytheia ||
       subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
-      subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale)
+      subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
+      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
@@ -393,6 +395,60 @@ export class AchievementService {
       rewards.push(new ResourceValue(ItemsEnum.GiantRing, 1));
       else if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
       rewards.push(new ResourceValue(ItemsEnum.GiantShield, 1));
+    
+      else if (subzoneType === SubZoneEnum.CreteTravelsAtSea)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfWater, 25));
+      else if (subzoneType === SubZoneEnum.CreteApproachingCrete)
+      rewards.push(new ResourceValue(ItemsEnum.ToxicIchor, 30));
+      else if (subzoneType === SubZoneEnum.CreteRapidWaters)
+      rewards.push(new ResourceValue(ItemsEnum.EssenceOfAir, 25));
+      else if (subzoneType === SubZoneEnum.CreteTurbulentCurrents)
+      rewards.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 100));
+      else if (subzoneType === SubZoneEnum.CreteWhirlpool)
+      rewards.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 40));
+      else if (subzoneType === SubZoneEnum.CreteNorthernCretanCoast)
+      rewards.push(new ResourceValue(ItemsEnum.EagleFeather, 25));
+    
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLeftPath)
+      rewards.push(new ResourceValue(ItemsEnum.Coin, 15000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthColdHallway)
+      rewards.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 100));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRightCorner)
+      rewards.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall1)
+      rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthCenterPath)
+      rewards.push(new ResourceValue(ItemsEnum.Coin, 15000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSlopedHallway)
+      rewards.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 100));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLeftFork)
+      rewards.push(new ResourceValue(ItemsEnum.Coin, 25000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRoundedPath)
+      rewards.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 100));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLeftTurn)
+      rewards.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 100));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall3)
+      rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthCenterFork)
+      rewards.push(new ResourceValue(ItemsEnum.Coin, 25000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthDarkCorridor)
+      rewards.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 100));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthOrnateEntryway)
+      rewards.push(new ResourceValue(ItemsEnum.MetalNuggets, 25));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
+      rewards.push(new ResourceValue(ItemsEnum.BonusXp, 1000000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRightFork)
+      rewards.push(new ResourceValue(ItemsEnum.Coin, 25000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall4)
+      rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRightPath)
+      rewards.push(new ResourceValue(ItemsEnum.Coin, 15000));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLongPassage1)
+      rewards.push(new ResourceValue(ItemsEnum.ShadowShield, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLongPassage2)
+      rewards.push(new ResourceValue(ItemsEnum.ShadowArmor, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall2)
+      rewards.push(new ResourceValue(ItemsEnum.BonusXp, 100000));
     }
 
     if (achievementType === AchievementTypeEnum.ThousandVictories) {
@@ -417,6 +473,8 @@ export class AchievementService {
       var mountOlympusBoonBonus = .04;
       var huntForYarrowBoonBonus = .04;
       var warForTheMountainBoonBonus = .05;
+      var creteBoonBonus = .04;      
+      var theLabyrinthBoonBonus = .04;
 
       if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Aigosthena))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, aigosthenaBoonBonus));
@@ -460,6 +518,10 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, huntForYarrowBoonBonus));
         else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.WarForTheMountain))
         rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, warForTheMountainBoonBonus));
+        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Crete))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, creteBoonBonus));
+        else if (this.lookupService.isSubzoneInZone(subzoneType, ZoneEnum.Labyrinth))
+        rewards.push(new ResourceValue(ItemsEnum.BoonOfOlympus, theLabyrinthBoonBonus));
     }
 
     //need to figure out what you actually want
@@ -755,6 +817,60 @@ export class AchievementService {
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfVulnerability, 1));
       else if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
       rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfEarthProtection, 1));
+      
+      else if (subzoneType === SubZoneEnum.CreteTravelsAtSea)
+      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.CreteApproachingCrete)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.CreteRapidWaters)
+      rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.CreteTurbulentCurrents)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.CreteWhirlpool)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.CreteNorthernCretanCoast)
+      rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+    
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLeftPath)
+      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthColdHallway)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRightCorner)
+      rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall1)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthCenterPath)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSlopedHallway)
+      rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLeftFork)
+      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRoundedPath)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLeftTurn)
+      rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall3)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthCenterFork)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthDarkCorridor)
+      rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthOrnateEntryway)
+      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRightFork)
+      rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall4)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthRightPath)
+      rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLongPassage1)
+      rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthLongPassage2)
+      rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+      else if (subzoneType === SubZoneEnum.TheLabyrinthSolidWall2)
+      rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
     }
 
     if (achievementType === AchievementTypeEnum.ThirtySecondClear) {
@@ -816,6 +932,10 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
         rewards.push(new ResourceValue(ItemsEnum.LargeGildedKantharos, 1));
+        if (subzoneType === SubZoneEnum.CreteWhirlpool)
+        rewards.push(new ResourceValue(ItemsEnum.LargeBlackKantharos, 1));
+        if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
+        rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
     }
 
     if (achievementType === AchievementTypeEnum.TenSecondClear) {
@@ -879,6 +999,10 @@ export class AchievementService {
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfPreparation, 1));
         if (subzoneType === SubZoneEnum.WarForTheMountainThePeak)
         rewards.push(new ResourceValue(ItemsEnum.LargeCharmOfWaterDestruction, 1));
+        if (subzoneType === SubZoneEnum.CreteWhirlpool)
+        rewards.push(new ResourceValue(ItemsEnum.LargeBuccheroKantharos, 1));
+        if (subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
+        rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
     }
 
     if (achievementType === AchievementTypeEnum.Complete) {

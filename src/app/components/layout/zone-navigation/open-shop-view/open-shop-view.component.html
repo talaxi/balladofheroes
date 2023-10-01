@@ -1,0 +1,24 @@
+<div class="grid">
+<app-shop-view class="column1" [showAllShopOptions]="true"></app-shop-view>
+<div class="column2">
+    <button class="buttonStyled stackedButtons" [disabled]="isSubZoneChangingDisabled()"
+    (click)="jumpToLatestShop()">Latest Town</button>
+<br />
+<br />
+<button class="buttonStyled stackedButtons" *ngIf="isPalaceOfHadesAvailable()" [disabled]="isSubZoneChangingDisabled()"
+    (click)="jumpToPalaceOfHades()">Palace of Hades</button>
+<br />
+<br />
+<button class="buttonStyled stackedButtons" *ngIf="isColiseumAvailable()" [disabled]="isSubZoneChangingDisabled()"
+    (click)="jumpToColiseum()">Coliseum</button>
+    <br />
+    <br />
+<button class="buttonStyled stackedButtons" *ngIf="isOlympusAvailable()" [disabled]="isSubZoneChangingDisabled()"
+    (click)="jumpToOlympus()">Olympus</button>
+</div>
+</div>
+
+<br/>
+<div class="textCentered" *ngIf="isColiseumAvailable()">Eternal Melee Tickets: <span [innerHtml]="getEternalMeleeTickets()"></span></div>
+<br/>
+<div class="textCentered" *ngIf="isOlympusAvailable()">Current God Trial: <span [ngClass]="getGodColorClass(getGodTrialName())" class="smallCaps bold" [innerHtml]="getGodTrialName()"></span></div>

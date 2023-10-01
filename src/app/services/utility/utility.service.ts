@@ -41,6 +41,7 @@ export class UtilityService {
   public maxItemBeltSize = 4;
   public defaultCharacterAbilityLevel = 2;
   public characterPassiveLevel = 4;
+  public characterLinkLevel = 6;
   public characterOverdriveLevel = 10;
   public characterAbility2Level = 8;
   public defaultGodAbilityLevel = 1;
@@ -65,6 +66,10 @@ export class UtilityService {
   public characterPermanentAbility2ObtainCap = 25;
   public characterPermanentPassiveObtainCap = 25;
   public characterPermanentStatObtainCap = 25;
+
+  public damageLinkBoost = 10;
+  public nonDamageLinkBoost = 15;
+  public linkCooldown = 15;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;

@@ -14,5 +14,6 @@ export enum ShopTypeEnum {
   OlympicFavor,
   Trials,
   StoryZeus,
-  Hephaestus
+  Hephaestus,
+  IslandOfNaxos
 }

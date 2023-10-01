@@ -16,6 +16,7 @@ export class AltarEffect {
     effectOnExpiration: boolean = false;
     isEffectMultiplier: boolean = true;
     element: ElementalTypeEnum;
+    countTowards1: boolean = false;
 
     constructor() {
         this.tickTimer = 0;

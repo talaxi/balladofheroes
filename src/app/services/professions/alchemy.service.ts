@@ -276,6 +276,55 @@ export class AlchemyService {
         this.updateGameLogWithNewRecipe(ItemsEnum.ParalyzingToxin);
       }
     }
+    if (alchemy.level >= 76) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.ElixirOfFortune)) {
+        this.learnRecipe(ItemsEnum.ElixirOfFortune);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ElixirOfFortune);
+      }
+    }
+    if (alchemy.level >= 80) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.BouncingPotion)) {
+        this.learnRecipe(ItemsEnum.BouncingPotion);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.BouncingPotion);
+      }
+    }
+    if (alchemy.level >= 82) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.SandToxin)) {
+        this.learnRecipe(ItemsEnum.SandToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.SandToxin);
+      }
+    }    
+    if (alchemy.level >= 85) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MagicSalve)) {
+        this.learnRecipe(ItemsEnum.MagicSalve);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MagicSalve);
+      }
+    }
+    if (alchemy.level >= 90) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.ElectrifiedToxin)) {
+        this.learnRecipe(ItemsEnum.ElectrifiedToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.ElectrifiedToxin);
+      }
+    }
+    if (alchemy.level >= 95) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MagicRevivify)) {
+        this.learnRecipe(ItemsEnum.MagicRevivify);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MagicRevivify);
+      }
+    }
+    if (alchemy.level >= 100) {
+      if (!this.doesUserHaveRecipe(ItemsEnum.MagicToxin)) {
+        this.learnRecipe(ItemsEnum.MagicToxin);
+        newRecipeLearned = true;
+        this.updateGameLogWithNewRecipe(ItemsEnum.MagicToxin);
+      }
+    }
 
     return newRecipeLearned;
   }
@@ -305,6 +354,10 @@ export class AlchemyService {
     else if (alchemy.level <= 75) {
       upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Rare);
       qualityName = "Rare";
+    }
+    else if (alchemy.level <= 100) {
+      upgrades = alchemy.upgrades.find(item => item.quality === EquipmentQualityEnum.Epic);
+      qualityName = "Epic";
     }
 
     if (upgrades === undefined)
@@ -804,6 +857,89 @@ export class AlchemyService {
       recipe.steps.push(ProfessionActionsEnum.StoreIngredients);
 
       recipe.expGain = 40;
+    }    
+    //lvl 76
+    if (item === ItemsEnum.ElixirOfFortune) {
+      recipe.quality = EquipmentQualityEnum.Epic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 3));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.Infuse);
+      recipe.steps.push(ProfessionActionsEnum.StrainMixture);
+
+      recipe.expGain = 45;
+    }
+    //lvl 78
+    if (item === ItemsEnum.BouncingPotion) {
+      recipe.quality = EquipmentQualityEnum.Epic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PotentEssence, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfAir, 2));            
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
+
+      recipe.numberOfSteps = 3;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+      recipe.steps.push(ProfessionActionsEnum.RareCombineIngredientsPotion);
+      recipe.steps.push(ProfessionActionsEnum.HeatMixture);
+
+      recipe.expGain = 45;
+    }    
+    //lvl 82
+    if (item === ItemsEnum.SandToxin) {
+      recipe.quality = EquipmentQualityEnum.Epic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfEarth, 4));      
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+
+      recipe.expGain = 48;
+    }     
+    //lvl 88
+    if (item === ItemsEnum.MagicSalve) {
+      recipe.quality = EquipmentQualityEnum.Epic;      
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 2));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.BushelOfHerbs, 4));    
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+
+      recipe.expGain = 48;
+    }
+    //lvl 88
+    if (item === ItemsEnum.ElectrifiedToxin) {
+      recipe.quality = EquipmentQualityEnum.Epic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.EssenceOfLightning, 4));      
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+
+      recipe.expGain = 48;
+    }
+    //lvl 88
+    if (item === ItemsEnum.MagicRevivify) {
+      recipe.quality = EquipmentQualityEnum.Epic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 1));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.PotentEssence, 1));      
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicDust, 1));      
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+
+      recipe.expGain = 50;
+    }
+    //lvl 88
+    if (item === ItemsEnum.MagicToxin) {
+      recipe.quality = EquipmentQualityEnum.Epic;
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.VialOfTheCretanSea, 3));
+      recipe.ingredients.push(new ResourceValue(ItemsEnum.MagicDust, 3));      
+
+      recipe.numberOfSteps = 1;
+      recipe.steps.push(ProfessionActionsEnum.CrushIngredients);
+
+      recipe.expGain = 55;
     }
 
     return recipe;

@@ -5,5 +5,6 @@ export enum CharacterEnum {
   Priest,
   Archer,
   None,
-  All
+  All,
+  Monk
 }

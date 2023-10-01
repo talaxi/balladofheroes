@@ -127,6 +127,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.PriestClass) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 5000));
     }
+    if (item === ItemsEnum.MonkClass) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
     if (item === ItemsEnum.FracturedRubyRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
@@ -436,6 +439,10 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
+    if (item === ItemsEnum.PoseidonsTrident) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
     if (item === ItemsEnum.AthenasShield) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
@@ -472,6 +479,10 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
+    if (item === ItemsEnum.PoseidonsShield) {     
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
     if (item === ItemsEnum.AthenasArmor) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
@@ -479,6 +490,9 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HermessArmor) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.PoseidonsArmor) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
     if (item === ItemsEnum.HadessArmor) {      
@@ -535,6 +549,10 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
+    if (item === ItemsEnum.PoseidonsRing) {     
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
     if (item === ItemsEnum.AthenasNecklace) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
@@ -571,6 +589,10 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
+    if (item === ItemsEnum.PoseidonsNecklace) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
     if (item === ItemsEnum.Ambrosia) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));      
     }    
@@ -592,6 +614,24 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.OlympicCommendation) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 3));      
     }    
+    if (item === ItemsEnum.ShadowSpear) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowArmor) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowRing) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowShield) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowNecklace) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.RagingBull) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

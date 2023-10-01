@@ -230,6 +230,8 @@ export class CharacterNameViewComponent implements OnInit {
       src += "warriorTarget.svg";
       if (this.character.type === CharacterEnum.Priest)
       src += "priestTarget.svg";
+      if (this.character.type === CharacterEnum.Monk)
+      src += "monkTarget.svg";
 
       return src;
   }

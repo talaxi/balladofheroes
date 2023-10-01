@@ -11,5 +11,6 @@ export enum OverdriveNameEnum {
   Quickness,
   Weaken,
   Revenge,
-  Hope
+  Hope,
+  Flurry
 }

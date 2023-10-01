@@ -49,6 +49,7 @@ export class ZoneNavigationComponent implements OnInit {
   autoProgress: boolean = false;
   itemsEnum = ItemsEnum;
   townsAvailable = false;
+  underworldAvailable = false;
   quickView: QuickViewEnum = QuickViewEnum.Overview;
   quickViewEnum = QuickViewEnum;
   trackedResourcesColumn1: ItemsEnum[] = [];
@@ -122,6 +123,9 @@ export class ZoneNavigationComponent implements OnInit {
 
     if (this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
       this.townsAvailable = true;
+
+      if (this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades)?.isAvailable)
+      this.underworldAvailable = true;
 
     if (this.balladService.findSubzone(SubZoneEnum.AigosthenaLowerCoast)?.isAvailable)
       this.quickLinksUnlocked = true;
@@ -476,6 +480,13 @@ export class ZoneNavigationComponent implements OnInit {
       return true;
     }
     return false;
+  }
+
+  openAllShopView(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '90%' });
+    else
+      this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85vh' });
   }
 
   areFollowersAvailable() {

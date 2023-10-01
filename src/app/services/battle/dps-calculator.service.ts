@@ -2,13 +2,17 @@ import { Injectable } from '@angular/core';
 import { GameLoopService } from '../game-loop/game-loop.service';
 import { GlobalService } from '../global/global.service';
 import { UtilityService } from '../utility/utility.service';
+import { Character } from 'src/app/models/character/character.model';
+import { God } from 'src/app/models/character/god.model';
+import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
 @Injectable({
   providedIn: 'root'
 })
 export class DpsCalculatorService {
   subscription: any;
-  partyDamagingActions: [number, number][] = [];
+  partyDamagingActions: [number, number, CharacterEnum?, GodEnum?][] = [];
   enemyDamagingActions: [number, number][] = [];
   xpGain: [number, number][] = [];
   rollingAverageTimer: number = 0;
@@ -18,7 +22,7 @@ export class DpsCalculatorService {
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime) => {
       if (!this.globalService.globalVar.isGamePaused && !this.globalService.globalVar.isBattlePaused)
       {
-        if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && this.globalService.globalVar.extraSpeedEnabled)
+        if (this.globalService.globalVar.extraSpeedEnabled)
           deltaTime *= 2;
         
         this.rollingAverageTimer += deltaTime;
@@ -31,8 +35,8 @@ export class DpsCalculatorService {
     });
    }
 
-   addPartyDamageAction(damageDealt: number) {
-    this.partyDamagingActions.push([damageDealt, this.rollingAverageTimer]);
+   addPartyDamageAction(damageDealt: number, character?: Character, godType?: GodEnum) {
+    this.partyDamagingActions.push([damageDealt, this.rollingAverageTimer, character === undefined ? undefined : character.type, godType]);
   }
 
   addEnemyDamageAction(damageDealt: number) {
@@ -62,6 +66,58 @@ export class DpsCalculatorService {
       dps = sum / rollingAverageTime;
 
     return dps;
+  }
+
+  getCharacterDps(type: CharacterEnum) {
+    var dps = 0;
+    if (this.partyDamagingActions === undefined || this.partyDamagingActions.length === 0)
+      return dps;
+
+    var rollingAverageTime = 120; //only factor in the latest 120 seconds
+
+    var latestTime = this.partyDamagingActions[this.partyDamagingActions.length - 1][1];
+
+    var filteredActions = this.partyDamagingActions.filter(item => item[2] === type && item[1] >= latestTime - rollingAverageTime);
+    
+    var sum = filteredActions.reduce((accumulator, currentValue) => accumulator + currentValue[0], 0);
+
+    if (latestTime < rollingAverageTime)    
+      dps = sum / latestTime;    
+    else
+      dps = sum / rollingAverageTime;
+
+    return dps;
+  }
+
+  getCharacterDpsPercent(type: CharacterEnum)
+  {
+    return this.getCharacterDps(type) / this.calculatePartyDps();
+  }
+
+  getGodDps(type: GodEnum) {
+    var dps = 0;
+    if (this.partyDamagingActions === undefined || this.partyDamagingActions.length === 0)
+      return dps;
+
+    var rollingAverageTime = 120; //only factor in the latest 120 seconds
+
+    var latestTime = this.partyDamagingActions[this.partyDamagingActions.length - 1][1];
+
+    var filteredActions = this.partyDamagingActions.filter(item => item[3] === type && item[1] >= latestTime - rollingAverageTime);
+    
+    var sum = filteredActions.reduce((accumulator, currentValue) => accumulator + currentValue[0], 0);
+
+    if (latestTime < rollingAverageTime)    
+      dps = sum / latestTime;    
+    else
+      dps = sum / rollingAverageTime;
+
+    return dps;
+  }
+  
+  getGodDpsPercent(type: GodEnum)
+  {
+    return this.getGodDps(type) / this.calculatePartyDps();
   }
 
   calculateEnemyDps() {

@@ -161,5 +161,14 @@ export enum StatusEffectEnum {
     AutomaticCritical,
     AbilityAppliesDebuff,
     ResetRandomCooldown,
-    GainRandomEnBuff
+    GainRandomEnBuff,
+    DamageShield,
+    Flow,
+    KingOfTheSea,
+    SpiritUnleashed,
+    Insight,
+    SandToxin,
+    ElectrifiedToxin,
+    MagicToxin,
+    ElixirOfFortune
   }

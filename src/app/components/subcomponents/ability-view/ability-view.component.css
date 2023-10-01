@@ -18,6 +18,9 @@
     position: absolute;
     top: 0;
     left: 0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
 }
 
 .abilityTimer svg {
@@ -53,4 +56,14 @@
 
 .manualModeImage {
     opacity: .3;
+}
+
+.linkActive {
+    background-image: radial-gradient(rgba(0, 0, 0, .0) 35%, var(--linkText));
+    border-radius: 50%;
+    height: 80%;
+    width: 80%;
+    position: absolute;
+    display: flex;
+    opacity: 100%;
 }

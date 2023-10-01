@@ -60,6 +60,7 @@
 .navArea {
   grid-area: nav;
   justify-self: stretch;
+  overflow: hidden;
 
   background-color: var(--background-default);
   color: var(--foreground-default);

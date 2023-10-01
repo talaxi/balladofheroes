@@ -1,4 +1,4 @@
-import { Component, OnInit, ViewChild } from '@angular/core';
+import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
@@ -38,6 +38,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
   styleUrls: ['./shop-view.component.css']
 })
 export class ShopViewComponent implements OnInit {
+  @Input() showAllShopOptions: boolean = false;
   shopOptions: ShopOption[];
   subscription: any;
   activeSubzoneType: SubZoneEnum;
@@ -77,10 +78,11 @@ export class ShopViewComponent implements OnInit {
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
 
-    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
+    this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {      
+      if (!this.showAllShopOptions && this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
+        //if (this.activeSubzoneType !== this.balladService.getActiveSubZone().type) {
         this.activeSubzoneType = this.balladService.getActiveSubZone().type;
-        this.getShopOptions();
+        this.getShopOptions(); 
       }
     });
   }
@@ -97,7 +99,12 @@ export class ShopViewComponent implements OnInit {
   }
 
   getShopOptions() {
-    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData);
+    if (this.showAllShopOptions)
+    {
+      this.activeSubzoneType = this.balladService.getLatestSubzone();
+      this.isDisplayingNewItems = false;
+    }
+    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData, this.showAllShopOptions, this.globalService.globalVar.ballads, this.globalService.globalVar.optionalScenesViewed);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);
@@ -111,6 +118,8 @@ export class ShopViewComponent implements OnInit {
     if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting))
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Hephaestus);
 
+      if (this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos))
+      this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.IslandOfNaxos);
   }
 
   getShopItemTooltipDirection(index: number) {
@@ -519,12 +528,22 @@ export class ShopViewComponent implements OnInit {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.HephaestusJewelcrafting)) {
       scene = OptionalSceneEnum.HephaestusJewelcrafting;
     }
+    if (option.type === ShopTypeEnum.IslandOfNaxos && this.balladService.getActiveSubZone().type === SubZoneEnum.CreteKnossos &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.IslandOfNaxos)) {
+      scene = OptionalSceneEnum.IslandOfNaxos;
+    }
 
     return scene;
   }
 
   handleHephaestusJewelcrafting(option: ShopOption) {
     var optionalSceneToDisplay = this.optionalSceneToDisplay(option);
+    this.storyService.displayOptionalScene(optionalSceneToDisplay);
+    this.battleService.checkScene();
+  }
+
+  handleIslandOfNaxos(option: ShopOption) {    
+    var optionalSceneToDisplay = this.optionalSceneToDisplay(option);    
     this.storyService.displayOptionalScene(optionalSceneToDisplay);
     this.battleService.checkScene();
   }

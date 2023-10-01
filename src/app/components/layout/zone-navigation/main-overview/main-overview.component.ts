@@ -26,6 +26,7 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 export class MainOverviewComponent {
   itemsEnum = ItemsEnum;
   townsAvailable = false;
+  underworldAvailable = false;
   
   constructor(public globalService: GlobalService, public lookupService: LookupService, private balladService: BalladService,
     private dpsCalculatorService: DpsCalculatorService, private gameLogService: GameLogService, public dialog: MatDialog,
@@ -36,6 +37,9 @@ export class MainOverviewComponent {
   ngOnInit(): void {    
     if (this.balladService.findSubzone(SubZoneEnum.DodonaDelphi)?.isAvailable)
       this.townsAvailable = true;
+      
+    if (this.balladService.findSubzone(SubZoneEnum.AsphodelPalaceOfHades)?.isAvailable)
+      this.underworldAvailable = true;
   }
 
   meleteFunctionalityAvailable() {
@@ -61,6 +65,15 @@ export class MainOverviewComponent {
   areFollowersAvailable() {
     return this.globalService.globalVar.followerData.availableFollowers > 0;
   }
+
+
+  openAllShopView(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '90%' });
+    else
+      this.dialog.open(content, { width: '75%', minHeight: '85vh', maxHeight: '85vh' });
+  }
+
 
   jumpToLatestShop() {
     var latestShop: SubZone = this.balladService.getActiveSubZone();

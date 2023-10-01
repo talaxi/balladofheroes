@@ -173,6 +173,8 @@ export class TrialService {
       god = GodEnum.Dionysus;
     if (bestiaryEnum === BestiaryEnum.Zeus)
       god = GodEnum.Zeus;
+      if (bestiaryEnum === BestiaryEnum.Poseidon)
+      god = GodEnum.Poseidon;
 
     return god;
   }
@@ -198,6 +200,8 @@ export class TrialService {
       enemyOptions.push(BestiaryEnum.Dionysus);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Zeus);
+      if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Poseidon);
 
     enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 

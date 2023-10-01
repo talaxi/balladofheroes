@@ -10,7 +10,7 @@ import { GlobalService } from '../global/global.service';
 })
 export class GameLogService {
   gameLog: string[] = [];
-  gameLogMaxLength = 100;
+  gameLogMaxLength = 200;
   //event text, entry type, remaining duration, animation state, time the item was added to log
   notificationOverlayBuffer: [string, GameLogEntryEnum, number, AnimationStateEnum, number][] = [];
   disableOverlayBuffer: boolean = false;

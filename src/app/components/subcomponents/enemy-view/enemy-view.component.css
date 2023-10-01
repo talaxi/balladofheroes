@@ -39,6 +39,10 @@
     border: 2px solid var(--priestColor);
 }
 
+.characterTargetedMonk:hover {
+    border: 2px solid var(--monkColor);
+}
+
 .characterTargetedAll:hover {    
     border: 2px solid;
     border-image:  linear-gradient(to right, var(--adventurerColor) 25%, var(--archerColor) 25%, var(--archerColor) 50%,

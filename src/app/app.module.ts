@@ -120,6 +120,8 @@ import { SelectLoadoutGodComponent } from './components/subcomponents/loadouts-v
 import { SelectLoadoutEquipmentComponent } from './components/subcomponents/loadouts-view/select-loadout-equipment/select-loadout-equipment.component';
 import { TutorialBoxComponent } from './components/subcomponents/utility/tutorial-box/tutorial-box.component';
 import { CalculatorOverviewComponent } from './components/layout/zone-navigation/calculator-overview/calculator-overview.component';
+import { UpdateAltarAutoComponent } from './components/menu/settings-view/update-altar-auto/update-altar-auto.component';
+import { OpenShopViewComponent } from './components/layout/zone-navigation/open-shop-view/open-shop-view.component';
 
 @NgModule({
   declarations: [
@@ -204,7 +206,9 @@ import { CalculatorOverviewComponent } from './components/layout/zone-navigation
     SelectLoadoutGodComponent,
     SelectLoadoutEquipmentComponent,
     TutorialBoxComponent,
-    CalculatorOverviewComponent,    
+    CalculatorOverviewComponent,
+    UpdateAltarAutoComponent,
+    OpenShopViewComponent,    
   ],
   imports: [
     BrowserModule,

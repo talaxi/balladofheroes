@@ -368,6 +368,7 @@ export class LoadoutsViewComponent {
     this.menuService.updateParty = true;
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {
+      this.globalService.setGodStatuses(member);
       this.globalService.calculateCharacterBattleStats(member);
     });
 

@@ -4,7 +4,11 @@
         (touchstart)="longPressStart()" (touchend)="longPressEnd()">
             <div>
                 <span class='abilityTimer' [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
-                <img class="abilityImage" (contextmenu)="preventRightClick()" [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)"></span>                
+                <div class="linkActive" *ngIf="!isAutoAttack && ability.manuallyTriggered">
+                    
+                </div>
+                <img class="abilityImage" (contextmenu)="preventRightClick()"
+                [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)"></span>                
                 <span *ngIf="isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode " class="manualModeText"><strong>OFF</strong></span>
             </div>
             <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate" [diameter]="spinnerDiameter"
@@ -16,12 +20,12 @@
 
 <ng-template #abilityPopover>
     <div>
-        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong>
+        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong> <span *ngIf="verboseMode"> {{getAutoManualText()}} {{getLinkText()}}</span>
         <!--<hr class="miniHr" />-->
         <hr />
         <span [innerHtml]="getAbilityDescription()"></span>        
         <hr />
         <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
-        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>
+        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>        
     </div>
 </ng-template>

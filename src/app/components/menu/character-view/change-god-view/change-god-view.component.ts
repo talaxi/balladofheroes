@@ -165,7 +165,7 @@ export class ChangeGodViewComponent implements OnInit {
         member.assignedGod2 = GodEnum.None;
       }
 
-      this.setGodStatuses(member);
+      this.globalService.setGodStatuses(member);
       this.globalService.calculateCharacterBattleStats(member);
     });
   }
@@ -192,46 +192,5 @@ export class ChangeGodViewComponent implements OnInit {
     });
 
     return "<span class='" + this.globalService.getCharacterColorClassText(assignedCharacter.type) + "'>" + assignedCharacter.name + "</span>";
-  }
-
-  setGodStatuses(character: Character) {
-    if ((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis) && 
-    !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
-      var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", character);
-      if (dispenserOfDues !== undefined) {
-        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
-      }
-    }
-    else if (character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) {
-      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues))
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
-
-      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Retribution))
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Retribution);
-
-      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ChainsOfFate))
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ChainsOfFate);
-    }
-
-    if ((character.assignedGod1 !== GodEnum.Ares && character.assignedGod2 !== GodEnum.Ares) && 
-    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Onslaught)) {
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
-    }
-
-    if ((character.assignedGod1 !== GodEnum.Hades && character.assignedGod2 !== GodEnum.Hades) && 
-    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.LordOfTheUnderworld)) {
-      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
-    }
-
-    if (character.assignedGod1 !== GodEnum.Apollo && character.assignedGod2 !== GodEnum.Apollo) {      
-      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Staccato))
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Staccato);
-
-        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Fortissimo))
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Fortissimo);
-
-        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Coda))
-        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Coda);
-    }
-  }
+  }  
 }

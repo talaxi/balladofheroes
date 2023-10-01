@@ -76,6 +76,8 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
       if (this.item.shopItem === ItemsEnum.OlympicCommendation && this.lookupService.getResourceAmount(ItemsEnum.OlympicCommendation) >= 5)
       outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.MonkClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk)?.isAvailable)
+      outOfStock = true;
 
     return outOfStock;  
   }
@@ -126,7 +128,7 @@ export class ShoppingItemViewComponent implements OnInit {
           this.globalService.giveCharactersBonusExp(5000);          
           this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
         }
-        else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass) {
+        else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass) {
           this.unlockClass(resource.item);
         }
         else if (resource.item === ItemsEnum.Nemesis || resource.item === ItemsEnum.Dionysus) {
@@ -181,6 +183,12 @@ export class ShoppingItemViewComponent implements OnInit {
 
       if (priest !== undefined)
         priest.isAvailable = true;
+    }
+    if (item === ItemsEnum.MonkClass) {
+      var monk = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk);
+
+      if (monk !== undefined)
+        monk.isAvailable = true;
     }
   }
 

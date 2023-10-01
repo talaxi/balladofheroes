@@ -1,0 +1,28 @@
+
+.grid {
+    display: grid;
+    height: 100%;
+    margin: 0 .5rem;
+    grid-template-columns: 50% 50%;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "column1 column2";
+}
+
+.column1 {
+    grid-area: column1;
+}
+
+.column2 {
+    grid-area: column2;
+}
+
+.buttonStyled {
+    width: 75%;
+    height: 3rem;
+    cursor: pointer;
+    text-align: center;
+    font-size: 1.4rem;
+  }
+  

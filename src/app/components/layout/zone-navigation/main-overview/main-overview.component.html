@@ -2,6 +2,7 @@
     <div *ngIf="townsAvailable" class="quickJump centeredText">
         <span>Jump to..</span>
         <br />
+                         
         <button class="buttonStyled stackedButtons" *ngIf="townsAvailable"  [disabled]="isSubZoneChangingDisabled()"
             (click)="jumpToLatestShop()">Latest Town</button>
         <br />
@@ -43,6 +44,10 @@
                                 View Loadouts
                             </button>
                 <br/>
+                
+        <button class="buttonStyled stackedButtons" *ngIf="underworldAvailable"  [disabled]="isSubZoneChangingDisabled()"
+        (click)="openAllShopView(allShops)">View All Shops</button>
+    <br />
                 <button *ngIf="meleteFunctionalityAvailable()" class="buttonStyled stackedButtons"
                             (click)="viewFollowers(melete)">Melete</button>
         </div>
@@ -66,3 +71,7 @@
     <app-loadouts-view></app-loadouts-view>
 </ng-template>
 
+
+<ng-template #allShops>
+    <app-open-shop-view></app-open-shop-view>
+</ng-template>

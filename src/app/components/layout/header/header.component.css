@@ -103,7 +103,7 @@
 
 .menuOverlay {
     position: absolute;
-    z-index: 25;    
+    z-index: 25;
     max-height: 100%;
     display: flex;
     overflow: auto;

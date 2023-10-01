@@ -54,6 +54,12 @@
             </mat-checkbox>
         </span> 
         <br />
+        <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="verboseMode" customToolTip [contentTemplate]="verboseModePopover"
+                (input)="verboseModeToggle()">Verbose Mode
+            </mat-checkbox>
+        </span> 
+        <br />
         <br />
         <div>
             <div *ngIf="!isMobile" class="updateKeybinds twoColumn">
@@ -62,6 +68,9 @@
             <div class="updateKeybinds twoColumn">
                 <button class="buttonStyled" (click)="openQuickViewOptions(quickViewOptionsContent)">Update Quick View
                     Options</button>
+            </div>
+            <div class="updateKeybinds twoColumn">
+                <button class="buttonStyled" (click)="openQuickViewOptions(updateAltarsAutoContent)">Select Altars State</button>
             </div>
             <div *ngIf="isMobile" class="updateKeybinds twoColumn">
                 <button class="buttonStyled" (click)="openKeybinds(overlayNotificationsContent)">Update Overlay
@@ -192,6 +201,12 @@
     </div>
 </ng-template>
 
+<ng-template #updateAltarsAutoContent>
+    <div>
+        <app-update-altar-auto></app-update-altar-auto>
+    </div>
+</ng-template>
+
 <ng-template #overlayNotificationsContent>
     <div>
         <app-overlay-notification-options></app-overlay-notification-options>
@@ -222,27 +237,33 @@
     </div>
 </ng-template>
 
+<ng-template #verboseModePopover>
+    <div>
+        Include additional text information in tooltips, such as if abilities are running in Auto/Manual mode.
+    </div>
+</ng-template>
+
 <ng-template #lowLoadingTimePopover>
     <div>
-        Automate the game for up to 30 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 30 minutes of away time.
     </div>
 </ng-template>
 
 <ng-template #averageLoadingTimePopover>
     <div>
-        Automate the game for up to 60 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 60 minutes of away time.
     </div>
 </ng-template>
 
 <ng-template #highLoadingTimePopover>
     <div>
-        Automate the game for up to 120 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 120 minutes of away time.
     </div>
 </ng-template>
 
 <ng-template #veryHighLoadingTimePopover>
     <div>
-        Automate the game for up to 240 minutes of away time before starting to bank double speed time.
+        Automate the game for up to 240 minutes of away time.
     </div>
 </ng-template>
 

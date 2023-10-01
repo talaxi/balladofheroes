@@ -57,7 +57,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService) { }
 
   getCurrentVersion() {
-    return .65;
+    return .7;
   }
 
   initializeGlobalVariables() {
@@ -86,6 +86,8 @@ export class GlobalService {
       return new CharacterStats(225, 17, 12, 8, 8, 12);
     else if (type === CharacterEnum.Priest)
       return new CharacterStats(175, 17, 9, 6, 7, 10);
+      else if (type === CharacterEnum.Monk)
+      return new CharacterStats(210, 19, 8, 8, 10, 7);
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);
   }
@@ -142,6 +144,19 @@ export class GlobalService {
     this.assignAbilityInfo(priest);
 
     this.globalVar.characters.push(priest);
+    
+    var monk = new Character(CharacterEnum.Monk);
+    monk.name = "Monk";
+    monk.type = CharacterEnum.Monk;
+    monk.isAvailable = false;
+    monk.baseStats = this.getCharacterBaseStats(CharacterEnum.Monk);
+    monk.battleStats = monk.baseStats.makeCopy();
+    monk.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
+    monk.battleInfo.autoAttackModifier = this.utilityService.strongAutoAttack;
+    this.calculateCharacterBattleStats(monk);
+    this.assignAbilityInfo(monk);
+
+    this.globalVar.characters.push(monk);
   }
 
   assignAbilityInfo(character: Character) {
@@ -273,6 +288,41 @@ export class GlobalService {
       barrier.cooldown = barrier.currentCooldown = 44;
       barrier.userEffect.push(this.createStatusEffect(StatusEffectEnum.Barrier, -1, .7, true, true, true, "", 1));
       character.abilityList.push(barrier);
+    }
+    
+    if (character.type === CharacterEnum.Monk) {
+      var palmStrike = new Ability();
+      palmStrike.name = "Palm Strike";
+      palmStrike.isAvailable = false;
+      palmStrike.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
+      palmStrike.effectiveness = 1.9;
+      palmStrike.cooldown = palmStrike.currentCooldown = 21;
+      palmStrike.dealsDirectDamage = true;
+      palmStrike.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenUp, 8, 1.25, false, false));
+      character.abilityList.push(palmStrike);
+
+      var insight = new Ability();
+      insight.name = "Insight";
+      insight.effectiveness = .2;
+      insight.requiredLevel = this.utilityService.characterPassiveLevel;
+      insight.maxCount = 4;
+      insight.isAvailable = false;
+      insight.isPassive = true;
+      insight.isActivatable = false;
+      insight.userEffect.push(this.createStatusEffect(StatusEffectEnum.Insight, 4, 1.05, false, true));
+      character.abilityList.push(insight);
+
+      var spiritUnleashed = new Ability();
+      spiritUnleashed.name = "Spirit Unleashed"; 
+      spiritUnleashed.requiredLevel = this.utilityService.characterAbility2Level;
+      spiritUnleashed.isAvailable = false;
+      spiritUnleashed.effectiveness = 2.1;
+      spiritUnleashed.secondaryEffectiveness = .15;
+      spiritUnleashed.maxCount = 10;
+      spiritUnleashed.threshold = 1.5;
+      spiritUnleashed.dealsDirectDamage = true;
+      spiritUnleashed.cooldown = spiritUnleashed.currentCooldown = 48;      
+      character.abilityList.push(spiritUnleashed);
     }
   }
 
@@ -737,47 +787,54 @@ export class GlobalService {
       god.abilityList.push(overload);
     }
 
-    if (god.type === GodEnum.Poseidon) {
-      /*var divineStrike = new Ability();
-      divineStrike.name = "Divine Strike";
-      divineStrike.isAvailable = false;
-      divineStrike.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      divineStrike.cooldown = divineStrike.currentCooldown = 30;
-      divineStrike.dealsDirectDamage = true;
-      divineStrike.effectiveness = 1.6;
-      divineStrike.elementalType = ElementalTypeEnum.Holy;
-      divineStrike.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHeal, 0, .1, true, true));
-      god.abilityList.push(divineStrike);
+    if (god.type === GodEnum.Poseidon) {      
+      var crashingWaves = new Ability();
+      crashingWaves.name = "Crashing Waves";
+      crashingWaves.isAvailable = false;
+      crashingWaves.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      crashingWaves.cooldown = crashingWaves.currentCooldown = 28;
+      crashingWaves.dealsDirectDamage = true;
+      crashingWaves.effectiveness = 1.9;
+      crashingWaves.secondaryEffectiveness = 4;
+      crashingWaves.elementalType = ElementalTypeEnum.Water;
+      crashingWaves.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Unsteady, 6, .25, false, false));
+      god.abilityList.push(crashingWaves);
 
-      var aegis = new Ability();
-      aegis.name = "Heavenly Shield";
-      aegis.requiredLevel = this.utilityService.godAbility2Level;
-      aegis.isAvailable = false;
-      aegis.cooldown = aegis.currentCooldown = 6;
-      aegis.userEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenDown, 8, .8, false, true));
-      god.abilityList.push(aegis);
+      var whirlpool = new Ability();
+      whirlpool.name = "Whirlpool";
+      whirlpool.requiredLevel = this.utilityService.godAbility2Level;
+      whirlpool.isAvailable = false;
+      whirlpool.effectiveness = 1.6;
+      whirlpool.dealsDirectDamage = true;
+      whirlpool.secondaryEffectiveness = 1.3;
+      whirlpool.cooldown = whirlpool.currentCooldown = 38;
+      whirlpool.elementalType = ElementalTypeEnum.Water;
+      whirlpool.isAoe = true;
+      god.abilityList.push(whirlpool);
 
-      var blindingLight = new Ability();
-      blindingLight.name = "Blinding Light";
-      blindingLight.requiredLevel = this.utilityService.godAbility3Level;
-      blindingLight.isAvailable = false;
-      blindingLight.cooldown = blindingLight.currentCooldown = 25;
-      blindingLight.dealsDirectDamage = true;
-      blindingLight.effectiveness = .5;
-      blindingLight.elementalType = ElementalTypeEnum.Holy;
-      blindingLight.targetEffect.push(this.createStatusEffect(StatusEffectEnum.Blind, 6, 1.25, false, false));
-      god.abilityList.push(blindingLight);
+      var tsunami = new Ability();
+      tsunami.name = "Tsunami";
+      tsunami.requiredLevel = this.utilityService.godAbility3Level;
+      tsunami.isAvailable = false;
+      tsunami.cooldown = tsunami.currentCooldown = 55;
+      tsunami.dealsDirectDamage = true;
+      tsunami.effectiveness = 1.5;
+      tsunami.secondaryEffectiveness = 1;
+      tsunami.elementalType = ElementalTypeEnum.Water;
+      tsunami.userEffect.push(this.createStatusEffect(StatusEffectEnum.KingOfTheSea, 5, 1.05, false, true));
+      tsunami.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      god.abilityList.push(tsunami);
 
-      var secondWind = new Ability();
-      secondWind.name = "Second Wind";
-      secondWind.requiredLevel = this.utilityService.godPassiveLevel;
-      secondWind.isAvailable = false;
-      secondWind.isPassive = true;
-      secondWind.dealsDirectDamage = true;
-      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, 0, .05, true, true));
-      god.abilityList.push(secondWind);*/
+      var flow = new Ability();
+      flow.name = "Flow";
+      flow.requiredLevel = this.utilityService.godPassiveLevel;
+      flow.isAvailable = false;
+      flow.isPassive = true;
+      flow.isActivatable = false;
+      flow.dealsDirectDamage = false;
+      flow.userEffect.push(this.createStatusEffect(StatusEffectEnum.Flow, -1, 1.01, false, true));
+      god.abilityList.push(flow);
     }
-
   }
 
   initializeItemBelt() {
@@ -849,7 +906,7 @@ export class GlobalService {
       || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge ||
       type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock ||
       type === StatusEffectEnum.HealingDoneUp || type === StatusEffectEnum.ThornsDamageUp || type === StatusEffectEnum.AllElementalResistanceUp ||
-      type === StatusEffectEnum.AbsorbElementalDamage)
+      type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight)
       refreshes = true;
 
     return refreshes;
@@ -861,7 +918,8 @@ export class GlobalService {
     if (type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.WitheringToxin ||
       type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed || type === StatusEffectEnum.FlamingToxin ||
-      type === StatusEffectEnum.ParalyzingToxin)
+      type === StatusEffectEnum.ParalyzingToxin || type === StatusEffectEnum.KingOfTheSea || type === StatusEffectEnum.ElixirOfFortune ||
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
       refreshes = true;
 
     return refreshes;
@@ -873,7 +931,8 @@ export class GlobalService {
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
-      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir)
+      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
       persistsDeath = true;
 
     return persistsDeath;
@@ -886,7 +945,8 @@ export class GlobalService {
     if (type === StatusEffectEnum.RecentlyDefeated || type === StatusEffectEnum.PoisonousToxin || type === StatusEffectEnum.DebilitatingToxin ||
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
-      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir)
+      type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
       persistsDeath = true;
 
     if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
@@ -943,7 +1003,7 @@ export class GlobalService {
     character.battleStats.healingReceived = this.equipmentService.getTotalHealingReceivedGain(character.equipmentSet);
     character.battleStats.healingDone = this.equipmentService.getTotalHealingDoneGain(character.equipmentSet);
     character.battleStats.aoeDamage = this.equipmentService.getTotalAoeDamageGain(character.equipmentSet);
-    character.battleStats.thorns = this.equipmentService.getTotalThornsGain(character.equipmentSet);
+    character.battleStats.thorns = this.equipmentService.getTotalThornsGain(character.equipmentSet);    
     character.battleStats.tickFrequency = this.equipmentService.getTotalTickFrequencyGain(character.equipmentSet);
     character.battleStats.abilityCooldownReductionStart = (1 - this.equipmentService.getTotalAbilityCooldownReductionStartGain(character.equipmentSet));
     character.battleStats.abilityCooldownReductionWithBuffs = (1 - this.equipmentService.getTotalAbilityCooldownReductionWithBuffsGain(character.equipmentSet));
@@ -1126,6 +1186,57 @@ export class GlobalService {
     return stats;
   }
 
+  setGodStatuses(character: Character) {
+    /*if ((character.assignedGod1 === GodEnum.Nemesis || character.assignedGod2 === GodEnum.Nemesis) && 
+    !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
+      var dispenserOfDues = this.lookupService.characterHasAbility("Dispenser of Dues", character);
+      if (dispenserOfDues !== undefined) {
+        this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
+      }
+    }*/
+    if (character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) {
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
+
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Retribution))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Retribution);
+
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ChainsOfFate))
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.ChainsOfFate);
+    }
+
+    if ((character.assignedGod1 !== GodEnum.Ares && character.assignedGod2 !== GodEnum.Ares) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Onslaught)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
+    }
+
+    if ((character.assignedGod1 !== GodEnum.Hades && character.assignedGod2 !== GodEnum.Hades) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.LordOfTheUnderworld)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.LordOfTheUnderworld);
+    }
+    
+    if ((character.assignedGod1 !== GodEnum.Zeus && character.assignedGod2 !== GodEnum.Zeus) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Surge)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Surge);
+    }
+
+    if ((character.assignedGod1 !== GodEnum.Poseidon && character.assignedGod2 !== GodEnum.Poseidon) && 
+    character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Flow)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flow);
+    }
+
+    if (character.assignedGod1 !== GodEnum.Apollo && character.assignedGod2 !== GodEnum.Apollo) {      
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Staccato))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Staccato);
+
+        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Fortissimo))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Fortissimo);
+
+        if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Coda))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Coda);
+    }
+  }
+
   giveCharactersBonusExp(bonusXp: number) {
     //bonus XP has no restrictions on being dead or activity
     this.globalVar.characters.filter(partyMember => partyMember.isAvailable && partyMember.level < partyMember.maxLevel).forEach(partyMember => {
@@ -1264,6 +1375,7 @@ export class GlobalService {
 
     this.getCharacterLevelStatIncrease(character);
     this.checkForNewCharacterAbilities(character);
+    this.checkForNewCharacterLinks(character);
     this.checkForNewCharacterOverdrives(character);
 
     this.calculateCharacterBattleStats(character);
@@ -1293,6 +1405,14 @@ export class GlobalService {
     }
   }
 
+  checkForNewCharacterLinks(character: Character) {
+    if (character.level % 10 === 6)
+    {
+      character.linkInfo.totalLinks += 1;
+      character.linkInfo.remainingLinks += 1;
+    }
+  }
+
   checkForNewCharacterOverdrives(character: Character) {
     if (character.level === 20) {
       character.unlockedOverdrives.push(OverdriveNameEnum.Fervor);
@@ -1306,6 +1426,8 @@ export class GlobalService {
         character.unlockedOverdrives.push(OverdriveNameEnum.Revenge);
       if (character.type === CharacterEnum.Priest)
         character.unlockedOverdrives.push(OverdriveNameEnum.Hope);
+      if (character.type === CharacterEnum.Monk)
+        character.unlockedOverdrives.push(OverdriveNameEnum.Flurry);
     }
   }
 
@@ -1390,6 +1512,9 @@ export class GlobalService {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
 
         ability.targetEffect[0].effectiveness += .025 * Math.ceil(newLevel / 10);
+      }      
+      if (character.type === CharacterEnum.Monk) {
+        ability.effectiveness += .15 * Math.ceil(newLevel / 10);
       }
     }
     if (newLevel % 10 === 4) {        //passive 
@@ -1411,6 +1536,13 @@ export class GlobalService {
       if (character.type === CharacterEnum.Warrior) {
         ability.effectiveness += .025 * Math.ceil(newLevel / 10);
       }
+      if (character.type === CharacterEnum.Monk) {
+        if (ability.userEffect.length === 0)
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+
+        var userGainsEffect = ability.userEffect[0];
+        userGainsEffect.effectiveness += .025 * Math.ceil(newLevel / 10);
+      }
     }
     if (newLevel % 10 === 8) {        //ability 2
       ability.requiredLevel = this.utilityService.characterAbility2Level;
@@ -1427,6 +1559,9 @@ export class GlobalService {
         ability.effectiveness += .025 * Math.ceil(newLevel / 10);
       }
       if (character.type === CharacterEnum.Warrior) {
+        ability.effectiveness += .1 * Math.ceil(newLevel / 10);
+      }      
+      if (character.type === CharacterEnum.Monk) {
         ability.effectiveness += .1 * Math.ceil(newLevel / 10);
       }
     }
@@ -1546,6 +1681,8 @@ export class GlobalService {
       return 'warriorColor';
     if (type === CharacterEnum.Priest)
       return 'priestColor';
+      if (type === CharacterEnum.Monk)
+      return 'monkColor';
 
     return '';
   }
@@ -1840,6 +1977,12 @@ export class GlobalService {
       else
         userGainsEffect.effectiveness += .025;
     }
+    else if (god.type === GodEnum.Poseidon) {
+      if (ability.abilityUpgradeLevel % 20 === 0 && ability.abilityUpgradeLevel <= 100)
+        targetGainsEffect.effectiveness += .05;
+      else
+        ability.effectiveness += .125;
+    }
   }
 
   upgradeGodAbility2(god: God) {
@@ -1936,6 +2079,13 @@ export class GlobalService {
         ability.effectiveness += .15;
       }
     }
+    else if (god.type === GodEnum.Poseidon) {
+      //every 10 upgrades until level 100, reduce cooldown
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.secondaryEffectiveness += .03;
+      else
+        ability.effectiveness += .05;
+    }
   }
 
   upgradeGodAbility3(god: God) {
@@ -2028,6 +2178,16 @@ export class GlobalService {
         }
       }
     }
+    else if (god.type === GodEnum.Poseidon) {
+      if (ability.abilityUpgradeLevel === 75)
+        ability.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+      else if (ability.abilityUpgradeLevel === 25)
+        ability.secondaryEffectiveness += 1;
+      else if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.effectiveness += .025;
+      else
+        ability.effectiveness += .075;
+    }
   }
 
   upgradeGodPassive(god: God) {
@@ -2091,6 +2251,10 @@ export class GlobalService {
         ability.userEffect.forEach(effect => { effect.duration += 1 });
       else
         ability.userEffect.forEach(effect => { effect.effectiveness += .00625 });
+    }    
+    else if (god.type === GodEnum.Poseidon) {
+      if (ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.effectiveness += .0019;
     }
   }
 
@@ -2233,6 +2397,9 @@ export class GlobalService {
         else if (god.type === GodEnum.Zeus) {
           stats.elementIncrease.lightning += godLevel / 25000; //should lead to +60% lightning damage
         }
+        else if (god.type === GodEnum.Poseidon) {
+          stats.elementIncrease.water += godLevel / 25000; //should lead to +60% water damage
+        }
       }
       else if (godLevel % 50 === 0) {
         if (god.type === GodEnum.Athena || god.type === GodEnum.Dionysus) {
@@ -2241,7 +2408,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Artemis || god.type === GodEnum.Hades) {
           stats.luck += Math.round(godLevel / (3 + (1 / 3)));
         }
-        else if (god.type === GodEnum.Hermes) {
+        else if (god.type === GodEnum.Hermes || god.type === GodEnum.Poseidon) {
           stats.agility += Math.round(godLevel / (3 + (1 / 3)));
         }
         else if (god.type === GodEnum.Zeus) {
@@ -2278,7 +2445,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Artemis || god.type === GodEnum.Hades) {
           stats.luck += (godLevel - 450) / 4;
         }
-        else if (god.type === GodEnum.Hermes) {
+        else if (god.type === GodEnum.Hermes || god.type === GodEnum.Poseidon) {
           stats.agility += (godLevel - 450) / 4;
         }
         else if (god.type === GodEnum.Zeus) {
@@ -2333,8 +2500,11 @@ export class GlobalService {
         else if (god.type === GodEnum.Nemesis) {
           ability.effectiveness += .5;
         }
-        if (god.type === GodEnum.Zeus) {
+        else if (god.type === GodEnum.Zeus) {
           ability.effectiveness += .75;
+        }
+        else if (god.type === GodEnum.Poseidon) {
+          ability.effectiveness += .5;
         }
       }
       else if (godLevel % 200 === 100) //passive  
@@ -2375,6 +2545,11 @@ export class GlobalService {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
           var userGainsEffect = ability.userEffect[0];
           userGainsEffect.effectiveness = .025;
+        }
+        if (god.type === GodEnum.Poseidon) {
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+          var userGainsEffect = ability.userEffect[0];
+          userGainsEffect.effectiveness = .003;
         }
       }
       else if (godLevel % 200 === 150) //ability 2  
@@ -2423,6 +2598,9 @@ export class GlobalService {
         else if (god.type === GodEnum.Zeus) {
           ability.effectiveness += .85;
         }
+        else if (god.type === GodEnum.Poseidon) {
+          ability.effectiveness = .2;
+        }
       }
       else if (godLevel % 200 === 0) //ability 3
       {
@@ -2462,6 +2640,9 @@ export class GlobalService {
         }
         else if (god.type === GodEnum.Zeus) {
           ability.effectiveness += .4;
+        }
+        else if (god.type === GodEnum.Poseidon) {
+          ability.effectiveness += .25;
         }
       }
     }
@@ -2986,8 +3167,13 @@ export class GlobalService {
 
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.duration <= 0 || this.isBuffUnremovable(item) || item.type === StatusEffectEnum.LordOfTheUnderworld);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Surge);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RepeatDamageAfterDelay);
+
+      var dispenserOfDues = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
+      if (dispenserOfDues !== undefined)
+        dispenserOfDues.effectiveness = 0;
 
       if (member.abilityList !== undefined && member.abilityList.length > 0)
         member.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
@@ -3130,6 +3316,17 @@ export class GlobalService {
           }
         });
       }
+      
+      if (character.equipmentSet.necklace !== undefined && character.equipmentSet.necklace.associatedResource !== undefined) {
+          var associatedResource = character.equipmentSet.necklace.associatedResource;    
+
+          /*associatedResource.extras.forEach(filledSlot => {
+            if () {
+
+            }
+          });*/        
+      }
+
       character.equipmentSet.necklace = undefined;
     }
 
@@ -3222,6 +3419,20 @@ export class GlobalService {
       else if (setCount === 5)
         return 10;
     }
+    if (setType === EquipmentSetEnum.Poseidon) {
+      if (setCount === 2)
+        return .05; 
+      else if (setCount === 3)
+        return .5; 
+      else if (setCount === 5)
+        return .1; 
+    }    
+    if (setType === EquipmentSetEnum.Shadow) {
+      if (setCount === 2)
+        return .3;
+      else if (setCount === 3)
+        return .5;
+    }
 
     return 0;
   }
@@ -3299,6 +3510,18 @@ export class GlobalService {
           stats!.armorPenetration += this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
           stats!.elementIncrease.lightning += this.getSetBonusAmount(setCount[0], 3);
+      }
+
+      if (setCount[0] === EquipmentSetEnum.Poseidon) {
+        if (setCount[1] >= 2)
+          stats!.abilityCooldownReduction += this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 3)
+          stats!.elementIncrease.water += this.getSetBonusAmount(setCount[0], 3);
+      }
+      
+      if (setCount[0] === EquipmentSetEnum.Shadow) {
+        if (setCount[1] >= 2)
+          stats!.aoeDamage += this.getSetBonusAmount(setCount[0], 2);
       }
     });
 

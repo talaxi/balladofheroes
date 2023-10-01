@@ -1,0 +1,28 @@
+<div>
+<span>Manually adjust altar state here for those who have issues with switching them on the main screen.</span>
+
+    <div class="twoColumn">
+        <span class="smallCaps bold">altar 1</span>
+        <br />
+        <mat-button-toggle-group [(ngModel)]="altar1Setting" aria-label="Altar 1 Setting" (change)="setAltarSetting(1)">
+            <mat-button-toggle [value]="altarEnum.Small">Small</mat-button-toggle>
+            <mat-button-toggle [value]="altarEnum.Large">Large</mat-button-toggle>
+        </mat-button-toggle-group>
+        <br/>
+        <br/>
+        <span class="smallCaps bold">altar 2</span>
+        <br />
+        <mat-button-toggle-group [(ngModel)]="altar2Setting" aria-label="Altar 2 Setting" (change)="setAltarSetting(2)">
+            <mat-button-toggle [value]="altarEnum.Small">Small</mat-button-toggle>
+            <mat-button-toggle [value]="altarEnum.Large">Large</mat-button-toggle>
+        </mat-button-toggle-group>
+        <br/>
+        <br/>
+        <span class="smallCaps bold">altar 3</span>
+        <br />
+        <mat-button-toggle-group [(ngModel)]="altar3Setting" aria-label="Altar 3 Setting" (change)="setAltarSetting(3)">
+            <mat-button-toggle [value]="altarEnum.Small">Small</mat-button-toggle>
+            <mat-button-toggle [value]="altarEnum.Large">Large</mat-button-toggle>
+        </mat-button-toggle-group>
+    </div>
+</div>

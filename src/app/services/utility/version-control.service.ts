@@ -44,7 +44,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1278,7 +1278,7 @@ export class VersionControlService {
               aresGod.permanentPassiveGainCount.forEach(item => {
                 totalGainCount += item[1];
               });
-              
+
               permanentPassive.effectiveness = totalGainCount * .0058;
             }
           }
@@ -1291,12 +1291,12 @@ export class VersionControlService {
               passive.effectiveness = .2;
               passive.secondaryEffectiveness = .2;
 
-              for (var i = 1; i <= passive.abilityUpgradeLevel; i++) { 
+              for (var i = 1; i <= passive.abilityUpgradeLevel; i++) {
                 if (i % 10 === 0 && i <= 100)
-                passive.effectiveness += .08;
-              else if (i <= 100)
-                passive.secondaryEffectiveness += .02;
-              }              
+                  passive.effectiveness += .08;
+                else if (i <= 100)
+                  passive.secondaryEffectiveness += .02;
+              }
             }
 
             var permanentPassive = nemesisGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
@@ -1310,6 +1310,44 @@ export class VersionControlService {
               permanentPassive.secondaryEffectiveness = totalGainCount * .04;
             }
           }
+        }
+        if (version === .7) {
+          this.initializationService.initializeBalladOfTheLabyrinth();
+
+          var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
+          if (poseidon !== undefined) {            
+            this.globalService.assignGodAbilityInfo(poseidon);
+            poseidon.displayOrder = 10;
+          }
+
+          var thePeakSubZone = this.balladService.findSubzone(SubZoneEnum.WarForTheMountainThePeak);
+          if (thePeakSubZone !== undefined && thePeakSubZone.isAvailable && thePeakSubZone.victoryCount > 0) {
+            var labyrinth = this.balladService.findBallad(BalladEnum.Labyrinth);
+            var crete = this.balladService.findZone(ZoneEnum.Crete);
+            var travelsAtSea = this.balladService.findSubzone(SubZoneEnum.CreteTravelsAtSea);
+
+            if (labyrinth !== undefined) {
+              labyrinth.isAvailable = true;
+              labyrinth.notify = true;
+            }
+            if (crete !== undefined) {
+              crete.isAvailable = true;
+              crete.notify = true;
+            }
+            if (travelsAtSea !== undefined) {
+              travelsAtSea.isAvailable = true;
+              travelsAtSea.notify = true;
+
+              this.achievementService.createDefaultAchievementsForSubzone(travelsAtSea.type).forEach(achievement => {
+                this.globalService.globalVar.achievements.push(achievement);
+              });
+            }
+          }
+
+          this.globalService.globalVar.characters.forEach(character => {
+            character.linkInfo.totalLinks += Math.floor((character.level+4) / 10);
+            character.linkInfo.remainingLinks += Math.floor((character.level+4) / 10);
+          });
         }
 
         this.globalService.globalVar.currentVersion = version;
