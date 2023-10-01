@@ -69,7 +69,7 @@
                 <button class="buttonStyled" (click)="openQuickViewOptions(quickViewOptionsContent)">Update Quick View
                     Options</button>
             </div>
-            <div class="updateKeybinds twoColumn">
+            <div class="updateKeybinds twoColumn" *ngIf="largeAltarsAvailable">
                 <button class="buttonStyled" (click)="openQuickViewOptions(updateAltarsAutoContent)">Select Altars State</button>
             </div>
             <div *ngIf="isMobile" class="updateKeybinds twoColumn">

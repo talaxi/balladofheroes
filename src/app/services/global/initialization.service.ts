@@ -596,6 +596,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShadowShield, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.ShadowNecklace, 1));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RagingBull, 5));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.EternalMeleeTicket, 5));
 
     this.globalService.globalVar.currentStoryId = 310;
     this.globalService.globalVar.isDpsUnlocked = true;
@@ -770,6 +771,7 @@ export class InitializationService {
       this.globalService.globalVar.chthonicPowers.agilityBoostLevel = 10;
       this.globalService.globalVar.altars.largeAltarsUnlocked = true;
       this.globalService.globalVar.extraSpeedTimeRemaining = 8 * 60 * 60;
+      this.globalService.globalVar.extraSpeedEnabled = true;
 
       var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.FendingMace, 1);
       if (resource !== undefined)

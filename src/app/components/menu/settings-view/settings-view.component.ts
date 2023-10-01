@@ -44,6 +44,7 @@ export class SettingsViewComponent implements OnInit {
   @Input() isMobile = false;
   confirmationText = "";
   @ViewChild('confirmationBox') confirmationBox: any;
+  largeAltarsAvailable = false;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     public utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
@@ -72,6 +73,7 @@ export class SettingsViewComponent implements OnInit {
       console.log(this.codeCreationService.createCode());
 
     this.getSettings();
+    this.largeAltarsAvailable = this.globalService.globalVar.altars.largeAltarsUnlocked;
   }
 
   getSettings() {

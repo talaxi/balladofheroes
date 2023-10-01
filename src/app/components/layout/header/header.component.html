@@ -23,7 +23,8 @@
 
     <div class="extraTimeItem centerAlign">
       <button class="buttonAsText clickableText globalHeaderItem normalFontSize" (click)="toggleExtraSpeed()">
-        <span class="headerTextItems clickableText globalHeaderItem">game speed: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
+        <span class="headerTextItems clickableText globalHeaderItem" *ngIf="!isMobile">game speed: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
+        <span class="headerTextItems clickableText globalHeaderItem" *ngIf="isMobile">game spd: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
       </button>
     </div>
 

@@ -632,6 +632,24 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.RagingBull) {            
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
+    if (item === ItemsEnum.LesserFlawedRuby) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedOpal) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedEmerald) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedTopaz) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedAquamarine) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedAmethyst) {            
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
 
     return new ShopItem(item, purchasePrice, originalStore);
   }

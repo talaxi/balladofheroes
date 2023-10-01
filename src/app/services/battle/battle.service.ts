@@ -1371,6 +1371,13 @@ export class BattleService {
         keepFlow = true;
         var flowStatus = this.globalService.makeStatusEffectCopy(flow.userEffect[0]);
 
+        var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
+        if (poseidon !== undefined) {
+          var flowUpgrade = poseidon.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+          if (flowUpgrade !== undefined && flowUpgrade.userEffect.length > 0)
+            flowStatus.effectiveness += flowUpgrade.userEffect[0].effectiveness;
+        }
+
         if (this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareFlow) !== undefined) {
           var relevantAltarEffect = this.globalService.getAltarEffectWithEffect(AltarEffectsEnum.PoseidonRareFlow);
           if (relevantAltarEffect !== undefined)

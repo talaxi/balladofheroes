@@ -65,7 +65,7 @@ export class BattleComponent implements OnInit {
 
     this.activeSubzone = this.balladService.getActiveSubZone();
     this.showDevStats = this.deploymentService.showStats;
-    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
+    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;    
 
     if (this.globalService.globalVar.activeBattle !== undefined)
       this.currentEnemies = this.globalService.globalVar.activeBattle?.currentEnemies;
@@ -120,7 +120,8 @@ export class BattleComponent implements OnInit {
   }
 
   
-  repeatColiseumFightToggle() {
+  repeatColiseumFightToggle() {    
+    this.repeatColiseumFight = !this.repeatColiseumFight;
     this.globalService.globalVar.settings.set("repeatColiseumFight", this.repeatColiseumFight);
   }
 
@@ -158,7 +159,7 @@ export class BattleComponent implements OnInit {
   }
   
   doingEternalMeleeFight() {    
-    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
+    this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;    
     return this.globalService.globalVar.activeBattle !== undefined && this.globalService.globalVar.activeBattle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee;        
   }
 

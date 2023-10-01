@@ -828,6 +828,12 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.Nectar) {
       return new ResourceValue(ItemsEnum.Nectar, amount);
     }
+    if (type === ItemsEnum.EagleFeather) {
+      return new ResourceValue(ItemsEnum.EagleFeather, amount);
+    }
+    if (type === ItemsEnum.MagicDust) {
+      return new ResourceValue(ItemsEnum.MagicDust, amount);
+    }
     if (type === ItemsEnum.OlympicCommendation)
       return new ResourceValue(ItemsEnum.OlympicCommendation, amount);
     if (type === ItemsEnum.RadiatingAirStone)
