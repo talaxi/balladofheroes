@@ -325,7 +325,7 @@ export class LookupService {
       type === ItemsEnum.MetalScraps || type === ItemsEnum.SharkTeeth || type === ItemsEnum.Seashell || type === ItemsEnum.Wax || type === ItemsEnum.BoarHide ||
       type === ItemsEnum.BearHide || type === ItemsEnum.ToxicIchor || type === ItemsEnum.CoarseFur || type === ItemsEnum.SerpentScale ||
       type === ItemsEnum.Honey || type === ItemsEnum.AnimalHide || type === ItemsEnum.EssenceOfWater || type === ItemsEnum.Tusk ||
-      type === ItemsEnum.BrokenNecklace ||
+      type === ItemsEnum.BrokenNecklace || type === ItemsEnum.MagicDust ||
       type === ItemsEnum.SharpFeather || type === ItemsEnum.BronzeBeak || type === ItemsEnum.MagicTreeBark || type === ItemsEnum.CanineFang ||
       type === ItemsEnum.SmallAnimalBones || type === ItemsEnum.VialOfTheCretanSea || type === ItemsEnum.PristineCrabClaw || type === ItemsEnum.BirchBark ||
       type === ItemsEnum.RadiatingGemstone || type === ItemsEnum.WhiteHorn || type === ItemsEnum.PotentEssence || type === ItemsEnum.BlackHorn ||

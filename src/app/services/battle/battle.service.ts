@@ -1231,7 +1231,7 @@ export class BattleService {
           ability.currentCooldown = this.globalService.getAbilityCooldown(ability, character);
 
           var flowEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flow);
-          if (flowEffect !== undefined && flowEffect.count === 2) {
+          if (flowEffect !== undefined && (flowEffect.count === 2 || flowEffect.count === 3)) {
             ability.currentCooldown /= flowEffect.effectiveness;
             character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.Flow && item.count === 2));
           }
@@ -1369,6 +1369,8 @@ export class BattleService {
       var flow = this.lookupService.characterHasAbility("Flow", user);
       if (flow !== undefined && elementalType === ElementalTypeEnum.Water) {
         keepFlow = true;
+        if (flowEffect !== undefined)
+          flowEffect.count = 3;
         var flowStatus = this.globalService.makeStatusEffectCopy(flow.userEffect[0]);
 
         var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
