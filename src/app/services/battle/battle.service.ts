@@ -4677,7 +4677,8 @@ export class BattleService {
 
     if (this.battleItemInUse === ItemsEnum.ThrowingStone || this.battleItemInUse === ItemsEnum.ExplodingPotion ||
       this.battleItemInUse === ItemsEnum.FirePotion || this.battleItemInUse === ItemsEnum.HeftyStone ||
-      this.battleItemInUse === ItemsEnum.PotentConcoction || this.battleItemInUse === ItemsEnum.PiercingPotion) {
+      this.battleItemInUse === ItemsEnum.PotentConcoction || this.battleItemInUse === ItemsEnum.PiercingPotion ||
+      this.battleItemInUse === ItemsEnum.BouncingPotion) {
       if (character.battleStats.currentHp <= 0)
         return;
 

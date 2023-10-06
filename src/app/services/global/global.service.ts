@@ -3423,7 +3423,7 @@ export class GlobalService {
     }
     if (setType === EquipmentSetEnum.Poseidon) {
       if (setCount === 2)
-        return .05; 
+        return .95; 
       else if (setCount === 3)
         return .5; 
       else if (setCount === 5)
@@ -3516,7 +3516,7 @@ export class GlobalService {
 
       if (setCount[0] === EquipmentSetEnum.Poseidon) {
         if (setCount[1] >= 2)
-          stats!.abilityCooldownReduction += this.getSetBonusAmount(setCount[0], 2);
+          stats!.abilityCooldownReduction *= this.getSetBonusAmount(setCount[0], 2);
         if (setCount[1] >= 3)
           stats!.elementIncrease.water += this.getSetBonusAmount(setCount[0], 3);
       }

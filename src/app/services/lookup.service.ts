@@ -8154,8 +8154,9 @@ export class LookupService {
 
     var equipmentAbilityCooldownReductionGain = this.equipmentService.getTotalAbilityCooldownReductionGain(character.equipmentSet);
     var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
-    if (setStats !== undefined && setStats.abilityCooldownReduction > 0)
+    if (setStats !== undefined && setStats.abilityCooldownReduction > 0) {
       equipmentAbilityCooldownReductionGain += setStats.abilityCooldownReduction;
+    }
 
     if (equipmentAbilityCooldownReductionGain > 0)
       breakdown += "Equipment: *" + this.utilityService.roundTo(equipmentAbilityCooldownReductionGain * 100, 2) + "%<br />";
