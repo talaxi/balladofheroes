@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ItemsEnum } from '../../models/enums/items-enum.model';
 import { ColiseumTournamentEnum } from '../../models/enums/coliseum-tournament-enum.model';
+import { ZodiacEnum } from '../../models/enums/zodiac-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { MeleteActionEnum } from 'src/app/models/enums/melete-action-enum.model';
@@ -586,8 +587,8 @@ export class DictionaryService {
       name = "Birch Bark";
     else if (type === ItemsEnum.RadiatingGemstone)
       name = "Radiating Gemstone";
-      else if (type === ItemsEnum.MagicDust)
-        name = "Magic Dust";
+    else if (type === ItemsEnum.MagicDust)
+      name = "Magic Dust";
     else if (type === ItemsEnum.WhiteHorn)
       name = "White Horn";
     else if (type === ItemsEnum.BlackHorn)
@@ -1024,6 +1025,12 @@ export class DictionaryService {
       return "Trial of Skill";
     if (type === TrialEnum.TrialOfResolve)
       return "Trial of Resolve";
+      if (type === TrialEnum.TrialOfTheStarsNormal)
+      return "Trial of the Stars (Normal)";
+      if (type === TrialEnum.TrialOfTheStarsHard)
+      return "Trial of the Stars (Hard)";
+      if (type === TrialEnum.TrialOfTheStarsVeryHard)
+      return "Trial of the Stars (Very Hard)";
 
     return "";
   }
@@ -1038,5 +1045,34 @@ export class DictionaryService {
       name = "Exhale Deeply";
 
     return name;
+  }
+
+  getZodiacName(zodiac: ZodiacEnum) {
+    if (zodiac === ZodiacEnum.Aries)
+      return "Aries";
+    if (zodiac === ZodiacEnum.Taurus)
+      return "Taurus";
+    if (zodiac === ZodiacEnum.Gemini)
+      return "Gemini";
+    if (zodiac === ZodiacEnum.Leo)
+      return "Leo";
+    if (zodiac === ZodiacEnum.Cancer)
+      return "Cancer";
+    if (zodiac === ZodiacEnum.Capricorn)
+      return "Capricorn";
+    if (zodiac === ZodiacEnum.Virgo)
+      return "Virgo";
+    if (zodiac === ZodiacEnum.Libra)
+      return "Libra";
+    if (zodiac === ZodiacEnum.Scorpio)
+      return "Scorpio";
+    if (zodiac === ZodiacEnum.Sagittarius)
+      return "Sagittarius";
+    if (zodiac === ZodiacEnum.Pisces)
+      return "Pisces";
+    if (zodiac === ZodiacEnum.Aquarius)
+      return "Aquarius";
+
+    return "";
   }
 }

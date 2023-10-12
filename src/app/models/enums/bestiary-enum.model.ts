@@ -325,5 +325,8 @@ export enum BestiaryEnum {
   DustyCloak,
   DarkSpecter,
   WingedApparation,
-  Poseidon
+  Poseidon,
+  ThemisNormal,
+  ThemisHard,
+  ThemisVeryHard
 }

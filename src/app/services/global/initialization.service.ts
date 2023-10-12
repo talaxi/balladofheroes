@@ -820,7 +820,7 @@ export class InitializationService {
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
         character1.assignedGod1 = GodEnum.Poseidon;
-        character1.assignedGod2 = GodEnum.Artemis;
+        character1.assignedGod2 = GodEnum.Nemesis;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasScythe);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.DivineTarge);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasArmor);
@@ -839,7 +839,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ApollosNecklace);
       }
 
-      var chthonicResetCount = 2;
+      var chthonicResetCount = 1;
       var godLevel = 1400;
 
       for (var j = 0; j < chthonicResetCount; j++) {

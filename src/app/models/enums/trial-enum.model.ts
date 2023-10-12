@@ -1,5 +1,8 @@
 export enum TrialEnum {
   None,
   TrialOfSkill,
-  TrialOfResolve
+  TrialOfResolve,
+  TrialOfTheStarsNormal,
+  TrialOfTheStarsHard,
+  TrialOfTheStarsVeryHard
 }

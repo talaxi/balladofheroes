@@ -43,6 +43,7 @@ import { ConfirmationBoxComponent } from 'src/app/components/subcomponents/utili
 import { MatDialog } from '@angular/material/dialog';
 import { TutorialBoxComponent } from 'src/app/components/subcomponents/utility/tutorial-box/tutorial-box.component';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ZodiacService } from './zodiac.service';
 
 @Injectable({
   providedIn: 'root'
@@ -54,7 +55,7 @@ export class GlobalService {
 
   constructor(private utilityService: UtilityService, private gameLogService: GameLogService, private charmService: CharmService,
     private equipmentService: EquipmentService, private dictionaryService: DictionaryService, public dialog: MatDialog, 
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
     return .71;
@@ -1029,14 +1030,22 @@ export class GlobalService {
     this.checkForSetBonuses(character.equipmentSet, character.battleStats);
 
     //gods
+    var god1ZodiacBoost = 1;
+    var god2ZodiacBoost = 1;
+    var zodiacGods = this.zodiacService.getBonusGods();
+    if (zodiacGods.some(item => item === god1?.type))
+      god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+      if (zodiacGods.some(item => item === god2?.type))
+      god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+
     var god1 = this.globalVar.gods.find(item => character.assignedGod1 === item.type);
     if (god1 !== undefined) {
-      character.battleStats.maxHp += god1.statGain.maxHp + god1.permanentStatGain.maxHp;
-      character.battleStats.attack += god1.statGain.attack + god1.permanentStatGain.attack;
-      character.battleStats.defense += god1.statGain.defense + god1.permanentStatGain.defense;
-      character.battleStats.agility += god1.statGain.agility + god1.permanentStatGain.agility;
-      character.battleStats.luck += god1.statGain.luck + god1.permanentStatGain.luck;
-      character.battleStats.resistance += god1.statGain.resistance + god1.permanentStatGain.resistance;
+      character.battleStats.maxHp += (god1.statGain.maxHp + god1.permanentStatGain.maxHp) * god1ZodiacBoost;
+      character.battleStats.attack += (god1.statGain.attack + god1.permanentStatGain.attack) * god1ZodiacBoost;
+      character.battleStats.defense += (god1.statGain.defense + god1.permanentStatGain.defense) * god1ZodiacBoost;
+      character.battleStats.agility += (god1.statGain.agility + god1.permanentStatGain.agility) * god1ZodiacBoost;
+      character.battleStats.luck += (god1.statGain.luck + god1.permanentStatGain.luck) * god1ZodiacBoost;
+      character.battleStats.resistance += (god1.statGain.resistance + god1.permanentStatGain.resistance) * god1ZodiacBoost;
 
       character.battleStats.hpRegen += god1.statGain.hpRegen + god1.permanentStatGain.hpRegen;
       character.battleStats.abilityCooldownReduction *= (1 - (god1.statGain.abilityCooldownReduction + god1.permanentStatGain.abilityCooldownReduction));
@@ -1062,12 +1071,12 @@ export class GlobalService {
 
     var god2 = this.globalVar.gods.find(item => character.assignedGod2 === item.type);
     if (god2 !== undefined) {
-      character.battleStats.maxHp += god2.statGain.maxHp + god2.permanentStatGain.maxHp;
-      character.battleStats.attack += god2.statGain.attack + god2.permanentStatGain.attack;
-      character.battleStats.defense += god2.statGain.defense + god2.permanentStatGain.defense;
-      character.battleStats.agility += god2.statGain.agility + god2.permanentStatGain.agility;
-      character.battleStats.luck += god2.statGain.luck + god2.permanentStatGain.luck;
-      character.battleStats.resistance += god2.statGain.resistance + god2.permanentStatGain.resistance;
+      character.battleStats.maxHp += (god2.statGain.maxHp + god2.permanentStatGain.maxHp) * god2ZodiacBoost;
+      character.battleStats.attack += (god2.statGain.attack + god2.permanentStatGain.attack) * god2ZodiacBoost;
+      character.battleStats.defense += (god2.statGain.defense + god2.permanentStatGain.defense) * god2ZodiacBoost;
+      character.battleStats.agility += (god2.statGain.agility + god2.permanentStatGain.agility) * god2ZodiacBoost;
+      character.battleStats.luck += (god2.statGain.luck + god2.permanentStatGain.luck) * god2ZodiacBoost;
+      character.battleStats.resistance += (god2.statGain.resistance + god2.permanentStatGain.resistance) * god2ZodiacBoost;
 
       character.battleStats.hpRegen += god2.statGain.hpRegen + god2.permanentStatGain.hpRegen;
       character.battleStats.abilityCooldownReduction *= (1 - (god2.statGain.abilityCooldownReduction + god2.permanentStatGain.abilityCooldownReduction));
@@ -1332,8 +1341,15 @@ export class GlobalService {
     this.globalVar.gods.forEach(god => {
       godLevelBonus += god.partyPermanentStatGain.xpGain;
     });
+    
+    var zodiacBonus = 1;
 
-    bonus *= BoonOfOlympusValue * affinityBoost * godLevelBonus * expUpEffectAmount;
+    var zodiacBonusGods = this.zodiacService.getBonusGods();
+    if (zodiacBonusGods.some(item => item === god.type)) {
+      zodiacBonus += this.utilityService.zodiacGodXpBoost;
+    }
+
+    bonus *= BoonOfOlympusValue * affinityBoost * godLevelBonus * expUpEffectAmount * zodiacBonus;
     return bonus;
   }
 

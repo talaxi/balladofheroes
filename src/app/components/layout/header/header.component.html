@@ -9,6 +9,10 @@
       <button (click)="togglePerformanceMode()">Perf Mode</button>
     </div>-->
 
+    <div class="performanceState centerAlign">
+      <span customToolTip class="headerTextItems globalHeaderItem"  [contentTemplate]="zodiacPopover">zodiac: <img class="icon filtered" [src]="getZodiacSign()"></span>
+    </div>
+
     <button *ngIf="textMode && isMobile && layoutService.navigation === navigationEnum.Menu" class="buttonAsText clickableText performanceState mainPageSectionHeader globalHeaderItem" (click)="backToMainView()">back</button>    
 
     <div class="centerAlign gameState">
@@ -57,6 +61,20 @@
   <ng-template #extraTimePopover>
     <div>
       The amount of banked time you've gained while away from the game. While this is available, the game will run at 2x the speed. Click to toggle on or off.
+    </div>
+  </ng-template>
+  
+  <ng-template #zodiacPopover>
+    <div>
+      Zodiac: <img class="icon filtered" [src]="getZodiacSign()"> ({{getZodiacName()}})
+      <br/>
+      Duration: {{getZodiacStartDate()}} to {{getZodiacEndDate()}}
+      <hr/>
+      Bonus Gods: <span [innerHTML]="getBonusGods()"></span>
+      <br/>
+      These gods give characters 20% additional primary stats when equipped, receive 20% extra XP, and gain 20% additional Chthonic Power when reset.
+      <br/>
+      <!--Name of Trial is active-->
     </div>
   </ng-template>
 

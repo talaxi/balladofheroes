@@ -87,7 +87,7 @@ export class BattleService {
       var party = this.globalService.getActivePartyCharacters(true);
       party.forEach(member => {
         this.checkForEquipmentEffect(EffectTriggerEnum.WhenEnteringBattle, member, undefined, party, []);
-        this.handleuserEffects(true, [], member, party, [], 0);
+        this.handleUserEffects(true, [], member, party, [], 0);
       });
       this.checkForOptionalScene();
       this.checkScene();
@@ -520,7 +520,7 @@ export class BattleService {
       god = GodEnum.Dionysus;
     if (bestiaryEnum === BestiaryEnum.Zeus)
       god = GodEnum.Zeus;
-      if (bestiaryEnum === BestiaryEnum.Poseidon)
+    if (bestiaryEnum === BestiaryEnum.Poseidon)
       god = GodEnum.Poseidon;
 
     return god;
@@ -726,7 +726,7 @@ export class BattleService {
     }
 
     var damageShield = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DamageShield);
-    if (damageShield !== undefined) {      
+    if (damageShield !== undefined) {
       damageShield.count += 1;
 
       var gameLogEntry = "";
@@ -742,7 +742,7 @@ export class BattleService {
       }
 
 
-      if (damageShield.count >= damageShield.maxCount) {        
+      if (damageShield.count >= damageShield.maxCount) {
         target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageShield);
       }
 
@@ -846,8 +846,8 @@ export class BattleService {
     else
       this.checkForEquipmentEffect(EffectTriggerEnum.ChanceWhenDamageTaken, target, character, targets, party);
 
-    this.handleuserEffects(isPartyAttacking, [], character, party, targets, damageDealt);
-    this.handletargetEffects(isPartyAttacking, [], character, target, targets, party, damageDealt);
+    this.handleUserEffects(isPartyAttacking, [], character, party, targets, damageDealt);
+    this.handleTargetEffects(isPartyAttacking, [], character, target, targets, party, damageDealt);
 
     var invulnerability = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Invulnerable);
     if (invulnerability === undefined) {
@@ -1601,6 +1601,31 @@ export class BattleService {
       });
     }
 
+    if (abilityCopy.name === "Properly Balanced") {
+      targetEffects = [];
+
+      var healingDownOriginalEffect = abilityCopy.targetEffect.find(item => item.type === StatusEffectEnum.ReduceHealing);
+      var damageDealtDownOriginalEffect = abilityCopy.targetEffect.find(item => item.type === StatusEffectEnum.DamageDealtDown);
+
+      if (healingDownOriginalEffect !== undefined && damageDealtDownOriginalEffect !== undefined) {
+        var healingDownEffect = this.globalService.makeStatusEffectCopy(healingDownOriginalEffect);
+        var damageDealtDownEffect = this.globalService.makeStatusEffectCopy(damageDealtDownOriginalEffect);
+
+        var rng = this.utilityService.getRandomInteger(0, potentialTargets.length - 1);
+        var healingDownTarget = potentialTargets[rng];
+        var damageDealtDownTarget = potentialTargets[rng];
+        if (potentialTargets.length > 1) {
+          if (rng === 0)
+            damageDealtDownTarget = potentialTargets[1];
+          else
+            damageDealtDownTarget = potentialTargets[0];
+        }
+
+        this.applyStatusEffect(healingDownEffect, healingDownTarget, potentialTargets, user, abilityCopy);
+        this.applyStatusEffect(damageDealtDownEffect, damageDealtDownTarget, potentialTargets, user, abilityCopy);
+      }
+    }
+
     if (user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.ThousandCuts) && !abilityWillRepeat) {
       var effect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ThousandCuts)!;
       if (effect !== undefined)
@@ -1713,8 +1738,8 @@ export class BattleService {
         spiritUnleashed.count = spiritUnleashed.maxCount;
     }
 
-    this.handleuserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy, healedAmount, isGodAbility);
-    this.handletargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, abilityCopy.targetsAllies, abilityCopy);
+    this.handleUserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy, healedAmount, isGodAbility);
+    this.handleTargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, abilityCopy.targetsAllies, abilityCopy);
 
     if (isPartyUsing) {
       this.checkForEquipmentEffect(EffectTriggerEnum.OnAbilityUse, user, target, party, targets, undefined, abilityCopy.targetsAllies);
@@ -1853,7 +1878,7 @@ export class BattleService {
     return false;
   }
 
-  handleuserEffects(isPartyUsing: boolean, userEffect: StatusEffect[], user: Character, party: Character[], targets: Character[], damageDealt: number = 0, originalAbility?: Ability, healingDone: number = 0, fromGodAbility: boolean = false) {
+  handleUserEffects(isPartyUsing: boolean, userEffect: StatusEffect[], user: Character, party: Character[], targets: Character[], damageDealt: number = 0, originalAbility?: Ability, healingDone: number = 0, fromGodAbility: boolean = false) {
     if (userEffect.length > 0) {
       userEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = this.globalService.makeStatusEffectCopy(gainedStatusEffect);
@@ -2079,7 +2104,7 @@ export class BattleService {
     });
   }
 
-  handletargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0, abilityTargetedAllies: boolean = false, originalAbility?: Ability) {
+  handleTargetEffects(isPartyUsing: boolean, targetEffect: StatusEffect[], user: Character, target: Character, potentialTargets: Character[], party: Character[], damageDealt: number = 0, abilityTargetedAllies: boolean = false, originalAbility?: Ability) {
     if (targetEffect.length > 0) {
       targetEffect.forEach(gainedStatusEffect => {
         var appliedStatusEffect = this.globalService.makeStatusEffectCopy(gainedStatusEffect);
@@ -2145,6 +2170,13 @@ export class BattleService {
 
           if (target !== undefined)
             this.gainHp(target, healAmount);
+        }
+        
+        if (instantEffect.type === StatusEffectEnum.BalanceHp) {
+          var maxHpAggregate = 0; 
+          potentialTargets.forEach(potentialTarget => maxHpAggregate += potentialTarget.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(potentialTarget) );
+          maxHpAggregate /= potentialTargets.length;
+          potentialTargets.forEach(potentialTarget => potentialTarget.battleStats.currentHp = maxHpAggregate * this.lookupService.getAdjustedMaxHp(potentialTarget) );          
         }
 
         if (instantEffect.type === StatusEffectEnum.RemoveBuff) {
@@ -2283,7 +2315,7 @@ export class BattleService {
           }
         }
 
-        if (instantEffect.type === StatusEffectEnum.InstantHpPercentDamage) {          
+        if (instantEffect.type === StatusEffectEnum.InstantHpPercentDamage) {
           var resetTarget: Character | undefined = target;
           if (abilityTargetedAllies && !instantEffect.targetsAllies) {
             resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
@@ -2303,7 +2335,7 @@ export class BattleService {
               var totalHits = target.battleInfo.statusEffects.filter(item => item.type === StatusEffectEnum.InstantHpPercentDamage && item.caster === instantEffect.caster).length;
 
               var effectiveness = this.lookupService.getAdjustedMaxHp(newTarget, false) * instantEffect.effectiveness;
-              
+
               if (instantEffect.threshold !== undefined && instantEffect.threshold !== 1 && effectiveness > instantEffect.threshold)
                 effectiveness = instantEffect.threshold;
 
@@ -3276,12 +3308,12 @@ export class BattleService {
     var retributionEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Retribution);
     if (retributionEffect !== undefined) {
       var retribution = this.lookupService.characterHasAbility("Retribution", target);
-      if (retribution !== undefined) {
+      if (retribution !== undefined && target.type !== CharacterEnum.Enemy) {
         var nemesis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis);
         var permanentEffectiveness = 0;
         if (nemesis !== undefined) {
           var permanentUpgrade = nemesis.permanentAbilityUpgrades.find(item => item.requiredLevel === retribution!.requiredLevel);
-          if (permanentUpgrade !== undefined && target.type !== CharacterEnum.Enemy) {
+          if (permanentUpgrade !== undefined) {
             permanentEffectiveness += permanentUpgrade.effectiveness;
           }
         }
@@ -5247,7 +5279,7 @@ export class BattleService {
       }
 
       //console.log("Effect  " + userGainsEffects[0].type);
-      this.handleuserEffects(true, userGainsEffects, user, party, targets, damageDealt, undefined, healingDone);
+      this.handleUserEffects(true, userGainsEffects, user, party, targets, damageDealt, undefined, healingDone);
     }
 
     if (targetGainsEffects.length > 0 && target !== undefined) {
@@ -5275,7 +5307,7 @@ export class BattleService {
         targetGainsEffects = targetGainsEffects.filter(item => item.type !== StatusEffectEnum.InstantAutoAttack);
       }
 
-      this.handletargetEffects(true, targetGainsEffects, user, target, targets, party, undefined, originalTriggerTargetedAllies);
+      this.handleTargetEffects(true, targetGainsEffects, user, target, targets, party, undefined, originalTriggerTargetedAllies);
     }
   }
 
@@ -5423,7 +5455,7 @@ export class BattleService {
             if (bullseyeDamage !== undefined) {
               this.applyStatusEffect(this.globalService.createDamageOverTimeEffect(5, 5, bullseyeDamage[1], "Bullseye", dotTypeEnum.TrueDamage), enemy);
               enemy.overdriveInfo.criticalDamageTaken = enemy.overdriveInfo.criticalDamageTaken.filter(item => item[0] !== character.type);
-              //this.handletargetEffects(true, [], character, enemy, this.battle.currentEnemies.enemyList, [], 0);
+              //this.handleTargetEffects(true, [], character, enemy, this.battle.currentEnemies.enemyList, [], 0);
             }
           });
         }

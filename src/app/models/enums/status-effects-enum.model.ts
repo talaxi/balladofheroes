@@ -170,5 +170,6 @@ export enum StatusEffectEnum {
     SandToxin,
     ElectrifiedToxin,
     MagicToxin,
-    ElixirOfFortune
+    ElixirOfFortune,
+    BalanceHp
   }

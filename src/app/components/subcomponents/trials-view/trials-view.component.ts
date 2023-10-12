@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Trial } from 'src/app/models/battle/trial.model';
@@ -11,6 +11,7 @@ import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-ge
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -24,18 +25,34 @@ export class TrialsViewComponent {
   tooltipDirection = DirectionEnum.Left;
   isMobile: boolean = false;
   resolveEnemies: Enemy[] = [];
+  starsEnemies: Enemy[] = [];
+  trials: TrialEnum[] = [];
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    var keybinds = this.globalService.globalVar.keybinds;
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuUp"))) {
+      this.toggleSubMenuOptions(-1);
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
+      this.toggleSubMenuOptions(1);
+    }
+  }
 
   constructor(private trialService: TrialService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
-    private enemyGeneratorService: EnemyGeneratorService, private deviceDetectorService: DeviceDetectorService) { }
+    private enemyGeneratorService: EnemyGeneratorService, private deviceDetectorService: DeviceDetectorService,
+    private keybindService: KeybindService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.resolveEnemies = this.getTrialEnemies();
     this.repeatTrialFight = this.globalService.globalVar.settings.get("repeatTrialFight") ?? false;
-    var standardTrials = this.getStandardTrials();
-    if (standardTrials.length > 0)
-      this.selectedTrial = this.dictionaryService.getTrialInfoFromType(standardTrials[0]);
+    this.trials = this.getStandardTrials();
+    if (this.trials.length > 0)
+      this.selectedTrial = this.dictionaryService.getTrialInfoFromType(this.trials[0]);
   }
 
   getStandardTrials() {
@@ -54,12 +71,31 @@ export class TrialsViewComponent {
     return Trials;
   }
 
+  getTrialOfTheStarsEnemies() {
+    console.log(this.selectedTrial);
+    var battleOptions = this.trialService.generateBattleOptions(this.selectedTrial);
+    console.log(battleOptions);
+    if (battleOptions !== undefined && battleOptions.length >= 1)
+      return this.trialService.generateBattleOptions(this.selectedTrial)[0].enemyList;
+
+    return [];
+  }
+
   isTrialOfResolve() {
     return this.selectedTrial.type === TrialEnum.TrialOfResolve;
+  }
+  isTrialOfTheStars() {
+    return this.selectedTrial.type === TrialEnum.TrialOfTheStarsNormal || this.selectedTrial.type === TrialEnum.TrialOfTheStarsHard ||
+      this.selectedTrial.type === TrialEnum.TrialOfTheStarsVeryHard;
+  }
+  isTrialOfSkill() {
+    return this.selectedTrial.type === TrialEnum.TrialOfSkill;
   }
 
   chooseTrial(trial: TrialEnum) {
     this.selectedTrial = this.dictionaryService.getTrialInfoFromType(trial);
+    if (trial === TrialEnum.TrialOfTheStarsNormal || trial === TrialEnum.TrialOfTheStarsHard || trial === TrialEnum.TrialOfTheStarsVeryHard)
+      this.starsEnemies = this.getTrialOfTheStarsEnemies();
   }
 
   getTrialName(type?: TrialEnum) {
@@ -76,6 +112,10 @@ export class TrialsViewComponent {
 
   getTrialOfResolveDescription() {
     return "Work your way through all stages of the Trial of Resolve to obtain Ambrosia, coins, and more!";
+  }
+
+  getTrialOfTheStarsDescription() {
+    return "Challenge the patron of the current Zodiac sign and gain special rewards!";
   }
 
   getTrialOfResolveStage() {
@@ -158,5 +198,19 @@ export class TrialsViewComponent {
 
   repeatTrialFightToggle() {
     this.globalService.globalVar.settings.set("repeatTrialFight", this.repeatTrialFight);
+  }
+
+  toggleSubMenuOptions(direction: number) {
+    console.log(this.trials);
+    var currentIndex = this.trials.findIndex(item => item === this.selectedTrial.type);
+    currentIndex += direction;
+
+    if (currentIndex < 0)
+      currentIndex = this.trials.length - 1;
+    if (currentIndex > this.trials.length - 1)
+      currentIndex = 0;
+
+    console.log(currentIndex);
+    this.selectedTrial = this.dictionaryService.getTrialInfoFromType(this.trials[currentIndex]);
   }
 }

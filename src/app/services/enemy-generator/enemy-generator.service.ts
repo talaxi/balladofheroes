@@ -10339,6 +10339,8 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 15;
       enemy.xpGainFromDefeat = 13250; 
       enemy.loot.push(new LootItem(ItemsEnum.RagingBull, ItemTypeEnum.Equipment, 1, .01)); 
+      enemy.battleStats.elementResistance.fire += .5;
+      enemy.battleStats.elementResistance.lightning += .25;
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenDown, -1, .5, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageOverTimeTakenDown, -1, .5, false, true, false));
             
@@ -10367,7 +10369,8 @@ export class EnemyGeneratorService {
       var intimidate = new Ability();
       intimidate.name = "Intimidate";
       intimidate.isAvailable = true;
-      intimidate.cooldown = intimidate.currentCooldown = 30;      
+      intimidate.cooldown = 30;      
+      intimidate.currentCooldown = 5;
       intimidate.dealsDirectDamage = false;
       intimidate.isAoe = true;      
       intimidate.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Unsteady, 20, .5, false, false, true));
@@ -10469,7 +10472,192 @@ export class EnemyGeneratorService {
       embellish.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 14, 1.75, false, true));
       embellish.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 14, 1.75, false, true));
       enemy.abilityList.push(embellish);          
-    }     
+    }   
+    if (type === BestiaryEnum.ThemisNormal) {      
+      enemy.name = "Themis";
+      enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;               
+      enemy.battleStats.elementResistance.fire += .25;
+            
+      var measuredOffensive = new Ability();
+      measuredOffensive.name = "Measured Offensive";
+      measuredOffensive.isAvailable = true;
+      measuredOffensive.effectiveness = 10.9;
+      measuredOffensive.cooldown = 30;
+      measuredOffensive.currentCooldown = 10;      
+      measuredOffensive.dealsDirectDamage = true;
+      measuredOffensive.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.5, false, true, true));
+      enemy.abilityList.push(measuredOffensive);
+            
+      var glancingBlow = new Ability();
+      glancingBlow.name = "Glancing Blow";
+      glancingBlow.isAvailable = true;
+      glancingBlow.effectiveness = 10.9;
+      glancingBlow.cooldown = 30;
+      glancingBlow.currentCooldown = 25;
+      glancingBlow.dealsDirectDamage = true;
+      glancingBlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 15, 1.5, false, true, true));
+      enemy.abilityList.push(glancingBlow);
+      
+      var retribution = new Ability();
+      retribution.name = "Retribution";
+      retribution.isAvailable = true;
+      retribution.cooldown = retribution.currentCooldown = 25;
+      retribution.dealsDirectDamage = false;
+      retribution.effectiveness = 5.1;
+      retribution.maxCount = 1;
+      retribution.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Retribution, 25, .8, false, true));
+      enemy.abilityList.push(retribution);
+
+      var scalesOfJustice = new Ability();
+      scalesOfJustice.name = "Scales of Justice";
+      scalesOfJustice.isAvailable = true;      
+      scalesOfJustice.cooldown = scalesOfJustice.currentCooldown = 10;
+      scalesOfJustice = this.randomizeCooldown(scalesOfJustice);
+      scalesOfJustice.dealsDirectDamage = false;
+      scalesOfJustice.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BalanceHp, 1, 0, true, false));      
+      enemy.abilityList.push(scalesOfJustice);        
+    
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.1, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);
+    }   
+    if (type === BestiaryEnum.ThemisHard) {      
+      enemy.name = "Themis";
+      enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;               
+      enemy.battleStats.elementResistance.fire += .25;
+            
+      var measuredOffensive = new Ability();
+      measuredOffensive.name = "Measured Offensive";
+      measuredOffensive.isAvailable = true;
+      measuredOffensive.effectiveness = 10.9;
+      measuredOffensive.cooldown = 30;
+      measuredOffensive.currentCooldown = 10;      
+      measuredOffensive.dealsDirectDamage = true;
+      measuredOffensive.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.5, false, true, true));
+      enemy.abilityList.push(measuredOffensive);
+            
+      var glancingBlow = new Ability();
+      glancingBlow.name = "Glancing Blow";
+      glancingBlow.isAvailable = true;
+      glancingBlow.effectiveness = 10.9;
+      glancingBlow.cooldown = 30;
+      glancingBlow.currentCooldown = 25;
+      glancingBlow.dealsDirectDamage = true;
+      glancingBlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 15, 1.5, false, true, true));
+      enemy.abilityList.push(glancingBlow);
+      
+      var retribution = new Ability();
+      retribution.name = "Retribution";
+      retribution.isAvailable = true;
+      retribution.cooldown = retribution.currentCooldown = 25;
+      retribution.dealsDirectDamage = false;
+      retribution.effectiveness = 5.1;
+      retribution.maxCount = 1;
+      retribution.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Retribution, 25, .8, false, true));
+      enemy.abilityList.push(retribution);
+
+      var properlyBalanced = new Ability();
+      properlyBalanced.name = "Properly Balanced";
+      properlyBalanced.isAvailable = true;      
+      properlyBalanced.cooldown = properlyBalanced.currentCooldown = 10;
+      properlyBalanced = this.randomizeCooldown(properlyBalanced);
+      properlyBalanced.dealsDirectDamage = false;
+      properlyBalanced.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceHealing, 10, 0, false, false));
+      properlyBalanced.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, 0, false, false));
+      enemy.abilityList.push(properlyBalanced);
+    
+      var scalesOfJustice = new Ability();
+      scalesOfJustice.name = "Scales of Justice";
+      scalesOfJustice.isAvailable = true;      
+      scalesOfJustice.cooldown = scalesOfJustice.currentCooldown = 10;
+      scalesOfJustice = this.randomizeCooldown(scalesOfJustice);
+      scalesOfJustice.dealsDirectDamage = false;
+      scalesOfJustice.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BalanceHp, 1, 0, true, false));      
+      enemy.abilityList.push(scalesOfJustice);        
+            
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.2, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);
+    }   
+    if (type === BestiaryEnum.ThemisVeryHard) {      
+      enemy.name = "Themis";
+      enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 2200;               
+      enemy.battleStats.elementResistance.fire += .25;
+            
+      var measuredOffensive = new Ability();
+      measuredOffensive.name = "Measured Offensive";
+      measuredOffensive.isAvailable = true;
+      measuredOffensive.effectiveness = 10.9;
+      measuredOffensive.cooldown = 30;
+      measuredOffensive.currentCooldown = 10;      
+      measuredOffensive.dealsDirectDamage = true;
+      measuredOffensive.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 15, 1.5, false, true, true));
+      enemy.abilityList.push(measuredOffensive);
+            
+      var glancingBlow = new Ability();
+      glancingBlow.name = "Glancing Blow";
+      glancingBlow.isAvailable = true;
+      glancingBlow.effectiveness = 10.9;
+      glancingBlow.cooldown = 30;
+      glancingBlow.currentCooldown = 25;
+      glancingBlow.dealsDirectDamage = true;
+      glancingBlow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DefenseUp, 15, 1.5, false, true, true));
+      enemy.abilityList.push(glancingBlow);
+      
+      var retribution = new Ability();
+      retribution.name = "Retribution";
+      retribution.isAvailable = true;
+      retribution.cooldown = retribution.currentCooldown = 25;
+      retribution.dealsDirectDamage = false;
+      retribution.effectiveness = 5.1;
+      retribution.maxCount = 1;
+      retribution.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Retribution, 25, .8, false, true));
+      enemy.abilityList.push(retribution);
+
+      var properlyBalanced = new Ability();
+      properlyBalanced.name = "Properly Balanced";
+      properlyBalanced.isAvailable = true;      
+      properlyBalanced.cooldown = properlyBalanced.currentCooldown = 10;
+      properlyBalanced = this.randomizeCooldown(properlyBalanced);
+      properlyBalanced.dealsDirectDamage = false;
+      properlyBalanced.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceHealing, 10, 0, false, false));
+      properlyBalanced.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, 0, false, false));
+      enemy.abilityList.push(properlyBalanced);
+    
+      var scalesOfJustice = new Ability();
+      scalesOfJustice.name = "Scales of Justice";
+      scalesOfJustice.isAvailable = true;      
+      scalesOfJustice.cooldown = scalesOfJustice.currentCooldown = 10;
+      scalesOfJustice = this.randomizeCooldown(scalesOfJustice);
+      scalesOfJustice.dealsDirectDamage = false;
+      scalesOfJustice.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BalanceHp, 1, 0, true, false));      
+      enemy.abilityList.push(scalesOfJustice);        
+            
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.25, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);
+    }   
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

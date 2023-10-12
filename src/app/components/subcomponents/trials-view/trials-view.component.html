@@ -11,7 +11,7 @@
                             <span class="smallCaps tournamentSection">standard</span>
                             <hr class="tournamentSectionEnder" />
                         </div>
-                        <div *ngFor="let trial of getStandardTrials(); let i = index" (click)="chooseTrial(trial)"
+                        <div *ngFor="let trial of trials; let i = index" (click)="chooseTrial(trial)"
                             class="listItem" [ngClass]='getTrialNameColor(trial)'>
                             <button class="buttonAsText clickableText listItemButton"
                                 [ngClass]='getTrialNameColor(trial)' [innerHtml]="getTrialName(trial)"></button>
@@ -53,7 +53,31 @@
                     </div>
                 </div>
             </div>
-            <div *ngIf="!isTrialOfResolve()">
+            <div *ngIf="isTrialOfTheStars()">
+                <strong><span class="s4Heading smallCaps" [innerHtml]="getTrialName()"></span></strong>
+                <br />
+                <br />
+                <span [innerHtml]="getTrialOfTheStarsDescription()"></span>
+                <hr />
+                <div>
+                    <div *ngFor="let enemy of starsEnemies">
+                        <span class="smallCaps bold" customToolTip
+                            [tooltipDirection]="tooltipDirection" [contentTemplate]="enemyPopover">
+                            {{enemy.name}}
+                            <ng-template #enemyPopover>
+                                <app-enemy-description-view [character]="enemy"></app-enemy-description-view>
+                            </ng-template>
+                        </span>
+                    </div>
+                    <hr />
+                    <div>
+                        <br />
+                        <br />
+                        <button class="buttonStyled" (click)="startTrial()">Start Trial</button>
+                    </div>
+                </div>
+            </div>
+            <div *ngIf="isTrialOfSkill()">
                 <strong><span class="s4Heading smallCaps" [innerHtml]="getTrialName()"></span></strong>
                 <br />
                 <br />

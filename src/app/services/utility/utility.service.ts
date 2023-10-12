@@ -71,6 +71,10 @@ export class UtilityService {
   public nonDamageLinkBoost = 15;
   public linkCooldown = 15;
 
+  public zodiacGodXpBoost = .2;
+  public zodiacGodResetBoost = .2;
+  public zodiacGodStatBoost = .2;
+
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
   public firstJewelcraftingLevelCap = 25;

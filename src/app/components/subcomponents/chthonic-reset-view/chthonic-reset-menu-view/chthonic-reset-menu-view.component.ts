@@ -9,6 +9,7 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { ZodiacService } from 'src/app/services/global/zodiac.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -26,7 +27,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
   isMobile: boolean = false;
 
   constructor(public globalService: GlobalService, public lookupService: LookupService, private utilityService: UtilityService,
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -87,6 +88,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     //should give slightly more per level and also have a multiplier from favor
     var chthonicFavorMultiplier = this.lookupService.getChthonicFavorMultiplier();
     var preferredGodBoost = 1;
+    var zodiacBoost = 1;
 
     if (god.level <= 1)
       return 0;
@@ -101,6 +103,10 @@ export class ChthonicResetMenuViewComponent implements OnInit {
       preferredGodBoost = 1.25;
     }
 
+    var zodiacBonusGods = this.zodiacService.getBonusGods();
+    if (zodiacBonusGods.some(item => item === god.type))
+      zodiacBoost += this.utilityService.zodiacGodResetBoost;
+
     var baseAmount = 1.00081475 ** (5325 * Math.log10(.08 * (Math.ceil((god.level + 13) * .8)) + 2)) - 1;
 
     if (god.level <= 100) {
@@ -113,7 +119,7 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     
     var darkOrbs = this.lookupService.getResourceAmount(ItemsEnum.DarkOrb);
 
-    return this.utilityService.roundTo((baseAmount) * (1 + chthonicFavorMultiplier) * preferredGodBoost * (1 + (darkOrbs * .1)), 2);
+    return this.utilityService.roundTo((baseAmount) * (1 + chthonicFavorMultiplier) * preferredGodBoost * zodiacBoost * (1 + (darkOrbs * .1)), 2);
   }
 
   getChthonicFavor(god: God) {    

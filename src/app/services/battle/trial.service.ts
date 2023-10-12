@@ -19,6 +19,8 @@ import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AltarService } from '../altar/altar.service';
+import { ZodiacService } from '../global/zodiac.service';
+import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -26,15 +28,23 @@ import { AltarService } from '../altar/altar.service';
 export class TrialService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
-    private lookupService: LookupService, private gameLogService: GameLogService, private achievementService: AchievementService,
-    private professionService: ProfessionService, private subZoneGeneratorService: SubZoneGeneratorService, private dictionaryService: DictionaryService,
-    private altarService: AltarService) { }
+    private lookupService: LookupService, private gameLogService: GameLogService, private dictionaryService: DictionaryService,
+    private altarService: AltarService, private zodiacService: ZodiacService) { }
 
   generateBattleOptions(trial: Trial) {
     var battleOptions: EnemyTeam[] = [];
 
     if (trial.type === TrialEnum.TrialOfResolve) {
       battleOptions.push(this.getTrialOfResolveBattle());
+    }
+    if (trial.type === TrialEnum.TrialOfTheStarsNormal) {
+      battleOptions.push(this.getTrialOfTheStarsBattle(1));
+    }
+    if (trial.type === TrialEnum.TrialOfTheStarsHard) {
+      battleOptions.push(this.getTrialOfTheStarsBattle(2));
+    }
+    if (trial.type === TrialEnum.TrialOfTheStarsVeryHard) {
+      battleOptions.push(this.getTrialOfTheStarsBattle(3));
     }
     if (trial.type === TrialEnum.TrialOfSkill) {
       var trialOfSkillBattle = this.enemyGeneratorService.generateEnemy(this.getTrialOfSkillBattle());
@@ -92,7 +102,7 @@ export class TrialService {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineOwl));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineOwl));
     }
-    if (stage === 2) {      
+    if (stage === 2) {
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LightningRemnant));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LightningRemnant));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LightningRemnant));
@@ -100,7 +110,7 @@ export class TrialService {
     }
     if (stage === 3) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrocodile));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrocodile));
     }
     if (stage === 4) {
       enemyTeam.isDoubleBossFight = true;
@@ -109,7 +119,25 @@ export class TrialService {
     }
     if (stage === 5) {
       enemyTeam.isBossFight = true;
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineRam));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineRam));
+    }
+
+    return enemyTeam;
+  }
+
+  //1 = normal, 2 = hard, 3 = very hard
+  getTrialOfTheStarsBattle(level: number) {
+    var enemyTeam: EnemyTeam = new EnemyTeam();
+    var zodiac = this.zodiacService.getCurrentZodiac();
+
+    if (zodiac === ZodiacEnum.Libra) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ThemisNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ThemisHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ThemisVeryHard));
     }
 
     return enemyTeam;
@@ -173,7 +201,7 @@ export class TrialService {
       god = GodEnum.Dionysus;
     if (bestiaryEnum === BestiaryEnum.Zeus)
       god = GodEnum.Zeus;
-      if (bestiaryEnum === BestiaryEnum.Poseidon)
+    if (bestiaryEnum === BestiaryEnum.Poseidon)
       god = GodEnum.Poseidon;
 
     return god;
@@ -200,7 +228,7 @@ export class TrialService {
       enemyOptions.push(BestiaryEnum.Dionysus);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Zeus);
-      if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable)
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Poseidon);
 
     enemyOptions = enemyOptions.filter(item => item !== previousBattle);

@@ -55,6 +55,7 @@ import { BalladEnum } from '../models/enums/ballad-enum.model';
 import { Battle } from '../models/battle/battle.model';
 import { EquipmentSetEnum } from '../models/enums/equipment-set-enum.model';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { ZodiacService } from './global/zodiac.service';
 
 @Injectable({
   providedIn: 'root'
@@ -66,7 +67,8 @@ export class LookupService {
   constructor(private globalService: GlobalService, private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService,
     private charmService: CharmService, private enemyGeneratorService: EnemyGeneratorService, private balladService: BalladService,
     private shopItemGeneratorService: ShopItemGeneratorService, private resourceGeneratorService: ResourceGeneratorService,
-    private equipmentService: EquipmentService, private dictionaryService: DictionaryService, private deviceDetectorService: DeviceDetectorService) { }
+    private equipmentService: EquipmentService, private dictionaryService: DictionaryService, private deviceDetectorService: DeviceDetectorService,
+    private zodiacService: ZodiacService) { }
 
   getSubZoneCompletionByType(type: SubZoneEnum) {
     var chosenSubzone = new SubZone();
@@ -6864,6 +6866,14 @@ export class LookupService {
     if (godLevelBonus > 1)
       breakdown += "Permanent God Level Boost: *" + this.utilityService.roundTo(godLevelBonus, 3) + "<br/>";
 
+    var zodiacBonus = 1;
+
+    var zodiacBonusGods = this.zodiacService.getBonusGods();
+    if (zodiacBonusGods.some(item => item === god.type)) {
+      zodiacBonus += this.utilityService.zodiacGodXpBoost;
+      breakdown += "Zodiac Boost: *" + this.utilityService.roundTo(zodiacBonus, 3) + "<br/>";
+    }
+
     return breakdown;
   }
 
@@ -7543,19 +7553,27 @@ export class LookupService {
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
+    var god1ZodiacBoost = 1;
+    var god2ZodiacBoost = 1;
+    var zodiacGods = this.zodiacService.getBonusGods();
+    if (zodiacGods.some(item => item === character.assignedGod1))
+      god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+      if (zodiacGods.some(item => item === character.assignedGod2))
+      god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+
     if (character.baseStats.maxHp > 0)
       breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.maxHp) + "<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.maxHp + assignedGod1.permanentStatGain.maxHp;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.maxHp + assignedGod2.permanentStatGain.maxHp;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7585,6 +7603,14 @@ export class LookupService {
     var breakdown = "";
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+    
+    var god1ZodiacBoost = 1;
+    var god2ZodiacBoost = 1;
+    var zodiacGods = this.zodiacService.getBonusGods();
+    if (zodiacGods.some(item => item === character.assignedGod1))
+      god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+      if (zodiacGods.some(item => item === character.assignedGod2))
+      god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
 
     if (character.baseStats.attack > 0)
       breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.attack) + "<br />";
@@ -7592,13 +7618,13 @@ export class LookupService {
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.attack + assignedGod1.permanentStatGain.attack;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.attack + assignedGod2.permanentStatGain.attack;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7629,19 +7655,27 @@ export class LookupService {
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
+    var god1ZodiacBoost = 1;
+    var god2ZodiacBoost = 1;
+    var zodiacGods = this.zodiacService.getBonusGods();
+    if (zodiacGods.some(item => item === character.assignedGod1))
+      god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+      if (zodiacGods.some(item => item === character.assignedGod2))
+      god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+    
     if (character.baseStats.defense > 0)
       breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.defense) + "<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.defense + assignedGod1.permanentStatGain.defense;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.defense + assignedGod2.permanentStatGain.defense;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7672,19 +7706,27 @@ export class LookupService {
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
+    var god1ZodiacBoost = 1;
+    var god2ZodiacBoost = 1;
+    var zodiacGods = this.zodiacService.getBonusGods();
+    if (zodiacGods.some(item => item === character.assignedGod1))
+      god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+      if (zodiacGods.some(item => item === character.assignedGod2))
+      god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+
     if (character.baseStats.agility > 0)
       breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.agility) + "<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.agility + assignedGod1.permanentStatGain.agility;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.agility + assignedGod2.permanentStatGain.agility;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7716,19 +7758,27 @@ export class LookupService {
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
+    var god1ZodiacBoost = 1;
+    var god2ZodiacBoost = 1;
+    var zodiacGods = this.zodiacService.getBonusGods();
+    if (zodiacGods.some(item => item === character.assignedGod1))
+      god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+      if (zodiacGods.some(item => item === character.assignedGod2))
+      god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+
     if (character.baseStats.luck > 0)
       breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.luck) + "<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.luck + assignedGod1.permanentStatGain.luck;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.luck + assignedGod2.permanentStatGain.luck;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7760,19 +7810,27 @@ export class LookupService {
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
 
+    var god1ZodiacBoost = 1;
+    var god2ZodiacBoost = 1;
+    var zodiacGods = this.zodiacService.getBonusGods();
+    if (zodiacGods.some(item => item === character.assignedGod1))
+      god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+      if (zodiacGods.some(item => item === character.assignedGod2))
+      god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
+
     if (character.baseStats.resistance > 0)
       breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.resistance) + "<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.resistance + assignedGod1.permanentStatGain.resistance;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.resistance + assignedGod2.permanentStatGain.resistance;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain) + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
     }
 
     var godPartyBonus = 0;
