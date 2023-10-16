@@ -610,6 +610,36 @@ export class BattleService {
         }
       }
 
+      if (effect.type === StatusEffectEnum.HealOverTime) {
+        //check tick time
+        effect.tickTimer += deltaTime;
+
+        console.log(effect.tickTimer + " vs " + effect.tickFrequency);
+        if (this.utilityService.roundTo(effect.tickTimer, 5) >= effect.tickFrequency) {
+          var caster: Character | undefined = undefined;
+
+          if (effect.casterEnum !== CharacterEnum.None) {
+            if (effect.casterEnum === CharacterEnum.Enemy && this.battle !== undefined && this.battle.currentEnemies !== undefined) {
+              caster = this.battle.currentEnemies.enemyList.find(item => item.name === effect.caster);
+            }
+            else {
+              caster = this.globalService.globalVar.characters.find(item => item.type === effect.casterEnum);
+            }
+          }
+
+          var amountHealed = this.gainHp(character, character.battleStats.maxHp * effect.effectiveness);
+
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + " gains " + this.utilityService.bigNumberReducer(Math.round(amountHealed)) + " HP from " + effect.abilityName + "'s effect.";
+
+          if ((isPartyMember && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
+            (!isPartyMember && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+          }
+
+          effect.tickTimer -= effect.tickFrequency;
+        }
+      }
+
       if (effect.type === StatusEffectEnum.RepeatDamageAfterDelay && effect.duration <= 0) {
         var target = this.getTarget(character, targets);
         if (target !== undefined) {
@@ -1738,6 +1768,15 @@ export class BattleService {
         spiritUnleashed.count = spiritUnleashed.maxCount;
     }
 
+    if (user.name === "Rainbow-Scaled Fish" && abilityCopy.name === "Wild Rush" && !fromRepeat) {
+      var current = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Current);
+      if (current !== undefined) {
+        for (var i = 0; i < current.count; i++) {
+          userEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
+        }
+      }
+    }
+
     this.handleUserEffects(isPartyUsing, userEffects, user, party, potentialTargets, damageDealt, abilityCopy, healedAmount, isGodAbility);
     this.handleTargetEffects(isPartyUsing, targetEffects, user, target, potentialTargets, party, damageDealt, abilityCopy.targetsAllies, abilityCopy);
 
@@ -2171,12 +2210,12 @@ export class BattleService {
           if (target !== undefined)
             this.gainHp(target, healAmount);
         }
-        
+
         if (instantEffect.type === StatusEffectEnum.BalanceHp) {
-          var maxHpAggregate = 0; 
-          potentialTargets.forEach(potentialTarget => maxHpAggregate += potentialTarget.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(potentialTarget) );
+          var maxHpAggregate = 0;
+          potentialTargets.forEach(potentialTarget => maxHpAggregate += potentialTarget.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(potentialTarget));
           maxHpAggregate /= potentialTargets.length;
-          potentialTargets.forEach(potentialTarget => potentialTarget.battleStats.currentHp = maxHpAggregate * this.lookupService.getAdjustedMaxHp(potentialTarget) );          
+          potentialTargets.forEach(potentialTarget => potentialTarget.battleStats.currentHp = maxHpAggregate * this.lookupService.getAdjustedMaxHp(potentialTarget));
         }
 
         if (instantEffect.type === StatusEffectEnum.RemoveBuff) {
@@ -3253,21 +3292,45 @@ export class BattleService {
     var totalDamageDealt = damage;
 
     //could probably make a unique ability check method
+    if (target.name === "Sea-Goat" && target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.AutoAttackSpeedUp)) {
+      var autoAttackSpeedUp = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AutoAttackSpeedUp);
+      if (autoAttackSpeedUp !== undefined) {
+        autoAttackSpeedUp.effectiveness -= .2;
+
+        if (autoAttackSpeedUp.effectiveness <= 0)
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.AutoAttackSpeedUp);
+      }
+    }
+
+    if (target.name === "Ganymede" && target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.HealOverTime)) {
+      var healOverTime = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealOverTime);
+      if (healOverTime !== undefined) {
+        healOverTime.count += totalDamageDealt;
+
+        if (healOverTime.count >= healOverTime.maxCount)
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.HealOverTime);
+      }
+    }
+
     var foresight = this.lookupService.characterHasAbility("Foresight", target);
-    if (foresight !== undefined) { //This is assumed to be used by Helenus from Forgotten Kings trial
-      var barrierAmount = Math.round(foresight.userEffect[0].effectiveness * this.lookupService.getAdjustedAttack(target, undefined, !isPartyAttacking));
+    var waterShield = this.lookupService.characterHasAbility("Water Shield", target);
+    if (foresight !== undefined || waterShield !== undefined) { //This is assumed to be used by Helenus from Forgotten Kings trial
+      var definedEffect = foresight !== undefined ? foresight : waterShield;
+      if (definedEffect !== undefined) {
+        var barrierAmount = Math.round(definedEffect.userEffect[0].effectiveness * this.lookupService.getAdjustedAttack(target, undefined, !isPartyAttacking));
 
-      if (target.battleInfo.barrierValue < target.battleStats.maxHp * foresight.userEffect[0].threshold) {
-        target.battleInfo.barrierValue += barrierAmount;
+        if (target.battleInfo.barrierValue < target.battleStats.maxHp * definedEffect.userEffect[0].threshold) {
+          target.battleInfo.barrierValue += barrierAmount;
 
-        //if you went over threshold, set it back down 
-        if (target.battleInfo.barrierValue > target.battleStats.maxHp * foresight.userEffect[0].threshold) {
-          target.battleInfo.barrierValue = Math.round(target.battleStats.maxHp * foresight.userEffect[0].threshold);
-        }
+          //if you went over threshold, set it back down 
+          if (target.battleInfo.barrierValue > target.battleStats.maxHp * definedEffect.userEffect[0].threshold) {
+            target.battleInfo.barrierValue = Math.round(target.battleStats.maxHp * definedEffect.userEffect[0].threshold);
+          }
 
-        if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
-          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>" + " uses " + foresight.name + ", giving herself a barrier of " + this.utilityService.bigNumberReducer(barrierAmount) + " HP before being attacked.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+          if (this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse")) {
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>" + " uses " + definedEffect.name + ", gaining a barrier of " + this.utilityService.bigNumberReducer(barrierAmount) + " HP before being attacked.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+          }
         }
       }
     }

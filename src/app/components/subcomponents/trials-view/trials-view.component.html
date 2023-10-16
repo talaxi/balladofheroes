@@ -12,8 +12,8 @@
                             <hr class="tournamentSectionEnder" />
                         </div>
                         <div *ngFor="let trial of trials; let i = index" (click)="chooseTrial(trial)"
-                            class="listItem" [ngClass]='getTrialNameColor(trial)'>
-                            <button class="buttonAsText clickableText listItemButton"
+                            class="listItem" [ngClass]='getTrialNameColor(trial)' (keydown.enter)="$event.preventDefault()">
+                            <button class="buttonAsText clickableText listItemButton" (keydown.enter)="$event.preventDefault()"
                                 [ngClass]='getTrialNameColor(trial)' [innerHtml]="getTrialName(trial)"></button>
                             <hr class="noMargin" />
                         </div>

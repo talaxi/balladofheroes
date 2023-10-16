@@ -455,6 +455,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.DamageShield) {
       src += "shielding.svg";
     }
+    if (effect.type === StatusEffectEnum.HealOverTime) {
+      src += "healOverTime.svg";
+    }
+    if (effect.type === StatusEffectEnum.Current) {
+      src += "flow.svg";
+    }
 
     return src;
   }

@@ -111,7 +111,7 @@ export class ZodiacService {
     } else if (month === 9) {
       zodiacSign = day <= 22 ? ZodiacEnum.Virgo : ZodiacEnum.Libra;
     } else if (month === 10) {
-      zodiacSign = day <= 22 ? ZodiacEnum.Libra : ZodiacEnum.Scorpio;
+      zodiacSign = day <= 22 ? ZodiacEnum.Pisces : ZodiacEnum.Scorpio; //TODO: FIRST ONE SHOULD BE LIBRA
     } else if (month === 11) {
       zodiacSign = day <= 21 ? ZodiacEnum.Scorpio : ZodiacEnum.Sagittarius;
     } else if (month === 12) {

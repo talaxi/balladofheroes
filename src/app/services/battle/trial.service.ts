@@ -139,6 +139,105 @@ export class TrialService {
       if (level === 3)
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ThemisVeryHard));
     }
+    if (zodiac === ZodiacEnum.Scorpio) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HardenedScorpionNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HardenedScorpionHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.HardenedScorpionVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Sagittarius) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChironNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChironHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChironVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Capricorn) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SeaGoatNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SeaGoatHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SeaGoatVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Aquarius) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GanymedeNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GanymedeHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GanymedeVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Pisces) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RainbowScaledFishNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RainbowScaledFishHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RainbowScaledFishVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Aries) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SoaringRamNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SoaringRamHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SoaringRamVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Taurus) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GreatBullNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GreatBullHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GreatBullVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Gemini) {
+      enemyTeam.isDoubleBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorPolluxNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorPolluxHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorPolluxVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Cancer) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrabNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrabHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GargantuanCrabVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Leo) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MajesticLionNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MajesticLionHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MajesticLionVeryHard));
+    }
+    if (zodiac === ZodiacEnum.Virgo) {
+      enemyTeam.isBossFight = true;
+      if (level === 1)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AstraeaNormal));
+      if (level === 2)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AstraeaHard));
+      if (level === 3)
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AstraeaVeryHard));
+    }
 
     return enemyTeam;
   }

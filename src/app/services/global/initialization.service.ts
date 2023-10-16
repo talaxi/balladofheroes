@@ -368,6 +368,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("menuTraverseSubMenuUp", "arrowup");
     this.globalService.globalVar.keybinds.set("menuTraverseSubMenuDown", "arrowdown");
 
+    this.globalService.globalVar.keybinds.set("triggerAction", "enter");
     this.globalService.globalVar.keybinds.set("togglePauseGame", "keyP");
     this.globalService.globalVar.keybinds.set("openMenu", "keyM");
     this.globalService.globalVar.keybinds.set("openLog", "keyL");

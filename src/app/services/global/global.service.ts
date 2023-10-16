@@ -883,6 +883,18 @@ export class GlobalService {
 
     return statusEffect;
   }
+  
+  createHealOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, abilityName: string, maxCount: number = 0) {
+    var statusEffect = new StatusEffect(StatusEffectEnum.HealOverTime);
+    statusEffect.duration = duration;
+    statusEffect.effectiveness = multiplier;
+    statusEffect.tickFrequency = tickFrequency;
+    statusEffect.abilityName = abilityName;
+    statusEffect.maxCount = maxCount;
+    statusEffect.isPositive = true;
+
+    return statusEffect;
+  }
 
   doesStatusEffectRefresh(type: StatusEffectEnum) {
     var refreshes = false;
@@ -907,7 +919,8 @@ export class GlobalService {
       || type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || type === StatusEffectEnum.AllPrimaryStatsUp || type === StatusEffectEnum.Surge ||
       type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock ||
       type === StatusEffectEnum.HealingDoneUp || type === StatusEffectEnum.ThornsDamageUp || type === StatusEffectEnum.AllElementalResistanceUp ||
-      type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight || type === StatusEffectEnum.Flow)
+      type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight || type === StatusEffectEnum.Flow ||
+      type === StatusEffectEnum.Current)
       refreshes = true;
 
     return refreshes;

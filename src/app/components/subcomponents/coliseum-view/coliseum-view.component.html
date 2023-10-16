@@ -12,10 +12,10 @@
                             <span class="smallCaps tournamentSection">standard</span>
                             <hr class="tournamentSectionEnder" />
                         </div>
-                        <div *ngFor="let tournament of getStandardColiseumTournaments(); let i = index"
+                        <div *ngFor="let tournament of standardColiseumTournaments; let i = index"
                             (click)="chooseColiseumTournament(tournament)" class="listItem"
-                            [ngClass]='getColiseumNameColor(tournament)'>
-                            <button class="buttonAsText clickableText listItemButton"
+                            [ngClass]='getColiseumNameColor(tournament)' (keydown.enter)="$event.preventDefault()">
+                            <button class="buttonAsText clickableText listItemButton" (keydown.enter)="$event.preventDefault()"
                                 [ngClass]='getColiseumNameColor(tournament)'
                                 [innerHtml]="getTournamentName(tournament)"></button>
                             <hr class="noMargin" />
@@ -28,9 +28,9 @@
                             <hr class="tournamentSectionEnder" />
                         </div>
                         <div *ngFor="let tournament of getSpecialColiseumTournaments(); let i = index"
-                            (click)="chooseColiseumTournament(tournament)" class="listItem"
+                            (click)="chooseColiseumTournament(tournament)" class="listItem" (keydown.enter)="$event.preventDefault()"
                             [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}">
-                            <button class="buttonAsText clickableText listItemButton"
+                            <button class="buttonAsText clickableText listItemButton" (keydown.enter)="$event.preventDefault()"
                                 [ngClass]="{'active': selectedTournament !== undefined && selectedTournament.type === tournament}"
                                 [innerHtml]="getTournamentName(tournament)"></button>
                             <hr class="noMargin" />

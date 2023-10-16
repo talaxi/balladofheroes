@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -13,6 +13,7 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -28,15 +29,35 @@ export class AlchemyViewComponent implements OnInit {
   recipeList: Recipe[];
   isMobile: boolean = false;
   customCreateAmount: number = 0;
+  fullRecipeList: Recipe[] = [];
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    var keybinds = this.globalService.globalVar.keybinds;
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuUp"))) {
+      this.toggleSubMenuOptions(-1);
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
+      this.toggleSubMenuOptions(1);
+    }
+  }
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
     private alchemyService: AlchemyService, private professionService: ProfessionService, private dictionaryService: DictionaryService,
-    private deviceDetectorService: DeviceDetectorService, private menuService: MenuService) { }
+    private deviceDetectorService: DeviceDetectorService, private menuService: MenuService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.getFullRecipeList();
+    
+    this.getQualityTypeList().forEach(qualityType => {
+      this.getRecipeList(qualityType).forEach(recipe => {
+        this.fullRecipeList.push(recipe);
+    });
+  });
   }
 
   selectRecipe(recipe: Recipe) {
@@ -334,6 +355,18 @@ export class AlchemyViewComponent implements OnInit {
     else 
       return qualityToggle[1];
   }
+  
+toggleSubMenuOptions(direction: number) {
+  var currentIndex = this.fullRecipeList.findIndex(item => item === this.selectedRecipe);
+  currentIndex += direction;
+
+  if (currentIndex < 0)
+    currentIndex = this.fullRecipeList.length - 1;
+  if (currentIndex > this.fullRecipeList.length - 1)
+    currentIndex = 0;
+
+  this.selectRecipe(this.fullRecipeList[currentIndex]);
+}
   
   ngOnDestroy() {
     this.menuService.inTextbox = false;

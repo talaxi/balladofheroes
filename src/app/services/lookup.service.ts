@@ -2751,7 +2751,7 @@ export class LookupService {
     if (abilityName === "Insight")
       abilityDescription = "After using an auto attack, increase ability damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
     if (ability !== undefined && abilityName === "Spirit Unleashed") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. This amount is increased by <strong>" + secondaryEffectivenessPercent + "%</strong> for every ability used since the last time Spirit Unleashed was used, up to <strong>" + thresholdAmountPercent + "</strong>%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Total damage is increased by <strong>" + secondaryEffectivenessPercent + "%</strong> for every ability used since the last time Spirit Unleashed was used, up to <strong>" + thresholdAmountPercent + "</strong>%. " + cooldown + " second cooldown.";
 
       if (!fromCharacterPage)
       abilityDescription += "<br/><br/>Current Bonus: " + this.utilityService.genericRound(ability.count * ability.secondaryEffectiveness * 100) + "%";

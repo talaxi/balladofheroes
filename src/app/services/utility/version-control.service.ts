@@ -1364,6 +1364,9 @@ export class VersionControlService {
 
           this.globalService.globalVar.characters.push(monk);
         }
+        if (version === .75) {
+          this.globalService.globalVar.keybinds.set("triggerAction", "enter");
+        }
 
         this.globalService.globalVar.currentVersion = version;
       }

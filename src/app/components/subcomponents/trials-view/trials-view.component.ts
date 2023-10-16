@@ -39,6 +39,10 @@ export class TrialsViewComponent {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
       this.toggleSubMenuOptions(1);
     }
+    
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("triggerAction"))) {
+      this.startTrial();
+    }
   }
 
   constructor(private trialService: TrialService, private globalService: GlobalService, public dialog: MatDialog,
@@ -200,8 +204,7 @@ export class TrialsViewComponent {
     this.globalService.globalVar.settings.set("repeatTrialFight", this.repeatTrialFight);
   }
 
-  toggleSubMenuOptions(direction: number) {
-    console.log(this.trials);
+  toggleSubMenuOptions(direction: number) {    
     var currentIndex = this.trials.findIndex(item => item === this.selectedTrial.type);
     currentIndex += direction;
 
@@ -209,8 +212,7 @@ export class TrialsViewComponent {
       currentIndex = this.trials.length - 1;
     if (currentIndex > this.trials.length - 1)
       currentIndex = 0;
-
-    console.log(currentIndex);
-    this.selectedTrial = this.dictionaryService.getTrialInfoFromType(this.trials[currentIndex]);
+    
+    this.chooseTrial(this.trials[currentIndex]);
   }
 }
