@@ -45,7 +45,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1366,6 +1366,19 @@ export class VersionControlService {
         }
         if (version === .75) {
           this.globalService.globalVar.keybinds.set("triggerAction", "enter");
+
+          var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
+          if (athena !== undefined) {
+            var secondWind = athena.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (secondWind !== undefined) {
+              if (secondWind.abilityUpgradeLevel >= 45) {
+              secondWind.userEffect[0].maxCount = 2;
+              secondWind.userEffect[0].effectiveness -= 47;
+              }
+            else
+              secondWind.userEffect[0].maxCount = 1;
+            }
+          } 
         }
 
         this.globalService.globalVar.currentVersion = version;

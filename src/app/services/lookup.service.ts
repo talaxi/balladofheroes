@@ -2774,6 +2774,9 @@ export class LookupService {
     var relatedUserGainStatusEffectEffectivenessPercent = 0;
     var relatedUserGainStatusEffectTickFrequency = 0;
     var relatedUserGainStatusEffectThreshold = 0;
+    var relatedUserGainMaxCount = 0;
+    var relatedSecondaryUserGainStatusEffectEffectiveness = 0;
+    var relatedSecondaryUserGainStatusEffectEffectivenessPercent = 0;
     var relatedTargetGainStatusEffectDuration = 0;
     var relatedTargetGainStatusEffectEffectiveness = 0;
     var relatedTargetGainStatusEffectEffectivenessPercent = 0;
@@ -2823,6 +2826,7 @@ export class LookupService {
 
       if (relatedUserGainStatusEffect !== undefined) {
         relatedUserGainStatusEffectDuration = this.utilityService.genericRound(relatedUserGainStatusEffect.duration + permanentUserEffectDurationIncrease);
+        relatedUserGainMaxCount = relatedUserGainStatusEffect.maxCount;
         relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold + permanentUserEffectThresholdIncrease;
         relatedUserGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedUserGainStatusEffect.effectiveness + permanentUserEffectEffectivenessIncrease);
         if (relatedUserGainStatusEffectEffectiveness < 1)
@@ -2830,6 +2834,16 @@ export class LookupService {
         else
           relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness - 1) * 100, 2);
         relatedUserGainStatusEffectTickFrequency = relatedUserGainStatusEffect.tickFrequency;
+      }
+      
+      var relatedSecondaryUserGainStatusEffect = ability?.userEffect[1];
+
+      if (relatedSecondaryUserGainStatusEffect !== undefined) {
+        relatedSecondaryUserGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedSecondaryUserGainStatusEffect.effectiveness + permanentUserEffectEffectivenessIncrease);
+        if (relatedSecondaryUserGainStatusEffectEffectiveness < 1)
+        relatedSecondaryUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedSecondaryUserGainStatusEffectEffectiveness) * 100, 2);
+        else
+        relatedSecondaryUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedSecondaryUserGainStatusEffectEffectiveness - 1) * 100, 2);      
       }
 
       var relatedTargetGainStatusEffect = ability?.targetEffect[0];
@@ -2843,15 +2857,15 @@ export class LookupService {
           relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedTargetGainStatusEffectEffectiveness - 1) * 100, this.utilityService.genericRoundTo);
         relatedTargetGainStatusEffectTickFrequency = relatedTargetGainStatusEffect.tickFrequency;
       }
-    }
+    }    
 
     //Athena
     if (abilityName === "Second Wind")
-      abilityDescription = "After using an ability, your next auto attack heals for <strong>" + relatedUserGainStatusEffectEffectiveness + "</strong> HP. Passive.";
+      abilityDescription = "After using an ability, your next " + (relatedUserGainMaxCount === 1 ? "auto attack heals" : relatedUserGainMaxCount + " auto attacks heal" ) + " for <strong>" + relatedUserGainStatusEffectEffectiveness + "</strong> HP. Passive.";
     if (abilityName === "Divine Strike")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
     if (abilityName === "Heavenly Shield")
-      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and increase healing received by <strong>" + (100 - relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Blinding Light")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets and apply a <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
@@ -4454,6 +4468,20 @@ export class LookupService {
       description = "Chains of Fate";
     if (type === StatusEffectEnum.RepeatDamageAfterDelay)
       description = "Repeat Damage After Delay";
+      if (type === StatusEffectEnum.Insight)
+        description = "Insight";
+        if (type === StatusEffectEnum.HealOverTime)
+        description = "Heal Over Time";
+        if (type === StatusEffectEnum.Current)
+        description = "Current";
+        if (type === StatusEffectEnum.FlamingMane)
+        description = "Flaming Mane";
+        if (type === StatusEffectEnum.DebuffImmunity)
+        description = "Debuff Immunity";
+        if (type === StatusEffectEnum.Flow)
+        description = "Flow";
+        if (type === StatusEffectEnum.KingOfTheSea)
+        description = "King of the Sea";
 
     return description;
   }
@@ -4598,7 +4626,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Submerge)
       description = "Cannot be targeted directly by any attacks. Force to re-emerge by dealing " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage. Damage remaining: " + this.utilityService.bigNumberReducer(statusEffect.maxCount - statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.InstantHealAfterAutoAttack)
-      description = "Your next auto attack will also heal you for " + statusEffect.effectiveness + " HP.";
+      description = "Your next " + (statusEffect.count === 1 ? "auto attack" : statusEffect.count + "  auto attacks" ) + " will also heal you for " + statusEffect.effectiveness + " HP.";
     if (statusEffect.type === StatusEffectEnum.Mark)
       description = "Damage against this target is increased by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.Thyrsus)

@@ -204,12 +204,18 @@ export class TrialService {
     }
     if (zodiac === ZodiacEnum.Gemini) {
       enemyTeam.isDoubleBossFight = true;
-      if (level === 1)
-        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorPolluxNormal));
-      if (level === 2)
-        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorPolluxHard));
-      if (level === 3)
-        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorPolluxVeryHard));
+      if (level === 1){
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorNormal));
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxNormal));
+      }
+      if (level === 2){
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorHard));
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxHard));
+      }
+      if (level === 3){
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorVeryHard));
+        enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxVeryHard));
+      }
     }
     if (zodiac === ZodiacEnum.Cancer) {
       enemyTeam.isBossFight = true;

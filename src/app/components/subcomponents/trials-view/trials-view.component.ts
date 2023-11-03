@@ -75,10 +75,8 @@ export class TrialsViewComponent {
     return Trials;
   }
 
-  getTrialOfTheStarsEnemies() {
-    console.log(this.selectedTrial);
-    var battleOptions = this.trialService.generateBattleOptions(this.selectedTrial);
-    console.log(battleOptions);
+  getTrialOfTheStarsEnemies() {    
+    var battleOptions = this.trialService.generateBattleOptions(this.selectedTrial);    
     if (battleOptions !== undefined && battleOptions.length >= 1)
       return this.trialService.generateBattleOptions(this.selectedTrial)[0].enemyList;
 

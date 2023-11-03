@@ -622,6 +622,9 @@ export class CharacterViewComponent implements OnInit {
     var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
     if (baseAbility !== undefined) {
+      if (baseAbility.name === "Second Wind") {
+        return this.utilityService.genericRound((ability.userEffect[0].maxCount - baseAbility.userEffect[0].maxCount));
+      }
       return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));
     }
 

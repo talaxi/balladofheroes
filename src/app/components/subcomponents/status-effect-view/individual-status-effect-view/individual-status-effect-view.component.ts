@@ -461,6 +461,18 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.Current) {
       src += "flow.svg";
     }
+    if (effect.type === StatusEffectEnum.HighTide) {
+      src += "highTide.svg";
+    }
+    if (effect.type === StatusEffectEnum.Cancer) {
+      src += "cancerWhite.svg";
+    }
+    if (effect.type === StatusEffectEnum.FlamingMane) {
+      src += "leoWhite.svg";
+    }
+    if (effect.type === StatusEffectEnum.DebuffImmunity) {
+      src += "debuffImmunity.svg";
+    }
 
     return src;
   }

@@ -173,5 +173,12 @@ export enum StatusEffectEnum {
     ElixirOfFortune,
     BalanceHp,
     HealOverTime,
-    Current
+    Current,
+    StunImmunity,
+    HighTide,
+    Cancer,
+    FlamingMane,
+    DebuffImmunity,
+    DealMissingHpPercent,
+    HealingReceivedUp,
   }

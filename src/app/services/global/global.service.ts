@@ -410,6 +410,7 @@ export class GlobalService {
       aegis.isAvailable = false;
       aegis.cooldown = aegis.currentCooldown = 60;
       aegis.userEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenDown, 8, .8, false, true));
+      aegis.userEffect.push(this.createStatusEffect(StatusEffectEnum.HealingReceivedUp, 8, 1.25, false, true));
       god.abilityList.push(aegis);
 
       var blindingLight = new Ability();
@@ -430,7 +431,7 @@ export class GlobalService {
       secondWind.isAvailable = false;
       secondWind.isPassive = true;
       secondWind.isActivatable = false;
-      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, -1, 3, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Second Wind"));
+      secondWind.userEffect.push(this.createStatusEffect(StatusEffectEnum.InstantHealAfterAutoAttack, -1, 3, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, "Second Wind", 1));
       god.abilityList.push(secondWind);
     }
 
@@ -920,7 +921,7 @@ export class GlobalService {
       type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock ||
       type === StatusEffectEnum.HealingDoneUp || type === StatusEffectEnum.ThornsDamageUp || type === StatusEffectEnum.AllElementalResistanceUp ||
       type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight || type === StatusEffectEnum.Flow ||
-      type === StatusEffectEnum.Current)
+      type === StatusEffectEnum.Current || type === StatusEffectEnum.Cancer)
       refreshes = true;
 
     return refreshes;
@@ -960,7 +961,8 @@ export class GlobalService {
       type === StatusEffectEnum.WitheringToxin || type === StatusEffectEnum.VenomousToxin || type === StatusEffectEnum.FlamingToxin || type === StatusEffectEnum.ParalyzingToxin ||
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
-      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin)
+      type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
+      type === StatusEffectEnum.DispenserOfDues)
       persistsDeath = true;
 
     if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
@@ -2029,8 +2031,10 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 3 === 1 && ability.abilityUpgradeLevel <= 90)
         ability.cooldown -= .5;
       //30 levels of increasing duration to 14 seconds
-      else if (ability.abilityUpgradeLevel % 3 === 2 && ability.abilityUpgradeLevel <= 90)
+      else if (ability.abilityUpgradeLevel % 3 === 2 && ability.abilityUpgradeLevel <= 90) {
         userGainsEffect.duration += .2;
+        userGainsSecondEffect.duration += .2;
+      }
       else
         //40 levels of increasing effectiveness to 70% reduction
         userGainsEffect.effectiveness -= .0125;
@@ -2228,7 +2232,9 @@ export class GlobalService {
     var userGainsEffect = ability.userEffect[0];
 
     if (god.type === GodEnum.Athena) {
-      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+      if (ability.abilityUpgradeLevel === 45)
+        userGainsEffect.maxCount = 2;
+      else if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
         userGainsEffect.effectiveness *= 2;
       else if (ability.abilityUpgradeLevel <= 100)
         userGainsEffect.effectiveness += ability.abilityUpgradeLevel + 2;
@@ -2587,8 +2593,11 @@ export class GlobalService {
 
         if (god.type === GodEnum.Athena) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
           var userGainsEffect = ability.userEffect[0];
+          var userGainsSecondEffect = ability.userEffect[1];
           userGainsEffect.duration = .1;
+          userGainsSecondEffect.duration = .1;
         }
         else if (god.type === GodEnum.Artemis) {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));

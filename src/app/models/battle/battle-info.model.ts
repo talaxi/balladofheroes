@@ -18,6 +18,7 @@ export class BattleInfo {
     hpRegenTimerLength: number;
     elementalType: ElementalTypeEnum;
     elementsUsed: ElementalTypeEnum[]; //specifically used for disaster
+    specialAbilityUseCount: number;
     lastUsedPoseidonAbility: boolean;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
@@ -32,5 +33,6 @@ export class BattleInfo {
         this.statusEffects = [];
         this.elementalType = ElementalTypeEnum.None;
         this.lastUsedPoseidonAbility = false;
+        this.specialAbilityUseCount = 0;
     }
 }
