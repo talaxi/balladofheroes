@@ -80,7 +80,8 @@ export class OpenShopViewComponent {
       'hermesColor': name === "Hermes",
       'hadesColor': name === "Hades",
       'dionysusColor': name === "Dionysus",
-      'nemesisColor': name === "Nemesis"
+      'aphroditeColor': name === "Aphrodite",      
+      'heraColor': name === "Hera"
     };
   }
 

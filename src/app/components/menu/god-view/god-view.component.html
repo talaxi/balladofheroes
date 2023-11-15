@@ -144,6 +144,9 @@
                 [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getGodColor()" class="statLabel">Tick
                     Frequency Bonus:</strong>
                 {{(getTickFrequencyBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                <span *ngIf="getLinkEffectivenessBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="linkEffectivenessPopover"><strong [ngClass]="getGodColor()" class="statLabel">Link Effectiveness Bonus:</strong>
+                    {{(getLinkEffectivenessBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getAoeDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="aoeDamagePopover"><strong [ngClass]="getGodColor()" class="statLabel">Multiple Target
                     Damage Bonus:</strong>
@@ -226,6 +229,54 @@
                     [contentTemplate]="partyXpGainPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party XP Gain Bonus:
                     </strong> <span class="statValue">{{getPartyXpGainBonus() * 100 | number :
                         '1.0-2'}}%</span><br/></span>
+                       <!-- <span *ngIf="getMaxHpMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="maxHpMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Max HP Multiplier:
+                    </strong> <span class="statValue">{{getMaxHpMultiplierBonus() * 100 | number :
+                        '1.0-2'}}%</span><br/></span>
+                        <span *ngIf="getAttackMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="attackMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Attack Multiplier:                                
+                            </strong> <span class="statValue">{{getAttackMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getDefenseMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="defenseMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Defense Multiplier:                                
+                            </strong> <span class="statValue">{{getDefenseMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getAgilityMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="agilityMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Agility Multiplier:                                
+                            </strong> <span class="statValue">{{getAgilityMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getLuckMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="luckMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Luck Multiplier:
+                            </strong> <span class="statValue">{{getLuckMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getResistanceMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="resistanceMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Resistance Multiplier:
+                            </strong> <span class="statValue">{{getResistanceMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>-->
+                        <span *ngIf="getPartyMaxHpMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="partyMaxHpMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Max HP Multiplier:
+                            </strong> <span class="statValue">{{getPartyMaxHpMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getPartyAttackMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="partyAttackMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Attack Multiplier:
+                            </strong> <span class="statValue">{{getPartyAttackMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getPartyDefenseMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="partyDefenseMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Defense Multiplier:
+                            </strong> <span class="statValue">{{getPartyDefenseMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getPartyAgilityMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="partyAgilityMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Agility Multiplier:
+                            </strong> <span class="statValue">{{getPartyAgilityMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getPartyLuckMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="partyLuckMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Luck Multiplier:
+                            </strong> <span class="statValue">{{getPartyLuckMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
+                        <span *ngIf="getPartyResistanceMultiplierBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="partyResistanceMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Resistance Multiplier:
+                            </strong> <span class="statValue">{{getPartyResistanceMultiplierBonus() * 100 | number :
+                                '1.0-2'}}%</span><br /></span>
         </div>
     </div>
 
@@ -462,6 +513,114 @@
     </div>
 </ng-template>
 
+<!--<ng-template #attackMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAttackMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodAttackStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #defenseMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getDefenseMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodDefenseStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #agilityMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAgilityMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodAgilityStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #maxHpMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getMaxHpMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodMaxHpStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #luckMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getLuckMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodLuckStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #resistanceMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getResistanceMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodResistanceStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+-->
+<ng-template #partyAttackMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyAttackMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyAttackStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyDefenseMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyDefenseMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyDefenseStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyAgilityMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyAgilityMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyAgilityStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyMaxHpMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyMaxHpMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyMaxHpStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyLuckMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyLuckMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyLuckStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #partyResistanceMultiplierPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getPartyResistanceMultiplierDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyResistanceStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
 <ng-template #hpRegenPopover>
     <div>
         <span class="description" [innerHtml]="this.lookupService.getHpRegenDescription()"></span>
@@ -625,6 +784,16 @@
         <span class="description" [innerHtml]="this.lookupService.getTickFrequencyBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodTickFrequencyBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #linkEffectivenessPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getLinkEffectivenessBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodLinkEffectivenessBonusStatBreakdown(this.god)">
 
         </div>
     </div>

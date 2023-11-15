@@ -58,6 +58,11 @@ export class UtilityService {
   public godPermanentStatGain2ObtainCap = 10;
   public godPermanentStatGain3ObtainCap = 10;
   public godPermanentStatGain4ObtainCap = 10;
+  public godPermanentStatGain5ObtainCap = 10;
+  public godPermanentStatGain6ObtainCap = 10;
+  public godPermanentStatGain7ObtainCap = 10;
+  public godPermanentStatGain8ObtainCap = 10;
+  public godPermanentDuoAbilityObtainCap = 10;
   public godPermanentAbility1ObtainCap = 10;
   public godPermanentPassiveObtainCap = 10;
   public godPermanentAbility2ObtainCap = 10;

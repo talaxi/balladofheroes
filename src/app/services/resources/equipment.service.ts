@@ -16,67 +16,22 @@ export class EquipmentService {
 
     if (equipmentSet.weapon !== undefined) {
       total += equipmentSet.weapon.stats.maxHp;
-
-      if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
-        equipmentSet.weapon.associatedResource.extras.length > 0) {
-        equipmentSet.weapon.associatedResource.extras.forEach(extra => {
-          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
-          if (slotItemValues.maxHp > 0)
-            total += slotItemValues.maxHp;
-        });
-      }
     }
 
     if (equipmentSet.shield !== undefined) {
       total += equipmentSet.shield.stats.maxHp;
-
-      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
-        equipmentSet.shield.associatedResource.extras.length > 0) {
-        equipmentSet.shield.associatedResource.extras.forEach(extra => {
-          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
-          if (slotItemValues.maxHp > 0)
-            total += slotItemValues.maxHp;
-        });
-      }
     }
 
     if (equipmentSet.armor !== undefined) {
       total += equipmentSet.armor.stats.maxHp;
-
-      if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
-        equipmentSet.armor.associatedResource.extras.length > 0) {
-        equipmentSet.armor.associatedResource.extras.forEach(extra => {
-          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
-          if (slotItemValues.maxHp > 0)
-            total += slotItemValues.maxHp;
-        });
-      }
     }
 
     if (equipmentSet.necklace !== undefined) {
       total += equipmentSet.necklace.stats.maxHp;
-
-      if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
-        equipmentSet.necklace.associatedResource.extras.length > 0) {
-        equipmentSet.necklace.associatedResource.extras.forEach(extra => {
-          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
-          if (slotItemValues.maxHp > 0)
-            total += slotItemValues.maxHp;
-        });
-      }
     }
 
     if (equipmentSet.ring !== undefined) {
       total += equipmentSet.ring.stats.maxHp;
-
-      if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
-        equipmentSet.ring.associatedResource.extras.length > 0) {
-        equipmentSet.ring.associatedResource.extras.forEach(extra => {
-          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
-          if (slotItemValues.maxHp > 0)
-            total += slotItemValues.maxHp;
-        });
-      }
     }
 
     return total;
@@ -87,7 +42,196 @@ export class EquipmentService {
 
     if (equipmentSet.weapon !== undefined) {
       total += equipmentSet.weapon.stats.attack;
+    }
 
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.attack;
+    }
+
+    if (equipmentSet.armor !== undefined) {
+      total += equipmentSet.armor.stats.attack;
+    }
+
+    if (equipmentSet.necklace !== undefined) {
+      total += equipmentSet.necklace.stats.attack;
+    }
+
+    if (equipmentSet.ring !== undefined) {
+      total += equipmentSet.ring.stats.attack;
+    }
+
+    return total;
+  }
+
+  getTotalAgilityGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined) {
+      total += equipmentSet.weapon.stats.agility;
+    }
+
+    if (equipmentSet.shield !== undefined){
+      total += equipmentSet.shield.stats.agility;
+    }
+
+    if (equipmentSet.armor !== undefined) {
+      total += equipmentSet.armor.stats.agility;
+    }
+
+    if (equipmentSet.necklace !== undefined) {
+      total += equipmentSet.necklace.stats.agility;
+    }
+
+    if (equipmentSet.ring !== undefined) {
+      total += equipmentSet.ring.stats.agility;
+    }
+
+    return total;
+  }
+
+  getTotalLuckGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined) {
+      total += equipmentSet.weapon.stats.luck;
+    }
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.luck;
+    }
+
+    if (equipmentSet.armor !== undefined) {
+      total += equipmentSet.armor.stats.luck;
+    }
+
+    if (equipmentSet.necklace !== undefined) {
+      total += equipmentSet.necklace.stats.luck;
+    }
+
+    if (equipmentSet.ring !== undefined) {    
+      total += equipmentSet.ring.stats.luck;
+    }
+
+    return total;
+  }
+
+  getTotalDefenseGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined) {
+      total += equipmentSet.weapon.stats.defense;
+    }
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.defense;
+    }
+
+    if (equipmentSet.armor !== undefined) {
+      total += equipmentSet.armor.stats.defense;
+    }
+
+    if (equipmentSet.necklace !== undefined) {
+      total += equipmentSet.necklace.stats.defense;
+    }
+
+    if (equipmentSet.ring !== undefined) {
+      total += equipmentSet.ring.stats.defense;
+    }
+
+    return total;
+  }
+
+  getTotalResistanceGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined) {
+      total += equipmentSet.weapon.stats.resistance;
+    }
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.resistance;
+    }
+
+    if (equipmentSet.armor !== undefined) {
+      total += equipmentSet.armor.stats.resistance;
+    }
+
+    if (equipmentSet.necklace !== undefined) {
+      total += equipmentSet.necklace.stats.resistance;
+    }
+
+    if (equipmentSet.ring !== undefined) {
+      total += equipmentSet.ring.stats.resistance;
+    }
+
+    return total;
+  }
+
+  getTotalMaxHpMultiplierGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined) {
+      if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
+        equipmentSet.weapon.associatedResource.extras.length > 0) {
+        equipmentSet.weapon.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.maxHp > 0)
+            total += slotItemValues.maxHp;
+        });
+      }
+    }
+
+    if (equipmentSet.shield !== undefined) {
+      if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
+        equipmentSet.shield.associatedResource.extras.length > 0) {
+        equipmentSet.shield.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.maxHp > 0)
+            total += slotItemValues.maxHp;
+        });
+      }
+    }
+
+    if (equipmentSet.armor !== undefined) {
+      if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
+        equipmentSet.armor.associatedResource.extras.length > 0) {
+        equipmentSet.armor.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.maxHp > 0)
+            total += slotItemValues.maxHp;
+        });
+      }
+    }
+
+    if (equipmentSet.necklace !== undefined) {
+      if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
+        equipmentSet.necklace.associatedResource.extras.length > 0) {
+        equipmentSet.necklace.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.maxHp > 0)
+            total += slotItemValues.maxHp;
+        });
+      }
+    }
+
+    if (equipmentSet.ring !== undefined) {
+      if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
+        equipmentSet.ring.associatedResource.extras.length > 0) {
+        equipmentSet.ring.associatedResource.extras.forEach(extra => {
+          var slotItemValues = this.resourceGeneratorService.getSlotItemValues(extra);
+          if (slotItemValues.maxHp > 0)
+            total += slotItemValues.maxHp;
+        });
+      }
+    }
+
+    return total;
+  }
+
+  getTotalAttackMultiplierGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined) {
       if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
         equipmentSet.weapon.associatedResource.extras.length > 0) {
         equipmentSet.weapon.associatedResource.extras.forEach(extra => {
@@ -99,8 +243,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.shield !== undefined) {
-      total += equipmentSet.shield.stats.attack;
-
       if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
         equipmentSet.shield.associatedResource.extras.length > 0) {
         equipmentSet.shield.associatedResource.extras.forEach(extra => {
@@ -112,8 +254,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.armor !== undefined) {
-      total += equipmentSet.armor.stats.attack;
-
       if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
         equipmentSet.armor.associatedResource.extras.length > 0) {
         equipmentSet.armor.associatedResource.extras.forEach(extra => {
@@ -125,8 +265,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.necklace !== undefined) {
-      total += equipmentSet.necklace.stats.attack;
-
       if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
         equipmentSet.necklace.associatedResource.extras.length > 0) {
         equipmentSet.necklace.associatedResource.extras.forEach(extra => {
@@ -138,8 +276,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.ring !== undefined) {
-      total += equipmentSet.ring.stats.attack;
-
       if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
         equipmentSet.ring.associatedResource.extras.length > 0) {
         equipmentSet.ring.associatedResource.extras.forEach(extra => {
@@ -153,12 +289,10 @@ export class EquipmentService {
     return total;
   }
 
-  getTotalAgilityGain(equipmentSet: EquipmentSet) {
+  getTotalAgilityMultiplierGain(equipmentSet: EquipmentSet) {
     var total = 0;
 
-    if (equipmentSet.weapon !== undefined) {
-      total += equipmentSet.weapon.stats.agility;
-
+    if (equipmentSet.weapon !== undefined) {      
       if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
         equipmentSet.weapon.associatedResource.extras.length > 0) {
         equipmentSet.weapon.associatedResource.extras.forEach(extra => {
@@ -170,8 +304,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.shield !== undefined){
-      total += equipmentSet.shield.stats.agility;
-
       if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
         equipmentSet.shield.associatedResource.extras.length > 0) {
         equipmentSet.shield.associatedResource.extras.forEach(extra => {
@@ -183,8 +315,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.armor !== undefined) {
-      total += equipmentSet.armor.stats.agility;
-
       if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
         equipmentSet.armor.associatedResource.extras.length > 0) {
         equipmentSet.armor.associatedResource.extras.forEach(extra => {
@@ -196,8 +326,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.necklace !== undefined) {
-      total += equipmentSet.necklace.stats.agility;
-
       if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
         equipmentSet.necklace.associatedResource.extras.length > 0) {
         equipmentSet.necklace.associatedResource.extras.forEach(extra => {
@@ -209,8 +337,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.ring !== undefined) {
-      total += equipmentSet.ring.stats.agility;
-
       if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
         equipmentSet.ring.associatedResource.extras.length > 0) {
         equipmentSet.ring.associatedResource.extras.forEach(extra => {
@@ -224,12 +350,10 @@ export class EquipmentService {
     return total;
   }
 
-  getTotalLuckGain(equipmentSet: EquipmentSet) {
+  getTotalLuckMultiplierGain(equipmentSet: EquipmentSet) {
     var total = 0;
 
     if (equipmentSet.weapon !== undefined) {
-      total += equipmentSet.weapon.stats.luck;
-
       if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
         equipmentSet.weapon.associatedResource.extras.length > 0) {
         equipmentSet.weapon.associatedResource.extras.forEach(extra => {
@@ -241,8 +365,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.shield !== undefined) {
-      total += equipmentSet.shield.stats.luck;
-
       if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
         equipmentSet.shield.associatedResource.extras.length > 0) {
         equipmentSet.shield.associatedResource.extras.forEach(extra => {
@@ -254,8 +376,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.armor !== undefined) {
-      total += equipmentSet.armor.stats.luck;
-
       if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
         equipmentSet.armor.associatedResource.extras.length > 0) {
         equipmentSet.armor.associatedResource.extras.forEach(extra => {
@@ -267,8 +387,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.necklace !== undefined) {
-      total += equipmentSet.necklace.stats.luck;
-
       if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
         equipmentSet.necklace.associatedResource.extras.length > 0) {
         equipmentSet.necklace.associatedResource.extras.forEach(extra => {
@@ -280,8 +398,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.ring !== undefined) {    
-      total += equipmentSet.ring.stats.luck;
-
       if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
         equipmentSet.ring.associatedResource.extras.length > 0) {
         equipmentSet.ring.associatedResource.extras.forEach(extra => {
@@ -295,12 +411,10 @@ export class EquipmentService {
     return total;
   }
 
-  getTotalDefenseGain(equipmentSet: EquipmentSet) {
+  getTotalDefenseMultiplierGain(equipmentSet: EquipmentSet) {
     var total = 0;
 
     if (equipmentSet.weapon !== undefined) {
-      total += equipmentSet.weapon.stats.defense;
-
       if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
         equipmentSet.weapon.associatedResource.extras.length > 0) {
         equipmentSet.weapon.associatedResource.extras.forEach(extra => {
@@ -312,8 +426,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.shield !== undefined) {
-      total += equipmentSet.shield.stats.defense;
-
       if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
         equipmentSet.shield.associatedResource.extras.length > 0) {
         equipmentSet.shield.associatedResource.extras.forEach(extra => {
@@ -325,8 +437,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.armor !== undefined) {
-      total += equipmentSet.armor.stats.defense;
-
       if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
         equipmentSet.armor.associatedResource.extras.length > 0) {
         equipmentSet.armor.associatedResource.extras.forEach(extra => {
@@ -338,8 +448,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.necklace !== undefined) {
-      total += equipmentSet.necklace.stats.defense;
-
       if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
         equipmentSet.necklace.associatedResource.extras.length > 0) {
         equipmentSet.necklace.associatedResource.extras.forEach(extra => {
@@ -351,8 +459,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.ring !== undefined) {
-      total += equipmentSet.ring.stats.defense;
-
       if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
         equipmentSet.ring.associatedResource.extras.length > 0) {
         equipmentSet.ring.associatedResource.extras.forEach(extra => {
@@ -366,12 +472,10 @@ export class EquipmentService {
     return total;
   }
 
-  getTotalResistanceGain(equipmentSet: EquipmentSet) {
+  getTotalResistanceMultiplierGain(equipmentSet: EquipmentSet) {
     var total = 0;
 
     if (equipmentSet.weapon !== undefined) {
-      total += equipmentSet.weapon.stats.resistance;
-
       if (equipmentSet.weapon.associatedResource !== undefined && equipmentSet.weapon.associatedResource.extras !== undefined &&
         equipmentSet.weapon.associatedResource.extras.length > 0) {
         equipmentSet.weapon.associatedResource.extras.forEach(extra => {
@@ -383,8 +487,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.shield !== undefined) {
-      total += equipmentSet.shield.stats.resistance;
-
       if (equipmentSet.shield.associatedResource !== undefined && equipmentSet.shield.associatedResource.extras !== undefined &&
         equipmentSet.shield.associatedResource.extras.length > 0) {
         equipmentSet.shield.associatedResource.extras.forEach(extra => {
@@ -396,8 +498,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.armor !== undefined) {
-      total += equipmentSet.armor.stats.resistance;
-
       if (equipmentSet.armor.associatedResource !== undefined && equipmentSet.armor.associatedResource.extras !== undefined &&
         equipmentSet.armor.associatedResource.extras.length > 0) {
         equipmentSet.armor.associatedResource.extras.forEach(extra => {
@@ -409,8 +509,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.necklace !== undefined) {
-      total += equipmentSet.necklace.stats.resistance;
-
       if (equipmentSet.necklace.associatedResource !== undefined && equipmentSet.necklace.associatedResource.extras !== undefined &&
         equipmentSet.necklace.associatedResource.extras.length > 0) {
         equipmentSet.necklace.associatedResource.extras.forEach(extra => {
@@ -422,8 +520,6 @@ export class EquipmentService {
     }
 
     if (equipmentSet.ring !== undefined) {
-      total += equipmentSet.ring.stats.resistance;
-
       if (equipmentSet.ring.associatedResource !== undefined && equipmentSet.ring.associatedResource.extras !== undefined &&
         equipmentSet.ring.associatedResource.extras.length > 0) {
         equipmentSet.ring.associatedResource.extras.forEach(extra => {
@@ -504,6 +600,28 @@ export class EquipmentService {
         });
       }
     }
+
+    return total;
+  }
+
+  getTotalLinkEffectivenessGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined)
+      total += equipmentSet.weapon.stats.linkEffectiveness;
+
+    if (equipmentSet.shield !== undefined) {
+      total += equipmentSet.shield.stats.linkEffectiveness;
+    }
+
+    if (equipmentSet.armor !== undefined)
+      total += equipmentSet.armor.stats.linkEffectiveness;
+
+    if (equipmentSet.necklace !== undefined)
+      total += equipmentSet.necklace.stats.linkEffectiveness;
+
+    if (equipmentSet.ring !== undefined)
+      total += equipmentSet.ring.stats.linkEffectiveness;
 
     return total;
   }

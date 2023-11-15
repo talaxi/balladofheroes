@@ -43,6 +43,10 @@
     border: 2px solid var(--monkColor);
 }
 
+.characterTargetedThaumaturge:hover {
+    border: 2px solid var(--thaumaturgeColor);
+}
+
 .characterTargetedAll:hover {    
     border: 2px solid;
     border-image:  linear-gradient(to right, var(--adventurerColor) 25%, var(--archerColor) 25%, var(--archerColor) 50%,

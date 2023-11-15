@@ -1040,9 +1040,9 @@ export class ResourceGeneratorService {
   }
 
   getSlotItemValues(item: ItemsEnum) {
-    var baseLesserCrackedStatValue = 15;
-    var hpModifier = 5;
-    var defensiveModifier = 1.5;
+    var baseLesserCrackedStatValue = .015;
+    var hpModifier = 1;
+    var defensiveModifier = 1;
     if (item === ItemsEnum.LesserCrackedOpal) {
       return new CharacterStats(0, baseLesserCrackedStatValue, 0, 0, 0, 0);
     }
@@ -1062,7 +1062,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseLesserCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseCrackedStatValue = 30;
+    var baseCrackedStatValue = .03;
     if (item === ItemsEnum.CrackedOpal) {
       return new CharacterStats(0, baseCrackedStatValue, 0, 0, 0, 0);
     }
@@ -1082,7 +1082,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseCrackedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectCrackedStatValue = 45;
+    var basePerfectCrackedStatValue = .045;
     if (item === ItemsEnum.PerfectCrackedOpal) {
       return new CharacterStats(0, basePerfectCrackedStatValue, 0, 0, 0, 0);
     }
@@ -1143,7 +1143,7 @@ export class ResourceGeneratorService {
       return stats;
     }
 
-    var baseDullStatValue = 60;
+    var baseDullStatValue = 6;
     if (item === ItemsEnum.DullOpal) {
       return new CharacterStats(0, baseDullStatValue, 0, 0, 0, 0);
     }
@@ -1163,7 +1163,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseDullStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var basePerfectDullStatValue = 90;
+    var basePerfectDullStatValue = .075;
     if (item === ItemsEnum.PerfectDullOpal) {
       return new CharacterStats(0, basePerfectDullStatValue, 0, 0, 0, 0);
     }
@@ -1183,7 +1183,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectDullStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseFlawedStatValue = 120;
+    var baseFlawedStatValue = .09;
     if (item === ItemsEnum.FlawedOpal) {
       return new CharacterStats(0, baseFlawedStatValue, 0, 0, 0, 0);
     }
@@ -1203,7 +1203,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseFlawedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseLesserFlawedStatValue = 90;
+    var baseLesserFlawedStatValue = .05;
     if (item === ItemsEnum.LesserFlawedOpal) {
       return new CharacterStats(0, baseLesserFlawedStatValue, 0, 0, 0, 0);
     }
@@ -1223,7 +1223,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(baseLesserFlawedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
     
-    var basePerfectFlawedStatValue = 180;
+    var basePerfectFlawedStatValue = .105;
     if (item === ItemsEnum.PerfectFlawedOpal) {
       return new CharacterStats(0, basePerfectFlawedStatValue, 0, 0, 0, 0);
     }
@@ -1243,7 +1243,7 @@ export class ResourceGeneratorService {
       return new CharacterStats(basePerfectFlawedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
-    var baseRadiatingStoneValue = .05;
+    var baseRadiatingStoneValue = .1;
     if (item === ItemsEnum.RadiatingHolyStone) {
       var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
       stats.elementIncrease.holy = baseRadiatingStoneValue;
@@ -1275,7 +1275,7 @@ export class ResourceGeneratorService {
       return stats;
     }
 
-    var basePerfectRadiatingStoneValue = .075;
+    var basePerfectRadiatingStoneValue = .015;
     if (item === ItemsEnum.PerfectRadiatingHolyStone) {
       var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
       stats.elementIncrease.holy = basePerfectRadiatingStoneValue;

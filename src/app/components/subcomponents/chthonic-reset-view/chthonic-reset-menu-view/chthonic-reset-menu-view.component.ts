@@ -82,6 +82,8 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     this.bonusGodText = this.bonusGodText.replaceAll("Nemesis", "<span class='nemesisColor storyCharacterName'>Nemesis</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Dionysus", "<span class='dionysusColor storyCharacterName'>Dionysus</span>");
     this.bonusGodText = this.bonusGodText.replaceAll("Poseidon", "<span class='poseidonColor storyCharacterName'>Poseidon</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Hera", "<span class='heraColor storyCharacterName'>Hera</span>");
+    this.bonusGodText = this.bonusGodText.replaceAll("Aphrodite", "<span class='aphroditeColor storyCharacterName'>Aphrodite</span>");
   }
 
   getChthonicPower(god: God) {

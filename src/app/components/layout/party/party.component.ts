@@ -391,9 +391,9 @@ export class PartyComponent implements OnInit {
   }
 
   getCharacterNextLinkDamage(character: Character) {
-    return this.battleService.getLinkChainPercent(character.linkInfo);
+    return this.utilityService.genericRound(this.battleService.getLinkChainPercent(character.linkInfo, false, character.battleStats.linkEffectiveness));
   }
-
+ 
   isLinkOffCooldown(character: Character) {
     return character.linkInfo.cooldown <= 0;
   }

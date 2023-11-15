@@ -203,6 +203,10 @@ export class CharacterViewComponent implements OnInit {
     return (1 - this.character.battleStats.autoAttackCooldownReduction) * 100;
   }
 
+  getLinkEffectivenessBonus() {
+    return this.character.battleStats.linkEffectiveness;
+  }
+
   getOverdriveGainBonus() {
     return this.character.battleStats.overdriveGain;
   }
@@ -464,7 +468,7 @@ export class CharacterViewComponent implements OnInit {
 
     if (ability !== undefined && ability.userEffect.length > 0) {
       if (ability.name === "Second Wind")
-        return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
+        return "*" + this.utilityService.genericRound(1 + permanentAbilityUpgradeAmount);
       else
         return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
     }
@@ -823,6 +827,8 @@ export class CharacterViewComponent implements OnInit {
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.water * 100) + "% Water Damage Increase, ";
     if (upgradedStats.overdriveGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
+      if (upgradedStats.linkEffectiveness > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.linkEffectiveness * 100) + "% Link Effectiveness, ";
     if (upgradedStats.armorPenetration > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
     if (upgradedStats.abilityCooldownReduction > 0)

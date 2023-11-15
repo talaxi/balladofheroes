@@ -18,6 +18,10 @@ export class God {
     permanentStatGain: CharacterStats;
     @Type(() => CharacterStats)
     partyPermanentStatGain: CharacterStats;
+    /*@Type(() => CharacterStats)
+    permanentStatMultiplier: CharacterStats;*/
+    @Type(() => CharacterStats)
+    partyPermanentStatMultiplier: CharacterStats;
     @Type(() => Ability)
     abilityList: Ability[];
     @Type(() => Ability)
@@ -27,10 +31,15 @@ export class God {
     isAvailable: boolean;
     lastStatGain: CharacterStatEnum;
     statGainCount = 0;
-    permanentStat1GainCount: [number, number][]; //permanent god primary stat
-    permanentStat2GainCount: [number, number][]; //permanent god secondary stat
-    permanentStat3GainCount: [number, number][]; //permanent party primary stat
-    permanentStat4GainCount: [number, number][]; //permanent party xp boost
+    permanentStat1GainCount: [number, number][]; //permanent god primary stat -- Levels 50, 150, etc
+    permanentStat2GainCount: [number, number][]; //permanent god secondary stat -- Levels 100, 200, etc
+    permanentStat3GainCount: [number, number][]; //permanent party primary stat -- Levels 550, 650, etc
+    permanentStat4GainCount: [number, number][]; //permanent party xp boost -- Levels 600, 700, etc
+    permanentStat5GainCount: [number, number][]; //permanent party xp boost 2 -- Levels 2050, 2150, etc
+    permanentDuoAbilityGainCount: [number, number][]; //duo ability boost -- Levels 2100, 2200, etc
+    permanentStat6GainCount: [number, number][]; //permanent god primary stat multiplier -- Levels 3050, 3150, etc
+    permanentStat7GainCount: [number, number][]; //permanent party primary stat multiplier -- Levels 3100, 3200, etc
+    permanentStat8GainCount: [number, number][]; //permanent party super stat boost -- Levels 4050, 4100, 4150, etc
     permanentAbility1GainCount: [number, number][];
     permanentPassiveGainCount: [number, number][];
     permanentAbility2GainCount: [number, number][];
@@ -48,6 +57,8 @@ export class God {
         this.statGain = new CharacterStats(0, 0, 0, 0, 0, 0);
         this.permanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
         this.partyPermanentStatGain = new CharacterStats(0, 0, 0, 0, 0, 0);
+        //this.permanentStatMultiplier = new CharacterStats(1, 1, 1, 1, 1, 1);
+        this.partyPermanentStatMultiplier = new CharacterStats(1, 1, 1, 1, 1, 1);
         this.abilityList = [];
         this.exp = 0;
         this.expToNextLevel = 200;
@@ -57,10 +68,15 @@ export class God {
         this.permanentStat2GainCount = [];
         this.permanentStat3GainCount = [];
         this.permanentStat4GainCount = [];
+        this.permanentStat5GainCount = [];
+        this.permanentStat6GainCount = [];
+        this.permanentStat7GainCount = [];
+        this.permanentStat8GainCount = [];
         this.permanentAbility1GainCount = [];
         this.permanentPassiveGainCount = [];
         this.permanentAbility2GainCount = [];
         this.permanentAbility3GainCount = [];
+        this.permanentDuoAbilityGainCount = [];
         this.permanentAbilityUpgrades = [];
 
         this.affinityLevel = 0;
@@ -90,6 +106,10 @@ export class God {
             return new PrimaryStats(.85, 1.1, 1.15, 1.05, 1.05, .7); //5.9 total
         else if (type === GodEnum.Poseidon)
             return new PrimaryStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
+            else if (type === GodEnum.Aphrodite)
+            return new PrimaryStats(1.2, .975, .925, 1.05, 1, 1.025); //6.175 total
+            else if (type === GodEnum.Hera)
+            return new PrimaryStats(.875, 1.075, .825, .975, 1.05, 1.15); //5.95 total
 
         return new PrimaryStats(1, 1, 1, 1, 1, 1);
     }

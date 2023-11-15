@@ -1326,7 +1326,7 @@ export class BattleService {
       //console.log(ability.name + " Non DD Link");
       user.linkInfo.remainingLinks -= 1;
       user.linkInfo.linkChain += 1;
-      user.linkInfo.bonusChain += this.utilityService.nonDamageLinkBoost;
+      user.linkInfo.bonusChain += this.utilityService.nonDamageLinkBoost * (1 + user.battleStats.linkEffectiveness);
 
       if (user.linkInfo.remainingLinks <= 0) {
         user.linkInfo.linkChain = 0;
@@ -1402,7 +1402,7 @@ export class BattleService {
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
 
-      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat);
+      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, user.battleStats.linkEffectiveness);
       abilityEffectiveness *= linkMultiplier;
 
       var flowEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flow);
@@ -1498,7 +1498,7 @@ export class BattleService {
       }
     }
     else if (abilityCopy.heals) {
-      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability);
+      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, false, user.battleStats.linkEffectiveness);
       abilityEffectiveness *= linkMultiplier;
 
       var healingDoneModifier = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
@@ -1871,7 +1871,7 @@ export class BattleService {
       var permanentUpgrades = this.getGodPermanentAbilityUpgrades(secondWind, user);
 
       if (permanentUpgrades !== undefined && permanentUpgrades.userEffect.length > 0)
-        statusEffect.effectiveness += permanentUpgrades.userEffect[0].effectiveness;
+        statusEffect.effectiveness *= 1 + permanentUpgrades.userEffect[0].effectiveness;
 
       statusEffect.count = statusEffect.maxCount;
       this.applyStatusEffect(statusEffect, user, party, user);
@@ -2742,7 +2742,7 @@ export class BattleService {
     return effectiveness;
   }
 
-  handleDamageDealingLink(linkInfo: LinkInfo, ability: Ability, abilityRepeats: boolean = false) {
+  handleDamageDealingLink(linkInfo: LinkInfo, ability: Ability, abilityRepeats: boolean = false, linkEffectivenessBonus: number) {
     var linkMultiplier = 1;
 
     if (ability.name !== "Barrage" && ability.manuallyTriggered && linkInfo.remainingLinks > 0 && linkInfo.cooldown <= 0) {
@@ -2751,7 +2751,7 @@ export class BattleService {
         linkInfo.linkChain += 1;
       }
 
-      linkMultiplier = 1 + (this.getLinkChainPercent(linkInfo, abilityRepeats) / 100);
+      linkMultiplier = 1 + (this.getLinkChainPercent(linkInfo, abilityRepeats, linkEffectivenessBonus) / 100);
 
 
       if (linkInfo.remainingLinks <= 0) {
@@ -2764,13 +2764,14 @@ export class BattleService {
     return linkMultiplier;
   }
 
-  getLinkChainPercent(linkInfo: LinkInfo, abilityRepeats: boolean = false) {
+  getLinkChainPercent(linkInfo: LinkInfo, abilityRepeats: boolean = false, linkEffectivenessBonus: number) {
     var repeaterBonus = 0; //if an ability repeats, add 1 temporarily so that it doesn't add it every time on repeat
 
     if (abilityRepeats)
       repeaterBonus += 1;
 
-    return 10 + ((linkInfo.linkChain + repeaterBonus) * this.utilityService.damageLinkBoost) + (linkInfo.bonusChain);
+      //console.log("10 + (" + linkInfo.linkChain + " + " + repeaterBonus + ") * " + this.utilityService.damageLinkBoost + " * (1 + " + linkEffectivenessBonus + ") + " + (linkInfo.bonusChain));
+    return 10 + ((linkInfo.linkChain + repeaterBonus) * this.utilityService.damageLinkBoost *  (1  + linkEffectivenessBonus)) + (linkInfo.bonusChain);
   }
 
   getDamageMultiplier(character: Character, target: Character, additionalDamageMultiplier?: number, isAutoAttack: boolean = false, elementalType: ElementalTypeEnum = ElementalTypeEnum.None, abilityName: string = "", isAoe: boolean = false, willAbilityRepeat: boolean = false, lastOfMultiTarget: boolean = true, ability?: Ability) {
@@ -3933,17 +3934,18 @@ export class BattleService {
   //check for upper limits and any weird logic
   gainHp(character: Character, healAmount: number) {
     var healModifier = 1;
+    var healingReceivedUpModifier = 0;
+    
+    var healingReceivedUp = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingReceivedUp);
+    if (healingReceivedUp !== undefined)
+      healingReceivedUpModifier = healingReceivedUp.effectiveness - 1;  
 
     if (character.battleStats.healingReceived > 0)
-      healModifier = 1 + character.battleStats.healingReceived;
+      healModifier = 1 + character.battleStats.healingReceived + healingReceivedUpModifier;
 
     var reduceHealingDebuff = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceHealing);
     if (reduceHealingDebuff !== undefined)
       healModifier *= reduceHealingDebuff.effectiveness;
-
-    var healingReceivedUp = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingReceivedUp);
-    if (healingReceivedUp !== undefined)
-      healModifier *= healingReceivedUp.effectiveness;  
 
     healAmount = healAmount * healModifier;
     character.battleStats.currentHp += healAmount;

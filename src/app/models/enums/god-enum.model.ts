@@ -9,5 +9,7 @@ export enum GodEnum {
   Artemis,
   Hades,
   Dionysus,
-  Nemesis
+  Nemesis,
+  Aphrodite,
+  Hera
 }

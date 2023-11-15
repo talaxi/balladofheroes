@@ -60,6 +60,13 @@ export class HeaderComponent implements OnInit {
   ngOnInit(): void {
   }
 
+  openZodiacPopover(content: any) {
+    if (this.deviceDetectorService.isMobile())
+      this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+    else
+      this.dialog.open(content, { width: '75%', height: '80%' });
+  }
+
   getZodiacSign() {
     var zodiacSrc = "assets/svg/";
     var zodiacSign = this.zodiacService.getCurrentZodiac();

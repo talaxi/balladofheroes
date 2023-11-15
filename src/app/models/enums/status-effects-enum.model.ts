@@ -181,4 +181,6 @@ export enum StatusEffectEnum {
     DebuffImmunity,
     DealMissingHpPercent,
     HealingReceivedUp,
+    FatalAttraction,
+    PassionateRhythm
   }

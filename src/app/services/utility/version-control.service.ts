@@ -1378,6 +1378,17 @@ export class VersionControlService {
             else
               secondWind.userEffect[0].maxCount = 1;
             }
+
+            var heavenlyShield = athena.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (heavenlyShield !== undefined) { 
+              var originalEffect = heavenlyShield.userEffect[0];
+              heavenlyShield.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.HealingReceivedUp, originalEffect.duration, 1.25, false, true));
+            }
+
+            var permanentSecondWind = athena.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);            
+            if (permanentSecondWind !== undefined && permanentSecondWind.userEffect.length > 0) {
+              permanentSecondWind.userEffect[0].effectiveness = (permanentSecondWind.userEffect[0].effectiveness / 250) * .05;
+            }
           } 
         }
 

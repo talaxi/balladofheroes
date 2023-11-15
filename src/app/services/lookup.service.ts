@@ -129,7 +129,7 @@ export class LookupService {
       description = "The Warrior class focuses on taking damage as much as dealing damage with the ability to force enemies' attention and retaliate against attacks.";
     if (type === CharacterEnum.Priest)
       description = "The Priest class focuses on keeping the party healthy with healing and barrier effects.";
-      if (type === CharacterEnum.Monk)
+    if (type === CharacterEnum.Monk)
       description = "The Monk class focuses on increasing the target's damage taken and timing different attacks to deal increased damage.";
 
     return description;
@@ -565,7 +565,7 @@ export class LookupService {
       name = "New Class: Warrior<br/><br/>" + this.getCharacterDescription(CharacterEnum.Warrior);
     else if (type === ItemsEnum.PriestClass)
       name = "New Class: Priest<br/><br/>" + this.getCharacterDescription(CharacterEnum.Priest);
-      else if (type === ItemsEnum.MonkClass)
+    else if (type === ItemsEnum.MonkClass)
       name = "New Class: Monk<br/><br/>" + this.getCharacterDescription(CharacterEnum.Monk);
     else if (type === ItemsEnum.Nemesis)
       name = "New God: Nemesis<br/><br/>" + this.getGodDescription(GodEnum.Nemesis);
@@ -773,17 +773,17 @@ export class LookupService {
     var slotItemValues = this.resourceGeneratorService.getSlotItemValues(item);
 
     if (slotItemValues.maxHp > 0)
-      description = "+<b>" + slotItemValues.maxHp + " Max HP</b>";
+      description = "+<b>" + this.utilityService.genericRound(slotItemValues.maxHp * 100) + "% Max HP</b>";
     if (slotItemValues.attack > 0)
-      description = "+<b>" + slotItemValues.attack + " Attack</b>";
+      description = "+<b>" + this.utilityService.genericRound(slotItemValues.attack * 100) + "% Attack</b>";
     if (slotItemValues.defense > 0)
-      description = "+<b>" + slotItemValues.defense + " Defense</b>";
+      description = "+<b>" + this.utilityService.genericRound(slotItemValues.defense * 100) + "% Defense</b>";
     if (slotItemValues.agility > 0)
-      description = "+<b>" + slotItemValues.agility + " Agility</b>";
+      description = "+<b>" + this.utilityService.genericRound(slotItemValues.agility * 100) + "% Agility</b>";
     if (slotItemValues.luck > 0)
-      description = "+<b>" + slotItemValues.luck + " Luck</b>";
+      description = "+<b>" + this.utilityService.genericRound(slotItemValues.luck * 100) + "% Luck</b>";
     if (slotItemValues.resistance > 0)
-      description = "+<b>" + slotItemValues.resistance + " Resistance</b>";
+      description = "+<b>" + this.utilityService.genericRound(slotItemValues.resistance * 100) + "% Resistance</b>";
 
     if (slotItemValues.elementIncrease.holy > 0)
       description = "+<b>" + (slotItemValues.elementIncrease.holy * 100) + "% Holy Damage Increase</b>";
@@ -1377,7 +1377,7 @@ export class LookupService {
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 3;
       equipmentPiece.set = EquipmentSetEnum.Poseidon;
-    }    
+    }
     if (type === ItemsEnum.ShadowSpear) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Spear);
       equipmentPiece.stats = new CharacterStats(0, 1000, 0, 0, 1500, 500);
@@ -1391,7 +1391,7 @@ export class LookupService {
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 4;
       equipmentPiece.set = EquipmentSetEnum.Shadow;
-    }  
+    }
     if (type === ItemsEnum.RagingBull) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Hammer);
       equipmentPiece.stats = new CharacterStats(0, 3500, 0, 0, 0, 0);
@@ -1403,7 +1403,7 @@ export class LookupService {
       equipmentEffect.chance = .1;
       equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantHpPercentDamage, 0, .03, true, false, false, "Raging Bull", 95000, undefined, undefined, undefined, false));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
-      equipmentPiece.slotCount = 5;      
+      equipmentPiece.slotCount = 5;
     }
 
     //shields
@@ -2081,7 +2081,7 @@ export class LookupService {
       equipmentEffect.chance = .2;
       equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ReduceCooldowns, -1, 1.1, true, true, false, type.toString()));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
-    }    
+    }
     if (type === ItemsEnum.ShadowNecklace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
       equipmentPiece.stats = new CharacterStats(0, 1000, 0, 0, 750, 0);
@@ -2323,7 +2323,7 @@ export class LookupService {
       equipmentPiece.stats.aoeDamage = .1;
       equipmentPiece.stats.criticalMultiplier = .1;
       equipmentPiece.slotCount = 2;
-      
+
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
       equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, -1, .25, true, false, true, this.dictionaryService.getItemName(type).toString(), 0, false, undefined, 30));
@@ -2754,7 +2754,7 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Total damage is increased by <strong>" + secondaryEffectivenessPercent + "%</strong> for every ability used since the last time Spirit Unleashed was used, up to <strong>" + thresholdAmountPercent + "</strong>%. " + cooldown + " second cooldown.";
 
       if (!fromCharacterPage)
-      abilityDescription += "<br/><br/>Current Bonus: " + this.utilityService.genericRound(ability.count * ability.secondaryEffectiveness * 100) + "%";
+        abilityDescription += "<br/><br/>Current Bonus: " + this.utilityService.genericRound(ability.count * ability.secondaryEffectiveness * 100) + "%";
     }
 
     return this.utilityService.getSanitizedHtml(abilityDescription);
@@ -2771,6 +2771,7 @@ export class LookupService {
     var thresholdAmountPercent = 0;
     var relatedUserGainStatusEffectDuration = 0;
     var relatedUserGainStatusEffectEffectiveness = 0;
+    var secondWindUserGainStatusEffectEffectiveness = 0;
     var relatedUserGainStatusEffectEffectivenessPercent = 0;
     var relatedUserGainStatusEffectTickFrequency = 0;
     var relatedUserGainStatusEffectThreshold = 0;
@@ -2829,21 +2830,22 @@ export class LookupService {
         relatedUserGainMaxCount = relatedUserGainStatusEffect.maxCount;
         relatedUserGainStatusEffectThreshold = relatedUserGainStatusEffect.threshold + permanentUserEffectThresholdIncrease;
         relatedUserGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedUserGainStatusEffect.effectiveness + permanentUserEffectEffectivenessIncrease);
+        secondWindUserGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedUserGainStatusEffect.effectiveness * (1 + permanentUserEffectEffectivenessIncrease));
         if (relatedUserGainStatusEffectEffectiveness < 1)
           relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness) * 100, 2);
         else
           relatedUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedUserGainStatusEffectEffectiveness - 1) * 100, 2);
         relatedUserGainStatusEffectTickFrequency = relatedUserGainStatusEffect.tickFrequency;
       }
-      
+
       var relatedSecondaryUserGainStatusEffect = ability?.userEffect[1];
 
       if (relatedSecondaryUserGainStatusEffect !== undefined) {
         relatedSecondaryUserGainStatusEffectEffectiveness = this.utilityService.genericRound(relatedSecondaryUserGainStatusEffect.effectiveness + permanentUserEffectEffectivenessIncrease);
         if (relatedSecondaryUserGainStatusEffectEffectiveness < 1)
-        relatedSecondaryUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedSecondaryUserGainStatusEffectEffectiveness) * 100, 2);
+          relatedSecondaryUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedSecondaryUserGainStatusEffectEffectiveness) * 100, 2);
         else
-        relatedSecondaryUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedSecondaryUserGainStatusEffectEffectiveness - 1) * 100, 2);      
+          relatedSecondaryUserGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedSecondaryUserGainStatusEffectEffectiveness - 1) * 100, 2);
       }
 
       var relatedTargetGainStatusEffect = ability?.targetEffect[0];
@@ -2857,15 +2859,15 @@ export class LookupService {
           relatedTargetGainStatusEffectEffectivenessPercent = this.utilityService.roundTo((relatedTargetGainStatusEffectEffectiveness - 1) * 100, this.utilityService.genericRoundTo);
         relatedTargetGainStatusEffectTickFrequency = relatedTargetGainStatusEffect.tickFrequency;
       }
-    }    
+    }
 
     //Athena
     if (abilityName === "Second Wind")
-      abilityDescription = "After using an ability, your next " + (relatedUserGainMaxCount === 1 ? "auto attack heals" : relatedUserGainMaxCount + " auto attacks heal" ) + " for <strong>" + relatedUserGainStatusEffectEffectiveness + "</strong> HP. Passive.";
+      abilityDescription = "After using an ability, your next " + (relatedUserGainMaxCount === 1 ? "auto attack heals" : relatedUserGainMaxCount + " auto attacks heal") + " for <strong>" + this.utilityService.bigNumberReducer(secondWindUserGainStatusEffectEffectiveness) + "</strong> HP. Passive.";
     if (abilityName === "Divine Strike")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage. Heal for <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt. " + cooldown + " second cooldown.";
     if (abilityName === "Heavenly Shield")
-      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and increase healing received by <strong>" + (100 - relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+      abilityDescription = "Reduce damage taken by <strong>" + (100 - relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and increase healing received by <strong>" + (relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
     if (abilityName === "Blinding Light")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Holy</span> damage to all targets and apply a <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> Blind for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
@@ -2958,6 +2960,26 @@ export class LookupService {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage to all targets. If the previous ability used was a Poseidon ability, increase the damage dealt by <strong>" + secondaryEffectiveAmountPercent + "%</strong>. " + cooldown + " second cooldown.";
     if (abilityName === "Tsunami")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Water</span> damage to a target " + (ability === undefined ? "2" : (ability.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).length + 1)) + " times and give the user King of the Sea, increasing Damage Dealt by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. Increase duration by <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds for each hit. If the previous ability used was a Poseidon ability, the ability hits " + secondaryEffectiveAmount + " more time" + (secondaryEffectiveAmount > 1 ? "s" : "") + ". " + cooldown + " second cooldown.";
+
+    //Aphrodite
+    if (abilityName === "Passionate Rhythm")
+      abilityDescription = "After you use an auto attack or ability, your ally's next auto attack or ability has its effectiveness increased by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "</strong>%. Passive.";
+      if (abilityName === "Fatal Attraction")
+      abilityDescription = "Increase the damage of the next ability your ally uses by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. Cast the ability again. " + cooldown + " second cooldown.";
+    if (abilityName === "Power of Love")
+      abilityDescription = "Increase your Ally's highest non HP stat by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>and your highest non HP stat by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
+    if (abilityName === "Kiss of Death")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> plus <strong>" + (effectivenessPercent) + "% of ally's Attack</strong> damage to a target. Combine your Luck for the critical chance. " + cooldown + " second cooldown.";
+
+    //Hera
+    if (abilityName === "Shapeshift")
+      abilityDescription = ". Passive.";
+    if (abilityName === "Strut")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target and increase Attack by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If you are in Peacock form, instead gain the Strut buff that increases Attack and Luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "</strong>%. " + cooldown + " second cooldown.";
+    if (abilityName === "Espionage")
+      abilityDescription = "Reduce enemy damage dealt by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. If you are in Crow form, instead give the enemy the Espionage debuff that reduces enemy damage dealt by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> and all elemental resistances by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong>. " + cooldown + " second cooldown.";
+    if (abilityName === "Puncture")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> <span class='bold'>Air</span> damage to a target two times. If you are in Panther form, you also apply a Damage over Time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
 
 
     return abilityDescription;
@@ -4166,7 +4188,7 @@ export class LookupService {
     }
     if (ability.name === "Hydra-Poisoned Arrows") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target. Apply a damage over time effect that deals an additional <strong>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. " + cooldown + " second cooldown.";
-    }    
+    }
     if (ability.name === "Frenzied Assault") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> Water damage to a target three times. " + cooldown + " second cooldown.";
     }
@@ -4468,20 +4490,20 @@ export class LookupService {
       description = "Chains of Fate";
     if (type === StatusEffectEnum.RepeatDamageAfterDelay)
       description = "Repeat Damage After Delay";
-      if (type === StatusEffectEnum.Insight)
-        description = "Insight";
-        if (type === StatusEffectEnum.HealOverTime)
-        description = "Heal Over Time";
-        if (type === StatusEffectEnum.Current)
-        description = "Current";
-        if (type === StatusEffectEnum.FlamingMane)
-        description = "Flaming Mane";
-        if (type === StatusEffectEnum.DebuffImmunity)
-        description = "Debuff Immunity";
-        if (type === StatusEffectEnum.Flow)
-        description = "Flow";
-        if (type === StatusEffectEnum.KingOfTheSea)
-        description = "King of the Sea";
+    if (type === StatusEffectEnum.Insight)
+      description = "Insight";
+    if (type === StatusEffectEnum.HealOverTime)
+      description = "Heal Over Time";
+    if (type === StatusEffectEnum.Current)
+      description = "Current";
+    if (type === StatusEffectEnum.FlamingMane)
+      description = "Flaming Mane";
+    if (type === StatusEffectEnum.DebuffImmunity)
+      description = "Debuff Immunity";
+    if (type === StatusEffectEnum.Flow)
+      description = "Flow";
+    if (type === StatusEffectEnum.KingOfTheSea)
+      description = "King of the Sea";
 
     return description;
   }
@@ -4522,6 +4544,8 @@ export class LookupService {
       description = "Increase Defense and Resistance by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
     if (statusEffect.type === StatusEffectEnum.HealingDoneUp)
       description = "Increase Healing Done by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
+    if (statusEffect.type === StatusEffectEnum.HealingReceivedUp)
+      description = "Increase Healing Received by " + Math.round((statusEffect.effectiveness - 1) * 100) + "%.";
 
     if (statusEffect.type === StatusEffectEnum.AgilityDown)
       description = "Decrease Agility by " + Math.round((1 - statusEffect.effectiveness) * 100) + "%.";
@@ -4626,7 +4650,7 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.Submerge)
       description = "Cannot be targeted directly by any attacks. Force to re-emerge by dealing " + this.utilityService.bigNumberReducer(statusEffect.maxCount) + " damage. Damage remaining: " + this.utilityService.bigNumberReducer(statusEffect.maxCount - statusEffect.count);
     if (statusEffect.type === StatusEffectEnum.InstantHealAfterAutoAttack)
-      description = "Your next " + (statusEffect.count === 1 ? "auto attack" : statusEffect.count + "  auto attacks" ) + " will also heal you for " + statusEffect.effectiveness + " HP.";
+      description = "Your next " + (statusEffect.count === 1 ? "auto attack" : statusEffect.count + "  auto attacks") + " will also heal you for " + this.utilityService.bigNumberReducer(statusEffect.effectiveness) + " HP.";
     if (statusEffect.type === StatusEffectEnum.Mark)
       description = "Damage against this target is increased by " + this.utilityService.roundTo(((statusEffect.effectiveness - 1) * 100), 2) + "%.";
     if (statusEffect.type === StatusEffectEnum.Thyrsus)
@@ -4653,7 +4677,7 @@ export class LookupService {
 
     } if (statusEffect.type === StatusEffectEnum.StockpileRock)
       description = "Stockpiling rocks. Current total is " + statusEffect.stackCount + ".";
-      if (statusEffect.type === StatusEffectEnum.DamageShield)
+    if (statusEffect.type === StatusEffectEnum.DamageShield)
       description = "Reduce any direct damage taken to 0 for " + statusEffect.maxCount + " total hits. Remaining hits: " + (statusEffect.maxCount - statusEffect.count) + ".";
     if (statusEffect.type === StatusEffectEnum.Stagger)
       description = "Increase auto attack cooldown by " + Math.round((statusEffect.effectiveness) * 100) + "%.";
@@ -5908,6 +5932,8 @@ export class LookupService {
       equipmentStats += "+" + (equipment.stats.armorPenetration * 100) + "% Armor Penetration<br />";
     if (equipment.stats.overdriveGain > 0)
       equipmentStats += "+" + (equipment.stats.overdriveGain * 100) + "% Overdrive Gain Bonus<br />";
+    if (equipment.stats.linkEffectiveness > 0)
+      equipmentStats += "+" + (equipment.stats.linkEffectiveness * 100) + "% Link Effectiveness<br />";
     if (equipment.stats.abilityCooldownReduction > 0)
       equipmentStats += "+" + (equipment.stats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction<br />";
     if (equipment.stats.autoAttackCooldownReduction > 0)
@@ -6339,7 +6365,7 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
         var set5Amount = this.globalService.getSetBonusAmount(equipment.set, 5);
 
-        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + this.utilityService.genericRound((1-set2Amount) * 100) + "% Ability Cooldown Reduction</span><br/>";
+        equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + this.utilityService.genericRound((1 - set2Amount) * 100) + "% Ability Cooldown Reduction</span><br/>";
         equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% Water Damage Bonus</span><br/>";
         equipmentEffects += "<span" + (setCount >= 5 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 5 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(5) Set</span></b>: Your water abilities have a " + (set5Amount * 100) + "% chance to trigger again after use.</span><br/>";
       }
@@ -6349,7 +6375,7 @@ export class LookupService {
         var set3Amount = this.globalService.getSetBonusAmount(equipment.set, 3);
 
         equipmentEffects += "<span" + (setCount >= 2 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 2 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(2) Set</span></b>: +" + (set2Amount * 100) + "% Multiple Target Damage Bonus</span><br/>";
-        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% chance to gain Dodge for 6 seconds after being hit by an ability.</span><br/>";        
+        equipmentEffects += "<span" + (setCount >= 3 ? "" : " class='unactivatedSetBonus'") + "><b><span class='" + (setCount >= 3 ? "positiveStatusEffectColor" : "unactivatedSetColor") + "'>(3) Set</span></b>: +" + (set3Amount * 100) + "% chance to gain Dodge for 6 seconds after being hit by an ability.</span><br/>";
       }
     }
 
@@ -6365,7 +6391,8 @@ export class LookupService {
       'archerColor': type === CharacterEnum.Archer,
       'warriorColor': type === CharacterEnum.Warrior,
       'priestColor': type === CharacterEnum.Priest,
-      'monkColor': type === CharacterEnum.Monk
+      'monkColor': type === CharacterEnum.Monk,
+      'thaumaturgeColor': type === CharacterEnum.Thaumaturge
     };
   }
 
@@ -6381,6 +6408,8 @@ export class LookupService {
       'hadesColor': type === GodEnum.Hades,
       'dionysusColor': type === GodEnum.Dionysus,
       'nemesisColor': type === GodEnum.Nemesis,
+      'aphroditeColor': type === GodEnum.Aphrodite,
+      'heraColor': type === GodEnum.Hera,
     };
   }
 
@@ -6652,6 +6681,24 @@ export class LookupService {
     }
     else if (abilityName === "Tsunami") {
       src += "tsunami.svg";
+    }
+    else if (abilityName === "Fatal Attraction") {
+      src += "fatalAttraction.svg";
+    }
+    else if (abilityName === "Power of Love") {
+      src += "powerOfLove.svg";
+    }
+    else if (abilityName === "Kiss of Death") {
+      src += "kissOfDeath.svg";
+    }
+    else if (abilityName === "Strut") {
+      src += "strut.svg";
+    }
+    else if (abilityName === "Espionage") {
+      src += "espionage.svg";
+    }
+    else if (abilityName === "Puncture") {
+      src += "puncture.svg";
     }
     else
       src += "sword.svg";
@@ -6961,6 +7008,54 @@ export class LookupService {
     return "Reduce damage taken from enemy attacks.";
   }
 
+  getDefenseMultiplierDescription() {
+    return "Multiplier applied to your total Defense.";
+  }
+
+  getAttackMultiplierDescription() {
+    return "Multiplier applied to your total Attack.";
+  }
+
+  getLuckMultiplierDescription() {
+    return "Multiplier applied to your total Luck.";
+  }
+
+  getResistanceMultiplierDescription() {
+    return "Multiplier applied to your total Resistance.";
+  }
+
+  getMaxHpMultiplierDescription() {
+    return "Multiplier applied to your total Max HP.";
+  }
+
+  getAgilityMultiplierDescription() {
+    return "Multiplier applied to your total Agility.";
+  }
+
+  getPartyDefenseMultiplierDescription() {
+    return "A Defense multiplier that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyAttackMultiplierDescription() {
+    return "An Attak multiplier that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyLuckMultiplierDescription() {
+    return "A Luck multiplier that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyResistanceMultiplierDescription() {
+    return "A Resistance multiplier that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyMaxHpMultiplierDescription() {
+    return "A Max HP multiplier that is applied to all characters regardless of what god they have equipped.";
+  }
+
+  getPartyAgilityMultiplierDescription() {
+    return "An Agility multiplier that is applied to all characters regardless of what god they have equipped.";
+  }
+
   getAgilityDescription(character?: Character) {
     if (character === undefined) {
       return "Increase auto attack damage.";
@@ -7113,6 +7208,10 @@ export class LookupService {
     return "Increases how frequently your damage over time effects deal damage.";
   }
 
+  getLinkEffectivenessBonusDescription() {
+    return "Increases the damage multiplier of Link abilities.";
+  }
+
   getElementResistanceReductionDescription() {
     return "Reduce an enemy's elemental resistances when you attack.";
   }
@@ -7224,6 +7323,114 @@ export class LookupService {
 
     if (god.partyPermanentStatGain.resistance > 0)
       breakdown += "Permanent Stat Gain: +" + Math.round(god.partyPermanentStatGain.resistance) + "<br />";
+
+    return breakdown;
+  }
+
+  /*getGodAttackStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.permanentStatMultiplier.attack > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.permanentStatMultiplier.attack) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodDefenseStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.permanentStatMultiplier.defense > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.permanentStatMultiplier.defense) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodLuckStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.permanentStatMultiplier.luck > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.permanentStatMultiplier.luck) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodMaxHpStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.permanentStatMultiplier.maxHp > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.permanentStatMultiplier.maxHp) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodAgilityStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.permanentStatMultiplier.agility > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.permanentStatMultiplier.agility) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodResistanceStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.permanentStatMultiplier.resistance > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.permanentStatMultiplier.resistance) + "<br />";
+
+    return breakdown;
+  }*/
+
+  getGodPartyResistanceStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatMultiplier.resistance > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.partyPermanentStatMultiplier.resistance) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodPartyAttackStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatMultiplier.attack > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.partyPermanentStatMultiplier.attack) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodPartyDefenseStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatMultiplier.defense > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.partyPermanentStatMultiplier.defense) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodPartyLuckStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatMultiplier.luck > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.partyPermanentStatMultiplier.luck) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodPartyAgilityStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatMultiplier.agility > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.partyPermanentStatMultiplier.agility) + "<br />";
+
+    return breakdown;
+  }
+
+  getGodPartyMaxHpStatMultiplierBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.partyPermanentStatMultiplier.maxHp > 0)
+      breakdown += "Permanent Stat Gain: *" + this.utilityService.genericRound(god.partyPermanentStatMultiplier.maxHp) + "<br />";
 
     return breakdown;
   }
@@ -7446,6 +7653,17 @@ export class LookupService {
     return breakdown;
   }
 
+  getGodLinkEffectivenessBonusStatBreakdown(god: God) {
+    var breakdown = "";
+
+    if (god.statGain.linkEffectiveness > 0)
+      breakdown += "Base Stat Gain: +" + this.utilityService.roundTo(god.statGain.linkEffectiveness * 100, 2) + "%<br />";
+    if (god.permanentStatGain.linkEffectiveness > 0)
+      breakdown += "Permanent Stat Gain: +" + this.utilityService.roundTo(god.permanentStatGain.linkEffectiveness * 100, 2) + "%<br />";
+
+    return breakdown;
+  }
+
   getGodElementResistanceReductionStatBreakdown(god: God) {
     var breakdown = "";
 
@@ -7586,7 +7804,7 @@ export class LookupService {
     var zodiacGods = this.zodiacService.getBonusGods();
     if (zodiacGods.some(item => item === character.assignedGod1))
       god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
-      if (zodiacGods.some(item => item === character.assignedGod2))
+    if (zodiacGods.some(item => item === character.assignedGod2))
       god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
 
     if (character.baseStats.maxHp > 0)
@@ -7595,13 +7813,13 @@ export class LookupService {
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.maxHp + assignedGod1.permanentStatGain.maxHp;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.maxHp + assignedGod2.permanentStatGain.maxHp;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7624,6 +7842,23 @@ export class LookupService {
     if (this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getMaxHpBoostPercent(), 2) + "<br />";
 
+    if (this.equipmentService.getTotalMaxHpMultiplierGain(character.equipmentSet) > 0)
+      breakdown += "Gems: *" + this.utilityService.genericRound(1 + this.equipmentService.getTotalMaxHpMultiplierGain(character.equipmentSet)) + "<br/>";
+
+    /*if (assignedGod1 !== undefined && assignedGod1.permanentStatMultiplier.maxHp > 1)
+    breakdown += assignedGod1.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod1.permanentStatMultiplier.maxHp, 2) + "<br />";
+
+    if (assignedGod2 !== undefined && assignedGod2.permanentStatMultiplier.maxHp > 1)
+    breakdown += assignedGod2.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod2.permanentStatMultiplier.maxHp, 2) + "<br />";
+*/
+    var godPartyMultiplier = 1;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyMultiplier += god.partyPermanentStatMultiplier.maxHp - 1;
+    });
+    if (godPartyMultiplier > 1)
+      breakdown += "God Party Multiplier: *" + this.utilityService.roundTo(godPartyMultiplier, 3) + "<br />";
+
+
     return breakdown;
   }
 
@@ -7631,13 +7866,13 @@ export class LookupService {
     var breakdown = "";
     var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
     var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
-    
+
     var god1ZodiacBoost = 1;
     var god2ZodiacBoost = 1;
     var zodiacGods = this.zodiacService.getBonusGods();
     if (zodiacGods.some(item => item === character.assignedGod1))
       god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
-      if (zodiacGods.some(item => item === character.assignedGod2))
+    if (zodiacGods.some(item => item === character.assignedGod2))
       god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
 
     if (character.baseStats.attack > 0)
@@ -7646,13 +7881,13 @@ export class LookupService {
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.attack + assignedGod1.permanentStatGain.attack;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.attack + assignedGod2.permanentStatGain.attack;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7675,6 +7910,23 @@ export class LookupService {
     if (this.globalService.globalVar.chthonicPowers.getAttackBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getAttackBoostPercent(), 2) + "<br />";
 
+    if (this.equipmentService.getTotalAttackMultiplierGain(character.equipmentSet) > 0)
+      breakdown += "Gems: *" + this.utilityService.genericRound(1 + this.equipmentService.getTotalAttackMultiplierGain(character.equipmentSet)) + "<br/>";
+
+    /*if (assignedGod1 !== undefined && assignedGod1.permanentStatMultiplier.attack > 1)
+    breakdown += assignedGod1.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod1.permanentStatMultiplier.attack, 2) + "<br />";
+
+    if (assignedGod2 !== undefined && assignedGod2.permanentStatMultiplier.attack > 1)
+    breakdown += assignedGod2.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod2.permanentStatMultiplier.attack, 2) + "<br />";
+*/
+    var godPartyMultiplier = 1;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyMultiplier += god.partyPermanentStatMultiplier.attack - 1;
+    });
+    if (godPartyMultiplier > 1)
+      breakdown += "God Party Multiplier: *" + this.utilityService.roundTo(godPartyMultiplier, 3) + "<br />";
+
+
     return breakdown;
   }
 
@@ -7688,22 +7940,22 @@ export class LookupService {
     var zodiacGods = this.zodiacService.getBonusGods();
     if (zodiacGods.some(item => item === character.assignedGod1))
       god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
-      if (zodiacGods.some(item => item === character.assignedGod2))
+    if (zodiacGods.some(item => item === character.assignedGod2))
       god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
-    
+
     if (character.baseStats.defense > 0)
       breakdown += "Base Stat Gain: +" + Math.round(character.baseStats.defense) + "<br />";
 
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.defense + assignedGod1.permanentStatGain.defense;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.defense + assignedGod2.permanentStatGain.defense;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7726,6 +7978,22 @@ export class LookupService {
     if (this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getDefenseBoostPercent(), 2) + "<br />";
 
+    if (this.equipmentService.getTotalDefenseMultiplierGain(character.equipmentSet) > 0)
+      breakdown += "Gems: *" + this.utilityService.genericRound(1 + this.equipmentService.getTotalDefenseMultiplierGain(character.equipmentSet)) + "<br/>";
+
+    /*if (assignedGod1 !== undefined && assignedGod1.permanentStatMultiplier.defense > 1)
+    breakdown += assignedGod1.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod1.permanentStatMultiplier.defense, 2) + "<br />";
+
+    if (assignedGod2 !== undefined && assignedGod2.permanentStatMultiplier.defense > 1)
+    breakdown += assignedGod2.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod2.permanentStatMultiplier.defense, 2) + "<br />";
+*/
+    var godPartyMultiplier = 1;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyMultiplier += god.partyPermanentStatMultiplier.defense - 1;
+    });
+    if (godPartyMultiplier > 1)
+      breakdown += "God Party Multiplier: *" + this.utilityService.roundTo(godPartyMultiplier, 3) + "<br />";
+
     return breakdown;
   }
 
@@ -7739,7 +8007,7 @@ export class LookupService {
     var zodiacGods = this.zodiacService.getBonusGods();
     if (zodiacGods.some(item => item === character.assignedGod1))
       god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
-      if (zodiacGods.some(item => item === character.assignedGod2))
+    if (zodiacGods.some(item => item === character.assignedGod2))
       god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
 
     if (character.baseStats.agility > 0)
@@ -7748,13 +8016,13 @@ export class LookupService {
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.agility + assignedGod1.permanentStatGain.agility;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.agility + assignedGod2.permanentStatGain.agility;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7778,6 +8046,22 @@ export class LookupService {
     if (this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getAgilityBoostPercent(), 2) + "<br />";
 
+    if (this.equipmentService.getTotalAgilityMultiplierGain(character.equipmentSet) > 0)
+      breakdown += "Gems: *" + this.utilityService.genericRound(1 + this.equipmentService.getTotalAgilityMultiplierGain(character.equipmentSet)) + "<br/>";
+
+    /*if (assignedGod1 !== undefined && assignedGod1.permanentStatMultiplier.agility > 1)
+    breakdown += assignedGod1.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod1.permanentStatMultiplier.agility, 2) + "<br />";
+
+    if (assignedGod2 !== undefined && assignedGod2.permanentStatMultiplier.defense > 1)
+    breakdown += assignedGod2.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod2.permanentStatMultiplier.agility, 2) + "<br />";
+*/
+    var godPartyMultiplier = 1;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyMultiplier += god.partyPermanentStatMultiplier.agility - 1;
+    });
+    if (godPartyMultiplier > 1)
+      breakdown += "God Party Multiplier: *" + this.utilityService.roundTo(godPartyMultiplier, 3) + "<br />";
+
     return breakdown;
   }
 
@@ -7791,7 +8075,7 @@ export class LookupService {
     var zodiacGods = this.zodiacService.getBonusGods();
     if (zodiacGods.some(item => item === character.assignedGod1))
       god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
-      if (zodiacGods.some(item => item === character.assignedGod2))
+    if (zodiacGods.some(item => item === character.assignedGod2))
       god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
 
     if (character.baseStats.luck > 0)
@@ -7800,13 +8084,13 @@ export class LookupService {
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.luck + assignedGod1.permanentStatGain.luck;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.luck + assignedGod2.permanentStatGain.luck;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7830,6 +8114,22 @@ export class LookupService {
     if (this.globalService.globalVar.chthonicPowers.getLuckBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getLuckBoostPercent(), 2) + "<br />";
 
+    if (this.equipmentService.getTotalLuckMultiplierGain(character.equipmentSet) > 0)
+      breakdown += "Gems: *" + this.utilityService.genericRound(1 + this.equipmentService.getTotalLuckMultiplierGain(character.equipmentSet)) + "<br/>";
+
+    /*if (assignedGod1 !== undefined && assignedGod1.permanentStatMultiplier.luck > 1)
+    breakdown += assignedGod1.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod1.permanentStatMultiplier.luck, 2) + "<br />";
+
+    if (assignedGod2 !== undefined && assignedGod2.permanentStatMultiplier.luck > 1)
+    breakdown += assignedGod2.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod2.permanentStatMultiplier.luck, 2) + "<br />";
+*/
+    var godPartyMultiplier = 1;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyMultiplier += god.partyPermanentStatMultiplier.luck - 1;
+    });
+    if (godPartyMultiplier > 1)
+      breakdown += "God Party Multiplier: *" + this.utilityService.roundTo(godPartyMultiplier, 3) + "<br />";
+
     return breakdown;
   }
 
@@ -7843,7 +8143,7 @@ export class LookupService {
     var zodiacGods = this.zodiacService.getBonusGods();
     if (zodiacGods.some(item => item === character.assignedGod1))
       god1ZodiacBoost += this.utilityService.zodiacGodStatBoost;
-      if (zodiacGods.some(item => item === character.assignedGod2))
+    if (zodiacGods.some(item => item === character.assignedGod2))
       god2ZodiacBoost += this.utilityService.zodiacGodStatBoost;
 
     if (character.baseStats.resistance > 0)
@@ -7852,13 +8152,13 @@ export class LookupService {
     if (assignedGod1 !== undefined) {
       var godStatGain = assignedGod1.statGain.resistance + assignedGod1.permanentStatGain.resistance;
       if (godStatGain > 0)
-        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * god1ZodiacBoost) + (god1ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     if (assignedGod2 !== undefined) {
       var godStatGain = assignedGod2.statGain.resistance + assignedGod2.permanentStatGain.resistance;
       if (godStatGain > 0)
-        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)"  : "") + "<br />";
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * god2ZodiacBoost) + (god2ZodiacBoost > 1 ? " (Zodiac Boost)" : "") + "<br />";
     }
 
     var godPartyBonus = 0;
@@ -7881,6 +8181,22 @@ export class LookupService {
 
     if (this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent() > 0)
       breakdown += "Chthonic Power: *" + this.utilityService.roundTo(1 + this.globalService.globalVar.chthonicPowers.getResistanceBoostPercent(), 2) + "<br />";
+
+    if (this.equipmentService.getTotalResistanceMultiplierGain(character.equipmentSet) > 0)
+      breakdown += "Gems: *" + 1 + this.utilityService.genericRound(this.equipmentService.getTotalResistanceMultiplierGain(character.equipmentSet)) + "<br/>";
+
+    /*if (assignedGod1 !== undefined && assignedGod1.permanentStatMultiplier.resistance > 1)
+    breakdown += assignedGod1.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod1.permanentStatMultiplier.resistance, 2) + "<br />";
+
+    if (assignedGod2 !== undefined && assignedGod2.permanentStatMultiplier.resistance > 1)
+    breakdown += assignedGod2.name + " Stat Multiplier: *" + this.utilityService.roundTo(assignedGod2.permanentStatMultiplier.resistance, 2) + "<br />";
+*/
+    var godPartyMultiplier = 1;
+    this.globalService.globalVar.gods.forEach(god => {
+      godPartyMultiplier += god.partyPermanentStatMultiplier.resistance - 1;
+    });
+    if (godPartyMultiplier > 1)
+      breakdown += "God Party Multiplier: *" + this.utilityService.roundTo(godPartyMultiplier, 3) + "<br />";
 
     return breakdown;
   }
@@ -7956,6 +8272,42 @@ export class LookupService {
 
     if (equipmentTotalCriticalMultiplierGain > 0)
       breakdown += "Equipment: +" + Math.round(equipmentTotalCriticalMultiplierGain * 100) + "%<br />";
+
+    return breakdown;
+  }
+
+  getLinkEffectivenessBonusStatBreakdown(character: Character) {
+    var breakdown = "";
+    var assignedGod1 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
+    var assignedGod2 = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
+
+    if (character.baseStats.linkEffectiveness > 0)
+      breakdown += "Base Stat Gain: +" + Math.round((character.baseStats.linkEffectiveness) * 100) + "%<br />";
+
+    if (assignedGod1 !== undefined) {
+      var godStatGain = assignedGod1.statGain.linkEffectiveness + assignedGod1.permanentStatGain.linkEffectiveness;
+      if (godStatGain > 0)
+        breakdown += assignedGod1.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    if (assignedGod2 !== undefined) {
+      var godStatGain = assignedGod2.statGain.linkEffectiveness + assignedGod2.permanentStatGain.linkEffectiveness;
+      if (godStatGain > 0)
+        breakdown += assignedGod2.name + " Stat Gain: +" + Math.round(godStatGain * 100) + "%<br />";
+    }
+
+    /*var charmGain = this.charmService.getTotalOverdriveGainAdditionFromCharms(this.globalService.globalVar.resources);
+    if (charmGain > 0) {
+      breakdown += "Charm Total: +" + Math.round(charmGain * 100) + "%<br />";
+    }*/
+
+    var equipmentOverdriveGain = this.equipmentService.getTotalLinkEffectivenessGain(character.equipmentSet);
+    var setStats = this.globalService.checkForSetBonuses(character.equipmentSet);
+    if (setStats !== undefined && setStats.linkEffectiveness > 0)
+      equipmentOverdriveGain += setStats.linkEffectiveness;
+
+    if (equipmentOverdriveGain > 0)
+      breakdown += "Equipment: +" + Math.round(equipmentOverdriveGain * 100) + "%<br />";
 
     return breakdown;
   }

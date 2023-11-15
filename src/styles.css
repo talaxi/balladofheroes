@@ -140,6 +140,7 @@
   --warriorColor: #0695FB;
   --priestColor: #D063EE;
   --monkColor: #edac82;  /*#aca2fc;*/
+  --thaumaturgeColor: #ffc100;
 
   --itemColor: #ffffff;
   --athenaColor: #7fbffa;
@@ -153,6 +154,8 @@
   --hadesColor: #b58bf2;
   --dionysusColor: #B8E71E;
   --nemesisColor: #B08884;
+  --heraColor: #91e9e5;
+  --aphroditeColor: #F777AF;
 
   --holyColor: #d9dbbf;
   --lightningColor: #fff30b;
@@ -770,6 +773,12 @@ body {
   --mdc-circular-progress-active-indicator-color: var(--monkColor) !important;
 }
 
+.thaumaturgeColor {
+  color: var(--thaumaturgeColor);
+  stroke: var(--thaumaturgeColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--thaumaturgeColor) !important;
+}
+
 .itemColor {
   color: var(--itemColor);
   stroke: var(--itemColor) !important;
@@ -851,6 +860,18 @@ body {
   color: var(--nemesisColor);
   stroke: var(--nemesisColor) !important;
   --mdc-circular-progress-active-indicator-color: var(--nemesisColor) !important;
+}
+
+.aphroditeColor {
+  color: var(--aphroditeColor);
+  stroke: var(--aphroditeColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--aphroditeColor) !important;
+}
+
+.heraColor {
+  color: var(--heraColor);
+  stroke: var(--heraColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--heraColor) !important;
 }
 
 .unclearedSubzoneColor {
@@ -1134,6 +1155,24 @@ button {
 
 .nemesis-progress .mdc-linear-progress__buffer-bar {
   background-color: var(--nemesisColor) !important;
+  filter: brightness(50%);
+}
+
+.aphrodite-progress {
+  --mdc-linear-progress-active-indicator-color: var(--aphroditeColor) !important;
+}
+
+.aphrodite-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--aphroditeColor) !important;
+  filter: brightness(50%);
+}
+
+.hera-progress {
+  --mdc-linear-progress-active-indicator-color: var(--heraColor) !important;
+}
+
+.hera-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--heraColor) !important;
   filter: brightness(50%);
 }
 

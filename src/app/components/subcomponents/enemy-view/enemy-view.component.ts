@@ -173,6 +173,8 @@ export class EnemyViewComponent implements OnInit {
       'characterTargetedArcher': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Archer,
       'characterTargetedWarrior': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Warrior,
       'characterTargetedPriest': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Priest,
+      'characterTargetedMonk': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Monk,
+      'characterTargetedThaumaturge': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Thaumaturge,
       'characterTargetedAll': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.All,
     };
   }
@@ -193,6 +195,8 @@ export class EnemyViewComponent implements OnInit {
         src += "priestTarget.svg";
         if (character.type === CharacterEnum.Monk)
           src += "monkTarget.svg";
+          if (character.type === CharacterEnum.Thaumaturge)
+          src += "thaumaturgeTarget.svg";
     }
     return src;
   }
@@ -210,6 +214,8 @@ export class EnemyViewComponent implements OnInit {
       src += "priestTarget.svg";
       if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Monk)
       src += "monkTarget.svg";
+      if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Thaumaturge)
+      src += "thaumaturgeTarget.svg";
 
     return src;
   }
