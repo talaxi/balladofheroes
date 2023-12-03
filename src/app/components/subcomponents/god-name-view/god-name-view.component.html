@@ -17,7 +17,7 @@
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(1)"
                 class="characterBar xpHighBar removeTransition"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(1), 'apolloProgressBarColor': character.assignedGod1 === godEnum.Apollo, 
-                'dionysusProgressBarColor': character.assignedGod1 === godEnum.Dionysus}">
+                'dionysusProgressBarColor': character.assignedGod1 === godEnum.Dionysus, 'heraProgressBarColor': character.assignedGod1 === godEnum.Hera}">
             </mat-progress-bar>
         </div>
     </div>
@@ -42,7 +42,7 @@
             <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(2)"
                 class="characterBar xpHighBar removeTransition"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(2), 'apolloProgressBarColor': character.assignedGod2 === godEnum.Apollo, 
-                'dionysusProgressBarColor': character.assignedGod2 === godEnum.Dionysus}">
+                'dionysusProgressBarColor': character.assignedGod2 === godEnum.Dionysus, 'heraProgressBarColor': character.assignedGod2 === godEnum.Hera}">
             </mat-progress-bar>
         </div>
     </div>

@@ -60,5 +60,17 @@ export enum AltarEffectsEnum {
   PoseidonDealWaterDamage,
   PoseidonRareWaterDamageIncrease,
   PoseidonRareReduceAbilityCooldownAfter,
-  PoseidonRareFlow
+  PoseidonRareFlow,
+  HeraAirDamageIncrease,
+  HeraRareAirDamageIncrease,
+  HeraReduceEnemyDamageAfter,
+  HeraAttackUp,
+  HeraRareReduceAllEnemyDamageAfter,
+  HeraRareShapeshift,
+  AphroditeMaxHpUpAfter,
+  AphroditeHealPartyOverTime,
+  AphroditeDealAttackDamageAll,
+  AphroditeRareHealPartyOverTime,
+  AphroditeRareDamageUp,
+  AphroditeRarePassionateRhythmOverTime
 }

@@ -10,5 +10,6 @@ export enum EquipmentSetEnum {
   Dionysus,
   Zeus,
   Poseidon,
-  Shadow
+  Shadow,
+  Zodiac
 }

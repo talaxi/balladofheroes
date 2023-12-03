@@ -874,6 +874,15 @@ body {
   --mdc-circular-progress-active-indicator-color: var(--heraColor) !important;
 }
 
+.heraProgressBarColor {
+  --mdc-linear-progress-active-indicator-color: var(--heraColor) !important;
+}
+
+.heraProgressBarColor .mdc-linear-progress__buffer-bar {
+  background-color: var(--heraColor) !important;
+  filter: brightness(50%);
+}
+
 .unclearedSubzoneColor {
   color: var(--foreground-default);
 }

@@ -215,7 +215,7 @@ export class GodNameViewComponent implements OnInit {
     if (whichGod === 2)
       matchTo = this.character.assignedGod2;
 
-    if (matchTo === GodEnum.Apollo || matchTo === GodEnum.Dionysus) {
+    if (matchTo === GodEnum.Apollo || matchTo === GodEnum.Dionysus || matchTo === GodEnum.Hera) {
       return true;
     }
 
@@ -245,6 +245,13 @@ export class GodNameViewComponent implements OnInit {
         return 100 - ((haveADrink.currentCooldown / this.globalService.getAbilityCooldown(haveADrink, this.character)) * 100);
       }
     }
+    if (god.type === GodEnum.Hera) {
+      var shapeshift = this.lookupService.characterHasAbility("Shapeshift", this.character);
+      if (shapeshift !== undefined)
+      {
+        return 100 - ((shapeshift.currentCooldown / this.globalService.getAbilityCooldown(shapeshift, this.character)) * 100);
+      }
+    }
 
     return 0;
   }
@@ -267,6 +274,12 @@ export class GodNameViewComponent implements OnInit {
     }
     if (god.type === GodEnum.Dionysus) {
       var ability = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (ability !== undefined) {
+        ability.autoMode = !ability.autoMode;
+      }
+    }
+    if (god.type === GodEnum.Hera) {
+      var ability = this.lookupService.characterHasAbility("Shapeshift", this.character);
       if (ability !== undefined) {
         ability.autoMode = !ability.autoMode;
       }
@@ -296,6 +309,12 @@ export class GodNameViewComponent implements OnInit {
         ability.manuallyTriggered = true;
       }
     }
+    if (god.type === GodEnum.Hera) {
+      var ability = this.lookupService.characterHasAbility("Shapeshift", this.character);
+      if (ability !== undefined) {
+        ability.manuallyTriggered = true;
+      }
+    }
   }
 
   isGodSpecificAbilityAuto(whichGod: number) {
@@ -316,6 +335,12 @@ export class GodNameViewComponent implements OnInit {
     }
     if (god.type === GodEnum.Dionysus) {
       var ability = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (ability !== undefined) {
+        return ability.autoMode;
+      }
+    }
+    if (god.type === GodEnum.Hera) {
+      var ability = this.lookupService.characterHasAbility("Shapeshift", this.character);
       if (ability !== undefined) {
         return ability.autoMode;
       }
@@ -342,6 +367,12 @@ export class GodNameViewComponent implements OnInit {
     }
     if (god.type === GodEnum.Dionysus) {
       var ability = this.lookupService.characterHasAbility("Have a Drink", this.character);
+      if (ability !== undefined) {
+        return god.level >= ability.requiredLevel;
+      }
+    }
+    if (god.type === GodEnum.Hera) {
+      var ability = this.lookupService.characterHasAbility("Shapeshift", this.character);
       if (ability !== undefined) {
         return god.level >= ability.requiredLevel;
       }

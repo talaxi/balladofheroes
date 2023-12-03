@@ -10666,6 +10666,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;                     
       enemy.battleStats.armorPenetration += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.ScorpionStingerEpic, ItemTypeEnum.Equipment, 1, .1));
             
       var stab = new Ability();
       stab.name = "Stab";
@@ -10721,6 +10722,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;                     
       enemy.battleStats.armorPenetration += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.ScorpionStingerSpecial, ItemTypeEnum.Equipment, 1, .1));
             
       var stab = new Ability();
       stab.name = "Stab";
@@ -10784,6 +10786,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;                     
       enemy.battleStats.armorPenetration += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.ScorpionStingerUnique, ItemTypeEnum.Equipment, 1, 1));
             
       var stab = new Ability();
       stab.name = "Stab";
@@ -10847,6 +10850,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;                     
       enemy.battleStats.armorPenetration += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.CarcanetOfTheCentaurEpic, ItemTypeEnum.Equipment, 1, .1));
             
       var perfectArrow = new Ability();
       perfectArrow.name = "Perfect Arrow";
@@ -10945,6 +10949,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;                     
       enemy.battleStats.armorPenetration += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.CarcanetOfTheCentaurSpecial, ItemTypeEnum.Equipment, 1, .1));
             
       var perfectArrow = new Ability();
       perfectArrow.name = "Perfect Arrow";
@@ -11053,6 +11058,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;                     
       enemy.battleStats.armorPenetration += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.CarcanetOfTheCentaurUnique, ItemTypeEnum.Equipment, 1, 1));
             
       var perfectArrow = new Ability();
       perfectArrow.name = "Perfect Arrow";
@@ -11160,6 +11166,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;            
+      enemy.loot.push(new LootItem(ItemsEnum.BoundingBandEpic, ItemTypeEnum.Equipment, 1, .1));
             
       var slam = new Ability();
       slam.name = "Slam";
@@ -11213,7 +11220,8 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;            
-            
+      enemy.loot.push(new LootItem(ItemsEnum.BoundingBandSpecial, ItemTypeEnum.Equipment, 1, .1));      
+
       var slam = new Ability();
       slam.name = "Slam";
       slam.isAvailable = true;
@@ -11275,7 +11283,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;            
+      enemy.xpGainFromDefeat = 2200;    
+      enemy.loot.push(new LootItem(ItemsEnum.BoundingBandUnique, ItemTypeEnum.Equipment, 1, 1));        
             
       var slam = new Ability();
       slam.name = "Slam";
@@ -11524,6 +11533,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.thorns = .1;
       enemy.battleStats.elementIncrease.water = .5;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
+      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaleShieldEpic, ItemTypeEnum.Equipment, 1, .1));
             
       var crash = new Ability();
       crash.name = "Crash";
@@ -11573,6 +11583,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.thorns = .1;
       enemy.battleStats.elementIncrease.water = .5;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
+      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaleShieldSpecial, ItemTypeEnum.Equipment, 1, .1));
             
       var crash = new Ability();
       crash.name = "Crash";
@@ -11631,6 +11642,7 @@ export class EnemyGeneratorService {
       enemy.battleStats.thorns = .1;
       enemy.battleStats.elementIncrease.water = .5;
       enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
+      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaleShieldUnique, ItemTypeEnum.Equipment, 1, 1));
             
       var crash = new Ability();
       crash.name = "Crash";

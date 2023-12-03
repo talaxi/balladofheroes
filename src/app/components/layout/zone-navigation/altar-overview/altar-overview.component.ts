@@ -98,7 +98,9 @@ export class AltarOverviewComponent implements OnInit {
       'hades-progress': altarEffect.associatedGod === GodEnum.Hades,
       'poseidon-progress': altarEffect.associatedGod === GodEnum.Poseidon,
       'dionysus-progress': altarEffect.associatedGod === GodEnum.Dionysus,
-      'nemesis-progress': altarEffect.associatedGod === GodEnum.Nemesis
+      'nemesis-progress': altarEffect.associatedGod === GodEnum.Nemesis,
+      'hera-progress': altarEffect.associatedGod === GodEnum.Hera,
+      'aphrodite-progress': altarEffect.associatedGod === GodEnum.Aphrodite
     };
   }
 

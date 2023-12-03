@@ -140,6 +140,9 @@
                 [contentTemplate]="healingDoneBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Healing
                     Done Bonus:</strong>
                 {{(getHealingDoneBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                <span *ngIf="getAllyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                    [contentTemplate]="allyDamageBonusPopover"><strong [ngClass]="getGodColor()" class="statLabel">Ally Damage Bonus:</strong>
+                    {{(getAllyDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
             <span *ngIf="getTickFrequencyBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                 [contentTemplate]="tickFrequencyPopover"><strong [ngClass]="getGodColor()" class="statLabel">Tick
                     Frequency Bonus:</strong>
@@ -698,6 +701,16 @@
         <span class="description" [innerHtml]="this.lookupService.getHealingDoneBonusDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodHealingDoneBonusStatBreakdown(this.god)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #allyDamageBonusPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAllyDamageBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodAllyDamageBonusStatBreakdown(this.god)">
 
         </div>
     </div>

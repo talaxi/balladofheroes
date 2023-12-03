@@ -17,6 +17,18 @@
     display: flex;
 }
 
+.peacock {
+    color: green;
+}
+
+.crow {
+    color: black;
+}
+
+.lion {
+    color: #f51919;
+}
+
 .positiveStatUpDownGrid {
     aspect-ratio: 1 / 1;
     display: grid;
@@ -52,7 +64,7 @@
 }
 
 .onlyText {
-    font-size: 1vw;
+    font-size: 1.25vw;
     vertical-align: center;
 }
 
@@ -69,6 +81,10 @@
 @media (max-width: 800px) {
     .textDiv {
         font-size: unset;
+    }
+
+    .onlyText {
+        font-size: 1vw;        
     }
 
 /*

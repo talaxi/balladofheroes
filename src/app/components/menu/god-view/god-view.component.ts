@@ -428,6 +428,10 @@ export class GodViewComponent implements OnInit {
   getHealingDoneBonus() {
     return this.god.statGain.healingDone + this.god.permanentStatGain.healingDone;
   }
+  
+  getAllyDamageBonus() {
+    return this.god.statGain.allyDamageBonus + this.god.permanentStatGain.allyDamageBonus;
+  }
 
   getAoeDamageBonus() {
     return this.god.statGain.aoeDamage + this.god.permanentStatGain.aoeDamage;

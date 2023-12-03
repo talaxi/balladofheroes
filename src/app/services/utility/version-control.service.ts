@@ -1366,6 +1366,8 @@ export class VersionControlService {
         }
         if (version === .75) {
           this.globalService.globalVar.keybinds.set("triggerAction", "enter");
+          if (this.globalService.globalVar.uniques === undefined)
+            this.globalService.globalVar.uniques = [];
 
           var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
           if (athena !== undefined) {

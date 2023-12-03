@@ -38,7 +38,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp ||
       effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp ||
       effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp ||
-      effect.type === StatusEffectEnum.AllPrimaryStatsUp || 
+      effect.type === StatusEffectEnum.AllPrimaryStatsUp ||
       effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown ||
       effect.type === StatusEffectEnum.HpRegenUp)
       return true;
@@ -140,12 +140,22 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "ITM";
     if (effect.type === StatusEffectEnum.AoeDamageUp)
       return "AOE";
-      if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
+    if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
       return "DOT";
     if (effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown)
       return "PEN";
-      if (effect.type === StatusEffectEnum.HpRegenUp)
+    if (effect.type === StatusEffectEnum.HpRegenUp)
       return "RGN";
+    if (effect.type === StatusEffectEnum.Shapeshift) {
+      if (effect.count === 1)
+        return "P";
+      else if (effect.count === 2)
+        return "C";
+      else if (effect.count === 3)
+        return "L";
+      else
+        return "H";
+    }
     if (effect.type === StatusEffectEnum.StatusEffectDisplayCatchAll) {
       var hiddenEffectCount = 0;
 
@@ -191,7 +201,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       img = "assets/svg/elementalResistanceDown.svg";
     if (effect.type === StatusEffectEnum.DamageOverTimeTakenDown)
       img = "assets/svg/shieldSlam.svg";
-      if (effect.type === StatusEffectEnum.ThornsDamageTakenUp || effect.type === StatusEffectEnum.ThornsDamageUp)
+    if (effect.type === StatusEffectEnum.ThornsDamageTakenUp || effect.type === StatusEffectEnum.ThornsDamageUp)
       img = "assets/svg/thorns.svg";
 
     return img;
@@ -476,13 +486,34 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.HealingReceivedUp) {
       src += "healingReceivedUp.svg";
     }
+    if (effect.type === StatusEffectEnum.FatalAttraction) {
+      src += "fatalAttraction.svg";
+    }
+    if (effect.type === StatusEffectEnum.Espionage) {
+      src += "espionage.svg";
+    }
+    if (effect.type === StatusEffectEnum.Strut) {
+      src += "strut.svg";
+    }
+    if (effect.type === StatusEffectEnum.PassionateRhythm) {
+      src += "passionateRhythm.svg";
+    }
+    if (effect.type === StatusEffectEnum.PassionateRhythmAutoAttack) {
+      src += "passionateRhythmAutoAttack.svg";
+    }
+    if (effect.type === StatusEffectEnum.RainbowScaleShieldAttack || effect.type === StatusEffectEnum.RainbowScaleShieldAttackUnique)
+      src += "Pisces.svg";
+    if (effect.type === StatusEffectEnum.Slow)
+      src += "Sagittarius.svg";
+    if (effect.type === StatusEffectEnum.BoundingBand || effect.type === StatusEffectEnum.BoundingBandUnique)
+      src += "Capricorn.svg";
 
     return src;
   }
 
   getStatusEffectDescription() {
     var description = "";
-    if (this.getEffectCount() > 1 && this.statusEffect.type === StatusEffectEnum.DamageOverTime) {    
+    if (this.getEffectCount() > 1 && this.statusEffect.type === StatusEffectEnum.DamageOverTime) {
       this.character.battleInfo.statusEffects.filter(item => item.type === this.statusEffect.type).forEach((effect, index, array) => {
         description += this.lookupService.getStatusEffectDescription(effect, this.character) + "<br/><br/>";
         description += this.getStatusEffectDuration(effect);
@@ -498,7 +529,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
               description += this.lookupService.getStatusEffectDescription(item, this.character) + "<br/><br/>";
               description += this.getStatusEffectDuration(item);
               if (!Object.is(array.length - 1, index))
-              description += "<hr/>";
+                description += "<hr/>";
             }
           });
         }
@@ -508,7 +539,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
               description += this.lookupService.getStatusEffectDescription(item, this.character) + "<br/><br/>";
               description += this.getStatusEffectDuration(item);
               if (!Object.is(array.length - 1, index))
-              description += "<hr/>";
+                description += "<hr/>";
             }
           });
         }

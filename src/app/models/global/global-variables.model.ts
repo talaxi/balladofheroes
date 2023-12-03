@@ -29,6 +29,7 @@ import { Profession } from "../professions/profession.model";
 import { Melete } from "../melete/melete.model";
 import { Loadout } from "../utility/loadout.model";
 import { StatusEffect } from "../battle/status-effect.model";
+import { Uniques } from "../resources/uniques.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -105,6 +106,8 @@ export class GlobalVariables {
     loadouts: Loadout[];
     @Type(() => StatusEffect)
     globalStatusEffects: StatusEffect[];
+    @Type(() => Uniques)
+    uniques: Uniques[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -146,5 +149,6 @@ export class GlobalVariables {
         this.globalStatusEffects = [];
         this.partyMember1Hidden = false;
         this.partyMember2Hidden = false;
+        this.uniques = [];
     }
 }

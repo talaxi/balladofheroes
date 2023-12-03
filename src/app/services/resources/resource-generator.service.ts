@@ -444,6 +444,42 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.RagingBull) {
       return new ResourceValue(ItemsEnum.RagingBull, amount);
     }
+    if (type === ItemsEnum.ScorpionStingerEpic) {
+      return new ResourceValue(ItemsEnum.ScorpionStingerEpic, amount);
+    }
+    if (type === ItemsEnum.ScorpionStingerSpecial) {
+      return new ResourceValue(ItemsEnum.ScorpionStingerSpecial, amount);
+    }
+    if (type === ItemsEnum.ScorpionStingerUnique) {
+      return new ResourceValue(ItemsEnum.ScorpionStingerUnique, amount);
+    }
+    if (type === ItemsEnum.RainbowScaleShieldEpic) {
+      return new ResourceValue(ItemsEnum.RainbowScaleShieldEpic, amount);
+    }
+    if (type === ItemsEnum.RainbowScaleShieldSpecial) {
+      return new ResourceValue(ItemsEnum.RainbowScaleShieldSpecial, amount);
+    }
+    if (type === ItemsEnum.RainbowScaleShieldUnique) {
+      return new ResourceValue(ItemsEnum.RainbowScaleShieldUnique, amount);
+    }
+    if (type === ItemsEnum.CarcanetOfTheCentaurEpic) {
+      return new ResourceValue(ItemsEnum.CarcanetOfTheCentaurEpic, amount);
+    }
+    if (type === ItemsEnum.CarcanetOfTheCentaurSpecial) {
+      return new ResourceValue(ItemsEnum.CarcanetOfTheCentaurSpecial, amount);
+    }
+    if (type === ItemsEnum.CarcanetOfTheCentaurUnique) {
+      return new ResourceValue(ItemsEnum.CarcanetOfTheCentaurUnique, amount);
+    }
+    if (type === ItemsEnum.BoundingBandEpic) {
+      return new ResourceValue(ItemsEnum.BoundingBandEpic, amount);
+    }
+    if (type === ItemsEnum.BoundingBandSpecial) {
+      return new ResourceValue(ItemsEnum.BoundingBandSpecial, amount);
+    }
+    if (type === ItemsEnum.BoundingBandUnique) {
+      return new ResourceValue(ItemsEnum.BoundingBandUnique, amount);
+    }
     //equippables
     if (type === ItemsEnum.HealingHerb) {
       return new ResourceValue(ItemsEnum.HealingHerb, amount);

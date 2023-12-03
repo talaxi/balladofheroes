@@ -182,5 +182,15 @@ export enum StatusEffectEnum {
     DealMissingHpPercent,
     HealingReceivedUp,
     FatalAttraction,
-    PassionateRhythm
+    PassionateRhythm,
+    Espionage,
+    Strut,
+    PowerOfLove,
+    PassionateRhythmAutoAttack,
+    Shapeshift,
+    RainbowScaleShieldAttack,
+    RainbowScaleShieldAttackUnique,
+    Slow,
+    BoundingBand,
+    BoundingBandUnique
   }

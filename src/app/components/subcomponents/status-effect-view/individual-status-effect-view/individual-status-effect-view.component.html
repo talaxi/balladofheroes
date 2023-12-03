@@ -23,7 +23,7 @@
         <div *ngIf="hasImage(statusEffect)">
             <img class="image" (contextmenu)="preventRightClick()" [src]="this.getStatusEffectImage(statusEffect)">
         </div>
-        <div *ngIf="!hasImage(statusEffect)" class="textDiv onlyText">{{getStatusEffectText(statusEffect)}}</div>
+        <div *ngIf="!hasImage(statusEffect)" class="textDiv onlyText" [ngClass]="{'peacock': statusEffect.type === 188 && statusEffect.count === 1,'crow': statusEffect.type === 188 && statusEffect.count === 2,'lion': statusEffect.type === 188 && statusEffect.count === 3}">{{getStatusEffectText(statusEffect)}}</div>
     </div>
 </div>
 <div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover"

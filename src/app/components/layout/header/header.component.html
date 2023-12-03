@@ -25,10 +25,10 @@
         </button>        
     </div>    
 
-    <div class="extraTimeItem centerAlign">
+    <div class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
       <button class="buttonAsText clickableText globalHeaderItem normalFontSize" (click)="toggleExtraSpeed()">
         <span class="headerTextItems clickableText globalHeaderItem" *ngIf="!isMobile">game speed: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
-        <span class="headerTextItems clickableText globalHeaderItem" *ngIf="isMobile">game spd: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
+        <span class="headerTextItems clickableText globalHeaderItem" *ngIf="isMobile">{{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}} <img class="icon" src="assets/svg/clock.svg"></span>
       </button>
     </div>
 

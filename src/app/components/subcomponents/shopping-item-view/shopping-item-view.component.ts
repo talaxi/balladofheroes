@@ -127,6 +127,10 @@ export class ShoppingItemViewComponent implements OnInit {
         if (resource.item === ItemsEnum.SparringMatch) { 
           this.globalService.giveCharactersBonusExp(5000);          
           this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
+          //TODO: REMOVE BELOW
+          this.globalService.globalVar.uniques.forEach(item => {
+            item.level += 100;
+          });
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass) {
           this.unlockClass(resource.item);

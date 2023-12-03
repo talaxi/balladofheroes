@@ -229,6 +229,30 @@ export class DictionaryService {
       name = "Shadow Ring";
     else if (type === ItemsEnum.RagingBull)
       name = "Raging Bull";
+      else if (type === ItemsEnum.ScorpionStingerEpic)
+      name = "Scorpion Stinger";
+      else if (type === ItemsEnum.ScorpionStingerSpecial)
+      name = "Scorpion Stinger";
+      else if (type === ItemsEnum.ScorpionStingerUnique)
+      name = "Scorpion Stinger";
+      else if (type === ItemsEnum.RainbowScaleShieldEpic)
+      name = "Rainbow-Scale Shield";
+      else if (type === ItemsEnum.RainbowScaleShieldSpecial)
+      name = "Rainbow-Scale Shield";
+      else if (type === ItemsEnum.RainbowScaleShieldUnique)
+      name = "Rainbow-Scale Shield";
+      else if (type === ItemsEnum.CarcanetOfTheCentaurEpic)
+      name = "Carcanet of the Centaur";
+      else if (type === ItemsEnum.CarcanetOfTheCentaurSpecial)
+      name = "Carcanet of the Centaur";
+      else if (type === ItemsEnum.CarcanetOfTheCentaurUnique)
+      name = "Carcanet of the Centaur";
+      else if (type === ItemsEnum.BoundingBandEpic)
+      name = "Bounding Band";
+      else if (type === ItemsEnum.BoundingBandSpecial)
+      name = "Bounding Band";
+      else if (type === ItemsEnum.BoundingBandUnique)
+      name = "Bounding Band";
 
     //shields
     else if (type === ItemsEnum.IronShield)
@@ -832,6 +856,14 @@ export class DictionaryService {
       name = "Small Charm of Zeus";
     else if (type === ItemsEnum.LargeCharmOfZeus)
       name = "Large Charm of Zeus";
+      else if (type === ItemsEnum.SmallCharmOfHera)
+      name = "Small Charm of Hera";
+    else if (type === ItemsEnum.LargeCharmOfHera)
+      name = "Large Charm of Hera";
+      else if (type === ItemsEnum.SmallCharmOfAphrodite)
+      name = "Small Charm of Aphrodite";
+    else if (type === ItemsEnum.LargeCharmOfAphrodite)
+      name = "Large Charm of Aphrodite";
     else if (type === ItemsEnum.SmallCharmOfPoseidon)
       name = "Small Charm of Poseidon";
     else if (type === ItemsEnum.LargeCharmOfPoseidon)

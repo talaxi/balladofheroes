@@ -214,6 +214,10 @@ export class CharacterViewComponent implements OnInit {
   getHealingReceivedBonus() {
     return this.character.battleStats.healingReceived;
   }
+  
+  getAllyDamageBonus() {
+    return this.character.battleStats.allyDamageBonus;
+  }
 
   getDebuffDurationBonus() {
     return this.character.battleStats.debuffDuration;

@@ -289,6 +289,28 @@ export class BackgroundService {
         }
       }
 
+      if (effect.type === AltarEffectsEnum.AphroditeHealPartyOverTime || effect.type === AltarEffectsEnum.AphroditeRareHealPartyOverTime) {
+        party.forEach(member => {
+          var hpEffectiveness = this.lookupService.getAdjustedMaxHp(member, true) * (effect.effectiveness - 1);          
+          this.battleService.gainHp(member, hpEffectiveness);
+        });
+      }
+      
+      if (effect.type === AltarEffectsEnum.AphroditeRarePassionateRhythmOverTime) {
+        var memberWithAphrodite = party.find(item => item.assignedGod1 === GodEnum.Aphrodite || item.assignedGod2 === GodEnum.Aphrodite);
+        if (memberWithAphrodite !== undefined) {
+          var rng = this.utilityService.getRandomInteger(0, 1);
+          if (rng === 0) {
+            var passionateRhythm = this.globalService.createStatusEffect(StatusEffectEnum.PassionateRhythm, -1, effect.effectiveness, false, true);             
+            this.battleService.applyStatusEffect(this.globalService.makeStatusEffectCopy(passionateRhythm), memberWithAphrodite, party, memberWithAphrodite);
+          }
+          else if (rng === 1) {
+            var passionateRhythm = this.globalService.createStatusEffect(StatusEffectEnum.PassionateRhythmAutoAttack, -1, effect.effectiveness, false, true);             
+            this.battleService.applyStatusEffect(this.globalService.makeStatusEffectCopy(passionateRhythm), memberWithAphrodite, party, memberWithAphrodite);
+          }
+        }
+      }
+
       effect.tickTimer -= effect.tickFrequency;
     }
   }
@@ -539,6 +561,41 @@ export class BackgroundService {
           }
         }
       });
+    }
+
+    if (effect.type === AltarEffectsEnum.AphroditeDealAttackDamageAll) {
+      if (enemies !== undefined && party !== undefined) {
+        var totalAttack = 0;
+        party.forEach(member => {
+          totalAttack += this.lookupService.getAdjustedAttack(member);
+        });
+        var damage = totalAttack * effect.effectiveness;
+
+        enemies.forEach(enemy => {
+          this.battleService.dealTrueDamage(true, enemy, damage);
+        });
+      }
+    }
+    
+    if (effect.type === AltarEffectsEnum.AphroditeMaxHpUpAfter) {
+      party.forEach(member => {
+        this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.MaxHpUp, 10, effect.effectiveness, false, true), member, enemies);
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.HeraReduceEnemyDamageAfter) {
+      if (enemies !== undefined) {
+        var target = this.lookupService.getRandomPartyMember(enemies);
+        this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, effect.effectiveness, false, false), target, enemies);
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.HeraRareReduceAllEnemyDamageAfter) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, effect.effectiveness, false, false), member, enemies);
+        });
+      }
     }
   }
 

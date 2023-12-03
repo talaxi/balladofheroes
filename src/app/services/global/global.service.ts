@@ -870,25 +870,25 @@ export class GlobalService {
       fatalAttraction.name = "Fatal Attraction";
       fatalAttraction.isAvailable = false;
       fatalAttraction.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      fatalAttraction.cooldown = fatalAttraction.currentCooldown = 28;
+      fatalAttraction.cooldown = fatalAttraction.currentCooldown = 27;
       fatalAttraction.dealsDirectDamage = false;      
-      fatalAttraction.userEffect.push(this.createStatusEffect(StatusEffectEnum.FatalAttraction, -1, .25, true, true));
+      fatalAttraction.userEffect.push(this.createStatusEffect(StatusEffectEnum.FatalAttraction, -1, 1.1, false, true));
       god.abilityList.push(fatalAttraction);
 
       var powerOfLove = new Ability();
       powerOfLove.name = "Power of Love";
       powerOfLove.requiredLevel = this.utilityService.godAbility2Level;
       powerOfLove.isAvailable = false;
-      powerOfLove.effectiveness = 1.6;
       powerOfLove.dealsDirectDamage = false;      
-      powerOfLove.cooldown = powerOfLove.currentCooldown = 38;      
+      powerOfLove.cooldown = powerOfLove.currentCooldown = 38;     
+      powerOfLove.userEffect.push(this.createStatusEffect(StatusEffectEnum.PowerOfLove, 10, 1.15, true, true)); 
       god.abilityList.push(powerOfLove);
 
       var kissOfDeath = new Ability();
       kissOfDeath.name = "Kiss of Death";
       kissOfDeath.requiredLevel = this.utilityService.godAbility3Level;
       kissOfDeath.isAvailable = false;
-      kissOfDeath.cooldown = kissOfDeath.currentCooldown = 55;
+      kissOfDeath.cooldown = kissOfDeath.currentCooldown = 43;
       kissOfDeath.dealsDirectDamage = true;
       kissOfDeath.effectiveness = 1.5;                        
       god.abilityList.push(kissOfDeath);
@@ -900,7 +900,7 @@ export class GlobalService {
       passionateRhythm.isPassive = true;
       passionateRhythm.isActivatable = false;
       passionateRhythm.dealsDirectDamage = false;
-      passionateRhythm.effectiveness = 1.05;
+      passionateRhythm.userEffect.push(this.createStatusEffect(StatusEffectEnum.PassionateRhythm, -1, 1.05, false, true)); 
       god.abilityList.push(passionateRhythm);
     }
     
@@ -909,11 +909,11 @@ export class GlobalService {
       strut.name = "Strut";
       strut.isAvailable = false;
       strut.requiredLevel = this.utilityService.defaultGodAbilityLevel;
-      strut.cooldown = strut.currentCooldown = 28;
+      strut.cooldown = strut.currentCooldown = 35;
       strut.dealsDirectDamage = true;
       strut.effectiveness = 1.9;      
       strut.elementalType = ElementalTypeEnum.Air;
-      strut.userEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 10, 1.3, false, true));
+      strut.userEffect.push(this.createStatusEffect(StatusEffectEnum.AttackUp, 13, 1.3, false, true));
       god.abilityList.push(strut);
 
       var espionage = new Ability();
@@ -921,8 +921,8 @@ export class GlobalService {
       espionage.requiredLevel = this.utilityService.godAbility2Level;
       espionage.isAvailable = false;
       espionage.dealsDirectDamage = false;      
-      espionage.cooldown = espionage.currentCooldown = 38;
-      espionage.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DamageDealtDown, 8, 1.25, false, false));      
+      espionage.cooldown = espionage.currentCooldown = 48;
+      espionage.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, .88, false, false));      
       god.abilityList.push(espionage);
 
       var puncture = new Ability();
@@ -932,6 +932,7 @@ export class GlobalService {
       puncture.cooldown = puncture.currentCooldown = 58;
       puncture.dealsDirectDamage = true;
       puncture.effectiveness = 1.65;
+      puncture.secondaryEffectiveness = .25;
       puncture.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));      
       god.abilityList.push(puncture);
 
@@ -940,9 +941,12 @@ export class GlobalService {
       shapeshift.requiredLevel = this.utilityService.godPassiveLevel;
       shapeshift.isAvailable = false;
       shapeshift.isPassive = true;
-      shapeshift.isActivatable = false;
+      shapeshift.isActivatable = true;
       shapeshift.dealsDirectDamage = false;
-      shapeshift.userEffect.push(this.createStatusEffect(StatusEffectEnum.Flow, -1, 1.01, false, true));
+      shapeshift.effectiveness = 0;
+      shapeshift.cooldown = shapeshift.currentCooldown = 15;
+      shapeshift.userEffect.push(this.createStatusEffect(StatusEffectEnum.Shapeshift, -1, 1.03, false, true, false, undefined, undefined, true));    
+      shapeshift.userEffect[0].resolution = EffectResolutionEnum.AlwaysActive;
       god.abilityList.push(shapeshift);
     }
   }
@@ -1029,7 +1033,9 @@ export class GlobalService {
       type === StatusEffectEnum.HpRegenUp || type === StatusEffectEnum.ThornsDamageTakenUp || type === StatusEffectEnum.GaiasBlessing || type === StatusEffectEnum.StockpileRock ||
       type === StatusEffectEnum.HealingDoneUp || type === StatusEffectEnum.ThornsDamageUp || type === StatusEffectEnum.AllElementalResistanceUp ||
       type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight || type === StatusEffectEnum.Flow ||
-      type === StatusEffectEnum.Current || type === StatusEffectEnum.Cancer || type === StatusEffectEnum.HealingReceivedUp)
+      type === StatusEffectEnum.Current || type === StatusEffectEnum.Cancer || type === StatusEffectEnum.HealingReceivedUp || type === StatusEffectEnum.FatalAttraction ||
+      type === StatusEffectEnum.Strut || type === StatusEffectEnum.Espionage || type === StatusEffectEnum.PassionateRhythmAutoAttack || type === StatusEffectEnum.PassionateRhythm ||
+      type === StatusEffectEnum.Shapeshift || type === StatusEffectEnum.Slow)
       refreshes = true;
 
     return refreshes;
@@ -1273,6 +1279,8 @@ export class GlobalService {
     character.battleStats.autoAttackCooldownReduction *= (1 - this.charmService.getTotalAutoAttackCooldownReductionAdditionFromCharms(this.globalVar.resources));
     character.battleStats.healingReceived += this.charmService.getTotalHealingReceivedAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.debuffDuration += this.charmService.getTotalDebuffDurationAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.buffDuration += this.charmService.getTotalBuffDurationAdditionFromCharms(this.globalVar.resources, character);
+    character.battleStats.allyDamageBonus += this.charmService.getTotalAllyDamageAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.overdriveGainFromAutoAttacks += this.charmService.getTotalOverdriveGainFromAutoAttacksAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.healingDone += this.charmService.getTotalHealingDoneAdditionFromCharms(this.globalVar.resources, character);
     character.battleStats.aoeDamage += this.charmService.getTotalAoeDamageAdditionFromCharms(this.globalVar.resources, character);
@@ -2191,6 +2199,18 @@ export class GlobalService {
       else
         ability.effectiveness += .125;
     }
+    else if (god.type === GodEnum.Aphrodite) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;
+      else
+        userGainsEffect.effectiveness += .01;
+    }
+    else if (god.type === GodEnum.Hera) {
+      if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.effectiveness += .05;
+      else
+        ability.effectiveness += .075;
+    }
   }
 
   upgradeGodAbility2(god: God) {
@@ -2296,6 +2316,21 @@ export class GlobalService {
       else
         ability.effectiveness += .05;
     }
+    else if (god.type === GodEnum.Hera) {
+      //every 10 upgrades until level 100, reduce cooldown
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;
+      else
+        targetGainsEffect.effectiveness -= .002;
+    }
+    else if (god.type === GodEnum.Aphrodite) {      
+    if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100) {
+      userGainsEffect.duration += .25;
+    }
+    else {
+      userGainsEffect.effectiveness += .0075;
+    }
+    }
   }
 
   upgradeGodAbility3(god: God) {
@@ -2398,6 +2433,16 @@ export class GlobalService {
       else
         ability.effectiveness += .075;
     }
+    else if (god.type === GodEnum.Hera) {
+      if (ability.abilityUpgradeLevel % 20 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.secondaryEffectiveness += .05;
+      else
+        ability.effectiveness += .1;
+    }
+    else if (god.type === GodEnum.Aphrodite) {
+      if (ability.abilityUpgradeLevel <= 100)
+        ability.effectiveness += .075;
+    }
   }
 
   upgradeGodPassive(god: God) {
@@ -2467,6 +2512,16 @@ export class GlobalService {
     else if (god.type === GodEnum.Poseidon) {
       if (ability.abilityUpgradeLevel <= 100)
         userGainsEffect.effectiveness += .0019;
+    }
+    else if (god.type === GodEnum.Hera) {
+      if (ability.abilityUpgradeLevel % 10 === 0 && ability.abilityUpgradeLevel <= 100)
+        ability.cooldown -= .5;        
+      else
+        userGainsEffect.effectiveness += .0005;
+    }
+    else if (god.type === GodEnum.Aphrodite) {
+      if (ability.abilityUpgradeLevel <= 100)
+        userGainsEffect.effectiveness += .002;
     }
   }
 
@@ -2856,6 +2911,14 @@ export class GlobalService {
         else if (god.type === GodEnum.Poseidon) {
           ability.effectiveness += .5;
         }
+        else if (god.type === GodEnum.Hera) {
+          ability.effectiveness += .6;
+        }
+        else if (god.type === GodEnum.Aphrodite) {
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+          var userGainsEffect = ability.userEffect[0];
+          userGainsEffect.threshold = .025;
+        }
       }
       else if (godLevel % 200 === 100) //passive  
       {
@@ -2897,6 +2960,16 @@ export class GlobalService {
           userGainsEffect.effectiveness = .025;
         }
         if (god.type === GodEnum.Poseidon) {
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+          var userGainsEffect = ability.userEffect[0];
+          userGainsEffect.effectiveness = .003;
+        }
+        if (god.type === GodEnum.Hera) {
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
+          var userGainsEffect = ability.userEffect[0];
+          userGainsEffect.effectiveness = .0005;
+        }
+        if (god.type === GodEnum.Aphrodite) {
           ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));
           var userGainsEffect = ability.userEffect[0];
           userGainsEffect.effectiveness = .003;
@@ -2954,6 +3027,16 @@ export class GlobalService {
         else if (god.type === GodEnum.Poseidon) {
           ability.effectiveness = .2;
         }
+        else if (god.type === GodEnum.Hera) {
+          ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
+          var targetGainsEffect = ability.targetEffect[0];
+          targetGainsEffect.effectiveness = .002;
+        }
+        else if (god.type === GodEnum.Aphrodite) {          
+          ability.userEffect.push(new StatusEffect(StatusEffectEnum.None));          
+          var userGainsEffect = ability.userEffect[0];          
+          userGainsEffect.effectiveness = .015;
+        }
       }
       else if (godLevel % 200 === 0) //ability 3
       {
@@ -2996,6 +3079,12 @@ export class GlobalService {
         }
         else if (god.type === GodEnum.Poseidon) {
           ability.effectiveness += .25;
+        }
+        else if (god.type === GodEnum.Hera) {
+          ability.effectiveness += .3;
+        }
+        else if (god.type === GodEnum.Aphrodite) {
+          ability.effectiveness += .5;
         }
       }
     }
@@ -3608,6 +3697,18 @@ export class GlobalService {
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Surge);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RepeatDamageAfterDelay);
+
+      var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
+      if (shapeshift !== undefined) {
+        var hera = this.globalVar.gods.find(item => item.type === GodEnum.Hera);
+        var baseShapeshift = hera?.abilityList.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+
+        if (baseShapeshift !== undefined) {
+          baseShapeshift.currentCooldown = baseShapeshift.cooldown;
+          shapeshift.effectiveness = 1;//baseShapeshift.userEffect[0].effectiveness;          
+          shapeshift.count = 0;
+        }
+      }
 
       var dispenserOfDues = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
       if (dispenserOfDues !== undefined)
@@ -4353,6 +4454,9 @@ export class GlobalService {
   }
 
   getAbilityCooldown(ability: Ability, character: Character, starting: boolean = false) {
+    if (ability.name === "Shapeshift")
+      return ability.cooldown;
+
     var cooldownReductionWithBuffs = 1;
     if (character.battleInfo.statusEffects.filter(item => item.isPositive).length > 0) {
       cooldownReductionWithBuffs = character.battleStats.abilityCooldownReductionWithBuffs;
@@ -4395,6 +4499,7 @@ export class GlobalService {
     var copy = new StatusEffect(effect.type);
 
     copy.duration = effect.duration;
+    copy.maxDuration = effect.duration;
     copy.effectiveness = effect.effectiveness;
     copy.isPermanent = effect.isPermanent;
     copy.isInstant = effect.isInstant;
