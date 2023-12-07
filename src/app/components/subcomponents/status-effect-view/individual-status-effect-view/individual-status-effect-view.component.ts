@@ -501,12 +501,14 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.PassionateRhythmAutoAttack) {
       src += "passionateRhythmAutoAttack.svg";
     }
-    if (effect.type === StatusEffectEnum.RainbowScaleShieldAttack || effect.type === StatusEffectEnum.RainbowScaleShieldAttackUnique)
-      src += "Pisces.svg";
+    if (effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttack || effect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttackUnique)
+      src += "Libra.svg";
     if (effect.type === StatusEffectEnum.Slow)
       src += "Sagittarius.svg";
     if (effect.type === StatusEffectEnum.BoundingBand || effect.type === StatusEffectEnum.BoundingBandUnique)
       src += "Capricorn.svg";
+      if (effect.type === StatusEffectEnum.ScathingBeauty || effect.type === StatusEffectEnum.ScathingBeautyUnique)
+      src += "Aquarius.svg";
 
     return src;
   }

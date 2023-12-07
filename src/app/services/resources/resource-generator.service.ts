@@ -453,14 +453,14 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.ScorpionStingerUnique) {
       return new ResourceValue(ItemsEnum.ScorpionStingerUnique, amount);
     }
-    if (type === ItemsEnum.RainbowScaleShieldEpic) {
-      return new ResourceValue(ItemsEnum.RainbowScaleShieldEpic, amount);
+    if (type === ItemsEnum.BucklerOfPerfectHarmonyEpic) {
+      return new ResourceValue(ItemsEnum.BucklerOfPerfectHarmonyEpic, amount);
     }
-    if (type === ItemsEnum.RainbowScaleShieldSpecial) {
-      return new ResourceValue(ItemsEnum.RainbowScaleShieldSpecial, amount);
+    if (type === ItemsEnum.BucklerOfPerfectHarmonySpecial) {
+      return new ResourceValue(ItemsEnum.BucklerOfPerfectHarmonySpecial, amount);
     }
-    if (type === ItemsEnum.RainbowScaleShieldUnique) {
-      return new ResourceValue(ItemsEnum.RainbowScaleShieldUnique, amount);
+    if (type === ItemsEnum.BucklerOfPerfectHarmonyUnique) {
+      return new ResourceValue(ItemsEnum.BucklerOfPerfectHarmonyUnique, amount);
     }
     if (type === ItemsEnum.CarcanetOfTheCentaurEpic) {
       return new ResourceValue(ItemsEnum.CarcanetOfTheCentaurEpic, amount);
@@ -479,6 +479,27 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.BoundingBandUnique) {
       return new ResourceValue(ItemsEnum.BoundingBandUnique, amount);
+    }
+    if (type === ItemsEnum.BlazingSunPendantUnique) {
+      return new ResourceValue(ItemsEnum.BlazingSunPendantUnique, amount);
+    }
+    if (type === ItemsEnum.DarkMoonPendantUnique) {
+      return new ResourceValue(ItemsEnum.DarkMoonPendantUnique, amount);
+    }
+    if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
+      return new ResourceValue(ItemsEnum.BlazingSunPendantUniqueUpgrade, amount);
+    }
+    if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
+      return new ResourceValue(ItemsEnum.DarkMoonPendantUniqueUpgrade, amount);
+    }
+    if (type === ItemsEnum.ScathingBeautyEpic) {
+      return new ResourceValue(ItemsEnum.ScathingBeautyEpic, amount);
+    }
+    if (type === ItemsEnum.ScathingBeautySpecial) {
+      return new ResourceValue(ItemsEnum.ScathingBeautySpecial, amount);
+    }
+    if (type === ItemsEnum.ScathingBeautyUnique) {
+      return new ResourceValue(ItemsEnum.ScathingBeautyUnique, amount);
     }
     //equippables
     if (type === ItemsEnum.HealingHerb) {

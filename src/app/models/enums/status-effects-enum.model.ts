@@ -188,9 +188,13 @@ export enum StatusEffectEnum {
     PowerOfLove,
     PassionateRhythmAutoAttack,
     Shapeshift,
-    RainbowScaleShieldAttack,
-    RainbowScaleShieldAttackUnique,
+    BucklerOfPerfectHarmonyAttack,
+    BucklerOfPerfectHarmonyAttackUnique,
     Slow,
     BoundingBand,
-    BoundingBandUnique
+    BoundingBandUnique,
+    ScathingBeauty,
+    ScathingBeautyUnique,
+    RainbowPlating,
+    RainbowPlatingUnique
   }

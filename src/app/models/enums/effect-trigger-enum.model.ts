@@ -13,5 +13,6 @@ export enum EffectTriggerEnum {
   ChanceOnDotTick,
   ChanceOnDebuff,
   WhenEnteringBattle,
-  AfterTime
+  AfterTime,
+  ChanceWhenNonCriticalDamageTaken
 }

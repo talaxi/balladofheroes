@@ -235,12 +235,12 @@ export class DictionaryService {
       name = "Scorpion Stinger";
       else if (type === ItemsEnum.ScorpionStingerUnique)
       name = "Scorpion Stinger";
-      else if (type === ItemsEnum.RainbowScaleShieldEpic)
-      name = "Rainbow-Scale Shield";
-      else if (type === ItemsEnum.RainbowScaleShieldSpecial)
-      name = "Rainbow-Scale Shield";
-      else if (type === ItemsEnum.RainbowScaleShieldUnique)
-      name = "Rainbow-Scale Shield";
+      else if (type === ItemsEnum.BucklerOfPerfectHarmonyEpic)
+      name = "Buckler of Perfect Harmony";
+      else if (type === ItemsEnum.BucklerOfPerfectHarmonySpecial)
+      name = "Buckler of Perfect Harmony";
+      else if (type === ItemsEnum.BucklerOfPerfectHarmonyUnique)
+      name = "Buckler of Perfect Harmony";
       else if (type === ItemsEnum.CarcanetOfTheCentaurEpic)
       name = "Carcanet of the Centaur";
       else if (type === ItemsEnum.CarcanetOfTheCentaurSpecial)
@@ -253,6 +253,26 @@ export class DictionaryService {
       name = "Bounding Band";
       else if (type === ItemsEnum.BoundingBandUnique)
       name = "Bounding Band";
+      else if (type === ItemsEnum.DarkMoonPendantUnique)
+      name = "Dark Moon Pendant";
+      else if (type === ItemsEnum.BlazingSunPendantUnique)
+      name = "Blazing Sun Pendant";
+      else if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade)
+      name = "Dark Moon Pendant Unique XP";
+      else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade)
+      name = "Blazing Sun Pendant Unique XP";
+      else if (type === ItemsEnum.ScathingBeautyEpic)
+      name = "Scathing Beauty";
+      else if (type === ItemsEnum.ScathingBeautySpecial)
+      name = "Scathing Beauty";
+      else if (type === ItemsEnum.ScathingBeautyUnique)
+      name = "Scathing Beauty";
+      else if (type === ItemsEnum.RainbowScaledPlatingEpic)
+      name = "Rainbow-Scaled Plating";
+      else if (type === ItemsEnum.RainbowScaledPlatingSpecial)
+      name = "Rainbow-Scaled Plating";
+      else if (type === ItemsEnum.RainbowScaledPlatingUnique)
+      name = "Rainbow-Scaled Plating";
 
     //shields
     else if (type === ItemsEnum.IronShield)

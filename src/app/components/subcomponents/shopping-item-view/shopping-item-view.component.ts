@@ -129,7 +129,8 @@ export class ShoppingItemViewComponent implements OnInit {
           this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
           //TODO: REMOVE BELOW
           this.globalService.globalVar.uniques.forEach(item => {
-            item.level += 100;
+            item.level += 99;
+            this.lookupService.levelUpUnique(item);
           });
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass) {

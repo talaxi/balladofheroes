@@ -10481,6 +10481,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;               
       enemy.battleStats.elementResistance.fire += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.BucklerOfPerfectHarmonyEpic, ItemTypeEnum.Equipment, 1, .1));
             
       var measuredOffensive = new Ability();
       measuredOffensive.name = "Measured Offensive";
@@ -10536,6 +10537,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;               
       enemy.battleStats.elementResistance.fire += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.BucklerOfPerfectHarmonySpecial, ItemTypeEnum.Equipment, 1, .1));
             
       var measuredOffensive = new Ability();
       measuredOffensive.name = "Measured Offensive";
@@ -10601,6 +10603,7 @@ export class EnemyGeneratorService {
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;               
       enemy.battleStats.elementResistance.fire += .25;
+      enemy.loot.push(new LootItem(ItemsEnum.BucklerOfPerfectHarmonyUnique, ItemTypeEnum.Equipment, 1, 1));
             
       var measuredOffensive = new Ability();
       measuredOffensive.name = "Measured Offensive";
@@ -11350,7 +11353,8 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
-            
+      enemy.loot.push(new LootItem(ItemsEnum.ScathingBeautyEpic, ItemTypeEnum.Equipment, 1, .1));  
+
       var thrust = new Ability();
       thrust.name = "Thrust";
       thrust.isAvailable = true;
@@ -11403,6 +11407,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
+      enemy.loot.push(new LootItem(ItemsEnum.ScathingBeautySpecial, ItemTypeEnum.Equipment, 1, .1));  
             
       var thrust = new Ability();
       thrust.name = "Thrust";
@@ -11448,7 +11453,7 @@ export class EnemyGeneratorService {
       eternalYouth.isAvailable = true;
       eternalYouth.cooldown = eternalYouth.currentCooldown = 18;
       eternalYouth = this.randomizeCooldown(eternalYouth);      
-      eternalYouth.userEffect.push(this.globalService.createHealOverTimeEffect(30, 3, .2, eternalYouth.name));
+      eternalYouth.userEffect.push(this.globalService.createHealOverTimeEffect(30, 3, .2, eternalYouth.name, 100000));
       eternalYouth.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ClearDebuffs, -1, 1, true, true, false));
       enemy.abilityList.push(eternalYouth);
 
@@ -11465,7 +11470,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;   
+      enemy.xpGainFromDefeat = 2200;
+      enemy.loot.push(new LootItem(ItemsEnum.ScathingBeautyUnique, ItemTypeEnum.Equipment, 1, 1));     
             
       var thrust = new Ability();
       thrust.name = "Thrust";
@@ -11512,7 +11518,7 @@ export class EnemyGeneratorService {
       eternalYouth.cooldown = eternalYouth.currentCooldown = 18;
       eternalYouth = this.randomizeCooldown(eternalYouth);
       eternalYouth.dealsDirectDamage = false;      
-      eternalYouth.userEffect.push(this.globalService.createHealOverTimeEffect(30, 3, .2, eternalYouth.name));
+      eternalYouth.userEffect.push(this.globalService.createHealOverTimeEffect(30, 3, .2, eternalYouth.name, 100000));
       eternalYouth.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ClearDebuffs, -1, 1, true, true, false));
       enemy.abilityList.push(eternalYouth);
 
@@ -11532,8 +11538,8 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 2200;   
       enemy.battleStats.thorns = .1;
       enemy.battleStats.elementIncrease.water = .5;
-      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
-      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaleShieldEpic, ItemTypeEnum.Equipment, 1, .1));
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;    
+      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaledPlatingEpic, ItemTypeEnum.Equipment, 1, .1));  
             
       var crash = new Ability();
       crash.name = "Crash";
@@ -11582,8 +11588,8 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 2200;   
       enemy.battleStats.thorns = .1;
       enemy.battleStats.elementIncrease.water = .5;
-      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
-      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaleShieldSpecial, ItemTypeEnum.Equipment, 1, .1));
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;    
+      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaledPlatingSpecial, ItemTypeEnum.Equipment, 1, .1));    
             
       var crash = new Ability();
       crash.name = "Crash";
@@ -11641,8 +11647,8 @@ export class EnemyGeneratorService {
       enemy.xpGainFromDefeat = 2200;   
       enemy.battleStats.thorns = .1;
       enemy.battleStats.elementIncrease.water = .5;
-      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;
-      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaleShieldUnique, ItemTypeEnum.Equipment, 1, 1));
+      enemy.battleInfo.elementalType = ElementalTypeEnum.Water;  
+      enemy.loot.push(new LootItem(ItemsEnum.RainbowScaledPlatingUnique, ItemTypeEnum.Equipment, 1, 1));      
             
       var crash = new Ability();
       crash.name = "Crash";

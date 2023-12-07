@@ -18,6 +18,7 @@ export class BattleInfo {
     hpRegenTimerLength: number;
     elementalType: ElementalTypeEnum;
     elementsUsed: ElementalTypeEnum[]; //specifically used for disaster
+    outburstElementsUsed: ElementalTypeEnum[]; //specifically used for outburst
     specialAbilityUseCount: number;
     lastUsedPoseidonAbility: boolean;
     stingerCount: [number, number][]; //specifically used for unique weapon Scorpion Stinger

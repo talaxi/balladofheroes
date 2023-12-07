@@ -340,6 +340,38 @@ export class GlobalService {
       spiritUnleashed.cooldown = spiritUnleashed.currentCooldown = 48;
       character.abilityList.push(spiritUnleashed);
     }
+
+    if (character.type === CharacterEnum.Thaumaturge) {
+      var elementalStrike = new Ability();
+      elementalStrike.name = "Elemental Strike";
+      elementalStrike.isAvailable = false;
+      elementalStrike.requiredLevel = this.utilityService.defaultCharacterAbilityLevel;
+      elementalStrike.effectiveness = 1.9;
+      elementalStrike.cooldown = elementalStrike.currentCooldown = 5;
+      elementalStrike.dealsDirectDamage = true;      
+      character.abilityList.push(elementalStrike);
+
+      var elementalSpirit = new Ability();
+      elementalSpirit.name = "Awakened Spirit";      
+      elementalSpirit.requiredLevel = this.utilityService.characterPassiveLevel;
+      elementalSpirit.maxCount = 4;
+      elementalSpirit.isAvailable = false;
+      elementalSpirit.isPassive = true;
+      elementalSpirit.isActivatable = false;
+      elementalSpirit.userEffect.push(this.createStatusEffect(StatusEffectEnum.FireDamageUp, 6, 1.05, false, true));
+      elementalSpirit.userEffect.push(this.createStatusEffect(StatusEffectEnum.FireDamageTakenDown, 6, .75, false, true));
+      character.abilityList.push(elementalSpirit);
+
+      var outburst = new Ability();
+      outburst.name = "Outburst";
+      outburst.requiredLevel = this.utilityService.characterAbility2Level;
+      outburst.isAvailable = false;
+      outburst.effectiveness = 2.1;
+      outburst.secondaryEffectiveness = 1.2;
+      outburst.dealsDirectDamage = true;
+      outburst.cooldown = outburst.currentCooldown = 5;
+      character.abilityList.push(outburst);
+    }
   }
 
   initializeGods() {
@@ -1035,7 +1067,8 @@ export class GlobalService {
       type === StatusEffectEnum.AbsorbElementalDamage || type === StatusEffectEnum.Insight || type === StatusEffectEnum.Flow ||
       type === StatusEffectEnum.Current || type === StatusEffectEnum.Cancer || type === StatusEffectEnum.HealingReceivedUp || type === StatusEffectEnum.FatalAttraction ||
       type === StatusEffectEnum.Strut || type === StatusEffectEnum.Espionage || type === StatusEffectEnum.PassionateRhythmAutoAttack || type === StatusEffectEnum.PassionateRhythm ||
-      type === StatusEffectEnum.Shapeshift || type === StatusEffectEnum.Slow)
+      type === StatusEffectEnum.Shapeshift || type === StatusEffectEnum.Slow || type === StatusEffectEnum.BoundingBand || type === StatusEffectEnum.BoundingBandUnique ||
+      type === StatusEffectEnum.ScathingBeauty || type === StatusEffectEnum.ScathingBeautyUnique)
       refreshes = true;
 
     return refreshes;

@@ -593,6 +593,19 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
+    //TODO: originals could be drop rewards from the trial of resolve
+    if (item === ItemsEnum.BlazingSunPendantUnique) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 100));
+    }
+    if (item === ItemsEnum.DarkMoonPendantUnique) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 100));
+    }
+    if (item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+    }
+    if (item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {      
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+    }
     if (item === ItemsEnum.Ambrosia) {      
       purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));      
     }    
