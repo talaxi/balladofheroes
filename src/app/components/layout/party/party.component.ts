@@ -736,6 +736,10 @@ export class PartyComponent implements OnInit {
     return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown);
   }
 
+  triggerDuo(character: Character) {
+    console.log("Duo ability");
+  }
+
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

@@ -11704,6 +11704,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
+      enemy.loot.push(new LootItem(ItemsEnum.BatteringMaceEpic, ItemTypeEnum.Equipment, 1, .1));   
             
       var backKick = new Ability();
       backKick.name = "Back Kick";
@@ -11756,6 +11757,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
+      enemy.loot.push(new LootItem(ItemsEnum.BatteringMaceSpecial, ItemTypeEnum.Equipment, 1, .1));   
             
       var backKick = new Ability();
       backKick.name = "Back Kick";
@@ -11816,7 +11818,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;   
+      enemy.xpGainFromDefeat = 2200;  
+      enemy.loot.push(new LootItem(ItemsEnum.BatteringMaceUnique, ItemTypeEnum.Equipment, 1, 1));    
             
       var backKick = new Ability();
       backKick.name = "Back Kick";
@@ -11878,6 +11881,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
+      enemy.loot.push(new LootItem(ItemsEnum.GleamingLoopEpic, ItemTypeEnum.Equipment, 1, .1));   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.StunImmunity, -1, 1, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, -1, 1.25, false, true, false));
             
@@ -11925,6 +11929,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
+      enemy.loot.push(new LootItem(ItemsEnum.GleamingLoopSpecial, ItemTypeEnum.Equipment, 1, .1));   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.StunImmunity, -1, 1, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, -1, 1.25, false, true, false));
             
@@ -11983,6 +11988,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;   
+      enemy.loot.push(new LootItem(ItemsEnum.GleamingLoopUnique, ItemTypeEnum.Equipment, 1, 1));   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.StunImmunity, -1, 1, false, true, false));
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, -1, 1.25, false, true, false));
             
@@ -12040,7 +12046,7 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(1250, 180, 55, 82, 75, 200);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 3;
-      enemy.xpGainFromDefeat = 250;
+      enemy.xpGainFromDefeat = 250;      
       
       var cut = new Ability();
       cut.name = "Cut";
@@ -12085,6 +12091,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250;
+      enemy.loot.push(new LootItem(ItemsEnum.EnergyShieldEpic, ItemTypeEnum.Equipment, 1, .1));   
             
       var oneTwoPunch = new Ability();
       oneTwoPunch.name = "One Two Punch";
@@ -12183,6 +12190,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250;
+      enemy.loot.push(new LootItem(ItemsEnum.EnergyShieldSpecial, ItemTypeEnum.Equipment, 1, .1));   
             
       var oneTwoPunch = new Ability();
       oneTwoPunch.name = "One Two Punch";
@@ -12290,6 +12298,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 2;
       enemy.xpGainFromDefeat = 250;
+      enemy.loot.push(new LootItem(ItemsEnum.EnergyShieldUnique, ItemTypeEnum.Equipment, 1, 1));   
             
       var oneTwoPunch = new Ability();
       oneTwoPunch.name = "One Two Punch";
@@ -12342,7 +12351,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;               
+      enemy.xpGainFromDefeat = 2200;      
+      enemy.loot.push(new LootItem(ItemsEnum.SturdyShellEpic, ItemTypeEnum.Equipment, 1, .1));            
 
       var gargantuanClaw = new Ability();
       gargantuanClaw.name = "Gargantuan Claw";
@@ -12398,7 +12408,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;               
+      enemy.xpGainFromDefeat = 2200;      
+      enemy.loot.push(new LootItem(ItemsEnum.SturdyShellSpecial, ItemTypeEnum.Equipment, 1, .1));                     
 
       var gargantuanClaw = new Ability();
       gargantuanClaw.name = "Gargantuan Claw";
@@ -12463,7 +12474,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;               
+      enemy.xpGainFromDefeat = 2200;    
+      enemy.loot.push(new LootItem(ItemsEnum.SturdyShellUnique, ItemTypeEnum.Equipment, 1, .1));                       
 
       var gargantuanClaw = new Ability();
       gargantuanClaw.name = "Gargantuan Claw";
@@ -12529,6 +12541,7 @@ export class EnemyGeneratorService {
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;          
+      enemy.loot.push(new LootItem(ItemsEnum.GlowingChokerEpic, ItemTypeEnum.Equipment, 1, .1));            
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.FlamingMane, -1, 1, false, true, false));     
       
       var swipe = new Ability();
@@ -12567,12 +12580,13 @@ export class EnemyGeneratorService {
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.1, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);
     } 
-    if (type === BestiaryEnum.MajesticLionNormal) {      
+    if (type === BestiaryEnum.MajesticLionHard) {      
       enemy.name = "Majestic Lion";
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;          
+      enemy.xpGainFromDefeat = 2200;   
+      enemy.loot.push(new LootItem(ItemsEnum.GlowingChokerSpecial, ItemTypeEnum.Equipment, 1, .1));                   
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.FlamingMane, -1, 1, false, true, false));     
       
       var swipe = new Ability();
@@ -12620,12 +12634,13 @@ export class EnemyGeneratorService {
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.2, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);
     } 
-    if (type === BestiaryEnum.MajesticLionNormal) {      
+    if (type === BestiaryEnum.MajesticLionVeryHard) {      
       enemy.name = "Majestic Lion";
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;          
+      enemy.xpGainFromDefeat = 2200; 
+      enemy.loot.push(new LootItem(ItemsEnum.GlowingChokerUnique, ItemTypeEnum.Equipment, 1, 1));                     
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.FlamingMane, -1, 1, false, true, false));     
       
       var swipe = new Ability();
@@ -12678,7 +12693,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;          
+      enemy.xpGainFromDefeat = 2200;  
+      enemy.loot.push(new LootItem(ItemsEnum.AstralRingEpic, ItemTypeEnum.Equipment, 1, .1));                    
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffImmunity, -1, 1, false, true, false));     
       
       var thunderingStrike = new Ability();
@@ -12731,7 +12747,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;          
+      enemy.xpGainFromDefeat = 2200;    
+      enemy.loot.push(new LootItem(ItemsEnum.AstralRingSpecial, ItemTypeEnum.Equipment, 1, .1));                          
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffImmunity, -1, 1, false, true, false));     
       
       var thunderingStrike = new Ability();
@@ -12795,7 +12812,8 @@ export class EnemyGeneratorService {
       enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
-      enemy.xpGainFromDefeat = 2200;          
+      enemy.xpGainFromDefeat = 2200; 
+      enemy.loot.push(new LootItem(ItemsEnum.AstralRingUnique, ItemTypeEnum.Equipment, 1, 1));                             
       enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DebuffImmunity, -1, 1, false, true, false));     
       
       var thunderingStrike = new Ability();

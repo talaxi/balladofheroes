@@ -36,8 +36,26 @@
 }
 
 .compareEquipment {
-  display: flex;
-  justify-content: space-evenly;
+  /*display: flex;
+  justify-content: space-evenly;*/
+
+  display: grid;
+  width: 100%;
+  height: 100%;
+  grid-template-columns: 49% 49%;
+  grid-template-rows: 1fr;
+  justify-content: stretch;
+  gap: 1rem;
+  grid-template-areas:
+    "item1 item2";
+}
+
+.item1 {
+  grid-area: item1;
+}
+
+.item2 {
+  grid-area: item2;
 }
 
 .comparedEquipmentItem {

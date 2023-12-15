@@ -965,6 +965,7 @@ export class GlobalService {
       puncture.dealsDirectDamage = true;
       puncture.effectiveness = 1.65;
       puncture.secondaryEffectiveness = .25;
+      puncture.elementalType = ElementalTypeEnum.Air;
       puncture.userEffect.push(this.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));      
       god.abilityList.push(puncture);
 

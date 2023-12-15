@@ -88,6 +88,30 @@
         "characterInfo abilities";
 }
 
+.statusEffectGrid {
+    display: grid;
+    height: 100%;
+    grid-template-columns: 85% 1% 14%;
+    grid-template-rows: 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "statusEffects . duoAbility";
+}
+
+.statusEffects {
+    grid-area: statusEffects;
+}
+
+.duoAbility {
+    grid-area: duoAbility;
+    margin: auto;
+}
+
+.duoAbilityImage {
+    aspect-ratio: 1/1;
+    width: 2.5vw;
+}
+
 .characterInfo {
     grid-area: characterInfo;
     display: flex;

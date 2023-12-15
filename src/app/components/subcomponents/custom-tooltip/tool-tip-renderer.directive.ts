@@ -6,6 +6,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Directive({
   selector: '[customToolTip]'
@@ -25,23 +26,27 @@ export class ToolTipRendererDirective {
   @Input() contentTemplate: TemplateRef<any>;
 
   private _overlayRef: OverlayRef;
-  @Output() overlayRefEmitter = new EventEmitter<OverlayRef>(); 
+  @Output() overlayRefEmitter = new EventEmitter<OverlayRef>();
 
   delayTimer: number = 0;
   subscription: any;
+  tooltipSubscription: any;
   delayTimerCap = .35;
   @Input() isDelayed: boolean = true;
   @Input() isLargeTooltip: boolean = false;
+  @Input() isSmallTooltip: boolean = false;
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
+  smallTooltipPercent = .31; //these need to match the css
   regularTooltipPercent = .38; //these need to match the css
-  largeTooltipPercent = .58; //these need to match the css
+  largeTooltipPercent = .49; //these need to match the css
 
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
     private _elementRef: ElementRef,
     private globalService: GlobalService,
     private gameLoopService: GameLoopService,
-    private deviceDetectorService: DeviceDetectorService) { }
+    private deviceDetectorService: DeviceDetectorService,
+    private utilityService: UtilityService) { }
 
   /**
    * Init life cycle event handler
@@ -53,16 +58,25 @@ export class ToolTipRendererDirective {
 
     var positionStrategy: FlexibleConnectedPositionStrategy;
 
-    if (this.tooltipDirection === DirectionEnum.Right) {      
-      var tooltipPercent = this.isLargeTooltip ? this.largeTooltipPercent : this.regularTooltipPercent;
-      
-      if ((screen.width * (1-tooltipPercent) < (this._elementRef.nativeElement.getBoundingClientRect().x + this._elementRef.nativeElement.getBoundingClientRect().width)))
-        this.tooltipDirection = DirectionEnum.DownRight;
-    }
-
+    var tooltipPercent = 0;
+    if (this.isLargeTooltip)
+      tooltipPercent = this.largeTooltipPercent;
+    else if (this.isSmallTooltip)
+      tooltipPercent = this.smallTooltipPercent;
+    else
+      tooltipPercent = this.regularTooltipPercent;
+    /*
+        if (this.tooltipDirection === DirectionEnum.Right) {
+              
+    
+          if ((screen.width * (1 - tooltipPercent) < (this._elementRef.nativeElement.getBoundingClientRect().x + this._elementRef.nativeElement.getBoundingClientRect().width)))
+            this.tooltipDirection = DirectionEnum.DownRight;
+        }
+    */
+   
     if (this.tooltipDirection === DirectionEnum.Down) {
       positionStrategy = this._overlayPositionBuilder
-      .flexibleConnectedTo(this._elementRef)
+        .flexibleConnectedTo(this._elementRef)
         .withPositions([{
           originX: 'start',
           originY: 'bottom',
@@ -70,10 +84,10 @@ export class ToolTipRendererDirective {
           overlayY: 'top',
           offsetY: 5,
         }]);
-    }    
+    }
     else if (this.tooltipDirection === DirectionEnum.Up) {
       positionStrategy = this._overlayPositionBuilder
-      .flexibleConnectedTo(this._elementRef)
+        .flexibleConnectedTo(this._elementRef)
         .withPositions([{
           originX: 'start',
           originY: 'top',
@@ -95,7 +109,7 @@ export class ToolTipRendererDirective {
     }
     else if (this.tooltipDirection === DirectionEnum.UpLeft) {
       positionStrategy = this._overlayPositionBuilder
-      .flexibleConnectedTo(this._elementRef)
+        .flexibleConnectedTo(this._elementRef)
         .withPositions([{
           originX: 'start',
           originY: 'top',
@@ -107,7 +121,7 @@ export class ToolTipRendererDirective {
     }
     else if (this.tooltipDirection === DirectionEnum.DownRight) {
       positionStrategy = this._overlayPositionBuilder
-      .flexibleConnectedTo(this._elementRef)
+        .flexibleConnectedTo(this._elementRef)
         .withPositions([{
           originX: 'end',
           originY: 'bottom',
@@ -119,7 +133,7 @@ export class ToolTipRendererDirective {
     }
     else if (this.tooltipDirection === DirectionEnum.DownLeft) {
       positionStrategy = this._overlayPositionBuilder
-      .flexibleConnectedTo(this._elementRef)
+        .flexibleConnectedTo(this._elementRef)
         .withPositions([{
           originX: 'start',
           originY: 'bottom',
@@ -128,10 +142,10 @@ export class ToolTipRendererDirective {
           offsetY: 5,
           offsetX: -5
         }]);
-    } 
+    }
     else if (this.tooltipDirection === DirectionEnum.UpRight) {
       positionStrategy = this._overlayPositionBuilder
-      .flexibleConnectedTo(this._elementRef)
+        .flexibleConnectedTo(this._elementRef)
         .withPositions([{
           originX: 'end',
           originY: 'top',
@@ -152,9 +166,9 @@ export class ToolTipRendererDirective {
           offsetX: 5,
         }]);
     }
-    
-    this._overlayRef = this._overlay.create({ positionStrategy });        
-    this.overlayRefEmitter.emit(this._overlayRef);  
+
+    this._overlayRef = this._overlay.create({ positionStrategy });
+    this.overlayRefEmitter.emit(this._overlayRef);
   }
 
   /**
@@ -162,17 +176,17 @@ export class ToolTipRendererDirective {
    * i.e. where this directive is applied
    * This method will show the tooltip by instantiating the McToolTipComponent and attaching to the overlay
    */
-  @HostListener('mouseenter')
-  show() { 
-    if (!this.deviceDetectorService.isMobile())   
+  @HostListener('mouseenter', ['$event'])
+  show(event: any) {
+    if (!this.deviceDetectorService.isMobile())
       this.openToolTip();
   }
 
   @HostListener('touchstart')
-  mobileShow(event: any) { 
-    if (this.deviceDetectorService.isMobile()) {        
+  mobileShow(event: any) {
+    if (this.deviceDetectorService.isMobile()) {
       event?.preventDefault();
-      this.openToolTip();      
+      this.openToolTip();
     }
   }
 
@@ -181,15 +195,34 @@ export class ToolTipRendererDirective {
    * i.e. where this directive is applied
    * This method will close the tooltip by detaching the overlay from the view
    */
-  @HostListener('mouseleave')
-  hide() {    
-    if (!this.deviceDetectorService.isMobile())   
+  @HostListener('mouseleave', ['$event'])
+  hide(event: any) {
+    /*
+        var newHoveredItem = document.elementFromPoint(event.clientX, event.clientY);    
+        var elementClass = "";
+        if (newHoveredItem !== null && newHoveredItem !== undefined)
+          elementClass = newHoveredItem?.className;
+    
+        if (typeof elementClass === 'string' && elementClass.includes("tooltip-container")) {
+          console.log("Setting up the sub");
+          this.utilityService.mouseOverHoverable = true;
+    
+          this.tooltipSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+            console.log("Checking: " + this.utilityService.mouseInTooltip + " " + this.utilityService.mouseOverHoverable);
+            if (this.utilityService.mouseInTooltip) {                    
+              this.closeToolTip();
+            }
+          });
+        }
+        else {*/
+    if (!this.deviceDetectorService.isMobile())
       this.closeToolTip();
+    //}
   }
 
   @HostListener('touchend')
-  mobileHide() {    
-    if (this.deviceDetectorService.isMobile())   
+  mobileHide() {
+    if (this.deviceDetectorService.isMobile())
       this.closeToolTip();
   }
 
@@ -215,6 +248,7 @@ export class ToolTipRendererDirective {
           tooltipRef.instance.text = this.text;
           tooltipRef.instance.contentTemplate = this.contentTemplate;
           tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;
+          tooltipRef.instance.isSmallTooltip = this.isSmallTooltip;
           tooltipRef.instance.tooltipDirection = this.tooltipDirection;
         }
       });
@@ -223,9 +257,10 @@ export class ToolTipRendererDirective {
       if (this._overlayRef && !this._overlayRef.hasAttached()) {
         const tooltipRef: ComponentRef<CustomTooltipComponent> = this._overlayRef.attach(new ComponentPortal(CustomTooltipComponent));
         tooltipRef.instance.text = this.text;
-        tooltipRef.instance.contentTemplate = this.contentTemplate;  
-        tooltipRef.instance.isLargeTooltip = this.isLargeTooltip; 
-        tooltipRef.instance.tooltipDirection = this.tooltipDirection;     
+        tooltipRef.instance.contentTemplate = this.contentTemplate;
+        tooltipRef.instance.isLargeTooltip = this.isLargeTooltip;
+        tooltipRef.instance.isSmallTooltip = this.isSmallTooltip;
+        tooltipRef.instance.tooltipDirection = this.tooltipDirection;
       }
     }
   }
@@ -237,6 +272,10 @@ export class ToolTipRendererDirective {
     this.delayTimer = 0;
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
+
+
+    if (this.tooltipSubscription !== undefined)
+      this.tooltipSubscription.unsubscribe();
 
     if (this._overlayRef) {
       this._overlayRef.detach();

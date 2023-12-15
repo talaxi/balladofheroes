@@ -1,5 +1,5 @@
 <div *ngIf="isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover"
-    (overlayRefEmitter)="overlayEmitter($event)">
+    (overlayRefEmitter)="overlayEmitter($event)" (click)="clickStatusEffect()">
     <div *ngIf="isSplitStatUpDownEffect(statusEffect)"
         class="statUpDownGrid positiveStatUpDownGrid positiveStatusEffect">
         <div class="halfImage">
@@ -27,7 +27,7 @@
     </div>
 </div>
 <div *ngIf="!isPositiveEffect" customToolTip [contentTemplate]="statusEffectPopover"
-    (overlayRefEmitter)="overlayEmitter($event)">
+    (overlayRefEmitter)="overlayEmitter($event)" (click)="clickStatusEffect()">
     <div *ngIf="isSplitStatUpDownEffect(statusEffect)"
         class="statUpDownGrid negativeStatUpDownGrid negativeStatusEffect">
         <div class="halfImage">

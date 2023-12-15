@@ -42,8 +42,13 @@
                             </span>
                         </div>
                     </div>
-                    <div class="fullHeight">
+                    <div class="fullHeight statusEffectGrid">
+                        <div class="statusEffects">
                         <app-status-effect-view [character]="character"></app-status-effect-view>
+                        </div>
+                        <div class="duoAbility" customToolTip [contentTemplate]="duoAbilityPopover" (click)="triggerDuo(character)">
+                            <img class="duoAbilityImage" src="assets/svg/heraAphroditeDuo.svg">
+                        </div>
                     </div>
                     <div>
                         <app-god-name-view [character]="character"></app-god-name-view>
@@ -150,4 +155,16 @@
 
 <ng-template #xpsTemplate>
     XP Per Second is calculated over a 120 second period and is reset upon changing sub zones. This does not include any XP modifiers such as Boon of Olympus.
+</ng-template>
+
+<ng-template #duoAbilityPopover>
+    <div>
+        Test
+        <!--<strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong> <span *ngIf="verboseMode"> {{getAutoManualText()}} {{getLinkText()}}</span>        
+        <hr />
+        <span [innerHtml]="getAbilityDescription()"></span>        
+        <hr />
+        <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
+        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>        -->
+    </div>
 </ng-template>

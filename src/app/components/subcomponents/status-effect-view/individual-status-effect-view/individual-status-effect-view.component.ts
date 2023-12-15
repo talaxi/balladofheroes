@@ -507,8 +507,10 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "Sagittarius.svg";
     if (effect.type === StatusEffectEnum.BoundingBand || effect.type === StatusEffectEnum.BoundingBandUnique)
       src += "Capricorn.svg";
-      if (effect.type === StatusEffectEnum.ScathingBeauty || effect.type === StatusEffectEnum.ScathingBeautyUnique)
+    if (effect.type === StatusEffectEnum.ScathingBeauty || effect.type === StatusEffectEnum.ScathingBeautyUnique)
       src += "Aquarius.svg";
+    if (effect.type === StatusEffectEnum.RainbowPlating || effect.type === StatusEffectEnum.RainbowPlatingUnique)
+      src += "Pisces.svg";
 
     return src;
   }
@@ -608,6 +610,23 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return true;
 
     return false;
+  }
+
+  clickStatusEffect() {
+    if (this.statusEffect.type === StatusEffectEnum.RainbowPlating || this.statusEffect.type === StatusEffectEnum.RainbowPlatingUnique) {
+      if (this.statusEffect.element === ElementalTypeEnum.Holy)
+        this.statusEffect.element = ElementalTypeEnum.Fire;
+      else if (this.statusEffect.element === ElementalTypeEnum.Fire)
+      this.statusEffect.element = ElementalTypeEnum.Lightning;
+      else if (this.statusEffect.element === ElementalTypeEnum.Lightning)
+      this.statusEffect.element = ElementalTypeEnum.Earth;
+      else if (this.statusEffect.element === ElementalTypeEnum.Earth)
+      this.statusEffect.element = ElementalTypeEnum.Air;
+      else if (this.statusEffect.element === ElementalTypeEnum.Air)
+      this.statusEffect.element = ElementalTypeEnum.Water;
+      else if (this.statusEffect.element === ElementalTypeEnum.Water)
+      this.statusEffect.element = ElementalTypeEnum.Holy;
+    }
   }
 
   ngOnDestroy() {

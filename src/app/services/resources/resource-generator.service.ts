@@ -500,7 +500,71 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.ScathingBeautyUnique) {
       return new ResourceValue(ItemsEnum.ScathingBeautyUnique, amount);
+    }    
+    if (type === ItemsEnum.RainbowScaledPlatingEpic) {
+      return new ResourceValue(ItemsEnum.RainbowScaledPlatingEpic, amount);
     }
+    if (type === ItemsEnum.RainbowScaledPlatingSpecial) {
+      return new ResourceValue(ItemsEnum.RainbowScaledPlatingSpecial, amount);
+    }
+    if (type === ItemsEnum.RainbowScaledPlatingUnique) {
+      return new ResourceValue(ItemsEnum.RainbowScaledPlatingUnique, amount);
+    }     
+    if (type === ItemsEnum.BatteringMaceEpic) {
+      return new ResourceValue(ItemsEnum.BatteringMaceEpic, amount);
+    }
+    if (type === ItemsEnum.BatteringMaceSpecial) {
+      return new ResourceValue(ItemsEnum.BatteringMaceSpecial, amount);
+    }
+    if (type === ItemsEnum.BatteringMaceUnique) {
+      return new ResourceValue(ItemsEnum.BatteringMaceUnique, amount);
+    } 
+    if (type === ItemsEnum.GleamingLoopEpic) {
+      return new ResourceValue(ItemsEnum.GleamingLoopEpic, amount);
+    }
+    if (type === ItemsEnum.GleamingLoopSpecial) {
+      return new ResourceValue(ItemsEnum.GleamingLoopSpecial, amount);
+    }
+    if (type === ItemsEnum.GleamingLoopUnique) {
+      return new ResourceValue(ItemsEnum.GleamingLoopUnique, amount);
+    } 
+    if (type === ItemsEnum.EnergyShieldEpic) {
+      return new ResourceValue(ItemsEnum.EnergyShieldEpic, amount);
+    }
+    if (type === ItemsEnum.EnergyShieldSpecial) {
+      return new ResourceValue(ItemsEnum.EnergyShieldSpecial, amount);
+    }
+    if (type === ItemsEnum.EnergyShieldUnique) {
+      return new ResourceValue(ItemsEnum.EnergyShieldUnique, amount);
+    } 
+    if (type === ItemsEnum.SturdyShellEpic) {
+      return new ResourceValue(ItemsEnum.SturdyShellEpic, amount);
+    }
+    if (type === ItemsEnum.SturdyShellSpecial) {
+      return new ResourceValue(ItemsEnum.SturdyShellSpecial, amount);
+    }
+    if (type === ItemsEnum.SturdyShellUnique) {
+      return new ResourceValue(ItemsEnum.SturdyShellUnique, amount);
+    } 
+    if (type === ItemsEnum.GlowingChokerEpic) {
+      return new ResourceValue(ItemsEnum.GlowingChokerEpic, amount);
+    }
+    if (type === ItemsEnum.GlowingChokerSpecial) {
+      return new ResourceValue(ItemsEnum.GlowingChokerSpecial, amount);
+    }
+    if (type === ItemsEnum.GlowingChokerUnique) {
+      return new ResourceValue(ItemsEnum.GlowingChokerUnique, amount);
+    } 
+    if (type === ItemsEnum.AstralRingEpic) {
+      return new ResourceValue(ItemsEnum.AstralRingEpic, amount);
+    }
+    if (type === ItemsEnum.AstralRingSpecial) {
+      return new ResourceValue(ItemsEnum.AstralRingSpecial, amount);
+    }
+    if (type === ItemsEnum.AstralRingUnique) {
+      return new ResourceValue(ItemsEnum.AstralRingUnique, amount);
+    }
+
     //equippables
     if (type === ItemsEnum.HealingHerb) {
       return new ResourceValue(ItemsEnum.HealingHerb, amount);
@@ -612,6 +676,24 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.ElixirOfFortune) {
       return new ResourceValue(ItemsEnum.ElixirOfFortune, amount);
+    }
+    if (type === ItemsEnum.WaterAbsorptionPotion) {
+      return new ResourceValue(ItemsEnum.WaterAbsorptionPotion, amount);
+    }
+    if (type === ItemsEnum.HolyAbsorptionPotion) {
+      return new ResourceValue(ItemsEnum.HolyAbsorptionPotion, amount);
+    }
+    if (type === ItemsEnum.FireAbsorptionPotion) {
+      return new ResourceValue(ItemsEnum.FireAbsorptionPotion, amount);
+    }
+    if (type === ItemsEnum.LightningAbsorptionPotion) {
+      return new ResourceValue(ItemsEnum.LightningAbsorptionPotion, amount);
+    }
+    if (type === ItemsEnum.EarthAbsorptionPotion) {
+      return new ResourceValue(ItemsEnum.EarthAbsorptionPotion, amount);
+    }
+    if (type === ItemsEnum.AirAbsorptionPotion) {
+      return new ResourceValue(ItemsEnum.AirAbsorptionPotion, amount);
     }
 
     //materials

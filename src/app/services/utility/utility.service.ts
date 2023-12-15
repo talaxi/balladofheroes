@@ -134,7 +134,25 @@ export class UtilityService {
   public weeklyMeleeEntryCap = 7;
   public levelsNeededForAmbrosia = 50;
 
+  //these two fields are hopefully going to finally resolve the stutter issue when hovering over an item and the tooltip overlaps your mouse
+  public mouseInTooltip = false;
+  public mouseOverHoverable = false;
+
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
+
+  enterHoverable(event: any) {   
+    console.log("Entered hoverable");
+    console.log(event);
+    this.mouseOverHoverable = true;
+  }
+
+  leaveHoverable() {    
+    console.log("Left hoverable");
+    if (this.mouseInTooltip)
+      return;
+
+    this.mouseOverHoverable = false;
+  }
 
   getSanitizedHtml(text: string) {
     var sanitizedHtml = this.sanitizer.sanitize(SecurityContext.HTML, this.sanitizer.bypassSecurityTrustHtml(text));

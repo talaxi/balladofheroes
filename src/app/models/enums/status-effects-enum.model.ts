@@ -196,5 +196,8 @@ export enum StatusEffectEnum {
     ScathingBeauty,
     ScathingBeautyUnique,
     RainbowPlating,
-    RainbowPlatingUnique
+    RainbowPlatingUnique,
+    FreeAbilityCastChance,
+    EnergyShield,
+    EnergyShieldUnique,
   }

@@ -1441,8 +1441,8 @@ export class LookupService {
     //zodiacs    
     if (type === ItemsEnum.ScorpionStingerEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Spear);
-      equipmentPiece.stats = new CharacterStats(500, 325, 0, 0, 150, 0);
-      equipmentPiece.stats.armorPenetration = .025;
+      equipmentPiece.stats = new CharacterStats(500, 325, 0, 150, 0, 0);
+      equipmentPiece.stats.tickFrequency = .025;
       equipmentPiece.stats.autoAttackCooldownReduction = .05;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
@@ -1453,8 +1453,8 @@ export class LookupService {
     }
     if (type === ItemsEnum.ScorpionStingerSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Spear);
-      equipmentPiece.stats = new CharacterStats(3500, 2250, 0, 0, 500, 0);
-      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats = new CharacterStats(3500, 2250, 0, 500, 0, 0);
+      equipmentPiece.stats.tickFrequency = .05;
       equipmentPiece.stats.autoAttackCooldownReduction = .075;
       equipmentPiece.stats.hpRegen = 40;
       var equipmentEffect = new UsableItemEffect();
@@ -1467,8 +1467,8 @@ export class LookupService {
     }
     if (type === ItemsEnum.ScorpionStingerUnique) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Unique, WeaponTypeEnum.Spear);
-      equipmentPiece.stats = new CharacterStats(7500, 7000, 0, 0, 1500, 0);
-      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats = new CharacterStats(7500, 7000, 0, 1500, 0, 0);
+      equipmentPiece.stats.tickFrequency = .05;
       equipmentPiece.stats.autoAttackCooldownReduction = .1;
       equipmentPiece.stats.hpRegen = 100;
       var equipmentEffect = new UsableItemEffect();
@@ -1617,7 +1617,7 @@ export class LookupService {
       equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.BoundingBandUnique, 10, 1.1 + effectivenessIncrease, false, true, false));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 5;
-    }    
+    }
     if (type === ItemsEnum.ScathingBeautyEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
       equipmentPiece.stats = new CharacterStats(0, 0, 400, 0, 0, 600);
@@ -1626,7 +1626,7 @@ export class LookupService {
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
       equipmentEffect.chance = .2;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));      
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
       equipmentEffect.userEffect[0].tickFrequency = 10;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 2;
@@ -1640,7 +1640,7 @@ export class LookupService {
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
       equipmentEffect.chance = .2;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));      
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
       equipmentEffect.userEffect[0].tickFrequency = 10;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 3;
@@ -1662,19 +1662,24 @@ export class LookupService {
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
       equipmentEffect.chance = .2;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeautyUnique, 30, .25 + effectivenessIncrease, false, true, false, type.toString(), undefined, true, undefined, undefined, undefined, undefined, maxCount));      
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeautyUnique, 30, .25 + effectivenessIncrease, false, true, false, type.toString(), undefined, true, undefined, undefined, undefined, undefined, maxCount));
       equipmentEffect.userEffect[0].tickFrequency = 10;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
-      equipmentPiece.slotCount = 5;      
+      equipmentPiece.slotCount = 5;
     }
     if (type === ItemsEnum.RainbowScaledPlatingEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
       equipmentPiece.stats = new CharacterStats(1500, 0, 400, 300, 0, 0);
+      equipmentPiece.stats.elementResistance.earth = .025;
+      equipmentPiece.stats.elementResistance.air = .025;
+      equipmentPiece.stats.elementResistance.water = .025;
+      equipmentPiece.stats.elementResistance.holy = .025;
+      equipmentPiece.stats.elementResistance.lightning = .025;
+      equipmentPiece.stats.elementResistance.fire = .025;
       equipmentPiece.stats.armorPenetration = .05;
-      equipmentPiece.stats.healingDone = .05;
       var equipmentEffect = new UsableItemEffect();
-      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;      
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RainbowPlating, -1, .1, false, true, false, type.toString()));      
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RainbowPlating, -1, .1, false, true, false, type.toString(), undefined, undefined, ElementalTypeEnum.Holy));
       equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 2;
@@ -1688,23 +1693,22 @@ export class LookupService {
       equipmentPiece.stats.elementResistance.holy = .05;
       equipmentPiece.stats.elementResistance.lightning = .05;
       equipmentPiece.stats.elementResistance.fire = .05;
-      equipmentPiece.stats.armorPenetration = .075;
+      equipmentPiece.stats.elementIncrease.earth = .05;
+      equipmentPiece.stats.elementIncrease.air = .05;
+      equipmentPiece.stats.elementIncrease.water = .05;
+      equipmentPiece.stats.elementIncrease.holy = .05;
+      equipmentPiece.stats.elementIncrease.lightning = .05;
+      equipmentPiece.stats.elementIncrease.fire = .05;
+      equipmentPiece.stats.armorPenetration = .05;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RainbowPlating, -1, .1, false, true, false, type.toString()));            
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RainbowPlating, -1, .1, false, true, false, type.toString(), undefined, undefined, ElementalTypeEnum.Holy));
       equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 3;
       equipmentPiece.set = EquipmentSetEnum.Zodiac;
     }
     if (type === ItemsEnum.RainbowScaledPlatingUnique) {
-      var damageIncrease = 0;
-      var defenseIncrease = 0;      
-      if (unique !== undefined) {
-        damageIncrease = .005 * unique.getMinorEffectLevel();
-        defenseIncrease = unique.getMajorEffectLevel();
-      }
-
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Unique);
       equipmentPiece.stats = new CharacterStats(15000, 0, 4000, 3000, 0, 0);
       equipmentPiece.stats.elementResistance.earth = .075;
@@ -1713,11 +1717,331 @@ export class LookupService {
       equipmentPiece.stats.elementResistance.holy = .075;
       equipmentPiece.stats.elementResistance.lightning = .075;
       equipmentPiece.stats.elementResistance.fire = .075;
-      equipmentPiece.stats.armorPenetration = .1;
+      equipmentPiece.stats.elementIncrease.earth = .075;
+      equipmentPiece.stats.elementIncrease.air = .075;
+      equipmentPiece.stats.elementIncrease.water = .075;
+      equipmentPiece.stats.elementIncrease.holy = .075;
+      equipmentPiece.stats.elementIncrease.lightning = .075;
+      equipmentPiece.stats.elementIncrease.fire = .075;
+      equipmentPiece.stats.armorPenetration = .075;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
-      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RainbowPlating, -1, .1, false, true, false, type.toString()));      
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RainbowPlatingUnique, -1, 0, false, true, false, type.toString(), undefined, undefined, ElementalTypeEnum.Holy));
       equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 5;
+    }
+
+    if (type === ItemsEnum.BatteringMaceEpic) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 750, 0, 0, 250, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .025;
+      equipmentPiece.stats.criticalMultiplier = .075;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TargetAboveHpPercentAbility;
+      equipmentEffect.maxThreshold = .8;
+      equipmentEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .1, "Battering Mace", dotTypeEnum.BasedOnDamage));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.BatteringMaceSpecial) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 2625, 0, 0, 875, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .025;
+      equipmentPiece.stats.armorPenetration = .025;
+      equipmentPiece.stats.criticalMultiplier = .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TargetAboveHpPercentAbility;
+      equipmentEffect.maxThreshold = .8;
+      equipmentEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .1, "Battering Mace", dotTypeEnum.BasedOnDamage));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zodiac;
+    }
+    if (type === ItemsEnum.BatteringMaceUnique) {
+      var effectivenessIncrease = 0;
+      var thresholdReduction = 0;
+      if (unique !== undefined) {
+        effectivenessIncrease = .004 * unique.getMinorEffectLevel();
+        thresholdReduction = unique.getMajorEffectLevel() * .03;
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Unique, WeaponTypeEnum.Hammer);
+      equipmentPiece.stats = new CharacterStats(0, 7500, 0, 0, 2500, 0);
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats.criticalMultiplier = .15;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TargetAboveHpPercentAbility;
+      equipmentEffect.maxThreshold = .8 - thresholdReduction;
+      equipmentEffect.targetEffect.push(this.globalService.createDamageOverTimeEffect(12, 4, .1 + effectivenessIncrease, "Battering Mace", dotTypeEnum.BasedOnDamage));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 5;
+    }
+    if (type === ItemsEnum.GleamingLoopEpic) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(1250, 150, 150, 150, 150, 150);
+      equipmentPiece.stats.aoeDamage = .05;
+      equipmentPiece.stats.overdriveGain = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FreeAbilityCastChance, 0, .1, true, false, false, this.dictionaryService.getItemName(type).toString(), 0, undefined, undefined, 25));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.GleamingLoopSpecial) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(4375, 525, 525, 525, 525, 525);
+      equipmentPiece.stats.aoeDamage = .05;
+      equipmentPiece.stats.overdriveGain = .05;
+      equipmentPiece.stats.criticalMultiplier = .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FreeAbilityCastChance, 0, .1, true, false, false, this.dictionaryService.getItemName(type).toString(), 0, undefined, undefined, 25));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zodiac;
+    }
+    if (type === ItemsEnum.GleamingLoopUnique) {
+      var effectivenessIncrease = 0;
+      var countReduction = 1;
+      if (unique !== undefined) {
+        effectivenessIncrease = .01 * unique.getMinorEffectLevel();
+        countReduction = unique.getMajorEffectLevel();
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(12500, 1500, 1500, 1500, 1500, 1500);
+      equipmentPiece.stats.aoeDamage = .1;
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.stats.criticalMultiplier = .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.TriggersEvery;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FreeAbilityCastChance, 0, 0 + effectivenessIncrease, true, false, false, this.dictionaryService.getItemName(type).toString(), 0, undefined, undefined, 25 - countReduction));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 5;
+    }
+    if (type === ItemsEnum.EnergyShieldEpic) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(2500, 0, 250, 0, 0, 250);
+      equipmentPiece.stats.hpRegen = 17;
+      equipmentPiece.stats.healingReceived = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EnergyShield, -1, .1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect2.chance = .15;
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, .1, true, true, false, type.toString()));
+      equipmentEffect2.userEffect[0].dotType = dotTypeEnum.UserCurrentMaxHpPercent;
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.EnergyShieldSpecial) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(8750, 0, 875, 0, 0, 875);
+      equipmentPiece.stats.hpRegen = 45;
+      equipmentPiece.stats.healingReceived = .05;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EnergyShield, -1, .1, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect2.chance = .15;
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, .1, true, true, false, type.toString()));
+      equipmentEffect2.userEffect[0].dotType = dotTypeEnum.UserCurrentMaxHpPercent;
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zodiac;
+    }
+    if (type === ItemsEnum.EnergyShieldUnique) {
+      var damageIncrease = 0;
+      var barrierIncrease = 0;
+      if (unique !== undefined) {
+        damageIncrease = .01 * unique.getMinorEffectLevel();
+        barrierIncrease = unique.getMajorEffectLevel() * .02;
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(25000, 0, 2500, 0, 0, 2500);
+      equipmentPiece.stats.hpRegen = 85;
+      equipmentPiece.stats.healingReceived = .075;
+      equipmentPiece.stats.abilityCooldownReduction = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.EnergyShieldUnique, -1, damageIncrease, false, true, false, type.toString()));
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      var equipmentEffect2 = new UsableItemEffect();
+      equipmentEffect2.trigger = EffectTriggerEnum.ChanceWhenDamageTaken;
+      equipmentEffect2.chance = .15;
+      equipmentEffect2.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.SelfBarrier, -1, barrierIncrease, true, true, false, type.toString()));
+      equipmentEffect2.userEffect[0].dotType = dotTypeEnum.UserCurrentMaxHpPercent;
+      equipmentPiece.equipmentEffects.push(equipmentEffect2);
+      equipmentPiece.slotCount = 5;
+    }
+    if (type === ItemsEnum.SturdyShellEpic) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(1000, 0, 600, 200, 0, 0);
+      equipmentPiece.stats.debuffDuration = .025;
+      equipmentPiece.stats.overdriveGain = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.SturdyShellSpecial) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(3500, 0, 2100, 700, 0, 0);
+      equipmentPiece.stats.debuffDuration = .05;
+      equipmentPiece.stats.overdriveGain = .05;
+      equipmentPiece.stats.buffDuration = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zodiac;
+    }
+    if (type === ItemsEnum.SturdyShellUnique) {
+      var effectivenessIncrease = 0;
+      var maxCount = 1;
+      if (unique !== undefined) {
+        effectivenessIncrease = .0075 * unique.getMinorEffectLevel();
+        maxCount = unique.getMajorEffectLevel();
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(10000, 0, 6000, 0, 2000, 0);
+      equipmentPiece.stats.debuffDuration = .075;
+      equipmentPiece.stats.overdriveGain = .1;
+      equipmentPiece.stats.buffDuration = .075;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeautyUnique, 30, .25 + effectivenessIncrease, false, true, false, type.toString(), undefined, true, undefined, undefined, undefined, undefined, maxCount));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 5;
+    }
+    if (type === ItemsEnum.GlowingChokerEpic) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 200, 0, 100, 700, 0);
+      equipmentPiece.stats.criticalMultiplier = .05;
+      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats.elementIncrease.earth = .05;
+      equipmentPiece.stats.elementIncrease.air = .05;
+      equipmentPiece.stats.elementIncrease.water = .05;
+      equipmentPiece.stats.elementIncrease.holy = .05;
+      equipmentPiece.stats.elementIncrease.lightning = .05;
+      equipmentPiece.stats.elementIncrease.fire = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.GlowingChokerSpecial) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 700, 0, 350, 2450, 0);
+      equipmentPiece.stats.criticalMultiplier = .075;
+      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats.elementIncrease.earth = .075;
+      equipmentPiece.stats.elementIncrease.air = .075;
+      equipmentPiece.stats.elementIncrease.water = .075;
+      equipmentPiece.stats.elementIncrease.holy = .075;
+      equipmentPiece.stats.elementIncrease.lightning = .075;
+      equipmentPiece.stats.elementIncrease.fire = .075;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zodiac;
+    }
+    if (type === ItemsEnum.GlowingChokerUnique) {
+      var effectivenessIncrease = 0;
+      var maxCount = 1;
+      if (unique !== undefined) {
+        effectivenessIncrease = .0075 * unique.getMinorEffectLevel();
+        maxCount = unique.getMajorEffectLevel();
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(0, 2000, 0, 1000, 7000, 0);
+      equipmentPiece.stats.criticalMultiplier = .1;
+      equipmentPiece.stats.armorPenetration = .05;
+      equipmentPiece.stats.elementIncrease.earth = .1;
+      equipmentPiece.stats.elementIncrease.air = .1;
+      equipmentPiece.stats.elementIncrease.water = .1;
+      equipmentPiece.stats.elementIncrease.holy = .1;
+      equipmentPiece.stats.elementIncrease.lightning = .1;
+      equipmentPiece.stats.elementIncrease.fire = .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeautyUnique, 30, .25 + effectivenessIncrease, false, true, false, type.toString(), undefined, true, undefined, undefined, undefined, undefined, maxCount));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 5;
+    }
+    if (type === ItemsEnum.AstralRingEpic) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
+      equipmentPiece.stats = new CharacterStats(0, 0, 250, 0, 200, 550);
+      equipmentPiece.stats.hpRegen = 30;
+      equipmentPiece.stats.healingDone = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 2;
+    }
+    if (type === ItemsEnum.AstralRingSpecial) {
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
+      equipmentPiece.stats = new CharacterStats(0, 0, 875, 0, 700, 1925);
+      equipmentPiece.stats.hpRegen = 65;
+      equipmentPiece.stats.healingDone = .05;
+      equipmentPiece.stats.healingReceived = .05;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeauty, 30, .25, false, true, false, type.toString()));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+      equipmentPiece.slotCount = 3;
+      equipmentPiece.set = EquipmentSetEnum.Zodiac;
+    }
+    if (type === ItemsEnum.AstralRingUnique) {
+      var effectivenessIncrease = 0;
+      var maxCount = 1;
+      if (unique !== undefined) {
+        effectivenessIncrease = .0075 * unique.getMinorEffectLevel();
+        maxCount = unique.getMajorEffectLevel();
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(0, 0, 2500, 0, 2000, 5500);
+      equipmentPiece.stats.hpRegen = 135;
+      equipmentPiece.stats.healingDone = .075;
+      equipmentPiece.stats.healingReceived = .1;
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken;
+      equipmentEffect.chance = .2;
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ScathingBeautyUnique, 30, .25 + effectivenessIncrease, false, true, false, type.toString(), undefined, true, undefined, undefined, undefined, undefined, maxCount));
+      equipmentEffect.userEffect[0].tickFrequency = 10;
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 5;
     }
@@ -3095,13 +3419,13 @@ export class LookupService {
         abilityDescription += "<br/><br/>Current Bonus: " + this.utilityService.genericRound(ability.count * ability.secondaryEffectiveness * 100) + "%";
     }
 
-     //Thaumaturge
-     if (abilityName === "Elemental Strike")
-     abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. A random element is used for the damage. " + cooldown + " second cooldown.";
-   if (abilityName === "Awakened Spirit")
-     abilityDescription = "After dealing damage with any element, increase damage dealt by that element by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and reduce damage taken from that element by <strong>" + (relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
-   if (abilityName === "Outburst")
-     abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. The damage is increased by <strong>" + (secondaryEffectivenessPercent - 100) + "%</strong> for each different element you attacked with since the last time this was used. " + cooldown + " second cooldown.";
+    //Thaumaturge
+    if (abilityName === "Elemental Strike")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. A random element is used for the damage. " + cooldown + " second cooldown.";
+    if (abilityName === "Awakened Spirit")
+      abilityDescription = "After dealing damage with any element, increase damage dealt by that element by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> and reduce damage taken from that element by <strong>" + (relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
+    if (abilityName === "Outburst")
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. The damage is increased by <strong>" + (secondaryEffectivenessPercent - 100) + "%</strong> for each different element you attacked with since the last time this was used. " + cooldown + " second cooldown.";
 
 
     return this.utilityService.getSanitizedHtml(abilityDescription);
@@ -5193,8 +5517,27 @@ export class LookupService {
       if (statusEffect.stackCount >= 4)
         description += "Increase Healing Done by " + Math.round((statusEffect.effectiveness) * 10) + "%.<br/>";
       if (statusEffect.stackCount >= 8)
-        description += "When non-critically attacked, reduce attacker's Damage Dealt by " + Math.round((statusEffect.effectiveness) * 10) + "%.<br/>";      
+        description += "When non-critically attacked, reduce attacker's Damage Dealt by " + Math.round((statusEffect.effectiveness) * 10) + "%.<br/>";
     }
+
+
+    if (statusEffect.type === StatusEffectEnum.RainbowPlating && character !== undefined)
+      description += "You are attuned to " + this.getElementName(statusEffect.element) + ". When taking " + this.getElementName(statusEffect.element) + " damage, first absorb " + this.utilityService.bigNumberReducer(Math.round(statusEffect.effectiveness * this.getAdjustedDefense(character, true))) + " of the damage taken. Increase " + this.getElementName(statusEffect.element) + " damage dealt by " + Math.round((statusEffect.effectiveness) * 100) + "%. Click  to change the element you are attuned to. <br/>";
+
+    if (statusEffect.type === StatusEffectEnum.RainbowPlatingUnique && character !== undefined) {
+      var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.RainbowScaledPlatingUnique);
+      var elementalDefenseIncrease = 0;
+      var elementalDamageIncrease = 0;
+      if (unique !== undefined) {
+        elementalDefenseIncrease = unique.getMinorEffectLevel() * .02;
+        elementalDamageIncrease = unique.getMajorEffectLevel() * .1;
+
+        description += "You are attuned to " + this.getElementName(statusEffect.element) + ". When taking " + this.getElementName(statusEffect.element) + " damage, first absorb " + this.utilityService.bigNumberReducer(Math.round((statusEffect.effectiveness + elementalDefenseIncrease) * this.getAdjustedDefense(character, true))) + " of the damage taken. Increase " + this.getElementName(statusEffect.element) + " damage dealt by " + Math.round((statusEffect.effectiveness + elementalDamageIncrease) * 100) + "%. Click  to change the element you are attuned to. <br/>";
+      }
+    }
+
+    if (statusEffect.type === StatusEffectEnum.EnergyShield || statusEffect.type === StatusEffectEnum.EnergyShieldUnique)
+      description += "You deal " + this.utilityService.genericRound(statusEffect.effectiveness * 100) + "% more damage when you have an active Barrier.<br/>";
 
     if (statusEffect.type === StatusEffectEnum.DebilitatingToxin)
       description = "10% chance on auto attack to reduce target's Agility by 20% for 14 seconds.";
@@ -6600,14 +6943,14 @@ export class LookupService {
           if (equipmentEffect.trigger === EffectTriggerEnum.OnHit)
             equipmentEffects += "On Hit: ";
           if (equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
-            equipmentEffects += "Triggers Over Time: ";
+            equipmentEffects += "Triggers Every " + effect.triggersEvery + " Seconds: ";
           if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
             equipmentEffects += "Chance On Auto Attack (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
           if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
             equipmentEffects += "Chance On Ability Use (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
           if (equipmentEffect.trigger === EffectTriggerEnum.ChanceWhenDamageTaken)
             equipmentEffects += "Chance When Damage Taken (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
-            if (equipmentEffect.trigger === EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken)
+          if (equipmentEffect.trigger === EffectTriggerEnum.ChanceWhenNonCriticalDamageTaken)
             equipmentEffects += "Chance When Non-Critical Damage Taken (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
           if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnHeal)
             equipmentEffects += "Chance When Healing (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
@@ -6621,18 +6964,22 @@ export class LookupService {
             equipmentEffects += "When First Entering Subzone: ";
           if (equipmentEffect.trigger === EffectTriggerEnum.AfterTime)
             equipmentEffects += "After " + effect.maxCount + " seconds: ";
+          if (equipmentEffect.trigger === EffectTriggerEnum.TargetAboveHpPercentAbility)
+            equipmentEffects += "When Target's HP Is Above " + this.utilityService.genericRound(equipmentEffect.maxThreshold * 100) + "%: ";
 
           equipmentEffects += "</span></b>";
 
           if (effect.type === StatusEffectEnum.DamageOverTime) {
             if (equipment.itemType === ItemsEnum.Venomstrike)
               equipmentEffects += "Poison your target, dealing " + effect.effectiveness + " damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds.<br/>";
+            if (equipment.itemType === ItemsEnum.BatteringMaceEpic || equipment.itemType === ItemsEnum.BatteringMaceSpecial || equipment.itemType === ItemsEnum.BatteringMaceUnique)
+              equipmentEffects += "Dealing damage with abilities also applies a damage over time effect for <strong>" + this.utilityService.genericRound(effect.effectiveness * 100) + "%</strong> of the damage dealt every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds.<br/>";
             if (equipment.itemType === ItemsEnum.ScorpionStingerEpic || equipment.itemType === ItemsEnum.ScorpionStingerSpecial)
               equipmentEffects += "Poison your target, dealing <strong>" + (effect.effectiveness * 100) + "% of your Max HP</strong> in damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds. Every time this effect triggers against the same enemy, the damage is increased by 10%.<br/>";
             else if (equipment.itemType === ItemsEnum.ScorpionStingerUnique) {
               var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
               if (unique !== undefined)
-                equipmentEffects += "Poison your target, dealing <strong>" + (unique.getMinorEffectLevel()).toString() + "% of your Max HP</strong> in damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds. Every time this effect triggers against the same enemy, the damage is increased by " + (10 * unique.getMajorEffectLevel()).toString() + "%.<br/>";
+                equipmentEffects += "Poison your target, dealing <strong>" + (unique.getMinorEffectLevel() * .5).toString() + "% of your Max HP</strong> in damage every " + effect.tickFrequency + " seconds for " + effect.duration + " seconds. Every time this effect triggers against the same enemy, the damage is increased by " + (10 * unique.getMajorEffectLevel()).toString() + "%.<br/>";
             }
           }
 
@@ -6640,7 +6987,7 @@ export class LookupService {
             if (equipment.itemType === ItemsEnum.SwordOfFlames)
               equipmentEffects += "Blast your target with fire, dealing " + effect.effectiveness + " Fire damage.<br/>";
             else if (equipment.itemType === ItemsEnum.ShieldOfTheSea)
-              equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Water damage to all targets as true damage every " + effect.triggersEvery + " seconds. <br/>";
+              equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Water damage to all targets as true damage. <br/>";
             else if (equipment.itemType === ItemsEnum.AthenasScythe)
               equipmentEffects += "Deal <strong>" + Math.round(effect.effectiveness * 100) + "% of Attack</strong> Holy damage to your target as true damage. <br/>";
             else if (equipment.itemType === ItemsEnum.ZeussNecklace)
@@ -6669,7 +7016,7 @@ export class LookupService {
             equipmentEffects += "Increase target's Auto Attack cooldown by " + Math.round((effect.effectiveness) * 100) + "% for " + effect.duration + " seconds.<br/>";
 
           if (effect.type === StatusEffectEnum.Slow)
-            equipmentEffects += "Increase all targets' Auto Attack and Ability cooldowns by " + Math.round((effect.effectiveness) * 100) + "%.<br/>";
+            equipmentEffects += "Increase all targets' Auto Attack and Ability cooldowns by <strong>" + Math.round((effect.effectiveness) * 100) + "%</strong>.<br/>";
 
           if (effect.type === StatusEffectEnum.DebuffDurationIncrease)
             equipmentEffects += "Increase the duration of all enemy debuffs by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
@@ -6695,7 +7042,7 @@ export class LookupService {
           if (equipmentEffect.trigger === EffectTriggerEnum.OnHit)
             equipmentEffects += "On Hit: ";
           if (equipmentEffect.trigger === EffectTriggerEnum.TriggersEvery)
-            equipmentEffects += "Triggers Over Time: ";
+            equipmentEffects += "Triggers Every " + effect.triggersEvery + " Seconds: ";
           if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAutoAttack)
             equipmentEffects += "Chance On Auto Attack (" + this.utilityService.roundTo(equipmentEffect.chance * 100, 2) + "%): ";
           if (equipmentEffect.trigger === EffectTriggerEnum.ChanceOnAbilityUse)
@@ -6746,18 +7093,27 @@ export class LookupService {
           if (effect.type === StatusEffectEnum.ScathingBeautyUnique) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
             if (unique !== undefined)
-            equipmentEffects += "When non-critically attacked, gain a stack of Scathing Beauty, up to <strong>" + unique.getMajorEffectLevel() + "</strong> " + (unique.getMajorEffectLevel() === 1 ? "stack" : "stacks") + ". Heal for " + Math.round((effect.effectiveness) * 100) + "% of Resistance HP every 10 seconds for " + effect.duration + " seconds. Each stack increases the heal amount by 10%. If stacks are at 4 or greater, also increase Healing Done by <strong>" + Math.round((effect.effectiveness) * 10) + "%</strong>. If stacks are at 8 or greater, any time you are non-critically attacked, reduce the attacker's Damage Dealt by <strong>" + Math.round((effect.effectiveness) * 10) + "%</strong>.<br/>";
+              equipmentEffects += "When non-critically attacked, gain a stack of Scathing Beauty, up to <strong>" + unique.getMajorEffectLevel() + "</strong> " + (unique.getMajorEffectLevel() === 1 ? "stack" : "stacks") + ". Heal for <strong>" + Math.round((effect.effectiveness) * 100) + "% of Resistance</strong> HP every 10 seconds for " + effect.duration + " seconds. Each stack increases the heal amount by 10%. If stacks are at 4 or greater, also increase Healing Done by <strong>" + Math.round((effect.effectiveness) * 10) + "%</strong>. If stacks are at 8 or greater, any time you are non-critically attacked, reduce the attacker's Damage Dealt by <strong>" + Math.round((effect.effectiveness) * 10) + "%</strong>. When the duration expires or you are critically attacked, deal the total amount healed in damage to all targets.<br/>";
           }
 
-          
           if (effect.type === StatusEffectEnum.RainbowPlating)
             equipmentEffects += "You are always attuned to one element. Absorb " + Math.round((effect.effectiveness) * 100) + "% of Defense of damage from that element and increase damage dealt of that element by " + Math.round((effect.effectiveness) * 100) + "%. Click the buff icon to change the element you are attuned to. <br/>";
 
           if (effect.type === StatusEffectEnum.RainbowPlatingUnique) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === equipment.itemType);
-            if (unique !== undefined)
-            equipmentEffects += "You are always attuned to one element. Absorb " + Math.round((effect.effectiveness) * 100) + "% of Defense of damage from that element and increase damage dealt of that element by " + Math.round((effect.effectiveness) * 100) + "%. Click the buff icon to change the element you are attuned to. <br/>";
+            if (unique !== undefined) {
+              equipmentEffects += "You are always attuned to one element. Absorb <strong>" + Math.round((effect.effectiveness + unique.getMinorEffectLevel() * .02) * 100) + "% of Defense</strong> of damage from that element and increase damage dealt of that element by <strong>" + Math.round((effect.effectiveness + unique.getMajorEffectLevel() * .1) * 100) + "%</strong>. Click the buff icon to change the element you are attuned to. <br/>";
+            }
           }
+
+          if (effect.type === StatusEffectEnum.EnergyShield)
+            equipmentEffects += "You deal " + this.utilityService.genericRound(effect.effectiveness * 100) + "% more damage when you have an active Barrier.<br/>";
+
+          if (effect.type === StatusEffectEnum.EnergyShieldUnique)
+            equipmentEffects += "You deal <strong>" + this.utilityService.genericRound(effect.effectiveness * 100) + "%</strong> more damage when you have an active Barrier.<br/>";
+
+          if (effect.type === StatusEffectEnum.FreeAbilityCastChance)
+            equipmentEffects += this.utilityService.genericRound(effect.effectiveness * 100) + "% chance to cast one ability you currently possess at random.<br/>";
 
           if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp)
             equipmentEffects += "Increase Damage Over Time Damage Dealt by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
@@ -6815,8 +7171,10 @@ export class LookupService {
               equipmentEffects += "Give your target a Barrier for " + Math.round((effect.effectiveness) * 100) + "% of the amount healed.<br/>";
           }
 
-          if (effect.type === StatusEffectEnum.SelfBarrier) {
-            if (equipment.itemType === ItemsEnum.DionysussNecklace)
+          if (effect.type === StatusEffectEnum.SelfBarrier) {    
+            if (equipment.itemType === ItemsEnum.EnergyShieldUnique)
+              equipmentEffects += "Gain a Barrier for <strong>" + Math.round((effect.effectiveness) * 100) + "%</strong> of your Max HP.<br/>";
+            else        
               equipmentEffects += "Gain a Barrier for " + Math.round((effect.effectiveness) * 100) + "% of your Max HP.<br/>";
           }
 
@@ -6850,17 +7208,17 @@ export class LookupService {
             equipmentEffects += "All auto attacks and non-elemental abilities have the Lightning element.<br/>";
 
           if (equipment.itemType === ItemsEnum.FracturedRubyRing)
-            equipmentEffects += "Absorb " + effect.effectiveness + " Fire damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+            equipmentEffects += "Absorb " + effect.effectiveness + " Fire damage for " + effect.duration + " seconds.<br/>";
           if (equipment.itemType === ItemsEnum.FracturedTopazRing)
-            equipmentEffects += "Absorb " + effect.effectiveness + " Holy damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+            equipmentEffects += "Absorb " + effect.effectiveness + " Holy damage for " + effect.duration + " seconds.<br/>";
           if (equipment.itemType === ItemsEnum.FracturedOpalRing)
-            equipmentEffects += "Absorb " + effect.effectiveness + " Lightning damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+            equipmentEffects += "Absorb " + effect.effectiveness + " Lightning damage for " + effect.duration + " seconds.<br/>";
           if (equipment.itemType === ItemsEnum.FracturedAquamarineRing)
-            equipmentEffects += "Absorb " + effect.effectiveness + " Water damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+            equipmentEffects += "Absorb " + effect.effectiveness + " Water damage for " + effect.duration + " seconds.<br/>";
           if (equipment.itemType === ItemsEnum.FracturedAmethystRing)
-            equipmentEffects += "Absorb " + effect.effectiveness + " Air damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+            equipmentEffects += "Absorb " + effect.effectiveness + " Air damage for " + effect.duration + " seconds.<br/>";
           if (equipment.itemType === ItemsEnum.FracturedEmeraldRing)
-            equipmentEffects += "Absorb " + effect.effectiveness + " Earth damage for " + effect.duration + " seconds. Effect occurs every " + effect.triggersEvery + " seconds.<br/>";
+            equipmentEffects += "Absorb " + effect.effectiveness + " Earth damage for " + effect.duration + " seconds.<br/>";
         });
       }
     });

@@ -272,7 +272,43 @@ export class DictionaryService {
       else if (type === ItemsEnum.RainbowScaledPlatingSpecial)
       name = "Rainbow-Scaled Plating";
       else if (type === ItemsEnum.RainbowScaledPlatingUnique)
-      name = "Rainbow-Scaled Plating";
+      name = "Rainbow-Scaled Plating";      
+      else if (type === ItemsEnum.BatteringMaceEpic)
+      name = "Battering Mace";
+      else if (type === ItemsEnum.BatteringMaceSpecial)
+      name = "Battering Mace";
+      else if (type === ItemsEnum.BatteringMaceUnique)
+      name = "Battering Mace";
+      else if (type === ItemsEnum.GleamingLoopEpic)
+      name = "Gleaming Loop";
+      else if (type === ItemsEnum.GleamingLoopSpecial)
+      name = "Gleaming Loop";
+      else if (type === ItemsEnum.GleamingLoopUnique)
+      name = "Gleaming Loop";
+      else if (type === ItemsEnum.EnergyShieldEpic)
+      name = "Energy Shield";
+      else if (type === ItemsEnum.EnergyShieldSpecial)
+      name = "Energy Shield";
+      else if (type === ItemsEnum.EnergyShieldUnique)
+      name = "Energy Shield";
+      else if (type === ItemsEnum.SturdyShellEpic)
+      name = "Sturdy Shell";
+      else if (type === ItemsEnum.SturdyShellSpecial)
+      name = "Sturdy Shell";
+      else if (type === ItemsEnum.SturdyShellUnique)
+      name = "Sturdy Shell";
+      else if (type === ItemsEnum.GlowingChokerEpic)
+      name = "Glowing Choker";
+      else if (type === ItemsEnum.GlowingChokerSpecial)
+      name = "Glowing Choker";
+      else if (type === ItemsEnum.GlowingChokerUnique)
+      name = "Glowing Choker";
+      else if (type === ItemsEnum.AstralRingEpic)
+      name = "Astral Ring";
+      else if (type === ItemsEnum.AstralRingSpecial)
+      name = "Astral Ring";
+      else if (type === ItemsEnum.AstralRingUnique)
+      name = "Astral Ring";
 
     //shields
     else if (type === ItemsEnum.IronShield)

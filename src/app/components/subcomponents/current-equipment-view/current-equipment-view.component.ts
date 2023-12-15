@@ -109,4 +109,12 @@ export class CurrentEquipmentViewComponent implements OnInit {
   itemSlotted(slotted: boolean) {
     //this.setUpAvailableEquipment();
   }
+  
+  enterHoverable(event: any) {    
+    this.utilityService.enterHoverable(event);
+  }
+
+  leaveHoverable() {    
+    this.utilityService.leaveHoverable();
+  }
 }
