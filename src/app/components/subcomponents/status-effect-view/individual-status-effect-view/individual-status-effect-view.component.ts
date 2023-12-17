@@ -136,7 +136,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "TKN";
     if (effect.type === StatusEffectEnum.Dead)
       return "KO";
-    if (effect.type === StatusEffectEnum.BattleItemEffectUp)
+    if (effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.ItemBoost)
       return "ITM";
     if (effect.type === StatusEffectEnum.AoeDamageUp)
       return "AOE";
@@ -398,6 +398,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.Focus) {
       src += "focus.svg";
+    }
+    if (effect.type === StatusEffectEnum.ItemBoost) {
+      src += "itemBoost.svg";
+    }
+    if (effect.type === StatusEffectEnum.LinkBoost) {
+      src += "linkBoost.svg";
     }
     if (effect.type === StatusEffectEnum.DispenserOfDues) {
       src += "dispenserOfDues.svg";

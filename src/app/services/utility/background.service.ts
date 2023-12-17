@@ -746,6 +746,20 @@ export class BackgroundService {
       character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
     }
+
+    if ((character.assignedGod1 === GodEnum.Hera || character.assignedGod2 === GodEnum.Hera) &&
+    !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Shapeshift)) {
+    var shapeshift = this.lookupService.characterHasAbility("Shapeshift", character);
+    if (shapeshift !== undefined) {
+      var copy = this.globalService.makeStatusEffectCopy(shapeshift.userEffect[0]);
+      copy.effectiveness = 1;      
+      this.battleService.applyStatusEffect(copy, character);
+    }
+  }
+    if ((character.assignedGod1 !== GodEnum.Hera && character.assignedGod2 !== GodEnum.Hera) &&
+      character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Shapeshift)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Shapeshift);
+    }
   }
 
   checkForThornsGems(character: Character) {

@@ -4618,13 +4618,23 @@ export class SubZoneGeneratorService {
     return returnSubzone;
   }
 
-  getAvailableOlympianRewardOptions(resources: ResourceValue[]) {
+  getAvailableOlympianRewardOptions(resources: ResourceValue[], isPatron: boolean = false) {
     var shopOptions: ShopItem[] = [];
 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Nemesis, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Dionysus, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.OlympicCommendation, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Ambrosia, SubZoneEnum.MountOlympusOlympus));
+        
+    if (resources.some(item => item.item === ItemsEnum.BlazingSunPendant) && !resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUnique, SubZoneEnum.MountOlympusOlympus, isPatron));
+    if (resources.some(item => item.item === ItemsEnum.DarkMoonPendant) && !resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUnique, SubZoneEnum.MountOlympusOlympus, isPatron));
+    if (resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
+    if (resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
+    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
+
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasScythe, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasNecklace, SubZoneEnum.MountOlympusOlympus));
@@ -4655,15 +4665,6 @@ export class SubZoneGeneratorService {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PoseidonsTrident, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PoseidonsShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PoseidonsNecklace, SubZoneEnum.MountOlympusOlympus));
-
-    if (resources.some(item => item.item === ItemsEnum.BlazingSunPendant) && !resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
-    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUnique, SubZoneEnum.MountOlympusOlympus));
-    if (resources.some(item => item.item === ItemsEnum.DarkMoonPendant) && !resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
-    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUnique, SubZoneEnum.MountOlympusOlympus));
-    if (resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
-    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
-    if (resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
-    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
 
     return shopOptions;
   }

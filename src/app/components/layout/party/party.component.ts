@@ -23,6 +23,7 @@ import { TutorialService } from 'src/app/services/global/tutorial.service';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
+import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 
 @Component({
   selector: 'app-party',
@@ -386,8 +387,14 @@ export class PartyComponent implements OnInit {
     return character.linkInfo.totalLinks;
   }
 
-  getCharacterNextLinkDamage(character: Character) {
-    return this.utilityService.genericRound(this.battleService.getLinkChainPercent(character.linkInfo, false, character.battleStats.linkEffectiveness));
+  getCharacterNextLinkDamage(character: Character) {    
+    var linkEffectivenessBoost = character.battleStats.linkEffectiveness;
+    var linkEffectivenessBoostEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
+    if (linkEffectivenessBoostEffect !== undefined) {
+      linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;    
+    }
+
+    return this.utilityService.genericRound(this.battleService.getLinkChainPercent(character.linkInfo, false, linkEffectivenessBoost));
   }
  
   isLinkOffCooldown(character: Character) {

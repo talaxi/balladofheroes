@@ -203,5 +203,7 @@ export enum StatusEffectEnum {
     SturdyShell,
     Leo,
     PalmStrike,
-    Overheal    
+    Overheal,
+    LinkBoost,
+    ItemBoost    
   }

@@ -1445,7 +1445,7 @@ export class LookupService {
     //zodiacs    
     if (type === ItemsEnum.ScorpionStingerEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Spear);
-      equipmentPiece.stats = new CharacterStats(500, 325, 0, 150, 0, 0);
+      equipmentPiece.stats = new CharacterStats(500, 325, 0, 175, 0, 0);
       equipmentPiece.stats.tickFrequency = .025;
       equipmentPiece.stats.autoAttackCooldownReduction = .05;
       var equipmentEffect = new UsableItemEffect();
@@ -1457,7 +1457,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.ScorpionStingerSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Spear);
-      equipmentPiece.stats = new CharacterStats(3500, 2250, 0, 500, 0, 0);
+      equipmentPiece.stats = new CharacterStats(2500, 2000, 0, 500, 0, 0);
       equipmentPiece.stats.tickFrequency = .05;
       equipmentPiece.stats.autoAttackCooldownReduction = .075;
       equipmentPiece.stats.hpRegen = 40;
@@ -1471,7 +1471,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.ScorpionStingerUnique) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Unique, WeaponTypeEnum.Spear);
-      equipmentPiece.stats = new CharacterStats(7500, 7000, 0, 1500, 0, 0);
+      equipmentPiece.stats = new CharacterStats(6000, 6500, 0, 1300, 0, 0);
       equipmentPiece.stats.tickFrequency = .05;
       equipmentPiece.stats.autoAttackCooldownReduction = .1;
       equipmentPiece.stats.hpRegen = 100;
@@ -1484,7 +1484,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.BucklerOfPerfectHarmonyEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 800, 0, 0, 200);
+      equipmentPiece.stats = new CharacterStats(0, 0, 450, 0, 0, 150);
       equipmentPiece.stats.hpRegen = 25;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;
@@ -1500,7 +1500,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.BucklerOfPerfectHarmonySpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(0, 0, 3000, 0, 0, 500);
+      equipmentPiece.stats = new CharacterStats(0, 0, 2250, 0, 0, 750);
       equipmentPiece.stats.abilityCooldownReduction = .05;
       equipmentPiece.stats.hpRegen = 25;
       var equipmentEffect = new UsableItemEffect();
@@ -1523,7 +1523,7 @@ export class LookupService {
         count = 11 - unique.getMajorEffectLevel();
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(0, 0, 8000, 0, 0, 2000);
+      equipmentPiece.stats = new CharacterStats(0, 0, 6750, 0, 0, 2250);
       equipmentPiece.stats.abilityCooldownReduction = .075;
       equipmentPiece.stats.hpRegen = 80;
       var equipmentEffect = new UsableItemEffect();
@@ -1541,23 +1541,24 @@ export class LookupService {
     }
     if (type === ItemsEnum.CarcanetOfTheCentaurEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 500, 0, 0, 250, 250);
+      equipmentPiece.stats = new CharacterStats(0, 300, 0, 0, 150, 150);
       equipmentPiece.stats.debuffDuration = .05;
       equipmentPiece.stats.abilityCooldownReduction = .025;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AfterTime;
-      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Slow, -1, .01, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 90));
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Slow, -1, .1, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 90));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 2;
     }
     if (type === ItemsEnum.CarcanetOfTheCentaurSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(0, 1700, 0, 0, 850, 850);
+      equipmentPiece.stats = new CharacterStats(0, 1500, 0, 0, 750, 750);
       equipmentPiece.stats.debuffDuration = .075;
+      equipmentPiece.stats.tickFrequency = .025;
       equipmentPiece.stats.abilityCooldownReduction = .05;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AfterTime;
-      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Slow, -1, .01, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 90));
+      equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Slow, -1, .1, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, 90));
       equipmentPiece.equipmentEffects.push(equipmentEffect);
       equipmentPiece.slotCount = 3;
       equipmentPiece.set = EquipmentSetEnum.Zodiac;
@@ -1571,9 +1572,10 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(0, 5000, 0, 0, 2500, 2500);
+      equipmentPiece.stats = new CharacterStats(0, 4500, 0, 0, 2250, 2250);
       equipmentPiece.stats.debuffDuration = .1;
-      equipmentPiece.stats.abilityCooldownReduction = .05;
+      equipmentPiece.stats.tickFrequency = .05;
+      equipmentPiece.stats.abilityCooldownReduction = .075;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.AfterTime;
       equipmentEffect.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Slow, -1, .01 + slowAddition, false, false, true, undefined, undefined, undefined, undefined, undefined, undefined, undefined, count));
@@ -1582,7 +1584,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.BoundingBandEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(500, 200, 0, 200, 0, 0);
+      equipmentPiece.stats = new CharacterStats(500, 200, 0, 300, 0, 0);
       equipmentPiece.stats.autoAttackCooldownReduction = .05;
       equipmentPiece.stats.overdriveGain = .05;
       var equipmentEffect = new UsableItemEffect();
@@ -1594,8 +1596,9 @@ export class LookupService {
     }
     if (type === ItemsEnum.BoundingBandSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(2500, 1500, 0, 1500, 0, 0);
+      equipmentPiece.stats = new CharacterStats(2500, 1000, 0, 1500, 0, 0);
       equipmentPiece.stats.autoAttackCooldownReduction = .075;
+      equipmentPiece.stats.criticalMultiplier = .075;
       equipmentPiece.stats.overdriveGain = .1;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
@@ -1612,8 +1615,9 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(5000, 4500, 0, 4500, 0, 0);
+      equipmentPiece.stats = new CharacterStats(7500, 3000, 0, 4500, 0, 0);
       equipmentPiece.stats.autoAttackCooldownReduction = .1;
+      equipmentPiece.stats.criticalMultiplier = .125;
       equipmentPiece.stats.overdriveGain = .15;
       var equipmentEffect = new UsableItemEffect();
       equipmentEffect.trigger = EffectTriggerEnum.ChanceOnAutoAttack;
@@ -1624,7 +1628,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.ScathingBeautyEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 400, 0, 0, 600);
+      equipmentPiece.stats = new CharacterStats(0, 0, 150, 0, 0, 450);
       equipmentPiece.stats.hpRegen = 20;
       equipmentPiece.stats.healingDone = .05;
       var equipmentEffect = new UsableItemEffect();
@@ -1637,7 +1641,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.ScathingBeautySpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(0, 0, 1500, 0, 0, 2000);
+      equipmentPiece.stats = new CharacterStats(0, 0, 750, 0, 0, 2250);
       equipmentPiece.stats.hpRegen = 35;
       equipmentPiece.stats.buffDuration = .05;
       equipmentPiece.stats.healingDone = .075;
@@ -1659,7 +1663,7 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(0, 0, 4000, 0, 0, 6000);
+      equipmentPiece.stats = new CharacterStats(0, 0, 2250, 0, 0, 6750);
       equipmentPiece.stats.healingDone = .1;
       equipmentPiece.stats.buffDuration = .075;
       equipmentPiece.stats.hpRegen = 75;
@@ -1673,7 +1677,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.RainbowScaledPlatingEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(1500, 0, 400, 300, 0, 0);
+      equipmentPiece.stats = new CharacterStats(1000, 0, 300, 100, 0, 0);
       equipmentPiece.stats.elementResistance.earth = .025;
       equipmentPiece.stats.elementResistance.air = .025;
       equipmentPiece.stats.elementResistance.water = .025;
@@ -1690,7 +1694,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.RainbowScaledPlatingSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(5000, 0, 1500, 1000, 0, 0);
+      equipmentPiece.stats = new CharacterStats(5000, 0, 1500, 500, 0, 0);
       equipmentPiece.stats.elementResistance.earth = .05;
       equipmentPiece.stats.elementResistance.air = .05;
       equipmentPiece.stats.elementResistance.water = .05;
@@ -1714,7 +1718,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.RainbowScaledPlatingUnique) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(15000, 0, 4000, 3000, 0, 0);
+      equipmentPiece.stats = new CharacterStats(15000, 0, 4500, 1500, 0, 0);
       equipmentPiece.stats.elementResistance.earth = .075;
       equipmentPiece.stats.elementResistance.air = .075;
       equipmentPiece.stats.elementResistance.water = .075;
@@ -1738,7 +1742,7 @@ export class LookupService {
 
     if (type === ItemsEnum.BatteringMaceEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Epic, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 750, 0, 0, 250, 0);
+      equipmentPiece.stats = new CharacterStats(0, 450, 0, 0, 150, 0);
       equipmentPiece.stats.abilityCooldownReduction = .025;
       equipmentPiece.stats.criticalMultiplier = .075;
       var equipmentEffect = new UsableItemEffect();
@@ -1750,7 +1754,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.BatteringMaceSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Special, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 2625, 0, 0, 875, 0);
+      equipmentPiece.stats = new CharacterStats(0, 2250, 0, 0, 750, 0);
       equipmentPiece.stats.abilityCooldownReduction = .025;
       equipmentPiece.stats.armorPenetration = .025;
       equipmentPiece.stats.criticalMultiplier = .1;
@@ -1771,7 +1775,7 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Weapon, EquipmentQualityEnum.Unique, WeaponTypeEnum.Hammer);
-      equipmentPiece.stats = new CharacterStats(0, 7500, 0, 0, 2500, 0);
+      equipmentPiece.stats = new CharacterStats(0, 6750, 0, 0, 2250, 0);
       equipmentPiece.stats.abilityCooldownReduction = .05;
       equipmentPiece.stats.armorPenetration = .05;
       equipmentPiece.stats.criticalMultiplier = .15;
@@ -1784,7 +1788,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.GleamingLoopEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(1250, 150, 150, 150, 150, 150);
+      equipmentPiece.stats = new CharacterStats(500, 100, 100, 100, 100, 100);
       equipmentPiece.stats.aoeDamage = .05;
       equipmentPiece.stats.overdriveGain = .05;
       var equipmentEffect = new UsableItemEffect();
@@ -1795,7 +1799,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.GleamingLoopSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(4375, 525, 525, 525, 525, 525);
+      equipmentPiece.stats = new CharacterStats(2500, 500, 500, 500, 500, 500);
       equipmentPiece.stats.aoeDamage = .05;
       equipmentPiece.stats.overdriveGain = .05;
       equipmentPiece.stats.criticalMultiplier = .1;
@@ -1815,7 +1819,7 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(12500, 1500, 1500, 1500, 1500, 1500);
+      equipmentPiece.stats = new CharacterStats(7500, 1500, 1500, 1500, 1500, 1500);
       equipmentPiece.stats.aoeDamage = .1;
       equipmentPiece.stats.overdriveGain = .1;
       equipmentPiece.stats.criticalMultiplier = .1;
@@ -1827,7 +1831,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.EnergyShieldEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(2500, 0, 250, 0, 0, 250);
+      equipmentPiece.stats = new CharacterStats(1500, 0, 150, 0, 0, 150);
       equipmentPiece.stats.hpRegen = 17;
       equipmentPiece.stats.healingReceived = .05;
       var equipmentEffect = new UsableItemEffect();
@@ -1845,7 +1849,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.EnergyShieldSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(8750, 0, 875, 0, 0, 875);
+      equipmentPiece.stats = new CharacterStats(7500, 0, 750, 0, 0, 750);
       equipmentPiece.stats.hpRegen = 45;
       equipmentPiece.stats.healingReceived = .05;
       equipmentPiece.stats.abilityCooldownReduction = .05;
@@ -1872,7 +1876,7 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Shield, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(25000, 0, 2500, 0, 0, 2500);
+      equipmentPiece.stats = new CharacterStats(22500, 0, 2250, 0, 0, 2250);
       equipmentPiece.stats.hpRegen = 85;
       equipmentPiece.stats.healingReceived = .075;
       equipmentPiece.stats.abilityCooldownReduction = .05;
@@ -1891,7 +1895,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.SturdyShellEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(1000, 0, 600, 200, 0, 0);
+      equipmentPiece.stats = new CharacterStats(500, 0, 400, 100, 0, 0);
       equipmentPiece.stats.debuffDuration = .025;
       equipmentPiece.stats.overdriveGain = .05;
       var equipmentEffect = new UsableItemEffect();
@@ -1904,7 +1908,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.SturdyShellSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(3500, 0, 2100, 700, 0, 0);
+      equipmentPiece.stats = new CharacterStats(2500, 0, 2000, 500, 0, 0);
       equipmentPiece.stats.debuffDuration = .05;
       equipmentPiece.stats.overdriveGain = .05;
       equipmentPiece.stats.buffDuration = .05;
@@ -1926,7 +1930,7 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Armor, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(10000, 0, 6000, 0, 2000, 0);
+      equipmentPiece.stats = new CharacterStats(7500, 0, 6000, 1500, 0, 0);
       equipmentPiece.stats.debuffDuration = .075;
       equipmentPiece.stats.overdriveGain = .1;
       equipmentPiece.stats.buffDuration = .075;
@@ -1940,7 +1944,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.GlowingChokerEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 200, 0, 100, 700, 0);
+      equipmentPiece.stats = new CharacterStats(0, 100, 0, 50, 450, 0);
       equipmentPiece.stats.criticalMultiplier = .05;
       equipmentPiece.stats.armorPenetration = .05;
       equipmentPiece.stats.elementIncrease.earth = .05;
@@ -1958,8 +1962,8 @@ export class LookupService {
     }
     if (type === ItemsEnum.GlowingChokerSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(0, 700, 0, 350, 2450, 0);
-      equipmentPiece.stats.criticalMultiplier = .075;
+      equipmentPiece.stats = new CharacterStats(0, 500, 0, 250, 2250, 0);
+      equipmentPiece.stats.criticalMultiplier = .1;
       equipmentPiece.stats.armorPenetration = .05;
       equipmentPiece.stats.elementIncrease.earth = .075;
       equipmentPiece.stats.elementIncrease.air = .075;
@@ -1984,8 +1988,8 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(0, 2000, 0, 1000, 7000, 0);
-      equipmentPiece.stats.criticalMultiplier = .1;
+      equipmentPiece.stats = new CharacterStats(0, 1500, 0, 750, 6750, 0);
+      equipmentPiece.stats.criticalMultiplier = .15;
       equipmentPiece.stats.armorPenetration = .05;
       equipmentPiece.stats.elementIncrease.earth = .1;
       equipmentPiece.stats.elementIncrease.air = .1;
@@ -2002,7 +2006,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.AstralRingEpic) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Epic);
-      equipmentPiece.stats = new CharacterStats(0, 0, 250, 0, 200, 550);
+      equipmentPiece.stats = new CharacterStats(0, 0, 175, 0, 100, 325);
       equipmentPiece.stats.hpRegen = 30;
       equipmentPiece.stats.healingDone = .05;
       var equipmentEffect = new UsableItemEffect();
@@ -2013,7 +2017,7 @@ export class LookupService {
     }
     if (type === ItemsEnum.AstralRingSpecial) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Special);
-      equipmentPiece.stats = new CharacterStats(0, 0, 875, 0, 700, 1925);
+      equipmentPiece.stats = new CharacterStats(0, 0, 875, 0, 500, 1625);
       equipmentPiece.stats.hpRegen = 65;
       equipmentPiece.stats.healingDone = .05;
       equipmentPiece.stats.healingReceived = .05;
@@ -2033,7 +2037,7 @@ export class LookupService {
       }
 
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Ring, EquipmentQualityEnum.Unique);
-      equipmentPiece.stats = new CharacterStats(0, 0, 2500, 0, 2000, 5500);
+      equipmentPiece.stats = new CharacterStats(0, 0, 2625, 0, 1500, 4875);
       equipmentPiece.stats.hpRegen = 135;
       equipmentPiece.stats.healingDone = .075;
       equipmentPiece.stats.healingReceived = .1;
@@ -2526,8 +2530,8 @@ export class LookupService {
       equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 0, 0);
       equipmentPiece.stats.autoAttackCooldownReduction += .075;
       equipmentPiece.stats.abilityCooldownReduction += .075;
-      equipmentPiece.stats.overdriveGain += .2;
-      equipmentPiece.stats.criticalMultiplier += .25;
+      equipmentPiece.stats.overdriveGain += .15;
+      equipmentPiece.stats.criticalMultiplier += .15;
       equipmentPiece.stats.tickFrequency += .05;
     }
     if (type === ItemsEnum.DarkMoonPendant) {
@@ -2538,6 +2542,64 @@ export class LookupService {
       equipmentPiece.stats.healingReceived += .15;
       equipmentPiece.stats.abilityCooldownReduction += .1;
       equipmentPiece.stats.thorns += .15;
+    }    
+    if (type === ItemsEnum.BlazingSunPendantUnique) {
+      var effectivenessIncrease = 0;
+      var cooldownReduction = 0;
+      if (unique !== undefined) {
+        effectivenessIncrease = .015 * unique.getMinorEffectLevel();
+        cooldownReduction = unique.getMajorEffectLevel();
+      }
+      else
+      {
+        effectivenessIncrease = .015;
+        cooldownReduction = 1;
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(0, 0, 0, 0, 1000, 0);
+      equipmentPiece.stats.autoAttackCooldownReduction += .075;
+      equipmentPiece.stats.abilityCooldownReduction += .075;
+      equipmentPiece.stats.overdriveGain += .15;
+      equipmentPiece.stats.criticalMultiplier += .15;
+      equipmentPiece.stats.tickFrequency += .05;
+
+      //increase link damage
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;      
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LinkBoost, -1, effectivenessIncrease, false, true, false, type.toString()));      
+      equipmentEffect.userEffect[0].count = cooldownReduction;
+      equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
+    }
+    if (type === ItemsEnum.DarkMoonPendantUnique) {
+      var effectivenessIncrease = 0;
+      var cooldownReduction = 0;
+      if (unique !== undefined) {
+        effectivenessIncrease = .015 * unique.getMinorEffectLevel();
+        cooldownReduction = unique.getMajorEffectLevel() * .1;
+      }
+      else
+      {
+        effectivenessIncrease = .015;
+        cooldownReduction = .1;
+      }
+
+      equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Unique);
+      equipmentPiece.stats = new CharacterStats(0, 0, 1000, 0, 0, 0);
+      equipmentPiece.stats.hpRegen += 30;
+      equipmentPiece.stats.healingDone += .15;
+      equipmentPiece.stats.healingReceived += .15;
+      equipmentPiece.stats.abilityCooldownReduction += .1;
+      equipmentPiece.stats.thorns += .15;
+      
+      //increase item damage
+      var equipmentEffect = new UsableItemEffect();
+      equipmentEffect.trigger = EffectTriggerEnum.AlwaysActive;         
+      equipmentEffect.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ItemBoost, -1, effectivenessIncrease, false, true, false, type.toString()));      
+      equipmentEffect.userEffect[0].count = cooldownReduction;
+      equipmentEffect.userEffect[0].resolution = EffectResolutionEnum.AlwaysActiveEquipment;
+      equipmentPiece.equipmentEffects.push(equipmentEffect);
     }
     if (type === ItemsEnum.BronzeBeakNecklace) {
       equipmentPiece = new Equipment(type, EquipmentTypeEnum.Necklace, EquipmentQualityEnum.Epic);
@@ -5275,6 +5337,12 @@ export class LookupService {
     if (statusEffect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttack || statusEffect.type === StatusEffectEnum.BucklerOfPerfectHarmonyAttackUnique) {
       description = "After being attacked " + statusEffect.count + " more times, deal damage to all enemies.";
     }
+
+    if (statusEffect.type === StatusEffectEnum.LinkBoost)
+      description = "Increase the damage multiplier of Link abilities by " + Math.round((statusEffect.effectiveness) * 100) + "%. Reduce the cooldown after using all Links by " + statusEffect.count + " second" + (statusEffect.count === 1 ? "" : "s") + ".";
+    
+      if (statusEffect.type === StatusEffectEnum.ItemBoost)
+      description = "Increase healing or damage dealt by battle items by " + Math.round((statusEffect.effectiveness) * 100) + "%. Reduce any cooldowns an item may have by " + (statusEffect.count * 100) + "%. (Does not increase effectiveness of items that grant effects)";
     
     if (statusEffect.type === StatusEffectEnum.PalmStrike)
       description = "Current stack count: " + statusEffect.stackCount + ". When this reaches 3 stacks, the Palm Strike that caused it will hit all targets and deal increased damage.";
@@ -7159,6 +7227,12 @@ export class LookupService {
           if (effect.type === StatusEffectEnum.FreeAbilityCastChance)
             equipmentEffects += this.utilityService.genericRound(effect.effectiveness * 100) + "% chance to cast one ability you currently possess at random.<br/>";
 
+            if (effect.type === StatusEffectEnum.LinkBoost)
+            equipmentEffects += "Increase the damage multiplier of Link abilities by <strong>" + Math.round((effect.effectiveness) * 100) + "%</strong>. Reduce the cooldown after using all Links by <strong>" + effect.count + "</strong> second" + (effect.count === 1 ? "" : "s") + ".<br/>";
+          
+            if (effect.type === StatusEffectEnum.ItemBoost)
+            equipmentEffects += "Increase healing or damage dealt by battle items by <strong>" + Math.round((effect.effectiveness) * 100) + "%</strong>. Reduce any cooldowns an item may have by <strong>" + (effect.count * 100) + "%</strong>. (Does not increase effectiveness of items that grant effects)<br/>";
+          
           if (effect.type === StatusEffectEnum.DamageOverTimeDamageUp)
             equipmentEffects += "Increase Damage Over Time Damage Dealt by " + Math.round((effect.effectiveness - 1) * 100) + "%.<br/>";
 
@@ -7403,6 +7477,11 @@ export class LookupService {
           equipmentEffects += "<span class='bold smallCaps uniqueEquipment'>MAX</span><br/>";
         else
           equipmentEffects += "<span class='bold smallCaps uniqueEquipment'>" + unique.xp + " / " + unique.xpToNextLevel + " XP to Level " + (unique.level + 1) + "</span><br/>";
+      }
+      else
+      {
+        equipmentEffects += "<br/>";
+        equipmentEffects += "<span class='bold smallCaps uniqueEquipment'>Unique Level 0</span><br/>";
       }
     }
 

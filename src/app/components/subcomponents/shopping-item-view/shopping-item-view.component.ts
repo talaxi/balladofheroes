@@ -20,6 +20,7 @@ import { StoryService } from 'src/app/services/story/story.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
+import { Uniques } from 'src/app/models/resources/uniques.model';
 
 @Component({
   selector: 'app-shopping-item-view',
@@ -33,7 +34,7 @@ export class ShoppingItemViewComponent implements OnInit {
   partyMembers: Character[];
   subscription: any;
   outOfStock: boolean = false;
-  @Input() tooltipDirection = DirectionEnum.Right;  
+  @Input() tooltipDirection = DirectionEnum.Right;
   @Input() excludeItemDescriptionLocationText = false;
   @Input() totalItemsInShop = 0;
 
@@ -74,26 +75,33 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.Dionysus && this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.OlympicCommendation && this.lookupService.getResourceAmount(ItemsEnum.OlympicCommendation) >= 5)
+    if (this.item.shopItem === ItemsEnum.OlympicCommendation && this.lookupService.getResourceAmount(ItemsEnum.OlympicCommendation) >= 5)
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.MonkClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk)?.isAvailable)
+    if (this.item.shopItem === ItemsEnum.MonkClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk)?.isAvailable)
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.ThaumaturgeClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Thaumaturge)?.isAvailable)
+    if (this.item.shopItem === ItemsEnum.ThaumaturgeClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Thaumaturge)?.isAvailable)
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.DarkMoonPendantUnique && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
+      outOfStock = true;
+    if (this.item.shopItem === ItemsEnum.BlazingSunPendantUnique && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.BlazingSunPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.BlazingSunPendantUnique && item.level >= 1000))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.DarkMoonPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.DarkMoonPendantUnique && item.level >= 1000))
       outOfStock = true;
 
-    return outOfStock;  
+    return outOfStock;
   }
 
   setItemPurchasePrice() {
     this.purchaseResourcesRequired = "";
-    if (this.item.purchasePrice.some(item => item.item === ItemsEnum.Ambrosia))
-    {
+    if (this.item.purchasePrice.some(item => item.item === ItemsEnum.Ambrosia)) {
       this.item.purchasePrice = this.item.purchasePrice.filter(item => item.item !== ItemsEnum.Coin);
     }
 
     this.item.purchasePrice.forEach(resource => {
       var amount = resource.amount;
-      if (this.item.shopItem === ItemsEnum.SparringMatch) {        
+      if (this.item.shopItem === ItemsEnum.SparringMatch) {
         amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
       }
 
@@ -126,8 +134,8 @@ export class ShoppingItemViewComponent implements OnInit {
       var resource = this.resourceGeneratorService.getResourceFromItemType(this.item.shopItem, 1);
 
       if (resource !== undefined) {
-        if (resource.item === ItemsEnum.SparringMatch) { 
-          this.globalService.giveCharactersBonusExp(5000);          
+        if (resource.item === ItemsEnum.SparringMatch) {
+          this.globalService.giveCharactersBonusExp(5000);
           this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
           //TODO: REMOVE BELOW
           this.globalService.globalVar.uniques.forEach(item => {
@@ -135,7 +143,17 @@ export class ShoppingItemViewComponent implements OnInit {
             this.lookupService.levelUpUnique(item);
           });
         }
-        else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass  || resource.item === ItemsEnum.ThaumaturgeClass) {
+        else if (resource.item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
+          var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
+          if (unique !== undefined)
+          this.lookupService.levelUpUnique(unique);
+        }
+        else if (resource.item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
+          var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BlazingSunPendantUnique);
+          if (unique !== undefined)
+          this.lookupService.levelUpUnique(unique);
+        }
+        else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass || resource.item === ItemsEnum.ThaumaturgeClass) {
           this.unlockClass(resource.item);
         }
         else if (resource.item === ItemsEnum.Nemesis || resource.item === ItemsEnum.Dionysus) {
@@ -169,7 +187,11 @@ export class ShoppingItemViewComponent implements OnInit {
           }
         }
         else
-          this.lookupService.gainResource(resource);
+          if (resource.item === ItemsEnum.DarkMoonPendantUnique || resource.item === ItemsEnum.BlazingSunPendantUnique) {
+            this.globalService.globalVar.uniques.push(new Uniques(resource.item));
+          }
+
+        this.lookupService.gainResource(resource);
       }
     }
   }
@@ -201,7 +223,7 @@ export class ShoppingItemViewComponent implements OnInit {
       var thaumaturge = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Thaumaturge);
 
       if (thaumaturge !== undefined)
-      thaumaturge.isAvailable = true;
+        thaumaturge.isAvailable = true;
     }
   }
 
@@ -220,15 +242,15 @@ export class ShoppingItemViewComponent implements OnInit {
     }
   }
 
-  getResource(resource: ResourceValue) {    
+  getResource(resource: ResourceValue) {
     var resourceCopy = this.lookupService.makeResourceCopy(resource);
 
-      if (this.item.shopItem === ItemsEnum.SparringMatch) {
-        resourceCopy.amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
-        resourceCopy.amount = Math.round(resourceCopy.amount);
-      }
+    if (this.item.shopItem === ItemsEnum.SparringMatch) {
+      resourceCopy.amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+      resourceCopy.amount = Math.round(resourceCopy.amount);
+    }
 
-      return resourceCopy;
+    return resourceCopy;
   }
 
   canBuyItem() {

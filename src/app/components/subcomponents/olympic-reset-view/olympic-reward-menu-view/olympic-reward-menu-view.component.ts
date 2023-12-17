@@ -27,7 +27,7 @@ export class OlympicRewardMenuViewComponent {
   }
 
   ngOnInit() {
-    var allItems = this.subzoneGeneratorService.getAvailableOlympianRewardOptions(this.globalService.globalVar.resources);
+    var allItems = this.subzoneGeneratorService.getAvailableOlympianRewardOptions(this.globalService.globalVar.resources, this.globalService.globalVar.isSubscriber);
     this.equipmentItems = allItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.Equipment);
     this.shopItems = allItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) !== ItemTypeEnum.Equipment);
     this.setupDisplayShopItems();

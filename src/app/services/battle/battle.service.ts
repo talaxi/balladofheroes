@@ -1458,12 +1458,21 @@ export class BattleService {
       //console.log(ability.name + " Non DD Link");
       user.linkInfo.remainingLinks -= 1;
       user.linkInfo.linkChain += 1;
-      user.linkInfo.bonusChain += this.utilityService.nonDamageLinkBoost * (1 + user.battleStats.linkEffectiveness);
+
+      var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
+      var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
+      if (linkEffectivenessBoostEffect !== undefined)
+        linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;
+
+      user.linkInfo.bonusChain += this.utilityService.nonDamageLinkBoost * (1 + linkEffectivenessBoost);
 
       if (user.linkInfo.remainingLinks <= 0) {
         user.linkInfo.linkChain = 0;
         user.linkInfo.bonusChain = 0;
         user.linkInfo.cooldown = this.utilityService.linkCooldown;
+
+        if (linkEffectivenessBoostEffect !== undefined && linkEffectivenessBoostEffect.count > 0)
+          user.linkInfo.cooldown -= linkEffectivenessBoostEffect.count;
       }
     }
 
@@ -1573,7 +1582,15 @@ export class BattleService {
       if (elementalType !== ElementalTypeEnum.None)
         elementalText = this.getElementalDamageText(elementalType);
 
-      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, user.battleStats.linkEffectiveness);
+      var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
+      var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
+      if (linkEffectivenessBoostEffect !== undefined) {
+        linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;
+        //console.log("From effect: " + linkEffectivenessBoostEffect.effectiveness);
+      }
+
+     // console.log("Link Effectiveness: " + linkEffectivenessBoost);
+      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, linkEffectivenessBoost, linkEffectivenessBoostEffect !== undefined ? linkEffectivenessBoostEffect.count : undefined);
       abilityEffectiveness *= linkMultiplier;
 
       var flowEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flow);
@@ -1673,7 +1690,12 @@ export class BattleService {
       }
     }
     else if (abilityCopy.heals) {
-      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, false, user.battleStats.linkEffectiveness);
+      var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
+      var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
+      if (linkEffectivenessBoostEffect !== undefined)
+        linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;
+
+      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, false, linkEffectivenessBoost, linkEffectivenessBoostEffect !== undefined ? linkEffectivenessBoostEffect.count : undefined);
       abilityEffectiveness *= linkMultiplier;
 
       var healingDoneModifier = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
@@ -2323,8 +2345,7 @@ export class BattleService {
 
             if (member !== undefined) {
               healAmount = this.gainHp(member, healAmount, true, instantEffect.threshold);
-              overHealedAmount = member.battleInfo.barrierValue - currentBarrierAmount;
-              console.log("Overheal amount: " + overHealedAmount);
+              overHealedAmount = member.battleInfo.barrierValue - currentBarrierAmount;              
             }
 
             if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
@@ -3213,7 +3234,7 @@ export class BattleService {
     return effectiveness;
   }
 
-  handleDamageDealingLink(linkInfo: LinkInfo, ability: Ability, abilityRepeats: boolean = false, linkEffectivenessBonus: number) {
+  handleDamageDealingLink(linkInfo: LinkInfo, ability: Ability, abilityRepeats: boolean = false, linkEffectivenessBonus: number, linkEffectivenessCooldownReduction?: number) {
     var linkMultiplier = 1;
 
     if (ability.name !== "Barrage" && ability.manuallyTriggered && linkInfo.remainingLinks > 0 && linkInfo.cooldown <= 0) {
@@ -3224,11 +3245,13 @@ export class BattleService {
 
       linkMultiplier = 1 + (this.getLinkChainPercent(linkInfo, abilityRepeats, linkEffectivenessBonus) / 100);
 
-
       if (linkInfo.remainingLinks <= 0) {
         linkInfo.linkChain = 0;
         linkInfo.bonusChain = 0;
         linkInfo.cooldown = this.utilityService.linkCooldown;
+
+        if (linkEffectivenessCooldownReduction !== undefined && linkEffectivenessCooldownReduction > 0)
+          linkInfo.cooldown -= linkEffectivenessCooldownReduction;
       }
     }
 
@@ -5107,8 +5130,7 @@ export class BattleService {
 
         if (baseShapeshift !== undefined) {
           baseShapeshift.currentCooldown = baseShapeshift.cooldown;
-          shapeshift.effectiveness = 1;//baseShapeshift.userEffect[0].effectiveness;
-          //console.log("Shapeshift effectiveness: " + shapeshift.effectiveness);
+          shapeshift.effectiveness = 1;
           shapeshift.count = 0;
         }
       }
@@ -5490,6 +5512,12 @@ export class BattleService {
         damageMultiplier += itemEffect.effectiveness - 1;
         healingMultiplier += itemEffect.effectiveness - 1;
       }
+
+      var itemBoostEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ItemBoost);
+      if (itemBoostEffect !== undefined) {
+        damageMultiplier += itemBoostEffect.effectiveness;
+        healingMultiplier += itemBoostEffect.effectiveness;
+      }
     });
 
     if (this.battleItemInUse === ItemsEnum.HealingHerb || this.battleItemInUse === ItemsEnum.HealingPoultice
@@ -5752,7 +5780,15 @@ export class BattleService {
     }
 
     if (effect.cooldown > 0) {
-      this.globalService.globalVar.timers.itemCooldowns.push([this.battleItemInUse, effect.cooldown]);
+      var itemCooldown = effect.cooldown;
+
+      this.globalService.getActivePartyCharacters(true).forEach(member => {
+        var itemBoostEffect = member.battleInfo.statusEffects.find(effect => effect.type === StatusEffectEnum.ItemBoost);
+        if (itemBoostEffect !== undefined)
+          itemCooldown *= 1 - itemBoostEffect.count;
+      });
+
+      this.globalService.globalVar.timers.itemCooldowns.push([this.battleItemInUse, itemCooldown]);
     }
 
     if (this.lookupService.getResourceAmount(this.battleItemInUse) === 0) {

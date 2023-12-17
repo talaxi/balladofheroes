@@ -899,6 +899,12 @@ export class InitializationService {
       resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.WaterAbsorptionPotion, 1);
       if (resource !== undefined)
         this.lookupService.gainResource(resource);
+        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.DarkMoonPendant, 1);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);
+        resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.BlazingSunPendant, 1);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);
 
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.ScorpionStingerUnique));
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.BucklerOfPerfectHarmonyUnique));

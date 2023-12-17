@@ -1437,6 +1437,12 @@ export class GlobalService {
         this.battleService.applyStatusEffect(dispenserOfDues.userEffect[0], character);
       }
     }*/
+
+    if (character.assignedGod1 !== GodEnum.Hera && character.assignedGod2 !== GodEnum.Hera) {
+      if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Shapeshift))
+        character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Shapeshift);
+    }
+    
     if (character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) {
       if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues))
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);

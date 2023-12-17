@@ -131,6 +131,10 @@
                             [contentTemplate]="allyDamagePopover"><strong [ngClass]="getCharacterColor()"
                                 class="statLabel">Ally Damage Bonus:</strong>
                             {{(getAllyDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                            <span *ngIf="getLinkEffectivenessBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                                [contentTemplate]="linkEffectivenessPopover"><strong [ngClass]="getCharacterColor()"
+                                    class="statLabel">Link Effectiveness Bonus:</strong>
+                                {{(getLinkEffectivenessBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="healingDonePopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Done Bonus:</strong>
@@ -531,6 +535,17 @@
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getAllyDamageBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #linkEffectivenessPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getLinkEffectivenessBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getLinkEffectivenessBonusStatBreakdown(this.character)">
 
         </div>
     </div>
