@@ -185,17 +185,23 @@ export class IndividualStatusEffectViewComponent implements OnInit {
   getSplitStatImage(effect: StatusEffect) {
     var img = "assets/svg/statUpSE.svg";
 
-    if (effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageTakenUp)
+    if (effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageTakenUp ||
+      effect.type === StatusEffectEnum.EarthDamageDown || effect.type === StatusEffectEnum.EarthDamageTakenDown)
       img = "assets/svg/earth.svg";
-    if (effect.type === StatusEffectEnum.AirDamageUp || effect.type === StatusEffectEnum.AirDamageTakenUp)
+    if (effect.type === StatusEffectEnum.AirDamageUp || effect.type === StatusEffectEnum.AirDamageTakenUp ||
+      effect.type === StatusEffectEnum.AirDamageDown || effect.type === StatusEffectEnum.AirDamageTakenDown)
       img = "assets/svg/air.svg";
-    if (effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageTakenUp)
+    if (effect.type === StatusEffectEnum.HolyDamageUp || effect.type === StatusEffectEnum.HolyDamageTakenUp ||
+      effect.type === StatusEffectEnum.HolyDamageDown || effect.type === StatusEffectEnum.HolyDamageTakenDown)
       img = "assets/svg/holy.svg";
-    if (effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageTakenUp)
+    if (effect.type === StatusEffectEnum.LightningDamageUp || effect.type === StatusEffectEnum.LightningDamageTakenUp ||
+      effect.type === StatusEffectEnum.LightningDamageDown || effect.type === StatusEffectEnum.LightningDamageTakenDown) 
       img = "assets/svg/largeLightning.svg";
-    if (effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageTakenUp)
+    if (effect.type === StatusEffectEnum.FireDamageUp || effect.type === StatusEffectEnum.FireDamageTakenUp ||
+      effect.type === StatusEffectEnum.FireDamageDown || effect.type === StatusEffectEnum.FireDamageTakenDown)
       img = "assets/svg/fire.svg";
-    if (effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageTakenUp)
+    if (effect.type === StatusEffectEnum.WaterDamageUp || effect.type === StatusEffectEnum.WaterDamageTakenUp ||
+      effect.type === StatusEffectEnum.WaterDamageDown || effect.type === StatusEffectEnum.WaterDamageTakenDown)
       img = "assets/svg/water.svg";
     if (effect.type === StatusEffectEnum.AllElementalResistanceDown || effect.type === StatusEffectEnum.AllElementalResistanceUp)
       img = "assets/svg/elementalResistanceDown.svg";
@@ -350,6 +356,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.AbilitySpeedUp) {
       src += "abilitySpeedUp.svg";
+    }
+    if (effect.type === StatusEffectEnum.PalmStrike) {
+      src += "palmStrike.svg";
     }
     if (effect.type === StatusEffectEnum.AbsorbElementalDamage && effect.element === ElementalTypeEnum.Fire) {
       src += "barfire.svg";
@@ -511,6 +520,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "Aquarius.svg";
     if (effect.type === StatusEffectEnum.RainbowPlating || effect.type === StatusEffectEnum.RainbowPlatingUnique)
       src += "Pisces.svg";
+    if (effect.type === StatusEffectEnum.EnergyShield || effect.type === StatusEffectEnum.EnergyShieldUnique)
+      src += "Gemini.svg";
+    if (effect.type === StatusEffectEnum.SturdyShell)
+      src += "Cancer.svg";
+      if (effect.type === StatusEffectEnum.Leo)
+      src += "Leo.svg";
 
     return src;
   }
@@ -617,15 +632,15 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       if (this.statusEffect.element === ElementalTypeEnum.Holy)
         this.statusEffect.element = ElementalTypeEnum.Fire;
       else if (this.statusEffect.element === ElementalTypeEnum.Fire)
-      this.statusEffect.element = ElementalTypeEnum.Lightning;
+        this.statusEffect.element = ElementalTypeEnum.Lightning;
       else if (this.statusEffect.element === ElementalTypeEnum.Lightning)
-      this.statusEffect.element = ElementalTypeEnum.Earth;
+        this.statusEffect.element = ElementalTypeEnum.Earth;
       else if (this.statusEffect.element === ElementalTypeEnum.Earth)
-      this.statusEffect.element = ElementalTypeEnum.Air;
+        this.statusEffect.element = ElementalTypeEnum.Air;
       else if (this.statusEffect.element === ElementalTypeEnum.Air)
-      this.statusEffect.element = ElementalTypeEnum.Water;
+        this.statusEffect.element = ElementalTypeEnum.Water;
       else if (this.statusEffect.element === ElementalTypeEnum.Water)
-      this.statusEffect.element = ElementalTypeEnum.Holy;
+        this.statusEffect.element = ElementalTypeEnum.Holy;
     }
   }
 

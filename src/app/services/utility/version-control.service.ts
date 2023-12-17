@@ -1364,10 +1364,51 @@ export class VersionControlService {
 
           this.globalService.globalVar.characters.push(monk);
         }
-        if (version === .75) {
+        if (version === .75) { 
           this.globalService.globalVar.keybinds.set("triggerAction", "enter");
           if (this.globalService.globalVar.uniques === undefined)
             this.globalService.globalVar.uniques = [];
+
+            var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
+            if (dionysusGod !== undefined) { 
+              var ability2 = dionysusGod.abilityList.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+              if (ability2 !== undefined)
+              ability2.cooldown += 10;
+              
+              var permanentAbility2 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+              if (permanentAbility2 !== undefined && permanentAbility2.targetEffect.length > 0) {                
+                permanentAbility2.targetEffect[0].effectiveness = permanentAbility2.targetEffect[0].effectiveness * (4/5);                
+              }
+            }
+
+            var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
+            if (artemis !== undefined) {
+              var passive = artemis.abilityList.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+              if (passive !== undefined) {                
+                passive.effectiveness = 1.1;
+                passive.secondaryEffectiveness = 1;
+  
+                for (var i = 1; i <= passive.abilityUpgradeLevel; i++) {
+                  if (i % 10 === 0 && i <= 100)
+                    passive.secondaryEffectiveness += .02;
+                  else if (i <= 100)
+                    passive.effectiveness += .02;
+                }
+              }
+  
+              var permanentPassive = artemis.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+              if (permanentPassive !== undefined) {                
+                permanentPassive.effectiveness = permanentPassive.effectiveness / 5;                
+              }
+            }
+
+            var hermes = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes);
+            if (hermes !== undefined) {
+              var permanentPassive = hermes.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+              if (permanentPassive !== undefined) {                
+                permanentPassive.effectiveness = permanentPassive.effectiveness / 2;                
+              }
+            }
 
           var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
           if (athena !== undefined) {

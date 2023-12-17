@@ -25,7 +25,7 @@
         </button>        
     </div>    
 
-    <div class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
+    <div customToolTip [contentTemplate]="gameSpeedPopover" class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
       <button class="buttonAsText clickableText globalHeaderItem normalFontSize" (click)="toggleExtraSpeed()">
         <span class="headerTextItems clickableText globalHeaderItem" *ngIf="!isMobile">game speed: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
         <span class="headerTextItems clickableText globalHeaderItem" *ngIf="isMobile">{{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}} <img class="icon" src="assets/svg/clock.svg"></span>
@@ -39,6 +39,15 @@
       </button>
     </div>
 </div>
+
+<ng-template #gameSpeedPopover>
+  <div *ngIf="!isMobile">
+    Click to toggle between 1x and 2x game speed.
+  </div>
+  <div *ngIf="isMobile">
+    Tap to toggle between 1x and 2x game speed.
+  </div>
+</ng-template>
 
 <ng-template #pausedPopover>
     <div *ngIf="!isMobile">

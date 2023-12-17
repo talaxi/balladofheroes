@@ -130,6 +130,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.MonkClass) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
+    if (item === ItemsEnum.ThaumaturgeClass) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
     if (item === ItemsEnum.FracturedRubyRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));

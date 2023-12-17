@@ -78,6 +78,8 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
       if (this.item.shopItem === ItemsEnum.MonkClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk)?.isAvailable)
       outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.ThaumaturgeClass && this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Thaumaturge)?.isAvailable)
+      outOfStock = true;
 
     return outOfStock;  
   }
@@ -133,7 +135,7 @@ export class ShoppingItemViewComponent implements OnInit {
             this.lookupService.levelUpUnique(item);
           });
         }
-        else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass) {
+        else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass  || resource.item === ItemsEnum.ThaumaturgeClass) {
           this.unlockClass(resource.item);
         }
         else if (resource.item === ItemsEnum.Nemesis || resource.item === ItemsEnum.Dionysus) {
@@ -194,6 +196,12 @@ export class ShoppingItemViewComponent implements OnInit {
 
       if (monk !== undefined)
         monk.isAvailable = true;
+    }
+    if (item === ItemsEnum.ThaumaturgeClass) {
+      var thaumaturge = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Thaumaturge);
+
+      if (thaumaturge !== undefined)
+      thaumaturge.isAvailable = true;
     }
   }
 

@@ -8,6 +8,7 @@ import { Enemy } from 'src/app/models/character/enemy.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ColiseumService } from 'src/app/services/battle/coliseum.service';
+import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
@@ -45,7 +46,7 @@ export class ColiseumViewComponent implements OnInit {
 
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
-    private deviceDetectorService: DeviceDetectorService, private keybindService: KeybindService) { }
+    private deviceDetectorService: DeviceDetectorService, private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService) { }
 
   ngOnInit(): void {
     this.rewardsText = this.setRewardsText();
@@ -217,6 +218,11 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   startTournament() {
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
+
     this.globalService.startColiseumTournament(this.selectedTournament);
     this.dialog.closeAll();
   }

@@ -17,6 +17,7 @@ export class EnemyDescriptionViewComponent {
   @Input() character: Enemy;
   defeatCount: number = 0;
   subscription: any;
+  sizeSubscription: any;
   @ViewChild('enemyDescriptionView') containerDiv: ElementRef;
   @ViewChild('infoView') infoDiv: ElementRef;
 
@@ -26,14 +27,6 @@ export class EnemyDescriptionViewComponent {
   }
 
   ngOnInit() {
-    //var div = document.getElementById('enemyDescriptionView');
-   
-    /*if (div !== undefined && div !== null && div.scrollHeight > div.clientHeight)
-    {      
-      console.log("Adding");
-      div.classList.add('extremelySmallText');
-    }*/
-
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       if (this.character !== undefined) {
         var defeatCount = this.globalService.globalVar.enemyDefeatCount.find(item => item.bestiaryEnum === this.character.bestiaryType);
@@ -44,10 +37,21 @@ export class EnemyDescriptionViewComponent {
   }
 
   ngAfterViewInit() {
-    if (this.containerDiv !== undefined && (window.innerHeight * .98) < this.containerDiv.nativeElement.clientHeight + this.containerDiv.nativeElement.getBoundingClientRect().y)
-    {      
-      this.containerDiv.nativeElement.classList.add('smallText');
-    }
+    //console.log(".98 * " + window.innerHeight + " < " + this.containerDiv.nativeElement.clientHeight + " + " + this.containerDiv.nativeElement.getBoundingClientRect().y);
+    //console.log(this.containerDiv.nativeElement);
+    //if (this.containerDiv !== undefined && (window.innerHeight * .98) < this.containerDiv.nativeElement.clientHeight + this.containerDiv.nativeElement.getBoundingClientRect().y) {
+    //  this.containerDiv.nativeElement.classList.add('smallText');
+    //}
+
+    this.sizeSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
+      //this gives the necessary delay so that window is correctly sized
+      console.log("Sub'd:");
+      //console.log("** .98 * " + window.innerHeight + " < " + this.containerDiv.nativeElement.clientHeight + " + " + this.containerDiv.nativeElement.getBoundingClientRect().y);
+      if (this.containerDiv !== undefined && (window.innerHeight * .98) < this.containerDiv.nativeElement.clientHeight + this.containerDiv.nativeElement.getBoundingClientRect().y) {
+        this.containerDiv.nativeElement.classList.add('smallText');
+        this.sizeSubscription.unsubscribe();
+      }
+    });
   }
 
   getLootItem(loot: LootItem) {
@@ -182,29 +186,78 @@ export class EnemyDescriptionViewComponent {
   getAttack() {
     return this.utilityService.bigNumberReducer(this.character.battleStats.attack);
   }
-  
+
   getMaxHp() {
     return this.utilityService.bigNumberReducer(this.character.battleStats.maxHp);
   }
-  
+
   getDefense() {
     return this.utilityService.bigNumberReducer(this.character.battleStats.defense);
   }
-  
+
   getAgility() {
     return this.utilityService.bigNumberReducer(this.character.battleStats.agility);
   }
-  
+
   getLuck() {
     return this.utilityService.bigNumberReducer(this.character.battleStats.luck);
   }
-  
+
   getResistance() {
     return this.utilityService.bigNumberReducer(this.character.battleStats.resistance);
+  }
+
+  getCharacterCriticalHitChance(whichCharacter: number) {
+    var party = this.globalService.getActivePartyCharacters(true);
+
+    var partyMember = party[0];
+    if (whichCharacter === 2) {
+      partyMember = party[1];
+    }
+
+    var critChance = this.lookupService.getDamageCriticalChanceByNumbers(this.lookupService.getAdjustedLuck(partyMember, true), this.lookupService.getAdjustedResistance(this.character));
+
+    if (critChance < .01)
+      critChance = .01;
+
+    if (critChance > 1)
+      critChance = 1;
+
+    var critPercent = this.utilityService.roundTo(critChance * 100, 2);
+
+    return "<span class='bold " + this.globalService.getCharacterColorClassText(partyMember.type) + "'>" + critPercent + "%</span>";
+  }
+
+  getCharacterChanceToBeCriticallyHit(whichCharacter: number) {
+    var party = this.globalService.getActivePartyCharacters(true);
+
+    var partyMember = party[0];
+    if (whichCharacter === 2) {
+      partyMember = party[1];
+    }
+
+    var critChance = this.lookupService.getDamageCriticalChanceByNumbers(this.lookupService.getAdjustedLuck(this.character), this.lookupService.getAdjustedResistance(partyMember, true));
+
+    if (critChance < .01)
+      critChance = .01;
+
+    if (critChance > 1)
+      critChance = 1;
+
+    var critPercent = this.utilityService.roundTo(critChance * 100, 2);
+
+    return "<span class='bold " + this.globalService.getCharacterColorClassText(partyMember.type) + "'>" + critPercent + "%</span>";
+  }
+
+  getActivePartyCount() {
+    return this.globalService.getActivePartyCharacters(true).length;
   }
 
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
+
+    if (this.sizeSubscription !== undefined)
+      this.sizeSubscription.unsubscribe();
   }
 }

@@ -196,28 +196,9 @@ export class ToolTipRendererDirective {
    * This method will close the tooltip by detaching the overlay from the view
    */
   @HostListener('mouseleave', ['$event'])
-  hide(event: any) {
-    /*
-        var newHoveredItem = document.elementFromPoint(event.clientX, event.clientY);    
-        var elementClass = "";
-        if (newHoveredItem !== null && newHoveredItem !== undefined)
-          elementClass = newHoveredItem?.className;
-    
-        if (typeof elementClass === 'string' && elementClass.includes("tooltip-container")) {
-          console.log("Setting up the sub");
-          this.utilityService.mouseOverHoverable = true;
-    
-          this.tooltipSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-            console.log("Checking: " + this.utilityService.mouseInTooltip + " " + this.utilityService.mouseOverHoverable);
-            if (this.utilityService.mouseInTooltip) {                    
-              this.closeToolTip();
-            }
-          });
-        }
-        else {*/
+  hide(event: any) {    
     if (!this.deviceDetectorService.isMobile())
-      this.closeToolTip();
-    //}
+      this.closeToolTip();    
   }
 
   @HostListener('touchend')

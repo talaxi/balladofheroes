@@ -1147,6 +1147,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.MonkClass) {
       return new ResourceValue(ItemsEnum.MonkClass, amount);
     }  
+    if (type === ItemsEnum.ThaumaturgeClass) {
+      return new ResourceValue(ItemsEnum.ThaumaturgeClass, amount);
+    }  
     if (type === ItemsEnum.Dionysus) {
       return new ResourceValue(ItemsEnum.Dionysus, amount);
     }

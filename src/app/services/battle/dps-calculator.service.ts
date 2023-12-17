@@ -54,7 +54,7 @@ export class DpsCalculatorService {
 
     var rollingAverageTime = 120; //only factor in the latest 120 seconds
 
-    var latestTime = this.partyDamagingActions[this.partyDamagingActions.length - 1][1];
+    var latestTime = this.partyDamagingActions[this.partyDamagingActions.length - 1][1];    
 
     this.partyDamagingActions = this.partyDamagingActions.filter(item => item[1] >= latestTime - rollingAverageTime);
     

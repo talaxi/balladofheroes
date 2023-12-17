@@ -200,4 +200,8 @@ export enum StatusEffectEnum {
     FreeAbilityCastChance,
     EnergyShield,
     EnergyShieldUnique,
+    SturdyShell,
+    Leo,
+    PalmStrike,
+    Overheal    
   }

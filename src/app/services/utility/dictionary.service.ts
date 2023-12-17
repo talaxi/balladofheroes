@@ -974,6 +974,8 @@ export class DictionaryService {
       name = "<span class='priestColor'>Priest</span>";
     else if (type === ItemsEnum.MonkClass)
       name = "<span class='monkColor'>Monk</span>";
+      else if (type === ItemsEnum.ThaumaturgeClass)
+      name = "<span class='thaumaturgeColor'>Thaumaturge</span>";
     else if (type === ItemsEnum.UnderworldAccess)
       name = "Freely Enter and Leave Underworld";
     else if (type === ItemsEnum.BonusXp)

@@ -35,6 +35,11 @@
         </div>
         <br />
         <span class='statLabel'>Auto Attack Speed: </span> <span class="statValue"> {{getCharacterAttackSpeed()}}</span>
+        <br/>
+        <span class='statLabel'>Party Critical Hit Chance: </span> <span class="statValue"> <span [innerHTML]="getCharacterCriticalHitChance(1)"></span> <span *ngIf="this.getActivePartyCount() > 1"> / <span [innerHTML]="getCharacterCriticalHitChance(2)"></span></span> </span>
+        <br/>
+        <span class='statLabel'>Chance For Party To Be Critically Hit: </span> <span class="statValue"> <span [innerHTML]="getCharacterChanceToBeCriticallyHit(1)"></span> <span *ngIf="this.getActivePartyCount() > 1"> / <span [innerHTML]="getCharacterChanceToBeCriticallyHit(2)"></span></span></span>
+        <br/>
         <div>
             <span *ngIf="character.abilityList.length === 0">No abilities.</span>
             <div *ngIf="character.abilityList.length > 0">

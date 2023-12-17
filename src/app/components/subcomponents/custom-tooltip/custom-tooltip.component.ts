@@ -118,16 +118,6 @@ export class CustomTooltipComponent implements OnInit {
     this.globalService.globalVar.settings.set("autoProgress", false);
   }
 
-  enterTooltip() {    
-    console.log("Entered tooltip");
-    this.utilityService.mouseInTooltip = true;
-  }
-
-  leaveTooltip() {    
-    console.log("Left tooltip");
-    this.utilityService.mouseInTooltip = false;
-  }
-
   ngOnDestroy() {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();

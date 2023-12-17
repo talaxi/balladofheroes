@@ -343,7 +343,7 @@ table tr td:nth-child(4n-3) {
     z-index: 5;
     opacity: 1;
     text-align: center;
-    width: 74.2%;
+    width: 73.55%;
     /* needs to match .characterBar */
     bottom: .1rem;
     height: 1rem;
@@ -354,13 +354,13 @@ table tr td:nth-child(4n-3) {
 }
 
 .overdriveProgressBar {
-    width: 74.2%;
+    width: 73.55%;
     margin-right: .5rem;
 }
 
 .characterHp {
     display: grid;
-    grid-template-columns: 74.2% 1fr;
+    grid-template-columns: 73.55% 1fr;
     column-gap: .3rem;
     justify-content: stretch;
     grid-template-areas:

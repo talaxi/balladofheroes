@@ -4533,6 +4533,7 @@ export class SubZoneGeneratorService {
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedTopaz, SubZoneEnum.CreteKnossos));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedAquamarine, SubZoneEnum.CreteKnossos));
     availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MonkClass, SubZoneEnum.CreteKnossos));
+    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ThaumaturgeClass, SubZoneEnum.CreteKnossos));
 
     if (subzoneType === SubZoneEnum.CreteKnossos) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));

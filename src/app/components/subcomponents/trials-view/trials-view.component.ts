@@ -6,6 +6,7 @@ import { Enemy } from 'src/app/models/character/enemy.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
+import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { TrialService } from 'src/app/services/battle/trial.service';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -48,7 +49,7 @@ export class TrialsViewComponent {
   constructor(private trialService: TrialService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
     private enemyGeneratorService: EnemyGeneratorService, private deviceDetectorService: DeviceDetectorService,
-    private keybindService: KeybindService) { }
+    private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -170,6 +171,11 @@ export class TrialsViewComponent {
   }
 
   startTrial() {
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
+
     this.globalService.startTrial(this.selectedTrial);
     this.dialog.closeAll();
   }
