@@ -476,5 +476,6 @@ export enum ItemsEnum {
   GlowingChokerUnique,
   AstralRingEpic,
   AstralRingSpecial,
-  AstralRingUnique
+  AstralRingUnique,
+  ThaumaturgeClass
 } 
