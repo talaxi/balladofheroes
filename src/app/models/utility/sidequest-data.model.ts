@@ -17,6 +17,7 @@ export class SidequestData {
     sparringMatchMultiplier: number;
     sparringMatchTimer: number;
     trialStage: number;
+    duosUnlocked: boolean;
 
     constructor() {       
         this.isAltarOfAsclepiusUnlocked = false; 
@@ -36,5 +37,6 @@ export class SidequestData {
         this.sparringMatchMultiplier = 1;
         this.sparringMatchTimer = 0;
         this.trialStage = 1;
+        this.duosUnlocked = false;
     }
 }

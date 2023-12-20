@@ -207,6 +207,10 @@ export class DictionaryService {
       name = "Zeus's Lightning Bolts";
     else if (type === ItemsEnum.PoseidonsTrident)
       name = "Poseidon's Trident";
+      else if (type === ItemsEnum.HerasRod)
+      name = "Hera's Rod";
+      else if (type === ItemsEnum.AphroditesRoses)
+      name = "Aphrodite's Roses";
     else if (type === ItemsEnum.GiantSword)
       name = "Giant Sword";
     else if (type === ItemsEnum.GiantHammer)
@@ -261,6 +265,8 @@ export class DictionaryService {
       name = "Dark Moon Pendant Unique XP";
       else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade)
       name = "Blazing Sun Pendant Unique XP";
+      else if (type === ItemsEnum.DuoAbilityAccess)
+      name = "Duo Ability Access";
       else if (type === ItemsEnum.ScathingBeautyEpic)
       name = "Scathing Beauty";
       else if (type === ItemsEnum.ScathingBeautySpecial)
@@ -349,6 +355,10 @@ export class DictionaryService {
       name = "Nemesis's Shield";
     else if (type === ItemsEnum.ZeussShield)
       name = "Zeus's Shield";
+      else if (type === ItemsEnum.HerasShield)
+      name = "Hera's Shield";
+      else if (type === ItemsEnum.AphroditesShield)
+      name = "Aphrodite's Shield";
     else if (type === ItemsEnum.GiantShield)
       name = "Giant Shield";
     else if (type === ItemsEnum.PoseidonsShield)
@@ -395,6 +405,10 @@ export class DictionaryService {
       name = "Nemesis's Necklace";
     else if (type === ItemsEnum.ZeussNecklace)
       name = "Zeus's Necklace";
+      else if (type === ItemsEnum.HerasNecklace)
+      name = "Hera's Necklace";
+      else if (type === ItemsEnum.AphroditesNecklace)
+      name = "Aphrodite's Necklace";
     else if (type === ItemsEnum.GiantNecklace)
       name = "Giant Necklace";
     else if (type === ItemsEnum.PoseidonsNecklace)
@@ -447,6 +461,10 @@ export class DictionaryService {
       name = "Nemesis's Armor";
     else if (type === ItemsEnum.ZeussArmor)
       name = "Zeus's Armor";
+      else if (type === ItemsEnum.HerasArmor)
+      name = "Hera's Armor";
+      else if (type === ItemsEnum.AphroditesArmor)
+      name = "Aphrodite's Armor";
     else if (type === ItemsEnum.GiantArmor)
       name = "Giant Armor";
     else if (type === ItemsEnum.PoseidonsArmor)
@@ -499,6 +517,10 @@ export class DictionaryService {
       name = "Nemesis's Ring";
     else if (type === ItemsEnum.ZeussRing)
       name = "Zeus's Ring";
+      else if (type === ItemsEnum.HerasRing)
+      name = "Hera's Ring";
+      else if (type === ItemsEnum.AphroditesRing)
+      name = "Aphrodite's Ring";
     else if (type === ItemsEnum.GiantRing)
       name = "Giant Ring";
     else if (type === ItemsEnum.PoseidonsRing)

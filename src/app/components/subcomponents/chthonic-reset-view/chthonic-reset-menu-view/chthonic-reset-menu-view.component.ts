@@ -70,6 +70,12 @@ export class ChthonicResetMenuViewComponent implements OnInit {
     if (this.bonusGod === GodEnum.Poseidon) {
       this.bonusGodText = "Boy oh boy, is there anything like the ocean breeze? Seriously, it's about the only nice thing we have left down here. If you manage to get some favor from Poseidon, bring it by will ya?";
     }
+    if (this.bonusGod === GodEnum.Hera) {
+      this.bonusGodText = "They say Queen Hera can see and hear everything. Well, hopefully she can hear how much I want some of her favor!";
+    }
+    if (this.bonusGod === GodEnum.Aphrodite) {
+      this.bonusGodText = "I think I've been shot! Right in the heart with the power of love, baby! Give me everything you got with Aphrodite's name on it!";
+    }
 
     this.bonusGodText = "<strong>" + this.bonusGodText + "</strong>";
     this.bonusGodText = this.bonusGodText.replaceAll("Athena", "<span class='athenaColor storyCharacterName'>Athena</span>");

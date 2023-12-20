@@ -364,5 +364,8 @@ export enum BestiaryEnum {
   MajesticLionVeryHard,
   AstraeaNormal,
   AstraeaHard,
-  AstraeaVeryHard 
+  AstraeaVeryHard,
+  Hera,
+  Aphrodite,
+  Eros
 }

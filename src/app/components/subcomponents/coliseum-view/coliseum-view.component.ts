@@ -1,4 +1,4 @@
-import { Component, HostListener, OnInit } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Battle } from 'src/app/models/battle/battle.model';
@@ -9,11 +9,13 @@ import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ColiseumService } from 'src/app/services/battle/coliseum.service';
 import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
+import { GameLogService } from 'src/app/services/battle/game-log.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 
 @Component({
   selector: 'app-coliseum-view',
@@ -23,9 +25,12 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class ColiseumViewComponent implements OnInit {
   selectedTournament: ColiseumTournament;
   repeatColiseumFight: boolean = false;
+  automateEternalMelee: boolean = false;
   rewardsText = "";
   standardColiseumTournaments: ColiseumTournamentEnum[] = [];
   specialColiseumTournaments: ColiseumTournamentEnum[] = [];
+  @ViewChild('confirmationBox') confirmationBox: any;
+  confirmationText = "You are currently set to automate through the Eternal Melee with all of your tickets. You will not be able to stop part way through to adjust your team. Continue?";
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -38,19 +43,21 @@ export class ColiseumViewComponent implements OnInit {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
       this.toggleSubMenuOptions(1);
     }
-    
-    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("triggerAction"))) {      
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("triggerAction"))) {
       this.startTournament();
     }
   }
 
   constructor(private coliseumService: ColiseumService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
-    private deviceDetectorService: DeviceDetectorService, private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService) { }
+    private deviceDetectorService: DeviceDetectorService, private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService,
+    private gameLogService: GameLogService) { }
 
   ngOnInit(): void {
     this.rewardsText = this.setRewardsText();
     this.repeatColiseumFight = this.globalService.globalVar.settings.get("repeatColiseumFight") ?? false;
+    this.automateEternalMelee = this.globalService.globalVar.settings.get("automateEternalMelee") ?? false;
     this.standardColiseumTournaments = this.getStandardColiseumTournaments();
     this.specialColiseumTournaments = this.getSpecialColiseumTournaments();
     if (this.standardColiseumTournaments.length > 0)
@@ -59,6 +66,10 @@ export class ColiseumViewComponent implements OnInit {
 
   isMobile() {
     return this.deviceDetectorService.isMobile();
+  }
+
+  openConfirmationDialog() {
+    return this.dialog.open(this.confirmationBox, { width: '40%', height: 'auto' });
   }
 
   getStandardColiseumTournaments() {
@@ -107,7 +118,7 @@ export class ColiseumViewComponent implements OnInit {
   }
 
   chooseColiseumTournament(tournament: ColiseumTournamentEnum) {
-    this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(tournament);    
+    this.selectedTournament = this.dictionaryService.getColiseumInfoFromType(tournament);
   }
 
   getTournamentName(type?: ColiseumTournamentEnum) {
@@ -195,23 +206,22 @@ export class ColiseumViewComponent implements OnInit {
     return level;
   }
 
-  getColiseumNameColor(type: ColiseumTournamentEnum) {    
-    if (this.firstTimeRewardAlreadyObtained(type) && !this.quickCompletionRewardAlreadyObtained(type)) {              
-        if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
-          return { 'activeBackground clearedSubzoneColor': true };
-        else
-          return { 'clearedSubzoneColor': true };      
+  getColiseumNameColor(type: ColiseumTournamentEnum) {
+    if (this.firstTimeRewardAlreadyObtained(type) && !this.quickCompletionRewardAlreadyObtained(type)) {
+      if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
+        return { 'activeBackground clearedSubzoneColor': true };
+      else
+        return { 'clearedSubzoneColor': true };
     }
-    else if (this.firstTimeRewardAlreadyObtained(type) && this.quickCompletionRewardAlreadyObtained(type)) {      
+    else if (this.firstTimeRewardAlreadyObtained(type) && this.quickCompletionRewardAlreadyObtained(type)) {
       if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
         return { 'activeBackground completedSubzoneColor': true };
       else
         return { 'completedSubzoneColor': true };
     }
-    else
-    {
+    else {
       if (this.selectedTournament !== undefined && this.selectedTournament.type === type)
-          return { 'active': true };
+        return { 'active': true };
     }
 
     return {};
@@ -223,8 +233,42 @@ export class ColiseumViewComponent implements OnInit {
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.dpsCalculatorService.xpGain = [];
 
-    this.globalService.startColiseumTournament(this.selectedTournament);
-    this.dialog.closeAll();
+    if (this.automateEternalMelee) {
+      if (this.repeatColiseumFight) {
+        //only show dialog if automating and repeating
+        var dialogRef = this.openConfirmationDialog();
+
+        dialogRef.afterClosed().subscribe(dialogResult => {
+          if (dialogResult) {
+            var tickets = this.globalService.globalVar.resources.find(item => item.item === ItemsEnum.EternalMeleeTicket);
+            var ticketCount = 14;
+            if (tickets !== undefined)
+              ticketCount = tickets.amount;
+
+            this.lookupService.isUIHidden = true;
+            this.globalService.globalVar.isCatchingUp = true;
+            this.gameLogService.disableOverlayBuffer = true;
+            this.globalService.bankedTime += ticketCount * 5 * 60;
+            this.globalService.maxBankedTime = this.globalService.bankedTime;
+            this.globalService.startColiseumTournament(this.selectedTournament);
+            this.dialog.closeAll();
+          }
+        });
+      }
+      else {
+        this.lookupService.isUIHidden = true;
+        this.globalService.globalVar.isCatchingUp = true;
+        this.gameLogService.disableOverlayBuffer = true;
+        this.globalService.bankedTime +=  5 * 60;
+        this.globalService.maxBankedTime = this.globalService.bankedTime;
+        this.globalService.startColiseumTournament(this.selectedTournament);
+        this.dialog.closeAll();
+      }
+    }
+    else {
+      this.globalService.startColiseumTournament(this.selectedTournament);
+      this.dialog.closeAll();
+    }
   }
 
   canEnterWeeklyMelee() {
@@ -241,8 +285,8 @@ export class ColiseumViewComponent implements OnInit {
 
   getWeeklyEntryCap() {
     var ticketMultiplier = 1;
-      if (this.globalService.globalVar.isSubscriber)
-        ticketMultiplier = 2;
+    if (this.globalService.globalVar.isSubscriber)
+      ticketMultiplier = 2;
 
     return this.utilityService.weeklyMeleeEntryCap * ticketMultiplier;
   }
@@ -255,47 +299,51 @@ export class ColiseumViewComponent implements OnInit {
     this.globalService.globalVar.settings.set("repeatColiseumFight", this.repeatColiseumFight);
   }
 
+  automateEternalMeleeToggle() {
+    this.globalService.globalVar.settings.set("automateEternalMelee", this.automateEternalMelee);
+  }
+
   setRewardsText() {
     var rewardsText = "";
 
     rewardsText = "Enemies will not give XP, Coins, or Items like normal. Instead, you will gain XP and Coins based on how many rounds you complete. The further you progress, the more you will gain. In addition, you will gain an item reward after each boss fight. <br/><br/>" +
-    "Completing Round 5: +10-50 Basic Crafting Materials<br/>" +
-    "Completing Round 10: +30-70 Rough Gem Fragments<br/>" +
-    "Completing Round 15: +25-100 Metal Scraps<br/>" +
-    "Completing Round 20: +25-150 Chthonic Favor<br/>" +
-    "Completing Round 25: +30-70 Uncommon Crafting Materials<br/>" +
-    "Every successive boss fight: +100 Rough Gem Fragments<br/><br/>" +
-    "<b><i>Rewards will continue to be adjusted as future content is added to the game</i></b>"
+      "Completing Round 5: +10-50 Basic Crafting Materials<br/>" +
+      "Completing Round 10: +30-70 Rough Gem Fragments<br/>" +
+      "Completing Round 15: +25-100 Metal Scraps<br/>" +
+      "Completing Round 20: +25-150 Chthonic Favor<br/>" +
+      "Completing Round 25: +30-70 Uncommon Crafting Materials<br/>" +
+      "Every successive boss fight: +100 Rough Gem Fragments<br/><br/>" +
+      "<b><i>Rewards will continue to be adjusted as future content is added to the game</i></b>"
 
     return rewardsText;
   }
 
-  openModal(content: any) {    
-    return this.dialog.open(content, { width: '40%', height: 'auto' });      
+  openModal(content: any) {
+    return this.dialog.open(content, { width: '40%', height: 'auto' });
   }
-  
-  toggleSubMenuOptions(direction: number) {    
+
+  toggleSubMenuOptions(direction: number) {
     var isStandard = this.standardColiseumTournaments.some(item => item === this.selectedTournament.type);
     if (isStandard) {
       var currentIndex = this.standardColiseumTournaments.findIndex(item => item === this.selectedTournament.type);
       currentIndex += direction;
-  
+
       if (currentIndex < 0)
         currentIndex = this.standardColiseumTournaments.length - 1;
       if (currentIndex > this.standardColiseumTournaments.length - 1)
         currentIndex = 0;
-      
+
       this.chooseColiseumTournament(this.standardColiseumTournaments[currentIndex]);
     }
     else {
       var currentIndex = this.specialColiseumTournaments.findIndex(item => item === this.selectedTournament.type);
       currentIndex += direction;
-  
+
       if (currentIndex < 0)
         currentIndex = this.specialColiseumTournaments.length - 1;
       if (currentIndex > this.specialColiseumTournaments.length - 1)
         currentIndex = 0;
-      
+
       this.chooseColiseumTournament(this.specialColiseumTournaments[currentIndex]);
     }
   }

@@ -1364,10 +1364,23 @@ export class VersionControlService {
 
           this.globalService.globalVar.characters.push(monk);
         }
-        if (version === .75) { 
+        if (version === .74) { //TODO: set to .75
+          this.globalService.globalVar.sidequestData.duosUnlocked = false;
           this.globalService.globalVar.keybinds.set("triggerAction", "enter");
           if (this.globalService.globalVar.uniques === undefined)
             this.globalService.globalVar.uniques = [];
+
+          this.globalService.globalVar.gods.forEach(god => {
+            god.statGain.linkEffectiveness = 0;
+            god.permanentStatGain.linkEffectiveness = 0;
+            god.statGain.allyDamageBonus = 0;
+            god.permanentStatGain.allyDamageBonus = 0;
+          });
+
+          if (this.globalService.globalVar.currentStoryId === 46) {
+            this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, SubZoneEnum.TheLabyrinthLabyrinthCenter);
+            this.globalService.globalVar.currentStoryId += 1;            
+          }
 
             var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);
             if (dionysusGod !== undefined) { 
@@ -1431,6 +1444,11 @@ export class VersionControlService {
             var permanentSecondWind = athena.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);            
             if (permanentSecondWind !== undefined && permanentSecondWind.userEffect.length > 0) {
               permanentSecondWind.userEffect[0].effectiveness = (permanentSecondWind.userEffect[0].effectiveness / 250) * .05;
+            }
+
+            var permanentBlindingLight = athena.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);            
+            if (permanentBlindingLight !== undefined) {
+              permanentBlindingLight.effectiveness = (permanentBlindingLight.effectiveness / .25) * .35;
             }
           } 
         }

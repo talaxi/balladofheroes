@@ -205,5 +205,9 @@ export enum StatusEffectEnum {
     PalmStrike,
     Overheal,
     LinkBoost,
-    ItemBoost    
+    ItemBoost,
+    AutoAttackDealsElementalDamage, //TODO: needs image
+    DivineRetribution,
+    ReduceNextAbilityCooldown, //TODO: needs image    
+    BlindedByLove, //TODO: needs image    
   }

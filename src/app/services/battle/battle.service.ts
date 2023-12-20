@@ -960,9 +960,46 @@ export class BattleService {
 
       if (ally !== undefined)
         this.applyStatusEffect(copy, ally, party, character);
+
+      if (this.checkForAphroditeSetBonus(character)) {
+        var newCopy = this.globalService.makeStatusEffectCopy(passionateRhythm.userEffect[0]);
+        newCopy.type = StatusEffectEnum.PassionateRhythm;
+        if (aphrodite !== undefined) {
+          var passionateRhythmUpgrade = aphrodite.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+          if (passionateRhythmUpgrade !== undefined && passionateRhythmUpgrade.userEffect.length > 0)
+            newCopy.effectiveness += passionateRhythmUpgrade.userEffect[0].effectiveness;
+        }
+
+        if (ally !== undefined)
+          this.applyStatusEffect(newCopy, ally, party, character);
+      }
     }
 
     this.checkForHermesSetBonus(character, target);
+
+    var divineSpeed = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.AutoAttackDealsElementalDamage);
+    if (divineSpeed !== undefined) {
+      var trueDamageDealt = this.dealTrueDamage(true, target, this.lookupService.getAdjustedAttack(character) * divineSpeed.effectiveness, character, ElementalTypeEnum.Holy, true);
+      if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
+        (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
+        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(target.type) + "'>" + target.name + "</strong>" + " takes " + this.utilityService.bigNumberReducer(Math.round(trueDamageDealt)) + " Holy damage from " + character.name + "'s effect.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+      }
+
+      if (trueDamageDealt > 0) {
+        var healAmount = trueDamageDealt * .1 * (1 + character.battleStats.healingDone);
+
+        healAmount = this.gainHp(character, healAmount);
+
+        if (Math.round(healAmount) > 0) {
+          if ((isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("partyStatusEffect")) ||
+            (!isPartyAttacking && this.globalService.globalVar.gameLogSettings.get("enemyStatusEffect"))) {
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong> gains " + this.utilityService.bigNumberReducer(healAmount) + " HP from Divine Speed's effect.";
+            this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
+          }
+        }
+      }
+    }
 
     var boundingBand = character.battleInfo.statusEffects.find(item => (item.type === StatusEffectEnum.BoundingBandUnique && item.count >= 9));
     if (boundingBand !== undefined) {
@@ -1122,6 +1159,13 @@ export class BattleService {
       }
     }
 
+
+    var blindedByLove = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BlindedByLove);
+    if (blindedByLove !== undefined) {
+      var blind = this.globalService.createStatusEffect(StatusEffectEnum.Blind, 6, .5, false, false, false);
+      this.applyStatusEffect(blind, target, targets, character);
+    }
+
     var quicken = this.lookupService.characterHasAbility("Quicken", character);
     if (quicken !== undefined) {
       var effectiveness = quicken.effectiveness;
@@ -1187,7 +1231,7 @@ export class BattleService {
         var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod1);
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
-            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+            god.abilityList.filter(ability => ability.isAvailable && ability.name !== "Shapeshift").forEach(ability => {
               ability.currentCooldown *= effectiveness;
             });
         }
@@ -1197,7 +1241,7 @@ export class BattleService {
         var god = this.globalService.globalVar.gods.find(item => item.type === character.assignedGod2);
         if (god !== undefined) {
           if (god.abilityList !== undefined && god.abilityList.length > 0)
-            god.abilityList.filter(ability => ability.isAvailable).forEach(ability => {
+            god.abilityList.filter(ability => ability.isAvailable && ability.name !== "Shapeshift").forEach(ability => {
               ability.currentCooldown *= effectiveness;
             });
         }
@@ -1260,6 +1304,11 @@ export class BattleService {
           var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(character.type) + "'>" + character.name + "</strong>" + "'s attack misses!";
           this.gameLogService.updateGameLog(GameLogEntryEnum.DealingDamage, gameLogEntry);
         }
+
+        if (blind.abilityName === "Thunderclap" && !target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.StunImmunity)) {
+          this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, blind.maxCount, 0, false, false), character, undefined, target);
+        }
+
         return true;
       }
     }
@@ -1390,14 +1439,20 @@ export class BattleService {
 
           var flowEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Flow);
           if (flowEffect !== undefined && (flowEffect.count === 2 || flowEffect.count === 3)) {
-            ability.currentCooldown /= flowEffect.effectiveness;
+            ability.currentCooldown *= 1 - (flowEffect.effectiveness - 1);
             character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.Flow && item.count === 2));
           }
 
-          var ally = partyMembers.find(item => item.type !== character.type);
+          var reduceNextAbilityCooldown = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ReduceNextAbilityCooldown);
+          if (reduceNextAbilityCooldown !== undefined) {
+            ability.currentCooldown *= 1 - (reduceNextAbilityCooldown.effectiveness - 1);
+            character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => !(item.type === StatusEffectEnum.ReduceNextAbilityCooldown));
+          }
+
+          var ally = partyMembers.find(item => item.type !== character.type || character.type === CharacterEnum.Enemy);
           if (ally !== undefined) {
             var fatalAttraction = ally.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.FatalAttraction);
-            if (fatalAttraction !== undefined && fatalAttraction.count === 2) {
+            if (fatalAttraction !== undefined && fatalAttraction.count === 2 && ability.name !== "Kiss of Death") {
               var fatalAttractionModifier = fatalAttraction.effectiveness;
               ally.battleInfo.statusEffects = ally.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.FatalAttraction);
               ability.currentCooldown = 0;
@@ -1589,7 +1644,7 @@ export class BattleService {
         //console.log("From effect: " + linkEffectivenessBoostEffect.effectiveness);
       }
 
-     // console.log("Link Effectiveness: " + linkEffectivenessBoost);
+      // console.log("Link Effectiveness: " + linkEffectivenessBoost);
       var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, abilityCopy.userEffect.some(effect => effect.type === StatusEffectEnum.RepeatAbility) || abilityWillRepeat, linkEffectivenessBoost, linkEffectivenessBoostEffect !== undefined ? linkEffectivenessBoostEffect.count : undefined);
       abilityEffectiveness *= linkMultiplier;
 
@@ -1621,7 +1676,7 @@ export class BattleService {
         userEffects.push(flowStatus);
       }
 
-      var fatalAttractionModifier = fromFatalAttractionModifier > 1 ? fromFatalAttractionModifier : this.checkForFatalAttraction(user, party.find(item => item.type !== user.type));
+      var fatalAttractionModifier = fromFatalAttractionModifier > 1 ? fromFatalAttractionModifier : this.checkForFatalAttraction(user, party.find(item => item.type !== user.type || item.type === CharacterEnum.Enemy));
 
       if (abilityCopy.isAoe) {
         potentialTargets.forEach((potentialTarget, index, array) => {
@@ -1664,8 +1719,13 @@ export class BattleService {
         damageMultiplier *= fatalAttractionModifier;
         var isCritical = this.isDamageCritical(user, target, abilityCopy, party.find(item => item.type !== user.type));
 
-        if (isCritical)
+        if (isCritical) {
           wasDamageCritical = true;
+          if (abilityCopy.name === "Blinding Arrow") {
+            damageMultiplier *= abilityCopy.secondaryEffectiveness;
+            abilityCopy.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, 8, 1, false, false, false));
+          }
+        }
 
         if (damageIsBlocked)
           damageMultiplier = 0;
@@ -1690,55 +1750,126 @@ export class BattleService {
       }
     }
     else if (abilityCopy.heals) {
-      var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
-      var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
-      if (linkEffectivenessBoostEffect !== undefined)
-        linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;
+      if (abilityCopy.isAoe) {
+        party.forEach((potentialTarget, index, array) => {
+          var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
+          var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
+          if (linkEffectivenessBoostEffect !== undefined)
+            linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;
 
-      var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, false, linkEffectivenessBoost, linkEffectivenessBoostEffect !== undefined ? linkEffectivenessBoostEffect.count : undefined);
-      abilityEffectiveness *= linkMultiplier;
+          var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, false, linkEffectivenessBoost, linkEffectivenessBoostEffect !== undefined ? linkEffectivenessBoostEffect.count : undefined);
+          abilityEffectiveness *= linkMultiplier;
 
-      var healingDoneModifier = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
-      var adjustedHealingDone = user.battleStats.healingDone;
-      if (healingDoneModifier !== undefined)
-        adjustedHealingDone *= healingDoneModifier.effectiveness;
+          var healingDoneModifier = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
+          var adjustedHealingDone = user.battleStats.healingDone;
+          if (healingDoneModifier !== undefined)
+            adjustedHealingDone *= healingDoneModifier.effectiveness;
 
-      var scathedBeautyUniqueEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ScathingBeautyUnique && item.stackCount >= 4);
-      if (scathedBeautyUniqueEffect !== undefined)
-        adjustedHealingDone *= 1 + (scathedBeautyUniqueEffect.effectiveness / 10);
+          var scathedBeautyUniqueEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ScathingBeautyUnique && item.stackCount >= 4);
+          if (scathedBeautyUniqueEffect !== undefined)
+            adjustedHealingDone *= 1 + (scathedBeautyUniqueEffect.effectiveness / 10);
 
-      var healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + adjustedHealingDone);
+          var healAmount = 0;
 
-      if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
-        healAmount *= 1.5;
+          if (abilityCopy.name === "Ostinato" || abilityCopy.name === "Heal" || abilityCopy.name === "Cleansing Rain")
+            healAmount = (((abilityEffectiveness / 2) * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing)) +
+              ((abilityEffectiveness / 2) * this.lookupService.getAdjustedResistance(user, isPartyUsing)))
+              * (1 + adjustedHealingDone);
+          else
+            healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + adjustedHealingDone);
 
-      if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Harmony) {
-        targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10, true));
+          if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
+            healAmount *= 1.5;
+
+          if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Harmony) {
+            targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10, true));
+          }
+
+          var adjustedCriticalMultiplier = 1;
+          var isCritical = this.isHealCritical(user);
+          if (isCritical)
+            adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(user, isPartyUsing, true);
+          healAmount *= adjustedCriticalMultiplier;
+
+          healedAmount = this.gainHp(potentialTarget, healAmount);
+
+          user.trackedStats.healingDone += healedAmount;
+          if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
+            !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
+            user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
+
+          user.trackedStats.healsMade += 1;
+          if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
+            !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
+            user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
+
+          if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
+            (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
+            var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on " + potentialTarget.name + ", restoring " + this.utilityService.bigNumberReducer(Math.round(healedAmount)) + " HP." + (isCritical ? " <strong>Critical heal!</strong>" : "");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
+          }
+        });
+      }
+      else {
+        var linkEffectivenessBoost = user.battleStats.linkEffectiveness;
+        var linkEffectivenessBoostEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
+        if (linkEffectivenessBoostEffect !== undefined)
+          linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;
+
+        var linkMultiplier = this.handleDamageDealingLink(user.linkInfo, ability, false, linkEffectivenessBoost, linkEffectivenessBoostEffect !== undefined ? linkEffectivenessBoostEffect.count : undefined);
+        abilityEffectiveness *= linkMultiplier;
+
+        var healingDoneModifier = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
+        var adjustedHealingDone = user.battleStats.healingDone;
+        if (healingDoneModifier !== undefined)
+          adjustedHealingDone *= healingDoneModifier.effectiveness;
+
+        var scathedBeautyUniqueEffect = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ScathingBeautyUnique && item.stackCount >= 4);
+        if (scathedBeautyUniqueEffect !== undefined)
+          adjustedHealingDone *= 1 + (scathedBeautyUniqueEffect.effectiveness / 10);
+
+        var healAmount = 0;
+
+        if (abilityCopy.name === "Ostinato" || abilityCopy.name === "Heal" || abilityCopy.name === "Cleansing Rain")
+          healAmount = (((abilityEffectiveness / 2) * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing)) +
+            ((abilityEffectiveness / 2) * this.lookupService.getAdjustedResistance(user, isPartyUsing)))
+            * (1 + adjustedHealingDone);
+        else
+          healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + adjustedHealingDone);
+
+        if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
+          healAmount *= 1.5;
+
+        if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Harmony) {
+          targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10, true));
+        }
+
+        var adjustedCriticalMultiplier = 1;
+        var isCritical = this.isHealCritical(user);
+        if (isCritical)
+          adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(user, isPartyUsing, true);
+        healAmount *= adjustedCriticalMultiplier;
+
+        healedAmount = this.gainHp(target, healAmount);
+
+        user.trackedStats.healingDone += healedAmount;
+        if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
+          !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
+          user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
+
+        user.trackedStats.healsMade += 1;
+        if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
+          !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
+          user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
+
+        if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
+          (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
+          var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on " + target.name + ", restoring " + this.utilityService.bigNumberReducer(Math.round(healedAmount)) + " HP." + (isCritical ? " <strong>Critical heal!</strong>" : "");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
+        }
       }
 
-      var adjustedCriticalMultiplier = 1;
-      var isCritical = this.isHealCritical(user);
-      if (isCritical)
-        adjustedCriticalMultiplier = this.lookupService.getAdjustedCriticalMultiplier(user, isPartyUsing, true);
-      healAmount *= adjustedCriticalMultiplier;
 
-      healedAmount = this.gainHp(target, healAmount);
-
-      user.trackedStats.healingDone += healedAmount;
-      if (user.trackedStats.healingDone >= this.utilityService.overdriveHealingNeededToUnlockPreservation &&
-        !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
-        user.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
-
-      user.trackedStats.healsMade += 1;
-      if (user.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
-        !user.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
-        user.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
-
-      if ((isPartyUsing && this.globalService.globalVar.gameLogSettings.get("partyAbilityUse")) ||
-        (!isPartyUsing && this.globalService.globalVar.gameLogSettings.get("enemyAbilityUse"))) {
-        var gameLogEntry = "<strong class='" + this.globalService.getCharacterColorClassText(user.type) + "'>" + user.name + "</strong>" + " uses " + abilityCopy.name + " on " + target.name + ", restoring " + this.utilityService.bigNumberReducer(Math.round(healedAmount)) + " HP." + (isCritical ? " <strong>Critical heal!</strong>" : "");
-        this.gameLogService.updateGameLog(GameLogEntryEnum.UseAbility, gameLogEntry);
-      }
 
       //check Apollo conditions
       if (abilityCopy.name === "Ostinato") {
@@ -1859,7 +1990,8 @@ export class BattleService {
       user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Onslaught);
 
     this.handleEnemySpecificAbilityFunctionality(user, abilityCopy, wasDamageCritical);
-
+    this.checkHeraDuoAbilities(abilityCopy, user);
+    
     //get copies instead of actually effects
     if (abilityCopy.userEffect.length > 0) {
       abilityCopy.userEffect.forEach(effect => {
@@ -1873,6 +2005,11 @@ export class BattleService {
       });
     }
 
+    var blindedByLove = user.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BlindedByLove);
+    if (blindedByLove !== undefined) {
+      targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantTrueDamage, 0, blindedByLove.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, true), true, false, false, undefined, undefined, undefined, ElementalTypeEnum.Holy));
+    }    
+
     if (abilityCopy.name === "Strut" && shapeshiftEffect !== undefined && shapeshiftEffect.count === 1) {
       var originalEffect = userEffects.find(item => item.type === StatusEffectEnum.AttackUp);
       if (originalEffect !== undefined) {
@@ -1882,9 +2019,15 @@ export class BattleService {
     }
 
     if (abilityCopy.name === "Espionage" && shapeshiftEffect !== undefined && shapeshiftEffect.count === 2) {
+      var originalEffect = targetEffects.find(item => item.type === StatusEffectEnum.DamageDealtDown);
+      if (originalEffect !== undefined) {
+        targetEffects = targetEffects.filter(item => item.type !== originalEffect?.type);
+        targetEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Espionage, originalEffect.duration, originalEffect.effectiveness, false, true));
+      }
     }
 
     if (abilityCopy.name === "Puncture" && shapeshiftEffect !== undefined && shapeshiftEffect.count === 3) {
+      targetEffects.push(this.globalService.createDamageOverTimeEffect(8, 2, .25, "Puncture", dotTypeEnum.BasedOnDamage));
     }
 
     if (abilityCopy.name === "Properly Balanced") {
@@ -1976,6 +2119,19 @@ export class BattleService {
 
       if (ally !== undefined)
         this.applyStatusEffect(copy, ally, party, user);
+
+      if (this.checkForAphroditeSetBonus(user)) {
+        var newCopy = this.globalService.makeStatusEffectCopy(passionateRhythm.userEffect[0]);
+        newCopy.type = StatusEffectEnum.PassionateRhythmAutoAttack;
+        if (aphrodite !== undefined) {
+          var passionateRhythmUpgrade = aphrodite.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.godPassiveLevel);
+          if (passionateRhythmUpgrade !== undefined && passionateRhythmUpgrade.userEffect.length > 0)
+            newCopy.effectiveness += passionateRhythmUpgrade.userEffect[0].effectiveness;
+        }
+
+        if (ally !== undefined)
+          this.applyStatusEffect(newCopy, ally, party, user);
+      }
     }
 
     if (isPartyUsing && abilityCopy.name === "Hellfire") {
@@ -2177,6 +2333,26 @@ export class BattleService {
     return true;
   }
 
+  checkHeraDuoAbilities(ability: Ability, character: Character) {
+    var shapeshift = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
+
+    if (shapeshift !== undefined) {
+      if (ability.name === "Soaring Strike") {
+        console.log("Checking soaring strike - " + shapeshift.count);
+        if (shapeshift.count === 1) {
+          ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AirDamageUp, 20, 1 + ability.secondaryEffectiveness * .1, false, true, false));
+          ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.HolyDamageUp, 20, 1 + ability.secondaryEffectiveness * .1, false, true, false));
+        }
+        else if (shapeshift.count === 2) {
+          ability.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Blind, ability.secondaryEffectiveness, 1, false, false, false));
+        }
+        else if (shapeshift.count === 3) {
+          ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true, undefined, undefined, undefined, undefined, ElementalTypeEnum.Holy));
+        }
+      }
+    }
+  }
+
   handleEnemySpecificAbilityFunctionality(character: Character, ability: Ability, wasDamageCritical: boolean) {
     //Mimon ability Landslide    
     if (ability.name === "Landslide") {
@@ -2345,7 +2521,7 @@ export class BattleService {
 
             if (member !== undefined) {
               healAmount = this.gainHp(member, healAmount, true, instantEffect.threshold);
-              overHealedAmount = member.battleInfo.barrierValue - currentBarrierAmount;              
+              overHealedAmount = member.battleInfo.barrierValue - currentBarrierAmount;
             }
 
             if (this.globalService.globalVar.gameLogSettings.get("partyEquipmentEffect")) {
@@ -2418,8 +2594,20 @@ export class BattleService {
 
           if (instantEffect.type === StatusEffectEnum.RepeatAbility && originalAbility !== undefined) {
             var repeatCount = originalAbility.userEffect.filter(effect => effect.type === StatusEffectEnum.RepeatAbility).length;
+
+            var elements: ElementalTypeEnum[] = [];
+            if (instantEffect.element !== undefined) {
+              originalAbility.userEffect.filter(item => item.type === StatusEffectEnum.RepeatAbility).forEach(repeat => {
+                elements.push(repeat.element);
+              });
+            }
+
             originalAbility.userEffect = originalAbility.userEffect.filter(item => item.type !== StatusEffectEnum.RepeatAbility);
             for (var i = 0; i < repeatCount; i++) {
+              if (elements.length > 0 && elements[i] !== undefined) {
+                originalAbility.elementalType = elements[i];
+              }
+
               this.useAbility(isPartyUsing, originalAbility, user, targets, party, fromGodAbility, undefined, i < repeatCount - 1, undefined, true);
             }
           }
@@ -2443,7 +2631,14 @@ export class BattleService {
           }
 
           if (instantEffect.type === StatusEffectEnum.Barrier) {
-            var barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
+            var barrierAmount = 0;
+
+            if (originalAbility !== undefined && (originalAbility.name === "Revelry" || originalAbility.name === "Pray"))
+              barrierAmount = Math.round(((instantEffect.effectiveness / 2) * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing)) +
+                ((instantEffect.effectiveness / 2) * this.lookupService.getAdjustedResistance(user, isPartyUsing)));
+            else
+              barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
+
             if (instantEffect.dotType === dotTypeEnum.BasedOnHeal)
               barrierAmount = Math.round(instantEffect.effectiveness * healingDone);
             if (instantEffect.dotType === dotTypeEnum.UserCurrentMaxHpPercent)
@@ -3008,7 +3203,8 @@ export class BattleService {
               elementalText = this.getElementalDamageText(elementalType);
             var damageMultiplier = this.getDamageMultiplier(target, targetedEnemy, undefined, false, elementalType, undefined, undefined, undefined, undefined, undefined, ally);
             var isCritical = this.isDamageCritical(target, targetedEnemy);
-            var allDamageDealt = this.dealDamage(isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType, GodEnum.Nemesis, party);
+
+            var allDamageDealt = this.dealDamage(!isPartyUsing, target, targetedEnemy, isCritical, abilityEffectiveness, damageMultiplier, abilityThatTriggeredCounter, elementalType, GodEnum.Nemesis, party);
             counterDamageDealt = allDamageDealt[0];
 
             var additionalDamageTargets = "";
@@ -3145,6 +3341,10 @@ export class BattleService {
         else
           ability.effectiveness *= (elementsUsed * (ability.secondaryEffectiveness - 1)) + 1;
       }
+    }
+
+    if (!fromRepeat && this.checkForHeraSetBonus(user) && ability.name === "Puncture" && user.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Strut)) {
+      ability.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
     }
 
     if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Flurry && ability.name === "Palm Strike" && !fromRepeat) {
@@ -3434,6 +3634,9 @@ export class BattleService {
         });
       }
 
+      if (target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DivineRetribution))
+        overallDamageMultiplier = 0;
+
       if (target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.InstantHealAfterAutoAttack) &&
         this.globalService.getSetCount(EquipmentSetEnum.Athena, target.equipmentSet) === 5) {
         damageTakenAggregate *= 1 - this.globalService.getSetBonusAmount(EquipmentSetEnum.Athena, 5);
@@ -3535,6 +3738,11 @@ export class BattleService {
 
     if (castingCharacter !== undefined && appliedStatusEffect.type === StatusEffectEnum.ChainsOfFate) {
       appliedStatusEffect.caster = castingCharacter.name;
+    }
+
+    var fadingBlind = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Blind && item.abilityName === "Fading");
+    if (fadingBlind !== undefined) {
+      fadingBlind.duration += fadingBlind.maxCount;
     }
 
     if (originalAbility !== undefined && originalAbility.name === "Revelry" && appliedStatusEffect.type === StatusEffectEnum.Barrier && castingCharacter !== undefined) {
@@ -3639,6 +3847,12 @@ export class BattleService {
         }
       }
 
+      var blessingOfDionysus = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.BlessingOfDionysus);
+      if (!appliedStatusEffect.isPositive && target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.HealOverTime && item.abilityName === "Cleansing Rain")) {
+        return;
+      }
+
+
       if ((appliedStatusEffect.type === StatusEffectEnum.Stun || appliedStatusEffect.type === StatusEffectEnum.Paralyze) &&
         target.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.StunImmunity))
         return;
@@ -3652,7 +3866,8 @@ export class BattleService {
     }
 
     if (appliedStatusEffect.isAoe && potentialTargets !== undefined) {
-      potentialTargets.forEach(enemy => {
+      potentialTargets.filter(potentialTarget => !(appliedStatusEffect.type === StatusEffectEnum.BlindedByLove && castingCharacter !== undefined && castingCharacter.type === potentialTarget.type)).forEach(enemy => {
+
         if (appliedStatusEffect.type === StatusEffectEnum.DamageOverTime) {
           if (appliedStatusEffect.dotType === dotTypeEnum.EnemyMaxHpPercent)
             appliedStatusEffect.effectiveness = appliedStatusEffect.effectiveness * this.lookupService.getAdjustedMaxHp(enemy, false);
@@ -3782,11 +3997,16 @@ export class BattleService {
         });
       }
       else if (targetType === TargetEnum.LowestHpPercent) {
-        potentialTargets = potentialTargets.sort(function (a, b) {
-          return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
-            a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
+        var lowestHpPartyMember: Character = potentialTargets[0];
+        potentialTargets.forEach(member => {
+          var CharAHpPercent = lowestHpPartyMember.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(lowestHpPartyMember, false, false);
+          var CharBHpPercent = member.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(member, false, false);
+
+          if (CharBHpPercent < CharAHpPercent)
+            lowestHpPartyMember = member;
         });
-        target = potentialTargets[0];
+
+        target = lowestHpPartyMember;
       }
       else if (targetType === TargetEnum.Self) {
         target = user;
@@ -3861,7 +4081,7 @@ export class BattleService {
 
     if (ability !== undefined) {
       if (ability.name === "Kiss of Death" && partyMembers !== undefined) {
-        var ally = partyMembers.find(item => item.type !== attacker.type);
+        var ally = partyMembers.find(item => item.type !== attacker.type || item.type === CharacterEnum.Enemy);
         if (ally !== undefined) {
           adjustedAllyAttack = ally.battleStats.attack;
           adjustedAllyAttackModifier = this.lookupService.getAdjustedAttackModifier(ally, ability, isPartyAttacking);
@@ -4105,6 +4325,12 @@ export class BattleService {
         if (retributionEffect.count <= 0)
           target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Retribution);
       }
+    }
+
+    var divineRetributionEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DivineRetribution);
+    if (divineRetributionEffect !== undefined) {
+      this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantCounter, -1, divineRetributionEffect.effectiveness, true, true, true, attacker.name), target, undefined, attacker);
+      target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DivineRetribution);
     }
 
     var dispenserOfDuesEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
@@ -4773,8 +4999,22 @@ export class BattleService {
     return 0;
   }
 
+  checkForHeraSetBonus(target: Character) {
+    if (this.globalService.getSetCount(EquipmentSetEnum.Hera, target.equipmentSet) !== 5)
+      return false;
+
+    return true;
+  }
+
   checkForDionysusSetBonus(target: Character) {
     if (this.globalService.getSetCount(EquipmentSetEnum.Dionysus, target.equipmentSet) === 5)
+      return true;
+
+    return false;
+  }
+
+  checkForAphroditeSetBonus(target: Character) {
+    if (this.globalService.getSetCount(EquipmentSetEnum.Aphrodite, target.equipmentSet) === 5)
       return true;
 
     return false;
@@ -5123,6 +5363,7 @@ export class BattleService {
       subZone.maxXps = Math.round(xps);
 
     this.globalService.getActivePartyCharacters(true).forEach(member => {
+      member.battleInfo.duoAbilityUsed = false;
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {
         var hera = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera);
@@ -5198,6 +5439,9 @@ export class BattleService {
           }
           else if (itemCopy.item === ItemsEnum.WaterAbsorptionPotionRecipe) {
             this.professionService.learnRecipe(ProfessionEnum.Alchemy, ItemsEnum.WaterAbsorptionPotion);
+          }
+          else if (itemCopy.item === ItemsEnum.DuoAbilityAccess) {
+            this.globalService.globalVar.sidequestData.duosUnlocked = true;
           }
           else if (itemCopy.item === ItemsEnum.GoldenApple && this.globalService.globalVar.sidequestData.goldenApplesObtained <= 25) {
             this.globalService.globalVar.sidequestData.goldenApplesObtained += item.amount;
@@ -5426,6 +5670,17 @@ export class BattleService {
 
   togglePause() {
     this.globalService.globalVar.isGamePaused = !this.globalService.globalVar.isGamePaused;
+  }
+
+  useDuoAbility(character: Character) {
+    var gods = [];
+    gods.push(character.assignedGod1);
+    gods.push(character.assignedGod2);
+
+    var ability = this.lookupService.getDuoAbility(gods);
+    this.useAbility(true, ability, character, this.battle.currentEnemies.enemyList, this.globalService.getActivePartyCharacters(true), true);
+
+    character.battleInfo.duoAbilityUsed = true;
   }
 
   useBattleItem(slotNumber: number) {

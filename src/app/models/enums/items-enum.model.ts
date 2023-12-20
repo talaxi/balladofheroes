@@ -477,5 +477,16 @@ export enum ItemsEnum {
   AstralRingEpic,
   AstralRingSpecial,
   AstralRingUnique,
-  ThaumaturgeClass
+  ThaumaturgeClass,  
+  HerasRod,
+  HerasShield,
+  HerasArmor,
+  HerasRing,
+  HerasNecklace,
+  AphroditesRoses,
+  AphroditesShield,
+  AphroditesArmor,
+  AphroditesRing,
+  AphroditesNecklace,
+  DuoAbilityAccess
 } 

@@ -69,8 +69,7 @@ export class BackgroundService {
         this.battleService.checkForEquipmentEffect(EffectTriggerEnum.AlwaysActive, partyMember, new Character(), party, []);
         this.battleService.handleHpRegen(partyMember, deltaTime);
         this.handleLinkCooldown(partyMember, deltaTime);
-        this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);
-        this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
+        this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);        
         this.checkForThornsGems(partyMember);
         this.checkGodStatuses(partyMember);
 
@@ -86,6 +85,7 @@ export class BackgroundService {
         if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
           this.handleAbilityCooldowns(partyMember, deltaTime);
+          this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
         }
       }
     });
@@ -350,13 +350,16 @@ export class BackgroundService {
 
     if (effect.type === AltarEffectsEnum.ApolloHeal) {
       if (party !== undefined && party.length > 0) {
-        party = party.sort(function (a, b) {
-          return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
-            a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
-        });
-        var target = party[0];
+        var lowestHpPartyMember: Character = party[0];
+        party.forEach(member => {
+          var CharAHpPercent = lowestHpPartyMember.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(lowestHpPartyMember, false, false);
+          var CharBHpPercent = member.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(member, false, false);
 
-        this.battleService.gainHp(target, effect.effectiveness);
+          if (CharBHpPercent < CharAHpPercent)
+            lowestHpPartyMember = member;
+        });        
+
+        this.battleService.gainHp(lowestHpPartyMember, effect.effectiveness);
       }
     }
 

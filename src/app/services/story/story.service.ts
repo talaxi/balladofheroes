@@ -123,9 +123,11 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 43 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteTravelsAtSea))
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 44 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteWhirlpool))
+    else if (this.globalService.globalVar.currentStoryId === 44 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteWhirlpool))
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 45 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLabyrinthLabyrinthCenter))
+    else if (this.globalService.globalVar.currentStoryId === 45 && this.balladService.getActiveSubZone().type === SubZoneEnum.CreteKnossos)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 46 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLabyrinthLabyrinthCenter))
       this.showStory = true;
 
     if (this.showStory)
@@ -593,7 +595,7 @@ export class StoryService {
     else if (storyId === 43) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You stand alone at the prow of a ship bound for Crete. A week had passed since your encounter with Khronos, and yet not even the calm waves of the sea could fix your uneasiness. You knew there was no other option, but the guilt of fleeing the battle still weighed upon you.</div>" +
-          "<div class='sceneDiv'>Zosime had decided you should return to Crete. It was about as far away from Olympus as you could go, and she thought returning to some normalcy and following another hero would do you some good.  You weren't sure it was going to be that easy to return to normalcy. You hadn’t made contact with any of the Olympian gods since the battle for Olympus, and you weren't sure what may have happened to them.</div>" + 
+          "<div class='sceneDiv'>Zosime had decided you should return to Crete. It was about as far away from Olympus as you could go, and she thought returning to some normalcy and following another hero would do you some good.  You weren't sure it was going to be that easy to return to normalcy. You hadn’t made contact with any of the Olympian gods since the battle for Olympus, and you weren't sure what may have happened to them.</div>" +
           "<div>Lost in your thoughts, you absently watch the rhythm of the waves.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>In an instant, the waves turned violent. Sailors hurried across the boat, the captain of the vessel shouted out orders. The crashing of the waves roused Zosime from her cabin, racing across the deck towards you.</div>" +
@@ -603,16 +605,24 @@ export class StoryService {
     else if (storyId === 44) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>The current of the water pulls you deeper and deeper towards the whirlpool. The panicked crew do everything they can to steer out of it, but the sea has taken on a life of its own.</div>" +
-          "<div class='sceneDiv'>" + this.poseidonText("“I SAT IDLY BY WHILE MY NIECES PUT TOGETHER THIS FOLLY OF A PLAN. NO LONGER.”") + " A voice booming deep from the middle of the whirlpool calls out. " + this.poseidonText("“I WILL BE KEEPING A MUCH CLOSER EYE ON YOU.”") + "</div>" + 
-          "<div class='sceneDiv'>You feel Poseidon granting you his power as the waves finally begin to calm. The whirlpool dissipates, freeing your ship from its clutches. Despite drawing the Sea God’s ire, you were grateful to see him. The gods hadn’t given up, and they were ready to fight back for their home.</div>" +
-          "<div>Your ship soon arrives on the shores of Crete, and you begin your journey to the Labyrinth of the Minotaur.</div>";      
-    }    
+          "<div class='sceneDiv'>" + this.poseidonText("“I SAT IDLY BY WHILE MY NIECES PUT TOGETHER THIS FOLLY OF A PLAN. NO LONGER.”") + " A voice booming deep from the middle of the whirlpool calls out. " + this.poseidonText("“I WILL BE KEEPING A MUCH CLOSER EYE ON YOU.”") + "</div>" +
+          "<div>You feel Poseidon granting you his power as the waves finally begin to calm. The whirlpool dissipates, freeing your ship from its clutches. Despite drawing the Sea God’s ire, you were grateful to see him. The gods hadn’t given up, and they were ready to fight back for their home.</div>";
+    }
     else if (storyId === 45) {
       if (pageCount === 1)
+      sceneText = "<div class='sceneDiv'>As the day begins to give way to night, your ship arrives on the shores of Crete. You use your remaining moments of sunlight to track down an inn.</div>" +
+        "<div>You secure a room for the night and stop for a warm meal, although the uneasy feeling around you is unmistakable. You hear hushed conversations discussing the events of Mount Olympus. You pick up exaggerated bits and pieces here and there, but it seems everyone knows the truth of the matter: Olympus had fallen.</div>";
+    else if (pageCount === 2)
+      sceneText = "<div class='sceneDiv'>You listen in on a nearby conversation from a particularly agitated patron. He had received warning from family living in a village near the mountain.</div>" +
+        "<div class='sceneDiv'>The giants had wasted no time in their destruction and pillaging, and their presence had been felt all around the mountain. Many patrons at this establishment seemed concerned for loved ones on the mainland.</div>" +
+        "<div>The chatter stirred something deep inside of you. You may have failed, but you would not give up. You will get answers from Khronos and find a way to put the rightful gods back on Olympus. But first, you will make your way to the Labyrinth like Theseus before you and defeat the great Minotaur.</div>";
+    }
+    else if (storyId === 46) {
+      if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>With the Minotaur defeated, you work your way out of the Labyrinth and back to Knossos. On the return journey, your meeting with Poseidon crept its way into your thoughts. It would seem the gods had escaped unscathed, but you had not heard yet from Athena.</div>" +
-          "<div>Upon arriving in Knossos, you make your way to the religious sanctuary within the Palace of Minos. You begin praying to your patron goddess, hoping for a sign on what to do next.</div>";          
+          "<div>Upon arriving in Knossos, you make your way to the religious sanctuary within the Palace of Minos. You begin praying to your patron goddess, hoping for a sign on what to do next.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>After some time, a vision slowly appears to you, almost begrudgingly. Athena had the makings of a plan, but did not seem sure about it. Eager to right your loss at Mount Olympus, you were determined to see it through regardless of the danger.</div>" +          
+        sceneText = "<div class='sceneDiv'>After some time, a vision slowly appears to you, almost begrudgingly. Athena had the makings of a plan, but did not seem sure about it. Eager to right your loss at Mount Olympus, you were determined to see it through regardless of the danger.</div>" +
           "<div>You finish your prayer to Athena, and begin to make travel plans with Zosime. Your next target: The island of Aiaia. Home to the sorceress Circe, sister of Aeëtes.</div>";
     }
 
@@ -799,6 +809,9 @@ export class StoryService {
     if (this.globalService.globalVar.currentStoryId === 45) {
       this.pageCount = 2;
     }
+    if (this.globalService.globalVar.currentStoryId === 46) {
+      this.pageCount = 2;
+    }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
 
@@ -823,7 +836,7 @@ export class StoryService {
 
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
-        this.globalService.globalVar.isBattlePaused = false;                              
+        this.globalService.globalVar.isBattlePaused = false;
         this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type));
         this.globalService.handleTutorialModal();
 
@@ -927,7 +940,7 @@ export class StoryService {
             this.globalService.globalVar.achievements.push(achievement);
           });
         }
-      }      
+      }
       if (this.globalService.globalVar.currentStoryId === 45) {
         var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
         if (poseidon !== undefined) {
@@ -1077,7 +1090,7 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You must be the mortals here to aid us in battle. You've been the talk of Olympus for some time.”") + " He says as he puts down his tools. He nods for you to follow as he makes his way back towards an armory holding his greatest artwork.</div>" +
           this.commonCharacterText("“I made a couple of pieces for you. Won't have you dying on my watch. Here, try this on and go give it a test run.”");
-    }    
+    }
     if (scene === OptionalSceneEnum.IslandOfNaxos) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You take a detour to the nearby Island of Naxos. The cult of Dionysus is alive and well here, and it is home to one of his largest temples.</div>" +
@@ -1162,7 +1175,7 @@ export class StoryService {
     if (this.showOptionalStory === OptionalSceneEnum.HephaestusJewelcrafting) {
       this.pageCount = 2;
     }
-    if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {      
+    if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {
       this.pageCount = 1;
     }
 

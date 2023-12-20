@@ -112,7 +112,7 @@ export class GodNameViewComponent implements OnInit {
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
     if (god !== undefined) {
-      return Math.round(god.exp);
+      return this.utilityService.bigNumberReducer(god.exp);
     }
 
     return 0;
@@ -125,7 +125,7 @@ export class GodNameViewComponent implements OnInit {
 
     var god = this.globalService.globalVar.gods.find(item => item.type === matchTo);
     if (god !== undefined) {
-      return Math.round(god.expToNextLevel);
+      return this.utilityService.bigNumberReducer(god.expToNextLevel);
     }
 
     return 0;

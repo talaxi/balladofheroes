@@ -89,6 +89,8 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
       if (this.item.shopItem === ItemsEnum.DarkMoonPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.DarkMoonPendantUnique && item.level >= 1000))
       outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.DuoAbilityAccess && this.globalService.globalVar.sidequestData.duosUnlocked)
+      outOfStock = true;
 
     return outOfStock;
   }
@@ -137,11 +139,11 @@ export class ShoppingItemViewComponent implements OnInit {
         if (resource.item === ItemsEnum.SparringMatch) {
           this.globalService.giveCharactersBonusExp(5000);
           this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
-          //TODO: REMOVE BELOW
-          this.globalService.globalVar.uniques.forEach(item => {
+          
+          /*this.globalService.globalVar.uniques.forEach(item => {
             item.level += 99;
             this.lookupService.levelUpUnique(item);
-          });
+          });*/
         }
         else if (resource.item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
           var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
@@ -158,6 +160,9 @@ export class ShoppingItemViewComponent implements OnInit {
         }
         else if (resource.item === ItemsEnum.Nemesis || resource.item === ItemsEnum.Dionysus) {
           this.unlockGod(resource.item);
+        }
+        else if (resource.item === ItemsEnum.DuoAbilityAccess) {
+          this.globalService.globalVar.sidequestData.duosUnlocked = true;
         }
         else if (resource.item === ItemsEnum.AugeanStables1 || resource.item === ItemsEnum.AugeanStables2) {
           var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);

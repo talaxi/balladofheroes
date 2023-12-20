@@ -426,6 +426,36 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.PoseidonsNecklace) {
       return new ResourceValue(ItemsEnum.PoseidonsNecklace, amount);
     }
+    if (type === ItemsEnum.HerasRod) {
+      return new ResourceValue(ItemsEnum.HerasRod, amount);
+    }
+    if (type === ItemsEnum.HerasShield) {
+      return new ResourceValue(ItemsEnum.HerasShield, amount);
+    }
+    if (type === ItemsEnum.HerasArmor) {
+      return new ResourceValue(ItemsEnum.HerasArmor, amount);
+    }
+    if (type === ItemsEnum.HerasRing) {
+      return new ResourceValue(ItemsEnum.HerasRing, amount);
+    }
+    if (type === ItemsEnum.HerasNecklace) {
+      return new ResourceValue(ItemsEnum.HerasNecklace, amount);
+    }
+    if (type === ItemsEnum.AphroditesRoses) {
+      return new ResourceValue(ItemsEnum.AphroditesRoses, amount);
+    }
+    if (type === ItemsEnum.AphroditesShield) {
+      return new ResourceValue(ItemsEnum.AphroditesShield, amount);
+    }
+    if (type === ItemsEnum.AphroditesArmor) {
+      return new ResourceValue(ItemsEnum.AphroditesArmor, amount);
+    }
+    if (type === ItemsEnum.AphroditesRing) {
+      return new ResourceValue(ItemsEnum.AphroditesRing, amount);
+    }
+    if (type === ItemsEnum.AphroditesNecklace) {
+      return new ResourceValue(ItemsEnum.AphroditesNecklace, amount);
+    }
     if (type === ItemsEnum.ShadowSpear) {
       return new ResourceValue(ItemsEnum.ShadowSpear, amount);
     }
@@ -491,6 +521,9 @@ export class ResourceGeneratorService {
     }
     if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
       return new ResourceValue(ItemsEnum.DarkMoonPendantUniqueUpgrade, amount);
+    }
+    if (type === ItemsEnum.DuoAbilityAccess) {
+      return new ResourceValue(ItemsEnum.DuoAbilityAccess, amount);
     }
     if (type === ItemsEnum.ScathingBeautyEpic) {
       return new ResourceValue(ItemsEnum.ScathingBeautyEpic, amount);

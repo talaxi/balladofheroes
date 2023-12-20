@@ -44,8 +44,7 @@ export class EnemyDescriptionViewComponent {
     //}
 
     this.sizeSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
-      //this gives the necessary delay so that window is correctly sized
-      console.log("Sub'd:");
+      //this gives the necessary delay so that window is correctly sized      
       //console.log("** .98 * " + window.innerHeight + " < " + this.containerDiv.nativeElement.clientHeight + " + " + this.containerDiv.nativeElement.getBoundingClientRect().y);
       if (this.containerDiv !== undefined && (window.innerHeight * .98) < this.containerDiv.nativeElement.clientHeight + this.containerDiv.nativeElement.getBoundingClientRect().y) {
         this.containerDiv.nativeElement.classList.add('smallText');

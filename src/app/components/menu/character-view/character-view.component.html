@@ -11,8 +11,8 @@
             <br />
             <span customToolTip class="buttonAsText clickableText" [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover">Level {{character.level}}</span>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{character.exp | number : '1.0-0'}} /
-                {{character.expToNextLevel | number : '1.0-0'}} XP to Level
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{getCharacterXp()}} /
+                {{getCharacterXpToNextLevel()}} XP to Level
                 {{character.level + 1}}</span>
             <span class="bold" *ngIf="character.level === character.maxLevel">
                 MAX

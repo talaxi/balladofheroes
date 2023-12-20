@@ -411,7 +411,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.ChainsOfFate) {
       src += "chainsOfFate.svg";
     }
-    if (effect.type === StatusEffectEnum.Retribution) {
+    if (effect.type === StatusEffectEnum.Retribution || effect.type === StatusEffectEnum.DivineRetribution) {
       src += "retribution.svg";
     }
     if (effect.type === StatusEffectEnum.Surge) {
@@ -532,6 +532,12 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "Cancer.svg";
       if (effect.type === StatusEffectEnum.Leo)
       src += "Leo.svg";
+      if (effect.type === StatusEffectEnum.BlindedByLove)
+      src += "athenaAphroditeDuo.svg";
+      if (effect.type === StatusEffectEnum.ReduceNextAbilityCooldown)
+      src += "poseidonAthenaDuo.svg";
+      if (effect.type === StatusEffectEnum.ReduceNextAbilityCooldown)
+      src += "athenaHermesDuo.svg";
 
     return src;
   }

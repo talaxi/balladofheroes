@@ -442,6 +442,14 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
+    if (item === ItemsEnum.HerasRod) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.AphroditesRoses) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
     if (item === ItemsEnum.PoseidonsTrident) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
@@ -552,6 +560,14 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
+    if (item === ItemsEnum.AphroditesRing) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.HerasRing) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
     if (item === ItemsEnum.PoseidonsRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
@@ -592,6 +608,14 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
+    if (item === ItemsEnum.HerasNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.AphroditesNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
     if (item === ItemsEnum.PoseidonsNecklace) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
@@ -609,13 +633,22 @@ export class ShopItemGeneratorService {
         purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 100));
     }
     if (item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
     }
     if (item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
     }
     if (item === ItemsEnum.Ambrosia) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));
+    }
+    if (item === ItemsEnum.DuoAbilityAccess) {
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
     }
     if (item === ItemsEnum.EssenceOfEarth) {
       purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));

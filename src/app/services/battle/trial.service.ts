@@ -48,12 +48,20 @@ export class TrialService {
     }
     if (trial.type === TrialEnum.TrialOfSkill) {
       var trialOfSkillBattle = this.enemyGeneratorService.generateEnemy(this.getTrialOfSkillBattle());
-
       trialOfSkillBattle = this.scaleTrialOfSkillBattle(trialOfSkillBattle);
 
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(trialOfSkillBattle);
+
+      if (trialOfSkillBattle.name === "Aphrodite") {
+        var eros = this.enemyGeneratorService.generateEnemy(BestiaryEnum.Eros);
+        eros = this.scaleTrialOfSkillBattle(eros);
+        enemyTeam.isDoubleBossFight = true;
+        enemyTeam.isBossFight = false;
+        enemyTeam.enemyList.push(eros);
+      }
+
       battleOptions.push(enemyTeam);
     }
 
@@ -204,15 +212,15 @@ export class TrialService {
     }
     if (zodiac === ZodiacEnum.Gemini) {
       enemyTeam.isDoubleBossFight = true;
-      if (level === 1){
+      if (level === 1) {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorNormal));
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxNormal));
       }
-      if (level === 2){
+      if (level === 2) {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorHard));
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxHard));
       }
-      if (level === 3){
+      if (level === 3) {
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CastorVeryHard));
         enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PolluxVeryHard));
       }
@@ -308,6 +316,10 @@ export class TrialService {
       god = GodEnum.Zeus;
     if (bestiaryEnum === BestiaryEnum.Poseidon)
       god = GodEnum.Poseidon;
+    if (bestiaryEnum === BestiaryEnum.Hera)
+      god = GodEnum.Hera;
+    if (bestiaryEnum === BestiaryEnum.Aphrodite)
+      god = GodEnum.Aphrodite;
 
     return god;
   }
@@ -335,6 +347,10 @@ export class TrialService {
       enemyOptions.push(BestiaryEnum.Zeus);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Poseidon);
+      if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Hera);
+      if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable)
+    enemyOptions.push(BestiaryEnum.Aphrodite);
 
     enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
@@ -383,12 +399,12 @@ export class TrialService {
     //divide these totals by 6, maybe *5 or something, and then apply the factor from enemy generator
     //maybe give each god some secondary stats as well
     var godLevelBeforeDamageReduction = 2350;
-    var hpFactor = 38;
+    var hpFactor = 42.5;
     var attackFactor = .65;
-    var defenseFactor = 5.8;
+    var defenseFactor = 3.85;
     var agilityFactor = 2.25;
     var luckFactor = 1.625;
-    var resistanceFactor = 2.4;
+    var resistanceFactor = 2.3;
     var defenseScalingFactor = 1 + ((totalGodLevels - godLevelBeforeDamageReduction) / godLevelBeforeDamageReduction);
     var hpScalingFactor = 1 + ((totalGodLevels - godLevelBeforeDamageReduction) / (godLevelBeforeDamageReduction * 2));
 

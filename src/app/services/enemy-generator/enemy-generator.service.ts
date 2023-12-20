@@ -17,6 +17,7 @@ import { DeploymentService } from '../deployment/deployment.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
 import { UtilityService } from '../utility/utility.service';
+import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -6726,7 +6727,7 @@ export class EnemyGeneratorService {
     }
     if (type === BestiaryEnum.Artemis) {
       enemy.name = "Artemis";
-      enemy.battleStats = new CharacterStats(1, .985, .95, 1.2, 1.5, 1.1);
+      enemy.battleStats = new CharacterStats(1, .985, .95, 1.15, 1.5, 1.05);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
       enemy.coinGainFromDefeat = 500;
       enemy.xpGainFromDefeat = 50000;       
@@ -7244,6 +7245,148 @@ export class EnemyGeneratorService {
       tsunami.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.KingOfTheSea, 5, 1.05, false, true));
       tsunami.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));
       enemy.abilityList.push(tsunami);
+    }    
+    if (type === BestiaryEnum.Hera) {      
+      enemy.name = "Hera";
+      enemy.battleStats = new CharacterStats(1.02, 1.035, 1, .95, .98, .95);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 500;
+      enemy.xpGainFromDefeat = 50000;      
+      enemy.loot.push(new LootItem(ItemsEnum.HerasRing, ItemTypeEnum.Equipment, 1, .05));
+      enemy.loot.push(new LootItem(ItemsEnum.HerasArmor, ItemTypeEnum.Equipment, 1, .05));    
+      enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .1));      
+      enemy.battleStats.elementResistance.air += .5;
+      enemy.battleStats.elementResistance.lightning += .5;
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.Shapeshift, -1, 1, false, true, undefined, undefined, undefined, true));      
+    
+      var whirlwind = new Ability();
+      whirlwind.name = "Whirlwind";      
+      whirlwind.isAvailable = true;
+      whirlwind.cooldown = whirlwind.currentCooldown = 10;
+      whirlwind.dealsDirectDamage = true;
+      whirlwind.effectiveness = 5;      
+      whirlwind.elementalType = ElementalTypeEnum.Air;      
+      enemy.abilityList.push(whirlwind);
+
+      var strut = new Ability();
+      strut.name = "Strut";
+      strut.isAvailable = true;
+      strut.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      strut.cooldown = strut.currentCooldown = 23;
+      strut.dealsDirectDamage = true;
+      strut.effectiveness = 1.9;      
+      strut.elementalType = ElementalTypeEnum.Air;
+      strut.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AttackUp, 8, 1.7, false, true));
+      enemy.abilityList.push(strut);
+
+      var espionage = new Ability();
+      espionage.name = "Espionage";
+      espionage.requiredLevel = this.utilityService.godAbility2Level;
+      espionage.isAvailable = true;
+      espionage.dealsDirectDamage = false;      
+      espionage.cooldown = espionage.currentCooldown = 25;
+      espionage.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, .7, false, false, true));      
+      enemy.abilityList.push(espionage);
+
+      var puncture = new Ability();
+      puncture.name = "Puncture";
+      puncture.requiredLevel = this.utilityService.godAbility3Level;
+      puncture.isAvailable = true;
+      puncture.cooldown = puncture.currentCooldown = 37;
+      puncture.dealsDirectDamage = true;
+      puncture.effectiveness = 4.8;
+      puncture.secondaryEffectiveness = .25;
+      puncture.elementalType = ElementalTypeEnum.Air;
+      puncture.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));      
+      enemy.abilityList.push(puncture);
+
+      var shapeshift = new Ability();
+      shapeshift.name = "Shapeshift";
+      shapeshift.requiredLevel = this.utilityService.godPassiveLevel;
+      shapeshift.isAvailable = true;
+      shapeshift.isPassive = true;
+      shapeshift.isActivatable = true;
+      shapeshift.dealsDirectDamage = false;
+      shapeshift.effectiveness = 0;
+      shapeshift.cooldown = shapeshift.currentCooldown = 10;
+      shapeshift.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Shapeshift, -1, 1.1, false, true, false, undefined, undefined, true));    
+      shapeshift.userEffect[0].resolution = EffectResolutionEnum.AlwaysActive;
+      enemy.abilityList.push(shapeshift);
+    }
+    if (type === BestiaryEnum.Aphrodite) {      
+      enemy.name = "Aphrodite";
+      enemy.battleStats = new CharacterStats(.625, .9, .97, .95, 1, 1.05);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyLongAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 500;
+      enemy.xpGainFromDefeat = 50000;      
+      enemy.loot.push(new LootItem(ItemsEnum.AphroditesRing, ItemTypeEnum.Equipment, 1, .05));
+      enemy.loot.push(new LootItem(ItemsEnum.AphroditesArmor, ItemTypeEnum.Equipment, 1, .05));    
+      enemy.loot.push(new LootItem(ItemsEnum.Nectar, ItemTypeEnum.Resource, 1, .1));      
+      enemy.battleStats.elementResistance.water += .25;
+      enemy.battleStats.elementResistance.earth += .25;
+      enemy.battleStats.elementResistance.air += .25;
+    
+      var fatalAttraction = new Ability();
+      fatalAttraction.name = "Fatal Attraction";
+      fatalAttraction.isAvailable = true;
+      fatalAttraction.requiredLevel = this.utilityService.defaultGodAbilityLevel;
+      fatalAttraction.cooldown = fatalAttraction.currentCooldown = 25;
+      fatalAttraction.dealsDirectDamage = false;      
+      fatalAttraction.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.FatalAttraction, -1, 1.25, false, true));
+      enemy.abilityList.push(fatalAttraction);
+
+      var powerOfLove = new Ability();
+      powerOfLove.name = "Power of Love";
+      powerOfLove.requiredLevel = this.utilityService.godAbility2Level;
+      powerOfLove.isAvailable = true;
+      powerOfLove.dealsDirectDamage = false;      
+      powerOfLove.cooldown = powerOfLove.currentCooldown = 30;     
+      powerOfLove.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PowerOfLove, 15, 1.5, true, true)); 
+      enemy.abilityList.push(powerOfLove);
+
+      var kissOfDeath = new Ability();
+      kissOfDeath.name = "Kiss of Death";
+      kissOfDeath.requiredLevel = this.utilityService.godAbility3Level;
+      kissOfDeath.isAvailable = true;
+      kissOfDeath.cooldown = kissOfDeath.currentCooldown = 60;
+      kissOfDeath.dealsDirectDamage = true;
+      kissOfDeath.effectiveness = 6;                        
+      enemy.abilityList.push(kissOfDeath);
+
+      var passionateRhythm = new Ability();
+      passionateRhythm.name = "Passionate Rhythm";
+      passionateRhythm.requiredLevel = this.utilityService.godPassiveLevel;
+      passionateRhythm.isAvailable = true;
+      passionateRhythm.isPassive = true;
+      passionateRhythm.isActivatable = false;
+      passionateRhythm.dealsDirectDamage = false;
+      passionateRhythm.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PassionateRhythm, -1, 1.3, false, true)); 
+      enemy.abilityList.push(passionateRhythm);
+    }
+    if (type === BestiaryEnum.Eros) {      
+      enemy.name = "Eros";
+      enemy.battleStats = new CharacterStats(.4, .84, 1, 1.2, 1.1, .9);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 0;
+      enemy.xpGainFromDefeat = 0;            
+
+      var loveArrow = new Ability();
+      loveArrow.name = "Love Arrow";      
+      loveArrow.isAvailable = true;
+      loveArrow.cooldown = loveArrow.currentCooldown = 10;
+      loveArrow.dealsDirectDamage = true;
+      loveArrow.effectiveness = 3.65;        
+      loveArrow.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));     
+      enemy.abilityList.push(loveArrow);
+      
+      var inTheAir = new Ability();
+      inTheAir.name = "In The Air";
+      inTheAir.isAvailable = true;
+      inTheAir.cooldown = inTheAir.currentCooldown = 30;
+      inTheAir = this.randomizeCooldown(inTheAir);
+      inTheAir.dealsDirectDamage = false;       
+      inTheAir.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, -1, 1.15, false, true, undefined, undefined, undefined, true));
+      enemy.abilityList.push(inTheAir);
     }
     if (type === BestiaryEnum.AgileChamois) {
       enemy.name = "Agile Chamois";

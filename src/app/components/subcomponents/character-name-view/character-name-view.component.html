@@ -34,7 +34,7 @@
     <div>
         Level {{character.level}}
         <br />
-        <span *ngIf="!isCharacterAtMaxLevel()">{{character.exp | number : '1.0-0'}} / {{character.expToNextLevel | number : '1.0-0'}} XP to Level
+        <span *ngIf="!isCharacterAtMaxLevel()">{{getCharacterXp()}} / {{getCharacterXpToNextLevel()}} XP to Level
         {{character.level + 1}}
     </span>
     <span *ngIf="isCharacterAtMaxLevel()">

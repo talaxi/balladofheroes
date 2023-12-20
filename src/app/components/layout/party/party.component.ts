@@ -50,6 +50,7 @@ export class PartyComponent implements OnInit {
   unlockedBattleItems = false;
   @Input() isMobile = false;
   showPartyHpAsPercent: boolean = false;
+  verboseMode: boolean = false;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -63,6 +64,7 @@ export class PartyComponent implements OnInit {
 
   ngOnInit(): void {
     this.showPartyHpAsPercent = this.globalService.globalVar.settings.get("showPartyHpAsPercent") ?? false;
+    this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
 
     this.party = this.globalService.getActivePartyCharacters(false);
     this.activeCharacterCount = this.party.filter(item => item.type !== CharacterEnum.None).length;
@@ -378,8 +380,8 @@ export class PartyComponent implements OnInit {
   }
 
   getCharacterTotalLinks(character: Character) {
-    if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Link) && 
-    character.type === CharacterEnum.Adventurer && character.level >= this.utilityService.characterLinkLevel) {
+    if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Link) &&
+      character.type === CharacterEnum.Adventurer && character.level >= this.utilityService.characterLinkLevel) {
       this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Link, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
       this.globalService.handleTutorialModal();
     }
@@ -387,16 +389,17 @@ export class PartyComponent implements OnInit {
     return character.linkInfo.totalLinks;
   }
 
-  getCharacterNextLinkDamage(character: Character) {    
+  getCharacterNextLinkDamage(character: Character) {
     var linkEffectivenessBoost = character.battleStats.linkEffectiveness;
+
     var linkEffectivenessBoostEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.LinkBoost);
     if (linkEffectivenessBoostEffect !== undefined) {
-      linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;    
+      linkEffectivenessBoost += linkEffectivenessBoostEffect.effectiveness;
     }
 
     return this.utilityService.genericRound(this.battleService.getLinkChainPercent(character.linkInfo, false, linkEffectivenessBoost));
   }
- 
+
   isLinkOffCooldown(character: Character) {
     return character.linkInfo.cooldown <= 0;
   }
@@ -529,32 +532,32 @@ export class PartyComponent implements OnInit {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter1AllAbilities"))) {
       this.party[0].battleInfo.autoAttackAutoMode = !this.party[0].battleInfo.autoAttackAutoMode;
 
-        var ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
-        if (ability !== undefined)
-          ability.autoMode = !ability.autoMode;   
-          
+      var ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+      if (ability !== undefined)
+        ability.autoMode = !ability.autoMode;
+
       ability = this.party[0].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
       if (ability !== undefined)
         ability.autoMode = !ability.autoMode;
-    
+
       var godAbility = this.getGodAbility(this.party[0], 1, 0);
       godAbility.autoMode = !godAbility.autoMode;
-    
+
       godAbility = this.getGodAbility(this.party[0], 1, 1);
       godAbility.autoMode = !godAbility.autoMode;
-    
+
       godAbility = this.getGodAbility(this.party[0], 1, 2);
       godAbility.autoMode = !godAbility.autoMode;
-    
+
       godAbility = this.getGodAbility(this.party[0], 2, 0);
       godAbility.autoMode = !godAbility.autoMode;
-        
+
       godAbility = this.getGodAbility(this.party[0], 2, 1);
-      godAbility.autoMode = !godAbility.autoMode;    
-    
+      godAbility.autoMode = !godAbility.autoMode;
+
       godAbility = this.getGodAbility(this.party[0], 2, 2);
-      godAbility.autoMode = !godAbility.autoMode;    
-    
+      godAbility.autoMode = !godAbility.autoMode;
+
       this.party[0].overdriveInfo.autoMode = !this.party[0].overdriveInfo.autoMode;
     }
 
@@ -668,39 +671,229 @@ export class PartyComponent implements OnInit {
       if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter2Overdrive"))) {
         this.party[1].overdriveInfo.autoMode = !this.party[1].overdriveInfo.autoMode;
       }
-      
-    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter2AllAbilities"))) {
-      this.party[1].battleInfo.autoAttackAutoMode = !this.party[1].battleInfo.autoAttackAutoMode;
+
+      if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter2AllAbilities"))) {
+        this.party[1].battleInfo.autoAttackAutoMode = !this.party[1].battleInfo.autoAttackAutoMode;
 
         var ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
         if (ability !== undefined)
-          ability.autoMode = !ability.autoMode;   
-          
-      ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
-      if (ability !== undefined)
-        ability.autoMode = !ability.autoMode;
-    
-      var godAbility = this.getGodAbility(this.party[1], 1, 0);
-      godAbility.autoMode = !godAbility.autoMode;
-    
-      godAbility = this.getGodAbility(this.party[1], 1, 1);
-      godAbility.autoMode = !godAbility.autoMode;
-    
-      godAbility = this.getGodAbility(this.party[1], 1, 2);
-      godAbility.autoMode = !godAbility.autoMode;
-    
-      godAbility = this.getGodAbility(this.party[1], 2, 0);
-      godAbility.autoMode = !godAbility.autoMode;
-        
-      godAbility = this.getGodAbility(this.party[1], 2, 1);
-      godAbility.autoMode = !godAbility.autoMode;    
-    
-      godAbility = this.getGodAbility(this.party[1], 2, 2);
-      godAbility.autoMode = !godAbility.autoMode;    
-    
-      this.party[1].overdriveInfo.autoMode = !this.party[1].overdriveInfo.autoMode;
+          ability.autoMode = !ability.autoMode;
+
+        ability = this.party[1].abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+        if (ability !== undefined)
+          ability.autoMode = !ability.autoMode;
+
+        var godAbility = this.getGodAbility(this.party[1], 1, 0);
+        godAbility.autoMode = !godAbility.autoMode;
+
+        godAbility = this.getGodAbility(this.party[1], 1, 1);
+        godAbility.autoMode = !godAbility.autoMode;
+
+        godAbility = this.getGodAbility(this.party[1], 1, 2);
+        godAbility.autoMode = !godAbility.autoMode;
+
+        godAbility = this.getGodAbility(this.party[1], 2, 0);
+        godAbility.autoMode = !godAbility.autoMode;
+
+        godAbility = this.getGodAbility(this.party[1], 2, 1);
+        godAbility.autoMode = !godAbility.autoMode;
+
+        godAbility = this.getGodAbility(this.party[1], 2, 2);
+        godAbility.autoMode = !godAbility.autoMode;
+
+        this.party[1].overdriveInfo.autoMode = !this.party[1].overdriveInfo.autoMode;
+      }
     }
+  }
+
+  getDuoAbilityName(character: Character) {
+    var gods = [];
+    gods.push(character.assignedGod1);
+    gods.push(character.assignedGod2);
+
+    var ability = this.lookupService.getDuoAbility(gods);
+    return ability.name;
+  }
+
+  getDuoAbilityDescription(character: Character) {
+    var gods = [];
+    gods.push(character.assignedGod1);
+    gods.push(character.assignedGod2);
+
+    var ability = this.lookupService.getDuoAbility(gods);
+
+    return this.lookupService.getGodAbilityDescription(ability.name, character, ability);
+  }
+
+  getDuoAbilityRemaining(character: Character) {
+    if (character.battleInfo.duoAbilityUsed)
+      return "UNAVAILABLE";
+    else
+      return "AVAILABLE";
+  }
+
+  isDuoAvailable() {
+    return this.globalService.globalVar.sidequestData.duosUnlocked;
+  }
+
+  getDuoSource(character: Character) {
+    var src = "assets/svg/";
+    var gods = [];
+    gods.push(character.assignedGod1);
+    gods.push(character.assignedGod2);
+
+    if (character.battleInfo.duoAbilityUsed) {
+      src += "inactiveDuo.svg";
+      return src;
     }
+
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Artemis))
+      src += "artemisAthenaDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hermes))
+      src += "athenaHermesDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Apollo))
+      src += "athenaApolloDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Ares))
+      src += "aresAthenaDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hades))
+      src += "athenaHadesDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusAthenaDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Nemesis))
+      src += "athenaNemesisDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusAthenaDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonAthenaDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Hera))
+      src += "heraAthenaDuo.svg";
+    if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "athenaAphroditeDuo.svg";
+
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hermes))
+      src += "hermesArtemisDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Apollo))
+      src += "artemisApolloDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Ares))
+      src += "artemisAresDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hades))
+      src += "hadesArtemisDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusArtemisDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Nemesis))
+      src += "artemisNemesisDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Zeus))
+      src += "artemisZeusDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonArtemisDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hera))
+      src += "heraArtemisDuo.svg";
+      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeArtemisDuo.svg";
+
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Apollo))
+      src += "hermesApolloDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Ares))
+      src += "hermesAresDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hades))
+      src += "hermesHadesDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusHermesDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Nemesis))
+      src += "hermesNemesisDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusHermesDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Poseidon))
+      src += "hermesPoseidonDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hera))
+      src += "hermesHeraDuo.svg";
+      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeHermesDuo.svg";    
+    
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hades))
+      src += "apolloHadesDuo.svg";  
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Ares))
+      src += "aresApolloDuo.svg";  
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusApolloDuo.svg";  
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Nemesis))
+      src += "nemesisApolloDuo.svg";  
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusApolloDuo.svg";  
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Poseidon))
+      src += "apolloPoseidonDuo.svg";  
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeApolloDuo.svg";  
+      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hera))
+      src += "apolloHeraDuo.svg";  
+  
+      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Ares))
+      src += "hadesAresDuo.svg";  
+      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusHadesDuo.svg";  
+      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Nemesis))
+      src += "hadesNemesisDuo.svg";  
+      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusHadesDuo.svg";  
+      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonAresDuo.svg";  
+      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "hadesAphroditeDuo.svg";  
+      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Hera))
+      src += "hadesHeraDuo.svg";  
+
+      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusAresDuo.svg";  
+      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Nemesis))
+      src += "aresNemesisDuo.svg";  
+      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusAresDuo.svg";  
+      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonAresDuo.svg";  
+      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeAresDuo.svg";  
+      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Hera))
+      src += "aresHeraDuo.svg";  
+
+      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Nemesis))
+      src += "nemesisDionysusDuo.svg";  
+      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Zeus))
+      src += "dionysusZeusDuo.svg";  
+      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonDionysusDuo.svg";  
+      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeDionysusDuo.svg";  
+      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Hera))
+      src += "heraDionysusDuo.svg";  
+
+      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Zeus))
+      src += "nemesisZeusDuo.svg";  
+      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Poseidon))
+      src += "nemesisPoseidonDuo.svg";  
+      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeNemesisDuo.svg";  
+      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Hera))
+      src += "nemesisHeraDuo.svg";  
+
+      if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonZeusDuo.svg";  
+      if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "zeusAphroditeDuo.svg";  
+      if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Hera))
+      src += "zeusHeraDuo.svg"; 
+    
+      if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditePoseidonDuo.svg";  
+      if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Hera))
+      src += "heraPoseidonDuo.svg"; 
+
+      if (gods.some(item => item === GodEnum.Aphrodite) && gods.some(item => item === GodEnum.Hera))
+      src += "aphroditeHeraDuo.svg"; 
+
+    if (src === "assets/svg/")
+      src += "inactiveDuo.svg";
+
+    return src;
   }
 
   getCharacterBarrierPercent(character: Character) {
@@ -715,7 +908,7 @@ export class PartyComponent implements OnInit {
     return this.utilityService.bigNumberReducer(Math.ceil(this.lookupService.getAdjustedMaxHp(character)));
   }
 
-  characterDpsBreakdown(which: number) {    
+  characterDpsBreakdown(which: number) {
     var character = this.party[which];
 
     var breakdown = this.dpsCalculatorService.getCharacterDps(character.type);
@@ -723,15 +916,15 @@ export class PartyComponent implements OnInit {
 
     return "<span class='bold smallCaps " + character.name.toLowerCase() + "Color'>" + character.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown) + " (" + this.utilityService.roundTo(percent * 100, 1) + "%)";
   }
-  
-  godDpsBreakdown(whichCharacter: number, whichGod: number) {    
+
+  godDpsBreakdown(whichCharacter: number, whichGod: number) {
     var character = this.party[whichCharacter];
     var godEnum = GodEnum.None;
 
     if (whichGod === 1)
       godEnum = character.assignedGod1;
     else if (whichGod === 2)
-    godEnum = character.assignedGod2;
+      godEnum = character.assignedGod2;
 
     var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
     if (god === undefined)
@@ -743,8 +936,11 @@ export class PartyComponent implements OnInit {
     return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown);
   }
 
-  triggerDuo(character: Character) {
-    console.log("Duo ability");
+  triggerDuo(character: Character) {    
+    if (!this.isDuoAvailable() || character.battleInfo.duoAbilityUsed)
+      return;
+
+    this.battleService.useDuoAbility(character);
   }
 
   ngOnDestroy() {

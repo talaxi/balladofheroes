@@ -38,7 +38,7 @@ export class CharacterNameViewComponent implements OnInit {
   removeBarTransition: boolean = true;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
-    private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService,
+    private layoutService: LayoutService, public utilityService: UtilityService, private deploymentService: DeploymentService,
     private gameLoopService: GameLoopService, private battleService: BattleService, private keybindService: KeybindService,
     private deviceDetectorService: DeviceDetectorService) { }
 
@@ -87,6 +87,14 @@ export class CharacterNameViewComponent implements OnInit {
     this.removeBarTransition = false;
   }
 
+  getCharacterXp() {
+    return this.utilityService.bigNumberReducer(this.character.exp);
+  }
+  
+  getCharacterXpToNextLevel() {
+    return this.utilityService.bigNumberReducer(this.character.expToNextLevel);
+  }
+  
   isButtonActive() {
     if (this.battleService.targetbattleItemMode && this.battleService.isTargetableWithItem(this.character, false)) {
       return false;

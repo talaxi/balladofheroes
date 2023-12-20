@@ -3,5 +3,6 @@ export enum WeaponTypeEnum {
     Hammer,
     Sword,
     Bow,
-    Spear
+    Spear,
+    Other
   }

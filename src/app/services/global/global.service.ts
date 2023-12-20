@@ -167,8 +167,8 @@ export class GlobalService {
     thaumaturge.isAvailable = false;
     thaumaturge.baseStats = this.getCharacterBaseStats(CharacterEnum.Thaumaturge);
     thaumaturge.battleStats = thaumaturge.baseStats.makeCopy();
-    thaumaturge.battleInfo.timeToAutoAttack = this.utilityService.longAutoAttackSpeed;
-    thaumaturge.battleInfo.autoAttackModifier = this.utilityService.strongAutoAttack;
+    thaumaturge.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+    thaumaturge.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
     this.calculateCharacterBattleStats(thaumaturge);
     this.assignAbilityInfo(thaumaturge);
 
@@ -1035,7 +1035,7 @@ export class GlobalService {
     return statusEffect;
   }
 
-  createHealOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, abilityName: string, maxCount: number = 0) {
+  createHealOverTimeEffect(duration: number, tickFrequency: number, multiplier: number, abilityName: string, maxCount: number = 0, isAoe: boolean = false) {
     var statusEffect = new StatusEffect(StatusEffectEnum.HealOverTime);
     statusEffect.duration = duration;
     statusEffect.effectiveness = multiplier;
@@ -1043,6 +1043,7 @@ export class GlobalService {
     statusEffect.abilityName = abilityName;
     statusEffect.maxCount = maxCount;
     statusEffect.isPositive = true;
+    statusEffect.isAoe = isAoe;
 
     return statusEffect;
   }
@@ -1074,7 +1075,8 @@ export class GlobalService {
       type === StatusEffectEnum.Current || type === StatusEffectEnum.Cancer || type === StatusEffectEnum.HealingReceivedUp || type === StatusEffectEnum.FatalAttraction ||
       type === StatusEffectEnum.Strut || type === StatusEffectEnum.Espionage || type === StatusEffectEnum.PassionateRhythmAutoAttack || type === StatusEffectEnum.PassionateRhythm ||
       type === StatusEffectEnum.Shapeshift || type === StatusEffectEnum.Slow || type === StatusEffectEnum.BoundingBand || type === StatusEffectEnum.BoundingBandUnique ||
-      type === StatusEffectEnum.ScathingBeauty || type === StatusEffectEnum.ScathingBeautyUnique || type === StatusEffectEnum.Leo  || type === StatusEffectEnum.PalmStrike)
+      type === StatusEffectEnum.ScathingBeauty || type === StatusEffectEnum.ScathingBeautyUnique || type === StatusEffectEnum.Leo  || type === StatusEffectEnum.PalmStrike ||
+      type === StatusEffectEnum.DivineRetribution || type === StatusEffectEnum.ReduceNextAbilityCooldown)
       refreshes = true;
 
     return refreshes;
@@ -1154,7 +1156,7 @@ export class GlobalService {
     return characters;
   }
 
-  calculateCharacterBattleStats(character: Character, inBattle: boolean = true) {
+  calculateCharacterBattleStats(character: Character, inBattle: boolean = true) {    
     var currentHp = character.battleStats.currentHp;
 
     character.battleStats = character.baseStats.makeCopy(inBattle);
@@ -1171,6 +1173,7 @@ export class GlobalService {
     character.battleStats.armorPenetration = this.equipmentService.getTotalArmorPenetrationGain(character.equipmentSet);
     character.battleStats.healingReceived = this.equipmentService.getTotalHealingReceivedGain(character.equipmentSet);
     character.battleStats.healingDone = this.equipmentService.getTotalHealingDoneGain(character.equipmentSet);
+    character.battleStats.allyDamageBonus = this.equipmentService.getTotalAllyDamageBonusGain(character.equipmentSet);
     character.battleStats.aoeDamage = this.equipmentService.getTotalAoeDamageGain(character.equipmentSet);
     character.battleStats.thorns = this.equipmentService.getTotalThornsGain(character.equipmentSet);
     character.battleStats.tickFrequency = this.equipmentService.getTotalTickFrequencyGain(character.equipmentSet);
@@ -1194,9 +1197,9 @@ export class GlobalService {
     character.battleStats.elementResistance.water = this.equipmentService.getTotalWaterDamageResistanceGain(character.equipmentSet);
     character.battleStats.elementResistance.lightning = this.equipmentService.getTotalLightningDamageResistanceGain(character.equipmentSet);
     character.battleStats.elementResistance.air = this.equipmentService.getTotalAirDamageResistanceGain(character.equipmentSet);
-    character.battleStats.elementResistance.earth = this.equipmentService.getTotalEarthDamageResistanceGain(character.equipmentSet);
+    character.battleStats.elementResistance.earth = this.equipmentService.getTotalEarthDamageResistanceGain(character.equipmentSet);    
 
-    this.checkForSetBonuses(character.equipmentSet, character.battleStats);
+    this.checkForSetBonuses(character.equipmentSet, character.battleStats);    
 
     //gods
     var equippedGodMaxHpStatMultiplier = 1;
@@ -1242,7 +1245,7 @@ export class GlobalService {
       character.battleStats.elementIncrease.increaseByStatArray(god1.permanentStatGain.elementIncrease);
       character.battleStats.elementResistance.increaseByStatArray(god1.statGain.elementResistance);
       character.battleStats.elementResistance.increaseByStatArray(god1.permanentStatGain.elementResistance);
-
+      
       /*equippedGodMaxHpStatMultiplier = god1.permanentStatMultiplier.maxHp;
       equippedGodAttackStatMultiplier = god1.permanentStatMultiplier.attack;
       equippedGodLuckStatMultiplier = god1.permanentStatMultiplier.luck;
@@ -1442,7 +1445,7 @@ export class GlobalService {
       if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Shapeshift))
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Shapeshift);
     }
-    
+
     if (character.assignedGod1 !== GodEnum.Nemesis && character.assignedGod2 !== GodEnum.Nemesis) {
       if (character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues))
         character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
@@ -3103,7 +3106,7 @@ export class GlobalService {
         ability.requiredLevel = this.utilityService.godAbility3Level;
 
         if (god.type === GodEnum.Athena) {
-          ability.effectiveness += .25;
+          ability.effectiveness += .35;
         }
         else if (god.type === GodEnum.Artemis) {
           ability.effectiveness += 1;
@@ -3750,7 +3753,12 @@ export class GlobalService {
     party.forEach(member => {
       member.battleInfo.autoAttackTimer = 0;
       member.battleInfo.barrierValue = 0;
+      member.battleInfo.duoAbilityUsed = false;
       member.battleStats.currentHp = member.battleStats.maxHp;
+      member.linkInfo.linkChain = 0;
+      member.linkInfo.bonusChain = 0;
+      member.linkInfo.cooldown = 0;
+      member.linkInfo.remainingLinks = member.linkInfo.totalLinks;
 
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.duration <= 0 || this.isBuffUnremovable(item) || item.type === StatusEffectEnum.LordOfTheUnderworld);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Immobilize);
@@ -4012,7 +4020,7 @@ export class GlobalService {
     }
     if (setType === EquipmentSetEnum.Zeus) {
       if (setCount === 2)
-        return .1;
+        return .05;
       else if (setCount === 3)
         return .5;
       else if (setCount === 5)
@@ -4029,6 +4037,24 @@ export class GlobalService {
     if (setType === EquipmentSetEnum.Shadow) {
       if (setCount === 2)
         return .3;
+      else if (setCount === 3)
+        return .5;
+    }
+    if (setType === EquipmentSetEnum.Hera) {
+      if (setCount === 2)
+        return .2;
+      else if (setCount === 3)
+        return .5;
+    }
+    if (setType === EquipmentSetEnum.Aphrodite) {
+      if (setCount === 2)
+        return .95;
+      else if (setCount === 3)
+        return .3;
+    }
+    if (setType === EquipmentSetEnum.Zodiac) {
+      if (setCount === 2)
+        return .2;
       else if (setCount === 3)
         return .5;
     }
@@ -4121,6 +4147,27 @@ export class GlobalService {
       if (setCount[0] === EquipmentSetEnum.Shadow) {
         if (setCount[1] >= 2)
           stats!.aoeDamage += this.getSetBonusAmount(setCount[0], 2);
+      }
+      
+      if (setCount[0] === EquipmentSetEnum.Hera) {
+        if (setCount[1] >= 2)
+          stats!.criticalMultiplier += this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 3)
+          stats!.elementIncrease.air += this.getSetBonusAmount(setCount[0], 3);
+      }
+      
+      if (setCount[0] === EquipmentSetEnum.Aphrodite) {
+        if (setCount[1] >= 2)
+          stats!.abilityCooldownReduction += this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 3)
+          stats!.allyDamageBonus += this.getSetBonusAmount(setCount[0], 3);
+      }
+      
+      if (setCount[0] === EquipmentSetEnum.Zodiac) {        
+        if (setCount[1] >= 2)
+          stats!.overdriveGain += this.getSetBonusAmount(setCount[0], 2);
+        if (setCount[1] >= 3)
+          stats!.criticalMultiplier += this.getSetBonusAmount(setCount[0], 3);
       }
     });
 

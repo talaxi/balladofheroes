@@ -363,13 +363,13 @@ export class LoadoutsViewComponent {
       this.globalService.equipItem(loadout.character2EquipmentSet.necklace, character2);
     }
     else if (loadout.character2EquipmentSet.necklace !== undefined)
-      itemIsMissing = true;
+      itemIsMissing = true;    
 
     this.menuService.updateParty = true;
 
-    this.globalService.getActivePartyCharacters(true).forEach(member => {
-      this.globalService.setGodStatuses(member);
-      this.globalService.calculateCharacterBattleStats(member);
+    this.globalService.getActivePartyCharacters(true).forEach(member => {      
+      this.globalService.setGodStatuses(member);      
+      this.globalService.calculateCharacterBattleStats(member);      
     });
 
     if (itemIsMissing) {

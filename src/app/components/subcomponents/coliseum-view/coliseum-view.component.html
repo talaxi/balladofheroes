@@ -94,6 +94,10 @@
                         <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">
                             Repeat Eternal Melee Until Out Of Tickets
                         </mat-checkbox>
+                        <br/>
+                        <mat-checkbox [(ngModel)]="automateEternalMelee" (input)="automateEternalMeleeToggle()">
+                            Automate Eternal Melee
+                        </mat-checkbox>
                     </div>
                 </div>
             </div>
@@ -102,4 +106,8 @@
 
     <ng-template #eternalMeleeRewardsModal>
         <app-confirmation-box [cancelOptionAvailable]="false" [confirmationText]="rewardsText"></app-confirmation-box>
+    </ng-template>
+
+    <ng-template #confirmationBox>
+        <app-confirmation-box [confirmationText]="confirmationText"></app-confirmation-box>
     </ng-template>

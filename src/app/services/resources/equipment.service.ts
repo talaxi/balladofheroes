@@ -607,21 +607,44 @@ export class EquipmentService {
   getTotalLinkEffectivenessGain(equipmentSet: EquipmentSet) {
     var total = 0;
 
-    if (equipmentSet.weapon !== undefined)
+    if (equipmentSet.weapon !== undefined && equipmentSet.weapon.stats.linkEffectiveness !== undefined)
       total += equipmentSet.weapon.stats.linkEffectiveness;
 
-    if (equipmentSet.shield !== undefined) {
+    if (equipmentSet.shield !== undefined && equipmentSet.shield.stats.linkEffectiveness !== undefined) {
       total += equipmentSet.shield.stats.linkEffectiveness;
     }
 
-    if (equipmentSet.armor !== undefined)
+    if (equipmentSet.armor !== undefined && equipmentSet.armor.stats.linkEffectiveness !== undefined)
       total += equipmentSet.armor.stats.linkEffectiveness;
 
-    if (equipmentSet.necklace !== undefined)
+    if (equipmentSet.necklace !== undefined && equipmentSet.necklace.stats.linkEffectiveness !== undefined)
       total += equipmentSet.necklace.stats.linkEffectiveness;
 
-    if (equipmentSet.ring !== undefined)
+    if (equipmentSet.ring !== undefined && equipmentSet.ring.stats.linkEffectiveness !== undefined)
       total += equipmentSet.ring.stats.linkEffectiveness;
+
+    return total;
+  }
+
+  
+  getTotalAllyDamageBonusGain(equipmentSet: EquipmentSet) {
+    var total = 0;
+
+    if (equipmentSet.weapon !== undefined && equipmentSet.weapon.stats.allyDamageBonus !== undefined)
+      total += equipmentSet.weapon.stats.allyDamageBonus;
+
+    if (equipmentSet.shield !== undefined && equipmentSet.shield.stats.allyDamageBonus !== undefined) {
+      total += equipmentSet.shield.stats.allyDamageBonus;
+    }
+
+    if (equipmentSet.armor !== undefined && equipmentSet.armor.stats.allyDamageBonus !== undefined)
+      total += equipmentSet.armor.stats.allyDamageBonus;
+
+    if (equipmentSet.necklace !== undefined && equipmentSet.necklace.stats.allyDamageBonus !== undefined)
+      total += equipmentSet.necklace.stats.allyDamageBonus;
+
+    if (equipmentSet.ring !== undefined && equipmentSet.ring.stats.allyDamageBonus !== undefined)
+      total += equipmentSet.ring.stats.allyDamageBonus;
 
     return total;
   }

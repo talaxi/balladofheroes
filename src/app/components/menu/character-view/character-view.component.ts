@@ -68,6 +68,14 @@ export class CharacterViewComponent implements OnInit {
     });
   }
 
+  getCharacterXp() {
+    return this.utilityService.bigNumberReducer(this.character.exp);
+  }
+  
+  getCharacterXpToNextLevel() {
+    return this.utilityService.bigNumberReducer(this.character.expToNextLevel);
+  }
+
   getOverdriveName() {
     return this.lookupService.getOverdriveName(this.character.overdriveInfo.selectedOverdrive);
   }
