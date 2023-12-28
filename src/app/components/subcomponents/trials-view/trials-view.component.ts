@@ -110,7 +110,7 @@ export class TrialsViewComponent {
   }
 
   getTrialDescription() {
-    return "Do battle with a random god of Olympus. If you succeed, you will receive a buff increasing XP and Item Drop Rate for a duration of time. Gods may also drop Nectar and their respective Ring and Armor. You will not be able to change classes or gods during the trial.";
+    return "Do battle with a random god of Olympus. Their stats scale with your primary stats and total equipped god levels. If you succeed, you will receive a buff increasing XP and Item Drop Rate for a duration of time. Gods may also drop Nectar and their respective Ring and Armor. You will not be able to change classes or gods during the trial.";
   }
 
   getTrialOfResolveDescription() {

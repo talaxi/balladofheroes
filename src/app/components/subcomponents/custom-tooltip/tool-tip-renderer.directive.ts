@@ -254,7 +254,6 @@ export class ToolTipRendererDirective {
     if (this.subscription !== undefined)
       this.subscription.unsubscribe();
 
-
     if (this.tooltipSubscription !== undefined)
       this.tooltipSubscription.unsubscribe();
 

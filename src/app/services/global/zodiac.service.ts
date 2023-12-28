@@ -23,7 +23,7 @@ export class ZodiacService {
     if (zodiac === ZodiacEnum.Taurus) {
       if (availableGods === undefined || availableGods.some(item => item.type === GodEnum.Artemis))
         bonusGods.push(GodEnum.Artemis);
-      //bonusGods.push(GodEnum.Athena); //Aphrodite
+        bonusGods.push(GodEnum.Aphrodite);
     }
     if (zodiac === ZodiacEnum.Gemini) {
       if (availableGods === undefined || availableGods.some(item => item.type === GodEnum.Zeus))
@@ -46,12 +46,12 @@ export class ZodiacService {
     if (zodiac === ZodiacEnum.Virgo) {
       if (availableGods === undefined || availableGods.some(item => item.type === GodEnum.Hermes))
         bonusGods.push(GodEnum.Hermes);
-      //bonusGods.push(GodEnum.Athena); //Hera
+        bonusGods.push(GodEnum.Hera);
     }
     if (zodiac === ZodiacEnum.Libra) {
       if (availableGods === undefined || availableGods.some(item => item.type === GodEnum.Nemesis))
         bonusGods.push(GodEnum.Nemesis);
-      //bonusGods.push(GodEnum.Athena); //Aphrodite
+        bonusGods.push(GodEnum.Aphrodite);
     }
     if (zodiac === ZodiacEnum.Scorpio) {
       if (availableGods === undefined || availableGods.some(item => item.type === GodEnum.Ares))
@@ -68,7 +68,7 @@ export class ZodiacService {
     if (zodiac === ZodiacEnum.Capricorn) {
       if (availableGods === undefined || availableGods.some(item => item.type === GodEnum.Apollo))
         bonusGods.push(GodEnum.Apollo);
-      //bonusGods.push(GodEnum.Hades); //Hera
+        bonusGods.push(GodEnum.Hera); 
     }
     if (zodiac === ZodiacEnum.Aquarius) {
       if (availableGods === undefined || availableGods.some(item => item.type === GodEnum.Dionysus))

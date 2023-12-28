@@ -6,11 +6,13 @@ export class Trial {
     timer: number;
     timerLength: number;
     godEnum: GodEnum;
+    maxHp: number;
 
     constructor() {
         this.type = TrialEnum.None;
         this.timer = 0;
         this.timerLength = 0;
         this.godEnum = GodEnum.None;
+        this.maxHp = 0;
     }
 }

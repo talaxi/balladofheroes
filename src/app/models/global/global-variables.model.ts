@@ -21,6 +21,7 @@ import { AltarInfo } from "../altar/altar-info.model";
 import { AltarEffect } from "../altar/altar-effect.model";
 import { OptionalSceneEnum } from "../enums/optional-scene-enum.model";
 import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
+import { TrialDefeatCount } from "../battle/trial-defeat-count.model";
 import { Altars } from "../altar/altars.model";
 import { SidequestData } from "../utility/sidequest-data.model";
 import { FollowerData } from "../followers/follower-data.model";
@@ -86,6 +87,8 @@ export class GlobalVariables {
     enemyDefeatCount: EnemyDefeatCount[];
     @Type(() => ColiseumDefeatCount)
     coliseumDefeatCount: ColiseumDefeatCount[];
+    @Type(() => TrialDefeatCount)
+    trialDefeatCount: TrialDefeatCount[];
     @Type(() => Altars)
     altars: Altars;
     optionalScenesViewed: OptionalSceneEnum[];
@@ -121,6 +124,7 @@ export class GlobalVariables {
         this.trackedResources = [];
         this.enemyDefeatCount = [];
         this.coliseumDefeatCount = [];
+        this.trialDefeatCount = [];
         this.itemBeltSize = 1;
         this.totalAchievementsCompleted = 0;
         this.playerNavigation = new PlayerNavigation();

@@ -647,9 +647,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.Ambrosia) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));
     }
-    if (item === ItemsEnum.DuoAbilityAccess) {
+    /*if (item === ItemsEnum.DuoAbilityAccess) {
         purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
-    }
+    }*/
     if (item === ItemsEnum.EssenceOfEarth) {
       purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));
     }

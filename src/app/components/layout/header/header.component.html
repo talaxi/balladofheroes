@@ -9,8 +9,8 @@
       <button (click)="togglePerformanceMode()">Perf Mode</button>
     </div>-->
 
-    <div class="performanceState centerAlign">
-      <span (click)="openZodiacPopover(zodiacPopover)" customToolTip class="headerTextItems globalHeaderItem"  [contentTemplate]="zodiacPopover">zodiac: <img class="icon filtered" [src]="getZodiacSign()"></span>
+    <div *ngIf="!(isMobile && layoutService.navigation === navigationEnum.Menu)" class="performanceState centerAlign">
+      <span (click)="openZodiacPopover(zodiacPopover)" customToolTip class="headerTextItems globalHeaderItem"  [contentTemplate]="zodiacPopover"><img class="icon filtered" [src]="getZodiacSign()"></span>
     </div>
 
     <button *ngIf="textMode && isMobile && layoutService.navigation === navigationEnum.Menu" class="buttonAsText clickableText performanceState mainPageSectionHeader globalHeaderItem" (click)="backToMainView()">back</button>    

@@ -1375,6 +1375,7 @@ export class VersionControlService {
             god.permanentStatGain.linkEffectiveness = 0;
             god.statGain.allyDamageBonus = 0;
             god.permanentStatGain.allyDamageBonus = 0;
+            god.permanentStatGain.duoPermanentEffectiveness = 0;
           });
 
           if (this.globalService.globalVar.currentStoryId === 46) {
@@ -1420,6 +1421,15 @@ export class VersionControlService {
               var permanentPassive = hermes.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
               if (permanentPassive !== undefined) {                
                 permanentPassive.effectiveness = permanentPassive.effectiveness / 2;                
+              }
+            }
+
+            
+            var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
+            if (ares !== undefined) {
+              var permanentPassive = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+              if (permanentPassive !== undefined && permanentPassive.targetEffect.length > 0) {                
+                permanentPassive.targetEffect[0].effectiveness = permanentPassive.targetEffect[0].effectiveness / 4;                
               }
             }
 

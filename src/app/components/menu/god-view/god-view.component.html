@@ -279,6 +279,10 @@
                             [contentTemplate]="partyResistanceMultiplierPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Party Resistance Multiplier:
                             </strong> <span class="statValue">{{getPartyResistanceMultiplierBonus() * 100 | number :
                                 '1.0-2'}}%</span><br /></span>
+                                <span *ngIf="getDuoEffectivenessBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                                    [contentTemplate]="duoEffectivenessPopover"><strong [ngClass]="getGodColor()" class="statLabel">Permanent Duo Ability Effectiveness Bonus:
+                                    </strong> <span class="statValue">{{getDuoEffectivenessBonus() * 100 | number :
+                                        '1.0-2'}}%</span><br /></span>
         </div>
     </div>
 
@@ -619,6 +623,15 @@
         <span class="description" [innerHtml]="this.lookupService.getPartyResistanceMultiplierDescription()"></span>
         <hr class="miniHr" />
         <div class="statBreakdown" [innerHtml]="this.lookupService.getGodPartyResistanceStatMultiplierBreakdown(this.god)">
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #duoEffectivenessPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getDuoEffectivenessDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown" [innerHtml]="this.lookupService.getGodDuoEffectivenessBreakdown(this.god)">
         </div>
     </div>
 </ng-template>

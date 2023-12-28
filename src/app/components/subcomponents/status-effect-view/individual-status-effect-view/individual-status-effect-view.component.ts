@@ -38,7 +38,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp ||
       effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp ||
       effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp ||
-      effect.type === StatusEffectEnum.AllPrimaryStatsUp ||
+      effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown ||
+      effect.type === StatusEffectEnum.AllPrimaryStatsDown ||
       effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown ||
       effect.type === StatusEffectEnum.HpRegenUp)
       return true;
@@ -113,7 +114,8 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       return "LCK";
     if (effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp)
       return "RES";
-    if (effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || effect.type === StatusEffectEnum.AllPrimaryStatsUp)
+    if (effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || effect.type === StatusEffectEnum.AllPrimaryStatsUp ||
+      effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || effect.type === StatusEffectEnum.AllPrimaryStatsDown)
       return "ALL";
     if (effect.type === StatusEffectEnum.DamageDealtUp || effect.type === StatusEffectEnum.DamageDealtDown ||
       effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown ||
@@ -536,8 +538,60 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "athenaAphroditeDuo.svg";
       if (effect.type === StatusEffectEnum.ReduceNextAbilityCooldown)
       src += "poseidonAthenaDuo.svg";
-      if (effect.type === StatusEffectEnum.ReduceNextAbilityCooldown)
+      if (effect.type === StatusEffectEnum.AutoAttackDealsElementalDamage && effect.element === ElementalTypeEnum.Holy)
       src += "athenaHermesDuo.svg";
+      if (effect.type === StatusEffectEnum.AutoAttackDealsElementalDamage && effect.element !== ElementalTypeEnum.Holy)
+      src += "hermesHadesDuo.svg";
+      if (effect.type === StatusEffectEnum.LuckyShots)
+      src += "hermesArtemisDuo.svg";
+      if (effect.type === StatusEffectEnum.CleansingShots)
+      src += "hermesApolloDuo.svg";
+      if (effect.type === StatusEffectEnum.BleedingAttacks)
+      src += "hermesAresDuo.svg";      
+      if (effect.type === StatusEffectEnum.ShieldingAttacks)
+      src += "dionysusHermesDuo.svg";      
+      if (effect.type === StatusEffectEnum.LightningAttacks)
+      src += "zeusHermesDuo.svg";      
+      if (effect.type === StatusEffectEnum.PureSpeed)
+      src += "hermesPoseidonDuo.svg";      
+      if (effect.type === StatusEffectEnum.BetterTogether)
+      src += "aphroditeHermesDuo.svg";      
+      if (effect.type === StatusEffectEnum.WindAttacks)
+      src += "hermesHeraDuo.svg";      
+      if (effect.type === StatusEffectEnum.DiscordantMelody)
+      src += "apolloHadesDuo.svg";      
+      if (effect.type === StatusEffectEnum.PassingJudgment)
+      src += "nemesisApolloDuo.svg";      
+      if (effect.type === StatusEffectEnum.ThunderousMelody)
+      src += "zeusApolloDuo.svg";      
+      if (effect.type === StatusEffectEnum.Flood)
+      src += "apolloPoseidonDuo.svg";      
+      if (effect.type === StatusEffectEnum.CaringGaze)
+      src += "aphroditeApolloDuo.svg";      
+      if (effect.type === StatusEffectEnum.MelodicMoves)
+      src += "apolloHeraDuo.svg";      
+      if (effect.type === StatusEffectEnum.BlisteringRiposte)
+      src += "aresNemesisDuo.svg";      
+      if (effect.type === StatusEffectEnum.RecedingTide)
+      src += "poseidonAresDuo.svg";      
+      if (effect.type === StatusEffectEnum.WarAndLove)
+      src += "aphroditeAresDuo.svg"; 
+      if (effect.type === StatusEffectEnum.FieryJudgment)
+      src += "hadesNemesisDuo.svg";      
+      if (effect.type === StatusEffectEnum.WildJudgment)
+      src += "nemesisDionysusDuo.svg";      
+      if (effect.type === StatusEffectEnum.WildParty)
+      src += "aphroditeDionysusDuo.svg";      
+      if (effect.type === StatusEffectEnum.ThunderousRiposte)
+      src += "nemesisZeusDuo.svg";      
+      if (effect.type === StatusEffectEnum.StaggeringRiposte)
+      src += "poseidonNemesisDuo.svg";      
+      if (effect.type === StatusEffectEnum.Protector)
+      src += "aphroditeNemesisDuo.svg";   
+      if (effect.type === StatusEffectEnum.DefensiveShapeshifting)
+      src += "nemesisHeraDuo.svg";      
+      if (effect.type === StatusEffectEnum.LovingEmbrace)
+      src += "aphroditeHeraDuo.svg";      
 
     return src;
   }

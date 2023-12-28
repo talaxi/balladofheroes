@@ -937,9 +937,9 @@ export class InitializationService {
       this.globalService.globalVar.uniques.push(new Uniques(ItemsEnum.GleamingLoopUnique));
       //this.globalService.globalVar.uniques[0].level = 2;
 
-      this.globalService.globalVar.activePartyMember1 = CharacterEnum.Monk;
+      this.globalService.globalVar.activePartyMember1 = CharacterEnum.Archer;
       this.globalService.globalVar.characters.forEach(character => { character.isAvailable = true; character.unlockedOverdrives.push(OverdriveNameEnum.Reprisal); character.unlockedOverdrives.push(OverdriveNameEnum.Preservation); character.unlockedOverdrives.push(OverdriveNameEnum.Harmony); character.unlockedOverdrives.push(OverdriveNameEnum.Bullseye); });     //
-      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Thaumaturge;
+      this.globalService.globalVar.activePartyMember2 = CharacterEnum.Priest;
       this.globalService.globalVar.itemBeltSize = 1;
       this.globalService.globalVar.sidequestData.traderHuntLevel = 2;
       //this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy)!.level = 75;
@@ -952,8 +952,8 @@ export class InitializationService {
 
       var character1 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember1);
       if (character1 !== undefined) {
-        character1.assignedGod1 = GodEnum.Artemis;
-        character1.assignedGod2 = GodEnum.Hades;
+        character1.assignedGod1 = GodEnum.Dionysus;
+        character1.assignedGod2 = GodEnum.Aphrodite;
         character1.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.AthenasScythe);
         character1.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BloodyShield);
         character1.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ZeussArmor);
@@ -963,8 +963,8 @@ export class InitializationService {
 
       var character2 = this.globalService.globalVar.characters.find(item => item.type === this.globalService.globalVar.activePartyMember2);
       if (character2 !== undefined) {
-        character2.assignedGod1 = GodEnum.Athena;
-        character2.assignedGod2 = GodEnum.Hera;
+        character2.assignedGod1 = GodEnum.Zeus;
+        character2.assignedGod2 = GodEnum.Ares;
         character2.equipmentSet.weapon = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.NemesissSword);
         character2.equipmentSet.shield = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.BloodyShield);
         character2.equipmentSet.armor = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.ZeussArmor);
@@ -973,7 +973,7 @@ export class InitializationService {
       }
       
       var chthonicResetCount = 1;
-      var godLevel = 1550;
+      var godLevel = 1000;
 
       for (var j = 0; j < chthonicResetCount; j++) {
         var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
@@ -987,9 +987,9 @@ export class InitializationService {
         this.globalService.assignGodAbilityInfo(athena!);
 
         if (j < chthonicResetCount - 1)
-          godLevel = 2000;
+          godLevel = 1000;
         else
-          godLevel = 1250;
+          godLevel = 1000;
 
         for (var i = 0; i < godLevel; i++) {
           this.globalService.levelUpGod(athena!);

@@ -35,6 +35,7 @@ export class CharacterStats {
     xpGain: number; 
     elementResistanceReduction: number;
     allyDamageBonus: number;
+    duoPermanentEffectiveness: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
@@ -67,6 +68,7 @@ export class CharacterStats {
         this.xpGain = 0;
         this.elementResistanceReduction = 0;
         this.allyDamageBonus = 0;
+        this.duoPermanentEffectiveness = 0;
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {

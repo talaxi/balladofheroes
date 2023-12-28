@@ -7,5 +7,6 @@ export enum dotTypeEnum {
     UserCurrentMaxHpPercent,
     BasedOnHeal,
     ScorpionStinger,
-    ScorpionStingerUnique
+    ScorpionStingerUnique,
+    BasedOnResistance
   }

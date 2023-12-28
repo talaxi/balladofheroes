@@ -23,6 +23,11 @@
     grid-area: info;
 }
 
+.flexGods {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .defaultBallad,
 .defaultZone,
 .defaultSubzone {

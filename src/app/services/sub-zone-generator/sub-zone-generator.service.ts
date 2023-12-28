@@ -4624,7 +4624,7 @@ export class SubZoneGeneratorService {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Nemesis, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Dionysus, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.OlympicCommendation, SubZoneEnum.MountOlympusOlympus));
-    shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DuoAbilityAccess, SubZoneEnum.MountOlympusOlympus));
+    //shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DuoAbilityAccess, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Ambrosia, SubZoneEnum.MountOlympusOlympus));
         
     if (resources.some(item => item.item === ItemsEnum.BlazingSunPendant) && !resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))

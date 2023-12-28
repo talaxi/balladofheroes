@@ -6792,7 +6792,7 @@ export class EnemyGeneratorService {
       war.cooldown = 120;
       war.currentCooldown = 0;
       war.isAoe = true;
-      war.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantCurrentHpPercentDamage, -1, .5, true, false, true, "Warpath"));
+      war.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.InstantCurrentHpPercentDamage, 0, .5, true, false, true, "Warpath"));
       enemy.abilityList.push(war);   
 
       var rupture = new Ability();
@@ -6844,7 +6844,7 @@ export class EnemyGeneratorService {
       avertingArrow.dealsDirectDamage = true;
       avertingArrow.effectiveness = 6;
       avertingArrow.isAoe = true;
-      avertingArrow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, -1, 1, true, false, true));
+      avertingArrow.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, 0, 1, true, false, true));
       enemy.abilityList.push(avertingArrow);   
 
       var staccato = new Ability();
@@ -11308,7 +11308,7 @@ export class EnemyGeneratorService {
     }     
     if (type === BestiaryEnum.SeaGoatNormal) {      
       enemy.name = "Sea-Goat";
-      enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
+      enemy.battleStats = new CharacterStats(925000, 6850, 24750, 23575, 18500, 27750);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;            
@@ -11362,7 +11362,7 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.SeaGoatHard) {      
       enemy.name = "Sea-Goat";
-      enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
+      enemy.battleStats = new CharacterStats(15832500, 13250, 137500, 58500, 37500, 49000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;            
@@ -11404,7 +11404,7 @@ export class EnemyGeneratorService {
       scamper = this.randomizeCooldown(scamper);
       scamper.dealsDirectDamage = false;
       scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 7, 0, false, true));
-      scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 20, 1.2, false, true, undefined, undefined, undefined, true));
+      scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 35, 1.2, false, true, undefined, undefined, undefined, true));
       enemy.abilityList.push(scamper);
 
       var rhythm = new Ability();
@@ -11426,7 +11426,7 @@ export class EnemyGeneratorService {
     } 
     if (type === BestiaryEnum.SeaGoatVeryHard) {      
       enemy.name = "Sea-Goat";
-      enemy.battleStats = new CharacterStats(750000, 7050, 20050, 22875, 18000, 30000);
+      enemy.battleStats = new CharacterStats(38410000, 29250, 587500, 105000, 82500, 109000);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyQuickAutoAttackSpeed;
       enemy.coinGainFromDefeat = 5;
       enemy.xpGainFromDefeat = 2200;    
@@ -12854,7 +12854,7 @@ export class EnemyGeneratorService {
       purge.isAvailable = true;
       purge.cooldown = purge.currentCooldown = 8;
       purge.dealsDirectDamage = false;      
-      purge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, -1, 1, true, false));
+      purge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, 0, 1, true, false));
       enemy.abilityList.push(purge); 
       
       var handOfJustice = new Ability();
@@ -12919,7 +12919,7 @@ export class EnemyGeneratorService {
       purge.isAvailable = true;
       purge.cooldown = purge.currentCooldown = 8;
       purge.dealsDirectDamage = false;      
-      purge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, -1, 1, true, false));
+      purge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, 0, 1, true, false));
       enemy.abilityList.push(purge); 
       
       var handOfJustice = new Ability();
@@ -12984,7 +12984,7 @@ export class EnemyGeneratorService {
       purge.isAvailable = true;
       purge.cooldown = purge.currentCooldown = 8;
       purge.dealsDirectDamage = false;      
-      purge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, -1, 1, true, false));
+      purge.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RemoveBuff, 0, 1, true, false));
       enemy.abilityList.push(purge); 
       
       var handOfJustice = new Ability();

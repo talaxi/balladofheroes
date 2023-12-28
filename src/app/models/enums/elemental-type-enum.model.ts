@@ -5,5 +5,6 @@ export enum ElementalTypeEnum {
   Lightning,
   Earth,
   Air,
-  Water
+  Water,
+  Random
 }

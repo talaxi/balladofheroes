@@ -4,6 +4,7 @@ import { dotTypeEnum } from "../enums/damage-over-time-type-enum.model";
 import { EffectResolutionEnum } from "../enums/effect-resolution-enum.model";
 import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { StatusEffectEnum } from "../enums/status-effects-enum.model";
+import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 
 export class StatusEffect {
     type: StatusEffectEnum;
@@ -32,6 +33,7 @@ export class StatusEffect {
     tickTimer: number;
     dotType: dotTypeEnum;
     element: ElementalTypeEnum;
+    target: TargetEnum;
 
     constructor(type: StatusEffectEnum) {
         this.type = type;
@@ -50,6 +52,7 @@ export class StatusEffect {
         this.triggersEvery = 0;
         this.targetsAllies = false;
         this.addedEffect = false;
+        this.target = TargetEnum.None;
     }
 
     //todo: terrible idea to maintain this in two places
@@ -78,6 +81,7 @@ export class StatusEffect {
         copy.dotType = this.dotType;
         copy.element = this.element;
         copy.triggersEvery = this.triggersEvery;
+        copy.target = this.target;
 
         return copy;
     }

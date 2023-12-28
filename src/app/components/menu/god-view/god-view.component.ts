@@ -258,6 +258,8 @@ export class GodViewComponent implements OnInit {
         if (increaseValues.resistance > 0)
           rewards += this.utilityService.genericRound(multiplierText !== "" ? increaseValues.resistance * 100 : increaseValues.resistance) + multiplierText + " Resistance " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
 
+        if (increaseValues.duoPermanentEffectiveness > 0)
+          rewards += this.utilityService.genericRound(increaseValues.duoPermanentEffectiveness * 100) + "% Duo Ability Effectiveness " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.xpGain > 0)
           rewards += this.utilityService.genericRound(increaseValues.xpGain * 100) + "% XP Gain " + permanentText + " <span class='obtainableCount'><i>(Can obtain " + remainingAmount + " more " + (remainingAmount === 1 ? "time" : "times") + ")</i></span>, ";
         if (increaseValues.hpRegen > 0)
@@ -599,6 +601,10 @@ export class GodViewComponent implements OnInit {
 
   getMaxHpStatBreakdown() {
     return this.lookupService.getGodMaxHpStatBreakdown(this.god);
+  }
+
+  getDuoEffectivenessBonus() {
+    return this.god.permanentStatGain.duoPermanentEffectiveness;
   }
 
   hasMoreThanOneGod() {
@@ -1097,6 +1103,8 @@ export class GodViewComponent implements OnInit {
       statGainText += this.utilityService.genericRound(upgradedStats.abilityCooldownReduction * 100) + "% Ability Cooldown Reduction, ";
     if (upgradedStats.xpGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.xpGain * 100) + "% XP Gain, ";
+      if (upgradedStats.duoPermanentEffectiveness > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.duoPermanentEffectiveness * 100) + "% Duo Ability Effectiveness, ";
 
     var upgradedAbilityName = this.god.abilityList.find(item => item.requiredLevel === upgradedAbilities.requiredLevel)?.name;
 

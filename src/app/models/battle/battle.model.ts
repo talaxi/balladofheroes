@@ -20,6 +20,7 @@ export class Battle {
     chestRewards: ResourceValue[];
     selectedAltar: AltarInfo | undefined;
     battleDuration: number;
+    firstAbilityUsed: boolean;
 
     activeTournament: ColiseumTournament;
     activeTrial: Trial;
@@ -33,5 +34,6 @@ export class Battle {
         this.battleDuration = 0;
         this.activeTournament = new ColiseumTournament();
         this.activeTrial = new Trial();
+        this.firstAbilityUsed = false;
     }
 }

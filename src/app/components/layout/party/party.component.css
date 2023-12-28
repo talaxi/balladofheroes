@@ -404,6 +404,15 @@ table tr td:nth-child(4n-3) {
 }
 
 @media (max-width: 800px) {
+
+    .duoAbilityImage {
+        width: 8vw;
+    }
+
+    .duoAbility {
+        margin: 17.5% auto;
+    }
+
     .gridContainer {
         grid-template-rows: auto 1fr 1fr;
         justify-content: stretch;
@@ -444,7 +453,7 @@ table tr td:nth-child(4n-3) {
     }
 
     .abilityGrid {
-        height: 96%;        
+        height: 96%;
     }
-    
+
 }

@@ -21,6 +21,8 @@ import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AltarService } from '../altar/altar.service';
 import { ZodiacService } from '../global/zodiac.service';
 import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
+import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model';
+import { DpsCalculatorService } from './dps-calculator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -29,7 +31,7 @@ export class TrialService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private dictionaryService: DictionaryService,
-    private altarService: AltarService, private zodiacService: ZodiacService) { }
+    private altarService: AltarService, private zodiacService: ZodiacService, private dpsCalculatorService: DpsCalculatorService) { }
 
   generateBattleOptions(trial: Trial) {
     var battleOptions: EnemyTeam[] = [];
@@ -347,10 +349,10 @@ export class TrialService {
       enemyOptions.push(BestiaryEnum.Zeus);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Poseidon);
-      if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable)
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Hera);
-      if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable)
-    enemyOptions.push(BestiaryEnum.Aphrodite);
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable)
+      enemyOptions.push(BestiaryEnum.Aphrodite);
 
     enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
@@ -517,9 +519,36 @@ export class TrialService {
 
       //gain affinity for the god
       var affinityXpGain = 200;
+      var xps = this.dpsCalculatorService.calculateXps();
+      var dps = this.dpsCalculatorService.calculatePartyDps();
+      var godLevels = this.getCurrentPartyGodLevels();
+      //if (subZone !== undefined && (subZone.maxXps === undefined || subZone.maxXps < Math.round(xps)))
+        //subZone.maxXps = Math.round(xps);
+
       var godEnum = this.globalService.globalVar.activeBattle.activeTrial.godEnum;
       var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
       if (god !== undefined) {
+        var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type && item.godType === godEnum);
+        if (trialType !== undefined) {
+          trialType.count += 1;
+          if (xps > trialType.highestXps)
+          trialType.highestXps = xps;
+          if (dps > trialType.highestDps)
+          trialType.highestDps = dps;
+          if (godLevels > trialType.highestGodLevelTotal)
+          trialType.highestGodLevelTotal = godLevels;
+          if (this.globalService.globalVar.activeBattle.activeTrial.maxHp > trialType.highestHp) 
+          trialType.highestHp = this.globalService.globalVar.activeBattle.activeTrial.maxHp;
+        }
+        else {
+          var trialDefeatCount = new TrialDefeatCount(type, 1, godEnum);
+          trialDefeatCount.highestXps = xps;
+          trialDefeatCount.highestDps = dps;
+          trialDefeatCount.highestGodLevelTotal = godLevels;
+          trialDefeatCount.highestHp = this.globalService.globalVar.activeBattle.activeTrial.maxHp;
+          this.globalService.globalVar.trialDefeatCount.push(trialDefeatCount);
+        }
+
         god.affinityExp += affinityXpGain;
 
         if (this.globalService.globalVar.gameLogSettings.get("battleXpRewards")) {
@@ -553,5 +582,20 @@ export class TrialService {
 
     //then reset
     this.globalService.globalVar.activeBattle.activeTrial = this.globalService.setNewTrial(true);
+  }
+
+  getCurrentPartyGodLevels() {
+    var activeParty = this.globalService.getActivePartyCharacters(true);    
+    var totalGodLevels = 0;
+
+    for (var i = 0; i < activeParty.length; i++) {      
+      var god1 = this.globalService.globalVar.gods.find(item => item.type === activeParty[i].assignedGod1);
+      var god2 = this.globalService.globalVar.gods.find(item => item.type === activeParty[i].assignedGod2);
+      var god1Level = god1 === undefined ? 0 : god1.level;
+      var god2Level = god2 === undefined ? 0 : god2.level;
+      totalGodLevels += god1Level + god2Level;
+    }
+
+    return totalGodLevels;
   }
 }

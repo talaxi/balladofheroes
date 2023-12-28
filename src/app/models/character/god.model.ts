@@ -48,6 +48,7 @@ export class God {
     affinityExp: number;
     affinityExpToNextLevel: number;
     displayOrder: number;
+    duoAbilityAccess: boolean;
 
     constructor(type: GodEnum) {
         this.type = type;
@@ -83,6 +84,7 @@ export class God {
         this.affinityExp = 0;
         this.affinityExpToNextLevel = 5;
         this.displayOrder = 0;
+        this.duoAbilityAccess = false;
     }
 
     private getGainModifier(type: GodEnum) {

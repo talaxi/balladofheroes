@@ -522,8 +522,77 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
       return new ResourceValue(ItemsEnum.DarkMoonPendantUniqueUpgrade, amount);
     }
-    if (type === ItemsEnum.DuoAbilityAccess) {
-      return new ResourceValue(ItemsEnum.DuoAbilityAccess, amount);
+    if (type === ItemsEnum.AthenasCrest) {
+      return new ResourceValue(ItemsEnum.AthenasCrest, amount);
+    }
+    if (type === ItemsEnum.ArtemissCrest) {
+      return new ResourceValue(ItemsEnum.ArtemissCrest, amount);
+    }
+    if (type === ItemsEnum.HermessCrest) {
+      return new ResourceValue(ItemsEnum.HermessCrest, amount);
+    }
+    if (type === ItemsEnum.ApollosCrest) {
+      return new ResourceValue(ItemsEnum.ApollosCrest, amount);
+    }
+    if (type === ItemsEnum.AressCrest) {
+      return new ResourceValue(ItemsEnum.AressCrest, amount);
+    }
+    if (type === ItemsEnum.HadessCrest) {
+      return new ResourceValue(ItemsEnum.HadessCrest, amount);
+    }
+    if (type === ItemsEnum.NemesissCrest) {
+      return new ResourceValue(ItemsEnum.NemesissCrest, amount);
+    }
+    if (type === ItemsEnum.DionysussCrest) {
+      return new ResourceValue(ItemsEnum.DionysussCrest, amount);
+    }
+    if (type === ItemsEnum.ZeussCrest) {
+      return new ResourceValue(ItemsEnum.ZeussCrest, amount);
+    }
+    if (type === ItemsEnum.PoseidonsCrest) {
+      return new ResourceValue(ItemsEnum.PoseidonsCrest, amount);
+    }
+    if (type === ItemsEnum.AphroditesCrest) {
+      return new ResourceValue(ItemsEnum.AphroditesCrest, amount);
+    }
+    if (type === ItemsEnum.HerasCrest) {
+      return new ResourceValue(ItemsEnum.HerasCrest, amount);
+    }
+    if (type === ItemsEnum.AthenasSigil) {
+      return new ResourceValue(ItemsEnum.AthenasSigil, amount);
+    }
+    if (type === ItemsEnum.ArtemissSigil) {
+      return new ResourceValue(ItemsEnum.ArtemissSigil, amount);
+    }
+    if (type === ItemsEnum.HermessSigil) {
+      return new ResourceValue(ItemsEnum.HermessSigil, amount);
+    }
+    if (type === ItemsEnum.ApollosSigil) {
+      return new ResourceValue(ItemsEnum.ApollosSigil, amount);
+    }
+    if (type === ItemsEnum.AressSigil) {
+      return new ResourceValue(ItemsEnum.AressSigil, amount);
+    }
+    if (type === ItemsEnum.HadessSigil) {
+      return new ResourceValue(ItemsEnum.HadessSigil, amount);
+    }
+    if (type === ItemsEnum.NemesissSigil) {
+      return new ResourceValue(ItemsEnum.NemesissSigil, amount);
+    }
+    if (type === ItemsEnum.DionysussSigil) {
+      return new ResourceValue(ItemsEnum.DionysussSigil, amount);
+    }
+    if (type === ItemsEnum.ZeussSigil) {
+      return new ResourceValue(ItemsEnum.ZeussSigil, amount);
+    }
+    if (type === ItemsEnum.PoseidonsSigil) {
+      return new ResourceValue(ItemsEnum.PoseidonsSigil, amount);
+    }
+    if (type === ItemsEnum.AphroditesSigil) {
+      return new ResourceValue(ItemsEnum.AphroditesSigil, amount);
+    }
+    if (type === ItemsEnum.HerasSigil) {
+      return new ResourceValue(ItemsEnum.HerasSigil, amount);
     }
     if (type === ItemsEnum.ScathingBeautyEpic) {
       return new ResourceValue(ItemsEnum.ScathingBeautyEpic, amount);

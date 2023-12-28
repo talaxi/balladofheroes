@@ -480,7 +480,7 @@ export class GlobalService {
       blindingLight.name = "Blinding Light";
       blindingLight.requiredLevel = this.utilityService.godAbility3Level;
       blindingLight.isAvailable = false;
-      blindingLight.cooldown = blindingLight.currentCooldown = 51;
+      blindingLight.cooldown = blindingLight.currentCooldown = 46;
       blindingLight.isAoe = true;
       blindingLight.dealsDirectDamage = true;
       blindingLight.effectiveness = 1;
@@ -1076,7 +1076,13 @@ export class GlobalService {
       type === StatusEffectEnum.Strut || type === StatusEffectEnum.Espionage || type === StatusEffectEnum.PassionateRhythmAutoAttack || type === StatusEffectEnum.PassionateRhythm ||
       type === StatusEffectEnum.Shapeshift || type === StatusEffectEnum.Slow || type === StatusEffectEnum.BoundingBand || type === StatusEffectEnum.BoundingBandUnique ||
       type === StatusEffectEnum.ScathingBeauty || type === StatusEffectEnum.ScathingBeautyUnique || type === StatusEffectEnum.Leo  || type === StatusEffectEnum.PalmStrike ||
-      type === StatusEffectEnum.DivineRetribution || type === StatusEffectEnum.ReduceNextAbilityCooldown)
+      type === StatusEffectEnum.DivineRetribution || type === StatusEffectEnum.ReduceNextAbilityCooldown || type === StatusEffectEnum.ThunderousMelody || type === StatusEffectEnum.PassingJudgment ||
+      type === StatusEffectEnum.WindAttacks || type === StatusEffectEnum.BetterTogether || type === StatusEffectEnum.PureSpeed || type === StatusEffectEnum.LightningAttacks ||
+      type === StatusEffectEnum.ShieldingAttacks || type === StatusEffectEnum.BleedingAttacks || type === StatusEffectEnum.CleansingShots || type === StatusEffectEnum.LuckyShots || 
+      type === StatusEffectEnum.DiscordantMelody || type === StatusEffectEnum.Flood || type === StatusEffectEnum.WildJudgment || type === StatusEffectEnum.StaggeringRiposte || type === StatusEffectEnum.ThunderousRiposte || 
+      type === StatusEffectEnum.CaringGaze || type === StatusEffectEnum.MelodicMoves || type === StatusEffectEnum.BlisteringRiposte || type === StatusEffectEnum.RecedingTide || 
+      type === StatusEffectEnum.WarAndLove || type === StatusEffectEnum.AllPrimaryStatsDown || type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || type === StatusEffectEnum.FieryJudgment ||
+      type === StatusEffectEnum.Protector || type === StatusEffectEnum.LovingEmbrace || type === StatusEffectEnum.DefensiveShapeshifting)
       refreshes = true;
 
     return refreshes;
@@ -1117,7 +1123,7 @@ export class GlobalService {
       type === StatusEffectEnum.Dead || type === StatusEffectEnum.ElixirOfFortitude || type === StatusEffectEnum.ElixirOfSpeed ||
       type === StatusEffectEnum.HeroicElixir || type === StatusEffectEnum.RejuvenatingElixir || type === StatusEffectEnum.ElixirOfFortune ||
       type === StatusEffectEnum.SandToxin || type === StatusEffectEnum.ElectrifiedToxin || type === StatusEffectEnum.MagicToxin ||
-      type === StatusEffectEnum.DispenserOfDues)
+      type === StatusEffectEnum.DispenserOfDues || type === StatusEffectEnum.Shapeshift)
       persistsDeath = true;
 
     if (effect.resolution === EffectResolutionEnum.AlwaysActiveEquipment)
@@ -2223,7 +2229,7 @@ export class GlobalService {
       if (ability.abilityUpgradeLevel % 5 === 0 && ability.abilityUpgradeLevel <= 100)
         targetGainsEffect.duration += .25;
       else
-        targetGainsEffect.effectiveness += .025;
+        targetGainsEffect.effectiveness += .015;
     }
     else if (god.type === GodEnum.Hades) {
       //every 10 upgrades until level 100, reduce cooldown
@@ -2903,8 +2909,8 @@ export class GlobalService {
           stats.maxHp += this.utilityService.genericRound(Math.ceil((godLevel - 3000) / 50) / 733.33333);
         }
       }
-      else if (godLevel % 50 === 0) {
-        //TODO: handle duo abilities
+      else if (godLevel % 50 === 0) {        
+        stats.duoPermanentEffectiveness += 1;
       }
     }
     else if (godLevel > 4000) {
@@ -2955,7 +2961,7 @@ export class GlobalService {
         else if (god.type === GodEnum.Ares) {
           ability.targetEffect.push(new StatusEffect(StatusEffectEnum.None));
           var targetGainsEffect = ability.targetEffect[0];
-          targetGainsEffect.effectiveness = .1;
+          targetGainsEffect.effectiveness = .025;
         }
         else if (god.type === GodEnum.Hades) {
           ability.effectiveness += .2;
@@ -3379,8 +3385,7 @@ export class GlobalService {
         god.partyPermanentStatMultiplier.luck += upgradedStats.luck;
         god.partyPermanentStatMultiplier.resistance += upgradedStats.resistance;
       }
-      else if (god.level % 50 === 0) {
-        //TODO: do what needs to be done here for duo abilities
+      else if (god.level % 50 === 0) {        
         var matchingCount = god.permanentDuoAbilityGainCount.find(item => item[0] === god.level);
         if (matchingCount === undefined)
           god.permanentDuoAbilityGainCount.push([god.level, 1]);
@@ -3391,7 +3396,7 @@ export class GlobalService {
           return;
       }
 
-      god.permanentStatGain = this.roundCharacterStats(god.permanentStatGain);
+      god.permanentStatGain.duoPermanentEffectiveness += upgradedStats.duoPermanentEffectiveness;
     }
     else if (god.level > 4000) {
       if (god.level % 50 === 0) {
@@ -3765,6 +3770,8 @@ export class GlobalService {
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Surge);
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DamageOverTime && item.abilityName !== "Strangle");
       member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.RepeatDamageAfterDelay);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PassionateRhythmAutoAttack);
+      member.battleInfo.statusEffects = member.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.PassionateRhythm);
 
       var shapeshift = member.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Shapeshift);
       if (shapeshift !== undefined) {
@@ -4628,6 +4635,7 @@ export class GlobalService {
     copy.dotType = effect.dotType;
     copy.element = effect.element;
     copy.triggersEvery = effect.triggersEvery;
+    copy.target = effect.target;
 
     return copy;
   }
