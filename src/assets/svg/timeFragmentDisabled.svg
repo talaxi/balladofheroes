@@ -6,7 +6,7 @@
    version="1.1"
    id="svg61"
    inkscape:version="1.2.2 (732a01da63, 2022-12-09)"
-   sodipodi:docname="timeFragment.svg"
+   sodipodi:docname="timeFragmentDisabled.svg"
    xmlns:inkscape="http://www.inkscape.org/namespaces/inkscape"
    xmlns:sodipodi="http://sodipodi.sourceforge.net/DTD/sodipodi-0.dtd"
    xmlns="http://www.w3.org/2000/svg"
@@ -24,8 +24,8 @@
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
      inkscape:zoom="0.53033008"
-     inkscape:cx="666.566"
-     inkscape:cy="736.33387"
+     inkscape:cx="494.97475"
+     inkscape:cy="534.57273"
      inkscape:document-units="mm"
      inkscape:current-layer="layer3"
      inkscape:document-rotation="0"
@@ -39,7 +39,13 @@
      inkscape:showpageshadow="2"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     showguides="true" />
+     showguides="true">
+    <sodipodi:guide
+       position="87.806949,255.59762"
+       orientation="0,-1"
+       id="guide157578"
+       inkscape:locked="false" />
+  </sodipodi:namedview>
   <metadata
      id="metadata58">
     <rdf:RDF>
@@ -61,13 +67,9 @@
      inkscape:label="Layer 2"
      style="display:inline">
     <path
-       style="fill:#2e8f57;fill-opacity:1;stroke:none;stroke-width:1.49016;stroke-dasharray:none;stroke-opacity:1"
-       d="M 190.96006,44.671698 75.078833,121.95961 114.42356,254.95399 Z"
-       id="path150757" />
-    <path
-       style="display:inline;fill:#3b8258;fill-opacity:1;stroke:none;stroke-width:1.49016;stroke-dasharray:none;stroke-opacity:1"
-       d="m 190.48885,44.402 39.09043,133.69298 -115.62692,76.5893 z"
-       id="path150757-7" />
+       id="path150757"
+       style="fill:#cccccc;fill-opacity:1;stroke:none;stroke-width:1.49017;stroke-dasharray:none;stroke-opacity:1"
+       d="M 189.95946 44.402458 L 189.33935 46.105713 L 75.607788 121.96 L 114.223 252.48743 L 113.42305 254.68471 L 114.63538 253.88166 L 114.95267 254.95446 L 115.56814 253.26413 L 229.0501 178.09559 L 190.68448 46.88241 L 191.48909 44.672209 L 190.27521 45.481978 L 189.95946 44.402458 z " />
   </g>
   <g
      inkscape:groupmode="layer"

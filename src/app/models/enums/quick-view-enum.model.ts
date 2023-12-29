@@ -8,5 +8,6 @@ export enum QuickViewEnum {
     ItemBelt,
     GameText,
     Jewelcrafting,
-    Calculators
+    Calculators,
+    TimeFragment
   }

@@ -300,6 +300,7 @@ export class InitializationService {
     this.globalService.globalVar.settings.set("displayQuickViewAltars", true);
     this.globalService.globalVar.settings.set("displayQuickViewAlchemy", true);
     this.globalService.globalVar.settings.set("displayQuickViewJewelcrafting", true);
+    this.globalService.globalVar.settings.set("displayQuickViewTimeFragment", true);
 
     if (this.deviceDetectorService.isMobile()) {
       this.globalService.globalVar.settings.set("displayOverlayTutorials", true);
@@ -377,6 +378,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("openResourcesQuickView", "keyR");
     this.globalService.globalVar.keybinds.set("openAlchemyQuickView", "keyH");
     this.globalService.globalVar.keybinds.set("openJewelcraftingQuickView", "keyJ");
+    this.globalService.globalVar.keybinds.set("openTimeFragmentQuickView", "keyF");
     this.globalService.globalVar.keybinds.set("openAltarsQuickView", "keyA");
 
     this.globalService.globalVar.keybinds.set("toggleAllCharactersTargetMode", this.keybindService.altKeyBind + "keyT");
@@ -394,6 +396,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("useCharacter1God2Ability2", "digit8");
     this.globalService.globalVar.keybinds.set("useCharacter1God2Ability3", "digit9");
     this.globalService.globalVar.keybinds.set("useCharacter1Overdrive", "digit0");
+    this.globalService.globalVar.keybinds.set("useCharacter1DuoAbility", "keyG");
 
     this.globalService.globalVar.keybinds.set("autoToggleCharacter1AutoAttack", this.keybindService.altKeyBind + "digit1");
     this.globalService.globalVar.keybinds.set("autoToggleCharacter1Ability1", this.keybindService.altKeyBind + "digit2");
@@ -417,6 +420,7 @@ export class InitializationService {
     this.globalService.globalVar.keybinds.set("useCharacter2God2Ability2", this.keybindService.shiftKeyBind + "digit8");
     this.globalService.globalVar.keybinds.set("useCharacter2God2Ability3", this.keybindService.shiftKeyBind + "digit9");
     this.globalService.globalVar.keybinds.set("useCharacter2Overdrive", this.keybindService.shiftKeyBind + "digit0");
+    this.globalService.globalVar.keybinds.set("useCharacter2DuoAbility", this.keybindService.shiftKeyBind + "keyG");
 
     this.globalService.globalVar.keybinds.set("autoToggleCharacter2AutoAttack", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit1");
     this.globalService.globalVar.keybinds.set("autoToggleCharacter2Ability1", this.keybindService.shiftKeyBind + this.keybindService.altKeyBind + "digit2");
@@ -513,6 +517,7 @@ export class InitializationService {
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.RadiatingGemstone, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.WhiteHorn, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.Nectar, 100));
+    this.lookupService.gainResource(new ResourceValue(ItemsEnum.TimeFragment, 1));
 
     /*this.lookupService.gainResource(new ResourceValue(ItemsEnum.ParalyzingToxin, 100));
     this.lookupService.gainResource(new ResourceValue(ItemsEnum.FlamingToxin, 100));
@@ -871,7 +876,7 @@ export class InitializationService {
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.GoldenApple, 25));
       this.lookupService.gainResource(new ResourceValue(ItemsEnum.Ambrosia, 1000));
       this.globalService.globalVar.sidequestData.goldenApplesObtained = 25;
-      this.globalService.globalVar.sidequestData.duosUnlocked = true;
+      //this.globalService.globalVar.sidequestData.duosUnlocked = true;
 
       this.globalService.globalVar.chthonicPowers.attackBoostLevel = 10;
       this.globalService.globalVar.chthonicPowers.defenseBoostLevel = 10;
@@ -1499,6 +1504,7 @@ export class InitializationService {
     zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLabyrinthCenter));
     zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthRightFork));
     zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthSolidWall4));
+    zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthCloakedStranger));
     zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthRightPath));
     zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLongPassage1));
     zone2.subzones.push(new SubZone(SubZoneEnum.TheLabyrinthLongPassage2));

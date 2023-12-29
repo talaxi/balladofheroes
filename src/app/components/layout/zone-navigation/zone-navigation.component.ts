@@ -65,6 +65,7 @@ export class ZoneNavigationComponent implements OnInit {
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
   displayQuickViewJewelcrafting: boolean;
+  displayQuickViewTimeFragment: boolean;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -87,6 +88,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.displayQuickViewAltars = this.globalService.globalVar.settings.get("displayQuickViewAltars") ?? false;
     this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
     this.displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting") ?? false;
+    this.displayQuickViewTimeFragment = this.globalService.globalVar.settings.get("displayQuickViewTimeFragment") ?? true;
 
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
@@ -442,6 +444,8 @@ export class ZoneNavigationComponent implements OnInit {
       name = "Resources ";
     if (this.quickView === QuickViewEnum.Overview)
       name = "Overview ";
+      if (this.quickView === QuickViewEnum.TimeFragment)
+      name = "Time Fragment ";
 
     return name;
   }
@@ -452,6 +456,10 @@ export class ZoneNavigationComponent implements OnInit {
 
   isJewelcraftingAvailable() {
     return this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)?.isUnlocked;
+  }
+  
+  isTimeFragmentAvailable() {
+    return this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.TimeFragment);
   }
 
   areAltarsAvailable() {
@@ -511,6 +519,10 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.globalService.globalVar.altars.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAltarsQuickView"))) {
       this.setQuickView(QuickViewEnum.Altars);
       this.globalService.globalVar.altars.showNewNotification = false;
+    }
+
+    if (this.isTimeFragmentAvailable() && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openTimeFragmentQuickView"))) {
+      this.setQuickView(QuickViewEnum.TimeFragment);
     }
 
     this.globalService.globalVar.settings.set("activeOverview", this.quickView);

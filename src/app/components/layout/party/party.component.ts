@@ -477,7 +477,15 @@ export class PartyComponent implements OnInit {
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("useCharacter1Overdrive"))) {
       this.party[0].overdriveInfo.manuallyTriggered = true;
     }
+    
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("useCharacter1DuoAbility"))) {
+      this.triggerDuo(this.party[0]);
+    }
 
+    
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("useCharacter2DuoAbility"))) {
+      this.triggerDuo(this.party[1]);
+    }
 
     if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("autoToggleCharacter1AutoAttack"))) {
       this.party[0].battleInfo.autoAttackAutoMode = !this.party[0].battleInfo.autoAttackAutoMode;
@@ -732,8 +740,62 @@ export class PartyComponent implements OnInit {
       return "AVAILABLE";
   }
 
-  isDuoAvailable() {
-    return this.globalService.globalVar.sidequestData.duosUnlocked;
+  isDuoAvailable(character: Character) {
+    var god1ConditionMet = false;
+    var god2ConditionMet = false;
+    var gods = [];
+    gods.push(character.assignedGod1);
+    gods.push(character.assignedGod2);
+    if (gods.length < 2)
+      return false;
+
+    for (var i = 0; i < gods.length; i++) {
+      var conditionMet = false;
+
+      if (gods[i] === GodEnum.Athena && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Artemis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hermes && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Apollo && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Ares && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hades && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Nemesis && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Dionysus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Zeus && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Poseidon && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Aphrodite && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil && item.amount > 0))
+        conditionMet = true;
+      if (gods[i] === GodEnum.Hera && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasCrest && item.amount > 0) &&
+        this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil && item.amount > 0))
+        conditionMet = true;
+
+      if (i === 0)
+        god1ConditionMet = conditionMet;
+      else if (i === 1)
+        god2ConditionMet = conditionMet;
+    }
+
+    return god1ConditionMet && god2ConditionMet;
   }
 
   getDuoSource(character: Character) {
@@ -770,125 +832,125 @@ export class PartyComponent implements OnInit {
     if (gods.some(item => item === GodEnum.Athena) && gods.some(item => item === GodEnum.Aphrodite))
       src += "athenaAphroditeDuo.svg";
 
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hermes))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hermes))
       src += "hermesArtemisDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Apollo))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Apollo))
       src += "artemisApolloDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Ares))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Ares))
       src += "artemisAresDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hades))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hades))
       src += "hadesArtemisDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Dionysus))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Dionysus))
       src += "dionysusArtemisDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Nemesis))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Nemesis))
       src += "artemisNemesisDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Zeus))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Zeus))
       src += "artemisZeusDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Poseidon))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Poseidon))
       src += "poseidonArtemisDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hera))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Hera))
       src += "heraArtemisDuo.svg";
-      if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Aphrodite))
+    if (gods.some(item => item === GodEnum.Artemis) && gods.some(item => item === GodEnum.Aphrodite))
       src += "aphroditeArtemisDuo.svg";
 
     if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Apollo))
       src += "hermesApolloDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Ares))
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Ares))
       src += "hermesAresDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hades))
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hades))
       src += "hermesHadesDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Dionysus))
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Dionysus))
       src += "dionysusHermesDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Nemesis))
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Nemesis))
       src += "hermesNemesisDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Zeus))
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Zeus))
       src += "zeusHermesDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Poseidon))
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Poseidon))
       src += "hermesPoseidonDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hera))
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Hera))
       src += "hermesHeraDuo.svg";
-      if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "aphroditeHermesDuo.svg";    
-    
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hades))
-      src += "apolloHadesDuo.svg";  
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Ares))
-      src += "aresApolloDuo.svg";  
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Dionysus))
-      src += "dionysusApolloDuo.svg";  
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Nemesis))
-      src += "nemesisApolloDuo.svg";  
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Zeus))
-      src += "zeusApolloDuo.svg";  
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Poseidon))
-      src += "apolloPoseidonDuo.svg";  
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "aphroditeApolloDuo.svg";  
-      if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hera))
-      src += "apolloHeraDuo.svg";  
-  
-      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Ares))
-      src += "hadesAresDuo.svg";  
-      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Dionysus))
-      src += "dionysusHadesDuo.svg";  
-      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Nemesis))
-      src += "hadesNemesisDuo.svg";  
-      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Zeus))
-      src += "zeusHadesDuo.svg";  
-      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Poseidon))
-      src += "poseidonAresDuo.svg";  
-      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "hadesAphroditeDuo.svg";  
-      if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Hera))
-      src += "hadesHeraDuo.svg";  
+    if (gods.some(item => item === GodEnum.Hermes) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeHermesDuo.svg";
 
-      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Dionysus))
-      src += "dionysusAresDuo.svg";  
-      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Nemesis))
-      src += "aresNemesisDuo.svg";  
-      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Zeus))
-      src += "zeusAresDuo.svg";  
-      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Poseidon))
-      src += "poseidonAresDuo.svg";  
-      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "aphroditeAresDuo.svg";  
-      if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Hera))
-      src += "aresHeraDuo.svg";  
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hades))
+      src += "apolloHadesDuo.svg";
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Ares))
+      src += "aresApolloDuo.svg";
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusApolloDuo.svg";
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Nemesis))
+      src += "nemesisApolloDuo.svg";
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusApolloDuo.svg";
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Poseidon))
+      src += "apolloPoseidonDuo.svg";
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeApolloDuo.svg";
+    if (gods.some(item => item === GodEnum.Apollo) && gods.some(item => item === GodEnum.Hera))
+      src += "apolloHeraDuo.svg";
 
-      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Nemesis))
-      src += "nemesisDionysusDuo.svg";  
-      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Zeus))
-      src += "dionysusZeusDuo.svg";  
-      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Poseidon))
-      src += "poseidonDionysusDuo.svg";  
-      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "aphroditeDionysusDuo.svg";  
-      if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Hera))
-      src += "heraDionysusDuo.svg";  
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Ares))
+      src += "hadesAresDuo.svg";
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusHadesDuo.svg";
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Nemesis))
+      src += "hadesNemesisDuo.svg";
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusHadesDuo.svg";
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonAresDuo.svg";
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "hadesAphroditeDuo.svg";
+    if (gods.some(item => item === GodEnum.Hades) && gods.some(item => item === GodEnum.Hera))
+      src += "hadesHeraDuo.svg";
 
-      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Zeus))
-      src += "nemesisZeusDuo.svg";  
-      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Poseidon))
-      src += "nemesisPoseidonDuo.svg";  
-      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "aphroditeNemesisDuo.svg";  
-      if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Hera))
-      src += "nemesisHeraDuo.svg";  
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Dionysus))
+      src += "dionysusAresDuo.svg";
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Nemesis))
+      src += "aresNemesisDuo.svg";
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Zeus))
+      src += "zeusAresDuo.svg";
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonAresDuo.svg";
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeAresDuo.svg";
+    if (gods.some(item => item === GodEnum.Ares) && gods.some(item => item === GodEnum.Hera))
+      src += "aresHeraDuo.svg";
 
-      if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Poseidon))
-      src += "poseidonZeusDuo.svg";  
-      if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "zeusAphroditeDuo.svg";  
-      if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Hera))
-      src += "zeusHeraDuo.svg"; 
-    
-      if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Aphrodite))
-      src += "aphroditePoseidonDuo.svg";  
-      if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Hera))
-      src += "heraPoseidonDuo.svg"; 
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Nemesis))
+      src += "nemesisDionysusDuo.svg";
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Zeus))
+      src += "dionysusZeusDuo.svg";
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonDionysusDuo.svg";
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeDionysusDuo.svg";
+    if (gods.some(item => item === GodEnum.Dionysus) && gods.some(item => item === GodEnum.Hera))
+      src += "heraDionysusDuo.svg";
 
-      if (gods.some(item => item === GodEnum.Aphrodite) && gods.some(item => item === GodEnum.Hera))
-      src += "aphroditeHeraDuo.svg"; 
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Zeus))
+      src += "nemesisZeusDuo.svg";
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Poseidon))
+      src += "nemesisPoseidonDuo.svg";
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditeNemesisDuo.svg";
+    if (gods.some(item => item === GodEnum.Nemesis) && gods.some(item => item === GodEnum.Hera))
+      src += "nemesisHeraDuo.svg";
+
+    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Poseidon))
+      src += "poseidonZeusDuo.svg";
+    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "zeusAphroditeDuo.svg";
+    if (gods.some(item => item === GodEnum.Zeus) && gods.some(item => item === GodEnum.Hera))
+      src += "zeusHeraDuo.svg";
+
+    if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Aphrodite))
+      src += "aphroditePoseidonDuo.svg";
+    if (gods.some(item => item === GodEnum.Poseidon) && gods.some(item => item === GodEnum.Hera))
+      src += "heraPoseidonDuo.svg";
+
+    if (gods.some(item => item === GodEnum.Aphrodite) && gods.some(item => item === GodEnum.Hera))
+      src += "aphroditeHeraDuo.svg";
 
     if (src === "assets/svg/")
       src += "inactiveDuo.svg";
@@ -936,8 +998,8 @@ export class PartyComponent implements OnInit {
     return "<span class='bold smallCaps " + god.name.toLowerCase() + "Color'>" + god.name + ":</span> " + this.utilityService.bigNumberReducer(breakdown);
   }
 
-  triggerDuo(character: Character) {    
-    if (!this.isDuoAvailable() || character.battleInfo.duoAbilityUsed)
+  triggerDuo(character: Character) {
+    if (!this.isDuoAvailable(character) || character.battleInfo.duoAbilityUsed)
       return;
 
     this.battleService.useDuoAbility(character);

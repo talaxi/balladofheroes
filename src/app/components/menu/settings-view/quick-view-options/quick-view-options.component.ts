@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 
 @Component({
@@ -18,10 +19,12 @@ export class QuickViewOptionsComponent {
   displayQuickViewAlchemy: boolean;
   displayQuickViewJewelcrafting: boolean;
   displayQuickViewCalculators: boolean;
+  displayQuickViewTimeFragment: boolean;
 
   altarsUnlocked = false;
   alchemyUnlocked = false;
   jewelcraftingUnlocked = false;
+  timeFragmentsUnlocked = false;
 
   constructor(private globalService: GlobalService, private deviceDetectorService: DeviceDetectorService) {
 
@@ -34,6 +37,7 @@ export class QuickViewOptionsComponent {
     this.alchemyUnlocked = alchemy !== undefined && alchemy.isUnlocked;
     var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
     this.jewelcraftingUnlocked = jewelcrafting !== undefined && jewelcrafting.isUnlocked;
+    this.timeFragmentsUnlocked = this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.TimeFragment);
 
     var displayQuickViewOverview = this.globalService.globalVar.settings.get("displayQuickViewOverview");    
     if (displayQuickViewOverview === undefined)
@@ -82,6 +86,12 @@ export class QuickViewOptionsComponent {
           this.displayQuickViewCalculators = false;
         else
           this.displayQuickViewCalculators = displayQuickViewCalculators;
+        
+          var displayQuickViewTimeFragment = this.globalService.globalVar.settings.get("displayQuickViewTimeFragment");
+          if (displayQuickViewTimeFragment === undefined)
+            this.displayQuickViewTimeFragment = false;
+          else
+            this.displayQuickViewTimeFragment = displayQuickViewTimeFragment;
   }
 
   displayQuickViewOverviewToggle() {
@@ -114,5 +124,9 @@ export class QuickViewOptionsComponent {
 
   displayQuickViewCalculatorsToggle() {    
     this.globalService.globalVar.settings.set("displayQuickViewCalculators", this.displayQuickViewCalculators);
+  }
+  
+  displayQuickViewTimeFragmentToggle() {    
+    this.globalService.globalVar.settings.set("displayQuickViewTimeFragment", this.displayQuickViewTimeFragment);
   }
 }

@@ -122,6 +122,8 @@ import { TutorialBoxComponent } from './components/subcomponents/utility/tutoria
 import { CalculatorOverviewComponent } from './components/layout/zone-navigation/calculator-overview/calculator-overview.component';
 import { UpdateAltarAutoComponent } from './components/menu/settings-view/update-altar-auto/update-altar-auto.component';
 import { OpenShopViewComponent } from './components/layout/zone-navigation/open-shop-view/open-shop-view.component';
+import { TimeFragmentOverviewComponent } from './components/layout/zone-navigation/time-fragment-overview/time-fragment-overview.component';
+import { TimeFragmentViewComponent } from './components/subcomponents/time-fragment-view/time-fragment-view.component';
 
 @NgModule({
   declarations: [
@@ -208,7 +210,9 @@ import { OpenShopViewComponent } from './components/layout/zone-navigation/open-
     TutorialBoxComponent,
     CalculatorOverviewComponent,
     UpdateAltarAutoComponent,
-    OpenShopViewComponent,    
+    OpenShopViewComponent,
+    TimeFragmentOverviewComponent,
+    TimeFragmentViewComponent,    
   ],
   imports: [
     BrowserModule,

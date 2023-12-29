@@ -383,7 +383,13 @@ export class LookupService {
 
     if (type === ItemsEnum.BoonOfOlympus || type === ItemsEnum.ChthonicFavor || type === ItemsEnum.ChthonicPower || type === ItemsEnum.UnderworldAccess ||
       type === ItemsEnum.ChthonicFavorUpgrade1 || type === ItemsEnum.ChthonicFavorUpgrade2 || type === ItemsEnum.GoldenApple || type === ItemsEnum.Ambrosia ||
-      type === ItemsEnum.OlympicCommendation || type === ItemsEnum.DarkOrb)
+      type === ItemsEnum.OlympicCommendation || type === ItemsEnum.DarkOrb || type === ItemsEnum.AthenasCrest || type === ItemsEnum.AthenasSigil
+      || type === ItemsEnum.ArtemissCrest || type === ItemsEnum.ArtemissSigil || type === ItemsEnum.HermessCrest || type === ItemsEnum.HermessSigil
+      || type === ItemsEnum.ApollosCrest || type === ItemsEnum.ApollosSigil || type === ItemsEnum.HadessCrest || type === ItemsEnum.HadessSigil
+      || type === ItemsEnum.AressCrest || type === ItemsEnum.AressSigil || type === ItemsEnum.NemesissCrest || type === ItemsEnum.NemesissSigil
+      || type === ItemsEnum.DionysussCrest || type === ItemsEnum.DionysussSigil || type === ItemsEnum.ZeussCrest || type === ItemsEnum.ZeussSigil
+      || type === ItemsEnum.PoseidonsCrest || type === ItemsEnum.PoseidonsSigil || type === ItemsEnum.AphroditesCrest || type === ItemsEnum.AphroditesSigil
+      || type === ItemsEnum.HerasCrest || type === ItemsEnum.HerasSigil || type === ItemsEnum.TimeFragment)
       return ItemTypeEnum.Progression;
 
     return ItemTypeEnum.None;
@@ -613,8 +619,56 @@ export class LookupService {
       name = "+1 Unique XP";
     //else if (type === ItemsEnum.DuoAbilityAccess)
       //name = "Gain access to Duo abilities. When both equipped gods have an affinity level of 20 or greater, you can cast their unique Duo ability. <br/><i>This will eventually be accessible through a sidequest but for now can be purchased freely</i>";
-    else if (type == ItemsEnum.Ambrosia)
+    else if (type === ItemsEnum.Ambrosia)
       name = "Favored food of the gods. Use to buy special items and upgrades from the Olympic Favor menu.";
+    else if (type === ItemsEnum.AthenasCrest)
+      name = "Won from Athena in the Trial of Skill. When combined with Athena's Sigil, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.AthenasSigil)
+      name = "Purchased from a cloaked stranger. When combined with Athena's Crest, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.ArtemissCrest)
+      name = "Won from Artemis in the Trial of Skill. When combined with Artemis's Sigil, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.ArtemissSigil)
+      name = "Purchased from a cloaked stranger. When combined with Artemis's Crest, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.HermessCrest)
+      name = "Won from Hermes in the Trial of Skill. When combined with Hermes's Sigil, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.HermessSigil)
+      name = "Purchased from a cloaked stranger. When combined with Hermes's Crest, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.ApollosCrest)
+      name = "Won from Apollo in the Trial of Skill. When combined with Apollo's Sigil, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.ApollosSigil)
+      name = "Purchased from a cloaked stranger. When combined with Apollo's Crest, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.AressCrest)
+      name = "Won from Ares in the Trial of Skill. When combined with Ares's Sigil, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.AressSigil)
+      name = "Purchased from a cloaked stranger. When combined with Ares's Crest, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.HadessCrest)
+      name = "Won from Hades in the Trial of Skill. When combined with Hades's Sigil, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.HadessSigil)
+      name = "Purchased from a cloaked stranger. When combined with Hades's Crest, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.DionysussCrest)
+      name = "Won from Dionysus in the Trial of Skill. When combined with Dionysus's Sigil, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.DionysussSigil)
+      name = "Purchased from a cloaked stranger. When combined with Dionysus's Crest, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.NemesissCrest)
+      name = "Won from Nemesis in the Trial of Skill. When combined with Nemesis's Sigil, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.NemesissSigil)
+      name = "Purchased from a cloaked stranger. When combined with Nemesis's Crest, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.ZeussCrest)
+      name = "Won from Zeus in the Trial of Skill. When combined with Zeus's Sigil, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.ZeussSigil)
+      name = "Purchased from a cloaked stranger. When combined with Zeus's Crest, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.PoseidonsCrest)
+      name = "Won from Poseidon in the Trial of Skill. When combined with Poseidon's Sigil, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.PoseidonsSigil)
+      name = "Purchased from a cloaked stranger. When combined with Poseidon's Crest, this grants you access to his Duo ability when he is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.AphroditesCrest)
+      name = "Won from Aphrodite in the Trial of Skill. When combined with Aphrodite's Sigil, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.AphroditesSigil)
+      name = "Purchased from a cloaked stranger. When combined with Aphrodite's Crest, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.HerasCrest)
+      name = "Won from Hera in the Trial of Skill. When combined with Hera's Sigil, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
+      else if (type === ItemsEnum.HerasSigil)
+      name = "Purchased from a cloaked stranger. When combined with Hera's Crest, this grants you access to her Duo ability when she is equipped. Your other equipped god must also have their Crest and Sigil before the Duo ability will be available.";
 
     return name;
   }
@@ -8805,6 +8859,26 @@ export class LookupService {
       description = "Clear 'Trial of Skill - Athena' 10 times";
     if (type === AchievementTypeEnum.TenVictoriesArtemis)
       description = "Clear 'Trial of Skill - Artemis' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesHermes)
+      description = "Clear 'Trial of Skill - Hermes' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesApollo)
+      description = "Clear 'Trial of Skill - Apollo' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesAres)
+      description = "Clear 'Trial of Skill - Ares' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesHades)
+      description = "Clear 'Trial of Skill - Hades' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesDionysus)
+      description = "Clear 'Trial of Skill - Dionysus' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesNemesis)
+      description = "Clear 'Trial of Skill - Nemesis' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesZeus)
+      description = "Clear 'Trial of Skill - Zeus' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesPoseidon)
+      description = "Clear 'Trial of Skill - Poseidon' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesAphrodite)
+      description = "Clear 'Trial of Skill - Aphrodite' 10 times";
+      if (type === AchievementTypeEnum.TenVictoriesHera)
+      description = "Clear 'Trial of Skill - Hera' 10 times";
 
     return description;
   }
@@ -11337,7 +11411,8 @@ export class LookupService {
       || subzoneEnum === SubZoneEnum.CalydonTownMarket || subzoneEnum === SubZoneEnum.CalydonAltarOfAsclepius || subzoneEnum === SubZoneEnum.AegeanSeaIolcus ||
       subzoneEnum === SubZoneEnum.AegeanSeaSalmydessus || subzoneEnum === SubZoneEnum.BlackSeaMariandyna || subzoneEnum === SubZoneEnum.ColchisCityCenter
       || subzoneEnum === SubZoneEnum.NemeaCleonea || subzoneEnum === SubZoneEnum.StymphaliaTiryns || subzoneEnum === SubZoneEnum.CoastOfCreteElis ||
-      subzoneEnum === SubZoneEnum.ErytheiaCadiz || subzoneEnum === SubZoneEnum.MountOlympusOlympus || subzoneEnum === SubZoneEnum.CreteKnossos)
+      subzoneEnum === SubZoneEnum.ErytheiaCadiz || subzoneEnum === SubZoneEnum.MountOlympusOlympus || subzoneEnum === SubZoneEnum.CreteKnossos || 
+      subzoneEnum === SubZoneEnum.TheLabyrinthCloakedStranger)
       return true;
 
     return false;

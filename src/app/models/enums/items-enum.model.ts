@@ -512,4 +512,5 @@ export enum ItemsEnum {
   PoseidonsSigil,
   AphroditesSigil,
   HerasSigil,
+  TimeFragment
 } 

@@ -703,6 +703,42 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.LesserFlawedAmethyst) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }    
+    if (item === ItemsEnum.AthenasSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.ArtemissSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.HermessSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.ApollosSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.AressSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.HadessSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.DionysussSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.NemesissSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.ZeussSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.PoseidonsSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.AphroditesSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+    }
+    if (item === ItemsEnum.HerasSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
     }
 
     return new ShopItem(item, purchasePrice, originalStore);

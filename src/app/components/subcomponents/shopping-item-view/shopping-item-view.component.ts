@@ -89,8 +89,30 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
       if (this.item.shopItem === ItemsEnum.DarkMoonPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.DarkMoonPendantUnique && item.level >= 1000))
       outOfStock = true;
-      //if (this.item.shopItem === ItemsEnum.DuoAbilityAccess && this.globalService.globalVar.sidequestData.duosUnlocked)
-      //outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.AthenasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.ArtemissSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.HermessSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.ApollosSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.AressSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.HadessSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.NemesissSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.DionysussSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.ZeussSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.PoseidonsSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.AphroditesSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil))
+      outOfStock = true;
+      if (this.item.shopItem === ItemsEnum.HerasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil))
+      outOfStock = true;
 
     return outOfStock;
   }

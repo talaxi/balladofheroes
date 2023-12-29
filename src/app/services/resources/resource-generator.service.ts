@@ -522,6 +522,9 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
       return new ResourceValue(ItemsEnum.DarkMoonPendantUniqueUpgrade, amount);
     }
+    if (type === ItemsEnum.TimeFragment) {
+      return new ResourceValue(ItemsEnum.TimeFragment, amount);
+    }
     if (type === ItemsEnum.AthenasCrest) {
       return new ResourceValue(ItemsEnum.AthenasCrest, amount);
     }

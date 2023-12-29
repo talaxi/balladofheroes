@@ -23,6 +23,7 @@ import { ZodiacService } from '../global/zodiac.service';
 import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model';
 import { DpsCalculatorService } from './dps-calculator.service';
+import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -31,7 +32,8 @@ export class TrialService {
 
   constructor(private enemyGeneratorService: EnemyGeneratorService, private globalService: GlobalService, private utilityService: UtilityService,
     private lookupService: LookupService, private gameLogService: GameLogService, private dictionaryService: DictionaryService,
-    private altarService: AltarService, private zodiacService: ZodiacService, private dpsCalculatorService: DpsCalculatorService) { }
+    private altarService: AltarService, private zodiacService: ZodiacService, private dpsCalculatorService: DpsCalculatorService,
+    private achievementService: AchievementService) { }
 
   generateBattleOptions(trial: Trial) {
     var battleOptions: EnemyTeam[] = [];
@@ -329,17 +331,18 @@ export class TrialService {
   getAvailableBattlesForTrialOfSkill(previousBattle: BestiaryEnum = BestiaryEnum.None) {
     var enemyOptions: BestiaryEnum[] = [];
 
+    //TODO: uncomment this stuff
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Athena);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Artemis);
-    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable)
+    /*if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Ares);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable)
-      enemyOptions.push(BestiaryEnum.Apollo);
+      enemyOptions.push(BestiaryEnum.Apollo);*/
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Hermes);
-    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
+    /*if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Nemesis);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Hades2);
@@ -352,7 +355,7 @@ export class TrialService {
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Hera);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable)
-      enemyOptions.push(BestiaryEnum.Aphrodite);
+      enemyOptions.push(BestiaryEnum.Aphrodite);*/
 
     enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
@@ -523,7 +526,7 @@ export class TrialService {
       var dps = this.dpsCalculatorService.calculatePartyDps();
       var godLevels = this.getCurrentPartyGodLevels();
       //if (subZone !== undefined && (subZone.maxXps === undefined || subZone.maxXps < Math.round(xps)))
-        //subZone.maxXps = Math.round(xps);
+      //subZone.maxXps = Math.round(xps);
 
       var godEnum = this.globalService.globalVar.activeBattle.activeTrial.godEnum;
       var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
@@ -532,13 +535,13 @@ export class TrialService {
         if (trialType !== undefined) {
           trialType.count += 1;
           if (xps > trialType.highestXps)
-          trialType.highestXps = xps;
+            trialType.highestXps = xps;
           if (dps > trialType.highestDps)
-          trialType.highestDps = dps;
+            trialType.highestDps = dps;
           if (godLevels > trialType.highestGodLevelTotal)
-          trialType.highestGodLevelTotal = godLevels;
-          if (this.globalService.globalVar.activeBattle.activeTrial.maxHp > trialType.highestHp) 
-          trialType.highestHp = this.globalService.globalVar.activeBattle.activeTrial.maxHp;
+            trialType.highestGodLevelTotal = godLevels;
+          if (this.globalService.globalVar.activeBattle.activeTrial.maxHp > trialType.highestHp)
+            trialType.highestHp = this.globalService.globalVar.activeBattle.activeTrial.maxHp;
         }
         else {
           var trialDefeatCount = new TrialDefeatCount(type, 1, godEnum);
@@ -572,6 +575,30 @@ export class TrialService {
             this.lookupService.gainResource(new ResourceValue(this.altarService.getLargeCharmOfGod(god.type), 1));
           }
         }
+
+        var achievements = this.achievementService.checkForSubzoneAchievement(SubZoneEnum.MountOlympusOlympus, this.globalService.globalVar.achievements);
+
+        if (achievements !== undefined && achievements.length > 0) {
+          achievements.forEach(achievement => {            
+            var achievementBonus = "";
+            var rewards = this.achievementService.getAchievementReward(achievement.subzone, achievement.type);
+            if (rewards !== undefined && rewards.length > 0) {            
+              rewards.forEach(item => {
+                var amount = item.amount.toString();
+                achievementBonus += "<strong>" + amount + " " + (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item))) + "</strong>, ";
+              });
+
+              achievementBonus = achievementBonus.substring(0, achievementBonus.length - 2);
+            }
+            var gameLogUpdate = "Achievement <strong>" + this.lookupService.getAchievementName(achievement) + "</strong> completed!";
+            if (achievementBonus !== "")
+              gameLogUpdate += " You gain " + achievementBonus + ".";
+
+            if (this.globalService.globalVar.gameLogSettings.get("achievementUnlocked")) {
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogUpdate);
+            }
+          });
+        }
       }
     }
     else if (type === TrialEnum.TrialOfResolve) {
@@ -585,10 +612,10 @@ export class TrialService {
   }
 
   getCurrentPartyGodLevels() {
-    var activeParty = this.globalService.getActivePartyCharacters(true);    
+    var activeParty = this.globalService.getActivePartyCharacters(true);
     var totalGodLevels = 0;
 
-    for (var i = 0; i < activeParty.length; i++) {      
+    for (var i = 0; i < activeParty.length; i++) {
       var god1 = this.globalService.globalVar.gods.find(item => item.type === activeParty[i].assignedGod1);
       var god2 = this.globalService.globalVar.gods.find(item => item.type === activeParty[i].assignedGod2);
       var god1Level = god1 === undefined ? 0 : god1.level;

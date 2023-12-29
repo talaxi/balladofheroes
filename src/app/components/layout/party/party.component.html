@@ -50,7 +50,7 @@
                         <div class="statusEffects">
                             <app-status-effect-view [character]="character"></app-status-effect-view>
                         </div>
-                        <div *ngIf="isDuoAvailable()" class="duoAbility" customToolTip
+                        <div *ngIf="isDuoAvailable(character)" class="duoAbility" customToolTip
                             [contentTemplate]="duoAbilityPopover" (click)="triggerDuo(character)">
                             <img class="duoAbilityImage" [src]="getDuoSource(character)">
                         </div>

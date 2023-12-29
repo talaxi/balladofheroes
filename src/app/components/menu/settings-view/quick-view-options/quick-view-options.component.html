@@ -33,6 +33,10 @@
             <br />
             <mat-checkbox *ngIf="isMobile" [(ngModel)]="displayQuickViewCalculators" (input)="displayQuickViewCalculatorsToggle()">
                 Calculators
+            </mat-checkbox>            
+            <br *ngIf="timeFragmentsUnlocked" />
+            <mat-checkbox *ngIf="timeFragmentsUnlocked" [(ngModel)]="displayQuickViewTimeFragment" (input)="displayQuickViewTimeFragmentToggle()">
+                Time Fragment
             </mat-checkbox>
         </div>
     </div>

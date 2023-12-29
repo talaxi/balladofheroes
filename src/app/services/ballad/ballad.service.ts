@@ -859,7 +859,8 @@ export class BalladService {
       name = "Solid Wall 3";
     if (type === SubZoneEnum.TheLabyrinthSolidWall4)
       name = "Solid Wall 4";
-
+    if (type === SubZoneEnum.TheLabyrinthCloakedStranger)
+      name = "Cloaked Stranger";
 
     return name;
   }
@@ -1075,7 +1076,7 @@ export class BalladService {
       type === SubZoneEnum.CalydonTownMarket || type === SubZoneEnum.AegeanSeaIolcus || type === SubZoneEnum.AegeanSeaSalmydessus ||
       type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
       type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz ||
-      type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos) {
+      type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos || type === SubZoneEnum.TheLabyrinthCloakedStranger) {
       return true;
     }
 

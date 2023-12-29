@@ -163,6 +163,13 @@
                     src="assets/svg/jewelcrafting.svg">
                 <img class="icon iconDisabled" src="assets/svg/jewelcraftingDisabled.svg">
             </button>
+            <button class="buttonAsText clickableText iconButton" *ngIf="isTimeFragmentAvailable() && displayQuickViewTimeFragment"
+                (click)="setQuickView(quickViewEnum.TimeFragment)" customToolTip [contentTemplate]="timeFragmentIconPopover"
+                [tooltipDirection]="tooltipDirection">
+                <img *ngIf="quickView === quickViewEnum.TimeFragment" class="icon iconEnabled"
+                    src="assets/svg/timeFragment.svg">
+                <img class="icon iconDisabled" src="assets/svg/timeFragmentDisabled.svg">
+            </button>
         </div>
         <div class="overviewQuickView" *ngIf="quickView === quickViewEnum.Overview">
             <div class="quickLinkGrid">
@@ -248,6 +255,9 @@
         <div class="jewelcraftingQuickView centeredText" *ngIf="quickView === quickViewEnum.Jewelcrafting">
             <app-jewelcrafting-overview></app-jewelcrafting-overview>
         </div>
+        <div class="timeFragmentQuickView centeredText" *ngIf="quickView === quickViewEnum.TimeFragment">
+            <app-time-fragment-overview></app-time-fragment-overview>
+        </div>
     </div>
 </div>
 
@@ -317,6 +327,12 @@
 <ng-template #jewelcraftingIconPopover>
     <div>
         See a brief overview of your Jewelcrafting status.
+    </div>
+</ng-template>
+
+<ng-template #timeFragmentIconPopover>
+    <div>
+        See a brief overview of your Time Fragment status.
     </div>
 </ng-template>
 

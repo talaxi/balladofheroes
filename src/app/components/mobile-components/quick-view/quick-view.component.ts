@@ -34,6 +34,7 @@ export class QuickViewComponent {
   displayQuickViewAlchemy: boolean;
   displayQuickViewJewelcrafting: boolean;  
   displayQuickViewCalculators: boolean;
+  displayQuickViewTimeFragment: boolean;
 
   constructor(private balladService: BalladService, public globalService: GlobalService, private gameLoopService: GameLoopService,
     private battleService: BattleService, private lookupService: LookupService) {
@@ -49,6 +50,7 @@ export class QuickViewComponent {
     this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
     this.displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting") ?? false;
     this.displayQuickViewCalculators = this.globalService.globalVar.settings.get("displayQuickViewCalculators") ?? false;
+    this.displayQuickViewTimeFragment = this.globalService.globalVar.settings.get("displayQuickViewTimeFragment") ?? false;
 
     this.trackedResourcesColumn1 = this.globalService.globalVar.trackedResources.slice(0, 5);
     if (this.globalService.globalVar.trackedResources.length > 5)
@@ -106,6 +108,10 @@ export class QuickViewComponent {
 
   isQuickViewAvailable() {
     return this.lookupService.getSubZoneCompletionByType(SubZoneEnum.AigosthenaBay);
+  }
+
+  isTimeFragmentAvailable() {
+    return this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.TimeFragment);
   }
 
   openQuickView(type: QuickViewEnum) {

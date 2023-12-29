@@ -1097,6 +1097,10 @@ export class StoryService {
           "<div class='sceneDiv'>When you arrive, you are surprised to see Dionysus himself, seemingly unphased by recent events. A party was in full swing and you decided the best way to make amends and venerate the god of wine was to partake.</div>" +
           "<div>You're not quite sure what was in the wine, but you eventually leave the island with a throbbing headache and a greater knowledge of mixology.</div>";
     }
+    if (scene === OptionalSceneEnum.TimeFragmentInTheSwamp) {
+      if (pageCount === 1)
+        sceneText = "Swamp Fragment";
+    }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
     sceneText = sceneText.replaceAll("Zosime", "<span class='archerColor storyCharacterName'>Zosime</span>");
@@ -1178,6 +1182,9 @@ export class StoryService {
     if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {
       this.pageCount = 1;
     }
+    if (this.showOptionalStory === OptionalSceneEnum.TimeFragmentInTheSwamp) {
+      this.pageCount = 1;
+    }
 
     this.sceneText = this.getOptionalStoryText(this.showOptionalStory, this.currentPage);
 
@@ -1253,6 +1260,12 @@ export class StoryService {
           var gameLogEntry = "Your experience on the Island of Naxos has improved your Alchemy skills. Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
         }
+      }      
+      if (this.showOptionalStory === OptionalSceneEnum.TimeFragmentInTheSwamp) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You find a Time Fragment.");
+        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.TimeFragment, 1);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);        
       }
 
       this.currentPage = 1;

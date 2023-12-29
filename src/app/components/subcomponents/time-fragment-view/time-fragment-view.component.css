@@ -1,0 +1,10 @@
+
+.defaultBallad,
+.defaultZone,
+.defaultSubzone {
+    color: var(--foreground-default);
+}
+
+.selectedBallad {
+    color: var(--foreground-secondary) !important;
+}

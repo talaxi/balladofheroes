@@ -184,5 +184,6 @@ export enum SubZoneEnum {
   TheLabyrinthRightPath,
   TheLabyrinthLongPassage1,
   TheLabyrinthLongPassage2,
-  TheLabyrinthSolidWall2
+  TheLabyrinthSolidWall2,
+  TheLabyrinthCloakedStranger
 }

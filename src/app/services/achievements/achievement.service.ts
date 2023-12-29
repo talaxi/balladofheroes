@@ -33,6 +33,16 @@ export class AchievementService {
     if (subzoneType === SubZoneEnum.MountOlympusOlympus) {
       newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesAthena, subzoneType));
       newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesArtemis, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesHermes, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesApollo, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesAres, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesHades, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesNemesis, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesDionysus, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesZeus, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesPoseidon, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesAphrodite, subzoneType));
+      newAchievements.push(new Achievement(AchievementTypeEnum.TenVictoriesHera, subzoneType));
     }
 
     if (this.lookupService.isSubzoneATown(subzoneType) || subzoneType === SubZoneEnum.NemeaCountryRoadsOne)
@@ -1037,11 +1047,41 @@ export class AchievementService {
       }
     }
 
-    if (achievementType === AchievementTypeEnum.TenVictoriesAthena) {
+    if (achievementType === AchievementTypeEnum.TenVictoriesAthena) {      
       rewards.push(new ResourceValue(ItemsEnum.AthenasCrest, 1));
     }
     if (achievementType === AchievementTypeEnum.TenVictoriesArtemis) {
       rewards.push(new ResourceValue(ItemsEnum.ArtemissCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesHermes) {
+      rewards.push(new ResourceValue(ItemsEnum.HermessCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesApollo) {
+      rewards.push(new ResourceValue(ItemsEnum.ApollosCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesAres) {
+      rewards.push(new ResourceValue(ItemsEnum.AressCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesHades) {
+      rewards.push(new ResourceValue(ItemsEnum.HadessCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesNemesis) {
+      rewards.push(new ResourceValue(ItemsEnum.NemesissCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesDionysus) {
+      rewards.push(new ResourceValue(ItemsEnum.DionysussCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesZeus) {
+      rewards.push(new ResourceValue(ItemsEnum.ZeussCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesPoseidon) {
+      rewards.push(new ResourceValue(ItemsEnum.PoseidonsCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesAphrodite) {
+      rewards.push(new ResourceValue(ItemsEnum.AphroditesCrest, 1));
+    }
+    if (achievementType === AchievementTypeEnum.TenVictoriesHera) {
+      rewards.push(new ResourceValue(ItemsEnum.HerasCrest, 1));
     }
 
     return rewards;
@@ -1108,20 +1148,14 @@ export class AchievementService {
         });
       }
 
-      //need to test this
       var tenVictoriesAthena = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesAthena);
       var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesAthena);
-      var athenaWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Athena);
+      var athenaWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Athena);      
       if (tenVictoriesAthena !== undefined && athenaWinCount !== undefined && athenaWinCount.count >= 10 && !tenVictoriesAthena.completed && rewards !== undefined) {
         completedAchievement.push(tenVictoriesAthena);
         tenVictoriesAthena.completed = true;
         rewards.forEach(bonus => {
-          if (bonus.item === ItemsEnum.AthenasCrest) {
-            var athena = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena);
-            if (athena !== undefined) {
-              athena.duoAbilityAccess = true;
-            }
-          }
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 
@@ -1132,12 +1166,117 @@ export class AchievementService {
         completedAchievement.push(tenVictoriesArtemis);
         tenVictoriesArtemis.completed = true;
         rewards.forEach(bonus => {
-          if (bonus.item === ItemsEnum.ArtemissCrest) {
-            var artemis = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis);
-            if (artemis !== undefined) {
-              artemis.duoAbilityAccess = true;
-            }
-          }
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+      
+      var tenVictoriesHermes = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesHermes);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesHermes);
+      var hermesWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Hermes);
+      if (tenVictoriesHermes !== undefined && hermesWinCount !== undefined && hermesWinCount.count >= 10 && !tenVictoriesHermes.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesHermes);
+        tenVictoriesHermes.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+      
+      var tenVictoriesApollo = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesApollo);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesApollo);
+      var apolloWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Apollo);
+      if (tenVictoriesApollo !== undefined && apolloWinCount !== undefined && apolloWinCount.count >= 10 && !tenVictoriesApollo.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesApollo);
+        tenVictoriesApollo.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesAres = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesAres);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesAres);
+      var aresWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Ares);
+      if (tenVictoriesAres !== undefined && aresWinCount !== undefined && aresWinCount.count >= 10 && !tenVictoriesAres.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesAres);
+        tenVictoriesAres.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesHades = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesHades);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesHades);
+      var hadesWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Hades);
+      if (tenVictoriesHades !== undefined && hadesWinCount !== undefined && hadesWinCount.count >= 10 && !tenVictoriesHades.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesHades);
+        tenVictoriesHades.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesNemesis = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesNemesis);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesNemesis);
+      var nemesisWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Nemesis);
+      if (tenVictoriesNemesis !== undefined && nemesisWinCount !== undefined && nemesisWinCount.count >= 10 && !tenVictoriesNemesis.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesNemesis);
+        tenVictoriesNemesis.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesDionysus = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesDionysus);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesDionysus);
+      var dionysusWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Dionysus);
+      if (tenVictoriesDionysus !== undefined && dionysusWinCount !== undefined && dionysusWinCount.count >= 10 && !tenVictoriesDionysus.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesDionysus);
+        tenVictoriesDionysus.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesZeus = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesZeus);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesZeus);
+      var zeusWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Zeus);
+      if (tenVictoriesZeus !== undefined && zeusWinCount !== undefined && zeusWinCount.count >= 10 && !tenVictoriesZeus.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesZeus);
+        tenVictoriesZeus.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesPoseidon = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesPoseidon);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesPoseidon);
+      var poseidonWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Poseidon);
+      if (tenVictoriesPoseidon !== undefined && poseidonWinCount !== undefined && poseidonWinCount.count >= 10 && !tenVictoriesPoseidon.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesPoseidon);
+        tenVictoriesPoseidon.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesAphrodite = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesAphrodite);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesAphrodite);
+      var aphroditeWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Aphrodite);
+      if (tenVictoriesAphrodite !== undefined && aphroditeWinCount !== undefined && aphroditeWinCount.count >= 10 && !tenVictoriesAphrodite.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesAphrodite);
+        tenVictoriesAphrodite.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
+        });
+      }
+
+      var tenVictoriesHera = subzoneRelatedAchievements.find(item => item.type === AchievementTypeEnum.TenVictoriesHera);
+      var rewards = this.getAchievementReward(subzoneType, AchievementTypeEnum.TenVictoriesHera);
+      var heraWinCount = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === GodEnum.Hera);
+      if (tenVictoriesHera !== undefined && heraWinCount !== undefined && heraWinCount.count >= 10 && !tenVictoriesHera.completed && rewards !== undefined) {
+        completedAchievement.push(tenVictoriesHera);
+        tenVictoriesHera.completed = true;
+        rewards.forEach(bonus => {
+          this.lookupService.gainResource(this.lookupService.makeResourceCopy(bonus));
         });
       }
 

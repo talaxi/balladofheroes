@@ -55,7 +55,7 @@ export class ResourceViewComponent implements OnInit {
     });
   }
 
-  setupResources() {
+  setupResources() {    
     this.resources = this.globalService.globalVar.resources.filter(item => (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Resource || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Progression)).sort((a, b) => this.sortResources(a, b));
     this.craftingMaterials = this.globalService.globalVar.resources.filter(item => (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.CraftingMaterial)).sort((a, b) => this.sortCraftingMaterials(a, b));
     this.battleItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.HealingItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.BattleItem)).sort((a, b) => this.sortBattleItems(a, b));

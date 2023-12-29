@@ -18,5 +18,6 @@ export enum OptionalSceneEnum {
   AugeanStables5,
   AugeanStables6,
   HephaestusJewelcrafting,
-  IslandOfNaxos
+  IslandOfNaxos,
+  TimeFragmentInTheSwamp,
 }

@@ -23,9 +23,9 @@
      borderopacity="1.0"
      inkscape:pageopacity="0.0"
      inkscape:pageshadow="2"
-     inkscape:zoom="1.0606602"
-     inkscape:cx="569.92807"
-     inkscape:cy="571.81369"
+     inkscape:zoom="0.53033008"
+     inkscape:cx="666.566"
+     inkscape:cy="736.33387"
      inkscape:document-units="mm"
      inkscape:current-layer="layer3"
      inkscape:document-rotation="0"
@@ -39,23 +39,7 @@
      inkscape:showpageshadow="2"
      inkscape:pagecheckerboard="0"
      inkscape:deskcolor="#d1d1d1"
-     showguides="true">
-    <sodipodi:guide
-       position="97.079596,183.50612"
-       orientation="1,0"
-       id="guide150749"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="50.389215,225.41398"
-       orientation="0,-1"
-       id="guide150751"
-       inkscape:locked="false" />
-    <sodipodi:guide
-       position="87.308046,75.244142"
-       orientation="0,-1"
-       id="guide150753"
-       inkscape:locked="false" />
-  </sodipodi:namedview>
+     showguides="true" />
   <metadata
      id="metadata58">
     <rdf:RDF>
@@ -76,21 +60,13 @@
      id="layer3"
      inkscape:label="Layer 2"
      style="display:inline">
-    <rect
-       style="fill:#d9dbbf;fill-opacity:1;stroke:none;stroke-width:4.12158;stroke-miterlimit:4;stroke-dasharray:none;stroke-opacity:1"
-       id="rect129-3"
-       width="99.920555"
-       height="89.724579"
-       x="135.01378"
-       y="305.89835"
-       transform="matrix(0.5547002,-0.83205029,0.5547002,0.83205029,0,0)" />
     <path
-       style="fill:#407d5a;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none;stroke-opacity:1"
-       d="M 152.4149,74.586017 97.079595,149.92039 152.4149,224.75586 Z"
+       style="fill:#2e8f57;fill-opacity:1;stroke:none;stroke-width:1.49016;stroke-dasharray:none;stroke-opacity:1"
+       d="M 190.96006,44.671698 75.078833,121.95961 114.42356,254.95399 Z"
        id="path150757" />
     <path
-       style="display:inline;fill:#407d5a;fill-opacity:1;stroke:none;stroke-width:1;stroke-dasharray:none;stroke-opacity:1"
-       d="m 152.4149,74.586018 55.3353,75.334372 -55.3353,74.83547 z"
+       style="display:inline;fill:#3b8258;fill-opacity:1;stroke:none;stroke-width:1.49016;stroke-dasharray:none;stroke-opacity:1"
+       d="m 190.48885,44.402 39.09043,133.69298 -115.62692,76.5893 z"
        id="path150757-7" />
   </g>
   <g

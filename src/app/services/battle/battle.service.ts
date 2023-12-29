@@ -361,6 +361,11 @@ export class BattleService {
       !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.ChthonicFavorUpgrade2Scene3)) {
       this.storyService.displayOptionalScene(OptionalSceneEnum.ChthonicFavorUpgrade2Scene3);
     }
+    
+    if (this.lookupService.getSubZoneCompletionByType(SubZoneEnum.LernaSpringOfAmymone) &&
+      !this.globalService.globalVar.optionalScenesViewed.some(item => item === OptionalSceneEnum.TimeFragmentInTheSwamp)) {
+      this.storyService.displayOptionalScene(OptionalSceneEnum.TimeFragmentInTheSwamp);
+    }
   }
 
   checkScene() {
@@ -506,7 +511,6 @@ export class BattleService {
       this.battle.currentEnemies.enemyList.forEach(enemy => {        
         this.battle.activeTrial.maxHp += enemy.battleStats.maxHp;
       });
-      console.log("Max HP: " + this.battle.activeTrial.maxHp);
     }
   }
 
