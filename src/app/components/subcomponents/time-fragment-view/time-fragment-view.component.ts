@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, Input } from '@angular/core';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
@@ -6,6 +6,9 @@ import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DeviceDetectorService } from 'ngx-device-detector';
+import { Ballad } from 'src/app/models/zone/ballad.model';
+import { SubZone } from 'src/app/models/zone/sub-zone.model';
+import { Zone } from 'src/app/models/zone/zone.model';
 
 @Component({
   selector: 'app-time-fragment-view',
