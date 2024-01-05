@@ -31,6 +31,7 @@ import { Melete } from "../melete/melete.model";
 import { Loadout } from "../utility/loadout.model";
 import { StatusEffect } from "../battle/status-effect.model";
 import { Uniques } from "../resources/uniques.model";
+import { TimeFragmentRun } from "../utility/time-fragment-run.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -111,6 +112,8 @@ export class GlobalVariables {
     globalStatusEffects: StatusEffect[];
     @Type(() => Uniques)
     uniques: Uniques[];
+    @Type(() => TimeFragmentRun)
+    timeFragmentRuns: TimeFragmentRun[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -154,5 +157,6 @@ export class GlobalVariables {
         this.partyMember1Hidden = false;
         this.partyMember2Hidden = false;
         this.uniques = [];
+        this.timeFragmentRuns = [];
     }
 }

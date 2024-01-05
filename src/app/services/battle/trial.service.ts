@@ -331,18 +331,17 @@ export class TrialService {
   getAvailableBattlesForTrialOfSkill(previousBattle: BestiaryEnum = BestiaryEnum.None) {
     var enemyOptions: BestiaryEnum[] = [];
 
-    //TODO: uncomment this stuff
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Athena);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Artemis);
-    /*if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable)
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Ares);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable)
-      enemyOptions.push(BestiaryEnum.Apollo);*/
+      enemyOptions.push(BestiaryEnum.Apollo);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Hermes);
-    /*if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Nemesis);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Hades2);
@@ -355,7 +354,7 @@ export class TrialService {
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable)
       enemyOptions.push(BestiaryEnum.Hera);
     if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable)
-      enemyOptions.push(BestiaryEnum.Aphrodite);*/
+      enemyOptions.push(BestiaryEnum.Aphrodite);
 
     enemyOptions = enemyOptions.filter(item => item !== previousBattle);
 
@@ -404,12 +403,12 @@ export class TrialService {
     //divide these totals by 6, maybe *5 or something, and then apply the factor from enemy generator
     //maybe give each god some secondary stats as well
     var godLevelBeforeDamageReduction = 2350;
-    var hpFactor = 42.5;
+    var hpFactor = 42;
     var attackFactor = .65;
-    var defenseFactor = 3.85;
+    var defenseFactor = 3.6;
     var agilityFactor = 2.25;
     var luckFactor = 1.625;
-    var resistanceFactor = 2.3;
+    var resistanceFactor = 2.2;
     var defenseScalingFactor = 1 + ((totalGodLevels - godLevelBeforeDamageReduction) / godLevelBeforeDamageReduction);
     var hpScalingFactor = 1 + ((totalGodLevels - godLevelBeforeDamageReduction) / (godLevelBeforeDamageReduction * 2));
 
@@ -521,7 +520,7 @@ export class TrialService {
       }
 
       //gain affinity for the god
-      var affinityXpGain = 200;
+      var affinityXpGain = this.utilityService.trialAffinityXpGain;
       var xps = this.dpsCalculatorService.calculateXps();
       var dps = this.dpsCalculatorService.calculatePartyDps();
       var godLevels = this.getCurrentPartyGodLevels();
@@ -579,10 +578,10 @@ export class TrialService {
         var achievements = this.achievementService.checkForSubzoneAchievement(SubZoneEnum.MountOlympusOlympus, this.globalService.globalVar.achievements);
 
         if (achievements !== undefined && achievements.length > 0) {
-          achievements.forEach(achievement => {            
+          achievements.forEach(achievement => {
             var achievementBonus = "";
             var rewards = this.achievementService.getAchievementReward(achievement.subzone, achievement.type);
-            if (rewards !== undefined && rewards.length > 0) {            
+            if (rewards !== undefined && rewards.length > 0) {
               rewards.forEach(item => {
                 var amount = item.amount.toString();
                 achievementBonus += "<strong>" + amount + " " + (item.amount === 1 ? this.dictionaryService.getItemName(item.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(item.item))) + "</strong>, ";
@@ -604,6 +603,24 @@ export class TrialService {
     else if (type === TrialEnum.TrialOfResolve) {
       //TODO
       this.globalService.globalVar.sidequestData.trialStage += 1;
+    }
+    else {
+      var xps = this.dpsCalculatorService.calculateXps();
+      var dps = this.dpsCalculatorService.calculatePartyDps();
+      var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type);
+      if (trialType !== undefined) {
+        trialType.count += 1;
+        if (xps > trialType.highestXps)
+          trialType.highestXps = xps;
+        if (dps > trialType.highestDps)
+          trialType.highestDps = dps;       
+      }
+      else {
+        var trialDefeatCount = new TrialDefeatCount(type, 1);
+        trialDefeatCount.highestXps = xps;
+        trialDefeatCount.highestDps = dps;        
+        this.globalService.globalVar.trialDefeatCount.push(trialDefeatCount);
+      }
     }
 
 

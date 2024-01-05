@@ -1,4 +1,4 @@
-import { Component, Input, OnInit } from '@angular/core';
+import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -21,6 +21,12 @@ import { BattleService } from 'src/app/services/battle/battle.service';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Uniques } from 'src/app/models/resources/uniques.model';
+import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
+import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
+import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
+import { TutorialService } from 'src/app/services/global/tutorial.service';
+import { BalladService } from 'src/app/services/ballad/ballad.service';
+import { GameLogService } from 'src/app/services/battle/game-log.service';
 
 @Component({
   selector: 'app-shopping-item-view',
@@ -37,11 +43,70 @@ export class ShoppingItemViewComponent implements OnInit {
   @Input() tooltipDirection = DirectionEnum.Right;
   @Input() excludeItemDescriptionLocationText = false;
   @Input() totalItemsInShop = 0;
+  buyMultiplier: number = 1;
+  ctrlPressed: boolean = false;
+  shiftPressed: boolean = false;
+  altPressed: boolean = false;
+
+  @HostListener('window:keydown', ['$event'])
+  keyEventDown(event: KeyboardEvent) {
+    if (this.cannotMultiply())
+      return;
+
+    if (event.key === "Shift") { //multiply by 25
+      event.preventDefault();
+      if (!this.shiftPressed) {
+        this.buyMultiplier *= 25;
+        this.shiftPressed = true;
+      }
+    }
+    if (event.key === "Control") { //multiply by 10
+      event.preventDefault();
+      if (!this.ctrlPressed) {
+        this.buyMultiplier *= 10;
+        this.ctrlPressed = true;
+      }
+    }
+    if (event.key === "Alt") { //multiply by 100
+      event.preventDefault();
+      if (!this.altPressed) {
+        this.buyMultiplier *= 100;
+        this.altPressed = true;
+      }
+    }
+  }
+
+  @HostListener('window:keyup', ['$event'])
+  keyEventUp(event: KeyboardEvent) {
+    if (this.cannotMultiply())
+      return;
+
+    event.preventDefault();
+    if (event.key === "Shift") { //divide by 25
+      if (this.shiftPressed) {
+        this.buyMultiplier /= 25;
+        this.shiftPressed = false;
+      }
+    }
+    if (event.key === "Control") { //divide by 10
+      if (this.ctrlPressed) {
+        this.buyMultiplier /= 10;
+        this.ctrlPressed = false;
+      }
+    }
+    if (event.key === "Alt") { //divide by 100
+      if (this.altPressed) {
+        this.buyMultiplier /= 100;
+        this.altPressed = false;
+      }
+    }
+  }
 
   constructor(public lookupService: LookupService, private resourceGeneratorService: ResourceGeneratorService,
     private utilityService: UtilityService, private globalService: GlobalService, private gameLoopService: GameLoopService,
     private deviceDetectorService: DeviceDetectorService, public dictionaryService: DictionaryService, public dialog: MatDialog,
-    private storyService: StoryService, private battleService: BattleService) { }
+    private storyService: StoryService, private battleService: BattleService, private tutorialService: TutorialService,
+    private balladService: BalladService, private gameLogService: GameLogService) { }
 
   ngOnInit(): void {
     this.partyMembers = this.globalService.getActivePartyCharacters(true);
@@ -56,6 +121,22 @@ export class ShoppingItemViewComponent implements OnInit {
       this.setItemPurchasePrice();
       this.outOfStock = this.isItemOutOfStock();
     });
+  }
+
+  cannotMultiply() {
+    var cannotMultiply = false;
+
+    if (this.item.shopItem === ItemsEnum.WarriorClass || this.item.shopItem === ItemsEnum.PriestClass || this.item.shopItem === ItemsEnum.ThaumaturgeClass ||
+      this.item.shopItem === ItemsEnum.MonkClass || this.item.shopItem === ItemsEnum.AugeanStables1 || this.item.shopItem === ItemsEnum.AugeanStables2 ||
+      this.item.shopItem === ItemsEnum.AugeanStables3 || this.item.shopItem === ItemsEnum.Nemesis || this.item.shopItem === ItemsEnum.Dionysus ||
+      this.item.shopItem === ItemsEnum.OlympicCommendation || this.item.shopItem === ItemsEnum.DarkMoonPendantUnique || this.item.shopItem === ItemsEnum.BlazingSunPendantUnique ||
+      this.item.shopItem === ItemsEnum.AthenasSigil || this.item.shopItem === ItemsEnum.ArtemissSigil || this.item.shopItem === ItemsEnum.HermessSigil ||
+      this.item.shopItem === ItemsEnum.ApollosSigil || this.item.shopItem === ItemsEnum.AressSigil || this.item.shopItem === ItemsEnum.HadessSigil ||
+      this.item.shopItem === ItemsEnum.DionysussSigil || this.item.shopItem === ItemsEnum.NemesissSigil || this.item.shopItem === ItemsEnum.ZeussSigil ||
+      this.item.shopItem === ItemsEnum.PoseidonsSigil || this.item.shopItem === ItemsEnum.AphroditesSigil || this.item.shopItem === ItemsEnum.HerasSigil)
+      cannotMultiply = true;
+
+    return cannotMultiply;
   }
 
   isItemOutOfStock() {
@@ -85,33 +166,33 @@ export class ShoppingItemViewComponent implements OnInit {
       outOfStock = true;
     if (this.item.shopItem === ItemsEnum.BlazingSunPendantUnique && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.BlazingSunPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.BlazingSunPendantUnique && item.level >= 1000))
+    if (this.item.shopItem === ItemsEnum.BlazingSunPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.BlazingSunPendantUnique && item.level >= 1000))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.DarkMoonPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.DarkMoonPendantUnique && item.level >= 1000))
+    if (this.item.shopItem === ItemsEnum.DarkMoonPendantUniqueUpgrade && this.globalService.globalVar.uniques.some(item => item.type === ItemsEnum.DarkMoonPendantUnique && item.level >= 1000))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.AthenasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil))
+    if (this.item.shopItem === ItemsEnum.AthenasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AthenasSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.ArtemissSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil))
+    if (this.item.shopItem === ItemsEnum.ArtemissSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ArtemissSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.HermessSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil))
+    if (this.item.shopItem === ItemsEnum.HermessSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HermessSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.ApollosSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil))
+    if (this.item.shopItem === ItemsEnum.ApollosSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ApollosSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.AressSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil))
+    if (this.item.shopItem === ItemsEnum.AressSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AressSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.HadessSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil))
+    if (this.item.shopItem === ItemsEnum.HadessSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HadessSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.NemesissSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil))
+    if (this.item.shopItem === ItemsEnum.NemesissSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.NemesissSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.DionysussSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil))
+    if (this.item.shopItem === ItemsEnum.DionysussSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.DionysussSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.ZeussSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil))
+    if (this.item.shopItem === ItemsEnum.ZeussSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.ZeussSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.PoseidonsSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil))
+    if (this.item.shopItem === ItemsEnum.PoseidonsSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.PoseidonsSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.AphroditesSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil))
+    if (this.item.shopItem === ItemsEnum.AphroditesSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.AphroditesSigil))
       outOfStock = true;
-      if (this.item.shopItem === ItemsEnum.HerasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil))
+    if (this.item.shopItem === ItemsEnum.HerasSigil && this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.HerasSigil))
       outOfStock = true;
 
     return outOfStock;
@@ -126,7 +207,15 @@ export class ShoppingItemViewComponent implements OnInit {
     this.item.purchasePrice.forEach(resource => {
       var amount = resource.amount;
       if (this.item.shopItem === ItemsEnum.SparringMatch) {
-        amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+        amount = 0;
+        var currentMultiplier = this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+        for (var i = 0; i < this.buyMultiplier; i++) {          
+          amount += resource.amount * currentMultiplier;
+          currentMultiplier *= 1.1;
+        }
+      }
+      else {
+        amount *= this.buyMultiplier;
       }
 
       var displayName = this.dictionaryService.getItemName(resource.item);
@@ -155,27 +244,32 @@ export class ShoppingItemViewComponent implements OnInit {
   buyItem() {
     if (this.canBuyItem()) {
       this.spendResourcesOnItem();
-      var resource = this.resourceGeneratorService.getResourceFromItemType(this.item.shopItem, 1);
+      var resource = this.resourceGeneratorService.getResourceFromItemType(this.item.shopItem, 1 * this.buyMultiplier);
 
       if (resource !== undefined) {
         if (resource.item === ItemsEnum.SparringMatch) {
-          this.globalService.giveCharactersBonusExp(5000);
-          this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
-          
+          for (var i = 0; i < this.buyMultiplier; i++) {
+            this.globalService.giveCharactersBonusExp(5000);
+            this.globalService.globalVar.sidequestData.sparringMatchMultiplier *= 1.1;
+          }
           /*this.globalService.globalVar.uniques.forEach(item => {
             item.level += 99;
             this.lookupService.levelUpUnique(item);
           });*/
         }
-        else if (resource.item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
-          var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
-          if (unique !== undefined)
-          this.lookupService.levelUpUnique(unique);
+        else if (resource.item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {                   
+          for (var i = 0; i < this.buyMultiplier; i++) {
+            var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
+            if (unique !== undefined)              
+              this.lookupService.giveUniqueXp(unique, 1);
+          }
         }
         else if (resource.item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
-          var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BlazingSunPendantUnique);
-          if (unique !== undefined)
-          this.lookupService.levelUpUnique(unique);
+          for (var i = 0; i < this.buyMultiplier; i++) {
+            var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BlazingSunPendantUnique);
+            if (unique !== undefined)              
+              this.lookupService.giveUniqueXp(unique, 1);
+          }
         }
         else if (resource.item === ItemsEnum.WarriorClass || resource.item === ItemsEnum.PriestClass || resource.item === ItemsEnum.MonkClass || resource.item === ItemsEnum.ThaumaturgeClass) {
           this.unlockClass(resource.item);
@@ -183,9 +277,6 @@ export class ShoppingItemViewComponent implements OnInit {
         else if (resource.item === ItemsEnum.Nemesis || resource.item === ItemsEnum.Dionysus) {
           this.unlockGod(resource.item);
         }
-        /*else if (resource.item === ItemsEnum.DuoAbilityAccess) {
-          this.globalService.globalVar.sidequestData.duosUnlocked = true;
-        }*/
         else if (resource.item === ItemsEnum.AugeanStables1 || resource.item === ItemsEnum.AugeanStables2) {
           var jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
           if (jewelcrafting !== undefined) {
@@ -216,6 +307,11 @@ export class ShoppingItemViewComponent implements OnInit {
         else
           if (resource.item === ItemsEnum.DarkMoonPendantUnique || resource.item === ItemsEnum.BlazingSunPendantUnique) {
             this.globalService.globalVar.uniques.push(new Uniques(resource.item));
+
+            if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Uniques)) {
+              this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Uniques, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
+              this.globalService.handleTutorialModal();
+            }
           }
 
         this.lookupService.gainResource(resource);
@@ -286,7 +382,15 @@ export class ShoppingItemViewComponent implements OnInit {
       var userResourceAmount = this.lookupService.getResourceAmount(resource.item);
       var amount = resource.amount;
       if (this.item.shopItem === ItemsEnum.SparringMatch) {
-        amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+        amount = 0;
+        var currentMultiplier = this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+        for (var i = 0; i < this.buyMultiplier; i++) {          
+          amount += resource.amount * currentMultiplier;
+          currentMultiplier *= 1.1;
+        }
+      }
+      else {
+        amount *= this.buyMultiplier;
       }
 
       if (userResourceAmount < amount)
@@ -300,7 +404,15 @@ export class ShoppingItemViewComponent implements OnInit {
     this.item.purchasePrice.forEach(resource => {
       var amount = resource.amount;
       if (this.item.shopItem === ItemsEnum.SparringMatch) {
-        amount *= this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+        amount = 0;
+        var currentMultiplier = this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
+        for (var i = 0; i < this.buyMultiplier; i++) {          
+          amount += resource.amount * currentMultiplier;
+          currentMultiplier *= 1.1;
+        }
+      }
+      else {
+        amount *= this.buyMultiplier;
       }
 
       this.lookupService.useResource(resource.item, amount);
@@ -338,9 +450,9 @@ export class ShoppingItemViewComponent implements OnInit {
       return "★★★★";
     if (equipment?.quality === EquipmentQualityEnum.Special)
       return "★★★★★";
-    if (equipment?.quality === EquipmentQualityEnum.Extraordinary)
-      return "★★★★★★";
     if (equipment?.quality === EquipmentQualityEnum.Unique)
+      return "★★★★★★";
+    if (equipment?.quality === EquipmentQualityEnum.Extraordinary)
       return "★★★★★★★";
 
     return "";

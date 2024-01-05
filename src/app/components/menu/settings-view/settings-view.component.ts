@@ -197,14 +197,14 @@ export class SettingsViewComponent implements OnInit {
 
   openKeybinds(content: any) {
     if (this.isMobile)
-      this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
+      this.dialog.open(content, { width: '75%', height: '75%' });
     else
       this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '50%', id: 'dialogNoPadding' });
   }
 
   openQuickViewOptions(content: any) {
     if (this.isMobile)
-      this.dialog.open(content, { width: '75%', height: '75%', id: 'dialogNoPadding' });
+      this.dialog.open(content, { width: '75%', height: '75%' });
     else
     this.dialog.open(content, { width: '60%', height: '75%', panelClass: 'mat-dialog-no-scroll' });
   }

@@ -38,6 +38,7 @@ export class AltarViewComponent implements OnInit {
   animationTimerCap = 3;
   animationSubscription: any;
   overlayRef: OverlayRef;
+  isMobile: boolean;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     public globalService: GlobalService, private changeDetectorRef: ChangeDetectorRef, private altarService: AltarService,
@@ -46,8 +47,10 @@ export class AltarViewComponent implements OnInit {
   ngOnInit(): void {
     this.isReady = this.isAltarReady();
 
-    if (this.deviceDetectorService.isMobile())
+    if (this.deviceDetectorService.isMobile()) {
+      this.isMobile = true;
       this.tooltipDirection = DirectionEnum.Up;
+    }
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var isReadyNow = this.isAltarReady();
@@ -152,33 +155,33 @@ export class AltarViewComponent implements OnInit {
     if (keybind !== undefined)
       keybindKey = this.keybindService.getBindingString(keybind[1]);
 
-      var typeName = "";
+    var typeName = "";
     if (this.altar !== undefined) {
       godType = this.altar.god;
-      
+
       var affinityXpGain = 0;
       var godXpGain = 0;
 
-    if (this.altar.type === AltarEnum.Small) {
-      typeName = "Small Altar";
-      affinityXpGain = this.utilityService.smallAltarAffinityGain;
-      godXpGain = this.utilityService.basePrayGodXpIncrease;
+      if (this.altar.type === AltarEnum.Small) {
+        typeName = "Small Altar";
+        affinityXpGain = this.utilityService.smallAltarAffinityGain;
+        godXpGain = this.utilityService.basePrayGodXpIncrease;
 
-      if (this.globalService.globalVar.altars.largeAltarsUnlocked)      
-        nextAltarType = AltarEnum.Large;      
-    }
-    else if (this.altar.type === AltarEnum.Large) {
-      typeName = "Large Altar";
-      affinityXpGain = this.utilityService.largeAltarAffinityGain;
-      godXpGain = this.utilityService.largeAltarPrayGodXpIncrease;
+        if (this.globalService.globalVar.altars.largeAltarsUnlocked)
+          nextAltarType = AltarEnum.Large;
+      }
+      else if (this.altar.type === AltarEnum.Large) {
+        typeName = "Large Altar";
+        affinityXpGain = this.utilityService.largeAltarAffinityGain;
+        godXpGain = this.utilityService.largeAltarPrayGodXpIncrease;
 
-      nextAltarType = AltarEnum.Small;
-    }
+        nextAltarType = AltarEnum.Small;
+      }
 
-    if (nextAltarType === AltarEnum.Large)
-      nextToggleText = " Right click to toggle to a Large Altar.";
+      if (nextAltarType === AltarEnum.Large)
+        nextToggleText = " Right click to toggle to a Large Altar.";
       if (nextAltarType === AltarEnum.Small)
-      nextToggleText = " Right click to toggle to a Small Altar.";
+        nextToggleText = " Right click to toggle to a Small Altar.";
 
       description = "When the condition is met, click or press <span class='keybind'>" + keybindKey + "</span> to pray at a <strong>" + typeName + "</strong> to <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> for a boon. <strong>" + this.lookupService.getGodNameByType(godType) + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP." + nextToggleText;
     }
@@ -223,16 +226,28 @@ export class AltarViewComponent implements OnInit {
   }
 
   toggleAltarType() {
-    if (this.globalService.globalVar.altars.largeAltarsUnlocked)
-    {
-    if (this.altar.type === AltarEnum.Small)    
-      this.altar.type = AltarEnum.Large;            
-    else if (this.altar.type === AltarEnum.Large)
-      this.altar.type = AltarEnum.Small;
+    if (this.globalService.globalVar.altars.largeAltarsUnlocked && !this.isMobile) {
+      if (this.altar.type === AltarEnum.Small)
+        this.altar.type = AltarEnum.Large;
+      else if (this.altar.type === AltarEnum.Large)
+        this.altar.type = AltarEnum.Small;
 
-    this.altar.conditionMax = this.altarService.getAltarMaxConditions(this.altar);
+      this.altar.conditionMax = this.altarService.getAltarMaxConditions(this.altar);
     }
-    
+
+    return false;
+  }
+  
+  toggleAltarTypeMobile() {
+    if (this.globalService.globalVar.altars.largeAltarsUnlocked && this.isMobile) {
+      if (this.altar.type === AltarEnum.Small)
+        this.altar.type = AltarEnum.Large;
+      else if (this.altar.type === AltarEnum.Large)
+        this.altar.type = AltarEnum.Small;
+
+      this.altar.conditionMax = this.altarService.getAltarMaxConditions(this.altar);
+    }
+
     return false;
   }
 

@@ -183,15 +183,15 @@
 
 @media (max-width: 800px) {
     .characterBar {
-        width: 64%;
+        width: 62.75%;
     }
 
     .enemy {
-        grid-template-columns: 64% 1fr;
+        grid-template-columns: 62.75% 1fr;
     }
 
     .boss {
-        grid-template-columns: 82% 1fr;
+        grid-template-columns: 81% 1fr;
     }
 
     .hpMpText {

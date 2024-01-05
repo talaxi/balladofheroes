@@ -55,12 +55,12 @@
         [ngClass]="{'screenMargin': navigation !== navigationEnum.Menu && !storyService.triggerFirstTimeUnderworldScene && !storyService.endFirstTimeUnderworldScene }">
         <div class="mainContainer"
             [ngClass]="{ 'hide': lookupService.isUIHidden, 'darken': storyService.triggerFirstTimeUnderworldScene, 'lighten': storyService.endFirstTimeUnderworldScene }">
-            <div class="defaultDisplayGrid" *ngIf="navigation === navigationEnum.Default">
+            <div [ngClass]="{'storyDisplayGrid': isAtStoryScene(), 'defaultDisplayGrid': !isAtStoryScene()}" *ngIf="navigation === navigationEnum.Default">
                 <app-battle class="battleArea" [isMobile]="true"
                     [ngClass]="{ 'hide': (storyService.triggerFirstTimeUnderworldScene && !storyService.showFirstTimeUnderworldStory) || storyService.endFirstTimeUnderworldScene, 'dark': storyService.showFirstTimeUnderworldStory }"></app-battle>
-                <app-quick-view class="quickLinks" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-quick-view>
+                <app-quick-view class="quickLinks" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene || isAtStoryScene() }"></app-quick-view>
                 <app-party class="partyArea" [isMobile]="true"
-                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene }"></app-party>                                
+                    [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene || storyService.endFirstTimeUnderworldScene || isAtStoryScene() }"></app-party>                                
             </div> 
             <div class="defaultMenuGrid" *ngIf="navigation === navigationEnum.Menu">
                 <app-menu-display [isMobile]="true" class="menuDisplay screenMargin"></app-menu-display>
@@ -76,8 +76,7 @@
                 </div>
                 <br/>
                 <div class="centeredText">
-                    <i>Up to {{getActiveTimeAmount()}} minutes of away time is automated. After that, up to 12 hours is banked and allows
-                        you to run the game at double speed. You can adjust the length of automated away time in the settings.</i>
+                    <i>Up to {{getActiveTimeAmount()}} minutes of away time is automated. You can adjust the length of automated away time in the settings.</i>
                 </div>
                 <div *ngIf="displayFunFacts">
                     <br/>

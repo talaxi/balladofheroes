@@ -74,6 +74,12 @@
                         <br />
                         <br />
                         <button class="buttonStyled" (click)="startTrial()">Start Trial</button>
+                        <br />
+                        <div class='flexAround'>
+                            <mat-checkbox [(ngModel)]="repeatStarTrialFight" (input)="repeatStarTrialFightToggle()">
+                                Repeat Trial
+                            </mat-checkbox>
+                        </div>
                     </div>
                 </div>
             </div>

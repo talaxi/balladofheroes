@@ -131,8 +131,12 @@ export class UtilityService {
   public largeAltarPrayChancePerFollower = .01;
 
   public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
+  public genericShortRoundTo = 2; //rounds generic math values to 2 numbers after decimal
   public weeklyMeleeEntryCap = 7;
   public levelsNeededForAmbrosia = 50;
+
+  public trialAffinityXpGain = 200;
+  public timeFragmentEfficiency = .2;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
@@ -288,6 +292,10 @@ export class UtilityService {
 
   genericRound(value: number) {
     return this.roundTo(value, this.genericRoundTo);
+  }
+  
+  genericShortRound(value: number) {
+    return this.roundTo(value, this.genericShortRoundTo);
   }
 
   //level 0 = 1

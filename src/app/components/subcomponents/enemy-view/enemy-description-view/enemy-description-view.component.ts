@@ -215,6 +215,11 @@ export class EnemyDescriptionViewComponent {
     }
 
     var critChance = this.lookupService.getDamageCriticalChanceByNumbers(this.lookupService.getAdjustedLuck(partyMember, true), this.lookupService.getAdjustedResistance(this.character));
+    
+    var trueShot = this.lookupService.characterHasAbility("True Shot", partyMember);
+    if (trueShot !== undefined && this.character.battleInfo.statusEffects.some(effect => !effect.isPositive)) {
+      critChance *= trueShot.secondaryEffectiveness;
+    }
 
     if (critChance < .01)
       critChance = .01;

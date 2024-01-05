@@ -46,9 +46,9 @@ export class EquipmentItemViewComponent implements OnInit {
       return "★★★★";
     if (this.equipment?.quality === EquipmentQualityEnum.Special)
       return "★★★★★";
-    if (this.equipment?.quality === EquipmentQualityEnum.Extraordinary)
-      return "★★★★★★";
     if (this.equipment?.quality === EquipmentQualityEnum.Unique)
+      return "★★★★★★";
+    if (this.equipment?.quality === EquipmentQualityEnum.Extraordinary)
       return "★★★★★★★";
 
     return "";

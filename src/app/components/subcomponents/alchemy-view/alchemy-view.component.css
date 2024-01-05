@@ -165,6 +165,10 @@
         height: 50%;
     }
 
+    .recipeList {
+        height: 47.5%;
+    }
+
     .mobileDivider {
         border-color: var(--foreground-accent);
         border-width: 3px;

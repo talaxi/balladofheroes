@@ -1371,9 +1371,28 @@ export class VersionControlService {
           this.globalService.globalVar.keybinds.set("openTimeFragmentQuickView", "keyF");
           this.globalService.globalVar.keybinds.set("useCharacter1DuoAbility", "keyG");
           this.globalService.globalVar.keybinds.set("useCharacter2DuoAbility", this.keybindService.shiftKeyBind + "keyG");
+          this.globalService.globalVar.settings.set("displayQuickViewTimeFragment", true);
+
+          if (this.globalService.globalVar.isSubscriber) {
+            this.lookupService.gainResource(new ResourceValue(ItemsEnum.TimeFragment, 2));
+          }
+
+          var aphrodite = new God(GodEnum.Aphrodite);
+          aphrodite.name = "Aphrodite";
+          aphrodite.displayOrder = 11;
+          this.globalService.assignGodAbilityInfo(aphrodite);
+          this.globalService.globalVar.gods.push(aphrodite);
+
+          var hera = new God(GodEnum.Hera);
+          hera.name = "Hera";
+          hera.displayOrder = 12;
+          this.globalService.assignGodAbilityInfo(hera);
+          this.globalService.globalVar.gods.push(hera);
 
           if (this.globalService.globalVar.uniques === undefined)
             this.globalService.globalVar.uniques = [];
+          if (this.globalService.globalVar.timeFragmentRuns === undefined)
+            this.globalService.globalVar.timeFragmentRuns = [];
 
           var mountOlympusOlympus = this.balladService.findSubzone(SubZoneEnum.MountOlympusOlympus);
           if (mountOlympusOlympus !== undefined && mountOlympusOlympus.isAvailable) {
@@ -1423,9 +1442,14 @@ export class VersionControlService {
             if (ability2 !== undefined)
               ability2.cooldown += 10;
 
+            var permanentAbility1 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined && permanentAbility1.userEffect.length > 0) {
+              permanentAbility1.userEffect[0].threshold = (permanentAbility1.userEffect[0].threshold * .6);
+            }
+
             var permanentAbility2 = dionysusGod.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
             if (permanentAbility2 !== undefined && permanentAbility2.targetEffect.length > 0) {
-              permanentAbility2.targetEffect[0].effectiveness = permanentAbility2.targetEffect[0].effectiveness * (4 / 5);
+              permanentAbility2.targetEffect[0].effectiveness = (permanentAbility2.targetEffect[0].effectiveness * (4 / 5) * (2 / 5));
             }
           }
 
@@ -1458,11 +1482,42 @@ export class VersionControlService {
             }
           }
 
+          var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
+          if (zeus !== undefined) {
+            var permanentPassive = zeus.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined && permanentPassive.userEffect.length > 0) {
+              permanentPassive.userEffect[0].effectiveness = permanentPassive.userEffect[0].effectiveness * (2 / 5);
+            }
+          }
+
+          var apollo = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo);
+          if (apollo !== undefined) {
+            var permanentAbility2 = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (permanentAbility2 !== undefined) {
+              permanentAbility2.effectiveness = permanentAbility2.effectiveness / 3;
+            }
+
+            var permanentAbility3 = apollo.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility3Level);
+            if (permanentAbility3 !== undefined) {
+              permanentAbility3.effectiveness = permanentAbility3.effectiveness * (2 / 3);
+            }
+          }
+
           var ares = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares);
           if (ares !== undefined) {
-            var permanentPassive = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
-            if (permanentPassive !== undefined && permanentPassive.targetEffect.length > 0) {
-              permanentPassive.targetEffect[0].effectiveness = permanentPassive.targetEffect[0].effectiveness / 4;
+            var permanentAbility1 = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.defaultGodAbilityLevel);
+            if (permanentAbility1 !== undefined && permanentAbility1.targetEffect.length > 0) {
+              permanentAbility1.targetEffect[0].effectiveness = permanentAbility1.targetEffect[0].effectiveness / 4;
+            }
+
+            var permanentPassive = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godPassiveLevel);
+            if (permanentPassive !== undefined) {
+              permanentPassive.effectiveness = permanentPassive.effectiveness / 2.9;
+            }
+
+            var permanentAbility2 = ares.permanentAbilityUpgrades.find(ability => ability.requiredLevel === this.utilityService.godAbility2Level);
+            if (permanentAbility2 !== undefined && permanentAbility2.targetEffect.length > 0) {
+              permanentAbility2.targetEffect[0].duration /= 2;
             }
           }
 

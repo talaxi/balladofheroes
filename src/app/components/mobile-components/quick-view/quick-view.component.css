@@ -87,3 +87,10 @@
 .peekResources {
     grid-area: peekResources;
 }
+
+
+@media (max-width: 800px) {
+    .stackedButtons {
+        height: 14.5rem;
+    }
+}

@@ -1,4 +1,14 @@
+<div class="resizedText" *ngFor="let _ of [].constructor(availableFragments); let rowIndex = index">
+    <span *ngIf = "(timeFragmentRuns.length - 1) < rowIndex" class="bold s6Heading timeFragmentText">Available Time Fragment</span>
+    <span *ngIf = "(timeFragmentRuns.length - 1) >= rowIndex" [innerHtml]="getRunDetails(timeFragmentRuns[rowIndex])"></span>
+    <hr class="miniTransparentHr" *ngIf="rowIndex < availableFragments-1" />
+</div>
+
+<br/>
+
+<div class="textCentered">
 <button class="buttonStyled" (click)="openModal(timeFragmentView)">View Time Fragments</button>
+</div>
 
 <ng-template #timeFragmentView>
     <div>

@@ -81,7 +81,7 @@
       <hr/>
       Bonus Gods: <span [innerHTML]="getBonusGods()"></span>
       <br/>
-      These gods give characters 20% additional primary stats when equipped, receive 20% extra XP, and gain 20% additional Chthonic Power when reset.
+      These gods give characters 20% additional primary stats when equipped, receive 20% extra XP, and gain 20% additional Chthonic Power when reset. <span *ngIf="anyBonusGodsHidden()">Continue progressing through the story to unlock hidden gods.</span>
       <br/>
       <!--Name of Trial is active-->
     </div>

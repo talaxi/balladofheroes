@@ -240,6 +240,12 @@
         <button class="changeButton buttonStyled buttonOffset" *ngIf="overdriveAvailable"
             (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
         <div class="sectionInfo">
+            <div class="autoAttack">
+                <strong class="statLabel" [ngClass]="getAbilityColor(false)">Auto Attack</strong><span
+                    class="statValue"> -
+                    <span
+                        [innerHtml]="lookupService.getAutoAttackDescription(character)"></span></span>
+            </div>
             <div *ngFor="let ability of characterAbilityList">
                 <strong class="statLabel" [ngClass]="getAbilityColor(false)" customToolTip [isLargeTooltip]="true"
                 [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span

@@ -192,7 +192,7 @@ export class AltarComponent implements OnInit {
 
     var gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Right click Small Altars to toggle between the two options.";
     if (this.deviceDetectorService.isMobile())
-      gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Tap and hold Small Altars to toggle between the two options.";
+      gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Double tap Small Altars to toggle between the two options.";
    
       
       if (this.deviceDetectorService.isMobile()) 

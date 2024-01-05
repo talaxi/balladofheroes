@@ -69,7 +69,7 @@
 }
 
 .overdriveActive .mdc-linear-progress__buffer-bar {
-  background-color: var(--overdriveColor) !important;  
+  background-color: var(--overdriveColor) !important;
 }
 
 .barrier-progress {
@@ -134,12 +134,12 @@
 
   --grayedOut-Text: #797c80;
 
-
   --adventurerColor: #DB7803;
   --archerColor: #12A901;
   --warriorColor: #0695FB;
   --priestColor: #D063EE;
-  --monkColor: #edac82;  /*#aca2fc;*/
+  --monkColor: #edac82;
+  /*#aca2fc;*/
   --thaumaturgeColor: #ffc100;
 
   --itemColor: #ffffff;
@@ -176,6 +176,7 @@
   --uniqueEquipmentColor: #FF6250;
   --alchemyColor: #CE66E9;
   --jewelcraftingColor: #ff9d00;
+  --timeFragmentColor: #17A757;
 
   --resourceKeywordColor: #EAAD91;
   --insufficientResourcesKeywordColor: #7a818c;
@@ -344,6 +345,7 @@ a:link {
 }
 
 @media (max-aspect-ratio: 4/3) and (min-width: 1151px) {
+
   html,
   body {
     font-size: 1.9vmin;
@@ -351,13 +353,14 @@ a:link {
 }
 
 @media (max-aspect-ratio: 3.6/3) and (min-width: 1151px) {
+
   html,
   body {
     font-size: 1.6vmin;
   }
 }
 
-@media (max-width: 1150px) and (min-width:  801px) {
+@media (max-width: 1150px) and (min-width: 801px) {
 
   html,
   body {
@@ -369,7 +372,7 @@ a:link {
 
   html,
   body {
-    font-size: 3vmin;
+    font-size: 3.1vmin;
   }
 }
 
@@ -564,6 +567,10 @@ h6 {
   vertical-align: middle;
 }
 
+.topAligned {
+  vertical-align: top;
+}
+
 .buttonStyled:hover,
 .spanButtonStyled:hover {
   background-color: var(--button-hover);
@@ -694,6 +701,10 @@ body {
 
 .jewelcraftingText {
   color: var(--jewelcraftingColor);
+}
+
+.timeFragmentText {
+  color: var(--timeFragmentColor);
 }
 
 .overdriveText {
@@ -1070,7 +1081,7 @@ button {
   font-variant: small-caps;
   font-weight: bold;
   text-transform: lowercase;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
 }
 
 .barrierText {
@@ -1271,5 +1282,13 @@ button:disabled {
 
   body {
     overscroll-behavior: none;
+  }
+
+  .storyCharacterName {
+    font-size: 1.4rem;
+  }
+  
+  .storyBar .mdc-linear-progress__bar-inner {
+    border-top-width: var(--mdc-linear-progress-track-height, .5rem);
   }
 }

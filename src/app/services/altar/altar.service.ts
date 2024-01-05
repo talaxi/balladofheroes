@@ -29,8 +29,8 @@ export class AltarService {
 
   getTutorialAltar() {
     var altar = new AltarInfo();
-    altar.type = AltarEnum.Large; //TODO: SMALL 
-    altar.god = GodEnum.Nemesis;  //TODO: athena
+    altar.type = AltarEnum.Small;
+    altar.god = GodEnum.Athena;
     altar.condition = AltarConditionEnum.Victories;
     altar.conditionCount = altar.conditionMax = 1;
 

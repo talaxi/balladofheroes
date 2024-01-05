@@ -23,6 +23,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class TrialsViewComponent {
   selectedTrial: Trial;
   repeatTrialFight: boolean = false;
+  repeatStarTrialFight: boolean = false;
   tooltipDirection = DirectionEnum.Left;
   isMobile: boolean = false;
   resolveEnemies: Enemy[] = [];
@@ -55,6 +56,7 @@ export class TrialsViewComponent {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.resolveEnemies = this.getTrialEnemies();
     this.repeatTrialFight = this.globalService.globalVar.settings.get("repeatTrialFight") ?? false;
+    this.repeatStarTrialFight = this.globalService.globalVar.settings.get("repeatStarTrialFight") ?? false;
     this.trials = this.getStandardTrials();
     if (this.trials.length > 0)
       this.selectedTrial = this.dictionaryService.getTrialInfoFromType(this.trials[0]);
@@ -145,7 +147,6 @@ export class TrialsViewComponent {
     return boss;
   }
 
-
   getGodColorClass(name: string) {
     return {
       'athenaColor': name === "Athena",
@@ -208,6 +209,10 @@ export class TrialsViewComponent {
 
   repeatTrialFightToggle() {
     this.globalService.globalVar.settings.set("repeatTrialFight", this.repeatTrialFight);
+  }
+  
+  repeatStarTrialFightToggle() {
+    this.globalService.globalVar.settings.set("repeatStarTrialFight", this.repeatStarTrialFight);
   }
 
   toggleSubMenuOptions(direction: number) {    

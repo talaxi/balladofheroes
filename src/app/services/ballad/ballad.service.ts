@@ -52,6 +52,29 @@ export class BalladService {
 
     return name;
   }
+  
+  getShortBalladName(type?: BalladEnum) {
+    var name = "";
+
+    if (type === BalladEnum.Champion)
+      name = "Champion";
+    if (type === BalladEnum.Gorgon)
+      name = "Gorgon";
+    if (type === BalladEnum.Labors)
+      name = "Labors";
+    if (type === BalladEnum.Underworld)
+      name = "Underworld";
+    if (type === BalladEnum.Boar)
+      name = "Boar";
+    if (type === BalladEnum.Argo)
+      name = "Argo";
+    if (type === BalladEnum.Olympus)
+      name = "Olympus";
+    if (type === BalladEnum.Labyrinth)
+      name = "Labyrinth";
+
+    return name;
+  }
 
   getActiveBallad() {
     var activeBallad = this.globalService.globalVar.ballads.find(item => item.isSelected);

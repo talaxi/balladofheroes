@@ -1,6 +1,7 @@
 import { Component, Input, OnInit } from '@angular/core';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Achievement } from 'src/app/models/global/achievement.model';
@@ -235,6 +236,56 @@ export class AchievementsViewComponent implements OnInit {
 
     if (this.showUncompleted) {
       mainList = mainList.filter(item => !item.completed);
+    }
+
+    //check for specific gods
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Athena)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesAthena);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Artemis)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesArtemis);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hermes)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesHermes);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Apollo)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesApollo);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Ares)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesAres);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hades)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesHades);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesNemesis);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesDionysus);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesZeus);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesPoseidon);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesAphrodite);
+    }
+    if (this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera) === undefined ||
+    !this.globalService.globalVar.gods.find(item => item.type === GodEnum.Hera)?.isAvailable) {
+      mainList = mainList.filter(item => item.type !== AchievementTypeEnum.TenVictoriesHera);
     }
 
     mainList.forEach(achievement => {

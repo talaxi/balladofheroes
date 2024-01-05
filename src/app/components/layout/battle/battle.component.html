@@ -1,4 +1,4 @@
-<div class="gridContainer">
+<div [ngClass]="{'storyGridContainer': isAtStoryScene() && !isMobile, 'gridContainer': !isAtStoryScene() || isMobile}" class="gridContainer">
     <div class="header">
         <div [ngClass]="{'extraInfoHeaderFlex': doingColiseumOrTrialFight(), 'headerFlex': !doingColiseumOrTrialFight() }">
             <div class="alignCenter coliseumRound" *ngIf="doingColiseumFight()">
@@ -78,11 +78,11 @@
             <div class="skipButton">
                 <span *ngIf="showSkipButtonMessage"><i><strong>Click the arrow button to the right to skip to the next
                             page</strong></i></span>                
-                <button class="floatRight arrow buttonStyled" (click)="skipStory()">&#8594;</button>
+                <button class="floatRight arrow buttonStyled" (click)="skipStory()">&#10145;</button>
             </div>
             <div class="loadingBar">
                 <mat-progress-bar mode="determinate" [value]="getPagePercent()"
-                    class="green-progress characterBar removeAnimation removeTransition">
+                    class="green-progress characterBar storyBar removeAnimation removeTransition">
                 </mat-progress-bar>
             </div>
         </div>
@@ -115,8 +115,8 @@
             <span class="buttonStyled skipOverlay" (click)="skipOverlayMessage()">X</span>
         </div>
     </div>
-    <hr *ngIf="!isMobile" class='gap hr' />
-    <div *ngIf="!isMobile" class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
+    <hr *ngIf="!isMobile && !isAtStoryScene()" class='gap hr' />
+    <div *ngIf="!isMobile && !isAtStoryScene()" class="battleUpdates" [ngClass]="{ 'hide': storyService.triggerFirstTimeUnderworldScene }">
         <div class="innerContainer" #scrollToTop [scrollTop]="getScrollHeight(scrollToTop)"
             [innerHtml]="this.displayGameUpdates()"></div>
         <button (click)="openGameLogEditor(gameLogEditorModal)" class="gameLogEditor gameLogButton showOnHover buttonStyled"><img

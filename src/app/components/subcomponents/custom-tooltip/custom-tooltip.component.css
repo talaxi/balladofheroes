@@ -55,3 +55,18 @@
     transform: translateY(50%) translateX(-50%);
     overflow: hidden;
 }
+
+@media (max-width: 800px) {
+    .tooltip-container {    
+        max-width: 62.5vw;
+    }
+    
+    .largeTooltip {
+        max-width: 70vw;    
+    }
+    
+    .smallTooltip {
+        max-width: 45vw;    
+    }
+    
+}

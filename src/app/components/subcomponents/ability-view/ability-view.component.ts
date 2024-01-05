@@ -4,6 +4,7 @@ import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -30,6 +31,7 @@ export class AbilityViewComponent implements OnInit {
   isMobile: boolean = false;
   longPressStartTime = 0;
   verboseMode = false;
+  tooltipDirection = DirectionEnum.Right;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     private globalService: GlobalService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
@@ -37,6 +39,9 @@ export class AbilityViewComponent implements OnInit {
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
+
+    if (this.isMobile)
+      this.tooltipDirection = DirectionEnum.Up;
 
     if (this.ability === undefined)
       this.autoMode = this.character.battleInfo.autoAttackAutoMode;
@@ -116,6 +121,16 @@ export class AbilityViewComponent implements OnInit {
     if (timePassed > 500 && this.isMobile) { //longer than .5 seconds
       this.toggleAuto();
     }
+  }
+
+  doubleClicked() {    
+    if (this.isMobile)
+    this.toggleAuto();
+  }
+  
+  toggleAutoWeb() {    
+    if (!this.isMobile)
+    this.toggleAuto();
   }
 
   toggleAuto() {

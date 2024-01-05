@@ -36,6 +36,7 @@
                         (Lv {{getRewardLevel(zone.type)}})
                     </span>
                 </span>
+                <br *ngIf='isMobile' />
                 <span class="s4Heading followerCount">
                     <button class='buttonStyled' [disabled]="!canDecrement(zone.type)"
                         (click)="decrementZoneFollowers(zone.type)">-</button>

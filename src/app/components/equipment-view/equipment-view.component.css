@@ -169,6 +169,7 @@
 @media (max-width: 800px) {
   .compareEquipment {
     flex-direction: column;
+    display: flex;
   }
 
   .comparedEquipmentItem {

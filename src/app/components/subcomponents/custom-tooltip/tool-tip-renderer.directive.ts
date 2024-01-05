@@ -38,7 +38,7 @@ export class ToolTipRendererDirective {
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
   smallTooltipPercent = .31; //these need to match the css
   regularTooltipPercent = .38; //these need to match the css
-  largeTooltipPercent = .49; //these need to match the css
+  largeTooltipPercent = .495; //these need to match the css
 
   constructor(private _overlay: Overlay,
     private _overlayPositionBuilder: OverlayPositionBuilder,
@@ -54,6 +54,12 @@ export class ToolTipRendererDirective {
   ngOnInit() {
     if (!this.showToolTip) {
       return;
+    }
+
+    if (this.deviceDetectorService) {
+      this.smallTooltipPercent = .45;
+      this.regularTooltipPercent = .625;
+      this.largeTooltipPercent = .70;
     }
 
     var positionStrategy: FlexibleConnectedPositionStrategy;

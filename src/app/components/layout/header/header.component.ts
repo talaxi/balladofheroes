@@ -62,7 +62,7 @@ export class HeaderComponent implements OnInit {
 
   openZodiacPopover(content: any) {
     if (this.deviceDetectorService.isMobile())
-      this.dialog.open(content, { width: '95%', height: '80%', id: 'dialogNoPadding' });
+      this.dialog.open(content, { width: '95%', height: '80%' });
     else
       this.dialog.open(content, { width: '75%', height: '80%' });
   }
@@ -134,7 +134,7 @@ export class HeaderComponent implements OnInit {
     } else if ((month === 11 && day >= 22) || (month === 12 && day <= 21)) {
       zodiacStartDate = new Date(year, 10, 22);
     } else if ((month === 12 && day >= 22) || (month === 1 && day <= 19)) {
-      zodiacStartDate = new Date(year, 10, 22);
+      zodiacStartDate = new Date(year, 11, 22);
     } else {
       zodiacStartDate = new Date(0); // Default to an invalid date
     }
@@ -180,6 +180,19 @@ export class HeaderComponent implements OnInit {
     return formatDate(zodiacEndDate, 'MMM d, y', 'en-US');
   }
 
+  anyBonusGodsHidden() {
+    var bonusGods = this.zodiacService.getBonusGods(this.globalService.globalVar.gods);
+    var isHidden = false;
+
+    bonusGods.forEach(bonusGod => {
+      if (this.globalService.globalVar.gods.find(item => item.type === bonusGod) === undefined ||
+      !this.globalService.globalVar.gods.find(item => item.type === bonusGod)?.isAvailable)
+        isHidden = true;
+    });
+
+    return isHidden;
+  }
+
   getBonusGods() {
     var bonusGods = this.zodiacService.getBonusGods(this.globalService.globalVar.gods);
     var godText = "";
@@ -187,8 +200,12 @@ export class HeaderComponent implements OnInit {
     for (var i = 0; i < bonusGods.length; i++) {
       var bonusGod = bonusGods[i];
       var godName = this.lookupService.getGodNameByType(bonusGod);
+      var isGodHidden = false;
+      if (this.globalService.globalVar.gods.find(item => item.type === bonusGod) === undefined ||
+       !this.globalService.globalVar.gods.find(item => item.type === bonusGod)?.isAvailable)
+        isGodHidden = true;
 
-      godText += "<span class='bold smallCaps " + godName.toLowerCase() + "Color'>" + godName + "</span>";
+      godText += "<span class='bold smallCaps " + godName.toLowerCase() + "Color'>" + (isGodHidden ? "???" : godName) + "</span>";
       if (i !== bonusGods.length - 1)
         godText += ", ";
     }

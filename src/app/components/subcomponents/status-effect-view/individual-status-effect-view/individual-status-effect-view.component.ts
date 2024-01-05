@@ -38,8 +38,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       effect.type === StatusEffectEnum.DamageTakenDown || effect.type === StatusEffectEnum.DamageTakenUp ||
       effect.type === StatusEffectEnum.BattleItemEffectUp || effect.type === StatusEffectEnum.AoeDamageUp ||
       effect.type === StatusEffectEnum.DamageOverTimeDamageUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp ||
-      effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown ||
-      effect.type === StatusEffectEnum.AllPrimaryStatsDown ||
+      effect.type === StatusEffectEnum.AllPrimaryStatsUp || effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown ||      
       effect.type === StatusEffectEnum.ArmorPenetrationUp || effect.type === StatusEffectEnum.ArmorPenetrationDown ||
       effect.type === StatusEffectEnum.HpRegenUp)
       return true;
@@ -115,7 +114,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     if (effect.type === StatusEffectEnum.ResistanceDown || effect.type === StatusEffectEnum.ResistanceUp)
       return "RES";
     if (effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpUp || effect.type === StatusEffectEnum.AllPrimaryStatsUp ||
-      effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown || effect.type === StatusEffectEnum.AllPrimaryStatsDown)
+      effect.type === StatusEffectEnum.AllPrimaryStatsExcludeHpDown)
       return "ALL";
     if (effect.type === StatusEffectEnum.DamageDealtUp || effect.type === StatusEffectEnum.DamageDealtDown ||
       effect.type === StatusEffectEnum.EarthDamageUp || effect.type === StatusEffectEnum.EarthDamageDown ||
@@ -486,7 +485,7 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       src += "healOverTime.svg";
     }
     if (effect.type === StatusEffectEnum.Current) {
-      src += "flow.svg";
+      src += "Pisces.svg";
     }
     if (effect.type === StatusEffectEnum.HighTide) {
       src += "highTide.svg";
@@ -511,6 +510,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
     }
     if (effect.type === StatusEffectEnum.Strut) {
       src += "strut.svg";
+    }
+    if (effect.type === StatusEffectEnum.StunImmunity) {
+      src += "stunImmunity.svg";
     }
     if (effect.type === StatusEffectEnum.PassionateRhythm) {
       src += "passionateRhythm.svg";
@@ -591,7 +593,9 @@ export class IndividualStatusEffectViewComponent implements OnInit {
       if (effect.type === StatusEffectEnum.DefensiveShapeshifting)
       src += "nemesisHeraDuo.svg";      
       if (effect.type === StatusEffectEnum.LovingEmbrace)
-      src += "aphroditeHeraDuo.svg";      
+      src += "aphroditeHeraDuo.svg";     
+      if (effect.type === StatusEffectEnum.AllPrimaryStatsDown && effect.abilityName === "Sickness")
+      src += "dionysusArtemisDuo.svg";      
 
     return src;
   }

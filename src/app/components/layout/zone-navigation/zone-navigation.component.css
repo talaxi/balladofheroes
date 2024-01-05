@@ -198,6 +198,10 @@
             "quickLink";
     }
 
+    .stackedButtons {
+        height: 14.5rem;
+    }
+
     .zoneSpacer {
         margin-left: .5rem;
     }

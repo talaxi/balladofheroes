@@ -38,12 +38,12 @@
                 (input)="filterSpecialToggle()">Special
             </mat-checkbox>
             <br />
-            <mat-checkbox class="bold extraordinaryEquipment" [(ngModel)]="filterExtraordinary"
-                (input)="filterExtraordinaryToggle()">Extraordinary
-            </mat-checkbox>
-            <br />
             <mat-checkbox class="bold uniqueEquipment" [(ngModel)]="filterUnique" (input)="filterUniqueToggle()">Unique
             </mat-checkbox>
+            <br />
+            <mat-checkbox class="bold extraordinaryEquipment" [(ngModel)]="filterExtraordinary"
+                (input)="filterExtraordinaryToggle()">Extraordinary
+            </mat-checkbox>            
         </div>
         <div *ngIf="prefix !== 'slots'" class="column">
             <span class="sectionHeaderText sectionHeading">Equipment Type</span> <br />

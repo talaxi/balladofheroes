@@ -2,7 +2,7 @@
     <button (click)="viewAltar()"  class="container buttonAsText"
         [disabled]="!isAltarReady()">
         <div class="centeredBox">
-            <div #spinnerDiv class="ability"  (contextmenu)="toggleAltarType()">
+            <div #spinnerDiv class="ability" (contextmenu)="toggleAltarType()" (dblclick)="toggleAltarTypeMobile()">
                 <div>
                     <span class='abilityTimer'><img class="abilityImage" (contextmenu)="preventRightClick()" [src]='getAltarImage()' /></span>
                 </div>

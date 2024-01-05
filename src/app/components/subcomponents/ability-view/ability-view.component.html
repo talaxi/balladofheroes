@@ -1,7 +1,7 @@
-<div customToolTip [contentTemplate]="abilityPopover" class="container">
+<div customToolTip [contentTemplate]="abilityPopover" [tooltipDirection]="tooltipDirection" class="container">
     <div class="centeredBox">
-        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAuto()"
-        (touchstart)="longPressStart()" (touchend)="longPressEnd()">
+        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAutoWeb()"
+        (dblclick)="doubleClicked()">
             <div>
                 <span class='abilityTimer' [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
                 <div class="linkActive" *ngIf="!isAutoAttack && ability.manuallyTriggered">
@@ -26,6 +26,6 @@
         <span [innerHtml]="getAbilityDescription()"></span>        
         <hr />
         <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
-        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>        
+        <span *ngIf="isMobile">Double tap to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>        
     </div>
 </ng-template>

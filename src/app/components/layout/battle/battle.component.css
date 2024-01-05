@@ -12,6 +12,20 @@
         "battleUpdates";
 }
 
+.storyGridContainer {
+    display: grid;
+    height: 100%;
+    margin: 0 .5rem;
+    grid-template-columns: auto;
+    grid-template-rows: auto 75% 1rem 1fr;
+    justify-content: stretch;
+    grid-template-areas:
+        "header"
+        "scene"
+        "gap"
+        "battleUpdates";
+}
+
 .header {
     grid-area: header;
 }
@@ -199,7 +213,7 @@
 .text {
     grid-area: text;
     margin: auto;
-    font-size: 1.025rem;
+    font-size: 1.05rem;
 }
 
 .storyTextAnimation {
@@ -303,7 +317,7 @@
     margin-left: 1.725rem;
 }
 
-.buffImage {    
+.buffImage {
     width: 0.8rem;
     height: 1rem;
     vertical-align: super;
@@ -349,7 +363,7 @@
             "zoneDropdown victoryCount nextSubzone";
         font-variant: small-caps;
     }
-    
+
     .extraInfoHeaderFlex {
         text-align: center;
         display: grid;
@@ -398,6 +412,18 @@
     }
 
     .storyGrid {
-        gap:.25rem;
+        gap: .25rem;
+    }
+
+    .text {
+        font-size: 1.25rem;
+    }
+
+    .arrow {
+        font-size: 2rem;
+    }
+
+    .storyBar {
+        height: .5rem !important;
     }
 }

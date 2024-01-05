@@ -115,7 +115,7 @@ export class ZodiacService {
     } else if (month === 11) {
       zodiacSign = day <= 21 ? ZodiacEnum.Scorpio : ZodiacEnum.Sagittarius; 
     } else if (month === 12) {
-      zodiacSign = day <= 21 ? ZodiacEnum.Pisces : ZodiacEnum.Capricorn; //TODO: FIRST ONE SHOULD BE Sagittarius
+      zodiacSign = day <= 21 ? ZodiacEnum.Sagittarius : ZodiacEnum.Capricorn;
     }
 
     return zodiacSign;

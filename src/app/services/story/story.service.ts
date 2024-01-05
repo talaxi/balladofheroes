@@ -610,12 +610,12 @@ export class StoryService {
     }
     else if (storyId === 45) {
       if (pageCount === 1)
-      sceneText = "<div class='sceneDiv'>As the day begins to give way to night, your ship arrives on the shores of Crete. You use your remaining moments of sunlight to track down an inn.</div>" +
-        "<div>You secure a room for the night and stop for a warm meal, although the uneasy feeling around you is unmistakable. You hear hushed conversations discussing the events of Mount Olympus. You pick up exaggerated bits and pieces here and there, but it seems everyone knows the truth of the matter: Olympus had fallen.</div>";
-    else if (pageCount === 2)
-      sceneText = "<div class='sceneDiv'>You listen in on a nearby conversation from a particularly agitated patron. He had received warning from family living in a village near the mountain.</div>" +
-        "<div class='sceneDiv'>The giants had wasted no time in their destruction and pillaging, and their presence had been felt all around the mountain. Many patrons at this establishment seemed concerned for loved ones on the mainland.</div>" +
-        "<div>The chatter stirred something deep inside of you. You may have failed, but you would not give up. You will get answers from Khronos and find a way to put the rightful gods back on Olympus. But first, you will make your way to the Labyrinth like Theseus before you and defeat the great Minotaur.</div>";
+        sceneText = "<div class='sceneDiv'>As the day begins to give way to night, your ship arrives on the shores of Crete. You use your remaining moments of sunlight to track down an inn.</div>" +
+          "<div>You secure a room for the night and stop for a warm meal, although the uneasy feeling around you is unmistakable. You hear hushed conversations discussing the events of Mount Olympus. You pick up exaggerated bits and pieces here and there, but it seems everyone knows the truth of the matter: Olympus had fallen.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>You listen in on a nearby conversation from a particularly agitated patron. He had received warning from family living in a village near the mountain.</div>" +
+          "<div class='sceneDiv'>The giants had wasted no time in their destruction and pillaging, and their presence had been felt all around the mountain. Many patrons at this establishment seemed concerned for loved ones on the mainland.</div>" +
+          "<div>The chatter stirred something deep inside of you. You may have failed, but you would not give up. You will get answers from Khronos and find a way to put the rightful gods back on Olympus. But first, you will make your way to the Labyrinth like Theseus before you and defeat the great Minotaur.</div>";
     }
     else if (storyId === 46) {
       if (pageCount === 1)
@@ -837,11 +837,12 @@ export class StoryService {
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
         this.globalService.globalVar.isBattlePaused = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type));
-        this.globalService.handleTutorialModal();
-
+        
         if (this.deviceDetectorService.isMobile())
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type));
+
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type));
+        this.globalService.handleTutorialModal();        
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
@@ -995,7 +996,7 @@ export class StoryService {
         sceneText = "As soon as Acheron is out of sight, the familiar shade darts towards you again. " + this.commonCharacterText("“I saw the whole thing! How much prayin' does someone need, I mean sheesh! Well, I'll let the boys know to start coming out here and say sweet nothins' to Oceanus if they want their sea breeze. You start coming by at the palace and I'll sweeten our deal alright?”");
       else if (pageCount === 3)
         sceneText = "<div class='sceneDiv s4Heading bold textCentered sidequestText'>Side Quest Complete!</div>" +
-          this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, false);;
+          this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, false);
     }
     if (scene === OptionalSceneEnum.CalydonDenMother) {
       if (pageCount === 1)
@@ -1099,7 +1100,8 @@ export class StoryService {
     }
     if (scene === OptionalSceneEnum.TimeFragmentInTheSwamp) {
       if (pageCount === 1)
-        sceneText = "Swamp Fragment";
+        sceneText = "<div class='sceneDiv'>After defeating the Lernean Hydra, you wade your way out of the swamp. Near the edge of the swamp, you notice a dim green object partially obscured in the muck. You reach down and retrieve what seems to be a crystal. As soon as you touch it, it reacts to your magic and immediately begins to glow.</div>" +
+          "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Time Fragments Unlocked</div>";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -1125,6 +1127,8 @@ export class StoryService {
 
   handleOptionalScene(deltaTime: number) {
     this.globalService.globalVar.isBattlePaused = true;
+    var subzone = this.balladService.getActiveSubZone();
+
     if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
       this.pageCount = 2;
     }
@@ -1260,12 +1264,15 @@ export class StoryService {
           var gameLogEntry = "Your experience on the Island of Naxos has improved your Alchemy skills. Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
           this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
         }
-      }      
+      }
       if (this.showOptionalStory === OptionalSceneEnum.TimeFragmentInTheSwamp) {
         this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You find a Time Fragment.");
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.TimeFragment, 1);
         if (resource !== undefined)
-          this.lookupService.gainResource(resource);        
+          this.lookupService.gainResource(resource);
+
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.TimeFragments, undefined, undefined, true, subzone.type));
+        this.globalService.handleTutorialModal();
       }
 
       this.currentPage = 1;

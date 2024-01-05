@@ -83,11 +83,11 @@ export class EnemyViewComponent implements OnInit {
   }
 
   getCharacterHpPercent(character: Enemy) {
-    return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
+    return (character.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(character, false)) * 100;
   }
 
   getCharacterBarrierPercent(character: Enemy) {
-    return (character.battleInfo.barrierValue / character.battleStats.maxHp) * 100;
+    return (character.battleInfo.barrierValue / this.lookupService.getAdjustedMaxHp(character, false)) * 100;
   }
 
   getCharacterAutoAttackProgress(character: Enemy) {
@@ -150,7 +150,7 @@ export class EnemyViewComponent implements OnInit {
   }
 
   getCharacterMaxHp() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.maxHp);
+    return this.utilityService.bigNumberReducer(this.lookupService.getAdjustedMaxHp(this.character, false));
   }
 
   getLootItem(loot: LootItem) {
