@@ -1238,6 +1238,150 @@ export class ResourceGeneratorService {
     if (type === ItemsEnum.PerfectBlessedStone) {
       return new ResourceValue(ItemsEnum.PerfectBlessedStone, amount);
     }
+    if (type === ItemsEnum.RutilatedRuby) {
+      return new ResourceValue(ItemsEnum.RutilatedRuby, amount);
+    }
+    if (type === ItemsEnum.RutilatedEmerald) {
+      return new ResourceValue(ItemsEnum.RutilatedEmerald, amount);
+    }
+    if (type === ItemsEnum.RutilatedAquamarine) {
+      return new ResourceValue(ItemsEnum.RutilatedAquamarine, amount);
+    }
+    if (type === ItemsEnum.RutilatedTopaz) {
+      return new ResourceValue(ItemsEnum.RutilatedTopaz, amount);
+    }
+    if (type === ItemsEnum.RutilatedOpal) {
+      return new ResourceValue(ItemsEnum.RutilatedOpal, amount);
+    }
+    if (type === ItemsEnum.RutilatedAmethyst) {
+      return new ResourceValue(ItemsEnum.RutilatedAmethyst, amount);
+    }
+    if (type === ItemsEnum.PerfectRutilatedRuby) {
+      return new ResourceValue(ItemsEnum.PerfectRutilatedRuby, amount);
+    }
+    if (type === ItemsEnum.PerfectRutilatedEmerald) {
+      return new ResourceValue(ItemsEnum.PerfectRutilatedEmerald, amount);
+    }
+    if (type === ItemsEnum.PerfectRutilatedAquamarine) {
+      return new ResourceValue(ItemsEnum.PerfectRutilatedAquamarine, amount);
+    }
+    if (type === ItemsEnum.PerfectRutilatedTopaz) {
+      return new ResourceValue(ItemsEnum.PerfectRutilatedTopaz, amount);
+    }
+    if (type === ItemsEnum.PerfectRutilatedOpal) {
+      return new ResourceValue(ItemsEnum.PerfectRutilatedOpal, amount);
+    }
+    if (type === ItemsEnum.PerfectRutilatedAmethyst) {
+      return new ResourceValue(ItemsEnum.PerfectRutilatedAmethyst, amount);
+    }    
+    if (type === ItemsEnum.BrilliantRuby) {
+      return new ResourceValue(ItemsEnum.BrilliantRuby, amount);
+    }
+    if (type === ItemsEnum.BrilliantEmerald) {
+      return new ResourceValue(ItemsEnum.BrilliantEmerald, amount);
+    }
+    if (type === ItemsEnum.BrilliantAquamarine) {
+      return new ResourceValue(ItemsEnum.BrilliantAquamarine, amount);
+    }
+    if (type === ItemsEnum.BrilliantTopaz) {
+      return new ResourceValue(ItemsEnum.BrilliantTopaz, amount);
+    }
+    if (type === ItemsEnum.BrilliantOpal) {
+      return new ResourceValue(ItemsEnum.BrilliantOpal, amount);
+    }
+    if (type === ItemsEnum.BrilliantAmethyst) {
+      return new ResourceValue(ItemsEnum.BrilliantAmethyst, amount);
+    }
+    if (type === ItemsEnum.PerfectBrilliantRuby) {
+      return new ResourceValue(ItemsEnum.PerfectBrilliantRuby, amount);
+    }
+    if (type === ItemsEnum.PerfectBrilliantEmerald) {
+      return new ResourceValue(ItemsEnum.PerfectBrilliantEmerald, amount);
+    }
+    if (type === ItemsEnum.PerfectBrilliantAquamarine) {
+      return new ResourceValue(ItemsEnum.PerfectBrilliantAquamarine, amount);
+    }
+    if (type === ItemsEnum.PerfectBrilliantTopaz) {
+      return new ResourceValue(ItemsEnum.PerfectBrilliantTopaz, amount);
+    }
+    if (type === ItemsEnum.PerfectBrilliantOpal) {
+      return new ResourceValue(ItemsEnum.PerfectBrilliantOpal, amount);
+    }
+    if (type === ItemsEnum.PerfectBrilliantAmethyst) {
+      return new ResourceValue(ItemsEnum.PerfectBrilliantAmethyst, amount);
+    }    
+    if (type === ItemsEnum.FlawlessRuby) {
+      return new ResourceValue(ItemsEnum.FlawlessRuby, amount);
+    }
+    if (type === ItemsEnum.FlawlessEmerald) {
+      return new ResourceValue(ItemsEnum.FlawlessEmerald, amount);
+    }
+    if (type === ItemsEnum.FlawlessAquamarine) {
+      return new ResourceValue(ItemsEnum.FlawlessAquamarine, amount);
+    }
+    if (type === ItemsEnum.FlawlessTopaz) {
+      return new ResourceValue(ItemsEnum.FlawlessTopaz, amount);
+    }
+    if (type === ItemsEnum.FlawlessOpal) {
+      return new ResourceValue(ItemsEnum.FlawlessOpal, amount);
+    }
+    if (type === ItemsEnum.FlawlessAmethyst) {
+      return new ResourceValue(ItemsEnum.FlawlessAmethyst, amount);
+    }
+    if (type === ItemsEnum.PerfectFlawlessRuby) {
+      return new ResourceValue(ItemsEnum.PerfectFlawlessRuby, amount);
+    }
+    if (type === ItemsEnum.PerfectFlawlessEmerald) {
+      return new ResourceValue(ItemsEnum.PerfectFlawlessEmerald, amount);
+    }
+    if (type === ItemsEnum.PerfectFlawlessAquamarine) {
+      return new ResourceValue(ItemsEnum.PerfectFlawlessAquamarine, amount);
+    }
+    if (type === ItemsEnum.PerfectFlawlessTopaz) {
+      return new ResourceValue(ItemsEnum.PerfectFlawlessTopaz, amount);
+    }
+    if (type === ItemsEnum.PerfectFlawlessOpal) {
+      return new ResourceValue(ItemsEnum.PerfectFlawlessOpal, amount);
+    }
+    if (type === ItemsEnum.PerfectFlawlessAmethyst) {
+      return new ResourceValue(ItemsEnum.PerfectFlawlessAmethyst, amount);
+    }    
+    if (type === ItemsEnum.AdamantineRuby) {
+      return new ResourceValue(ItemsEnum.AdamantineRuby, amount);
+    }
+    if (type === ItemsEnum.AdamantineEmerald) {
+      return new ResourceValue(ItemsEnum.AdamantineEmerald, amount);
+    }
+    if (type === ItemsEnum.AdamantineAquamarine) {
+      return new ResourceValue(ItemsEnum.AdamantineAquamarine, amount);
+    }
+    if (type === ItemsEnum.AdamantineTopaz) {
+      return new ResourceValue(ItemsEnum.AdamantineTopaz, amount);
+    }
+    if (type === ItemsEnum.AdamantineOpal) {
+      return new ResourceValue(ItemsEnum.AdamantineOpal, amount);
+    }
+    if (type === ItemsEnum.AdamantineAmethyst) {
+      return new ResourceValue(ItemsEnum.AdamantineAmethyst, amount);
+    }
+    if (type === ItemsEnum.PerfectAdamantineRuby) {
+      return new ResourceValue(ItemsEnum.PerfectAdamantineRuby, amount);
+    }
+    if (type === ItemsEnum.PerfectAdamantineEmerald) {
+      return new ResourceValue(ItemsEnum.PerfectAdamantineEmerald, amount);
+    }
+    if (type === ItemsEnum.PerfectAdamantineAquamarine) {
+      return new ResourceValue(ItemsEnum.PerfectAdamantineAquamarine, amount);
+    }
+    if (type === ItemsEnum.PerfectAdamantineTopaz) {
+      return new ResourceValue(ItemsEnum.PerfectAdamantineTopaz, amount);
+    }
+    if (type === ItemsEnum.PerfectAdamantineOpal) {
+      return new ResourceValue(ItemsEnum.PerfectAdamantineOpal, amount);
+    }
+    if (type === ItemsEnum.PerfectAdamantineAmethyst) {
+      return new ResourceValue(ItemsEnum.PerfectAdamantineAmethyst, amount);
+    }    
 
     //other
     if (type === ItemsEnum.SparringMatch) {
@@ -1390,7 +1534,7 @@ export class ResourceGeneratorService {
       return stats;
     }
 
-    var baseDullStatValue = 6;
+    var baseDullStatValue = .06;
     if (item === ItemsEnum.DullOpal) {
       return new CharacterStats(0, baseDullStatValue, 0, 0, 0, 0);
     }
@@ -1552,6 +1696,166 @@ export class ResourceGeneratorService {
       var stats = new CharacterStats(0, 0, 0, 0, 0, 0);
       stats.elementIncrease.water = basePerfectRadiatingStoneValue;
       return stats;
+    }
+    
+    var baseRutilatedStatValue = .12;
+    if (item === ItemsEnum.RutilatedOpal) {
+      return new CharacterStats(0, baseRutilatedStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.RutilatedRuby) {
+      return new CharacterStats(0, 0, 0, 0, baseRutilatedStatValue, 0);
+    }
+    if (item === ItemsEnum.RutilatedAquamarine) {
+      return new CharacterStats(0, 0, 0, baseRutilatedStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.RutilatedEmerald) {
+      return new CharacterStats(0, 0, baseRutilatedStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.RutilatedAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, baseRutilatedStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.RutilatedTopaz) {
+      return new CharacterStats(baseRutilatedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var basePerfectRutilatedStatValue = .135;
+    if (item === ItemsEnum.PerfectRutilatedOpal) {
+      return new CharacterStats(0, basePerfectRutilatedStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectRutilatedRuby) {
+      return new CharacterStats(0, 0, 0, 0, basePerfectRutilatedStatValue, 0);
+    }
+    if (item === ItemsEnum.PerfectRutilatedAquamarine) {
+      return new CharacterStats(0, 0, 0, basePerfectRutilatedStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectRutilatedEmerald) {
+      return new CharacterStats(0, 0, basePerfectRutilatedStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectRutilatedAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, basePerfectRutilatedStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.PerfectRutilatedTopaz) {
+      return new CharacterStats(basePerfectRutilatedStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var baseBrilliantStatValue = .15;
+    if (item === ItemsEnum.BrilliantOpal) {
+      return new CharacterStats(0, baseBrilliantStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.BrilliantRuby) {
+      return new CharacterStats(0, 0, 0, 0, baseBrilliantStatValue, 0);
+    }
+    if (item === ItemsEnum.BrilliantAquamarine) {
+      return new CharacterStats(0, 0, 0, baseBrilliantStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.BrilliantEmerald) {
+      return new CharacterStats(0, 0, baseBrilliantStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.BrilliantAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, baseBrilliantStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.BrilliantTopaz) {
+      return new CharacterStats(baseBrilliantStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var basePerfectBrilliantStatValue = .165;
+    if (item === ItemsEnum.PerfectBrilliantOpal) {
+      return new CharacterStats(0, basePerfectBrilliantStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectBrilliantRuby) {
+      return new CharacterStats(0, 0, 0, 0, basePerfectBrilliantStatValue, 0);
+    }
+    if (item === ItemsEnum.PerfectBrilliantAquamarine) {
+      return new CharacterStats(0, 0, 0, basePerfectBrilliantStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectBrilliantEmerald) {
+      return new CharacterStats(0, 0, basePerfectBrilliantStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectBrilliantAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, basePerfectBrilliantStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.PerfectBrilliantTopaz) {
+      return new CharacterStats(basePerfectBrilliantStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var baseFlawlessStatValue = .18;
+    if (item === ItemsEnum.FlawlessOpal) {
+      return new CharacterStats(0, baseFlawlessStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.FlawlessRuby) {
+      return new CharacterStats(0, 0, 0, 0, baseFlawlessStatValue, 0);
+    }
+    if (item === ItemsEnum.FlawlessAquamarine) {
+      return new CharacterStats(0, 0, 0, baseFlawlessStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.FlawlessEmerald) {
+      return new CharacterStats(0, 0, baseFlawlessStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.FlawlessAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, baseFlawlessStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.FlawlessTopaz) {
+      return new CharacterStats(baseFlawlessStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var basePerfectFlawlessStatValue = .195;
+    if (item === ItemsEnum.PerfectFlawlessOpal) {
+      return new CharacterStats(0, basePerfectFlawlessStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectFlawlessRuby) {
+      return new CharacterStats(0, 0, 0, 0, basePerfectFlawlessStatValue, 0);
+    }
+    if (item === ItemsEnum.PerfectFlawlessAquamarine) {
+      return new CharacterStats(0, 0, 0, basePerfectFlawlessStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectFlawlessEmerald) {
+      return new CharacterStats(0, 0, basePerfectFlawlessStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectFlawlessAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, basePerfectFlawlessStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.PerfectFlawlessTopaz) {
+      return new CharacterStats(basePerfectFlawlessStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var baseAdamantineStatValue = .21;
+    if (item === ItemsEnum.AdamantineOpal) {
+      return new CharacterStats(0, baseAdamantineStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.AdamantineRuby) {
+      return new CharacterStats(0, 0, 0, 0, baseAdamantineStatValue, 0);
+    }
+    if (item === ItemsEnum.AdamantineAquamarine) {
+      return new CharacterStats(0, 0, 0, baseAdamantineStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.AdamantineEmerald) {
+      return new CharacterStats(0, 0, baseAdamantineStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.AdamantineAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, baseAdamantineStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.AdamantineTopaz) {
+      return new CharacterStats(baseAdamantineStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
+    }
+
+    var basePerfectAdamantineStatValue = .225;
+    if (item === ItemsEnum.PerfectAdamantineOpal) {
+      return new CharacterStats(0, basePerfectAdamantineStatValue, 0, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectAdamantineRuby) {
+      return new CharacterStats(0, 0, 0, 0, basePerfectAdamantineStatValue, 0);
+    }
+    if (item === ItemsEnum.PerfectAdamantineAquamarine) {
+      return new CharacterStats(0, 0, 0, basePerfectAdamantineStatValue, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectAdamantineEmerald) {
+      return new CharacterStats(0, 0, basePerfectAdamantineStatValue * defensiveModifier, 0, 0, 0);
+    }
+    if (item === ItemsEnum.PerfectAdamantineAmethyst) {
+      return new CharacterStats(0, 0, 0, 0, 0, basePerfectAdamantineStatValue * defensiveModifier);
+    }
+    if (item === ItemsEnum.PerfectAdamantineTopaz) {
+      return new CharacterStats(basePerfectAdamantineStatValue * defensiveModifier * hpModifier, 0, 0, 0, 0, 0);
     }
 
     return new CharacterStats(0, 0, 0, 0, 0, 0);

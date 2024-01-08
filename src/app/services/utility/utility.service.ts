@@ -26,6 +26,10 @@ export class UtilityService {
   public averageLoadingAccuracy = 5;
   public highLoadingAccuracy = 2;
 
+  public quickDoubleClickTiming = 250;
+  public averageDoubleClickTiming = 1000;
+  public longDoubleClickTiming = 5000;
+
   public quickAutoAttackSpeed = 6;
   public averageAutoAttackSpeed = 8;
   public longAutoAttackSpeed = 10;

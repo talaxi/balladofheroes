@@ -1,7 +1,6 @@
 <div customToolTip [contentTemplate]="abilityPopover" [tooltipDirection]="tooltipDirection" class="container">
     <div class="centeredBox">
-        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAutoWeb()"
-        (dblclick)="doubleClicked()">
+        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAutoWeb()">
             <div>
                 <span class='abilityTimer' [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
                 <div class="linkActive" *ngIf="!isAutoAttack && ability.manuallyTriggered">

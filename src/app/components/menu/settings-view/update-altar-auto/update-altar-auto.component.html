@@ -24,5 +24,15 @@
             <mat-button-toggle [value]="altarEnum.Small">Small</mat-button-toggle>
             <mat-button-toggle [value]="altarEnum.Large">Large</mat-button-toggle>
         </mat-button-toggle-group>
+        <br/>
+        <span class="smallCaps bold">double click timing</span>
+        <br/>
+        <i>If you need a bigger timing window to perform double clicks, set this to average or long</i>        
+        <br/>
+        <mat-button-toggle-group [(ngModel)]="doubleClickTiming" aria-label="Double Click Timing" (change)="setDoubleClickTiming()">
+            <mat-button-toggle [value]="utilityService.quickDoubleClickTiming">Quick</mat-button-toggle>
+            <mat-button-toggle [value]="utilityService.averageDoubleClickTiming">Average</mat-button-toggle>
+            <mat-button-toggle [value]="utilityService.longDoubleClickTiming">Long</mat-button-toggle>
+        </mat-button-toggle-group>
     </div>
 </div>

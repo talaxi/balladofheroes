@@ -1365,7 +1365,7 @@ export class VersionControlService {
 
           this.globalService.globalVar.characters.push(monk);
         }
-        if (version === .74) { //TODO: set to .75
+        if (version === .75) { //TODO: set to .75
           //this.globalService.globalVar.sidequestData.duosUnlocked = false;
           this.globalService.globalVar.keybinds.set("triggerAction", "enter");
           this.globalService.globalVar.keybinds.set("openTimeFragmentQuickView", "keyF");
@@ -1375,6 +1375,36 @@ export class VersionControlService {
 
           if (this.globalService.globalVar.isSubscriber) {
             this.lookupService.gainResource(new ResourceValue(ItemsEnum.TimeFragment, 2));
+          }
+
+          var sympegadesOverlook = this.lookupService.getSubZoneByType(SubZoneEnum.AegeanSeaSympegadesOverlook);
+          if (sympegadesOverlook.isAvailable) {
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.AegeanSeaSympegadesOverlook);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.AegeanSeaSympegadesOverlook).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && sympegadesOverlook !== undefined && sympegadesOverlook.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && sympegadesOverlook !== undefined && sympegadesOverlook.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && sympegadesOverlook !== undefined && sympegadesOverlook.victoryCount >= 2500)
+                achievement.completed = true;
+
+              this.globalService.globalVar.achievements.push(achievement);
+            });
+          }
+          
+          var aeetesReinforcements = this.lookupService.getSubZoneByType(SubZoneEnum.ColchisReinforcementsFromAeetes);
+          if (aeetesReinforcements.isAvailable) {
+            this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.ColchisReinforcementsFromAeetes);
+            this.achievementService.createDefaultAchievementsForSubzone(SubZoneEnum.ColchisReinforcementsFromAeetes).forEach(achievement => {
+              if (achievement.type === AchievementTypeEnum.HundredVictories && aeetesReinforcements !== undefined && aeetesReinforcements.victoryCount >= 100)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.ThousandVictories && aeetesReinforcements !== undefined && aeetesReinforcements.victoryCount >= 500)
+                achievement.completed = true;
+              if (achievement.type === AchievementTypeEnum.TenThousandVictories && aeetesReinforcements !== undefined && aeetesReinforcements.victoryCount >= 2500)
+                achievement.completed = true;
+
+              this.globalService.globalVar.achievements.push(achievement);
+            });
           }
 
           var aphrodite = new God(GodEnum.Aphrodite);

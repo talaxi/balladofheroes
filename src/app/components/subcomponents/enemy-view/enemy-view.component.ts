@@ -15,6 +15,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-enemy-view',
@@ -36,12 +37,15 @@ export class EnemyViewComponent implements OnInit {
   previousName = "";
   overlayRef: OverlayRef;
   showEnemyHpAsPercent: boolean = false;
+  isMobile: boolean = false;
 
   constructor(public battleService: BattleService, public lookupService: LookupService, public utilityService: UtilityService,
-    public globalService: GlobalService, private gameLoopService: GameLoopService, private dictionaryService: DictionaryService) { }
+    public globalService: GlobalService, private gameLoopService: GameLoopService, private dictionaryService: DictionaryService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
+    this.isMobile = this.deviceDetectorService.isMobile();
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var defeatCount: EnemyDefeatCount | undefined;
@@ -139,6 +143,17 @@ export class EnemyViewComponent implements OnInit {
     }
 
     this.battleService.targetCharacterMode = false;
+  }
+
+  mobileAllTarget(character: Character) {
+    if (character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Dead) !== undefined)
+      return;
+    
+    if (this.isMobile && !this.battleService.targetbattleItemMode) {
+      this.globalService.getActivePartyCharacters(true).forEach(member =>{
+        member.targeting = character;
+      });
+    }
   }
 
   getCharacterBarrierValue(character: Character) {

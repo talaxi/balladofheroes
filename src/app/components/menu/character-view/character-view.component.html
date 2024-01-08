@@ -320,7 +320,7 @@
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 1) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                         class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 1)"></span></div>
                                         <div
-                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%'">
+                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%' && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== '*1'">
                                         <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
                                             class="statValue"
                                             [innerHtml]="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1)"></span></div>
@@ -332,7 +332,7 @@
                                 <div *ngIf="getGodAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodAbilityUserEffectThresholdIncrease(ability, 1) !== '0%'"><span class="statLabel">Gained Effect Threshold Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodAbilityUserEffectThresholdIncrease(ability, 1)"></span></div>
                                 <div
-                            *ngIf="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== '0%'">
+                            *ngIf="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== '0%' && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== '*1'">
                             <span class="statLabel">Permanent Gained Effect Threshold Increase: </span> <span class="statValue"
                                 [innerHtml]="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1)"></span></div>
                                 <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 1) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
@@ -383,7 +383,7 @@
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 2) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                         class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 2)"></span></div>
                                         <div
-                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%'">
+                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%' && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== '*1'">
                                         <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
                                             class="statValue"
                                             [innerHtml]="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2)"></span></div>

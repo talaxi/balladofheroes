@@ -280,7 +280,7 @@ export class GlobalService {
       heal.heals = true;
       heal.targetsAllies = true;
       heal.dealsDirectDamage = false;
-      heal.cooldown = heal.currentCooldown = 13;
+      heal.cooldown = heal.currentCooldown = 15;
       character.abilityList.push(heal);
 
       var faith = new Ability();
@@ -333,10 +333,7 @@ export class GlobalService {
       spiritUnleashed.name = "Spirit Unleashed";
       spiritUnleashed.requiredLevel = this.utilityService.characterAbility2Level;
       spiritUnleashed.isAvailable = false;
-      spiritUnleashed.effectiveness = 2.1;
-      /*spiritUnleashed.secondaryEffectiveness = .15;
-      spiritUnleashed.maxCount = 10;
-      spiritUnleashed.threshold = 1.5;*/
+      spiritUnleashed.effectiveness = 2.1;      
       spiritUnleashed.dealsDirectDamage = true;
       spiritUnleashed.cooldown = spiritUnleashed.currentCooldown = 36;
       spiritUnleashed.targetEffect.push(this.createStatusEffect(StatusEffectEnum.DamageTakenUp, 7, 1.25, false, false));
@@ -2403,7 +2400,7 @@ export class GlobalService {
       }
       else {
         //if (ability.abilityUpgradeLevel % 10 === 3 && ability.abilityUpgradeLevel <= 100)
-          //targetGainsEffect.duration += .5;
+        //targetGainsEffect.duration += .5;
 
         ability.effectiveness += .15;
       }
@@ -3458,18 +3455,34 @@ export class GlobalService {
     }
 
     var statGainText = "";
-    if (upgradedStats.maxHp > 0)
-      statGainText += Math.round(upgradedStats.maxHp) + " Max HP, ";
-    if (upgradedStats.attack > 0)
-      statGainText += Math.round(upgradedStats.attack) + " Attack, ";
-    if (upgradedStats.agility > 0)
-      statGainText += Math.round(upgradedStats.agility) + " Agility, ";
-    if (upgradedStats.luck > 0)
-      statGainText += Math.round(upgradedStats.luck) + " Luck, ";
-    if (upgradedStats.defense > 0)
-      statGainText += Math.round(upgradedStats.defense) + " Defense, ";
-    if (upgradedStats.resistance > 0)
-      statGainText += Math.round(upgradedStats.resistance) + " Resistance, ";
+    if (god.level >= 2000 && god.level <= 4000) {
+      if (upgradedStats.maxHp > 0)
+        statGainText += this.utilityService.genericRound(upgradedStats.maxHp * 100) + "% Max HP, ";
+      if (upgradedStats.attack > 0)
+        statGainText += this.utilityService.genericRound(upgradedStats.attack * 100) + "% Attack, ";
+      if (upgradedStats.agility > 0)
+        statGainText += this.utilityService.genericRound(upgradedStats.agility * 100) + "% Agility, ";
+      if (upgradedStats.luck > 0)
+        statGainText += this.utilityService.genericRound(upgradedStats.luck * 100) + "% Luck, ";
+      if (upgradedStats.defense > 0)
+        statGainText += this.utilityService.genericRound(upgradedStats.defense * 100) + "% Defense, ";
+      if (upgradedStats.resistance > 0)
+        statGainText += this.utilityService.genericRound(upgradedStats.resistance * 100) + "% Resistance, ";
+    }
+    else {
+      if (upgradedStats.maxHp > 0)
+        statGainText += Math.round(upgradedStats.maxHp) + " Max HP, ";
+      if (upgradedStats.attack > 0)
+        statGainText += Math.round(upgradedStats.attack) + " Attack, ";
+      if (upgradedStats.agility > 0)
+        statGainText += Math.round(upgradedStats.agility) + " Agility, ";
+      if (upgradedStats.luck > 0)
+        statGainText += Math.round(upgradedStats.luck) + " Luck, ";
+      if (upgradedStats.defense > 0)
+        statGainText += Math.round(upgradedStats.defense) + " Defense, ";
+      if (upgradedStats.resistance > 0)
+        statGainText += Math.round(upgradedStats.resistance) + " Resistance, ";
+    }
 
     if (upgradedStats.hpRegen > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.hpRegen) + " HP Regen per 5 sec, ";
@@ -3498,6 +3511,9 @@ export class GlobalService {
     if (upgradedStats.xpGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.xpGain * 100) + "% XP Gain, ";
 
+    if (upgradedStats.duoPermanentEffectiveness > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.duoPermanentEffectiveness * 100) + "% Effectiveness, ";
+
     var upgradedAbilityName = god.abilityList.find(item => item.requiredLevel === upgradedAbilities.requiredLevel)?.name;
     if (upgradedAbilities.effectiveness > 0) {
       if (upgradedAbilityName === "Quicken")
@@ -3524,7 +3540,6 @@ export class GlobalService {
     if (statGainText !== "")
       statGainText = statGainText.substring(0, statGainText.length - 2);
 
-    //TODO: get text right for 2000+
     if (god.level <= 500) {
       if (this.globalVar.gameLogSettings.get("godLevelUp")) {
         var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong>.";
@@ -3545,6 +3560,30 @@ export class GlobalService {
         this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
       }
     }
+    else if (god.level <= 3000) {
+      if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong> for the entire party.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+      }
+    }
+    else if (god.level <= 4000 && god.level % 100 === 0) {
+      if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong> for the entire party.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+      }
+    }
+    else if (god.level <= 4000 && god.level % 50 === 0) {
+      if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong> for their Duo ability.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+      }
+    }
+    else {
+      if (this.globalVar.gameLogSettings.get("godLevelUp")) {
+        var gameLogEntry = "<strong class='" + this.getGodColorClassText(god.type) + "'>" + god.name + "</strong>" + " permanently gains <strong>" + statGainText + "</strong>.";
+        this.gameLogService.updateGameLog(GameLogEntryEnum.LevelUp, gameLogEntry);
+      }
+    }
   }
 
   //set this up entirely so you can tell what is going on. when leveling up, consult this before calling any function
@@ -3562,7 +3601,6 @@ export class GlobalService {
       level === this.utilityService.permanentGodAbility2Level || level === this.utilityService.permanentGodAbility3Level) {
       increaseType = GodLevelIncreaseEnum.PermanentAbility;
     }
-    //TODO: just make this %50 up to whatever level you have permanent stats (will be 2000 for now)    
     else if (level % 50 === 0) {
       if (this.isGodPermanentStatStillObtainable(god, level))
         increaseType = GodLevelIncreaseEnum.PermanentStats;

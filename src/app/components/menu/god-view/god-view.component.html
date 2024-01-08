@@ -331,7 +331,7 @@
                                 Count Increase: </span> <span class="statValue"
                                 [innerHtml]="getAbilityEffectMaxCountIncrease(ability)"></span></div>
                                 <div
-                            *ngIf="getPermanentAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getPermanentAbilityUserEffectEffectivenessIncrease(ability) !== '0%'">
+                            *ngIf="getPermanentAbilityUserEffectEffectivenessIncrease(ability) !== 0 && getPermanentAbilityUserEffectEffectivenessIncrease(ability) !== '0%' && getPermanentAbilityUserEffectEffectivenessIncrease(ability) !== '*1'">
                             <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
                                 class="statValue"
                                 [innerHtml]="getPermanentAbilityUserEffectEffectivenessIncrease(ability)"></span></div>

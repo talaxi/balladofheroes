@@ -4662,7 +4662,8 @@ export class BattleService {
 
     var counterStun = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.CounterStun);
     if (counterStun !== undefined) {
-      this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 3, 1, true, true, true, attacker.name), target, undefined, attacker);
+      console.log("Applying stun"); 
+      this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 3, 1, false, false, false, attacker.name), attacker, undefined, attacker);
     }
 
     var counterattack = this.lookupService.characterHasAbility("Counterattack", target);
@@ -5574,7 +5575,8 @@ export class BattleService {
         var lastBreath = this.lookupService.characterHasAbility("Last Breath", character);
         if (lastBreath !== undefined) //this is assumed to be Cassandra from Forgotten Kings Trial
         {
-          var teammate = this.battle.currentEnemies.enemyList.find(item => item.battleInfo.statusEffects.find(item => item.type !== StatusEffectEnum.Dead));
+          var teammate = this.battle.currentEnemies.enemyList.find(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+
           if (teammate !== undefined) {
             this.gainHp(teammate, teammate.battleStats.maxHp / 2);
           }
@@ -5590,10 +5592,11 @@ export class BattleService {
         }
 
         var lastGasp = this.lookupService.characterHasAbility("Last Gasp", character);
-        if (lastGasp !== undefined) //this is assumed to be Cassandra from Forgotten Kings Trial
-        {
-          var teammate = this.battle.currentEnemies.enemyList.find(item => item.battleInfo.statusEffects.find(item => item.type !== StatusEffectEnum.Dead));
-          if (teammate !== undefined) {
+        if (lastGasp !== undefined) //this is assumed to be Divine Owl from Trial of Resolve
+        {          
+          var teammate = this.battle.currentEnemies.enemyList.find(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
+          
+          if (teammate !== undefined) {           
             this.applyStatusEffect(lastGasp.userEffect[0], teammate, undefined);
           }
         }
@@ -5736,7 +5739,7 @@ export class BattleService {
       this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
       this.battle.activeTournament = this.globalService.setNewTournament(this.battle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee);
     }
-    if (this.battle.activeTrial.type === TrialEnum.TrialOfSkill) {
+    else if (this.battle.activeTrial.type === TrialEnum.TrialOfSkill) {
       //this.gameLogService.updateGameLog(GameLogEntryEnum.ColiseumUpdate, "You have been defeated in the Coliseum. You finished in round " + this.battle.activeTournament.currentRound + (this.battle.activeTournament.maxRounds !== -1 ? " of " + this.battle.activeTournament.maxRounds : "") + ".");
       this.globalService.handleTrialLoss(this.battle.activeTrial.type);
       this.battle.activeTrial = this.globalService.setNewTrial(true);
@@ -5846,11 +5849,11 @@ export class BattleService {
       subZone.fastestCompletion = this.utilityService.roundTo(this.battle.battleDuration, 5);
     }
 
-    var xps = this.dpsCalculatorService.calculateXps();
+    var xps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculateXps();
     if (subZone !== undefined && (subZone.maxXps === undefined || subZone.maxXps < Math.round(xps)))
       subZone.maxXps = Math.round(xps);
 
-    var dps = this.dpsCalculatorService.calculatePartyDps();
+    var dps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculatePartyDps();
     if (subZone !== undefined && (subZone.maxDps === undefined || subZone.maxDps < Math.round(dps)))
       subZone.maxDps = Math.round(dps);
 

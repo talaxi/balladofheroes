@@ -133,6 +133,181 @@ export class TrialService {
       enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineRam));
     }
+    if (stage === 6) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ErraticMachine));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ErraticMachine));
+    }
+    if (stage === 7) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.AutoVolley));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilverAutomaton));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilverAutomaton));      
+    }
+    if (stage === 8) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FireBreathingHorse));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FireBreathingHorse));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FireBreathingHorse));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FireBreathingHorse));
+    }
+    if (stage === 9) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.GoldGuardDog));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SilverGuardDog));
+    }
+    if (stage === 10) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivinePanther));
+    }
+    if (stage === 11) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MountainNymph));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MountainNymph));
+    }
+    if (stage === 12) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CentaurDuelist));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CentaurDuelist));
+    }
+    if (stage === 13) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TricksterSpirit));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TricksterSpirit));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TricksterSpirit));      
+    }
+    if (stage === 14) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BewitchedGolem));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.CentaurEnchanter));
+    }
+    if (stage === 15) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineHorse));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineHorse));
+    }
+    if (stage === 16) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Soldier));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Soldier));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TrackingHound));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.TrackingHound));
+    }
+    if (stage === 17) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BloodlustedWarrior));
+    }
+    if (stage === 18) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Scout));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Ranger));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Swordsman));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Healer));
+    }
+    if (stage === 19) {      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChampionOfAres));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChampionOfAres));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ChampionOfAres));
+    }
+    if (stage === 20) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineSerpent));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineSerpent));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineSerpent));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineSerpent));
+    }
+    if (stage === 21) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RampagingCyclops));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.RampagingCyclops));
+    }
+    if (stage === 22) {   
+      enemyTeam.isBossFight = true;   
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BeastmasterCyclops));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LoyalWolf));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.LoyalWolf));
+    }
+    if (stage === 23) {      
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MassiveCyclops));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.JuvenileCyclops));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.JuvenileCyclops));
+    }
+    if (stage === 24) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BlastingCyclops));
+    }
+    if (stage === 25) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineTortoise));
+    }    
+    if (stage === 26) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ManEatingAgora));
+    }    
+    if (stage === 27) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OvergrownSundew));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OvergrownSundew));
+    }
+    if (stage === 28) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.VineSnapper));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.VineSnapper));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.VineSnapper));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.VineSnapper));
+    }
+    if (stage === 29) {      
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.BelligerentOak));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OakRoots));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.OakRoots));
+    }    
+    if (stage === 30) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineHare));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineHare));
+    }    
+    if (stage === 31) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrunkenSatyr));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DrunkenSatyr));
+    }
+    if (stage === 32) {            
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Reveler));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Reveler));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Reveler));
+    }   
+    if (stage === 33) {
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SingingSatyr));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.SingingSatyr));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DancingSatyr));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DancingSatyr));
+    } 
+    if (stage === 34) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarstruckSatyr));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.StarstruckSatyr));
+    }   
+    if (stage === 35) {      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineHawk));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineHawk));
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivineHawk));
+    }   
+    if (stage === 36) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Boreas));      
+    }   
+    if (stage === 37) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Zephyros));      
+    }   
+    if (stage === 38) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Euros));      
+    }   
+    if (stage === 39) {
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Notos));      
+    }   
+    if (stage === 40) {
+      enemyTeam.isDoubleBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivinePeacock));      
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.DivinePeacock));      
+    }   
 
     return enemyTeam;
   }
@@ -520,9 +695,9 @@ export class TrialService {
       }
 
       //gain affinity for the god
-      var affinityXpGain = this.utilityService.trialAffinityXpGain;
-      var xps = this.dpsCalculatorService.calculateXps();
-      var dps = this.dpsCalculatorService.calculatePartyDps();
+      var affinityXpGain = this.utilityService.trialAffinityXpGain;      
+      var xps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculateXps();
+      var dps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculatePartyDps();
       var godLevels = this.getCurrentPartyGodLevels();
       //if (subZone !== undefined && (subZone.maxXps === undefined || subZone.maxXps < Math.round(xps)))
       //subZone.maxXps = Math.round(xps);
@@ -600,13 +775,29 @@ export class TrialService {
         }
       }
     }
-    else if (type === TrialEnum.TrialOfResolve) {
-      //TODO
+    else if (type === TrialEnum.TrialOfResolve) {      
       this.globalService.globalVar.sidequestData.trialStage += 1;
+
+      var xps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculateXps();
+      var dps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculatePartyDps();
+      var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type);
+      if (trialType !== undefined) {
+        trialType.count += 1;
+        if (xps > trialType.highestXps)
+          trialType.highestXps = xps;
+        if (dps > trialType.highestDps)
+          trialType.highestDps = dps;       
+      }
+      else {
+        var trialDefeatCount = new TrialDefeatCount(type, 1);
+        trialDefeatCount.highestXps = xps;
+        trialDefeatCount.highestDps = dps;        
+        this.globalService.globalVar.trialDefeatCount.push(trialDefeatCount);
+      }
     }
     else {
-      var xps = this.dpsCalculatorService.calculateXps();
-      var dps = this.dpsCalculatorService.calculatePartyDps();
+      var xps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculateXps();
+      var dps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculatePartyDps();
       var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type);
       if (trialType !== undefined) {
         trialType.count += 1;

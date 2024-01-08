@@ -1,6 +1,7 @@
 import { Component } from '@angular/core';
 import { AltarEnum } from 'src/app/models/enums/altar-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-update-altar-auto',
@@ -15,8 +16,9 @@ export class UpdateAltarAutoComponent {
   altar1Available: boolean = false;
   altar2Available: boolean = false;
   altar3Available: boolean = false;
+  doubleClickTiming: number;
 
-  constructor(private globalService: GlobalService) { }
+  constructor(private globalService: GlobalService, public utilityService: UtilityService) { }
 
   ngOnInit(): void {
     if (this.globalService.globalVar.altars.altar1 !== undefined) {
@@ -33,6 +35,8 @@ export class UpdateAltarAutoComponent {
       this.altar3Available = true;
     this.altar3Setting = this.globalService.globalVar.altars.altar3.type;
     }
+
+    this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;    
   }
 
   setAltarSetting(whichAltar: number) {
@@ -47,5 +51,9 @@ export class UpdateAltarAutoComponent {
     if (whichAltar === 3 && this.globalService.globalVar.altars.altar3 !== undefined) {
       this.globalService.globalVar.altars.altar3.type = this.altar3Setting;
     }
+  }
+
+  setDoubleClickTiming() {
+    this.globalService.globalVar.settings.set("doubleClickTiming", this.doubleClickTiming);
   }
 }

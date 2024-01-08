@@ -314,7 +314,7 @@
 }
 
 .subzoneName {
-    margin-left: 1.725rem;
+    margin-left: 2.6rem;
 }
 
 .buffImage {
@@ -425,5 +425,9 @@
 
     .storyBar {
         height: .5rem !important;
+    }
+
+    .buffEffects  {
+        margin-left: 1.5rem;
     }
 }

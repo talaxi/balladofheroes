@@ -31,9 +31,9 @@ export class JewelcraftingOverviewComponent {
   
   openProfession(content: any) {
       if (this.deviceDetectorService.isMobile())
-      this.dialog.open(content, { width: '95%', height: '80%' });
+      this.dialog.open(content, { width: '95%', height: '90%' });
     else 
-      this.dialog.open(content, { width: '80%', minHeight: '80vh', maxHeight: '80%', id: 'dialogNoPadding' });
+      this.dialog.open(content, { width: '80%', minHeight: '75vh', maxHeight: '83%', id: 'dialogNoPadding' });
     }
   
     getCreatingRecipeName() {

@@ -30,7 +30,7 @@ export class ColiseumViewComponent implements OnInit {
   standardColiseumTournaments: ColiseumTournamentEnum[] = [];
   specialColiseumTournaments: ColiseumTournamentEnum[] = [];
   @ViewChild('confirmationBox') confirmationBox: any;
-  confirmationText = "You are currently set to automate through the Eternal Melee with all of your tickets. You will not be able to stop part way through to adjust your team. Continue?";
+  confirmationText = "You are currently set to automate through the Eternal Melee with all of your tickets. You will not be able to stop part way through to adjust your team. Continue?";  
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -233,7 +233,7 @@ export class ColiseumViewComponent implements OnInit {
     this.dpsCalculatorService.enemyDamagingActions = [];
     this.dpsCalculatorService.xpGain = [];
 
-    if (this.automateEternalMelee) {
+    if (this.isSelectedTournamentWeeklyMelee() && this.automateEternalMelee) {
       if (this.repeatColiseumFight) {
         //only show dialog if automating and repeating
         var dialogRef = this.openConfirmationDialog();

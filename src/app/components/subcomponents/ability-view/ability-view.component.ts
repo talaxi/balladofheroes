@@ -31,7 +31,9 @@ export class AbilityViewComponent implements OnInit {
   isMobile: boolean = false;
   longPressStartTime = 0;
   verboseMode = false;
-  tooltipDirection = DirectionEnum.Right;
+  tooltipDirection = DirectionEnum.Right;  
+  clickCount = 0;
+  doubleClickTiming = 300;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     private globalService: GlobalService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
@@ -39,6 +41,7 @@ export class AbilityViewComponent implements OnInit {
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
+    this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;    
 
     if (this.isMobile)
       this.tooltipDirection = DirectionEnum.Up;
@@ -123,14 +126,12 @@ export class AbilityViewComponent implements OnInit {
     }
   }
 
-  doubleClicked() {    
-    if (this.isMobile)
-    this.toggleAuto();
-  }
-  
-  toggleAutoWeb() {    
-    if (!this.isMobile)
-    this.toggleAuto();
+  toggleAutoWeb() {
+    if (!this.isMobile) {
+      this.toggleAuto();
+    }
+
+    return false;
   }
 
   toggleAuto() {
@@ -150,6 +151,16 @@ export class AbilityViewComponent implements OnInit {
       this.ability.manuallyTriggered = !this.ability.manuallyTriggered;
     else
       this.character.battleInfo.autoAttackManuallyTriggered = !this.character.battleInfo.autoAttackManuallyTriggered;
+
+    if (this.isMobile) {
+      this.clickCount += 1;
+      setTimeout(() => {
+          if (this.clickCount === 2) {
+            this.toggleAuto();
+          }
+          this.clickCount = 0;
+      }, this.doubleClickTiming)
+    }
   }
 
   getStrokeColor() {

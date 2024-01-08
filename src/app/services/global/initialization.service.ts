@@ -1245,7 +1245,7 @@ export class InitializationService {
         character2.equipmentSet.necklace = this.lookupService.getEquipmentPieceByItemType(ItemsEnum.GiantNecklace);
       }
       
-      var chthonicResetCount = 10;
+      var chthonicResetCount = 1;
       var godLevel = 1500;
 
       for (var j = 0; j < chthonicResetCount; j++) {
@@ -1264,7 +1264,7 @@ export class InitializationService {
         else
           godLevel = 3750; 
 
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 2048; i++) {
           this.globalService.levelUpGod(athena!);
         }
         athena!.exp = 0;
@@ -1280,7 +1280,7 @@ export class InitializationService {
         hermes!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(hermes!);
 
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 2448; i++) {
           this.globalService.levelUpGod(hermes!);
         }
         hermes!.exp = 0;
@@ -1295,7 +1295,7 @@ export class InitializationService {
         apollo!.statGainCount = 0;
         apollo!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(apollo!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 2998; i++) {
           this.globalService.levelUpGod(apollo!);
         }
         apollo!.exp = 0;
@@ -1310,7 +1310,7 @@ export class InitializationService {
         artemis!.statGainCount = 0;
         artemis!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(artemis!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 2098; i++) {
           this.globalService.levelUpGod(artemis!);
         }
         artemis!.exp = 0;
@@ -1340,7 +1340,7 @@ export class InitializationService {
         ares!.statGainCount = 0;
         ares!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(ares!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 3048; i++) {
           this.globalService.levelUpGod(ares!);
         }
         ares!.exp = 0;
@@ -1355,7 +1355,7 @@ export class InitializationService {
         dionysus!.statGainCount = 0;
         dionysus!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(dionysus!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 3098; i++) {
           this.globalService.levelUpGod(dionysus!);
         }
         dionysus!.exp = 0;
@@ -1370,7 +1370,7 @@ export class InitializationService {
         nemesis!.statGainCount = 0;
         nemesis!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(nemesis!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 3148; i++) {
           this.globalService.levelUpGod(nemesis!);
         }
         nemesis!.exp = 0;
@@ -1385,7 +1385,7 @@ export class InitializationService {
         zeus!.statGainCount = 0;
         zeus!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(zeus!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 3998; i++) {
           this.globalService.levelUpGod(zeus!);
         }
         zeus!.exp = 0;
@@ -1400,7 +1400,7 @@ export class InitializationService {
         poseidon!.statGainCount = 0;
         poseidon!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(poseidon!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 4048; i++) {
           this.globalService.levelUpGod(poseidon!);
         }
         poseidon!.exp = 0;
@@ -1415,7 +1415,7 @@ export class InitializationService {
         hera!.statGainCount = 0;
         hera!.expToNextLevel = 200;
         this.globalService.assignGodAbilityInfo(hera!);
-        for (var i = 0; i < godLevel; i++) {
+        for (var i = 0; i < 4098; i++) {
           this.globalService.levelUpGod(hera!);
         }
         hera!.exp = 0;

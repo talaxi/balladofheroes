@@ -98,7 +98,7 @@
 
 :root {
   /* Colors */
-  --foreground-secondary: #6D8EAA;
+  --foreground-secondary: #6E96B6;
   /* old: 6B8CA5 */
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
@@ -153,7 +153,7 @@
   --artemisColor: #97BBB0;
   --hadesColor: #b58bf2;
   --dionysusColor: #B8E71E;
-  --nemesisColor: #B08884;
+  --nemesisColor: #B88884;
   --heraColor: #91e9e5;
   --aphroditeColor: #F777AF;
 

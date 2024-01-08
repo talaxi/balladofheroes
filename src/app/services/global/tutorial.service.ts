@@ -65,9 +65,9 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.Equipment) {
       if (this.deviceDetectorService.isMobile())
-        text = "You've acquired your first equipment item. Tap on 'Adventurer' in the middle of the screen to quickly jump to the menu and view the character page. Use the <b>'Change'</b> button to update your equipment.";
+        text = "You've acquired your first equipment item. Tap on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> in the middle of the screen to quickly jump to the menu and view the character page. Use the <b>'Change'</b> button to update your equipment.";
       else
-        text = "You've acquired your first equipment item. Click on 'Adventurer' on the top left of the screen to quickly jump to the menu and view the character page. Use the <b>'Change Equipment'</b> button to update your equipment.";
+        text = "You've acquired your first equipment item. Click on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> on the top left of the screen to quickly jump to the menu and view the character page. Use the <b>'Change Equipment'</b> button to update your equipment.";
     }
     else if (type === TutorialTypeEnum.Altars) {
       if (this.deviceDetectorService.isMobile())

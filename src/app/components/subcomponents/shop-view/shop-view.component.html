@@ -2,24 +2,24 @@
   <button
     *ngIf="option.type === shopTypeEnum.General || option.type === shopTypeEnum.Crafter || option.type === shopTypeEnum.Traveler"
     class="buttonStyled shopButtonText" (click)="openShop(option, shopModal)">{{getOptionText(option.type)}}</button>
-  <button *ngIf="option.type === shopTypeEnum.Trader" class="buttonStyled shopButtonText"
+  <button *ngIf="option.type === shopTypeEnum.Trader" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, traderModal)">{{getOptionText(option.type)}}
     <app-notification-icon *ngIf="showTraderSidequestNotification()" [isButton]="true"
       [notificationColor]="resetNotification"></app-notification-icon></button>
-  <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText"
+  <button *ngIf="option.type === shopTypeEnum.Alchemist" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, alchemyModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="alchemy !== undefined && !alchemy.isUnlocked" [isButton]="true"
       [notificationColor]="professionNotification"></app-notification-icon></button>
-  <button *ngIf="option.type === shopTypeEnum.Jewelcrafter" class="buttonStyled shopButtonText"
+  <button *ngIf="option.type === shopTypeEnum.Jewelcrafter" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, jewelcraftingModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="jewelcrafting !== undefined && !jewelcrafting.isUnlocked" [isButton]="true"
       [notificationColor]="professionNotification"></app-notification-icon></button>
-  <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText"
+  <button *ngIf="option.type === shopTypeEnum.ChthonicFavor" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, chthonicFavorModal)">{{getOptionText(option.type)}}
     <app-notification-icon *ngIf="!globalService.globalVar.chthonicPowers.isChthonicResetUnlocked" [isButton]="true"
       [notificationColor]="resetNotification"></app-notification-icon>
   </button>
-  <button *ngIf="option.type === shopTypeEnum.OlympicFavor" class="buttonStyled shopButtonText"
+  <button *ngIf="option.type === shopTypeEnum.OlympicFavor" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, olympicFavorModal)">{{getOptionText(option.type)}}
     <app-notification-icon *ngIf="!hasOlympicFavorBeenOpened()" [isButton]="true"
       [notificationColor]="resetNotification"></app-notification-icon>
@@ -41,10 +41,10 @@
     (click)="openShop(option, augeanStablesModal)">{{getOptionText(option.type)}} <app-notification-icon
       *ngIf="!augeanStablesCompleted()" [isButton]="true"
       [notificationColor]="sideQuestNotification"></app-notification-icon></button>
-  <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText"
+  <button *ngIf="option.type === shopTypeEnum.Coliseum" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, coliseumModal)">
     {{getOptionText(option.type)}}</button>
-    <button *ngIf="option.type === shopTypeEnum.Trials" class="buttonStyled shopButtonText"
+    <button *ngIf="option.type === shopTypeEnum.Trials" class="buttonStyled shopButtonText" [ngClass]="{'stackedButtons': showAllShopOptions}"
     (click)="openShop(option, trialsModal)">
     {{getOptionText(option.type)}}</button>
   <br *ngIf="i < shopOptions.length-1" />

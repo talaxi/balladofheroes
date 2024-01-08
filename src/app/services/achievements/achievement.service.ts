@@ -86,7 +86,7 @@ export class AchievementService {
       subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
-      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter) {
+      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes) {
       newAchievements.push(thirtySecondClear);
     }
 
@@ -104,7 +104,7 @@ export class AchievementService {
       subzoneType === SubZoneEnum.ErytheiaGeryonsFarm || subzoneType === SubZoneEnum.HuntForYarrowYarrowField || subzoneType === SubZoneEnum.WarForTheMountainBattleAtTheGates ||
       subzoneType === SubZoneEnum.WarForTheMountainPalaces || subzoneType === SubZoneEnum.WarForTheMountainStables || subzoneType === SubZoneEnum.WarForTheMountainOpenCourtyard ||
       subzoneType === SubZoneEnum.WarForTheMountainThePeak || subzoneType === SubZoneEnum.BlackSeaWindyGale || subzoneType === SubZoneEnum.CreteWhirlpool ||
-      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter)
+      subzoneType === SubZoneEnum.TheLabyrinthLabyrinthCenter  || subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook || subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
       newAchievements.push(tenSecondClear);
 
     var completeClear = new Achievement(AchievementTypeEnum.Complete, subzoneType);
@@ -913,11 +913,11 @@ export class AchievementService {
       if (subzoneType === SubZoneEnum.CalydonTallGrass)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirDestruction, 1));
       if (subzoneType === SubZoneEnum.AegeanSeaSympegadesOverlook)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfVulnerability, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeOrnateKantharos, 1));
       if (subzoneType === SubZoneEnum.BlackSeaWindyGale)
         rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfAirProtection, 1));
       if (subzoneType === SubZoneEnum.ColchisReinforcementsFromAeetes)
-        rewards.push(new ResourceValue(ItemsEnum.SmallCharmOfHolyDestruction, 1));
+        rewards.push(new ResourceValue(ItemsEnum.LargeCrackedKantharos, 1));
       if (subzoneType === SubZoneEnum.NemeaLairOfTheLion)
         rewards.push(new ResourceValue(ItemsEnum.LargeSilverKantharos, 1));
       if (subzoneType === SubZoneEnum.LernaSpringOfAmymone)

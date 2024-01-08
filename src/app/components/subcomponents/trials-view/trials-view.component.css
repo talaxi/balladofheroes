@@ -137,10 +137,14 @@
 @media (max-width: 800px) {
     .container {
         flex-direction: column;    
-        height: 80%;
+        height: 87.5%;
     }
 
-    .column {
+    .column1 {
+        height: 45%;
+    }
+    
+    .column2 {
         height: 50%;
     }
 

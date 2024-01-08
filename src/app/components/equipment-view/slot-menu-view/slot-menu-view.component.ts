@@ -248,27 +248,32 @@ export class SlotMenuViewComponent {
     if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Weapon) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
         item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
-        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition);
+        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
+        item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition);
     }
     if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Shield) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
         item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
-        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.WeaponSlotAddition);
+        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
+        item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorWeaponSlotAddition);
     }
     if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Ring) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorWeaponSlotAddition &&
         item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition && item.item !== ItemsEnum.WeaponSlotAddition &&
-        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition);
+        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition && item.item !== ItemsEnum.MajorWeaponSlotAddition &&
+        item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition);
     }
     if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Necklace) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorArmorSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
         item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
-        item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition);
+        item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
+        item.item !== ItemsEnum.MajorWeaponSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition);
     }
     if (this.resourceAsEquipment.equipmentType === EquipmentTypeEnum.Armor) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MinorWeaponSlotAddition && item.item !== ItemsEnum.MinorRingSlotAddition &&
         item.item !== ItemsEnum.MinorNecklaceSlotAddition && item.item !== ItemsEnum.MinorShieldSlotAddition && item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
-        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition);
+        item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.MajorWeaponSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
+        item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition);
     }
 
     if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 3) {
@@ -279,6 +284,11 @@ export class SlotMenuViewComponent {
     if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 5) {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.WeaponSlotAddition && item.item !== ItemsEnum.RingSlotAddition &&
         item.item !== ItemsEnum.NecklaceSlotAddition && item.item !== ItemsEnum.ShieldSlotAddition && item.item !== ItemsEnum.ArmorSlotAddition);
+    }
+
+    if (this.lookupService.getTotalNumberOfSlots(this.resource) >= 7) {
+      this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MajorWeaponSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
+        item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition);
     }
   }
 

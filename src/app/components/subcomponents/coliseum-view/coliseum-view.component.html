@@ -2,7 +2,7 @@
     <span class="s2Heading">Coliseum</span>
 </div>
 <div class="container">
-    <div class="overflowable column">
+    <div class="overflowable column column1">
         <div class="listList">
             <div class="listBackground">
                 <div class="tournamentGrid">
@@ -90,7 +90,7 @@
                     <button class="buttonStyled" [disabled]="!canEnterWeeklyMelee()" (click)="startTournament()">Start
                         Tournament</button>
                     <br />
-                    <div class='flexAround'>
+                    <div [ngClass]="{'flexAround': !isMobile()}">
                         <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">
                             Repeat Eternal Melee Until Out Of Tickets
                         </mat-checkbox>

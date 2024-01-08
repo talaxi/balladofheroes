@@ -338,8 +338,8 @@ export class TimeFragmentViewComponent {
     var hpSum = hpList.reduce(function (acc, cur) { return acc + cur; });
     clearRate = this.utilityService.genericShortRound(this.utilityService.genericShortRound(hpSum / hpList.length) / maxDps);
 
-    if (clearRate < 5)
-      clearRate = 5;
+    if (clearRate < 3)
+      clearRate = 3;
 
     return clearRate;
   }

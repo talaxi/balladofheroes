@@ -223,7 +223,7 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.FeatheredTunic) {
       purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 7));
-      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 10000));
     }
     if (item === ItemsEnum.ShieldOfTheSea) {
@@ -237,7 +237,7 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 8000));
     }
     if (item === ItemsEnum.BlackLance) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 14));
+      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
@@ -705,40 +705,58 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
     }    
     if (item === ItemsEnum.AthenasSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.ArtemissSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.HermessSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.ApollosSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.AressSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.HadessSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.DionysussSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.NemesissSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.ZeussSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.PoseidonsSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.AphroditesSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
     if (item === ItemsEnum.HerasSigil) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 1000000));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
+    }    
+    if (item === ItemsEnum.RutileRubyFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 20));
+    }
+    if (item === ItemsEnum.RutileOpalFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 20));
+    }
+    if (item === ItemsEnum.RutileAquamarineFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 20));
+    }
+    if (item === ItemsEnum.RutileEmeraldFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 20));
+    }
+    if (item === ItemsEnum.RutileTopazFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 20));
+    }
+    if (item === ItemsEnum.RutileAmethystFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 20));
     }
 
     return new ShopItem(item, purchasePrice, originalStore);

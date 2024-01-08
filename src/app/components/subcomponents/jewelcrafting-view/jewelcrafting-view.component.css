@@ -158,11 +158,15 @@
         margin: .5rem;
         padding: .25rem;
         flex-direction: column;    
-        height: 60vh;
+        height: 62.5vh;
       }
 
     .column {
         height: 50%;
+    }
+
+    .recipeList {
+        height: 47.5%;
     }
 
     .mobileDivider {

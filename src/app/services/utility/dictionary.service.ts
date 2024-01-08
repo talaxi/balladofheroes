@@ -625,6 +625,18 @@ export class DictionaryService {
       name = "Rough Topaz Fragment";
     else if (type === ItemsEnum.RoughRubyFragment)
       name = "Rough Ruby Fragment";
+      else if (type === ItemsEnum.RutileAmethystFragment)
+      name = "Rutile Amethyst Fragment";
+    else if (type === ItemsEnum.RutileOpalFragment)
+      name = "Rutile Opal Fragment";
+    else if (type === ItemsEnum.RutileAquamarineFragment)
+      name = "Rutile Aquamarine Fragment";
+    else if (type === ItemsEnum.RutileEmeraldFragment)
+      name = "Rutile Emerald Fragment";
+    else if (type === ItemsEnum.RutileTopazFragment)
+      name = "Rutile Topaz Fragment";
+    else if (type === ItemsEnum.RutileRubyFragment)
+      name = "Rutile Ruby Fragment";
     else if (type === ItemsEnum.Narcissus)
       name = "Narcissus";
     else if (type === ItemsEnum.ThickLeather)
@@ -865,6 +877,102 @@ export class DictionaryService {
       name = "Shield Slot Addition";
     else if (type === ItemsEnum.NecklaceSlotAddition)
       name = "Necklace Slot Addition";
+      else if (type === ItemsEnum.RutilatedRuby)
+      name = "Rutilated Ruby";
+    else if (type === ItemsEnum.RutilatedAmethyst)
+      name = "Rutilated Amethyst";
+    else if (type === ItemsEnum.RutilatedTopaz)
+      name = "Rutilated Topaz";
+    else if (type === ItemsEnum.RutilatedOpal)
+      name = "Rutilated Opal";
+    else if (type === ItemsEnum.RutilatedAquamarine)
+      name = "Rutilated Aquamarine";
+    else if (type === ItemsEnum.RutilatedEmerald)
+      name = "Rutilated Emerald";
+    else if (type === ItemsEnum.PerfectRutilatedRuby)
+      name = "Perfect Rutilated Ruby";
+    else if (type === ItemsEnum.PerfectRutilatedAmethyst)
+      name = "Perfect Rutilated Amethyst";
+    else if (type === ItemsEnum.PerfectRutilatedTopaz)
+      name = "Perfect Rutilated Topaz";
+    else if (type === ItemsEnum.PerfectRutilatedOpal)
+      name = "Perfect Rutilated Opal";
+    else if (type === ItemsEnum.PerfectRutilatedAquamarine)
+      name = "Perfect Rutilated Aquamarine";
+    else if (type === ItemsEnum.PerfectRutilatedEmerald)
+      name = "Perfect Rutilated Emerald";
+      else if (type === ItemsEnum.BrilliantRuby)
+      name = "Brilliant Ruby";
+    else if (type === ItemsEnum.BrilliantAmethyst)
+      name = "Brilliant Amethyst";
+    else if (type === ItemsEnum.BrilliantTopaz)
+      name = "Brilliant Topaz";
+    else if (type === ItemsEnum.BrilliantOpal)
+      name = "Brilliant Opal";
+    else if (type === ItemsEnum.BrilliantAquamarine)
+      name = "Brilliant Aquamarine";
+    else if (type === ItemsEnum.BrilliantEmerald)
+      name = "Brilliant Emerald";
+    else if (type === ItemsEnum.PerfectBrilliantRuby)
+      name = "Perfect Brilliant Ruby";
+    else if (type === ItemsEnum.PerfectBrilliantAmethyst)
+      name = "Perfect Brilliant Amethyst";
+    else if (type === ItemsEnum.PerfectBrilliantTopaz)
+      name = "Perfect Brilliant Topaz";
+    else if (type === ItemsEnum.PerfectBrilliantOpal)
+      name = "Perfect Brilliant Opal";
+    else if (type === ItemsEnum.PerfectBrilliantAquamarine)
+      name = "Perfect Brilliant Aquamarine";
+    else if (type === ItemsEnum.PerfectBrilliantEmerald)
+      name = "Perfect Brilliant Emerald";
+      else if (type === ItemsEnum.FlawlessRuby)
+      name = "Flawless Ruby";
+    else if (type === ItemsEnum.FlawlessAmethyst)
+      name = "Flawless Amethyst";
+    else if (type === ItemsEnum.FlawlessTopaz)
+      name = "Flawless Topaz";
+    else if (type === ItemsEnum.FlawlessOpal)
+      name = "Flawless Opal";
+    else if (type === ItemsEnum.FlawlessAquamarine)
+      name = "Flawless Aquamarine";
+    else if (type === ItemsEnum.FlawlessEmerald)
+      name = "Flawless Emerald";
+    else if (type === ItemsEnum.PerfectFlawlessRuby)
+      name = "Perfect Flawless Ruby";
+    else if (type === ItemsEnum.PerfectFlawlessAmethyst)
+      name = "Perfect Flawless Amethyst";
+    else if (type === ItemsEnum.PerfectFlawlessTopaz)
+      name = "Perfect Flawless Topaz";
+    else if (type === ItemsEnum.PerfectFlawlessOpal)
+      name = "Perfect Flawless Opal";
+    else if (type === ItemsEnum.PerfectFlawlessAquamarine)
+      name = "Perfect Flawless Aquamarine";
+    else if (type === ItemsEnum.PerfectFlawlessEmerald)
+      name = "Perfect Flawless Emerald";
+      else if (type === ItemsEnum.AdamantineRuby)
+      name = "Adamantine Ruby";
+    else if (type === ItemsEnum.AdamantineAmethyst)
+      name = "Adamantine Amethyst";
+    else if (type === ItemsEnum.AdamantineTopaz)
+      name = "Adamantine Topaz";
+    else if (type === ItemsEnum.AdamantineOpal)
+      name = "Adamantine Opal";
+    else if (type === ItemsEnum.AdamantineAquamarine)
+      name = "Adamantine Aquamarine";
+    else if (type === ItemsEnum.AdamantineEmerald)
+      name = "Adamantine Emerald";
+    else if (type === ItemsEnum.PerfectAdamantineRuby)
+      name = "Perfect Adamantine Ruby";
+    else if (type === ItemsEnum.PerfectAdamantineAmethyst)
+      name = "Perfect Adamantine Amethyst";
+    else if (type === ItemsEnum.PerfectAdamantineTopaz)
+      name = "Perfect Adamantine Topaz";
+    else if (type === ItemsEnum.PerfectAdamantineOpal)
+      name = "Perfect Adamantine Opal";
+    else if (type === ItemsEnum.PerfectAdamantineAquamarine)
+      name = "Perfect Adamantine Aquamarine";
+    else if (type === ItemsEnum.PerfectAdamantineEmerald)
+      name = "Perfect Adamantine Emerald";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
