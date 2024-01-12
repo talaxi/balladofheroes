@@ -5,8 +5,6 @@ import { AchievementService } from '../achievements/achievement.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
-import { ProfessionService } from '../professions/profession.service';
-import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { DictionaryService } from '../utility/dictionary.service';
 import { UtilityService } from '../utility/utility.service';
 import { GameLogService } from './game-log.service';
@@ -24,6 +22,7 @@ import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
 import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model';
 import { DpsCalculatorService } from './dps-calculator.service';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -101,7 +100,7 @@ export class TrialService {
         }
       });
     });
-
+    
     return battleOptions;
   }
 
@@ -698,9 +697,7 @@ export class TrialService {
       var affinityXpGain = this.utilityService.trialAffinityXpGain;      
       var xps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculateXps();
       var dps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculatePartyDps();
-      var godLevels = this.getCurrentPartyGodLevels();
-      //if (subZone !== undefined && (subZone.maxXps === undefined || subZone.maxXps < Math.round(xps)))
-      //subZone.maxXps = Math.round(xps);
+      var godLevels = this.getCurrentPartyGodLevels();      
 
       var godEnum = this.globalService.globalVar.activeBattle.activeTrial.godEnum;
       var god = this.globalService.globalVar.gods.find(item => item.type === godEnum);
@@ -729,7 +726,7 @@ export class TrialService {
         god.affinityExp += affinityXpGain;
 
         if (this.globalService.globalVar.gameLogSettings.get("battleXpRewards")) {
-          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain " + affinityXpGain + " Affinity XP for <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong>.");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You gain " + affinityXpGain + " Affinity XP for <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong>.", this.globalService.globalVar);
         }
 
         if (god.affinityExp >= god.affinityExpToNextLevel) {
@@ -739,7 +736,7 @@ export class TrialService {
 
           if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
             var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry, this.globalService.globalVar);
           }
 
           if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
@@ -769,7 +766,7 @@ export class TrialService {
               gameLogUpdate += " You gain " + achievementBonus + ".";
 
             if (this.globalService.globalVar.gameLogSettings.get("achievementUnlocked")) {
-              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogUpdate);
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogUpdate, this.globalService.globalVar);
             }
           });
         }
@@ -817,6 +814,15 @@ export class TrialService {
 
     //then reset
     this.globalService.globalVar.activeBattle.activeTrial = this.globalService.setNewTrial(true);
+  }
+
+  getTrialOfResolveReward(stage: number) {
+    var rewards: ResourceValue[] = [];
+
+    if  (stage === 1)
+      rewards.push(new ResourceValue(ItemsEnum.Ambrosia, 5));
+
+    return rewards;
   }
 
   getCurrentPartyGodLevels() {

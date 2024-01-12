@@ -14,6 +14,7 @@ export class Profession {
     @Type(() => ProfessionUpgrades)
     upgrades: ProfessionUpgrades[]; //each array item is for a different quality of recipe
     availableRecipeItems: number[];
+    favoritedRecipeItems: number[];
     @Type(() => Recipe)
     availableRecipes: Recipe[]; //DEPRECATED
 
@@ -27,12 +28,14 @@ export class Profession {
     isDurationHalved: boolean;
 
     recipeBookQualityToggle: [EquipmentQualityEnum, boolean][];
+    favoriteToggle: boolean;
 
     constructor() {
         this.type = ProfessionEnum.None;
         this.level = 0;
         this.maxLevel = 0;
         this.availableRecipeItems = [];
+        this.favoritedRecipeItems = [];
         this.availableRecipes = [];
         this.upgrades = [];
         this.recipeBookQualityToggle = [];
@@ -45,5 +48,6 @@ export class Profession {
         this.creationCurrentAmountCreated = 0;
         this.creationCreateAmount = 1;
         this.isDurationHalved = false;
+        this.favoriteToggle = false;
     }
 }

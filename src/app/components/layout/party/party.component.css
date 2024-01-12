@@ -78,6 +78,11 @@
     font-weight: bold;
 }
 
+.lowPerfHpMpText {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
 .characterGrid {
     display: grid;
     height: 100%;
@@ -259,6 +264,14 @@
 
 .overdriveActive {
     color: var(--overdriveColor);
+}
+
+.overdriveName {
+    color: #c40e1d;
+}
+
+.healthName {
+    color: #07ba13;
 }
 
 .characterTargeted:hover,
@@ -446,6 +459,11 @@ table tr td:nth-child(4n-3) {
     .hpMpText {
         font-size: .9rem;
     }
+    
+.lowPerfHpMpText {
+    font-size: 1.25rem;
+    font-weight: bold;
+}
 
     .characterTargeted:hover,
     .targetModeActive {

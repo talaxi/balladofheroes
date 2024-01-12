@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Battle } from 'src/app/models/battle/battle.model';
-import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
-import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
@@ -18,7 +15,6 @@ import { GlobalService } from '../global/global.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
-import { AchievementService } from '../achievements/achievement.service';
 import { MenuService } from '../menu/menu.service';
 
 @Injectable({
@@ -173,7 +169,7 @@ export class BalladService {
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.getSubZoneName(relatedSubzone.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry, this.globalService.globalVar);
     }
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
@@ -474,7 +470,7 @@ export class BalladService {
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + this.getSubZoneName(subzone.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry, this.globalService.globalVar);
     }
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];

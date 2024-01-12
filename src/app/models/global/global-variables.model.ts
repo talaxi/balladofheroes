@@ -4,7 +4,6 @@ import { Character } from "../character/character.model";
 import { God } from "../character/god.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
-import { Alchemy } from "../professions/alchemy.model";
 import { FreeTreasureChests } from "../resources/free-treasure-chests.model";
 import { ResourceValue } from "../resources/resource-value.model";
 import { ChthonicPowers } from "../utility/chthonic-powers.model";

@@ -31,7 +31,7 @@ export class AbilityViewComponent implements OnInit {
   isMobile: boolean = false;
   longPressStartTime = 0;
   verboseMode = false;
-  tooltipDirection = DirectionEnum.Right;  
+  tooltipDirection = DirectionEnum.Right;
   clickCount = 0;
   doubleClickTiming = 300;
 
@@ -41,7 +41,7 @@ export class AbilityViewComponent implements OnInit {
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
-    this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;    
+    this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;
 
     if (this.isMobile)
       this.tooltipDirection = DirectionEnum.Up;
@@ -69,7 +69,25 @@ export class AbilityViewComponent implements OnInit {
 
   getCharacterAutoAttackProgress() {
     var timeToAutoAttack = this.globalService.getAutoAttackTime(this.character);
-    return (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
+    var progress = (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
+
+    if (this.globalService.globalVar.settings.get("fps") === this.utilityService.lowFps) {      
+      var returnValue = 0;      
+
+      //TODO: is this doing anything?
+      var incrementAmount = (1/3) * 100;
+      for (var i = 0; i < 100; i += incrementAmount) {                
+        //console.log(progress + " > " + i + " && " + progress + " < (" + i + " + " + incrementAmount + ") && " + this.previousSpinnerPercent + " < " + i);
+        if (progress > i && progress < i + incrementAmount) {          
+          returnValue = i;
+        }        
+      }
+
+      return returnValue;
+    }
+    else {
+      return progress;
+    }
   }
 
   getAbilityProgress() {
@@ -78,10 +96,26 @@ export class AbilityViewComponent implements OnInit {
 
     var progress = 100 - ((this.ability.currentCooldown / this.globalService.getAbilityCooldown(this.ability, this.character)) * 100);
 
+    //TODO: is this doing anything?
+    if (this.globalService.globalVar.settings.get("fps") === this.utilityService.lowFps) {      
+      var returnValue = 0;
+
+      var incrementAmount = (1/3) * 100;
+      for (var i = 0; i < 100; i += incrementAmount) {                
+        //console.log(progress + " > " + i + " && " + progress + " < (" + i + " + " + incrementAmount + ") && " + this.previousSpinnerPercent + " < " + i);
+        if (progress > i && progress < i + incrementAmount) {          
+          returnValue = i;
+        }        
+      }
+      return returnValue;
+    }
+    else {
+
     if (progress < 0)
       progress = 0;
 
     return progress;
+    }
   }
 
   getAbilityName() {
@@ -155,10 +189,10 @@ export class AbilityViewComponent implements OnInit {
     if (this.isMobile) {
       this.clickCount += 1;
       setTimeout(() => {
-          if (this.clickCount === 2) {
-            this.toggleAuto();
-          }
-          this.clickCount = 0;
+        if (this.clickCount === 2) {
+          this.toggleAuto();
+        }
+        this.clickCount = 0;
       }, this.doubleClickTiming)
     }
   }
@@ -268,6 +302,10 @@ export class AbilityViewComponent implements OnInit {
       return "LINKED";
     else
       return "";
+  }
+
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
   }
 
   ngOnDestroy() {

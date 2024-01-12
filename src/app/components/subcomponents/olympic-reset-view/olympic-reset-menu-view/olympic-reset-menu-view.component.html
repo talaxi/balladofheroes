@@ -18,7 +18,7 @@
                 <!--<span class="chthonicFavorKeyword" *ngIf="globalService.globalVar.chthonicPowers.isChthonicFavorUnlocked">{{getChthonicFavor(god) | number : '1.0-2'}} Chthonic Favor<br /></span>
                 <span class="chthonicPowerKeyword">{{getChthonicPower(god) | number : '1.0-2'}} Chthonic Power</span>-->
             </div>
-            <button [disabled]="class.level < getMaxLevel(class)" class="godResetButton" (click)="resetClass(class)">Reset {{class.name}}</button>
+            <button [disabled]="class.level < getMaxLevel(class)" class="godResetButton buttonStyled" (click)="resetClass(class)">Reset {{class.name}}</button>
         </div>
         <hr />
     </div>

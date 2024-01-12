@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';

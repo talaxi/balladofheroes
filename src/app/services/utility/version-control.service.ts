@@ -25,7 +25,6 @@ import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { Melete } from 'src/app/models/melete/melete.model';
 import { JewelcraftingService } from '../professions/jewelcrafting.service';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
-import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { UsableItemEffect } from 'src/app/models/resources/usable-item-effect.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
@@ -1391,7 +1390,7 @@ export class VersionControlService {
               this.globalService.globalVar.achievements.push(achievement);
             });
           }
-          
+
           var aeetesReinforcements = this.lookupService.getSubZoneByType(SubZoneEnum.ColchisReinforcementsFromAeetes);
           if (aeetesReinforcements.isAvailable) {
             this.globalService.globalVar.achievements = this.globalService.globalVar.achievements.filter(item => item.subzone !== SubZoneEnum.ColchisReinforcementsFromAeetes);
@@ -1464,6 +1463,77 @@ export class VersionControlService {
           if (this.globalService.globalVar.currentStoryId === 46) {
             this.lookupService.addStoryToLog(this.globalService.globalVar.currentStoryId, SubZoneEnum.TheLabyrinthLabyrinthCenter);
             this.globalService.globalVar.currentStoryId += 1;
+          }
+
+          var thaumaturge = new Character(CharacterEnum.Thaumaturge);
+          thaumaturge.name = "Thaumaturge";
+          thaumaturge.type = CharacterEnum.Thaumaturge;
+          thaumaturge.isAvailable = false;
+          thaumaturge.baseStats = this.globalService.getCharacterBaseStats(CharacterEnum.Thaumaturge);
+          thaumaturge.battleStats = thaumaturge.baseStats.makeCopy();
+          thaumaturge.battleInfo.timeToAutoAttack = this.utilityService.averageAutoAttackSpeed;
+          thaumaturge.battleInfo.autoAttackModifier = this.utilityService.averageAutoAttack;
+          this.globalService.calculateCharacterBattleStats(thaumaturge);
+          this.globalService.assignAbilityInfo(thaumaturge);
+
+          this.globalService.globalVar.characters.push(thaumaturge);
+
+          var monkClass = this.globalService.globalVar.characters.find(item => item.type === CharacterEnum.Monk);
+          if (monkClass !== undefined) {
+            var ability1 = monkClass.abilityList.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (ability1 !== undefined) {
+              ability1.effectiveness = .8;
+              ability1.secondaryEffectiveness = 1.5;
+              ability1.cooldown = ability1.currentCooldown = 9;
+              ability1.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.PalmStrike, -1, 1, false, false, undefined, undefined, undefined, true, undefined, undefined, undefined, undefined, 3));
+            }
+
+            var permanentAbility1Upgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.defaultCharacterAbilityLevel);
+            if (permanentAbility1Upgrades !== undefined) {
+              permanentAbility1Upgrades.effectiveness = 0;
+
+              monkClass.permanentAbility1GainCount.forEach(item => {                
+                permanentAbility1Upgrades!.effectiveness += item[1] * (.075 * Math.ceil(item[0] / 10));
+              });
+            }
+
+            var passive = monkClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (passive !== undefined) {
+              passive.userEffect = [];
+              passive.effectiveness = .1;
+              passive.secondaryEffectiveness = 2;
+
+
+            }
+
+            var permanentPassiveUpgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);
+            if (permanentPassiveUpgrades !== undefined) {
+              permanentPassiveUpgrades!.userEffect = [];
+
+              monkClass.permanentPassiveGainCount.forEach(item => {
+                permanentPassiveUpgrades!.effectiveness += item[1] * (.015 * Math.ceil(item[0] / 10));
+              });
+            }
+
+            var ability2 = monkClass.abilityList.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+            if (ability2 !== undefined) {
+              ability2.userEffect = [];
+              ability2.targetEffect = [];
+              ability2.effectiveness = 2.1;
+              ability2.dealsDirectDamage = true;
+              ability2.cooldown = ability2.currentCooldown = 36;
+              ability2.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageTakenUp, 7, 1.25, false, false));
+              ability2.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 7, .75, false, false));
+              ability2.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Stagger, 7, .25, false, false));
+            }
+
+            var permanentPassiveUpgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterAbility2Level);
+            if (permanentPassiveUpgrades !== undefined) {
+              permanentPassiveUpgrades!.effectiveness = 0;
+              monkClass.permanentAbility2GainCount.forEach(item => {
+                permanentPassiveUpgrades!.effectiveness += item[1] * (.125 * Math.ceil(item[0] / 10));
+              });
+            }
           }
 
           var dionysusGod = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Dionysus);

@@ -1,15 +1,13 @@
-import { Component, HostListener, Input, OnInit, QueryList, ViewChild } from '@angular/core';
+import { Component, HostListener, Input, OnInit, ViewChild } from '@angular/core';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GlobalService } from 'src/app/services/global/global.service';
-import { MatProgressBarModule as MatProgressBarModule } from '@angular/material/progress-bar';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { LookupService } from 'src/app/services/lookup.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { Ability } from 'src/app/models/character/ability.model';
-import { God } from 'src/app/models/character/god.model';
-import { matMenuAnimations as matMenuAnimations, MatMenuTrigger as MatMenuTrigger } from '@angular/material/menu';
+import { MatMenuTrigger as MatMenuTrigger } from '@angular/material/menu';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
@@ -119,11 +117,15 @@ export class PartyComponent implements OnInit {
       }
     }
   }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
 
   isOverdriveAvailable(character: Character) {
     if (character.level >= this.utilityService.characterOverdriveLevel &&
       !this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Overdrive)) {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Overdrive, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Overdrive, undefined, undefined, true, this.balladService.getActiveSubZone()?.type), this.globalService.globalVar);
       this.globalService.handleTutorialModal();
     }
 
@@ -382,7 +384,7 @@ export class PartyComponent implements OnInit {
   getCharacterTotalLinks(character: Character) {
     if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Link) &&
       character.type === CharacterEnum.Adventurer && character.level >= this.utilityService.characterLinkLevel) {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Link, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Link, undefined, undefined, true, this.balladService.getActiveSubZone()?.type), this.globalService.globalVar);
       this.globalService.handleTutorialModal();
     }
 

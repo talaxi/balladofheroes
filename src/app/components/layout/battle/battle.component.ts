@@ -1,6 +1,5 @@
-import { Component, ElementRef, EventEmitter, Input, OnInit, Output, ViewChild } from '@angular/core';
+import { Component, ElementRef, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
-import * as pluralize from 'pluralize';
 import { StatusEffect } from 'src/app/models/battle/status-effect.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { AnimationStateEnum } from 'src/app/models/enums/animation-state-enum.model';
@@ -324,12 +323,15 @@ export class BattleComponent implements OnInit {
 
   newSubzoneUnlocked() {
     var newSubzoneAvailable = false;
+    var shouldHideCountryRoads1 = this.balladService.findSubzone(SubZoneEnum.NemeaCountryRoadsTwo)?.isAvailable ?? false;
+
     this.globalService.globalVar.ballads.forEach(ballad => {
       if (ballad.isAvailable) {
         ballad.zones.forEach(zone => {
           zone.subzones.forEach(subzone => {
-            if (subzone.notify)
+            if (subzone.notify && (!shouldHideCountryRoads1 || (shouldHideCountryRoads1 && subzone.type !== SubZoneEnum.NemeaCountryRoadsOne))) {              
               newSubzoneAvailable = true;
+            }
           });
         });
       }

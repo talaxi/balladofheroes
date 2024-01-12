@@ -30,6 +30,7 @@ export class JewelcraftingViewComponent {
   isMobile: boolean = false;
   customCreateAmount: number = 0;
   fullRecipeList: Recipe[] = [];
+  favoriteRecipeList: Recipe[] = [];
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -52,6 +53,7 @@ export class JewelcraftingViewComponent {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
     this.getFullRecipeList();
+    this.favoriteRecipeList = this.getFavoriteRecipeList();
 
     this.getQualityTypeList().forEach(qualityType => {
       this.getRecipeList(qualityType).forEach(recipe => {
@@ -75,6 +77,12 @@ getLevel() {
   if (this.jewelcrafting === undefined)
     return 0;
   return this.jewelcrafting.level;
+}
+
+getMaxLevel() {
+  if (this.jewelcrafting === undefined)
+    return 0;
+  return this.jewelcrafting.maxLevel;
 }
 
 getExp() {
@@ -374,6 +382,68 @@ toggleSubMenuOptions(direction: number) {
     currentIndex = 0;
 
   this.selectRecipe(this.fullRecipeList[currentIndex]);
+}
+
+favoriteRecipeAmount() {
+  if (this.jewelcrafting === undefined)
+    return 0;
+
+  var recipeList: Recipe[] = [];
+  this.jewelcrafting.favoritedRecipeItems.forEach(item => {
+    recipeList.push(this.jewelcraftingService.getRecipe(item));
+  });
+
+  return recipeList.length;
+}
+
+toggleFavorites() {
+  if (this.jewelcrafting !== undefined)
+    this.jewelcrafting.favoriteToggle = !this.jewelcrafting.favoriteToggle;
+}
+
+hideFavoriteRecipes() {
+  if (this.jewelcrafting !== undefined)
+    return this.jewelcrafting.favoriteToggle;
+  else 
+  return false;
+}
+
+getFavoriteRecipeList() {
+  if (this.jewelcrafting === undefined)
+    return [];
+
+    var recipeList: Recipe[] = [];
+    this.jewelcrafting.favoritedRecipeItems.forEach(item => {
+      recipeList.push(this.jewelcraftingService.getRecipe(item));
+    });
+
+  return recipeList;
+}
+
+favoriteRecipe(recipe: Recipe) {        
+  if (this.jewelcrafting === undefined)
+    return;
+
+  if (this.jewelcrafting.favoritedRecipeItems.some(item => item === recipe.createdItem)) {
+    this.jewelcrafting.favoritedRecipeItems = this.jewelcrafting.favoritedRecipeItems.filter(item => item !== recipe.createdItem);
+  }
+  else
+  {
+    this.jewelcrafting.favoritedRecipeItems.push(recipe.createdItem);
+  }
+
+  this.favoriteRecipeList = this.getFavoriteRecipeList();
+}
+
+getFavoriteIcon(recipe: Recipe) {
+  var src = "";
+  
+  if  (this.jewelcrafting !== undefined && this.jewelcrafting.favoritedRecipeItems.some(item => item === recipe.createdItem))
+    src = "assets/svg/favoriteActive.svg";
+  else
+    src = "assets/svg/favoriteInactive.svg";
+
+  return src;
 }
 
 ngOnDestroy() {

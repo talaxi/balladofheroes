@@ -7,10 +7,8 @@ import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
-import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { FollowerTabEnum } from 'src/app/models/enums/follower-tab-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { LogViewEnum } from 'src/app/models/enums/log-view-enum.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
@@ -21,7 +19,6 @@ import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { ProfessionUpgrades } from 'src/app/models/professions/profession-upgrades.model';
 import { Profession } from 'src/app/models/professions/profession.model';
-import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
@@ -32,7 +29,6 @@ import { LookupService } from '../lookup.service';
 import { AlchemyService } from '../professions/alchemy.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { KeybindService } from '../utility/keybind.service';
-import { VersionControlService } from '../utility/version-control.service';
 import { GlobalService } from './global.service';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
@@ -42,7 +38,6 @@ import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Uniques } from 'src/app/models/resources/uniques.model';
 import { CharacterStatEnum } from 'src/app/models/enums/character-stat-enum.model';
 import { Loadout } from 'src/app/models/utility/loadout.model';
-import { WeaponTypeEnum } from 'src/app/models/enums/weapon-type-enum.model';
 
 @Injectable({
   providedIn: 'root'

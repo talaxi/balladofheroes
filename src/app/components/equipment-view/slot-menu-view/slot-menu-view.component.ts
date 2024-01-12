@@ -1,11 +1,11 @@
-import { ChangeDetectorRef, Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
+import { Component, EventEmitter, Input, Output, ViewChild } from '@angular/core';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { Equipment } from 'src/app/models/resources/equipment.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
-import { MatDialog, MatDialogRef } from '@angular/material/dialog';
+import { MatDialog } from '@angular/material/dialog';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
@@ -42,11 +42,18 @@ export class SlotMenuViewComponent {
   }
 
   ngOnInit() {
+    if (this.globalService.globalVar.settings.get("slotsSortType") !== undefined && this.globalService.globalVar.settings.get("slotsSortType") !== "") 
+      this.sortType = this.globalService.globalVar.settings.get("slotsSortType");
+      if (this.globalService.globalVar.settings.get("slotsSort") !== undefined && this.globalService.globalVar.settings.get("slotsSort") !== "") 
+      this.ascendingSort = this.globalService.globalVar.settings.get("slotsSort");
+
     this.assignResource();
     this.setupAvailableGems();
   }
 
   setupAvailableGems() {
+    this.globalService.globalVar.settings.set("slotsSortType", this.sortType);
+
     var showBasicEquipment = this.globalService.globalVar.settings.get("slotsShowBasicFilter") ?? true;
     var showUncommonEquipment = this.globalService.globalVar.settings.get("slotsShowUncommonFilter") ?? true;
     var showRareEquipment = this.globalService.globalVar.settings.get("slotsShowRareFilter") ?? true;
@@ -79,6 +86,7 @@ export class SlotMenuViewComponent {
 
   toggleSort() {
     this.ascendingSort = !this.ascendingSort;
+    this.globalService.globalVar.settings.set("slotsSort", this.ascendingSort);
     this.setupAvailableGems();
   }
 
@@ -290,6 +298,8 @@ export class SlotMenuViewComponent {
       this.availableGems = this.availableGems.filter(item => item.item !== ItemsEnum.MajorWeaponSlotAddition && item.item !== ItemsEnum.MajorRingSlotAddition &&
         item.item !== ItemsEnum.MajorNecklaceSlotAddition && item.item !== ItemsEnum.MajorShieldSlotAddition && item.item !== ItemsEnum.MajorArmorSlotAddition);
     }
+
+    this.availableGems = this.availableGems.filter(item => item.amount > 0);
   }
 
   openConfirmationDialog() {

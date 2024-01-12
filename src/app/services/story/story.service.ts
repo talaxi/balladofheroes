@@ -7,7 +7,6 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
-import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GameLogService } from '../battle/game-log.service';
@@ -493,7 +492,7 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>With the demise of Geryon, your journey to the West is complete. You've completed more than half of Heracles's trials now, and the remainder of your journey lays back on the eastern side of Greece. </div>" +
           "<div>You journey back the way you came, reaching Cádiz and securing boat travel back to your homeland. On the first night of your return trip, you are greeted by a familiar face.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.hermesText("“You've accomplished quite a lot since the last time we spoke! You sure can go a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.hermesText("“You've accomplished quite a lot since the last time we spoke! You sure can make it a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
           "<div>" + this.hermesText("“You've impressed quite a few of us on Olympus. Even father is ready to speak to you now.”") + " Zeus, father of Hermes, Athena, and many others, was seeking your presence. You felt equal parts excitement and anxiety. </div>";
       else if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>" + this.hermesText("“He believes the Giants and the Titans are ready to make their move. Hopefully this time, they'll get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
@@ -839,24 +838,24 @@ export class StoryService {
         this.globalService.globalVar.isBattlePaused = false;
         
         if (this.deviceDetectorService.isMobile())
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type), this.globalService.globalVar);
 
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();        
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
         this.balladService.setActiveSubZone(SubZoneEnum.DodonaDelphi);
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town, undefined, undefined, true, SubZoneEnum.DodonaDelphi), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory, undefined, undefined, true, SubZoneEnum.DodonaDelphi), this.globalService.globalVar);
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis)?.quality);
         var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".", this.globalService.globalVar);
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
@@ -865,13 +864,13 @@ export class StoryService {
         this.globalService.globalVar.settings.set("autoProgress", false);
       }
       if (this.globalService.globalVar.currentStoryId === 8) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle.</i></b>");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle.</i></b>", this.globalService.globalVar);
       }
       if (this.globalService.globalVar.currentStoryId === 9) {
         this.showFirstTimeUnderworldStory = false;
         this.triggerFirstTimeUnderworldScene = false;
         this.endFirstTimeUnderworldScene = true;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         setTimeout(() => {
           this.endFirstTimeUnderworldScene = false;
         }, 5000);
@@ -887,11 +886,11 @@ export class StoryService {
         }
       }
       if (this.globalService.globalVar.currentStoryId === 12) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Traveler, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Traveler, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
@@ -907,7 +906,7 @@ export class StoryService {
       }
 
       if (this.globalService.globalVar.currentStoryId === 17) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new side quest is available in the Ballad of the Underworld.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new side quest is available in the Ballad of the Underworld.", this.globalService.globalVar);
       }
 
       if (this.globalService.globalVar.currentStoryId === 25) {
@@ -929,7 +928,7 @@ export class StoryService {
         var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
         if (zeus !== undefined) {
           zeus.isAvailable = true;
-          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of the almighty Zeus, God of Thunder and Lightning.");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of the almighty Zeus, God of Thunder and Lightning.", this.globalService.globalVar);
         }
 
         var mountainHike = this.balladService.findSubzone(SubZoneEnum.HuntForYarrowMountainHike);
@@ -946,7 +945,7 @@ export class StoryService {
         var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
         if (poseidon !== undefined) {
           poseidon.isAvailable = true;
-          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Poseidon, God of the Sea.");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Poseidon, God of the Sea.", this.globalService.globalVar);
         }
       }
     }
@@ -1100,7 +1099,7 @@ export class StoryService {
     }
     if (scene === OptionalSceneEnum.TimeFragmentInTheSwamp) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>After defeating the Lernean Hydra, you wade your way out of the swamp. Near the edge of the swamp, you notice a dim green object partially obscured in the muck. You reach down and retrieve what seems to be a crystal. As soon as you touch it, it reacts to your magic and immediately begins to glow.</div>" +
+        sceneText = "<div class='sceneDiv'>After defeating the Lernean Hydra, you wade your way out of the swamp. Near the edge, you notice a dim green object partially obscured in the muck. You reach down and retrieve what seems to be a crystal. As soon as you touch it, it reacts to your magic and immediately begins to glow.</div>" +
           "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Time Fragments Unlocked</div>";
     }
 
@@ -1202,7 +1201,7 @@ export class StoryService {
     if (this.currentPage > this.pageCount) {
       this.globalService.globalVar.isBattlePaused = false;
       if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 25 Olives and Fennel.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 25 Olives and Fennel.", this.globalService.globalVar);
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 25);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
@@ -1221,26 +1220,26 @@ export class StoryService {
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables2) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.", this.globalService.globalVar);
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables4) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.", this.globalService.globalVar);
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables6) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 5.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 5.", this.globalService.globalVar);
 
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RadiatingHolyStone, 1);
         if (resource !== undefined) {
           this.lookupService.gainResource(resource);
         }
 
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.", this.globalService.globalVar);
         this.professionService.learnRecipe(ProfessionEnum.Jewelcrafting, ItemsEnum.RadiatingHolyStone);
       }
       if (this.showOptionalStory === OptionalSceneEnum.HephaestusJewelcrafting) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hephaestus provides you with the Divine Targe and Divine Plate.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hephaestus provides you with the Divine Targe and Divine Plate.", this.globalService.globalVar);
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.DivinePlate, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
@@ -1253,7 +1252,7 @@ export class StoryService {
           jewelcrafting.maxLevel += 25;
 
           var gameLogEntry = "Watching Hephestaus work has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
         }
       }
       if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {
@@ -1262,16 +1261,16 @@ export class StoryService {
           alchemy.maxLevel += 25;
 
           var gameLogEntry = "Your experience on the Island of Naxos has improved your Alchemy skills. Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
         }
       }
       if (this.showOptionalStory === OptionalSceneEnum.TimeFragmentInTheSwamp) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You find a Time Fragment.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You find a Time Fragment.", this.globalService.globalVar);
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.TimeFragment, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
 
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.TimeFragments, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.TimeFragments, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
       }
 

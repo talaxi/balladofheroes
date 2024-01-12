@@ -59,3 +59,15 @@
 .subzoneSpacer {
     margin-left: 1rem;
 }
+
+@media (max-width: 800px) {
+    .balladView {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 30% auto 1fr;
+        grid-template-rows: auto;
+        justify-content: stretch;
+        grid-template-areas:
+            "options vr info";
+    }
+}

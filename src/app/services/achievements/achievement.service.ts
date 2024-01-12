@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AchievementTypeEnum } from 'src/app/models/enums/achievement-type-enum.copy';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -1140,7 +1139,7 @@ export class AchievementService {
                 if (ares!.level >= ability.requiredLevel)
                   ability.isAvailable = true;
               });
-              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your commitment to bloodshed has impressed Ares, God of War. Ares will now assist you on your journey.");
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your commitment to bloodshed has impressed Ares, God of War. Ares will now assist you on your journey.", this.globalService.globalVar);
             }
           }
           else
@@ -1318,12 +1317,12 @@ export class AchievementService {
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade1) {
             this.lookupService.enableChthonicFavoredGod();
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, true, subzoneType));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, true, subzoneType), this.globalService.globalVar);
             this.globalService.handleTutorialModal();
           }
           else if (bonus.item === ItemsEnum.ChthonicFavorUpgrade2) {
             this.lookupService.enableChthonicFavor();
-            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade2, undefined, undefined, true, subzoneType));
+            this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade2, undefined, undefined, true, subzoneType), this.globalService.globalVar);
             this.globalService.handleTutorialModal();
           }
           else
@@ -1338,9 +1337,9 @@ export class AchievementService {
     this.globalService.globalVar.totalAchievementsCompleted += count;
 
     if (previousAchievementCount === 0 && this.globalService.globalVar.totalAchievementsCompleted > 0) {
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements, undefined, undefined, true, subzoneType));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Achievements, undefined, undefined, true, subzoneType), this.globalService.globalVar);
       this.globalService.handleTutorialModal();
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Followers, undefined, undefined, true, subzoneType));
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Followers, undefined, undefined, true, subzoneType), this.globalService.globalVar);
     }
 
     if (this.globalService.globalVar.followerData.achievementCompletionCounter >= this.globalService.getAchievementsForNextFollower()) {

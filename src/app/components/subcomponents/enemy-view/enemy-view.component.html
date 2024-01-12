@@ -15,10 +15,10 @@
     </span>
     <div [ngClass]="{'boss': isBoss, 'enemy': !isBoss}">
         <div class="hpBarSpace hpBarGrid" #hpBar>
-            <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
+            <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getCharacterHpPercent(character)"
                 class="green-progress characterBar hpBar highBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
-            <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
+            <mat-progress-bar *ngIf="notLowPerformanceMode() && getCharacterBarrierValue(character) > 0" mode="determinate"
                 [value]="getCharacterBarrierPercent(character)" class="barrier-progress characterBar hpBar highBar"
                 [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>

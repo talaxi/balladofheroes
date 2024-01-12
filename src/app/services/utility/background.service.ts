@@ -20,13 +20,11 @@ import { GameLogService } from '../battle/game-log.service';
 import { FollowersService } from '../followers/followers.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
-import { AlchemyService } from '../professions/alchemy.service';
 import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from './utility.service';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
-import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { DictionaryService } from './dictionary.service';
 import { EquipmentService } from '../resources/equipment.service';
@@ -636,7 +634,7 @@ export class BackgroundService {
           if (rng <= chance) {
             var foundReward = new ResourceValue(reward.item, rewardAmount);
             if (this.globalService.globalVar.gameLogSettings.get("followerSearch")) {
-              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.dictionaryService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".");
+              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.dictionaryService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".", this.globalService.globalVar);
             }
             this.lookupService.addLootToLog(foundReward.item, foundReward.amount, SubZoneEnum.Follower);
             this.lookupService.gainResource(foundReward);
@@ -951,6 +949,15 @@ export class BackgroundService {
         xpList.push(teamXp);
         coinList.push(teamCoins);
       });
+      
+      var treasureChestRewards = this.subzoneGeneratorService.getTreasureChestRewards(run.selectedSubzone);
+      if (treasureChestRewards !== undefined && treasureChestRewards.length > 0 && run.selectedSubzone !== SubZoneEnum.AigosthenaUpperCoast
+        && run.selectedSubzone !== SubZoneEnum.AigosthenaBay && run.selectedSubzone !== SubZoneEnum.AigosthenaLowerCoast  && run.selectedSubzone !== SubZoneEnum.DodonaMountainOpening) {
+        var chance = this.subzoneGeneratorService.generateTreasureChestChance(run.selectedSubzone);        
+        treasureChestRewards.forEach(reward => {
+          lootOptions.push([reward.item, chance * fragmentEfficiency * reward.amount]);
+        });
+      }
     }
 
     var xpSum = xpList.reduce(function (acc, cur) { return acc + cur; });

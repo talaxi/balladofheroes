@@ -16,8 +16,11 @@
 </div>
 <div *ngIf="true" class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover">
     <!--ngIf fixes the default value for the progress bar-->
-    <mat-progress-bar mode="determinate" [ngClass]="{'removeTransition': removeBarTransition}" [value]="getCharacterXpPercent()" class="blue-progress characterBar xpHighBar">
+    <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [ngClass]="{'removeTransition': removeBarTransition}" [value]="getCharacterXpPercent()" class="blue-progress characterBar xpHighBar">
     </mat-progress-bar>
+    <div class="xpColor s3Heading" *ngIf="!notLowPerformanceMode()">                
+        {{getCharacterXp()}} / {{getCharacterXpToNextLevel()}} XP
+    </div>
 </div>
 
 <ng-template #characterPopover>

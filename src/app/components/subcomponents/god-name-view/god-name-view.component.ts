@@ -104,6 +104,10 @@ export class GodNameViewComponent implements OnInit {
 
     return 0;
   }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
 
   getGodExp(whichGod: number) {
     var matchTo = this.character.assignedGod1;

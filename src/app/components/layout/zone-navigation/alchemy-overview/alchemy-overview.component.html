@@ -1,5 +1,5 @@
 <div *ngIf="expandedView" class='alchemyInfo'>
-    <span>Level {{getLevel()}}</span>
+    <span customToolTip [contentTemplate]="maxLevelPopover">Level {{getLevel()}}</span>
     <br />
     <span *ngIf="!atMaxLevel()">{{getExp() | number : '1.0-0'}} / {{getExpToNextLevel() | number : '1.0-0'}} XP to Level
         {{getLevel() + 1}}</span>
@@ -28,4 +28,11 @@
     <div>
         <app-alchemy-view></app-alchemy-view>
     </div>
+</ng-template>
+
+
+<ng-template #maxLevelPopover>
+    <div>
+        <span class="description">Level {{getLevel()}} / {{getMaxLevel()}}</span>
+    </div>    
 </ng-template>

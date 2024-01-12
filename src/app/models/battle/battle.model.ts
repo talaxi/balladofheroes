@@ -1,8 +1,6 @@
 import { Type } from "class-transformer";
 import { AltarInfo } from "../altar/altar-info.model";
-import { Character } from "../character/character.model";
 import { EnemyTeam } from "../character/enemy-team.model";
-import { ColiseumTournamentEnum } from "../enums/coliseum-tournament-enum.model";
 import { SceneTypeEnum } from "../enums/scene-type-enum.model";
 import { ResourceValue } from "../resources/resource-value.model";
 import { ColiseumTournament } from "./coliseum-tournament.model";

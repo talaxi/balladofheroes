@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { Ability } from 'src/app/models/character/ability.model';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
-import { Character } from 'src/app/models/character/character.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
@@ -10,12 +9,10 @@ import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.mod
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
-import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 import { LootItem } from 'src/app/models/resources/loot-item.model';
 import { DeploymentService } from '../deployment/deployment.service';
 import { GlobalService } from '../global/global.service';
-import { LookupService } from '../lookup.service';
 import { UtilityService } from '../utility/utility.service';
 import { EffectResolutionEnum } from 'src/app/models/enums/effect-resolution-enum.model';
 
@@ -8650,8 +8647,7 @@ export class EnemyGeneratorService {
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.15, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);
     }
-    if (type === BestiaryEnum.GargantuanCrocodile) {
-      //TODO
+    if (type === BestiaryEnum.GargantuanCrocodile) {      
       enemy.name = "Gargantuan Crocodile";
       enemy.battleStats = new CharacterStats(5431250, 11000, 42720, 33000, 31000, 42500);
       enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
@@ -13102,6 +13098,35 @@ export class EnemyGeneratorService {
       enrage.cooldown = enrage.currentCooldown = 30;      
       enrage.dealsDirectDamage = false;
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.25, false, true, false, undefined, undefined, true));      
+      enemy.abilityList.push(enrage);
+    }
+    if (type === BestiaryEnum.ErraticMachine) {      
+      enemy.name = "Erratic Machine";
+      enemy.battleStats = new CharacterStats(6320000, 16300, 67500, 41000, 46250, 58500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 5;
+      enemy.xpGainFromDefeat = 16000;  
+      enemy.battleInfo.statusEffects.push(this.globalService.createStatusEffect(StatusEffectEnum.DivineProtection, -1, .8, false, true, false));    
+     
+      var hardSwipe = new Ability();
+      hardSwipe.name = "Hard Swipe";
+      hardSwipe.isAvailable = true;
+      hardSwipe.cooldown = hardSwipe.currentCooldown = 21;
+      hardSwipe = this.randomizeCooldown(hardSwipe);
+      hardSwipe.dealsDirectDamage = true;
+      hardSwipe.effectiveness = 11;
+      hardSwipe.isAoe = true;
+      hardSwipe.damageModifierRange = .5;
+      enemy.abilityList.push(hardSwipe);
+            
+     
+
+      var enrage = new Ability();
+      enrage.name = "Enrage";
+      enrage.isAvailable = true;
+      enrage.cooldown = enrage.currentCooldown = 30;      
+      enrage.dealsDirectDamage = false;
+      enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.15, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);
     } 
 

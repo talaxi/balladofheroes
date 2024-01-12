@@ -1,10 +1,7 @@
 import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Battle } from 'src/app/models/battle/battle.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
-import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
-import { Enemy } from 'src/app/models/character/enemy.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ColiseumService } from 'src/app/services/battle/coliseum.service';
@@ -30,7 +27,10 @@ export class ColiseumViewComponent implements OnInit {
   standardColiseumTournaments: ColiseumTournamentEnum[] = [];
   specialColiseumTournaments: ColiseumTournamentEnum[] = [];
   @ViewChild('confirmationBox') confirmationBox: any;
-  confirmationText = "You are currently set to automate through the Eternal Melee with all of your tickets. You will not be able to stop part way through to adjust your team. Continue?";  
+  confirmationText = "You are currently set to automate through the Eternal Melee with all of your tickets. You will not be able to stop part way through to adjust your team. Continue?";
+  @ViewChild('purchaseBox') transactionBox: any;
+  transactionEnabled: boolean = true; //TODO: make this false for now (done for now)
+  transactionConfirmationText = "";
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -70,6 +70,10 @@ export class ColiseumViewComponent implements OnInit {
 
   openConfirmationDialog() {
     return this.dialog.open(this.confirmationBox, { width: '40%', height: 'auto' });
+  }
+
+  openPurchaseDialog() {
+    return this.dialog.open(this.transactionBox, { width: '40%', height: 'auto' });
   }
 
   getStandardColiseumTournaments() {
@@ -259,7 +263,7 @@ export class ColiseumViewComponent implements OnInit {
         this.lookupService.isUIHidden = true;
         this.globalService.globalVar.isCatchingUp = true;
         this.gameLogService.disableOverlayBuffer = true;
-        this.globalService.bankedTime +=  5 * 60;
+        this.globalService.bankedTime += 5 * 60;
         this.globalService.maxBankedTime = this.globalService.bankedTime;
         this.globalService.startColiseumTournament(this.selectedTournament);
         this.dialog.closeAll();
@@ -320,6 +324,29 @@ export class ColiseumViewComponent implements OnInit {
 
   openModal(content: any) {
     return this.dialog.open(content, { width: '40%', height: 'auto' });
+  }
+
+  openTransactionModal() {
+    var ticketMultiplier = 1;
+    if (this.globalService.globalVar.isSubscriber)
+        ticketMultiplier = 2;
+
+    this.transactionConfirmationText = "For $1, gain a full set of <b>" + (this.utilityService.weeklyMeleeEntryCap * ticketMultiplier) + " Eternal Melee tickets</b>.";
+
+    var supportArea = " on the footer below ";
+    if (this.isMobile())
+      supportArea = " in the menu ";
+
+    if (ticketMultiplier === 1)
+      this.transactionConfirmationText += "<br/><br/><i>Note that Subscribers gain  " + (this.utilityService.weeklyMeleeEntryCap * 2) + " tickets instead of " + (this.utilityService.weeklyMeleeEntryCap * 2) + ", and gain 2 tickets a day instead of 1. Visit the 'Support' area " + supportArea + " to see how to subscribe for a one time payment of $3.</i>";
+
+    var dialogRef = this.openPurchaseDialog();
+
+    dialogRef.afterClosed().subscribe(dialogResult => {
+      if (dialogResult) {        
+        window.location.href = 'https://square.link/u/Cf9TBEF1';
+      }
+    });
   }
 
   toggleSubMenuOptions(direction: number) {

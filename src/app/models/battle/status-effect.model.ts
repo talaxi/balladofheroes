@@ -1,4 +1,3 @@
-import { Character } from "../character/character.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { dotTypeEnum } from "../enums/damage-over-time-type-enum.model";
 import { EffectResolutionEnum } from "../enums/effect-resolution-enum.model";

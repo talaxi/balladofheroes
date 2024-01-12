@@ -114,6 +114,12 @@ openAlchemy(content: any) {
     return this.alchemy.level;
   }
 
+  getMaxLevel() {
+    if (this.alchemy === undefined)
+      return 0;
+    return this.alchemy.maxLevel;
+  }
+
   getExp() {
     if (this.alchemy === undefined)
       return 0;

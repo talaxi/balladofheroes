@@ -214,6 +214,10 @@ export class CharacterNameViewComponent implements OnInit {
   getCharacterDps() {
     return this.lookupService.getCharacterDps(this.character);
   }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
 
   isTargetActivate() {
     return this.battleService.targetCharacterMode && this.battleService.characterInTargetMode === this.character.type;

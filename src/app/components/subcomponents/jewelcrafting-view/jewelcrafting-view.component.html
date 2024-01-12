@@ -1,7 +1,7 @@
 <div class="centeredText mainPageSectionHeader">
     <span class="s2Heading jewelcraftingText">Jewelcrafting</span>
     <br />
-    <span>Level {{getLevel()}}</span>
+    <span customToolTip [contentTemplate]="maxLevelPopover">Level {{getLevel()}}</span>
     <br />
     <span *ngIf="!atMaxLevel()">{{getExp() | number : '1.0-0'}} / {{getExpToNextLevel() | number : '1.0-0'}} XP to Level
         {{getLevel() + 1}}</span>
@@ -26,9 +26,25 @@
 <div class="recipeBook">
     <div class="column recipeList">
         <span class="centeredText mainPageSectionHeader">recipe book</span>
-        <br />        
+        <br />
         <div class="recipeBookBackground">
-            <div class="scrollable">                
+            <div class="scrollable">  
+                <div>
+                    <div class="recipeSectionTitle">
+                        <button (click)="toggleFavorites()" class="buttonStyled smallButtonStyled recipeSectionToggle">{{hideFavoriteRecipes() ? "+" : "-"}}</button> <span
+                            class="smallCaps bold recipeSection">Favorites</span>
+                            <hr class="recipeSectionEnder"/>
+                    </div>
+                    <div *ngFor="let recipe of favoriteRecipeList; let i = index" (click)="selectRecipe(recipe)" class="recipeItem"
+                        [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem,
+                                    'hide': hideFavoriteRecipes()}">
+                                    <button class="buttonStyled favoriteButton" (click)="favoriteRecipe(recipe)"><img class="favoriteIcon" [src]="getFavoriteIcon(recipe)"></button>
+                        <button class="buttonAsText clickableText recipeItemButton"
+                            [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}"
+                            [innerHtml]="getCraftedItemName(recipe)"></button>
+                        <hr class="noMargin" *ngIf="i !== favoriteRecipeList.length - 1" />
+                    </div>
+                </div>              
                 <div [ngClass]="{'hide': recipesAtQualityLevelAmount(qualityType) === 0}"
                     *ngFor="let qualityType of getQualityTypeList()">
                     <br />
@@ -40,6 +56,7 @@
                     <div *ngFor="let recipe of getRecipeList(qualityType); let i = index" (click)="selectRecipe(recipe)" class="recipeItem"
                         [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem,
                                     'hide': hideRecipesByQuality(qualityType)}">
+                                    <button class="buttonStyled favoriteButton" (click)="favoriteRecipe(recipe)"><img class="favoriteIcon" [src]="getFavoriteIcon(recipe)"></button>
                         <button class="buttonAsText clickableText recipeItemButton"
                             [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}"
                             [innerHtml]="getCraftedItemName(recipe)"></button>
@@ -49,10 +66,10 @@
             </div>
         </div>
     </div>
-    <div class="spacer">        
-    <div [ngClass]="{'vr': !isMobile}">
-        <hr [ngClass]="{'vrHr': !isMobile, 'mobileDivider': isMobile}" />
-    </div>
+    <div class="spacer">
+        <div [ngClass]="{'vr': !isMobile}">
+            <hr [ngClass]="{'vrHr': !isMobile, 'mobileDivider': isMobile}" />
+        </div>
     </div>
     <div class="column recipeInfo">
         <div *ngIf="selectedRecipe !== undefined">
@@ -61,7 +78,7 @@
             <span [innerHtml]="getSelectedRecipeQualityStars()"></span>
             <br />
             <span [innerHtml]="getSelectedRecipeDescription()"></span>
-            <br/>
+            <br />
             <span class="bold smallCaps jewelcraftingText">+{{getXpIncrease()}} jewelcrafting XP</span>
             <hr />
             <div *ngFor="let ingredient of this.selectedRecipe.ingredients; let i = index">
@@ -75,13 +92,16 @@
                 <button class="buttonAsText clickableText filterOption" [ngClass]="{'filterActive': createAmount === 5}"
                     (click)="changeCreateAmount(5, true)">5x</button>
                 <button class="buttonAsText clickableText filterOption"
-                    [ngClass]="{'filterActive': createAmount === 25}" (click)="changeCreateAmount(25, true)">25x</button>
+                    [ngClass]="{'filterActive': createAmount === 25}"
+                    (click)="changeCreateAmount(25, true)">25x</button>
                 <button class="buttonAsText clickableText filterOption"
-                    [ngClass]="{'filterActive': createAmount === 100}" (click)="changeCreateAmount(100, true)">100x</button>
+                    [ngClass]="{'filterActive': createAmount === 100}"
+                    (click)="changeCreateAmount(100, true)">100x</button>
                 <button class="buttonAsText clickableText filterOption"
                     [ngClass]="{'filterActive': createAmount !== 1 && createAmount !== 5 && createAmount !== 25 && createAmount !== 100 && createAmount === getTotalItemToCreateAmount()}"
                     (click)="changeCreateAmount(getTotalItemToCreateAmount(), true)">All</button>
-                    <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()" (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customCreateAmount" />
+                <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()"
+                    (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customCreateAmount" />
             </div>
             <br />
             <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
@@ -93,4 +113,10 @@
 
 <ng-template #confirmationBox>
     <app-confirmation-box></app-confirmation-box>
+</ng-template>
+
+<ng-template #maxLevelPopover>
+    <div>
+        <span class="description">Level {{getLevel()}} / {{getMaxLevel()}}</span>
+    </div>    
 </ng-template>

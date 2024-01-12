@@ -148,6 +148,27 @@
     width: 3rem;
   }
   
+  
+.buttonStyled {
+    background-color: var(--recipe-button-background-color);
+}
+
+.buttonStyled:hover {
+    background-color: var(--button-hover);
+  }
+  
+.favoriteIcon {
+    height: 100%;
+    width: 100%;
+}
+
+.favoriteButton {
+    margin-left: .5rem;
+    margin-right: .3rem;
+    height: 1.5rem;
+    vertical-align: bottom;
+    padding: .2rem;
+}
 
 @media (max-width: 800px) { 
     .offsetWidth {

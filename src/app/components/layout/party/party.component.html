@@ -11,7 +11,7 @@
                     <div>
                         <app-character-name-view [character]="character"></app-character-name-view>
                         <br />
-                        <div *ngIf="true" class="flex characterHp">
+                        <div *ngIf="notLowPerformanceMode()" class="flex characterHp">
                             <!--ngIf fixes the default value for the progress bar-->
                             <div class="hpBarSpace hpBarGrid">
                                 <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
@@ -20,7 +20,7 @@
                                 <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
                                     [value]="getCharacterBarrierPercent(character)"
                                     class="barrier-progress characterBar hpBar highBar">
-                                </mat-progress-bar>
+                                </mat-progress-bar>                                
                             </div>
                             <span class="hpMpText hpAmount" *ngIf="!showPartyHpAsPercent">
                                 <span
@@ -34,7 +34,23 @@
                                     | number : '1.2-2'}}%</span>
                             </span>
                         </div>
-                        <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex"
+                        <div *ngIf="!notLowPerformanceMode()" class="lowPerfHpMpText">                            
+                            <span class="bold smallCaps healthName statLabel">
+                                health:
+                            </span>
+                            <span class="hpAmount statValue" *ngIf="!showPartyHpAsPercent">
+                                <span
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span>
+                                /
+                                {{getMaxHp(character)}}
+                            </span>
+                            <span class="hpAmount statValue" *ngIf="showPartyHpAsPercent">
+                                <span
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character)
+                                    | number : '1.2-2'}}%</span>
+                            </span>
+                        </div>
+                        <div *ngIf="notLowPerformanceMode() && isOverdriveAvailable(character)" class="overdriveBar flex"
                             (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
                             <span *ngIf="!character.overdriveInfo.autoMode" class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
@@ -44,6 +60,13 @@
                                 [ngClass]="{'overdriveActive': isOverdriveActive(character)}">
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                             </span>
+                        </div>
+                        <div *ngIf="!notLowPerformanceMode() && isOverdriveAvailable(character)" class="overdriveBar flex lowPerfHpMpText"
+                            (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
+                            <span class="overdriveName bold smallCaps statLabel">overdrive: </span>
+                            <span [ngClass]="{'overdriveActive': isOverdriveActive(character)}" class="statValue">
+                             {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
+                        </span>
                         </div>
                     </div>
                     <div class="fullHeight statusEffectGrid">

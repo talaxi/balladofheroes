@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Settings } from 'src/app/models/utility/settings.model';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { InitializationService } from 'src/app/services/global/initialization.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 
@@ -32,7 +33,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
     this.keybindToUpdate = undefined;
   }
 
-  constructor(private globalService: GlobalService, private keybindService: KeybindService, private menuService: MenuService) { }
+  constructor(private globalService: GlobalService, private keybindService: KeybindService, private menuService: MenuService,
+    private initializationService: InitializationService) { }
 
   ngOnInit(): void {
     this.keybinds = this.globalService.globalVar.keybinds;
@@ -307,7 +309,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var autoToggleCharacter2AllAbilities = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter2AllAbilities");
     if (autoToggleCharacter2AllAbilities !== undefined)
       this.battleKeybinds.push(autoToggleCharacter2AllAbilities);
+  }
 
+  resetToDefault() {
+    this.initializationService.initializeKeybinds();
   }
 
   updateKeybind(keybind: [string, any]) {

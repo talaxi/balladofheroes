@@ -120,6 +120,12 @@ export class JewelcraftingOverviewComponent {
         return 0;
       return this.jewelcrafting.level;
     }
+    
+    getMaxLevel() {
+      if (this.jewelcrafting === undefined)
+        return 0;
+      return this.jewelcrafting.maxLevel;
+    }
   
     getExp() {
       if (this.jewelcrafting === undefined)

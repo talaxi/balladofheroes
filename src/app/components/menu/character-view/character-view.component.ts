@@ -5,7 +5,6 @@ import { Ability } from 'src/app/models/character/ability.model';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
-import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';

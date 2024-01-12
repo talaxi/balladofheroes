@@ -89,6 +89,8 @@
                     <br />
                     <button class="buttonStyled" [disabled]="!canEnterWeeklyMelee()" (click)="startTournament()">Start
                         Tournament</button>
+                        <br/>
+                    <button *ngIf="!canEnterWeeklyMelee() && transactionEnabled" class="buttonStyled transactionButton" (click)="openTransactionModal()">Purchase Eternal Melee Tickets</button>
                     <br />
                     <div [ngClass]="{'flexAround': !isMobile()}">
                         <mat-checkbox [(ngModel)]="repeatColiseumFight" (input)="repeatColiseumFightToggle()">
@@ -110,4 +112,8 @@
 
     <ng-template #confirmationBox>
         <app-confirmation-box [confirmationText]="confirmationText"></app-confirmation-box>
+    </ng-template>
+    
+    <ng-template #purchaseBox>
+        <app-confirmation-box [confirmationText]="transactionConfirmationText"></app-confirmation-box>
     </ng-template>

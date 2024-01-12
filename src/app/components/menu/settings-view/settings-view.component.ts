@@ -2,7 +2,6 @@ import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { plainToInstance } from 'class-transformer';
 import { StoryStyleSettingEnum } from 'src/app/models/enums/story-style-setting-enum.model';
-import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { GlobalVariables } from 'src/app/models/global/global-variables.model';
 import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { DeploymentService } from 'src/app/services/deployment/deployment.service';
@@ -13,8 +12,6 @@ import { CodeRedemptionService } from 'src/app/services/utility/code-redemption.
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { VersionControlService } from 'src/app/services/utility/version-control.service';
 declare var LZString: any;
-import { loadStripe } from '@stripe/stripe-js';
-import { Stripe } from 'stripe';
 import { PatreonAccessService } from 'src/app/services/utility/patreon-access.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
@@ -45,6 +42,7 @@ export class SettingsViewComponent implements OnInit {
   confirmationText = "";
   @ViewChild('confirmationBox') confirmationBox: any;
   largeAltarsAvailable = false;
+  showGameLogTimeStamps = false;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     public utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
@@ -98,6 +96,7 @@ export class SettingsViewComponent implements OnInit {
     this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? true;
     this.showTutorialsAsModals = this.globalService.globalVar.settings.get("showTutorialsAsModals") ?? false;
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
+    this.showGameLogTimeStamps = this.globalService.globalVar.settings.get("showGameLogTimestamps") ?? false
   }
 
   public SaveGame() {
@@ -199,7 +198,7 @@ export class SettingsViewComponent implements OnInit {
     if (this.isMobile)
       this.dialog.open(content, { width: '75%', height: '75%' });
     else
-      this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '50%', id: 'dialogNoPadding' });
+      this.dialog.open(content, { width: '75%', maxHeight: '75%', minHeight: '50%' });
   }
 
   openQuickViewOptions(content: any) {
@@ -247,6 +246,9 @@ export class SettingsViewComponent implements OnInit {
   }
   verboseModeToggle() {
     this.globalService.globalVar.settings.set("verboseMode", this.verboseMode);
+  }
+  showGameLogTimeStampsToggle() {
+    this.globalService.globalVar.settings.set("showGameLogTimestamps", this.showGameLogTimeStamps);
   }
 
   ngOnDestroy() {    

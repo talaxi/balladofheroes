@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AltarEffect } from 'src/app/models/altar/altar-effect.model';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
-import { God } from 'src/app/models/character/god.model';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
 import { AltarConditionEnum } from 'src/app/models/enums/altar-condition-enum.model';
 import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
@@ -11,7 +10,6 @@ import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLogService } from '../battle/game-log.service';
@@ -129,7 +127,7 @@ export class AltarService {
 
         if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
           var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry, this.globalService.globalVar);
         }
 
         if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
@@ -144,18 +142,18 @@ export class AltarService {
         if (this.globalService.globalVar.gameLogSettings.get("followerPrayer")) {
           if (followersActivatingAltar) {
             var gameLogEntry = "Your followers activate your altar to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry, this.globalService.globalVar);
           }
           else {
             var gameLogEntry = "Your followers pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry, this.globalService.globalVar);
           }
         }
       }
       else {
         if (this.globalService.globalVar.gameLogSettings.get("prayToAltar")) {
           var gameLogEntry = "You pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry, this.globalService.globalVar);
         }
       }
     }

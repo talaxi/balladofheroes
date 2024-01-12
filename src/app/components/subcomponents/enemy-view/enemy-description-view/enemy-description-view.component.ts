@@ -1,5 +1,4 @@
 import { Component, ElementRef, Input, ViewChild } from '@angular/core';
-import { EnemyDefeatCount } from 'src/app/models/battle/enemy-defeat-count.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { LootItem } from 'src/app/models/resources/loot-item.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';

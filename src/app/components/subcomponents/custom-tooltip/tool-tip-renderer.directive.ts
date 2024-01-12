@@ -1,4 +1,4 @@
-import { Directive, Input, TemplateRef, ElementRef, OnInit, HostListener, ComponentRef, OnDestroy, Output, EventEmitter } from '@angular/core';
+import { Directive, Input, TemplateRef, ElementRef, HostListener, ComponentRef, Output, EventEmitter } from '@angular/core';
 import { FlexibleConnectedPositionStrategy, Overlay, OverlayPositionBuilder, OverlayRef } from '@angular/cdk/overlay';
 import { ComponentPortal } from '@angular/cdk/portal';
 import { CustomTooltipComponent } from './custom-tooltip.component';

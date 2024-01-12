@@ -97,6 +97,10 @@ export class EnemyViewComponent implements OnInit {
   getCharacterAutoAttackProgress(character: Enemy) {
     return (character.battleInfo.autoAttackTimer / character.battleInfo.timeToAutoAttack) * 100;
   }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
 
   targetCharacterWithItem(character: Character) {
     var isTargeted = false;

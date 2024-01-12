@@ -14,6 +14,7 @@ export class UtilityService {
   public averageActiveTimeLimit = 1 * 60 * 60;
   public highActiveTimeLimit = 2 * 60 * 60;
   public veryHighActiveTimeLimit = 4 * 60 * 60;
+  public extremelyHighActiveTimeLimit = 8 * 60 * 60;
 
   public extraSpeedTimeLimit = 12 * 60 * 60;
   public patronExtraSpeedTimeLimit = 24 * 60 * 60;
@@ -275,6 +276,42 @@ export class UtilityService {
     return minutesDisplay + ":" + secondsDisplay;
   }
 
+  convertMillisecondsToMMSS(secondsRemaining: number) {
+    var hours = Math.floor(secondsRemaining / 3600);
+    var minutes = Math.floor((secondsRemaining / 60) - (hours * 60));
+    var seconds = (secondsRemaining - (hours * 60 * 60) - (minutes * 60));
+    var milliseconds = this.roundTo(secondsRemaining - Math.floor(secondsRemaining), 3);
+
+    var minutesDisplay = minutes.toString();
+    var secondsDisplay = Math.floor(seconds).toString();
+    var millisecondsDisplay = (milliseconds * 1000).toString();
+
+    if (minutes < 10) {
+      if (minutes < 1 || minutes > 59)
+        minutesDisplay = "00";
+      else
+        minutesDisplay = String(minutesDisplay).padStart(2, '0');
+    }
+
+    if (seconds < 10) {
+      if (seconds < 1 || seconds > 59)
+        secondsDisplay = "00";
+      else
+        secondsDisplay = String(secondsDisplay).padStart(2, '0');
+    }
+
+    //if (milliseconds)
+
+    if (milliseconds < 100 && milliseconds >= 10) {      
+      millisecondsDisplay = String(millisecondsDisplay).padStart(2, '0');            
+    }
+    else if (milliseconds < 10) {
+      millisecondsDisplay = String(millisecondsDisplay).padStart(3, '0');         
+    }
+
+    return minutesDisplay + ":" + secondsDisplay + "." + millisecondsDisplay;
+  }
+
   ordinalSuffixOf(i: number) {
     var j = i % 10,
       k = i % 100;
@@ -297,7 +334,7 @@ export class UtilityService {
   genericRound(value: number) {
     return this.roundTo(value, this.genericRoundTo);
   }
-  
+
   genericShortRound(value: number) {
     return this.roundTo(value, this.genericShortRoundTo);
   }
@@ -342,7 +379,7 @@ export class UtilityService {
       }
 
       reducedNumber += "M";
-    }    
+    }
     else if (this.getDigitCount(originalAmount) <= 12) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 9;
       reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
@@ -352,7 +389,7 @@ export class UtilityService {
       }
 
       reducedNumber += "B";
-    }    
+    }
     else if (this.getDigitCount(originalAmount) <= 15) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 12;
       reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);

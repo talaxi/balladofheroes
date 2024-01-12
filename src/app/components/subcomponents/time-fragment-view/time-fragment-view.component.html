@@ -31,15 +31,18 @@
                     <span class="zoneSpacer">&#8618;</span><button
                         class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
                         [ngClass]="getTrialClass(trialEnum.TrialOfSkill)"
-                        (click)="selectTrial(trialEnum.TrialOfSkill)">Trial of
-                        Skill
+                        (click)="selectTrial(trialEnum.TrialOfSkill)">
+                        <span *ngIf="!isMobile">Trial of Skill</span>
+                        <span *ngIf="isMobile">Skill</span>
                     </button>
                 </div>
                 <div *ngIf="isTrialAvailable(trialEnum.TrialOfTheStarsNormal)">
                     <span class="zoneSpacer">&#8618;</span><button
                         class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
                         [ngClass]="getTrialClass(trialEnum.TrialOfTheStarsNormal)"
-                        (click)="selectTrial(trialEnum.TrialOfTheStarsNormal)">Trial of the Stars (Normal)
+                        (click)="selectTrial(trialEnum.TrialOfTheStarsNormal)">
+                        <span *ngIf="!isMobile">Trial of the Stars (Normal)</span>
+                        <span *ngIf="isMobile">Stars (Normal)</span>
                     </button>
                     <br />
                 </div>
@@ -47,7 +50,9 @@
                     <span class="zoneSpacer">&#8618;</span><button
                         class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
                         [ngClass]="getTrialClass(trialEnum.TrialOfTheStarsHard)"
-                        (click)="selectTrial(trialEnum.TrialOfTheStarsHard)">Trial of the Stars (Hard)
+                        (click)="selectTrial(trialEnum.TrialOfTheStarsHard)">
+                        <span *ngIf="!isMobile">Trial of the Stars (Hard)</span>
+                        <span *ngIf="isMobile">Stars (Hard)</span>
                     </button>
                     <br />
                 </div>
@@ -55,7 +60,9 @@
                     <span class="zoneSpacer">&#8618;</span><button
                         class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
                         [ngClass]="getTrialClass(trialEnum.TrialOfTheStarsVeryHard)"
-                        (click)="selectTrial(trialEnum.TrialOfTheStarsVeryHard)">Trial of the Stars (Very Hard)
+                        (click)="selectTrial(trialEnum.TrialOfTheStarsVeryHard)">
+                        <span *ngIf="!isMobile">Trial of the Stars (Very Hard)</span>
+                        <span *ngIf="isMobile">Stars (Very Hard)</span>
                     </button>
                 </div>
             </div>
@@ -65,13 +72,13 @@
                 <div *ngIf="!isBalladSelected(ballad)">
                     <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
                         [ngClass]="getBalladClass(ballad)"
-                        (click)="selectBallad(ballad)">{{balladService.getBalladName(ballad)}}
+                        (click)="selectBallad(ballad)">{{isMobile ? balladService.getShortBalladName(ballad) : balladService.getBalladName(ballad)}}
                     </button>
                 </div>
                 <div *ngIf="isBalladSelected(ballad)" [ngClass]="{'flexBetween': !isMobile}">
                     <button
                         class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected defaultBallad"><strong
-                            [ngClass]="getBalladClass(ballad)">{{balladService.getBalladName(ballad)}}</strong></button>
+                            [ngClass]="getBalladClass(ballad)">{{isMobile ? balladService.getShortBalladName(ballad) : balladService.getBalladName(ballad)}}</strong></button>
                     <div class="zoneList">
                         <div *ngFor="let zone of availableZones">
                             <div *ngIf="!isZoneSelected(zone)">

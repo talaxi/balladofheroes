@@ -4,7 +4,6 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { Trial } from 'src/app/models/battle/trial.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { TrialService } from 'src/app/services/battle/trial.service';
@@ -181,7 +180,7 @@ export class TrialsViewComponent {
     this.dialog.closeAll();
   }
 
-  getTrialEnemies() {
+  getTrialEnemies() {    
     return this.trialService.getTrialOfResolveBattle().enemyList;
   }
 

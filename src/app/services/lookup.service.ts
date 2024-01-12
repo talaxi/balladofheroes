@@ -46,7 +46,6 @@ import { CharmService } from './resources/charm.service';
 import { ShopItemGeneratorService } from './shop/shop-item-generator.service';
 import { SubZoneGeneratorService } from './sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from './utility/utility.service';
-import { NotificationTypeEnum } from "../models/enums/notification-type-enum.model";
 import { ResourceGeneratorService } from './resources/resource-generator.service';
 import { EquipmentService } from './resources/equipment.service';
 import { DictionaryService } from './utility/dictionary.service';
@@ -965,8 +964,11 @@ export class LookupService {
       description = "One extra entry to the <strong>Eternal Melee</strong> coliseum battle.";
     else if (item === ItemsEnum.Nectar)
       description = "Can be traded for Ambrosia. Gain from winning trial fights.";
+      else if (item === ItemsEnum.TimeFragment)
+      description = "Automate one subzone or battle for each Time Fragment.";
     else {
-      description = "Used for crafting.";
+      //description = "Used for crafting.";
+      description = "Crafting material. Use at a Crafter or with a Profession to create new items.";
       if (item === ItemsEnum.SoulEssence || item === ItemsEnum.SatchelOfHerbs || item === ItemsEnum.BushelOfHerbs || item === ItemsEnum.PotentEssence)
         return description;
 
@@ -3682,11 +3684,12 @@ export class LookupService {
 
     //Monk
     if (abilityName === "Palm Strike")
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage and apply a Palm Strike debuff to the target. Every third Palm Strike on a target will increase the effectiveness by " + (secondaryEffectivenessPercent - 100) + "% and hit all targets. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage and apply a Palm Strike debuff to the target. Every third Palm Strike on a target will increase the effectiveness by <b>" + (secondaryEffectivenessPercent - 100) + "%</b> and hit all targets. " + cooldown + " second cooldown.";
     if (abilityName === "Insight")
-      abilityDescription = "After using an auto attack, increase ability damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
+    abilityDescription = "After using an auto attack, heal both party members for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Double this amount if the target has the Palm Strike debuff. Passive.";
+      //abilityDescription = "After using an auto attack, increase ability damage by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds. Passive.";
     if (abilityName === "Spirit Unleashed") {
-      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Rotate between giving your target a debuff to increase their damage taken by " + relatedTargetGainStatusEffectEffectivenessPercent + "%, reduce their damage dealt by " + relatedTargetGainStatusEffectEffectivenessPercent + "%, or reduce their Auto Attack Speed by " + relatedTargetGainStatusEffectEffectivenessPercent + "%. " + cooldown + " second cooldown.";
+      abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage. Rotate between giving your target a debuff to increase their damage taken by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, reduce their damage dealt by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>, or reduce their Auto Attack Speed by <b>" + relatedTargetGainStatusEffectEffectivenessPercent + "%</b>. " + cooldown + " second cooldown.";
     }
 
     //Thaumaturge
@@ -5333,7 +5336,7 @@ export class LookupService {
     if (ability.name === "Rampage") {
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target four times. " + cooldown + " second cooldown.";
     }
-    if (ability.name === "Intimidate") {
+    if (ability.name === "Intimidate" && character.name === "The Minotaur") {
       abilityDescription = "Apply <strong>" + (secondaryRelatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> Stagger and Unsteady effects for <strong>" + secondaryRelatedTargetGainStatusEffectDuration + "</strong> seconds to all targets. " + cooldown + " second cooldown.";
     }
     if (ability.name === "Stomp") {

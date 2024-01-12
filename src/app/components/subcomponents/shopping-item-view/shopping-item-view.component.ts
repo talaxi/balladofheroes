@@ -309,7 +309,7 @@ export class ShoppingItemViewComponent implements OnInit {
             this.globalService.globalVar.uniques.push(new Uniques(resource.item));
 
             if (!this.globalService.globalVar.logData.some(item => item.type === LogViewEnum.Tutorials && item.relevantEnumValue === TutorialTypeEnum.Uniques)) {
-              this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Uniques, undefined, undefined, true, this.balladService.getActiveSubZone()?.type));
+              this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Uniques, undefined, undefined, true, this.balladService.getActiveSubZone()?.type), this.globalService.globalVar);
               this.globalService.handleTutorialModal();
             }
           }

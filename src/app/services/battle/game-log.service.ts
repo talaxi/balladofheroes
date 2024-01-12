@@ -2,8 +2,8 @@ import { Injectable, Type } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { AnimationStateEnum } from 'src/app/models/enums/animation-state-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
-import { GameLoopService } from '../game-loop/game-loop.service';
-import { GlobalService } from '../global/global.service';
+import { GlobalVariables } from 'src/app/models/global/global-variables.model';
+import { UtilityService } from '../utility/utility.service';
 
 @Injectable({
   providedIn: 'root'
@@ -15,80 +15,80 @@ export class GameLogService {
   notificationOverlayBuffer: [string, GameLogEntryEnum, number, AnimationStateEnum, number][] = [];
   disableOverlayBuffer: boolean = false;
 
-  constructor(private deviceDetectorService: DeviceDetectorService) {
+  constructor(private deviceDetectorService: DeviceDetectorService, private utilityService: UtilityService) {
 
   }
 
-  updateGameLog(type: GameLogEntryEnum, entry: string) {
+  updateGameLog(type: GameLogEntryEnum, entry: string, globalVar: GlobalVariables) {
+    var timeStamp = "";
+
+    var timestampsActive = globalVar.settings.get("showGameLogTimestamps") ?? false;
+    if (timestampsActive) {      
+      timeStamp = "[" + this.utilityService.convertMillisecondsToMMSS(globalVar.activeBattle.battleDuration) + "] ";
+    }
+
     if (type === GameLogEntryEnum.BattleUpdate || type === GameLogEntryEnum.BattleRewards || type === GameLogEntryEnum.ColiseumUpdate) {
-      entry = "<span class='gameText battleUpdateText'>" + entry + "</span>";
+      entry = "<span class='gameText battleUpdateText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.UseBattleItem) {
-      entry = "<span class='gameText battleItemText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.UseBattleItem) {
+      entry = "<span class='gameText battleItemText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.ChangeLocation) {
-      entry = "<span class='gameText changeLocationText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.ChangeLocation) {
+      entry = "<span class='gameText changeLocationText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.Tutorial) {
-      entry = "<span class='gameText tutorialText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.Tutorial) {
+      entry = "<span class='gameText tutorialText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.Alchemy) {
-      entry = "<span class='gameText alchemyText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.Alchemy) {
+      entry = "<span class='gameText alchemyText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.Jewelcrafting) {
-      entry = "<span class='gameText jewelcraftingText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.Jewelcrafting) {
+      entry = "<span class='gameText jewelcraftingText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.Overdrive) {
-      entry = "<span class='gameText overdriveText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.Overdrive) {
+      entry = "<span class='gameText overdriveText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.SideQuest) {
-      entry = "<span class='gameText sidequestText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.SideQuest) {
+      entry = "<span class='gameText sidequestText'>" + timeStamp + entry + "</span>";
     }
-    if (type === GameLogEntryEnum.FollowerPrayer || type === GameLogEntryEnum.FollowerSearch) {
-      entry = "<span class='gameText followerText'>" + entry + "</span>";
+    else if (type === GameLogEntryEnum.FollowerPrayer || type === GameLogEntryEnum.FollowerSearch) {
+      entry = "<span class='gameText followerText'>" + timeStamp + entry + "</span>";
     }
-    else 
-    {
-      entry = "<span class='gameText'>" + entry + "</span>";
+    else {
+      entry = "<span class='gameText'>" + timeStamp + entry + "</span>";
     }
 
     this.gameLog.push(entry + "<br/>");
 
     if (this.gameLog.length > this.gameLogMaxLength) {
-      for (var i = this.gameLog.length; i > this.gameLogMaxLength; i--) {        
+      for (var i = this.gameLog.length; i > this.gameLogMaxLength; i--) {
         this.gameLog = this.gameLog.slice(1);
       }
     }
 
     //add certain items to the overlay
     var overlayTotalThreshold = 5;
-    if (this.deviceDetectorService.isMobile() && !this.disableOverlayBuffer && 
-    this.notificationOverlayBuffer.length < overlayTotalThreshold)
-    {
+    if (this.deviceDetectorService.isMobile() && !this.disableOverlayBuffer &&
+      this.notificationOverlayBuffer.length < overlayTotalThreshold) {
       var tutorialDuration = 20;
       var rewardDuration = 2;
       var altarDuration = 4;
 
       //set time to be within .5s of each other
-      if (type === GameLogEntryEnum.Tutorial)
-      {
-        this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
+      if (type === GameLogEntryEnum.Tutorial) {
+        this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime() / 500)]);
       }
-      if (type === GameLogEntryEnum.BattleRewards)
-      {
-        this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
+      if (type === GameLogEntryEnum.BattleRewards) {
+        this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime() / 500)]);
       }
-      if (type === GameLogEntryEnum.ColiseumUpdate)
-      {
-        this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
+      if (type === GameLogEntryEnum.ColiseumUpdate) {
+        this.notificationOverlayBuffer.push([entry, type, rewardDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime() / 500)]);
       }
-      if (type === GameLogEntryEnum.Pray)
-      {
-        this.notificationOverlayBuffer.push([entry, type, altarDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
+      if (type === GameLogEntryEnum.Pray) {
+        this.notificationOverlayBuffer.push([entry, type, altarDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime() / 500)]);
       }
-      if (type === GameLogEntryEnum.SideQuest)
-      {
-        this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime()/500)]);
+      if (type === GameLogEntryEnum.SideQuest) {
+        this.notificationOverlayBuffer.push([entry, type, tutorialDuration, AnimationStateEnum.Initial, Math.ceil(new Date().getTime() / 500)]);
       }
     }
   }

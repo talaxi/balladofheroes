@@ -17,9 +17,7 @@ export class God {
     @Type(() => CharacterStats)
     permanentStatGain: CharacterStats;
     @Type(() => CharacterStats)
-    partyPermanentStatGain: CharacterStats;
-    /*@Type(() => CharacterStats)
-    permanentStatMultiplier: CharacterStats;*/
+    partyPermanentStatGain: CharacterStats;    
     @Type(() => CharacterStats)
     partyPermanentStatMultiplier: CharacterStats;
     @Type(() => Ability)

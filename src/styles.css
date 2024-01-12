@@ -103,6 +103,7 @@
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
+  --disabled-foreground-quaternary: #E5E5E584;
   --foreground-accent: #9E8F81;
   --foreground-light: #FFFFFF;
   --active-filter: #FFFFFF;
@@ -116,13 +117,18 @@
   --background-quarternary: #2A2C31;
   --background-five: #007bff;
   --background-light: #54595E;
+  --transaction-color: #18612e;
   --button-background-color: #272b35;
+  --recipe-button-background-color: #202020;
+  --disabled-button-background-color: #272b3584;
+  --disabled-recipe-button-background-color: #20202084;
   --button-color: #F0F0F0;
   --button-hover: #54595E;
   --button-selected: #1e2023;
   --section-header: #08090A;
   --primary-default: #5dfdcb;
   --primary-light: #b2ffe7;
+  --xp-color: #608DFB;
 
   --positive-status-effect: #24b286;
   --negative-status-effect: #E62B2D;
@@ -317,6 +323,10 @@ body {
   font-family: "Candara", sans-serif;
   font-size: 2.2vmin;
   cursor: default;
+}
+
+.xpColor {
+  color: var(--xp-color);
 }
 
 a {
@@ -557,6 +567,10 @@ h6 {
 .smallButtonStyled {
   padding: 0 .3rem !important;
   margin: .1rem .1rem !important;
+}
+
+.transactionButton {
+  background-color: var(--transaction-color);
 }
 
 .smallMarginLeft {
@@ -1214,7 +1228,8 @@ button {
 }
 
 button:disabled {
-  opacity: .5;
+  color: var(--disabled-foreground-quaternary);
+  background-color: var(--disabled-button-background-color); 
 }
 
 .bold {
