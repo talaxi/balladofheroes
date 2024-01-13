@@ -17,7 +17,7 @@ export class God {
     @Type(() => CharacterStats)
     permanentStatGain: CharacterStats;
     @Type(() => CharacterStats)
-    partyPermanentStatGain: CharacterStats;    
+    partyPermanentStatGain: CharacterStats;
     @Type(() => CharacterStats)
     partyPermanentStatMultiplier: CharacterStats;
     @Type(() => Ability)
@@ -91,25 +91,25 @@ export class God {
         else if (type === GodEnum.Artemis)
             return new PrimaryStats(.8, .985, .75, 1.2, 1.5, 1.1); //6.2 total
         else if (type === GodEnum.Hermes)
-            return new PrimaryStats(.7, 1.07, .9, 1.5, 1.1, .6); //5.87 total
+            return new PrimaryStats(.7, 1.07, .9, 1.5, 1.1, .675); //5.945 total
         else if (type === GodEnum.Apollo)
             return new PrimaryStats(1.075, .9, .8, .85, 1.175, 1.45); //6.26 total
         else if (type === GodEnum.Ares)
             return new PrimaryStats(1.4, 1.0325, .725, .9, 1.15, .8775); //6.085 total
         else if (type === GodEnum.Hades)
             return new PrimaryStats(.925, 1.03, 1, .6, 1.25, 1.2); //6.005 total
-        else if (type === GodEnum.Dionysus) 
-            return new PrimaryStats(.9, .94, 1.3, 1.2, .85, 1.05); //6.24 total
-        else if (type === GodEnum.Nemesis) 
+        else if (type === GodEnum.Dionysus)
+            return new PrimaryStats(.9, .92, 1.2, 1.1, .85, 1.275); //6.245 total
+        else if (type === GodEnum.Nemesis)
             return new PrimaryStats(1.15, 1.01, 1.25, .8, .7, 1.25); //6.16 total
-        else if (type === GodEnum.Zeus) 
+        else if (type === GodEnum.Zeus)
             return new PrimaryStats(.85, 1.1, 1.15, 1.05, 1.05, .7); //5.9 total
         else if (type === GodEnum.Poseidon)
             return new PrimaryStats(.95, .95, 1.075, .95, 1.25, 1.05); //6.225 total
-            else if (type === GodEnum.Aphrodite)
-            return new PrimaryStats(1.2, .975, .925, 1.05, 1, 1.025); //6.175 total
-            else if (type === GodEnum.Hera)
-            return new PrimaryStats(.875, 1.075, .825, .975, 1.05, 1.15); //5.95 total
+        else if (type === GodEnum.Aphrodite)
+            return new PrimaryStats(1.2, .975, .9, 1.05, 1, 1.05); //6.175 total
+        else if (type === GodEnum.Hera)
+            return new PrimaryStats(.875, 1.075, .825, .975, 1.05, 1.1); //5.9 total
 
         return new PrimaryStats(1, 1, 1, 1, 1, 1);
     }

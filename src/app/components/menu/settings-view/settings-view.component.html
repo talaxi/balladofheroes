@@ -66,6 +66,18 @@
             </mat-checkbox>
         </span> 
         <br />
+        <span>
+            <mat-checkbox *ngIf="fps === utilityService.lowFps" class="example-margin" [(ngModel)]="showAbilityCooldownPercents" customToolTip [contentTemplate]="showAbilityCooldownPercentsPopover"
+                (input)="showAbilityCooldownPercentsToggle()">Show Ability Cooldown Percents
+            </mat-checkbox>
+        </span> 
+        <br />
+        <!--<span>
+            <mat-checkbox *ngIf="fps === utilityService.lowFps" class="example-margin" [(ngModel)]="showLowPerformanceAnimationFlash" customToolTip [contentTemplate]="abilityFlashPopover"
+                (input)="showLowPerformanceAnimationFlashToggle()">Show Ability Use Flash
+            </mat-checkbox>
+        </span> 
+        <br />-->
         <br />
         <div>
             <div *ngIf="!isMobile" class="updateKeybinds twoColumn">
@@ -124,7 +136,7 @@
             </div>
             <br/>
             <div>
-                <span class="smallCaps bold">Frames Per Second</span>
+                <span class="smallCaps bold">Performance</span>
                 <br />
                 <mat-button-toggle-group [(ngModel)]="fps" aria-label="Fps" (change)="setFps()">
                     <mat-button-toggle customToolTip [contentTemplate]="lowFpsPopover"
@@ -229,25 +241,37 @@
 
 <ng-template #lowFpsPopover>
     <div>
-        Run the game at 15 FPS.
+        Run the game on low performance mode. This removes most animations and replaces them with text.
     </div>
 </ng-template>
 
 <ng-template #averageFpsPopover>
     <div>
-        Run the game at 30 FPS.
+        Run the game on average performance mode. This runs the game at 30 FPS.
     </div>
 </ng-template>
 
 <ng-template #highFpsPopover>
     <div>
-        Run the game at 60 FPS.
+        Run the game on high performance mode. This runs the game at 60 FPS.
     </div>
 </ng-template>
 
 <ng-template #verboseModePopover>
     <div>
         Include additional text information in tooltips, such as if abilities are running in Auto/Manual mode.
+    </div>
+</ng-template>
+
+<ng-template #showAbilityCooldownPercentsPopover>
+    <div>
+        Uncheck this to turn off the ability % numbers underneath the image if all of the numbers are overwhelming.
+    </div>
+</ng-template>
+
+<ng-template #abilityFlashPopover>
+    <div>
+        When using an ability or auto attack when in low performance mode, it will flash to indicate it has been used. Disable this to disable the flash.
     </div>
 </ng-template>
 

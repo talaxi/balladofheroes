@@ -43,6 +43,8 @@ export class SettingsViewComponent implements OnInit {
   @ViewChild('confirmationBox') confirmationBox: any;
   largeAltarsAvailable = false;
   showGameLogTimeStamps = false;
+  showLowPerformanceAnimationFlash = false;
+  showAbilityCooldownPercents = true;
 
   constructor(private globalService: GlobalService, private balladService: BalladService, private storyService: StoryService,
     public utilityService: UtilityService, public dialog: MatDialog, private deploymentService: DeploymentService,
@@ -96,7 +98,9 @@ export class SettingsViewComponent implements OnInit {
     this.autoExportOnUpdate = this.globalService.globalVar.settings.get("autoExportOnUpdate") ?? true;
     this.showTutorialsAsModals = this.globalService.globalVar.settings.get("showTutorialsAsModals") ?? false;
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
-    this.showGameLogTimeStamps = this.globalService.globalVar.settings.get("showGameLogTimestamps") ?? false
+    this.showGameLogTimeStamps = this.globalService.globalVar.settings.get("showGameLogTimestamps") ?? false;
+    this.showLowPerformanceAnimationFlash = this.globalService.globalVar.settings.get("showLowPerformanceAnimationFlash") ?? false;    
+    this.showAbilityCooldownPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;    
   }
 
   public SaveGame() {
@@ -249,6 +253,12 @@ export class SettingsViewComponent implements OnInit {
   }
   showGameLogTimeStampsToggle() {
     this.globalService.globalVar.settings.set("showGameLogTimestamps", this.showGameLogTimeStamps);
+  }
+  showLowPerformanceAnimationFlashToggle() {
+    this.globalService.globalVar.settings.set("showLowPerformanceAnimationFlash", this.showLowPerformanceAnimationFlash);
+  }
+  showAbilityCooldownPercentsToggle() {
+    this.globalService.globalVar.settings.set("showAbilityCooldownPercents", this.showAbilityCooldownPercents);
   }
 
   ngOnDestroy() {    

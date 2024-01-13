@@ -1233,27 +1233,27 @@ export class BattleService {
       }
       var adjustedHealingDone = character.battleStats.healingDone;
 
-      var healingDoneModifier = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);        
+      var healingDoneModifier = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HealingDoneUp);
       if (healingDoneModifier !== undefined)
         adjustedHealingDone *= healingDoneModifier.effectiveness;
 
       var scathedBeautyUniqueEffect = character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.ScathingBeautyUnique && item.stackCount >= 4);
       if (scathedBeautyUniqueEffect !== undefined)
         adjustedHealingDone *= 1 + (scathedBeautyUniqueEffect.effectiveness / 10);
-        
-      party.forEach(potentialTarget => {               
+
+      party.forEach(potentialTarget => {
         var healAmount = 0;
-        
-          healAmount = (((insightEffectiveness / 2) * this.lookupService.getAdjustedAttack(character, undefined, true)) +
-            ((insightEffectiveness / 2) * this.lookupService.getAdjustedResistance(character, true)))
-            * (1 + adjustedHealingDone);
-            
+
+        healAmount = (((insightEffectiveness / 2) * this.lookupService.getAdjustedAttack(character, undefined, true)) +
+          ((insightEffectiveness / 2) * this.lookupService.getAdjustedResistance(character, true)))
+          * (1 + adjustedHealingDone);
+
         if (character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
           healAmount *= 1.5;
 
         if (character.overdriveInfo.isActive && character.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Harmony) {
           var harmonyEffect = this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtUp, 15, 1.1, false, true, false, undefined, undefined, true, undefined, undefined, undefined, undefined, 10, true)
-          this.applyStatusEffect(harmonyEffect, potentialTarget, targets, character);          
+          this.applyStatusEffect(harmonyEffect, potentialTarget, targets, character);
         }
 
         var adjustedCriticalMultiplier = 1;
@@ -1269,7 +1269,7 @@ export class BattleService {
           !character.unlockedOverdrives.some(item => item === OverdriveNameEnum.Preservation))
           character.unlockedOverdrives.push(OverdriveNameEnum.Preservation);
 
-          character.trackedStats.healsMade += 1;
+        character.trackedStats.healsMade += 1;
         if (character.trackedStats.healsMade >= this.utilityService.overdriveHealsNeededToUnlockHarmony &&
           !character.unlockedOverdrives.some(item => item === OverdriveNameEnum.Harmony))
           character.unlockedOverdrives.push(OverdriveNameEnum.Harmony);
@@ -2005,12 +2005,13 @@ export class BattleService {
 
           var healAmount = 0;
 
-          if (abilityCopy.name === "Ostinato" || abilityCopy.name === "Heal" || abilityCopy.name === "Cleansing Rain" || abilityCopy.name === "Warming Brew")
+          if (abilityCopy.name === "Cleansing Rain")
             healAmount = (((abilityEffectiveness / 2) * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing)) +
               ((abilityEffectiveness / 2) * this.lookupService.getAdjustedResistance(user, isPartyUsing)))
               * (1 + adjustedHealingDone);
           else
-            healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + adjustedHealingDone);
+            //healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + adjustedHealingDone);*/
+            healAmount = abilityEffectiveness * this.lookupService.getAdjustedResistance(user, isPartyUsing) * (1 + adjustedHealingDone);
 
           if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
             healAmount *= 1.5;
@@ -2064,12 +2065,14 @@ export class BattleService {
 
         var healAmount = 0;
 
-        if (abilityCopy.name === "Ostinato" || abilityCopy.name === "Heal" || abilityCopy.name === "Cleansing Rain")
+
+        if (abilityCopy.name === "Cleansing Rain")
           healAmount = (((abilityEffectiveness / 2) * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing)) +
             ((abilityEffectiveness / 2) * this.lookupService.getAdjustedResistance(user, isPartyUsing)))
             * (1 + adjustedHealingDone);
         else
-          healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + adjustedHealingDone);
+          //healAmount = abilityEffectiveness * this.lookupService.getAdjustedAttack(user, abilityCopy, isPartyUsing) * (1 + adjustedHealingDone);
+          healAmount = abilityEffectiveness * this.lookupService.getAdjustedResistance(user, isPartyUsing) * (1 + adjustedHealingDone);
 
         if (user.overdriveInfo.isActive && user.overdriveInfo.selectedOverdrive === OverdriveNameEnum.Preservation)
           healAmount *= 1.5;
@@ -2811,7 +2814,10 @@ export class BattleService {
         }
 
         if (appliedStatusEffect.type === StatusEffectEnum.HealOverTime) {
-          appliedStatusEffect.effectiveness = this.lookupService.getAdjustedResistance(user, true) * appliedStatusEffect.effectiveness;
+          if (originalAbility !== undefined && originalAbility.name === "Course of Battle")
+            appliedStatusEffect.effectiveness = ((this.lookupService.getAdjustedResistance(user, true) / 2) + (this.lookupService.getAdjustedAttack(user, originalAbility, true) / 2)) * appliedStatusEffect.effectiveness;
+          else
+            appliedStatusEffect.effectiveness = this.lookupService.getAdjustedResistance(user, true) * appliedStatusEffect.effectiveness;
         }
 
         if (appliedStatusEffect.dotType !== dotTypeEnum.None)
@@ -2974,7 +2980,7 @@ export class BattleService {
             }
           }
 
-          if (instantEffect.type === StatusEffectEnum.ReduceCooldowns) {            
+          if (instantEffect.type === StatusEffectEnum.ReduceCooldowns) {
             var isMultiplicative = false;
             if (originalAbility !== undefined && originalAbility.name === "Warming Waters")
               isMultiplicative = true;
@@ -3031,14 +3037,14 @@ export class BattleService {
           if (instantEffect.type === StatusEffectEnum.Barrier) {
             var barrierAmount = 0;
 
-            if (originalAbility !== undefined && (originalAbility.name === "Revelry" || originalAbility.name === "Pray"))
+            /*if (originalAbility !== undefined && (originalAbility.name === "Revelry" || originalAbility.name === "Pray"))
               barrierAmount = Math.round(((instantEffect.effectiveness / 2) * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing)) +
                 ((instantEffect.effectiveness / 2) * this.lookupService.getAdjustedResistance(user, isPartyUsing)));
-            else if (instantEffect.abilityName === "Shielding Attacks") {
-              barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedResistance(user, isPartyUsing));
-            }
+            else if (instantEffect.abilityName === "Shielding Attacks") {*/
+            barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedResistance(user, isPartyUsing));
+            /*}
             else
-              barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));
+              barrierAmount = Math.round(instantEffect.effectiveness * this.lookupService.getAdjustedAttack(user, undefined, isPartyUsing));*/
 
             if (instantEffect.dotType === dotTypeEnum.BasedOnHeal)
               barrierAmount = Math.round(instantEffect.effectiveness * healingDone);
@@ -3373,7 +3379,7 @@ export class BattleService {
           }
         }
 
-        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {          
+        if (instantEffect.type === StatusEffectEnum.InstantTrueDamage) {
           var resetTarget: Character | undefined = target;
           if (abilityTargetedAllies && !instantEffect.targetsAllies) {
             resetTarget = this.getTarget(user, potentialTargets, TargetEnum.Random);
@@ -4589,9 +4595,9 @@ export class BattleService {
       * Math.ceil(((adjustedAttackModifier * Math.pow(adjustedAttack, 2)) + (adjustedAllyAttackModifier * Math.pow(adjustedAllyAttack, 2))) / ((adjustedAttackModifier * adjustedAttack) + (adjustedAllyAttackModifier * adjustedAllyAttack) + adjustedDefense)));
 
     //if (ability !== undefined)
-      //console.log("Ability name: " + ability.name);
+    //console.log("Ability name: " + ability.name);
     //console.log(attacker.name + ": " + damageMultiplier + " * " + abilityDamageMultiplier + " * " + adjustedCriticalMultiplier + " * " + elementIncrease
-     // + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
+    // + " * " + elementalDamageDecrease + " * Math.ceil((" + adjustedAttackModifier + " * " + adjustedAttack + " ^2) / (" + adjustedAttackModifier + " * " + adjustedAttack + " + " + adjustedDefense + " ) = " + damage);
     var dispenserOfDuesEffect = attacker.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.DispenserOfDues);
     if (dispenserOfDuesEffect !== undefined && ability !== undefined) {
       damage += dispenserOfDuesEffect.effectiveness;
@@ -4712,7 +4718,7 @@ export class BattleService {
 
     var counterStun = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.CounterStun);
     if (counterStun !== undefined) {
-      console.log("Applying stun"); 
+      console.log("Applying stun");
       this.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.Stun, 3, 1, false, false, false, attacker.name), attacker, undefined, attacker);
     }
 
@@ -4918,7 +4924,7 @@ export class BattleService {
       highTide.count += totalDamageDealt;
 
       if (highTide.count > highTide.maxCount) {
-        target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.HighTide);        
+        target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.HighTide);
         highTide.count = 0;
       }
     }
@@ -5257,16 +5263,16 @@ export class BattleService {
           }
         }
       }
-      
-    var highTide = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HighTide);
-    if (highTide !== undefined) {
-      highTide.count += totalDamageDealt;
 
-      if (highTide.count > highTide.maxCount) {
-        target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.HighTide);        
-        highTide.count = 0;
+      var highTide = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.HighTide);
+      if (highTide !== undefined) {
+        highTide.count += totalDamageDealt;
+
+        if (highTide.count > highTide.maxCount) {
+          target.battleInfo.statusEffects = target.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.HighTide);
+          highTide.count = 0;
+        }
       }
-    }
 
       var submergeEffect = target.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Submerge);
       if (submergeEffect !== undefined) {
@@ -5643,10 +5649,10 @@ export class BattleService {
 
         var lastGasp = this.lookupService.characterHasAbility("Last Gasp", character);
         if (lastGasp !== undefined) //this is assumed to be Divine Owl from Trial of Resolve
-        {          
+        {
           var teammate = this.battle.currentEnemies.enemyList.find(item => !item.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Dead));
-          
-          if (teammate !== undefined) {           
+
+          if (teammate !== undefined) {
             this.applyStatusEffect(lastGasp.userEffect[0], teammate, undefined);
           }
         }
@@ -5789,7 +5795,7 @@ export class BattleService {
       this.globalService.handleColiseumLoss(this.battle.activeTournament.type, this.battle.activeTournament.currentRound);
       this.battle.activeTournament = this.globalService.setNewTournament(this.battle.activeTournament.type === ColiseumTournamentEnum.WeeklyMelee);
     }
-    else if (this.battle.activeTrial.type === TrialEnum.TrialOfSkill) {      
+    else if (this.battle.activeTrial.type === TrialEnum.TrialOfSkill) {
       this.globalService.handleTrialLoss(this.battle.activeTrial.type);
       this.battle.activeTrial = this.globalService.setNewTrial(true);
     }

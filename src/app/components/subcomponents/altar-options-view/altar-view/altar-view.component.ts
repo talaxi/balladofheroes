@@ -74,6 +74,11 @@ export class AltarViewComponent implements OnInit {
       });
     }
   }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
+
 
   getAltarCompletionPercent() {
     return (this.altar.conditionCount / this.altar.conditionMax) * 100;

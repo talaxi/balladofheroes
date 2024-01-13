@@ -81,11 +81,11 @@ export class GlobalService {
     else if (type === CharacterEnum.Archer)
       return new CharacterStats(200, 15, 6, 5, 13, 6);
     else if (type === CharacterEnum.Warrior)
-      return new CharacterStats(225, 17, 12, 8, 8, 12);
+      return new CharacterStats(225, 17, 12, 7, 7, 12);
     else if (type === CharacterEnum.Priest)
-      return new CharacterStats(175, 17, 9, 6, 7, 10);
+      return new CharacterStats(175, 17, 9, 6, 7, 15);
     else if (type === CharacterEnum.Monk)
-      return new CharacterStats(210, 19, 8, 8, 10, 7);
+      return new CharacterStats(210, 19, 8, 8, 10, 15);
     else if (type === CharacterEnum.Thaumaturge)
       return new CharacterStats(180, 18, 10, 10, 13, 10);
 

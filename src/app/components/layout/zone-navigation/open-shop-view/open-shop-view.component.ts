@@ -77,6 +77,7 @@ export class OpenShopViewComponent {
       'aresColor': name === "Ares",
       'poseidonColor': name === "Poseidon",
       'artemisColor': name === "Artemis",
+      'nemesisColor': name === "Nemesis",
       'hermesColor': name === "Hermes",
       'hadesColor': name === "Hades",
       'dionysusColor': name === "Dionysus",

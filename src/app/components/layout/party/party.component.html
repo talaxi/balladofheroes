@@ -10,7 +10,7 @@
                 <div class="characterInfo">
                     <div>
                         <app-character-name-view [character]="character"></app-character-name-view>
-                        <br />
+                        <br *ngIf="!(!notLowPerformanceMode() && isMobile)" />
                         <div *ngIf="notLowPerformanceMode()" class="flex characterHp">
                             <!--ngIf fixes the default value for the progress bar-->
                             <div class="hpBarSpace hpBarGrid">
@@ -34,17 +34,17 @@
                                     | number : '1.2-2'}}%</span>
                             </span>
                         </div>
-                        <div *ngIf="!notLowPerformanceMode()" class="lowPerfHpMpText">                            
+                        <div *ngIf="!notLowPerformanceMode()" class="lowPerfHpMpText healthUpperMargin">                            
                             <span class="bold smallCaps healthName statLabel">
                                 health:
                             </span>
-                            <span class="hpAmount statValue" *ngIf="!showPartyHpAsPercent">
+                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="!showPartyHpAsPercent">
                                 <span
                                     [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span>
                                 /
                                 {{getMaxHp(character)}}
                             </span>
-                            <span class="hpAmount statValue" *ngIf="showPartyHpAsPercent">
+                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="showPartyHpAsPercent">
                                 <span
                                     [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character)
                                     | number : '1.2-2'}}%</span>

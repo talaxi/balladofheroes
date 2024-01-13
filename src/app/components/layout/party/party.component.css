@@ -128,6 +128,10 @@
     grid-area: abilities;
 }
 
+.kod {
+    color: var(--kod-character);
+}
+
 /*.abilityGrid {
     display: grid;
     margin: .5rem;
@@ -267,11 +271,13 @@
 }
 
 .overdriveName {
-    color: #c40e1d;
+    color: var(--overdriveColor);
+    margin-right: .5rem;
 }
 
 .healthName {
     color: #07ba13;
+    margin-right: .5rem;
 }
 
 .characterTargeted:hover,
@@ -426,6 +432,10 @@ table tr td:nth-child(4n-3) {
         margin: 17.5% auto;
     }
 
+    .healthUpperMargin {
+        margin-top: .25rem;
+    }
+
     .gridContainer {
         grid-template-rows: auto 1fr 1fr;
         justify-content: stretch;
@@ -461,7 +471,7 @@ table tr td:nth-child(4n-3) {
     }
     
 .lowPerfHpMpText {
-    font-size: 1.25rem;
+    font-size: 1rem;
     font-weight: bold;
 }
 

@@ -430,4 +430,8 @@
     .buffEffects  {
         margin-left: 1.5rem;
     }
+
+    .mobileSmallText {
+        font-size: .75rem;
+    }
 }

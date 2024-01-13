@@ -10,7 +10,7 @@
             <span [innerHtml]="getGodDescription(1)"></span>
             <br/>
             <br/>
-            <button (click)="swapGod(1)">Swap</button>
+            <button class="buttonStyled" (click)="swapGod(1)">Swap</button>
             </div>
         </div>
         <div class="vr">
@@ -26,7 +26,7 @@
             <span [innerHtml]="getGodDescription(2)"></span>
             <br/>
             <br/>
-            <button (click)="swapGod(2)">Swap</button>
+            <button class="buttonStyled" (click)="swapGod(2)">Swap</button>
         </div>
         </div>
     </div>
@@ -46,7 +46,7 @@
                     <span [innerHtml]="getGodDescription(undefined, c.type)"></span>
                     <br />
                     <br />
-                    <button *ngIf="swapGod !== undefined" [disabled]="currentlyAssignedToSameCharacter(c.type)" (click)="selectNewGod(c.type)">Select</button>
+                    <button *ngIf="swapGod !== undefined" class="buttonStyled" [disabled]="currentlyAssignedToSameCharacter(c.type)" (click)="selectNewGod(c.type)">Select</button>
                 </td>
             </tr>
         </table>

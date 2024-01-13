@@ -114,6 +114,7 @@
   --background-default: #41474D;
   /*--background-default: #;*/
   --background-header: #08090A;
+  --kod-character: #08090A;
   --background-quarternary: #2A2C31;
   --background-five: #007bff;
   --background-light: #54595E;
@@ -310,6 +311,13 @@
   --mz3-size: 1.1rem;
   --z3-weight: 400;
   --z3-spacing: 0.1px;
+
+  --low-performance-ability-animation-color-row1: red;
+  --low-performance-ability-animation-color-row2: red;
+  --low-performance-ability-animation-color-row3: red;
+  --low-performance-ability-animation-color-row4: red;
+  --low-performance-ability-animation-color-row5: red;
+  --low-performance-ability-animation-color-row6: red;
 }
 
 body {
@@ -382,7 +390,7 @@ a:link {
 
   html,
   body {
-    font-size: 3.1vmin;
+    font-size: 3.07vmin;
   }
 }
 

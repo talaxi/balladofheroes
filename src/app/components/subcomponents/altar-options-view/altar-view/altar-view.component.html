@@ -4,10 +4,10 @@
         <div class="centeredBox">
             <div #spinnerDiv class="ability" (contextmenu)="toggleAltarType()" (dblclick)="toggleAltarTypeMobile()">
                 <div>
-                    <span class='abilityTimer'><img class="abilityImage" (contextmenu)="preventRightClick()" [src]='getAltarImage()' /></span>
+                    <span class='abilityTimer'><img class="abilityImage" [ngClass]="{'altarUnavailable': !isAltarReady() && !notLowPerformanceMode() }" (contextmenu)="preventRightClick()" [src]='getAltarImage()' /></span>
                 </div>
                 <div [ngClass]="{'altarUnavailable': !isAltarReady() }">
-                    <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()"
+                    <mat-spinner *ngIf="notLowPerformanceMode()" class="spinner abilityTimer" [ngClass]="getStrokeColor()"
                         mode="determinate" [diameter]="spinnerDiameter" [strokeWidth]="strokeWidth"
                         [value]="getAltarCompletionPercent()"></mat-spinner>
                 </div>

@@ -61,11 +61,25 @@
     /*position: absolute;*/
 }
 
+.healthName {
+    color: #07ba13;
+    margin-right: .5rem;
+}
+
+.lowPerfHpMpText {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
 .hpMpText {
     font-size: .7925rem;
     font-weight: bold;
     /*position: absolute;
     right: .25rem;*/
+}
+
+.kod {
+    color: var(--kod-character);
 }
 
 .targetSpace {

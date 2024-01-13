@@ -61,6 +61,10 @@ export class AlchemyViewComponent implements OnInit {
       });
     });
   }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
 
   selectRecipe(recipe: Recipe) {
     console.log(recipe);

@@ -130,7 +130,7 @@ export class LookupService {
     if (type === CharacterEnum.Priest)
       description = "The Priest class focuses on keeping the party healthy with healing and barrier effects.";
     if (type === CharacterEnum.Monk)
-      description = "The Monk class focuses on hitting multiple targets or gaining unique effects after hitting the same target several times.";
+      description = "The Monk class focuses on hitting multiple targets, giving enemies various debuffs, and healing the party.";
     if (type === CharacterEnum.Thaumaturge)
       description = "The Thaumaturge class focuses on dealing different elemental damage and reducing elemental damage taken.";
 
@@ -3676,11 +3676,11 @@ export class LookupService {
 
     //Priest
     if (abilityName === "Heal")
-      abilityDescription = "Heal a party member for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
+      abilityDescription = "Heal a party member for <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance</strong> HP. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
     if (abilityName === "Faith")
       abilityDescription = "Altar effectiveness is increased by <strong>" + effectiveAmountPercent + "%</strong>. Passive.";
     if (abilityName === "Pray")
-      abilityDescription = "Grant all characters a <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP Shield, up to <strong>" + thresholdAmountPercent + "%</strong> of their Max HP. " + cooldown + " second cooldown.";
+      abilityDescription = "Grant all characters a <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance</strong> HP Shield, up to <strong>" + thresholdAmountPercent + "%</strong> of their Max HP. " + cooldown + " second cooldown.";
 
     //Monk
     if (abilityName === "Palm Strike")
@@ -3856,7 +3856,7 @@ export class LookupService {
     if (abilityName === "Coda")
       abilityDescription = "Increase the party's luck by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong> for <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds. If Ostinato triggers while Coda is active, cleanse a random debuff from a party member. " + cooldown + " second cooldown.";
     if (abilityName === "Ostinato")
-      abilityDescription = "Every " + cooldown + " seconds, heal a party member for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance </strong> HP. Targets the party member with the lowest HP %.";
+      abilityDescription = "Every " + cooldown + " seconds, heal a party member for <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance </strong> HP. Targets the party member with the lowest HP %.";
 
     //Hermes
     if (abilityName === "Nimble Strike")
@@ -3900,7 +3900,7 @@ export class LookupService {
 
     //Dionysus
     if (abilityName === "Revelry")
-      abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness / 2 * 100)) + "% of Attack + " + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness / 2 * 100)) + "% of Resistance</strong> HP Shield, up to <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their Max HP. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
+      abilityDescription = "Grant a party member a <strong>" + (this.utilityService.genericRound(relatedUserGainStatusEffectEffectiveness * 100)) + "% of Resistance</strong> HP Shield, up to <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectThreshold * 100) + "%</strong> of their Max HP. Increase the effectiveness of the shield by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active buff you have. Targets the party member with the lowest HP %. " + cooldown + " second cooldown.";
     if (abilityName === "Thyrsus")
       abilityDescription = "Deal <strong>" + (effectivenessPercent) + "% of Attack</strong> damage to a target and increase the damage they take by <strong>" + (relatedTargetGainStatusEffectEffectivenessPercent) + "%</strong> for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. Increase the effectiveness of the debuff by <strong>" + secondaryEffectiveAmountPercent + "%</strong> per active unique debuff the target has, up to 15 debuffs. " + cooldown + " second cooldown.";
     if (abilityName === "Insanity")
@@ -4014,7 +4014,7 @@ export class LookupService {
       if (abilityName === "Discordant Melody")
         abilityDescription = "Instantly gain three stacks of Lord of the Underworld. For <strong>" + relatedUserGainStatusEffectDuration + "</strong> seconds, any ability use will increase the duration of Lord of the Underworld by " + relatedUserGainMaxCount + " seconds.";
       if (abilityName === "Warming Brew")
-        abilityDescription = "Heal all allies for <strong>" + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(effectivenessPercent / 2) + "% of Resistance</strong> HP. Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent / 2) + "% of Attack + " + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent / 2) + "% of Resistance</strong> HP, up to <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectThreshold * 100) + "%</strong> of their Max HP. Increase all stats of all allies by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds.";
+        abilityDescription = "Heal all allies for <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Resistance</strong> HP. Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "% of Resistance</strong> HP, up to <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectThreshold * 100) + "%</strong> of their Max HP. Increase all stats of all allies by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedUserGainStatusEffectDuration + " seconds.";
       if (abilityName === "Passing Judgment" && ability !== undefined)
         abilityDescription = "For " + relatedUserGainStatusEffectDuration + " seconds, increase Dues total by <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "%</strong> when casting Ostinato. Immediately increase Dues total by <strong>" + this.utilityService.bigNumberReducer(ability.effectiveness) + "</strong> and freely cast Ostinato.";
       if (abilityName === "Thunderous Melody")
@@ -4036,8 +4036,7 @@ export class LookupService {
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage to a target. Apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "%</strong> of the damage dealt every " + relatedTargetGainStatusEffectTickFrequency + " seconds for " + relatedTargetGainStatusEffectDuration + " seconds. Freely activate Onslaught.";
       if (abilityName === "Receding Tide")
         abilityDescription = " Apply a damage over time effect to all targets that deals <strong>" + this.utilityService.genericRound((relatedTargetGainStatusEffectEffectiveness) * 100) + "% of Attack Water</strong> damage every " + relatedTargetGainStatusEffectTickFrequency + " seconds for <strong>" + relatedTargetGainStatusEffectDuration + "</strong> seconds. For " + relatedUserGainStatusEffectDuration + " seconds, any target inflicted with a Damage over Time effect also has their ability cooldown speed reduced by " + this.utilityService.genericRound((relatedUserGainStatusEffectEffectiveness) * 100) + "%.";
-      if (abilityName === "War and Love") {
-        console.log(ability);
+      if (abilityName === "War and Love") {        
         abilityDescription = "Increase the damage of the next ability your ally uses by <strong>" + (relatedUserGainStatusEffectEffectivenessPercent) + "%</strong>. When your ally uses their next ability, apply a damage over time effect dealing <strong>" + this.utilityService.genericRound((relatedUserGainMaxCount) * 100) + "%</strong> of the damage dealt every 4 seconds for 16 seconds. Freely activate Onslaught.";
       }
 
@@ -4059,7 +4058,7 @@ export class LookupService {
       if (abilityName === "Warming Waters")
         abilityDescription = "Deal <strong>" + this.utilityService.genericRound(effectivenessPercent) + "% of Attack Water</strong> damage to all targets. Reduce all of your cooldowns by <strong>" + relatedUserGainStatusEffectEffectivenessPercent + "%</strong>.";
       if (abilityName === "Wild Party")
-        abilityDescription = "Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectiveness / 2 * 100) + "% of Attack + " + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectiveness / 2 * 100) + "% of Resistance</strong> HP. Increase ability cooldown speed by <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedSecondaryUserGainStatusEffectDuration + " seconds.";
+        abilityDescription = "Give each party member a Barrier of <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectiveness * 100) + "% of Resistance</strong> HP. Increase ability cooldown speed by <strong>" + this.utilityService.genericRound(relatedSecondaryUserGainStatusEffectEffectivenessPercent) + "%</strong> for " + relatedSecondaryUserGainStatusEffectDuration + " seconds.";
 
       if (abilityName === "Thunderous Riposte")
         abilityDescription = "Apply Chains of Fate to all targets for " + relatedTargetGainStatusEffectDuration + " seconds. For " + relatedUserGainStatusEffectDuration + " seconds, your counter attacks have the Lightning element and deal an additional <strong>" + this.utilityService.genericRound(relatedUserGainStatusEffectEffectivenessPercent) + "% of Attack</strong> <span class='bold'>Lightning</span> damage.";

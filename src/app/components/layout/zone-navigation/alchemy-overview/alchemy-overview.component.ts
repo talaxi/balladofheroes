@@ -29,6 +29,10 @@ ngOnInit() {
   this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
 }
 
+notLowPerformanceMode() {
+  return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+}
+
 openAlchemy(content: any) {
     if (this.deviceDetectorService.isMobile())
     this.dialog.open(content, { width: '95%', height: '90%' });

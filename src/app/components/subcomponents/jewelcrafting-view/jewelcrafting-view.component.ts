@@ -62,6 +62,10 @@ export class JewelcraftingViewComponent {
   });
 }
 
+notLowPerformanceMode() {
+  return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+}
+
 selectRecipe(recipe: Recipe) {
   this.selectedRecipe = recipe;
 }

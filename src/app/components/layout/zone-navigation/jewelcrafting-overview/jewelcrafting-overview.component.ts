@@ -29,6 +29,10 @@ export class JewelcraftingOverviewComponent {
     this.jewelcrafting = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting);
   }
   
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
+  
   openProfession(content: any) {
       if (this.deviceDetectorService.isMobile())
       this.dialog.open(content, { width: '95%', height: '90%' });

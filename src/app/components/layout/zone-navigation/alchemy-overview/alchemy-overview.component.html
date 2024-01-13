@@ -13,9 +13,12 @@
         *ngIf="this.getTotalAmountToCreate() > 1">&nbsp;<i>({{this.getAmountCreated() +
             1}} of {{this.getTotalAmountToCreate()}})</i></span>
     <br />
-    <mat-progress-bar mode="determinate" [value]="getStepProgress()"
+    <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getStepProgress()"
         class="purple-progress centeredBar removeAnimation removeTransition" [ngClass]="{'highBar shortenedWidth': expandedView}">
     </mat-progress-bar>
+    <div *ngIf="!notLowPerformanceMode()" class="textCentered bold alchemyText">
+        {{getStepProgress() | number : '1.0-0'}}%
+    </div>
     <span><i>({{getTimeRemaining()}} remaining)</i></span>
 </div>
 <div *ngIf="!creatingRecipe()">

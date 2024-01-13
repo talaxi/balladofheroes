@@ -11317,9 +11317,9 @@ export class EnemyGeneratorService {
       scamper.isAvailable = true;
       scamper.cooldown = scamper.currentCooldown = 23;
       scamper = this.randomizeCooldown(scamper);
-      scamper.dealsDirectDamage = false;
-      scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 7, 0, false, true));
+      scamper.dealsDirectDamage = false;      
       scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 20, 1.2, false, true, undefined, undefined, undefined, true));
+      scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 7, 0, false, true));
       enemy.abilityList.push(scamper);
 
       var rhythm = new Ability();
@@ -11382,9 +11382,9 @@ export class EnemyGeneratorService {
       scamper.isAvailable = true;
       scamper.cooldown = scamper.currentCooldown = 23;
       scamper = this.randomizeCooldown(scamper);
-      scamper.dealsDirectDamage = false;
-      scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 10, 0, false, true));
+      scamper.dealsDirectDamage = false;      
       scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityUp, 35, 1.2, false, true, undefined, undefined, undefined, true));
+      scamper.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.Dodge, 10, 0, false, true));
       enemy.abilityList.push(scamper);
 
       var rhythm = new Ability();

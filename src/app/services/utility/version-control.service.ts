@@ -1364,8 +1364,10 @@ export class VersionControlService {
 
           this.globalService.globalVar.characters.push(monk);
         }
-        if (version === .75) { //TODO: set to .75
-          //this.globalService.globalVar.sidequestData.duosUnlocked = false;
+        if (version === .75) {
+          //this.globalService.globalVar.sidequestData.duosUnlocked = false;          
+          this.globalService.globalVar.settings.set("showLowPerformanceAnimationFlash", false);
+          this.globalService.globalVar.settings.set("showAbilityCooldownPercents", true);
           this.globalService.globalVar.keybinds.set("triggerAction", "enter");
           this.globalService.globalVar.keybinds.set("openTimeFragmentQuickView", "keyF");
           this.globalService.globalVar.keybinds.set("useCharacter1DuoAbility", "keyG");

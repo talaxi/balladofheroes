@@ -99,4 +99,9 @@
         margin-left: .4rem;
     }
 
+    .enemy,
+    .encounter,
+    .item {
+        width: 33.333%;        
+    }
 }
