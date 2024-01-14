@@ -16,8 +16,11 @@
 </div>
 <div *ngIf="true" class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xpPopover">
     <!--ngIf fixes the default value for the progress bar-->
-    <mat-progress-bar mode="determinate" [ngClass]="{'removeTransition': removeBarTransition}" [value]="getCharacterXpPercent()" class="blue-progress characterBar xpHighBar">
+    <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [ngClass]="{'removeTransition': removeBarTransition}" [value]="getCharacterXpPercent()" class="blue-progress characterBar xpHighBar">
     </mat-progress-bar>
+    <div class="xpColor s3Heading" *ngIf="!notLowPerformanceMode()">                
+        {{getCharacterXp()}} / {{getCharacterXpToNextLevel()}} XP
+    </div>
 </div>
 
 <ng-template #characterPopover>
@@ -34,7 +37,7 @@
     <div>
         Level {{character.level}}
         <br />
-        <span *ngIf="!isCharacterAtMaxLevel()">{{character.exp | number : '1.0-0'}} / {{character.expToNextLevel | number : '1.0-0'}} XP to Level
+        <span *ngIf="!isCharacterAtMaxLevel()">{{getCharacterXp()}} / {{getCharacterXpToNextLevel()}} XP to Level
         {{character.level + 1}}
     </span>
     <span *ngIf="isCharacterAtMaxLevel()">
@@ -48,6 +51,6 @@
         Click or press <span class='keybind'>{{targetKeybind}}</span> to toggle targeting mode. After activating, click an enemy to target all auto attacks and abilities from this character on that enemy.                
     </div>
     <div *ngIf="isMobile">
-        Tap to toggle targeting mode. After activating, tap an enemy to target all auto attacks and abilities from this character on that enemy.                
+        Tap to toggle targeting mode. After activating, tap an enemy to target all auto attacks and abilities from this character on that enemy. Double tapping an enemy will target all party members to that enemy.          
     </div>
 </ng-template>

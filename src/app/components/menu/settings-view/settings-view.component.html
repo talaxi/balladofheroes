@@ -60,6 +60,24 @@
             </mat-checkbox>
         </span> 
         <br />
+        <span>
+            <mat-checkbox class="example-margin" [(ngModel)]="showGameLogTimeStamps"
+                (input)="showGameLogTimeStampsToggle()">Show Game Log Time Stamps
+            </mat-checkbox>
+        </span> 
+        <br />
+        <span>
+            <mat-checkbox *ngIf="fps === utilityService.lowFps" class="example-margin" [(ngModel)]="showAbilityCooldownPercents" customToolTip [contentTemplate]="showAbilityCooldownPercentsPopover"
+                (input)="showAbilityCooldownPercentsToggle()">Show Ability Cooldown Percents
+            </mat-checkbox>
+        </span> 
+        <br />
+        <!--<span>
+            <mat-checkbox *ngIf="fps === utilityService.lowFps" class="example-margin" [(ngModel)]="showLowPerformanceAnimationFlash" customToolTip [contentTemplate]="abilityFlashPopover"
+                (input)="showLowPerformanceAnimationFlashToggle()">Show Ability Use Flash
+            </mat-checkbox>
+        </span> 
+        <br />-->
         <br />
         <div>
             <div *ngIf="!isMobile" class="updateKeybinds twoColumn">
@@ -91,13 +109,15 @@
                     <mat-button-toggle-group [(ngModel)]="loadingTime" aria-label="Offline Loading Time"
                         (change)="setLoadingTime()">
                         <mat-button-toggle customToolTip [contentTemplate]="lowLoadingTimePopover"
-                            [value]="utilityService.lowActiveTimeLimit">Low</mat-button-toggle>
+                            [value]="utilityService.lowActiveTimeLimit">30 MIN</mat-button-toggle>
                         <mat-button-toggle customToolTip [contentTemplate]="averageLoadingTimePopover"
-                            [value]="utilityService.averageActiveTimeLimit">Average</mat-button-toggle>
+                            [value]="utilityService.averageActiveTimeLimit">1 HR</mat-button-toggle>
                         <mat-button-toggle customToolTip [contentTemplate]="highLoadingTimePopover"
-                            [value]="utilityService.highActiveTimeLimit">High</mat-button-toggle>
+                            [value]="utilityService.highActiveTimeLimit">2 HR</mat-button-toggle>
                         <mat-button-toggle customToolTip [contentTemplate]="veryHighLoadingTimePopover"
-                            [value]="utilityService.veryHighActiveTimeLimit">Very High</mat-button-toggle>
+                            [value]="utilityService.veryHighActiveTimeLimit">4 HR</mat-button-toggle>
+                            <mat-button-toggle customToolTip [contentTemplate]="extremelyHighLoadingTimePopover"
+                            [value]="utilityService.extremelyHighActiveTimeLimit">8 HR</mat-button-toggle>
                     </mat-button-toggle-group>
                 </div>
                 <div class="twoColumn">
@@ -116,7 +136,7 @@
             </div>
             <br/>
             <div>
-                <span class="smallCaps bold">Frames Per Second</span>
+                <span class="smallCaps bold">Performance</span>
                 <br />
                 <mat-button-toggle-group [(ngModel)]="fps" aria-label="Fps" (change)="setFps()">
                     <mat-button-toggle customToolTip [contentTemplate]="lowFpsPopover"
@@ -221,25 +241,37 @@
 
 <ng-template #lowFpsPopover>
     <div>
-        Run the game at 15 FPS.
+        Run the game on low performance mode. This removes most animations and replaces them with text.
     </div>
 </ng-template>
 
 <ng-template #averageFpsPopover>
     <div>
-        Run the game at 30 FPS.
+        Run the game on average performance mode. This runs the game at 30 FPS.
     </div>
 </ng-template>
 
 <ng-template #highFpsPopover>
     <div>
-        Run the game at 60 FPS.
+        Run the game on high performance mode. This runs the game at 60 FPS.
     </div>
 </ng-template>
 
 <ng-template #verboseModePopover>
     <div>
         Include additional text information in tooltips, such as if abilities are running in Auto/Manual mode.
+    </div>
+</ng-template>
+
+<ng-template #showAbilityCooldownPercentsPopover>
+    <div>
+        Uncheck this to turn off the ability % numbers underneath the image if all of the numbers are overwhelming.
+    </div>
+</ng-template>
+
+<ng-template #abilityFlashPopover>
+    <div>
+        When using an ability or auto attack when in low performance mode, it will flash to indicate it has been used. Disable this to disable the flash.
     </div>
 </ng-template>
 
@@ -264,6 +296,12 @@
 <ng-template #veryHighLoadingTimePopover>
     <div>
         Automate the game for up to 240 minutes of away time.
+    </div>
+</ng-template>
+
+<ng-template #extremelyHighLoadingTimePopover>
+    <div>
+        Automate the game for up to 480 minutes of away time.
     </div>
 </ng-template>
 

@@ -104,7 +104,9 @@ export class ShopViewComponent implements OnInit {
       this.activeSubzoneType = this.balladService.getLatestSubzone();
       this.isDisplayingNewItems = false;
     }
-    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData, this.showAllShopOptions, this.globalService.globalVar.ballads, this.globalService.globalVar.optionalScenesViewed);
+    var cloakedStrangerFound = this.balladService.findSubzone(SubZoneEnum.TheLabyrinthCloakedStranger)?.isAvailable;
+
+    this.shopOptions = this.subzoneGeneratorService.getShopOptions(this.activeSubzoneType, this.globalService.globalVar.sidequestData, this.showAllShopOptions, this.globalService.globalVar.ballads, this.globalService.globalVar.optionalScenesViewed, cloakedStrangerFound, this.globalService.globalVar.gods);
 
     if (this.balladService.findSubzone(SubZoneEnum.AsphodelTheDepths)?.isAvailable)
       this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story);

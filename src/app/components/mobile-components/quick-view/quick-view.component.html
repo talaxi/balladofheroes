@@ -46,6 +46,11 @@
                 src="assets/svg/calculator.svg">
             <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/calculatorDisabled.svg">
         </button>   
+        <button *ngIf="isTimeFragmentAvailable() && displayQuickViewTimeFragment" class="buttonAsText clickableText iconButton" (click)="openQuickView(quickViewEnum.TimeFragment)">
+            <img (contextmenu)="preventRightClick()" *ngIf="quickView === quickViewEnum.TimeFragment" class="icon iconEnabled"
+                src="assets/svg/timeFragment.svg">
+            <img (contextmenu)="preventRightClick()" class="icon iconDisabled" src="assets/svg/timeFragmentDisabled.svg">
+        </button>   
     </div>
     <div class="overlay" [ngClass]="{'flipOverlay': overlayShouldFlip}" *ngIf="quickView !== quickViewEnum.None">
         <div class="overviewQuickView centeredText" *ngIf="quickView === quickViewEnum.Overview">
@@ -59,6 +64,9 @@
         </div>
         <div class="jewelcraftingQuickView centeredText" *ngIf="quickView === quickViewEnum.Jewelcrafting">
             <app-jewelcrafting-overview></app-jewelcrafting-overview>
+        </div>
+        <div class="timeFragmentQuickView" *ngIf="quickView === quickViewEnum.TimeFragment">
+            <app-time-fragment-overview></app-time-fragment-overview>
         </div>
         <div class="altarsQuickView centeredText" *ngIf="quickView === quickViewEnum.Altars">
             <app-altar-overview></app-altar-overview>

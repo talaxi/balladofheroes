@@ -75,10 +75,10 @@
 
 @media (max-width: 800px) {
     .positiveStatusEffectList, .negativeStatusEffectList {     
-        width: 7.25vw;
+        width: 7.15vw;
     }
 
     .statusEffectView {
-        height: 15.5vw;
+        height: 15.3vw;
     }
 }

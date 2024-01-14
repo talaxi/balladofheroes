@@ -40,6 +40,10 @@ export class OverdriveViewComponent implements OnInit {
           continue;
           if (enumValue === OverdriveNameEnum.Hope && this.character.type !== CharacterEnum.Priest)
           continue;
+          if (enumValue === OverdriveNameEnum.Flurry && this.character.type !== CharacterEnum.Monk)
+          continue;
+          if (enumValue === OverdriveNameEnum.Explosion && this.character.type !== CharacterEnum.Thaumaturge)
+          continue;
 
         overdrives.push(enumValue);        
       }

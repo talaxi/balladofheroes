@@ -1,5 +1,4 @@
 import { Injectable } from '@angular/core';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
@@ -12,7 +11,7 @@ export class ShopItemGeneratorService {
 
   constructor() { }
 
-  generateShopItem(item: ItemsEnum, originalStore: SubZoneEnum) {
+  generateShopItem(item: ItemsEnum, originalStore: SubZoneEnum, isPatron: boolean = false) {
     var purchasePrice: ResourceValue[] = [];
     if (item === ItemsEnum.LinenArmor) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20));
@@ -130,6 +129,9 @@ export class ShopItemGeneratorService {
     if (item === ItemsEnum.MonkClass) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
+    if (item === ItemsEnum.ThaumaturgeClass) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
     if (item === ItemsEnum.FracturedRubyRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 4000));
@@ -211,16 +213,16 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 6000));
     }
     if (item === ItemsEnum.SharkstoothNecklace) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 8));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 6000));
     }
     if (item === ItemsEnum.SharkstoothPendant) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 8));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.SharkTeeth, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 6000));
     }
     if (item === ItemsEnum.FeatheredTunic) {
       purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 7));
-      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 10000));
     }
     if (item === ItemsEnum.ShieldOfTheSea) {
@@ -234,7 +236,7 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 8000));
     }
     if (item === ItemsEnum.BlackLance) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 14));
+      purchasePrice.push(new ResourceValue(ItemsEnum.EagleFeather, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 8));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
@@ -272,7 +274,7 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.Leather) {
       purchasePrice.push(new ResourceValue(ItemsEnum.LightLeather, 8));
-    }    
+    }
     if (item === ItemsEnum.ThickLeather) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Leather, 5));
     }
@@ -281,25 +283,25 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.BearHide) {
       purchasePrice.push(new ResourceValue(ItemsEnum.ThickLeather, 5));
-    }    
+    }
     if (item === ItemsEnum.Honey) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Olive, 10));
       purchasePrice.push(new ResourceValue(ItemsEnum.Fennel, 10));
     }
     if (item === ItemsEnum.VialOfLakeLerna) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 10));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheLethe, 10));
     }
     if (item === ItemsEnum.VialOfTheBlackSea) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 8));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfLakeLerna, 8));
     }
     if (item === ItemsEnum.VialOfTheCretanSea) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 8));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.VialOfTheBlackSea, 8));
     }
     if (item === ItemsEnum.EssenceOfWater) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfFire, 8));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfFire, 8));
     }
     if (item === ItemsEnum.ToxicIchor) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.SpiritEssence, 12));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.SpiritEssence, 12));
     }
     if (item === ItemsEnum.JaggedSword) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Tusk, 8));
@@ -323,77 +325,77 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
     }
     if (item === ItemsEnum.FurArmor) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.CoarseFur, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.CoarseFur, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
     }
     if (item === ItemsEnum.ScaleArmor) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.SerpentScale, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.SerpentScale, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
     }
     if (item === ItemsEnum.HideArmor) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
     }
     if (item === ItemsEnum.HesperidianArmor) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.MagicTreeBark, 15));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MagicTreeBark, 15));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 12500));
     }
     if (item === ItemsEnum.BronzeBeakNecklace) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.BronzeBeak, 2));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.BronzeBeak, 2));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 15000));
     }
-    if (item === ItemsEnum.BloodyNecklace) {      
+    if (item === ItemsEnum.BloodyNecklace) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
     }
-    if (item === ItemsEnum.SafeRing) {      
+    if (item === ItemsEnum.SafeRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
-    if (item === ItemsEnum.SirensongRing) {      
+    if (item === ItemsEnum.SirensongRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
-    if (item === ItemsEnum.RingOfCurses) {      
+    if (item === ItemsEnum.RingOfCurses) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
     }
-    if (item === ItemsEnum.BloodyShield) {      
+    if (item === ItemsEnum.BloodyShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 35000));
-    }    
-    if (item === ItemsEnum.DivinePlate) {      
+    }
+    if (item === ItemsEnum.DivinePlate) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.DivineTarge) {      
+    if (item === ItemsEnum.DivineTarge) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.GiantSword) {      
+    if (item === ItemsEnum.GiantSword) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.GiantHammer) {      
+    if (item === ItemsEnum.GiantHammer) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.GiantArmor) {      
+    if (item === ItemsEnum.GiantArmor) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.GiantShield) {      
+    if (item === ItemsEnum.GiantShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.GiantRing) {      
+    if (item === ItemsEnum.GiantRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.GiantNecklace) {      
+    if (item === ItemsEnum.GiantNecklace) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
     }
-    if (item === ItemsEnum.PorphyrionsMace) {      
+    if (item === ItemsEnum.PorphyrionsMace) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.AugeanStables1) {      
+    if (item === ItemsEnum.AugeanStables1) {
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 25));
     }
-    if (item === ItemsEnum.AugeanStables2) {      
+    if (item === ItemsEnum.AugeanStables2) {
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 50));
       purchasePrice.push(new ResourceValue(ItemsEnum.CoarseFur, 10));
     }
-    if (item === ItemsEnum.AugeanStables3) {      
+    if (item === ItemsEnum.AugeanStables3) {
       purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 100));
-      purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 25));    
+      purchasePrice.push(new ResourceValue(ItemsEnum.AnimalHide, 25));
     }
 
     if (item === ItemsEnum.Dionysus) {
@@ -403,252 +405,357 @@ export class ShopItemGeneratorService {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 8));
     }
 
-    if (item === ItemsEnum.AthenasScythe) {      
+    if (item === ItemsEnum.AthenasScythe) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.ArtemissBow) {      
+    if (item === ItemsEnum.ArtemissBow) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.HermessStaff) {      
+    if (item === ItemsEnum.HermessStaff) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.ApollosBow) {      
+    if (item === ItemsEnum.ApollosBow) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.HadessBident) {      
+    if (item === ItemsEnum.HadessBident) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.AressSpear) {      
+    if (item === ItemsEnum.AressSpear) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.NemesissSword) {      
+    if (item === ItemsEnum.NemesissSword) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.DionysussScepter) {      
+    if (item === ItemsEnum.DionysussScepter) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.ZeussLightningBolts) {      
+    if (item === ItemsEnum.ZeussLightningBolts) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.PoseidonsTrident) {      
+    if (item === ItemsEnum.HerasRod) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
     }
-    if (item === ItemsEnum.AthenasShield) {      
+    if (item === ItemsEnum.AphroditesRoses) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.PoseidonsTrident) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 12));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.AthenasShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ArtemissShield) {      
+    if (item === ItemsEnum.ArtemissShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.HermessShield) {      
+    if (item === ItemsEnum.HermessShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.HadessShield) {      
+    if (item === ItemsEnum.HadessShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ApollosShield) {      
+    if (item === ItemsEnum.ApollosShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.AressShield) {   
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));   
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.NemesissShield) {  
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));    
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.DionysussShield) {   
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));   
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.ZeussShield) {     
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.PoseidonsShield) {     
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.AthenasArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.ArtemissArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.HermessArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.PoseidonsArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.HadessArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.ApollosArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.AressArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.NemesissArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.DionysussArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.ZeussArmor) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.AthenasRing) {      
+    if (item === ItemsEnum.AressShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ArtemissRing) {      
+    if (item === ItemsEnum.NemesissShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.HermessRing) {      
+    if (item === ItemsEnum.DionysussShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.HadessRing) {      
+    if (item === ItemsEnum.ZeussShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ApollosRing) {      
+    if (item === ItemsEnum.PoseidonsShield) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.AressRing) {      
+    if (item === ItemsEnum.AthenasArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.ArtemissArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.HermessArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.PoseidonsArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.HadessArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.ApollosArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.AressArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.NemesissArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.DionysussArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.ZeussArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.AthenasRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.NemesissRing) {    
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));  
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.DionysussRing) {  
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));    
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.ZeussRing) {     
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.PoseidonsRing) {     
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4)); 
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
-    }
-    if (item === ItemsEnum.AthenasNecklace) {      
+    if (item === ItemsEnum.ArtemissRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ArtemissNecklace) {      
+    if (item === ItemsEnum.HermessRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.HermessNecklace) {      
+    if (item === ItemsEnum.HadessRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.HadessNecklace) {      
+    if (item === ItemsEnum.ApollosRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ApollosNecklace) {      
+    if (item === ItemsEnum.AressRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.AressNecklace) {      
+    if (item === ItemsEnum.NemesissRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.NemesissNecklace) {      
+    if (item === ItemsEnum.DionysussRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.DionysussNecklace) {      
+    if (item === ItemsEnum.ZeussRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.ZeussNecklace) {      
+    if (item === ItemsEnum.AphroditesRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.PoseidonsNecklace) {      
+    if (item === ItemsEnum.HerasRing) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
       purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
     }
-    if (item === ItemsEnum.Ambrosia) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));      
-    }    
+    if (item === ItemsEnum.PoseidonsRing) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.AthenasNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.ArtemissNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.HermessNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.HadessNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.ApollosNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.AressNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.NemesissNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.DionysussNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.ZeussNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.HerasNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.AphroditesNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.PoseidonsNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 4));
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 45000));
+    }
+    if (item === ItemsEnum.BlazingSunPendantUnique) {
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 100));
+    }
+    if (item === ItemsEnum.DarkMoonPendantUnique) {
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 100));
+    }
+    if (item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+    }
+    if (item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
+      if (isPatron)
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 1));
+      else
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 2));
+    }
+    if (item === ItemsEnum.Ambrosia) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));
+    }
+    /*if (item === ItemsEnum.DuoAbilityAccess) {
+        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
+    }*/
     if (item === ItemsEnum.EssenceOfEarth) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));      
-    }    
+      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));
+    }
     if (item === ItemsEnum.EssenceOfAir) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));
     }
     if (item === ItemsEnum.SerpentScale) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.BoarHide, 8));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.BoarHide, 8));
     }
     if (item === ItemsEnum.MagicTreeBark) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.BearHide, 8));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.BearHide, 8));
     }
     if (item === ItemsEnum.MetalNuggets) {
-      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 10));      
+      purchasePrice.push(new ResourceValue(ItemsEnum.MetalScraps, 10));
     }
-    if (item === ItemsEnum.OlympicCommendation) {      
-      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 3));      
+    if (item === ItemsEnum.OlympicCommendation) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 3));
+    }
+    if (item === ItemsEnum.ShadowSpear) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowArmor) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowRing) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowShield) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.ShadowNecklace) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.RagingBull) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    }
+    if (item === ItemsEnum.LesserFlawedRuby) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedOpal) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedEmerald) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedTopaz) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedAquamarine) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    }
+    if (item === ItemsEnum.LesserFlawedAmethyst) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
     }    
-    if (item === ItemsEnum.ShadowSpear) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    if (item === ItemsEnum.AthenasSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.ShadowArmor) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    if (item === ItemsEnum.ArtemissSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.ShadowRing) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    if (item === ItemsEnum.HermessSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.ShadowShield) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    if (item === ItemsEnum.ApollosSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.ShadowNecklace) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    if (item === ItemsEnum.AressSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.RagingBull) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 50000));
+    if (item === ItemsEnum.HadessSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.LesserFlawedRuby) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    if (item === ItemsEnum.DionysussSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.LesserFlawedOpal) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    if (item === ItemsEnum.NemesissSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.LesserFlawedEmerald) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    if (item === ItemsEnum.ZeussSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.LesserFlawedTopaz) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    if (item === ItemsEnum.PoseidonsSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.LesserFlawedAquamarine) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    if (item === ItemsEnum.AphroditesSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
     }
-    if (item === ItemsEnum.LesserFlawedAmethyst) {            
-      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 20000));
+    if (item === ItemsEnum.HerasSigil) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 2500000));
+    }    
+    if (item === ItemsEnum.RutileRubyFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughRubyFragment, 20));
+    }
+    if (item === ItemsEnum.RutileOpalFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughOpalFragment, 20));
+    }
+    if (item === ItemsEnum.RutileAquamarineFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAquamarineFragment, 20));
+    }
+    if (item === ItemsEnum.RutileEmeraldFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughEmeraldFragment, 20));
+    }
+    if (item === ItemsEnum.RutileTopazFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughTopazFragment, 20));
+    }
+    if (item === ItemsEnum.RutileAmethystFragment) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.RoughAmethystFragment, 20));
     }
 
     return new ShopItem(item, purchasePrice, originalStore);

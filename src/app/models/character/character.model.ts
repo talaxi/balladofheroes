@@ -6,7 +6,6 @@ import { OverdriveNameEnum } from "../enums/overdrive-name-enum.model";
 import { EquipmentSet } from "../resources/equipment-set.model";
 import { Ability } from "./ability.model";
 import { CharacterStats } from "./character-stats.model";
-import { God } from "./god.model";
 import { OverdriveInfo } from "./overdrive-info.model";
 import { LinkInfo } from "./link-info.model";
 import { TrackedStats } from "./tracked-stats.model";

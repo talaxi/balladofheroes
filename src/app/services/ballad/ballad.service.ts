@@ -1,12 +1,9 @@
 import { Injectable } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { Battle } from 'src/app/models/battle/battle.model';
-import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { NotificationTypeEnum } from 'src/app/models/enums/notification-type-enum.model';
-import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
@@ -18,7 +15,6 @@ import { GlobalService } from '../global/global.service';
 import { SubZoneGeneratorService } from '../sub-zone-generator/sub-zone-generator.service';
 import { UtilityService } from '../utility/utility.service';
 import { CompletionStatusEnum } from 'src/app/models/enums/completion-status-enum.model';
-import { AchievementService } from '../achievements/achievement.service';
 import { MenuService } from '../menu/menu.service';
 
 @Injectable({
@@ -49,6 +45,29 @@ export class BalladService {
       name = "Ballad of Olympus";
     if (type === BalladEnum.Labyrinth)
       name = "Ballad of the Labyrinth";
+
+    return name;
+  }
+  
+  getShortBalladName(type?: BalladEnum) {
+    var name = "";
+
+    if (type === BalladEnum.Champion)
+      name = "Champion";
+    if (type === BalladEnum.Gorgon)
+      name = "Gorgon";
+    if (type === BalladEnum.Labors)
+      name = "Labors";
+    if (type === BalladEnum.Underworld)
+      name = "Underworld";
+    if (type === BalladEnum.Boar)
+      name = "Boar";
+    if (type === BalladEnum.Argo)
+      name = "Argo";
+    if (type === BalladEnum.Olympus)
+      name = "Olympus";
+    if (type === BalladEnum.Labyrinth)
+      name = "Labyrinth";
 
     return name;
   }
@@ -150,7 +169,7 @@ export class BalladService {
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.getSubZoneName(relatedSubzone.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry, this.globalService.globalVar);
     }
 
     this.dpsCalculatorService.rollingAverageTimer = 0;
@@ -451,7 +470,7 @@ export class BalladService {
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + zone.zoneName + " - " + this.getSubZoneName(subzone.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry, this.globalService.globalVar);
     }
     this.dpsCalculatorService.rollingAverageTimer = 0;
     this.dpsCalculatorService.partyDamagingActions = [];
@@ -859,7 +878,8 @@ export class BalladService {
       name = "Solid Wall 3";
     if (type === SubZoneEnum.TheLabyrinthSolidWall4)
       name = "Solid Wall 4";
-
+    if (type === SubZoneEnum.TheLabyrinthCloakedStranger)
+      name = "Cloaked Stranger";
 
     return name;
   }
@@ -1075,7 +1095,7 @@ export class BalladService {
       type === SubZoneEnum.CalydonTownMarket || type === SubZoneEnum.AegeanSeaIolcus || type === SubZoneEnum.AegeanSeaSalmydessus ||
       type === SubZoneEnum.BlackSeaMariandyna || type === SubZoneEnum.ColchisCityCenter || type === SubZoneEnum.NemeaCleonea ||
       type === SubZoneEnum.StymphaliaTiryns || type === SubZoneEnum.CoastOfCreteElis || type === SubZoneEnum.ErytheiaCadiz ||
-      type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos) {
+      type === SubZoneEnum.MountOlympusOlympus || type === SubZoneEnum.CreteKnossos || type === SubZoneEnum.TheLabyrinthCloakedStranger) {
       return true;
     }
 

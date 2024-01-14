@@ -26,7 +26,7 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.AutoAttack) {
       if (this.deviceDetectorService.isMobile())
-        text = "On the bottom of your screen is your character information. Here you can see your character's health and all abilities available to you. Currently, you only have access to an auto attack that automatically deals attack damage to an enemy over time. Tap and hold the sword by your character's name for more details.";
+        text = "On the bottom of your screen is your character information. Here you can see your character's health and all abilities available to you. Currently, you only have access to an auto attack that automatically deals attack damage to an enemy over time. Tap and hold the sword icon by your character's name for more details.<br/><br/>Enemies are displayed at the top of your screen. When you reduce all enemies' HP to 0, you will gain XP and immediately begin fighting a new set of enemies. Tap and hold an enemy's name to see more details about them.";
       else
         text = "On the left side of your screen is your character information. Here you can see your character's health and all abilities available to you. Currently, you only have access to an auto attack that automatically deals attack damage to an enemy over time. Hover over the sword by your character's name for more details.<br/><br/>Enemies are displayed in the middle of your screen. When you reduce all enemies' HP to 0, you will gain XP and immediately begin fighting a new set of enemies. Hover over an enemy's name to see more details about them.";
     }
@@ -38,9 +38,9 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.NewSubzone) {
       if (this.deviceDetectorService.isMobile())
-        text = "As you proceed through the game, you will need to defeat enough enemies in an area before being able to move forward. You've won enough battles in the 'Upper Coast' subzone to continue. To the right of the subzone name, tap the down arrow and then tap 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible. Continue to proceed through each subzone to progress the story.";
+        text = "As you proceed through the game, you will need to defeat enough enemies in each subzone before moving forward. You've won enough battles in the <b>'Upper Coast'</b> subzone to continue. To the right of the <b>'Upper Coast'</b> name at the top of the screen, tap the right arrow to move to the next subzone, <b>'Bay'</b>. The down arrow to the left will show all available ballads, zones, and subzones. If you wish, you can select 'Auto Progress' in this menu to automatically move to the next subzone when possible. Continue proceeding through each subzone to progress the story.";
       else
-        text = "As you proceed through the game, you will need to defeat enough enemies in an area before being able to move forward. You've won enough battles in the 'Upper Coast' subzone to continue. On the right side of the screen, select 'Bay' to move to the next subzone within the 'Aigosthena' zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible. Continue to proceed through each subzone to progress the story.";
+        text = "As you proceed through the game, you will need to defeat enough enemies in each subzone before moving forward. You've won enough battles in the <b>'Upper Coast'</b> subzone to continue. On the right side of the screen, select <b>'Bay'</b> to move to the next subzone within the <b>'Aigosthena'</b> zone. If you wish, you can select 'Auto Progress' at the top of the page to automatically move to the next subzone when possible. Continue proceeding through each subzone to progress the story.";
     }
     else if (type === TutorialTypeEnum.Town) {
       if (this.deviceDetectorService.isMobile())
@@ -65,9 +65,9 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.Equipment) {
       if (this.deviceDetectorService.isMobile())
-        text = "You've acquired your first equipment item. Tap on 'Adventurer' in the middle of the screen to quickly jump to the menu and view the character page. Use the 'Change Equipment' button to update your equipment.";
+        text = "You've acquired your first equipment item. Tap on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> in the middle of the screen to quickly jump to the menu and view the character page. Use the <b>'Change'</b> button to update your equipment.";
       else
-        text = "You've acquired your first equipment item. Click on 'Adventurer' on the top left of the screen to quickly jump to the menu and view the character page. Use the 'Change Equipment' button to update your equipment.";
+        text = "You've acquired your first equipment item. Click on <span class='smallCaps adventurerColor bold'>'Adventurer'</span> on the top left of the screen to quickly jump to the menu and view the character page. Use the <b>'Change Equipment'</b> button to update your equipment.";
     }
     else if (type === TutorialTypeEnum.Altars) {
       if (this.deviceDetectorService.isMobile())
@@ -119,6 +119,12 @@ export class TutorialService {
     }
     else if (type === TutorialTypeEnum.Traveler) {
       text = "The Traveler will teach you new classes for a price. You can only have two classes active at any given time, but any new classes you learn will be available to switch to by selecting a class in the Menu and pressing 'Change Class'.";
+    }
+    else if (type === TutorialTypeEnum.TimeFragments) {
+      text = "You now have access to Time Fragments. Select the diamond icon in the Quick View options to view the Time Fragment View. With Time Fragments, you can automatically run completed subzones and certain battles in the background.";
+    }
+    else if (type === TutorialTypeEnum.Uniques) {
+      text = "You've obtained your first Unique equipment item. You can only obtain each Unique item one time. Any subsequent time you would gain that item, you instead gain XP for that item. A Unique item can reach level 1000 and will gain increased stats as well as increased effectiveness for its abilities.";
     }
 
     if (addToLog)

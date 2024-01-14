@@ -9,6 +9,10 @@
       <button (click)="togglePerformanceMode()">Perf Mode</button>
     </div>-->
 
+    <div *ngIf="!(isMobile && layoutService.navigation === navigationEnum.Menu)" class="performanceState centerAlign">
+      <span (click)="openZodiacPopover(zodiacPopover)" customToolTip class="headerTextItems globalHeaderItem"  [contentTemplate]="zodiacPopover"><img class="zodiacIcon filtered" [src]="getZodiacSign()"></span>
+    </div>
+
     <button *ngIf="textMode && isMobile && layoutService.navigation === navigationEnum.Menu" class="buttonAsText clickableText performanceState mainPageSectionHeader globalHeaderItem" (click)="backToMainView()">back</button>    
 
     <div class="centerAlign gameState">
@@ -21,10 +25,10 @@
         </button>        
     </div>    
 
-    <div class="extraTimeItem centerAlign">
+    <div customToolTip [contentTemplate]="gameSpeedPopover" class="extraTimeItem centerAlign" [ngClass]="{'extraSpeedDisabled': !this.globalService.globalVar.extraSpeedEnabled}">
       <button class="buttonAsText clickableText globalHeaderItem normalFontSize" (click)="toggleExtraSpeed()">
         <span class="headerTextItems clickableText globalHeaderItem" *ngIf="!isMobile">game speed: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
-        <span class="headerTextItems clickableText globalHeaderItem" *ngIf="isMobile">game spd: {{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}}</span>
+        <span class="headerTextItems clickableText globalHeaderItem" *ngIf="isMobile">{{this.globalService.globalVar.extraSpeedEnabled ? "2x" : "1x"}} <img class="icon" src="assets/svg/clock.svg"></span>
       </button>
     </div>
 
@@ -35,6 +39,15 @@
       </button>
     </div>
 </div>
+
+<ng-template #gameSpeedPopover>
+  <div *ngIf="!isMobile">
+    Click to toggle between 1x and 2x game speed.
+  </div>
+  <div *ngIf="isMobile">
+    Tap to toggle between 1x and 2x game speed.
+  </div>
+</ng-template>
 
 <ng-template #pausedPopover>
     <div *ngIf="!isMobile">
@@ -57,6 +70,20 @@
   <ng-template #extraTimePopover>
     <div>
       The amount of banked time you've gained while away from the game. While this is available, the game will run at 2x the speed. Click to toggle on or off.
+    </div>
+  </ng-template>
+  
+  <ng-template #zodiacPopover>
+    <div>
+      Zodiac: <img class="icon filtered" [src]="getZodiacSign()"> ({{getZodiacName()}})
+      <br/>
+      Duration: {{getZodiacStartDate()}} to {{getZodiacEndDate()}}
+      <hr/>
+      Bonus Gods: <span [innerHTML]="getBonusGods()"></span>
+      <br/>
+      These gods give characters 20% additional primary stats when equipped, receive 20% extra XP, and gain 20% additional Chthonic Power when reset. <span *ngIf="anyBonusGodsHidden()">Continue progressing through the story to unlock hidden gods.</span>
+      <br/>
+      <!--Name of Trial is active-->
     </div>
   </ng-template>
 

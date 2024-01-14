@@ -19,6 +19,10 @@
   padding: 0 !important;
 }
 
+#dialogNoUpperPadding .mat-mdc-dialog-surface {
+  padding-top: 0 !important;
+}
+
 .mdc-linear-progress__bar-inner {
   left: 0;
 }
@@ -69,7 +73,7 @@
 }
 
 .overdriveActive .mdc-linear-progress__buffer-bar {
-  background-color: var(--overdriveColor) !important;  
+  background-color: var(--overdriveColor) !important;
 }
 
 .barrier-progress {
@@ -98,11 +102,12 @@
 
 :root {
   /* Colors */
-  --foreground-secondary: #6D8EAA;
+  --foreground-secondary: #6E96B6;
   /* old: 6B8CA5 */
   --foreground-default: #A3B9CC;
   --foreground-tertiary: #49647A;
   --foreground-quaternary: #E5E5E5;
+  --disabled-foreground-quaternary: #E5E5E584;
   --foreground-accent: #9E8F81;
   --foreground-light: #FFFFFF;
   --active-filter: #FFFFFF;
@@ -113,16 +118,22 @@
   --background-default: #41474D;
   /*--background-default: #;*/
   --background-header: #08090A;
+  --kod-character: #08090A;
   --background-quarternary: #2A2C31;
   --background-five: #007bff;
   --background-light: #54595E;
+  --transaction-color: #18612e;
   --button-background-color: #272b35;
+  --recipe-button-background-color: #202020;
+  --disabled-button-background-color: #272b3584;
+  --disabled-recipe-button-background-color: #20202084;
   --button-color: #F0F0F0;
   --button-hover: #54595E;
   --button-selected: #1e2023;
   --section-header: #08090A;
   --primary-default: #5dfdcb;
   --primary-light: #b2ffe7;
+  --xp-color: #608DFB;
 
   --positive-status-effect: #24b286;
   --negative-status-effect: #E62B2D;
@@ -134,12 +145,13 @@
 
   --grayedOut-Text: #797c80;
 
-
   --adventurerColor: #DB7803;
   --archerColor: #12A901;
   --warriorColor: #0695FB;
   --priestColor: #D063EE;
-  --monkColor: #edac82;  /*#aca2fc;*/
+  --monkColor: #edac82;
+  /*#aca2fc;*/
+  --thaumaturgeColor: #ffc100;
 
   --itemColor: #ffffff;
   --athenaColor: #7fbffa;
@@ -152,7 +164,9 @@
   --artemisColor: #97BBB0;
   --hadesColor: #b58bf2;
   --dionysusColor: #B8E71E;
-  --nemesisColor: #B08884;
+  --nemesisColor: #B88884;
+  --heraColor: #91e9e5;
+  --aphroditeColor: #F777AF;
 
   --holyColor: #d9dbbf;
   --lightningColor: #fff30b;
@@ -161,7 +175,7 @@
   --fireColor: #FE565C;
   --earthColor: #C0845D;
 
-  --clearedSubzoneColor: #b36b24;
+  --clearedSubzoneColor: #D67A38;
   --completedSubzoneColor: #e8c602;
 
   --basicEquipmentColor: #f0f0f0;
@@ -173,6 +187,7 @@
   --uniqueEquipmentColor: #FF6250;
   --alchemyColor: #CE66E9;
   --jewelcraftingColor: #ff9d00;
+  --timeFragmentColor: #17A757;
 
   --resourceKeywordColor: #EAAD91;
   --insufficientResourcesKeywordColor: #7a818c;
@@ -300,6 +315,13 @@
   --mz3-size: 1.1rem;
   --z3-weight: 400;
   --z3-spacing: 0.1px;
+
+  --low-performance-ability-animation-color-row1: red;
+  --low-performance-ability-animation-color-row2: red;
+  --low-performance-ability-animation-color-row3: red;
+  --low-performance-ability-animation-color-row4: red;
+  --low-performance-ability-animation-color-row5: red;
+  --low-performance-ability-animation-color-row6: red;
 }
 
 body {
@@ -313,6 +335,10 @@ body {
   font-family: "Candara", sans-serif;
   font-size: 2.2vmin;
   cursor: default;
+}
+
+.xpColor {
+  color: var(--xp-color);
 }
 
 a {
@@ -341,6 +367,7 @@ a:link {
 }
 
 @media (max-aspect-ratio: 4/3) and (min-width: 1151px) {
+
   html,
   body {
     font-size: 1.9vmin;
@@ -348,13 +375,14 @@ a:link {
 }
 
 @media (max-aspect-ratio: 3.6/3) and (min-width: 1151px) {
+
   html,
   body {
     font-size: 1.6vmin;
   }
 }
 
-@media (max-width: 1150px) and (min-width:  801px) {
+@media (max-width: 1150px) and (min-width: 801px) {
 
   html,
   body {
@@ -366,7 +394,7 @@ a:link {
 
   html,
   body {
-    font-size: 3vmin;
+    font-size: 3.07vmin;
   }
 }
 
@@ -553,12 +581,20 @@ h6 {
   margin: .1rem .1rem !important;
 }
 
+.transactionButton {
+  background-color: var(--transaction-color);
+}
+
 .smallMarginLeft {
   margin-left: .5rem !important;
 }
 
 .statValue {
   vertical-align: middle;
+}
+
+.topAligned {
+  vertical-align: top;
 }
 
 .buttonStyled:hover,
@@ -693,6 +729,10 @@ body {
   color: var(--jewelcraftingColor);
 }
 
+.timeFragmentText {
+  color: var(--timeFragmentColor);
+}
+
 .overdriveText {
   color: var(--overdriveColor);
 }
@@ -768,6 +808,12 @@ body {
   color: var(--monkColor);
   stroke: var(--monkColor) !important;
   --mdc-circular-progress-active-indicator-color: var(--monkColor) !important;
+}
+
+.thaumaturgeColor {
+  color: var(--thaumaturgeColor);
+  stroke: var(--thaumaturgeColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--thaumaturgeColor) !important;
 }
 
 .itemColor {
@@ -851,6 +897,27 @@ body {
   color: var(--nemesisColor);
   stroke: var(--nemesisColor) !important;
   --mdc-circular-progress-active-indicator-color: var(--nemesisColor) !important;
+}
+
+.aphroditeColor {
+  color: var(--aphroditeColor);
+  stroke: var(--aphroditeColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--aphroditeColor) !important;
+}
+
+.heraColor {
+  color: var(--heraColor);
+  stroke: var(--heraColor) !important;
+  --mdc-circular-progress-active-indicator-color: var(--heraColor) !important;
+}
+
+.heraProgressBarColor {
+  --mdc-linear-progress-active-indicator-color: var(--heraColor) !important;
+}
+
+.heraProgressBarColor .mdc-linear-progress__buffer-bar {
+  background-color: var(--heraColor) !important;
+  filter: brightness(50%);
 }
 
 .unclearedSubzoneColor {
@@ -986,6 +1053,10 @@ button {
   padding: 0px;
 }
 
+#dialogNoUpperPadding {
+  padding-top: 0px;
+}
+
 .positiveStatusEffectColor {
   color: var(--positive-status-effect);
 }
@@ -1040,7 +1111,7 @@ button {
   font-variant: small-caps;
   font-weight: bold;
   text-transform: lowercase;
-  font-size: 1.15rem;
+  font-size: 1.2rem;
 }
 
 .barrierText {
@@ -1137,6 +1208,24 @@ button {
   filter: brightness(50%);
 }
 
+.aphrodite-progress {
+  --mdc-linear-progress-active-indicator-color: var(--aphroditeColor) !important;
+}
+
+.aphrodite-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--aphroditeColor) !important;
+  filter: brightness(50%);
+}
+
+.hera-progress {
+  --mdc-linear-progress-active-indicator-color: var(--heraColor) !important;
+}
+
+.hera-progress .mdc-linear-progress__buffer-bar {
+  background-color: var(--heraColor) !important;
+  filter: brightness(50%);
+}
+
 .amountAvailable {
   font-variant: normal !important;
 }
@@ -1155,7 +1244,8 @@ button {
 }
 
 button:disabled {
-  opacity: .5;
+  color: var(--disabled-foreground-quaternary);
+  background-color: var(--disabled-button-background-color); 
 }
 
 .bold {
@@ -1223,5 +1313,13 @@ button:disabled {
 
   body {
     overscroll-behavior: none;
+  }
+
+  .storyCharacterName {
+    font-size: 1.4rem;
+  }
+  
+  .storyBar .mdc-linear-progress__bar-inner {
+    border-top-width: var(--mdc-linear-progress-track-height, .5rem);
   }
 }

@@ -5,6 +5,7 @@ import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-custom-tooltip',
@@ -28,12 +29,11 @@ export class CustomTooltipComponent implements OnInit {
   @ViewChild('tooltipElement') tooltipElement: ElementRef;
   @Input() isSticky: boolean = false;
   @Input() isLargeTooltip: boolean = false;
+  @Input() isSmallTooltip: boolean = false;
   @Input() elementRef: ElementRef;
   @Input() isFlippedLeft: boolean = false;
   @Input() tooltipDirection: DirectionEnum = DirectionEnum.Right;
   tooltipTheme: boolean = true;
-  regularTooltipPercent = .38; //these need to match the css
-  largeTooltipPercent = .58; //these need to match the css
   shiftLeft = false;
   shiftUp = false;
   shiftDown = false;
@@ -41,7 +41,7 @@ export class CustomTooltipComponent implements OnInit {
   viewingAllItems: boolean = false;
 
   constructor(private balladService: BalladService, private globalService: GlobalService, public dialog: MatDialog,
-    private gameLoopService: GameLoopService, private selfRef: ElementRef) { }
+    private gameLoopService: GameLoopService, private selfRef: ElementRef, private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.tooltipTheme = this.globalService.globalVar.settings.get("tooltipTheme") ?? true;
@@ -78,22 +78,22 @@ export class CustomTooltipComponent implements OnInit {
         this.shiftUp = true;
     }
 
-    if (this.selfRef !== undefined && !this.shiftUp && this.selfRef.nativeElement.getBoundingClientRect().x > 0) {
+    /*if (this.selfRef !== undefined && !this.shiftUp && this.selfRef.nativeElement.getBoundingClientRect().x > 0) {
       var overlayPane = this.selfRef.nativeElement.closest(".cdk-overlay-pane");
-      
-      var screenWidth = screen.width - this.selfRef.nativeElement.getBoundingClientRect().width;      
-      if (this.tooltipDirection === DirectionEnum.Left) {        
-        if (this.selfRef.nativeElement.getBoundingClientRect().x <= screen.width * .02) {          
-          overlayPane.classList.add('shiftDown');          
+
+      var screenWidth = screen.width - this.selfRef.nativeElement.getBoundingClientRect().width;
+      if (this.tooltipDirection === DirectionEnum.Left) {
+        if (this.selfRef.nativeElement.getBoundingClientRect().x <= screen.width * .02) {
+          overlayPane.classList.add('shiftDown');
           //console.log("left shift down");
         }
       }
       else {
-        if ((screenWidth * .9 < this.selfRef.nativeElement.getBoundingClientRect().x)) {          
-          overlayPane.classList.add('shiftDown');         
+        if ((screenWidth * .9 < this.selfRef.nativeElement.getBoundingClientRect().x)) {
+          overlayPane.classList.add('shiftDown');
         }
       }
-    }
+    }*/
   }
 
   setClickEvent() {

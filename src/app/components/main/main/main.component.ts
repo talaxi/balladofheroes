@@ -10,6 +10,7 @@ import { LookupService } from 'src/app/services/lookup.service';
 import { StoryService } from 'src/app/services/story/story.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
+import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 
 @Component({
   selector: 'app-main',
@@ -64,10 +65,13 @@ export class MainComponent implements OnInit {
     var factList: string[] = [];
     factList.push("You receive more XP based on how many enemies are in the enemy party when defeating them. 2 enemies increase XP gain by 15%, 3 enemies increase XP gain by 30%, and 4 enemies increase XP gain by 45%.");
     factList.push("Any barrier amount your characters have is reset when switching subzones.");
-    factList.push("You can adjust your FPS in the Settings for a smoother or less CPU-intensive experience.");
+    factList.push("You can adjust game performance in the Settings to <b>Low</b> for a less CPU and battery intensive experience. If you want a smoother but more CPU and battery intensive experience, choose <b>High</b>.");
     factList.push("Your party can consist of at most 2 classes and 4 gods.");
     factList.push("By default, inactive classes gain no XP and inactive gods gain 25% XP from battle.");
     factList.push("All classes can use any weapon type without any penalty or boost.");
+    
+    if (!this.isMobile)
+    factList.push("You can purchase items from stores in bulk by using the CTRL, ALT, and SHIFT keys.");
 
     if (this.isMobile)
       factList.push("Tap on an enemy's name to see their stats, ability details, and possible loot.");
@@ -98,6 +102,12 @@ export class MainComponent implements OnInit {
     return "<strong><i>Tip:</i> " + factList[rng] + "</strong>";
   }
 
+  isAtStoryScene() {
+    if (this.globalService.globalVar.activeBattle !== undefined)
+      return this.globalService.globalVar.activeBattle.atScene && this.globalService.globalVar.activeBattle.sceneType === SceneTypeEnum.Story;
+
+    return false;
+  }
 
   isPalaceOfHadesAvailable() {
     var underworld = this.globalService.globalVar.ballads.find(item => item.type === BalladEnum.Underworld);

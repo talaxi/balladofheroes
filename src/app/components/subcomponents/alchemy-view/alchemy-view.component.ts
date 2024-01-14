@@ -1,4 +1,4 @@
-import { Component, Input, OnInit, ViewChild } from '@angular/core';
+import { Component, HostListener, OnInit, ViewChild } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -13,6 +13,7 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 import { AlchemyService } from 'src/app/services/professions/alchemy.service';
 import { ProfessionService } from 'src/app/services/professions/profession.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -28,18 +29,45 @@ export class AlchemyViewComponent implements OnInit {
   recipeList: Recipe[];
   isMobile: boolean = false;
   customCreateAmount: number = 0;
+  fullRecipeList: Recipe[] = [];
+  favoriteRecipeList: Recipe[] = [];
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    var keybinds = this.globalService.globalVar.keybinds;
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuUp"))) {
+      this.toggleSubMenuOptions(-1);
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
+      this.toggleSubMenuOptions(1);
+    }
+  }
 
   constructor(private globalService: GlobalService, private lookupService: LookupService, private utilityService: UtilityService,
     private alchemyService: AlchemyService, private professionService: ProfessionService, private dictionaryService: DictionaryService,
-    private deviceDetectorService: DeviceDetectorService, private menuService: MenuService) { }
+    private deviceDetectorService: DeviceDetectorService, private menuService: MenuService, private keybindService: KeybindService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.alchemy = this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Alchemy);
     this.getFullRecipeList();
+    this.favoriteRecipeList = this.getFavoriteRecipeList();
+
+    this.getQualityTypeList().forEach(qualityType => {
+      this.getRecipeList(qualityType).forEach(recipe => {
+        this.fullRecipeList.push(recipe);
+      });
+    });
+  }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
   }
 
   selectRecipe(recipe: Recipe) {
+    console.log(recipe);
     this.selectedRecipe = recipe;
   }
 
@@ -52,19 +80,25 @@ export class AlchemyViewComponent implements OnInit {
 
   getLevel() {
     if (this.alchemy === undefined)
-    return 0;
+      return 0;
     return this.alchemy.level;
+  }
+
+  getMaxLevel() {
+    if (this.alchemy === undefined)
+      return 0;
+    return this.alchemy.maxLevel;
   }
 
   getExp() {
     if (this.alchemy === undefined)
-    return 0;
+      return 0;
     return this.alchemy.exp;
   }
 
   getExpToNextLevel() {
     if (this.alchemy === undefined)
-    return 0;
+      return 0;
     return this.alchemy.expToNextLevel;
   }
 
@@ -173,7 +207,7 @@ export class AlchemyViewComponent implements OnInit {
   }
 
   getRecipeStepName() {
-    if (this.alchemy === undefined ||this.alchemy.creatingRecipe === undefined)
+    if (this.alchemy === undefined || this.alchemy.creatingRecipe === undefined)
       return "";
     return this.lookupService.getAlchemyActionName(this.alchemy.creatingRecipe.steps[this.alchemy.creationStep - 1]);
   }
@@ -204,7 +238,7 @@ export class AlchemyViewComponent implements OnInit {
     if (this.alchemy !== undefined && this.alchemy.creatingRecipe) {
       confirm = true;
     }
-    
+
     if (confirm) {
       var dialogRef = this.utilityService.openConfirmationDialog();
 
@@ -254,13 +288,13 @@ export class AlchemyViewComponent implements OnInit {
 
   getTotalAmountToCreate() {
     if (this.alchemy === undefined)
-    return 0;
+      return 0;
     return this.alchemy.creationCreateAmount;
   }
 
   getAmountCreated() {
     if (this.alchemy === undefined)
-    return 0;
+      return 0;
     return this.alchemy.creationCurrentAmountCreated;
   }
 
@@ -316,12 +350,10 @@ export class AlchemyViewComponent implements OnInit {
   toggleQualitySection(quality: EquipmentQualityEnum) {
     var qualityToggle = this.alchemy?.recipeBookQualityToggle.find(item => item[0] === quality);
 
-    if (qualityToggle === undefined)
-    {
+    if (qualityToggle === undefined) {
       this.alchemy?.recipeBookQualityToggle.push([quality, true]);
     }
-    else
-    {
+    else {
       qualityToggle[1] = !qualityToggle[1];
     }
   }
@@ -331,10 +363,84 @@ export class AlchemyViewComponent implements OnInit {
 
     if (qualityToggle === undefined)
       return false;
-    else 
+    else
       return qualityToggle[1];
   }
-  
+
+  favoriteRecipeAmount() {
+    if (this.alchemy === undefined)
+      return 0;
+
+    var recipeList: Recipe[] = [];
+    this.alchemy.favoritedRecipeItems.forEach(item => {
+      recipeList.push(this.alchemyService.getRecipe(item));
+    });
+
+    return recipeList.length;
+  }
+
+  toggleFavorites() {
+    if (this.alchemy !== undefined)
+      this.alchemy.favoriteToggle = !this.alchemy.favoriteToggle;
+  }
+
+  hideFavoriteRecipes() {
+    if (this.alchemy !== undefined)
+      return this.alchemy.favoriteToggle;
+    else 
+    return false;
+  }
+
+  getFavoriteRecipeList() {
+    if (this.alchemy === undefined)
+      return [];
+
+      var recipeList: Recipe[] = [];
+      this.alchemy.favoritedRecipeItems.forEach(item => {
+        recipeList.push(this.alchemyService.getRecipe(item));
+      });
+
+    return recipeList;
+  }
+
+  favoriteRecipe(recipe: Recipe) {        
+    if (this.alchemy === undefined)
+      return;
+
+    if (this.alchemy.favoritedRecipeItems.some(item => item === recipe.createdItem)) {
+      this.alchemy.favoritedRecipeItems = this.alchemy.favoritedRecipeItems.filter(item => item !== recipe.createdItem);
+    }
+    else
+    {
+      this.alchemy.favoritedRecipeItems.push(recipe.createdItem);
+    }
+
+    this.favoriteRecipeList = this.getFavoriteRecipeList();
+  }
+
+  getFavoriteIcon(recipe: Recipe) {
+    var src = "";
+    
+    if  (this.alchemy !== undefined && this.alchemy.favoritedRecipeItems.some(item => item === recipe.createdItem))
+      src = "assets/svg/favoriteActive.svg";
+    else
+      src = "assets/svg/favoriteInactive.svg";
+
+    return src;
+  }
+
+  toggleSubMenuOptions(direction: number) {
+    var currentIndex = this.fullRecipeList.findIndex(item => item === this.selectedRecipe);
+    currentIndex += direction;
+
+    if (currentIndex < 0)
+      currentIndex = this.fullRecipeList.length - 1;
+    if (currentIndex > this.fullRecipeList.length - 1)
+      currentIndex = 0;
+
+    this.selectRecipe(this.fullRecipeList[currentIndex]);
+  }
+
   ngOnDestroy() {
     this.menuService.inTextbox = false;
   }

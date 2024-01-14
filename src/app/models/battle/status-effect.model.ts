@@ -1,13 +1,14 @@
-import { Character } from "../character/character.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { dotTypeEnum } from "../enums/damage-over-time-type-enum.model";
 import { EffectResolutionEnum } from "../enums/effect-resolution-enum.model";
 import { ElementalTypeEnum } from "../enums/elemental-type-enum.model";
 import { StatusEffectEnum } from "../enums/status-effects-enum.model";
+import { TargetEnum } from 'src/app/models/enums/target-enum.model';
 
 export class StatusEffect {
     type: StatusEffectEnum;
     duration: number;
+    maxDuration: number;
     effectiveness: number;
     isPermanent: boolean; //no duration
     isInstant: boolean;    
@@ -31,6 +32,7 @@ export class StatusEffect {
     tickTimer: number;
     dotType: dotTypeEnum;
     element: ElementalTypeEnum;
+    target: TargetEnum;
 
     constructor(type: StatusEffectEnum) {
         this.type = type;
@@ -38,6 +40,7 @@ export class StatusEffect {
         this.tickTimer = 0;
         this.tickFrequency = 0;
         this.duration = 0;
+        this.maxDuration = 0;
         this.count = 0;
         this.maxCount = 0;
         this.dotType = dotTypeEnum.BasedOnDamage;
@@ -48,6 +51,7 @@ export class StatusEffect {
         this.triggersEvery = 0;
         this.targetsAllies = false;
         this.addedEffect = false;
+        this.target = TargetEnum.None;
     }
 
     //todo: terrible idea to maintain this in two places
@@ -55,6 +59,7 @@ export class StatusEffect {
         var copy = new StatusEffect(this.type);
 
         copy.duration = this.duration;
+        copy.maxDuration = this.duration;
         copy.effectiveness = this.effectiveness;
         copy.isPermanent = this.isPermanent;
         copy.isInstant = this.isInstant;
@@ -75,6 +80,7 @@ export class StatusEffect {
         copy.dotType = this.dotType;
         copy.element = this.element;
         copy.triggersEvery = this.triggersEvery;
+        copy.target = this.target;
 
         return copy;
     }

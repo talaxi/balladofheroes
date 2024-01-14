@@ -23,6 +23,11 @@
     grid-area: info;
 }
 
+.flexGods {
+    display: flex;
+    justify-content: space-evenly;
+}
+
 .defaultBallad,
 .defaultZone,
 .defaultSubzone {
@@ -94,4 +99,9 @@
         margin-left: .4rem;
     }
 
+    .enemy,
+    .encounter,
+    .item {
+        width: 33.333%;        
+    }
 }

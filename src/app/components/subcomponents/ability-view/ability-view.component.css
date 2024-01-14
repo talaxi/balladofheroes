@@ -12,6 +12,13 @@
     align-self: center;
 }
 
+.lowPerformanceCenteredBox {
+    width: 60%;
+    aspect-ratio : 1 / 1;
+    display: flex;
+    align-self: center;
+}
+
 .abilityTimer {
     width: 100% !important;
     height: 100% !important;
@@ -58,6 +65,13 @@
     opacity: .3;
 }
 
+.popoverPlaceholder {   
+    height: 100%;
+    width: 100%;
+    position: absolute;
+    display: flex;    
+}
+
 .linkActive {
     background-image: radial-gradient(rgba(0, 0, 0, .0) 35%, var(--linkText));
     border-radius: 50%;
@@ -66,4 +80,110 @@
     position: absolute;
     display: flex;
     opacity: 100%;
+}
+
+.useFlash {
+    transform: translateZ(0);
+    height: 80%;
+    width: 80%;
+    position: absolute;
+    display: flex;
+    border-radius: 50%;
+        
+    animation-duration: .5s;
+    animation-iteration-count: 1;
+    animation-timing-function: ease-in-out;
+}
+
+.flashRow1 {
+    animation-name: useFlashAnimation1;
+}
+.flashRow2 {
+    animation-name: useFlashAnimation2;
+}
+.flashRow3 {
+    animation-name: useFlashAnimation3;
+}
+.flashRow4 {
+    animation-name: useFlashAnimation4;
+}
+.flashRow5 {
+    animation-name: useFlashAnimation5;
+}
+.flashRow6 {
+    animation-name: useFlashAnimation6;
+}
+
+.buttonCursor {
+    cursor: pointer;
+}
+
+.alignSelfCenter {
+    align-self: center;
+}
+
+@keyframes useFlashAnimation1 {    
+    35% {        
+        background-color: var(--low-performance-ability-animation-color-row1);
+        opacity: 1;     
+    }
+
+    100% {               
+        opacity: 0;
+    }
+}
+
+@keyframes useFlashAnimation2 {    
+    35% {        
+        background-color: var(--low-performance-ability-animation-color-row2);
+        opacity: 1;     
+    }
+
+    100% {               
+        opacity: 0;
+    }
+}
+
+@keyframes useFlashAnimation3 {    
+    35% {        
+        background-color: var(--low-performance-ability-animation-color-row3);
+        opacity: 1;     
+    }
+
+    100% {               
+        opacity: 0;
+    }
+}
+
+@keyframes useFlashAnimation4 {    
+    35% {        
+        background-color: var(--low-performance-ability-animation-color-row4);
+        opacity: 1;     
+    }
+
+    100% {               
+        opacity: 0;
+    }
+}
+
+@keyframes useFlashAnimation5 {    
+    35% {        
+        background-color: var(--low-performance-ability-animation-color-row5);
+        opacity: 1;     
+    }
+
+    100% {               
+        opacity: 0;
+    }
+}
+
+@keyframes useFlashAnimation6 {    
+    35% {        
+        background-color: var(--low-performance-ability-animation-color-row6);
+        opacity: 1;     
+    }
+
+    100% {               
+        opacity: 0;
+    }
 }

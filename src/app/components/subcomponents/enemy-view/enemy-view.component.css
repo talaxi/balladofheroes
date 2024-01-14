@@ -43,6 +43,10 @@
     border: 2px solid var(--monkColor);
 }
 
+.characterTargetedThaumaturge:hover {
+    border: 2px solid var(--thaumaturgeColor);
+}
+
 .characterTargetedAll:hover {    
     border: 2px solid;
     border-image:  linear-gradient(to right, var(--adventurerColor) 25%, var(--archerColor) 25%, var(--archerColor) 50%,
@@ -57,11 +61,25 @@
     /*position: absolute;*/
 }
 
+.healthName {
+    color: #07ba13;
+    margin-right: .5rem;
+}
+
+.lowPerfHpMpText {
+    font-size: 1rem;
+    font-weight: bold;
+}
+
 .hpMpText {
     font-size: .7925rem;
     font-weight: bold;
     /*position: absolute;
     right: .25rem;*/
+}
+
+.kod {
+    color: var(--kod-character);
 }
 
 .targetSpace {
@@ -179,15 +197,15 @@
 
 @media (max-width: 800px) {
     .characterBar {
-        width: 64%;
+        width: 62.75%;
     }
 
     .enemy {
-        grid-template-columns: 64% 1fr;
+        grid-template-columns: 62.75% 1fr;
     }
 
     .boss {
-        grid-template-columns: 82% 1fr;
+        grid-template-columns: 81% 1fr;
     }
 
     .hpMpText {

@@ -26,6 +26,11 @@ import { MenuService } from 'src/app/services/menu/menu.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
+import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
+import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
+import { TrialService } from 'src/app/services/battle/trial.service';
 
 @Component({
   selector: 'app-bestiary-view',
@@ -47,14 +52,17 @@ export class BestiaryViewComponent {
   availableTreasure: ResourceValue[] = [];
   tooltipDirection = DirectionEnum.DownRight;
   itemTooltipDirection = DirectionEnum.UpRight;
+  trialTooltipDirection = DirectionEnum.Left;
+  godEnum = GodEnum;
   overlayRef: OverlayRef;
   nameHiddenText = "????";
   shopOptions: ShopOption[] = [];
+  selectedTrialGod: GodEnum = GodEnum.None;
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private deviceDetectorService: DeviceDetectorService,
     private subzoneGeneratorService: SubZoneGeneratorService, private utilityService: UtilityService, public lookupService: LookupService,
     private dictionaryService: DictionaryService, private achievementService: AchievementService, private menuService: MenuService,
-    private layoutService: LayoutService) {
+    private layoutService: LayoutService, private enemyGeneratorService: EnemyGeneratorService, private trialService: TrialService) {
 
   }
 
@@ -107,9 +115,98 @@ export class BestiaryViewComponent {
     }
   }
 
+  getEnemyTrialBossWithScaledStats() {
+    var bestiaryItem = BestiaryEnum.None;
+
+    if (this.selectedTrialGod === GodEnum.Athena)
+      bestiaryItem = BestiaryEnum.Athena;
+    if (this.selectedTrialGod === GodEnum.Artemis)
+    bestiaryItem = BestiaryEnum.Artemis;
+    if (this.selectedTrialGod === GodEnum.Hermes)
+    bestiaryItem = BestiaryEnum.Hermes;
+    if (this.selectedTrialGod === GodEnum.Apollo)
+    bestiaryItem = BestiaryEnum.Apollo;
+    if (this.selectedTrialGod === GodEnum.Hades)
+    bestiaryItem = BestiaryEnum.Hades2;
+    if (this.selectedTrialGod === GodEnum.Ares)
+    bestiaryItem = BestiaryEnum.Ares;
+    if (this.selectedTrialGod === GodEnum.Nemesis)
+    bestiaryItem = BestiaryEnum.Nemesis;
+    if (this.selectedTrialGod === GodEnum.Dionysus)
+    bestiaryItem = BestiaryEnum.Dionysus;
+    if (this.selectedTrialGod === GodEnum.Zeus)
+    bestiaryItem = BestiaryEnum.Zeus;
+    if (this.selectedTrialGod === GodEnum.Poseidon)
+    bestiaryItem = BestiaryEnum.Poseidon;
+    if (this.selectedTrialGod === GodEnum.Hera)
+    bestiaryItem = BestiaryEnum.Hera;
+    if (this.selectedTrialGod === GodEnum.Aphrodite)
+    bestiaryItem = BestiaryEnum.Aphrodite;
+
+    var boss = this.enemyGeneratorService.generateEnemy(bestiaryItem);
+    boss = this.trialService.scaleTrialOfSkillBattle(boss);
+    return boss;
+  }
+
+  getSelectedGodName() {
+    return this.lookupService.getGodNameByType(this.selectedTrialGod);
+  }
+
+  getGodColorClass() {
+    return this.lookupService.getGodColorClass(this.selectedTrialGod);
+  }
+
+  getTrialGodDefeatCount() {
+    var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === this.selectedTrialGod);
+    if (trialType === undefined)
+      return 0;
+
+    return trialType.count;
+  }
+
+  isShopOptionTrialOfSkill(option: ShopOption) {
+    return option.type === ShopTypeEnum.Trials;
+  }
+
+  showTrialOfSkill(god: GodEnum) {
+    this.selectedTrialGod = god;
+  }
+
+  isGodAvailable(godType: GodEnum) {
+    var god = this.globalService.globalVar.gods.find(item => item.type === godType);
+    if (god === undefined)
+      return false;
+
+    return god.isAvailable;
+  }
+
+  getHighestXpsForTrialGod() {
+    var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === this.selectedTrialGod);
+    if (trialType === undefined)
+      return 0;
+
+    return this.utilityService.bigNumberReducer(trialType.highestXps);
+  }
+  
+  getHighestDpsForTrialGod() {
+    var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === this.selectedTrialGod);
+    if (trialType === undefined)
+      return 0;
+
+    return this.utilityService.bigNumberReducer(trialType.highestDps);
+  }
+
+  getHighestGodLevelsForTrialGod() {
+    var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === this.selectedTrialGod);
+    if (trialType === undefined)
+      return 0;
+
+    return trialType.highestGodLevelTotal;
+  }
+
   getShopOptions(type: SubZoneEnum) {
     this.shopOptions = this.subzoneGeneratorService.getShopOptions(type, this.globalService.globalVar.sidequestData);
-    this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story && item.type !== ShopTypeEnum.StoryScene24 && item.type !== ShopTypeEnum.StoryZeus && item.type !== ShopTypeEnum.IslandOfNaxos);
+    this.shopOptions = this.shopOptions.filter(item => item.type !== ShopTypeEnum.Story && item.type !== ShopTypeEnum.StoryScene24 && item.type !== ShopTypeEnum.Hephaestus && item.type !== ShopTypeEnum.StoryZeus && item.type !== ShopTypeEnum.IslandOfNaxos);
   }
 
   selectSubzone(type: SubZoneEnum) {
@@ -398,6 +495,10 @@ export class BestiaryViewComponent {
 
   getHighestXps(subzone: SubZone) {
     return this.utilityService.bigNumberReducer(subzone.maxXps);
+  }
+  
+  getHighestDps(subzone: SubZone) {
+    return this.utilityService.bigNumberReducer(subzone.maxDps);
   }
 
   itemIsMaterial(item: ItemsEnum) {

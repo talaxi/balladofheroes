@@ -14,6 +14,7 @@ export class UtilityService {
   public averageActiveTimeLimit = 1 * 60 * 60;
   public highActiveTimeLimit = 2 * 60 * 60;
   public veryHighActiveTimeLimit = 4 * 60 * 60;
+  public extremelyHighActiveTimeLimit = 8 * 60 * 60;
 
   public extraSpeedTimeLimit = 12 * 60 * 60;
   public patronExtraSpeedTimeLimit = 24 * 60 * 60;
@@ -25,6 +26,10 @@ export class UtilityService {
   public lowLoadingAccuracy = 10;
   public averageLoadingAccuracy = 5;
   public highLoadingAccuracy = 2;
+
+  public quickDoubleClickTiming = 250;
+  public averageDoubleClickTiming = 1000;
+  public longDoubleClickTiming = 5000;
 
   public quickAutoAttackSpeed = 6;
   public averageAutoAttackSpeed = 8;
@@ -58,6 +63,11 @@ export class UtilityService {
   public godPermanentStatGain2ObtainCap = 10;
   public godPermanentStatGain3ObtainCap = 10;
   public godPermanentStatGain4ObtainCap = 10;
+  public godPermanentStatGain5ObtainCap = 10;
+  public godPermanentStatGain6ObtainCap = 10;
+  public godPermanentStatGain7ObtainCap = 10;
+  public godPermanentStatGain8ObtainCap = 10;
+  public godPermanentDuoAbilityObtainCap = 10;
   public godPermanentAbility1ObtainCap = 10;
   public godPermanentPassiveObtainCap = 10;
   public godPermanentAbility2ObtainCap = 10;
@@ -70,6 +80,10 @@ export class UtilityService {
   public damageLinkBoost = 10;
   public nonDamageLinkBoost = 15;
   public linkCooldown = 15;
+
+  public zodiacGodXpBoost = .2;
+  public zodiacGodResetBoost = .2;
+  public zodiacGodStatBoost = .2;
 
   public firstAlchemyLevelCap = 25;
   public alchemyLevelCapGain = 25;
@@ -122,8 +136,12 @@ export class UtilityService {
   public largeAltarPrayChancePerFollower = .01;
 
   public genericRoundTo = 4; //rounds generic math values to 4 numbers after decimal
+  public genericShortRoundTo = 2; //rounds generic math values to 2 numbers after decimal
   public weeklyMeleeEntryCap = 7;
   public levelsNeededForAmbrosia = 50;
+
+  public trialAffinityXpGain = 200;
+  public timeFragmentEfficiency = .2;
 
   constructor(public sanitizer: DomSanitizer, public dialog: MatDialog) { }
 
@@ -258,6 +276,42 @@ export class UtilityService {
     return minutesDisplay + ":" + secondsDisplay;
   }
 
+  convertMillisecondsToMMSS(secondsRemaining: number) {
+    var hours = Math.floor(secondsRemaining / 3600);
+    var minutes = Math.floor((secondsRemaining / 60) - (hours * 60));
+    var seconds = (secondsRemaining - (hours * 60 * 60) - (minutes * 60));
+    var milliseconds = this.roundTo(secondsRemaining - Math.floor(secondsRemaining), 3);
+
+    var minutesDisplay = minutes.toString();
+    var secondsDisplay = Math.floor(seconds).toString();
+    var millisecondsDisplay = (milliseconds * 1000).toString();
+
+    if (minutes < 10) {
+      if (minutes < 1 || minutes > 59)
+        minutesDisplay = "00";
+      else
+        minutesDisplay = String(minutesDisplay).padStart(2, '0');
+    }
+
+    if (seconds < 10) {
+      if (seconds < 1 || seconds > 59)
+        secondsDisplay = "00";
+      else
+        secondsDisplay = String(secondsDisplay).padStart(2, '0');
+    }
+
+    //if (milliseconds)
+
+    if (milliseconds < 100 && milliseconds >= 10) {      
+      millisecondsDisplay = String(millisecondsDisplay).padStart(2, '0');            
+    }
+    else if (milliseconds < 10) {
+      millisecondsDisplay = String(millisecondsDisplay).padStart(3, '0');         
+    }
+
+    return minutesDisplay + ":" + secondsDisplay + "." + millisecondsDisplay;
+  }
+
   ordinalSuffixOf(i: number) {
     var j = i % 10,
       k = i % 100;
@@ -279,6 +333,10 @@ export class UtilityService {
 
   genericRound(value: number) {
     return this.roundTo(value, this.genericRoundTo);
+  }
+
+  genericShortRound(value: number) {
+    return this.roundTo(value, this.genericShortRoundTo);
   }
 
   //level 0 = 1
@@ -321,7 +379,7 @@ export class UtilityService {
       }
 
       reducedNumber += "M";
-    }    
+    }
     else if (this.getDigitCount(originalAmount) <= 12) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 9;
       reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);
@@ -331,7 +389,7 @@ export class UtilityService {
       }
 
       reducedNumber += "B";
-    }    
+    }
     else if (this.getDigitCount(originalAmount) <= 15) {
       var leadingNumberCount = this.getDigitCount(originalAmount) - 12;
       reducedNumber = originalAmount.toString().substring(0, leadingNumberCount);

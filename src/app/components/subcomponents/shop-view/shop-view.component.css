@@ -14,8 +14,8 @@
 
 .sortOptions {
   width: 70%;
-  display:flex;
-  justify-content: space-around;      
+  display: flex;
+  justify-content: space-around;
 }
 
 .filters {
@@ -45,7 +45,7 @@
 
 .autoProgressIcon {
   height: 1.1rem;
-  display:flex;
+  display: flex;
   vertical-align: middle;
 }
 
@@ -63,38 +63,45 @@ table tr td:nth-child(2n) {
 }
 
 table {
-    table-layout: fixed;
-    width: 100%;
-    height: 100%;
-    text-align: center;
+  table-layout: fixed;
+  width: 100%;
+  height: 100%;
+  text-align: center;
 }
 
 td {
-    width: 25%;
-    border: 1px solid rgba(0,0,0,.1);
-    padding: 1rem;
-    vertical-align: top;
-  }
-  
-  table tr td:last-child, table tr td:nth-last-child(2), table tr td:nth-last-child(3), table tr td:nth-last-child(4) {
-    border-bottom: none;
-  }
+  width: 25%;
+  border: 1px solid rgba(0, 0, 0, .1);
+  padding: 1rem;
+  vertical-align: top;
+}
 
-  table tr:nth-child(1) td:nth-child(-n+4) {
-    border-top: none;
-  }
-  
-  table tr td:nth-child(4n) { 
-    border-right: none;
-  }
+table tr td:last-child,
+table tr td:nth-last-child(2),
+table tr td:nth-last-child(3),
+table tr td:nth-last-child(4) {
+  border-bottom: none;
+}
 
-  table tr td:nth-child(4n-3) { 
-    border-left: none;
-  }
+table tr:nth-child(1) td:nth-child(-n+4) {
+  border-top: none;
+}
 
-  
+table tr td:nth-child(4n) {
+  border-right: none;
+}
+
+table tr td:nth-child(4n-3) {
+  border-left: none;
+}
+
+
 @media (max-width: 800px) {
- table {
-  height: unset;
- }
+  table {
+    height: unset;
+  }
+
+  .stackedButtons {
+    height: 4.5rem;
+  }
 }

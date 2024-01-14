@@ -1,0 +1,73 @@
+
+.defaultBallad,
+.defaultZone,
+.defaultSubzone {
+    color: var(--foreground-default);
+}
+
+.selectedBallad {
+    color: var(--foreground-secondary) !important;
+    font-weight: bold;
+}
+
+.miniTransparentHr {
+    width: 75%;
+    margin: auto;
+    padding: 0;
+    border: 0;
+    margin-top: .2rem;
+    border-top: 1px solid rgba(255, 255, 255, .25);
+}
+
+.balladView {
+    height: 100%;
+    display: grid;
+    grid-template-columns: 20% auto 1fr;
+    grid-template-rows: auto;
+    justify-content: stretch;
+    grid-template-areas:
+        "options vr info";
+}
+
+.options {
+    grid-area: options;
+}
+
+.info {
+    grid-area: info;
+}
+
+.vr {
+    display: flex;
+    height: 100%;
+}
+
+.spacer {
+    grid-area: vr;
+}
+
+.vrHr {
+    margin: 0 1rem;
+    padding: 0;
+    height: auto;
+}
+
+.zoneSpacer {
+    margin-left: .5rem;
+}
+
+.subzoneSpacer {
+    margin-left: 1rem;
+}
+
+@media (max-width: 800px) {
+    .balladView {
+        height: 100%;
+        display: grid;
+        grid-template-columns: 30% auto 1fr;
+        grid-template-rows: auto;
+        justify-content: stretch;
+        grid-template-areas:
+            "options vr info";
+    }
+}

@@ -7,5 +7,17 @@ export enum AchievementTypeEnum {
   TenSecondClear,
   FullHPClear,
   Complete,
-  FiveThousandVictories
+  FiveThousandVictories,
+  TenVictoriesAthena,
+  TenVictoriesArtemis,
+  TenVictoriesHermes,
+  TenVictoriesApollo,
+  TenVictoriesAres,
+  TenVictoriesHades,
+  TenVictoriesNemesis,
+  TenVictoriesDionysus,
+  TenVictoriesZeus,
+  TenVictoriesPoseidon,
+  TenVictoriesAphrodite,
+  TenVictoriesHera
 }

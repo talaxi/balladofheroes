@@ -1,15 +1,12 @@
 import { Injectable } from '@angular/core';
 import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count.model';
-import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
-import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
 import { GlobalService } from '../global/global.service';
@@ -98,7 +95,7 @@ export class ColiseumService {
                 if (hades!.level >= ability.requiredLevel)
                   ability.isAvailable = true;
               });
-              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your strength has impressed Hades, God of the Underworld. Hades will now assist you on your journey.");
+              this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Your strength has impressed Hades, God of the Underworld. Hades will now assist you on your journey.", this.globalService.globalVar);
             }
           }
           else {
@@ -107,7 +104,7 @@ export class ColiseumService {
           }
 
           if (this.globalService.globalVar.gameLogSettings.get("battleItemsRewards")) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item))) + "</strong>.");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item))) + "</strong>.", this.globalService.globalVar);
           }
         });
       }
@@ -119,7 +116,7 @@ export class ColiseumService {
           this.lookupService.gainResource(reward);
           this.lookupService.addLootToLog(reward.item, reward.amount, SubZoneEnum.ElysiumColiseum);
           if (this.globalService.globalVar.gameLogSettings.get("battleItemsRewards")) {
-            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item))) + "</strong>.");
+            this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You win <strong>" + reward.amount + " " + (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item))) + "</strong>.", this.globalService.globalVar);
           }
         });
       }
@@ -146,15 +143,15 @@ export class ColiseumService {
     if (type === ColiseumTournamentEnum.RiverLords) {
       tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HadesTrial);
     }
-    
+
     if (type === ColiseumTournamentEnum.HadesTrial) {
       tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HeroesOfYore1);
     }
-    
+
     if (type === ColiseumTournamentEnum.HeroesOfYore1) {
       tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.ElementalPressure);
     }
-    
+
     if (type === ColiseumTournamentEnum.ElementalPressure) {
       tournamentType = this.globalService.globalVar.coliseumDefeatCount.find(item => item.type === ColiseumTournamentEnum.HeroesOfYore2);
     }
@@ -369,26 +366,26 @@ export class ColiseumService {
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ElementalPressure && round === 1) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FlamingCorpse));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FlamingCorpse));
       battleOptions.push(enemyTeam);
-    }    
+    }
     if (type === ColiseumTournamentEnum.ElementalPressure && round === 2) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Exploder));
-      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Exploder));   
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Exploder));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ElementalPressure && round === 3) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.EnflamedNightmare));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.Exploder));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.MalignedSpirit));
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ElementalPressure && round === 4) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();      
+      var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PossessedArm));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PossessedArm));
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.PossessedLeg));
@@ -396,11 +393,11 @@ export class ColiseumService {
       battleOptions.push(enemyTeam);
     }
     if (type === ColiseumTournamentEnum.ElementalPressure && round === 5) {
-      var enemyTeam: EnemyTeam = new EnemyTeam();  
-      enemyTeam.isBossFight = true;    
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
       enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.FragmentOfChaos));
       battleOptions.push(enemyTeam);
-    }    
+    }
     if (type === ColiseumTournamentEnum.HeroesOfYore2 && round === 1) {
       var enemyTeam: EnemyTeam = new EnemyTeam();
       enemyTeam.isBossFight = true;
@@ -478,8 +475,8 @@ export class ColiseumService {
       enemyCount = 4;
     else if (round % 5 === 3)
       enemyCount = 3;
-    else    
-      enemyCount = this.utilityService.getRandomInteger(2, 3);  
+    else
+      enemyCount = this.utilityService.getRandomInteger(2, 3);
 
     var isBoss = false;
     if (round % 5 === 0)
@@ -502,7 +499,7 @@ export class ColiseumService {
       var expectedCharacterStats = new PrimaryStats(27000, 1050, 800, 1000, 900, 1500);
 
       if (round === 10)
-      expectedCharacterStats = new PrimaryStats(13500, 240, 192, 365, 450, 600);
+        expectedCharacterStats = new PrimaryStats(13500, 240, 192, 365, 450, 600);
 
       expectedCharacterStats.maxHp *= defensiveGrowthFactor ** (((round - 1) % 5));
       expectedCharacterStats.defense *= defensiveGrowthFactor ** (((round - 1) % 5));
@@ -538,25 +535,25 @@ export class ColiseumService {
 
       var enumValue = propertyValue as SubZoneEnum;
 
-      if (!this.findSubzone(enumValue)?.isAvailable || enumValue === SubZoneEnum.NemeaCountryRoadsOne) {        
+      if (!this.findSubzone(enumValue)?.isAvailable || enumValue === SubZoneEnum.NemeaCountryRoadsOne) {
         continue;
       }
 
       if (round <= 10) {
         if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Champion &&
-          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Gorgon && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Underworld) {          
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Gorgon && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Underworld) {
           continue;
         }
       }
       else if (round === 15) {
-        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo) {        
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo) {
           continue;
         }
       }
       //eventually add round limiter here when you have more stuff
       else {
         if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar &&
-          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors)) {        
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors)) {
           continue;
         }
       }
@@ -568,6 +565,12 @@ export class ColiseumService {
         });
     }
 
+    if (isBoss) {
+      /*this.getPatreonBosses().forEach(bossTeam => {
+        allRelevantEnemyParties.push(bossTeam);
+      });*/
+    }
+
     var rng = this.utilityService.getRandomInteger(0, allRelevantEnemyParties.length - 1);
     var selectedEnemyTeam = allRelevantEnemyParties[rng];
 
@@ -577,9 +580,9 @@ export class ColiseumService {
     var multipleEnemyModifier = 1;
     if (enemyCount === 2)
       multipleEnemyModifier = 1.25;
-      if (enemyCount === 3)
+    if (enemyCount === 3)
       multipleEnemyModifier = 1.5;
-      if (enemyCount === 4)
+    if (enemyCount === 4)
       multipleEnemyModifier = 1.75;
 
     if (isBoss) {
@@ -587,13 +590,13 @@ export class ColiseumService {
         multipleEnemyModifier *= 3;
       else {
         if (enemyCount === 1)
-        multipleEnemyModifier *= 1.15;
+          multipleEnemyModifier *= 1.15;
         if (enemyCount === 2)
-        multipleEnemyModifier *= 1.325;
+          multipleEnemyModifier *= 1.325;
         if (enemyCount === 3)
-        multipleEnemyModifier *= 1.5;
+          multipleEnemyModifier *= 1.5;
         if (enemyCount === 4)
-        multipleEnemyModifier *= 1.625;
+          multipleEnemyModifier *= 1.625;
 
       }
     }
@@ -638,7 +641,7 @@ export class ColiseumService {
       totalAgility += enemy.battleStats.agility;
       totalLuck += enemy.battleStats.luck;
       totalResistance += enemy.battleStats.resistance;
-    });    
+    });
 
     enemyTeam.enemyList.forEach(enemy => {
       enemy.battleStats.maxHp = Math.round(enemy.battleStats.maxHp * (expectedStats.maxHp / totalHp));
@@ -694,5 +697,52 @@ export class ColiseumService {
     });
 
     return returnBallad;
+  }
+
+  getPatreonBosses() {
+    var battleOptions: EnemyTeam[] = [];
+
+    //List Begin 
+    /*var enemyTeam: EnemyTeam = new EnemyTeam();
+    enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
+    battleOptions.push(enemyTeam);
+*/
+
+    //End of list
+
+    battleOptions.forEach(enemyTeam => {
+      enemyTeam.enemyList.forEach(enemy => {
+        var duplicateNameList = enemyTeam.enemyList.filter(item => item.name === enemy.name);
+        if (duplicateNameList.length > 1) {
+          var count = "A";
+          duplicateNameList.forEach(duplicateEnemy => {
+            if (duplicateEnemy.abilityList.length > 0) {
+              //go through user/target effects, look for caster, update name
+              duplicateEnemy.abilityList.forEach(ability => {
+                if (ability.userEffect.length > 0 && ability.userEffect.filter(item => item.caster !== "").length > 0) {
+                  ability.userEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                      effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+
+                if (ability.targetEffect.length > 0 && ability.targetEffect.filter(item => item.caster !== "").length > 0) {
+                  ability.targetEffect.filter(item => item.caster !== "").forEach(effect => {
+                    if (effect.caster === duplicateEnemy.name)
+                      effect.caster = duplicateEnemy.name + " " + count;
+                  });
+                }
+              })
+            }
+            duplicateEnemy.name += " " + count;
+
+            var charCode = count.charCodeAt(0);
+            count = String.fromCharCode(++charCode);
+          })
+        }
+      });
+    });
+
+    return battleOptions;
   }
 }

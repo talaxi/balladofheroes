@@ -1,6 +1,6 @@
 <div class="existingEquipment">
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedWeapon"><strong class="statLabel">Weapon:
+    <span customToolTip [isDelayed]="false" [isSmallTooltip]="true" [contentTemplate]="equippedWeapon"><strong class="statLabel">Weapon:
       </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Weapon)"></span>
     </span>
@@ -12,7 +12,7 @@
     </div>
   </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedShield"><strong class="statLabel">Shield:
+    <span customToolTip [isSmallTooltip]="true" [isDelayed]="false" [contentTemplate]="equippedShield"><strong class="statLabel">Shield:
       </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Shield)"></span></span>
     <div class="buttonOptions">
@@ -23,7 +23,7 @@
     </div>
   </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedArmor"><strong class="statLabel">Armor: </strong>
+    <span customToolTip [isDelayed]="false" [isSmallTooltip]="true" [contentTemplate]="equippedArmor"><strong class="statLabel">Armor: </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Armor)"></span></span>
     <div class="buttonOptions">
       <button class="buttonStyled" *ngIf="!canChangeEquipment && slottingAvailable(equipmentTypeEnum.Armor)"
@@ -33,7 +33,7 @@
     </div>
   </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedRightRing"><strong class="statLabel">Ring:
+    <span customToolTip [isDelayed]="false" [isSmallTooltip]="true" [contentTemplate]="equippedRightRing"><strong class="statLabel">Ring:
       </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Ring)"></span></span>
     <div class="buttonOptions">
@@ -44,7 +44,7 @@
     </div>
   </div>
   <div class="equipmentDiv">
-    <span customToolTip [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong class="statLabel">Necklace:
+    <span customToolTip [isSmallTooltip]="true" [isDelayed]="false" [contentTemplate]="equippedNecklace"><strong class="statLabel">Necklace:
       </strong>
       <span span class="statValue" [innerHtml]="getEquippedItemNameByType(equipmentTypeEnum.Necklace)"></span></span>
     <div class="buttonOptions">

@@ -148,6 +148,26 @@
     width: 3rem;
   }
   
+.buttonStyled {
+    background-color: var(--recipe-button-background-color);
+}
+
+.buttonStyled:hover {
+  background-color: var(--button-hover);
+}
+
+.favoriteIcon {
+    height: 100%;
+    width: 100%;
+}
+
+.favoriteButton {
+    margin-left: .5rem;
+    margin-right: .3rem;
+    height: 1.5rem;
+    vertical-align: bottom;
+    padding: .2rem;
+}
 
 @media (max-width: 800px) { 
     .offsetWidth {
@@ -158,15 +178,23 @@
         margin: .5rem;
         padding: .25rem;
         flex-direction: column;    
-        height: 60vh;
+        height: 64vh;
       }
 
     .column {
         height: 50%;
     }
 
+    .recipeList {
+        height: 40%;
+    }
+
     .mobileDivider {
         border-color: var(--foreground-accent);
         border-width: 3px;
+    }
+    
+    .favoriteButton {
+        margin-left: .375rem;
     }
 }

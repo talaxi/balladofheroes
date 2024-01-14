@@ -12,5 +12,8 @@ export enum EffectTriggerEnum {
   ChanceOnHeal,
   ChanceOnDotTick,
   ChanceOnDebuff,
-  WhenEnteringBattle
+  WhenEnteringBattle,
+  AfterTime,
+  ChanceWhenNonCriticalDamageTaken,
+  TargetAboveHpPercentAbility
 }

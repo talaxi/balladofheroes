@@ -2,7 +2,6 @@ import { Injectable } from '@angular/core';
 import { ProfessionActionsEnum } from 'src/app/models/enums/profession-actions-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
@@ -34,7 +33,7 @@ export class AlchemyService {
         alchemy.isUnlocked = true;
         alchemy.level = 1;
         alchemy.maxLevel += this.utilityService.firstAlchemyLevelCap;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy,  undefined, undefined, true, subzone));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Alchemy,  undefined, undefined, true, subzone), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
       }
     }
@@ -370,7 +369,7 @@ export class AlchemyService {
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
         var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo2x * 100) + "%</strong> chance to make 2x as many items when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
 
@@ -381,7 +380,7 @@ export class AlchemyService {
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
         var gameLogEntry = "The time it takes to create " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy Recipe is reduced by <strong>" + (additionalDurationReduction * 100) + "%</strong>.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
 
@@ -392,7 +391,7 @@ export class AlchemyService {
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
         var gameLogEntry = "You gain an additional <strong>" + (additionalChanceToRetainMaterials * 100) + "%</strong> chance to retain your ingredients when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
 
@@ -401,7 +400,7 @@ export class AlchemyService {
 
       if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
         var gameLogEntry = "You gain an additional <strong>" + (additionalChanceTo5x * 100) + "%</strong> chance to make 5x as many items when making " + (qualityName === "Uncommon" || qualityName === "Extraordinary" ? "an" : "a" ) + " " + qualityName + " quality Alchemy recipe.";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
       }
     }
 
@@ -410,7 +409,7 @@ export class AlchemyService {
   updateGameLogWithNewRecipe(type: ItemsEnum) {
     if (this.globalService.globalVar.gameLogSettings.get("alchemyLevelUp")) {
       var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.dictionaryService.getItemName(type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
     }
   }
 

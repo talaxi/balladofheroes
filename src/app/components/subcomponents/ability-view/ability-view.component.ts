@@ -4,6 +4,7 @@ import { Ability } from 'src/app/models/character/ability.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
+import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
@@ -30,6 +31,15 @@ export class AbilityViewComponent implements OnInit {
   isMobile: boolean = false;
   longPressStartTime = 0;
   verboseMode = false;
+  tooltipDirection = DirectionEnum.Right;
+  clickCount = 0;
+  doubleClickTiming = 300;
+  isAnimationActive: boolean = false; //for low performance mode
+  animationDuration: number = 0;
+  animationMaxDuration: number = 2;
+  animationSubscription: any;
+  previousProgress: number = 0;
+  showPercents: boolean;
 
   constructor(public lookupService: LookupService, private utilityService: UtilityService, private gameLoopService: GameLoopService,
     private globalService: GlobalService, private keybindService: KeybindService, private deviceDetectorService: DeviceDetectorService) { }
@@ -37,6 +47,11 @@ export class AbilityViewComponent implements OnInit {
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.verboseMode = this.globalService.globalVar.settings.get("verboseMode") ?? false;
+    this.doubleClickTiming = this.globalService.globalVar.settings.get("doubleClickTiming") ?? this.utilityService.quickDoubleClickTiming;
+    this.showPercents = this.globalService.globalVar.settings.get("showAbilityCooldownPercents") ?? true;    
+
+    if (this.isMobile)
+      this.tooltipDirection = DirectionEnum.Up;
 
     if (this.ability === undefined)
       this.autoMode = this.character.battleInfo.autoAttackAutoMode;
@@ -57,11 +72,80 @@ export class AbilityViewComponent implements OnInit {
           this.spinnerDivSubscription.unsubscribe();
       });
     }
+
+    if (this.globalService.globalVar.settings.get("fps") === this.utilityService.lowFps &&
+      this.globalService.globalVar.settings.get("showLowPerformanceAnimationFlash")) {
+      var row = this.getFlashRow();
+      var color = "#ff0000";
+      if (this.isAutoAttack) {
+        color = getComputedStyle(document.documentElement).getPropertyValue('--' + this.globalService.getCharacterColorClassText(this.character.type));
+      }
+      else {
+        if (this.god !== undefined)
+          color = getComputedStyle(document.documentElement).getPropertyValue('--' + this.globalService.getGodColorClassText(this.god));
+        else
+          color = getComputedStyle(document.documentElement).getPropertyValue('--' + this.globalService.getCharacterColorClassText(this.character.type));
+      }
+
+      document.documentElement.style.setProperty('--low-performance-ability-animation-color-row' + row, color);
+
+      this.animationSubscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
+        if (this.isAnimationActive) {
+          this.animationDuration += deltaTime;
+          if (this.animationDuration >= this.animationMaxDuration) {
+            this.animationDuration = 0;
+            this.isAnimationActive = false;
+          }
+        }
+
+        var progress = 0;
+        if (this.isAutoAttack) {
+          var timeToAutoAttack = this.globalService.getAutoAttackTime(this.character);
+          progress = (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
+        }
+        else
+          progress = 100 - ((this.ability.currentCooldown / this.globalService.getAbilityCooldown(this.ability, this.character)) * 100);
+
+        if (progress < this.previousProgress) {
+          this.isAnimationActive = true;
+          this.animationDuration = 0;
+        }
+
+        this.previousProgress = progress;
+      });
+    }
+  }
+
+  getFlashRow() {
+    var party = this.globalService.getActivePartyCharacters(true);
+    if (party === undefined || party.length === 0)
+      return 0;
+
+    if (this.character.type === party[0].type) {
+      if (this.isAutoAttack || this.god === undefined)
+        return 1;
+      else if (this.god === this.character.assignedGod1)
+        return 2;
+      else if (this.god === this.character.assignedGod2)
+        return 3;
+    }
+    else {
+      if (this.isAutoAttack || this.god === undefined)
+        return 4;
+      else if (this.god === this.character.assignedGod1)
+        return 5;
+      else if (this.god === this.character.assignedGod2)
+        return 6;
+    }
+
+    return 0;
   }
 
   getCharacterAutoAttackProgress() {
     var timeToAutoAttack = this.globalService.getAutoAttackTime(this.character);
-    return (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
+    var progress = (this.character.battleInfo.autoAttackTimer / timeToAutoAttack) * 100;
+    
+    return progress;
   }
 
   getAbilityProgress() {
@@ -69,7 +153,7 @@ export class AbilityViewComponent implements OnInit {
       return 0;
 
     var progress = 100 - ((this.ability.currentCooldown / this.globalService.getAbilityCooldown(this.ability, this.character)) * 100);
-
+    
     if (progress < 0)
       progress = 0;
 
@@ -118,6 +202,14 @@ export class AbilityViewComponent implements OnInit {
     }
   }
 
+  toggleAutoWeb() {
+    if (!this.isMobile) {
+      this.toggleAuto();
+    }
+
+    return false;
+  }
+
   toggleAuto() {
     this.autoMode = !this.autoMode;
     if (this.ability !== undefined) {
@@ -135,9 +227,36 @@ export class AbilityViewComponent implements OnInit {
       this.ability.manuallyTriggered = !this.ability.manuallyTriggered;
     else
       this.character.battleInfo.autoAttackManuallyTriggered = !this.character.battleInfo.autoAttackManuallyTriggered;
+
+    if (this.isMobile) {
+      this.clickCount += 1;
+      setTimeout(() => {
+        if (this.clickCount === 2) {
+          this.toggleAuto();
+        }
+        this.clickCount = 0;
+      }, this.doubleClickTiming)
+    }
   }
 
   getStrokeColor() {
+    if (this.god !== undefined) {
+      return this.lookupService.getGodColorClass(this.god);
+    }
+    else {
+      return this.lookupService.getCharacterColorClass(this.character.type);
+    }
+  }
+
+  getLowPerformanceProgress() {
+    var progress = (this.isAutoAttack ? this.getCharacterAutoAttackProgress() : this.getAbilityProgress());
+    if (progress > 100)
+      progress = 100;
+
+    return progress;
+  }
+
+  getProgressColor() {
     if (this.god !== undefined) {
       return this.lookupService.getGodColorClass(this.god);
     }
@@ -244,8 +363,15 @@ export class AbilityViewComponent implements OnInit {
       return "";
   }
 
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
+
   ngOnDestroy() {
     if (this.spinnerDivSubscription !== undefined)
       this.spinnerDivSubscription.unsubscribe();
+
+    if (this.animationSubscription !== undefined)
+      this.animationSubscription.unsubscribe();
   }
 }

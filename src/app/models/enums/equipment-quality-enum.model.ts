@@ -4,8 +4,7 @@ export enum EquipmentQualityEnum {
   Uncommon, //white
   Rare, //blue  
   Epic, //purple
-  Special, //green
-  Extraordinary, //orange
+  Special, //green  
   Unique, //red
-  
+  Extraordinary, //orange
 }

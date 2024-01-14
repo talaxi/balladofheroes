@@ -1,14 +1,12 @@
-
-
 .scrollable {
-    overflow-y: auto; 
+    overflow-y: auto;
     display: grid;
-    height: auto;    
+    height: auto;
     grid-template-columns: 25% 1fr 68%;
     grid-template-rows: auto;
-    column-gap: .5rem;    
+    column-gap: .5rem;
     grid-template-areas:
-        "balladList arrow zoneList";    
+        "balladList arrow zoneList";
 }
 
 
@@ -47,5 +45,13 @@
 @media (max-width: 800px) {
     .headerSpacing {
         min-width: 60%;
+    }
+
+    .scrollable {
+        grid-template-columns: 35% 1fr 56%;
+    }
+
+    .balladList {
+        text-align: center;
     }
 }

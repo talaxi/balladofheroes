@@ -34,7 +34,7 @@
         </div>
     </div>
     <div class="purchaseButton">
-        <button (click)="buyItem()" [disabled]="!canBuyItem() || outOfStock">Buy</button>
+        <button (click)="buyItem()" class="buttonStyled" [disabled]="!canBuyItem() || outOfStock">Buy{{buyMultiplier > 1 ? " x" + buyMultiplier : ""}}</button>
         <br/>
         <span><i>{{getCurrentlyOwnedAmount()}} owned</i></span>
     </div>

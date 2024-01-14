@@ -24,5 +24,7 @@ export enum TutorialTypeEnum {
   Traveler,
   ExtraSpeed,
   Enemies,
-  Link
+  Link,
+  TimeFragments,
+  Uniques
 }

@@ -1,8 +1,8 @@
 <div class="dps" class="s4Heading textCentered pageHeader dpsChecks">
-    <span class='smallText partyDps' customToolTip [contentTemplate]="dpsTemplate">
+    <span class='smallText partyDps' customToolTip [contentTemplate]="outgoingDpsTemplate">
         Party DPS: {{getPartyDps()}}
     </span>
-    <span class='smallText enemyDps' customToolTip [contentTemplate]="dpsTemplate">
+    <span class='smallText enemyDps' customToolTip [contentTemplate]="incomingDpsTemplate">
         Incoming DPS: {{getEnemyDps()}}
     </span>
     <span class='smallText xps' customToolTip [contentTemplate]="xpsTemplate">
@@ -11,7 +11,22 @@
 </div>
 
 
-<ng-template #dpsTemplate>
+<ng-template #outgoingDpsTemplate>
+    Damage Per Second is calculated over a 120 second period and is reset upon changing sub zones.
+    <br />
+    <br />
+    <!--<i class="bold smallCaps">characters</i>-->
+    <div [innerHtml]="characterDpsBreakdown(0)"></div>
+    <div class="marginLeft" [innerHtml]="godDpsBreakdown(0, 1)"></div>
+    <div class="marginLeft" [innerHtml]="godDpsBreakdown(0, 2)"></div>
+    <br />
+    <div [innerHtml]="characterDpsBreakdown(1)"></div>
+    <div class="marginLeft" [innerHtml]="godDpsBreakdown(1, 1)"></div>
+    <div class="marginLeft" [innerHtml]="godDpsBreakdown(1, 2)"></div>
+</ng-template>
+
+
+<ng-template #incomingDpsTemplate>
     Damage Per Second is calculated over a 120 second period and is reset upon changing sub zones.
 </ng-template>
 

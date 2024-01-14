@@ -9,6 +9,7 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
+import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
   selector: 'app-altar-overview',
@@ -33,7 +34,8 @@ export class AltarOverviewComponent implements OnInit {
   }
 
   constructor(public globalService: GlobalService, private gameLoopService: GameLoopService, private lookupService: LookupService,
-    private keybindService: KeybindService, private altarService: AltarService, private deviceDetectorService: DeviceDetectorService) { }
+    private keybindService: KeybindService, private altarService: AltarService, private deviceDetectorService: DeviceDetectorService,
+    private utilityService: UtilityService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
@@ -47,6 +49,10 @@ export class AltarOverviewComponent implements OnInit {
 
       this.altarEffectsActive = this.getAllAltarEffects() !== "";      
     });
+  }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
   }
 
   updateAltars() {
@@ -83,6 +89,26 @@ export class AltarOverviewComponent implements OnInit {
   getAltarBarClass(i: number) {
     return 'altarBar' + (i + 1);
   }
+  
+  getProgressTextColor(altarEffect: AltarEffect) {
+    if (altarEffect === undefined)
+      return {};
+
+    return {
+      'athenaColor': altarEffect.associatedGod === GodEnum.Athena,
+      'artemisColor': altarEffect.associatedGod === GodEnum.Artemis,
+      'hermesColor': altarEffect.associatedGod === GodEnum.Hermes,
+      'apolloColor': altarEffect.associatedGod === GodEnum.Apollo,
+      'zeusColor': altarEffect.associatedGod === GodEnum.Zeus,
+      'aresColor': altarEffect.associatedGod === GodEnum.Ares,
+      'hadesColor': altarEffect.associatedGod === GodEnum.Hades,
+      'poseidonColor': altarEffect.associatedGod === GodEnum.Poseidon,
+      'dionysusColor': altarEffect.associatedGod === GodEnum.Dionysus,
+      'nemesisColor': altarEffect.associatedGod === GodEnum.Nemesis,
+      'heraColor': altarEffect.associatedGod === GodEnum.Hera,
+      'aphroditeColor': altarEffect.associatedGod === GodEnum.Aphrodite
+    };
+  }
 
   getProgressColor(altarEffect: AltarEffect) {
     if (altarEffect === undefined)
@@ -98,7 +124,9 @@ export class AltarOverviewComponent implements OnInit {
       'hades-progress': altarEffect.associatedGod === GodEnum.Hades,
       'poseidon-progress': altarEffect.associatedGod === GodEnum.Poseidon,
       'dionysus-progress': altarEffect.associatedGod === GodEnum.Dionysus,
-      'nemesis-progress': altarEffect.associatedGod === GodEnum.Nemesis
+      'nemesis-progress': altarEffect.associatedGod === GodEnum.Nemesis,
+      'hera-progress': altarEffect.associatedGod === GodEnum.Hera,
+      'aphrodite-progress': altarEffect.associatedGod === GodEnum.Aphrodite
     };
   }
 

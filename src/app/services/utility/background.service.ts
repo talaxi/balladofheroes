@@ -20,16 +20,21 @@ import { GameLogService } from '../battle/game-log.service';
 import { FollowersService } from '../followers/followers.service';
 import { GlobalService } from '../global/global.service';
 import { LookupService } from '../lookup.service';
-import { AlchemyService } from '../professions/alchemy.service';
 import { ProfessionService } from '../professions/profession.service';
 import { UtilityService } from './utility.service';
 import { dotTypeEnum } from 'src/app/models/enums/damage-over-time-type-enum.model';
 import { OverdriveNameEnum } from 'src/app/models/enums/overdrive-name-enum.model';
 import { ElementalTypeEnum } from 'src/app/models/enums/elemental-type-enum.model';
-import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { DictionaryService } from './dictionary.service';
 import { EquipmentService } from '../resources/equipment.service';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { TrialService } from 'src/app/services/battle/trial.service';
+import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
+import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model';
+import { TimeFragmentRun } from 'src/app/models/utility/time-fragment-run.model';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
+import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 
 @Injectable({
   providedIn: 'root'
@@ -39,7 +44,8 @@ export class BackgroundService {
   constructor(private globalService: GlobalService, private battleService: BattleService, private utilityService: UtilityService,
     private professionService: ProfessionService, private followerService: FollowersService, private lookupService: LookupService,
     private gameLogService: GameLogService, private balladService: BalladService, private altarService: AltarService,
-    private dictionaryService: DictionaryService, private equipmentService: EquipmentService) { }
+    private dictionaryService: DictionaryService, private equipmentService: EquipmentService, private trialService: TrialService,
+    private subzoneGeneratorService: SubZoneGeneratorService) { }
 
   //global -- this occurs even when at a scene or in a town
   handleBackgroundTimers(deltaTime: number, isInTown: boolean) {
@@ -52,6 +58,7 @@ export class BackgroundService {
     this.handleFollowerPrayer(deltaTime);
     this.handleGlobalStatusEffectDurations(deltaTime);
     this.handleSparringMatchMultiplier(deltaTime);
+    this.handleTimeFragments(deltaTime);
     //this.handleMelete(deltaTime);
     var party = this.globalService.getActivePartyCharacters(true);
     var enemies: Enemy[] = [];
@@ -70,7 +77,6 @@ export class BackgroundService {
         this.battleService.handleHpRegen(partyMember, deltaTime);
         this.handleLinkCooldown(partyMember, deltaTime);
         this.battleService.handleStatusEffectDurations(true, partyMember, enemies, party, deltaTime);
-        this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
         this.checkForThornsGems(partyMember);
         this.checkGodStatuses(partyMember);
 
@@ -86,6 +92,7 @@ export class BackgroundService {
         if (!isInTown) {
           this.battleService.handleAutoAttackTimer(partyMember, deltaTime);
           this.handleAbilityCooldowns(partyMember, deltaTime);
+          this.battleService.checkForEquipmentEffect(EffectTriggerEnum.TriggersEvery, partyMember, this.battleService.getTarget(partyMember, enemies), party, enemies, deltaTime);
         }
       }
     });
@@ -289,6 +296,28 @@ export class BackgroundService {
         }
       }
 
+      if (effect.type === AltarEffectsEnum.AphroditeHealPartyOverTime || effect.type === AltarEffectsEnum.AphroditeRareHealPartyOverTime) {
+        party.forEach(member => {
+          var hpEffectiveness = this.lookupService.getAdjustedMaxHp(member, true) * (effect.effectiveness - 1);
+          this.battleService.gainHp(member, hpEffectiveness);
+        });
+      }
+
+      if (effect.type === AltarEffectsEnum.AphroditeRarePassionateRhythmOverTime) {
+        var memberWithAphrodite = party.find(item => item.assignedGod1 === GodEnum.Aphrodite || item.assignedGod2 === GodEnum.Aphrodite);
+        if (memberWithAphrodite !== undefined) {
+          var rng = this.utilityService.getRandomInteger(0, 1);
+          if (rng === 0) {
+            var passionateRhythm = this.globalService.createStatusEffect(StatusEffectEnum.PassionateRhythm, -1, effect.effectiveness, false, true);
+            this.battleService.applyStatusEffect(this.globalService.makeStatusEffectCopy(passionateRhythm), memberWithAphrodite, party, memberWithAphrodite);
+          }
+          else if (rng === 1) {
+            var passionateRhythm = this.globalService.createStatusEffect(StatusEffectEnum.PassionateRhythmAutoAttack, -1, effect.effectiveness, false, true);
+            this.battleService.applyStatusEffect(this.globalService.makeStatusEffectCopy(passionateRhythm), memberWithAphrodite, party, memberWithAphrodite);
+          }
+        }
+      }
+
       effect.tickTimer -= effect.tickFrequency;
     }
   }
@@ -328,13 +357,16 @@ export class BackgroundService {
 
     if (effect.type === AltarEffectsEnum.ApolloHeal) {
       if (party !== undefined && party.length > 0) {
-        party = party.sort(function (a, b) {
-          return a.battleStats.getHpPercent() > b.battleStats.getHpPercent() ? 1 :
-            a.battleStats.getHpPercent() < b.battleStats.getHpPercent() ? -1 : 0;
-        });
-        var target = party[0];
+        var lowestHpPartyMember: Character = party[0];
+        party.forEach(member => {
+          var CharAHpPercent = lowestHpPartyMember.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(lowestHpPartyMember, false, false);
+          var CharBHpPercent = member.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(member, false, false);
 
-        this.battleService.gainHp(target, effect.effectiveness);
+          if (CharBHpPercent < CharAHpPercent)
+            lowestHpPartyMember = member;
+        });
+
+        this.battleService.gainHp(lowestHpPartyMember, effect.effectiveness);
       }
     }
 
@@ -540,6 +572,41 @@ export class BackgroundService {
         }
       });
     }
+
+    if (effect.type === AltarEffectsEnum.AphroditeDealAttackDamageAll) {
+      if (enemies !== undefined && party !== undefined) {
+        var totalAttack = 0;
+        party.forEach(member => {
+          totalAttack += this.lookupService.getAdjustedAttack(member);
+        });
+        var damage = totalAttack * effect.effectiveness;
+
+        enemies.forEach(enemy => {
+          this.battleService.dealTrueDamage(true, enemy, damage);
+        });
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.AphroditeMaxHpUpAfter) {
+      party.forEach(member => {
+        this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.MaxHpUp, 10, effect.effectiveness, false, true), member, enemies);
+      });
+    }
+
+    if (effect.type === AltarEffectsEnum.HeraReduceEnemyDamageAfter) {
+      if (enemies !== undefined) {
+        var target = this.lookupService.getRandomPartyMember(enemies);
+        this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, effect.effectiveness, false, false), target, enemies);
+      }
+    }
+
+    if (effect.type === AltarEffectsEnum.HeraRareReduceAllEnemyDamageAfter) {
+      if (enemies !== undefined) {
+        enemies.forEach(member => {
+          this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.DamageDealtDown, 10, effect.effectiveness, false, false), member, enemies);
+        });
+      }
+    }
   }
 
   handleFollowerSearch(deltaTime: number) {
@@ -567,7 +634,7 @@ export class BackgroundService {
           if (rng <= chance) {
             var foundReward = new ResourceValue(reward.item, rewardAmount);
             if (this.globalService.globalVar.gameLogSettings.get("followerSearch")) {
-              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.dictionaryService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".");
+              this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerSearch, "Your followers found <strong>" + foundReward.amount + " " + this.dictionaryService.getItemName(foundReward.item) + "</strong> while searching " + zoneName + ".", this.globalService.globalVar);
             }
             this.lookupService.addLootToLog(foundReward.item, foundReward.amount, SubZoneEnum.Follower);
             this.lookupService.gainResource(foundReward);
@@ -689,6 +756,20 @@ export class BackgroundService {
       character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.DispenserOfDues)) {
       character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.DispenserOfDues);
     }
+
+    if ((character.assignedGod1 === GodEnum.Hera || character.assignedGod2 === GodEnum.Hera) &&
+      !character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Shapeshift)) {
+      var shapeshift = this.lookupService.characterHasAbility("Shapeshift", character);
+      if (shapeshift !== undefined) {
+        var copy = this.globalService.makeStatusEffectCopy(shapeshift.userEffect[0]);
+        copy.effectiveness = 1;
+        this.battleService.applyStatusEffect(copy, character);
+      }
+    }
+    if ((character.assignedGod1 !== GodEnum.Hera && character.assignedGod2 !== GodEnum.Hera) &&
+      character.battleInfo.statusEffects.some(item => item.type === StatusEffectEnum.Shapeshift)) {
+      character.battleInfo.statusEffects = character.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Shapeshift);
+    }
   }
 
   checkForThornsGems(character: Character) {
@@ -730,5 +811,172 @@ export class BackgroundService {
       if (this.globalService.globalVar.sidequestData.sparringMatchMultiplier < 1)
         this.globalService.globalVar.sidequestData.sparringMatchMultiplier = 1;
     }
+  }
+
+  handleTimeFragments(deltaTime: number) {
+    if (this.globalService.globalVar.timeFragmentRuns === undefined || this.globalService.globalVar.timeFragmentRuns.length === 0)
+      return;
+
+    this.globalService.globalVar.timeFragmentRuns.forEach(run => {
+      run.timer += deltaTime;
+      var lootInfo: [number, number, [ItemsEnum, number][]] | undefined = undefined;
+      while (run.timer >= run.clearTime) {
+        if (lootInfo === undefined)
+          lootInfo = this.getTimeFragmentCondensedRewards(run);
+
+        //gain xp
+        var xpGain = lootInfo[0];
+        this.globalService.giveCharactersExp(this.globalService.getActivePartyCharacters(true), xpGain);
+
+        //gain coins
+        var coinGain = lootInfo[1];
+        this.lookupService.gainResource(new ResourceValue(ItemsEnum.Coin, coinGain));
+
+        //gain rewards
+        var lootOptions = lootInfo[2];
+        if (lootOptions.length > 0) {
+          lootOptions.forEach(loot => {
+            var rng = this.utilityService.getRandomNumber(0, 1);
+            var lootChance = loot[1];
+
+            var lootRateEffect = this.globalService.globalVar.globalStatusEffects.find(item => item.type === StatusEffectEnum.LootRateUp);
+            if (lootRateEffect !== undefined) {
+              lootChance = lootChance * lootRateEffect.effectiveness;
+            }
+
+            if (rng <= lootChance) {
+              if (this.lookupService.isItemUnique(loot[0])) {
+                var existingUnique = this.globalService.globalVar.uniques.find(item => item.type === loot[0]);
+                if (existingUnique !== undefined) {
+                  this.lookupService.giveUniqueXp(existingUnique, 1);
+                }
+              }
+              else
+                this.lookupService.gainResource(new ResourceValue(loot[0], 1));
+            }
+          });
+        }
+
+        run.timer -= run.clearTime;
+      }
+    });
+  }
+
+  getTimeFragmentCondensedRewards(run: TimeFragmentRun): [number, number, [ItemsEnum, number][]] {
+    var enemyOptions: EnemyTeam[] = [];
+    var lootOptions: [ItemsEnum, number][] = []; //item, rate divided by number of teams
+    var finalLootOptions: [ItemsEnum, number][] = []; //compress the list so duplicates are combined
+    var xpList: number[] = [];
+    var coinList: number[] = [];
+    var xpGained = 0;
+    var coinsGained = 0;
+    var fragmentEfficiency = .2;
+
+    if (run.selectedTrial !== undefined) {
+      var trialType: TrialDefeatCount | undefined;
+      if (run.selectedTrial === TrialEnum.TrialOfSkill) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+      }
+      else {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
+      }
+
+      var trial = this.dictionaryService.getTrialInfoFromType(run.selectedTrial);
+      enemyOptions = this.trialService.generateBattleOptions(trial);
+      enemyOptions.forEach(enemyTeam => {
+        var teamXp = 0;
+        var teamCoins = 0;
+
+        enemyTeam.enemyList.forEach(enemy => {
+          var partySizeXpMultiplier = 1;
+          if (enemyTeam.enemyList.length === 2)
+            partySizeXpMultiplier = 1.15;
+          if (enemyTeam.enemyList.length === 3)
+            partySizeXpMultiplier = 1.3;
+          if (enemyTeam.enemyList.length === 4)
+            partySizeXpMultiplier = 1.45;
+
+          teamXp += enemy.xpGainFromDefeat * partySizeXpMultiplier;
+          teamCoins += enemy.coinGainFromDefeat;
+
+          if (enemy.loot !== undefined && enemy.loot.length > 0) {
+            enemy.loot.forEach(loot => {
+              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
+                loot.item === ItemsEnum.LightningAbsorptionPotionRecipe || loot.item === ItemsEnum.EarthAbsorptionPotionRecipe || loot.item === ItemsEnum.HolyAbsorptionPotionRecipe ||
+                loot.item === ItemsEnum.AirAbsorptionPotionRecipe || loot.item === ItemsEnum.PoisonExtractPotionRecipe || loot.item === ItemsEnum.PotentConcoctionRecipe)
+                return;
+
+              lootOptions.push([loot.item, (loot.chance * loot.amount * fragmentEfficiency) / enemyOptions.length]);
+            });
+          }
+        });
+
+        xpList.push(teamXp);
+        coinList.push(teamCoins);
+      });
+    }
+    else if (run.selectedSubzone !== undefined) {
+      enemyOptions = this.subzoneGeneratorService.generateBattleOptions(run.selectedSubzone);
+      enemyOptions.forEach(enemyTeam => {
+        var teamXp = 0;
+        var teamCoins = 0;
+
+        enemyTeam.enemyList.forEach(enemy => {
+          var partySizeXpMultiplier = 1;
+          if (enemyTeam.enemyList.length === 2)
+            partySizeXpMultiplier = 1.15;
+          if (enemyTeam.enemyList.length === 3)
+            partySizeXpMultiplier = 1.3;
+          if (enemyTeam.enemyList.length === 4)
+            partySizeXpMultiplier = 1.45;
+
+          teamXp += enemy.xpGainFromDefeat * partySizeXpMultiplier;
+          teamCoins += enemy.coinGainFromDefeat;
+
+          if (enemy.loot !== undefined && enemy.loot.length > 0) {
+            enemy.loot.forEach(loot => {
+              if (loot.item === ItemsEnum.GoldenApple || loot.item === ItemsEnum.FireAbsorptionPotionRecipe || loot.item === ItemsEnum.WaterAbsorptionPotionRecipe ||
+                loot.item === ItemsEnum.LightningAbsorptionPotionRecipe || loot.item === ItemsEnum.EarthAbsorptionPotionRecipe || loot.item === ItemsEnum.HolyAbsorptionPotionRecipe ||
+                loot.item === ItemsEnum.AirAbsorptionPotionRecipe || loot.item === ItemsEnum.PoisonExtractPotionRecipe || loot.item === ItemsEnum.PotentConcoctionRecipe)
+                return;
+
+              lootOptions.push([loot.item, (loot.chance * loot.amount * fragmentEfficiency) / enemyOptions.length]);
+            });
+          }
+        });
+
+        xpList.push(teamXp);
+        coinList.push(teamCoins);
+      });
+      
+      var treasureChestRewards = this.subzoneGeneratorService.getTreasureChestRewards(run.selectedSubzone);
+      if (treasureChestRewards !== undefined && treasureChestRewards.length > 0 && run.selectedSubzone !== SubZoneEnum.AigosthenaUpperCoast
+        && run.selectedSubzone !== SubZoneEnum.AigosthenaBay && run.selectedSubzone !== SubZoneEnum.AigosthenaLowerCoast  && run.selectedSubzone !== SubZoneEnum.DodonaMountainOpening) {
+        var chance = this.subzoneGeneratorService.generateTreasureChestChance(run.selectedSubzone);        
+        treasureChestRewards.forEach(reward => {
+          lootOptions.push([reward.item, chance * fragmentEfficiency * reward.amount]);
+        });
+      }
+    }
+
+    var xpSum = xpList.reduce(function (acc, cur) { return acc + cur; });
+    xpGained = this.utilityService.genericShortRound(xpSum / xpList.length);
+
+    var coinSum = coinList.reduce(function (acc, cur) { return acc + cur; });
+    coinsGained = this.utilityService.genericShortRound(coinSum / coinList.length);
+
+    lootOptions.forEach(loot => {
+      var lootOption = finalLootOptions.find(item => item[0] === loot[0]);
+      if (lootOption !== undefined) {
+        lootOption[1] += loot[1];
+      }
+      else {
+        finalLootOptions.push(loot);
+      }
+    });
+
+
+    return [xpGained * fragmentEfficiency, coinsGained * fragmentEfficiency, finalLootOptions];
   }
 }

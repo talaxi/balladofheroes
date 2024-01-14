@@ -41,6 +41,10 @@
     animation-timing-function: ease-in-out;
 }
 
+.xpColor {
+    font-size: .85rem;
+}
+
 @keyframes levelUpAnimation {    
     25% {        
         transform: scale(1.1);   

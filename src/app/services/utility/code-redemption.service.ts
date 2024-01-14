@@ -76,7 +76,7 @@ export class CodeRedemptionService {
               this.lookupService.gainResource(reward);
               var itemName = (reward.amount === 1 ? this.dictionaryService.getItemName(reward.item) : this.utilityService.handlePlural(this.dictionaryService.getItemName(reward.item)));
               parsedRewardsText += "+<strong>" + reward.amount + " " + itemName + "</strong><br/>";
-              this.gameLogService.updateGameLog(GameLogEntryEnum.CodeRedemption, "You receive <strong>" + reward.amount + " " + itemName + "</strong> from a redeemed code.");
+              this.gameLogService.updateGameLog(GameLogEntryEnum.CodeRedemption, "You receive <strong>" + reward.amount + " " + itemName + "</strong> from a redeemed code.", this.globalService.globalVar);
             }
           });
 

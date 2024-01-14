@@ -1,4 +1,4 @@
-import { Component, TemplateRef, ViewChild } from '@angular/core';
+import { Component, ViewChild } from '@angular/core';
 import { plainToInstance } from 'class-transformer';
 import { GlobalVariables } from './models/global/global-variables.model';
 import { GameLoopService } from './services/game-loop/game-loop.service';
@@ -9,23 +9,20 @@ import { DeploymentService } from './services/deployment/deployment.service';
 import { BattleService } from './services/battle/battle.service';
 import { BalladService } from './services/ballad/ballad.service';
 import { InitializationService } from './services/global/initialization.service';
-import { TownService } from './services/town.service';
 import { BackgroundService } from './services/utility/background.service';
 import { MatDialog as MatDialog, MatDialogRef as MatDialogRef } from '@angular/material/dialog';
 import { UtilityService } from './services/utility/utility.service';
 import { SubZone } from './models/zone/sub-zone.model';
 import { LookupService } from './services/lookup.service';
 import { StoryService } from './services/story/story.service';
-import { ColiseumTournamentEnum } from './models/enums/coliseum-tournament-enum.model';
 import { OptionalSceneEnum } from './models/enums/optional-scene-enum.model';
 import { VersionControlService } from './services/utility/version-control.service';
 import { GameLogService } from './services/battle/game-log.service';
 declare var LZString: any;
 import { ActivatedRoute, Router } from '@angular/router';
-import { loadStripe } from '@stripe/stripe-js';
-import { Stripe } from 'stripe';
-import { SubZoneEnum } from './models/enums/sub-zone-enum.model';
 import { DpsCalculatorService } from './services/battle/dps-calculator.service';
+import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
+import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 
 @Component({
   selector: 'app-root',
@@ -40,6 +37,7 @@ export class AppComponent {
   saveFrequency = 5; //in seconds
   catchupDialog: MatDialogRef<unknown, any> | undefined = undefined;
   @ViewChild('confirmationBox') confirmationBox: any;
+  @ViewChild('ticketsBox') ticketsBox: any;
 
   constructor(private globalService: GlobalService, private gameLoopService: GameLoopService, private gameSaveService: GameSaveService,
     private deploymentService: DeploymentService, private battleService: BattleService, private initializationService: InitializationService,
@@ -50,7 +48,7 @@ export class AppComponent {
 
   }
 
-  ngOnInit() {    
+  ngOnInit() {
     var compressedGameData = localStorage.getItem("theBalladOfHeroesFinalGameData");
 
     if (compressedGameData !== null && compressedGameData !== undefined) {
@@ -62,7 +60,7 @@ export class AppComponent {
         this.loadStartup();
 
         //if (this.globalService.globalVar.betaSave)
-          //this.newGame = true;
+        //this.newGame = true;
       }
     }
 
@@ -85,12 +83,12 @@ export class AppComponent {
     if (devMode) {
       this.initializationService.devMode();
     }
-
+    
     this.checkForSupporterConfirmation();
     this.versionControlService.updatePlayerVersion(true);
 
     var lastPerformanceNow = 0;
-    var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {      
+    var subscription = this.gameLoopService.gameUpdateEvent.subscribe(async (deltaTime: number) => {
       deltaTime = this.utilityService.roundTo(deltaTime, 5);
       var checkupPerformanceNow = performance.now();
 
@@ -144,10 +142,10 @@ export class AppComponent {
   updateGameState(deltaTime: number, activeSubzone: SubZone) {
     var originalDeltaTime = deltaTime;
     deltaTime = this.handleShortTermCatchUpTime(deltaTime, activeSubzone);
-    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.lookupService.userNotInTownBattle();    
+    var isInTown = this.balladService.isSubzoneTown(activeSubzone.type) && this.lookupService.userNotInTownBattle();
     //vv not used anymore I think
     //if (Math.abs(deltaTime - originalDeltaTime) < this.getBatchRunTime(activeSubzone, deltaTime))
-      //this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
+    //this.dpsCalculatorService.bonusTime += deltaTime - originalDeltaTime;
 
     //this runs regardless of battle state
     //console.log("originalDeltaTime: " + originalDeltaTime + " New: " + deltaTime);
@@ -158,7 +156,7 @@ export class AppComponent {
     else
       this.globalService.globalVar.timers.townHpGainTimer = 0;
 
-    this.battleService.handleBattle(deltaTime, this.loading);  
+    this.battleService.handleBattle(deltaTime, this.loading);
   }
 
   loadStartup() {
@@ -174,7 +172,7 @@ export class AppComponent {
   }
 
   handleShortTermCatchUpTime(deltaTime: number, subzone: SubZone) {
-    var activeTimeLimit = this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.lowActiveTimeLimit; 
+    var activeTimeLimit = this.globalService.globalVar.settings.get("loadingTime") ?? this.utilityService.lowActiveTimeLimit;
 
     if (deltaTime > activeTimeLimit) {
       //this.globalService.globalVar.extraSpeedTimeRemaining += deltaTime - activeTimeLimit;
@@ -185,21 +183,21 @@ export class AppComponent {
     if (this.globalService.globalVar.extraSpeedEnabled)
       deltaTime *= 2;
 
-      /*
-    //if (!this.globalService.globalVar.isCatchingUp) {
-      if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && //deltaTime < this.utilityService.activeTimeLimit / 2 &&
-        this.globalService.globalVar.extraSpeedEnabled) {          
-        if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
-          deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
-          this.globalService.globalVar.extraSpeedTimeRemaining = 0;          
-        }
-        else {
-          this.globalService.globalVar.extraSpeedTimeRemaining -= deltaTime;
-          deltaTime *= 2;
-          doubleSpeedActive = true;
-        }
+    /*
+  //if (!this.globalService.globalVar.isCatchingUp) {
+    if (this.globalService.globalVar.extraSpeedTimeRemaining > 0 && //deltaTime < this.utilityService.activeTimeLimit / 2 &&
+      this.globalService.globalVar.extraSpeedEnabled) {          
+      if (this.globalService.globalVar.extraSpeedTimeRemaining < deltaTime) {
+        deltaTime += this.globalService.globalVar.extraSpeedTimeRemaining;
+        this.globalService.globalVar.extraSpeedTimeRemaining = 0;          
       }
-    //}*/
+      else {
+        this.globalService.globalVar.extraSpeedTimeRemaining -= deltaTime;
+        deltaTime *= 2;
+        doubleSpeedActive = true;
+      }
+    }
+  //}*/
 
     //cap extra speed after you deduct the catch up speed amount
     /*var timeLimit = this.utilityService.extraSpeedTimeLimit;
@@ -212,7 +210,7 @@ export class AppComponent {
 
     var batchTime = this.getBatchRunTime(subzone, deltaTime); //runs the game in batches of 5 seconds max    
     //user was afk, run battle in batches until you're caught up
-    if (deltaTime > batchTime) {      
+    if (deltaTime > batchTime) {
       this.lookupService.isUIHidden = true;
       this.globalService.globalVar.isCatchingUp = true;
       this.gameLogService.disableOverlayBuffer = true;
@@ -220,7 +218,7 @@ export class AppComponent {
       deltaTime = batchTime;
 
       if (this.globalService.bankedTime > this.globalService.maxBankedTime)
-      this.globalService.maxBankedTime = this.globalService.bankedTime;
+        this.globalService.maxBankedTime = this.globalService.bankedTime;
     }
 
     if (deltaTime < batchTime && this.globalService.bankedTime > 0) {
@@ -230,8 +228,8 @@ export class AppComponent {
         this.dpsCalculatorService.bonusTime += this.globalService.bankedTime;
         this.globalService.bankedTime = 0;
         this.globalService.maxBankedTime = 0;
-        this.lookupService.isUIHidden = false;        
-        this.globalService.globalVar.isCatchingUp = false;        
+        this.lookupService.isUIHidden = false;
+        this.globalService.globalVar.isCatchingUp = false;
         this.gameLogService.disableOverlayBuffer = false;
         this.gameSaveService.saveGame();
 
@@ -256,7 +254,7 @@ export class AppComponent {
   }
 
   getBatchRunTime(subzone: SubZone, totalDeltaTime: number) {
-    var batchRunTime = this.globalService.globalVar.settings.get("loadingAccuracy") ?? this.utilityService.averageLoadingAccuracy;    
+    var batchRunTime = this.globalService.globalVar.settings.get("loadingAccuracy") ?? this.utilityService.averageLoadingAccuracy;
 
     if (this.balladService.isSubzoneTown(subzone.type) && this.lookupService.userNotInTownBattle())
       batchRunTime = 30;
@@ -277,26 +275,24 @@ export class AppComponent {
         return;
 
       var checkoutConfirmation = params.co;
-
-      //TODO: This is my test version key and needs to be replaced with prod version on github when the time comes      
-      var stripe = new Stripe(environment.STRIPESECRET, {
-        apiVersion: '2022-11-15'
-      });
-
-      if (stripe === undefined)
-        return;
-
-      var session = await stripe.checkout.sessions.retrieve(checkoutConfirmation);
-
-      var createdMilliseconds = session.created * 1000;
-      var expirationDate = new Date(createdMilliseconds).setHours(new Date(createdMilliseconds).getHours() + 24);
-
-      //if we can confirm user paid, the user paid within 24 hours to verify nothing weird is going on with passing links,
-      //and that the user hasn't already received rewards
-      if (session.payment_status === 'paid' && new Date() <= new Date(expirationDate) && !this.globalService.globalVar.isSubscriber) {
+      
+      if (checkoutConfirmation === environment.SQUARE_SUPPORTER && !this.globalService.globalVar.isSubscriber) {
         setAsSubscriber = true;
-        this.globalService.setAsSubscriber(new Date(createdMilliseconds));
+        this.globalService.setAsSubscriber(new Date());
+
+        this.openSubscriberModal();
       }
+      else if (checkoutConfirmation === environment.SQUARE_ETERNAL_MELEE_TICKETS) {
+        var ticketMultiplier = 1;
+        if (this.globalService.globalVar.isSubscriber)
+          ticketMultiplier = 2;
+
+        var additionalTickets = this.utilityService.weeklyMeleeEntryCap * ticketMultiplier;
+
+        this.lookupService.gainResource(new ResourceValue(ItemsEnum.EternalMeleeTicket, additionalTickets));
+        this.openTicketsModal();
+      }
+
       this.gameSaveService.saveGame();
       this.router.navigate(
         [],
@@ -306,13 +302,17 @@ export class AppComponent {
           queryParamsHandling: '',
           replaceUrl: true
         });
-
-        this.openSubscriberModal();
     });
-  }
+  }  
 
   openSubscriberModal() {
     var dialog = this.dialog.open(this.confirmationBox, { width: '50%' });
+
+    return dialog;
+  }
+
+  openTicketsModal() {
+    var dialog = this.dialog.open(this.ticketsBox, { width: '50%' });
 
     return dialog;
   }

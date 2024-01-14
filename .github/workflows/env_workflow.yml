@@ -24,6 +24,8 @@ jobs:
         STRIPESECRET: ${{ secrets.STRIPESECRET }}
         PATREONCLIENTID: ${{ secrets.PATREONCLIENTID }}
         PATREONCLIENTSECRET: ${{ secrets.PATREONCLIENTSECRET }}
+        SQUARE_ETERNAL_MELEE_TICKETS: ${{ secrets.SQUARE_ETERNAL_MELEE_TICKETS }}
+        SQUARE_SUPPORTER: ${{ secrets.SQUARE_SUPPORTER }}
     
     - name: Upload Artifact
       uses: actions/upload-pages-artifact@v0

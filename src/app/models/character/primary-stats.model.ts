@@ -27,11 +27,4 @@ export class PrimaryStats {
 
         return copy;
     }
-
-    getHpPercent(asPercent: boolean = false) {
-        if (asPercent)
-            return (this.currentHp / this.maxHp) * 100;
-        else
-            return this.currentHp / this.maxHp;
-    }
 }

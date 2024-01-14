@@ -1,5 +1,5 @@
 <div *ngIf="character !== undefined" class="characterInfo"
-   (click)="useBattleItemOnCharacter(character); characterTargetEnemy(character);" [ngClass]="getTargetClass()">
+   (click)="useBattleItemOnCharacter(character); characterTargetEnemy(character);" (dblclick)="mobileAllTarget(character)" [ngClass]="getTargetClass()">
     <span class="flex spaceBetween">
         <span class="targetSpace" *ngIf="isBoss">
         </span>
@@ -13,12 +13,12 @@
             <img *ngIf="bothCharactersTargeting" class="targetIcon secondTarget" [src]="getSecondCharacterTargeting()">
         </span>
     </span>
-    <div [ngClass]="{'boss': isBoss, 'enemy': !isBoss}">
+    <div *ngIf="notLowPerformanceMode()" [ngClass]="{'boss': isBoss, 'enemy': !isBoss}">
         <div class="hpBarSpace hpBarGrid" #hpBar>
-            <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
+            <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getCharacterHpPercent(character)"
                 class="green-progress characterBar hpBar highBar" [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
-            <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
+            <mat-progress-bar *ngIf="notLowPerformanceMode() && getCharacterBarrierValue(character) > 0" mode="determinate"
                 [value]="getCharacterBarrierPercent(character)" class="barrier-progress characterBar hpBar highBar"
                 [ngClass]="{'removeAnimation': showNewEnemyGroupAnimation }">
             </mat-progress-bar>
@@ -26,6 +26,14 @@
         <span class="hpMpText hpAmount" *ngIf="!showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
             {{getCharacterMaxHp()}}<br /></span>
             <span class="hpMpText hpAmount textCentered enemyHpPercentMarginRight" *ngIf="showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character) | number : '1.2-2'}}%</span><br /></span>
+    </div>
+    <div *ngIf="!notLowPerformanceMode()" class="lowPerfHpMpText">                            
+        <span class="bold smallCaps healthName statLabel">
+            health:
+        </span>
+        <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="statValue hpAmount" *ngIf="!showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterCurrentHp()}}</span> /
+            {{getCharacterMaxHp()}}<br /></span>
+            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="statValue hpAmount textCentered enemyHpPercentMarginRight" *ngIf="showEnemyHpAsPercent"><span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character) | number : '1.2-2'}}%</span><br /></span>
     </div>
     <div class="fullHeight">
         <app-status-effect-view [character]="character"></app-status-effect-view>

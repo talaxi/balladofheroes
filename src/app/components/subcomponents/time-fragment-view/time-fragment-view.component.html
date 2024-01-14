@@ -1,0 +1,141 @@
+<div class="centeredText mainPageSectionHeader">
+    <span class="s2Heading timeFragmentText timeFragmentColor">Time Fragments</span>
+</div>
+<br />
+<span class="centeredText">For each Time Fragment you possess, you can select a subzone or battle to automatically run
+    in the background at <b>20% efficiency</b>.
+    The speed of each run will be determined by your highest DPS for that subzone or battle.</span>
+<br />
+<br />
+<hr />
+<!--<div *ngFor="let run of timeFragmentRuns; let i = index">-->
+<div class="centeredText" *ngFor="let _ of [].constructor(availableFragments); let rowIndex = index">
+    <span *ngIf = "(timeFragmentRuns.length - 1) < rowIndex" class="bold s6Heading timeFragmentText">Available Time Fragment</span>
+    <span *ngIf = "(timeFragmentRuns.length - 1) >= rowIndex" [innerHtml]="getRunDetails(timeFragmentRuns[rowIndex])"></span>
+    <button class="buttonStyled screenMarginLeft" (click)="removeTimeFragment(timeFragmentRuns[rowIndex])" *ngIf = "(timeFragmentRuns.length - 1) >= rowIndex">X</button>
+    <hr class="miniTransparentHr" *ngIf="rowIndex < availableFragments-1" />
+</div>
+
+<hr />
+<div *ngIf="availableBallads.length === 0 && !anyTrialAvailable()">
+    To use a Time Fragment on a subzone, you must first complete all achievements for that subzone. <span *ngIf="ifVersionPriorTo75()">(If you are playing save data that began prior to version 0.75, you will need to get 1 more victory in subzones you have already completed.)</span>
+</div>
+<div class="balladView">
+    <div class="options">
+        <div class="trialList" *ngIf="anyTrialAvailable()">
+            <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                [ngClass]="{'selectedBallad': trialsExpanded}" (click)="expandTrials()">Trials
+            </button>
+            <div *ngIf="trialsExpanded">
+                <div *ngIf="isTrialAvailable(trialEnum.TrialOfSkill)">
+                    <span class="zoneSpacer">&#8618;</span><button
+                        class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                        [ngClass]="getTrialClass(trialEnum.TrialOfSkill)"
+                        (click)="selectTrial(trialEnum.TrialOfSkill)">
+                        <span *ngIf="!isMobile">Trial of Skill</span>
+                        <span *ngIf="isMobile">Skill</span>
+                    </button>
+                </div>
+                <div *ngIf="isTrialAvailable(trialEnum.TrialOfTheStarsNormal)">
+                    <span class="zoneSpacer">&#8618;</span><button
+                        class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                        [ngClass]="getTrialClass(trialEnum.TrialOfTheStarsNormal)"
+                        (click)="selectTrial(trialEnum.TrialOfTheStarsNormal)">
+                        <span *ngIf="!isMobile">Trial of the Stars (Normal)</span>
+                        <span *ngIf="isMobile">Stars (Normal)</span>
+                    </button>
+                    <br />
+                </div>
+                <div *ngIf="isTrialAvailable(trialEnum.TrialOfTheStarsHard)">
+                    <span class="zoneSpacer">&#8618;</span><button
+                        class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                        [ngClass]="getTrialClass(trialEnum.TrialOfTheStarsHard)"
+                        (click)="selectTrial(trialEnum.TrialOfTheStarsHard)">
+                        <span *ngIf="!isMobile">Trial of the Stars (Hard)</span>
+                        <span *ngIf="isMobile">Stars (Hard)</span>
+                    </button>
+                    <br />
+                </div>
+                <div *ngIf="isTrialAvailable(trialEnum.TrialOfTheStarsVeryHard)">
+                    <span class="zoneSpacer">&#8618;</span><button
+                        class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                        [ngClass]="getTrialClass(trialEnum.TrialOfTheStarsVeryHard)"
+                        (click)="selectTrial(trialEnum.TrialOfTheStarsVeryHard)">
+                        <span *ngIf="!isMobile">Trial of the Stars (Very Hard)</span>
+                        <span *ngIf="isMobile">Stars (Very Hard)</span>
+                    </button>
+                </div>
+            </div>
+        </div>
+        <div class="balladList">
+            <div class="eachBallad" *ngFor="let ballad of availableBallads">
+                <div *ngIf="!isBalladSelected(ballad)">
+                    <button class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading defaultBallad"
+                        [ngClass]="getBalladClass(ballad)"
+                        (click)="selectBallad(ballad)">{{isMobile ? balladService.getShortBalladName(ballad) : balladService.getBalladName(ballad)}}
+                    </button>
+                </div>
+                <div *ngIf="isBalladSelected(ballad)" [ngClass]="{'flexBetween': !isMobile}">
+                    <button
+                        class="textLeftAligned buttonAsTextKeepColor clickableText z1Heading selected defaultBallad"><strong
+                            [ngClass]="getBalladClass(ballad)">{{isMobile ? balladService.getShortBalladName(ballad) : balladService.getBalladName(ballad)}}</strong></button>
+                    <div class="zoneList">
+                        <div *ngFor="let zone of availableZones">
+                            <div *ngIf="!isZoneSelected(zone)">
+                                <span class="zoneSpacer">&#8618;</span><button
+                                    class="buttonAsTextKeepColor z2Heading clickableText defaultZone"
+                                    [ngClass]="getZoneClass(zone)" (click)="selectZone(zone)">{{getZoneName(zone)}}
+                                </button>
+                            </div>
+                            <div *ngIf="isZoneSelected(zone)">
+                                <span class="zoneSpacer">&#8618;</span><button
+                                    class="buttonAsTextKeepColor z2Heading clickableText selected defaultZone"><strong
+                                        [ngClass]="getZoneClass(zone)">{{getZoneName(zone)}}</strong></button>
+                                <div *ngFor="let subzone of availableSubzones">
+                                    <div *ngIf="!isSubzoneSelected(subzone)">
+                                        <span class="subzoneSpacer">&#8618;</span><span><button
+                                                class="buttonAsTextKeepColor z3Heading clickableText defaultSubzone"
+                                                [ngClass]="getSubzoneClass(subzone)"
+                                                (click)="selectSubzone(subzone)">{{getSubzoneName(subzone)}}
+                                            </button>
+                                        </span>
+                                    </div>
+                                    <div *ngIf="isSubzoneSelected(subzone)">
+                                        <strong><button
+                                                class="buttonAsTextKeepColor z3Heading clickableText selected defaultSubzone"><span
+                                                    class="subzoneSpacer">&#8618;</span><strong><span
+                                                        [ngClass]="getSubzoneClass(subzone)">{{getSubzoneName(subzone)}}
+                                                    </span></strong></button></strong>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div *ngIf="!(availableBallads.length === 0 && !anyTrialAvailable())" class="spacer">
+        <div class="vr">
+            <hr class="vrHr" />
+        </div>
+    </div>
+
+    <div class="textCentered" *ngIf="itemIsSelected()">
+        <span class="bold s6Heading" [innerHtml]="getSelectedItemName()"></span>
+        <br />
+        <span [innerHtml]="getSelectedItemDps()"></span>
+        <br />
+        <br />
+        Estimated Rewards:
+        <br />
+        <span [innerHtml]="getSelectedEstimatedRewards()"></span>
+        <br />
+        <span *ngIf="selectedTrial !== undefined"><i>Rewards will shift as the Trial god changes every 30 minutes.
+                You will not gain any rewards while a god is selected that you have not defeated.</i></span>
+        <br />
+        <br />
+        <button class="buttonStyled" [disabled]="!isFragmentAvailableToAdd()" (click)="selectTimeFragmentRun()">Select</button>
+    </div>
+</div>

@@ -10,7 +10,7 @@
                 <span [innerHtml]="getClassDescription(1)"></span>
                 <br />
                 <br />
-                <button (click)="swapClass(1)">Swap</button>
+                <button class="buttonStyled" (click)="swapClass(1)">Swap</button>
             </div>
         </div>
         <div class="vr">
@@ -26,7 +26,7 @@
                 <span [innerHtml]="getClassDescription(2)"></span>
                 <br />
                 <br />
-                <button (click)="swapClass(2)">Swap</button>
+                <button class="buttonStyled" (click)="swapClass(2)">Swap</button>
             </div>
         </div>
     </div>
@@ -42,7 +42,7 @@
                     <span [innerHtml]="getClassDescription(undefined, c.type)"></span>
                     <br />
                     <br />
-                    <button *ngIf="swapClass !== undefined" [disabled]="currentlyAssignedToSameCharacter(c.type)"
+                    <button *ngIf="swapClass !== undefined" class="buttonStyled" [disabled]="currentlyAssignedToSameCharacter(c.type)"
                         (click)="selectNewClass(c.type)">Select</button>
                 </td>
             </tr>

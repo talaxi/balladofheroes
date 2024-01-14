@@ -8,7 +8,9 @@ export const environment = {
   CODEREDEMPTIONSECRET: 'testsecret',
   STRIPESECRET: 'teststripe',
   PATREONCLIENTID: 'patreonclientid',
-  PATREONCLIENTSECRET: 'patreonclientsecret'
+  PATREONCLIENTSECRET: 'patreonclientsecret',
+  SQUARE_ETERNAL_MELEE_TICKETS: 'SQUARE_ETERNAL_MELEE_TICKETS',
+  SQUARE_SUPPORTER: 'SQUARE_SUPPORTER'
 };
 
 /*

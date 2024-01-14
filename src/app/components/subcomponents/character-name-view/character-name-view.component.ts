@@ -38,7 +38,7 @@ export class CharacterNameViewComponent implements OnInit {
   removeBarTransition: boolean = true;
 
   constructor(public lookupService: LookupService, private globalService: GlobalService, private menuService: MenuService,
-    private layoutService: LayoutService, private utilityService: UtilityService, private deploymentService: DeploymentService,
+    private layoutService: LayoutService, public utilityService: UtilityService, private deploymentService: DeploymentService,
     private gameLoopService: GameLoopService, private battleService: BattleService, private keybindService: KeybindService,
     private deviceDetectorService: DeviceDetectorService) { }
 
@@ -87,6 +87,14 @@ export class CharacterNameViewComponent implements OnInit {
     this.removeBarTransition = false;
   }
 
+  getCharacterXp() {
+    return this.utilityService.bigNumberReducer(this.character.exp);
+  }
+  
+  getCharacterXpToNextLevel() {
+    return this.utilityService.bigNumberReducer(this.character.expToNextLevel);
+  }
+  
   isButtonActive() {
     if (this.battleService.targetbattleItemMode && this.battleService.isTargetableWithItem(this.character, false)) {
       return false;
@@ -206,6 +214,10 @@ export class CharacterNameViewComponent implements OnInit {
   getCharacterDps() {
     return this.lookupService.getCharacterDps(this.character);
   }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
+  }
 
   isTargetActivate() {
     return this.battleService.targetCharacterMode && this.battleService.characterInTargetMode === this.character.type;
@@ -232,6 +244,8 @@ export class CharacterNameViewComponent implements OnInit {
       src += "priestTarget.svg";
       if (this.character.type === CharacterEnum.Monk)
       src += "monkTarget.svg";
+      if (this.character.type === CharacterEnum.Thaumaturge)
+      src += "thaumaturgeTarget.svg";
 
       return src;
   }

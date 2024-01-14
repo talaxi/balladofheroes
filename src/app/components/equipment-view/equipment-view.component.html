@@ -47,7 +47,7 @@
       <hr />
       <div *ngIf="itemToSellSelected" class="sellItem">
         <span>Selling {{sellAmount}}x <span [innerHtml]="getEquipmentNameFromEquipment(itemToSell)"></span> for
-          <strong>{{(itemToSellPrice * sellAmount)}}</strong> coins</span>
+          <strong>{{(itemToSellPrice * sellAmount) | number : '1.0-2'}}</strong> coins</span>
         <br />
         <br />
         <div class="flex">
@@ -75,10 +75,10 @@
 
   <ng-template #template>
     <div class="compareEquipment">
-      <span class="item">
+      <span class="item item1">
         <app-equipment-item-view [equipment]="hoveredItem" [associatedResource]="hoveredItemAsResource" [character]="character"></app-equipment-item-view>
       </span>
-      <span class="item comparedEquipmentItem">
+      <span class="item item2 comparedEquipmentItem">
         <app-equipment-item-view [equipment]="getEquippedComparisonItem()" [associatedResource]="getEquippedComparisonItemAsResource()" [character]="character"></app-equipment-item-view>
       </span>
     </div>

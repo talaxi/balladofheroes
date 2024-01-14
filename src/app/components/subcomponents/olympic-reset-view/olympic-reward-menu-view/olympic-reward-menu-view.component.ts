@@ -3,6 +3,7 @@ import { DeviceDetectorService } from 'ngx-device-detector';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
+import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 
@@ -20,12 +21,13 @@ export class OlympicRewardMenuViewComponent {
   equipmentItemRows: ShopItem[][];
   equipmentItemCells: ShopItem[];
 
-  constructor(private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService, private lookupService: LookupService) {
+  constructor(private subzoneGeneratorService: SubZoneGeneratorService, private deviceDetectorService: DeviceDetectorService, private lookupService: LookupService,
+    private globalService: GlobalService) {
     
   }
 
   ngOnInit() {
-    var allItems = this.subzoneGeneratorService.getAvailableOlympianRewardOptions();
+    var allItems = this.subzoneGeneratorService.getAvailableOlympianRewardOptions(this.globalService.globalVar.resources, this.globalService.globalVar.isSubscriber, this.globalService.globalVar.gods);
     this.equipmentItems = allItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) === ItemTypeEnum.Equipment);
     this.shopItems = allItems.filter(item => this.lookupService.getItemTypeFromItemEnum(item.shopItem) !== ItemTypeEnum.Equipment);
     this.setupDisplayShopItems();

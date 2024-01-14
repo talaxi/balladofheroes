@@ -1,7 +1,7 @@
 <div class="centeredText mainPageSectionHeader">
     <span class="s2Heading alchemyColor">Alchemy</span>
     <br />
-    <span>Level {{getLevel()}}</span>
+    <span customToolTip [contentTemplate]="maxLevelPopover">Level {{getLevel()}}</span>
     <br />
     <span *ngIf="!atMaxLevel()">{{getExp() | number : '1.0-0'}} / {{getExpToNextLevel() | number : '1.0-0'}} XP to Level
         {{getLevel() + 1}}</span>
@@ -14,9 +14,12 @@
         *ngIf="this.getTotalAmountToCreate() > 1"><i>({{this.getAmountCreated() + 1}} of
             {{this.getTotalAmountToCreate()}})</i></span>
     <br />
-    <mat-progress-bar mode="determinate" [value]="getStepProgress()"
+    <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getStepProgress()"
         class="purple-progress centeredBar removeAnimation removeTransition">
     </mat-progress-bar>
+    <div *ngIf="!notLowPerformanceMode()" class="textCentered bold alchemyText">
+        {{getStepProgress() | number : '1.0-0'}}%
+    </div>
     <span><i>{{getRecipeStepName()}}.. ({{getTimeRemaining()}} remaining)</i></span>
 </div>
 <div class="centeredText" *ngIf="!creatingRecipe()">
@@ -28,7 +31,23 @@
         <span class="centeredText mainPageSectionHeader">recipe book</span>
         <br />        
         <div class="recipeBookBackground">
-            <div class="scrollable">                
+            <div class="scrollable">  
+                <div>
+                    <div class="recipeSectionTitle">
+                        <button (click)="toggleFavorites()" class="buttonStyled smallButtonStyled recipeSectionToggle">{{hideFavoriteRecipes() ? "+" : "-"}}</button> <span
+                            class="smallCaps bold recipeSection">Favorites</span>
+                            <hr class="recipeSectionEnder"/>
+                    </div>
+                    <div *ngFor="let recipe of favoriteRecipeList; let i = index" (click)="selectRecipe(recipe)" class="recipeItem"
+                        [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem,
+                                    'hide': hideFavoriteRecipes()}">
+                                    <button class="buttonStyled favoriteButton" (click)="favoriteRecipe(recipe)"><img class="favoriteIcon" [src]="getFavoriteIcon(recipe)"></button>
+                        <button class="buttonAsText clickableText recipeItemButton"
+                            [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}"
+                            [innerHtml]="getCraftedItemName(recipe)"></button>
+                        <hr class="noMargin" *ngIf="i !== favoriteRecipeList.length - 1" />
+                    </div>
+                </div>              
                 <div [ngClass]="{'hide': recipesAtQualityLevelAmount(qualityType) === 0}"
                     *ngFor="let qualityType of getQualityTypeList()">
                     <br />
@@ -40,6 +59,7 @@
                     <div *ngFor="let recipe of getRecipeList(qualityType); let i = index" (click)="selectRecipe(recipe)" class="recipeItem"
                         [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem,
                                     'hide': hideRecipesByQuality(qualityType)}">
+                                    <button class="buttonStyled favoriteButton" (click)="favoriteRecipe(recipe)"><img class="favoriteIcon" [src]="getFavoriteIcon(recipe)"></button>
                         <button class="buttonAsText clickableText recipeItemButton"
                             [ngClass]="{'active': selectedRecipe !== undefined && selectedRecipe.createdItem === recipe.createdItem}"
                             [innerHtml]="getCraftedItemName(recipe)"></button>
@@ -84,7 +104,7 @@
                     <input class="customNumberWidth" (focus)="inTextbox()" (blur)="outOfTextbox()" (change)="useCustomAmount()" type="text" maxlength="30" [(ngModel)]="customCreateAmount" />
             </div>
             <br />
-            <button [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
+            <button class="buttonStyled" [disabled]="!canCreateItem()" (click)="createSelectedRecipe()">Create</button>
             <br />
             <span><i>{{getSelectedRecipeCurrentlyOwnedAmount()}} owned</i></span>
         </div>
@@ -93,4 +113,11 @@
 
 <ng-template #confirmationBox>
     <app-confirmation-box></app-confirmation-box>
+</ng-template>
+
+
+<ng-template #maxLevelPopover>
+    <div>
+        <span class="description">Level {{getLevel()}} / {{getMaxLevel()}}</span>
+    </div>    
 </ng-template>

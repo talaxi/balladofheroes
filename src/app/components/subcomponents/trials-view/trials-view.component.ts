@@ -1,16 +1,17 @@
-import { Component } from '@angular/core';
+import { Component, HostListener } from '@angular/core';
 import { MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { Trial } from 'src/app/models/battle/trial.model';
 import { Enemy } from 'src/app/models/character/enemy.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
+import { DpsCalculatorService } from 'src/app/services/battle/dps-calculator.service';
 import { TrialService } from 'src/app/services/battle/trial.service';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
 @Component({
@@ -21,21 +22,43 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 export class TrialsViewComponent {
   selectedTrial: Trial;
   repeatTrialFight: boolean = false;
+  repeatStarTrialFight: boolean = false;
   tooltipDirection = DirectionEnum.Left;
   isMobile: boolean = false;
   resolveEnemies: Enemy[] = [];
+  starsEnemies: Enemy[] = [];
+  trials: TrialEnum[] = [];
+
+  @HostListener('window:keyup', ['$event'])
+  keyEvent(event: KeyboardEvent) {
+    var keybinds = this.globalService.globalVar.keybinds;
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuUp"))) {
+      this.toggleSubMenuOptions(-1);
+    }
+
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("menuTraverseSubMenuDown"))) {
+      this.toggleSubMenuOptions(1);
+    }
+    
+    if (this.keybindService.doesKeyMatchKeybind(event, keybinds.get("triggerAction"))) {
+      this.startTrial();
+    }
+  }
 
   constructor(private trialService: TrialService, private globalService: GlobalService, public dialog: MatDialog,
     private lookupService: LookupService, private utilityService: UtilityService, private dictionaryService: DictionaryService,
-    private enemyGeneratorService: EnemyGeneratorService, private deviceDetectorService: DeviceDetectorService) { }
+    private enemyGeneratorService: EnemyGeneratorService, private deviceDetectorService: DeviceDetectorService,
+    private keybindService: KeybindService, private dpsCalculatorService: DpsCalculatorService) { }
 
   ngOnInit(): void {
     this.isMobile = this.deviceDetectorService.isMobile();
     this.resolveEnemies = this.getTrialEnemies();
     this.repeatTrialFight = this.globalService.globalVar.settings.get("repeatTrialFight") ?? false;
-    var standardTrials = this.getStandardTrials();
-    if (standardTrials.length > 0)
-      this.selectedTrial = this.dictionaryService.getTrialInfoFromType(standardTrials[0]);
+    this.repeatStarTrialFight = this.globalService.globalVar.settings.get("repeatStarTrialFight") ?? false;
+    this.trials = this.getStandardTrials();
+    if (this.trials.length > 0)
+      this.selectedTrial = this.dictionaryService.getTrialInfoFromType(this.trials[0]);
   }
 
   getStandardTrials() {
@@ -54,12 +77,29 @@ export class TrialsViewComponent {
     return Trials;
   }
 
+  getTrialOfTheStarsEnemies() {    
+    var battleOptions = this.trialService.generateBattleOptions(this.selectedTrial);    
+    if (battleOptions !== undefined && battleOptions.length >= 1)
+      return this.trialService.generateBattleOptions(this.selectedTrial)[0].enemyList;
+
+    return [];
+  }
+
   isTrialOfResolve() {
     return this.selectedTrial.type === TrialEnum.TrialOfResolve;
+  }
+  isTrialOfTheStars() {
+    return this.selectedTrial.type === TrialEnum.TrialOfTheStarsNormal || this.selectedTrial.type === TrialEnum.TrialOfTheStarsHard ||
+      this.selectedTrial.type === TrialEnum.TrialOfTheStarsVeryHard;
+  }
+  isTrialOfSkill() {
+    return this.selectedTrial.type === TrialEnum.TrialOfSkill;
   }
 
   chooseTrial(trial: TrialEnum) {
     this.selectedTrial = this.dictionaryService.getTrialInfoFromType(trial);
+    if (trial === TrialEnum.TrialOfTheStarsNormal || trial === TrialEnum.TrialOfTheStarsHard || trial === TrialEnum.TrialOfTheStarsVeryHard)
+      this.starsEnemies = this.getTrialOfTheStarsEnemies();
   }
 
   getTrialName(type?: TrialEnum) {
@@ -71,11 +111,15 @@ export class TrialsViewComponent {
   }
 
   getTrialDescription() {
-    return "Do battle with a random god of Olympus. If you succeed, you will receive a buff increasing XP and Item Drop Rate for a duration of time. Gods may also drop Nectar and their respective Ring and Armor. You will not be able to change classes or gods during the trial.";
+    return "Do battle with a random god of Olympus. Their stats scale with your primary stats and total equipped god levels. If you succeed, you will receive a buff increasing XP and Item Drop Rate for a duration of time. Gods may also drop Nectar and their respective Ring and Armor. You will not be able to change classes or gods during the trial.";
   }
 
   getTrialOfResolveDescription() {
     return "Work your way through all stages of the Trial of Resolve to obtain Ambrosia, coins, and more!";
+  }
+
+  getTrialOfTheStarsDescription() {
+    return "Challenge the patron of the current Zodiac sign and gain special rewards!";
   }
 
   getTrialOfResolveStage() {
@@ -102,7 +146,6 @@ export class TrialsViewComponent {
     return boss;
   }
 
-
   getGodColorClass(name: string) {
     return {
       'athenaColor': name === "Athena",
@@ -114,7 +157,9 @@ export class TrialsViewComponent {
       'hermesColor': name === "Hermes",
       'hadesColor': name === "Hades",
       'dionysusColor': name === "Dionysus",
-      'nemesisColor': name === "Nemesis"
+      'nemesisColor': name === "Nemesis",
+      'aphroditeColor': name === "Aphrodite",
+      'heraColor': name === "Hera"
     };
   }
 
@@ -126,11 +171,16 @@ export class TrialsViewComponent {
   }
 
   startTrial() {
+    this.dpsCalculatorService.rollingAverageTimer = 0;
+    this.dpsCalculatorService.partyDamagingActions = [];
+    this.dpsCalculatorService.enemyDamagingActions = [];
+    this.dpsCalculatorService.xpGain = [];
+
     this.globalService.startTrial(this.selectedTrial);
     this.dialog.closeAll();
   }
 
-  getTrialEnemies() {
+  getTrialEnemies() {    
     return this.trialService.getTrialOfResolveBattle().enemyList;
   }
 
@@ -158,5 +208,21 @@ export class TrialsViewComponent {
 
   repeatTrialFightToggle() {
     this.globalService.globalVar.settings.set("repeatTrialFight", this.repeatTrialFight);
+  }
+  
+  repeatStarTrialFightToggle() {
+    this.globalService.globalVar.settings.set("repeatStarTrialFight", this.repeatStarTrialFight);
+  }
+
+  toggleSubMenuOptions(direction: number) {    
+    var currentIndex = this.trials.findIndex(item => item === this.selectedTrial.type);
+    currentIndex += direction;
+
+    if (currentIndex < 0)
+      currentIndex = this.trials.length - 1;
+    if (currentIndex > this.trials.length - 1)
+      currentIndex = 0;
+    
+    this.chooseTrial(this.trials[currentIndex]);
   }
 }

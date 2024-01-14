@@ -4,7 +4,6 @@ import { Character } from "../character/character.model";
 import { God } from "../character/god.model";
 import { CharacterEnum } from "../enums/character-enum.model";
 import { ItemsEnum } from "../enums/items-enum.model";
-import { Alchemy } from "../professions/alchemy.model";
 import { FreeTreasureChests } from "../resources/free-treasure-chests.model";
 import { ResourceValue } from "../resources/resource-value.model";
 import { ChthonicPowers } from "../utility/chthonic-powers.model";
@@ -21,6 +20,7 @@ import { AltarInfo } from "../altar/altar-info.model";
 import { AltarEffect } from "../altar/altar-effect.model";
 import { OptionalSceneEnum } from "../enums/optional-scene-enum.model";
 import { ColiseumDefeatCount } from "../battle/coliseum-defeat-count.model";
+import { TrialDefeatCount } from "../battle/trial-defeat-count.model";
 import { Altars } from "../altar/altars.model";
 import { SidequestData } from "../utility/sidequest-data.model";
 import { FollowerData } from "../followers/follower-data.model";
@@ -29,6 +29,8 @@ import { Profession } from "../professions/profession.model";
 import { Melete } from "../melete/melete.model";
 import { Loadout } from "../utility/loadout.model";
 import { StatusEffect } from "../battle/status-effect.model";
+import { Uniques } from "../resources/uniques.model";
+import { TimeFragmentRun } from "../utility/time-fragment-run.model";
 
 export class GlobalVariables {
     lastTimeStamp: number;
@@ -85,6 +87,8 @@ export class GlobalVariables {
     enemyDefeatCount: EnemyDefeatCount[];
     @Type(() => ColiseumDefeatCount)
     coliseumDefeatCount: ColiseumDefeatCount[];
+    @Type(() => TrialDefeatCount)
+    trialDefeatCount: TrialDefeatCount[];
     @Type(() => Altars)
     altars: Altars;
     optionalScenesViewed: OptionalSceneEnum[];
@@ -105,6 +109,10 @@ export class GlobalVariables {
     loadouts: Loadout[];
     @Type(() => StatusEffect)
     globalStatusEffects: StatusEffect[];
+    @Type(() => Uniques)
+    uniques: Uniques[];
+    @Type(() => TimeFragmentRun)
+    timeFragmentRuns: TimeFragmentRun[];
 
     constructor() {
         this.lastTimeStamp = 0;
@@ -118,6 +126,7 @@ export class GlobalVariables {
         this.trackedResources = [];
         this.enemyDefeatCount = [];
         this.coliseumDefeatCount = [];
+        this.trialDefeatCount = [];
         this.itemBeltSize = 1;
         this.totalAchievementsCompleted = 0;
         this.playerNavigation = new PlayerNavigation();
@@ -146,5 +155,7 @@ export class GlobalVariables {
         this.globalStatusEffects = [];
         this.partyMember1Hidden = false;
         this.partyMember2Hidden = false;
+        this.uniques = [];
+        this.timeFragmentRuns = [];
     }
 }

@@ -11,7 +11,9 @@ const envConfigFile = `export const environment = {
     CODEREDEMPTIONSECRET: '${process.env.CODEREDEMPTIONSECRET}',
     STRIPESECRET: '${process.env.STRIPESECRET}',
     PATREONCLIENTID: '${process.env.PATREONCLIENTID}',
-    PATREONCLIENTSECRET: '${process.env.PATREONCLIENTSECRET}'
+    PATREONCLIENTSECRET: '${process.env.PATREONCLIENTSECRET}',
+    SQUARE_ETERNAL_MELEE_TICKETS: '${process.env.SQUARE_ETERNAL_MELEE_TICKETS}',
+    SQUARE_SUPPORTER: '${process.env.SQUARE_SUPPORTER}',
 };
 `;
 

@@ -1,31 +1,71 @@
-<div customToolTip [contentTemplate]="abilityPopover" class="container">
+<div class="container" *ngIf="notLowPerformanceMode()" customToolTip [contentTemplate]="abilityPopover"
+    [tooltipDirection]="tooltipDirection">
     <div class="centeredBox">
-        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAuto()"
-        (touchstart)="longPressStart()" (touchend)="longPressEnd()">
+        <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAutoWeb()">
             <div>
-                <span class='abilityTimer' [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
-                <div class="linkActive" *ngIf="!isAutoAttack && ability.manuallyTriggered">
-                    
-                </div>
-                <img class="abilityImage" (contextmenu)="preventRightClick()"
-                [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)"></span>                
-                <span *ngIf="isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode " class="manualModeText"><strong>OFF</strong></span>
+                <span class='abilityTimer'
+                    [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
+                    <div class="linkActive" *ngIf="!isAutoAttack && ability.manuallyTriggered">
+
+                    </div>
+                    <img class="abilityImage" (contextmenu)="preventRightClick()"
+                        [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)">
+                </span>
+                <span *ngIf="isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode "
+                    class="manualModeText"><strong>OFF</strong></span>
             </div>
-            <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate" [diameter]="spinnerDiameter"
-                [strokeWidth]="strokeWidth" [value]="isAutoAttack ? getCharacterAutoAttackProgress() : getAbilityProgress()"></mat-spinner>
-            
+            <mat-spinner class="spinner abilityTimer" [ngClass]="getStrokeColor()" mode="determinate"
+                [diameter]="spinnerDiameter" [strokeWidth]="strokeWidth"
+                [value]="isAutoAttack ? getCharacterAutoAttackProgress() : getAbilityProgress()"></mat-spinner>
+
         </div>
+    </div>
+</div>
+
+<div *ngIf="!notLowPerformanceMode()">
+    <div class="container">
+        <div [ngClass]="{'lowPerformanceCenteredBox': showPercents, 'centeredBox': !showPercents}">
+            <div #spinnerDiv class="ability" (click)="manuallyTrigger()" (contextmenu)="toggleAutoWeb()">
+                <div>
+                    <span class='abilityTimer'
+                        [ngClass]="{'manualModeImage': isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode }">
+                        <div class="linkActive" *ngIf="!isAutoAttack && ability.manuallyTriggered">
+
+                        </div>
+                        <div [ngClass]="{'useFlash': isAnimationActive, 'flashRow1': isAnimationActive && getFlashRow() === 1, 'flashRow2': isAnimationActive && getFlashRow() === 2,
+                'flashRow3': isAnimationActive && getFlashRow() === 3, 'flashRow4': isAnimationActive && getFlashRow() === 4, 'flashRow5': isAnimationActive && getFlashRow() === 5,
+                'flashRow6': isAnimationActive && getFlashRow() === 6}">
+
+                        </div>
+                        <div class="popoverPlaceholder" customToolTip [contentTemplate]="abilityPopover"
+                            [tooltipDirection]="tooltipDirection">
+
+                        </div>
+                        <img class="abilityImage" (contextmenu)="preventRightClick()"
+                            [src]="isAutoAttack ? 'assets/svg/sword.svg' : lookupService.getAbilityImage(ability.name)">
+                    </span>
+                    <span *ngIf="isAutoAttack ? !character.battleInfo.autoAttackAutoMode : !ability.autoMode "
+                        class="manualModeText"><strong>OFF</strong></span>
+                </div>
+            </div>
+        </div>
+    </div>    
+    <div *ngIf="showPercents" class="textCentered bold" [ngClass]="getProgressColor()">        
+            {{getLowPerformanceProgress() | number : '1.0-0'}}%        
     </div>
 </div>
 
 <ng-template #abilityPopover>
     <div>
-        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong> <span *ngIf="verboseMode"> {{getAutoManualText()}} {{getLinkText()}}</span>
+        <strong><span class="s5Heading bold" [innerHtml]="getAbilityName()"></span></strong> <span *ngIf="verboseMode">
+            {{getAutoManualText()}} {{getLinkText()}}</span>
         <!--<hr class="miniHr" />-->
         <hr />
-        <span [innerHtml]="getAbilityDescription()"></span>        
+        <span [innerHtml]="getAbilityDescription()"></span>
         <hr />
-        <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
-        <span *ngIf="isMobile">Tap and hold to toggle between Manual and Auto mode. Tap to use ability in Manual mode.</span>        
+        <span *ngIf="!isMobile">Right click to toggle between Manual and Auto mode. Left click or press <span
+                [innerHtml]="getKeybind()"></span> to use ability in Manual mode.</span>
+        <span *ngIf="isMobile">Double tap to toggle between Manual and Auto mode. Tap to use ability in Manual
+            mode.</span>
     </div>
 </ng-template>

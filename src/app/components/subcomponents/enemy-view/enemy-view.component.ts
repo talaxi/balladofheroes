@@ -15,6 +15,7 @@ import { UtilityService } from 'src/app/services/utility/utility.service';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { OverlayRef } from '@angular/cdk/overlay';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
+import { DeviceDetectorService } from 'ngx-device-detector';
 
 @Component({
   selector: 'app-enemy-view',
@@ -36,12 +37,15 @@ export class EnemyViewComponent implements OnInit {
   previousName = "";
   overlayRef: OverlayRef;
   showEnemyHpAsPercent: boolean = false;
+  isMobile: boolean = false;
 
   constructor(public battleService: BattleService, public lookupService: LookupService, public utilityService: UtilityService,
-    public globalService: GlobalService, private gameLoopService: GameLoopService, private dictionaryService: DictionaryService) { }
+    public globalService: GlobalService, private gameLoopService: GameLoopService, private dictionaryService: DictionaryService,
+    private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
     this.showEnemyHpAsPercent = this.globalService.globalVar.settings.get("showEnemyHpAsPercent") ?? false;
+    this.isMobile = this.deviceDetectorService.isMobile();
 
     this.subscription = this.gameLoopService.gameUpdateEvent.subscribe(async () => {
       var defeatCount: EnemyDefeatCount | undefined;
@@ -83,15 +87,19 @@ export class EnemyViewComponent implements OnInit {
   }
 
   getCharacterHpPercent(character: Enemy) {
-    return (character.battleStats.currentHp / character.battleStats.maxHp) * 100;
+    return (character.battleStats.currentHp / this.lookupService.getAdjustedMaxHp(character, false)) * 100;
   }
 
   getCharacterBarrierPercent(character: Enemy) {
-    return (character.battleInfo.barrierValue / character.battleStats.maxHp) * 100;
+    return (character.battleInfo.barrierValue / this.lookupService.getAdjustedMaxHp(character, false)) * 100;
   }
 
   getCharacterAutoAttackProgress(character: Enemy) {
     return (character.battleInfo.autoAttackTimer / character.battleInfo.timeToAutoAttack) * 100;
+  }
+  
+  notLowPerformanceMode() {
+    return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
   }
 
   targetCharacterWithItem(character: Character) {
@@ -141,6 +149,17 @@ export class EnemyViewComponent implements OnInit {
     this.battleService.targetCharacterMode = false;
   }
 
+  mobileAllTarget(character: Character) {
+    if (character.battleInfo.statusEffects.find(item => item.type === StatusEffectEnum.Dead) !== undefined)
+      return;
+    
+    if (this.isMobile && !this.battleService.targetbattleItemMode) {
+      this.globalService.getActivePartyCharacters(true).forEach(member =>{
+        member.targeting = character;
+      });
+    }
+  }
+
   getCharacterBarrierValue(character: Character) {
     return character.battleInfo.barrierValue;
   }
@@ -150,7 +169,7 @@ export class EnemyViewComponent implements OnInit {
   }
 
   getCharacterMaxHp() {
-    return this.utilityService.bigNumberReducer(this.character.battleStats.maxHp);
+    return this.utilityService.bigNumberReducer(this.lookupService.getAdjustedMaxHp(this.character, false));
   }
 
   getLootItem(loot: LootItem) {
@@ -173,6 +192,8 @@ export class EnemyViewComponent implements OnInit {
       'characterTargetedArcher': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Archer,
       'characterTargetedWarrior': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Warrior,
       'characterTargetedPriest': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Priest,
+      'characterTargetedMonk': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Monk,
+      'characterTargetedThaumaturge': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.Thaumaturge,
       'characterTargetedAll': this.partyCharacterTargeting(this.character) && this.battleService.characterInTargetMode === CharacterEnum.All,
     };
   }
@@ -193,6 +214,8 @@ export class EnemyViewComponent implements OnInit {
         src += "priestTarget.svg";
         if (character.type === CharacterEnum.Monk)
           src += "monkTarget.svg";
+          if (character.type === CharacterEnum.Thaumaturge)
+          src += "thaumaturgeTarget.svg";
     }
     return src;
   }
@@ -210,6 +233,8 @@ export class EnemyViewComponent implements OnInit {
       src += "priestTarget.svg";
       if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Monk)
       src += "monkTarget.svg";
+      if (this.globalService.globalVar.activePartyMember2 === CharacterEnum.Thaumaturge)
+      src += "thaumaturgeTarget.svg";
 
     return src;
   }

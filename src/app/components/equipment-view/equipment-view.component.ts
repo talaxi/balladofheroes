@@ -1,10 +1,8 @@
 import { Component, Input, OnInit, ViewChild } from '@angular/core';
 import { MatDialog, MatDialogRef } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
-import { EffectTriggerEnum } from 'src/app/models/enums/effect-trigger-enum.model';
 import { EquipmentQualityEnum } from 'src/app/models/enums/equipment-quality-enum.model';
 import { EquipmentTypeEnum } from 'src/app/models/enums/equipment-type-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
@@ -50,6 +48,13 @@ export class EquipmentViewComponent implements OnInit {
 
   ngOnInit(): void {
     this.characterType = this.menuService.selectedCharacter === undefined ? CharacterEnum.Adventurer : this.menuService.selectedCharacter;
+    if (this.globalService.globalVar.settings.get("equipmentSortType") !== undefined && this.globalService.globalVar.settings.get("equipmentSortType") !== "") {      
+      this.sortType = this.globalService.globalVar.settings.get("equipmentSortType");
+    }
+    if (this.globalService.globalVar.settings.get("equipmentSort") !== undefined && this.globalService.globalVar.settings.get("equipmentSort") !== "") {      
+      this.ascendingSort = this.globalService.globalVar.settings.get("equipmentSort");
+    }
+
     this.setUpAvailableEquipment();
     if (this.globalService.globalVar.characters.some(item => item.type === this.characterType))
       this.character = this.globalService.globalVar.characters.find(item => item.type === this.characterType)!;
@@ -63,6 +68,8 @@ export class EquipmentViewComponent implements OnInit {
   }
 
   setUpAvailableEquipment() {
+    this.globalService.globalVar.settings.set("equipmentSortType", this.sortType);
+
     var showBasicEquipment = this.globalService.globalVar.settings.get("equipmentShowBasicFilter") ?? true;
     var showUncommonEquipment = this.globalService.globalVar.settings.get("equipmentShowUncommonFilter") ?? true;
     var showRareEquipment = this.globalService.globalVar.settings.get("equipmentShowRareFilter") ?? true;
@@ -261,6 +268,7 @@ export class EquipmentViewComponent implements OnInit {
   
   toggleSort() {
     this.ascendingSort = !this.ascendingSort;
+    this.globalService.globalVar.settings.set("equipmentSort", this.ascendingSort);
     this.setUpAvailableEquipment();
   }
 

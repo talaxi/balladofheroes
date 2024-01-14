@@ -10,8 +10,8 @@
                 <div class="characterInfo">
                     <div>
                         <app-character-name-view [character]="character"></app-character-name-view>
-                        <br />
-                        <div *ngIf="true" class="flex characterHp">
+                        <br *ngIf="!(!notLowPerformanceMode() && isMobile)" />
+                        <div *ngIf="notLowPerformanceMode()" class="flex characterHp">
                             <!--ngIf fixes the default value for the progress bar-->
                             <div class="hpBarSpace hpBarGrid">
                                 <mat-progress-bar mode="determinate" [value]="getCharacterHpPercent(character)"
@@ -20,30 +20,77 @@
                                 <mat-progress-bar *ngIf="getCharacterBarrierValue(character) > 0" mode="determinate"
                                     [value]="getCharacterBarrierPercent(character)"
                                     class="barrier-progress characterBar hpBar highBar">
-                                </mat-progress-bar>
+                                </mat-progress-bar>                                
                             </div>
                             <span class="hpMpText hpAmount" *ngIf="!showPartyHpAsPercent">
-                                <span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span> /
+                                <span
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span>
+                                /
                                 {{getMaxHp(character)}}
                             </span>
                             <span class="hpMpText hpAmount" *ngIf="showPartyHpAsPercent">
-                                <span [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character)  | number : '1.2-2'}}%</span>
-                            </span>                            
+                                <span
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character)
+                                    | number : '1.2-2'}}%</span>
+                            </span>
                         </div>
-                        <div *ngIf="isOverdriveAvailable(character)" class="overdriveBar flex"
+                        <div *ngIf="!notLowPerformanceMode()" class="lowPerfHpMpText healthUpperMargin">                            
+                            <span class="bold smallCaps healthName statLabel">
+                                health:
+                            </span>
+                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="!showPartyHpAsPercent">
+                                <span
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCurrentHp(character)}}</span>
+                                /
+                                {{getMaxHp(character)}}
+                            </span>
+                            <span [ngClass]="{'kod': character.battleStats.currentHp <= 0}" class="hpAmount statValue" *ngIf="showPartyHpAsPercent">
+                                <span
+                                    [ngClass]="{'barrierText': getCharacterBarrierValue(character) > 0}">{{getCharacterHpPercent(character)
+                                    | number : '1.2-2'}}%</span>
+                            </span>
+                        </div>
+                        <div *ngIf="notLowPerformanceMode() && isOverdriveAvailable(character)" class="overdriveBar flex"
                             (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
-                            <span *ngIf="!character.overdriveInfo.autoMode"
-                                class="manualOverdriveText">OFF</span>
+                            <span *ngIf="!character.overdriveInfo.autoMode" class="manualOverdriveText">OFF</span>
                             <mat-progress-bar mode="determinate" [value]="getCharacterOverdrivePercent(character)"
                                 class="red-progress characterBar overdriveProgressBar highBar"
                                 [ngClass]="{'manualOverdriveMode': !character.overdriveInfo.autoMode }">
-                            </mat-progress-bar> <span class="hpMpText" [ngClass]="{'overdriveActive': isOverdriveActive(character)}">
+                            </mat-progress-bar> <span class="hpMpText"
+                                [ngClass]="{'overdriveActive': isOverdriveActive(character)}">
                                 {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
                             </span>
                         </div>
+                        <div *ngIf="!notLowPerformanceMode() && isOverdriveAvailable(character)" class="overdriveBar flex lowPerfHpMpText"
+                            (click)="manuallyTrigger(character)" (contextmenu)="toggleAuto(character)">
+                            <span class="overdriveName bold smallCaps statLabel">overdrive: </span>
+                            <span [ngClass]="{'overdriveActive': isOverdriveActive(character)}" class="statValue">
+                             {{getCharacterOverdrivePercent(character) | number : '1.1-1'}}%
+                        </span>
+                        </div>
                     </div>
-                    <div class="fullHeight">
-                        <app-status-effect-view [character]="character"></app-status-effect-view>
+                    <div class="fullHeight statusEffectGrid">
+                        <div class="statusEffects">
+                            <app-status-effect-view [character]="character"></app-status-effect-view>
+                        </div>
+                        <div *ngIf="isDuoAvailable(character)" class="duoAbility" customToolTip
+                            [contentTemplate]="duoAbilityPopover" (click)="triggerDuo(character)">
+                            <img class="duoAbilityImage" [src]="getDuoSource(character)">
+                        </div>
+
+                        <ng-template #duoAbilityPopover>
+                            <div>
+                                <strong><span class="s5Heading bold" [innerHtml]="getDuoAbilityName(character)"></span></strong>
+                                <span *ngIf="verboseMode">{{getDuoAbilityRemaining(character)}}</span>
+                                <hr />
+                                <span [innerHtml]="getDuoAbilityDescription(character)"></span>
+                                <hr />
+                                <span *ngIf="!isMobile">Left click to use ability. Can only be used once per
+                                    battle.</span>
+                                <span *ngIf="isMobile">Tap to use ability. Can only be used once per battle.</span>
+                            </div>
+                        </ng-template>
+
                     </div>
                     <div>
                         <app-god-name-view [character]="character"></app-god-name-view>
@@ -51,7 +98,12 @@
                     </div>
                 </div>
                 <div class="abilities">
-                    <div *ngIf="getCharacterTotalLinks(character) > 0" class="smallCaps bold linkText">{{getCharacterRemainingLinks(character)}}/{{getCharacterTotalLinks(character)}} Link{{getCharacterTotalLinks(character) > 1 ? "s" : ""}}  - <span *ngIf="!isLinkOffCooldown(character)">... {{getLinkCooldown(character)}} seconds</span><span *ngIf="isLinkOffCooldown(character)">next ability +{{getCharacterNextLinkDamage(character)}}%</span></div>
+                    <div *ngIf="getCharacterTotalLinks(character) > 0" class="smallCaps bold linkText">
+                        {{getCharacterRemainingLinks(character)}}/{{getCharacterTotalLinks(character)}}
+                        Link{{getCharacterTotalLinks(character) > 1 ? "s" : ""}} - <span
+                            *ngIf="!isLinkOffCooldown(character)">... {{getLinkCooldown(character)}} seconds</span><span
+                            *ngIf="isLinkOffCooldown(character)">next ability
+                            +{{getCharacterNextLinkDamage(character)}}%</span></div>
                     <div class="abilityGrid">
                         <app-ability-view class="autoAttack" [character]="character" [isAutoAttack]="true">
                         </app-ability-view>
@@ -63,23 +115,29 @@
                             [ability]="getCharacterAbility(character, 1)" [abilityIndex]="1"></app-ability-view>
 
                         <app-ability-view class="god1ability1" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 0)" [ability]="getGodAbility(character, 1, 0)" [abilityIndex]="0">
+                            *ngIf="isGodAbilityAvailable(character, 1, 0)" [ability]="getGodAbility(character, 1, 0)"
+                            [abilityIndex]="0">
                         </app-ability-view>
                         <app-ability-view class="god1ability2" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 1)" [ability]="getGodAbility(character, 1, 1)" [abilityIndex]="1">
+                            *ngIf="isGodAbilityAvailable(character, 1, 1)" [ability]="getGodAbility(character, 1, 1)"
+                            [abilityIndex]="1">
                         </app-ability-view>
                         <app-ability-view class="god1ability3" [character]="character" [god]="character.assignedGod1"
-                            *ngIf="isGodAbilityAvailable(character, 1, 2)" [ability]="getGodAbility(character, 1, 2)" [abilityIndex]="2">
+                            *ngIf="isGodAbilityAvailable(character, 1, 2)" [ability]="getGodAbility(character, 1, 2)"
+                            [abilityIndex]="2">
                         </app-ability-view>
 
                         <app-ability-view class="god2ability1" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 0)" [ability]="getGodAbility(character, 2, 0)" [abilityIndex]="0">
+                            *ngIf="isGodAbilityAvailable(character, 2, 0)" [ability]="getGodAbility(character, 2, 0)"
+                            [abilityIndex]="0">
                         </app-ability-view>
                         <app-ability-view class="god2ability2" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 1)" [ability]="getGodAbility(character, 2, 1)" [abilityIndex]="1">
+                            *ngIf="isGodAbilityAvailable(character, 2, 1)" [ability]="getGodAbility(character, 2, 1)"
+                            [abilityIndex]="1">
                         </app-ability-view>
                         <app-ability-view class="god2ability3" [character]="character" [god]="character.assignedGod2"
-                            *ngIf="isGodAbilityAvailable(character, 2, 2)" [ability]="getGodAbility(character, 2, 2)" [abilityIndex]="2">
+                            *ngIf="isGodAbilityAvailable(character, 2, 2)" [ability]="getGodAbility(character, 2, 2)"
+                            [abilityIndex]="2">
                         </app-ability-view>
                     </div>
                 </div>
@@ -119,7 +177,8 @@
     <table>
         <tr *ngFor="let cells of battleItemRows;">
             <td *ngFor="let c of cells;">
-                <app-item-menu-item [item]="c.item" [openedSlotNumber]="openedSlotNumber" [totalItemAmount]="battleItems.length"></app-item-menu-item>
+                <app-item-menu-item [item]="c.item" [openedSlotNumber]="openedSlotNumber"
+                    [totalItemAmount]="battleItems.length"></app-item-menu-item>
             </td>
         </tr>
     </table>
@@ -130,13 +189,13 @@
 
 <ng-template #outgoingDpsTemplate>
     Damage Per Second is calculated over a 120 second period and is reset upon changing sub zones.
-    <br/>
-    <br/>
+    <br />
+    <br />
     <!--<i class="bold smallCaps">characters</i>-->
     <div [innerHtml]="characterDpsBreakdown(0)"></div>
     <div class="marginLeft" [innerHtml]="godDpsBreakdown(0, 1)"></div>
-    <div class="marginLeft" [innerHtml]="godDpsBreakdown(0, 2)"></div>   
-    <br/>
+    <div class="marginLeft" [innerHtml]="godDpsBreakdown(0, 2)"></div>
+    <br />
     <div [innerHtml]="characterDpsBreakdown(1)"></div>
     <div class="marginLeft" [innerHtml]="godDpsBreakdown(1, 1)"></div>
     <div class="marginLeft" [innerHtml]="godDpsBreakdown(1, 2)"></div>
@@ -149,5 +208,6 @@
 </ng-template>
 
 <ng-template #xpsTemplate>
-    XP Per Second is calculated over a 120 second period and is reset upon changing sub zones. This does not include any XP modifiers such as Boon of Olympus.
+    XP Per Second is calculated over a 120 second period and is reset upon changing sub zones. This does not include any
+    XP modifiers such as Boon of Olympus.
 </ng-template>

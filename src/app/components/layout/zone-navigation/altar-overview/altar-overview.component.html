@@ -3,9 +3,12 @@
         <app-altar-view [altar]="altar1"></app-altar-view>
     </div>
     <div customToolTip [contentTemplate]="altarEffect1Popover" [tooltipDirection]="buffTooltipDirection" class="altarBar1" *ngIf="altarEffect1 !== undefined">
-        <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect1)"
+        <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getRemainingPrayerDuration(altarEffect1)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect1)">
         </mat-progress-bar>
+        <div *ngIf="!notLowPerformanceMode()" class="textCentered bold" [ngClass]="getProgressTextColor(altarEffect1)">
+            {{getRemainingPrayerDuration(altarEffect1) | number : '1.0-0'}}%
+        </div>
         <br />
         <span class="smallCaps bold">{{getAltarName(altarEffect1)}}</span>
     </div>
@@ -19,9 +22,12 @@
         <app-altar-view [altar]="altar2"></app-altar-view>
     </div>
     <div customToolTip [contentTemplate]="altarEffect2Popover" [tooltipDirection]="buffTooltipDirection" *ngIf="altarEffect2 !== undefined" class="altarBar2">
-        <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect2)"
+        <mat-progress-bar *ngIf="notLowPerformanceMode()"  mode="determinate" [value]="getRemainingPrayerDuration(altarEffect2)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect2)">
         </mat-progress-bar>
+        <div *ngIf="!notLowPerformanceMode()" class="textCentered bold" [ngClass]="getProgressTextColor(altarEffect2)">
+            {{getRemainingPrayerDuration(altarEffect2) | number : '1.0-0'}}%
+        </div>
         <br/>
         <span class="smallCaps bold">{{getAltarName(altarEffect2)}}</span>
     </div>
@@ -35,9 +41,12 @@
         <app-altar-view [altar]="altar3"></app-altar-view>
     </div>
     <div customToolTip [contentTemplate]="altarEffect3Popover" [tooltipDirection]="buffTooltipDirection" *ngIf="altarEffect3 !== undefined" class="altarBar3">
-        <mat-progress-bar mode="determinate" [value]="getRemainingPrayerDuration(altarEffect3)"
+        <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getRemainingPrayerDuration(altarEffect3)"
             class="characterBar removeAnimation altarHighBar removeTransition" [ngClass]="getProgressColor(altarEffect3)">
         </mat-progress-bar>
+        <div *ngIf="!notLowPerformanceMode()" class="textCentered bold" [ngClass]="getProgressTextColor(altarEffect3)">
+            {{getRemainingPrayerDuration(altarEffect3) | number : '1.0-0'}}%
+        </div>
         <br />
         <span class="smallCaps bold">{{getAltarName(altarEffect3)}}</span>
     </div>

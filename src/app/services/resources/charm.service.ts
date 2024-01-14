@@ -100,11 +100,11 @@ export class CharmService {
   }
 
   getSmallCharmOfIngenuityValue() {
-    return .005;
+    return .0025;
   }
 
   getLargeCharmOfIngenuityValue() {
-    return .015;
+    return .0075;
   }
 
   getTotalAbilityCooldownReductionAdditionFromCharms(resources: ResourceValue[]) {
@@ -605,6 +605,58 @@ export class CharmService {
       amount += largeCharmValue * largeCharm.amount;
 
     return amount;
+  }
+
+  getTotalBuffDurationAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfHeraValue();
+    var largeCharmValue = this.getLargeCharmOfHeraValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfHera);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfHera);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Hera || character.assignedGod2 === GodEnum.Hera))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Hera || character.assignedGod2 === GodEnum.Hera))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfHeraValue() {
+    return .015;
+  }
+
+  getLargeCharmOfHeraValue() {
+    return .045;
+  }
+  
+  getTotalAllyDamageAdditionFromCharms(resources: ResourceValue[], character: Character) {
+    var amount = 0;
+    var smallCharmValue = this.getSmallCharmOfAphroditeValue();
+    var largeCharmValue = this.getLargeCharmOfAphroditeValue();
+
+    var smallCharm = resources.find(item => item.item === ItemsEnum.SmallCharmOfAphrodite);
+    var largeCharm = resources.find(item => item.item === ItemsEnum.LargeCharmOfAphrodite);
+
+    if (smallCharm !== undefined && smallCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Aphrodite || character.assignedGod2 === GodEnum.Aphrodite))
+      amount += smallCharmValue * smallCharm.amount;
+    if (largeCharm !== undefined && largeCharm.amount > 0 && 
+      (character.assignedGod1 === GodEnum.Aphrodite || character.assignedGod2 === GodEnum.Aphrodite))
+      amount += largeCharmValue * largeCharm.amount;
+
+    return amount;
+  }
+
+  getSmallCharmOfAphroditeValue() {
+    return .015;
+  }
+
+  getLargeCharmOfAphroditeValue() {
+    return .045;
   }
 
   getSmallCharmOfZeusValue() {

@@ -1,48 +1,56 @@
 <div class="godGrid">
     <div *ngIf="character.assignedGod1 !== undefined && character.assignedGod1 !== noGod" class="god1"
         [ngClass]="lookupService.getGodColorClass(character.assignedGod1)">
-        <span [ngClass]="{'buttonCursor': isButtonActive()}" customToolTip [contentTemplate]="god1Popover" (click)="goToGodDetails(1)">
+        <span [ngClass]="{'buttonCursor': isButtonActive()}" customToolTip [contentTemplate]="god1Popover"
+            (click)="goToGodDetails(1)">
             <span class="s3Heading">{{getCharacterGodName(character, 1)}} </span>
             <span><strong>Lv {{getCharacterGodLevel(character, 1)}}</strong></span> <span class="levelUpAnimationText"
                 [ngClass]="{'levelUpAnimation': showGod1LevelUpAnimation}">{{levelUpAnimationText}}</span></span>
         <div class="flex xpBarWidth" customToolTip [contentTemplate]="xp1Popover">
-            <mat-progress-bar [ngClass]="{'removeTransition': removeBarTransition}" mode="determinate" [value]="getGodXpPercent(1)"
-                class="blue-progress characterBar xpHighBar">
+            <mat-progress-bar *ngIf="notLowPerformanceMode()" [ngClass]="{'removeTransition': removeBarTransition}"
+                mode="determinate" [value]="getGodXpPercent(1)" class="blue-progress characterBar xpHighBar">
             </mat-progress-bar>
+            <div class="xpColor s3Heading" *ngIf="!notLowPerformanceMode()">                
+                {{getGodExp(1)}} / {{getGodExpToNextLevel(1)}} XP
+            </div>
         </div>
         <div *ngIf="godHasActivatablePassive(1) && godSpecificAbilityUnlocked(1)"
             class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(1)"
             (contextmenu)="toggleAuto(1)">
             <span *ngIf="!isGodSpecificAbilityAuto(1)" class="manualGodAbilityText">OFF</span>
-            <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(1)"
+            <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getGodSpecificProgressBar(1)"
                 class="characterBar xpHighBar removeTransition"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(1), 'apolloProgressBarColor': character.assignedGod1 === godEnum.Apollo, 
-                'dionysusProgressBarColor': character.assignedGod1 === godEnum.Dionysus}">
+                'dionysusProgressBarColor': character.assignedGod1 === godEnum.Dionysus, 'heraProgressBarColor': character.assignedGod1 === godEnum.Hera}">
             </mat-progress-bar>
         </div>
     </div>
 
     <div *ngIf="character.assignedGod2 !== undefined && character.assignedGod2 !== noGod" class="god2"
         [ngClass]="lookupService.getGodColorClass(character.assignedGod2)" (click)="goToGodDetails(2)">
-        <span [ngClass]="{'buttonCursor': isButtonActive()}" customToolTip [contentTemplate]="god2Popover" (click)="goToGodDetails(1)">
+        <span [ngClass]="{'buttonCursor': isButtonActive()}" customToolTip [contentTemplate]="god2Popover"
+            (click)="goToGodDetails(1)">
             <span class="s3Heading">{{getCharacterGodName(character, 2)}}
             </span>
             <span [ngClass]="{'buttonCursor': isButtonActive()}"><strong>Lv
                     {{getCharacterGodLevel(character, 2)}}</strong> <span class="levelUpAnimationText"
                     [ngClass]="{'levelUpAnimation': showGod2LevelUpAnimation}">{{levelUpAnimationText}}</span></span></span>
         <div class="flex xpBarWidth" customToolTip [isDelayed]="true" [contentTemplate]="xp2Popover">
-            <mat-progress-bar [ngClass]="{'removeTransition': removeBarTransition}" mode="determinate" [value]="getGodXpPercent(2)"
-                class="blue-progress characterBar xpHighBar">
+            <mat-progress-bar *ngIf="notLowPerformanceMode()" [ngClass]="{'removeTransition': removeBarTransition}"
+                mode="determinate" [value]="getGodXpPercent(2)" class="blue-progress characterBar xpHighBar">
             </mat-progress-bar>
+            <div class="xpColor s3Heading" *ngIf="!notLowPerformanceMode()">                
+                {{getGodExp(2)}} / {{getGodExpToNextLevel(2)}} XP
+            </div>
         </div>
         <div *ngIf="godHasActivatablePassive(2) && godSpecificAbilityUnlocked(2)"
             class="flex xpBarWidth removeAnimation godAbility" (click)="manuallyTrigger(2)"
             (contextmenu)="toggleAuto(2)">
             <span *ngIf="!isGodSpecificAbilityAuto(2)" class="manualGodAbilityText">OFF</span>
-            <mat-progress-bar mode="determinate" [value]="getGodSpecificProgressBar(2)"
+            <mat-progress-bar *ngIf="notLowPerformanceMode()" mode="determinate" [value]="getGodSpecificProgressBar(2)"
                 class="characterBar xpHighBar removeTransition"
                 [ngClass]="{'manualGodAbility': !isGodSpecificAbilityAuto(2), 'apolloProgressBarColor': character.assignedGod2 === godEnum.Apollo, 
-                'dionysusProgressBarColor': character.assignedGod2 === godEnum.Dionysus}">
+                'dionysusProgressBarColor': character.assignedGod2 === godEnum.Dionysus, 'heraProgressBarColor': character.assignedGod2 === godEnum.Hera}">
             </mat-progress-bar>
         </div>
     </div>
@@ -72,7 +80,7 @@
     <div>
         Level {{getCharacterGodLevel(character, 1)}}
         <br />
-        {{getGodExp(1) | number : '1.0-0'}} / {{getGodExpToNextLevel(1) | number : '1.0-0'}} XP to Level
+        {{getGodExp(1)}} / {{getGodExpToNextLevel(1)}} XP to Level
         {{getCharacterGodLevel(character, 1) + 1}}
     </div>
 </ng-template>
@@ -81,7 +89,7 @@
     <div>
         Level {{getCharacterGodLevel(character, 2)}}
         <br />
-        {{getGodExp(2) | number : '1.0-0'}} / {{getGodExpToNextLevel(2) | number : '1.0-0'}} XP to Level
+        {{getGodExp(2)}} / {{getGodExpToNextLevel(2)}} XP to Level
         {{getCharacterGodLevel(character, 2) + 1}}
     </div>
 </ng-template>

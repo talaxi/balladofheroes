@@ -1,8 +1,7 @@
 import { LogViewEnum } from "../enums/log-view-enum.model";
 import { SubZoneEnum } from "../enums/sub-zone-enum.model";
 
-export class LogData {
-    //dateReceived: string;
+export class LogData {    
     dateReceived: number;
     type: LogViewEnum;
     relevantEnumValue: number; //ItemsEnum, TutorialTypeEnum, Story ID

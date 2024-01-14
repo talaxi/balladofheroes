@@ -1,7 +1,6 @@
 import { Injectable } from '@angular/core';
 import { AltarEffect } from 'src/app/models/altar/altar-effect.model';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
-import { God } from 'src/app/models/character/god.model';
 import { AffinityLevelRewardEnum } from 'src/app/models/enums/affinity-level-reward-enum.model';
 import { AltarConditionEnum } from 'src/app/models/enums/altar-condition-enum.model';
 import { AltarEffectsEnum } from 'src/app/models/enums/altar-effects-enum.model';
@@ -11,7 +10,6 @@ import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
-import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { GameLogService } from '../battle/game-log.service';
@@ -129,7 +127,7 @@ export class AltarService {
 
         if (this.globalService.globalVar.gameLogSettings.get("godAffinityLevelUp")) {
           var gameLogEntry = "<strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains Affinity Level " + god.affinityLevel + ".";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry, this.globalService.globalVar);
         }
 
         if (this.lookupService.getAffinityRewardForLevel(god.affinityLevel) === AffinityLevelRewardEnum.SmallCharm) {
@@ -144,18 +142,18 @@ export class AltarService {
         if (this.globalService.globalVar.gameLogSettings.get("followerPrayer")) {
           if (followersActivatingAltar) {
             var gameLogEntry = "Your followers activate your altar to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry, this.globalService.globalVar);
           }
           else {
             var gameLogEntry = "Your followers pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
-            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry);
+            this.gameLogService.updateGameLog(GameLogEntryEnum.FollowerPrayer, gameLogEntry, this.globalService.globalVar);
           }
         }
       }
       else {
         if (this.globalService.globalVar.gameLogSettings.get("prayToAltar")) {
           var gameLogEntry = "You pray to <strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> for a boon and you receive <strong>" + this.lookupService.getBoonName(effect) + "</strong>.<br/><strong class='" + this.globalService.getGodColorClassText(god.type) + "'>" + god.name + "</strong> gains " + godXpGain + " XP and " + affinityXpGain + " Affinity XP.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Pray, gameLogEntry, this.globalService.globalVar);
         }
       }
     }
@@ -343,6 +341,34 @@ export class AltarService {
         possibleEffects.push(AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter);
         if (this.globalService.isGodEquipped(godType) || ignorePartyRequirement)
           possibleEffects.push(AltarEffectsEnum.PoseidonRareFlow);
+      }
+    }
+    
+    if (godType === GodEnum.Hera) {
+      if (altarType === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.HeraAirDamageIncrease);
+        possibleEffects.push(AltarEffectsEnum.HeraReduceEnemyDamageAfter);
+        possibleEffects.push(AltarEffectsEnum.HeraAttackUp);
+      }
+      else if (altarType === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.HeraRareAirDamageIncrease);
+        possibleEffects.push(AltarEffectsEnum.HeraRareReduceAllEnemyDamageAfter);
+        if (this.globalService.isGodEquipped(godType) || ignorePartyRequirement)
+          possibleEffects.push(AltarEffectsEnum.HeraRareShapeshift);
+      }
+    }
+    
+    if (godType === GodEnum.Aphrodite) {
+      if (altarType === AltarEnum.Small) {
+        possibleEffects.push(AltarEffectsEnum.AphroditeMaxHpUpAfter);
+        possibleEffects.push(AltarEffectsEnum.AphroditeDealAttackDamageAll);
+        possibleEffects.push(AltarEffectsEnum.AphroditeHealPartyOverTime);
+      }
+      else if (altarType === AltarEnum.Large) {
+        possibleEffects.push(AltarEffectsEnum.AphroditeRareHealPartyOverTime);
+        possibleEffects.push(AltarEffectsEnum.AphroditeRareDamageUp);
+        if (this.globalService.isGodEquipped(godType) || ignorePartyRequirement)
+          possibleEffects.push(AltarEffectsEnum.AphroditeRarePassionateRhythmOverTime);
       }
     }
 
@@ -699,7 +725,76 @@ export class AltarService {
       altarEffect.duration = altarEffect.totalDuration = 60;
       altarEffect.effectiveness = 1.02;
       altarEffect.stacks = false;
+    }      
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.HeraReduceEnemyDamageAfter) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = .95;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
     }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.HeraAttackUp) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+    }  
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.HeraAirDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.02;
+      altarEffect.stacks = false;
+    }    
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.HeraRareReduceAllEnemyDamageAfter) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = .97;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.HeraRareAirDamageIncrease) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.04;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.HeraRareShapeshift) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.02;
+      altarEffect.stacks = false;
+    }  
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.AphroditeHealPartyOverTime) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.01;
+      altarEffect.tickFrequency = (30 / 4);
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.AphroditeMaxHpUpAfter) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = 1.05;
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+    }  
+    if (altarType === AltarEnum.Small && effectType === AltarEffectsEnum.AphroditeDealAttackDamageAll) {
+      altarEffect.duration = altarEffect.totalDuration = 30;
+      altarEffect.effectiveness = .15;      
+      altarEffect.stacks = false;
+      altarEffect.effectOnExpiration = true;
+      altarEffect.isEffectMultiplier = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AphroditeRareHealPartyOverTime) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.025;
+      altarEffect.tickFrequency = (30 / 4);
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AphroditeRareDamageUp) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.015;
+      altarEffect.stacks = false;
+    }
+    if (altarType === AltarEnum.Large && effectType === AltarEffectsEnum.AphroditeRarePassionateRhythmOverTime) {
+      altarEffect.duration = altarEffect.totalDuration = 60;
+      altarEffect.effectiveness = 1.04;
+      altarEffect.stacks = false;
+      altarEffect.tickFrequency = (60 / 4);
+    }
+
 
     return altarEffect;
   }
@@ -803,7 +898,8 @@ export class AltarService {
       effect.type === AltarEffectsEnum.DionysusSingleBarrier || effect.type === AltarEffectsEnum.DionysusRareMultiBarrier || effect.type === AltarEffectsEnum.DionysusRareFullDebuffs ||
       effect.type === AltarEffectsEnum.NemesisLuckDebuff || effect.type === AltarEffectsEnum.NemesisRareDuesUp || effect.type === AltarEffectsEnum.ZeusRareStun ||
       effect.type === AltarEffectsEnum.ZeusAttackUpBuff || effect.type === AltarEffectsEnum.PoseidonUnsteady || effect.type === AltarEffectsEnum.PoseidonDealWaterDamage ||
-      effect.type === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter)
+      effect.type === AltarEffectsEnum.PoseidonRareReduceAbilityCooldownAfter || effect.type === AltarEffectsEnum.HeraReduceEnemyDamageAfter ||
+      effect.type === AltarEffectsEnum.HeraRareReduceAllEnemyDamageAfter || effect.type === AltarEffectsEnum.AphroditeMaxHpUpAfter || effect.type === AltarEffectsEnum.AphroditeRareDamageUp)
       return true;
 
     return false;
@@ -834,6 +930,10 @@ export class AltarService {
       item = ItemsEnum.SmallCharmOfNemesis;    
       if (type === GodEnum.Poseidon)
       item = ItemsEnum.SmallCharmOfPoseidon;
+      if (type === GodEnum.Hera)
+        item = ItemsEnum.SmallCharmOfHera;    
+        if (type === GodEnum.Aphrodite)
+        item = ItemsEnum.SmallCharmOfAphrodite;
 
     return item;
   }
@@ -863,6 +963,10 @@ export class AltarService {
       item = ItemsEnum.LargeCharmOfNemesis;  
       if (type === GodEnum.Poseidon)
       item = ItemsEnum.LargeCharmOfPoseidon;
+      if (type === GodEnum.Hera)
+      item = ItemsEnum.LargeCharmOfHera;
+      if (type === GodEnum.Aphrodite)
+      item = ItemsEnum.LargeCharmOfAphrodite;
 
     return item;
   }

@@ -1,6 +1,7 @@
 import { Injectable } from '@angular/core';
 import { ItemsEnum } from '../../models/enums/items-enum.model';
 import { ColiseumTournamentEnum } from '../../models/enums/coliseum-tournament-enum.model';
+import { ZodiacEnum } from '../../models/enums/zodiac-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { MeleteActionEnum } from 'src/app/models/enums/melete-action-enum.model';
@@ -206,6 +207,10 @@ export class DictionaryService {
       name = "Zeus's Lightning Bolts";
     else if (type === ItemsEnum.PoseidonsTrident)
       name = "Poseidon's Trident";
+    else if (type === ItemsEnum.HerasRod)
+      name = "Hera's Rod";
+    else if (type === ItemsEnum.AphroditesRoses)
+      name = "Aphrodite's Roses";
     else if (type === ItemsEnum.GiantSword)
       name = "Giant Sword";
     else if (type === ItemsEnum.GiantHammer)
@@ -228,6 +233,136 @@ export class DictionaryService {
       name = "Shadow Ring";
     else if (type === ItemsEnum.RagingBull)
       name = "Raging Bull";
+    else if (type === ItemsEnum.ScorpionStingerEpic)
+      name = "Scorpion Stinger";
+    else if (type === ItemsEnum.ScorpionStingerSpecial)
+      name = "Scorpion Stinger";
+    else if (type === ItemsEnum.ScorpionStingerUnique)
+      name = "Scorpion Stinger";
+    else if (type === ItemsEnum.BucklerOfPerfectHarmonyEpic)
+      name = "Buckler of Perfect Harmony";
+    else if (type === ItemsEnum.BucklerOfPerfectHarmonySpecial)
+      name = "Buckler of Perfect Harmony";
+    else if (type === ItemsEnum.BucklerOfPerfectHarmonyUnique)
+      name = "Buckler of Perfect Harmony";
+    else if (type === ItemsEnum.CarcanetOfTheCentaurEpic)
+      name = "Carcanet of the Centaur";
+    else if (type === ItemsEnum.CarcanetOfTheCentaurSpecial)
+      name = "Carcanet of the Centaur";
+    else if (type === ItemsEnum.CarcanetOfTheCentaurUnique)
+      name = "Carcanet of the Centaur";
+    else if (type === ItemsEnum.BoundingBandEpic)
+      name = "Bounding Band";
+    else if (type === ItemsEnum.BoundingBandSpecial)
+      name = "Bounding Band";
+    else if (type === ItemsEnum.BoundingBandUnique)
+      name = "Bounding Band";
+    else if (type === ItemsEnum.DarkMoonPendantUnique)
+      name = "Dark Moon Pendant";
+    else if (type === ItemsEnum.BlazingSunPendantUnique)
+      name = "Blazing Sun Pendant";
+    else if (type === ItemsEnum.DarkMoonPendantUniqueUpgrade)
+      name = "Dark Moon Pendant Unique XP";
+    else if (type === ItemsEnum.BlazingSunPendantUniqueUpgrade)
+      name = "Blazing Sun Pendant Unique XP";
+      else if (type === ItemsEnum.TimeFragment)
+      name = "Time Fragment";
+    else if (type === ItemsEnum.AthenasCrest)
+      name = "Athena's Crest";
+      else if (type === ItemsEnum.ArtemissCrest)
+      name = "Artemis's Crest";
+      else if (type === ItemsEnum.HermessCrest)
+      name = "Hermes's Crest";
+      else if (type === ItemsEnum.ApollosCrest)
+      name = "Apollo's Crest";
+      else if (type === ItemsEnum.AressCrest)
+      name = "Ares's Crest";
+      else if (type === ItemsEnum.HadessCrest)
+      name = "Hades's Crest";
+      else if (type === ItemsEnum.NemesissCrest)
+      name = "Nemesis's Crest";
+      else if (type === ItemsEnum.DionysussCrest)
+      name = "Dionysus's Crest";
+      else if (type === ItemsEnum.ZeussCrest)
+      name = "Zeus's Crest";
+      else if (type === ItemsEnum.PoseidonsCrest)
+      name = "Poseidon's Crest";
+      else if (type === ItemsEnum.AphroditesCrest)
+      name = "Aphrodite's Crest";
+      else if (type === ItemsEnum.HerasCrest)
+      name = "Hera's Crest";
+      else if (type === ItemsEnum.AthenasSigil)
+      name = "Athena's Sigil";
+      else if (type === ItemsEnum.ArtemissSigil)
+      name = "Artemis's Sigil";
+      else if (type === ItemsEnum.HermessSigil)
+      name = "Hermes's Sigil";
+      else if (type === ItemsEnum.ApollosSigil)
+      name = "Apollo's Sigil";
+      else if (type === ItemsEnum.AressSigil)
+      name = "Ares's Sigil";
+      else if (type === ItemsEnum.HadessSigil)
+      name = "Hades's Sigil";
+      else if (type === ItemsEnum.NemesissSigil)
+      name = "Nemesis's Sigil";
+      else if (type === ItemsEnum.DionysussSigil)
+      name = "Dionysus's Sigil";
+      else if (type === ItemsEnum.ZeussSigil)
+      name = "Zeus's Sigil";
+      else if (type === ItemsEnum.PoseidonsSigil)
+      name = "Poseidon's Sigil";
+      else if (type === ItemsEnum.AphroditesSigil)
+      name = "Aphrodite's Sigil";
+      else if (type === ItemsEnum.HerasSigil)
+      name = "Hera's Sigil";
+    else if (type === ItemsEnum.ScathingBeautyEpic)
+      name = "Scathing Beauty";
+    else if (type === ItemsEnum.ScathingBeautySpecial)
+      name = "Scathing Beauty";
+    else if (type === ItemsEnum.ScathingBeautyUnique)
+      name = "Scathing Beauty";
+    else if (type === ItemsEnum.RainbowScaledPlatingEpic)
+      name = "Rainbow-Scaled Plating";
+    else if (type === ItemsEnum.RainbowScaledPlatingSpecial)
+      name = "Rainbow-Scaled Plating";
+    else if (type === ItemsEnum.RainbowScaledPlatingUnique)
+      name = "Rainbow-Scaled Plating";
+    else if (type === ItemsEnum.BatteringMaceEpic)
+      name = "Battering Mace";
+    else if (type === ItemsEnum.BatteringMaceSpecial)
+      name = "Battering Mace";
+    else if (type === ItemsEnum.BatteringMaceUnique)
+      name = "Battering Mace";
+    else if (type === ItemsEnum.GleamingLoopEpic)
+      name = "Gleaming Loop";
+    else if (type === ItemsEnum.GleamingLoopSpecial)
+      name = "Gleaming Loop";
+    else if (type === ItemsEnum.GleamingLoopUnique)
+      name = "Gleaming Loop";
+    else if (type === ItemsEnum.EnergyShieldEpic)
+      name = "Energy Shield";
+    else if (type === ItemsEnum.EnergyShieldSpecial)
+      name = "Energy Shield";
+    else if (type === ItemsEnum.EnergyShieldUnique)
+      name = "Energy Shield";
+    else if (type === ItemsEnum.SturdyShellEpic)
+      name = "Sturdy Shell";
+    else if (type === ItemsEnum.SturdyShellSpecial)
+      name = "Sturdy Shell";
+    else if (type === ItemsEnum.SturdyShellUnique)
+      name = "Sturdy Shell";
+    else if (type === ItemsEnum.GlowingChokerEpic)
+      name = "Glowing Choker";
+    else if (type === ItemsEnum.GlowingChokerSpecial)
+      name = "Glowing Choker";
+    else if (type === ItemsEnum.GlowingChokerUnique)
+      name = "Glowing Choker";
+    else if (type === ItemsEnum.AstralRingEpic)
+      name = "Astral Ring";
+    else if (type === ItemsEnum.AstralRingSpecial)
+      name = "Astral Ring";
+    else if (type === ItemsEnum.AstralRingUnique)
+      name = "Astral Ring";
 
     //shields
     else if (type === ItemsEnum.IronShield)
@@ -268,6 +403,10 @@ export class DictionaryService {
       name = "Nemesis's Shield";
     else if (type === ItemsEnum.ZeussShield)
       name = "Zeus's Shield";
+    else if (type === ItemsEnum.HerasShield)
+      name = "Hera's Shield";
+    else if (type === ItemsEnum.AphroditesShield)
+      name = "Aphrodite's Shield";
     else if (type === ItemsEnum.GiantShield)
       name = "Giant Shield";
     else if (type === ItemsEnum.PoseidonsShield)
@@ -314,6 +453,10 @@ export class DictionaryService {
       name = "Nemesis's Necklace";
     else if (type === ItemsEnum.ZeussNecklace)
       name = "Zeus's Necklace";
+    else if (type === ItemsEnum.HerasNecklace)
+      name = "Hera's Necklace";
+    else if (type === ItemsEnum.AphroditesNecklace)
+      name = "Aphrodite's Necklace";
     else if (type === ItemsEnum.GiantNecklace)
       name = "Giant Necklace";
     else if (type === ItemsEnum.PoseidonsNecklace)
@@ -366,6 +509,10 @@ export class DictionaryService {
       name = "Nemesis's Armor";
     else if (type === ItemsEnum.ZeussArmor)
       name = "Zeus's Armor";
+    else if (type === ItemsEnum.HerasArmor)
+      name = "Hera's Armor";
+    else if (type === ItemsEnum.AphroditesArmor)
+      name = "Aphrodite's Armor";
     else if (type === ItemsEnum.GiantArmor)
       name = "Giant Armor";
     else if (type === ItemsEnum.PoseidonsArmor)
@@ -418,6 +565,10 @@ export class DictionaryService {
       name = "Nemesis's Ring";
     else if (type === ItemsEnum.ZeussRing)
       name = "Zeus's Ring";
+    else if (type === ItemsEnum.HerasRing)
+      name = "Hera's Ring";
+    else if (type === ItemsEnum.AphroditesRing)
+      name = "Aphrodite's Ring";
     else if (type === ItemsEnum.GiantRing)
       name = "Giant Ring";
     else if (type === ItemsEnum.PoseidonsRing)
@@ -474,6 +625,18 @@ export class DictionaryService {
       name = "Rough Topaz Fragment";
     else if (type === ItemsEnum.RoughRubyFragment)
       name = "Rough Ruby Fragment";
+      else if (type === ItemsEnum.RutileAmethystFragment)
+      name = "Rutile Amethyst Fragment";
+    else if (type === ItemsEnum.RutileOpalFragment)
+      name = "Rutile Opal Fragment";
+    else if (type === ItemsEnum.RutileAquamarineFragment)
+      name = "Rutile Aquamarine Fragment";
+    else if (type === ItemsEnum.RutileEmeraldFragment)
+      name = "Rutile Emerald Fragment";
+    else if (type === ItemsEnum.RutileTopazFragment)
+      name = "Rutile Topaz Fragment";
+    else if (type === ItemsEnum.RutileRubyFragment)
+      name = "Rutile Ruby Fragment";
     else if (type === ItemsEnum.Narcissus)
       name = "Narcissus";
     else if (type === ItemsEnum.ThickLeather)
@@ -586,8 +749,8 @@ export class DictionaryService {
       name = "Birch Bark";
     else if (type === ItemsEnum.RadiatingGemstone)
       name = "Radiating Gemstone";
-      else if (type === ItemsEnum.MagicDust)
-        name = "Magic Dust";
+    else if (type === ItemsEnum.MagicDust)
+      name = "Magic Dust";
     else if (type === ItemsEnum.WhiteHorn)
       name = "White Horn";
     else if (type === ItemsEnum.BlackHorn)
@@ -714,6 +877,102 @@ export class DictionaryService {
       name = "Shield Slot Addition";
     else if (type === ItemsEnum.NecklaceSlotAddition)
       name = "Necklace Slot Addition";
+      else if (type === ItemsEnum.RutilatedRuby)
+      name = "Rutilated Ruby";
+    else if (type === ItemsEnum.RutilatedAmethyst)
+      name = "Rutilated Amethyst";
+    else if (type === ItemsEnum.RutilatedTopaz)
+      name = "Rutilated Topaz";
+    else if (type === ItemsEnum.RutilatedOpal)
+      name = "Rutilated Opal";
+    else if (type === ItemsEnum.RutilatedAquamarine)
+      name = "Rutilated Aquamarine";
+    else if (type === ItemsEnum.RutilatedEmerald)
+      name = "Rutilated Emerald";
+    else if (type === ItemsEnum.PerfectRutilatedRuby)
+      name = "Perfect Rutilated Ruby";
+    else if (type === ItemsEnum.PerfectRutilatedAmethyst)
+      name = "Perfect Rutilated Amethyst";
+    else if (type === ItemsEnum.PerfectRutilatedTopaz)
+      name = "Perfect Rutilated Topaz";
+    else if (type === ItemsEnum.PerfectRutilatedOpal)
+      name = "Perfect Rutilated Opal";
+    else if (type === ItemsEnum.PerfectRutilatedAquamarine)
+      name = "Perfect Rutilated Aquamarine";
+    else if (type === ItemsEnum.PerfectRutilatedEmerald)
+      name = "Perfect Rutilated Emerald";
+      else if (type === ItemsEnum.BrilliantRuby)
+      name = "Brilliant Ruby";
+    else if (type === ItemsEnum.BrilliantAmethyst)
+      name = "Brilliant Amethyst";
+    else if (type === ItemsEnum.BrilliantTopaz)
+      name = "Brilliant Topaz";
+    else if (type === ItemsEnum.BrilliantOpal)
+      name = "Brilliant Opal";
+    else if (type === ItemsEnum.BrilliantAquamarine)
+      name = "Brilliant Aquamarine";
+    else if (type === ItemsEnum.BrilliantEmerald)
+      name = "Brilliant Emerald";
+    else if (type === ItemsEnum.PerfectBrilliantRuby)
+      name = "Perfect Brilliant Ruby";
+    else if (type === ItemsEnum.PerfectBrilliantAmethyst)
+      name = "Perfect Brilliant Amethyst";
+    else if (type === ItemsEnum.PerfectBrilliantTopaz)
+      name = "Perfect Brilliant Topaz";
+    else if (type === ItemsEnum.PerfectBrilliantOpal)
+      name = "Perfect Brilliant Opal";
+    else if (type === ItemsEnum.PerfectBrilliantAquamarine)
+      name = "Perfect Brilliant Aquamarine";
+    else if (type === ItemsEnum.PerfectBrilliantEmerald)
+      name = "Perfect Brilliant Emerald";
+      else if (type === ItemsEnum.FlawlessRuby)
+      name = "Flawless Ruby";
+    else if (type === ItemsEnum.FlawlessAmethyst)
+      name = "Flawless Amethyst";
+    else if (type === ItemsEnum.FlawlessTopaz)
+      name = "Flawless Topaz";
+    else if (type === ItemsEnum.FlawlessOpal)
+      name = "Flawless Opal";
+    else if (type === ItemsEnum.FlawlessAquamarine)
+      name = "Flawless Aquamarine";
+    else if (type === ItemsEnum.FlawlessEmerald)
+      name = "Flawless Emerald";
+    else if (type === ItemsEnum.PerfectFlawlessRuby)
+      name = "Perfect Flawless Ruby";
+    else if (type === ItemsEnum.PerfectFlawlessAmethyst)
+      name = "Perfect Flawless Amethyst";
+    else if (type === ItemsEnum.PerfectFlawlessTopaz)
+      name = "Perfect Flawless Topaz";
+    else if (type === ItemsEnum.PerfectFlawlessOpal)
+      name = "Perfect Flawless Opal";
+    else if (type === ItemsEnum.PerfectFlawlessAquamarine)
+      name = "Perfect Flawless Aquamarine";
+    else if (type === ItemsEnum.PerfectFlawlessEmerald)
+      name = "Perfect Flawless Emerald";
+      else if (type === ItemsEnum.AdamantineRuby)
+      name = "Adamantine Ruby";
+    else if (type === ItemsEnum.AdamantineAmethyst)
+      name = "Adamantine Amethyst";
+    else if (type === ItemsEnum.AdamantineTopaz)
+      name = "Adamantine Topaz";
+    else if (type === ItemsEnum.AdamantineOpal)
+      name = "Adamantine Opal";
+    else if (type === ItemsEnum.AdamantineAquamarine)
+      name = "Adamantine Aquamarine";
+    else if (type === ItemsEnum.AdamantineEmerald)
+      name = "Adamantine Emerald";
+    else if (type === ItemsEnum.PerfectAdamantineRuby)
+      name = "Perfect Adamantine Ruby";
+    else if (type === ItemsEnum.PerfectAdamantineAmethyst)
+      name = "Perfect Adamantine Amethyst";
+    else if (type === ItemsEnum.PerfectAdamantineTopaz)
+      name = "Perfect Adamantine Topaz";
+    else if (type === ItemsEnum.PerfectAdamantineOpal)
+      name = "Perfect Adamantine Opal";
+    else if (type === ItemsEnum.PerfectAdamantineAquamarine)
+      name = "Perfect Adamantine Aquamarine";
+    else if (type === ItemsEnum.PerfectAdamantineEmerald)
+      name = "Perfect Adamantine Emerald";
 
     //recipes
     else if (type === ItemsEnum.PoisonExtractPotionRecipe)
@@ -831,6 +1090,14 @@ export class DictionaryService {
       name = "Small Charm of Zeus";
     else if (type === ItemsEnum.LargeCharmOfZeus)
       name = "Large Charm of Zeus";
+    else if (type === ItemsEnum.SmallCharmOfHera)
+      name = "Small Charm of Hera";
+    else if (type === ItemsEnum.LargeCharmOfHera)
+      name = "Large Charm of Hera";
+    else if (type === ItemsEnum.SmallCharmOfAphrodite)
+      name = "Small Charm of Aphrodite";
+    else if (type === ItemsEnum.LargeCharmOfAphrodite)
+      name = "Large Charm of Aphrodite";
     else if (type === ItemsEnum.SmallCharmOfPoseidon)
       name = "Small Charm of Poseidon";
     else if (type === ItemsEnum.LargeCharmOfPoseidon)
@@ -885,6 +1152,8 @@ export class DictionaryService {
       name = "<span class='priestColor'>Priest</span>";
     else if (type === ItemsEnum.MonkClass)
       name = "<span class='monkColor'>Monk</span>";
+    else if (type === ItemsEnum.ThaumaturgeClass)
+      name = "<span class='thaumaturgeColor'>Thaumaturge</span>";
     else if (type === ItemsEnum.UnderworldAccess)
       name = "Freely Enter and Leave Underworld";
     else if (type === ItemsEnum.BonusXp)
@@ -1015,7 +1284,10 @@ export class DictionaryService {
   getTrialInfoFromType(type: TrialEnum) {
     var trial = new Trial();
     trial.type = type;
-    trial.timerLength = 300;
+    if (trial.type === TrialEnum.TrialOfTheStarsVeryHard)
+      trial.timerLength = 600;
+    else
+      trial.timerLength = 300;
     return trial;
   }
 
@@ -1024,6 +1296,12 @@ export class DictionaryService {
       return "Trial of Skill";
     if (type === TrialEnum.TrialOfResolve)
       return "Trial of Resolve";
+    if (type === TrialEnum.TrialOfTheStarsNormal)
+      return "Trial of the Stars (Normal)";
+    if (type === TrialEnum.TrialOfTheStarsHard)
+      return "Trial of the Stars (Hard)";
+    if (type === TrialEnum.TrialOfTheStarsVeryHard)
+      return "Trial of the Stars (Very Hard)";
 
     return "";
   }
@@ -1038,5 +1316,34 @@ export class DictionaryService {
       name = "Exhale Deeply";
 
     return name;
+  }
+
+  getZodiacName(zodiac: ZodiacEnum) {
+    if (zodiac === ZodiacEnum.Aries)
+      return "Aries";
+    if (zodiac === ZodiacEnum.Taurus)
+      return "Taurus";
+    if (zodiac === ZodiacEnum.Gemini)
+      return "Gemini";
+    if (zodiac === ZodiacEnum.Leo)
+      return "Leo";
+    if (zodiac === ZodiacEnum.Cancer)
+      return "Cancer";
+    if (zodiac === ZodiacEnum.Capricorn)
+      return "Capricorn";
+    if (zodiac === ZodiacEnum.Virgo)
+      return "Virgo";
+    if (zodiac === ZodiacEnum.Libra)
+      return "Libra";
+    if (zodiac === ZodiacEnum.Scorpio)
+      return "Scorpio";
+    if (zodiac === ZodiacEnum.Sagittarius)
+      return "Sagittarius";
+    if (zodiac === ZodiacEnum.Pisces)
+      return "Pisces";
+    if (zodiac === ZodiacEnum.Aquarius)
+      return "Aquarius";
+
+    return "";
   }
 }

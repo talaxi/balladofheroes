@@ -1,27 +1,23 @@
 import { Injectable } from '@angular/core';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
-import { Enemy } from 'src/app/models/character/enemy.model';
+import { God } from 'src/app/models/character/god.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
-import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ShopTypeEnum } from 'src/app/models/enums/shop-type-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
-import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
 import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { ShopItem } from 'src/app/models/shop/shop-item.model';
 import { ShopOption } from 'src/app/models/shop/shop-option.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
-import { BalladService } from '../ballad/ballad.service';
-import { GameLogService } from '../battle/game-log.service';
 import { EnemyGeneratorService } from '../enemy-generator/enemy-generator.service';
-import { TutorialService } from '../global/tutorial.service';
 import { ResourceGeneratorService } from '../resources/resource-generator.service';
 import { ShopItemGeneratorService } from '../shop/shop-item-generator.service';
 import { SidequestData } from 'src/app/models/utility/sidequest-data.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
+import { GodEnum } from 'src/app/models/enums/god-enum.model';
 
 @Injectable({
   providedIn: 'root'
@@ -4318,6 +4314,9 @@ export class SubZoneGeneratorService {
     if (type === SubZoneEnum.TheLabyrinthRightFork) {
       subZoneEnums.push(SubZoneEnum.TheLabyrinthSolidWall4);
     }
+    if (type === SubZoneEnum.TheLabyrinthSolidWall4) {
+      subZoneEnums.push(SubZoneEnum.TheLabyrinthCloakedStranger);
+    }
     if (type === SubZoneEnum.TheLabyrinthRightPath) {
       subZoneEnums.push(SubZoneEnum.TheLabyrinthLongPassage1);
     }
@@ -4331,7 +4330,7 @@ export class SubZoneGeneratorService {
     return subZoneEnums;
   }
 
-  getShopOptions(subzoneType: SubZoneEnum, sidequestData: SidequestData, returnAllShopOptions: boolean = false, balladList?: Ballad[], optionalScenesViewed?: OptionalSceneEnum[]) {
+  getShopOptions(subzoneType: SubZoneEnum, sidequestData: SidequestData, returnAllShopOptions: boolean = false, balladList?: Ballad[], optionalScenesViewed?: OptionalSceneEnum[], cloakedStrangerFound: boolean = false, gods?: God[]) {
     var shopOptions: ShopOption[] = [];
     var availableOptionsGeneral: ShopItem[] = [];
     var availableOptionsCrafter: ShopItem[] = [];
@@ -4533,11 +4532,43 @@ export class SubZoneGeneratorService {
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedTopaz, SubZoneEnum.CreteKnossos));
     availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.LesserFlawedAquamarine, SubZoneEnum.CreteKnossos));
     availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.MonkClass, SubZoneEnum.CreteKnossos));
+    availableOptionsTraveler.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ThaumaturgeClass, SubZoneEnum.CreteKnossos));
 
     if (subzoneType === SubZoneEnum.CreteKnossos) {
       shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
       shopOptions.push(new ShopOption(ShopTypeEnum.Traveler, availableOptionsTraveler));
       shopOptions.push(new ShopOption(ShopTypeEnum.IslandOfNaxos, []));
+    }
+
+    if (cloakedStrangerFound && gods !== undefined) {
+      if (gods.find(item => item.type === GodEnum.Athena)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Artemis)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArtemissSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Hermes)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HermessSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Apollo)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ApollosSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Ares)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AressSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Hades)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HadessSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Nemesis)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NemesissSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Dionysus)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DionysussSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Zeus)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ZeussSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Poseidon)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PoseidonsSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Aphrodite)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AphroditesSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+      if (gods.find(item => item.type === GodEnum.Hera)?.isAvailable)
+        availableOptionsGeneral.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HerasSigil, SubZoneEnum.TheLabyrinthCloakedStranger));
+    }
+    
+    if (subzoneType === SubZoneEnum.TheLabyrinthCloakedStranger) {
+      shopOptions.push(new ShopOption(ShopTypeEnum.General, availableOptionsGeneral));
     }
 
     if (returnAllShopOptions) {
@@ -4617,43 +4648,84 @@ export class SubZoneGeneratorService {
     return returnSubzone;
   }
 
-  getAvailableOlympianRewardOptions() {
+  getAvailableOlympianRewardOptions(resources: ResourceValue[], isPatron: boolean = false, gods: God[]) {
     var shopOptions: ShopItem[] = [];
 
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Nemesis, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Dionysus, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.OlympicCommendation, SubZoneEnum.MountOlympusOlympus));
+    //shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DuoAbilityAccess, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.Ambrosia, SubZoneEnum.MountOlympusOlympus));
+
+    if (resources.some(item => item.item === ItemsEnum.BlazingSunPendant) && !resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUnique, SubZoneEnum.MountOlympusOlympus, isPatron));
+    if (resources.some(item => item.item === ItemsEnum.DarkMoonPendant) && !resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUnique, SubZoneEnum.MountOlympusOlympus, isPatron));
+    if (resources.some(item => item.item === ItemsEnum.BlazingSunPendantUnique))
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.BlazingSunPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
+    if (resources.some(item => item.item === ItemsEnum.DarkMoonPendantUnique))
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DarkMoonPendantUniqueUpgrade, SubZoneEnum.MountOlympusOlympus));
+
+    if (gods.some(item => item.type === GodEnum.Athena && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasScythe, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AthenasNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Artemis && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArtemissBow, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArtemissShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ArtemissNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Hermes && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HermessStaff, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HermessShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HermessNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Apollo && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ApollosBow, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ApollosShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ApollosNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Hades && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HadessBident, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HadessShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HadessNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Ares && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AressSpear, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AressShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AressNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Nemesis && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NemesissSword, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NemesissShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.NemesissNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Dionysus && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DionysussScepter, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DionysussShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.DionysussNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Zeus && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ZeussLightningBolts, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ZeussShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.ZeussNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Poseidon && item.isAvailable)) {
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PoseidonsTrident, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PoseidonsShield, SubZoneEnum.MountOlympusOlympus));
     shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.PoseidonsNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Aphrodite && item.isAvailable)) {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AphroditesRoses, SubZoneEnum.MountOlympusOlympus));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AphroditesShield, SubZoneEnum.MountOlympusOlympus));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.AphroditesNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
+    if (gods.some(item => item.type === GodEnum.Hera && item.isAvailable)) {
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HerasRod, SubZoneEnum.MountOlympusOlympus));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HerasShield, SubZoneEnum.MountOlympusOlympus));
+      shopOptions.push(this.shopItemGenerator.generateShopItem(ItemsEnum.HerasNecklace, SubZoneEnum.MountOlympusOlympus));
+    }
 
     return shopOptions;
   }

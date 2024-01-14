@@ -77,10 +77,12 @@ export class OpenShopViewComponent {
       'aresColor': name === "Ares",
       'poseidonColor': name === "Poseidon",
       'artemisColor': name === "Artemis",
+      'nemesisColor': name === "Nemesis",
       'hermesColor': name === "Hermes",
       'hadesColor': name === "Hades",
       'dionysusColor': name === "Dionysus",
-      'nemesisColor': name === "Nemesis"
+      'aphroditeColor': name === "Aphrodite",      
+      'heraColor': name === "Hera"
     };
   }
 
@@ -156,7 +158,7 @@ export class OpenShopViewComponent {
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry, this.globalService.globalVar);
     }
 
     this.globalService.globalVar.settings.set("autoProgress", false);

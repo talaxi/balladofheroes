@@ -5,7 +5,6 @@ import { Ability } from 'src/app/models/character/ability.model';
 import { CharacterStats } from 'src/app/models/character/character-stats.model';
 import { Character } from 'src/app/models/character/character.model';
 import { God } from 'src/app/models/character/god.model';
-import { CharacterEnum } from 'src/app/models/enums/character-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
@@ -66,6 +65,14 @@ export class CharacterViewComponent implements OnInit {
 
       this.getCharacterGodAbilities();
     });
+  }
+
+  getCharacterXp() {
+    return this.utilityService.bigNumberReducer(this.character.exp);
+  }
+  
+  getCharacterXpToNextLevel() {
+    return this.utilityService.bigNumberReducer(this.character.expToNextLevel);
   }
 
   getOverdriveName() {
@@ -203,12 +210,20 @@ export class CharacterViewComponent implements OnInit {
     return (1 - this.character.battleStats.autoAttackCooldownReduction) * 100;
   }
 
+  getLinkEffectivenessBonus() {
+    return this.character.battleStats.linkEffectiveness;
+  }
+
   getOverdriveGainBonus() {
     return this.character.battleStats.overdriveGain;
   }
 
   getHealingReceivedBonus() {
     return this.character.battleStats.healingReceived;
+  }
+  
+  getAllyDamageBonus() {
+    return this.character.battleStats.allyDamageBonus;
   }
 
   getDebuffDurationBonus() {
@@ -464,7 +479,7 @@ export class CharacterViewComponent implements OnInit {
 
     if (ability !== undefined && ability.userEffect.length > 0) {
       if (ability.name === "Second Wind")
-        return this.utilityService.genericRound(permanentAbilityUpgradeAmount);
+        return "*" + this.utilityService.genericRound(1 + permanentAbilityUpgradeAmount);
       else
         return Math.abs(this.utilityService.genericRound(permanentAbilityUpgradeAmount * 100)) + "%";
     }
@@ -622,6 +637,9 @@ export class CharacterViewComponent implements OnInit {
     var baseAbility = baseGod.abilityList.find(item => item.name === ability.name);
 
     if (baseAbility !== undefined) {
+      if (baseAbility.name === "Second Wind") {
+        return this.utilityService.genericRound((ability.userEffect[0].maxCount - baseAbility.userEffect[0].maxCount));
+      }
       return this.utilityService.genericRound((ability.maxCount - baseAbility.maxCount));
     }
 
@@ -820,6 +838,8 @@ export class CharacterViewComponent implements OnInit {
       statGainText += this.utilityService.genericRound(upgradedStats.elementIncrease.water * 100) + "% Water Damage Increase, ";
     if (upgradedStats.overdriveGain > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.overdriveGain * 100) + "% Overdrive Gain, ";
+      if (upgradedStats.linkEffectiveness > 0)
+      statGainText += this.utilityService.genericRound(upgradedStats.linkEffectiveness * 100) + "% Link Effectiveness, ";
     if (upgradedStats.armorPenetration > 0)
       statGainText += this.utilityService.genericRound(upgradedStats.armorPenetration * 100) + "% Armor Penetration, ";
     if (upgradedStats.abilityCooldownReduction > 0)

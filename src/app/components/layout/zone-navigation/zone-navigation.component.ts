@@ -1,7 +1,6 @@
 import { Component, HostListener, Input, OnInit } from '@angular/core';
 import { MatDialog as MatDialog } from '@angular/material/dialog';
 import { DeviceDetectorService } from 'ngx-device-detector';
-import { ColiseumTournament } from 'src/app/models/battle/coliseum-tournament.model';
 import { BalladEnum } from 'src/app/models/enums/ballad-enum.model';
 import { DirectionEnum } from 'src/app/models/enums/direction-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
@@ -10,14 +9,9 @@ import { MenuEnum } from 'src/app/models/enums/menu-enum.model';
 import { NavigationEnum } from 'src/app/models/enums/navigation-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
 import { QuickViewEnum } from 'src/app/models/enums/quick-view-enum.model';
-import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
-import { ZoneEnum } from 'src/app/models/enums/zone-enum.model';
-import { FollowerData } from 'src/app/models/followers/follower-data.model';
-import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
 import { LayoutService } from 'src/app/models/global/layout.service';
-import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { Ballad } from 'src/app/models/zone/ballad.model';
 import { SubZone } from 'src/app/models/zone/sub-zone.model';
 import { Zone } from 'src/app/models/zone/zone.model';
@@ -30,8 +24,6 @@ import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
-import { AlchemyService } from 'src/app/services/professions/alchemy.service';
-import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 
@@ -65,6 +57,7 @@ export class ZoneNavigationComponent implements OnInit {
   displayQuickViewAltars: boolean;
   displayQuickViewAlchemy: boolean;
   displayQuickViewJewelcrafting: boolean;
+  displayQuickViewTimeFragment: boolean;
 
   @HostListener('window:keyup', ['$event'])
   keyEvent(event: KeyboardEvent) {
@@ -87,6 +80,7 @@ export class ZoneNavigationComponent implements OnInit {
     this.displayQuickViewAltars = this.globalService.globalVar.settings.get("displayQuickViewAltars") ?? false;
     this.displayQuickViewAlchemy = this.globalService.globalVar.settings.get("displayQuickViewAlchemy") ?? false;
     this.displayQuickViewJewelcrafting = this.globalService.globalVar.settings.get("displayQuickViewJewelcrafting") ?? false;
+    this.displayQuickViewTimeFragment = this.globalService.globalVar.settings.get("displayQuickViewTimeFragment") ?? true;
 
     var autoProgress = this.globalService.globalVar.settings.get("autoProgress");
     if (autoProgress === undefined)
@@ -230,7 +224,7 @@ export class ZoneNavigationComponent implements OnInit {
 
     if (this.globalService.globalVar.gameLogSettings.get("moveLocations")) {
       var gameLogEntry = "You move to <strong>" + relatedZone?.zoneName + " - " + this.balladService.getSubZoneName(latestShop.type) + "</strong>.";
-      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.ChangeLocation, gameLogEntry, this.globalService.globalVar);
     }
 
     this.globalService.globalVar.settings.set("autoProgress", false);
@@ -442,6 +436,8 @@ export class ZoneNavigationComponent implements OnInit {
       name = "Resources ";
     if (this.quickView === QuickViewEnum.Overview)
       name = "Overview ";
+      if (this.quickView === QuickViewEnum.TimeFragment)
+      name = "Time Fragment ";
 
     return name;
   }
@@ -452,6 +448,10 @@ export class ZoneNavigationComponent implements OnInit {
 
   isJewelcraftingAvailable() {
     return this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)?.isUnlocked;
+  }
+  
+  isTimeFragmentAvailable() {
+    return this.globalService.globalVar.resources.some(item => item.item === ItemsEnum.TimeFragment);
   }
 
   areAltarsAvailable() {
@@ -511,6 +511,10 @@ export class ZoneNavigationComponent implements OnInit {
     if (this.globalService.globalVar.altars.isUnlocked && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openAltarsQuickView"))) {
       this.setQuickView(QuickViewEnum.Altars);
       this.globalService.globalVar.altars.showNewNotification = false;
+    }
+
+    if (this.isTimeFragmentAvailable() && this.keybindService.doesKeyMatchKeybind(event, keybinds.get("openTimeFragmentQuickView"))) {
+      this.setQuickView(QuickViewEnum.TimeFragment);
     }
 
     this.globalService.globalVar.settings.set("activeOverview", this.quickView);

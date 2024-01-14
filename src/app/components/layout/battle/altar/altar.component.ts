@@ -1,14 +1,12 @@
 import { Component, OnInit } from '@angular/core';
 import { DeviceDetectorService } from 'ngx-device-detector';
 import { AltarInfo } from 'src/app/models/altar/altar-info.model';
-import { Character } from 'src/app/models/character/character.model';
 import { AltarPrayOptionsEnum } from 'src/app/models/enums/altar-pray-options-enum.model';
 import { GameLogEntryEnum } from 'src/app/models/enums/game-log-entry-enum.model';
 import { GodEnum } from 'src/app/models/enums/god-enum.model';
 import { ItemTypeEnum } from 'src/app/models/enums/item-type-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ProfessionEnum } from 'src/app/models/enums/professions-enum.model';
-import { SceneTypeEnum } from 'src/app/models/enums/scene-type-enum.model';
 import { AltarService } from 'src/app/services/altar/altar.service';
 import { BattleService } from 'src/app/services/battle/battle.service';
 import { GameLogService } from 'src/app/services/battle/game-log.service';
@@ -169,9 +167,9 @@ export class AltarComponent implements OnInit {
 
     var gameLogEntry = "Your sacrifice and devotion to healing has honored Asclepius and impressed his father Apollo, God of Healing and Music. Apollo will now assist you on your adventure.";
     if (this.deviceDetectorService.isMobile()) 
-      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry, this.globalService.globalVar);
       else
-    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry);
+    this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry, this.globalService.globalVar);
   }
 
   gainThreshold2Reward() {
@@ -181,9 +179,9 @@ export class AltarComponent implements OnInit {
       var gameLogEntry = "You learn how to make the Alchemy recipe: <strong>" + this.dictionaryService.getItemName(ItemsEnum.RejuvenatingElixir) + "</strong>.";
       
       if (this.deviceDetectorService.isMobile()) 
-      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry, this.globalService.globalVar);
       else
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);      
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);      
     }
   }
 
@@ -192,13 +190,13 @@ export class AltarComponent implements OnInit {
 
     var gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Right click Small Altars to toggle between the two options.";
     if (this.deviceDetectorService.isMobile())
-      gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Tap and hold Small Altars to toggle between the two options.";
+      gameLogEntry = "To further your devotion to the gods, you can now pray to <strong>Large Altars</strong>. Double tap Small Altars to toggle between the two options.";
    
       
       if (this.deviceDetectorService.isMobile()) 
-      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry, this.globalService.globalVar);
       else
-      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, gameLogEntry, this.globalService.globalVar);
   }
 
   gainThreshold4Reward() {
@@ -211,9 +209,9 @@ export class AltarComponent implements OnInit {
       var gameLogEntry = "Your max Alchemy level has increased to <strong>" + alchemy.maxLevel + "</strong>.";
       
       if (this.deviceDetectorService.isMobile()) 
-      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry);
+      this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, gameLogEntry, this.globalService.globalVar);
       else
-      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);  
+      this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);  
     }
   }
 

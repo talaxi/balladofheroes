@@ -11,8 +11,8 @@
             <br />
             <span customToolTip class="buttonAsText clickableText" [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover">Level {{character.level}}</span>
             <br />
-            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{character.exp | number : '1.0-0'}} /
-                {{character.expToNextLevel | number : '1.0-0'}} XP to Level
+            <span customToolTip [tooltipDirection]="tooltipDirection" (click)="openPermanentStatBreakdown(permanentStatBreakdownContent)" [contentTemplate]="characterXpPopover" *ngIf="character.level < character.maxLevel">{{getCharacterXp()}} /
+                {{getCharacterXpToNextLevel()}} XP to Level
                 {{character.level + 1}}</span>
             <span class="bold" *ngIf="character.level === character.maxLevel">
                 MAX
@@ -127,6 +127,14 @@
                         [contentTemplate]="healingReceivedPopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Received Bonus:</strong>
                         {{(getHealingReceivedBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                        <span *ngIf="getAllyDamageBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                            [contentTemplate]="allyDamagePopover"><strong [ngClass]="getCharacterColor()"
+                                class="statLabel">Ally Damage Bonus:</strong>
+                            {{(getAllyDamageBonus() * 100) | number : '1.0-2'}}%<br /></span>
+                            <span *ngIf="getLinkEffectivenessBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
+                                [contentTemplate]="linkEffectivenessPopover"><strong [ngClass]="getCharacterColor()"
+                                    class="statLabel">Link Effectiveness Bonus:</strong>
+                                {{(getLinkEffectivenessBonus() * 100) | number : '1.0-2'}}%<br /></span>
                     <span *ngIf="getHealingDoneBonus() > 0" customToolTip [tooltipDirection]="tooltipDirection"
                         [contentTemplate]="healingDonePopover"><strong [ngClass]="getCharacterColor()"
                             class="statLabel">Healing Done Bonus:</strong>
@@ -232,6 +240,12 @@
         <button class="changeButton buttonStyled buttonOffset" *ngIf="overdriveAvailable"
             (click)="openOverdriveMenu(overdriveView)">Change Overdrive</button>
         <div class="sectionInfo">
+            <div class="autoAttack">
+                <strong class="statLabel" [ngClass]="getAbilityColor(false)">Auto Attack</strong><span
+                    class="statValue"> -
+                    <span
+                        [innerHtml]="lookupService.getAutoAttackDescription(character)"></span></span>
+            </div>
             <div *ngFor="let ability of characterAbilityList">
                 <strong class="statLabel" [ngClass]="getAbilityColor(false)" customToolTip [isLargeTooltip]="true"
                 [tooltipDirection]="abilityTooltipDirection" [contentTemplate]="abilityPopover">{{ability.name}}</strong><span
@@ -306,7 +320,7 @@
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 1) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                         class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 1)"></span></div>
                                         <div
-                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%'">
+                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== '0%' && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1) !== '*1'">
                                         <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
                                             class="statValue"
                                             [innerHtml]="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 1)"></span></div>
@@ -318,7 +332,7 @@
                                 <div *ngIf="getGodAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodAbilityUserEffectThresholdIncrease(ability, 1) !== '0%'"><span class="statLabel">Gained Effect Threshold Increase: </span> <span
                                     class="statValue" [innerHtml]="getGodAbilityUserEffectThresholdIncrease(ability, 1)"></span></div>
                                 <div
-                            *ngIf="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== '0%'">
+                            *ngIf="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== 0 && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== '0%' && getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1) !== '*1'">
                             <span class="statLabel">Permanent Gained Effect Threshold Increase: </span> <span class="statValue"
                                 [innerHtml]="getGodPermanentAbilityUserEffectThresholdIncrease(ability, 1)"></span></div>
                                 <div *ngIf="getGodAbilityUserEffectDurationIncrease(ability, 1) !== 0"><span class="statLabel">Gained Effect Duration Increase: </span> <span
@@ -369,7 +383,7 @@
                                     <div *ngIf="getGodAbilityEffectMaxCountIncrease(ability, 2) !== 0"><span class="statLabel">Effect Count Increase: </span> <span
                                         class="statValue" [innerHtml]="getGodAbilityEffectMaxCountIncrease(ability, 2)"></span></div>
                                         <div
-                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%'">
+                                        *ngIf="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== 0 && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== '0%' && getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2) !== '*1'">
                                         <span class="statLabel">Permanent Gained Effect Effectiveness Increase: </span> <span
                                             class="statValue"
                                             [innerHtml]="getGodPermanentAbilityUserEffectEffectivenessIncrease(ability, 2)"></span></div>
@@ -516,6 +530,28 @@
         <hr class="miniHr" />
         <div class="statBreakdown"
             [innerHtml]="this.lookupService.getHealingReceivedBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #allyDamagePopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getAllyDamageBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getAllyDamageBonusStatBreakdown(this.character)">
+
+        </div>
+    </div>
+</ng-template>
+
+<ng-template #linkEffectivenessPopover>
+    <div>
+        <span class="description" [innerHtml]="this.lookupService.getLinkEffectivenessBonusDescription()"></span>
+        <hr class="miniHr" />
+        <div class="statBreakdown"
+            [innerHtml]="this.lookupService.getLinkEffectivenessBonusStatBreakdown(this.character)">
 
         </div>
     </div>

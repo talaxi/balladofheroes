@@ -1,6 +1,7 @@
 import { Component, HostListener, OnInit } from '@angular/core';
 import { Settings } from 'src/app/models/utility/settings.model';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { InitializationService } from 'src/app/services/global/initialization.service';
 import { MenuService } from 'src/app/services/menu/menu.service';
 import { KeybindService } from 'src/app/services/utility/keybind.service';
 
@@ -32,7 +33,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
     this.keybindToUpdate = undefined;
   }
 
-  constructor(private globalService: GlobalService, private keybindService: KeybindService, private menuService: MenuService) { }
+  constructor(private globalService: GlobalService, private keybindService: KeybindService, private menuService: MenuService,
+    private initializationService: InitializationService) { }
 
   ngOnInit(): void {
     this.keybinds = this.globalService.globalVar.keybinds;
@@ -102,6 +104,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     if (openJewelcraftingQuickView !== undefined)
       this.battleKeybinds.push(openJewelcraftingQuickView);
 
+      var openTimeFragmentQuickView = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openTimeFragmentQuickView");
+    if (openTimeFragmentQuickView !== undefined)
+      this.battleKeybinds.push(openTimeFragmentQuickView);
+
     var openFirstAvailableAltar = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "openFirstAvailableAltar");
     if (openFirstAvailableAltar !== undefined)
       this.battleKeybinds.push(openFirstAvailableAltar);
@@ -161,6 +167,10 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var useCharacter1Overdrive = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "useCharacter1Overdrive");
     if (useCharacter1Overdrive !== undefined)
       this.battleKeybinds.push(useCharacter1Overdrive);
+
+      var useCharacter1DuoAbility = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "useCharacter1DuoAbility");
+    if (useCharacter1DuoAbility !== undefined)
+      this.battleKeybinds.push(useCharacter1DuoAbility);
 
     var autoToggleCharacter1AutoAttack = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter1AutoAttack");
     if (autoToggleCharacter1AutoAttack !== undefined)
@@ -291,11 +301,18 @@ export class UpdateKeybindsViewComponent implements OnInit {
     var autoToggleCharacter2Overdrive = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter2Overdrive");
     if (autoToggleCharacter2Overdrive !== undefined)
       this.battleKeybinds.push(autoToggleCharacter2Overdrive);
+    
+      var useCharacter2DuoAbility = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "useCharacter2DuoAbility");
+    if (useCharacter2DuoAbility !== undefined)
+      this.battleKeybinds.push(useCharacter2DuoAbility);
 
     var autoToggleCharacter2AllAbilities = this.globalService.globalVar.keybinds.settings.find(item => item[0] === "autoToggleCharacter2AllAbilities");
     if (autoToggleCharacter2AllAbilities !== undefined)
       this.battleKeybinds.push(autoToggleCharacter2AllAbilities);
+  }
 
+  resetToDefault() {
+    this.initializationService.initializeKeybinds();
   }
 
   updateKeybind(keybind: [string, any]) {
@@ -338,6 +355,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Open Alchemy Quick View";
     if (name === "openJewelcraftingQuickView")
       updatedName = "Open Jewelcrafting Quick View";
+      if (name === "openTimeFragmentQuickView")
+      updatedName = "Open Time Fragment Quick View";
     if (name === "useCharacter1AutoAttack")
       updatedName = "Use Character 1 Auto Attack";
     if (name === "openFirstAvailableAltar")
@@ -374,6 +393,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Use Character 1 God 2 Ability 3";
     if (name === "useCharacter1Overdrive")
       updatedName = "Use Character 1 Overdrive";
+      if (name === "useCharacter1DuoAbility")
+      updatedName = "Use Character 1 Duo Ability";
     if (name === "autoToggleCharacter1AutoAttack")
       updatedName = "Toggle Auto Character 1 Auto Attack";
     if (name === "autoToggleCharacter1Ability1")
@@ -414,6 +435,8 @@ export class UpdateKeybindsViewComponent implements OnInit {
       updatedName = "Use Character 2 God 2 Ability 3";
     if (name === "useCharacter2Overdrive")
       updatedName = "Use Character 2 Overdrive";
+      if (name === "useCharacter2DuoAbility")
+      updatedName = "Use Character 2 Duo Ability";
     if (name === "autoToggleCharacter2AutoAttack")
       updatedName = "Toggle Auto Character 2 Auto Attack";
     if (name === "autoToggleCharacter2Ability1")

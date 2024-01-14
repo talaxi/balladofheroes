@@ -7,7 +7,6 @@ import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { OptionalSceneEnum } from 'src/app/models/enums/optional-scene-enum.model';
 import { SubZoneEnum } from 'src/app/models/enums/sub-zone-enum.model';
 import { TutorialTypeEnum } from 'src/app/models/enums/tutorial-type-enum.model';
-import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { AchievementService } from '../achievements/achievement.service';
 import { BalladService } from '../ballad/ballad.service';
 import { GameLogService } from '../battle/game-log.service';
@@ -123,9 +122,11 @@ export class StoryService {
       this.showStory = true;
     else if (this.globalService.globalVar.currentStoryId === 43 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteTravelsAtSea))
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 44 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteWhirlpool))
+    else if (this.globalService.globalVar.currentStoryId === 44 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.CreteWhirlpool))
       this.showStory = true;
-      else if (this.globalService.globalVar.currentStoryId === 45 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLabyrinthLabyrinthCenter))
+    else if (this.globalService.globalVar.currentStoryId === 45 && this.balladService.getActiveSubZone().type === SubZoneEnum.CreteKnossos)
+      this.showStory = true;
+    else if (this.globalService.globalVar.currentStoryId === 46 && this.lookupService.getSubZoneCompletionByType(SubZoneEnum.TheLabyrinthLabyrinthCenter))
       this.showStory = true;
 
     if (this.showStory)
@@ -491,7 +492,7 @@ export class StoryService {
         sceneText = "<div class='sceneDiv'>With the demise of Geryon, your journey to the West is complete. You've completed more than half of Heracles's trials now, and the remainder of your journey lays back on the eastern side of Greece. </div>" +
           "<div>You journey back the way you came, reaching Cádiz and securing boat travel back to your homeland. On the first night of your return trip, you are greeted by a familiar face.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>" + this.hermesText("“You've accomplished quite a lot since the last time we spoke! You sure can go a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
+        sceneText = "<div class='sceneDiv'>" + this.hermesText("“You've accomplished quite a lot since the last time we spoke! You sure can make it a lot further now that you have my power, huh?”") + " Hermes, Messenger of the gods, says to you. Before you can say much, he continues.</div>" +
           "<div>" + this.hermesText("“You've impressed quite a few of us on Olympus. Even father is ready to speak to you now.”") + " Zeus, father of Hermes, Athena, and many others, was seeking your presence. You felt equal parts excitement and anxiety. </div>";
       else if (pageCount === 3)
         sceneText = "<div class='sceneDiv'>" + this.hermesText("“He believes the Giants and the Titans are ready to make their move. Hopefully this time, they'll get the message that they can't beat us. Anyway, you should come as soon as you can!”") + " Hermes says just before taking flight, no doubt delivering another urgent message elsewhere.</div>" +
@@ -593,7 +594,7 @@ export class StoryService {
     else if (storyId === 43) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You stand alone at the prow of a ship bound for Crete. A week had passed since your encounter with Khronos, and yet not even the calm waves of the sea could fix your uneasiness. You knew there was no other option, but the guilt of fleeing the battle still weighed upon you.</div>" +
-          "<div class='sceneDiv'>Zosime had decided you should return to Crete. It was about as far away from Olympus as you could go, and she thought returning to some normalcy and following another hero would do you some good.  You weren't sure it was going to be that easy to return to normalcy. You hadn’t made contact with any of the Olympian gods since the battle for Olympus, and you weren't sure what may have happened to them.</div>" + 
+          "<div class='sceneDiv'>Zosime had decided you should return to Crete. It was about as far away from Olympus as you could go, and she thought returning to some normalcy and following another hero would do you some good.  You weren't sure it was going to be that easy to return to normalcy. You hadn’t made contact with any of the Olympian gods since the battle for Olympus, and you weren't sure what may have happened to them.</div>" +
           "<div>Lost in your thoughts, you absently watch the rhythm of the waves.</div>";
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>In an instant, the waves turned violent. Sailors hurried across the boat, the captain of the vessel shouted out orders. The crashing of the waves roused Zosime from her cabin, racing across the deck towards you.</div>" +
@@ -603,16 +604,24 @@ export class StoryService {
     else if (storyId === 44) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>The current of the water pulls you deeper and deeper towards the whirlpool. The panicked crew do everything they can to steer out of it, but the sea has taken on a life of its own.</div>" +
-          "<div class='sceneDiv'>" + this.poseidonText("“I SAT IDLY BY WHILE MY NIECES PUT TOGETHER THIS FOLLY OF A PLAN. NO LONGER.”") + " A voice booming deep from the middle of the whirlpool calls out. " + this.poseidonText("“I WILL BE KEEPING A MUCH CLOSER EYE ON YOU.”") + "</div>" + 
-          "<div class='sceneDiv'>You feel Poseidon granting you his power as the waves finally begin to calm. The whirlpool dissipates, freeing your ship from its clutches. Despite drawing the Sea God’s ire, you were grateful to see him. The gods hadn’t given up, and they were ready to fight back for their home.</div>" +
-          "<div>Your ship soon arrives on the shores of Crete, and you begin your journey to the Labyrinth of the Minotaur.</div>";      
-    }    
+          "<div class='sceneDiv'>" + this.poseidonText("“I SAT IDLY BY WHILE MY NIECES PUT TOGETHER THIS FOLLY OF A PLAN. NO LONGER.”") + " A voice booming deep from the middle of the whirlpool calls out. " + this.poseidonText("“I WILL BE KEEPING A MUCH CLOSER EYE ON YOU.”") + "</div>" +
+          "<div>You feel Poseidon granting you his power as the waves finally begin to calm. The whirlpool dissipates, freeing your ship from its clutches. Despite drawing the Sea God’s ire, you were grateful to see him. The gods hadn’t given up, and they were ready to fight back for their home.</div>";
+    }
     else if (storyId === 45) {
       if (pageCount === 1)
-        sceneText = "<div class='sceneDiv'>With the Minotaur defeated, you work your way out of the Labyrinth and back to Knossos. On the return journey, your meeting with Poseidon crept its way into your thoughts. It would seem the gods had escaped unscathed, but you had not heard yet from Athena.</div>" +
-          "<div>Upon arriving in Knossos, you make your way to the religious sanctuary within the Palace of Minos. You begin praying to your patron goddess, hoping for a sign on what to do next.</div>";          
+        sceneText = "<div class='sceneDiv'>As the day begins to give way to night, your ship arrives on the shores of Crete. You use your remaining moments of sunlight to track down an inn.</div>" +
+          "<div>You secure a room for the night and stop for a warm meal, although the uneasy feeling around you is unmistakable. You hear hushed conversations discussing the events of Mount Olympus. You pick up exaggerated bits and pieces here and there, but it seems everyone knows the truth of the matter: Olympus had fallen.</div>";
       else if (pageCount === 2)
-        sceneText = "<div class='sceneDiv'>After some time, a vision slowly appears to you, almost begrudgingly. Athena had the makings of a plan, but did not seem sure about it. Eager to right your loss at Mount Olympus, you were determined to see it through regardless of the danger.</div>" +          
+        sceneText = "<div class='sceneDiv'>You listen in on a nearby conversation from a particularly agitated patron. He had received warning from family living in a village near the mountain.</div>" +
+          "<div class='sceneDiv'>The giants had wasted no time in their destruction and pillaging, and their presence had been felt all around the mountain. Many patrons at this establishment seemed concerned for loved ones on the mainland.</div>" +
+          "<div>The chatter stirred something deep inside of you. You may have failed, but you would not give up. You will get answers from Khronos and find a way to put the rightful gods back on Olympus. But first, you will make your way to the Labyrinth like Theseus before you and defeat the great Minotaur.</div>";
+    }
+    else if (storyId === 46) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>With the Minotaur defeated, you work your way out of the Labyrinth and back to Knossos. On the return journey, your meeting with Poseidon crept its way into your thoughts. It would seem the gods had escaped unscathed, but you had not heard yet from Athena.</div>" +
+          "<div>Upon arriving in Knossos, you make your way to the religious sanctuary within the Palace of Minos. You begin praying to your patron goddess, hoping for a sign on what to do next.</div>";
+      else if (pageCount === 2)
+        sceneText = "<div class='sceneDiv'>After some time, a vision slowly appears to you, almost begrudgingly. Athena had the makings of a plan, but did not seem sure about it. Eager to right your loss at Mount Olympus, you were determined to see it through regardless of the danger.</div>" +
           "<div>You finish your prayer to Athena, and begin to make travel plans with Zosime. Your next target: The island of Aiaia. Home to the sorceress Circe, sister of Aeëtes.</div>";
     }
 
@@ -799,6 +808,9 @@ export class StoryService {
     if (this.globalService.globalVar.currentStoryId === 45) {
       this.pageCount = 2;
     }
+    if (this.globalService.globalVar.currentStoryId === 46) {
+      this.pageCount = 2;
+    }
 
     this.sceneText = this.getStoryText(this.globalService.globalVar.currentStoryId, this.currentPage);
 
@@ -823,26 +835,27 @@ export class StoryService {
 
       //post story events, if any
       if (this.globalService.globalVar.currentStoryId === 1) {
-        this.globalService.globalVar.isBattlePaused = false;                              
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type));
-        this.globalService.handleTutorialModal();
-
+        this.globalService.globalVar.isBattlePaused = false;
+        
         if (this.deviceDetectorService.isMobile())
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.MobileOverlay, undefined, undefined, true, subzone.type), this.globalService.globalVar);
+
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.AutoAttack, undefined, undefined, true, subzone.type), this.globalService.globalVar);
+        this.globalService.handleTutorialModal();        
       }
       if (this.globalService.globalVar.currentStoryId === 3) {
         this.globalService.globalVar.settings.set("autoProgress", false);
         this.balladService.setActiveSubZone(SubZoneEnum.DodonaDelphi);
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Town, undefined, undefined, true, SubZoneEnum.DodonaDelphi), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory, undefined, undefined, true, SubZoneEnum.DodonaDelphi));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SkipStory, undefined, undefined, true, SubZoneEnum.DodonaDelphi), this.globalService.globalVar);
       }
       if (this.globalService.globalVar.currentStoryId === 6) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Crafting, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
         var qualityClass = this.lookupService.getEquipmentQualityClass(this.lookupService.getEquipmentPieceByItemType(ItemsEnum.Aegis)?.quality);
         var itemName = "<span class='" + qualityClass + "'>Aegis</span>";
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Athena gives you her shield " + itemName + ".", this.globalService.globalVar);
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Aegis, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
@@ -851,13 +864,13 @@ export class StoryService {
         this.globalService.globalVar.settings.set("autoProgress", false);
       }
       if (this.globalService.globalVar.currentStoryId === 8) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle.</i></b>");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Warning, "<b><i>You will temporarily lose access to previous Ballads after completing the following battle.</i></b>", this.globalService.globalVar);
       }
       if (this.globalService.globalVar.currentStoryId === 9) {
         this.showFirstTimeUnderworldStory = false;
         this.triggerFirstTimeUnderworldScene = false;
         this.endFirstTimeUnderworldScene = true;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Notifications, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         setTimeout(() => {
           this.endFirstTimeUnderworldScene = false;
         }, 5000);
@@ -873,11 +886,11 @@ export class StoryService {
         }
       }
       if (this.globalService.globalVar.currentStoryId === 12) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Traveler, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.Traveler, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
       }
       if (this.globalService.globalVar.currentStoryId === 14) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests, undefined, undefined, true, subzone.type));
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.SideQuests, undefined, undefined, true, subzone.type), this.globalService.globalVar);
         this.globalService.handleTutorialModal();
         var championBallad = this.balladService.findBallad(BalladEnum.Champion);
         if (championBallad !== undefined)
@@ -893,7 +906,7 @@ export class StoryService {
       }
 
       if (this.globalService.globalVar.currentStoryId === 17) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new side quest is available in the Ballad of the Underworld.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.SideQuest, "A new side quest is available in the Ballad of the Underworld.", this.globalService.globalVar);
       }
 
       if (this.globalService.globalVar.currentStoryId === 25) {
@@ -915,7 +928,7 @@ export class StoryService {
         var zeus = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Zeus);
         if (zeus !== undefined) {
           zeus.isAvailable = true;
-          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of the almighty Zeus, God of Thunder and Lightning.");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of the almighty Zeus, God of Thunder and Lightning.", this.globalService.globalVar);
         }
 
         var mountainHike = this.balladService.findSubzone(SubZoneEnum.HuntForYarrowMountainHike);
@@ -927,12 +940,12 @@ export class StoryService {
             this.globalService.globalVar.achievements.push(achievement);
           });
         }
-      }      
+      }
       if (this.globalService.globalVar.currentStoryId === 45) {
         var poseidon = this.globalService.globalVar.gods.find(item => item.type === GodEnum.Poseidon);
         if (poseidon !== undefined) {
           poseidon.isAvailable = true;
-          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Poseidon, God of the Sea.");
+          this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You have gained the powers of Poseidon, God of the Sea.", this.globalService.globalVar);
         }
       }
     }
@@ -982,7 +995,7 @@ export class StoryService {
         sceneText = "As soon as Acheron is out of sight, the familiar shade darts towards you again. " + this.commonCharacterText("“I saw the whole thing! How much prayin' does someone need, I mean sheesh! Well, I'll let the boys know to start coming out here and say sweet nothins' to Oceanus if they want their sea breeze. You start coming by at the palace and I'll sweeten our deal alright?”");
       else if (pageCount === 3)
         sceneText = "<div class='sceneDiv s4Heading bold textCentered sidequestText'>Side Quest Complete!</div>" +
-          this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, false);;
+          this.tutorialService.getTutorialText(TutorialTypeEnum.ChthonicFavorUpgrade1, undefined, undefined, false);
     }
     if (scene === OptionalSceneEnum.CalydonDenMother) {
       if (pageCount === 1)
@@ -1077,12 +1090,17 @@ export class StoryService {
       else if (pageCount === 2)
         sceneText = "<div class='sceneDiv'>" + this.commonCharacterText("“You must be the mortals here to aid us in battle. You've been the talk of Olympus for some time.”") + " He says as he puts down his tools. He nods for you to follow as he makes his way back towards an armory holding his greatest artwork.</div>" +
           this.commonCharacterText("“I made a couple of pieces for you. Won't have you dying on my watch. Here, try this on and go give it a test run.”");
-    }    
+    }
     if (scene === OptionalSceneEnum.IslandOfNaxos) {
       if (pageCount === 1)
         sceneText = "<div class='sceneDiv'>You take a detour to the nearby Island of Naxos. The cult of Dionysus is alive and well here, and it is home to one of his largest temples.</div>" +
           "<div class='sceneDiv'>When you arrive, you are surprised to see Dionysus himself, seemingly unphased by recent events. A party was in full swing and you decided the best way to make amends and venerate the god of wine was to partake.</div>" +
           "<div>You're not quite sure what was in the wine, but you eventually leave the island with a throbbing headache and a greater knowledge of mixology.</div>";
+    }
+    if (scene === OptionalSceneEnum.TimeFragmentInTheSwamp) {
+      if (pageCount === 1)
+        sceneText = "<div class='sceneDiv'>After defeating the Lernean Hydra, you wade your way out of the swamp. Near the edge, you notice a dim green object partially obscured in the muck. You reach down and retrieve what seems to be a crystal. As soon as you touch it, it reacts to your magic and immediately begins to glow.</div>" +
+          "<br/><br/><br/><div class='s4Heading bold textCentered sidequestText'>Time Fragments Unlocked</div>";
     }
 
     sceneText = sceneText.replaceAll("Thales", "<span class='adventurerColor storyCharacterName'>Thales</span>");
@@ -1108,6 +1126,8 @@ export class StoryService {
 
   handleOptionalScene(deltaTime: number) {
     this.globalService.globalVar.isBattlePaused = true;
+    var subzone = this.balladService.getActiveSubZone();
+
     if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
       this.pageCount = 2;
     }
@@ -1162,7 +1182,10 @@ export class StoryService {
     if (this.showOptionalStory === OptionalSceneEnum.HephaestusJewelcrafting) {
       this.pageCount = 2;
     }
-    if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {      
+    if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {
+      this.pageCount = 1;
+    }
+    if (this.showOptionalStory === OptionalSceneEnum.TimeFragmentInTheSwamp) {
       this.pageCount = 1;
     }
 
@@ -1178,7 +1201,7 @@ export class StoryService {
     if (this.currentPage > this.pageCount) {
       this.globalService.globalVar.isBattlePaused = false;
       if (this.showOptionalStory === OptionalSceneEnum.HecateAlchemy) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 25 Olives and Fennel.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hecate provides you with 25 Olives and Fennel.", this.globalService.globalVar);
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.Olive, 25);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
@@ -1197,26 +1220,26 @@ export class StoryService {
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables2) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.", this.globalService.globalVar);
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables4) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 10.", this.globalService.globalVar);
       }
       if (this.showOptionalStory === OptionalSceneEnum.AugeanStables6) {
         this.globalService.globalVar.sidequestData.displayAugeanStablesPayScene = false;
-        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 5.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, "Your max Jewelcrafting level has increased by 5.", this.globalService.globalVar);
 
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.RadiatingHolyStone, 1);
         if (resource !== undefined) {
           this.lookupService.gainResource(resource);
         }
 
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You receive 1 " + this.dictionaryService.getItemName(ItemsEnum.RadiatingHolyStone) + " and learn the Jewelcrafting recipe to craft it.", this.globalService.globalVar);
         this.professionService.learnRecipe(ProfessionEnum.Jewelcrafting, ItemsEnum.RadiatingHolyStone);
       }
       if (this.showOptionalStory === OptionalSceneEnum.HephaestusJewelcrafting) {
-        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hephaestus provides you with the Divine Targe and Divine Plate.");
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "Hephaestus provides you with the Divine Targe and Divine Plate.", this.globalService.globalVar);
         var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.DivinePlate, 1);
         if (resource !== undefined)
           this.lookupService.gainResource(resource);
@@ -1229,7 +1252,7 @@ export class StoryService {
           jewelcrafting.maxLevel += 25;
 
           var gameLogEntry = "Watching Hephestaus work has given you inspiration. Your Jewelcrafting max level increases by <strong>25</strong> to a total of <strong>" + jewelcrafting.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Jewelcrafting, gameLogEntry, this.globalService.globalVar);
         }
       }
       if (this.showOptionalStory === OptionalSceneEnum.IslandOfNaxos) {
@@ -1238,8 +1261,17 @@ export class StoryService {
           alchemy.maxLevel += 25;
 
           var gameLogEntry = "Your experience on the Island of Naxos has improved your Alchemy skills. Your Alchemy max level increases by <strong>25</strong> to a total of <strong>" + alchemy.maxLevel + "</strong>.";
-          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry);
+          this.gameLogService.updateGameLog(GameLogEntryEnum.Alchemy, gameLogEntry, this.globalService.globalVar);
         }
+      }
+      if (this.showOptionalStory === OptionalSceneEnum.TimeFragmentInTheSwamp) {
+        this.gameLogService.updateGameLog(GameLogEntryEnum.BattleRewards, "You find a Time Fragment.", this.globalService.globalVar);
+        var resource = this.resourceGeneratorService.getResourceFromItemType(ItemsEnum.TimeFragment, 1);
+        if (resource !== undefined)
+          this.lookupService.gainResource(resource);
+
+        this.gameLogService.updateGameLog(GameLogEntryEnum.Tutorial, this.tutorialService.getTutorialText(TutorialTypeEnum.TimeFragments, undefined, undefined, true, subzone.type), this.globalService.globalVar);
+        this.globalService.handleTutorialModal();
       }
 
       this.currentPage = 1;

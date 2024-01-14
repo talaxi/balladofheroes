@@ -45,6 +45,13 @@ export class ResourceViewComponent implements OnInit {
     private gameLoopService: GameLoopService, private deviceDetectorService: DeviceDetectorService) { }
 
   ngOnInit(): void {
+    if (this.globalService.globalVar.settings.get("resourcesTabActive") !== undefined && this.globalService.globalVar.settings.get("resourcesTabActive") !== "") 
+      this.resourceTabActive = this.globalService.globalVar.settings.get("resourcesTabActive");
+    if (this.globalService.globalVar.settings.get("resourcesSortType") !== undefined && this.globalService.globalVar.settings.get("resourcesSortType") !== "") 
+      this.sortType = this.globalService.globalVar.settings.get("resourcesSortType");
+      if (this.globalService.globalVar.settings.get("resourcesSort") !== undefined && this.globalService.globalVar.settings.get("resourcesSort") !== "") 
+      this.ascendingSort = this.globalService.globalVar.settings.get("resourcesSort");
+
     this.resourceTabActive = ResourceViewEnum.Equipment;
     this.setupResources();
     this.slotItemsAreAvailable = this.slotItems.length > 0 || (this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting) !== undefined && this.globalService.globalVar.professions.find(item => item.type === ProfessionEnum.Jewelcrafting)!.isUnlocked);
@@ -55,7 +62,9 @@ export class ResourceViewComponent implements OnInit {
     });
   }
 
-  setupResources() {
+  setupResources() {        
+    this.globalService.globalVar.settings.set("resourcesSortType", this.sortType);
+
     this.resources = this.globalService.globalVar.resources.filter(item => (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Resource || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Progression)).sort((a, b) => this.sortResources(a, b));
     this.craftingMaterials = this.globalService.globalVar.resources.filter(item => (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.CraftingMaterial)).sort((a, b) => this.sortCraftingMaterials(a, b));
     this.battleItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && (this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.HealingItem || this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.BattleItem)).sort((a, b) => this.sortBattleItems(a, b));
@@ -63,6 +72,10 @@ export class ResourceViewComponent implements OnInit {
     this.slotItems = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.SlotItem).sort((a, b) => this.sortSlotItems(a, b));
     this.smallCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("small")).sort((a, b) => this.sortCharms(a, b));
     this.largeCharmResources = this.globalService.globalVar.resources.filter(item => item.amount > 0 && this.lookupService.getItemTypeFromItemEnum(item.item) === ItemTypeEnum.Charm && this.dictionaryService.getItemName(item.item).toLowerCase().includes("large")).sort((a, b) => this.sortCharms(a, b));    
+
+    var coins = this.resources.find(item => item.item === ItemsEnum.Coin);
+    if (coins !== undefined)
+      coins.amount = Math.round(coins.amount);
   }
 
   sortEquipment(a: ResourceValue, b: ResourceValue) {
@@ -280,7 +293,10 @@ export class ResourceViewComponent implements OnInit {
 
     if (type !== ResourceViewEnum.Equipment && this.sortType === ResourceViewSortEnum.Quality) {
       this.sortType = ResourceViewSortEnum.Name;
+      this.globalService.globalVar.settings.set("resourcesSortType", this.sortType);
     }
+
+    this.globalService.globalVar.settings.set("resourcesTabActive", this.resourceTabActive);
   }
 
   getEquipmentClass(item: ItemsEnum) {
@@ -331,6 +347,7 @@ export class ResourceViewComponent implements OnInit {
 
   toggleSort() {
     this.ascendingSort = !this.ascendingSort;
+    this.globalService.globalVar.settings.set("resourcesSort", this.ascendingSort);
   }
 
   ngOnDestroy() {

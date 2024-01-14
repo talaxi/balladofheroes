@@ -24,6 +24,7 @@ export class CharacterStats {
     healingReceived: number;
     debuffDuration: number;
     buffDuration: number;
+    linkEffectiveness: number;
     overdriveGainFromAutoAttacks: number;
     healingDone: number;
     aoeDamage: number;
@@ -33,6 +34,8 @@ export class CharacterStats {
     abilityCooldownReductionStart: number;   
     xpGain: number; 
     elementResistanceReduction: number;
+    allyDamageBonus: number;
+    duoPermanentEffectiveness: number;
 
     constructor(hp: number,strength: number, defense: number, agility: number, luck: number, resistance: number) {
         this.maxHp = hp;
@@ -54,6 +57,7 @@ export class CharacterStats {
         this.healingReceived = 0;
         this.debuffDuration = 0;
         this.buffDuration = 0;
+        this.linkEffectiveness = 0;
         this.overdriveGainFromAutoAttacks = 0;
         this.healingDone = 0;
         this.aoeDamage = 0;
@@ -63,6 +67,8 @@ export class CharacterStats {
         this.thorns = 0;
         this.xpGain = 0;
         this.elementResistanceReduction = 0;
+        this.allyDamageBonus = 0;
+        this.duoPermanentEffectiveness = 0;
     }
 
     makeCopy(excludeCurrentHp: boolean = true) {
@@ -73,12 +79,5 @@ export class CharacterStats {
             copy.currentHp = currentHp;
 
         return copy;
-    }
-
-    getHpPercent(asPercent: boolean = false) {
-        if (asPercent)
-            return (this.currentHp / this.maxHp) * 100;
-        else
-            return this.currentHp / this.maxHp;
     }
 }

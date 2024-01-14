@@ -18,7 +18,11 @@ export class BattleInfo {
     hpRegenTimerLength: number;
     elementalType: ElementalTypeEnum;
     elementsUsed: ElementalTypeEnum[]; //specifically used for disaster
+    outburstElementsUsed: ElementalTypeEnum[]; //specifically used for outburst
+    specialAbilityUseCount: number;
     lastUsedPoseidonAbility: boolean;
+    stingerCount: [number, number][]; //specifically used for unique weapon Scorpion Stinger
+    duoAbilityUsed: boolean;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
@@ -32,5 +36,8 @@ export class BattleInfo {
         this.statusEffects = [];
         this.elementalType = ElementalTypeEnum.None;
         this.lastUsedPoseidonAbility = false;
+        this.specialAbilityUseCount = 0;
+        this.stingerCount = [];
+        this.duoAbilityUsed = false;
     }
 }

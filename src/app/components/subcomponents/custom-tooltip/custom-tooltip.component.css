@@ -2,14 +2,18 @@
     border: 1px solid gray;
     border-radius: 2px;
     padding: .25rem .5rem;
-    max-width: 38vw;    
+    max-width: 38vw;
 
     background-color: var(--button-selected);
     color: var(--foreground-tooltip);
 }
 
 .largeTooltip {
-    max-width: 58vw;    
+    max-width: 49.5vw;    
+}
+
+.smallTooltip {
+    max-width: 31vw;    
 }
 
 .lightTooltip {
@@ -50,4 +54,19 @@
 .shiftDownLeft {
     transform: translateY(50%) translateX(-50%);
     overflow: hidden;
+}
+
+@media (max-width: 800px) {
+    .tooltip-container {    
+        max-width: 62.5vw;
+    }
+    
+    .largeTooltip {
+        max-width: 70vw;    
+    }
+    
+    .smallTooltip {
+        max-width: 45vw;    
+    }
+    
 }
