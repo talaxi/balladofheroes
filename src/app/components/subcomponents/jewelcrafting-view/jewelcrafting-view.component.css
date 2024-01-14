@@ -179,7 +179,7 @@
         margin: .5rem;
         padding: .25rem;
         flex-direction: column;    
-        height: 62.5vh;
+        height: 64vh;
       }
 
     .column {
@@ -187,11 +187,15 @@
     }
 
     .recipeList {
-        height: 47.5%;
+        height: 40%;
     }
 
     .mobileDivider {
         border-color: var(--foreground-accent);
         border-width: 3px;
+    }
+
+    .favoriteButton {
+        margin-left: .375rem;
     }
 }

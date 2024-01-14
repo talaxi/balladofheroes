@@ -6374,7 +6374,7 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.AresRareOverdriveGain)
       description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
     if (effect.type === AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage)
-      description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%";
+      description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.AresRareDealHpDamage)
       description = "When the duration expires, deal an amount equal to " + this.utilityService.roundTo(((1 - effect.effectiveness) * 100), 2) + "% of the party's total current HP to all enemies.";
     if (effect.type === AltarEffectsEnum.HadesFireDamageUp)
@@ -6548,7 +6548,7 @@ export class LookupService {
     if (effect.type === AltarEffectsEnum.AresRareOverdriveGain)
       description = "When the duration expires, fill " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of each party member's Overdrive gauge.";
     if (effect.type === AltarEffectsEnum.AresRareIncreaseDamageOverTimeDamage)
-      description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%";
+      description = "Increase damage over time effectiveness by " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "%.";
     if (effect.type === AltarEffectsEnum.AresRareDealHpDamage)
       description = "Only available when Ares is in your party. When the duration expires, deal an amount equal to " + this.utilityService.roundTo(((effect.effectiveness - 1) * 100), 2) + "% of the party's total current HP to all enemies.";
     if (effect.type === AltarEffectsEnum.HadesFireDamageUp)
@@ -9612,7 +9612,7 @@ export class LookupService {
     return "Reduce an enemy's elemental resistances when you attack.";
   }
 
-  //todo: include element colors
+  //todo: include element colors (they've been added but calls haven't been updated)
   getElementName(type?: ElementalTypeEnum, name?: string, includeCss: boolean = false) {
     var element = "";
 
@@ -12241,7 +12241,7 @@ export class LookupService {
     if (level === 3)
       return BestiaryEnum.RabidJackal;
     //if (level === 4) //TODO: once next ballad is implemented
-      //return BestiaryEnum.Charybdis;
+      //return BestiaryEnum.Charybdis; //should be able to trade both rough fragments and flawed jewels
 
     return BestiaryEnum.None;
   }

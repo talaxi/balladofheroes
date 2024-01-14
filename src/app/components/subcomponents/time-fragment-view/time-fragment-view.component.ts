@@ -419,8 +419,8 @@ export class TimeFragmentViewComponent {
     this.timeFragmentRuns = this.globalService.globalVar.timeFragmentRuns;
   }
 
-  isFragmentAvailableToAdd() {
-    if (this.availableFragments < this.timeFragmentRuns.length)
+  isFragmentAvailableToAdd() {    
+    if (this.availableFragments <= this.timeFragmentRuns.length)
       return false;
 
     if (this.timeFragmentRuns.some(item => (item.selectedSubzone !== undefined && this.selectedSubzone !== undefined && item.selectedSubzone === this.selectedSubzone.type) ||

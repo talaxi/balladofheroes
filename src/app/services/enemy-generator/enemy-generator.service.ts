@@ -7134,7 +7134,7 @@ export class EnemyGeneratorService {
       var retribution = new Ability();
       retribution.name = "Retribution";
       retribution.isAvailable = true;
-      retribution.cooldown = retribution.currentCooldown = 15;
+      retribution.cooldown = retribution.currentCooldown = 12;
       retribution.dealsDirectDamage = false;
       retribution.effectiveness = 5.1;
       retribution.maxCount = 1;
@@ -7156,7 +7156,7 @@ export class EnemyGeneratorService {
       noEscape.name = "No Escape";
       noEscape.requiredLevel = this.utilityService.godAbility3Level;
       noEscape.isAvailable = true;
-      noEscape.cooldown = noEscape.currentCooldown = 50;
+      noEscape.cooldown = noEscape.currentCooldown = 40;
       noEscape.dealsDirectDamage = true;
       noEscape.effectiveness = 4.6;
       noEscape.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.RepeatAbility, -1, 1, true, true));

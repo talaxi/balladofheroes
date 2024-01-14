@@ -1504,8 +1504,6 @@ export class VersionControlService {
               passive.userEffect = [];
               passive.effectiveness = .1;
               passive.secondaryEffectiveness = 2;
-
-
             }
 
             var permanentPassiveUpgrades = monkClass.permanentAbilityUpgrades.find(item => item.requiredLevel === this.utilityService.characterPassiveLevel);

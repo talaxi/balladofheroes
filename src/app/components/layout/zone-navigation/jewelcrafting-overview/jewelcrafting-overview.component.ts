@@ -32,10 +32,10 @@ export class JewelcraftingOverviewComponent {
   notLowPerformanceMode() {
     return this.globalService.globalVar.settings.get("fps") === undefined || this.globalService.globalVar.settings.get("fps") !== this.utilityService.lowFps;
   }
-  
+
   openProfession(content: any) {
       if (this.deviceDetectorService.isMobile())
-      this.dialog.open(content, { width: '95%', height: '90%' });
+      this.dialog.open(content, { width: '95%', height: '90%', id: 'dialogNoUpperPadding' });
     else 
       this.dialog.open(content, { width: '80%', minHeight: '75vh', maxHeight: '83%', id: 'dialogNoPadding' });
     }
