@@ -13,7 +13,7 @@ jobs:
     steps:
     
     - name: Checkout
-      uses: actions/checkout@v2
+      uses: actions/checkout@v3
 
     - name: Build
       run: |
@@ -34,7 +34,7 @@ jobs:
         retention-days: 1
 
     - name: Deploy
-      uses: actions/deploy-pages@v1
+      uses: actions/deploy-pages@v3
       id: deployment
       with:
         emit_telemetry: false
