@@ -645,10 +645,79 @@ export class ShopItemGeneratorService {
     }
     if (item === ItemsEnum.Ambrosia) {
       purchasePrice.push(new ResourceValue(ItemsEnum.Nectar, 10));
+    }    
+    if (item === ItemsEnum.BoundingBandEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
     }
-    /*if (item === ItemsEnum.DuoAbilityAccess) {
-        purchasePrice.push(new ResourceValue(ItemsEnum.Ambrosia, 10));
-    }*/
+    if (item === ItemsEnum.BoundingBandSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.ScathingBeautyEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.ScathingBeautySpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.RainbowScaledPlatingEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.RainbowScaledPlatingSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.BatteringMaceEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.BatteringMaceSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.GleamingLoopEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.GleamingLoopSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.EnergyShieldEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.EnergyShieldSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.SturdyShellEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.SturdyShellSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.GlowingChokerEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.GlowingChokerSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.AstralRingEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.AstralRingSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.CarcanetOfTheCentaurEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.CarcanetOfTheCentaurSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.BucklerOfPerfectHarmonyEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.BucklerOfPerfectHarmonySpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }    
+    if (item === ItemsEnum.ScorpionStingerEpic) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 25000));
+    }
+    if (item === ItemsEnum.ScorpionStingerSpecial) {
+      purchasePrice.push(new ResourceValue(ItemsEnum.Coin, 40000));
+    }
     if (item === ItemsEnum.EssenceOfEarth) {
       purchasePrice.push(new ResourceValue(ItemsEnum.EssenceOfWater, 3));
     }

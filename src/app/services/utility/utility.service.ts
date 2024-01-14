@@ -23,6 +23,8 @@ export class UtilityService {
   public averageFps = 32;
   public highFps = 64;
 
+  public timeFragmentClearRateMinimumSeconds = 3;
+
   public lowLoadingAccuracy = 10;
   public averageLoadingAccuracy = 5;
   public highLoadingAccuracy = 2;
