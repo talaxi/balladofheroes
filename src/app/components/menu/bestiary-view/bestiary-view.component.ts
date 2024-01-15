@@ -232,7 +232,7 @@ export class BestiaryViewComponent {
     else if (this.selectedZodiacDifficulty === "Very Hard") {
       if (this.selectedZodiac === ZodiacEnum.Aries)
         bestiaryItem = BestiaryEnum.SoaringRamVeryHard;
-      if (this.selectedZodiac === ZodiacEnum.Aries)
+      if (this.selectedZodiac === ZodiacEnum.Capricorn)
         bestiaryItem = BestiaryEnum.SeaGoatVeryHard;
         if (this.selectedZodiac === ZodiacEnum.Taurus)
         bestiaryItem = BestiaryEnum.GreatBullVeryHard;
