@@ -209,7 +209,7 @@ export class ShoppingItemViewComponent implements OnInit {
       if (this.item.shopItem === ItemsEnum.SparringMatch) {
         amount = 0;
         var currentMultiplier = this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
-        for (var i = 0; i < this.buyMultiplier; i++) {          
+        for (var i = 0; i < this.buyMultiplier; i++) {
           amount += resource.amount * currentMultiplier;
           currentMultiplier *= 1.1;
         }
@@ -257,17 +257,17 @@ export class ShoppingItemViewComponent implements OnInit {
             this.lookupService.levelUpUnique(item);
           });*/
         }
-        else if (resource.item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {                   
+        else if (resource.item === ItemsEnum.DarkMoonPendantUniqueUpgrade) {
           for (var i = 0; i < this.buyMultiplier; i++) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.DarkMoonPendantUnique);
-            if (unique !== undefined)              
+            if (unique !== undefined)
               this.lookupService.giveUniqueXp(unique, 1);
           }
         }
         else if (resource.item === ItemsEnum.BlazingSunPendantUniqueUpgrade) {
           for (var i = 0; i < this.buyMultiplier; i++) {
             var unique = this.globalService.globalVar.uniques.find(item => item.type === ItemsEnum.BlazingSunPendantUnique);
-            if (unique !== undefined)              
+            if (unique !== undefined)
               this.lookupService.giveUniqueXp(unique, 1);
           }
         }
@@ -320,6 +320,15 @@ export class ShoppingItemViewComponent implements OnInit {
   }
 
   getCurrentlyOwnedAmount() {
+    if (this.item.shopItem === ItemsEnum.WarriorClass && this.globalService.globalVar.characters.some(item => item.type === CharacterEnum.Warrior && item.isAvailable))
+      return 1;
+    if (this.item.shopItem === ItemsEnum.PriestClass && this.globalService.globalVar.characters.some(item => item.type === CharacterEnum.Priest && item.isAvailable))
+      return 1;
+    if (this.item.shopItem === ItemsEnum.MonkClass && this.globalService.globalVar.characters.some(item => item.type === CharacterEnum.Monk && item.isAvailable))
+      return 1;
+    if (this.item.shopItem === ItemsEnum.ThaumaturgeClass && this.globalService.globalVar.characters.some(item => item.type === CharacterEnum.Thaumaturge && item.isAvailable))
+      return 1;
+
     return this.lookupService.getResourceAmount(this.item.shopItem).toLocaleString();
   }
 
@@ -384,7 +393,7 @@ export class ShoppingItemViewComponent implements OnInit {
       if (this.item.shopItem === ItemsEnum.SparringMatch) {
         amount = 0;
         var currentMultiplier = this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
-        for (var i = 0; i < this.buyMultiplier; i++) {          
+        for (var i = 0; i < this.buyMultiplier; i++) {
           amount += resource.amount * currentMultiplier;
           currentMultiplier *= 1.1;
         }
@@ -406,7 +415,7 @@ export class ShoppingItemViewComponent implements OnInit {
       if (this.item.shopItem === ItemsEnum.SparringMatch) {
         amount = 0;
         var currentMultiplier = this.globalService.globalVar.sidequestData.sparringMatchMultiplier;
-        for (var i = 0; i < this.buyMultiplier; i++) {          
+        for (var i = 0; i < this.buyMultiplier; i++) {
           amount += resource.amount * currentMultiplier;
           currentMultiplier *= 1.1;
         }
