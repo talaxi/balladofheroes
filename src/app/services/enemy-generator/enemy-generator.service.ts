@@ -13117,9 +13117,7 @@ export class EnemyGeneratorService {
       hardSwipe.effectiveness = 11;
       hardSwipe.isAoe = true;
       hardSwipe.damageModifierRange = .5;
-      enemy.abilityList.push(hardSwipe);
-            
-     
+      enemy.abilityList.push(hardSwipe);                 
 
       var enrage = new Ability();
       enrage.name = "Enrage";
@@ -13129,6 +13127,68 @@ export class EnemyGeneratorService {
       enrage.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.15, false, true, false, undefined, undefined, true));      
       enemy.abilityList.push(enrage);
     } 
+    if (type === BestiaryEnum.ColchianDragon) {
+      enemy.name = "The Colchian Dragon";
+      enemy.battleStats = new CharacterStats(300000, 3000, 9000, 12500, 6450, 14500);
+      enemy.battleInfo.timeToAutoAttack = this.utilityService.enemyAverageAutoAttackSpeed;
+      enemy.coinGainFromDefeat = 15;
+      enemy.xpGainFromDefeat = 6550;   
+      enemy.patron = "Dragomura";             
+      
+      var clawStrike = new Ability();
+      clawStrike.name = "Claw Strike";
+      clawStrike.isAvailable = true;
+      clawStrike.effectiveness = 6.8;
+      clawStrike.cooldown = clawStrike.currentCooldown = 16;
+      clawStrike = this.randomizeCooldown(clawStrike);
+      clawStrike.dealsDirectDamage = true;    
+      clawStrike.targetEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AgilityDown, 12, .5, false, false));
+      enemy.abilityList.push(clawStrike);
+      
+      var fireBreath = new Ability();
+      fireBreath.name = "Fire Breath";
+      fireBreath.isAvailable = true;
+      fireBreath.effectiveness = 7.25;
+      fireBreath.cooldown = fireBreath.currentCooldown = 23;
+      fireBreath = this.randomizeCooldown(fireBreath);
+      fireBreath.dealsDirectDamage = true;
+      fireBreath.isAoe = true;
+      fireBreath.targetEffect.push(this.globalService.createDamageOverTimeEffect(15, 5, .15, fireBreath.name, dotTypeEnum.BasedOnAttack, ElementalTypeEnum.Fire, true));
+      enemy.abilityList.push(fireBreath);
+
+      var tailSwipe = new Ability();
+      tailSwipe.name = "Tail Swipe";
+      tailSwipe.isAvailable = true;
+      tailSwipe.effectiveness = 5.75;
+      tailSwipe.cooldown = tailSwipe.currentCooldown = 18;
+      tailSwipe = this.randomizeCooldown(tailSwipe);
+      tailSwipe.dealsDirectDamage = true;    
+      tailSwipe.isAoe = true;
+      enemy.abilityList.push(tailSwipe);
+      
+      var vigilance = new Ability();
+      vigilance.name = "Vigilance";
+      vigilance.isAvailable = true;
+      vigilance.cooldown = vigilance.currentCooldown = 30;
+      vigilance = this.randomizeCooldown(vigilance);
+      vigilance.dealsDirectDamage = false;            
+      vigilance.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ResistanceUp, 20, 1.6, false, true, false));                 
+      vigilance.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.LuckUp, 20, 1.6, false, true, false));      
+      enemy.abilityList.push(vigilance);
+      
+      var immortality = new Ability();
+      immortality.name = "Immortality";
+      immortality.isAvailable = true;
+      immortality.cooldown = immortality.currentCooldown = 1000000000;      
+      immortality.dealsDirectDamage = false;
+      immortality.heals = true;
+      immortality.effectiveness = 5000;
+      immortality.targetsAllies = true;
+      immortality.targetType = TargetEnum.Self;
+      immortality.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.AllPrimaryStatsExcludeHpUp, -1, 1.5, false, true, false, undefined, undefined, true));      
+      immortality.userEffect.push(this.globalService.createStatusEffect(StatusEffectEnum.ClearDebuffs, -1, 1, true, true, false));
+      enemy.abilityList.push(immortality);
+    }
 
     //probably a better way to do this... these reductions are multiplicative but enemies don't get stats calc'd so otherwise
     //it gets multiplied by 0

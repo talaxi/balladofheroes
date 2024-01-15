@@ -414,5 +414,6 @@ export enum BestiaryEnum {
   Zephyros,
   Euros,
   Notos,
-  DivinePeacock
+  DivinePeacock,
+  ColchianDragon
 }

@@ -109,56 +109,108 @@
                     <br />
                     <i>Select a god to view information about their trial.</i>
                     <br />
-                    <div class="flexGods" *ngIf="!isMobile">
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader athenaColor"
-                            *ngIf="isGodAvailable(godEnum.Athena)"
-                            (click)="showTrialOfSkill(godEnum.Athena)">Athena</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader artemisColor"
-                            *ngIf="isGodAvailable(godEnum.Artemis)"
-                            (click)="showTrialOfSkill(godEnum.Artemis)">Artemis</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader hermesColor"
-                            *ngIf="isGodAvailable(godEnum.Hermes)"
-                            (click)="showTrialOfSkill(godEnum.Hermes)">Hermes</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader apolloColor"
-                            *ngIf="isGodAvailable(godEnum.Apollo)"
-                            (click)="showTrialOfSkill(godEnum.Apollo)">Apollo</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader aresColor"
-                            *ngIf="isGodAvailable(godEnum.Ares)" (click)="showTrialOfSkill(godEnum.Ares)">Ares</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader hadesColor"
-                            *ngIf="isGodAvailable(godEnum.Hades)"
-                            (click)="showTrialOfSkill(godEnum.Hades)">Hades</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader nemesisColor"
-                            *ngIf="isGodAvailable(godEnum.Nemesis)"
-                            (click)="showTrialOfSkill(godEnum.Nemesis)">Nemesis</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader dionysusColor"
-                            *ngIf="isGodAvailable(godEnum.Dionysus)"
-                            (click)="showTrialOfSkill(godEnum.Dionysus)">Dionysus</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader zeusColor"
-                            *ngIf="isGodAvailable(godEnum.Zeus)" (click)="showTrialOfSkill(godEnum.Zeus)">Zeus</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader poseidonColor"
-                            *ngIf="isGodAvailable(godEnum.Poseidon)"
-                            (click)="showTrialOfSkill(godEnum.Poseidon)">Poseidon</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader aphroditeColor"
-                            *ngIf="isGodAvailable(godEnum.Aphrodite)"
-                            (click)="showTrialOfSkill(godEnum.Aphrodite)">Aphrodite</button>
-                        <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader heraColor"
-                            *ngIf="isGodAvailable(godEnum.Hera)" (click)="showTrialOfSkill(godEnum.Hera)">Hera</button>                            
-                    </div>
-                    <!--<div class="flexGods">                        
-                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
-                            (click)="showTrialOfStars(zodiacEnum.Aries)"><img class="filtered" src="assets/svg/Aries.svg" /></button>
-                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
-                            (click)="showTrialOfStars(zodiacEnum.Capricorn)"><img class="filtered" src="assets/svg/Capricorn.svg" /></button>
-                            
-                            <div *ngIf="selectedZodiac !== zodiacEnum.None">
-                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader smallCaps bold"
-                            (click)="setTrialOfStarsDifficulty('Normal')">normal</button>
-                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader smallCaps bold"
-                            (click)="setTrialOfStarsDifficulty('Hard')">hard</button>
-                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader smallCaps bold"
-                            (click)="setTrialOfStarsDifficulty('Very Hard')">very hard</button>
+                    <div *ngIf="!isMobile">
+                        <div class="flexGods">
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader athenaColor"
+                                *ngIf="isGodAvailable(godEnum.Athena)"
+                                (click)="showTrialOfSkill(godEnum.Athena)">Athena</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader artemisColor"
+                                *ngIf="isGodAvailable(godEnum.Artemis)"
+                                (click)="showTrialOfSkill(godEnum.Artemis)">Artemis</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader hermesColor"
+                                *ngIf="isGodAvailable(godEnum.Hermes)"
+                                (click)="showTrialOfSkill(godEnum.Hermes)">Hermes</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader apolloColor"
+                                *ngIf="isGodAvailable(godEnum.Apollo)"
+                                (click)="showTrialOfSkill(godEnum.Apollo)">Apollo</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader aresColor"
+                                *ngIf="isGodAvailable(godEnum.Ares)"
+                                (click)="showTrialOfSkill(godEnum.Ares)">Ares</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader hadesColor"
+                                *ngIf="isGodAvailable(godEnum.Hades)"
+                                (click)="showTrialOfSkill(godEnum.Hades)">Hades</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader nemesisColor"
+                                *ngIf="isGodAvailable(godEnum.Nemesis)"
+                                (click)="showTrialOfSkill(godEnum.Nemesis)">Nemesis</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader dionysusColor"
+                                *ngIf="isGodAvailable(godEnum.Dionysus)"
+                                (click)="showTrialOfSkill(godEnum.Dionysus)">Dionysus</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader zeusColor"
+                                *ngIf="isGodAvailable(godEnum.Zeus)"
+                                (click)="showTrialOfSkill(godEnum.Zeus)">Zeus</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader poseidonColor"
+                                *ngIf="isGodAvailable(godEnum.Poseidon)"
+                                (click)="showTrialOfSkill(godEnum.Poseidon)">Poseidon</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader aphroditeColor"
+                                *ngIf="isGodAvailable(godEnum.Aphrodite)"
+                                (click)="showTrialOfSkill(godEnum.Aphrodite)">Aphrodite</button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader heraColor"
+                                *ngIf="isGodAvailable(godEnum.Hera)"
+                                (click)="showTrialOfSkill(godEnum.Hera)">Hera</button>
                         </div>
-                    </div>-->
+                        <br />
+                        <div class="flexGods">
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Aquarius)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Aquarius, 'filtered': selectedZodiac !== zodiacEnum.Aquarius}"
+                                    src="assets/svg/Aquarius.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Pisces)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Pisces, 'filtered': selectedZodiac !== zodiacEnum.Pisces}"
+                                    src="assets/svg/Pisces.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Aries)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Aries, 'filtered': selectedZodiac !== zodiacEnum.Aries}"
+                                    src="assets/svg/Aries.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Taurus)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Taurus, 'filtered': selectedZodiac !== zodiacEnum.Taurus}"
+                                    src="assets/svg/Taurus.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Gemini)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Gemini, 'filtered': selectedZodiac !== zodiacEnum.Gemini}"
+                                    src="assets/svg/Gemini.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Cancer)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Cancer, 'filtered': selectedZodiac !== zodiacEnum.Cancer}"
+                                    src="assets/svg/Cancer.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Leo)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Leo, 'filtered': selectedZodiac !== zodiacEnum.Leo}"
+                                    src="assets/svg/Leo.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Virgo)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Virgo, 'filtered': selectedZodiac !== zodiacEnum.Virgo}"
+                                    src="assets/svg/Virgo.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Libra)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Libra, 'filtered': selectedZodiac !== zodiacEnum.Libra}"
+                                    src="assets/svg/Libra.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Scorpio)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Scorpio, 'filtered': selectedZodiac !== zodiacEnum.Scorpio}"
+                                    src="assets/svg/Scorpio.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Sagittarius)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Sagittarius, 'filtered': selectedZodiac !== zodiacEnum.Sagittarius}"
+                                    src="assets/svg/Sagittarius.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Capricorn)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Capricorn, 'filtered': selectedZodiac !== zodiacEnum.Capricorn}"
+                                    src="assets/svg/Capricorn.svg" /></button>
+                        </div>
+                        <div class="flexGods" *ngIf="selectedZodiac !== zodiacEnum.None">
+                            <button [ngClass]="{'selected': selectedZodiacDifficulty === 'Normal'}"
+                                class="buttonAsText clickableText s6Heading pageHeader smallCaps bold"
+                                (click)="setTrialOfStarsDifficulty('Normal')">normal</button>
+                            <button [ngClass]="{'selected': selectedZodiacDifficulty === 'Hard'}"
+                                class="buttonAsText clickableText s6Heading pageHeader smallCaps bold"
+                                (click)="setTrialOfStarsDifficulty('Hard')">hard</button>
+                            <button [ngClass]="{'selected': selectedZodiacDifficulty === 'Very Hard'}"
+                                class="buttonAsText clickableText s6Heading pageHeader smallCaps bold"
+                                (click)="setTrialOfStarsDifficulty('Very Hard')">very hard</button>
+                        </div>
+                    </div>
                     <div *ngIf="isMobile">
                         <div class="flexGods">
                             <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader athenaColor"
@@ -204,38 +256,109 @@
                                 *ngIf="isGodAvailable(godEnum.Hera)"
                                 (click)="showTrialOfSkill(godEnum.Hera)">Hera</button>
                         </div>
+                        <br />
+                        <div class="flexGods">
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Aquarius)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Aquarius, 'filtered': selectedZodiac !== zodiacEnum.Aquarius}"
+                                    src="assets/svg/Aquarius.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Pisces)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Pisces, 'filtered': selectedZodiac !== zodiacEnum.Pisces}"
+                                    src="assets/svg/Pisces.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Aries)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Aries, 'filtered': selectedZodiac !== zodiacEnum.Aries}"
+                                    src="assets/svg/Aries.svg" /></button>
+                        </div>
+                        <div class="flexGods">
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Taurus)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Taurus, 'filtered': selectedZodiac !== zodiacEnum.Taurus}"
+                                    src="assets/svg/Taurus.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Gemini)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Gemini, 'filtered': selectedZodiac !== zodiacEnum.Gemini}"
+                                    src="assets/svg/Gemini.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Cancer)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Cancer, 'filtered': selectedZodiac !== zodiacEnum.Cancer}"
+                                    src="assets/svg/Cancer.svg" /></button>
+                        </div>
+                        <div class="flexGods">
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Leo)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Leo, 'filtered': selectedZodiac !== zodiacEnum.Leo}"
+                                    src="assets/svg/Leo.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Virgo)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Virgo, 'filtered': selectedZodiac !== zodiacEnum.Virgo}"
+                                    src="assets/svg/Virgo.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Libra)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Libra, 'filtered': selectedZodiac !== zodiacEnum.Libra}"
+                                    src="assets/svg/Libra.svg" /></button>
+                        </div>
+                        <div class="flexGods">
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Scorpio)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Scorpio, 'filtered': selectedZodiac !== zodiacEnum.Scorpio}"
+                                    src="assets/svg/Scorpio.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Sagittarius)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Sagittarius, 'filtered': selectedZodiac !== zodiacEnum.Sagittarius}"
+                                    src="assets/svg/Sagittarius.svg" /></button>
+                            <button class="buttonAsTextKeepColor clickableText s6Heading pageHeader"
+                                (click)="showTrialOfStars(zodiacEnum.Capricorn)"><img
+                                    [ngClass]="{'filteredSelected': selectedZodiac === zodiacEnum.Capricorn, 'filtered': selectedZodiac !== zodiacEnum.Capricorn}"
+                                    src="assets/svg/Capricorn.svg" /></button>
+                        </div>
+
+                        <div class="flexGods" *ngIf="selectedZodiac !== zodiacEnum.None">
+                            <button [ngClass]="{'selected': selectedZodiacDifficulty === 'Normal'}"
+                                class="buttonAsText clickableText s6Heading pageHeader smallCaps bold"
+                                (click)="setTrialOfStarsDifficulty('Normal')">normal</button>
+                            <button [ngClass]="{'selected': selectedZodiacDifficulty === 'Hard'}"
+                                class="buttonAsText clickableText s6Heading pageHeader smallCaps bold"
+                                (click)="setTrialOfStarsDifficulty('Hard')">hard</button>
+                            <button [ngClass]="{'selected': selectedZodiacDifficulty === 'Very Hard'}"
+                                class="buttonAsText clickableText s6Heading pageHeader smallCaps bold"
+                                (click)="setTrialOfStarsDifficulty('Very Hard')">very hard</button>
+                        </div>
                     </div>
                     <br />
-                    <br/>
+                    <br />
                     <div *ngIf="selectedTrialGod !== godEnum.None">
-                        <span class="textCentered bold s4Heading pageHeader" [ngClass]="getGodColorClass()" customToolTip
-                        [contentTemplate]="trialEnemyPopover" [tooltipDirection]="trialTooltipDirection">{{getSelectedGodName()}}</span>
+                        <span class="textCentered bold s4Heading pageHeader" [ngClass]="getGodColorClass()"
+                            customToolTip [contentTemplate]="trialEnemyPopover"
+                            [tooltipDirection]="trialTooltipDirection">{{getSelectedGodName()}}</span>
                         <ng-template #trialEnemyPopover>
                             <app-enemy-description-view
                                 [character]="getEnemyTrialBossWithScaledStats()"></app-enemy-description-view>
                         </ng-template>
-                        <br/>
+                        <br />
                         <span>Defeat Count: {{getTrialGodDefeatCount()}}</span>
-                        <br/>
+                        <br />
                         <span>Highest XPS Achieved: {{getHighestXpsForTrialGod()}}</span>
-                        <br/>
+                        <br />
                         <span>Highest DPS Achieved: {{getHighestDpsForTrialGod()}}</span>
-                        <br/>
+                        <br />
                         <span>Highest Total God Levels On Defeat: {{getHighestGodLevelsForTrialGod()}}</span>
                     </div>
                     <div *ngIf="selectedZodiac !== zodiacEnum.None">
                         <span class="textCentered bold s4Heading pageHeader" customToolTip
-                        [contentTemplate]="trialEnemyPopover" [tooltipDirection]="trialTooltipDirection">{{getSelectedZodiacName()}}</span>
+                            [contentTemplate]="trialEnemyPopover"
+                            [tooltipDirection]="trialTooltipDirection">{{getSelectedZodiacName()}}</span>
                         <ng-template #trialEnemyPopover>
                             <app-enemy-description-view
                                 [character]="getTrialOfTheStarsBestiary()"></app-enemy-description-view>
                         </ng-template>
-                        <br/>
+                        <br />
                         <span>Defeat Count: {{getTrialOfTheStarsDefeatCount()}}</span>
-                        <br/>
+                        <br />
                         <span>Highest XPS Achieved: {{getHighestXpsForTrialOfTheStars()}}</span>
-                        <br/>
-                        <span>Highest DPS Achieved: {{getHighestDpsForTrialOfTheStars()}}</span>                        
+                        <br />
+                        <span>Highest DPS Achieved: {{getHighestDpsForTrialOfTheStars()}}</span>
                     </div>
                 </div>
 
@@ -271,7 +394,7 @@
             <span class="smallCaps bold">subzone</span>
             <br />
             <span>Highest XPS Achieved: {{getHighestXps(selectedSubzone)}}</span>
-            <br/>
+            <br />
             <span>Highest DPS Achieved: {{getHighestDps(selectedSubzone)}}</span>
             <br />
             <br />

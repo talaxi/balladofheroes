@@ -13,6 +13,8 @@ import { ColiseumDefeatCount } from 'src/app/models/battle/coliseum-defeat-count
 import { ColiseumTournamentEnum } from 'src/app/models/enums/coliseum-tournament-enum.model';
 import { God } from 'src/app/models/character/god.model';
 import { StatusEffectEnum } from 'src/app/models/enums/status-effects-enum.model';
+import { ZodiacEnum } from 'src/app/models/enums/zodiac-enum.model';
+import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { ItemsEnum } from 'src/app/models/enums/items-enum.model';
 import { ResourceValue } from 'src/app/models/resources/resource-value.model';
 import { IndividualFollower } from 'src/app/models/followers/individual-follower.model';
@@ -45,7 +47,7 @@ export class VersionControlService {
 
   //DON'T FORGET TO CHANGE GLOBAL SERVICE VERSION AS WELL
   //add to this in descending order
-  gameVersions = [0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
+  gameVersions = [0.76, 0.75, 0.71, 0.7, 0.65, 0.64, 0.63, 0.62, 0.61, 0.6, 0.56, 0.55, 0.51, 0.5, 0.46, 0.45, 0.42, 0.41, 0.4, 0.32, 0.31, 0.3];
 
   getCurrentVersion() {
     return this.gameVersions[0];
@@ -1494,7 +1496,7 @@ export class VersionControlService {
             if (permanentAbility1Upgrades !== undefined) {
               permanentAbility1Upgrades.effectiveness = 0;
 
-              monkClass.permanentAbility1GainCount.forEach(item => {                
+              monkClass.permanentAbility1GainCount.forEach(item => {
                 permanentAbility1Upgrades!.effectiveness += item[1] * (.075 * Math.ceil(item[0] / 10));
               });
             }
@@ -1648,6 +1650,20 @@ export class VersionControlService {
             if (permanentBlindingLight !== undefined) {
               permanentBlindingLight.effectiveness = (permanentBlindingLight.effectiveness / .25) * .35;
             }
+          }
+        }
+        if (version === .76) {
+          var starsNormal = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsNormal);
+          var starsHard = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsHard);
+          var starsVeryHard = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsVeryHard);
+          if (starsNormal !== undefined && starsNormal.count >= 0) {
+            starsNormal.zodiacType = ZodiacEnum.Capricorn;
+          }
+          if (starsHard !== undefined && starsHard.count >= 0) {
+            starsHard.zodiacType = ZodiacEnum.Capricorn;
+          }
+          if (starsVeryHard !== undefined && starsVeryHard.count >= 0) {
+            starsVeryHard.zodiacType = ZodiacEnum.Capricorn;
           }
         }
 

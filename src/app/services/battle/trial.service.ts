@@ -795,7 +795,8 @@ export class TrialService {
     else {
       var xps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculateXps();
       var dps = this.lookupService.isUIHidden ? 1 : this.dpsCalculatorService.calculatePartyDps();
-      var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type);
+      var zodiacEnum = this.zodiacService.getCurrentZodiac();
+      var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === type && item.zodiacType === zodiacEnum);
       if (trialType !== undefined) {
         trialType.count += 1;
         if (xps > trialType.highestXps)
@@ -804,7 +805,7 @@ export class TrialService {
           trialType.highestDps = dps;       
       }
       else {
-        var trialDefeatCount = new TrialDefeatCount(type, 1);
+        var trialDefeatCount = new TrialDefeatCount(type, 1, undefined, zodiacEnum);
         trialDefeatCount.highestXps = xps;
         trialDefeatCount.highestDps = dps;        
         this.globalService.globalVar.trialDefeatCount.push(trialDefeatCount);

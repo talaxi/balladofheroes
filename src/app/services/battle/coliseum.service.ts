@@ -550,10 +550,20 @@ export class ColiseumService {
           continue;
         }
       }
+      else if (round === 20) {
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors) {
+          continue;
+        }
+      }
+      else if (round <= 30) {
+        if (this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Olympus && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors) {
+          continue;
+        }
+      }
       //eventually add round limiter here when you have more stuff
       else {
-        if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Boar &&
-          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Argo && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors)) {
+        if ((this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Olympus &&
+          this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labyrinth && this.findBalladOfSubzone(enumValue)?.type !== BalladEnum.Labors)) {
           continue;
         }
       }
@@ -566,9 +576,9 @@ export class ColiseumService {
     }
 
     if (isBoss) {
-      /*this.getPatreonBosses().forEach(bossTeam => {
+      this.getPatreonBosses(round).forEach(bossTeam => {
         allRelevantEnemyParties.push(bossTeam);
-      });*/
+      });
     }
 
     var rng = this.utilityService.getRandomInteger(0, allRelevantEnemyParties.length - 1);
@@ -607,7 +617,6 @@ export class ColiseumService {
     expectedCharacterStats.agility *= multipleEnemyModifier;
     expectedCharacterStats.luck *= multipleEnemyModifier;
     expectedCharacterStats.resistance *= multipleEnemyModifier;
-
 
     this.normalizeEnemyTeamStats(selectedEnemyTeam, expectedCharacterStats);
 
@@ -650,6 +659,10 @@ export class ColiseumService {
       enemy.battleStats.agility = Math.round(enemy.battleStats.agility * (expectedStats.agility / totalAgility));
       enemy.battleStats.luck = Math.round(enemy.battleStats.luck * (expectedStats.luck / totalLuck));
       enemy.battleStats.resistance = Math.round(enemy.battleStats.resistance * (expectedStats.resistance / totalResistance));
+
+      if (enemy.bestiaryType === BestiaryEnum.ColchianDragon) {
+        enemy.battleStats.maxHp = Math.round(enemy.battleStats.maxHp * .6);
+      }
 
       enemy.battleStats.currentHp = enemy.battleStats.maxHp;
     });
@@ -699,15 +712,16 @@ export class ColiseumService {
     return returnBallad;
   }
 
-  getPatreonBosses() {
+  getPatreonBosses(round: number) {
     var battleOptions: EnemyTeam[] = [];
 
     //List Begin 
-    /*var enemyTeam: EnemyTeam = new EnemyTeam();
-    enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.WaterSerpent));
-    battleOptions.push(enemyTeam);
-*/
-
+    if (round >= 25) {
+      var enemyTeam: EnemyTeam = new EnemyTeam();
+      enemyTeam.isBossFight = true;
+      enemyTeam.enemyList.push(this.enemyGeneratorService.generateEnemy(BestiaryEnum.ColchianDragon));
+      battleOptions.push(enemyTeam);
+    }
     //End of list
 
     battleOptions.forEach(enemyTeam => {

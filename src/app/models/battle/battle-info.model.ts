@@ -23,6 +23,7 @@ export class BattleInfo {
     lastUsedPoseidonAbility: boolean;
     stingerCount: [number, number][]; //specifically used for unique weapon Scorpion Stinger
     duoAbilityUsed: boolean;
+    immortalityCount: number;
 
     constructor(characterType?: CharacterEnum, enemyType?: BestiaryEnum) {
         this.autoAttackTimer = 0;
@@ -39,5 +40,6 @@ export class BattleInfo {
         this.specialAbilityUseCount = 0;
         this.stingerCount = [];
         this.duoAbilityUsed = false;
+        this.immortalityCount = 0;
     }
 }

@@ -89,6 +89,13 @@
     filter: invert(99%) sepia(1%) saturate(297%) hue-rotate(124deg) brightness(112%) contrast(80%);
 }
 
+.filteredSelected {
+    filter: invert(40%) sepia(1%) saturate(297%) hue-rotate(124deg) brightness(112%) contrast(80%);
+}
+
+.selected {
+    color: var(--foreground-secondary);
+}
 
 @media (max-width: 800px) {
 

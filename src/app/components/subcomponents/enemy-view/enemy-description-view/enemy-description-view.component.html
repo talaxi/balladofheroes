@@ -50,6 +50,11 @@
             </div>
         </div>
         <hr />
+        <div *ngIf="character.patron !== undefined && character.patron !== ''">
+            <i>
+                Thank you to <b class="smallCaps">{{character.patron}}</b> for the boss inspiration and your support as a <b class="smallCaps">Chthonic Patron</b>!
+            </i>
+        </div>
         <div *ngIf="this.defeatCount < this.utilityService.killCountDisplayBasicEnemyLoot">
             Defeat {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount}} more
             {{this.utilityService.killCountDisplayBasicEnemyLoot - this.defeatCount === 1 ? "time" : "times"}} for more

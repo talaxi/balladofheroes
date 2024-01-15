@@ -55,7 +55,7 @@ export class GlobalService {
     private deviceDetectorService: DeviceDetectorService, private zodiacService: ZodiacService) { }
 
   getCurrentVersion() {
-    return .75;
+    return .76;
   }
 
   initializeGlobalVariables() {

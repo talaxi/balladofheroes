@@ -12,6 +12,7 @@ import { Zone } from 'src/app/models/zone/zone.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { DictionaryService } from 'src/app/services/utility/dictionary.service';
 import { TrialService } from 'src/app/services/battle/trial.service';
+import { ZodiacService } from 'src/app/services/global/zodiac.service';
 import { UtilityService } from 'src/app/services/utility/utility.service';
 import { TimeFragmentRun } from 'src/app/models/utility/time-fragment-run.model';
 import { EnemyTeam } from 'src/app/models/character/enemy-team.model';
@@ -43,7 +44,7 @@ export class TimeFragmentViewComponent {
   constructor(public balladService: BalladService, private globalService: GlobalService, private lookupService: LookupService,
     private deviceDetectorService: DeviceDetectorService, private dictionaryService: DictionaryService, private trialService: TrialService,
     private utilityService: UtilityService, private subzoneGeneratorService: SubZoneGeneratorService, private achievementService: AchievementService,
-    private backgroundService: BackgroundService) {
+    private backgroundService: BackgroundService, private zodiacService: ZodiacService) {
 
   }
 
@@ -270,10 +271,14 @@ export class TimeFragmentViewComponent {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
+      else if (this.selectedTrial === TrialEnum.TrialOfTheStarsNormal || this.selectedTrial === TrialEnum.TrialOfTheStarsHard || this.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial &&
+          item.zodiacType === this.zodiacService.getCurrentZodiac());
+      }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === this.selectedTrial);        
       }
-      
+
       if (trialType === undefined)
         return 0;
 
@@ -303,6 +308,10 @@ export class TimeFragmentViewComponent {
       if (run.selectedTrial === TrialEnum.TrialOfSkill) {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+      }
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.zodiacType === this.zodiacService.getCurrentZodiac());
       }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
@@ -370,6 +379,10 @@ export class TimeFragmentViewComponent {
       if (run.selectedTrial === TrialEnum.TrialOfSkill) {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+      }
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.zodiacType === this.zodiacService.getCurrentZodiac());
       }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);

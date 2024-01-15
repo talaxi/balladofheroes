@@ -10,6 +10,7 @@ export class Enemy extends Character {
     loot: LootItem[];
     isBoss: boolean;
     bestiaryType: BestiaryEnum;
+    patron: string;
     
     constructor() {
         super();

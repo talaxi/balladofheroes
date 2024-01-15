@@ -32,6 +32,7 @@ import { BestiaryEnum } from 'src/app/models/enums/bestiary-enum.model';
 import { TrialEnum } from 'src/app/models/enums/trial-enum.model';
 import { EnemyGeneratorService } from 'src/app/services/enemy-generator/enemy-generator.service';
 import { TrialService } from 'src/app/services/battle/trial.service';
+import { TrialDefeatCount } from 'src/app/models/battle/trial-defeat-count.model';
 
 @Component({
   selector: 'app-bestiary-view',
@@ -61,7 +62,7 @@ export class BestiaryViewComponent {
   shopOptions: ShopOption[] = [];
   selectedTrialGod: GodEnum = GodEnum.None;
   selectedZodiac: ZodiacEnum = ZodiacEnum.None;
-  selectedZodiacDifficulty = "";
+  selectedZodiacDifficulty = "Normal";
 
   constructor(private globalService: GlobalService, public balladService: BalladService, private deviceDetectorService: DeviceDetectorService,
     private subzoneGeneratorService: SubZoneGeneratorService, private utilityService: UtilityService, public lookupService: LookupService,
@@ -181,21 +182,82 @@ export class BestiaryViewComponent {
         bestiaryItem = BestiaryEnum.SoaringRamNormal;
       if (this.selectedZodiac === ZodiacEnum.Capricorn)
         bestiaryItem = BestiaryEnum.SeaGoatNormal;
+        if (this.selectedZodiac === ZodiacEnum.Taurus)
+        bestiaryItem = BestiaryEnum.GreatBullNormal;
+        if (this.selectedZodiac === ZodiacEnum.Gemini)
+        bestiaryItem = BestiaryEnum.PolluxNormal;
+        if (this.selectedZodiac === ZodiacEnum.Cancer)
+        bestiaryItem = BestiaryEnum.GargantuanCrabNormal;
+        if (this.selectedZodiac === ZodiacEnum.Leo)
+        bestiaryItem = BestiaryEnum.MajesticLionNormal;
+        if (this.selectedZodiac === ZodiacEnum.Virgo)
+        bestiaryItem = BestiaryEnum.AstraeaNormal;
+        if (this.selectedZodiac === ZodiacEnum.Libra)
+        bestiaryItem = BestiaryEnum.ThemisNormal;
+        if (this.selectedZodiac === ZodiacEnum.Scorpio)
+        bestiaryItem = BestiaryEnum.HardenedScorpionNormal;
+        if (this.selectedZodiac === ZodiacEnum.Sagittarius)
+        bestiaryItem = BestiaryEnum.ChironNormal;
+        if (this.selectedZodiac === ZodiacEnum.Aquarius)
+        bestiaryItem = BestiaryEnum.GanymedeNormal;
+        if (this.selectedZodiac === ZodiacEnum.Pisces)
+        bestiaryItem = BestiaryEnum.RainbowScaledFishNormal;
     }
     else if (this.selectedZodiacDifficulty === "Hard") {
       if (this.selectedZodiac === ZodiacEnum.Aries)
         bestiaryItem = BestiaryEnum.SoaringRamHard;
       if (this.selectedZodiac === ZodiacEnum.Capricorn)
         bestiaryItem = BestiaryEnum.SeaGoatHard;
+        if (this.selectedZodiac === ZodiacEnum.Taurus)
+        bestiaryItem = BestiaryEnum.GreatBullHard;
+        if (this.selectedZodiac === ZodiacEnum.Gemini)
+        bestiaryItem = BestiaryEnum.PolluxHard;
+        if (this.selectedZodiac === ZodiacEnum.Cancer)
+        bestiaryItem = BestiaryEnum.GargantuanCrabHard;
+        if (this.selectedZodiac === ZodiacEnum.Leo)
+        bestiaryItem = BestiaryEnum.MajesticLionHard;
+        if (this.selectedZodiac === ZodiacEnum.Virgo)
+        bestiaryItem = BestiaryEnum.AstraeaHard;
+        if (this.selectedZodiac === ZodiacEnum.Libra)
+        bestiaryItem = BestiaryEnum.ThemisHard;
+        if (this.selectedZodiac === ZodiacEnum.Scorpio)
+        bestiaryItem = BestiaryEnum.HardenedScorpionHard;
+        if (this.selectedZodiac === ZodiacEnum.Sagittarius)
+        bestiaryItem = BestiaryEnum.ChironHard;
+        if (this.selectedZodiac === ZodiacEnum.Aquarius)
+        bestiaryItem = BestiaryEnum.GanymedeHard;
+        if (this.selectedZodiac === ZodiacEnum.Pisces)
+        bestiaryItem = BestiaryEnum.RainbowScaledFishHard;
     }
     else if (this.selectedZodiacDifficulty === "Very Hard") {
       if (this.selectedZodiac === ZodiacEnum.Aries)
         bestiaryItem = BestiaryEnum.SoaringRamVeryHard;
       if (this.selectedZodiac === ZodiacEnum.Aries)
         bestiaryItem = BestiaryEnum.SeaGoatVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Taurus)
+        bestiaryItem = BestiaryEnum.GreatBullVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Gemini)
+        bestiaryItem = BestiaryEnum.PolluxVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Cancer)
+        bestiaryItem = BestiaryEnum.GargantuanCrabVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Leo)
+        bestiaryItem = BestiaryEnum.MajesticLionVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Virgo)
+        bestiaryItem = BestiaryEnum.AstraeaVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Libra)
+        bestiaryItem = BestiaryEnum.ThemisVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Scorpio)
+        bestiaryItem = BestiaryEnum.HardenedScorpionVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Sagittarius)
+        bestiaryItem = BestiaryEnum.ChironVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Aquarius)
+        bestiaryItem = BestiaryEnum.GanymedeVeryHard;
+        if (this.selectedZodiac === ZodiacEnum.Pisces)
+        bestiaryItem = BestiaryEnum.RainbowScaledFishVeryHard;
     }
 
     var boss = this.enemyGeneratorService.generateEnemy(bestiaryItem);
+
     return boss;
   }
 
@@ -241,28 +303,60 @@ export class BestiaryViewComponent {
   }
 
   getTrialOfTheStarsDefeatCount() {
+    var trialType: TrialDefeatCount | undefined = undefined;
+    if (this.selectedZodiacDifficulty === "Normal") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsNormal && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Hard") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsHard && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Very Hard") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsVeryHard && item.zodiacType === this.selectedZodiac);
+    }
 
+    if (trialType === undefined)
+      return 0;
+
+    return trialType.count;
   }
 
   //todo: you have to overhaul this a bit -- stars needs to mimic skill where it differentiates by zodiac
   getHighestXpsForTrialOfTheStars() {
-    /*if (this.selected)
+    var trialType: TrialDefeatCount | undefined = undefined;
+    if (this.selectedZodiacDifficulty === "Normal") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsNormal && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Hard") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsHard && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Very Hard") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsVeryHard && item.zodiacType === this.selectedZodiac);
+    }
 
-    var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill);
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestXps);*/
+    return this.utilityService.bigNumberReducer(trialType.highestXps);
 
     return 0;
   }
 
   getHighestDpsForTrialOfTheStars() {
-    /*var trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfSkill && item.godType === this.selectedTrialGod);
+    var trialType: TrialDefeatCount | undefined = undefined;
+    if (this.selectedZodiacDifficulty === "Normal") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsNormal && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Hard") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsHard && item.zodiacType === this.selectedZodiac);
+    }
+    if (this.selectedZodiacDifficulty === "Very Hard") {
+      trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === TrialEnum.TrialOfTheStarsVeryHard && item.zodiacType === this.selectedZodiac);
+    }
+
     if (trialType === undefined)
       return 0;
 
-    return this.utilityService.bigNumberReducer(trialType.highestDps);*/
+    return this.utilityService.bigNumberReducer(trialType.highestDps);
 
     return 0;
   }

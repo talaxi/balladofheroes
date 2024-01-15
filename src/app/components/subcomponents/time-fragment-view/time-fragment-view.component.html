@@ -132,7 +132,7 @@
         <br />
         <span [innerHtml]="getSelectedEstimatedRewards()"></span>
         <br />
-        <span *ngIf="selectedTrial !== undefined"><i>Rewards will shift as the Trial god changes every 30 minutes.
+        <span *ngIf="selectedTrial === trialEnum.TrialOfSkill"><i>Rewards will shift as the Trial god changes every 30 minutes.
                 You will not gain any rewards while a god is selected that you have not defeated.</i></span>
         <br />
         <br />

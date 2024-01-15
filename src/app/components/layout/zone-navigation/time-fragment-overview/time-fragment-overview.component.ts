@@ -10,6 +10,7 @@ import { BalladService } from 'src/app/services/ballad/ballad.service';
 import { TrialService } from 'src/app/services/battle/trial.service';
 import { GameLoopService } from 'src/app/services/game-loop/game-loop.service';
 import { GlobalService } from 'src/app/services/global/global.service';
+import { ZodiacService } from 'src/app/services/global/zodiac.service';
 import { LookupService } from 'src/app/services/lookup.service';
 import { SubZoneGeneratorService } from 'src/app/services/sub-zone-generator/sub-zone-generator.service';
 import { BackgroundService } from 'src/app/services/utility/background.service';
@@ -29,7 +30,7 @@ export class TimeFragmentOverviewComponent {
   constructor(private deviceDetectorService: DeviceDetectorService, public dialog: MatDialog, private lookupService: LookupService,
     private globalService: GlobalService, private gameLoopService: GameLoopService, private trialService: TrialService, 
     private dictionaryService: DictionaryService, private balladService: BalladService, private subzoneGeneratorService: SubZoneGeneratorService,
-    private utilityService: UtilityService, private backgroundService: BackgroundService) {
+    private utilityService: UtilityService, private backgroundService: BackgroundService, private zodiacService: ZodiacService) {
 
   }
 
@@ -58,6 +59,10 @@ export class TimeFragmentOverviewComponent {
       if (run.selectedTrial === TrialEnum.TrialOfSkill) {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
+      }
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.zodiacType === this.zodiacService.getCurrentZodiac());
       }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
@@ -122,6 +127,10 @@ export class TimeFragmentOverviewComponent {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
           item.godType === this.trialService.getGodEnumFromTrialOfSkillBattle());
       }
+      else if (run.selectedTrial === TrialEnum.TrialOfTheStarsNormal || run.selectedTrial === TrialEnum.TrialOfTheStarsHard || run.selectedTrial === TrialEnum.TrialOfTheStarsVeryHard) {
+        trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial &&
+          item.zodiacType === this.zodiacService.getCurrentZodiac());
+      }
       else {
         trialType = this.globalService.globalVar.trialDefeatCount.find(item => item.type === run.selectedTrial);
       }
@@ -152,16 +161,7 @@ export class TimeFragmentOverviewComponent {
       rewards = rewards.substring(0, rewards.length - 2);
       
     if (finalLootOptions.length > 0)
-    rewards += finalLootOptions.length + " Items ";
-    /*finalLootOptions.forEach(loot => {
-      rewards += "<span>" + this.utilityService.genericShortRound(loot[1]) + "</span> " + this.dictionaryService.getItemName(loot[0]) + ", ";
-    });
-
-    if (rewards !== "" && finalLootOptions.length > 0) {
-      rewards = rewards.substring(0, rewards.length - 2);
-      if (!oneLine)
-        rewards += "<br/>";
-    }*/
+    rewards += finalLootOptions.length + " Items ";    
 
     if (rewards !== "") {
       if (oneLine)
