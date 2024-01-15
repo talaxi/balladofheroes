@@ -75,11 +75,11 @@
   
   <ng-template #zodiacPopover>
     <div>
-      Zodiac: <img class="icon filtered" [src]="getZodiacSign()"> ({{getZodiacName()}})
+      <span class="bold smallCaps">Zodiac: </span> <img class="icon filtered" [src]="getZodiacSign()"> ({{getZodiacName()}})
       <br/>
-      Duration: {{getZodiacStartDate()}} to {{getZodiacEndDate()}}
+      <span class="bold smallCaps">Duration: </span> {{getZodiacStartDate()}} to {{getZodiacEndDate()}}
       <hr/>
-      Bonus Gods: <span [innerHTML]="getBonusGods()"></span>
+      <span class="bold smallCaps">Bonus Gods: </span> <span [innerHTML]="getBonusGods()"></span>
       <br/>
       These gods give characters 20% additional primary stats when equipped, receive 20% extra XP, and gain 20% additional Chthonic Power when reset. <span *ngIf="anyBonusGodsHidden()">Continue progressing through the story to unlock hidden gods.</span>
       <br/>

@@ -139,7 +139,7 @@ export class HeaderComponent implements OnInit {
       zodiacStartDate = new Date(0); // Default to an invalid date
     }
 
-    return formatDate(zodiacStartDate, 'MMM d, y', 'en-US');
+    return formatDate(zodiacStartDate, 'MMMM d', 'en-US');
   }
 
   getZodiacEndDate() {
@@ -177,7 +177,7 @@ export class HeaderComponent implements OnInit {
       zodiacEndDate = new Date(0); // Default to an invalid date
     }
     
-    return formatDate(zodiacEndDate, 'MMM d, y', 'en-US');
+    return formatDate(zodiacEndDate, 'MMMM d', 'en-US');
   }
 
   anyBonusGodsHidden() {

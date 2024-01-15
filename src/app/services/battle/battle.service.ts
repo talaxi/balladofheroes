@@ -2724,7 +2724,8 @@ export class BattleService {
     else
       user.battleInfo.lastUsedPoseidonAbility = false;
 
-    this.battle.firstAbilityUsed = true;
+    if (this.battle !== undefined)
+      this.battle.firstAbilityUsed = true;
 
     if (!keepFlow) {
       user.battleInfo.statusEffects = user.battleInfo.statusEffects.filter(item => item.type !== StatusEffectEnum.Flow);

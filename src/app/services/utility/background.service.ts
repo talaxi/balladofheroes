@@ -421,7 +421,7 @@ export class BackgroundService {
           //this.battleService.applyStatusEffect(this.globalService.createStatusEffect(StatusEffectEnum.InstantOstinato, -1, effect.effectiveness, true, true), member, enemies);
           //this.battleService.handleuserEffects(true, )
           var ostinato = this.lookupService.characterHasAbility("Ostinato", member);
-          if (ostinato !== undefined) {
+          if (ostinato !== undefined && this.globalService.globalVar.activeBattle !== undefined) {
             this.battleService.useAbility(true, ostinato, member, enemies === undefined ? [] : enemies, party, true, effect.effectiveness - 1);
           }
         }
